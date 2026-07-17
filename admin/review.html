@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Review Queue - AfroTools Admin</title>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', -apple-system, sans-serif; background: #F5F9FF; color: #1a2e22; line-height: 1.6; }
+  .dash { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+  .dash-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .dash-header h1 { font-size: 1.5rem; font-weight: 800; }
+  .badge { background: #e0f2fe; color: #075985; font-size: .65rem; font-weight: 700; padding: 3px 10px; border-radius: 12px; text-transform: uppercase; }
+  .intro { color: #6B7F99; max-width: 76ch; margin-bottom: 24px; }
+  .back-link { font-size: .82rem; color: #0062CC; text-decoration: none; margin-bottom: 16px; display: inline-block; }
+  .back-link:hover { text-decoration: underline; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .stat-card { background: #fff; border: 1px solid #E8F0FE; border-radius: 12px; padding: 16px; text-align: center; }
+  .stat-value { font-size: 1.6rem; font-weight: 800; color: #0062CC; }
+  .stat-label { font-size: .72rem; color: #6B7F99; margin-top: 2px; }
+  .section { background: #fff; border: 1px solid #E8F0FE; border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+  .section-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 16px; }
+  .section h2 { font-size: 1rem; font-weight: 700; }
+  .section-copy { color: #6B7F99; margin-top: 6px; max-width: 68ch; }
+  .btn { padding: 10px 20px; border: none; border-radius: 8px; font-family: inherit; font-size: .85rem; font-weight: 600; cursor: pointer; }
+  .btn-primary { background: #0062CC; color: #fff; }
+  .btn-primary:hover { background: #0063D1; }
+  .btn-danger { background: #dc2626; color: #fff; }
+  .btn-danger:hover { background: #b91c1c; }
+  .btn-sm { padding: 6px 12px; font-size: .75rem; }
+  table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+  th { text-align: left; font-weight: 600; color: #6B7F99; padding: 8px 10px; border-bottom: 2px solid #E8F0FE; }
+  td { padding: 8px 10px; border-bottom: 1px solid #EFF6FF; vertical-align: top; }
+  tr:hover td { background: #F5F9FF; }
+  .status-pill {
+    display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 999px;
+    font-size: .72rem; font-weight: 700; letter-spacing: .02em;
+  }
+  .status-pending { background: #FFF7ED; color: #C2410C; }
+  .confidence-high { color: #027A48; font-weight: 700; }
+  .confidence-medium { color: #C2410C; font-weight: 700; }
+  .confidence-low { color: #4B5563; font-weight: 700; }
+  .muted { color: #6B7F99; font-size: .75rem; }
+  .toast { position: fixed; top: 20px; right: 20px; padding: 12px 20px; border-radius: 8px; color: #fff; font-size: .85rem; font-weight: 500; z-index: 999; transform: translateY(-20px); opacity: 0; transition: all .3s; }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { background: #059669; }
+  .toast.error { background: #dc2626; }
+  .auth-state {
+    min-height: 100vh; display: grid; place-items: center; padding: 24px;
+    background: linear-gradient(180deg, #F5F9FF, #EEF4FB);
+  }
+  .auth-card {
+    max-width: 420px; width: 100%; padding: 28px; background: rgba(255,255,255,0.9);
+    border: 1px solid #E8F0FE; border-radius: 18px; box-shadow: 0 18px 60px rgba(15, 23, 42, 0.08);
+    text-align: center;
+  }
+  .auth-card h1 { margin: 14px 0 8px; font-size: 1.8rem; }
+  .auth-card p { color: #6B7F99; margin-bottom: 18px; }
+  @media (max-width: 860px) {
+    .section-head { flex-direction: column; align-items: flex-start; }
+  }
+  @media (max-width: 600px) {
+    .dash { padding: 20px 16px; }
+  }
+</style>
+<link rel="alternate" hreflang="en" href="https://afrotools.com/admin/review" />
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/admin/review" />
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Review Queue - AfroTools Admin">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<link rel="canonical" href="https://afrotools.com/admin/review">
+<meta property="og:url" content="https://afrotools.com/admin/review">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c4853917">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/lib/dark-mode.js?v=5cb64ba3" defer></script>
+</head>
+<body class="top-level-page-ui-refresh">
+<div class="dash">
+  <a href="/admin/dashboard" class="back-link">&larr; Admin Dashboard</a>
+  <div class="dash-header">
+    <h1>Review Queue</h1>
+    <span class="badge">Admin</span>
+  </div>
+  <p class="intro">Verify gazette-detected changes and clear pending review items. Approving a change confirms the signal, but the underlying calculator data still needs a manual update before it reaches users.</p>
+
+  <div class="stats" id="queueStats"></div>
+
+  <div class="section">
+    <div class="section-head">
+      <div>
+        <h2>Pending Gazette Changes</h2>
+        <p class="section-copy">Detected changes that still need a human decision before the team updates the affected payroll or tax surfaces.</p>
+      </div>
+      <button class="btn btn-primary btn-sm" type="button" onclick="loadReviewQueue()">Refresh</button>
+    </div>
+    <table>
+      <thead>
+        <tr><th>Country</th><th>Change</th><th>Description</th><th>Source</th><th>Confidence</th><th>Detected</th><th>Actions</th></tr>
+      </thead>
+      <tbody id="gazetteTable">
+        <tr><td colspan="7" style="text-align:center;color:#94a3b8;">Loading...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <div>
+        <h2>Pending Review Queue</h2>
+        <p class="section-copy">Cross-check the manual queue generated by the scanner and related admin processes.</p>
+      </div>
+    </div>
+    <table>
+      <thead>
+        <tr><th>Status</th><th>Country</th><th>Metric</th><th>Reason</th><th>Created</th><th>Notes</th></tr>
+      </thead>
+      <tbody id="reviewTable">
+        <tr><td colspan="6" style="text-align:center;color:#94a3b8;">Loading...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var adminKey = sessionStorage.getItem('admin_key');
+var reviewEnabled = !!adminKey;
+if (!adminKey) {
+  adminKey = prompt('Enter admin password:');
+  if (adminKey) sessionStorage.setItem('admin_key', adminKey);
+  reviewEnabled = !!adminKey;
+}
+
+if (!reviewEnabled) {
+  document.body.innerHTML = '<div class="auth-state"><div class="auth-card"><h1>Access Denied</h1><p>Admin password required to review gazette changes.</p><a class="back-link" href="/">Back to AfroTools</a></div></div>';
+}
+
+function showToast(msg, type) {
+  var t = document.getElementById('toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.className = 'toast ' + (type || 'success');
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 3000);
+}
+
+function escapeHtml(value) {
+  return String(value == null ? '' : value).replace(/[&<>"']/g, function(ch) {
+    return ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    })[ch];
+  });
+}
+
+function humanizeLabel(value) {
+  return String(value || '').replace(/_/g, ' ').replace(/\b\w/g, function(ch) { return ch.toUpperCase(); });
+}
+
+function formatDateTime(value) {
+  if (!value) return '--';
+  var date = new Date(value);
+  if (isNaN(date.getTime())) return String(value);
+  return date.toLocaleString();
+}
+
+function confidenceClass(value) {
+  if (value >= 0.8) return 'confidence-high';
+  if (value >= 0.6) return 'confidence-medium';
+  return 'confidence-low';
+}
+
+async function apiFetch(method, body) {
+  var opts = {
+    method: method,
+    headers: {
+      'Content-Type': 'application/json',
+      'x-admin-key': adminKey
+    }
+  };
+  if (body) opts.body = JSON.stringify(body);
+  var res = await fetch('/api/gazette-review', opts);
+  var text = await res.text();
+  var data = {};
+  try { data = text ? JSON.parse(text) : {}; } catch (err) { data = { error: text || 'Invalid server response' }; }
+  if (!res.ok) throw new Error(data.error || ('Request failed with status ' + res.status));
+  return data;
+}
+
+function renderStats(data) {
+  var total = (data.gazette_count || 0) + (data.review_count || 0);
+  document.getElementById('queueStats').innerHTML =
+    '<div class="stat-card"><div class="stat-value">' + total + '</div><div class="stat-label">Total Pending</div></div>' +
+    '<div class="stat-card"><div class="stat-value">' + (data.gazette_count || 0) + '</div><div class="stat-label">Gazette Changes</div></div>' +
+    '<div class="stat-card"><div class="stat-value">' + (data.review_count || 0) + '</div><div class="stat-label">Review Items</div></div>';
+}
+
+function renderGazetteTable(changes) {
+  var tbody = document.getElementById('gazetteTable');
+  if (!changes.length) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#94a3b8;">No pending gazette changes.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = changes.map(function(change) {
+    var confidence = typeof change.confidence === 'number' ? Math.round(change.confidence * 100) + '%' : '--';
+    var source = change.source_url
+      ? '<a href="' + escapeHtml(change.source_url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(change.source_name || 'Source') + '</a>'
+      : escapeHtml(change.source_name || '--');
+    return '<tr>' +
+      '<td>' + escapeHtml(change.country_name || change.country_code || '--') + '</td>' +
+      '<td>' + escapeHtml(humanizeLabel(change.change_type)) + '</td>' +
+      '<td><strong>' + escapeHtml(change.description || '--') + '</strong></td>' +
+      '<td>' + source + '</td>' +
+      '<td class="' + confidenceClass(change.confidence || 0) + '">' + escapeHtml(confidence) + '</td>' +
+      '<td>' + escapeHtml(formatDateTime(change.detected_at)) + '</td>' +
+      '<td><button class="btn btn-sm btn-primary" type="button" onclick="actionChange(\'' + escapeHtml(change.id) + '\', \'approve\')">Approve</button> ' +
+      '<button class="btn btn-sm btn-danger" type="button" onclick="actionChange(\'' + escapeHtml(change.id) + '\', \'reject\')">Reject</button></td>' +
+    '</tr>';
+  }).join('');
+}
+
+function renderReviewTable(reviews) {
+  var tbody = document.getElementById('reviewTable');
+  if (!reviews.length) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#94a3b8;">No pending review items.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = reviews.map(function(item) {
+    return '<tr>' +
+      '<td><span class="status-pill status-pending">' + escapeHtml(String(item.status || 'pending').toUpperCase()) + '</span></td>' +
+      '<td>' + escapeHtml(item.country_code || '--') + '</td>' +
+      '<td>' + escapeHtml(humanizeLabel(item.metric)) + '</td>' +
+      '<td>' + escapeHtml(humanizeLabel(item.reason)) + '</td>' +
+      '<td>' + escapeHtml(formatDateTime(item.created_at)) + '</td>' +
+      '<td><span class="muted">' + escapeHtml(item.notes || '--') + '</span></td>' +
+    '</tr>';
+  }).join('');
+}
+
+async function loadReviewQueue() {
+  var gazetteTable = document.getElementById('gazetteTable');
+  var reviewTable = document.getElementById('reviewTable');
+
+  try {
+    var data = await apiFetch('GET');
+    renderStats(data);
+    renderGazetteTable(data.pending_gazette_changes || []);
+    renderReviewTable(data.pending_reviews || []);
+  } catch (err) {
+    if (gazetteTable) {
+      gazetteTable.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#dc2626;">' + escapeHtml(err.message || 'Unable to load review queue') + '</td></tr>';
+    }
+    if (reviewTable) {
+      reviewTable.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#dc2626;">' + escapeHtml(err.message || 'Unable to load review queue') + '</td></tr>';
+    }
+    showToast(err.message || 'Unable to load review queue', 'error');
+  }
+}
+
+async function actionChange(id, action) {
+  var message = action === 'approve'
+    ? 'Optional verification note:'
+    : 'Reason for rejection (optional):';
+  var notes = prompt(message, '');
+  if (notes === null) return;
+
+  try {
+    var data = await apiFetch('POST', { id: id, action: action, notes: notes.trim() });
+    showToast(data.message || ('Change ' + action + 'd'));
+    loadReviewQueue();
+  } catch (err) {
+    showToast(err.message || ('Unable to ' + action + ' change'), 'error');
+  }
+}
+
+if (reviewEnabled) {
+  loadReviewQueue();
+}
+</script>
+</body>
+</html>

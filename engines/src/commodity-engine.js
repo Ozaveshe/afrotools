@@ -1,0 +1,83 @@
+var CommodityEngine = function() {
+  "use strict";
+  function e(e) {
+    return Number(e).toLocaleString("en-US");
+  }
+  function t(t, r) {
+    var a = [], o = r.tradeBalance || 0;
+    return "NG" === t ? (a.push("🛢️ Nigeria's exports are 90%+ hydrocarbons. Diversification into agriculture and manufacturing is a key national priority."),
+    a.push("⚠️ The high import dependency for refined petroleum (despite crude oil production) reflects refinery capacity constraints.")) : "GH" === t ? (a.push("🏅 Ghana is the world's 2nd largest cocoa producer. Gold + cocoa + oil = the \"Big 3\" that dominate Ghana's export basket."),
+    a.push("💡 Ghana's trade surplus driven by commodity exports — vulnerable to global commodity price swings.")) : "KE" === t ? (a.push("🌹 Kenya leads Africa in cut flower exports — the Naivasha lake region supplies 35%+ of EU flower imports."),
+    a.push("☕ Kenyan AA coffee commands premium prices. Mombasa Tea Auction is the largest in the world by volume.")) : "ZA" === t ? (a.push("💎 South Africa holds 80% of global platinum group metal reserves — unique export dominance in precious metals."),
+    a.push("🚗 SA is Africa's leading vehicle manufacturer (BMW, VW, Mercedes assembly) — vehicles are both top export and import.")) : "CI" === t ? a.push("🍫 Côte d'Ivoire is the world's #1 cocoa producer, accounting for ~40% of global supply. Cocoa price volatility is a major economic risk.") : "ET" === t && (a.push("☕ Ethiopia is the birthplace of coffee. Its specialty Yirgacheffe, Sidamo and Harrar coffees command premium prices globally."),
+    a.push("🌼 Ethiopia is Africa's largest flower exporter, with Addis Ababa's altitude ideal for year-round cultivation.")),
+    o > 0 ? a.push("✅ " + r.name + " runs a trade surplus of $" + e(Math.abs(o)) + "M — exports exceed imports.") : a.push("📊 " + r.name + " runs a trade deficit of $" + e(Math.abs(o)) + "M — higher import dependency typical for developing economies."),
+    a;
+  }
+  return {
+    getCountrySummary: function(e) {
+      var r = CommodityTradeData.getCountry(e);
+      return r ? {
+        code: e,
+        name: r.name,
+        flag: r.flag,
+        region: r.region,
+        totalExports: r.totalExports || 0,
+        totalImports: r.totalImports || 0,
+        tradeBalance: r.tradeBalance || 0,
+        topExports: r.topExports || [],
+        topImports: r.topImports || [],
+        topPartners: r.topPartners || {},
+        observations: t(e, r)
+      } : null;
+    },
+    getRankedList: function(t, r, a) {
+      return CommodityTradeData.getCommoditiesForCountry(t, r, a).map(function(t, r) {
+        return Object.assign({}, t, {
+          rank: r + 1,
+          valueFormatted: e(t.value) + " M USD"
+        });
+      });
+    },
+    getTradeBalance: function(e) {
+      var t = CommodityTradeData.getCountry(e);
+      if (!t) {
+        return null;
+      }
+      var r = t.tradeBalance || 0;
+      return {
+        exports: t.totalExports || 0,
+        imports: t.totalImports || 0,
+        balance: r,
+        status: r >= 0 ? "surplus" : "deficit",
+        statusLabel: r >= 0 ? "Trade Surplus" : "Trade Deficit",
+        statusColor: r >= 0 ? "#34C759" : "#FF3B30",
+        absBalance: Math.abs(r)
+      };
+    },
+    findCommodityTraders: function(e) {
+      return CommodityTradeData.getCommodityByName(e).sort(function(e, t) {
+        return t.item.value - e.item.value;
+      });
+    },
+    getPriceContext: function() {
+      return Object.entries(CommodityTradeData.commodityPrices).map(function(e) {
+        var t = e[0], r = e[1];
+        return {
+          id: t,
+          name: r.name,
+          unit: r.unit,
+          currency: r.currency,
+          source: r.source,
+          refPrice: r.refPrice
+        };
+      });
+    },
+    getAllCountries: function() {
+      return CommodityTradeData.getAllCountries();
+    },
+    getCategories: function() {
+      return CommodityTradeData.categories;
+    }
+  };
+}();

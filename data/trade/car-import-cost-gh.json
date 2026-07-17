@@ -1,0 +1,107 @@
+{
+  "countryCode": "GH",
+  "countryName": "Ghana",
+  "slug": "ghana",
+  "flagLabel": "GH",
+  "currency": "GHS",
+  "effectiveFrom": "2025-01-01",
+  "effectiveTo": null,
+  "status": "estimate-pack",
+  "confidence": "official-plus-estimate",
+  "valuationMethod": "Manufacturer or first purchase price reduced by depreciation to FOB, converted by FX, then freight and insurance to CIF.",
+  "ageRules": {
+    "basis": "manufactureYear",
+    "maxYears": null,
+    "message": "Ghana applies overage penalties instead of a simple age ban in this pack."
+  },
+  "steeringRules": {
+    "required": "left",
+    "message": "Right-hand-steering vehicles are restricted unless a special dispensation applies."
+  },
+  "inspectionRules": {
+    "required": true,
+    "label": "Used-vehicle examination",
+    "message": "Used vehicles can attract examination and ICUMS/VIN valuation processing."
+  },
+  "customsBasisRules": {
+    "basis": "CIF",
+    "insuranceRate": 0.012,
+    "freightFallbackUsd": 1650,
+    "valuationPackRequired": false
+  },
+  "ports": [
+    { "code": "GHTMA", "label": "Tema Port", "city": "Tema / Accra", "terminalHandlingUsd": 260, "shippingLineChargesUsd": 180, "freeStorageDays": 5, "dailyStorageUsd": 25, "dailyDemurrageUsd": 55 },
+    { "code": "GHTKD", "label": "Takoradi Port", "city": "Takoradi", "terminalHandlingUsd": 230, "shippingLineChargesUsd": 160, "freeStorageDays": 5, "dailyStorageUsd": 22, "dailyDemurrageUsd": 50 }
+  ],
+  "cities": [
+    { "id": "accra", "label": "Accra", "inlandUsd": 90 },
+    { "id": "kumasi", "label": "Kumasi", "inlandUsd": 360 },
+    { "id": "takoradi", "label": "Takoradi", "inlandUsd": 90 },
+    { "id": "tamale", "label": "Tamale", "inlandUsd": 650 }
+  ],
+  "practicalCostPresets": {
+    "terminalHandlingUsd": 260,
+    "shippingLineChargesUsd": 180,
+    "inspectionUsd": 140,
+    "clearingAgentUsd": 360,
+    "diyClearingUsd": 170,
+    "registrationUsd": 240,
+    "tradePlateUsd": 70,
+    "safeBondRentUsd": 95,
+    "bufferRate": 0.07
+  },
+  "taxComponents": [
+    { "id": "gh-import-duty", "label": "Import duty", "type": "engine-based", "base": "customsValue", "displayOrder": 10, "official": true, "group": "officialTaxes", "tiers": [
+      { "maxCc": 1500, "rate": 0.1, "label": "Small engine estimate" },
+      { "minCc": 1501, "maxCc": 2500, "rate": 0.2, "label": "Medium engine estimate" },
+      { "minCc": 2501, "rate": 0.3, "label": "Large engine estimate" }
+    ] },
+    { "id": "gh-vat", "label": "VAT", "type": "percentage", "base": "customsValuePlusPriorOfficialTaxes", "rateOrFormula": 0.125, "displayOrder": 20, "official": true, "group": "officialTaxes" },
+    { "id": "gh-nhil", "label": "NHIL", "type": "percentage", "base": "customsValuePlusPriorOfficialTaxes", "rateOrFormula": 0.025, "displayOrder": 30, "official": true, "group": "officialTaxes" },
+    { "id": "gh-getfund", "label": "GETFund levy", "type": "percentage", "base": "customsValuePlusPriorOfficialTaxes", "rateOrFormula": 0.025, "displayOrder": 40, "official": true, "group": "officialTaxes" },
+    { "id": "gh-au-levy", "label": "AU levy", "type": "percentage", "base": "customsValue", "rateOrFormula": 0.002, "displayOrder": 50, "official": true, "group": "officialFees" },
+    { "id": "gh-ecowas-levy", "label": "ECOWAS levy", "type": "percentage", "base": "customsValue", "rateOrFormula": 0.005, "displayOrder": 60, "official": true, "group": "officialFees" },
+    { "id": "gh-exim-levy", "label": "EXIM levy", "type": "percentage", "base": "customsValue", "rateOrFormula": 0.0075, "displayOrder": 70, "official": true, "group": "officialFees" },
+    { "id": "gh-exam-fee", "label": "Used-vehicle examination fee", "type": "percentage", "base": "customsValue", "rateOrFormula": 0.01, "displayOrder": 80, "official": true, "group": "officialFees" },
+    { "id": "gh-processing-fee", "label": "Processing fee", "type": "percentage", "base": "customsValue", "rateOrFormula": 0.01, "displayOrder": 90, "official": true, "group": "officialFees" },
+    { "id": "gh-overage-penalty", "label": "Age overage penalty", "type": "age-based", "base": "customsValue", "displayOrder": 100, "official": true, "group": "officialFees", "tiers": [
+      { "minAge": 10, "maxAge": 12, "rate": 0.05, "label": "10-12 years" },
+      { "minAge": 13, "maxAge": 15, "rate": 0.15, "label": "13-15 years" },
+      { "minAge": 16, "rate": 0.3, "label": "16+ years" }
+    ] }
+  ],
+  "registrationComponents": [
+    { "id": "gh-dvla-registration", "label": "DVLA registration and number plate estimate", "type": "fixed", "amountUsd": 240, "displayOrder": 10, "official": false, "group": "registration" }
+  ],
+  "optionalComponents": [
+    { "id": "gh-safe-bond-rent", "label": "Safe bond terminal/rent estimate", "type": "fixed", "amountUsd": 95, "official": false }
+  ],
+  "documents": [
+    "Commercial invoice",
+    "Bill of lading",
+    "Certificate of title / export certificate",
+    "Packing list where applicable",
+    "Insurance certificate",
+    "TIN / importer registration",
+    "ICUMS declaration details",
+    "Vehicle VIN and engine number"
+  ],
+  "sourceNotes": [
+    { "name": "Ghana Revenue Authority - vehicle importation", "url": "https://gra.gov.gh/customs/vehicle-importation/", "lastVerified": "2026-04-10", "confidence": "official", "note": "Used for valuation workflow, statutory charge list, overage, and steering warning." },
+    { "name": "GRA online tools", "url": "https://gra.gov.gh/online-tools/tax-calculators/", "lastVerified": "2026-04-10", "confidence": "official", "note": "Reference for official calculator availability." },
+    { "name": "ICUMS used vehicle tax calculator", "url": "https://external.unipassghana.com/cl/tm/tax/selectUsedVehicleTaxCalculate.do?MENU_ID=IIM01S03V02&decorator=popup", "lastVerified": "2026-04-10", "confidence": "official-system", "note": "Future VIN/ICUMS lookup hook; no runtime scraping." }
+  ],
+  "disclaimers": [
+    "Ghana official taxes and third-party charges are separated so users can see what is statutory versus practical.",
+    "Right-hand steering is restricted unless a special dispensation applies.",
+    "Age overage penalty is shown as a clear estimate and must be verified against the final ICUMS assessment."
+  ],
+  "faqs": [
+    { "question": "Why does Ghana separate official taxes and third-party charges?", "answer": "Ghana clearing often includes statutory taxes, ICUMS-related fees, terminal costs, shipping-line charges, safe bond handling, trade plates, and agent charges. Separating them makes the estimate easier to audit." },
+    { "question": "Can Ghana use VIN lookup later?", "answer": "Yes. The data model has an ICUMS/VIN-oriented hook so an official or licensed lookup source can be imported later without rewriting the calculator." }
+  ],
+  "copy": {
+    "intro": "Estimate a vehicle import through Tema or Takoradi with Ghana-specific duties, levies, overage penalty, local port costs, DVLA registration, and third-party clearing charges.",
+    "hiddenCosts": "Common misses are used-vehicle examination fees, processing fees, safe bond rent, shipping-line charges, trade number plates, and age overage penalties."
+  }
+}

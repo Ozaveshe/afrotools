@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML kwenda PDF - geuza HTML au rich text kuwa PDF | AfroTools</title>
+<meta name="description" content="Badilisha HTML au rich text kuwa PDF kwenye kivinjari kwa templates, CSS, header, footer, namba za kurasa, margins na live preview.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="HTML kwenda PDF - geuza HTML au rich text kuwa PDF | AfroTools">
+<meta property="og:description" content="Badilisha HTML au rich text kuwa PDF kwenye kivinjari kwa templates, CSS, header, footer, namba za kurasa, margins na live preview.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/sw/zana/html-kwenda-pdf/">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="HTML kwenda PDF - geuza HTML au rich text kuwa PDF | AfroTools">
+<meta name="twitter:description" content="Badilisha HTML au rich text kuwa PDF kwenye kivinjari kwa templates, CSS, header, footer, namba za kurasa, margins na live preview.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/vendor/html2canvas/html2canvas.min.js?v=d7530aa0"></script>
+<script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c"></script>
+<style>
+  :root {
+    --afro-accent: var(--color-primary);
+    --afro-dark: #0f1419;
+    --afro-light: #f5f7fa;
+  }
+
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-hero::after {
+    content: '';
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 120px;
+    height: 120px;
+    background: rgba(0, 98, 204, 0.04);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--afro-accent);
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    color: var(--afro-accent);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 6px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .b-green {
+    background: rgba(0, 113, 227, 0.18);
+    color: var(--color-primary);
+    border: 1px solid rgba(0, 113, 227, 0.38);
+  }
+
+  /* Main */
+  .tool-main {
+    padding: 28px 0 72px;
+  }
+
+  .tool-main-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* Tabs */
+  .tab-toggle {
+    display: flex;
+    gap: 0;
+    margin-bottom: 20px;
+    background: #EFF6FF;
+    border-radius: 8px;
+    padding: 4px;
+    border: 1px solid #DBEAFE;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 10px 16px;
+    border: none;
+    background: transparent;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #64748b;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+
+  .tab-btn.active {
+    background: #fff;
+    color: var(--afro-accent);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  }
+
+  .tab-content {
+    display: none;
+  }
+
+  .tab-content.active {
+    display: block;
+  }
+
+  /* Card */
+  .tool-card {
+    background: #fff;
+    border: 1px solid #DBEAFE;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+  }
+
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #EFF6FF;
+    background: #F5F9FF;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #0f172a;
+  }
+
+  .card-body {
+    padding: 20px 22px;
+  }
+
+  /* HTML textarea */
+  #htmlInput {
+    width: 100%;
+    min-height: 300px;
+    background: #EFF6FF;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 6px;
+    padding: 14px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #0f172a;
+    outline: none;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    resize: vertical;
+    line-height: 1.6;
+    tab-size: 2;
+    box-sizing: border-box;
+  }
+
+  .sample-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .sample-btn,
+  .mini-action {
+    border: 1.5px solid #BFDBFE;
+    background: #fff;
+    color: #0f172a;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 800;
+    transition: all 0.15s;
+  }
+
+  .sample-btn {
+    padding: 9px 12px;
+    font-size: 0.74rem;
+  }
+
+  .mini-action {
+    padding: 8px 10px;
+    font-size: 0.72rem;
+  }
+
+  .sample-btn:hover,
+  .mini-action:hover {
+    border-color: var(--afro-accent);
+    color: var(--afro-accent);
+    background: #F5F9FF;
+  }
+
+  #htmlInput:focus {
+    border-color: var(--afro-accent);
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+  }
+
+  /* Options row */
+  .options-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 16px;
+    margin-bottom: 18px;
+  }
+
+  .option-group {
+    flex: 1;
+    min-width: 140px;
+  }
+
+  .option-group label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-bottom: 6px;
+  }
+
+  .option-group select,
+  .option-group input,
+  .option-group textarea {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 6px;
+    background: #EFF6FF;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #0f172a;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .option-group input,
+  .option-group textarea {
+    cursor: text;
+  }
+
+  .option-group textarea {
+    min-height: 110px;
+    resize: vertical;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    line-height: 1.5;
+  }
+
+  .option-group select:focus,
+  .option-group input:focus,
+  .option-group textarea:focus {
+    border-color: var(--afro-accent);
+    background: #fff;
+  }
+
+  .advanced-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin: 16px 0 18px;
+  }
+
+  .wide-field {
+    grid-column: 1 / -1;
+  }
+
+  .check-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px 0;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #334155;
+  }
+
+  .check-row input {
+    margin-top: 2px;
+    accent-color: var(--afro-accent);
+  }
+
+  .hint-line,
+  .doc-stats {
+    font-size: 0.75rem;
+    color: #64748b;
+    line-height: 1.5;
+  }
+
+  .doc-stats {
+    margin: 10px 0 0;
+    padding: 10px 12px;
+    border: 1px solid #DBEAFE;
+    border-radius: 8px;
+    background: #F8FBFF;
+    font-weight: 700;
+  }
+
+  /* Rich text editor */
+  .rte-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 10px 14px;
+    border-bottom: 1px solid #EFF6FF;
+    background: #F5F9FF;
+  }
+
+  .rte-btn {
+    padding: 6px 10px;
+    background: #EFF6FF;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #0f172a;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+    min-width: 30px;
+    text-align: center;
+  }
+
+  .rte-btn:hover {
+    border-color: var(--afro-accent);
+    background: rgba(0, 113, 227, 0.05);
+  }
+
+  .rte-sep {
+    width: 1px;
+    background: #DBEAFE;
+    margin: 2px 4px;
+  }
+
+  #richEditor {
+    min-height: 300px;
+    padding: 18px;
+    outline: none;
+    font-size: 0.95rem;
+    color: #0f172a;
+    line-height: 1.7;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  #richEditor:focus {
+    background: #FAFBFF;
+  }
+
+  #richEditor h1 { font-size: 1.8rem; font-weight: 800; margin-bottom: 8px; }
+  #richEditor h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 6px; }
+  #richEditor h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; }
+  #richEditor ul, #richEditor ol { padding-left: 24px; margin-bottom: 10px; }
+  #richEditor a { color: var(--afro-accent); text-decoration: underline; }
+
+  /* Convert button */
+  .convert-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--afro-accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s;
+    font-family: 'DM Sans', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .convert-btn:hover {
+    background: #0059B3;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 113, 227, 0.3);
+  }
+
+  .convert-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .convert-btn .spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    display: none;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Preview + download */
+  .preview-section {
+    display: none;
+  }
+
+  .preview-section.visible {
+    display: block;
+  }
+
+  .preview-frame {
+    width: 100%;
+    min-height: 400px;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 6px;
+    background: #fff;
+  }
+
+  .html-preview-frame {
+    min-height: 320px;
+  }
+
+  .result-metrics {
+    margin-top: 12px;
+    padding: 12px;
+    border: 1px solid #DBEAFE;
+    border-radius: 8px;
+    background: #F8FBFF;
+    font-size: 0.78rem;
+    color: #334155;
+    line-height: 1.6;
+    display: none;
+  }
+
+  .result-metrics.visible {
+    display: block;
+  }
+
+  .download-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .dl-btn {
+    flex: 1;
+    padding: 12px;
+    background: var(--afro-accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .dl-btn:hover {
+    background: #0059B3;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 113, 227, 0.3);
+  }
+
+  .dl-btn.secondary {
+    background: #EFF6FF;
+    color: var(--afro-accent);
+    border: 1.5px solid #BFDBFE;
+  }
+
+  .dl-btn.secondary:hover {
+    background: #DBEAFE;
+    box-shadow: none;
+    transform: none;
+  }
+
+  /* Status */
+  .status-msg {
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: none;
+  }
+
+  .status-msg.error {
+    display: block;
+    background: rgba(239, 68, 68, 0.08);
+    color: #dc2626;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+  }
+
+  .status-msg.success {
+    display: block;
+    background: rgba(0, 113, 227, 0.06);
+    color: var(--afro-accent);
+    border: 1px solid rgba(0, 113, 227, 0.2);
+  }
+
+  /* SEO section */
+  .seo-section {
+    max-width: 900px;
+    margin: 0 auto 48px;
+    padding: 0 24px;
+  }
+
+  .seo-section h2 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #111;
+    margin-bottom: 12px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .seo-section p {
+    font-size: 0.88rem;
+    color: #4b5563;
+    line-height: 1.7;
+    margin-bottom: 12px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* FAQ */
+  .faq-section {
+    max-width: 900px;
+    margin: 0 auto 48px;
+    padding: 0 24px;
+  }
+
+  .faq-section h2 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #111;
+    margin-bottom: 20px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  details {
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    background: #fff;
+  }
+
+  details summary {
+    padding: 14px 18px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #111;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  details summary::-webkit-details-marker { display: none; }
+  details[open] summary svg { transform: rotate(180deg); }
+
+  details .faq-body {
+    padding: 0 18px 14px;
+    font-size: 0.84rem;
+    color: #4b5563;
+    line-height: 1.7;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .sw-proof-panel {
+    max-width: 900px;
+    margin: 0 auto 32px;
+    padding: 0 20px;
+  }
+
+  .sw-proof-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .sw-proof-card {
+    border: 1px solid #dbe6f4;
+    border-radius: 12px;
+    background: #fff;
+    padding: 14px;
+    box-shadow: 0 1px 8px rgba(15, 23, 42, 0.05);
+  }
+
+  .sw-proof-card strong {
+    display: block;
+    color: #0f172a;
+    font-size: 0.9rem;
+    line-height: 1.25;
+    margin-bottom: 6px;
+  }
+
+  .sw-proof-card p {
+    margin: 0;
+    color: #52637a;
+    font-size: 0.82rem;
+    line-height: 1.55;
+  }
+
+  /* Hidden render container */
+  #renderContainer {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    background: #fff;
+    padding: 20px;
+    z-index: -1;
+  }
+
+  @media (max-width: 600px) {
+    .options-row {
+      flex-direction: column;
+    }
+    .download-row {
+      flex-direction: column;
+    }
+    .advanced-grid {
+      grid-template-columns: 1fr;
+    }
+    .sw-proof-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+
+
+<meta property="og:locale" content="sw_KE">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="article:modified_time" content="2026-04-28">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"HTML kwenda PDF","url":"https://afrotools.com/sw/zana/html-kwenda-pdf/","applicationCategory":"BusinessApplication","operatingSystem":"Any","inLanguage":"sw","description":"Badilisha HTML au rich text kuwa PDF kwenye kivinjari kwa templates, CSS, header, footer, namba za kurasa, margins na live preview.","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Hati na PDF","item":"https://afrotools.com/sw/hati-na-pdf/"},{"@type":"ListItem","position":4,"name":"HTML kwenda PDF","item":"https://afrotools.com/sw/zana/html-kwenda-pdf/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Je, HTML yangu inapakiwa?","acceptedAnswer":{"@type":"Answer","text":"Ubadilishaji umeundwa kufanyika kwenye kivinjari kwa maktaba za ndani. Picha za nje zinaweza kutegemea CORS na ruhusa za chanzo."}},{"@type":"Question","name":"Je, output ni sawa kabisa na browser page?","acceptedAnswer":{"@type":"Answer","text":"Hapana, export fidelity hutegemea CSS, fonts, picha, ukubwa wa ukurasa na uwezo wa browser. Hakiki PDF kabla ya kuituma."}},{"@type":"Question","name":"Ukubwa gani wa ukurasa unaungwa mkono?","acceptedAnswer":{"@type":"Answer","text":"Unaweza kutumia A4, A3, Letter au Legal kwa mwelekeo wa wima au mlalo, pamoja na margin za kawaida, nyembamba, pana, bila margin au maalum."}},{"@type":"Question","name":"Naweza kubadilisha rich text yenye formatting kuwa PDF?","acceptedAnswer":{"@type":"Answer","text":"Ndiyo. Tumia tab ya Hariri rich text kwa bold, italic, headings, orodha, links na alignment, kisha badilisha moja kwa moja kuwa PDF."}},{"@type":"Question","name":"Je, maudhui marefu hugawanywa kwenye kurasa nyingi?","acceptedAnswer":{"@type":"Answer","text":"Ndiyo. Maudhui marefu hugawanywa kulingana na ukubwa wa ukurasa, margins na render scale uliyochagua."}}]}</script>
+<link rel="stylesheet" href="/assets/css/sw-zana-mobile.css?v=adecdf8a">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/sw/zana/html-kwenda-pdf/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/html-to-pdf/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/html-en-pdf/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/html-kwenda-pdf/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/html-to-pdf/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">AfroTools</a> / <a href="/sw/tools/">Zana</a> / <span>HTML kwenda PDF</span>
+    </div>
+    <h1>HTML kwenda <em>PDF</em></h1>
+    <p class="hero-sub">Badilisha HTML au rich text kuwa PDF iliyopangwa kwa templates, CSS maalum, header, footer, namba za kurasa, ubora na uchakataji wa kivinjari.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">Maktaba za ndani</span>
+      <span class="badge b-green">Header na footer</span>
+      <span class="badge b-green">mwonekano wa awali ya moja kwa moja</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+
+    <!-- Tab Toggle -->
+    <div class="tab-toggle">
+      <button type="button" class="tab-btn active" data-tab="html">Bandika HTML</button>
+      <button type="button" class="tab-btn" data-tab="rte">Hariri rich text</button>
+    </div>
+
+    <!-- Status -->
+    <div id="statusMsg" class="status-msg"></div>
+
+    <!-- Tab 1: Bandika HTML -->
+    <div id="tab-html" class="tab-content active">
+      <div class="tool-card">
+        <div class="card-head">Ingizo la HTML</div>
+        <div class="card-body">
+          <div class="sample-strip">
+            <button class="sample-btn" type="button" data-template="invoice">Ankara</button>
+            <button class="sample-btn" type="button" data-template="report">Ripoti</button>
+            <button class="sample-btn" type="button" data-template="letter">Barua</button>
+            <button class="sample-btn" type="button" data-template="certificate">Cheti</button>
+            <button class="mini-action" id="previewHtmlBtn" type="button">Onyesha HTML</button>
+          </div>
+          <textarea id="htmlInput" aria-label="Ingizo la HTML" placeholder="&lt;h1&gt;Hati yangu&lt;/h1&gt;&#10;&lt;p&gt;Bandika HTML yako hapa...&lt;/p&gt;&#10;&#10;&lt;ul&gt;&#10;  &lt;li&gt;Inaunga mkono inline styles&lt;/li&gt;&#10;  &lt;li&gt;Majedwali, picha na orodha&lt;/li&gt;&#10;  &lt;li&gt;Maudhui ya kurasa nyingi&lt;/li&gt;&#10;&lt;/ul&gt;"></textarea>
+
+          <div class="options-row">
+            <div class="option-group">
+              <label for="pageSize">Ukubwa wa ukurasa</label>
+              <select id="pageSize">
+                <option value="a4" selected>A4 (210 x 297 mm)</option>
+                <option value="a3">A3 (297 x 420 mm)</option>
+                <option value="letter">Letter (8.5 x 11 in)</option>
+                <option value="legal">Legal (8.5 x 14 in)</option>
+              </select>
+            </div>
+            <div class="option-group">
+              <label>Mwelekeo</label>
+              <select id="orientation" aria-label="Orientation">
+                <option value="portrait" selected>Wima</option>
+                <option value="landscape">Mlalo</option>
+              </select>
+            </div>
+            <div class="option-group">
+              <label>Margins</label>
+              <select id="margins" aria-label="Margins">
+                <option value="normal" selected>Kawaida (20mm)</option>
+                <option value="narrow">Nyembamba (10mm)</option>
+                <option value="wide">Pana (30mm)</option>
+                <option value="none">Bila margin</option>
+                <option value="custom">Maalum</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="advanced-grid">
+            <div class="option-group">
+              <label for="fileName">Jina la faili</label>
+              <input id="fileName" type="text" value="afrotools-document.pdf">
+            </div>
+            <div class="option-group">
+              <label for="docTitle">Kichwa cha PDF</label>
+              <input id="docTitle" type="text" value="AfroTools HTML PDF">
+            </div>
+            <div class="option-group">
+              <label for="customMargin">Margin maalum (mm)</label>
+              <input id="customMargin" type="number" min="0" max="60" value="16">
+            </div>
+            <div class="option-group">
+              <label for="renderScale">Kiwango cha render</label>
+              <select id="renderScale">
+                <option value="1.5">Haraka</option>
+                <option value="2" selected>Wastani</option>
+                <option value="2.75">Ubora wa juu</option>
+              </select>
+            </div>
+            <div class="option-group">
+              <label for="imageQuality">Ubora wa picha</label>
+              <select id="imageQuality">
+                <option value="0.82">Faili ndogo</option>
+                <option value="0.92" selected>Wastani</option>
+                <option value="0.98">Ubora wa juu</option>
+              </select>
+            </div>
+            <div class="option-group">
+              <label for="headerText">Header</label>
+              <input id="headerText" type="text" placeholder="Header ya hiari ya ukurasa">
+            </div>
+            <div class="option-group">
+              <label for="footerText">Footer</label>
+              <input id="footerText" type="text" placeholder="Footer ya hiari ya ukurasa">
+            </div>
+            <div class="option-group wide-field">
+              <label for="customCss">CSS maalum</label>
+              <textarea id="customCss" spellcheck="false" placeholder="@page { size: A4; }&#10;h1 { color: #0071e3; }&#10;.page-break { break-before: page; }"></textarea>
+              <div class="hint-line">Picha za nje zinaweza kuhitaji CORS. Scripts huondolewa kabla ya render kwa ubadilishaji salama zaidi wa ndani.</div>
+            </div>
+            <label class="check-row">
+              <input aria-label="PageNumbers" id="pageNumbers" type="checkbox" checked>
+              <span>Ongeza namba za kurasa</span>
+            </label>
+            <label class="check-row">
+              <input aria-label="IncludeDate" id="includeDate" type="checkbox">
+              <span>Ongeza tarehe ya kutengeneza</span>
+            </label>
+          </div>
+
+          <div class="doc-stats" id="docStats">Tayari. Bandika HTML au anza na template.</div>
+
+          <button type="button" class="convert-btn" id="convertHtmlBtn">
+            <span class="spinner" id="spinnerHtml"></span>
+            Badilisha kuwa PDF
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 2: Hariri rich text -->
+    <div id="tab-rte" class="tab-content">
+      <div class="tool-card">
+        <div class="card-head">Hariri rich text</div>
+        <div class="rte-toolbar">
+          <button type="button" class="rte-btn" data-cmd="bold" title="Bold"><b>B</b></button>
+          <button type="button" class="rte-btn" data-cmd="italic" title="Italic"><i>I</i></button>
+          <button type="button" class="rte-btn" data-cmd="underline" title="Underline"><u>U</u></button>
+          <div class="rte-sep"></div>
+          <button type="button" class="rte-btn" data-cmd="formatBlock" data-val="h1" title="Heading 1">H1</button>
+          <button type="button" class="rte-btn" data-cmd="formatBlock" data-val="h2" title="Heading 2">H2</button>
+          <button type="button" class="rte-btn" data-cmd="formatBlock" data-val="h3" title="Heading 3">H3</button>
+          <button type="button" class="rte-btn" data-cmd="formatBlock" data-val="p" title="Paragraph">P</button>
+          <div class="rte-sep"></div>
+          <button type="button" class="rte-btn" data-cmd="insertUnorderedList" title="Bullet List">&#8226; List</button>
+          <button type="button" class="rte-btn" data-cmd="insertOrderedList" title="Numbered List">1. List</button>
+          <div class="rte-sep"></div>
+          <button type="button" class="rte-btn" data-cmd="createLink" title="Insert Link">Link</button>
+          <div class="rte-sep"></div>
+          <button type="button" class="rte-btn" data-cmd="justifyLeft" title="Align Left">Left</button>
+          <button type="button" class="rte-btn" data-cmd="justifyCenter" title="Align Center">Center</button>
+          <button type="button" class="rte-btn" data-cmd="justifyRight" title="Align Right">Right</button>
+        </div>
+        <div id="richEditor" contenteditable="true">
+          <h2>Anza kuandika hapa...</h2>
+          <p>Tumia toolbar juu kupanga maandishi. Bold, italic, headings, orodha, viungo na alignment vinaungwa mkono.</p>
+        </div>
+      </div>
+
+      <div class="options-row" style="margin-top:16px">
+        <div class="option-group">
+          <label for="pageSizeRte">Ukubwa wa ukurasa</label>
+          <select id="pageSizeRte">
+            <option value="a4" selected>A4 (210 x 297 mm)</option>
+            <option value="a3">A3 (297 x 420 mm)</option>
+            <option value="letter">Letter (8.5 x 11 in)</option>
+            <option value="legal">Legal (8.5 x 14 in)</option>
+          </select>
+        </div>
+        <div class="option-group">
+          <label>Mwelekeo</label>
+          <select id="orientationRte" aria-label="Orientation Rte">
+            <option value="portrait" selected>Wima</option>
+            <option value="landscape">Mlalo</option>
+          </select>
+        </div>
+        <div class="option-group">
+          <label>Margins</label>
+          <select id="marginsRte" aria-label="Margins Rte">
+            <option value="normal" selected>Kawaida (20mm)</option>
+            <option value="narrow">Nyembamba (10mm)</option>
+            <option value="wide">Pana (30mm)</option>
+            <option value="none">Bila margin</option>
+            <option value="custom">Tumia margin maalum hapo juu</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="button" class="convert-btn" id="convertRteBtn">
+        <span class="spinner" id="spinnerRte"></span>
+        Badilisha kuwa PDF
+      </button>
+    </div>
+
+    <!-- Preview + Pakua -->
+    <div id="previewSection" class="preview-section">
+      <div class="tool-card" style="margin-top:24px">
+        <div class="card-head">Muonekano wa HTML</div>
+        <div class="card-body">
+          <iframe id="htmlPreview" class="preview-frame html-preview-frame" title="Muonekano wa HTML"></iframe>
+        </div>
+      </div>
+      <div class="tool-card" style="margin-top:24px">
+        <div class="card-head">mwonekano wa awali ya PDF</div>
+        <div class="card-body">
+          <iframe id="pdfPreview" class="preview-frame" title="mwonekano wa awali ya PDF"></iframe>
+          <div class="result-metrics" id="resultMetrics"></div>
+          <div class="download-row">
+            <button type="button" class="dl-btn" id="downloadBtn">Pakua PDF</button>
+            <button type="button" class="dl-btn secondary" id="openPreviewBtn">Fungua mwonekano wa awali</button>
+            <button type="button" class="dl-btn secondary" id="resetBtn">Badilisha nyingine</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Hidden render container -->
+<div id="renderContainer"></div>
+
+<!-- SEO Section -->
+<section class="seo-section">
+  <h2>Badilisha HTML kuwa PDF mtandaoni</h2>
+  <p>AfroTools HTML kwenda PDF hubadilisha HTML ghafi au rich text kuwa hati za PDF kwa kivinjari-local rendering. Tumia templates za ankara, ripoti, barua na vyeti, au bandika HTML yako yenye inline styles, majedwali, orodha na picha. Chagua ukubwa wa ukurasa, mwelekeo, margins, render quality, CSS, headers, footers, namba za kurasa na tarehe kabla ya export.</p>
+  <p>Kila kitu hufanyika upande wa kivinjari kwa kutumia html2canvas na jsPDF assets za ndani. Maudhui yako hayatoki kwenye kifaa chako, hivyo yanafaa kwa ankara, mikataba, ripoti, risiti, barua za shule na nyaraka za ndani. Kwa kunasa live URLs kwa usahihi wa pixel, tumia seva-side renderer; kwa HTML au rich text uliyobandika kwa faragha, zana hii inatoa kasi na udhibiti.</p>
+</section>
+<section class="sw-proof-panel" aria-labelledby="html-pdf-proof-title">
+  <h2 id="html-pdf-proof-title" style="margin:0 0 12px;color:#0f172a;font-size:1.25rem;">Kabla ya ku-export PDF</h2>
+  <div class="sw-proof-grid">
+    <div class="sw-proof-card"><strong>Inafaa kwa nini</strong><p>Ankara, risiti, barua, ripoti fupi, vyeti, notes za darasa na hati za ndani unazotaka kuunda bila kupakia maudhui.</p></div>
+    <div class="sw-proof-card"><strong>Faragha ya kazi</strong><p>HTML na rich text hukaa kwenye kivinjari. Picha za nje zinaweza kushindwa kama chanzo hakiruhusu CORS.</p></div>
+    <div class="sw-proof-card"><strong>Hakiki kabla ya kutuma</strong><p>PDF ya canvas inaweza kubadilisha fonti au spacing. Fungua mwonekano wa awali, kagua kurasa, kisha pakua.</p></div>
+  </div>
+</section>
+
+<!-- FAQ Section -->
+
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+<section class="faq-section">
+  <h2>Maswali ya mara kwa mara</h2>
+  <div class="faq-list">
+    <details>
+      <summary>
+        Je, HTML yangu inapakiwa kwenye seva?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div class="faq-body">Hapana. Ubadilishaji wote hufanyika kwenye kivinjari yako kwa html2canvas na jsPDF files za ndani. HTML yako haitoki kwenye kifaa chako.</div>
+    </details>
+    <details>
+      <summary>
+        Ukubwa gani wa ukurasa na mwelekeo unaungwa mkono?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div class="faq-body">Zana inaunga mkono A4, A3, Letter na Legal kwa wima au mlalo. Unaweza kuchagua margin za kawaida, nyembamba, pana, bila margin au maalum.</div>
+    </details>
+    <details>
+      <summary>
+        Naweza kubadilisha rich text yenye formatting kuwa PDF?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div class="faq-body">Ndiyo. Fungua tab ya Hariri rich text kutumia editor yenye bold, italic, underline, headings, orodha, links na alignment. Maudhui hayo hubadilishwa moja kwa moja kuwa PDF.</div>
+    </details>
+    <details>
+      <summary>
+        Je, zana hushughulikia maudhui ya kurasa nyingi?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div class="faq-body">Ndiyo. Maudhui marefu hugawanywa kwenye kurasa nyingi kulingana na ukubwa wa ukurasa, margins na render scale uliyochagua. Header, footer, namba za kurasa na tarehe hutumika kwenye kila ukurasa.</div>
+    </details>
+    <details>
+      <summary>
+        Je, CSS styles huhifadhiwa kwenye PDF?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div class="faq-body">Inline styles na field ya CSS maalum hu-render kwenye PDF. Picha za nje zinaweza kuhitaji CORS, hivyo picha zilizopachikwa au same-origin ndizo za kuaminika zaidi.</div>
+    </details>
+  </div>
+</section>
+
+<afro-related-tools category="document-pdf" current="html-to-pdf"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script src="/assets/js/pages/html-to-pdf.js?v=674d3f39"></script>
+<script type="application/x-afrotools-legacy-disabled">
+(function() {
+  'use strict';
+
+  /* ── Libraries ── */
+  var libsLoaded = { html2canvas: false, jspdf: false };
+
+  function loadScript(src) {
+    return new Promise(function(resolve, reject) {
+      if (document.querySelector('script[src="' + src + '"]')) { resolve(); return; }
+      var s = document.createElement('script');
+      s.src = src;
+      s.onload = resolve;
+      s.onerror = function() { reject(new Error('Failed to load: ' + src)); };
+      document.head.appendChild(s);
+    });
+  }
+
+  async function ensureLibs() {
+    await Promise.all([
+      loadScript('/assets/vendor/html2canvas/html2canvas.min.js?v=1.4.1'),
+      loadScript('/assets/vendor/jspdf/jspdf.umd.min.js?v=2.5.1')
+    ]);
+    libsLoaded.html2canvas = true;
+    libsLoaded.jspdf = true;
+  }
+
+  /* ── Elements ── */
+  var tabBtns = document.querySelectorAll('.tab-btn');
+  var htmlInput = document.getElementById('htmlInput');
+  var convertHtmlBtn = document.getElementById('convertHtmlBtn');
+  var convertRteBtn = document.getElementById('convertRteBtn');
+  var spinnerHtml = document.getElementById('spinnerHtml');
+  var spinnerRte = document.getElementById('spinnerRte');
+  var richEditor = document.getElementById('richEditor');
+  var previewSection = document.getElementById('previewSection');
+  var pdfPreview = document.getElementById('pdfPreview');
+  var downloadBtn = document.getElementById('downloadBtn');
+  var resetBtn = document.getElementById('resetBtn');
+  var statusMsg = document.getElementById('statusMsg');
+  var renderContainer = document.getElementById('renderContainer');
+  var rteBtns = document.querySelectorAll('.rte-btn');
+
+  var currentPdfBlob = null;
+
+  /* ── Tabs ── */
+  tabBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      tabBtns.forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      document.querySelectorAll('.tab-content').forEach(function(tc) { tc.classList.remove('active'); });
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+      hideStatus();
+    });
+  });
+
+  /* ── Rich Text Editor commands ── */
+  rteBtns.forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      var cmd = btn.dataset.cmd;
+      var val = btn.dataset.val || null;
+
+      if (cmd === 'createLink') {
+        var url = prompt('Enter URL:', 'https://');
+        if (url) document.execCommand(cmd, false, url);
+      } else if (cmd === 'formatBlock') {
+        document.execCommand(cmd, false, '<' + val + '>');
+      } else {
+        document.execCommand(cmd, false, val);
+      }
+      richEditor.focus();
+    });
+  });
+
+  /* ── Status helpers ── */
+  function showStatus(msg, type) {
+    statusMsg.textContent = msg;
+    statusMsg.className = 'status-msg ' + type;
+  }
+
+  function hideStatus() {
+    statusMsg.className = 'status-msg';
+  }
+
+  /* ── Margin values ── */
+  function getMarginMm(val) {
+    if (val === 'narrow') return 10;
+    if (val === 'wide') return 30;
+    return 20;
+  }
+
+  /* ── Page dimensions in mm ── */
+  function getPageDims(size, orient) {
+    var w, h;
+    if (size === 'letter') { w = 215.9; h = 279.4; }
+    else { w = 210; h = 297; }
+    if (orient === 'landscape') { var t = w; w = h; h = t; }
+    return { w: w, h: h };
+  }
+
+  /* ── Core convert function ── */
+  async function convertToPdf(htmlContent, opts) {
+    await ensureLibs();
+
+    var dims = getPageDims(opts.pageSize, opts.orientation);
+    var marginMm = getMarginMm(opts.margins);
+    var contentWidthMm = dims.w - (marginMm * 2);
+
+    // Render into hidden container
+    // Use a pixel width based on content area at 96dpi
+    var pxPerMm = 96 / 25.4;
+    var containerWidthPx = Math.round(contentWidthMm * pxPerMm);
+
+    renderContainer.style.width = containerWidthPx + 'px';
+    renderContainer.innerHTML = htmlContent;
+
+    // Wait a tick for rendering
+    await new Promise(function(r) { setTimeout(r, 100); });
+
+    // Capture
+    var canvas = await html2canvas(renderContainer, {
+      scale: 2,
+      useCORS: true,
+      logging: false,
+      backgroundColor: '#ffffff',
+      width: containerWidthPx
+    });
+
+    // Clear hidden container
+    renderContainer.innerHTML = '';
+
+    // Create PDF
+    var jsPDF = window.jspdf.jsPDF;
+    var pdf = new jsPDF({
+      orientation: opts.orientation === 'landscape' ? 'l' : 'p',
+      unit: 'mm',
+      format: opts.pageSize === 'letter' ? 'letter' : 'a4'
+    });
+
+    var pageW = pdf.internal.pageSize.getWidth();
+    var pageH = pdf.internal.pageSize.getHeight();
+    var imgW = pageW - (marginMm * 2);
+    var imgH = (canvas.height * imgW) / canvas.width;
+    var contentH = pageH - (marginMm * 2);
+
+    // Handle multi-page
+    if (imgH <= contentH) {
+      // Single page
+      pdf.addImage(canvas.toDataURL('image/jpeg', 0.95), 'JPEG', marginMm, marginMm, imgW, imgH);
+    } else {
+      // Multi-page: slice the canvas
+      var totalPages = Math.ceil(imgH / contentH);
+      var sourcePageHeightPx = Math.floor(canvas.height / totalPages);
+
+      for (var i = 0; i < totalPages; i++) {
+        if (i > 0) pdf.addPage();
+
+        var sliceCanvas = document.createElement('canvas');
+        sliceCanvas.width = canvas.width;
+        var remainingPx = canvas.height - (i * sourcePageHeightPx);
+        sliceCanvas.height = Math.min(sourcePageHeightPx, remainingPx);
+
+        var ctx = sliceCanvas.getContext('2d');
+        ctx.drawImage(canvas,
+          0, i * sourcePageHeightPx,
+          canvas.width, sliceCanvas.height,
+          0, 0,
+          canvas.width, sliceCanvas.height
+        );
+
+        var sliceImgH = (sliceCanvas.height * imgW) / sliceCanvas.width;
+        pdf.addImage(sliceCanvas.toDataURL('image/jpeg', 0.95), 'JPEG', marginMm, marginMm, imgW, sliceImgH);
+      }
+    }
+
+    return pdf;
+  }
+
+  /* ── Convert handlers ── */
+  convertHtmlBtn.addEventListener('click', async function() {
+    var html = htmlInput.value.trim();
+    if (!html) {
+      showStatus('Please paste some HTML code first.', 'error');
+      return;
+    }
+
+    hideStatus();
+    convertHtmlBtn.disabled = true;
+    spinnerHtml.style.display = 'inline-block';
+
+    try {
+      var pdf = await convertToPdf(html, {
+        pageSize: document.getElementById('pageSize').value,
+        orientation: document.getElementById('orientation').value,
+        margins: document.getElementById('margins').value
+      });
+
+      currentPdfBlob = pdf.output('blob');
+      var url = URL.createObjectURL(currentPdfBlob);
+      pdfPreview.src = url;
+      previewSection.classList.add('visible');
+      showStatus('PDF generated successfully.', 'success');
+
+      previewSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (err) {
+      showStatus('Conversion failed: ' + err.message, 'error');
+    } finally {
+      convertHtmlBtn.disabled = false;
+      spinnerHtml.style.display = 'none';
+    }
+  });
+
+  convertRteBtn.addEventListener('click', async function() {
+    var html = richEditor.innerHTML.trim();
+    if (!html || html === '<br>' || html === '<p><br></p>') {
+      showStatus('Please type some content in the editor first.', 'error');
+      return;
+    }
+
+    hideStatus();
+    convertRteBtn.disabled = true;
+    spinnerRte.style.display = 'inline-block';
+
+    try {
+      // Wrap in a styled container for better rendering
+      var wrappedHtml = '<div style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', sans-serif; line-height: 1.6; color: #111;">' + html + '</div>';
+
+      var pdf = await convertToPdf(wrappedHtml, {
+        pageSize: document.getElementById('pageSizeRte').value,
+        orientation: document.getElementById('orientationRte').value,
+        margins: document.getElementById('marginsRte').value
+      });
+
+      currentPdfBlob = pdf.output('blob');
+      var url = URL.createObjectURL(currentPdfBlob);
+      pdfPreview.src = url;
+      previewSection.classList.add('visible');
+      showStatus('PDF generated successfully.', 'success');
+
+      previewSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (err) {
+      showStatus('Conversion failed: ' + err.message, 'error');
+    } finally {
+      convertRteBtn.disabled = false;
+      spinnerRte.style.display = 'none';
+    }
+  });
+
+  /* ── Download ── */
+  function doActualDownload() {
+    if (!currentPdfBlob) return;
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(currentPdfBlob);
+    a.download = 'document.pdf';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+
+  downloadBtn.addEventListener('click', function() {
+    var gate = document.querySelector('email-gate-modal');
+    if (gate) { gate.show(doActualDownload); } else { doActualDownload(); }
+  });
+
+  /* ── Reset ── */
+  resetBtn.addEventListener('click', function() {
+    previewSection.classList.remove('visible');
+    currentPdfBlob = null;
+    hideStatus();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+})();
+</script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
+<script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
+<script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
+
+<script>
+// Save/Share buttons — manual placement needed
+(function(){
+  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
+  div.innerHTML = '<share-result-button tool-name="HTML kwenda PDF" tool-slug="html-to-pdf"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
+<email-gate-modal></email-gate-modal>
+<script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
+<script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script>
+(function(){
+  const textMap = new Map([["Upload PDF","Pakia PDF"],["Download PDF","Pakua PDF"],["Download ZIP","Pakua ZIP"],["Download Report","Pakua ripoti"],["Download result","Pakua matokeo"],["Download audit CSV","Pakua audit CSV"],["Download CSV","Pakua CSV"],["Download Text","Pakua maandishi"],["Download Audio","Pakua sauti"],["Clear","Futa"],["Copy","Nakili"],["Save","Hifadhi"],["Cancel","Ghairi"],["Close","Funga"],["Remove file","Ondoa faili"],["Remove","Ondoa"],["Add Step","Ongeza hatua"],["Run Pipeline","Endesha mtiririko"],["Validate workflow","Hakiki workflow"],["Repair PDF","Rekebisha PDF"],["Translate PDF","Tafsiri PDF"],["Convert to PDF","Badilisha kuwa PDF"],["Find Matches","Tafuta matches"],["Replace Selected","Badilisha iliyochaguliwa"],["Replace All","Badilisha zote"],["Run Comparison","Endesha ulinganisho"],["Copy Summary","Nakili muhtasari"],["Loading...","Inapakia..."],["Loading voices...","Inapakia sauti..."],["Upload a PDF to get started.","Pakia PDF kuanza."],["No file selected","Hakuna faili iliyochaguliwa"],["Processing...","Inachakata..."],["Please paste some HTML code first.","Bandika msimbo wa HTML kwanza."],["Please type some content in the rich text editor.","Andika maudhui kwenye rich text editor kwanza."],["Paste HTML or choose a template before previewing.","Bandika HTML au chagua template kabla ya preview."],["Popup blocked. Please allow popups for preview.","Popup imezuiwa. Ruhusu popups ili kuona preview."],["PDF generated successfully","PDF imeundwa vizuri"],["Conversion failed:","Ubadilishaji umeshindikana:"],["Ready","Tayari"],["Error","Hitilafu"]]);
+  const attrMap = textMap;
+  function swapText(node){
+    const raw = node.textContent || '';
+    const trimmed = raw.trim();
+    if (!trimmed || !textMap.has(trimmed)) return;
+    node.textContent = raw.replace(trimmed, textMap.get(trimmed));
+  }
+  function walk(root){
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node){
+        const parent = node.parentElement;
+        if (!parent || /^(SCRIPT|STYLE|NOSCRIPT)$/i.test(parent.tagName)) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(swapText);
+    root.querySelectorAll && root.querySelectorAll('[placeholder],[aria-label],button,input[type="button"],input[type="submit"]').forEach(el => {
+      ['placeholder','aria-label','value','title'].forEach(attr => {
+        const value = el.getAttribute(attr);
+        if (value && attrMap.has(value.trim())) el.setAttribute(attr, attrMap.get(value.trim()));
+      });
+    });
+  }
+  function run(){ walk(document.body); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
+  new MutationObserver(mutations => {
+    for (const mutation of mutations) {
+      mutation.addedNodes.forEach(node => {
+        if (node.nodeType === Node.TEXT_NODE) swapText(node);
+        else if (node.nodeType === Node.ELEMENT_NODE) walk(node);
+      });
+    }
+  }).observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script>
+  <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
+</body>
+</html>

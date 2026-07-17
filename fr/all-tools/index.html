@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tous les outils pour l'Afrique | AfroTools</title>
+<meta name="description" content="Parcourez la bibliotheque AfroTools en français : salaire, PAYE, TVA, PDF, éducation, devises, business, ingenierie et productivité pour l'Afrique.">
+<meta name="content-language" content="fr">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/fr/all-tools/">
+<meta property="og:title" content="Tous les outils AfroTools en français">
+<meta property="og:description" content="Explorez les outils AfroTools pour l'Afrique : calculateurs, documents PDF, fiscalité, devises, business, éducation, ingenierie et plus.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="manifest" href="/fr/manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<script src="/assets/js/lib/progressive-directory.js?v=18e0a585"></script>
+<script src="/assets/js/components/tool-registry.min.js?v=ea618462" defer data-directory-dependency></script>
+<script src="/assets/js/data/registry-counts.js?v=70517916" defer></script>
+<script src="/assets/js/data/african-countries.js?v=32a88a32" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=d8d640ef" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);background:var(--color-bg);color:var(--color-text);-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+
+/* ── HERO ── */
+.hero{--hero-text:#f8fafc;--hero-muted:#d1d5db;--hero-soft:#cbd5e1;--hero-subtle:#94a3b8;--hero-accent:#60a5fa;background:linear-gradient(135deg,#0d1117 0%,#111827 60%,#0d1117 100%);padding:64px 24px 52px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 70% 30%,rgba(0,98,204,.12),transparent),radial-gradient(ellipse 40% 40% at 20% 70%,rgba(96,181,255,.06),transparent);pointer-events:none;}
+.hero::after{content:'';position:absolute;inset:0;background-image:radial-gradient(1.5px 1.5px at 25% 25%,rgba(255,255,255,.06),transparent),radial-gradient(1px 1px at 75% 55%,rgba(255,255,255,.04),transparent),radial-gradient(1.5px 1.5px at 50% 80%,rgba(255,255,255,.05),transparent);pointer-events:none;}
+.hero-inner{max-width:960px;margin:0 auto;position:relative;z-index:1;}
+.hero-breadcrumb{display:flex;align-items:center;gap:7px;font-size:.72rem;color:var(--hero-soft);margin-bottom:20px;}
+.hero-breadcrumb a{color:var(--hero-soft);transition:color .15s;}
+.hero-breadcrumb a:hover{color:#fff;}
+.hero-breadcrumb-sep{color:var(--hero-subtle);}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(96,165,250,.16);border:1px solid rgba(147,197,253,.42);border-radius:100px;padding:5px 14px;font-size:.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#93c5fd;margin-bottom:16px;}
+.hero h1{font-size:clamp(1.8rem,4.5vw,3rem);font-weight:900;color:var(--hero-text);letter-spacing:-.025em;line-height:1.08;margin-bottom:12px;text-shadow:0 2px 18px rgba(0,0,0,.22);}
+.hero h1 em{color:var(--hero-accent);font-style:normal;}
+.hero-sub{font-size:.95rem;color:var(--hero-muted);max-width:560px;line-height:1.7;margin-bottom:28px;}
+.hero-stats{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:28px;}
+.hero-stat{background:rgba(255,255,255,.075);border:1px solid rgba(203,213,225,.2);border-radius:10px;padding:10px 18px;box-shadow:inset 0 1px 0 rgba(255,255,255,.05);}
+.hero-stat .s-lbl{font-size:.65rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--hero-soft);margin-bottom:2px;}
+.hero-stat .s-val{font-size:.95rem;font-weight:800;color:var(--hero-text);}
+.hero-stat .s-val.blue{color:var(--hero-accent);}
+
+/* ── SEARCH & FILTER ── */
+.filter-bar{background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--color-border);padding:14px 24px;position:sticky;top:60px;z-index:100;box-shadow:var(--shadow-sm);}
+.filter-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.search-wrap{position:relative;flex:1;min-width:220px;max-width:380px;order:1;}
+.search-input{width:100%;padding:9px 66px 9px 14px;border:1.5px solid var(--color-border);border-radius:var(--radius-md);font-size:.85rem;color:var(--color-text);background:var(--color-surface-muted);transition:border-color .2s,box-shadow .2s;background-clip:padding-box;font-family:var(--font-sans);}
+.search-input:focus{outline:none;border-color:var(--color-primary);box-shadow:var(--shadow-focus);background:var(--color-surface);}
+.search-icon{position:absolute;right:10px;top:50%;transform:translateY(-50%);color:#9ca3af;font-size:.9rem;pointer-events:none;}
+.search-clear{position:absolute;right:34px;top:50%;transform:translateY(-50%);width:22px;height:22px;border:0;border-radius:50%;background:#e5e7eb;color:#475569;font-size:1rem;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s,color .15s;}
+.search-clear:hover,.search-clear:focus{background:#cbd5e1;color:#0f172a;outline:none;}
+.search-clear[hidden]{display:none;}
+.filter-tabs{display:flex;gap:6px;flex:1 1 100%;max-width:100%;order:3;overflow-x:auto;flex-wrap:nowrap;padding-bottom:2px;scrollbar-width:thin;}
+.filter-tab{flex:0 0 auto;padding:7px 14px;border:1.5px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-surface-muted);font-size:.72rem;font-weight:700;color:var(--color-text-muted);cursor:pointer;transition:all .15s;white-space:nowrap;}
+.filter-tab:hover{border-color:var(--color-primary);color:var(--color-primary);}
+.filter-tab.active{background:var(--color-primary);border-color:var(--color-primary);color:#fff;}
+.filter-count{font-size:.65rem;background:rgba(0,0,0,.08);border-radius:10px;padding:1px 6px;margin-left:4px;}
+.filter-tab.active .filter-count{background:rgba(255,255,255,.2);}
+.sort-sel{order:2;padding:8px 12px;border:1.5px solid var(--color-border);border-radius:var(--radius-md);font-size:.75rem;font-weight:600;color:var(--color-text);background:var(--color-surface-muted);cursor:pointer;margin-left:auto;}
+.sort-sel:focus{outline:none;border-color:var(--color-primary);}
+
+/* ── MAIN LAYOUT ── */
+.page-main{max-width:960px;margin:0 auto;padding:32px 24px 80px;}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.section-title{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#9ca3af;display:flex;align-items:center;gap:8px;}
+.section-title::before{content:'';width:16px;height:2px;background:var(--color-primary);border-radius:2px;}
+.results-count{font-size:.75rem;color:#9ca3af;font-weight:600;}
+
+/* ── TOOL CARDS ── */
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:40px;}
+.tool-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;display:flex;flex-direction:column;transition:border-color .15s,box-shadow .15s,transform .15s;position:relative;overflow:hidden;}
+.tool-card:hover{border-color:var(--color-primary);box-shadow:0 8px 30px rgba(0,98,204,.12);transform:translateY(-3px);}
+.tool-card.new::after{content:'NEW';position:absolute;top:12px;right:12px;background:var(--color-primary);color:#fff;font-size:.55rem;font-weight:900;padding:3px 8px;border-radius:6px;letter-spacing:.08em;z-index:2;}
+.tool-card.ai-powered::after{content:'✦ AI';position:absolute;top:12px;right:12px;background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;font-size:.55rem;font-weight:900;padding:3px 8px;border-radius:6px;letter-spacing:.04em;z-index:2;}
+
+/* CARD IMAGE */
+.tc-image{width:100%;aspect-ratio:3/2;overflow:hidden;background:#f3f4f6;position:relative;display:flex;align-items:center;justify-content:center;}
+.tc-image img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s;}
+.tool-card:hover .tc-image img{transform:scale(1.03);}
+.tc-image-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3rem;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.15);text-align:center;line-height:1;padding:12px;}
+
+/* CARD BODY */
+.tc-body{padding:14px 16px 16px;flex:1;display:flex;flex-direction:column;}
+.tc-name{font-size:.88rem;font-weight:800;color:#111;margin-bottom:4px;line-height:1.25;}
+.tc-desc{font-size:.74rem;color:#6b7280;line-height:1.5;margin-bottom:10px;flex:1;}
+.tc-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.tc-badge{font-size:.58rem;font-weight:800;padding:3px 8px;border-radius:10px;letter-spacing:.04em;text-transform:uppercase;}
+.tc-badge.live{background:#DBEAFE;color:#1D4ED8;}
+.tc-badge.planned{background:#f3f4f6;color:#6b7280;}
+.tc-badge.tier1{background:#fef3c7;color:#92400e;}
+.tc-badge.tier2{background:#eff6ff;color:#1d4ed8;}
+.tc-badge.tier3{background:#f3f4f6;color:#6b7280;}
+.tc-countries{font-size:.65rem;color:#9ca3af;font-weight:600;}
+
+/* FEATURED / WIDE CARD */
+.tool-card.featured{grid-column:span 2;}
+@media(max-width:640px){.tool-card.featured{grid-column:span 1;}}
+.tool-card.featured .tc-name{font-size:1rem;}
+
+/* CATEGORY PILL */
+.cat-pill{display:inline-flex;align-items:center;gap:4px;font-size:.6rem;font-weight:700;padding:2px 8px;border-radius:8px;background:#f3f4f6;color:#6b7280;}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:60px 20px;grid-column:1/-1;}
+.empty-state .e-icon{font-size:2.5rem;margin-bottom:12px;}
+.empty-state p{font-size:.9rem;color:#9ca3af;line-height:1.6;}
+.empty-actions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:18px;}
+.empty-actions button{border:1.5px solid #e5e7eb;background:#fff;border-radius:8px;padding:8px 12px;font:700 .72rem 'DM Sans',sans-serif;color:#475569;cursor:pointer;}
+.empty-actions button:hover,.empty-actions button:focus{border-color:var(--color-primary);color:var(--color-primary);outline:none;}
+.directory-pagination{text-align:center;margin:-18px 0 40px}.directory-pagination .btn{min-width:180px}
+
+/* SECTION DIVIDER */
+.sec-divider{height:1px;background:linear-gradient(90deg,transparent,#e5e7eb,transparent);margin:32px 0;}
+
+/* NEWSLETTER */
+.nl-box{background:linear-gradient(135deg,#0d1117,#1e293b);border-radius:16px;padding:36px 32px;text-align:center;margin-top:40px;}
+.nl-box h3{color:#fff;font-size:1.1rem;font-weight:900;text-transform:uppercase;letter-spacing:.03em;margin-bottom:8px;}
+.nl-box p{color:rgba(255,255,255,.65);font-size:.85rem;margin-bottom:20px;line-height:1.6;}
+.nl-form{display:flex;gap:8px;max-width:400px;margin:0 auto;flex-wrap:wrap;}
+.nl-input{flex:1;min-width:200px;padding:11px 16px;border:1px solid rgba(255,255,255,.15);border-radius:10px;background:rgba(255,255,255,.07);color:#fff;font-family:'DM Sans',sans-serif;font-size:.85rem;}
+.nl-input::placeholder{color:rgba(255,255,255,.35);}
+.nl-input:focus{outline:none;border-color:rgba(0,98,204,.5);}
+.nl-btn{padding:11px 22px;background:var(--color-primary);border:none;border-radius:10px;color:#fff;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:background .15s;white-space:nowrap;}
+.nl-btn:hover{background:#0059B3;}
+
+@media(max-width:640px){
+  .filter-bar{padding:10px 16px;}
+  .filter-inner{gap:8px;}
+  .search-wrap{max-width:100%;flex:1 0 100%;}
+  .tools-grid{grid-template-columns:1fr;}
+  .page-main{padding:24px 16px 60px;}
+  .hero{padding:48px 16px 40px;}
+  .hero-stats{gap:8px;}
+}
+</style>
+<meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:locale:alternate" content="sw_TZ">
+<meta property="og:locale:alternate" content="ha_NG">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:title" content="Tous les outils AfroTools en français">
+<meta name="twitter:description" content="Explorez les outils AfroTools pour l'Afrique : calculateurs, documents PDF, fiscalité, devises, business, éducation, ingenierie et plus.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "All Tools",
+      "item": "https://afrotools.com/all-tools/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "All AfroTools",
+  "description": "Browse the complete AfroTools library across salary tax, trade, documents, migration, and productivity.",
+  "url": "https://afrotools.com/all-tools/",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Popular AfroTools",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "url": "https://afrotools.com/nigeria/ng-salary-tax",
+      "name": "Nigeria PAYE Calculator"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "url": "https://afrotools.com/tools/pdf-workspace/",
+      "name": "PDF Workspace"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "url": "https://afrotools.com/tools/import-duty/",
+      "name": "Import Duty Calculator"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "url": "https://afrotools.com/tools/japa-calculator/",
+      "name": "Japa Cost Calculator"
+    },
+    {
+      "@type": "ListItem",
+      "position": 5,
+      "url": "https://afrotools.com/tools/currency-converter/",
+      "name": "Currency Converter"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<meta name="content-language" content="fr">
+<script src="/assets/js/i18n-detect.js?v=8515a010" defer></script>
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/fr/all-tools/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/all-tools/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana-zote/">
+<link rel="alternate" hreflang="yo" href="https://afrotools.com/yo/awon-ise/">
+<link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/">
+</head>
+<script>
+window.addEventListener('load', function() {
+  // Override share library copy toast text for French pages
+  if (window.AfroTools) {
+    var _origToast = window.AfroTools.toast;
+    if (_origToast && _origToast.success) {
+      var _origSuccess = _origToast.success.bind(_origToast);
+      _origToast.success = function(msg) {
+        if (msg === 'Link copied to clipboard') msg = 'Lien copié !';
+        return _origSuccess(msg);
+      };
+    }
+    if (typeof _origToast === 'function') {
+      window.AfroTools.toast = function(msg, type) {
+        if (msg === 'Link copied!' || msg === 'Link copied to clipboard') msg = 'Lien copié !';
+        return _origToast(msg, type);
+      };
+    }
+  }
+  // Patch window.open to replace WhatsApp share CTA text for French pages
+  var _origOpen = window.open;
+  window.open = function(url, target) {
+    if (url && typeof url === 'string' && url.startsWith('https://wa.me/?text=')) {
+      url = url.replace(encodeURIComponent('Calculate yours FREE 👇'),
+                        encodeURIComponent('Calculez le vôtre GRATUITEMENT 👇'));
+      url = url.replace(encodeURIComponent('My Result'), encodeURIComponent('Mon résultat'));
+    }
+    return _origOpen.apply(this, arguments);
+  };
+});
+</script>
+<body class="top-level-page-ui-refresh" data-progressive-directory data-directory-registry="AFRO_TOOLS" data-directory-state="loading">
+<afro-navbar></afro-navbar>
+<div data-directory-status role="status" aria-live="polite" hidden><p data-directory-message></p><button type="button" data-directory-retry hidden>Réessayer le chargement</button></div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <nav class="hero-breadcrumb">
+      <a href="/fr/">AfroTools</a>
+      <span class="hero-breadcrumb-sep">›</span>
+      <span>Tous les outils</span>
+    </nav>
+    <div class="hero-eyebrow">Bibliothèque d’outils</div>
+    <h1>Tous les outils disponibles en français</h1>
+    <p class="hero-sub">Recherchez uniquement les fiches publiées avec une interface ou un parcours français. La juridiction et la langue restent deux dimensions distinctes.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="s-lbl">Outils publiés en français</div><div class="s-val blue" id="statLive" data-registry-count="tools.locale.fr.published">1452</div></div>
+      <div class="hero-stat"><div class="s-lbl">Fiches non publiées</div><div class="s-val" id="statPlanned" data-registry-count="tools.unpublished">0</div></div>
+      <div class="hero-stat"><div class="s-lbl">Catégories</div><div class="s-val blue" id="statCategories" data-registry-count="categories.published">32</div></div>
+      <div class="hero-stat"><div class="s-lbl">Pays couverts</div><div class="s-val blue" data-registry-count="countries.published">54</div></div>
+      <div class="hero-stat"><div class="s-lbl">Accès essentiel</div><div class="s-val blue">sans abonnement payant</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="filter-inner">
+    <div class="search-wrap">
+      <input type="search" class="search-input" id="searchInput" placeholder="Rechercher par outil, pays ou catégorie..." aria-label="Rechercher dans tous les outils" autocomplete="off" oninput="handleSearchInput()">
+      <button type="button" class="search-clear" id="searchClear" aria-label="Effacer la recherche" onclick="clearSearch()" hidden>&times;</button>
+      <span class="search-icon">🔍</span>
+    </div>
+    <div class="filter-tabs" id="filterTabs">
+      <button type="button" class="filter-tab active" data-filter="all" onclick="setFilter('all',this)">Tous <span class="filter-count" id="countAll">1152</span></button>
+      <button type="button" class="filter-tab" data-filter="live" onclick="setFilter('live',this)">Publiés <span class="filter-count" id="countLive">1152</span></button>
+      <button type="button" class="filter-tab" data-filter="ai" onclick="setFilter('ai',this)">✦ IA</button>
+      <button type="button" class="filter-tab" data-filter="salary-tax" onclick="setFilter('salary-tax',this)">💰 PAYE</button>
+      <button type="button" class="filter-tab" data-filter="financial" onclick="setFilter('financial',this)">🏦 Finance</button>
+      <button type="button" class="filter-tab" data-filter="health" onclick="setFilter('health',this)">🏥 Santé</button>
+      <button type="button" class="filter-tab" data-filter="ecommerce" onclick="setFilter('ecommerce',this)">🧾 Entreprise</button>
+      <button type="button" class="filter-tab" data-filter="document-pdf" onclick="setFilter('document-pdf',this)">📄 PDF</button>
+      <button type="button" class="filter-tab" data-filter="image-design" onclick="setFilter('image-design',this)">🖼️ Image</button>
+      <button type="button" class="filter-tab" data-filter="education" onclick="setFilter('education',this)">🎓 Éducation</button>
+      <button type="button" class="filter-tab" data-filter="agriculture" onclick="setFilter('agriculture',this)">🌾 Agriculture</button>
+      <button type="button" class="filter-tab" data-filter="engineering" onclick="setFilter('engineering',this)">🏗️ Ingénierie</button>
+      <button type="button" class="filter-tab" data-filter="developer" onclick="setFilter('developer',this)">⌨️ Dev</button>
+      <button type="button" class="filter-tab" data-filter="trade" onclick="setFilter('trade',this)">🚢 Commerce</button>
+      <button type="button" class="filter-tab" data-filter="african" onclick="setFilter('african',this)">🌍 Afrique</button>
+      <button type="button" class="filter-tab" data-filter="legal" onclick="setFilter('legal',this)">⚖️ Juridique</button>
+      <button type="button" class="filter-tab" data-filter="language" onclick="setFilter('language',this)">🗣️ Langues</button>
+      <button type="button" class="filter-tab" data-filter="data-productivity" onclick="setFilter('data-productivity',this)">📊 Données</button>
+      <button type="button" class="filter-tab" data-filter="government" onclick="setFilter('government',this)">🏛️ Services publics</button>
+      <button type="button" class="filter-tab" data-filter="small-business" onclick="setFilter('small-business',this)">🏪 PME</button>
+      <button type="button" class="filter-tab" data-filter="insurance" onclick="setFilter('insurance',this)">🛡️ Assurance</button>
+      <button type="button" class="filter-tab" data-filter="fintech" onclick="setFilter('fintech',this)">💳 Fintech</button>
+      <button type="button" class="filter-tab" data-filter="energy" onclick="setFilter('energy',this)">⚡ Énergie</button>
+      <button type="button" class="filter-tab" data-filter="transport" onclick="setFilter('transport',this)">🚚 Transport</button>
+      <button type="button" class="filter-tab" data-filter="travel-tourism" onclick="setFilter('travel-tourism',this)">✈️ Voyage</button>
+      <button type="button" class="filter-tab" data-filter="creative" onclick="setFilter('creative',this)">🎨 Création</button>
+      <button type="button" class="filter-tab" data-filter="religious-cultural" onclick="setFilter('religious-cultural',this)">🕌 Culture</button>
+      <button type="button" class="filter-tab" data-filter="sports" onclick="setFilter('sports',this)">⚽ Sport</button>
+      <button type="button" class="filter-tab" data-filter="career" onclick="setFilter('career',this)">📈 Carrière</button>
+    </div>
+    <select class="sort-sel" id="sortSel" aria-label="Trier les outils" onchange="visibleLimit=PAGE_SIZE;renderTools()">
+      <option value="priority">Tri : recommandés</option>
+      <option value="name">Tri : A–Z</option>
+      <option value="live">Tri : publiés d’abord</option>
+    </select>
+  </div>
+</div>
+
+<!-- INTRO -->
+<section style="max-width:900px;margin:0 auto;padding:24px 20px 32px;">
+  <p style="font-size:0.92rem;color:#475569;line-height:1.7;margin-bottom:16px;">Ce répertoire affiche les outils publiés avec une route française. Un pays couvert par un calcul n’implique pas automatiquement que toutes ses pages sont traduites.</p>
+  <p style="font-size:0.92rem;color:#475569;line-height:1.7;">Utilisez la recherche ou les catégories. Les fonctions essentielles sont accessibles sans abonnement payant ; les capacités Pro sont signalées séparément.</p>
+</section>
+
+<!-- MAIN -->
+<main class="page-main">
+  <div class="section-header">
+    <div class="section-title" id="sectionTitle">Tous les outils</div>
+    <div class="results-count" id="resultsCount"></div>
+  </div>
+  <div class="tools-grid" id="toolsGrid">
+<!-- PROGRESSIVE_DIRECTORY_FALLBACK_START -->
+        <a href="/fr/tools/calculateur-du-cout-d-importation-d-un-vehicule-ghana/" class="tool-card" data-directory-record data-id="car-import-cost-fr-coverage-car-import-cost-ghana"><div class="tc-body"><div class="tc-name">Calculateur du coût d’importation d’un véhicule — Ghana</div><div class="tc-desc">Préparez vos informations, puis utilisez l’outil « Calculateur du coût d’importation d’un véhicule — Ghana » et vérifiez les hypothèses adaptées à votre pays.</div><div class="tc-meta"><span class="cat-pill">Transport</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/calculateur-du-cout-d-importation-d-un-vehicule-kenya/" class="tool-card" data-directory-record data-id="car-import-cost-fr-coverage-car-import-cost-kenya"><div class="tc-body"><div class="tc-name">Calculateur du coût d’importation d’un véhicule — Kenya</div><div class="tc-desc">Préparez vos informations, puis utilisez l’outil « Calculateur du coût d’importation d’un véhicule — Kenya » et vérifiez les hypothèses adaptées à votre pays.</div><div class="tc-meta"><span class="cat-pill">Transport</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/calculateur-du-cout-d-importation-d-un-vehicule-nigeria/" class="tool-card" data-directory-record data-id="car-import-cost-fr-coverage-car-import-cost-nigeria"><div class="tc-body"><div class="tc-name">Calculateur du coût d’importation d’un véhicule — Nigéria</div><div class="tc-desc">Préparez vos informations, puis utilisez l’outil « Calculateur du coût d’importation d’un véhicule — Nigéria » et vérifiez les hypothèses adaptées à votre pays.</div><div class="tc-meta"><span class="cat-pill">Transport</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/calculateur-du-cout-d-importation-d-un-vehicule-tanzanie/" class="tool-card" data-directory-record data-id="car-import-cost-fr-coverage-car-import-cost-tanzania"><div class="tc-body"><div class="tc-name">Calculateur du coût d’importation d’un véhicule — Tanzanie</div><div class="tc-desc">Préparez vos informations, puis utilisez l’outil « Calculateur du coût d’importation d’un véhicule — Tanzanie » et vérifiez les hypothèses adaptées à votre pays.</div><div class="tc-meta"><span class="cat-pill">Transport</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/calculateur-du-cout-d-importation-d-un-vehicule-ouganda/" class="tool-card" data-directory-record data-id="car-import-cost-fr-coverage-car-import-cost-uganda"><div class="tc-body"><div class="tc-name">Calculateur du coût d’importation d’un véhicule — Ouganda</div><div class="tc-desc">Préparez vos informations, puis utilisez l’outil « Calculateur du coût d’importation d’un véhicule — Ouganda » et vérifiez les hypothèses adaptées à votre pays.</div><div class="tc-meta"><span class="cat-pill">Transport</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/calculateur-du-cout-d-importation-d-un-vehicule-zambie/" class="tool-card" data-directory-record data-id="car-import-cost-fr-coverage-car-import-cost-zambia"><div class="tc-body"><div class="tc-name">Calculateur du coût d’importation d’un véhicule — Zambie</div><div class="tc-desc">Préparez vos informations, puis utilisez l’outil « Calculateur du coût d’importation d’un véhicule — Zambie » et vérifiez les hypothèses adaptées à votre pays.</div><div class="tc-meta"><span class="cat-pill">Transport</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/fusionner-diviser-pdf/" class="tool-card" data-directory-record data-id="pdf-merge-split-fr"><div class="tc-body"><div class="tc-name">Fusionner et diviser des PDF</div><div class="tc-desc">Fusionnez, divisez, extrayez ou réorganisez des pages PDF depuis le navigateur.</div><div class="tc-meta"><span class="cat-pill">Documents &amp; PDF</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/compresser-pdf/" class="tool-card" data-directory-record data-id="pdf-compress-fr"><div class="tc-body"><div class="tc-name">Compresser un PDF</div><div class="tc-desc">Réduisez la taille de vos PDF avec plusieurs modes de compression locaux.</div><div class="tc-meta"><span class="cat-pill">Documents &amp; PDF</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/convertir-pdf/" class="tool-card" data-directory-record data-id="pdf-convert-fr"><div class="tc-body"><div class="tc-name">Convertir un PDF</div><div class="tc-desc">Convertissez PDF, documents et tableaux vers des formats utiles dans le navigateur.</div><div class="tc-meta"><span class="cat-pill">Documents &amp; PDF</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/chat-pdf/" class="tool-card" data-directory-record data-id="pdf-chat-fr"><div class="tc-body"><div class="tc-name">Chat avec PDF</div><div class="tc-desc">Posez des questions à un PDF, résumez et retrouvez des passages avec citations.</div><div class="tc-meta"><span class="cat-pill">Documents &amp; PDF</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/document-pdf/" class="tool-card" data-directory-record data-id="document-pdf-fr"><div class="tc-body"><div class="tc-name">Documents et PDF</div><div class="tc-desc">Accédez aux outils PDF disponibles en français : fusion, compression, protection, conversion et préparation de documents.</div><div class="tc-meta"><span class="cat-pill">Documents &amp; PDF</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/signer-pdf/" class="tool-card" data-directory-record data-id="pdf-sign-fr"><div class="tc-body"><div class="tc-name">Signer un PDF</div><div class="tc-desc">Ajoutez une signature dessinée, tapée ou importée à un PDF localement.</div><div class="tc-meta"><span class="cat-pill">Documents &amp; PDF</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/traduire-pdf/" class="tool-card" data-directory-record data-id="pdf-translate-fr"><div class="tc-body"><div class="tc-name">Traduire un PDF</div><div class="tc-desc">Traduisez un PDF et préparez des exports bilingues depuis la page française.</div><div class="tc-meta"><span class="cat-pill">Documents &amp; PDF</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/pdf-en-image/" class="tool-card" data-directory-record data-id="pdf-image-convert-fr"><div class="tc-body"><div class="tc-name">PDF en image</div><div class="tc-desc">Exportez des pages PDF en images ou assemblez des images en PDF.</div><div class="tc-meta"><span class="cat-pill">Documents &amp; PDF</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/recette-de-banku-et-tilapia-du-ghana/" class="tool-card" data-directory-record data-id="afrokitchen-fr-coverage-afrokitchen-recipes-banku-tilapia-gh"><div class="tc-body"><div class="tc-name">Recette de banku et tilapia du Ghana</div><div class="tc-desc">Préparez vos informations, puis utilisez l’outil « Recette de banku et tilapia du Ghana » et vérifiez les hypothèses adaptées à votre pays.</div><div class="tc-meta"><span class="cat-pill">Spécialités africaines</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/filigrane-pdf/" class="tool-card" data-directory-record data-id="pdf-watermark-fr"><div class="tc-body"><div class="tc-name">Filigrane PDF</div><div class="tc-desc">Ajoutez un filigrane texte ou image avec position, opacité et rotation.</div><div class="tc-meta"><span class="cat-pill">Documents &amp; PDF</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/comparer-pdf/" class="tool-card" data-directory-record data-id="pdf-compare-fr"><div class="tc-body"><div class="tc-name">Comparer deux PDF</div><div class="tc-desc">Comparez deux PDF avec diff texte, rendu visuel et pages modifiées.</div><div class="tc-meta"><span class="cat-pill">Documents &amp; PDF</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/reorganiser-pdf/" class="tool-card" data-directory-record data-id="pdf-reorder-fr"><div class="tc-body"><div class="tc-name">Réorganiser les pages PDF</div><div class="tc-desc">Réordonnez, supprimez, dupliquez et extrayez des pages PDF localement.</div><div class="tc-meta"><span class="cat-pill">Documents &amp; PDF</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/guide-d-itax-de-la-kra/" class="tool-card" data-directory-record data-id="itax-guide-fr-coverage-itax-guide"><div class="tc-body"><div class="tc-name">Guide d’iTax de la KRA</div><div class="tc-desc">Préparez vos informations, puis utilisez l’outil « Guide d’iTax de la KRA » et vérifiez les hypothèses adaptées à votre pays.</div><div class="tc-meta"><span class="cat-pill">Finances</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/remplir-formulaire-pdf/" class="tool-card" data-directory-record data-id="pdf-form-filler-fr"><div class="tc-body"><div class="tc-name">Remplir un formulaire PDF</div><div class="tc-desc">Détectez et remplissez les champs de formulaires PDF dans le navigateur.</div><div class="tc-meta"><span class="cat-pill">Documents &amp; PDF</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/ocr-pdf/" class="tool-card" data-directory-record data-id="pdf-ocr-fr"><div class="tc-body"><div class="tc-name">OCR PDF</div><div class="tc-desc">Extrayez du texte depuis des PDF scannés avec OCR côté navigateur.</div><div class="tc-meta"><span class="cat-pill">Documents &amp; PDF</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/guide-de-sars-efiling/" class="tool-card" data-directory-record data-id="sars-efiling-fr-coverage-sars-efiling"><div class="tc-body"><div class="tc-name">Guide de SARS eFiling</div><div class="tc-desc">Préparez vos informations, puis utilisez l’outil « Guide de SARS eFiling » et vérifiez les hypothèses adaptées à votre pays.</div><div class="tc-meta"><span class="cat-pill">Finances</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/calculateur-du-cout-du-gaz-gpl-angola/" class="tool-card" data-directory-record data-id="gas-lpg-cost-fr-coverage-gas-lpg-cost-angola"><div class="tc-body"><div class="tc-name">Calculateur du coût du gaz GPL — Angola</div><div class="tc-desc">Préparez vos informations, puis utilisez l’outil « Calculateur du coût du gaz GPL — Angola » et vérifiez les hypothèses adaptées à votre pays.</div><div class="tc-meta"><span class="cat-pill">Énergie</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/calculateur-du-cout-du-gaz-gpl-cameroun/" class="tool-card" data-directory-record data-id="gas-lpg-cost-fr-coverage-gas-lpg-cost-cameroon"><div class="tc-body"><div class="tc-name">Calculateur du coût du gaz GPL — Cameroun</div><div class="tc-desc">Préparez vos informations, puis utilisez l’outil « Calculateur du coût du gaz GPL — Cameroun » et vérifiez les hypothèses adaptées à votre pays.</div><div class="tc-meta"><span class="cat-pill">Énergie</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/calculateur-du-cout-du-gaz-gpl-cote-d-ivoire/" class="tool-card" data-directory-record data-id="gas-lpg-cost-fr-coverage-gas-lpg-cost-cote-divoire"><div class="tc-body"><div class="tc-name">Calculateur du coût du gaz GPL — Côte d’Ivoire</div><div class="tc-desc">Préparez vos informations, puis utilisez l’outil « Calculateur du coût du gaz GPL — Côte d’Ivoire » et vérifiez les hypothèses adaptées à votre pays.</div><div class="tc-meta"><span class="cat-pill">Énergie</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/calculateur-du-cout-du-gaz-gpl-egypte/" class="tool-card" data-directory-record data-id="gas-lpg-cost-fr-coverage-gas-lpg-cost-egypt"><div class="tc-body"><div class="tc-name">Calculateur du coût du gaz GPL — Égypte</div><div class="tc-desc">Préparez vos informations, puis utilisez l’outil « Calculateur du coût du gaz GPL — Égypte » et vérifiez les hypothèses adaptées à votre pays.</div><div class="tc-meta"><span class="cat-pill">Énergie</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/calculateur-du-cout-du-gaz-gpl-ethiopie/" class="tool-card" data-directory-record data-id="gas-lpg-cost-fr-coverage-gas-lpg-cost-ethiopia"><div class="tc-body"><div class="tc-name">Calculateur du coût du gaz GPL — Éthiopie</div><div class="tc-desc">Préparez vos informations, puis utilisez l’outil « Calculateur du coût du gaz GPL — Éthiopie » et vérifiez les hypothèses adaptées à votre pays.</div><div class="tc-meta"><span class="cat-pill">Énergie</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/calculateur-du-cout-du-gaz-gpl-ghana/" class="tool-card" data-directory-record data-id="gas-lpg-cost-fr-coverage-gas-lpg-cost-ghana"><div class="tc-body"><div class="tc-name">Calculateur du coût du gaz GPL — Ghana</div><div class="tc-desc">Préparez vos informations, puis utilisez l’outil « Calculateur du coût du gaz GPL — Ghana » et vérifiez les hypothèses adaptées à votre pays.</div><div class="tc-meta"><span class="cat-pill">Énergie</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/calculateur-du-cout-du-gaz-gpl-kenya/" class="tool-card" data-directory-record data-id="gas-lpg-cost-fr-coverage-gas-lpg-cost-kenya"><div class="tc-body"><div class="tc-name">Calculateur du coût du gaz GPL — Kenya</div><div class="tc-desc">Préparez vos informations, puis utilisez l’outil « Calculateur du coût du gaz GPL — Kenya » et vérifiez les hypothèses adaptées à votre pays.</div><div class="tc-meta"><span class="cat-pill">Énergie</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/calculateur-du-cout-du-gaz-gpl-maroc/" class="tool-card" data-directory-record data-id="gas-lpg-cost-fr-coverage-gas-lpg-cost-morocco"><div class="tc-body"><div class="tc-name">Calculateur du coût du gaz GPL — Maroc</div><div class="tc-desc">Préparez vos informations, puis utilisez l’outil « Calculateur du coût du gaz GPL — Maroc » et vérifiez les hypothèses adaptées à votre pays.</div><div class="tc-meta"><span class="cat-pill">Énergie</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/calculateur-du-cout-du-gaz-gpl-nigeria/" class="tool-card" data-directory-record data-id="gas-lpg-cost-fr-coverage-gas-lpg-cost-nigeria"><div class="tc-body"><div class="tc-name">Calculateur du coût du gaz GPL — Nigéria</div><div class="tc-desc">Préparez vos informations, puis utilisez l’outil « Calculateur du coût du gaz GPL — Nigéria » et vérifiez les hypothèses adaptées à votre pays.</div><div class="tc-meta"><span class="cat-pill">Énergie</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/calculateur-du-cout-du-gaz-gpl-rwanda/" class="tool-card" data-directory-record data-id="gas-lpg-cost-fr-coverage-gas-lpg-cost-rwanda"><div class="tc-body"><div class="tc-name">Calculateur du coût du gaz GPL — Rwanda</div><div class="tc-desc">Préparez vos informations, puis utilisez l’outil « Calculateur du coût du gaz GPL — Rwanda » et vérifiez les hypothèses adaptées à votre pays.</div><div class="tc-meta"><span class="cat-pill">Énergie</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/calculateur-du-cout-du-gaz-gpl-senegal/" class="tool-card" data-directory-record data-id="gas-lpg-cost-fr-coverage-gas-lpg-cost-senegal"><div class="tc-body"><div class="tc-name">Calculateur du coût du gaz GPL — Sénégal</div><div class="tc-desc">Préparez vos informations, puis utilisez l’outil « Calculateur du coût du gaz GPL — Sénégal » et vérifiez les hypothèses adaptées à votre pays.</div><div class="tc-meta"><span class="cat-pill">Énergie</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/calculateur-du-cout-du-gaz-gpl-afrique-du-sud/" class="tool-card" data-directory-record data-id="gas-lpg-cost-fr-coverage-gas-lpg-cost-south-africa"><div class="tc-body"><div class="tc-name">Calculateur du coût du gaz GPL — Afrique du Sud</div><div class="tc-desc">Préparez vos informations, puis utilisez l’outil « Calculateur du coût du gaz GPL — Afrique du Sud » et vérifiez les hypothèses adaptées à votre pays.</div><div class="tc-meta"><span class="cat-pill">Énergie</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/calculateur-du-cout-du-gaz-gpl-tanzanie/" class="tool-card" data-directory-record data-id="gas-lpg-cost-fr-coverage-gas-lpg-cost-tanzania"><div class="tc-body"><div class="tc-name">Calculateur du coût du gaz GPL — Tanzanie</div><div class="tc-desc">Préparez vos informations, puis utilisez l’outil « Calculateur du coût du gaz GPL — Tanzanie » et vérifiez les hypothèses adaptées à votre pays.</div><div class="tc-meta"><span class="cat-pill">Énergie</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/calculateur-du-cout-du-gaz-gpl-tunisie/" class="tool-card" data-directory-record data-id="gas-lpg-cost-fr-coverage-gas-lpg-cost-tunisia"><div class="tc-body"><div class="tc-name">Calculateur du coût du gaz GPL — Tunisie</div><div class="tc-desc">Préparez vos informations, puis utilisez l’outil « Calculateur du coût du gaz GPL — Tunisie » et vérifiez les hypothèses adaptées à votre pays.</div><div class="tc-meta"><span class="cat-pill">Énergie</span><span class="tc-badge live">Publié</span></div></div></a>
+<!-- PROGRESSIVE_DIRECTORY_FALLBACK_END -->
+  </div>
+  <div class="directory-pagination"><button class="btn btn-secondary" type="button" id="loadMoreTools" hidden>Afficher plus d’outils</button></div>
+
+  <div class="sec-divider"></div>
+
+  <!-- NEWSLETTER -->
+  <div class="nl-box">
+    <h3>Nouveaux outils chaque semaine</h3>
+    <p>Recevez une alerte quand un nouvel outil est publie. Pas de spam, desinscription a tout moment.</p>
+    <form class="nl-form" name="notify-all-tools" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you/">
+      <input type="hidden" name="form-name" value="notify-all-tools">
+      <p style="display:none"><input aria-label="Bot field" name="bot-field"></p>
+      <input type="hidden" name="source" value="all-tools">
+      <input aria-label="Adresse e-mail" type="email" name="email" class="nl-input" placeholder="vous@exemple.com" required>
+      <button type="submit" class="nl-btn">Me prevenir</button>
+    </form>
+  </div>
+</main>
+
+<afro-footer></afro-footer>
+
+<script>
+// ── TOOL ICON — auto-resolve from /assets/img/tools/ ──
+// Tries registry-backed image keys first, then falls back to emoji/gradient
+const PAGE_LANG = (document.documentElement.lang || 'en').toLowerCase();
+const IS_FR = PAGE_LANG === 'fr';
+const PAGE_COPY = IS_FR ? {
+  breadcrumb: 'Tous les outils',
+  eyebrow: 'Bibliothèque d’outils',
+  hero: 'Tous les outils disponibles <em>en français</em>',
+  heroSub: 'Recherchez uniquement les fiches publiées avec une interface ou un parcours français. La juridiction et la langue restent deux dimensions distinctes.',
+  liveTools: 'Outils publiés en français',
+  inDevelopment: 'En preparation',
+  categories: 'Catégories',
+  countries: 'Pays couverts',
+  price: 'Prix',
+  freeForever: 'accès essentiel sans abonnement payant',
+  searchPlaceholder: 'Rechercher par outil, pays ou catégorie…',
+  searchAria: 'Rechercher dans tous les outils',
+  clearSearch: 'Effacer la recherche',
+  filters: {
+    all: 'Tous',
+    live: 'Actifs',
+    ai: 'IA',
+    'salary-tax': 'PAYE',
+    financial: 'Finance',
+    health: 'Santé',
+    ecommerce: 'Entreprise',
+    'document-pdf': 'PDF',
+    'image-design': 'Image',
+    education: 'Éducation',
+    agriculture: 'Agriculture',
+    engineering: 'Ingénierie',
+    developer: 'Dev',
+    trade: 'Commerce',
+    african: 'Afrique',
+    legal: 'Juridique',
+    language: 'Langues',
+    'data-productivity': 'Donnees',
+    government: 'Services publics',
+    'small-business': 'PME',
+    insurance: 'Assurance',
+    fintech: 'Fintech',
+    energy: 'Énergie',
+    transport: 'Transport',
+    'travel-tourism': 'Voyage',
+    creative: 'Création',
+    'religious-cultural': 'Culture',
+    sports: 'Sport',
+    career: 'Carrière'
+  },
+  sortAria: 'Trier les outils',
+  sortRecommended: 'Tri : recommandés',
+  sortName: 'Tri : A-Z',
+  sortLive: 'Tri : actifs d abord',
+  intro1: 'Ce répertoire affiche les outils publiés avec une route française. Un pays couvert par un calcul n’implique pas automatiquement que toutes ses pages sont traduites.',
+  intro2: 'Utilisez la recherche ou les catégories. Les fonctions essentielles sont accessibles sans abonnement payant ; les capacités Pro sont signalées séparément.',
+  allTools: 'Tous les outils',
+  searchResults: 'Resultats de recherche',
+  loading: 'Chargement des outils...',
+  noToolsPrefix: 'Aucun outil ne correspond à',
+  toolsSingular: 'outil',
+  toolsPlural: 'outils',
+  live: 'Actif',
+  soon: 'Bientot',
+  newsletterTitle: 'Nouveaux outils chaque semaine',
+  newsletterText: 'Recevez une alerte quand un nouvel outil est publie. Pas de spam, desinscription a tout moment.',
+  emailAria: 'Adresse e-mail',
+  emailPlaceholder: 'vous@exemple.com',
+  notify: 'Me prevenir'
+} : {
+  allTools: 'All Tools',
+  searchResults: 'Search Results',
+  loading: 'Loading tools...',
+  noToolsPrefix: 'No tools match',
+  toolsSingular: 'tool',
+  toolsPlural: 'tools',
+  live: 'Live',
+  soon: 'Soon'
+};
+
+function localizeStaticShell(){
+  if(!IS_FR) return;
+  const breadcrumb = document.querySelector('.hero-breadcrumb span:last-child');
+  if(breadcrumb) breadcrumb.textContent = PAGE_COPY.breadcrumb;
+  const eyebrow = document.querySelector('.hero-eyebrow');
+  if(eyebrow) eyebrow.textContent = PAGE_COPY.eyebrow;
+  const h1 = document.querySelector('.hero h1');
+  if(h1) h1.innerHTML = PAGE_COPY.hero;
+  const heroSub = document.querySelector('.hero-sub');
+  if(heroSub) heroSub.textContent = PAGE_COPY.heroSub;
+
+  const statLabels = document.querySelectorAll('.hero-stat .s-lbl');
+  const statValues = document.querySelectorAll('.hero-stat .s-val');
+  [PAGE_COPY.liveTools, PAGE_COPY.inDevelopment, PAGE_COPY.categories, PAGE_COPY.countries, PAGE_COPY.price].forEach((text, index) => {
+    if(statLabels[index]) statLabels[index].textContent = text;
+  });
+  if(statValues[4]) statValues[4].textContent = PAGE_COPY.freeForever;
+
+  const search = document.getElementById('searchInput');
+  if(search){
+    search.placeholder = PAGE_COPY.searchPlaceholder;
+    search.setAttribute('aria-label', PAGE_COPY.searchAria);
+  }
+  const clear = document.getElementById('searchClear');
+  if(clear) clear.setAttribute('aria-label', PAGE_COPY.clearSearch);
+
+  document.querySelectorAll('.filter-tab').forEach(button => {
+    const label = PAGE_COPY.filters[button.dataset.filter];
+    if(!label) return;
+    const count = button.querySelector('.filter-count');
+    const first = button.textContent.trim().split(/\s+/)[0];
+    button.textContent = first && !/^\d/.test(first) && first !== 'All' && first !== 'Live' ? first + ' ' + label : label;
+    if(count){
+      button.appendChild(document.createTextNode(' '));
+      button.appendChild(count);
+    }
+  });
+
+  const sort = document.getElementById('sortSel');
+  if(sort){
+    sort.setAttribute('aria-label', PAGE_COPY.sortAria);
+    const labels = [PAGE_COPY.sortRecommended, PAGE_COPY.sortName, PAGE_COPY.sortLive];
+    Array.from(sort.options).forEach((option, index) => { if(labels[index]) option.textContent = labels[index]; });
+  }
+
+  const intro = document.querySelectorAll('section[style*="max-width:900px"] p');
+  if(intro[0]) intro[0].textContent = PAGE_COPY.intro1;
+  if(intro[1]) intro[1].textContent = PAGE_COPY.intro2;
+
+  const newsletterTitle = document.querySelector('.nl-box h3');
+  if(newsletterTitle) newsletterTitle.textContent = PAGE_COPY.newsletterTitle;
+  const newsletterText = document.querySelector('.nl-box p');
+  if(newsletterText) newsletterText.textContent = PAGE_COPY.newsletterText;
+  const email = document.querySelector('.nl-input');
+  if(email){
+    email.setAttribute('aria-label', PAGE_COPY.emailAria);
+    email.placeholder = PAGE_COPY.emailPlaceholder;
+  }
+  const notify = document.querySelector('.nl-btn');
+  if(notify) notify.textContent = PAGE_COPY.notify;
+}
+
+function getToolImageCandidate(tool) {
+  const keys = [
+    tool && tool.imageId,
+    tool && tool.sourceId,
+    tool && tool.id
+  ].filter(value => typeof value === 'string' && value.trim()).map(value => value.trim());
+  const extensions = typeof TOOL_CARD_IMAGE_EXTENSIONS !== 'undefined' ? TOOL_CARD_IMAGE_EXTENSIONS : null;
+  if (extensions) {
+    const mappedKey = keys.find(key => extensions[key]);
+    if (mappedKey) return { key: mappedKey, ext: extensions[mappedKey] || 'webp' };
+  }
+  return { key: keys[0] || '', ext: 'webp' };
+}
+
+function getToolIconSrc(tool) {
+  const image = getToolImageCandidate(tool);
+  return image.key ? '/assets/img/tools/' + encodeURIComponent(image.key) + '.' + (image.ext || 'webp') : '';
+}
+
+function getToolIconFallback(tool) {
+  const image = getToolImageCandidate(tool);
+  if (!image.key) return '';
+  return '/assets/img/tools/' + encodeURIComponent(image.key) + '.' + (image.ext === 'svg' ? 'webp' : 'svg');
+}
+
+// ── CATEGORY METADATA ──
+const CAT_META = {
+  'salary-tax':{name:'PAYE',color:'#eff6ff',icon:'💰'},
+  'financial':{name:'Finance',color:'#eff6ff',icon:'💰'},
+  'document-pdf':{name:'PDF',color:'#eff6ff',icon:'📄'},
+  'image-design':{name:'Image',color:'#fdf2f8',icon:'🖼️'},
+  'developer':{name:'Dev',color:'#ede9fe',icon:'⌨️'},
+  'education':{name:'Education',color:'#EFF6FF',icon:'🎓'},
+  'health':{name:'Health',color:'#fce8e8',icon:'🏥'},
+  'ecommerce':{name:'Business',color:'#fff7ed',icon:'🧾'},
+  'legal':{name:'Legal',color:'#e0f2fe',icon:'⚖️'},
+  'data-productivity':{name:'Productivity',color:'#eef2ff',icon:'📊'},
+  'language':{name:'Language',color:'#faf5ff',icon:'🗣️'},
+  'african':{name:'African',color:'#fef9ec',icon:'🌍'},
+  'engineering':{name:'Engineering',color:'#f5f5f4',icon:'🏗️'},
+  'government':{name:'Government',color:'#eff6ff',icon:'🏛️'},
+  'small-business':{name:'Small Business',color:'#fff7ed',icon:'🏪'},
+  'insurance':{name:'Insurance',color:'#f0fdfa',icon:'🛡️'},
+  'fintech':{name:'Fintech',color:'#ecfdf5',icon:'💳'},
+  'telecom':{name:'Telecom',color:'#eef2ff',icon:'📱'},
+  'energy':{name:'Energy',color:'#fffbeb',icon:'⚡'},
+  'transport':{name:'Transport',color:'#fff7ed',icon:'🚚'},
+  'hr-payroll':{name:'HR & Payroll',color:'#f0fdfa',icon:'💼'},
+  'personal-finance':{name:'Personal Finance',color:'#f5f3ff',icon:'💵'},
+  'diaspora':{name:'Diaspora',color:'#e0f2fe',icon:'🌐'},
+  'religious-cultural':{name:'Religious & Cultural',color:'#fef3c7',icon:'🕌'},
+  'climate':{name:'Climate',color:'#f0fdf4',icon:'🌱'},
+  'sports':{name:'Sports',color:'#fef2f2',icon:'⚽'},
+  'mining':{name:'Mining',color:'#f5f5f4',icon:'⛏️'},
+  'creative':{name:'Creative',color:'#fdf2f8',icon:'🎨'},
+  'security':{name:'Security',color:'#f9fafb',icon:'🔒'},
+  'travel-tourism':{name:'Travel',color:'#e0f2fe',icon:'✈️'},
+  'career':{name:'Career',color:'#f5f3ff',icon:'📈'},
+};
+
+const CATEGORY_ALIASES = {
+  'african':['afro','afrotools','africa','pan african','uniquely african','local africa'],
+  'financial':['money','tax','paye','salary','fx','forex','rates'],
+  'document-pdf':['pdf','document','merge','split','compress','watermark'],
+  'image-design':['image','design','photo','qr','passport'],
+  'developer':['dev','code','api','json','regex','sql'],
+  'education':['school','student','gpa','scholarship','exam'],
+  'health':['medical','clinic','doctor','lab','wellness'],
+  'ecommerce':['business tax','vat','invoice','sales tax'],
+  'small-business':['business','sme','startup','shop','market','pos'],
+  'data-productivity':['productivity','roi','data','dashboard','calculator'],
+  'language':['translation','translate','swahili','yoruba','hausa'],
+  'engineering':['construction','cad','boq','floor plan'],
+  'trade':['import','export','customs','shipping','afcfta'],
+  'government':['civic','passport','visa','id','voter','public service'],
+  'transport':['car','vehicle','logistics','delivery','road'],
+  'travel-tourism':['travel','tourism','safari','hotel','flight'],
+  'creative':['creator','media','design','thumbnail'],
+  'religious-cultural':['religion','culture','zakat','ramadan','hajj'],
+  'energy':['power','electricity','solar','fuel','generator'],
+  'insurance':['cover','premium','claims','policy'],
+  'fintech':['banking','mobile money','payments','crypto'],
+  'telecom':['mobile','data','airtime','network'],
+  'climate':['environment','carbon','flood','sustainability'],
+  'career':['job','cv','resume','salary negotiation']
+};
+
+const SEARCH_STOPWORDS = new Set(['a','an','and','for','in','of','or','the','to','with']);
+const SEARCH_TERM_ALIASES = { 'afrotool':'afro', 'afrotools':'afro', 'biz':'business' };
+
+// AI-powered tools list
+const AI_TOOLS = ['ng-paye','ke-paye','gh-paye','za-paye','eg-paye','tz-paye','et-paye','rw-paye'];
+
+let activeFilter = 'all';
+const PAGE_SIZE = 60;
+let visibleLimit = PAGE_SIZE;
+
+function isAiTool(tool){
+  if(!tool) return false;
+  if(AI_TOOLS.includes(tool.id)) return true;
+  return /\b(ai|advisor|assistant|interpreter)\b/.test(normalizeText([tool.name, tool.desc].join(' ')));
+}
+
+function escapeHtml(value){
+  return String(value||'')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/'/g,'&#39;')
+    .replace(/"/g,'&quot;');
+}
+
+function normalizeText(value){
+  return String(value||'')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g,'')
+    .replace(/&/g,' and ')
+    .replace(/[^a-z0-9]+/g,' ')
+    .trim();
+}
+
+function tokenizeSearch(value){
+  return normalizeText(value)
+    .split(/\s+/)
+    .map(term => SEARCH_TERM_ALIASES[term] || term)
+    .filter(term => term && !SEARCH_STOPWORDS.has(term));
+}
+
+function setFilter(f, btn){
+  activeFilter = f;
+  visibleLimit = PAGE_SIZE;
+  document.querySelectorAll('.filter-tab').forEach(b => {
+    const isActive = b.dataset.filter === f;
+    b.classList.toggle('active', isActive);
+    b.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+  });
+  if(btn) btn.classList.add('active');
+  renderTools();
+}
+
+function resetFilterToAll(){
+  if(activeFilter === 'all') return;
+  activeFilter = 'all';
+  document.querySelectorAll('.filter-tab').forEach(b => {
+    const isActive = b.dataset.filter === 'all';
+    b.classList.toggle('active', isActive);
+    b.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+  });
+}
+
+function updateSearchClear(){
+  const input = document.getElementById('searchInput');
+  const clear = document.getElementById('searchClear');
+  if(clear && input) clear.hidden = !input.value.trim();
+}
+
+function handleSearchInput(){
+  const input = document.getElementById('searchInput');
+  if(input && input.value.trim()) resetFilterToAll();
+  updateSearchClear();
+  visibleLimit = PAGE_SIZE;
+  renderTools();
+}
+
+function clearSearch(){
+  const input = document.getElementById('searchInput');
+  if(input){
+    input.value = '';
+    input.focus();
+  }
+  updateSearchClear();
+  visibleLimit = PAGE_SIZE;
+  renderTools();
+}
+
+function loadMoreTools(){
+  visibleLimit += PAGE_SIZE;
+  renderTools();
+}
+
+function getIcon(tool){
+  const safeIcon = (tool.icon||'🛠️').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;').replace(/"/g,'&quot;');
+  const safeName = (tool.name||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  const imageSrc = getToolIconSrc(tool);
+  const imageFallback = getToolIconFallback(tool);
+  if(imageSrc){
+    return `<img src="${imageSrc}" alt="${safeName}" loading="lazy" width="48" height="48" onerror="this.onerror=function(){this.parentElement.textContent='${safeIcon}';};this.src='${imageFallback}';">`;
+  }
+  return safeIcon;
+}
+
+function getCatMeta(cat){
+  const registryMeta = typeof AFRO_CATEGORIES !== 'undefined' ? AFRO_CATEGORIES[cat] : null;
+  const localMeta = CAT_META[cat] || {};
+  const frName = PAGE_COPY.filters && PAGE_COPY.filters[cat];
+  return {
+    name: frName || localMeta.name || (registryMeta && registryMeta.name) || cat || 'Tools',
+    color: localMeta.color || (registryMeta && registryMeta.bg) || '#f3f4f6',
+    icon: localMeta.icon || (registryMeta && registryMeta.icon) || '🔧',
+    desc: (registryMeta && registryMeta.desc) || ''
+  };
+}
+
+function getToolSearchText(tool){
+  const cat = getCatMeta(tool.category);
+  return normalizeText([
+    tool.id,
+    tool.name,
+    tool.desc,
+    tool.category,
+    cat.name,
+    cat.desc,
+    tool.href,
+    tool.tier,
+    tool.phase,
+    (tool.countries||[]).join(' '),
+    (tool.tags||[]).join(' '),
+    (tool.features||[]).join(' '),
+    (CATEGORY_ALIASES[tool.category]||[]).join(' ')
+  ].join(' '));
+}
+
+function toolMatchesSearch(tool, terms){
+  if(!terms.length) return true;
+  const haystack = getToolSearchText(tool);
+  return terms.every(term => haystack.includes(term));
+}
+
+function applySearchSuggestion(query){
+  const input = document.getElementById('searchInput');
+  if(input) input.value = query;
+  handleSearchInput();
+}
+
+function renderTools(){
+  const grid = document.getElementById('toolsGrid');
+  const rawSearch = document.getElementById('searchInput').value.trim();
+  const searchTerms = tokenizeSearch(rawSearch);
+  const sort = document.getElementById('sortSel').value;
+
+  if(typeof AFRO_TOOLS === 'undefined'){
+    if (window.AfroProgressiveDirectory) window.AfroProgressiveDirectory.fail();
+    return;
+  }
+  if (Array.isArray(AFRO_TOOLS) && AFRO_TOOLS.length === 0) {
+    if (window.AfroProgressiveDirectory) window.AfroProgressiveDirectory.markNoPublished();
+    return;
+  }
+
+  document.querySelectorAll('.filter-tab').forEach(b => {
+    const isActive = b.dataset.filter === activeFilter;
+    b.classList.toggle('active', isActive);
+    b.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+  });
+
+  const directoryTools = IS_FR
+    ? AFRO_TOOLS.filter(t => t.lang === 'fr' && String(t.href || '').startsWith('/fr/') && (t.status === 'live' || t.status === 'new'))
+    : AFRO_TOOLS.slice();
+  let tools = directoryTools.slice();
+
+  // Filter
+  if(activeFilter === 'live'){
+    tools = tools.filter(t => t.status === 'live' || t.status === 'new');
+  } else if(activeFilter === 'ai'){
+    tools = tools.filter(t => isAiTool(t));
+  } else if(activeFilter === 'salary-tax'){
+    // PAYE tools have category='financial' in the registry
+    tools = tools.filter(t => t.category === 'financial' && (t.id||'').includes('paye'));
+  } else if(activeFilter !== 'all'){
+    tools = tools.filter(t => t.category === activeFilter || t.href?.includes(activeFilter));
+  }
+
+  // Search
+  if(searchTerms.length){
+    tools = tools.filter(t => toolMatchesSearch(t, searchTerms));
+  }
+
+  // Sort
+  if(sort === 'name'){
+    tools.sort((a,b) => a.name.localeCompare(b.name));
+  } else if(sort === 'live'){
+    tools.sort((a,b) => {
+      const order = {live:0,new:0,planned:1};
+      return (order[a.status]||1) - (order[b.status]||1);
+    });
+  } else {
+    tools.sort((a,b) => (b.priority||0) - (a.priority||0));
+  }
+
+  // Update counts using the same registry rows this page actually renders.
+  const publicStats = typeof getPublicToolStats === 'function' ? getPublicToolStats(PAGE_LANG) : null;
+  const totalAll = IS_FR ? directoryTools.length : (publicStats ? publicStats.totalTools : AFRO_TOOLS.length);
+  const totalLive = IS_FR ? directoryTools.length : (publicStats ? publicStats.liveTools : AFRO_TOOLS.filter(t => t.status === 'live' || t.status === 'new').length);
+  const totalQueued = publicStats ? publicStats.inDevelopmentTools : AFRO_TOOLS.filter(t => t.status === 'queued' || t.status === 'planned').length;
+  const totalCategories = publicStats ? publicStats.categories : (typeof AFRO_CATEGORIES !== 'undefined' ? Object.keys(AFRO_CATEGORIES).length : 0);
+  const canonicalCounts = window.AFRO_REGISTRY_COUNTS || {};
+  document.getElementById('statLive').textContent = String(IS_FR ? (canonicalCounts['tools.locale.fr.published'] || totalLive) : (canonicalCounts['tools.live_experiences'] || totalLive));
+  document.getElementById('statPlanned').textContent = String(Number.isInteger(canonicalCounts['tools.unpublished']) ? canonicalCounts['tools.unpublished'] : totalQueued);
+  document.getElementById('countAll').textContent = totalAll.toLocaleString();
+  document.getElementById('countLive').textContent = totalLive.toLocaleString();
+  if (document.getElementById('statCategories')) {
+    document.getElementById('statCategories').textContent = String(canonicalCounts['categories.published'] || totalCategories);
+  }
+  document.getElementById('resultsCount').textContent = tools.length.toLocaleString(IS_FR ? 'fr-FR' : 'en-US') + ' ' + (tools.length === 1 ? PAGE_COPY.toolsSingular : PAGE_COPY.toolsPlural);
+  document.getElementById('sectionTitle').textContent = rawSearch ? PAGE_COPY.searchResults : (activeFilter === 'all' ? PAGE_COPY.allTools : getCatMeta(activeFilter).name);
+  updateSearchClear();
+
+  // Render
+  if(tools.length === 0){
+    const loadMore = document.getElementById('loadMoreTools');
+    if (loadMore) loadMore.hidden = true;
+    grid.innerHTML = `<div class="empty-state">
+      <div class="e-icon">🔍</div>
+      <p>${PAGE_COPY.noToolsPrefix} "<strong>${escapeHtml(rawSearch||activeFilter)}</strong>".</p>
+      <div class="empty-actions">
+        <button type="button" onclick="applySearchSuggestion('paye')">PAYE</button>
+        <button type="button" onclick="applySearchSuggestion('pdf')">PDF</button>
+        <button type="button" onclick="applySearchSuggestion('afro')">Afro</button>
+        <button type="button" onclick="applySearchSuggestion('entreprise')">Entreprise</button>
+      </div>
+    </div>`;
+    if (window.AfroProgressiveDirectory) window.AfroProgressiveDirectory.markNoResults(Boolean(rawSearch || activeFilter !== 'all'));
+    return;
+  }
+
+  const catMeta = getCatMeta;
+  const isNew = t => t.status === 'new' || (t.id && (t.id.includes('solar') || t.id.includes('floor-plan') || t.id.includes('boq')));
+  const matchedCount = tools.length;
+  const renderedTools = tools.slice(0, visibleLimit);
+  const loadMore = document.getElementById('loadMoreTools');
+  if (loadMore) loadMore.hidden = renderedTools.length >= matchedCount;
+  document.getElementById('resultsCount').textContent = renderedTools.length.toLocaleString('fr-FR') + ' sur ' + matchedCount.toLocaleString('fr-FR') + ' ' + PAGE_COPY.toolsPlural;
+
+  grid.innerHTML = renderedTools.map(t => {
+    const live = t.status === 'live' || t.status === 'new';
+    const cat = catMeta(t.category);
+    const aiPowered = isAiTool(t);
+    const cardClass = aiPowered ? 'tool-card ai-powered' : live && isNew(t) ? 'tool-card new' : 'tool-card';
+    const safeName = escapeHtml(t.name);
+    const safeDesc = escapeHtml(t.desc);
+    const safeHref = typeof t.href === 'string' && (t.href.startsWith('/') || t.href.startsWith('https://afrotools.com/')) ? t.href : '#';
+    const safeIcon = escapeHtml(t.icon || '🛠️');
+    const safeCatName = escapeHtml(cat.name);
+    const safeCatIcon = escapeHtml(cat.icon);
+    const imageSrc = getToolIconSrc(t);
+    const imageFallback = getToolIconFallback(t);
+
+    return `<a href="${safeHref}" class="${cardClass}" data-directory-record>
+      <div class="tc-image" style="background:linear-gradient(135deg,${cat.color},#e2e8f0)">
+        ${imageSrc ? `<img src="${imageSrc}" alt="${safeName}" width="600" height="400" loading="lazy" onerror="this.onerror=function(){this.style.display='none';this.nextElementSibling&&(this.nextElementSibling.style.display='flex');};this.src='${imageFallback}';">` : ''}
+        <div class="tc-image-fallback" style="display:none;background:linear-gradient(135deg,${cat.color},#cbd5e1)">${safeIcon}</div>
+      </div>
+      <div class="tc-body">
+        <div class="tc-name">${safeName}</div>
+        <div class="tc-desc">${safeDesc.substring(0,100)}${safeDesc.length>100?'…':''}</div>
+        <div class="tc-meta">
+          <span class="cat-pill">${safeCatIcon} ${safeCatName}</span>
+          <span class="tc-badge ${live?'live':'planned'}">${live?'● ' + PAGE_COPY.live:PAGE_COPY.soon}</span>
+          ${t.tier?`<span class="tc-badge tier${t.tier.replace('T','')}">${t.tier}</span>`:''}
+          ${aiPowered?'<span class="tc-badge" style="background:#ede9fe;color:#6d28d9;">✦ AI</span>':''}
+          ${t.countries&&t.countries.length<=4?`<span class="tc-countries">${t.countries.join(' · ')}</span>`:''}
+        </div>
+      </div>
+    </a>`;
+  }).join('');
+  if (window.AfroProgressiveDirectory) window.AfroProgressiveDirectory.markReady();
+}
+
+// Init on registry ready (replaces fragile polling pattern)
+document.addEventListener('DOMContentLoaded', localizeStaticShell);
+document.addEventListener('DOMContentLoaded', function(){
+  const loadMore = document.getElementById('loadMoreTools');
+  if (loadMore) loadMore.addEventListener('click', loadMoreTools);
+});
+if (typeof onRegistryReady === 'function') {
+  onRegistryReady(function() { localizeStaticShell(); renderTools(); });
+} else {
+  // Fallback: DOMContentLoaded + retry
+  document.addEventListener('DOMContentLoaded', function() {
+    localizeStaticShell();
+    if (typeof AFRO_TOOLS !== 'undefined') renderTools();
+    else document.addEventListener('afrotools:registry-ready', function() { renderTools(); });
+  });
+}
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+</body>
+</html>

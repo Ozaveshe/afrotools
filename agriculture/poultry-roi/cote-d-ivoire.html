@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="afrotools-currency" content="XOF">
+<meta name="afrotools-formula-jurisdiction" content="CI">
+<meta name="afrotools-source-jurisdiction" content="CI">
+<meta name="afrotools-country-id" content="CI">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Poultry Farm ROI Calculator for Côte d'Ivoire — Broilers &amp; Layers | AfroTools</title>
+<meta name="description" content="Calculate poultry farming profitability in Côte d'Ivoire. Full ROI analysis for broiler and layer production with local feed prices, chick costs, and selling prices.">
+<meta property="og:title" content="Côte d'Ivoire Poultry Farm ROI Calculator — AfroTools">
+<meta property="og:description" content="Calculate broiler and layer farming profitability in Côte d'Ivoire with real local costs. Full ROI, payback period, and cash flow analysis.">
+<meta property="og:url" content="https://afrotools.com/agriculture/poultry-roi/cote-d-ivoire">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Côte d'Ivoire Poultry Farm ROI Calculator — AfroTools">
+<meta name="twitter:description" content="Calculate poultry farming profitability in Côte d'Ivoire with real local costs.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Côte d'Ivoire Poultry Farm ROI Calculator","url":"https://afrotools.com/agriculture/poultry-roi/cote-d-ivoire","applicationCategory":"UtilityApplication","operatingSystem":"All","description":"Calculate poultry farming profitability in Côte d'Ivoire. Full ROI analysis for broiler and layer production with local feed prices, chick costs, and selling prices.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Agriculture","item":"https://afrotools.com/agriculture/"},{"@type":"ListItem","position":3,"name":"Poultry ROI Calculator","item":"https://afrotools.com/agriculture/poultry-roi/"},{"@type":"ListItem","position":4,"name":"C&ocirc;te d&rsquo;Ivoire","item":"https://afrotools.com/agriculture/poultry-roi/cote-d-ivoire"}]}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/agriculture.css?v=70592203">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+
+<style>
+:root {
+  --calc-accent: #0062CC;
+  --calc-accent-rgb: 0, 98, 204;
+  --calc-accent-dark: #0063D1;
+  --calc-accent-light: #E8F2FF;
+  --calc-accent-pale: #EBF4FF;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; margin: 0; }
+.tool-hero { background: #0A1628; padding: 36px 0 32px; position: relative; overflow: hidden; }
+.tool-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 20% 50%, rgba(0,98,204,0.12) 0%, transparent 60%); pointer-events: none; }
+.tool-hero .container { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+.breadcrumb { font-size: 0.75rem; font-weight: 500; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
+.breadcrumb a { color: rgba(255,255,255,0.5); text-decoration: none; }
+.breadcrumb a:hover { color: #fff; }
+.breadcrumb span { margin: 0 6px; opacity: 0.4; }
+.tool-hero h1 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; color: #fff; margin: 0 0 8px; letter-spacing: -0.02em; }
+.tool-hero h1 em { color: var(--calc-accent); font-style: normal; }
+.tool-hero-sub { font-size: 0.875rem; color: rgba(255,255,255,0.92); max-width: 600px; line-height: 1.6; margin: 0 0 16px; }
+.hero-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+.badge { padding: 4px 10px; border-radius: 100px; font-size: 0.72rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; }
+.badge-blue { background: rgba(0,98,204,0.15); color: var(--calc-accent); }
+.badge-grey { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.6); }
+.tool-main { max-width: 1100px; margin: -20px auto 48px; padding: 0 24px; position: relative; z-index: 2; }
+.card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 24px; }
+.card-head { padding: 16px 22px; background: #F8FAFD; border-bottom: 1px solid #f1f5f9; border-radius: 10px 10px 0 0; display: flex; align-items: center; justify-content: space-between; }
+.card-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #3D5A80; margin: 0; display: flex; align-items: center; gap: 6px; }
+.card-body { padding: 22px; }
+.card-toggle { background: none; border: 1px solid #CBD5E1; border-radius: 6px; padding: 4px 10px; font-size: 0.72rem; font-weight: 600; color: #64748b; cursor: pointer; }
+.card-toggle:hover { background: #f1f5f9; }
+.section-body { display: block; }
+.section-body.collapsed { display: none; }
+.field { margin-bottom: 16px; }
+.field.full { grid-column: 1 / -1; }
+.f-label-text { display: block; font-size: 0.75rem; font-weight: 700; color: #2D3A5A; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
+.f-label-hint { font-size: 0.7rem; font-weight: 400; color: #64748b; margin-left: 6px; text-transform: none; }
+.f-input, .f-select { font-family: 'DM Sans', sans-serif; font-size: 0.9rem; padding: 11px 13px; border: 1.5px solid #CBD5E1; border-radius: 6px; background: #F4F7FA; color: #0f172a; outline: none; width: 100%; }
+.f-input:focus, .f-select:focus { border-color: var(--calc-accent); background: #fff; box-shadow: 0 0 0 3px rgba(0,98,204,0.1); }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 820px) { .form-grid { grid-template-columns: 1fr; } }
+.cross-link { font-size: 0.75rem; color: var(--calc-accent); text-decoration: none; font-weight: 600; }
+.cross-link:hover { text-decoration: underline; }
+.mode-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.mode-tab { padding: 8px 16px; border-radius: 980px; border: 1.5px solid #CBD5E1; font-size: 0.82rem; font-weight: 700; cursor: pointer; background: #fff; color: #3D5A80; transition: all 0.15s; }
+.mode-tab.active { background: var(--calc-accent); border-color: var(--calc-accent); color: #fff; }
+.preset-btns { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+.preset-btn { padding: 4px 10px; border-radius: 980px; border: 1px solid #CBD5E1; font-size: 0.75rem; font-weight: 600; cursor: pointer; background: #F4F7FA; color: #3D5A80; }
+.preset-btn:hover { border-color: var(--calc-accent); color: var(--calc-accent); background: var(--calc-accent-light); }
+.calc-btn { width: 100%; padding: 14px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; background: var(--calc-accent); color: #fff; border: none; border-radius: 100px; cursor: pointer; margin-top: 8px; transition: filter 0.15s, transform 0.15s; }
+.calc-btn:hover { filter: brightness(0.85); transform: translateY(-1px); }
+.results-wrap { display: none; }
+.results-wrap.on { display: block; animation: resultsFade 0.4s ease; }
+@keyframes resultsFade { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+.profit-hero { text-align: center; padding: 28px 16px; border-radius: 10px 10px 0 0; }
+.profit-hero.positive { background: linear-gradient(135deg, #0A3E1A 0%, #1a5e30 100%); }
+.profit-hero.negative { background: linear-gradient(135deg, #3E0A0A 0%, #5e1a1a 100%); }
+.profit-amount { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; color: #fff; }
+.profit-label { font-size: 0.78rem; color: rgba(255,255,255,0.6); margin-top: 6px; }
+.profit-sub { font-size: 0.85rem; color: rgba(255,255,255,0.75); margin-top: 6px; }
+.summary-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.summary-table tr td { padding: 7px 10px; border-bottom: 1px solid #f1f5f9; }
+.summary-table .section-head td { font-weight: 700; font-size: 0.72rem; text-transform: uppercase; color: #3D5A80; background: #F8FAFD; padding: 10px 10px 6px; }
+.summary-table .total-row td { font-weight: 800; border-top: 2px solid #e2e8f0; padding-top: 10px; }
+.summary-table .indent { padding-left: 22px; color: #64748b; }
+.summary-table .amount { text-align: right; font-weight: 600; }
+.positive-val { color: #16a34a; font-weight: 700; }
+.negative-val { color: #ef4444; font-weight: 700; }
+.cost-bar-wrap { margin: 12px 0; }
+.cost-bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 0.78rem; }
+.cost-bar-label { width: 110px; flex-shrink: 0; color: #64748b; }
+.cost-bar-track { flex: 1; height: 14px; background: #f1f5f9; border-radius: 7px; overflow: hidden; }
+.cost-bar-fill { height: 100%; background: var(--calc-accent); border-radius: 7px; }
+.cost-bar-val { width: 70px; text-align: right; font-weight: 600; color: #1A1A2E; }
+.metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 16px 0; }
+.metric-card { background: #F8FAFD; border-radius: 8px; padding: 14px; text-align: center; }
+.metric-val { font-size: 1.15rem; font-weight: 800; color: var(--calc-accent); }
+.metric-label { font-size: 0.7rem; color: #64748b; margin-top: 3px; line-height: 1.3; }
+.cashflow-wrap { overflow-x: auto; }
+.cashflow-chart { display: flex; gap: 4px; align-items: flex-end; min-height: 100px; padding: 8px 0; }
+.cf-bar-wrap { display: flex; flex-direction: column; align-items: center; gap: 3px; flex: 1; min-width: 36px; }
+.cf-bar { width: 100%; border-radius: 4px 4px 0 0; min-height: 4px; }
+.cf-bar.income { background: #16a34a; }
+.cf-bar.expense { background: #ef4444; }
+.cf-bar.net-pos { background: #0062CC; }
+.cf-bar.net-neg { background: #f97316; }
+.cf-label { font-size: 0.62rem; color: #94a3b8; text-align: center; white-space: nowrap; }
+.scenario-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin-top: 12px; }
+.scenario-card { background: #F8FAFD; border-radius: 8px; padding: 14px; border-left: 3px solid #CBD5E1; }
+.scenario-card.positive { border-left-color: #16a34a; }
+.scenario-card.negative { border-left-color: #ef4444; }
+.scenario-label { font-size: 0.78rem; font-weight: 600; color: #3D5A80; margin-bottom: 6px; }
+.scenario-profit { font-size: 1rem; font-weight: 800; }
+.scenario-change { font-size: 0.72rem; margin-top: 3px; }
+.compare-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.compare-table th { background: #F8FAFD; padding: 10px; text-align: left; font-size: 0.72rem; text-transform: uppercase; color: #3D5A80; border-bottom: 2px solid #e2e8f0; }
+.compare-table td { padding: 9px 10px; border-bottom: 1px solid #f1f5f9; }
+.compare-table tr:hover td { background: #F8FAFD; }
+.cross-tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 12px; }
+.cross-tool-card { background: var(--calc-accent-pale); border: 1px solid var(--calc-accent-light); border-radius: 8px; padding: 12px; text-decoration: none; color: #1A1A2E; display: flex; align-items: center; gap: 10px; transition: box-shadow 0.2s; }
+.cross-tool-card:hover { box-shadow: 0 4px 12px rgba(0,98,204,0.12); }
+.cross-tool-icon { font-size: 1.4rem; flex-shrink: 0; }
+.cross-tool-name { font-weight: 700; color: var(--calc-accent); font-size: 0.82rem; }
+.cross-tool-desc { color: #64748b; font-size: 0.72rem; margin-top: 2px; }
+.sources-footer { font-size: 0.72rem; color: #94a3af; text-align: center; padding: 24px 0; line-height: 1.6; }
+@media print {
+  .tool-hero, afro-navbar, afro-footer, .calc-btn, .card-toggle { display: none !important; }
+  .results-wrap { display: block !important; }
+  .section-body.collapsed { display: block !important; }
+}
+</style>
+<meta property="article:modified_time" content="2026-03-28">
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<link rel="canonical" href="https://afrotools.com/agriculture/poultry-roi/cote-d-ivoire">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/agriculture/poultry-roi/cote-d-ivoire">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/agriculture/poultry-roi/cote-d-ivoire">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/agriculture/poultry-roi/cote-d-ivoire">
+</head>
+
+<body class="tool-page top-level-page-ui-refresh">
+<afro-navbar theme="dark" active="tools"></afro-navbar>
+
+<section class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a><span>/</span>
+      <a href="/agriculture/poultry-roi/">Poultry ROI Calculator</a><span>/</span>
+      <span aria-current="page">Côte d'Ivoire</span>
+    </nav>
+    <h1><span aria-hidden="true">🇨🇮</span> Côte d'Ivoire <em>Poultry Farm ROI Calculator</em></h1>
+    <p class="tool-hero-sub">Calculate broiler and layer farming profitability in Côte d'Ivoire with real local costs. Full ROI analysis, payback period, cash flow timeline, and risk scenarios.</p>
+    <div class="hero-badges">
+      <span class="badge badge-blue">&#x1F423; Broilers &amp; Layers</span>
+      <span class="badge badge-grey">Currency: XOF (CFA)</span>
+      <span class="badge badge-grey">&#x1F4C8; ROI + Payback Period</span>
+    </div>
+  </div>
+</section>
+
+<main class="tool-main">
+
+<div class="card">
+  <div class="card-head">
+    <span class="card-title">&#x1F423; Section 1: Production Setup</span>
+  </div>
+  <div class="card-body section-body" id="sec1Body">
+    <div class="field full">
+      <label class="f-label-text">Production Type</label>
+      <div class="mode-tabs">
+        <button type="button" class="mode-tab active" onclick="setMode('broilers',this)">&#x1F356; Broilers</button>
+        <button type="button" class="mode-tab" onclick="setMode('layers',this)">&#x1F95A; Layers</button>
+        <button type="button" class="mode-tab" onclick="setMode('indigenous',this)">&#x1F413; Indigenous / Kienyeji</button>
+        <button type="button" class="mode-tab" onclick="setMode('compare',this)">&#x1F4CA; Compare All</button>
+      </div>
+    </div>
+    <div class="form-grid">
+      <div class="field">
+        <label class="f-label-text" for="inpFlock">Flock Size <span class="f-label-hint">(birds)</span></label>
+        <input class="f-input" id="inpFlock" type="number" min="10" step="10" value="100">
+        <div class="preset-btns">
+          <button type="button" class="preset-btn" onclick="setFlock(100)">100</button>
+          <button type="button" class="preset-btn" onclick="setFlock(500)">500</button>
+          <button type="button" class="preset-btn" onclick="setFlock(1000)">1,000</button>
+          <button type="button" class="preset-btn" onclick="setFlock(5000)">5,000</button>
+        </div>
+      </div>
+      <div class="field">
+        <label class="f-label-text" for="selManagement">Management Level</label>
+        <select class="f-select" id="selManagement" onchange="updateDefaults()">
+          <option value="backyard">Backyard (free-range, minimal inputs)</option>
+          <option value="smallholder" selected>Smallholder (managed, basic housing)</option>
+          <option value="semi_commercial">Semi-commercial (controlled environment)</option>
+          <option value="commercial">Commercial (intensive, biosecurity)</option>
+        </select>
+      </div>
+      <div class="field" id="cyclesField">
+        <label class="f-label-text" for="inpCycles">Cycles per Year <span class="f-label-hint">(broilers only)</span></label>
+        <input class="f-input" id="inpCycles" type="number" min="1" max="7" step="1" value="4">
+      </div>
+      <div class="field">
+        <label class="f-label-text" for="selOwnHouse">Existing Poultry House?</label>
+        <select class="f-select" id="selOwnHouse" onchange="updateHousingField()">
+          <option value="yes">Yes — no construction cost</option>
+          <option value="no">No — include housing cost</option>
+        </select>
+      </div>
+      <div class="field" id="housingTypeField" style="display:none;">
+        <label class="f-label-text" for="selHousingType">Housing Type</label>
+        <select class="f-select" id="selHousingType">
+          <option value="simple">Simple / wooden structure</option>
+          <option value="semi_commercial">Semi-commercial (block walls)</option>
+          <option value="commercial">Commercial (insulated, full equipment)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head">
+    <span class="card-title">&#x1F4B0; Section 2: Costs &amp; Selling Prices</span>
+    <button type="button" class="card-toggle" onclick="toggleSection('sec2Body',this)">Collapse</button>
+  </div>
+  <div class="card-body section-body" id="sec2Body">
+    <p style="font-size:0.78rem;color:#64748b;margin:0 0 12px;">Pre-filled with local Côte d'Ivoire market prices. Adjust to match your actual costs.</p>
+    <div class="form-grid">
+      <div class="field">
+        <label class="f-label-text" for="inpChickPrice">Day-old Chick Price <span class="f-label-hint">(each)</span></label>
+        <input class="f-input" id="inpChickPrice" type="number" min="0" step="1" value="0">
+      </div>
+      <div class="field">
+        <label class="f-label-text" for="inpStarterKg">Starter Feed <span class="f-label-hint">(per kg)</span></label>
+        <input class="f-input" id="inpStarterKg" type="number" min="0" step="0.01" value="0">
+      </div>
+      <div class="field">
+        <label class="f-label-text" for="inpGrowerKg">Grower Feed <span class="f-label-hint">(per kg)</span></label>
+        <input class="f-input" id="inpGrowerKg" type="number" min="0" step="0.01" value="0">
+      </div>
+      <div class="field">
+        <label class="f-label-text" for="inpFinisherKg">Finisher Feed <span class="f-label-hint">(per kg — broilers)</span></label>
+        <input class="f-input" id="inpFinisherKg" type="number" min="0" step="0.01" value="0">
+      </div>
+      <div class="field">
+        <label class="f-label-text" for="inpLayerMashKg">Layer Mash <span class="f-label-hint">(per kg — layers)</span></label>
+        <input class="f-input" id="inpLayerMashKg" type="number" min="0" step="0.01" value="0">
+      </div>
+      <div class="field">
+        <label class="f-label-text" for="inpLaborMonth">Labour <span class="f-label-hint">(per month)</span></label>
+        <input class="f-input" id="inpLaborMonth" type="number" min="0" step="1" value="0">
+      </div>
+      <div class="field" id="sellingBroilerField">
+        <label class="f-label-text" for="inpSellingBroiler">Broiler Selling Price <span class="f-label-hint">(per bird)</span></label>
+        <input class="f-input" id="inpSellingBroiler" type="number" min="0" step="1" value="0">
+      </div>
+      <div class="field" id="sellingEggField" style="display:none;">
+        <label class="f-label-text" for="inpSellingEgg">Egg Selling Price <span class="f-label-hint">(per egg)</span></label>
+        <input class="f-input" id="inpSellingEgg" type="number" min="0" step="0.01" value="0">
+      </div>
+      <div class="field" id="sellingSpentField" style="display:none;">
+        <label class="f-label-text" for="inpSellingSpent">Spent Hen Price <span class="f-label-hint">(per bird, end of lay)</span></label>
+        <input class="f-input" id="inpSellingSpent" type="number" min="0" step="1" value="0">
+      </div>
+      <div class="field" id="sellingIndigField" style="display:none;">
+        <label class="f-label-text" for="inpSellingIndig">Indigenous Bird Price <span class="f-label-hint">(per bird)</span></label>
+        <input class="f-input" id="inpSellingIndig" type="number" min="0" step="1" value="0">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <button type="button" class="calc-btn" onclick="calculate()">&#x1F4CA; Calculate Poultry Farm ROI</button>
+  </div>
+</div>
+
+<div class="results-wrap" id="resultsPanel">
+
+  <div class="card" style="overflow:hidden;">
+    <div class="profit-hero" id="profitHero">
+      <div class="profit-amount" id="rNetProfit">--</div>
+      <div class="profit-label" id="rProfitLabel">ANNUAL NET PROFIT</div>
+      <div class="profit-sub" id="rProfitSub"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-title" style="margin-bottom:12px;">&#x1F4CA; Profit &amp; Loss Summary</div>
+      <table class="summary-table" id="summaryTable"><tbody></tbody></table>
+    </div>
+  </div>
+
+  <div class="card" id="costBreakdownCard">
+    <div class="card-head"><span class="card-title">&#x1F4C8; Cost Breakdown</span></div>
+    <div class="card-body">
+      <div class="cost-bar-wrap" id="costBars"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">&#x1F50D; Key Metrics</span></div>
+    <div class="card-body">
+      <div class="metrics-grid" id="metricsGrid"></div>
+    </div>
+  </div>
+
+  <div class="card" id="cashFlowCard">
+    <div class="card-head"><span class="card-title">&#x1F4C5; Cash Flow Timeline</span></div>
+    <div class="card-body">
+      <p style="font-size:0.78rem;color:#64748b;margin:0 0 10px;" id="cashFlowNote"></p>
+      <div class="cashflow-wrap">
+        <div class="cashflow-chart" id="cashFlowChart"></div>
+      </div>
+      <div style="display:flex;gap:14px;margin-top:6px;font-size:0.72rem;color:#64748b;flex-wrap:wrap;">
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#16a34a;margin-right:3px;"></span>Income</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#ef4444;margin-right:3px;"></span>Expenses</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#0062CC;margin-right:3px;"></span>Net (positive)</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#f97316;margin-right:3px;"></span>Net (negative)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">&#x26A0;&#xFE0F; Risk Scenarios</span></div>
+    <div class="card-body">
+      <p style="font-size:0.8rem;color:#64748b;margin:0 0 8px;">How does your annual profit change under these conditions?</p>
+      <div class="scenario-grid" id="scenarioGrid"></div>
+    </div>
+  </div>
+
+  <div class="card" id="compareCard" style="display:none;">
+    <div class="card-head"><span class="card-title">&#x1F4CA; Side-by-Side Comparison</span></div>
+    <div class="card-body" style="overflow-x:auto;">
+      <table class="compare-table" id="compareTable"></table>
+    </div>
+  </div>
+
+  <div class="card" id="investmentCard">
+    <div class="card-head"><span class="card-title">&#x1F3E0; Investment Summary</span></div>
+    <div class="card-body">
+      <table class="summary-table" id="investmentTable"><tbody></tbody></table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">&#x1F517; More Agriculture Tools for Côte d'Ivoire</span></div>
+    <div class="card-body">
+      <div class="cross-tools">
+        <a class="cross-tool-card" href="/agriculture/farm-profit/cote-d-ivoire">
+          <span class="cross-tool-icon">&#x1F4CA;</span>
+          <div><div class="cross-tool-name">Farm Profit/Loss Calculator</div><div class="cross-tool-desc">Full crop profitability analysis</div></div>
+        </a>
+        <a class="cross-tool-card" href="/agriculture/crop-yield/cote-d-ivoire">
+          <span class="cross-tool-icon">&#x1F33E;</span>
+          <div><div class="cross-tool-name">Crop Yield Estimator</div><div class="cross-tool-desc">Estimate yields by region and crop</div></div>
+        </a>
+        <a class="cross-tool-card" href="/agriculture/fertilizer/cote-d-ivoire">
+          <span class="cross-tool-icon">&#x1F9EA;</span>
+          <div><div class="cross-tool-name">Fertilizer Calculator</div><div class="cross-tool-desc">Calculate NPK needs and costs</div></div>
+        </a>
+        <a class="cross-tool-card" href="/agriculture/irrigation/cote-d-ivoire">
+          <span class="cross-tool-icon">&#x1F4A7;</span>
+          <div><div class="cross-tool-name">Irrigation Calculator</div><div class="cross-tool-desc">Water requirements and schedule</div></div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-bottom:8px;">
+    <button type="button" onclick="window.print()" style="background:none;border:1px solid #CBD5E1;border-radius:100px;padding:8px 20px;font-size:0.78rem;font-weight:600;color:#64748b;cursor:pointer;font-family:'DM Sans',sans-serif;">&#x1F5A8; Print Results</button>
+  </div>
+
+</div>
+
+<div class="card">
+  <div class="card-head"><span class="card-title">&#x1F413; Poultry Farming in Côte d'Ivoire</span></div>
+  <div class="card-body">
+    <p style="font-size:0.85rem;color:#64748b;line-height:1.6;">Abidjan is West Africa's wealthiest and most urbanised city, generating strong demand for quality poultry products. The UEMOA trade zone means some regional competition, but locally-grown fresh chicken and eggs consistently command premiums over imports. The poultry sector benefits from well-developed feed grain supply chains.</p>
+    <details style="margin-top:16px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;list-style:none;">+ What is FCR and why does it matter?</summary>
+      <p style="font-size:0.82rem;color:#64748b;line-height:1.6;margin-top:8px;">Feed Conversion Ratio (FCR) is the kg of feed required to produce 1 kg of live weight gain. An FCR of 2.0 means 2 kg of feed produces 1 kg of growth. Feed accounts for 60–70% of broiler costs — improving FCR from 2.5 to 2.0 can increase profit by 20–30%.</p>
+    </details>
+    <details style="margin-top:8px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;list-style:none;">+ Broilers vs Layers — which is more profitable?</summary>
+      <p style="font-size:0.82rem;color:#64748b;line-height:1.6;margin-top:8px;">Broilers are faster (7-week cycles, revenue every 2 months) but margins are thinner. Layers require 18 weeks of investment before any eggs, but generate daily income for 54 weeks. Use the Compare All mode to see the numbers side-by-side for your specific flock size and country.</p>
+    </details>
+    <details style="margin-top:8px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;list-style:none;">+ How is payback period calculated?</summary>
+      <p style="font-size:0.82rem;color:#64748b;line-height:1.6;margin-top:8px;">Payback period = (Total investment + working capital) ÷ Annual net profit. A 12-month payback means you recover all your startup costs in one year. For broilers with existing housing, payback is often 3–6 months. For layers with new housing, expect 12–24 months.</p>
+    </details>
+  </div>
+</div>
+
+<div class="sources-footer">
+  Data sources: FAO, country poultry associations, commercial hatcheries, national market surveys.<br>
+  Estimates are indicative — actual results vary by management, disease pressure, and market conditions. Last updated: 2026.
+</div>
+</main>
+
+<section class="seo-content agri-country-facts" style="max-width:800px;margin:2rem auto;padding:0 1rem;">
+<h2 style="font-size:1.15rem;font-weight:700;color:#1e293b;margin:1.5rem 0 0.5rem;">Farming context: Cote d&#39;Ivoire</h2>
+<p>Cote d&#39;Ivoire&#39;s staple crops include cassava, yam, rice, plantain, while cocoa, coffee robusta, cashew lead exports. Regional growing conditions differ sharply, so check your region below before applying national averages.</p>
+<table style="width:100%;border-collapse:collapse;font-size:.85rem;"><tbody><tr><th scope="row" style="text-align:left;padding:6px 8px;border-bottom:1px solid #eef2f7;font-weight:600;">Agriculture share of GDP</th><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">~21%</td></tr>
+<tr><th scope="row" style="text-align:left;padding:6px 8px;border-bottom:1px solid #eef2f7;font-weight:600;">Arable land</th><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">6,900,000 ha</td></tr>
+<tr><th scope="row" style="text-align:left;padding:6px 8px;border-bottom:1px solid #eef2f7;font-weight:600;">Irrigated share</th><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">~1%</td></tr>
+<tr><th scope="row" style="text-align:left;padding:6px 8px;border-bottom:1px solid #eef2f7;font-weight:600;">Main rainy season</th><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">March to October</td></tr>
+<tr><th scope="row" style="text-align:left;padding:6px 8px;border-bottom:1px solid #eef2f7;font-weight:600;">Main food crops</th><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">cassava, yam, rice, plantain, maize</td></tr>
+<tr><th scope="row" style="text-align:left;padding:6px 8px;border-bottom:1px solid #eef2f7;font-weight:600;">Main export crops</th><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">cocoa, coffee robusta, cashew, rubber, oil palm</td></tr></tbody></table>
+<h3 style="font-size:.95rem;font-weight:700;margin:1.2rem 0 .4rem;">Growing regions at a glance</h3>
+<table style="width:100%;border-collapse:collapse;font-size:.82rem;">
+<thead><tr><th style="text-align:left;padding:6px 8px;border-bottom:2px solid #e2e8f0;">Region</th><th style="text-align:left;padding:6px 8px;border-bottom:2px solid #e2e8f0;">Annual rainfall</th><th style="text-align:left;padding:6px 8px;border-bottom:2px solid #e2e8f0;">Major crops</th></tr></thead>
+<tbody><tr><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">Southern Forest (Abidjan, San-Pedro, Sassandra)</td><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">1800 mm</td><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">cocoa, rubber, oil palm, cassava</td></tr>
+<tr><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">Central Forest &amp; Savanna (Yamoussoukro, Bouake, Daloa)</td><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">1200 mm</td><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">cocoa, coffee robusta, yam, cassava</td></tr>
+<tr><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">North-West (Man, Touba, Odienne)</td><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">1400 mm</td><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">rice, coffee robusta, cocoa, cassava</td></tr>
+<tr><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">North-East Savanna (Korhogo, Bondoukou, Bouna)</td><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">1000 mm</td><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">cotton, cashew, mango, maize</td></tr></tbody>
+</table>
+<p style="font-size:.78rem;color:#64748b;">Country context from the AfroTools agriculture dataset — planning reference, not agronomic advice. Confirm with local extension services.</p>
+</section>
+
+<afro-footer></afro-footer>
+
+<script src="/data/agriculture/poultry-data.js?v=04314a93"></script>
+<script src="/engines/poultry-roi-engine.js?v=9bff3a9e"></script>
+<script>
+(function () {
+  'use strict';
+
+  var PAGE_COUNTRY_CODE = 'CI';
+  var cd = window.AfroTools.PoultryCosts[PAGE_COUNTRY_CODE];
+  var ENG = window.AfroTools.PoultryROIEngine;
+  var currentMode = 'broilers';
+
+  function $(id) { return document.getElementById(id); }
+  function sym() { return cd ? cd.symbol : ''; }
+
+  function fmtN(n, dec) {
+    if (typeof n !== 'number' || isNaN(n)) return '0';
+    return n.toLocaleString('en-US', { maximumFractionDigits: dec !== undefined ? dec : 0 });
+  }
+  function fmtC(n) { return sym() + fmtN(n); }
+  function fmtPct(n) { return (Math.round(n * 10) / 10) + '%'; }
+  function fmtMonths(m) {
+    if (m >= 9999) return 'N/A';
+    if (m < 12) return Math.round(m) + ' months';
+    return (m / 12).toFixed(1) + ' years';
+  }
+
+  window.toggleSection = function (id, btn) {
+    var el = $(id);
+    el.classList.toggle('collapsed');
+    btn.textContent = el.classList.contains('collapsed') ? 'Expand' : 'Collapse';
+  };
+
+  window.setFlock = function (n) { $('inpFlock').value = n; };
+
+  window.setMode = function (mode, btn) {
+    currentMode = mode;
+    document.querySelectorAll('.mode-tab').forEach(function (b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    updateModeFields();
+    updateDefaults();
+  };
+
+  function updateModeFields() {
+    $('cyclesField').style.display = (currentMode === 'broilers') ? '' : 'none';
+    $('sellingBroilerField').style.display = (currentMode === 'broilers' || currentMode === 'compare') ? '' : 'none';
+    $('sellingEggField').style.display = (currentMode === 'layers' || currentMode === 'compare') ? '' : 'none';
+    $('sellingSpentField').style.display = (currentMode === 'layers' || currentMode === 'compare') ? '' : 'none';
+    $('sellingIndigField').style.display = (currentMode === 'indigenous' || currentMode === 'compare') ? '' : 'none';
+  }
+
+  window.updateDefaults = function () {
+    if (!cd) return;
+    var mgmt = $('selManagement').value;
+    var mgmtCycles = { backyard: 3, smallholder: 4, semi_commercial: 5, commercial: 6 };
+    $('inpCycles').value = mgmtCycles[mgmt] || 4;
+    var chickType = (currentMode === 'layers') ? 'layer' : (currentMode === 'indigenous') ? 'indigenous' : 'broiler';
+    $('inpChickPrice').value = cd.dayOldChick[chickType] || cd.dayOldChick.broiler;
+    $('inpStarterKg').value = cd.feed_per_kg.starter;
+    $('inpGrowerKg').value = cd.feed_per_kg.grower;
+    $('inpFinisherKg').value = cd.feed_per_kg.finisher;
+    $('inpLayerMashKg').value = cd.feed_per_kg.layer_mash;
+    $('inpLaborMonth').value = cd.labor_per_month;
+    $('inpSellingBroiler').value = cd.sellingPrice.broiler_per_bird || 0;
+    $('inpSellingEgg').value = cd.sellingPrice.egg_per_egg || 0;
+    $('inpSellingSpent').value = cd.sellingPrice.spent_layer_per_bird || 0;
+    $('inpSellingIndig').value = cd.sellingPrice.indigenous_live_per_bird || 0;
+  };
+
+  window.updateHousingField = function () {
+    $('housingTypeField').style.display = $('selOwnHouse').value === 'no' ? '' : 'none';
+  };
+
+  function getInputs() {
+    return {
+      mode: currentMode,
+      countryCode: PAGE_COUNTRY_CODE,
+      flockSize: parseInt($('inpFlock').value) || 100,
+      management: $('selManagement').value,
+      cyclesPerYear: parseInt($('inpCycles').value) || 4,
+      ownHouse: $('selOwnHouse').value === 'yes',
+      housingType: $('selHousingType').value
+    };
+  }
+
+  function getCustomCd() {
+    var custom = JSON.parse(JSON.stringify(cd));
+    custom.dayOldChick.broiler = parseFloat($('inpChickPrice').value) || cd.dayOldChick.broiler;
+    custom.dayOldChick.layer = parseFloat($('inpChickPrice').value) || cd.dayOldChick.layer;
+    custom.dayOldChick.indigenous = parseFloat($('inpChickPrice').value) || cd.dayOldChick.indigenous;
+    custom.feed_per_kg.starter = parseFloat($('inpStarterKg').value) || cd.feed_per_kg.starter;
+    custom.feed_per_kg.grower = parseFloat($('inpGrowerKg').value) || cd.feed_per_kg.grower;
+    custom.feed_per_kg.finisher = parseFloat($('inpFinisherKg').value) || cd.feed_per_kg.finisher;
+    custom.feed_per_kg.layer_mash = parseFloat($('inpLayerMashKg').value) || cd.feed_per_kg.layer_mash;
+    custom.labor_per_month = parseFloat($('inpLaborMonth').value) || cd.labor_per_month;
+    custom.sellingPrice.broiler_per_bird = parseFloat($('inpSellingBroiler').value) || cd.sellingPrice.broiler_per_bird;
+    custom.sellingPrice.egg_per_egg = parseFloat($('inpSellingEgg').value) || cd.sellingPrice.egg_per_egg;
+    custom.sellingPrice.spent_layer_per_bird = parseFloat($('inpSellingSpent').value) || cd.sellingPrice.spent_layer_per_bird;
+    custom.sellingPrice.indigenous_live_per_bird = parseFloat($('inpSellingIndig').value) || cd.sellingPrice.indigenous_live_per_bird;
+    return custom;
+  }
+
+  window.calculate = function () {
+    var inputs = getInputs();
+    var customCd = getCustomCd();
+    var result = ENG.calculate(inputs, customCd);
+    if (result.error) { alert('Error: ' + result.error); return; }
+    renderResults(result);
+    $('resultsPanel').classList.add('on');
+    $('resultsPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  function renderResults(r) {
+    if (r.mode === 'compare') { renderCompare(r); return; }
+    $('compareCard').style.display = 'none';
+    var annualProfit = r.annual.profit;
+    var isPositive = annualProfit >= 0;
+    var hero = $('profitHero');
+    hero.className = 'profit-hero ' + (isPositive ? 'positive' : 'negative');
+    $('rNetProfit').textContent = fmtC(Math.abs(annualProfit));
+    $('rProfitLabel').textContent = isPositive ? 'ANNUAL NET PROFIT' : 'ANNUAL NET LOSS';
+    if (r.mode === 'broilers') {
+      $('rProfitSub').textContent = fmtC(r.perCycle.profit) + ' per cycle \u00d7 ' + r.cyclesYear + ' cycles/year';
+    } else if (r.mode === 'layers') {
+      $('rProfitSub').textContent = fmtN(r.eggsProduced) + ' eggs/year \u2014 ' + r.cratesOf30 + ' crates of 30';
+    } else {
+      $('rProfitSub').textContent = r.survivingBirds + ' birds surviving per cycle';
+    }
+    renderSummaryTable(r);
+    renderCostBars(r);
+    renderMetrics(r);
+    renderCashFlow(r);
+    renderScenarios(r);
+    renderInvestment(r);
+  }
+
+  function renderSummaryTable(r) {
+    var tb = $('summaryTable').tBodies[0];
+    tb.innerHTML = '';
+    function row(label, val, cls, indent) {
+      var tr = document.createElement('tr');
+      if (cls) tr.className = cls;
+      tr.innerHTML = '<td class="' + (indent ? 'indent' : '') + '">' + label + '</td><td class="amount">' + val + '</td>';
+      tb.appendChild(tr);
+    }
+    function head(label) {
+      var tr = document.createElement('tr');
+      tr.className = 'section-head';
+      tr.innerHTML = '<td colspan="2">' + label + '</td>';
+      tb.appendChild(tr);
+    }
+    if (r.mode === 'broilers') {
+      head('REVENUE (per cycle)');
+      row('Birds surviving (' + r.survivingBirds + ' of ' + r.flockSize + ')', fmtC(r.perCycle.revenue));
+      head('COSTS (per cycle)');
+      row('Day-old chicks', fmtC(r.perCycle.costs.chicks), '', true);
+      row('Feed (total)', fmtC(r.perCycle.costs.feed), '', true);
+      row('Vaccination', fmtC(r.perCycle.costs.vaccination), '', true);
+      row('Medication', fmtC(r.perCycle.costs.medication), '', true);
+      row('Labour', fmtC(r.perCycle.costs.labor), '', true);
+      row('Electricity', fmtC(r.perCycle.costs.electricity), '', true);
+      row('Water', fmtC(r.perCycle.costs.water), '', true);
+      row('Litter', fmtC(r.perCycle.costs.litter), '', true);
+      row('Other / transport', fmtC(r.perCycle.costs.other), '', true);
+      row('TOTAL COSTS', fmtC(r.perCycle.costs.total), 'total-row');
+      row('PROFIT PER CYCLE', fmtC(r.perCycle.profit), 'total-row');
+      head('ANNUAL PROJECTION (\xd7 ' + r.cyclesYear + ' cycles)');
+      row('Annual revenue', fmtC(r.annual.revenue));
+      row('Annual costs', fmtC(r.annual.costs));
+      row('ANNUAL PROFIT', fmtC(r.annual.profit), 'total-row');
+    } else if (r.mode === 'layers') {
+      head('ANNUAL REVENUE');
+      row('Egg sales (' + fmtN(r.eggsProduced) + ' eggs)', fmtC(r.annual.revenue.eggs));
+      row('Spent hens (' + r.spentHens + ' birds)', fmtC(r.annual.revenue.spentHens));
+      row('TOTAL REVENUE', fmtC(r.annual.revenue.total), 'total-row');
+      head('ANNUAL COSTS');
+      row('Rearing (chicks + feed, 0\u201318wk)', fmtC(r.annual.costs.rearing), '', true);
+      row('Laying feed (18\u201372wk)', fmtC(r.annual.costs.layingFeed), '', true);
+      row('Labour (annual)', fmtC(r.annual.costs.labor), '', true);
+      row('Electricity', fmtC(r.annual.costs.electricity), '', true);
+      row('Water', fmtC(r.annual.costs.water), '', true);
+      row('Litter', fmtC(r.annual.costs.litter), '', true);
+      row('Misc', fmtC(r.annual.costs.misc), '', true);
+      row('TOTAL COSTS', fmtC(r.annual.costs.total), 'total-row');
+      row('ANNUAL PROFIT', fmtC(r.annual.profit), 'total-row');
+    } else {
+      head('REVENUE (per cycle)');
+      row('Surviving birds (' + r.survivingBirds + ')', fmtC(r.perCycle.revenue));
+      head('COSTS (per cycle)');
+      row('Chicks', fmtC(r.perCycle.costs.chicks), '', true);
+      row('Feed (supplemental)', fmtC(r.perCycle.costs.feed), '', true);
+      row('Labour', fmtC(r.perCycle.costs.labor), '', true);
+      row('Vaccination', fmtC(r.perCycle.costs.vaccination), '', true);
+      row('Misc', fmtC(r.perCycle.costs.misc), '', true);
+      row('TOTAL COSTS', fmtC(r.perCycle.costs.total), 'total-row');
+      row('PROFIT PER CYCLE', fmtC(r.perCycle.profit), 'total-row');
+      head('ANNUAL (\xd7 ' + r.cyclesYear + ' cycles)');
+      row('Annual profit', fmtC(r.annual.profit), 'total-row');
+    }
+  }
+
+  function renderCostBars(r) {
+    var costs = r.mode === 'layers' ? r.annual.costs : r.perCycle.costs;
+    var total = costs.total || 1;
+    var items = r.mode === 'broilers' ? [
+      { label: 'Feed', val: costs.feed },
+      { label: 'Chicks', val: costs.chicks },
+      { label: 'Labour', val: costs.labor },
+      { label: 'Vax + Med', val: (costs.vaccination || 0) + (costs.medication || 0) },
+      { label: 'Utilities', val: (costs.electricity || 0) + (costs.water || 0) },
+      { label: 'Other', val: (costs.litter || 0) + (costs.other || 0) }
+    ] : r.mode === 'layers' ? [
+      { label: 'Laying feed', val: costs.layingFeed },
+      { label: 'Rearing', val: costs.rearing },
+      { label: 'Labour', val: costs.labor },
+      { label: 'Utilities', val: (costs.electricity || 0) + (costs.water || 0) },
+      { label: 'Other', val: (costs.litter || 0) + (costs.misc || 0) }
+    ] : [
+      { label: 'Feed', val: costs.feed },
+      { label: 'Chicks', val: costs.chicks },
+      { label: 'Labour', val: costs.labor },
+      { label: 'Other', val: (costs.vaccination || 0) + (costs.misc || 0) }
+    ];
+    $('costBars').innerHTML = items.map(function (item) {
+      var pct = Math.round((item.val / total) * 100);
+      return '<div class="cost-bar-row"><div class="cost-bar-label">' + item.label + '</div>' +
+        '<div class="cost-bar-track"><div class="cost-bar-fill" style="width:' + pct + '%"></div></div>' +
+        '<div class="cost-bar-val">' + fmtC(item.val) + '</div></div>';
+    }).join('');
+  }
+
+  function renderMetrics(r) {
+    var m = r.metrics;
+    var cards = [
+      { val: fmtPct(m.roi), label: 'Annual ROI' },
+      { val: fmtMonths(m.paybackMonths), label: 'Payback Period' }
+    ];
+    if (r.mode === 'broilers') {
+      cards.push({ val: fmtC(m.costPerKg), label: 'Cost per kg Meat' });
+      cards.push({ val: fmtC(m.profitPerBird), label: 'Profit per Bird' });
+      cards.push({ val: fmtPct(m.feedPct), label: 'Feed % of Cost' });
+      cards.push({ val: r.survivingBirds + ' / ' + r.flockSize, label: 'Surviving Birds' });
+    } else if (r.mode === 'layers') {
+      cards.push({ val: fmtC(m.costPerEgg), label: 'Cost per Egg' });
+      cards.push({ val: fmtC(m.breakEvenEggPrice), label: 'Break-even Egg Price' });
+      cards.push({ val: fmtPct(m.feedPct), label: 'Feed % of Cost' });
+      cards.push({ val: r.cratesOf30 + ' crates', label: 'Annual Egg Crates (30s)' });
+    } else {
+      cards.push({ val: fmtC(m.profitPerBird), label: 'Profit per Bird' });
+      cards.push({ val: fmtPct(m.feedPct), label: 'Feed % of Cost' });
+    }
+    $('metricsGrid').innerHTML = cards.map(function (c) {
+      return '<div class="metric-card"><div class="metric-val">' + c.val + '</div><div class="metric-label">' + c.label + '</div></div>';
+    }).join('');
+  }
+
+  function renderCashFlow(r) {
+    if (!r.cashFlow || !r.cashFlow.length) { $('cashFlowCard').style.display = 'none'; return; }
+    $('cashFlowCard').style.display = '';
+    var data = r.cashFlow;
+    var maxVal = 0;
+    data.forEach(function (d) {
+      if (d.income) maxVal = Math.max(maxVal, d.income);
+      if (d.expense) maxVal = Math.max(maxVal, d.expense);
+      if (d.amount) maxVal = Math.max(maxVal, Math.abs(d.amount));
+    });
+    if (maxVal === 0) { $('cashFlowCard').style.display = 'none'; return; }
+    var maxH = 80;
+    if (r.mode === 'broilers') {
+      $('cashFlowNote').textContent = 'Broilers: expenses upfront, revenue at end of each cycle.';
+      $('cashFlowChart').innerHTML = data.map(function (d) {
+        var isRev = d.type === 'revenue';
+        var h = Math.round((Math.abs(d.amount) / maxVal) * maxH);
+        return '<div class="cf-bar-wrap"><div class="cf-bar ' + (isRev ? 'income' : 'expense') + '" style="height:' + h + 'px;"></div><div class="cf-label">' + d.label.replace('Cycle ', 'C') + '</div></div>';
+      }).join('');
+    } else {
+      $('cashFlowNote').textContent = 'Layers: negative cash flow during 4-month rearing, positive once eggs start (month 5+).';
+      $('cashFlowChart').innerHTML = data.map(function (d) {
+        var netH = Math.round((Math.abs(d.net) / maxVal) * maxH);
+        var cls = d.net >= 0 ? 'net-pos' : 'net-neg';
+        return '<div class="cf-bar-wrap"><div class="cf-bar ' + cls + '" style="height:' + Math.max(4, netH) + 'px;"></div><div class="cf-label">' + d.label.replace('Month ', 'M') + '</div></div>';
+      }).join('');
+    }
+  }
+
+  function renderScenarios(r) {
+    var base = r.annual.profit;
+    var risks = r.risks || {};
+    $('scenarioGrid').innerHTML = Object.keys(risks).map(function (key) {
+      var risk = risks[key];
+      var diff = risk.annualProfit - base;
+      var isPos = diff >= 0;
+      return '<div class="scenario-card ' + (isPos ? 'positive' : 'negative') + '">' +
+        '<div class="scenario-label">' + risk.desc + '</div>' +
+        '<div class="scenario-profit ' + (risk.annualProfit >= 0 ? 'positive-val' : 'negative-val') + '">' + fmtC(risk.annualProfit) + '</div>' +
+        '<div class="scenario-change" style="color:' + (isPos ? '#16a34a' : '#ef4444') + '">' + (isPos ? '+' : '') + fmtC(diff) + ' vs base case</div></div>';
+    }).join('');
+  }
+
+  function renderInvestment(r) {
+    var inv = r.investment || {};
+    var wc = r.workingCapital || 0;
+    var tb = $('investmentTable').tBodies[0];
+    tb.innerHTML = '';
+    function row(label, val, bold) {
+      var tr = document.createElement('tr');
+      if (bold) tr.className = 'total-row';
+      tr.innerHTML = '<td>' + label + '</td><td class="amount">' + fmtC(val) + '</td>';
+      tb.appendChild(tr);
+    }
+    row('Housing / infrastructure', inv.housing || 0);
+    row('Equipment (feeders, drinkers, heaters)', inv.equipment || 0);
+    row('Working capital (first cycle/rearing)', wc);
+    row('TOTAL INITIAL CAPITAL REQUIRED', (inv.total || 0) + wc, true);
+    $('investmentCard').style.display = '';
+  }
+
+  function renderCompare(r) {
+    $('compareCard').style.display = '';
+    $('cashFlowCard').style.display = 'none';
+    $('investmentCard').style.display = 'none';
+    $('costBreakdownCard').style.display = 'none';
+    var b = r.broiler, l = r.layer, i = r.indigenous;
+    var best = [b.annual.profit, l.annual.profit, i.annual.profit];
+    var bestIdx = best.indexOf(Math.max.apply(null, best));
+    var labels = ['Broilers', 'Layers', 'Indigenous'];
+    var hero = $('profitHero');
+    hero.className = 'profit-hero positive';
+    $('rNetProfit').textContent = labels[bestIdx] + ' wins!';
+    $('rProfitLabel').textContent = 'MOST PROFITABLE FOR YOUR INPUTS';
+    $('rProfitSub').textContent = 'Annual profit: ' + fmtC(best[bestIdx]);
+    var tbl = $('compareTable');
+    tbl.innerHTML = '<thead><tr><th>Metric</th><th>&#x1F356; Broilers</th><th>&#x1F95A; Layers</th><th>&#x1F413; Indigenous</th></tr></thead>';
+    var tbody = document.createElement('tbody');
+    function cmpRow(label, bv, lv, iv) {
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td style="font-weight:600">' + label + '</td><td>' + bv + '</td><td>' + lv + '</td><td>' + iv + '</td>';
+      tbody.appendChild(tr);
+    }
+    cmpRow('Annual Revenue', fmtC(b.annual.revenue), fmtC(l.annual.revenue.total), fmtC(i.annual.revenue));
+    cmpRow('Annual Costs', fmtC(b.annual.costs), fmtC(l.annual.costs.total), fmtC(i.annual.costs));
+    cmpRow('Annual Profit', fmtC(b.annual.profit), fmtC(l.annual.profit), fmtC(i.annual.profit));
+    cmpRow('ROI', fmtPct(b.metrics.roi), fmtPct(l.metrics.roi), fmtPct(i.metrics.roi));
+    cmpRow('Payback', fmtMonths(b.metrics.paybackMonths), fmtMonths(l.metrics.paybackMonths), fmtMonths(i.metrics.paybackMonths));
+    cmpRow('Feed % of costs', fmtPct(b.metrics.feedPct), fmtPct(l.metrics.feedPct), fmtPct(i.metrics.feedPct));
+    tbl.appendChild(tbody);
+    renderSummaryTable(b);
+    renderMetrics(b);
+    renderScenarios(b);
+  }
+
+  updateModeFields();
+  updateDefaults();
+}());
+</script>
+<script src="/assets/js/lib/cross-tool-nav.js?v=27275fef" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
+<script>if(typeof twemoji!=="undefined")twemoji.parse(document.body,{folder:"svg",ext:".svg"});</script>
+</body>
+</html>

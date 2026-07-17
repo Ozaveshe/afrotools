@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="view-transition" content="same-origin">
+<title>Formateur JSON | AfroTools</title>
+<meta name="description" content="Formateur et validateur JSON gratuit en ligne. Formatez, minifiez et corrigez votre JSON. Vue arborescente, coloration syntaxique. Outil 100% côté client.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="Formateur JSON | AfroTools">
+<meta property="og:description" content="Formateur et validateur JSON gratuit en ligne. Formatez, minifiez et corrigez votre JSON.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/json-formatter.webp">
+<meta property="og:url" content="https://afrotools.com/fr/tools/formateur-json/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Formateur JSON | AfroTools">
+<meta name="twitter:description" content="Formateur et validateur JSON gratuit en ligne. Formatez, minifiez et corrigez votre JSON. Vue arborescente, coloration syntaxique. Outil 100% côté client.">
+<meta name="robots" content="index, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+.fr-hero{background:#0f172a;padding:42px 0 30px}
+.fr-hero-inner{max-width:1120px;margin:0 auto;padding:0 20px}
+.fr-kicker{display:inline-flex;margin-bottom:10px;color:#93c5fd;font-size:.74rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase}
+.fr-hero h1{font-size:clamp(1.55rem,4vw,2.45rem);font-weight:800;color:#fff;margin:0 0 10px;max-width:760px;line-height:1.08}
+.fr-hero p{color:rgba(255,255,255,.72);font-size:.95rem;max-width:680px;line-height:1.65;margin:0}
+.fr-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.fr-badge{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#dbeafe;border-radius:999px;padding:6px 10px;font-size:.76rem;font-weight:700}
+.fr-wrap{max-width:800px;margin:0 auto;padding:32px 20px 64px}
+.fr-tool-frame{background:#fff;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;margin-bottom:32px}
+.fr-tool-frame iframe{width:100%;height:600px;border:none}
+.fr-seo h2{font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:12px}
+.fr-seo p{font-size:.88rem;color:#475569;line-height:1.7;margin-bottom:16px}
+.fr-faq{margin-top:28px}.fr-faq h2{font-size:1.1rem;font-weight:700;color:#0f172a;margin-bottom:16px}
+.fr-faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;background:#fff}
+.fr-faq summary{padding:14px 18px;font-weight:600;font-size:.88rem;cursor:pointer;color:#0f172a}
+.fr-faq details p{padding:0 18px 14px;font-size:.84rem;color:#475569;line-height:1.65;margin:0}
+.json-app{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.85fr);gap:1rem;margin-bottom:32px}
+.json-panel{background:#fff;border:1px solid #dbe4ef;border-radius:12px;padding:1rem;box-shadow:0 14px 34px rgba(15,23,42,.07)}
+.json-panel h2{margin:.1rem 0 .55rem;font-size:1.15rem;color:#0f172a}
+.json-panel p{color:#52627a;line-height:1.65;font-size:.9rem}
+.json-field{display:grid;gap:.35rem;color:#334155;font-weight:800;font-size:.88rem}
+.json-field textarea{width:100%;min-height:310px;border:1px solid #cbd5e1;border-radius:8px;padding:.8rem;font:14px/1.55 ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;color:#111827;background:#f8fafc;resize:vertical}
+.json-output textarea{background:#0f172a;color:#dbeafe;border-color:#1e293b}
+.json-actions{display:flex;flex-wrap:wrap;gap:.55rem;margin:.8rem 0}
+.json-btn{border:1px solid #155eef;background:#155eef;color:#fff;border-radius:8px;padding:.72rem .9rem;font-weight:800;cursor:pointer}
+.json-btn.secondary{background:#fff;color:#155eef}
+.json-btn.warn{background:#fff7ed;color:#9a3412;border-color:#fed7aa}
+.json-status{border-radius:8px;background:#ecfdf5;color:#065f46;padding:.75rem;margin:.8rem 0;font-weight:800;line-height:1.45}
+.json-status.is-error{background:#fef2f2;color:#991b1b}
+.json-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem;margin:.85rem 0}
+.json-metric{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:.7rem}
+.json-metric span{display:block;color:#64748b;font-size:.74rem;text-transform:uppercase;letter-spacing:.08em}
+.json-metric strong{display:block;color:#0f172a;margin-top:.2rem}
+.json-list{margin:.3rem 0 0;padding-left:1.15rem;color:#52627a;line-height:1.7}
+.json-list a{color:#155eef;font-weight:800}
+@media(max-width:860px){.json-app{grid-template-columns:1fr}.json-field textarea{min-height:220px}.json-metrics{grid-template-columns:1fr}}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Formateur JSON",
+  "url": "https://afrotools.com/fr/tools/formateur-json/",
+  "inLanguage": "fr",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/json-formatter.webp"
+}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Le formateur JSON est-il sécurisé ?","acceptedAnswer":{"@type":"Answer","text":"Oui, tout le traitement JSON se fait localement dans votre navigateur. Aucune donnée n'est envoyée à un serveur. Vos données sensibles restent sur votre machine."}},{"@type":"Question","name":"Puis-je formater du JSON invalide ?","acceptedAnswer":{"@type":"Answer","text":"L'outil tente de corriger automatiquement les erreurs courantes comme les virgules finales, les guillemets simples et les commentaires. Si le JSON est trop corrompu, un message d'erreur précis est affiché."}},{"@type":"Question","name":"L'outil fonctionne-t-il hors ligne ?","acceptedAnswer":{"@type":"Answer","text":"Une fois la page chargée, l'outil fonctionne entièrement hors ligne. Tout le traitement JSON se fait en JavaScript dans votre navigateur sans connexion requise."}}]}
+</script>
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/json-formatter.webp">
+<style data-mobile-control-comfort="fr-tools">
+@media (max-width: 640px) {
+  .fr-faq summary {
+    font-size: 1rem;
+    min-height: 44px;
+  }
+}
+</style>
+<link rel="canonical" href="https://afrotools.com/fr/tools/formateur-json/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/json-formatter/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/formateur-json/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kirekebisha-json/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/json-formatter/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="tools"></afro-navbar>
+<section class="fr-hero">
+<div class="fr-hero-inner">
+<span class="fr-kicker">Outil développeur local</span>
+<h1>Formater, réparer et exporter un JSON avant test API</h1>
+<p>Collez un payload, validez la syntaxe, réparez les erreurs simples, puis copiez ou téléchargez le résultat. Tout reste dans votre navigateur.</p>
+<div class="fr-badges"><span class="fr-badge">JSON.parse</span><span class="fr-badge">Réparation légère</span><span class="fr-badge">Copie/export</span><span class="fr-badge">Local par défaut</span></div>
+</div>
+</section>
+<div class="fr-wrap">
+<section class="json-app" aria-label="Formateur JSON côté navigateur">
+<form class="json-panel" id="jsonFormatterForm">
+<h2>Coller un payload</h2>
+<p>Utilisez ce panneau pour nettoyer une réponse API, un webhook ou une configuration avant de l’envoyer dans un ticket ou un test.</p>
+<label class="json-field">Entrée JSON
+<textarea id="jsonInput" spellcheck="false">{"country":"Côte d'Ivoire","tools":["VAT","PDF","CV"],"active":true}</textarea>
+</label>
+<div class="json-actions">
+<button class="json-btn" type="submit">Formater</button>
+<button class="json-btn secondary" type="button" id="jsonMinify">Minifier</button>
+<button class="json-btn secondary" type="button" id="jsonRepair">Réparer léger</button>
+<button class="json-btn secondary" type="button" id="jsonSample">Exemple</button>
+<button class="json-btn secondary" type="button" id="jsonCopy">Copier</button>
+<button class="json-btn warn" type="button" id="jsonDownload">Télécharger .json</button>
+</div>
+<div class="json-status" id="jsonStatus" aria-live="polite">Prêt à valider. Aucun contenu n’est envoyé à AfroTools.</div>
+</form>
+<aside class="json-panel json-output">
+<h2>Résultat prêt à copier</h2>
+<label class="json-field">JSON formaté
+<textarea id="jsonOutput" readonly spellcheck="false"></textarea>
+</label>
+<div class="json-metrics">
+<div class="json-metric"><span>Statut</span><strong id="jsonValidity">-</strong></div>
+<div class="json-metric"><span>Taille</span><strong id="jsonSize">-</strong></div>
+<div class="json-metric"><span>Clés</span><strong id="jsonKeys">-</strong></div>
+<div class="json-metric"><span>Profondeur</span><strong id="jsonDepth">-</strong></div>
+</div>
+</aside>
+</section>
+<section class="json-app" aria-label="Méthode JSON">
+<article class="json-panel">
+<h2>Ce que fait l’outil</h2>
+<p>La validation utilise JSON.parse, le formatage utilise JSON.stringify et les métriques comptent les clés, tableaux et niveaux. La réparation légère retire les commentaires, virgules finales et guillemets simples avant une nouvelle validation.</p>
+</article>
+<article class="json-panel">
+<h2>Confidentialité et limites</h2>
+<p>Le validateur signale les erreurs de syntaxe JSON mais ne garantit pas qu'un schéma métier, une API ou une base de données acceptera le fichier. Ne collez pas de secrets de production. Le traitement est local au navigateur; aucune donnée n'est envoyée à AfroTools.</p>
+<ul class="json-list">
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse" rel="nofollow noopener" target="_blank">MDN JSON.parse</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify" rel="nofollow noopener" target="_blank">MDN JSON.stringify</a></li>
+</ul>
+</article>
+</section>
+<div class="fr-seo">
+<h2>Formateur JSON en ligne gratuit</h2>
+<p>Le formateur JSON d'AfroTools vous permet de valider, formater et minifier votre JSON directement dans le navigateur. Que vous déboguiez une réponse API ou prépariez un fichier de configuration, cet outil corrige automatiquement les erreurs courantes comme les virgules finales et les guillemets simples. La vue arborescente interactive facilite la navigation dans les structures JSON complexes.</p>
+<p>Tous les traitements sont effectués localement dans votre navigateur. Aucune donnée n'est envoyée à un serveur, ce qui préserve la confidentialité de vos informations. L'outil supporte les fichiers JSON volumineux et offre des raccourcis clavier pour une productivité maximale.</p>
+</div>
+<div class="fr-seo" data-tool-verification-panel="formateur-json-fr">
+<h2>Sources et vérification</h2>
+<p><strong>Méthodologie:</strong> l'outil parse le contenu avec <code>JSON.parse</code>, applique une réparation prudente des erreurs fréquentes quand l'option est cochee, puis produit une sortie formatee ou minifiee avec <code>JSON.stringify</code>.</p>
+<p><strong>Sources et références:</strong> comportement base sur la spécification JSON exposée par les API JavaScript et la documentation MDN pour <code>JSON.parse</code> et <code>JSON.stringify</code>. Dernière révision du flux: juin 2026.</p>
+<p><strong>Limites:</strong> la validation confirme la syntaxe JSON, pas la conformite a un schema métier, une API, un contrat legal ou une base de données. Gardez les secrets hors des exemples colles.</p>
+</div>
+<div class="fr-faq">
+<h2>Questions fréquentes</h2>
+<details><summary>Le formateur JSON est-il sécurisé ?</summary><p>Oui, tout le traitement JSON se fait localement dans votre navigateur. Aucune donnée n'est envoyée à un serveur. Vos données sensibles restent sur votre machine.</p></details>
+<details><summary>Puis-je formater du JSON invalide ?</summary><p>L'outil tente de corriger automatiquement les erreurs courantes comme les virgules finales, les guillemets simples et les commentaires. Si le JSON est trop corrompu, un message d'erreur précis est affiché.</p></details>
+<details><summary>L'outil fonctionne-t-il hors ligne ?</summary><p>Une fois la page chargée, l'outil fonctionne entièrement hors ligne. Tout le traitement JSON se fait en JavaScript dans votre navigateur sans connexion requise.</p></details>
+</div>
+</div>
+<script>
+  (function () {
+    var form = document.getElementById('jsonFormatterForm');
+    if (!form) return;
+    var input = document.getElementById('jsonInput');
+    var output = document.getElementById('jsonOutput');
+    var status = document.getElementById('jsonStatus');
+    var validity = document.getElementById('jsonValidity');
+    var size = document.getElementById('jsonSize');
+    var keys = document.getElementById('jsonKeys');
+    var depth = document.getElementById('jsonDepth');
+    var minify = document.getElementById('jsonMinify');
+    var repair = document.getElementById('jsonRepair');
+    var sample = document.getElementById('jsonSample');
+    var copy = document.getElementById('jsonCopy');
+    var download = document.getElementById('jsonDownload');
+
+    function setStatus(message, isError) {
+      status.textContent = message;
+      status.classList.toggle('is-error', !!isError);
+      validity.textContent = isError ? 'Invalide' : 'Valide';
+    }
+
+    function analyse(value, level) {
+      if (value === null || typeof value !== 'object') return { keys: 0, depth: level };
+      var total = 0;
+      var maxDepth = level;
+      if (Array.isArray(value)) {
+        value.forEach(function (item) {
+          var next = analyse(item, level + 1);
+          total += next.keys;
+          maxDepth = Math.max(maxDepth, next.depth);
+        });
+      } else {
+        Object.keys(value).forEach(function (key) {
+          total += 1;
+          var next = analyse(value[key], level + 1);
+          total += next.keys;
+          maxDepth = Math.max(maxDepth, next.depth);
+        });
+      }
+      return { keys: total, depth: maxDepth };
+    }
+
+    function parseCurrent(text) {
+      return JSON.parse(text == null ? input.value : text);
+    }
+
+    function render(compact) {
+      try {
+        var parsed = parseCurrent();
+        var formatted = JSON.stringify(parsed, null, compact ? 0 : 2);
+        output.value = formatted;
+        var stats = analyse(parsed, 0);
+        size.textContent = new Intl.NumberFormat('fr-FR').format(formatted.length) + ' caractères';
+        keys.textContent = stats.keys + ' clés';
+        depth.textContent = stats.depth + ' niveaux';
+        setStatus(compact ? 'JSON valide et minifié. Copiez ou téléchargez le résultat.' : 'JSON valide et formaté. Copiez ou téléchargez le résultat.', false);
+        try { localStorage.setItem('afrotools_json_formatter_fr_v1', formatted); } catch (_) {}
+        return formatted;
+      } catch (error) {
+        setStatus(error.message || 'JSON invalide.', true);
+        output.value = '';
+        size.textContent = '-';
+        keys.textContent = '-';
+        depth.textContent = '-';
+        return '';
+      }
+    }
+
+    function repairText(text) {
+      return String(text || '')
+        .replace(/\/\*[\s\S]*?\*\//g, '')
+        .replace(/(^|[^:])\/\/.*$/gm, '$1')
+        .replace(/,\s*([}\]])/g, '$1')
+        .replace(/'([^'\\]*(?:\\.[^'\\]*)*)'/g, function (_, inner) {
+          return '"' + inner.replace(/"/g, '\\"') + '"';
+        })
+        .replace(/([{,]\s*)([A-Za-z_$][\w$-]*)(\s*:)/g, '$1"$2"$3');
+    }
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      render(false);
+    });
+    minify.addEventListener('click', function () { render(true); });
+    repair.addEventListener('click', function () {
+      input.value = repairText(input.value);
+      render(false);
+    });
+    sample.addEventListener('click', function () {
+      input.value = '{\\n  \"country\": \"Sénégal\",\\n  \"workflow\": \"API test\",\\n  \"items\": [{\"name\":\"PDF\", \"count\": 3}],\\n  \"private\": true\\n}';
+      render(false);
+    });
+    copy.addEventListener('click', function () {
+      var text = output.value || render(false);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () {
+          copy.textContent = 'Copié';
+          setStatus('Résultat copié dans le presse-papiers.', false);
+          setTimeout(function () { copy.textContent = 'Copier'; }, 1300);
+        }).catch(function () { output.select(); });
+      } else {
+        output.select();
+      }
+    });
+    download.addEventListener('click', function () {
+      var text = output.value || render(false);
+      if (!text) return;
+      var blob = new Blob([text], { type: 'application/json;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement('a');
+      link.href = url;
+      link.download = 'afrotools-json-formate.json';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      setStatus('Fichier JSON préparé pour téléchargement.', false);
+    });
+    render(false);
+  })();
+</script>
+<afro-footer></afro-footer>
+</body>
+</html>

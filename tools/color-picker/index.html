@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Color Picker — HEX RGB HSL OKLCH CMYK Converter | AfroTools</title>
+<meta name="description" content="Free color picker tool. Convert between HEX, RGB, HSL, OKLCH, CMYK. Gradient builder, contrast checker, Tailwind class finder, African flag palettes.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Color Picker | AfroTools">
+<meta property="og:description" content="Color picker with HEX/RGB/HSL/OKLCH/CMYK conversion. Gradient builder, contrast checker, Tailwind classes, African flag palettes.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/color-picker.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/color-picker/">
+<meta property="og:site_name" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/image-design-workflow.css?v=0c4f7205">
+<link rel="stylesheet" href="/assets/css/image-design-tool-focus.css?v=6f9baf9f">
+<script src="/assets/js/pages/image-design-tool-focus.js?v=257c735f" defer></script>
+<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+  :root { --afro-blue: var(--color-primary); --afro-dark: #0f1419; }
+  .tool-hero { background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%); padding: 44px 0 36px; position: relative; overflow: hidden; }
+  .tool-hero::after { content: '\1f3a8'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: 0.06; pointer-events: none; }
+  .tool-hero-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; }
+  .breadcrumb { font-size: 0.72rem; font-weight: 500; color: rgba(255, 255, 255, 0.3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+  .breadcrumb a { color: rgba(255, 255, 255, 0.3); text-decoration: none; }
+  .breadcrumb span { color: var(--afro-blue); }
+  h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; color: #fff; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 10px; }
+  h1 em { color: var(--afro-blue); font-style: normal; }
+  .hero-sub { font-size: 0.88rem; color: rgba(255, 255, 255, 0.45); line-height: 1.6; max-width: 560px; margin-bottom: 14px; }
+  .hero-badges { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 6px; }
+  .badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px; border-radius: 4px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.05em; }
+  .b-green { background: rgba(0, 113, 227, 0.18); color: var(--color-primary); border: 1px solid rgba(0, 113, 227, 0.38); }
+  .tool-main { padding: 28px 0 72px; }
+  .tool-main-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: 1fr 360px; gap: 22px; align-items: start; }
+  .card { background: #fff; border: 1px solid #DBEAFE; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05); }
+  .card + .card { margin-top: 18px; }
+  .card-head { padding: 15px 22px; border-bottom: 1px solid #EFF6FF; background: #F5F9FF; }
+  .card-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #0a4018; }
+  .card-body { padding: 22px; }
+  .color-picker-input { width: 100%; height: 120px; border: 1px solid #DBEAFE; border-radius: 8px; cursor: pointer; }
+  .field { margin-bottom: 18px; }
+  .f-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .f-label-text { font-size: 0.75rem; font-weight: 700; color: #0d2813; }
+  .f-input { width: 100%; padding: 11px 13px; background: #EFF6FF; border: 1.5px solid #BFDBFE; border-radius: 7px; font-size: 0.95rem; font-weight: 600; color: #0d2813; outline: none; font-family: 'Courier New', monospace; }
+  .f-input:focus { border-color: var(--afro-blue); box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1); }
+  .palette-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 12px; }
+  .palette-color { height: 40px; border-radius: 6px; border: 1px solid #DBEAFE; cursor: pointer; transition: all 0.2s; }
+  .palette-color:hover { transform: scale(1.1); }
+  .palette-color.selected { outline: 3px solid var(--afro-blue); outline-offset: 2px; transform: scale(1.1); box-shadow: 0 2px 8px rgba(0, 113, 227, 0.35); }
+  .sidebar { display: flex; flex-direction: column; gap: 16px; }
+  .info-card { background: #F5F9FF; border: 1px solid #DBEAFE; border-radius: 10px; padding: 16px; }
+  .info-title { font-size: 0.72rem; font-weight: 700; color: #0a4018; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+  .info-text { font-size: 0.8rem; color: #244d2c; line-height: 1.6; }
+  /* Copy button */
+  .copy-btn { background: none; border: 1px solid #BFDBFE; border-radius: 5px; padding: 3px 8px; font-size: 0.65rem; font-weight: 700; color: var(--afro-blue); cursor: pointer; letter-spacing: 0.05em; transition: all 0.15s; }
+  .copy-btn:hover { background: var(--afro-blue); color: #fff; }
+  /* Toast */
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: #0d2813; color: #fff; padding: 10px 24px; border-radius: 8px; font-size: 0.82rem; font-weight: 600; z-index: 9999; opacity: 0; transition: all 0.3s ease; pointer-events: none; }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  /* Eyedropper btn */
+  .eyedropper-btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; background: var(--afro-blue); color: #fff; border: none; border-radius: 7px; font-size: 0.82rem; font-weight: 700; cursor: pointer; margin-top: 10px; transition: opacity 0.15s; }
+  .eyedropper-btn:hover { opacity: 0.85; }
+  /* Flag palette */
+  .flag-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #EFF6FF; cursor: pointer; transition: background 0.15s; border-radius: 6px; padding-left: 6px; }
+  .flag-row:last-child { border-bottom: none; }
+  .flag-row:hover { background: #EFF6FF; }
+  .flag-name { font-size: 0.82rem; font-weight: 700; color: #0d2813; min-width: 80px; }
+  .flag-swatches { display: flex; gap: 4px; flex: 1; }
+  .flag-swatch { width: 22px; height: 22px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.08); }
+  /* Gradient builder */
+  .gradient-preview { width: 100%; height: 80px; border-radius: 8px; border: 1px solid #DBEAFE; margin-bottom: 12px; }
+  .grad-controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
+  .grad-controls input[type="color"] { width: 44px; height: 36px; border: 1px solid #BFDBFE; border-radius: 6px; cursor: pointer; padding: 0; }
+  .grad-controls select { padding: 8px 10px; border: 1.5px solid #BFDBFE; border-radius: 7px; font-size: 0.82rem; font-weight: 600; background: #EFF6FF; color: #0d2813; }
+  /* Contrast checker */
+  .contrast-demo { display: flex; gap: 12px; margin: 12px 0; }
+  .contrast-box { flex: 1; padding: 14px; border-radius: 8px; text-align: center; font-weight: 700; font-size: 0.85rem; border: 1px solid #DBEAFE; }
+  .contrast-ratio { font-size: 1.6rem; font-weight: 800; color: #0d2813; margin: 8px 0 4px; }
+  .contrast-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .c-badge { padding: 3px 10px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em; }
+  .c-pass { background: #d1fae5; color: #065f46; }
+  .c-fail { background: #fee2e2; color: #991b1b; }
+  .contrast-inputs { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .contrast-inputs input[type="color"] { width: 44px; height: 36px; border: 1px solid #BFDBFE; border-radius: 6px; cursor: pointer; padding: 0; }
+  .contrast-inputs label { font-size: 0.75rem; font-weight: 700; color: #0d2813; }
+  /* Named colors dropdown */
+  .named-color-wrap { position: relative; }
+  .named-color-search { width: 100%; padding: 9px 13px; border: 1.5px solid #BFDBFE; border-radius: 7px; font-size: 0.85rem; background: #EFF6FF; color: #0d2813; outline: none; }
+  .named-color-search:focus { border-color: var(--afro-blue); }
+  .named-color-list { max-height: 200px; overflow-y: auto; border: 1px solid #DBEAFE; border-radius: 7px; margin-top: 4px; background: #fff; display: none; }
+  .named-color-list.open { display: block; }
+  .nc-item { display: flex; align-items: center; gap: 8px; padding: 7px 12px; cursor: pointer; font-size: 0.8rem; font-weight: 600; color: #0d2813; transition: background 0.1s; }
+  .nc-item:hover { background: #EFF6FF; }
+  .nc-swatch { width: 18px; height: 18px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.08); flex-shrink: 0; }
+  /* Tailwind output */
+  .tw-result { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: #EFF6FF; border: 1.5px solid #BFDBFE; border-radius: 7px; font-family: 'Courier New', monospace; font-size: 0.88rem; font-weight: 700; color: #0d2813; margin-top: 8px; }
+  .tw-swatch { width: 20px; height: 20px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.08); flex-shrink: 0; }
+  /* Export btns */
+  .export-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+  .export-btn { padding: 9px 16px; border: 1.5px solid #BFDBFE; border-radius: 7px; background: #fff; font-size: 0.78rem; font-weight: 700; color: #0d2813; cursor: pointer; transition: all 0.15s; }
+  .export-btn:hover { background: var(--afro-blue); color: #fff; border-color: var(--afro-blue); }
+  /* FAQ accordion */
+  .faq-section { max-width: 1200px; margin: 0 auto 60px; padding: 0 24px; }
+  .faq-section h2 { font-size: 1.4rem; font-weight: 800; color: #0d2813; margin-bottom: 20px; }
+  .faq-item { border: 1px solid #DBEAFE; border-radius: 10px; margin-bottom: 10px; overflow: hidden; background: #fff; }
+  .faq-q { padding: 16px 22px; font-size: 0.9rem; font-weight: 700; color: #0d2813; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+  .faq-q::after { content: '+'; font-size: 1.2rem; font-weight: 700; color: var(--afro-blue); transition: transform 0.2s; }
+  .faq-item.open .faq-q::after { content: '\2212'; }
+  .faq-a { padding: 0 22px; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; font-size: 0.84rem; color: #244d2c; line-height: 1.7; }
+  .faq-item.open .faq-a { max-height: 300px; padding: 0 22px 16px; }
+  @media (max-width: 768px) {
+    .tool-main-inner { grid-template-columns: 1fr; }
+    .contrast-demo { flex-direction: column; }
+    .contrast-inputs { flex-direction: column; }
+    .grad-controls { flex-direction: column; align-items: stretch; }
+  }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Color Picker",
+  "description": "Free color picker tool. Convert between HEX, RGB, HSL, OKLCH, CMYK. Gradient builder, contrast checker, Tailwind class finder, African flag palettes.",
+  "url": "https://afrotools.com/tools/color-picker/",
+  "inLanguage": "en",
+  "applicationCategory": "DesignApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/color-picker.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Color Picker",
+  "url": "https://afrotools.com/tools/color-picker/",
+  "description": "Free color picker tool. Convert between HEX, RGB, HSL, OKLCH, CMYK. Gradient builder, contrast checker, Tailwind class finder, African flag palettes.",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/color-picker.webp"
+}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between HEX, RGB, and HSL color formats?","acceptedAnswer":{"@type":"Answer","text":"HEX uses a six-digit hexadecimal code (e.g. #FF5733) for red, green, and blue. RGB specifies each channel as 0-255. HSL uses Hue (0-360), Saturation (0-100%), and Lightness (0-100%), which is more intuitive for adjusting colours."}},{"@type":"Question","name":"What is OKLCH and why should I use it?","acceptedAnswer":{"@type":"Answer","text":"OKLCH is a perceptually uniform colour space now supported in modern CSS. It defines colours by Lightness, Chroma, and Hue in a way that matches how humans see differences, producing smoother gradients and more predictable adjustments than HSL."}},{"@type":"Question","name":"How does the WCAG contrast checker work?","acceptedAnswer":{"@type":"Answer","text":"It calculates the luminance ratio between foreground and background colours. WCAG AA requires 4.5:1 for normal text and 3:1 for large text. AAA requires 7:1 for normal and 4.5:1 for large text, ensuring readability for people with visual impairments."}},{"@type":"Question","name":"How do I find the closest Tailwind CSS class for my colour?","acceptedAnswer":{"@type":"Answer","text":"The Tailwind Class Finder compares your chosen colour against every colour in the default Tailwind palette by measuring perceptual distance. It returns the closest match (e.g. bg-blue-500) so you can use Tailwind without custom configuration."}},{"@type":"Question","name":"What is CMYK and how does it relate to RGB?","acceptedAnswer":{"@type":"Answer","text":"CMYK (Cyan, Magenta, Yellow, Key/black) is used in print. RGB is additive (light) while CMYK is subtractive (ink). Converting between them is approximate because they have different colour gamuts; on-screen colours may not match print exactly."}}]}
+</script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Color Picker | AfroTools">
+<meta name="twitter:description" content="Color picker with HEX/RGB/HSL/OKLCH/CMYK conversion. Gradient builder, contrast checker, Tailwind classes, African flag palettes.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/color-picker.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Color Picker",
+      "item": "https://afrotools.com/tools/color-picker/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/color-picker/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/color-picker/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/selecteur-couleur/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kichagua-rangi/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/color-picker/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="/">AfroTools</a> / <span>Tools</span></div>
+    <h1>Color <em>Picker</em> &amp; Converter</h1>
+    <p class="hero-sub">Pick colors and convert between HEX, RGB, HSL, OKLCH, CMYK. Gradient builder, contrast checker, Tailwind class finder, and African flag palettes.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">6 Formats</span>
+      <span class="badge b-green">Instant</span>
+      <span class="badge b-green">WCAG Checker</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main" id="main-content" role="main">
+  <div class="tool-main-inner">
+    <div>
+      <!-- Pick Color card -->
+      <div class="card">
+        <div class="card-head"><span class="card-title">Pick Color</span></div>
+        <div class="card-body">
+          <input aria-label="Pick a color" type="color" id="colorInput" class="color-picker-input" value="#008751">
+          <div id="eyedropperWrap" style="display:none;">
+            <button type="button" class="eyedropper-btn" id="eyedropperBtn">&#128065; Pick from Screen</button>
+          </div>
+
+          <div class="field" style="margin-top:18px;">
+            <label class="f-label"><span class="f-label-text">HEX</span><button type="button" class="copy-btn" data-copy="hexValue">Copy</button></label>
+            <input aria-label="HEX color value" type="text" id="hexValue" class="f-input" placeholder="#000000">
+          </div>
+          <div class="field">
+            <label class="f-label"><span class="f-label-text">RGB</span><button type="button" class="copy-btn" data-copy="rgbValue">Copy</button></label>
+            <input aria-label="RGB color value" type="text" id="rgbValue" class="f-input" placeholder="rgb(0, 0, 0)" readonly>
+          </div>
+          <div class="field">
+            <label class="f-label"><span class="f-label-text">HSL</span><button type="button" class="copy-btn" data-copy="hslValue">Copy</button></label>
+            <input aria-label="HSL color value" type="text" id="hslValue" class="f-input" placeholder="hsl(0, 0%, 0%)" readonly>
+          </div>
+          <div class="field">
+            <label class="f-label"><span class="f-label-text">OKLCH</span><button type="button" class="copy-btn" data-copy="oklchValue">Copy</button></label>
+            <input aria-label="OKLCH color value" type="text" id="oklchValue" class="f-input" placeholder="oklch(0 0 0)" readonly>
+          </div>
+          <div class="field">
+            <label class="f-label"><span class="f-label-text">CMYK</span><button type="button" class="copy-btn" data-copy="cmykValue">Copy</button></label>
+            <input aria-label="CMYK color value" type="text" id="cmykValue" class="f-input" placeholder="cmyk(0%, 0%, 0%, 0%)" readonly>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tailwind Class Finder -->
+      <div class="card">
+        <div class="card-head"><span class="card-title">Tailwind Class Finder</span></div>
+        <div class="card-body">
+          <label class="f-label"><span class="f-label-text">Closest Tailwind Class</span><button type="button" class="copy-btn" id="copyTw">Copy</button></label>
+          <div class="tw-result" id="twResult">
+            <span class="tw-swatch" id="twSwatch"></span>
+            <span id="twClass">--</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Palette Generator -->
+      <div class="card">
+        <div class="card-head"><span class="card-title">Palette Generator</span></div>
+        <div class="card-body">
+          <label class="f-label"><span class="f-label-text">Generated Palette</span></label>
+          <div class="palette-grid" id="paletteGrid"></div>
+        </div>
+      </div>
+
+      <!-- Gradient Builder -->
+      <div class="card">
+        <div class="card-head"><span class="card-title">Gradient Builder</span></div>
+        <div class="card-body">
+          <div class="grad-controls">
+            <label style="font-size:0.75rem;font-weight:700;color:#0d2813;">Color 1</label>
+            <input aria-label="Gradient color 1" type="color" id="gradColor1" value="#008751">
+            <label style="font-size:0.75rem;font-weight:700;color:#0d2813;">Color 2</label>
+            <input aria-label="Gradient color 2" type="color" id="gradColor2" value="#5ddb9e">
+            <select id="gradDir" aria-label="Gradient direction">
+              <option value="to right">To Right</option>
+              <option value="to left">To Left</option>
+              <option value="to bottom">To Bottom</option>
+              <option value="to top">To Top</option>
+              <option value="to bottom right">To Bottom Right</option>
+              <option value="to top left">To Top Left</option>
+              <option value="135deg">135 deg</option>
+              <option value="45deg">45 deg</option>
+            </select>
+          </div>
+          <div class="gradient-preview" id="gradPreview"></div>
+          <div class="field">
+            <label class="f-label"><span class="f-label-text">CSS Code</span><button type="button" class="copy-btn" data-copy="gradCode">Copy</button></label>
+            <input aria-label="Gradient CSS code" type="text" id="gradCode" class="f-input" readonly>
+          </div>
+        </div>
+      </div>
+
+      <!-- WCAG Contrast Checker -->
+      <div class="card">
+        <div class="card-head"><span class="card-title">WCAG Contrast Checker</span></div>
+        <div class="card-body">
+          <div class="contrast-inputs">
+            <label>Foreground</label>
+            <input aria-label="Foreground color" type="color" id="contrastFg" value="#000000">
+            <label>Background</label>
+            <input aria-label="Background color" type="color" id="contrastBg" value="#FFFFFF">
+          </div>
+          <div class="contrast-demo" id="contrastDemo">
+            <div class="contrast-box" id="contrastBoxNormal">Sample Text</div>
+            <div class="contrast-box" id="contrastBoxLarge" style="font-size:1.2rem;">Large Text</div>
+          </div>
+          <div style="text-align:center;">
+            <div class="contrast-ratio" id="contrastRatio">21:1</div>
+            <div class="contrast-badges" id="contrastBadges" style="justify-content:center;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Named CSS Colors -->
+      <div class="card">
+        <div class="card-head"><span class="card-title">Named CSS Colors</span></div>
+        <div class="card-body">
+          <div class="named-color-wrap">
+            <input aria-label="Search 148 named colors" type="text" class="named-color-search" id="namedColorSearch" placeholder="Search 148 named colors..." autocomplete="off">
+            <div class="named-color-list" id="namedColorList"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- African Flag Palettes -->
+      <div class="card">
+        <div class="card-head"><span class="card-title">African Flag Palettes</span></div>
+        <div class="card-body" id="flagPalettes"></div>
+      </div>
+
+      <!-- Palette Export -->
+      <div class="card">
+        <div class="card-head"><span class="card-title">Export Palette</span></div>
+        <div class="card-body">
+          <p style="font-size:0.82rem;color:#244d2c;margin-bottom:12px;">Export the current generated palette as CSS variables or a Tailwind config snippet.</p>
+          <div class="export-btns">
+            <button type="button" class="export-btn" id="exportCssVars">Download CSS Variables</button>
+            <button type="button" class="export-btn" id="exportTwConfig">Download Tailwind Config</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="info-card">
+        <div class="info-title">Color Formats</div>
+        <div class="info-text">
+          <strong>HEX:</strong> #RRGGBB (6 digits)<br><br>
+          <strong>RGB:</strong> rgb(R, G, B) values 0-255<br><br>
+          <strong>HSL:</strong> hsl(H, S%, L%) hue 0-360, saturation and lightness 0-100%<br><br>
+          <strong>OKLCH:</strong> oklch(L C H) perceptually uniform, modern CSS<br><br>
+          <strong>CMYK:</strong> cmyk(C%, M%, Y%, K%) for print
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-title">About Colors</div>
+        <div class="info-text">
+          Colors can be specified using HEX codes (#000000 to #FFFFFF), RGB triplets, or HSL values. Different color models serve different purposes in design and development.
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-title">WCAG Guidelines</div>
+        <div class="info-text">
+          <strong>AA Normal:</strong> 4.5:1 ratio<br>
+          <strong>AA Large:</strong> 3:1 ratio<br>
+          <strong>AAA Normal:</strong> 7:1 ratio<br>
+          <strong>AAA Large:</strong> 4.5:1 ratio<br><br>
+          Large text is 18pt+ or 14pt bold.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section style="max-width:900px;margin:32px auto;padding:0 20px;">
+  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
+    <p>This colour picker tool lets you explore, select, and convert colours across multiple formats including HEX, RGB, HSL, and CMYK. Use the interactive colour wheel and spectrum to find the perfect shade, then copy the colour code in whatever format your project needs. The tool also generates complementary, analogous, triadic, and other colour harmonies to help you build cohesive palettes. Designers, front-end developers, and digital artists will find it useful for everything from web design to branding projects. All processing happens in your browser, making it fast, private, and available even when you are offline.</p>
+  </div>
+</section>
+<!-- FAQ Accordion -->
+
+
+<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="color-picker" aria-labelledby="color-picker-verification-title">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Color handoff check</span>
+          <h2 class="tool-verification-title" id="color-picker-verification-title">Check contrast, formats, and CSS output before shipping</h2>
+          <p class="tool-verification-lead">Pick and convert colors locally, test WCAG contrast, copy usable formats, then export CSS variables or Tailwind config for implementation.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Reviewed 2026</span>
+          <p class="tool-verification-note">Local design utility. Browser support controls whether screen eyedropper is available.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>What to check</h3>
+          <ul class="tool-verification-list">
+            <li>Methodology: selected color, generated palette, contrast pair, gradient settings, and export action produce copyable or downloadable design tokens.</li>
+            <li>Check AA/AAA contrast for real text sizes and backgrounds before putting the colors into production.</li>
+            <li>Copy HEX, RGB, HSL, OKLCH, CMYK, Tailwind class, gradient CSS, or export CSS/Tailwind files for handoff.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Limitations</h3>
+          <ul class="tool-verification-list">
+            <li>Not a substitute for full brand accessibility review, print proofing, or color-managed production software.</li>
+            <li>Screen eyedropper support depends on the browser and may be unavailable on some devices.</li>
+            <li>Privacy note: color selection and exports happen locally.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <a class="tool-verification-report" href="#exportCssVars">Review palette exports</a>
+        <p class="tool-verification-disclaimer">Source/freshness note: browser support and CSS color syntax evolve; verify target browser support before shipping newer formats like OKLCH.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<afro-business-cta tool-name="Color Picker &amp; Converter" prospect-segment="design-workflows" save-note="Pick locally, check contrast, then copy formats or download CSS/Tailwind palette files."></afro-business-cta>
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+<section class="faq-section">
+  <h2>Frequently Asked Questions</h2>
+  <div class="faq-item">
+    <div class="faq-q">What is the difference between HEX, RGB, and HSL color formats?</div>
+    <div class="faq-a">HEX uses a six-digit hexadecimal code (e.g. #FF5733) for red, green, and blue. RGB specifies each channel as 0-255. HSL uses Hue (0-360), Saturation (0-100%), and Lightness (0-100%), which is more intuitive for adjusting colours.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">What is OKLCH and why should I use it?</div>
+    <div class="faq-a">OKLCH is a perceptually uniform colour space now supported in modern CSS. It defines colours by Lightness, Chroma, and Hue in a way that matches how humans see differences, producing smoother gradients and more predictable adjustments than HSL.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">How does the WCAG contrast checker work?</div>
+    <div class="faq-a">It calculates the luminance ratio between foreground and background colours. WCAG AA requires 4.5:1 for normal text and 3:1 for large text. AAA requires 7:1 for normal and 4.5:1 for large text, ensuring readability for people with visual impairments.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">How do I find the closest Tailwind CSS class for my colour?</div>
+    <div class="faq-a">The Tailwind Class Finder compares your chosen colour against every colour in the default Tailwind palette by measuring perceptual distance. It returns the closest match (e.g. bg-blue-500) so you can use Tailwind without custom configuration.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">What is CMYK and how does it relate to RGB?</div>
+    <div class="faq-a">CMYK (Cyan, Magenta, Yellow, Key/black) is used in print. RGB is additive (light) while CMYK is subtractive (ink). Converting between them is approximate because they have different colour gamuts; on-screen colours may not match print exactly.</div>
+  </div>
+</section>
+
+<afro-related-tools category="image-design" current="color-picker" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/image-compress/" data-related-tool data-id="image-compress" data-name="Image Compressor Studio" data-category="image-design" data-icon="IC" data-desc="Batch compress, resize, convert, compare, and target file-size limits locally in the browser.">Image Compressor Studio</a></li><li><a href="/tools/flyer-maker/" data-related-tool data-id="flyer-maker" data-name="AI Flyer &amp; Poster Studio" data-category="image-design" data-icon="AF" data-desc="Prompt your way to WhatsApp, Instagram, story, and print flyers with brand kits, uploads, checks, and local exports.">AI Flyer &amp; Poster Studio</a></li><li><a href="/tools/background-remover/" data-related-tool data-id="background-remover" data-name="Background Remover Studio" data-category="image-design" data-icon="BR" data-desc="Remove or replace backgrounds with AI person cutout, color key, brush refine, and local exports.">Background Remover Studio</a></li><li><a href="/tools/image-resize/" data-related-tool data-id="image-resize" data-name="Image Resizer Studio" data-category="image-design" data-icon="IR" data-desc="Batch resize, crop, pad, convert, compare, and export multiple social or web sizes locally.">Image Resizer Studio</a></li><li><a href="/tools/passport-photo/" data-related-tool data-id="passport-photo" data-name="Passport Photo Studio" data-category="image-design" data-icon="PP" data-desc="Create source-backed passport and visa photos with African specs, face guides, and print sheets.">Passport Photo Studio</a></li><li><a href="/tools/qr-generator/" data-related-tool data-id="qr-generator" data-name="QR Code Generator" data-category="image-design" data-icon="QC" data-desc="Generate QR codes for M-Pesa links, WhatsApp, WiFi, URLs. Download as PNG/SVG.">QR Code Generator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+
+<section style="background:#f8fafc;padding:40px 24px;border-top:1px solid #e2e8f0"><div style="max-width:900px;margin:0 auto">
+<h2 style="font-size:1.15rem;font-weight:800;color:#111827;margin-bottom:14px">Related Image Tools</h2>
+<div style="display:flex;flex-wrap:wrap;gap:10px"><a href="/tools/colour-palette/" style="padding:10px 16px;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#1e293b;text-decoration:none;transition:all .2s">African Colour Palette</a><a href="/tools/logo-maker/" style="padding:10px 16px;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#1e293b;text-decoration:none;transition:all .2s">Logo Maker</a><a href="/tools/favicon-generator/" style="padding:10px 16px;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#1e293b;text-decoration:none;transition:all .2s">Favicon Generator</a>
+<a href="/image-design/" style="padding:10px 16px;background:#f3f4f6;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#6b7280;text-decoration:none;transition:all .2s">View All Image Tools</a>
+</div>
+</div></section>
+<afro-footer></afro-footer>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  /* ── Helpers ── */
+  const $ = id => document.getElementById(id);
+  function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1800); }
+  function copyText(txt){
+    if(!navigator.clipboard || !navigator.clipboard.writeText){
+      toast('Copy not available. Select and copy manually.');
+      return;
+    }
+    navigator.clipboard.writeText(txt).then(()=>toast('Copied!')).catch(()=>toast('Copy blocked. Select and copy manually.'));
+  }
+
+  /* Copy buttons */
+  document.querySelectorAll('.copy-btn[data-copy]').forEach(b=>{
+    b.addEventListener('click',()=>{ const el=$(b.dataset.copy); if(el) copyText(el.value); });
+  });
+  $('copyTw').addEventListener('click',()=>copyText($('twClass').textContent));
+
+  /* ── Core refs ── */
+  const colorInput=$('colorInput'), hexValue=$('hexValue'), rgbValue=$('rgbValue'),
+        hslValue=$('hslValue'), oklchValue=$('oklchValue'), cmykValue=$('cmykValue'),
+        paletteGrid=$('paletteGrid');
+
+  /* ── Color conversion ── */
+  function hexToRgb(hex){
+    const r=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return r?{r:parseInt(r[1],16),g:parseInt(r[2],16),b:parseInt(r[3],16)}:null;
+  }
+  function rgbToHsl(r,g,b){
+    r/=255;g/=255;b/=255;
+    const mx=Math.max(r,g,b),mn=Math.min(r,g,b);
+    let h,s,l=(mx+mn)/2;
+    if(mx===mn){h=s=0;}else{
+      const d=mx-mn; s=l>0.5?d/(2-mx-mn):d/(mx+mn);
+      switch(mx){case r:h=((g-b)/d+(g<b?6:0))/6;break;case g:h=((b-r)/d+2)/6;break;case b:h=((r-g)/d+4)/6;break;}
+    }
+    return{h:Math.round(h*360),s:Math.round(s*100),l:Math.round(l*100)};
+  }
+  function rgbToCmyk(r,g,b){
+    if(r===0&&g===0&&b===0) return{c:0,m:0,y:0,k:100};
+    const c1=1-r/255,m1=1-g/255,y1=1-b/255,k=Math.min(c1,m1,y1);
+    return{c:Math.round((c1-k)/(1-k)*100),m:Math.round((m1-k)/(1-k)*100),y:Math.round((y1-k)/(1-k)*100),k:Math.round(k*100)};
+  }
+  /* RGB -> OKLab -> OKLCH */
+  function linearize(c){ return c<=0.04045?c/12.92:Math.pow((c+0.055)/1.055,2.4); }
+  function rgbToOklch(r,g,b){
+    const lr=linearize(r/255),lg=linearize(g/255),lb=linearize(b/255);
+    const l_=0.4122214708*lr+0.5363325363*lg+0.0514459929*lb;
+    const m_=0.2119034982*lr+0.6806995451*lg+0.1073969566*lb;
+    const s_=0.0883024619*lr+0.2220049174*lg+0.6896926207*lb;
+    const l1=Math.cbrt(l_),m1=Math.cbrt(m_),s1=Math.cbrt(s_);
+    const L=0.2104542553*l1+0.7936177850*m1-0.0040720468*s1;
+    const a=1.9779984951*l1-2.4285922050*m1+0.4505937099*s1;
+    const bv=0.0259040371*l1+0.7827717662*m1-0.8086757660*s1;
+    const C=Math.sqrt(a*a+bv*bv);
+    let H=Math.atan2(bv,a)*180/Math.PI;
+    if(H<0)H+=360;
+    return{L:+(L).toFixed(4),C:+(C).toFixed(4),H:+(H).toFixed(2)};
+  }
+  function hslToHex(h,s,l){
+    s/=100;l/=100;
+    const c=(1-Math.abs(2*l-1))*s,x=c*(1-Math.abs((h/60)%2-1)),m=l-c/2;
+    let r,g,b;
+    if(h<60){r=c;g=x;b=0;}else if(h<120){r=x;g=c;b=0;}else if(h<180){r=0;g=c;b=x;}
+    else if(h<240){r=0;g=x;b=c;}else if(h<300){r=x;g=0;b=c;}else{r=c;g=0;b=x;}
+    const toH=n=>Math.round((n+m)*255).toString(16).padStart(2,'0');
+    return`#${toH(r)}${toH(g)}${toH(b)}`;
+  }
+
+  /* ── Tailwind palette (default) ── */
+  const TW={
+    slate:{50:'#f8fafc',100:'#f1f5f9',200:'#e2e8f0',300:'#cbd5e1',400:'#94a3b8',500:'#64748b',600:'#475569',700:'#334155',800:'#1e293b',900:'#0f172a',950:'#020617'},
+    gray:{50:'#f9fafb',100:'#f3f4f6',200:'#e5e7eb',300:'#d1d5db',400:'#9ca3af',500:'#6b7280',600:'#4b5563',700:'#374151',800:'#1f2937',900:'#111827',950:'#030712'},
+    zinc:{50:'#fafafa',100:'#f4f4f5',200:'#e4e4e7',300:'#d4d4d8',400:'#a1a1aa',500:'#71717a',600:'#52525b',700:'#3f3f46',800:'#27272a',900:'#18181b',950:'#09090b'},
+    neutral:{50:'#fafafa',100:'#f5f5f5',200:'#e5e5e5',300:'#d4d4d4',400:'#a3a3a3',500:'#737373',600:'#525252',700:'#404040',800:'#262626',900:'#171717',950:'#0a0a0a'},
+    stone:{50:'#fafaf9',100:'#f5f5f4',200:'#e7e5e4',300:'#d6d3d1',400:'#a8a29e',500:'#78716c',600:'#57534e',700:'#44403c',800:'#292524',900:'#1c1917',950:'#0c0a09'},
+    red:{50:'#fef2f2',100:'#fee2e2',200:'#fecaca',300:'#fca5a5',400:'#f87171',500:'#ef4444',600:'#dc2626',700:'#b91c1c',800:'#991b1b',900:'#7f1d1d',950:'#450a0a'},
+    orange:{50:'#fff7ed',100:'#ffedd5',200:'#fed7aa',300:'#fdba74',400:'#fb923c',500:'#f97316',600:'#ea580c',700:'#c2410c',800:'#9a3412',900:'#7c2d12',950:'#431407'},
+    amber:{50:'#fffbeb',100:'#fef3c7',200:'#fde68a',300:'#fcd34d',400:'#fbbf24',500:'#f59e0b',600:'#d97706',700:'#b45309',800:'#92400e',900:'#78350f',950:'#451a03'},
+    yellow:{50:'#fefce8',100:'#fef9c3',200:'#fef08a',300:'#fde047',400:'#facc15',500:'#eab308',600:'#ca8a04',700:'#a16207',800:'#854d0e',900:'#713f12',950:'#422006'},
+    lime:{50:'#f7fee7',100:'#ecfccb',200:'#d9f99d',300:'#bef264',400:'#a3e635',500:'#84cc16',600:'#65a30d',700:'#4d7c0f',800:'#3f6212',900:'#365314',950:'#1a2e05'},
+    green:{50:'#f0fdf4',100:'#dcfce7',200:'#bbf7d0',300:'#86efac',400:'#4ade80',500:'#22c55e',600:'#16a34a',700:'#15803d',800:'#166534',900:'#14532d',950:'#052e16'},
+    emerald:{50:'#ecfdf5',100:'#d1fae5',200:'#a7f3d0',300:'#6ee7b7',400:'#34d399',500:'#10b981',600:'#059669',700:'#047857',800:'#065f46',900:'#064e3b',950:'#022c22'},
+    teal:{50:'#f0fdfa',100:'#ccfbf1',200:'#99f6e4',300:'#5eead4',400:'#2dd4bf',500:'#14b8a6',600:'#0d9488',700:'#0f766e',800:'#115e59',900:'#134e4a',950:'#042f2e'},
+    cyan:{50:'#ecfeff',100:'#cffafe',200:'#a5f3fc',300:'#67e8f9',400:'#22d3ee',500:'#06b6d4',600:'#0891b2',700:'#0e7490',800:'#155e75',900:'#164e63',950:'#083344'},
+    sky:{50:'#f0f9ff',100:'#e0f2fe',200:'#bae6fd',300:'#7dd3fc',400:'#38bdf8',500:'#0ea5e9',600:'#0284c7',700:'#0369a1',800:'#075985',900:'#0c4a6e',950:'#082f49'},
+    blue:{50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a',950:'#172554'},
+    indigo:{50:'#eef2ff',100:'#e0e7ff',200:'#c7d2fe',300:'#a5b4fc',400:'#818cf8',500:'#6366f1',600:'#4f46e5',700:'#4338ca',800:'#3730a3',900:'#312e81',950:'#1e1b4b'},
+    violet:{50:'#f5f3ff',100:'#ede9fe',200:'#ddd6fe',300:'#c4b5fd',400:'#a78bfa',500:'#8b5cf6',600:'#7c3aed',700:'#6d28d9',800:'#5b21b6',900:'#4c1d95',950:'#2e1065'},
+    purple:{50:'#faf5ff',100:'#f3e8ff',200:'#e9d5ff',300:'#d8b4fe',400:'#c084fc',500:'#a855f7',600:'#9333ea',700:'#7e22ce',800:'#6b21a8',900:'#581c87',950:'#3b0764'},
+    fuchsia:{50:'#fdf4ff',100:'#fae8ff',200:'#f5d0fe',300:'#f0abfc',400:'#e879f9',500:'#d946ef',600:'#c026d3',700:'#a21caf',800:'#86198f',900:'#701a75',950:'#4a044e'},
+    pink:{50:'#fdf2f8',100:'#fce7f3',200:'#fbcfe8',300:'#f9a8d4',400:'#f472b6',500:'#ec4899',600:'#db2777',700:'#be185d',800:'#9d174d',900:'#831843',950:'#500724'},
+    rose:{50:'#fff1f2',100:'#ffe4e6',200:'#fecdd3',300:'#fda4af',400:'#fb7185',500:'#f43f5e',600:'#e11d48',700:'#be123c',800:'#9f1239',900:'#881337',950:'#4c0519'}
+  };
+  function colorDist(h1,h2){
+    const a=hexToRgb(h1),b=hexToRgb(h2);
+    if(!a||!b)return Infinity;
+    return Math.sqrt((a.r-b.r)**2+(a.g-b.g)**2+(a.b-b.b)**2);
+  }
+  function closestTw(hex){
+    let best='',bestD=Infinity,bestHex='';
+    for(const [name,shades] of Object.entries(TW)){
+      for(const [shade,val] of Object.entries(shades)){
+        const d=colorDist(hex,val);
+        if(d<bestD){bestD=d;best=`bg-${name}-${shade}`;bestHex=val;}
+      }
+    }
+    return{cls:best,hex:bestHex};
+  }
+
+  /* ── Named CSS Colors (all 148) ── */
+  const CSS_COLORS={"aliceblue":"#f0f8ff","antiquewhite":"#faebd7","aqua":"#00ffff","aquamarine":"#7fffd4","azure":"#f0ffff","beige":"#f5f5dc","bisque":"#ffe4c4","black":"#000000","blanchedalmond":"#ffebcd","blue":"#0000ff","blueviolet":"#8a2be2","brown":"#a52a2a","burlywood":"#deb887","cadetblue":"#5f9ea0","chartreuse":"#7fff00","chocolate":"#d2691e","coral":"#ff7f50","cornflowerblue":"#6495ed","cornsilk":"#fff8dc","crimson":"#dc143c","cyan":"#00ffff","darkblue":"#00008b","darkcyan":"#008b8b","darkgoldenrod":"#b8860b","darkgray":"#a9a9a9","darkgreen":"#006400","darkgrey":"#a9a9a9","darkkhaki":"#bdb76b","darkmagenta":"#8b008b","darkolivegreen":"#556b2f","darkorange":"#ff8c00","darkorchid":"#9932cc","darkred":"#8b0000","darksalmon":"#e9967a","darkseagreen":"#8fbc8f","darkslateblue":"#483d8b","darkslategray":"#2f4f4f","darkslategrey":"#2f4f4f","darkturquoise":"#00ced1","darkviolet":"#9400d3","deeppink":"#ff1493","deepskyblue":"#00bfff","dimgray":"#696969","dimgrey":"#696969","dodgerblue":"#1e90ff","firebrick":"#b22222","floralwhite":"#fffaf0","forestgreen":"#228b22","fuchsia":"#ff00ff","gainsboro":"#dcdcdc","ghostwhite":"#f8f8ff","gold":"#ffd700","goldenrod":"#daa520","gray":"#808080","green":"#008000","greenyellow":"#adff2f","grey":"#808080","honeydew":"#f0fff0","hotpink":"#ff69b4","indianred":"#cd5c5c","indigo":"#4b0082","ivory":"#fffff0","khaki":"#f0e68c","lavender":"#e6e6fa","lavenderblush":"#fff0f5","lawngreen":"#7cfc00","lemonchiffon":"#fffacd","lightblue":"#add8e6","lightcoral":"#f08080","lightcyan":"#e0ffff","lightgoldenrodyellow":"#fafad2","lightgray":"#d3d3d3","lightgreen":"#90ee90","lightgrey":"#d3d3d3","lightpink":"#ffb6c1","lightsalmon":"#ffa07a","lightseagreen":"#20b2aa","lightskyblue":"#87cefa","lightslategray":"#778899","lightslategrey":"#778899","lightsteelblue":"#b0c4de","lightyellow":"#ffffe0","lime":"#00ff00","limegreen":"#32cd32","linen":"#faf0e6","magenta":"#ff00ff","maroon":"#800000","mediumaquamarine":"#66cdaa","mediumblue":"#0000cd","mediumorchid":"#ba55d3","mediumpurple":"#9370db","mediumseagreen":"#3cb371","mediumslateblue":"#7b68ee","mediumspringgreen":"#00fa9a","mediumturquoise":"#48d1cc","mediumvioletred":"#c71585","midnightblue":"#191970","mintcream":"#f5fffa","mistyrose":"#ffe4e1","moccasin":"#ffe4b5","navajowhite":"#ffdead","navy":"#000080","oldlace":"#fdf5e6","olive":"#808000","olivedrab":"#6b8e23","orange":"#ffa500","orangered":"#ff4500","orchid":"#da70d6","palegoldenrod":"#eee8aa","palegreen":"#98fb98","paleturquoise":"#afeeee","palevioletred":"#db7093","papayawhip":"#ffefd5","peachpuff":"#ffdab9","peru":"#cd853f","pink":"#ffc0cb","plum":"#dda0dd","powderblue":"#b0e0e6","purple":"#800080","rebeccapurple":"#663399","red":"#ff0000","rosybrown":"#bc8f8f","royalblue":"#4169e1","saddlebrown":"#8b4513","salmon":"#fa8072","sandybrown":"#f4a460","seagreen":"#2e8b57","seashell":"#fff5ee","sienna":"#a0522d","silver":"#c0c0c0","skyblue":"#87ceeb","slateblue":"#6a5acd","slategray":"#708090","slategrey":"#708090","snow":"#fffafa","springgreen":"#00ff7f","steelblue":"#4682b4","tan":"#d2b48c","teal":"#008080","thistle":"#d8bfd8","tomato":"#ff6347","turquoise":"#40e0d0","violet":"#ee82ee","wheat":"#f5deb3","white":"#ffffff","whitesmoke":"#f5f5f5","yellow":"#ffff00","yellowgreen":"#9acd32"};
+
+  /* ── African Flag Palettes ── */
+  const FLAGS=[
+    {name:'Nigeria',colors:['#008751','#FFFFFF','#008751']},
+    {name:'Kenya',colors:['#000000','#BB0000','#006600','#FFFFFF']},
+    {name:'South Africa',colors:['#007A4D','#FFB612','#000000','#DE3831','#002395','#FFFFFF']},
+    {name:'Ghana',colors:['#006B3F','#FCD116','#CE1126','#000000']},
+    {name:'Egypt',colors:['#CE1126','#FFFFFF','#000000','#C09300']}
+  ];
+
+  /* ── Palette state ── */
+  let currentPaletteHexes=[];
+
+  /* ── Update everything ── */
+  function updateColor(hex){
+    hex=hex.replace(/^#?/,'#');
+    if(!/^#[0-9a-f]{6}$/i.test(hex)) return;
+    hexValue.value=hex.toUpperCase();
+    colorInput.value=hex;
+    const rgb=hexToRgb(hex);
+    rgbValue.value=`rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+    const hsl=rgbToHsl(rgb.r,rgb.g,rgb.b);
+    hslValue.value=`hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
+    const oklch=rgbToOklch(rgb.r,rgb.g,rgb.b);
+    oklchValue.value=`oklch(${oklch.L} ${oklch.C} ${oklch.H})`;
+    const cmyk=rgbToCmyk(rgb.r,rgb.g,rgb.b);
+    cmykValue.value=`cmyk(${cmyk.c}%, ${cmyk.m}%, ${cmyk.y}%, ${cmyk.k}%)`;
+    generatePalette(hex);
+    updateTailwind(hex);
+    updateGradientColor1(hex);
+  }
+
+  function generatePalette(hex){
+    paletteGrid.innerHTML='';
+    const rgb=hexToRgb(hex),hsl=rgbToHsl(rgb.r,rgb.g,rgb.b);
+    const vars=[
+      {h:hsl.h,s:hsl.s,l:Math.max(20,hsl.l-30)},
+      {h:hsl.h,s:hsl.s,l:Math.max(40,hsl.l-15)},
+      {h:hsl.h,s:hsl.s,l:hsl.l},
+      {h:hsl.h,s:hsl.s,l:Math.min(90,hsl.l+15)},
+      {h:hsl.h,s:hsl.s,l:Math.min(95,hsl.l+30)}
+    ];
+    currentPaletteHexes=[];
+    vars.forEach(v=>{
+      const div=document.createElement('div');
+      div.className='palette-color';
+      const sh=hslToHex(v.h,v.s,v.l);
+      currentPaletteHexes.push(sh.toUpperCase());
+      div.style.backgroundColor=`hsl(${v.h},${v.s}%,${v.l}%)`;
+      if(sh.toLowerCase()===hex.toLowerCase()) div.classList.add('selected');
+      div.title=sh.toUpperCase();
+      div.addEventListener('click',()=>{
+        document.querySelectorAll('.palette-color').forEach(c=>c.classList.remove('selected'));
+        div.classList.add('selected');
+        updateColor(sh);
+      });
+      paletteGrid.appendChild(div);
+    });
+  }
+
+  function updateTailwind(hex){
+    const tw=closestTw(hex);
+    $('twClass').textContent=tw.cls;
+    $('twSwatch').style.backgroundColor=tw.hex;
+  }
+
+  function updateGradientColor1(hex){
+    $('gradColor1').value=hex;
+    updateGradient();
+  }
+
+  /* ── Gradient builder ── */
+  function updateGradient(){
+    const c1=$('gradColor1').value,c2=$('gradColor2').value,dir=$('gradDir').value;
+    const css=`linear-gradient(${dir}, ${c1}, ${c2})`;
+    $('gradPreview').style.background=css;
+    $('gradCode').value=`background: ${css};`;
+  }
+  $('gradColor1').addEventListener('input',updateGradient);
+  $('gradColor2').addEventListener('input',updateGradient);
+  $('gradDir').addEventListener('change',updateGradient);
+
+  /* ── Contrast checker ── */
+  function srgbLum(hex){
+    const rgb=hexToRgb(hex);
+    const ch=[rgb.r,rgb.g,rgb.b].map(c=>{c/=255;return c<=0.03928?c/12.92:Math.pow((c+0.055)/1.055,2.4);});
+    return 0.2126*ch[0]+0.7152*ch[1]+0.0722*ch[2];
+  }
+  function contrastRatio(fg,bg){
+    const l1=srgbLum(fg),l2=srgbLum(bg);
+    const lighter=Math.max(l1,l2),darker=Math.min(l1,l2);
+    return(lighter+0.05)/(darker+0.05);
+  }
+  function updateContrast(){
+    const fg=$('contrastFg').value,bg=$('contrastBg').value;
+    const ratio=contrastRatio(fg,bg);
+    const r=ratio.toFixed(2);
+    $('contrastRatio').textContent=`${r}:1`;
+    $('contrastBoxNormal').style.cssText=`color:${fg};background:${bg};`;
+    $('contrastBoxLarge').style.cssText=`color:${fg};background:${bg};font-size:1.2rem;`;
+    const aaN=ratio>=4.5, aaL=ratio>=3, aaaN=ratio>=7, aaaL=ratio>=4.5;
+    $('contrastBadges').innerHTML=`
+      <span class="c-badge ${aaN?'c-pass':'c-fail'}">AA Normal ${aaN?'Pass':'Fail'}</span>
+      <span class="c-badge ${aaL?'c-pass':'c-fail'}">AA Large ${aaL?'Pass':'Fail'}</span>
+      <span class="c-badge ${aaaN?'c-pass':'c-fail'}">AAA Normal ${aaaN?'Pass':'Fail'}</span>
+      <span class="c-badge ${aaaL?'c-pass':'c-fail'}">AAA Large ${aaaL?'Pass':'Fail'}</span>`;
+  }
+  $('contrastFg').addEventListener('input',updateContrast);
+  $('contrastBg').addEventListener('input',updateContrast);
+
+  /* ── Named CSS colors ── */
+  const ncSearch=$('namedColorSearch'), ncList=$('namedColorList');
+  function renderNamedColors(filter){
+    ncList.innerHTML='';
+    const entries=Object.entries(CSS_COLORS);
+    const filtered=filter?entries.filter(([n])=>n.includes(filter.toLowerCase())):entries;
+    if(!filtered.length){ncList.classList.remove('open');return;}
+    filtered.slice(0,30).forEach(([name,hex])=>{
+      const div=document.createElement('div');
+      div.className='nc-item';
+      div.innerHTML=`<span class="nc-swatch" style="background:${hex}"></span>${name}`;
+      div.addEventListener('click',()=>{
+        updateColor(hex);ncList.classList.remove('open');ncSearch.value=name;
+      });
+      ncList.appendChild(div);
+    });
+    ncList.classList.add('open');
+  }
+  ncSearch.addEventListener('focus',()=>renderNamedColors(ncSearch.value));
+  ncSearch.addEventListener('input',()=>renderNamedColors(ncSearch.value));
+  document.addEventListener('click',e=>{if(!e.target.closest('.named-color-wrap'))ncList.classList.remove('open');});
+
+  /* ── African Flag Palettes ── */
+  const flagWrap=$('flagPalettes');
+  FLAGS.forEach(f=>{
+    const row=document.createElement('div');
+    row.className='flag-row';
+    row.innerHTML=`<span class="flag-name">${f.name}</span><div class="flag-swatches">${f.colors.map(c=>`<span class="flag-swatch" style="background:${c}" title="${c}"></span>`).join('')}</div>`;
+    row.addEventListener('click',()=>{
+      updateColor(f.colors[0]);
+      toast(`${f.name} palette loaded`);
+    });
+    flagWrap.appendChild(row);
+  });
+
+  /* ── EyeDropper API ── */
+  if(window.EyeDropper){
+    $('eyedropperWrap').style.display='block';
+    $('eyedropperBtn').addEventListener('click',async()=>{
+      try{
+        const dropper=new EyeDropper();
+        const result=await dropper.open();
+        updateColor(result.sRGBHex);
+      }catch(e){}
+    });
+  }
+
+  /* ── Palette Export ── */
+  function downloadFile(name,content){
+    const blob=new Blob([content],{type:'text/plain'});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);a.download=name;a.click();
+    URL.revokeObjectURL(a.href);
+    toast('Downloaded!');
+  }
+  $('exportCssVars').addEventListener('click',()=>{
+    if(!currentPaletteHexes.length)return;
+    const css=`:root {\n${currentPaletteHexes.map((h,i)=>`  --palette-${(i+1)*100}: ${h};`).join('\n')}\n}`;
+    downloadFile('palette-variables.css',css);
+  });
+  $('exportTwConfig').addEventListener('click',()=>{
+    if(!currentPaletteHexes.length)return;
+    const obj=currentPaletteHexes.reduce((a,h,i)=>{a[(i+1)*100]=h;return a;},{});
+    const tw=`// tailwind.config.js\nmodule.exports = {\n  theme: {\n    extend: {\n      colors: {\n        custom: ${JSON.stringify(obj,null,8).replace(/^/gm,'        ').trim()}\n      }\n    }\n  }\n}`;
+    downloadFile('tailwind-palette.config.js',tw);
+  });
+
+  /* ── FAQ accordion ── */
+  document.querySelectorAll('.faq-q').forEach(q=>{
+    q.addEventListener('click',()=>{
+      const item=q.parentElement;
+      const wasOpen=item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+      if(!wasOpen) item.classList.add('open');
+    });
+  });
+
+  /* ── Listeners ── */
+  colorInput.addEventListener('input',e=>updateColor(e.target.value));
+  hexValue.addEventListener('input',()=>{
+    let v=hexValue.value.trim();
+    if(v.length===7||v.length===6) updateColor(v);
+  });
+
+  /* ── Init ── */
+  updateColor('#008751');
+  updateGradient();
+  updateContrast();
+})();
+</script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
+
+<script>
+// Save/Share buttons — manual placement needed
+(function(){
+  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
+  div.innerHTML = '<save-result-button tool-slug="color-picker" tool-name="Color Picker"></save-result-button><share-result-button tool-name="Color Picker" tool-slug="color-picker"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
+<script src="/assets/js/lib/image-design-workflow.js?v=f9b20b1b" defer></script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Economic Impact — AfroConflict | AfroTools</title>
+<meta name="description" content="Economic impact of African conflicts — GDP loss, military spending, trade disruption, and commodity impacts across all tracked conflicts.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Economic Impact - AfroConflict | AfroTools">
+<meta property="og:description" content="Economic impact of African conflicts - GDP loss, military spending, trade disruption, and commodity impacts across all tracked conflicts.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/africa-conflict/economy">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Economic Impact - AfroConflict | AfroTools">
+<meta name="twitter:description" content="Economic impact of African conflicts - GDP loss, military spending, trade disruption, and commodity impacts across all tracked conflicts.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta name="robots" content="index, follow">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="style.css?v=efb99733">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js" defer></script>
+<script src="/tools/africa-conflict/local-api-guard.js?v=8f670098" defer></script>
+<script src="/engines/africa-conflict-engine.js?v=3f1cd07e" defer></script>
+<script src="/tools/africa-conflict/static-routes.js?v=eb9fb3ae" defer></script>
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="canonical" href="https://afrotools.com/tools/africa-conflict/economy">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/africa-conflict/economy">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/africa-conflict/economy">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/africa-conflict/economy">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<main class="acd-page">
+  <div class="acd-hero">
+    <div class="acd-hero-inner">
+      <div>
+        <div class="acd-hero-title"><span class="acd-live-dot"></span><h1>📉 Economic Impact</h1></div>
+        <p class="acd-hero-desc">Cost of conflict across Africa — GDP loss, military spend, and trade disruption</p>
+      </div>
+      <nav class="acd-hero-nav">
+        <a href="/tools/africa-conflict/">Dashboard</a>
+        <a href="/tools/africa-conflict/conflicts/">All Conflicts</a>
+        <a href="/tools/africa-conflict/economy" class="active">Economy</a>
+        <a href="/tools/africa-conflict/methodology">Methodology</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Total banner -->
+  <div class="acd-section">
+    <div id="acd-econ-banner" class="acd-kpi-row" style="padding:0;margin-bottom:20px">
+      <div class="acd-skeleton acd-kpi-card" style="height:90px"></div>
+      <div class="acd-skeleton acd-kpi-card" style="height:90px"></div>
+      <div class="acd-skeleton acd-kpi-card" style="height:90px"></div>
+      <div class="acd-skeleton acd-kpi-card" style="height:90px"></div>
+    </div>
+
+    <!-- Top conflicts by economic cost -->
+    <div class="acd-chart-box">
+      <h3>Top Conflicts by Estimated Economic Loss (Max USD Billions)</h3>
+      <div id="acd-econ-chart" style="height:320px"></div>
+      <div class="acd-source-tag" style="margin-top:8px">Source: World Bank / SIPRI / Manual estimates · Figures are ranges with inherent uncertainty</div>
+    </div>
+
+    <!-- Military spending table -->
+    <div class="acd-chart-box">
+      <h3>Military Spending by Conflict</h3>
+      <div id="acd-mil-table"></div>
+    </div>
+
+    <!-- Food insecurity overlay -->
+    <div class="acd-chart-box">
+      <h3>⚠️ Food Insecurity — Conflict-Linked</h3>
+      <div id="acd-food-list"></div>
+    </div>
+
+    <!-- Commodity disruptions -->
+    <div class="acd-chart-box">
+      <h3>Commodity Disruptions</h3>
+      <div id="acd-commodity-list"></div>
+    </div>
+  </div>
+</main>
+<afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script>
+(function(){
+  function conflictUrl(slug) {
+    if (window.AfroConflictStaticRoutes && typeof window.AfroConflictStaticRoutes.conflict === 'function') {
+      return window.AfroConflictStaticRoutes.conflict(slug);
+    }
+    return '/tools/africa-conflict/detail.html?id=' + encodeURIComponent(slug || '');
+  }
+
+  async function load() {
+    var res = await fetch('/api/conflicts');
+    var json = await res.json();
+    var conflicts = json.data || [];
+
+    var totalEconMin = 0, totalEconMax = 0, totalMilSpend = 0;
+    var foodConflicts = [], commodityMap = {};
+
+    conflicts.forEach(function(c){
+      totalEconMin += (c.economic_loss_min_usd_b||0);
+      totalEconMax += (c.economic_loss_max_usd_b||0);
+      totalMilSpend += (c.military_spend_usd_m||0);
+      if (c.food_insecurity_link) foodConflicts.push(c);
+      (c.resource_links||[]).forEach(function(r){
+        if (!commodityMap[r]) commodityMap[r] = [];
+        commodityMap[r].push(c.short_name||c.name);
+      });
+    });
+
+    // Banner KPIs
+    document.getElementById('acd-econ-banner').innerHTML = [
+      { icon:'💰', label:'Total Est. Economic Loss', val:'USD '+Math.round(totalEconMin)+'–'+Math.round(totalEconMax)+'B', sub:'WB/SIPRI/Manual', color:'#dc2626' },
+      { icon:'🪖', label:'Total Military Spend/yr', val:'USD '+AfroConflict.formatNumber(Math.round(totalMilSpend))+'M', sub:'SIPRI/Manual', color:'#ea580c' },
+      { icon:'🌾', label:'Food Insecurity Linked', val:foodConflicts.length+' conflicts', sub:'FAO/WFP', color:'#ca8a04' },
+      { icon:'📦', label:'Commodities Disrupted', val:Object.keys(commodityMap).length+' types', sub:'Manual Research', color:'#6b7280' }
+    ].map(function(k){
+      return '<div class="acd-kpi-card" style="border-top-color:'+k.color+'"><div class="acd-kpi-icon">'+k.icon+'</div><div class="acd-kpi-value">'+k.val+'</div><div class="acd-kpi-label">'+k.label+'</div><div class="acd-kpi-sub">'+k.sub+'</div></div>';
+    }).join('');
+
+    // ECharts bar chart
+    if (typeof echarts !== 'undefined') {
+      var sorted = conflicts.filter(function(c){ return c.economic_loss_max_usd_b; })
+        .sort(function(a,b){ return (b.economic_loss_max_usd_b||0)-(a.economic_loss_max_usd_b||0); })
+        .slice(0,10);
+      var chart = echarts.init(document.getElementById('acd-econ-chart'));
+      chart.setOption({
+        backgroundColor:'transparent',
+        tooltip:{ trigger:'axis', formatter: function(p){ return p[0].name+'<br>Max: USD '+p[0].value+'B'; } },
+        xAxis:{ type:'category', data:sorted.map(function(c){ return c.short_name||c.name; }), axisLabel:{ color:'#94a3b8',rotate:30,fontSize:11 }, axisLine:{ lineStyle:{ color:'#475569' } } },
+        yAxis:{ type:'value', name:'USD Billions', axisLabel:{ color:'#94a3b8',formatter:'{value}B' }, splitLine:{ lineStyle:{ color:'#1e293b' } } },
+        series:[
+          { name:'Min Loss', type:'bar', data:sorted.map(function(c){ return c.economic_loss_min_usd_b||0; }), itemStyle:{ color:'rgba(220,38,38,0.4)' }, stack:'loss' },
+          { name:'Additional (Max)', type:'bar', data:sorted.map(function(c){ return (c.economic_loss_max_usd_b||0)-(c.economic_loss_min_usd_b||0); }), itemStyle:{ color:'#dc2626' }, stack:'loss' }
+        ]
+      });
+    }
+
+    // Military spend table
+    var milSorted = conflicts.filter(function(c){ return c.military_spend_usd_m; })
+      .sort(function(a,b){ return (b.military_spend_usd_m||0)-(a.military_spend_usd_m||0); });
+    document.getElementById('acd-mil-table').innerHTML = milSorted.length ?
+      '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.8rem"><thead><tr style="border-bottom:2px solid var(--acd-border)"><th style="padding:8px;text-align:left;color:var(--acd-text-dim)">Conflict</th><th style="padding:8px;text-align:right;color:var(--acd-text-dim)">Military Spend / yr</th><th style="padding:8px;text-align:left;color:var(--acd-text-dim)">GDP Drag</th></tr></thead><tbody>' +
+      milSorted.map(function(c){
+        return '<tr style="border-bottom:1px solid var(--acd-border)"><td style="padding:8px">'+AfroConflict.flagEmoji(c.primary_country)+' <a href="'+conflictUrl(c.slug)+'" style="color:var(--acd-accent)">'+(c.short_name||c.name)+'</a></td><td style="padding:8px;text-align:right;font-weight:700">'+AfroConflict.formatCurrency(c.military_spend_usd_m)+'</td><td style="padding:8px;color:var(--acd-text-muted)">'+(c.gdp_drag_pct ? c.gdp_drag_pct+'%' : '—')+'</td></tr>';
+      }).join('') + '</tbody></table></div>' :
+      '<div class="acd-empty"><div class="acd-empty-title">Military spending data will populate as admin enters conflict data</div></div>';
+
+    // Food insecurity
+    document.getElementById('acd-food-list').innerHTML = foodConflicts.length ?
+      '<div class="acd-actors-grid">' + foodConflicts.map(function(c){
+        return '<a href="'+conflictUrl(c.slug)+'" style="text-decoration:none"><div class="acd-actor-card">'+AfroConflict.flagEmoji(c.primary_country)+' <span style="font-weight:700">'+(c.short_name||c.name)+'</span><div style="font-size:.75rem;color:var(--acd-text-dim);margin-top:4px">'+AfroConflict.formatNumber((c.idps_count||0)+(c.refugees_count||0))+' displaced</div></div></a>';
+      }).join('') + '</div>' :
+      '<div class="acd-empty"><div class="acd-empty-title">No food insecurity links recorded</div></div>';
+
+    // Commodities
+    var comEntries = Object.entries(commodityMap).sort(function(a,b){ return b[1].length-a[1].length; });
+    document.getElementById('acd-commodity-list').innerHTML = comEntries.length ?
+      comEntries.map(function(e){
+        return '<div style="padding:10px 0;border-bottom:1px solid var(--acd-border);display:flex;align-items:flex-start;gap:10px">'+
+          '<span style="font-size:1.1rem">'+AfroConflict.resourceIcon(e[0])+'</span>'+
+          '<div><div style="font-weight:700;text-transform:capitalize">'+e[0].replace(/_/g,' ')+'</div>'+
+          '<div style="font-size:.75rem;color:var(--acd-text-muted)">Linked to: '+e[1].join(', ')+'</div></div>'+
+          '</div>';
+      }).join('') :
+      '<div class="acd-empty"><div class="acd-empty-title">No commodity data recorded</div></div>';
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){ AfroConflict.init(); load(); });
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+</body>
+</html>

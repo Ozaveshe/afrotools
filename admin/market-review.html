@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Market Review | AfroTools Admin</title>
+<meta name="description" content="Internal AfroPoints review queue for submissions, payout approvals, and buyer leads.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/market-data.css?v=82be8cb4">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<style>
+body{background:#f6f8fb}
+.mr-shell{max-width:1240px;margin:0 auto;padding:32px 20px 64px}
+.mr-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:20px}
+.mr-stat{padding:18px;border-radius:18px;background:#fff;border:1.5px solid #e2e8f0}
+.mr-stat strong{display:block;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#64748b;margin-bottom:8px}
+.mr-stat span{font-size:1.6rem;font-weight:800;color:#0f172a}
+.mr-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.mr-panel{background:#fff;border:1.5px solid #e2e8f0;border-radius:18px;overflow:hidden}
+.mr-head{padding:16px 18px;border-bottom:1px solid #eef2f7;background:#f8fafc}
+.mr-head h2{margin:0;font-size:.92rem;font-weight:800;color:#0f172a}
+.mr-head p{margin:4px 0 0;font-size:.78rem;color:#64748b}
+.mr-list{padding:18px;display:flex;flex-direction:column;gap:12px}
+.mr-item{padding:14px;border-radius:16px;border:1px solid #e2e8f0;background:#fbfdff}
+.mr-item h3{margin:0 0 8px;font-size:.88rem;font-weight:800;color:#0f172a}
+.mr-item p{margin:0 0 8px;font-size:.82rem;line-height:1.6;color:#475569}
+.mr-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.mr-pill{display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;background:#eef4ff;color:#1d4ed8;font-size:.72rem;font-weight:700}
+.mr-actions{display:flex;flex-wrap:wrap;gap:10px}
+.mr-empty{padding:28px;text-align:center;color:#64748b;font-size:.86rem}
+.mr-btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 16px;border-radius:12px;border:1.5px solid #d6deea;background:#fff;color:#0f172a;font-weight:700;font-size:.8rem;cursor:pointer}
+.mr-btn.primary{background:#0f62fe;border-color:#0f62fe;color:#fff}
+.mr-btn.warn{background:#fff7ed;border-color:#fdba74;color:#9a3412}
+.mr-btn.danger{background:#fff1f2;border-color:#fda4af;color:#be123c}
+.mr-banner{margin-bottom:18px;padding:16px 18px;border-radius:18px;background:linear-gradient(135deg,#0A1628,#12335a);color:#fff}
+.mr-banner h1{margin:0 0 8px;font-size:1.45rem;font-weight:800}
+.mr-banner p{margin:0;color:rgba(255,255,255,.78);line-height:1.7}
+.mr-toast{position:fixed;right:20px;bottom:20px;transform:translateY(60px);opacity:0;padding:12px 16px;border-radius:14px;background:#0f172a;color:#fff;font-weight:700;transition:all .2s;z-index:300}
+.mr-toast.show{transform:translateY(0);opacity:1}
+.mr-auth{margin-top:18px}
+@media(max-width:980px){.mr-summary,.mr-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){.mr-summary,.mr-grid{grid-template-columns:1fr}.mr-shell{padding:24px 14px 96px}}
+</style>
+<link rel="canonical" href="https://afrotools.com/admin/market-review">
+<meta property="og:url" content="https://afrotools.com/admin/market-review">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<div class="mr-shell">
+  <div class="mr-banner">
+    <h1>AfroPoints Market Review</h1>
+    <p>Approve or reject submissions, review payout requests, and qualify buyer leads from one admin surface.</p>
+    <div class="mr-auth"><a id="loginBtn" class="mr-btn" href="/auth/?mode=login&amp;next=/admin/market-review.html">Sign in</a></div>
+  </div>
+  <div class="mr-summary">
+    <div class="mr-stat"><strong>Pending submissions</strong><span id="summarySubmissions">0</span></div>
+    <div class="mr-stat"><strong>Review queue</strong><span id="summaryQueue">0</span></div>
+    <div class="mr-stat"><strong>Pending payouts</strong><span id="summaryCashouts">0</span></div>
+    <div class="mr-stat"><strong>Buyer leads</strong><span id="summaryLeads">0</span></div>
+  </div>
+  <div class="mr-grid">
+    <section class="mr-panel">
+      <div class="mr-head"><h2>Submissions</h2><p>Approve, reject, or hold records before they become public.</p></div>
+      <div class="mr-list" id="submissionList"><div class="mr-empty">Sign in as an admin to load submissions.</div></div>
+    </section>
+    <section class="mr-panel">
+      <div class="mr-head"><h2>Payout Requests</h2><p>Manual review for mobile money, bank, crypto, or Pro credit cashouts.</p></div>
+      <div class="mr-list" id="payoutList"><div class="mr-empty">No payout data loaded yet.</div></div>
+    </section>
+    <section class="mr-panel">
+      <div class="mr-head"><h2>Review Queue</h2><p>Context on items that were flagged before publication.</p></div>
+      <div class="mr-list" id="queueList"><div class="mr-empty">No review queue data loaded yet.</div></div>
+    </section>
+    <section class="mr-panel">
+      <div class="mr-head"><h2>Buyer Leads</h2><p>Qualify demand so the product loop feeds revenue.</p></div>
+      <div class="mr-list" id="leadList"><div class="mr-empty">No buyer leads loaded yet.</div></div>
+    </section>
+  </div>
+</div>
+<div class="mr-toast" id="reviewToast"></div>
+<afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/assets/js/afro-auth.js?v=4250956b"></script>
+<script>
+(function () {
+  'use strict';
+
+  function toast(message) {
+    var el = document.getElementById('reviewToast');
+    el.textContent = message;
+    el.className = 'mr-toast show';
+    window.clearTimeout(toast.timer);
+    toast.timer = window.setTimeout(function () { el.className = 'mr-toast'; }, 3000);
+  }
+
+  function authHeaders() {
+    var token = window.AfroAuth && typeof window.AfroAuth.getSessionToken === 'function' ? window.AfroAuth.getSessionToken() : null;
+    return token ? { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' };
+  }
+
+  function toPills(values) {
+    return values.map(function (value) { return '<span class="mr-pill">' + value + '</span>'; }).join('');
+  }
+
+  async function callReview(method, body) {
+    var response = await fetch('/.netlify/functions/afropoints-review', {
+      method: method,
+      headers: authHeaders(),
+      body: body ? JSON.stringify(body) : undefined
+    });
+    return response.json();
+  }
+
+  async function loadDashboard() {
+    try {
+      var response = await fetch('/.netlify/functions/afropoints-review', { headers: authHeaders() });
+      var data = await response.json();
+      if (data.error) {
+        toast(data.error);
+        return;
+      }
+
+      document.getElementById('summarySubmissions').textContent = data.summary.pending_submissions || 0;
+      document.getElementById('summaryQueue').textContent = data.summary.pending_reviews || 0;
+      document.getElementById('summaryCashouts').textContent = data.summary.pending_cashouts || 0;
+      document.getElementById('summaryLeads').textContent = data.summary.buyer_leads || 0;
+
+      renderSubmissions(data.submissions || []);
+      renderQueue(data.review_queue || []);
+      renderPayouts(data.cashouts || []);
+      renderLeads(data.buyer_leads || []);
+    } catch (error) {
+      toast('Admin review load failed');
+    }
+  }
+
+  function renderSubmissions(items) {
+    var wrap = document.getElementById('submissionList');
+    if (!items.length) {
+      wrap.innerHTML = '<div class="mr-empty">No pending submissions.</div>';
+      return;
+    }
+    wrap.innerHTML = items.map(function (item) {
+      return '<article class="mr-item">' +
+        '<h3>' + (item.subtype || item.data_category) + ' - ' + (item.city || 'Unknown city') + '</h3>' +
+        '<div class="mr-meta">' + toPills([item.country_code || 'XX', item.source_type || 'source', item.review_reason || 'review']) + '</div>' +
+        '<p><strong>User:</strong> ' + (item.user_id || 'unknown') + '<br><strong>Payload:</strong> ' + JSON.stringify(item.payload || {}) + '</p>' +
+        '<div class="mr-actions">' +
+        '<button type="button" class="mr-btn primary" data-review="approve" data-id="' + item.id + '">Approve</button>' +
+        '<button type="button" class="mr-btn danger" data-review="reject" data-id="' + item.id + '">Reject</button>' +
+        '<button type="button" class="mr-btn warn" data-review="hold" data-id="' + item.id + '">Hold</button>' +
+        '</div></article>';
+    }).join('');
+  }
+
+  function renderQueue(items) {
+    var wrap = document.getElementById('queueList');
+    if (!items.length) {
+      wrap.innerHTML = '<div class="mr-empty">No pending review queue items.</div>';
+      return;
+    }
+    wrap.innerHTML = items.map(function (item) {
+      return '<article class="mr-item"><h3>' + (item.category || 'Category') + '</h3>' +
+        '<div class="mr-meta">' + toPills([item.country_code || 'XX', item.reason || 'reason', (item.change_pct || 0) + '% delta']) + '</div>' +
+        '<p><strong>Metric:</strong> ' + (item.metric || 'n/a') + '<br><strong>Value:</strong> ' + (item.scraped_value || 'n/a') + '</p></article>';
+    }).join('');
+  }
+
+  function renderPayouts(items) {
+    var wrap = document.getElementById('payoutList');
+    if (!items.length) {
+      wrap.innerHTML = '<div class="mr-empty">No pending payouts.</div>';
+      return;
+    }
+    wrap.innerHTML = items.map(function (item) {
+      return '<article class="mr-item"><h3>' + (item.payout_method || 'Payout') + ' - ' + (item.points_redeemed || 0) + ' pts</h3>' +
+        '<div class="mr-meta">' + toPills([item.status || 'pending', item.user_id || 'unknown']) + '</div>' +
+        '<p><strong>Destination:</strong> ' + JSON.stringify(item.payout_details || {}) + '</p>' +
+        '<div class="mr-actions">' +
+        '<button type="button" class="mr-btn primary" data-payout="approved" data-id="' + item.id + '">Approve</button>' +
+        '<button type="button" class="mr-btn warn" data-payout="hold" data-id="' + item.id + '">Hold</button>' +
+        '<button type="button" class="mr-btn danger" data-payout="rejected" data-id="' + item.id + '">Reject</button>' +
+        '</div></article>';
+    }).join('');
+  }
+
+  function renderLeads(items) {
+    var wrap = document.getElementById('leadList');
+    if (!items.length) {
+      wrap.innerHTML = '<div class="mr-empty">No buyer leads.</div>';
+      return;
+    }
+    wrap.innerHTML = items.map(function (item) {
+      return '<article class="mr-item"><h3>' + (item.company || 'Company') + '</h3>' +
+        '<div class="mr-meta">' + toPills([item.review_status || 'new'].concat(item.verticals || [])) + '</div>' +
+        '<p><strong>Use case:</strong> ' + (item.use_case || 'n/a') + '<br><strong>Contact:</strong> ' + (item.contact_email || 'n/a') + '</p>' +
+        '<div class="mr-actions">' +
+        '<button type="button" class="mr-btn primary" data-lead="qualified" data-id="' + item.id + '">Qualify</button>' +
+        '<button type="button" class="mr-btn warn" data-lead="needs_context" data-id="' + item.id + '">Needs context</button>' +
+        '<button type="button" class="mr-btn danger" data-lead="rejected" data-id="' + item.id + '">Reject</button>' +
+        '</div></article>';
+    }).join('');
+  }
+
+  document.addEventListener('click', async function (event) {
+    var submissionDecision = event.target.getAttribute('data-review');
+    var payoutDecision = event.target.getAttribute('data-payout');
+    var leadDecision = event.target.getAttribute('data-lead');
+    if (!submissionDecision && !payoutDecision && !leadDecision) return;
+
+    var id = event.target.getAttribute('data-id');
+    var notes = window.prompt('Optional reviewer note:', '') || '';
+    var body;
+
+    if (submissionDecision) body = { kind: 'submission', contribution_id: id, decision: submissionDecision, notes: notes };
+    if (payoutDecision) body = { kind: 'payout', id: id, decision: payoutDecision, notes: notes };
+    if (leadDecision) body = { kind: 'buyer_lead', id: id, decision: leadDecision, notes: notes };
+
+    var result = await callReview('POST', body);
+    if (result && !result.error) {
+      toast('Review action saved');
+      loadDashboard();
+    } else {
+      toast((result && result.error) || 'Review action failed');
+    }
+  });
+
+  document.getElementById('loginBtn').addEventListener('click', function (event) {
+    if (window.AfroAuth && typeof window.AfroAuth.openModal === 'function') {
+      event.preventDefault();
+      window.AfroAuth.openModal();
+    }
+  });
+
+  if (window.AfroAuth && typeof window.AfroAuth.onReady === 'function') {
+    window.AfroAuth.onReady(loadDashboard);
+    document.addEventListener('afro-auth-change', loadDashboard);
+  }
+})();
+</script>
+</body>
+</html>

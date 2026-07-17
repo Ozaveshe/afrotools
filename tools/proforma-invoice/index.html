@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<title>Proforma Invoice Generator for African Trade | AfroTools</title>
+<meta name="description" content="Prepare a proforma invoice for African trade with HS codes, Incoterms, FOB/CIF totals, payment terms, and export-ready notes for buyer, bank, or broker review.">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Proforma Invoice Generator for African Trade | AfroTools">
+<meta property="og:description" content="Prepare a proforma invoice for African trade with HS codes, Incoterms, FOB/CIF totals, payment terms, and export-ready notes for buyer, bank, or broker review.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/proforma-invoice/">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/proforma-invoice.webp">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Proforma Invoice Generator for African Trade | AfroTools">
+<meta name="twitter:description" content="Prepare a proforma invoice with HS codes, Incoterms, FOB/CIF totals, payment terms, and review notes.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/proforma-invoice.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="../../assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="../../assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="../../assets/css/tool-landing.css?v=09fede9d">
+  <script src="../../assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+<script src="../../assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;line-height:1.6}
+.pi-hero{background:linear-gradient(135deg,#0A1628 0%,#0f2040 100%);color:#fff;padding:2.5rem 1.5rem 2rem;text-align:center}
+.pi-hero h1{font-size:clamp(1.5rem,3.5vw,2.2rem);font-weight:800;margin-bottom:.4rem;color:#fff!important}
+.pi-hero p{font-size:1rem;opacity:.85;max-width:600px;margin:0 auto .75rem}
+.pi-hero .breadcrumb{font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:12px}
+.pi-hero .breadcrumb a{color:rgba(255,255,255,.6);text-decoration:none}
+.pi-hero .breadcrumb a:hover{color:#fff}
+.pi-hero .breadcrumb span{margin:0 6px}
+.badges{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap}
+.badge{padding:.25rem .75rem;border-radius:99px;font-size:.75rem;font-weight:700;letter-spacing:.3px}
+.badge-blue{background:#0062CC;color:#fff}
+.badge-gray{background:rgba(255,255,255,.12);color:#fff}
+.pi-wrap{max-width:1300px;margin:0 auto;padding:1.5rem}
+.pi-grid{display:grid;grid-template-columns:40% 1fr;gap:1.5rem;align-items:start}.pi-grid>*{min-width:0}
+@media(max-width:900px){.pi-grid{grid-template-columns:1fr}}
+.form-panel{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:1.5rem;position:sticky;top:1rem}
+@media(max-width:900px){.form-panel{position:static}}
+.form-section{margin-bottom:1.25rem}
+.section-title{font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:#0062CC;margin-bottom:.75rem;padding-bottom:.4rem;border-bottom:1.5px solid #E8F2FF}
+.form-row{display:grid;gap:.6rem;margin-bottom:.6rem}
+.form-row-2{grid-template-columns:1fr 1fr}
+.form-row-3{grid-template-columns:1fr 1fr 1fr}
+@media(max-width:600px){.form-row-2,.form-row-3{grid-template-columns:1fr}}
+.fg{display:flex;flex-direction:column;gap:.25rem}
+.fg label{font-size:.78rem;font-weight:700;color:#475569}
+.fg input,.fg select,.fg textarea{padding:.5rem .7rem;border:1.5px solid #cbd5e1;border-radius:9px;font-size:.88rem;font-family:inherit;background:#F8FAFD;color:#0f172a;transition:border-color .2s,box-shadow .2s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:#0062CC;box-shadow:0 0 0 3px rgba(0,98,204,.12)}
+.fg textarea{resize:vertical;min-height:60px}
+.fg .optional{color:#94a3b8;font-weight:400;font-size:.72rem}
+.items-table-wrap{overflow-x:auto;margin-top:.5rem;max-width:100%}
+.items-table{width:100%;border-collapse:collapse;font-size:.8rem}
+.items-table th{background:#F8FAFD;padding:.4rem .5rem;text-align:left;font-weight:700;color:#475569;border-bottom:1.5px solid #e2e8f0;white-space:nowrap}
+.items-table td{padding:.35rem .4rem;border-bottom:1px solid #f1f5f9;vertical-align:middle}
+.items-table td input,.items-table td select{width:100%;padding:.3rem .4rem;border:1.5px solid #e2e8f0;border-radius:6px;font-size:.8rem;font-family:inherit;background:#fff}
+.items-table td input:focus,.items-table td select:focus{outline:none;border-color:#0062CC}
+.td-total{font-weight:700;color:#0062CC;white-space:nowrap}
+.btn-remove{background:none;border:none;color:#ef4444;cursor:pointer;font-size:1rem;padding:.2rem .3rem;border-radius:4px;line-height:1}
+.btn-remove:hover{background:#fef2f2}
+.btn-add{display:inline-flex;align-items:center;gap:.3rem;padding:.45rem 1rem;border:1.5px solid #0062CC;border-radius:99px;background:#fff;color:#0062CC;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s;margin-top:.5rem}
+.btn-add:hover{background:#E8F2FF}
+.totals-mini{background:#F8FAFD;border-radius:10px;padding:.75rem;margin-top:.75rem;font-size:.85rem}
+.totals-mini-row{display:flex;justify-content:space-between;align-items:center;padding:.2rem 0}
+.totals-mini-row.strong{font-weight:800;color:#0062CC;font-size:.95rem;border-top:1.5px solid #e2e8f0;margin-top:.3rem;padding-top:.5rem}
+.totals-mini-row input{width:120px;padding:.25rem .4rem;border:1.5px solid #e2e8f0;border-radius:6px;font-size:.82rem;text-align:right}
+.action-bar{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem}
+.btn-primary{padding:.6rem 1.25rem;background:#0062CC;color:#fff;border:none;border-radius:99px;font-weight:700;font-size:.88rem;cursor:pointer;transition:background .2s}
+.btn-primary:hover{background:#0063D1}
+.btn-secondary{padding:.6rem 1.25rem;background:#fff;color:#475569;border:1.5px solid #e2e8f0;border-radius:99px;font-weight:700;font-size:.88rem;cursor:pointer;transition:all .2s}
+.btn-secondary:hover{background:#f8fafc;border-color:#cbd5e1}.pi-status{flex-basis:100%;min-height:20px;color:#475569;font-size:.78rem;font-weight:700}.trade-next-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.trade-next-card{border:1px solid #e2e8f0;border-radius:10px;background:#fff;padding:14px}.trade-next-card strong{display:block;color:#0f172a;font-size:.9rem;margin-bottom:5px}.trade-next-card span{display:block;color:#52637a;font-size:.8rem;line-height:1.55}@media(max-width:720px){.trade-next-grid{grid-template-columns:1fr}.action-bar{display:grid}.action-bar .btn-primary,.action-bar .btn-secondary{width:100%}.form-panel,.doc-panel{width:100%;min-width:0}.doc-preview{padding:18px;max-width:100%;overflow-x:auto}.doc-parties,.doc-terms-bar,.doc-terms-grid{grid-template-columns:1fr}.doc-table{min-width:520px}.doc-totals{justify-content:stretch}.doc-totals-box{min-width:0;width:100%}}
+/* ── Document Preview ── */
+.doc-panel{background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.06)}
+.doc-preview{background:#fff;padding:30px;font-family:'DM Sans',system-ui,sans-serif;font-size:11pt;color:#0f172a;min-height:600px}
+.doc-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;padding-bottom:16px;border-bottom:2px solid #0062CC}
+.doc-title-block{}
+.doc-title-block h2{font-size:20pt;font-weight:800;color:#0062CC;letter-spacing:-.5px;line-height:1}
+.doc-title-block .pi-subtitle{font-size:8pt;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.doc-meta-block{text-align:right;font-size:9pt;color:#475569}
+.doc-meta-block strong{color:#0f172a;display:block;font-size:10pt}
+.doc-meta-row{margin-bottom:2px}
+.doc-parties{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.doc-party{background:#F8FAFD;border-radius:8px;padding:10px 12px;font-size:9pt}
+.doc-party-label{font-size:7.5pt;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:#0062CC;margin-bottom:4px}
+.doc-party-name{font-weight:700;font-size:10pt;color:#0f172a;margin-bottom:2px}
+.doc-party p{color:#475569;line-height:1.5;margin:0}
+.doc-terms-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.doc-term-item{background:#E8F2FF;border-radius:8px;padding:8px 10px;text-align:center}
+.doc-term-label{font-size:7pt;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#0063D1;display:block;margin-bottom:2px}
+.doc-term-value{font-size:9pt;font-weight:700;color:#0A1628}
+.doc-incoterm-badge{display:inline-block;background:#0062CC;color:#fff;padding:.2rem .6rem;border-radius:6px;font-size:8.5pt;font-weight:800;letter-spacing:.5px}
+.doc-table{width:100%;border-collapse:collapse;margin-bottom:12px;font-size:9pt}
+.doc-table th{background:#0A1628;color:#fff;padding:6px 8px;text-align:left;font-weight:700;font-size:8pt}
+.doc-table th:last-child,.doc-table td:last-child{text-align:right}
+.doc-table td{padding:5px 8px;border-bottom:1px solid #f1f5f9;vertical-align:top}
+.doc-table tr:nth-child(even) td{background:#fafbfc}
+.doc-totals{display:flex;justify-content:flex-end;margin-bottom:16px}
+.doc-totals-box{min-width:220px;font-size:9pt}
+.doc-totals-row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #f1f5f9;color:#475569}
+.doc-totals-row.highlight{font-weight:800;font-size:10pt;color:#0062CC;border-top:2px solid #0062CC;border-bottom:none;margin-top:4px;padding-top:6px}
+.doc-totals-row.cif-row{font-weight:700;font-size:10pt;color:#0063D1;border-bottom:none}
+.doc-terms-section{font-size:8.5pt;color:#475569;margin-bottom:16px}
+.doc-terms-section h4{font-size:9pt;font-weight:800;color:#0f172a;margin-bottom:6px}
+.doc-terms-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.doc-terms-item strong{color:#0f172a;display:block;font-size:8pt}
+.doc-footer-note{background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:8px 12px;font-size:8pt;color:#92400e;margin-bottom:16px}
+.doc-signature{display:flex;justify-content:flex-end}
+.doc-sig-box{text-align:center;min-width:180px}
+.doc-sig-line{border-top:1.5px solid #0f172a;margin-top:32px;margin-bottom:4px}
+.doc-sig-label{font-size:8pt;color:#475569}
+
+/* Site coherence pass */
+.pi-hero{background:#f8fafc;color:#0f172a;border-bottom:1px solid #e2e8f0;text-align:left}
+.pi-hero h1{color:#0f172a!important;letter-spacing:0}
+.pi-hero p{color:#475569;opacity:1;margin-left:0}
+.pi-hero .breadcrumb,.pi-hero .breadcrumb a{color:#64748b}
+.pi-hero .breadcrumb a:hover{color:#0057B8}
+.badges{justify-content:flex-start}
+.badge,.btn-add,.btn-primary,.btn-secondary,.form-panel,.doc-panel,.doc-party,.doc-term-item,.doc-footer-note,.trade-next-card,.totals-mini{border-radius:8px}
+.badge-blue,.badge-gray{background:#fff;color:#475569;border:1px solid #dbe3ef}
+.form-panel,.doc-panel{box-shadow:none;border-color:#e2e8f0}
+.fg input,.fg select,.fg textarea,.items-table td input,.items-table td select,.totals-mini-row input{border-width:1px;border-radius:8px;min-height:40px}
+.btn-primary,.btn-secondary,.btn-add{min-height:44px;box-shadow:none}
+.btn-primary{background:#0062CC}
+.btn-primary:hover{background:#0057B8}
+.btn-secondary:hover,.btn-add:hover{background:#f8fafc;border-color:#b8c8dc;color:#0057B8}
+.items-table-wrap{border:1px solid #e2e8f0;border-radius:8px}
+.items-table{min-width:780px}
+.doc-header{border-bottom-color:#bfdbfe}
+.doc-table th{background:#f8fafc;color:#475569;border-bottom:1px solid #e2e8f0}
+.doc-title-block h2,.doc-term-label,.doc-totals-row.highlight,.doc-totals-row.cif-row{color:#0057B8}
+@media(max-width:720px){.pi-hero{padding:2rem 1rem 1.6rem}.pi-wrap{padding:1rem}.form-panel,.doc-panel{border-radius:8px}.action-bar{gap:.5rem}.items-table{min-width:760px}}
+@media(prefers-reduced-motion:reduce){.btn-primary,.btn-secondary,.btn-add,.fg input,.fg select,.fg textarea{transition:none!important}}
+
+@media print{
+  .navbar-wrapper,.afro-navbar,.afro-footer,footer,.form-panel,.action-bar,.pi-hero,.doc-panel .doc-panel-header{display:none!important}
+  .pi-wrap{padding:0!important}
+  .pi-grid{display:block!important}
+  .doc-panel{border:none!important;border-radius:0!important;box-shadow:none!important}
+  .doc-preview{padding:15mm!important}
+  @page{size:A4 portrait;margin:15mm}
+  body{background:#fff!important}
+}
+</style>
+<link rel="stylesheet" href="/assets/css/trade-focus.css?v=67d7d132">
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="stylesheet" href="/assets/css/trade-toolkit.css?v=2465f40a">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Proforma Invoice Generator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Proforma Invoice Generator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Proforma Invoice Generator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Proforma Invoice Generator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Proforma Invoice Generator for African Trade",
+  "description": "Prepare a proforma invoice for African trade with HS codes, Incoterms, FOB/CIF totals, payment terms, and export-ready notes for buyer, bank, or broker review.",
+  "url": "https://afrotools.com/tools/proforma-invoice/",
+  "inLanguage": "en",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/proforma-invoice.webp"
+}
+</script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Proforma Invoice Generator for African Trade","item":"https://afrotools.com/tools/proforma-invoice/"}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/proforma-invoice/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/proforma-invoice/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/facture-proforma/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ankara-proforma/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/proforma-invoice/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="trade"></afro-navbar>
+
+<div class="pi-hero">
+  <div class="breadcrumb">
+    <a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span>Proforma Invoice
+  </div>
+  <h1>Proforma Invoice Generator</h1>
+  <p>Prepare a buyer-ready trade quote with HS codes, Incoterms, FOB/CIF totals, payment terms, and export notes</p>
+  <div class="badges">
+    <span class="badge badge-blue">FREE</span>
+    <span class="badge badge-gray">INCOTERMS 2020</span>
+    <span class="badge badge-gray">FOB/CIF AUTO-CALC</span>
+    <span class="badge badge-gray">PDF EXPORT</span>
+  </div>
+</div>
+
+<div class="pi-wrap">
+  <div class="pi-grid">
+
+    <!-- ── FORM PANEL ── -->
+    <div class="form-panel">
+      <div class="action-bar" style="margin-bottom:1rem;margin-top:0">
+        <button type="button" class="btn-primary" onclick="window.print()">&#8595; Download PDF</button>
+        <button type="button" class="btn-secondary" onclick="copyTradeSummary()">Copy trade summary</button>
+        <button type="button" class="btn-secondary" id="piCsvBtn">Download CSV</button>
+        <button type="button" class="btn-secondary" id="piJsonBtn">Backup JSON</button>
+        <button type="button" class="btn-secondary" onclick="copyLast()">Restore last draft</button>
+        <button type="button" class="btn-secondary" onclick="resetForm()">Reset Form</button>
+        <div class="pi-status" id="piStatus" role="status" aria-live="polite"></div>
+      </div>
+
+      <!-- Seller Details -->
+      <div class="form-section">
+        <div class="section-title">Seller / Exporter</div>
+        <div class="form-row"><div class="fg"><label>Company Name</label><input aria-label="Your company name" type="text" id="sellerName" oninput="renderDoc()" placeholder="Your company name"></div></div>
+        <div class="form-row"><div class="fg"><label>Address</label><textarea id="sellerAddr" rows="2" oninput="renderDoc()" placeholder="Street, City, State" aria-label="Street, City, State"></textarea></div></div>
+        <div class="form-row form-row-2">
+          <div class="fg"><label>Country</label><select id="sellerCountry" onchange="renderDoc()" aria-label="Seller Country"><?php echo countryOptions(); ?></select></div>
+          <div class="fg"><label>Phone</label><input aria-label="SellerPhone" type="text" id="sellerPhone" oninput="renderDoc()" placeholder="+234 800 000 0000"></div>
+        </div>
+        <div class="form-row form-row-2">
+          <div class="fg"><label>Email</label><input aria-label="Exports@company.com" type="email" id="sellerEmail" oninput="renderDoc()" placeholder="exports@company.com"></div>
+          <div class="fg"><label>Reg. Number</label><input aria-label="RC000000" type="text" id="sellerReg" oninput="renderDoc()" placeholder="RC000000"></div>
+        </div>
+        <div class="form-row"><div class="fg"><label>Export License <span class="optional">(optional)</span></label><input aria-label="EXL 2024 XXXX" type="text" id="sellerExportLicense" oninput="renderDoc()" placeholder="EXL-2024-XXXX"></div></div>
+      </div>
+
+      <!-- Buyer Details -->
+      <div class="form-section">
+        <div class="section-title">Buyer / Importer</div>
+        <div class="form-row"><div class="fg"><label>Company Name</label><input aria-label="Buyer company name" type="text" id="buyerName" oninput="renderDoc()" placeholder="Buyer company name"></div></div>
+        <div class="form-row"><div class="fg"><label>Address</label><textarea id="buyerAddr" rows="2" oninput="renderDoc()" placeholder="Street, City, Country" aria-label="Street, City, Country"></textarea></div></div>
+        <div class="form-row form-row-2">
+          <div class="fg"><label>Country</label><select id="buyerCountry" onchange="renderDoc()" aria-label="Buyer Country"></select></div>
+          <div class="fg"><label>Phone</label><input aria-label="BuyerPhone" type="text" id="buyerPhone" oninput="renderDoc()" placeholder="+254 700 000 000"></div>
+        </div>
+        <div class="form-row form-row-2">
+          <div class="fg"><label>Email</label><input aria-label="Imports@buyer.com" type="email" id="buyerEmail" oninput="renderDoc()" placeholder="imports@buyer.com"></div>
+          <div class="fg"><label>Import License <span class="optional">(optional)</span></label><input aria-label="IMP 2024 XXXX" type="text" id="buyerImportLicense" oninput="renderDoc()" placeholder="IMP-2024-XXXX"></div>
+        </div>
+      </div>
+
+      <!-- Document Details -->
+      <div class="form-section">
+        <div class="section-title">Document Details</div>
+        <div class="form-row form-row-2">
+          <div class="fg"><label>Proforma Number</label><input aria-label="PiNumber" type="text" id="piNumber" oninput="renderDoc()"></div>
+          <div class="fg"><label>Date</label><input aria-label="PiDate" type="date" id="piDate" onchange="renderDoc()"></div>
+        </div>
+        <div class="form-row form-row-2">
+          <div class="fg"><label>Valid Until</label><input aria-label="PiValidUntil" type="date" id="piValidUntil" onchange="renderDoc()"></div>
+          <div class="fg"><label>Incoterm</label>
+            <select id="piIncoterm" onchange="renderDoc()" aria-label="Pi Incoterm">
+              <option>EXW</option><option>FCA</option><option>CPT</option><option>CIP</option>
+              <option>DAP</option><option>DDP</option><option>FAS</option><option selected>FOB</option>
+              <option>CFR</option><option>CIF</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row form-row-2">
+          <div class="fg"><label>Port of Loading</label><input aria-label="Apapa, Lagos" type="text" id="piPOL" oninput="renderDoc()" placeholder="Apapa, Lagos"></div>
+          <div class="fg"><label>Port of Discharge</label><input aria-label="Mombasa" type="text" id="piPOD" oninput="renderDoc()" placeholder="Mombasa"></div>
+        </div>
+        <div class="form-row form-row-2">
+          <div class="fg"><label>Country of Origin</label><select id="piOriginCountry" onchange="renderDoc()" aria-label="Pi Origin Country"></select></div>
+          <div class="fg"><label>Currency</label>
+            <select id="piCurrency" onchange="renderDoc()" aria-label="Pi Currency">
+              <option value="USD">USD — US Dollar</option>
+              <option value="EUR">EUR — Euro</option>
+              <option value="GBP">GBP — British Pound</option>
+              <option value="KES">KES — Kenyan Shilling</option>
+              <option value="NGN">NGN — Nigerian Naira</option>
+              <option value="ZAR">ZAR — South African Rand</option>
+              <option value="GHS">GHS — Ghanaian Cedi</option>
+              <option value="UGX">UGX — Ugandan Shilling</option>
+              <option value="TZS">TZS — Tanzanian Shilling</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row form-row-2">
+          <div class="fg"><label>Payment Terms</label>
+            <select id="piPaymentTerms" onchange="renderDoc()" aria-label="Pi Payment Terms">
+              <option>LC at Sight</option>
+              <option>Usance LC 30 Days</option>
+              <option>Usance LC 60 Days</option>
+              <option>Usance LC 90 Days</option>
+              <option>T/T 30% Advance</option>
+              <option>T/T in Advance</option>
+              <option>CAD (Documents Against Payment)</option>
+              <option>Open Account</option>
+            </select>
+          </div>
+          <div class="fg"><label>Delivery Time</label><input aria-label="30 45 days after LC" type="text" id="piDelivery" oninput="renderDoc()" placeholder="30-45 days after LC"></div>
+        </div>
+      </div>
+
+      <!-- Line Items -->
+      <div class="form-section">
+        <div class="section-title">Line Items</div>
+        <div class="items-table-wrap">
+          <table class="items-table" id="itemsTable">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>HS Code</th>
+                <th>Qty</th>
+                <th>Unit</th>
+                <th>Unit Price</th>
+                <th>Total</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="itemsBody"></tbody>
+          </table>
+        </div>
+        <button type="button" class="btn-add" onclick="addItem()">+ Add Item</button>
+        <div class="totals-mini" id="totalsMini">
+          <div class="totals-mini-row"><span>Subtotal</span><span id="tSubtotal">0.00</span></div>
+          <div class="totals-mini-row"><span>Freight</span><input aria-label="PiFreight" type="number" id="piFreight" value="0" min="0" oninput="calcTotals()" style="width:110px;padding:.2rem .4rem;border:1.5px solid #e2e8f0;border-radius:6px;font-size:.82rem;text-align:right"></div>
+          <div class="totals-mini-row"><span>Insurance</span><input aria-label="PiInsurance" type="number" id="piInsurance" value="0" min="0" oninput="calcTotals()" style="width:110px;padding:.2rem .4rem;border:1.5px solid #e2e8f0;border-radius:6px;font-size:.82rem;text-align:right"></div>
+          <div class="totals-mini-row strong"><span>FOB Total</span><span id="tFOB">0.00</span></div>
+          <div class="totals-mini-row strong" style="color:#0063D1"><span>CIF Total</span><span id="tCIF">0.00</span></div>
+        </div>
+      </div>
+
+      <!-- Terms -->
+      <div class="form-section">
+        <div class="section-title">Terms &amp; Conditions</div>
+        <div class="form-row form-row-2">
+          <div class="fg"><label>Packaging</label><input aria-label="In cartons of 24 units" type="text" id="piPackaging" oninput="renderDoc()" placeholder="In cartons of 24 units"></div>
+          <div class="fg"><label>Inspection</label><input aria-label="SGS inspection at origin" type="text" id="piInspection" oninput="renderDoc()" placeholder="SGS inspection at origin"></div>
+        </div>
+        <div class="form-row form-row-2">
+          <div class="fg"><label>Shipping Marks</label><input aria-label="BUYER REF / DEST PORT" type="text" id="piMarks" oninput="renderDoc()" placeholder="BUYER REF / DEST PORT"></div>
+          <div class="fg"><label>Special Conditions</label><input aria-label="Subject to export permit approval" type="text" id="piConditions" oninput="renderDoc()" placeholder="Subject to export permit approval"></div>
+        </div>
+      </div>
+    </div><!-- /form-panel -->
+
+    <!-- ── DOCUMENT PREVIEW ── -->
+    <div class="doc-panel">
+      <div class="doc-preview" id="docPreview">
+        <!-- rendered by JS -->
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<section class="df-upgrade" data-df-upgrade="proforma-invoice">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Trade document workflow</span>
+      <h2>Finish the quote before you send it</h2>
+      <p>Not sure how to get the most from the Proforma Invoice Generator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Proforma Invoice Generator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
+    </div>
+    <div class="trade-next-grid" aria-label="Proforma invoice next steps">
+      <div class="trade-next-card"><strong>1. Build the quote</strong><span>Enter buyer, seller, Incoterm, ports, origin, HS code, quantity, unit price, freight, and insurance.</span></div>
+      <div class="trade-next-card"><strong>2. Review assumptions</strong><span>Confirm HS classification, permit needs, inspection wording, payment terms, and shipment timing.</span></div>
+      <div class="trade-next-card"><strong>3. Export for review</strong><span>Print to PDF or copy the trade summary for WhatsApp, email, broker review, or bank pre-check.</span></div>
+    </div>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="proforma-invoice-faq-title">
+  <h2 id="proforma-invoice-faq-title">Proforma invoice FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the Proforma Invoice Generator?</summary><p>Enter your amounts, rates and dates in the fields above. The Proforma Invoice Generator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Proforma Invoice Generator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Proforma Invoice Generator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
+</section>
+<section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="proforma-verification-title">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Sources &amp; verification</span>
+          <h2 class="tool-verification-title" id="proforma-verification-title">Proforma invoice methodology</h2>
+          <p class="tool-verification-lead">The document builder combines seller, buyer, product, HS code, Incoterm, origin, port, freight, insurance, validity, payment, and delivery fields into a draft quote and export summary. It does not submit anything to customs, banks, buyers, or regulators.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Draft document</span>
+          <p class="tool-verification-note">Trade wording, HS classification, permits, bank requirements, and shipment costs must be confirmed for the specific transaction.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>Before acting</h3>
+          <ul class="tool-verification-list">
+            <li>Verify HS codes, origin, valuation, permits, inspection wording, Incoterms, ports, and payment terms with the buyer, broker, bank, or relevant authority.</li>
+            <li>Replace planning freight and insurance values with current written quotes before relying on CIF or landed-cost planning.</li>
+            <li>Keep the final commercial invoice separate until contract, shipment, and compliance details are agreed.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Privacy and limits</h3>
+          <p class="tool-verification-meta"><strong>Disclaimer:</strong> Draft details stay in the browser unless you print, copy, download CSV/JSON, or share the file. This is not legal advice, customs advice, a tax invoice, bank approval, or an official filing.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<afro-business-cta tool-name="Proforma Invoice Generator" save-note="Build the draft, then print to PDF, copy the trade summary, download CSV, or back up JSON for buyer, broker, bank, or finance review."></afro-business-cta>
+<afro-related-tools category="trade" current="proforma-invoice" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/afcfta-tracker/" data-related-tool data-id="afcfta-tracker" data-name="AfCFTA Tariff Tracker" data-category="trade" data-icon="AT" data-desc="Live AfCFTA duty schedule. Check duty-free status for any item between 54 African countries. Phase I &amp; II schedules.">AfCFTA Tariff Tracker</a></li><li><a href="/tools/landed-cost/" data-related-tool data-id="landed-cost" data-name="Landed Cost Calculator" data-category="trade" data-icon="LC" data-desc="Estimate landed cost for selected African import markets with source-confidence labels for user inputs, estimates, and v">Landed Cost Calculator</a></li><li><a href="/tools/incoterms-calculator/" data-related-tool data-id="incoterms-calculator" data-name="Incoterms 2020 Calculator" data-category="trade" data-icon="I2" data-desc="All 11 Incoterms 2020 explained with cost-split calculator, comparison tool, and Africa-specific trade guide.">Incoterms 2020 Calculator</a></li><li><a href="/tools/shipping-estimator/" data-related-tool data-id="shipping-estimator" data-name="Shipping Cost Estimator" data-category="trade" data-icon="SC" data-desc="Estimate sea freight, air freight and road haulage costs for Africa trade corridors. 16 ports, 8 airlines, 8 trucking ro">Shipping Cost Estimator</a></li><li><a href="/tools/export-docs/" data-related-tool data-id="export-docs-trade" data-name="Export Documentation Checklist" data-category="trade" data-icon="ED" data-desc="Country-specific checklist for every document needed to export from Africa. 17 origin countries, 8 destinations includin">Export Documentation Checklist</a></li><li><a href="/tools/fx-import-impact/" data-related-tool data-id="fx-import-impact" data-name="FX Import Cost Impact" data-category="trade" data-icon="FI" data-desc="Calculate how currency depreciation affects import costs. Model FX scenarios for 15 African currencies.">FX Import Cost Impact</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+
+<script>
+const AFRICAN_COUNTRIES = ["Algeria","Angola","Benin","Botswana","Burkina Faso","Burundi","Cabo Verde","Cameroon","Central African Republic","Chad","Comoros","Congo (Brazzaville)","Congo (DRC)","Djibouti","Egypt","Equatorial Guinea","Eritrea","Eswatini","Ethiopia","Gabon","Gambia","Ghana","Guinea","Guinea-Bissau","Ivory Coast","Kenya","Lesotho","Liberia","Libya","Madagascar","Malawi","Mali","Mauritania","Mauritius","Morocco","Mozambique","Namibia","Niger","Nigeria","Rwanda","São Tomé & Príncipe","Senegal","Seychelles","Sierra Leone","Somalia","South Africa","South Sudan","Sudan","Tanzania","Togo","Tunisia","Uganda","Zambia","Zimbabwe"];
+
+function buildCountryOptions(selectedVal){
+  return AFRICAN_COUNTRIES.map(c=>`<option value="${c}"${c===selectedVal?' selected':''}>${c}</option>`).join('');
+}
+
+function initCountryDropdowns(){
+  ['sellerCountry','buyerCountry','piOriginCountry'].forEach(id=>{
+    document.getElementById(id).innerHTML = buildCountryOptions(id==='sellerCountry'?'Nigeria':(id==='buyerCountry'?'Kenya':'Nigeria'));
+  });
+}
+
+function genPINumber(){
+  const d = new Date().toISOString().slice(0,10).replace(/-/g,'');
+  return `PI-${d}-001`;
+}
+
+function initDefaults(){
+  initCountryDropdowns();
+  document.getElementById('piNumber').value = genPINumber();
+  const today = new Date();
+  document.getElementById('piDate').value = today.toISOString().slice(0,10);
+  const valid = new Date(today);
+  valid.setDate(valid.getDate()+30);
+  document.getElementById('piValidUntil').value = valid.toISOString().slice(0,10);
+  addItem();
+  renderDoc();
+}
+
+let itemRows = [];
+let itemCounter = 0;
+
+function addItem(){
+  itemCounter++;
+  const id = itemCounter;
+  itemRows.push(id);
+  const tbody = document.getElementById('itemsBody');
+  const tr = document.createElement('tr');
+  tr.id = `item-row-${id}`;
+  tr.innerHTML = `
+    <td><input aria-label="Product description" type="text" placeholder="Product description" onchange="calcTotals()" oninput="calcTotals()"></td>
+    <td><input type="text" placeholder="6309.90" style="width:80px" oninput="calcTotals()" aria-label="Input value"></td>
+    <td><input type="number" placeholder="1" min="0" step="any" style="width:60px" oninput="calcItemTotal(${id})" value="1" aria-label="Input value"></td>
+    <td><select onchange="calcTotals()" aria-label="Select option"><option>pcs</option><option>kg</option><option>MT</option><option>CBM</option><option>Cartons</option></select></td>
+    <td><input type="number" placeholder="0.00" min="0" step="any" style="width:80px" oninput="calcItemTotal(${id})" value="0" aria-label="Input value"></td>
+    <td class="td-total" id="item-total-${id}">0.00</td>
+    <td><button type="button" class="btn-remove" onclick="removeItem(${id})" title="Remove">&#10005;</button></td>
+  `;
+  tbody.appendChild(tr);
+  calcTotals();
+}
+
+function removeItem(id){
+  const el = document.getElementById(`item-row-${id}`);
+  if(el) el.remove();
+  itemRows = itemRows.filter(r=>r!==id);
+  calcTotals();
+}
+
+function calcItemTotal(id){
+  const row = document.getElementById(`item-row-${id}`);
+  if(!row) return;
+  const inputs = row.querySelectorAll('input[type="number"]');
+  const qty = parseFloat(inputs[0].value)||0;
+  const price = parseFloat(inputs[1].value)||0;
+  const total = qty*price;
+  const el = document.getElementById(`item-total-${id}`);
+  if(el) el.textContent = fmt(total);
+  calcTotals();
+}
+
+function fmt(n){return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
+
+function calcTotals(){
+  let subtotal=0;
+  document.querySelectorAll('#itemsBody tr').forEach(tr=>{
+    const nums = tr.querySelectorAll('input[type="number"]');
+    if(nums.length>=2){
+      const qty=parseFloat(nums[0].value)||0;
+      const price=parseFloat(nums[1].value)||0;
+      subtotal+=qty*price;
+      const idStr=tr.id.replace('item-row-','');
+      const el=document.getElementById(`item-total-${idStr}`);
+      if(el) el.textContent=fmt(qty*price);
+    }
+  });
+  const freight=parseFloat(document.getElementById('piFreight').value)||0;
+  const insurance=parseFloat(document.getElementById('piInsurance').value)||0;
+  const fob=subtotal+freight;
+  const cif=fob+insurance;
+  document.getElementById('tSubtotal').textContent=fmt(subtotal);
+  document.getElementById('tFOB').textContent=fmt(fob);
+  document.getElementById('tCIF').textContent=fmt(cif);
+  renderDoc();
+}
+
+function v(id){return(document.getElementById(id)||{}).value||''}
+function sv(id){const el=document.getElementById(id);return el?el.options[el.selectedIndex].text:'';}
+
+function renderDoc(){
+  const cur = v('piCurrency').split(' ')[0]||'USD';
+  const curLabel = v('piCurrency');
+  let subtotal=0;
+  const rowData=[];
+  document.querySelectorAll('#itemsBody tr').forEach(tr=>{
+    const inputs=tr.querySelectorAll('input');
+    const selects=tr.querySelectorAll('select');
+    const desc=inputs[0]?inputs[0].value:'';
+    const hs=inputs[1]?inputs[1].value:'';
+    const qty=parseFloat(inputs[2]?inputs[2].value:0)||0;
+    const unit=selects[0]?selects[0].value:'pcs';
+    const price=parseFloat(inputs[3]?inputs[3].value:0)||0;
+    const total=qty*price;
+    subtotal+=total;
+    rowData.push({desc,hs,qty,unit,price,total});
+  });
+  const freight=parseFloat(v('piFreight'))||0;
+  const insurance=parseFloat(v('piInsurance'))||0;
+  const fob=subtotal+freight;
+  const cif=fob+insurance;
+
+  const tableRows=rowData.map((r,i)=>`
+    <tr>
+      <td>${i+1}</td>
+      <td>${r.desc||'—'}</td>
+      <td>${r.hs||'—'}</td>
+      <td style="text-align:right">${r.qty}</td>
+      <td>${r.unit}</td>
+      <td style="text-align:right">${cur} ${fmt(r.price)}</td>
+      <td style="text-align:right;font-weight:700">${cur} ${fmt(r.total)}</td>
+    </tr>`).join('');
+
+  const piDate = v('piDate');
+  const piValid = v('piValidUntil');
+  const sellerName = v('sellerName')||'Seller Company Name';
+  const buyerName = v('buyerName')||'Buyer Company Name';
+
+  const html = `
+<div class="doc-header">
+  <div class="doc-title-block">
+    <h2>PROFORMA INVOICE</h2>
+    <div class="pi-subtitle">Commercial Quotation Document</div>
+  </div>
+  <div class="doc-meta-block">
+    <div class="doc-meta-row"><strong>${v('piNumber')||'PI-XXXXXXXX-001'}</strong></div>
+    <div class="doc-meta-row">Date: ${piDate||'—'}</div>
+    <div class="doc-meta-row">Valid Until: ${piValid||'—'}</div>
+    <div class="doc-meta-row" style="margin-top:6px"><span class="doc-incoterm-badge">${v('piIncoterm')}</span></div>
+  </div>
+</div>
+
+<div class="doc-parties">
+  <div class="doc-party">
+    <div class="doc-party-label">Seller / Exporter</div>
+    <div class="doc-party-name">${sellerName}</div>
+    <p>${(v('sellerAddr')||'').replace(/\n/g,'<br>')}${v('sellerCountry')?'<br>'+v('sellerCountry'):''}</p>
+    ${v('sellerPhone')?'<p>Tel: '+v('sellerPhone')+'</p>':''}
+    ${v('sellerEmail')?'<p>Email: '+v('sellerEmail')+'</p>':''}
+    ${v('sellerReg')?'<p>Reg: '+v('sellerReg')+'</p>':''}
+    ${v('sellerExportLicense')?'<p>Export License: '+v('sellerExportLicense')+'</p>':''}
+  </div>
+  <div class="doc-party">
+    <div class="doc-party-label">Buyer / Importer</div>
+    <div class="doc-party-name">${buyerName}</div>
+    <p>${(v('buyerAddr')||'').replace(/\n/g,'<br>')}${v('buyerCountry')?'<br>'+v('buyerCountry'):''}</p>
+    ${v('buyerPhone')?'<p>Tel: '+v('buyerPhone')+'</p>':''}
+    ${v('buyerEmail')?'<p>Email: '+v('buyerEmail')+'</p>':''}
+    ${v('buyerImportLicense')?'<p>Import License: '+v('buyerImportLicense')+'</p>':''}
+  </div>
+</div>
+
+<div class="doc-terms-bar">
+  <div class="doc-term-item">
+    <span class="doc-term-label">Port of Loading</span>
+    <span class="doc-term-value">${v('piPOL')||'—'}</span>
+  </div>
+  <div class="doc-term-item">
+    <span class="doc-term-label">Port of Discharge</span>
+    <span class="doc-term-value">${v('piPOD')||'—'}</span>
+  </div>
+  <div class="doc-term-item">
+    <span class="doc-term-label">Payment Terms</span>
+    <span class="doc-term-value" style="font-size:8pt">${v('piPaymentTerms')}</span>
+  </div>
+  <div class="doc-term-item">
+    <span class="doc-term-label">Delivery</span>
+    <span class="doc-term-value" style="font-size:8pt">${v('piDelivery')||'—'}</span>
+  </div>
+</div>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th style="width:28px">#</th>
+      <th>Description of Goods</th>
+      <th>HS Code</th>
+      <th style="text-align:right">Qty</th>
+      <th>Unit</th>
+      <th style="text-align:right">Unit Price</th>
+      <th style="text-align:right">Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    ${tableRows||'<tr><td colspan="7" style="text-align:center;color:#94a3b8;padding:12px">Add items using the form on the left</td></tr>'}
+  </tbody>
+</table>
+
+<div class="doc-totals">
+  <div class="doc-totals-box">
+    <div class="doc-totals-row"><span>Country of Origin:</span><span style="font-weight:600">${v('piOriginCountry')||'—'}</span></div>
+    <div class="doc-totals-row"><span>Subtotal:</span><span>${cur} ${fmt(subtotal)}</span></div>
+    <div class="doc-totals-row"><span>Freight:</span><span>${cur} ${fmt(freight)}</span></div>
+    <div class="doc-totals-row"><span>Insurance:</span><span>${cur} ${fmt(insurance)}</span></div>
+    <div class="doc-totals-row highlight"><span>FOB ${v('piPOL')||'Port'}:</span><span>${cur} ${fmt(fob)}</span></div>
+    <div class="doc-totals-row cif-row"><span>CIF ${v('piPOD')||'Destination'}:</span><span>${cur} ${fmt(cif)}</span></div>
+    <div class="doc-totals-row" style="font-size:8pt;color:#94a3b8"><span>Currency:</span><span>${curLabel}</span></div>
+  </div>
+</div>
+
+<div class="doc-terms-section">
+  <h4>Terms &amp; Conditions</h4>
+  <div class="doc-terms-grid">
+    <div class="doc-terms-item"><strong>Packaging:</strong>${v('piPackaging')||'As per international standard'}</div>
+    <div class="doc-terms-item"><strong>Inspection:</strong>${v('piInspection')||'As per buyer specification'}</div>
+    <div class="doc-terms-item"><strong>Shipping Marks:</strong>${v('piMarks')||'As instructed by buyer'}</div>
+    <div class="doc-terms-item"><strong>Special Conditions:</strong>${v('piConditions')||'None'}</div>
+  </div>
+</div>
+
+<div class="doc-footer-note">
+  &#9432; This is a proforma invoice for quotation purposes only. Not a demand for payment. All prices are subject to final contract confirmation.
+</div>
+
+<div class="doc-signature">
+  <div class="doc-sig-box">
+    <div class="doc-sig-line"></div>
+    <div class="doc-sig-label">Authorized Signatory</div>
+    <div style="font-size:8.5pt;color:#475569;margin-top:2px">${sellerName}</div>
+  </div>
+</div>
+`;
+  document.getElementById('docPreview').innerHTML = html;
+}
+
+function resetForm(){
+  if(!confirm('Reset all form data?')) return;
+  document.querySelectorAll('#itemsBody tr').forEach(tr=>tr.remove());
+  itemRows=[];
+  itemCounter=0;
+  ['sellerName','sellerAddr','sellerPhone','sellerEmail','sellerReg','sellerExportLicense',
+   'buyerName','buyerAddr','buyerPhone','buyerEmail','buyerImportLicense',
+   'piPOL','piPOD','piDelivery','piPackaging','piInspection','piMarks','piConditions'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.value='';
+  });
+  document.getElementById('piFreight').value='0';
+  document.getElementById('piInsurance').value='0';
+  initCountryDropdowns();
+  document.getElementById('piNumber').value=genPINumber();
+  const today=new Date();
+  document.getElementById('piDate').value=today.toISOString().slice(0,10);
+  const valid=new Date(today);valid.setDate(valid.getDate()+30);
+  document.getElementById('piValidUntil').value=valid.toISOString().slice(0,10);
+  addItem();
+  calcTotals();
+}
+
+function copyLast(){
+  try{
+    const saved=localStorage.getItem('pi_last_save');
+    if(!saved){alert('No saved proforma found.');return;}
+    const data=JSON.parse(saved);
+    Object.keys(data).forEach(id=>{
+      const el=document.getElementById(id);
+      if(el) el.value=data[id];
+    });
+    calcTotals();
+  } catch(e){alert('No saved data found.');}
+}
+
+function setPiStatus(message){
+  const status=document.getElementById('piStatus');
+  if(status) status.textContent=message||'';
+}
+
+function proformaTotals(){
+  let subtotal=0;
+  let itemCount=0;
+  document.querySelectorAll('#itemsBody tr').forEach(tr=>{
+    const nums=tr.querySelectorAll('input[type="number"]');
+    if(nums.length>=2){
+      const qty=parseFloat(nums[0].value)||0;
+      const price=parseFloat(nums[1].value)||0;
+      if(qty||price) itemCount++;
+      subtotal+=qty*price;
+    }
+  });
+  const freight=parseFloat(v('piFreight'))||0;
+  const insurance=parseFloat(v('piInsurance'))||0;
+  return {subtotal,freight,insurance,fob:subtotal+freight,cif:subtotal+freight+insurance,itemCount};
+}
+
+function proformaItems(){
+  const items=[];
+  document.querySelectorAll('#itemsBody tr').forEach(tr=>{
+    const inputs=tr.querySelectorAll('input');
+    const selects=tr.querySelectorAll('select');
+    items.push({
+      description:inputs[0]?inputs[0].value:'',
+      hsCode:inputs[1]?inputs[1].value:'',
+      quantity:parseFloat(inputs[2]?inputs[2].value:0)||0,
+      unit:selects[0]?selects[0].value:'pcs',
+      unitPrice:parseFloat(inputs[3]?inputs[3].value:0)||0
+    });
+  });
+  return items;
+}
+
+function proformaDraftData(){
+  const fields={};
+  ['sellerName','sellerAddr','sellerPhone','sellerEmail','sellerReg','sellerExportLicense',
+   'buyerName','buyerAddr','buyerPhone','buyerEmail','buyerImportLicense',
+   'piNumber','piDate','piValidUntil','piIncoterm','piPOL','piPOD','piOriginCountry',
+   'piCurrency','piPaymentTerms','piDelivery','piFreight','piInsurance',
+   'piPackaging','piInspection','piMarks','piConditions','sellerCountry','buyerCountry'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) fields[id]=el.value;
+  });
+  return {tool:'proforma-invoice',exportedAt:new Date().toISOString(),fields,items:proformaItems(),totals:proformaTotals()};
+}
+
+function tradeSummaryText(){
+  const totals=proformaTotals();
+  const cur=v('piCurrency').split(' ')[0]||'USD';
+  return [
+    'AfroTools proforma invoice review summary',
+    'Proforma number: '+(v('piNumber')||'not set'),
+    'Seller: '+(v('sellerName')||'not set')+' - '+(v('sellerCountry')||'not set'),
+    'Buyer: '+(v('buyerName')||'not set')+' - '+(v('buyerCountry')||'not set'),
+    'Route: '+(v('piPOL')||'loading port not set')+' to '+(v('piPOD')||'discharge port not set'),
+    'Incoterm/payment: '+(v('piIncoterm')||'not set')+' / '+(v('piPaymentTerms')||'not set'),
+    'Items with values: '+totals.itemCount,
+    'FOB total: '+cur+' '+fmt(totals.fob),
+    'CIF total: '+cur+' '+fmt(totals.cif),
+    'Review before sending: HS codes, permits, bank wording, inspection, freight, insurance, validity date, and final commercial invoice requirements.'
+  ].join('\n');
+}
+
+function downloadProformaCsv(){
+  const data=proformaDraftData();
+  const cur=v('piCurrency').split(' ')[0]||'USD';
+  const rows=[['description','hs_code','quantity','unit','unit_price_'+cur.toLowerCase(),'line_total_'+cur.toLowerCase()]];
+  data.items.forEach(item=>rows.push([item.description,item.hsCode,item.quantity,item.unit,item.unitPrice.toFixed(2),(item.quantity*item.unitPrice).toFixed(2)]));
+  rows.push([]);
+  rows.push(['field','value'],['proforma_number',v('piNumber')],['seller',v('sellerName')],['buyer',v('buyerName')],['incoterm',v('piIncoterm')],['payment_terms',v('piPaymentTerms')],['port_of_loading',v('piPOL')],['port_of_discharge',v('piPOD')],['fob_total',data.totals.fob.toFixed(2)],['cif_total',data.totals.cif.toFixed(2)],['assumption_note','Draft proforma only. Verify HS codes, permits, bank wording, freight, insurance, tax, and final commercial invoice requirements before sending.']);
+  var csv=rows.map(row=>row.map(cell=>'"'+String(cell == null ? '' : cell).replace(/"/g,'""')+'"').join(',')).join('\n');
+  var blob=new Blob([csv],{type:'text/csv'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=(v('piNumber')||'afrotools-proforma')+'.csv';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(a.href);
+  setPiStatus('CSV downloaded for broker, buyer, or accounting review.');
+}
+
+function downloadProformaJson(){
+  saveToLocal();
+  var blob=new Blob([JSON.stringify(proformaDraftData(),null,2)],{type:'application/json'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=(v('piNumber')||'afrotools-proforma')+'.json';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(a.href);
+  setPiStatus('JSON backup downloaded. It stays local until you share it.');
+}
+
+function copyTradeSummary(){
+  const text=tradeSummaryText();
+  saveToLocal();
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>setPiStatus('Trade summary copied. No data was sent to AfroTools.')).catch(()=>setPiStatus(text));
+  } else {
+    setPiStatus(text);
+  }
+}
+
+function saveToLocal(){
+  const data={};
+  ['sellerName','sellerAddr','sellerPhone','sellerEmail','sellerReg','sellerExportLicense',
+   'buyerName','buyerAddr','buyerPhone','buyerEmail','buyerImportLicense',
+   'piNumber','piDate','piValidUntil','piIncoterm','piPOL','piPOD','piOriginCountry',
+   'piCurrency','piPaymentTerms','piDelivery','piFreight','piInsurance',
+   'piPackaging','piInspection','piMarks','piConditions','sellerCountry','buyerCountry'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) data[id]=el.value;
+  });
+  localStorage.setItem('pi_last_save',JSON.stringify(data));
+}
+
+window.addEventListener('beforeprint',saveToLocal);
+document.getElementById('piCsvBtn').addEventListener('click',downloadProformaCsv);
+document.getElementById('piJsonBtn').addEventListener('click',downloadProformaJson);
+window.addEventListener('load',initDefaults);
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/trade-toolkit.js?v=748d8913" defer></script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/pages/trade-focus.js?v=50a063e9" defer></script>
+</body>
+</html>

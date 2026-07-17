@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rate Limits — AfroTools API Docs</title>
+<meta name="description" content="Rate limits by plan for the AfroTools API. Daily and monthly quotas, rate limit headers, and how to handle 429 errors.">
+<meta name="theme-color" content="#0062CC">
+<link rel="canonical" href="https://afrotools.com/docs/api/rate-limits">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/api-docs.css?v=ce57a995">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/api-sidebar.js?v=1e21db66" defer></script>
+<script src="/assets/js/components/api-code-tabs.js?v=d929cd13" defer></script>
+<meta property="article:modified_time" content="2026-03-28">
+<meta property="og:url" content="https://afrotools.com/docs/api/rate-limits">
+</head>
+<body class="api-docs-body top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<div class="api-docs-layout">
+  <api-sidebar active="/docs/api/rate-limits.html"></api-sidebar>
+  <main class="api-content">
+    <div class="api-two-panel api-two-panel--wide-left">
+      <div class="api-content__left">
+        <h1 class="mt-0">Rate Limits</h1>
+        <p class="api-subtitle">Understand your plan's request quotas, rate limit response headers, and how to handle 429 errors gracefully.</p>
+
+        <h2>Limits by Plan</h2>
+        <table class="param-table">
+          <thead><tr><th>Plan</th><th>Daily Limit</th><th>Monthly Limit</th><th>Requests/Second</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="param-name">Free</span></td>
+              <td>100</td>
+              <td>3,000</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">Starter</span></td>
+              <td>10,000</td>
+              <td>300,000</td>
+              <td>10</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">Pro</span></td>
+              <td>100,000</td>
+              <td>3,000,000</td>
+              <td>50</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">Enterprise</span></td>
+              <td>Unlimited</td>
+              <td>Unlimited</td>
+              <td>200</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Rate Limit Headers</h2>
+        <p>Every API response includes rate limit headers so you can monitor your usage in real time:</p>
+        <table class="param-table">
+          <thead><tr><th>Header</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="param-name">X-RateLimit-Limit</span></td>
+              <td>Maximum number of requests allowed in the current daily window.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">X-RateLimit-Remaining</span></td>
+              <td>Number of requests remaining in the current daily window.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">X-RateLimit-Reset</span></td>
+              <td>Unix timestamp (seconds) when the daily limit resets (midnight UTC).</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">X-RateLimit-Monthly-Limit</span></td>
+              <td>Your plan's monthly request quota.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">X-RateLimit-Monthly-Remaining</span></td>
+              <td>Number of requests remaining in your monthly quota.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">Retry-After</span></td>
+              <td>Seconds to wait before retrying (only included on 429 responses).</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Handling 429 Errors</h2>
+        <p>When you exceed your rate limit, the API returns a <code>429 Too Many Requests</code> response. Follow these steps to handle it gracefully:</p>
+
+        <h3>1. Check the Reset Header</h3>
+        <p>Read the <code>X-RateLimit-Reset</code> header to determine when you can make requests again. For monthly limits, check <code>X-RateLimit-Monthly-Remaining</code>.</p>
+
+        <h3>2. Implement Exponential Backoff</h3>
+        <p>If you receive a 429, wait before retrying. Double the wait time for each consecutive 429:</p>
+        <ul style="margin:8px 0 20px 20px;font-size:.88rem;color:#4B5563;line-height:1.8">
+          <li>1st retry: wait 1 second</li>
+          <li>2nd retry: wait 2 seconds</li>
+          <li>3rd retry: wait 4 seconds</li>
+          <li>Maximum: wait 60 seconds, then stop retrying</li>
+        </ul>
+
+        <h3>3. Cache Responses</h3>
+        <p>Cache frequently requested data to reduce API calls. Fuel prices and central bank rates change infrequently, so caching for 1 hour is usually safe.</p>
+
+        <h3>4. Use Batch Endpoints</h3>
+        <p>When fetching data for multiple countries, omit the <code>country</code> parameter to get all data in a single request instead of making 54 separate calls.</p>
+
+        <h3>5. Upgrade Your Plan</h3>
+        <p>If you consistently hit rate limits, consider <a href="/docs/api/pricing">upgrading your plan</a> for higher daily and monthly quotas.</p>
+
+        <div class="api-callout api-callout--info">
+          <strong>Sandbox keys.</strong> Test keys (<code>afro_test_*</code>) return deterministic sandbox data with separate sandbox limits.
+        </div>
+      </div>
+
+      <div class="api-content__right">
+        <div class="code-label">Response Headers (200 OK)</div>
+        <div class="code-example">HTTP/1.1 200 OK
+Content-Type: application/json
+X-RateLimit-Limit: 10000
+X-RateLimit-Remaining: 9847
+X-RateLimit-Reset: 1742342400
+X-RateLimit-Monthly-Limit: 300000
+X-RateLimit-Monthly-Remaining: 287453</div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">429 Response</div>
+        <div class="code-example">HTTP/1.1 429 Too Many Requests
+Content-Type: application/json
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 0
+X-RateLimit-Reset: 1742342400
+Retry-After: 3600
+
+{
+  "success": false,
+  "error": {
+    "code": "RATE_LIMIT_EXCEEDED",
+    "message": "Daily limit of 100 requests exceeded. Resets at 2026-03-17T00:00:00Z.",
+    "docs": "https://afrotools.com/docs/api/rate-limits.html"
+  }
+}</div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">Exponential Backoff (JavaScript)</div>
+        <div class="code-example">async function fetchWithRetry(url, opts, retries = 3) {
+  for (let i = 0; i &lt; retries; i++) {
+    const res = await fetch(url, opts);
+    if (res.status !== 429) return res;
+
+    const wait = res.headers.get("Retry-After")
+      ? parseInt(res.headers.get("Retry-After")) * 1000
+      : Math.pow(2, i) * 1000;
+
+    await new Promise(r =&gt; setTimeout(r, Math.min(wait, 60000)));
+  }
+  throw new Error("Rate limit exceeded after retries");
+}</div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">Check Remaining Quota (Python)</div>
+        <div class="code-example">import time, requests
+
+def fetch_with_retry(url, headers, retries=3):
+    for i in range(retries):
+        resp = requests.get(url, headers=headers)
+        if resp.status_code != 429:
+            return resp
+
+        reset = resp.headers.get("X-RateLimit-Reset")
+        if reset:
+            wait = max(0, int(reset) - time.time())
+        else:
+            wait = min(2 ** i, 60)
+        time.sleep(wait)
+
+    raise Exception("Rate limit exceeded")
+
+# Check usage
+resp = requests.get(
+    "https://afrotools.com/api/v1/fx/rates",
+    params={"base": "USD", "target": "NGN"},
+    headers={"x-api-key": "afro_live_your_key"}
+)
+remaining = resp.headers.get("X-RateLimit-Remaining")
+limit = resp.headers.get("X-RateLimit-Limit")
+print(f"Daily: {int(limit) - int(remaining)}/{limit}")
+
+monthly = resp.headers.get("X-RateLimit-Monthly-Remaining")
+print(f"Monthly remaining: {monthly}")</div>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

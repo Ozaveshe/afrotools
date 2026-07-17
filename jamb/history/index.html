@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My JAMB Mock History — Track Your Progress | AfroJAMB</title>
+<meta name="description" content="See every JAMB CBT mock test you've taken. Track your aggregate score over time, per-subject trends, and best score. Free, no sign-up.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="My JAMB Mock History">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/jamb.css?v=dc55e15e">
+
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<!-- afro-edu-bridge -->
+<script src="/assets/js/afro-auth.js?v=4250956b" defer></script>
+<script src="/assets/js/edu-profile-sync.js?v=8febee3d" defer></script>
+<script src="/assets/js/afro-edu-bridge.js?v=ab646560" defer></script>
+<script src="/assets/js/lib/cross-tool-nav.js?v=27275fef" defer></script>
+<!-- /afro-edu-bridge --><meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1443999710469672');
+fbq('track', 'PageView');
+</script>
+<!-- End Meta Pixel Code -->
+<meta property="og:url" content="https://afrotools.com/jamb/history/">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/jamb/history/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/jamb/history/">
+<link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/jamb/tarihi/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/jamb/history/">
+</head>
+<body class="jamb-page top-level-page-ui-refresh">
+<noscript><img aria-hidden="true" alt="" height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
+/></noscript>
+<a href="#main" class="jb-skip">Skip to main content</a>
+
+
+<afro-navbar active="education"></afro-navbar>
+
+<div class="jb-wrap">
+  <nav class="jb-bc" aria-label="Breadcrumb">
+    <a href="/">Home</a><span class="sep">/</span>
+    <a href="/education/">Education</a><span class="sep">/</span>
+    <a href="/jamb/">AfroJAMB</a><span class="sep">/</span>
+    <span class="cur">My History</span>
+  </nav>
+</div>
+
+<main id="main">
+<section class="jb-hero" style="padding:42px 0 50px;">
+  <div class="jb-wrap jb-hero-z">
+    <span class="jb-hero-tag">📈 Progress Tracker</span>
+    <h1>Your JAMB <b>practice history</b></h1>
+    <p class="sub">Every mock you've taken on this device. Track your trend over time and see which subjects are improving.</p>
+  </div>
+</section>
+
+<section class="jb-sec">
+  <div class="jb-wrap" style="max-width:880px;">
+
+    <div id="empty-state" hidden>
+      <div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:14px;padding:48px 24px;text-align:center;">
+        <div style="font-size:3rem;">📭</div>
+        <h3 style="margin:14px 0 6px;font-size:1.2rem;font-weight:800;color:#0f172a;">No mock tests yet</h3>
+        <p style="font-size:.88rem;color:#64748b;margin:0 0 20px;">Take your first CBT mock and your results will show up here.</p>
+        <a href="/jamb/cbt/" class="jb-btn jb-btn-primary">Start Your First Mock →</a>
+      </div>
+    </div>
+
+    <div id="content" hidden>
+      <!-- Stats summary -->
+      <div id="stats-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:24px;"></div>
+
+      <!-- Trend chart -->
+      <div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:14px;padding:24px;margin-bottom:18px;">
+        <h3 style="margin:0 0 4px;font-size:1rem;font-weight:800;color:#0f172a;">Aggregate score trend</h3>
+        <p style="font-size:.78rem;color:#64748b;margin:0 0 16px;">Your aggregate score on each mock, oldest to newest. Green line = your trajectory.</p>
+        <div style="position:relative;height:280px;">
+          <canvas id="trend-chart"></canvas>
+        </div>
+      </div>
+
+      <!-- Subject breakdown chart -->
+      <div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:14px;padding:24px;margin-bottom:18px;">
+        <h3 style="margin:0 0 4px;font-size:1rem;font-weight:800;color:#0f172a;">Per-subject trends</h3>
+        <p style="font-size:.78rem;color:#64748b;margin:0 0 16px;">Score per subject across your last 10 mocks.</p>
+        <div style="position:relative;height:280px;">
+          <canvas id="subj-chart"></canvas>
+        </div>
+      </div>
+
+      <!-- Attempt list -->
+      <h3 style="margin:24px 0 10px;font-size:1rem;font-weight:800;color:#0f172a;">All attempts</h3>
+      <div id="attempt-list" style="display:flex;flex-direction:column;gap:10px;"></div>
+
+      <div style="text-align:center;margin-top:24px;">
+        <button type="button" id="clear-btn" style="padding:8px 16px;font-size:.74rem;font-weight:700;border:1px solid #fee2e2;background:#fff;border-radius:8px;cursor:pointer;color:#991b1b;font-family:inherit;">Clear all history</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<afro-footer></afro-footer>
+
+<style>
+.stat {
+  background: #fff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px 14px;
+  text-align: center;
+}
+.stat-num { font-size: 1.6rem; font-weight: 800; color: #0062CC; line-height: 1; }
+.stat-lbl { font-size: .65rem; color: #64748b; margin-top: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+
+.attempt {
+  background: #fff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.attempt:hover { border-color: #4DA3FF; }
+.attempt-meta { flex: 1; min-width: 200px; }
+.attempt-mode {
+  font-size: .62rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #0062CC;
+  background: #E8F2FF;
+  padding: 3px 8px;
+  border-radius: 4px;
+  display: inline-block;
+}
+.attempt-date { font-size: .76rem; color: #64748b; margin-top: 4px; }
+.attempt-subjects { font-size: .72rem; color: #94a3b8; margin-top: 2px; }
+.attempt-score {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #0062CC;
+}
+.attempt-pct { font-size: .72rem; color: #64748b; }
+</style>
+
+<script>
+var SUBJ_LABEL = {
+  english:"📝 English", mathematics:"➗ Math", physics:"⚛️ Physics", chemistry:"🧪 Chem",
+  biology:"🌱 Biology", government:"🏛️ Govt", economics:"💹 Econ", literature:"📖 Lit",
+  crk:"✝️ CRK", commerce:"🛒 Comm", accounts:"📒 Acct"
+};
+
+function loadHistory() {
+  try { return JSON.parse(localStorage.getItem("afrojamb-history") || "[]"); } catch(e) { return []; }
+}
+
+function fmtDate(ts) {
+  var d = new Date(ts);
+  var day = d.toLocaleDateString("en-US", {month:"short", day:"numeric"});
+  var time = d.toLocaleTimeString("en-US", {hour:"numeric", minute:"2-digit"});
+  return day + " · " + time;
+}
+
+function render() {
+  var hist = loadHistory();
+  if (hist.length === 0) {
+    document.getElementById("empty-state").hidden = false;
+    document.getElementById("content").hidden = true;
+    return;
+  }
+  document.getElementById("empty-state").hidden = true;
+  document.getElementById("content").hidden = false;
+
+  // Stats
+  var best = Math.max.apply(null, hist.map(function(h){return h.aggregate||0;}));
+  var avg = Math.round(hist.reduce(function(s,h){return s+(h.aggregate||0);}, 0) / hist.length);
+  var totalQs = hist.reduce(function(s,h){return s+(h.outOf||0);}, 0);
+  var totalMin = Math.round(hist.reduce(function(s,h){return s+(h.durationSeconds||0);}, 0) / 60);
+
+  var statsBox = document.getElementById("stats-grid");
+  statsBox.innerHTML =
+    '<div class="stat"><div class="stat-num">' + hist.length + '</div><div class="stat-lbl">Mocks Taken</div></div>'
+    + '<div class="stat"><div class="stat-num">' + best + '</div><div class="stat-lbl">Best Aggregate</div></div>'
+    + '<div class="stat"><div class="stat-num">' + avg + '</div><div class="stat-lbl">Average</div></div>'
+    + '<div class="stat"><div class="stat-num">' + totalQs + '</div><div class="stat-lbl">Qs Answered</div></div>'
+    + '<div class="stat"><div class="stat-num">' + totalMin + '</div><div class="stat-lbl">Minutes</div></div>';
+
+  // Reverse for chronological (oldest first) for charts
+  var chrono = hist.slice().reverse();
+  var labels = chrono.map(function(h, i){ return "Mock " + (i+1); });
+
+  // Render attempt list FIRST so it shows even if Chart.js isn't ready
+  renderAttemptList(hist);
+
+  // Wait for Chart.js if it's not loaded yet
+  if (typeof Chart === "undefined") {
+    var waitForChart = setInterval(function(){
+      if (typeof Chart !== "undefined") {
+        clearInterval(waitForChart);
+        renderCharts(chrono);
+      }
+    }, 100);
+    return;
+  }
+  renderCharts(chrono);
+}
+
+function renderCharts(chrono) {
+  var labels = chrono.map(function(h, i){ return "Mock " + (i+1); });
+  // Trend chart
+  if (window._trendChart) window._trendChart.destroy();
+  window._trendChart = new Chart(document.getElementById("trend-chart").getContext("2d"), {
+    type: "line",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "Aggregate /400",
+        data: chrono.map(function(h){return h.aggregate||0;}),
+        borderColor: "#10b981",
+        backgroundColor: "rgba(16,185,129,.1)",
+        borderWidth: 3,
+        tension: .3,
+        pointRadius: 5,
+        pointHoverRadius: 7,
+        fill: true,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {legend:{display:false}},
+      scales: {
+        y: { beginAtZero: true, max: 400, grid:{color:"#f1f5f9"}, ticks:{color:"#64748b"} },
+        x: { grid:{display:false}, ticks:{color:"#64748b"} }
+      }
+    }
+  });
+
+  // Subject chart — last 10 mocks
+  var last10 = chrono.slice(-10);
+  var allSubjects = new Set();
+  last10.forEach(function(h){
+    Object.keys(h.subjectScores || {}).forEach(function(s){ allSubjects.add(s); });
+  });
+  var colors = ["#0062CC","#10b981","#f59e0b","#ef4444","#8b5cf6","#06b6d4","#ec4899"];
+  var datasets = Array.from(allSubjects).map(function(s, i){
+    return {
+      label: (SUBJ_LABEL[s] || s).split(" ")[1] || s,
+      data: last10.map(function(h){ return h.subjectScores && h.subjectScores[s] != null ? h.subjectScores[s] : null; }),
+      borderColor: colors[i % colors.length],
+      backgroundColor: colors[i % colors.length] + "20",
+      borderWidth: 2,
+      tension: .3,
+      pointRadius: 3,
+      spanGaps: true,
+    };
+  });
+  if (window._subjChart) window._subjChart.destroy();
+  window._subjChart = new Chart(document.getElementById("subj-chart").getContext("2d"), {
+    type: "line",
+    data: { labels: last10.map(function(h, i){return "Mock " + (i+1);}), datasets: datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: {mode:"index", intersect: false},
+      plugins: { legend: {position:"top", labels:{boxWidth:12, font:{size:11}}} },
+      scales: {
+        y: {beginAtZero:true, max:100, grid:{color:"#f1f5f9"}, ticks:{color:"#64748b"}},
+        x: {grid:{display:false}, ticks:{color:"#64748b"}}
+      }
+    }
+  });
+
+}
+
+function renderAttemptList(hist) {
+  var listBox = document.getElementById("attempt-list");
+  listBox.innerHTML = "";
+  hist.forEach(function(h){
+    var subjLbls = (h.subjects || []).map(function(s){return SUBJ_LABEL[s]||s;}).join(" · ");
+    var modeLbl = h.mode === "quick" ? "Quick Mock" : h.mode === "subject" ? "Single Subject" : "Full Mock";
+    var item = document.createElement("div");
+    item.className = "attempt";
+    item.innerHTML = '<div class="attempt-meta">'
+      + '<span class="attempt-mode">' + modeLbl + '</span>'
+      + '<div class="attempt-date">' + fmtDate(h.ts) + '</div>'
+      + '<div class="attempt-subjects">' + subjLbls + '</div>'
+      + '</div>'
+      + '<div style="text-align:right;">'
+      + '<div class="attempt-score">' + (h.aggregate || 0) + '<span style="font-size:.7rem;color:#94a3b8;font-weight:600;">/400</span></div>'
+      + '<div class="attempt-pct">' + (h.pctCorrect || 0) + '% correct'
+      + (h.ungraded ? ' · ' + h.ungraded + ' ungraded' : '')
+      + '</div>'
+      + '</div>';
+    listBox.appendChild(item);
+  });
+}
+
+document.getElementById("clear-btn").addEventListener("click", function(){
+  if (confirm("Clear all your mock history? This cannot be undone.")) {
+    localStorage.removeItem("afrojamb-history");
+    render();
+  }
+});
+
+render();
+</script>
+
+</body>
+</html>

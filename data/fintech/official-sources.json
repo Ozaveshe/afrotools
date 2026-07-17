@@ -1,0 +1,316 @@
+{
+  "version": 1,
+  "category": "fintech",
+  "name": "Fintech & Digital Banking official sources",
+  "reviewCadenceDays": 90,
+  "highRiskCadenceDays": 30,
+  "lastReviewed": "2026-07-17",
+  "notes": [
+    "Fintech holds some of the site's most price-perishable public numbers: mid-market FX rates, remittance provider fees and margins, payment-gateway and POS fees, digital-lending APRs, mobile-money charges, deposit and T-bill benchmark rates. FX and provider pricing move faster than any review cadence.",
+    "Unlike energy/telecom, fintech has no single country dataset file. Each tool embeds its own data (per-country option attributes or a provider table), and mid-market FX is now pulled live. This ledger therefore binds sources by CLASS OF CLAIM, not by a single dataset row.",
+    "Mid-market FX is sourced: remittance-compare (and b2b-payment for spread reference) now read live USD-based rates from the shared forex feed (/api/forex?base=USD, backed by data/forex/latest.json). A corridor rate is rates[dest]/rates[send]; when a currency is missing the tool falls back to a March 2026 benchmark snapshot rather than defaulting to zero.",
+    "Deposit, T-bill, bond and money-market BENCHMARK rates are anchored to central-bank policy rates and treasury auctions. The central bank is authoritative for the policy rate and the T-bill/bond auction yield; specific commercial-bank deposit offers shown in the tools are indicative and editable by the user.",
+    "Provider PRICING is commercial by design and recorded as unsourced: remittance fees/margins, payment-gateway and POS fees, digital-lending and microfinance APRs, BNPL fees, mobile-money charges, and SACCO dividend rates are offers, not regulated rates. They are recorded in gaps.unsourcedClaims exactly as energy records solar-kit prices.",
+    "Never update a benchmark rate, fee, APR or FX figure because a URL's content hash changed. Read the gazetted rate notice, auction result or published tariff first, exactly as .claude/rules/government.md and .claude/rules/energy.md require.",
+    "The bug class to watch, per .claude/rules/telecom.md and .claude/rules/energy.md: `country.data.field || 0` turns missing data into free, which then wins a cost comparison. A July 2026 audit found NO instance of this in the 32 fintech tools — every per-country/per-provider lookup either reads a complete data-* attribute into an editable input or is guarded by an explicit `if (!x) { alert; return }`. remittance-compare guards a missing corridor at index.html and must keep doing so. Preserve that; never let a future market or provider default a fee/rate/FX to zero."
+  ],
+  "tools": [
+    "fixed-deposit",
+    "money-market",
+    "tbill-calc",
+    "bond-yield",
+    "stock-portfolio",
+    "dividend-yield",
+    "sacco-calc",
+    "thrift-calc",
+    "dca-calc",
+    "real-return",
+    "property-vs-stocks",
+    "emergency-fund",
+    "fire-calc",
+    "net-worth",
+    "loan-shark-compare",
+    "microfinance-loan",
+    "digital-lending",
+    "credit-score",
+    "debt-snowball",
+    "loan-consolidation",
+    "bnpl-calc",
+    "asset-finance",
+    "invoice-factoring",
+    "trade-credit",
+    "remittance-compare",
+    "payment-gateway",
+    "pos-fees",
+    "mobile-vs-bank",
+    "qr-payment",
+    "bill-split",
+    "merchant-fees",
+    "b2b-payment"
+  ],
+  "fxFeed": {
+    "api": "/api/forex?base=USD",
+    "file": "data/forex/latest.json",
+    "source": "fawazahmed currency-api (via scheduled-fetch-forex-rates.js)",
+    "note": "Shared live FX source of record for the whole site. remittance-compare reads it on load and computes corridor mid-rates as rates[dest]/rates[send], falling back to a March 2026 snapshot per corridor. Do not hardcode a competing FX table in a fintech tool."
+  },
+  "sources": [
+    {
+      "id": "fx-shared-forex",
+      "country": "ALL",
+      "authority": "AfroTools shared forex feed (fawazahmed currency-api)",
+      "title": "Shared live FX source — /api/forex?base=USD",
+      "url": "https://afrotools.com/api/forex?base=USD",
+      "sourceType": "aggregator",
+      "watch": "availability-and-content",
+      "fields": ["fx.midMarket"],
+      "tools": ["remittance-compare", "b2b-payment"],
+      "notes": "Live USD-based mid-market rates. This is an aggregator, acceptable for mid-market FX because it is a neutral reference (not a provider quote). A provider's own live quote always outranks it for a specific transfer. Backed by data/forex/latest.json as offline fallback."
+    },
+    {
+      "id": "cb-ng",
+      "country": "NG",
+      "authority": "Central Bank of Nigeria (CBN)",
+      "title": "CBN — policy rate & NTB auction",
+      "url": "https://www.cbn.gov.ng/",
+      "sourceType": "central-bank",
+      "watch": "availability-and-content",
+      "fields": ["policyRate", "tbillYield"],
+      "tools": ["fixed-deposit", "tbill-calc", "bond-yield", "money-market"],
+      "notes": "Authoritative for the MPR and Nigerian Treasury Bill auction results. Read the published auction result before changing a benchmark yield; commercial-bank deposit offers remain indicative and user-editable."
+    },
+    {
+      "id": "cb-ke",
+      "country": "KE",
+      "authority": "Central Bank of Kenya (CBK)",
+      "title": "CBK — CBR & Treasury auctions",
+      "url": "https://www.centralbank.go.ke/",
+      "sourceType": "central-bank",
+      "watch": "availability-and-content",
+      "fields": ["policyRate", "tbillYield"],
+      "tools": ["fixed-deposit", "tbill-calc", "bond-yield", "money-market"],
+      "notes": "Authoritative for the Central Bank Rate and the 91/182/364-day Treasury bill auction. Read the auction result before changing a benchmark yield."
+    },
+    {
+      "id": "cb-za",
+      "country": "ZA",
+      "authority": "South African Reserve Bank (SARB)",
+      "title": "SARB — repo rate",
+      "url": "https://www.resbank.co.za/",
+      "sourceType": "central-bank",
+      "watch": "availability-and-content",
+      "fields": ["policyRate", "tbillYield"],
+      "tools": ["fixed-deposit", "tbill-calc", "bond-yield"],
+      "notes": "Authoritative for the repo rate and treasury issuance. Commercial deposit rates remain indicative."
+    },
+    {
+      "id": "cb-gh",
+      "country": "GH",
+      "authority": "Bank of Ghana (BoG)",
+      "title": "BoG — policy rate & T-bill auction",
+      "url": "https://www.bog.gov.gh/",
+      "sourceType": "central-bank",
+      "watch": "availability-and-content",
+      "fields": ["policyRate", "tbillYield"],
+      "tools": ["fixed-deposit", "tbill-calc", "bond-yield", "money-market"],
+      "notes": "Authoritative for the Monetary Policy Rate and weekly T-bill auction. Read the auction result before changing a benchmark yield."
+    },
+    {
+      "id": "cb-eg",
+      "country": "EG",
+      "authority": "Central Bank of Egypt (CBE)",
+      "title": "CBE — policy rate & T-bill auction",
+      "url": "https://www.cbe.org.eg/",
+      "sourceType": "central-bank",
+      "watch": "availability-and-content",
+      "fields": ["policyRate", "tbillYield"],
+      "tools": ["fixed-deposit", "tbill-calc", "bond-yield"],
+      "notes": "Authoritative for the overnight rates and Egyptian T-bill auctions."
+    },
+    {
+      "id": "cb-tz",
+      "country": "TZ",
+      "authority": "Bank of Tanzania (BoT)",
+      "title": "BoT — policy rate & T-bill auction",
+      "url": "https://www.bot.go.tz/",
+      "sourceType": "central-bank",
+      "watch": "availability-and-content",
+      "fields": ["policyRate", "tbillYield"],
+      "tools": ["fixed-deposit", "tbill-calc", "bond-yield"],
+      "notes": "Authoritative for the Tanzanian policy rate and treasury auctions."
+    },
+    {
+      "id": "cb-ug",
+      "country": "UG",
+      "authority": "Bank of Uganda (BoU)",
+      "title": "BoU — CBR & T-bill auction",
+      "url": "https://www.bou.or.ug/",
+      "sourceType": "central-bank",
+      "watch": "availability-and-content",
+      "fields": ["policyRate", "tbillYield"],
+      "tools": ["fixed-deposit", "tbill-calc", "bond-yield"],
+      "notes": "Authoritative for the Central Bank Rate and Ugandan treasury auctions."
+    },
+    {
+      "id": "cb-rw",
+      "country": "RW",
+      "authority": "National Bank of Rwanda (BNR)",
+      "title": "BNR — policy rate",
+      "url": "https://www.bnr.rw/",
+      "sourceType": "central-bank",
+      "watch": "availability-and-content",
+      "fields": ["policyRate", "tbillYield"],
+      "tools": ["fixed-deposit", "tbill-calc"],
+      "notes": "Authoritative for the Rwandan central bank rate and treasury auctions."
+    },
+    {
+      "id": "cb-ma",
+      "country": "MA",
+      "authority": "Bank Al-Maghrib",
+      "title": "Bank Al-Maghrib — key rate",
+      "url": "https://www.bkam.ma/",
+      "sourceType": "central-bank",
+      "watch": "availability-and-content",
+      "fields": ["policyRate", "tbillYield"],
+      "tools": ["fixed-deposit", "tbill-calc"],
+      "notes": "Authoritative for the Moroccan key rate and treasury auctions."
+    },
+    {
+      "id": "cb-et",
+      "country": "ET",
+      "authority": "National Bank of Ethiopia (NBE)",
+      "title": "NBE — policy rate",
+      "url": "https://nbe.gov.et/",
+      "sourceType": "central-bank",
+      "watch": "availability-and-content",
+      "fields": ["policyRate"],
+      "tools": ["fixed-deposit"],
+      "notes": "Authoritative for the Ethiopian national bank rate. Read the published notice before changing a benchmark."
+    },
+    {
+      "id": "cb-zm",
+      "country": "ZM",
+      "authority": "Bank of Zambia (BoZ)",
+      "title": "BoZ — policy rate & T-bill auction",
+      "url": "https://www.boz.zm/",
+      "sourceType": "central-bank",
+      "watch": "availability-and-content",
+      "fields": ["policyRate", "tbillYield"],
+      "tools": ["fixed-deposit", "tbill-calc"],
+      "notes": "Authoritative for the Zambian policy rate and treasury auctions."
+    },
+    {
+      "id": "cb-bw",
+      "country": "BW",
+      "authority": "Bank of Botswana",
+      "title": "Bank of Botswana — MoPR",
+      "url": "https://www.bankofbotswana.bw/",
+      "sourceType": "central-bank",
+      "watch": "availability-and-content",
+      "fields": ["policyRate"],
+      "tools": ["fixed-deposit"],
+      "notes": "Authoritative for the Monetary Policy Rate of Botswana."
+    },
+    {
+      "id": "cb-na",
+      "country": "NA",
+      "authority": "Bank of Namibia",
+      "title": "Bank of Namibia — repo rate",
+      "url": "https://www.bon.com.na/",
+      "sourceType": "central-bank",
+      "watch": "availability-and-content",
+      "fields": ["policyRate"],
+      "tools": ["fixed-deposit"],
+      "notes": "Authoritative for the Namibian repo rate."
+    },
+    {
+      "id": "cb-bceao",
+      "country": "SN",
+      "authority": "BCEAO (West African Economic and Monetary Union)",
+      "title": "BCEAO — WAEMU policy rate (XOF)",
+      "url": "https://www.bceao.int/",
+      "sourceType": "central-bank",
+      "watch": "availability-and-content",
+      "fields": ["policyRate", "tbillYield"],
+      "tools": ["fixed-deposit", "tbill-calc"],
+      "notes": "Authoritative for the XOF zone (Senegal, Cote d'Ivoire, and the other WAEMU members) policy rate and regional treasury auctions."
+    },
+    {
+      "id": "cb-beac",
+      "country": "CM",
+      "authority": "BEAC (Central African Economic and Monetary Community)",
+      "title": "BEAC — CEMAC policy rate (XAF)",
+      "url": "https://www.beac.int/",
+      "sourceType": "central-bank",
+      "watch": "availability-and-content",
+      "fields": ["policyRate", "tbillYield"],
+      "tools": ["fixed-deposit", "tbill-calc"],
+      "notes": "Authoritative for the XAF zone (Cameroon and the other CEMAC members) policy rate and regional treasury auctions."
+    }
+  ],
+  "gaps": {
+    "regulatorsWithoutUrl": [
+      {
+        "country": "AO",
+        "authority": "Banco Nacional de Angola (BNA)",
+        "needs": ["policyRate", "tbillYield"],
+        "why": "Angola's deposit benchmark is surfaced by fixed-deposit but the BNA URL is not bound here pending verification. Treat the shown rate as planning-grade."
+      },
+      {
+        "country": "MW",
+        "authority": "Reserve Bank of Malawi (RBM)",
+        "needs": ["policyRate"],
+        "why": "Malawi's deposit benchmark is surfaced by fixed-deposit but the RBM URL is not bound here pending verification. Treat the shown rate as planning-grade."
+      },
+      {
+        "country": "MZ",
+        "authority": "Banco de Mocambique",
+        "needs": ["policyRate"],
+        "why": "Mozambique's deposit benchmark is surfaced by fixed-deposit but the central-bank URL is not bound here pending verification. Treat the shown rate as planning-grade."
+      },
+      {
+        "country": "ZW",
+        "authority": "Reserve Bank of Zimbabwe (RBZ)",
+        "needs": ["policyRate"],
+        "why": "Zimbabwe's deposit tool shows a USD figure; the RBZ URL is not bound here pending verification, and the multi-currency regime makes any single benchmark fragile."
+      }
+    ],
+    "unsourcedClaims": [
+      {
+        "field": "remittance.fee",
+        "why": "Remittance provider transfer fees and FX margins (Wise, WorldRemit, Remitly, LemFi, Sendwave, Afriex, Western Union, MoneyGram, Chipper) are commercial offers from a March 2026 pricing snapshot, not regulated rates. The recipient's live quote is the only authority for a specific transfer.",
+        "tools": ["remittance-compare"]
+      },
+      {
+        "field": "paymentGateway.fee",
+        "why": "Payment-gateway pricing (Paystack, Flutterwave, Stripe, Chipper, Interswitch, Peach, DPO, Pesapal) is commercial and changes with negotiated merchant terms. The 0% bank-transfer rows are the provider's advertised structure, not a claim that settlement is free of all cost.",
+        "tools": ["payment-gateway", "merchant-fees"]
+      },
+      {
+        "field": "pos.mdr",
+        "why": "POS merchant discount rates, terminal rental and caps are commercial acquirer offers that vary by merchant category and volume.",
+        "tools": ["pos-fees", "merchant-fees"]
+      },
+      {
+        "field": "digitalLending.apr",
+        "why": "Digital-lending and microfinance APRs (Branch, Tala, FairMoney, Carbon, Zenka, OKash, Jumo, LAPO, FINCA) are commercial and change frequently; some are quoted as fee-per-cycle rather than APR. Verify the lender's own disclosure before borrowing.",
+        "tools": ["digital-lending", "microfinance-loan", "loan-shark-compare", "bnpl-calc"]
+      },
+      {
+        "field": "mobileMoney.fee",
+        "why": "Mobile-money send/withdraw tariffs (M-Pesa, MTN MoMo, Airtel Money) are operator tariffs that change by band and market; the tools take them as user input rather than asserting a rate.",
+        "tools": ["mobile-vs-bank", "qr-payment"]
+      },
+      {
+        "field": "sacco.dividendRate",
+        "why": "SACCO / cooperative dividend and thrift returns are member-society declarations, not regulated rates. Some markets legitimately declare 0% in a given year.",
+        "tools": ["sacco-calc", "thrift-calc"]
+      },
+      {
+        "field": "b2b.fxSpread",
+        "why": "Cross-border B2B provider FX spreads (SWIFT correspondent, Wise Business, Payoneer, Flutterwave) are modelled as indicative percentage spreads, not a live per-provider quote. Confirm the provider's live rate before funding.",
+        "tools": ["b2b-payment"]
+      }
+    ]
+  }
+}

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Matatu / Danfo / Trotro Fare Calculator Africa | AfroTools</title>
+<meta name="description" content="Estimate matatu fares in Nairobi, danfo fares in Lagos, trotro fares in Accra, and dala-dala fares in Dar es Salaam. Monthly commute cost comparison vs ride-hailing.">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Matatu / Danfo Fare Calculator Africa | AfroTools">
+<meta property="og:description" content="Estimate matatu fares in Nairobi, danfo fares in Lagos, trotro fares in Accra, and dala-dala fares in Dar es Salaam. Monthly commute cost comparison vs ride-hailing.">
+<meta property="og:url" content="https://afrotools.com/tools/matatu-fare/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Matatu / Danfo / Trotro Fare Calculator Africa | AfroTools">
+<meta name="twitter:description" content="Estimate matatu fares in Nairobi, danfo fares in Lagos, trotro fares in Accra, and dala-dala fares in Dar es Salaam. Monthly commute cost comparison vs ride-hailing.">
+<meta name="tool-id" content="matatu-fare">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+.tool-hero{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);color:#fff;padding:44px 0 52px}
+.tool-hero .container{max-width:900px;margin:0 auto;padding:0 1.5rem}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.65);margin-bottom:1rem}
+.breadcrumb a{color:rgba(255,255,255,.65)}
+.breadcrumb a:hover{color:#fff}
+.breadcrumb span{margin:0 6px;opacity:.5}
+.tool-hero h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;line-height:1.2;margin:.5rem 0 .75rem}
+.tool-hero h1 em{font-style:normal;color:#f59e0b}
+.tool-hero-sub{font-size:.95rem;color:rgba(255,255,255,.82);max-width:580px;line-height:1.6}
+.tool-pills{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;background:rgba(255,255,255,.12);border-radius:100px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.85)}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1.25rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.field{display:flex;flex-direction:column;gap:4px}
+label{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#374151}
+.hint{font-size:.72rem;color:#9ca3af;margin-top:-2px}
+select{width:100%;padding:10px 12px;border:1.5px solid #d1d5db;border-radius:10px;font-size:.9rem;font-family:inherit;background:#fff;color:#1a1a2e;transition:border-color .2s;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239ca3af' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+select:focus{outline:none;border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(0,98,204,.12)}
+input[type=number]{width:100%;padding:10px 12px;border:1.5px solid #d1d5db;border-radius:10px;font-size:.9rem;font-family:inherit;background:#fff;color:#1a1a2e;transition:border-color .2s}
+input:focus{outline:none;border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(0,98,204,.12)}
+.btn-calc{display:block;width:100%;padding:14px;border:none;border-radius:12px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;transition:background .2s;margin-top:.5rem}
+.btn-calc:hover{background:#0059B3}
+.results{display:none;margin-top:1.25rem}
+.results.on{display:block;animation:fadeUp .4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.fare-hero{background:linear-gradient(135deg,#0f1419,#1a1f2e);border-radius:14px;padding:1.75rem;text-align:center;margin-bottom:1.25rem}
+.fare-label{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.65)}
+.fare-amount{font-size:clamp(2rem,6vw,3.5rem);font-weight:800;color:#f59e0b;margin:.25rem 0}
+.fare-sub{font-size:.85rem;color:rgba(255,255,255,.6)}
+.compare-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1.25rem}
+.cmp-box{background:#f8fafc;border:1.5px solid #e5e7eb;border-radius:12px;padding:1rem;text-align:center}
+.cmp-icon{font-size:1.5rem;margin-bottom:.35rem}
+.cmp-name{font-size:.75rem;font-weight:700;color:#374151;margin-bottom:.25rem}
+.cmp-val{font-size:1.1rem;font-weight:800;color:var(--color-primary)}
+.cmp-val.cheaper{color:#16a34a}
+.route-info{background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:1rem 1.25rem;font-size:.85rem;color:#1e40af;line-height:1.7;margin-top:1rem}
+.faq-section{margin-top:2.5rem}
+.faq-section h2{font-size:1.25rem;font-weight:700;margin-bottom:1rem}
+details{border:1px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+summary{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
+details[open] summary::after{content:'\2212'}
+.faq-body{padding:0 1.25rem 1rem;font-size:.85rem;color:#4b5563;line-height:1.65}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr}.compare-grid{grid-template-columns:1fr}}
+</style>
+<link rel="stylesheet" href="/assets/css/transport-focus.css?v=f286e7af">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/matatu-fare.webp">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/matatu-fare.webp">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Matatu/Danfo Route Fare Calc?","acceptedAnswer":{"@type":"Answer","text":"Enter your route, distance and costs in the fields above. The Matatu/Danfo Route Fare Calc then gives you a cost or income estimate you can plan around you can use straight away."}},{"@type":"Question","name":"How accurate is the Matatu/Danfo Route Fare Calc?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current fuel prices, fares and local charges before you rely on it."}},{"@type":"Question","name":"Is the Matatu/Danfo Route Fare Calc free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for Kenya, Nigeria, Ghana."}},{"@type":"Question","name":"How much is matatu fare in Nairobi?","acceptedAnswer":{"@type":"Answer","text":"Nairobi matatu fares (2026): CBD to Westlands KSh 50, CBD to Thika KSh 120-150, CBD to Rongai KSh 80-100, CBD to Kikuyu KSh 60-80. Peak hour fares can be 20-50% higher. The Nairobi matatu system covers hundreds of routes. Saccos (matatu cooperatives) regulate routes and some have introduced cashless M-Pesa payment systems."}},{"@type":"Question","name":"How much is danfo fare in Lagos?","acceptedAnswer":{"@type":"Answer","text":"Lagos danfo fares vary significantly by route and time. Typical 2026 fares: Oshodi-CMS ₦400-600, Ikeja-CMS ₦600-800, Yaba-CMS ₦300-500. Lagos BRT bus fares are lower — Oshodi to CMS: ₦250. BRT is more reliable, safer, and climate-controlled but routes are limited. During peak hours (7-9am, 5-8pm) fares can increase by 50-100% especially on key arteries."}},{"@type":"Question","name":"Is trotro or ride-hailing cheaper in Accra?","acceptedAnswer":{"@type":"Answer","text":"Trotro is significantly cheaper for regular commutes. Accra trotro: Accra-Tema GH₵12, Accra Circle-Madina GH₵5. An Uber for the same Accra-Tema route would cost GH₵60-120 depending on traffic. For a monthly commuter, trotro can cost 5-10x less than ride-hailing. However, trotro is slower, more unpredictable, and less comfortable. Yango and Bolt are trying to offer middle ground with shared ride options."}},{"@type":"Question","name":"How much does it cost to commute monthly in Nairobi vs Lagos?","acceptedAnswer":{"@type":"Answer","text":"Nairobi matatu commuter (CBD return daily): KSh 100-300/day = KSh 2,200-6,600/month. Lagos danfo commuter (moderate route): ₦800-1,200/day = ₦17,600-26,400/month. In USD terms, Nairobi costs approximately $17-50/month and Lagos approximately $23-35/month for public transport. Ride-hailing for the same commute would cost 5-10x more in both cities."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/lib/source-confidence.js?v=e7c3ebe4" defer></script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Matatu / Danfo / Trotro Fare Calculator Africa",
+  "description": "Estimate matatu fares in Nairobi, danfo fares in Lagos, trotro fares in Accra, and dala-dala fares in Dar es Salaam. Monthly commute cost comparison vs ride-hailing.",
+  "url": "https://afrotools.com/tools/matatu-fare/",
+  "inLanguage": "en",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/matatu-fare.webp"
+}
+</script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Matatu / Danfo / Trotro Fare Calculator Africa","item":"https://afrotools.com/tools/matatu-fare/"}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/matatu-fare/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/matatu-fare/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/tarif-matatu-danfo/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/nauli-za-matatu-danfo-trotro/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/matatu-fare/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar theme="dark" active="transport"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb">
+      <a href="/">AfroTools</a><span>›</span>
+      <a href="/transport/">Transport &amp; Logistics</a><span>›</span>
+      Matatu / Danfo Fare Calculator
+    </nav>
+    <h1>Matatu / Danfo <em>Fare Calculator</em></h1>
+    <p class="tool-hero-sub">Estimate fares for matatu (Nairobi), danfo (Lagos), trotro (Accra), and dala-dala (Dar es Salaam). Calculate monthly commute costs and compare with ride-hailing.</p>
+    <div class="tool-pills">
+      <span class="pill">&#x1f68e; 15 Countries</span>
+      <span class="pill">&#x1f4b0; Free</span>
+      <span class="pill">&#x1f695; vs Ride-Hailing</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="card">
+    <h2>&#x1f68e; Route Details</h2>
+    <div class="form-grid">
+      <div class="field">
+        <label for="matatuCity">City</label>
+        <select id="matatuCity" onchange="updateRoutes()">
+          <option value="nairobi">Nairobi (Matatu)</option>
+          <option value="lagos">Lagos (Danfo)</option>
+          <option value="kampala">Kampala (Taxi / Minibus)</option>
+          <option value="dares">Dar es Salaam (Dala-Dala)</option>
+          <option value="accra">Accra (Trotro)</option>
+          <option value="addis">Addis Ababa (Minibus)</option>
+          <option value="kigali">Kigali (Twegerane)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Route</label>
+        <select id="matatuRoute" aria-label="Matatu Route"></select>
+      </div>
+      <div class="field">
+        <label>Number of Transfers</label>
+        <select id="matatuTransfers" aria-label="Matatu Transfers">
+          <option value="0">Direct (no transfer)</option>
+          <option value="1">1 transfer</option>
+          <option value="2">2 transfers</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Commute Days per Month</label>
+        <input aria-label="MatatuDays" type="number" id="matatuDays" value="22" min="1" max="31">
+        <span class="hint">Both ways (×2 for round trip)</span>
+      </div>
+    </div>
+    <button type="button" class="btn-calc" onclick="calcMatatuFare()">Calculate Fare</button>
+
+    <div class="results" id="matatuResults">
+      <div class="fare-hero">
+        <div class="fare-label">Estimated One-Way Fare</div>
+        <div class="fare-amount" id="matatuFare">0</div>
+        <div class="fare-sub" id="matatuCity2">Nairobi Matatu</div>
+      </div>
+      <div class="compare-grid">
+        <div class="cmp-box">
+          <div class="cmp-icon">&#x1f68e;</div>
+          <div class="cmp-name">Matatu / Danfo<br>Monthly</div>
+          <div class="cmp-val" id="matatuMonthly">0</div>
+        </div>
+        <div class="cmp-box">
+          <div class="cmp-icon">&#x1f695;</div>
+          <div class="cmp-name">Ride-Hailing<br>Monthly (est.)</div>
+          <div class="cmp-val" id="matatuRideHail">0</div>
+        </div>
+        <div class="cmp-box">
+          <div class="cmp-icon">&#x1f4b0;</div>
+          <div class="cmp-name">Monthly Saving<br>(vs ride-hailing)</div>
+          <div class="cmp-val cheaper" id="matatuSaving">0</div>
+        </div>
+      </div>
+      <div class="route-info" id="matatuInfo"></div>
+    </div>
+  </div>
+
+<section class="df-upgrade" data-df-upgrade="matatu-fare">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Practical workflow</span>
+      <h2>Matatu/Danfo Route Fare Calc: quick guide</h2>
+      <p>Not sure how to get the most from the Matatu/Danfo Route Fare Calc? Enter your route, distance and costs and it returns a cost or income estimate you can plan around — built for Kenya, Nigeria, Ghana.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a cost or income estimate you can plan around, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Matatu/Danfo Route Fare Calc takes your route, distance and costs and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current fuel prices, fares and local charges before you rely on the result.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current fuel prices, fares and local charges before acting.</p>
+    </div>
+    <form class="df-form" data-df-form="matatu-fare">
+      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
+      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
+      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
+      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="matatu-fare" data-df-base="Matatu/Danfo Route Fare Calc — enter your details above to see your result." aria-live="polite">Matatu/Danfo Route Fare Calc — enter your details above to see your result.</output>
+      <div class="df-actions"><button type="button" data-df-copy="matatu-fare">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="matatu-fare-faq-title">
+  <h2 id="matatu-fare-faq-title">Matatu/Danfo Route Fare Calc FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the Matatu/Danfo Route Fare Calc?</summary><p>Enter your route, distance and costs in the fields above. The Matatu/Danfo Route Fare Calc then gives you a cost or income estimate you can plan around you can use straight away.</p></details><details><summary>How accurate is the Matatu/Danfo Route Fare Calc?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current fuel prices, fares and local charges before you rely on it.</p></details><details><summary>Is the Matatu/Danfo Route Fare Calc free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for Kenya, Nigeria, Ghana.</p></details></div>
+</section>
+  <div class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <details><summary>How much is matatu fare in Nairobi?</summary><div class="faq-body">Nairobi matatu fares (2026): CBD to Westlands KSh 50, CBD to Thika KSh 120-150, CBD to Rongai KSh 80-100, CBD to Kikuyu KSh 60-80. Peak hour fares can be 20-50% higher. The Nairobi matatu system covers hundreds of routes. Saccos (matatu cooperatives) regulate routes and some have introduced cashless M-Pesa payment systems.</div></details>
+    <details><summary>How much is danfo fare in Lagos?</summary><div class="faq-body">Lagos danfo fares vary significantly by route and time. Typical 2026 fares: Oshodi-CMS ₦400-600, Ikeja-CMS ₦600-800, Yaba-CMS ₦300-500. Lagos BRT bus fares are lower — Oshodi to CMS: ₦250. BRT is more reliable, safer, and climate-controlled but routes are limited. During peak hours (7-9am, 5-8pm) fares can increase by 50-100% especially on key arteries.</div></details>
+    <details><summary>Is trotro or ride-hailing cheaper in Accra?</summary><div class="faq-body">Trotro is significantly cheaper for regular commutes. Accra trotro: Accra-Tema GH₵12, Accra Circle-Madina GH₵5. An Uber for the same Accra-Tema route would cost GH₵60-120 depending on traffic. For a monthly commuter, trotro can cost 5-10x less than ride-hailing. However, trotro is slower, more unpredictable, and less comfortable. Yango and Bolt are trying to offer middle ground with shared ride options.</div></details>
+    <details><summary>How much does it cost to commute monthly in Nairobi vs Lagos?</summary><div class="faq-body">Nairobi matatu commuter (CBD return daily): KSh 100-300/day = KSh 2,200-6,600/month. Lagos danfo commuter (moderate route): ₦800-1,200/day = ₦17,600-26,400/month. In USD terms, Nairobi costs approximately $17-50/month and Lagos approximately $23-35/month for public transport. Ride-hailing for the same commute would cost 5-10x more in both cities.</div></details>
+  </div>
+</div>
+<afro-related-tools data-ssr="1" category="transport" current="matatu-fare">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/cars/" data-related-tool data-id="car-price-intelligence" data-name="African Car Price Directory" data-category="transport" data-icon="AC" data-desc="Search popular imported cars with source-market price ranges, landed-cost ranges, local asking ranges, and import-vs-loc">African Car Price Directory</a></li><li><a href="/tools/car-import-cost/" data-related-tool data-id="car-import-cost" data-name="African Car Landed Cost Calculator" data-category="transport" data-icon="AC" data-desc="Estimate true car import landed and on-road cost across Nigeria, Kenya, Ghana, Uganda, Zambia, and Tanzania. Customs, po">African Car Landed Cost Calculator</a></li><li><a href="/tools/ride-fare/" data-related-tool data-id="ride-fare" data-name="Ride-Hailing Fare Estimator" data-category="transport" data-icon="RH" data-desc="Estimate Uber, Bolt, InDrive, Little fares across 20 African cities. Compare ride types, surge pricing awareness.">Ride-Hailing Fare Estimator</a></li><li><a href="/tools/boda-income/" data-related-tool data-id="boda-income" data-name="Boda-Boda/Okada Income Calc" data-category="transport" data-icon="BB" data-desc="Calculate daily/monthly income for motorcycle taxi riders in East and West Africa. Fuel, maintenance, net earnings.">Boda-Boda/Okada Income Calc</a></li><li><a href="/tools/delivery-cost/" data-related-tool data-id="delivery-cost" data-name="Delivery Cost Estimator" data-category="transport" data-icon="DC" data-desc="Estimate last-mile delivery costs for African e-commerce and logistics. Weight, distance, mtoa shipping comparison.">Delivery Cost Estimator</a></li><li><a href="/tools/car-loan-vs-cash/" data-related-tool data-id="car-loan-vs-cash" data-name="Car Loan vs Cash Purchase" data-category="transport" data-icon="CL" data-desc="Compare financing a car vs paying cash in Africa. Interest cost, depreciation, opportunity cost — which makes more sense">Car Loan vs Cash Purchase</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+<script>
+var MATATU_ROUTES = {
+  nairobi: {
+    name: 'Nairobi Matatu', currency: 'KSh',
+    rideFare: {base:80, perKm:30},
+    routes: [
+      {name:'CBD → Westlands', fare:50, km:5, duration:25},
+      {name:'CBD → Thika Road', fare:120, km:18, duration:45},
+      {name:'CBD → Rongai', fare:80, km:25, duration:55},
+      {name:'CBD → Kikuyu', fare:60, km:15, duration:40},
+      {name:'CBD → Mombasa Road', fare:70, km:12, duration:35},
+      {name:'CBD → Githurai', fare:100, km:20, duration:50},
+      {name:'CBD → Karen', fare:90, km:18, duration:45}
+    ]
+  },
+  lagos: {
+    name: 'Lagos Danfo', currency: '₦',
+    rideFare: {base:200, perKm:35},
+    routes: [
+      {name:'Oshodi → CMS', fare:400, km:12, duration:60},
+      {name:'Ikeja → CMS', fare:600, km:18, duration:75},
+      {name:'Yaba → CMS', fare:300, km:8, duration:40},
+      {name:'Lekki → CMS', fare:700, km:22, duration:90},
+      {name:'Ojota → Ikeja', fare:200, km:6, duration:30},
+      {name:'Ikorodu → CMS', fare:800, km:35, duration:120}
+    ]
+  },
+  kampala: {
+    name: 'Kampala Minibus', currency: 'UGX',
+    rideFare: {base:3000, perKm:800},
+    routes: [
+      {name:'Old Taxi Park → Entebbe', fare:5000, km:40, duration:90},
+      {name:'City Centre → Mukono', fare:3000, km:20, duration:50},
+      {name:'Wandegeya → Kalerwe', fare:800, km:3, duration:20},
+      {name:'City → Ntinda', fare:1500, km:8, duration:30}
+    ]
+  },
+  dares: {
+    name: 'Dar es Salaam Dala-Dala', currency: 'TZS',
+    rideFare: {base:2000, perKm:500},
+    routes: [
+      {name:'Posta → Kimara', fare:700, km:18, duration:55},
+      {name:'Posta → Tegeta', fare:1200, km:28, duration:80},
+      {name:'Kariakoo → Mwenge', fare:600, km:12, duration:40},
+      {name:'CBD → Mbagala', fare:800, km:15, duration:50}
+    ]
+  },
+  accra: {
+    name: 'Accra Trotro', currency: 'GH₵',
+    rideFare: {base:4, perKm:2},
+    routes: [
+      {name:'Accra → Tema', fare:12, km:30, duration:60},
+      {name:'Circle → Madina', fare:5, km:12, duration:35},
+      {name:'Accra → Kumasi', fare:60, km:250, duration:240},
+      {name:'Kaneshie → East Legon', fare:8, km:15, duration:40}
+    ]
+  },
+  addis: {
+    name: 'Addis Ababa Minibus', currency: 'ETB',
+    rideFare: {base:30, perKm:15},
+    routes: [
+      {name:'Megenagna → Piassa', fare:10, km:8, duration:35},
+      {name:'Bole → Mercato', fare:12, km:10, duration:40},
+      {name:'CMC → Kolfe', fare:8, km:6, duration:30},
+      {name:'Piassa → Lideta', fare:5, km:4, duration:20}
+    ]
+  },
+  kigali: {
+    name: 'Kigali Twegerane', currency: 'RWF',
+    rideFare: {base:500, perKm:200},
+    routes: [
+      {name:'Nyabugogo → Remera', fare:350, km:8, duration:30},
+      {name:'Nyabugogo → Kimironko', fare:400, km:10, duration:35},
+      {name:'City → Kicukiro', fare:300, km:7, duration:25}
+    ]
+  }
+};
+
+function updateRoutes() {
+  var city = document.getElementById('matatuCity').value;
+  var data = MATATU_ROUTES[city];
+  var routeEl = document.getElementById('matatuRoute');
+  routeEl.innerHTML = (data ? data.routes : []).map(function(r, i){
+    return '<option value="' + i + '">' + r.name + ' (~' + r.km + ' km)</option>';
+  }).join('');
+}
+updateRoutes();
+
+function calcMatatuFare() {
+  var city = document.getElementById('matatuCity').value;
+  var routeIdx = parseInt(document.getElementById('matatuRoute').value) || 0;
+  var transfers = parseInt(document.getElementById('matatuTransfers').value) || 0;
+  var days = parseInt(document.getElementById('matatuDays').value) || 22;
+
+  var data = MATATU_ROUTES[city];
+  if (!data) return;
+
+  var route = data.routes[routeIdx];
+  if (!route) return;
+
+  var transferFare = transfers * route.fare * 0.5; // each transfer costs ~50% of main fare
+  var totalFare = route.fare + transferFare;
+  var monthlyBus = totalFare * 2 * days; // round trip
+
+  // Ride-hailing estimate
+  var rideOneway = data.rideFare.base + data.rideFare.perKm * route.km;
+  var monthlyRide = rideOneway * 2 * days;
+  var saving = monthlyRide - monthlyBus;
+
+  var fmt = function(n){ return data.currency + ' ' + Math.round(n).toLocaleString(); };
+
+  document.getElementById('matatuFare').textContent = fmt(totalFare);
+  document.getElementById('matatuCity2').textContent = data.name + ' | ~' + route.duration + ' min';
+  document.getElementById('matatuMonthly').textContent = fmt(monthlyBus);
+  document.getElementById('matatuRideHail').textContent = fmt(monthlyRide);
+  document.getElementById('matatuSaving').textContent = fmt(saving);
+
+  document.getElementById('matatuInfo').innerHTML = '&#x1f4cd; <strong>Route: ' + route.name + '</strong> | Distance: ~' + route.km + ' km | Est. time: ~' + route.duration + ' min | Transfers: ' + transfers + '<br>&#x1f4b0; Using public transport saves approximately <strong>' + fmt(saving) + '/month</strong> vs ride-hailing. Annual saving: <strong>' + fmt(saving * 12) + '</strong>. Note: matatu fares are higher during peak hours (7-9am, 5-8pm) and may increase 20-50% during school holidays or bad weather.';
+
+  document.getElementById('matatuResults').classList.add('on');
+}
+</script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/pages/transport-focus.js?v=03ea47f7" defer></script>
+
+  <!-- AfroTools source confidence -->
+  <div class="container afro-source-meta" data-source-meta-id="ledger-tool-matatu-fare" data-source-meta-compact="true"></div>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

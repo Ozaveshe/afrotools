@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Minimum Wages — AfroTools Admin</title>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', -apple-system, sans-serif; background: #F5F9FF; color: #1a2e22; line-height: 1.6; }
+  .dash { max-width: 1400px; margin: 0 auto; padding: 32px 24px; }
+  .dash-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+  .dash-header h1 { font-size: 1.4rem; font-weight: 800; }
+  .dash-header .badge { background: #fef3cd; color: #92400e; font-size: .65rem; font-weight: 700; padding: 3px 10px; border-radius: 12px; text-transform: uppercase; }
+  .back-link { font-size: .82rem; color: #0062CC; text-decoration: none; margin-bottom: 16px; display: inline-block; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .stat-card { background: #fff; border: 1px solid #E8F0FE; border-radius: 12px; padding: 14px; text-align: center; }
+  .stat-value { font-size: 1.4rem; font-weight: 800; color: #0062CC; }
+  .stat-value.warn { color: #d97706; }
+  .stat-label { font-size: .72rem; color: #6B7F99; margin-top: 2px; }
+  .section { background: #fff; border: 1px solid #E8F0FE; border-radius: 12px; padding: 24px; margin-bottom: 20px; overflow-x: auto; }
+  .section h2 { font-size: 1rem; font-weight: 700; margin-bottom: 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: .77rem; min-width: 1200px; }
+  th { text-align: left; font-weight: 600; color: #6B7F99; padding: 7px 6px; border-bottom: 2px solid #E8F0FE; white-space: nowrap; font-size: .74rem; }
+  td { padding: 4px 6px; border-bottom: 1px solid #EFF6FF; }
+  tr:hover td { background: #F5F9FF; }
+  td input[type="number"] { width: 85px; padding: 3px 5px; border: 1.5px solid #E5E7EB; border-radius: 5px; font-size: .77rem; text-align: right; }
+  td input[type="text"]   { width: 65px; padding: 3px 5px; border: 1.5px solid #E5E7EB; border-radius: 5px; font-size: .77rem; }
+  td input.wide { width: 180px; }
+  td input[type="date"] { padding: 3px 5px; border: 1.5px solid #E5E7EB; border-radius: 5px; font-size: .77rem; }
+  td input:focus { border-color: #0062CC; outline: none; }
+  .btn { padding: 4px 11px; border: none; border-radius: 5px; font-family: inherit; font-size: .75rem; font-weight: 600; cursor: pointer; }
+  .btn-save { background: #059669; color: #fff; }
+  .btn-save:hover { background: #047857; }
+  .stale { background: #FEF2F2; }
+  .stale-badge { font-size: .58rem; font-weight: 700; background: #FEE2E2; color: #991B1B; padding: 2px 5px; border-radius: 4px; }
+  .fresh-badge { font-size: .58rem; font-weight: 700; background: #ECFDF5; color: #059669; padding: 2px 5px; border-radius: 4px; }
+  .source-note { font-size: .72rem; color: #94a3b8; margin-top: 12px; }
+  .toast { position: fixed; top: 20px; right: 20px; padding: 12px 20px; border-radius: 8px; color: #fff;
+    font-size: .85rem; font-weight: 500; z-index: 999; transform: translateY(-20px); opacity: 0; transition: all .3s; }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { background: #059669; }
+  .toast.error { background: #dc2626; }
+  .search-bar { margin-bottom: 12px; }
+  .search-bar input { padding: 8px 14px; border: 1.5px solid #E5E7EB; border-radius: 8px; font-family: inherit; font-size: .82rem; width: 260px; }
+  .search-bar input:focus { border-color: #0062CC; outline: none; }
+</style>
+<meta property="article:modified_time" content="2026-03-28">
+<link rel="canonical" href="https://afrotools.com/admin/wages">
+<meta property="og:url" content="https://afrotools.com/admin/wages">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c4853917">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/lib/dark-mode.js?v=5cb64ba3" defer></script>
+</head>
+<body class="top-level-page-ui-refresh">
+<div class="dash">
+  <a href="/admin/dashboard" class="back-link">&larr; Admin Dashboard</a>
+  <div class="dash-header">
+    <h1>💵 Minimum Wages — Farm Payroll</h1>
+    <span class="badge">Admin</span>
+  </div>
+  <div class="stats" id="wageStats"></div>
+
+  <div class="section">
+    <h2>All 54 African Countries — Labour Rates & Deductions</h2>
+    <div class="search-bar">
+      <input aria-label="🔍 Search country" type="text" id="searchInput" placeholder="🔍 Search country…" oninput="filterTable()">
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Country</th>
+          <th>Currency</th>
+          <th>Daily Low</th>
+          <th>Daily Mid</th>
+          <th>Daily High</th>
+          <th>Monthly Min Wage</th>
+          <th>Pension %</th>
+          <th>Health %</th>
+          <th>Other Ded %</th>
+          <th>Effective Date</th>
+          <th>Notes</th>
+          <th>Updated</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="wageTable">
+        <tr><td colspan="14" style="text-align:center;color:#94a3b8;padding:24px">Loading wage data…</td></tr>
+      </tbody>
+    </table>
+    <div class="source-note">Sources: ILO NATLEX, national labour ministries. Review annually or when minimum wage changes.</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var adminKey = sessionStorage.getItem('admin_key');
+if (!adminKey) { adminKey = prompt('Enter admin password:'); if (adminKey) sessionStorage.setItem('admin_key', adminKey); }
+var SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
+var allData = [];
+var filteredData = [];
+
+var COUNTRIES_54 = [
+  ['DZ','Algeria','DZD'],['AO','Angola','AOA'],['BJ','Benin','XOF'],['BW','Botswana','BWP'],
+  ['BF','Burkina Faso','XOF'],['BI','Burundi','BIF'],['CV','Cape Verde','CVE'],['CM','Cameroon','XAF'],
+  ['CF','Central African Rep.','XAF'],['TD','Chad','XAF'],['KM','Comoros','KMF'],
+  ['CG','Congo-Brazzaville','XAF'],['CI',"Côte d'Ivoire",'XOF'],['DJ','Djibouti','DJF'],
+  ['CD','DR Congo','CDF'],['EG','Egypt','EGP'],['GQ','Equatorial Guinea','XAF'],
+  ['ER','Eritrea','ERN'],['SZ','Eswatini','SZL'],['ET','Ethiopia','ETB'],['GA','Gabon','XAF'],
+  ['GM','Gambia','GMD'],['GH','Ghana','GHS'],['GN','Guinea','GNF'],['GW','Guinea-Bissau','XOF'],
+  ['KE','Kenya','KES'],['LS','Lesotho','LSL'],['LR','Liberia','LRD'],['LY','Libya','LYD'],
+  ['MG','Madagascar','MGA'],['MW','Malawi','MWK'],['ML','Mali','XOF'],['MR','Mauritania','MRU'],
+  ['MU','Mauritius','MUR'],['MA','Morocco','MAD'],['MZ','Mozambique','MZN'],['NA','Namibia','NAD'],
+  ['NE','Niger','XOF'],['NG','Nigeria','NGN'],['RW','Rwanda','RWF'],['ST','São Tomé','STN'],
+  ['SN','Senegal','XOF'],['SC','Seychelles','SCR'],['SL','Sierra Leone','SLL'],
+  ['SO','Somalia','SOS'],['ZA','South Africa','ZAR'],['SS','South Sudan','SSP'],
+  ['SD','Sudan','SDG'],['TZ','Tanzania','TZS'],['TG','Togo','XOF'],['TN','Tunisia','TND'],
+  ['UG','Uganda','UGX'],['ZM','Zambia','ZMW'],['ZW','Zimbabwe','USD']
+];
+
+function showToast(msg, type) {
+  var t = document.getElementById('toast'); t.textContent = msg;
+  t.className = 'toast ' + (type || 'success'); t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 3000);
+}
+function timeAgo(dateStr) {
+  if (!dateStr) return 'Never';
+  var days = Math.floor((Date.now() - new Date(dateStr).getTime()) / 86400000);
+  if (days === 0) return 'Today'; if (days === 1) return 'Yesterday';
+  if (days < 30) return days + 'd ago'; return Math.floor(days / 30) + 'mo ago';
+}
+function isStale(d) { return !d || (Date.now() - new Date(d).getTime()) > 365 * 86400000; } // 1yr for wages
+
+async function loadData() {
+  try {
+    var res = await fetch(SUPABASE_URL + '/rest/v1/minimum_wages?select=*&order=country_name.asc', {
+      headers: { apikey: adminKey, Authorization: 'Bearer ' + adminKey }
+    });
+    var dbRows = res.ok ? await res.json() : [];
+    var dbMap = {};
+    dbRows.forEach(function(r) { dbMap[r.country_code] = r; });
+    allData = COUNTRIES_54.map(function(c) {
+      return dbMap[c[0]] || { country_code: c[0], country_name: c[1], currency: c[2],
+        daily_rate_low: null, daily_rate_mid: null, daily_rate_high: null,
+        monthly_minimum: null, pension_pct: 0, health_pct: 0, other_deductions_pct: 0,
+        effective_date: null, notes: '', updated_at: null };
+    });
+    filteredData = allData;
+    renderTable(); renderStats();
+  } catch(e) { showToast('Load error: ' + e.message, 'error'); }
+}
+
+function filterTable() {
+  var q = document.getElementById('searchInput').value.toLowerCase();
+  filteredData = q ? allData.filter(function(r) {
+    return r.country_name.toLowerCase().includes(q) || r.country_code.toLowerCase().includes(q);
+  }) : allData;
+  renderTable();
+}
+
+function renderStats() {
+  var stale = allData.filter(function(r) { return isStale(r.updated_at); }).length;
+  var fresh = allData.length - stale;
+  document.getElementById('wageStats').innerHTML =
+    '<div class="stat-card"><div class="stat-value">' + allData.length + '</div><div class="stat-label">Countries</div></div>' +
+    '<div class="stat-card"><div class="stat-value">' + fresh + '</div><div class="stat-label">Up to Date</div></div>' +
+    '<div class="stat-card"><div class="stat-value' + (stale > 0 ? ' warn' : '') + '">' + stale + '</div><div class="stat-label">Stale (>1yr)</div></div>';
+}
+
+function renderTable() {
+  var n = function(v) { return v !== null && v !== undefined ? v : ''; };
+  document.getElementById('wageTable').innerHTML = filteredData.map(function(r, i) {
+    var stale = isStale(r.updated_at);
+    // Find actual index in allData for saveRow
+    var realIdx = allData.indexOf(r);
+    return '<tr class="' + (stale ? 'stale' : '') + '" data-idx="' + realIdx + '">' +
+      '<td><strong>' + r.country_code + '</strong> ' + r.country_name + '</td>' +
+      '<td><input aria-label="Currency" type="text" value="' + n(r.currency) + '" data-field="currency" style="width:55px"></td>' +
+      '<td><input aria-label="Daily rate low" type="number" step="1" value="' + n(r.daily_rate_low)  + '" data-field="daily_rate_low"></td>' +
+      '<td><input aria-label="Daily rate mid" type="number" step="1" value="' + n(r.daily_rate_mid)  + '" data-field="daily_rate_mid"></td>' +
+      '<td><input aria-label="Daily rate high" type="number" step="1" value="' + n(r.daily_rate_high) + '" data-field="daily_rate_high"></td>' +
+      '<td><input aria-label="Monthly minimum" type="number" step="1" value="' + n(r.monthly_minimum) + '" data-field="monthly_minimum"></td>' +
+      '<td><input aria-label="Pension pct" type="number" step="0.1" value="' + n(r.pension_pct)            + '" data-field="pension_pct" style="width:65px"></td>' +
+      '<td><input aria-label="Health pct" type="number" step="0.1" value="' + n(r.health_pct)             + '" data-field="health_pct" style="width:65px"></td>' +
+      '<td><input aria-label="Other deductions pct" type="number" step="0.1" value="' + n(r.other_deductions_pct)   + '" data-field="other_deductions_pct" style="width:65px"></td>' +
+      '<td><input aria-label="Effective date" type="date" value="' + (r.effective_date || '') + '" data-field="effective_date"></td>' +
+      '<td><input aria-label="Remarks" type="text" class="wide" value="' + (r.notes||'').replace(/"/g,'&quot;') + '" data-field="notes" placeholder="Remarks…"></td>' +
+      '<td style="font-size:.7rem;color:#94a3b8;white-space:nowrap">' + timeAgo(r.updated_at) + '</td>' +
+      '<td>' + (stale ? '<span class="stale-badge">STALE</span>' : '<span class="fresh-badge">OK</span>') + '</td>' +
+      '<td><button type="button" class="btn btn-save" onclick="saveRow(' + realIdx + ')">Save</button></td>' +
+    '</tr>';
+  }).join('');
+}
+
+async function saveRow(idx) {
+  var r = allData[idx];
+  var row = document.querySelector('tr[data-idx="' + idx + '"]');
+  var f = function(field) { return parseFloat(row.querySelector('[data-field="' + field + '"]').value) || null; };
+  var payload = {
+    country_code: r.country_code, country_name: r.country_name,
+    currency:              row.querySelector('[data-field="currency"]').value,
+    daily_rate_low:        f('daily_rate_low'),
+    daily_rate_mid:        f('daily_rate_mid'),
+    daily_rate_high:       f('daily_rate_high'),
+    monthly_minimum:       f('monthly_minimum'),
+    pension_pct:           f('pension_pct') || 0,
+    health_pct:            f('health_pct') || 0,
+    other_deductions_pct:  f('other_deductions_pct') || 0,
+    effective_date:        row.querySelector('[data-field="effective_date"]').value || null,
+    notes:                 row.querySelector('[data-field="notes"]').value,
+    updated_at: new Date().toISOString(), updated_by: 'admin'
+  };
+  try {
+    var res = await fetch(SUPABASE_URL + '/rest/v1/minimum_wages', {
+      method: 'POST',
+      headers: { apikey: adminKey, Authorization: 'Bearer ' + adminKey,
+        'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates,return=representation' },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) {
+      allData[idx] = Object.assign(r, payload);
+      showToast(r.country_name + ' wages updated'); renderTable(); renderStats();
+    } else showToast('Save failed: ' + await res.text(), 'error');
+  } catch(e) { showToast('Network error', 'error'); }
+}
+
+loadData();
+</script>
+</body>
+</html>

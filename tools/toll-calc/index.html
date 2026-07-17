@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Toll Fee Calculator Africa — Lagos, Johannesburg, Accra Routes | AfroTools</title>
+<meta name="description" content="Calculate toll fees on major African routes. Compare e-tag vs cash savings, one-way vs return, and monthly commute toll costs for Nigeria, South Africa, Ghana, and more.">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Toll Fee Calculator Africa | AfroTools">
+<meta property="og:description" content="Calculate toll fees on major African routes. Compare e-tag vs cash savings, one-way vs return, and monthly commute toll costs for Nigeria, South Africa, Ghana, and more.">
+<meta property="og:url" content="https://afrotools.com/tools/toll-calc/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Toll Fee Calculator Africa — Lagos, Johannesburg, Accra Routes | AfroTools">
+<meta name="twitter:description" content="Calculate toll fees on major African routes. Compare e-tag vs cash savings, one-way vs return, and monthly commute toll costs for Nigeria, South Africa, Ghana, and more.">
+<meta name="tool-id" content="toll-calc">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+.tool-hero{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);color:#fff;padding:44px 0 52px}
+.tool-hero .container{max-width:900px;margin:0 auto;padding:0 1.5rem}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.65);margin-bottom:1rem}
+.breadcrumb a{color:rgba(255,255,255,.65)}
+.breadcrumb a:hover{color:#fff}
+.breadcrumb span{margin:0 6px;opacity:.5}
+.tool-hero h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;line-height:1.2;margin:.5rem 0 .75rem}
+.tool-hero h1 em{font-style:normal;color:#f59e0b}
+.tool-hero-sub{font-size:.95rem;color:rgba(255,255,255,.82);max-width:580px;line-height:1.6}
+.tool-pills{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;background:rgba(255,255,255,.12);border-radius:100px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.85)}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1.25rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.field{display:flex;flex-direction:column;gap:4px}
+label{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#374151}
+.hint{font-size:.72rem;color:#9ca3af;margin-top:-2px}
+input[type=number],select{width:100%;padding:10px 12px;border:1.5px solid #d1d5db;border-radius:10px;font-size:.9rem;font-family:inherit;background:#fff;color:#1a1a2e;transition:border-color .2s}
+input:focus,select:focus{outline:none;border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(0,98,204,.12)}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239ca3af' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+.btn-calc{display:block;width:100%;padding:14px;border:none;border-radius:12px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;transition:background .2s;margin-top:.5rem}
+.btn-calc:hover{background:#0059B3}
+.results{display:none;margin-top:1.25rem}
+.results.on{display:block;animation:fadeUp .4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.toll-hero{background:linear-gradient(135deg,#0f1419,#1a1f2e);border-radius:14px;padding:1.75rem;display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;text-align:center;margin-bottom:1.25rem}
+.th-val{font-size:1.35rem;font-weight:800;color:#f59e0b}
+.th-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.6);margin-top:4px}
+.toll-table{width:100%;border-collapse:collapse;font-size:.88rem}
+.toll-table th,.toll-table td{padding:10px 12px;text-align:left;border-bottom:1px solid #f1f5f9}
+.toll-table th{font-weight:700;color:#374151;background:#f8fafc;font-size:.78rem;text-transform:uppercase}
+.toll-table td:last-child{text-align:right;font-weight:600}
+.saving-box{background:#dcfce7;border:1px solid #86efac;border-radius:12px;padding:1rem 1.25rem;font-size:.88rem;color:#14532d;margin-top:1rem}
+.faq-section{margin-top:2.5rem}
+.faq-section h2{font-size:1.25rem;font-weight:700;margin-bottom:1rem}
+details{border:1px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+summary{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
+details[open] summary::after{content:'\2212'}
+.faq-body{padding:0 1.25rem 1rem;font-size:.85rem;color:#4b5563;line-height:1.65}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr}.toll-hero{grid-template-columns:1fr 1fr}}
+</style>
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/toll-calc.webp">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/toll-calc.webp">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Toll Fee Calculator Africa?","acceptedAnswer":{"@type":"Answer","text":"Enter your route, distance and costs in the fields above. The Toll Fee Calculator Africa then gives you a cost or income estimate you can plan around you can use straight away."}},{"@type":"Question","name":"How accurate is the Toll Fee Calculator Africa?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current fuel prices, fares and local charges before you rely on it."}},{"@type":"Question","name":"Is the Toll Fee Calculator Africa free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"How much does it cost to drive Lagos to Ibadan?","acceptedAnswer":{"@type":"Answer","text":"The Lagos-Ibadan Expressway has multiple toll plazas. For a private car paying cash, expect to pay approximately ₦3,000 one-way. Using an e-tag through Remitta or the LASG system may give a 10-15% discount. For daily commuters making this trip, monthly toll costs alone can reach ₦66,000 (₦3,000 × 22 working days × 2 trips). Factor in fuel costs separately."}},{"@type":"Question","name":"Does South Africa's e-toll system still operate?","acceptedAnswer":{"@type":"Answer","text":"South Africa's Gauteng e-toll system was officially scrapped in 2022 and all e-toll debt was written off. However, SANRAL still operates conventional toll gates on national roads including the N1 (Johannesburg-Pretoria), N3 (Johannesburg-Durban), N4, and others. These are traditional cash or card payment toll plazas, not the controversial urban e-tolling system."}},{"@type":"Question","name":"Are there tolls on Kenyan roads?","acceptedAnswer":{"@type":"Answer","text":"Kenya currently has no operational national toll system on most major roads. The Nairobi Expressway (launched 2022) is the main tolled road, charging KSh 100-800 depending on vehicle class and distance. The Nairobi-Mombasa road has no tolls but uses SGR (Standard Gauge Railway) for passenger transport. KENHA and KeNHA are considering expanding toll roads."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/lib/source-confidence.js?v=e7c3ebe4" defer></script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Toll Fee Calculator Africa — Lagos, Johannesburg, Accra Routes",
+  "description": "Calculate toll fees on major African routes. Compare e-tag vs cash savings, one-way vs return, and monthly commute toll costs for Nigeria, South Africa, Ghana, and more.",
+  "url": "https://afrotools.com/tools/toll-calc/",
+  "inLanguage": "en",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/toll-calc.webp"
+}
+</script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Toll Fee Calculator Africa — Lagos, Johannesburg, Accra Routes","item":"https://afrotools.com/tools/toll-calc/"}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/toll-calc/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/toll-calc/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ada-za-toll/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/toll-calc/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar theme="dark" active="transport"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb">
+      <a href="/">AfroTools</a><span>›</span>
+      <a href="/transport/">Transport &amp; Logistics</a><span>›</span>
+      Toll Fee Calculator
+    </nav>
+    <h1>Toll Fee <em>Calculator</em></h1>
+    <p class="tool-hero-sub">Calculate toll fees on major African highways. Compare e-tag vs cash payments, one-way vs return trips, and monthly commute toll costs for Nigeria, South Africa, Ghana, and more.</p>
+    <div class="tool-pills">
+      <span class="pill">&#x1f6e3;&#xfe0f; 15 Countries</span>
+      <span class="pill">&#x1f4b0; Free</span>
+      <span class="pill">&#x1f4b3; E-tag Savings</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="card">
+    <h2>&#x1f6e3;&#xfe0f; Route &amp; Trip Details</h2>
+    <div class="form-grid">
+      <div class="field">
+        <label for="tollCountry">Country</label>
+        <select id="tollCountry" onchange="updateTollRoutes()">
+          <option value="nigeria">Nigeria</option>
+          <option value="southafrica">South Africa</option>
+          <option value="ghana">Ghana</option>
+          <option value="kenya">Kenya (no national tolls)</option>
+          <option value="ethiopia">Ethiopia</option>
+          <option value="tanzania">Tanzania</option>
+          <option value="cameroon">Cameroon</option>
+          <option value="senegal">Senegal</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Route</label>
+        <select id="tollRoute" aria-label="Toll Route"></select>
+      </div>
+      <div class="field">
+        <label>Vehicle Type</label>
+        <select id="tollVehicle" aria-label="Toll Vehicle">
+          <option value="car">Car / Light Motor Vehicle</option>
+          <option value="minibus">Minibus / Kombi</option>
+          <option value="heavy">Heavy Truck</option>
+          <option value="motorcycle">Motorcycle</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Trip Type</label>
+        <select id="tollTrip" aria-label="Toll Trip">
+          <option value="oneway">One-Way</option>
+          <option value="return">Return (same day)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Trips per Month (commute)</label>
+        <input aria-label="TollMonthly" type="number" id="tollMonthly" value="22" min="0">
+        <span class="hint">Enter 0 if not a regular commute</span>
+      </div>
+      <div class="field">
+        <label>Payment Method</label>
+        <select id="tollPayment" aria-label="Toll Payment">
+          <option value="cash">Cash</option>
+          <option value="etag">E-tag / Tag (10-15% discount)</option>
+        </select>
+      </div>
+    </div>
+    <button type="button" class="btn-calc" onclick="calcTollFee()">Calculate Toll Costs</button>
+
+    <div class="results" id="tollResults">
+      <div class="toll-hero">
+        <div><div class="th-val" id="tollOneWay">0</div><div class="th-label">Per Trip</div></div>
+        <div><div class="th-val" id="tollReturn">0</div><div class="th-label">Return</div></div>
+        <div><div class="th-val" id="tollMonthlyCost">0</div><div class="th-label">Monthly</div></div>
+        <div><div class="th-val" id="tollAnnual">0</div><div class="th-label">Annual</div></div>
+      </div>
+      <table class="toll-table" id="tollBreakdown">
+        <thead><tr><th>Toll Gate</th><th>Car (Cash)</th><th>With E-tag</th></tr></thead>
+        <tbody id="tollGateRows"></tbody>
+      </table>
+      <div class="saving-box" id="tollSaving"></div>
+    </div>
+  </div>
+
+<section class="df-upgrade" data-df-upgrade="toll-calc">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Practical workflow</span>
+      <h2>Toll Fee Calculator Africa: quick guide</h2>
+      <p>Not sure how to get the most from the Toll Fee Calculator Africa? Enter your route, distance and costs and it returns a cost or income estimate you can plan around — built for all 54 African countries.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a cost or income estimate you can plan around, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Toll Fee Calculator Africa takes your route, distance and costs and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current fuel prices, fares and local charges before you rely on the result.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current fuel prices, fares and local charges before acting.</p>
+    </div>
+    <form class="df-form" data-df-form="toll-calc">
+      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
+      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
+      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
+      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="toll-calc" data-df-base="Toll Fee Calculator Africa — enter your details above to see your result." aria-live="polite">Toll Fee Calculator Africa — enter your details above to see your result.</output>
+      <div class="df-actions"><button type="button" data-df-copy="toll-calc">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="toll-calc-faq-title">
+  <h2 id="toll-calc-faq-title">Toll Fee Calculator Africa — Lagos, Johannesburg, Accra Routes FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the Toll Fee Calculator Africa?</summary><p>Enter your route, distance and costs in the fields above. The Toll Fee Calculator Africa then gives you a cost or income estimate you can plan around you can use straight away.</p></details><details><summary>How accurate is the Toll Fee Calculator Africa?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current fuel prices, fares and local charges before you rely on it.</p></details><details><summary>Is the Toll Fee Calculator Africa free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
+</section>
+  <div class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <details><summary>How much does it cost to drive Lagos to Ibadan?</summary><div class="faq-body">The Lagos-Ibadan Expressway has multiple toll plazas. For a private car paying cash, expect to pay approximately ₦3,000 one-way. Using an e-tag through Remitta or the LASG system may give a 10-15% discount. For daily commuters making this trip, monthly toll costs alone can reach ₦66,000 (₦3,000 × 22 working days × 2 trips). Factor in fuel costs separately.</div></details>
+    <details><summary>Does South Africa's e-toll system still operate?</summary><div class="faq-body">South Africa's Gauteng e-toll system was officially scrapped in 2022 and all e-toll debt was written off. However, SANRAL still operates conventional toll gates on national roads including the N1 (Johannesburg-Pretoria), N3 (Johannesburg-Durban), N4, and others. These are traditional cash or card payment toll plazas, not the controversial urban e-tolling system.</div></details>
+    <details><summary>Are there tolls on Kenyan roads?</summary><div class="faq-body">Kenya currently has no operational national toll system on most major roads. The Nairobi Expressway (launched 2022) is the main tolled road, charging KSh 100-800 depending on vehicle class and distance. The Nairobi-Mombasa road has no tolls but uses SGR (Standard Gauge Railway) for passenger transport. KENHA and KeNHA are considering expanding toll roads.</div></details>
+  </div>
+</div>
+<afro-related-tools data-ssr="1" category="transport" current="toll-calc">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/cars/" data-related-tool data-id="car-price-intelligence" data-name="African Car Price Directory" data-category="transport" data-icon="AC" data-desc="Search popular imported cars with source-market price ranges, landed-cost ranges, local asking ranges, and import-vs-loc">African Car Price Directory</a></li><li><a href="/tools/car-import-cost/" data-related-tool data-id="car-import-cost" data-name="African Car Landed Cost Calculator" data-category="transport" data-icon="AC" data-desc="Estimate true car import landed and on-road cost across Nigeria, Kenya, Ghana, Uganda, Zambia, and Tanzania. Customs, po">African Car Landed Cost Calculator</a></li><li><a href="/tools/ride-fare/" data-related-tool data-id="ride-fare" data-name="Ride-Hailing Fare Estimator" data-category="transport" data-icon="RH" data-desc="Estimate Uber, Bolt, InDrive, Little fares across 20 African cities. Compare ride types, surge pricing awareness.">Ride-Hailing Fare Estimator</a></li><li><a href="/tools/matatu-fare/" data-related-tool data-id="matatu-fare" data-name="Matatu/Danfo Route Fare Calc" data-category="transport" data-icon="MD" data-desc="Calculate public transport fares for matatu (Kenya), danfo (Nigeria), trotro (Ghana) routes by distance and zone.">Matatu/Danfo Route Fare Calc</a></li><li><a href="/tools/boda-income/" data-related-tool data-id="boda-income" data-name="Boda-Boda/Okada Income Calc" data-category="transport" data-icon="BB" data-desc="Calculate daily/monthly income for motorcycle taxi riders in East and West Africa. Fuel, maintenance, net earnings.">Boda-Boda/Okada Income Calc</a></li><li><a href="/tools/delivery-cost/" data-related-tool data-id="delivery-cost" data-name="Delivery Cost Estimator" data-category="transport" data-icon="DC" data-desc="Estimate last-mile delivery costs for African e-commerce and logistics. Weight, distance, mtoa shipping comparison.">Delivery Cost Estimator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+<script>
+var TOLL_ROUTES = {
+  nigeria: [
+    {name:'Lagos-Ibadan (Expressway)', gates:[{name:'Ibafo', car:200},{name:'Sagamu Junction', car:500},{name:'Ibadan', car:300}]},
+    {name:'Lagos-Ore (via Sagamu)', gates:[{name:'Sagamu', car:500},{name:'Ore', car:500},{name:'Shagamu', car:200}]},
+    {name:'Abuja-Kaduna', gates:[{name:'Gwagwalada', car:300},{name:'Suleja', car:300},{name:'Kaduna South', car:400}]},
+    {name:'Lokoja-Abuja', gates:[{name:'Koton-Karfe', car:200},{name:'Abaji', car:300}]}
+  ],
+  southafrica: [
+    {name:'N1 Johannesburg-Pretoria', gates:[{name:'Bela-Bela (N1)', car:48},{name:'Carousel (N1)', car:48}]},
+    {name:'N3 Johannesburg-Durban', gates:[{name:'Wilge', car:70},{name:'Tugela', car:60},{name:'Bergview', car:65},{name:'Mooi River', car:60},{name:'Mariannhill', car:50}]},
+    {name:'N1 Cape Town-Paarl', gates:[{name:'Huguenot Tunnel', car:130}]},
+    {name:'Nairobi Expressway (Kenya)', gates:[{name:'Zone A', car:100},{name:'Zone B', car:200},{name:'Zone C', car:400},{name:'Full route', car:800}]}
+  ],
+  ghana: [
+    {name:'Accra-Kumasi (N6)', gates:[{name:'Yamoransa', car:5},{name:'Anwiankwanta', car:5},{name:'Asante Bekwai', car:5},{name:'Kumasi', car:10}]},
+    {name:'Accra-Takoradi (N1)', gates:[{name:'Kasoa', car:5},{name:'Yamoransa', car:5}]},
+    {name:'Accra-Cape Coast', gates:[{name:'Yamoransa', car:5},{name:'Cape Coast', car:5}]}
+  ],
+  kenya: [
+    {name:'Nairobi Expressway (full)', gates:[{name:'Mlolongo to Westlands', car:800}]},
+    {name:'Nairobi Expressway (partial)', gates:[{name:'Mlolongo-Museum Hill', car:400}]}
+  ],
+  ethiopia: [
+    {name:'Addis-Adama Expressway', gates:[{name:'Toll 1', car:30},{name:'Toll 2', car:30}]},
+    {name:'Addis-Jimma Road', gates:[{name:'Sebeta', car:20}]}
+  ],
+  tanzania: [
+    {name:'Dar-Chalinze', gates:[{name:'Chalinze', car:2000},{name:'Morogoro bypass', car:1000}]},
+    {name:'TANZAM Highway', gates:[{name:'Mikumi', car:2000},{name:'Iringa', car:2000}]}
+  ],
+  cameroon: [
+    {name:'Douala-Yaoundé', gates:[{name:'Edéa', car:500},{name:'Eséka', car:500},{name:'Mbankomo', car:500}]}
+  ],
+  senegal: [
+    {name:'Dakar-Touba Autoroute', gates:[{name:'Thiès', car:1000},{name:'Touba', car:1000}]},
+    {name:'Dakar-Diamniadio', gates:[{name:'Patte d\'oie', car:500},{name:'Diamniadio', car:1000}]}
+  ]
+};
+
+function updateTollRoutes() {
+  var country = document.getElementById('tollCountry').value;
+  var routes = TOLL_ROUTES[country] || [];
+  document.getElementById('tollRoute').innerHTML = routes.map(function(r, i){
+    return '<option value="' + i + '">' + r.name + '</option>';
+  }).join('');
+}
+updateTollRoutes();
+
+function calcTollFee() {
+  var country = document.getElementById('tollCountry').value;
+  var routeIdx = parseInt(document.getElementById('tollRoute').value) || 0;
+  var vehicle = document.getElementById('tollVehicle').value;
+  var tripType = document.getElementById('tollTrip').value;
+  var monthly = parseInt(document.getElementById('tollMonthly').value) || 0;
+  var isEtag = document.getElementById('tollPayment').value === 'etag';
+
+  var routes = TOLL_ROUTES[country] || [];
+  var route = routes[routeIdx];
+  if (!route) return;
+
+  var multipliers = {car:1, minibus:2, heavy:5, motorcycle:0.5};
+  var mult = multipliers[vehicle] || 1;
+  var etagDiscount = isEtag ? 0.88 : 1;
+
+  var totalOneway = route.gates.reduce(function(s, g){ return s + g.car * mult; }, 0) * etagDiscount;
+  var totalReturn = tripType === 'return' ? totalOneway * 2 : totalOneway;
+  var monthlyTotal = totalReturn * monthly;
+  var annualTotal = monthlyTotal * 12;
+
+  var fmt = function(n){ return n.toLocaleString('en', {maximumFractionDigits:0}); };
+
+  document.getElementById('tollOneWay').textContent = fmt(Math.round(totalOneway));
+  document.getElementById('tollReturn').textContent = fmt(Math.round(totalReturn));
+  document.getElementById('tollMonthlyCost').textContent = fmt(Math.round(monthlyTotal));
+  document.getElementById('tollAnnual').textContent = fmt(Math.round(annualTotal));
+
+  document.getElementById('tollGateRows').innerHTML = route.gates.map(function(g){
+    var cash = g.car * mult;
+    var etag = cash * 0.88;
+    return '<tr><td>' + g.name + '</td><td>' + fmt(Math.round(cash)) + '</td><td>' + fmt(Math.round(etag)) + '</td></tr>';
+  }).join('');
+
+  var cashTotal = route.gates.reduce(function(s, g){ return s + g.car * mult; }, 0);
+  var etagTotal = cashTotal * 0.88;
+  var annualSaving = (cashTotal - etagTotal) * (tripType === 'return' ? 2 : 1) * monthly * 12;
+
+  document.getElementById('tollSaving').innerHTML = isEtag
+    ? '&#x1f4b3; You\'re using e-tag — saving approximately ' + fmt(Math.round(annualSaving)) + ' per year vs cash payment.'
+    : '&#x1f4a1; Switch to e-tag / tag payment to save approximately 10-15% (' + fmt(Math.round(annualSaving)) + '/year on this route).';
+
+  document.getElementById('tollResults').classList.add('on');
+}
+</script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+
+  <!-- AfroTools source confidence -->
+  <div class="container afro-source-meta" data-source-meta-id="ledger-tool-toll-calc" data-source-meta-compact="true"></div>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

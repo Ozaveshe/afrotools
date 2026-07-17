@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crop Yield Estimators for Africa &mdash; 54 Countries | AfroTools</title>
+<meta name="description" content="Free crop yield calculators for all 54 African countries. Estimate cassava, maize, rice, sorghum, millet yields by region with country-specific agricultural data.">
+<meta property="og:title" content="Crop Yield Estimators for Africa &mdash; AfroTools">
+<meta property="og:description" content="Free crop yield calculators for all 54 African countries. Estimate yields by region with country-specific agricultural data.">
+<meta property="og:url" content="https://afrotools.com/agriculture/crop-yield/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/crop-yield-estimator.webp">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Crop Yield Estimators for Africa","url":"https://afrotools.com/agriculture/crop-yield/","description":"Free crop yield calculators for all 54 African countries.","author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/crop-yield-estimator.webp"}</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/agriculture.css?v=70592203">
+
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+
+<style>
+:root {
+  --calc-accent: #0062CC;
+  --calc-accent-dark: #0063D1;
+  --calc-accent-light: #E8F2FF;
+  --color-bg: #F8F9FA;
+  --color-bg-card: #FFFFFF;
+  --color-text: #1A1A2E;
+  --color-text-muted: #6B7280;
+  --radius-md: 18px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; background: var(--color-bg); color: var(--color-text); margin: 0; }
+
+.hub-hero {
+  background: var(--color-bg-dark, #0A1628);
+  color: #fff;
+  padding: 3rem 1rem 2.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hub-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(0,98,204,0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hub-hero-inner { max-width: 720px; margin: 0 auto; }
+.hub-hero .breadcrumb { font-size: 0.85rem; opacity: 0.85; margin-bottom: 0.75rem; }
+.hub-hero .breadcrumb a { color: #fff; text-decoration: none; }
+.hub-hero .breadcrumb a:hover { text-decoration: underline; }
+.hub-hero h1 {
+  color: #fff;
+  font-size: clamp(1.5rem, 5.5vw, 2.6rem);
+  font-weight: 800;
+  margin: 0 0 0.75rem;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.hub-hero p { font-size: 1.05rem; opacity: 1; line-height: 1.6; max-width: 600px; margin: 0 auto; }
+.hub-hero .badge-row { display: flex; justify-content: center; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap; }
+.hub-badge {
+  background: rgba(255,255,255,0.22);
+  border-radius: 980px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.hub-main { max-width: 1100px; margin: -1.5rem auto 3rem; padding: 0 1rem;  position: relative; z-index: 2;}
+
+.region-section { margin-bottom: 2rem; }
+.region-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--calc-accent-light);
+}
+
+.country-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+.country-card {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--color-bg-card);
+  border: 1.5px solid #E5E7EB;
+  border-radius: 14px;
+  padding: 0.85rem 1rem;
+  text-decoration: none;
+  color: var(--color-text);
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+.country-card:hover {
+  border-color: var(--calc-accent);
+  box-shadow: 0 4px 12px rgba(0,98,204,0.12);
+  transform: translateY(-2px);
+}
+.country-card .flag { font-size: 1.5rem; flex-shrink: 0; }
+.country-card .name { flex: 1; }
+.country-card .arrow { color: var(--color-text-muted); font-size: 1.1rem; }
+
+/* SEO content */
+.seo-content {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+.seo-content h2 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin: 2rem 0 0.75rem;
+  color: var(--color-text);
+}
+.seo-content p {
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--color-text-muted);
+}
+.faq details {
+  border-bottom: 1px solid #E5E7EB;
+  padding: 0.85rem 0;
+}
+.faq summary {
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  list-style: none;
+}
+.faq summary::before { content: '+ '; color: var(--calc-accent); font-weight: 800; }
+.faq details[open] summary::before { content: '- '; }
+.faq p { font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.6; margin: 0.5rem 0 0; }
+</style>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:title" content="Crop Yield Estimators for Africa &mdash; AfroTools">
+<meta name="twitter:description" content="Free crop yield calculators for all 54 African countries. Estimate yields by region with country-specific agricultural data.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/crop-yield-estimator.webp">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How accurate are the yield estimates?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Estimates are based on national average yields from FAOSTAT adjusted by research-backed multipliers for region, soil, irrigation, fertilizer, and seed type. They provide a reasonable range but actual yields depend on many factors including weather, pests, and management practices."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What crops are covered?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Over 40 crop types are covered, including cereals (maize, rice, sorghum, millet, wheat, teff), roots and tubers (cassava, yam, sweet potato), legumes (cowpea, groundnut, soybean), cash crops (cocoa, coffee, tea, cotton), fruits, and vegetables."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where does the data come from?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Primary sources include FAOSTAT (FAO), HarvestStat Africa, World Bank, national statistics bureaus, and CGIAR research centers. Yield data uses 3-5 year averages to smooth out weather variability."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use this for farm planning?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The tool is designed to help with pre-season planning, input budgeting, and revenue forecasting. Consult your local agricultural extension office for specific advice on your farm conditions."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Agriculture",
+      "item": "https://afrotools.com/agriculture/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Crop Yield Estimators",
+      "item": "https://afrotools.com/agriculture/crop-yield/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/agriculture-page-ui-refresh.css?v=411c7880">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/agriculture/crop-yield/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/agriculture/crop-yield/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/agriculture/crop-yield/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/makisio-ya-mavuno/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/agriculture/crop-yield/">
+</head>
+
+<body class="agriculture-page-ui-refresh top-level-page-ui-refresh">
+<afro-navbar active="tools"></afro-navbar>
+
+<section class="hub-hero">
+  <div class="hub-hero-inner">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">AfroTools</a> &rsaquo; Agriculture &rsaquo; Crop Yield Estimators
+    </nav>
+    <h1>&#127807; Crop Yield Estimators for Africa</h1>
+    <p>Free yield estimation tools for all 54 African countries. Select a country below to estimate crop yields using region-specific agricultural data.</p>
+    <div class="badge-row">
+      <span class="hub-badge">&#127758; 54 Countries</span>
+      <span class="hub-badge">&#127793; 40+ Crops</span>
+      <span class="hub-badge">&#128202; FAOSTAT Data</span>
+      <span class="hub-badge">&#127760; 100% Free</span>
+    </div>
+  </div>
+</section>
+
+<div class="hub-main" id="hubMain">
+
+  <div class="region-section">
+    <div class="region-label">West Africa (16)</div>
+    <div class="country-grid">
+      <a class="country-card" href="/agriculture/crop-yield/nigeria"><span class="flag">&#127475;&#127468;</span><span class="name">Nigeria</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/ghana"><span class="flag">&#127468;&#127469;</span><span class="name">Ghana</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/cote-d-ivoire"><span class="flag">&#127464;&#127470;</span><span class="name">C&ocirc;te d&rsquo;Ivoire</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/senegal"><span class="flag">&#127480;&#127475;</span><span class="name">Senegal</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/mali"><span class="flag">&#127474;&#127473;</span><span class="name">Mali</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/burkina-faso"><span class="flag">&#127463;&#127467;</span><span class="name">Burkina Faso</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/niger"><span class="flag">&#127475;&#127466;</span><span class="name">Niger</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/guinea"><span class="flag">&#127468;&#127475;</span><span class="name">Guinea</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/benin"><span class="flag">&#127463;&#127471;</span><span class="name">Benin</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/togo"><span class="flag">&#127481;&#127468;</span><span class="name">Togo</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/sierra-leone"><span class="flag">&#127480;&#127473;</span><span class="name">Sierra Leone</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/liberia"><span class="flag">&#127473;&#127479;</span><span class="name">Liberia</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/mauritania"><span class="flag">&#127474;&#127479;</span><span class="name">Mauritania</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/gambia"><span class="flag">&#127468;&#127474;</span><span class="name">Gambia</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/guinea-bissau"><span class="flag">&#127468;&#127484;</span><span class="name">Guinea-Bissau</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/cabo-verde"><span class="flag">&#127464;&#127483;</span><span class="name">Cabo Verde</span><span class="arrow">&rsaquo;</span></a>
+    </div>
+  </div>
+  <div class="region-section">
+    <div class="region-label">East Africa (10)</div>
+    <div class="country-grid">
+      <a class="country-card" href="/agriculture/crop-yield/kenya"><span class="flag">&#127472;&#127466;</span><span class="name">Kenya</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/ethiopia"><span class="flag">&#127466;&#127481;</span><span class="name">Ethiopia</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/tanzania"><span class="flag">&#127481;&#127487;</span><span class="name">Tanzania</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/uganda"><span class="flag">&#127482;&#127468;</span><span class="name">Uganda</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/rwanda"><span class="flag">&#127479;&#127484;</span><span class="name">Rwanda</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/burundi"><span class="flag">&#127463;&#127470;</span><span class="name">Burundi</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/somalia"><span class="flag">&#127480;&#127476;</span><span class="name">Somalia</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/djibouti"><span class="flag">&#127465;&#127471;</span><span class="name">Djibouti</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/eritrea"><span class="flag">&#127466;&#127479;</span><span class="name">Eritrea</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/south-sudan"><span class="flag">&#127480;&#127480;</span><span class="name">South Sudan</span><span class="arrow">&rsaquo;</span></a>
+    </div>
+  </div>
+  <div class="region-section">
+    <div class="region-label">Central Africa (8)</div>
+    <div class="country-grid">
+      <a class="country-card" href="/agriculture/crop-yield/dr-congo"><span class="flag">&#127464;&#127465;</span><span class="name">DR Congo</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/cameroon"><span class="flag">&#127464;&#127474;</span><span class="name">Cameroon</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/congo-brazzaville"><span class="flag">&#127464;&#127468;</span><span class="name">Congo (Brazzaville)</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/gabon"><span class="flag">&#127468;&#127462;</span><span class="name">Gabon</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/equatorial-guinea"><span class="flag">&#127468;&#127478;</span><span class="name">Equatorial Guinea</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/central-african-republic"><span class="flag">&#127464;&#127467;</span><span class="name">Central African Republic</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/chad"><span class="flag">&#127481;&#127465;</span><span class="name">Chad</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/sao-tome-and-principe"><span class="flag">&#127480;&#127481;</span><span class="name">Sao Tome and Principe</span><span class="arrow">&rsaquo;</span></a>
+    </div>
+  </div>
+  <div class="region-section">
+    <div class="region-label">Southern Africa (10)</div>
+    <div class="country-grid">
+      <a class="country-card" href="/agriculture/crop-yield/south-africa"><span class="flag">&#127487;&#127462;</span><span class="name">South Africa</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/mozambique"><span class="flag">&#127474;&#127487;</span><span class="name">Mozambique</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/zambia"><span class="flag">&#127487;&#127474;</span><span class="name">Zambia</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/zimbabwe"><span class="flag">&#127487;&#127484;</span><span class="name">Zimbabwe</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/malawi"><span class="flag">&#127474;&#127484;</span><span class="name">Malawi</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/angola"><span class="flag">&#127462;&#127476;</span><span class="name">Angola</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/namibia"><span class="flag">&#127475;&#127462;</span><span class="name">Namibia</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/botswana"><span class="flag">&#127463;&#127484;</span><span class="name">Botswana</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/lesotho"><span class="flag">&#127473;&#127480;</span><span class="name">Lesotho</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/eswatini"><span class="flag">&#127480;&#127487;</span><span class="name">Eswatini</span><span class="arrow">&rsaquo;</span></a>
+    </div>
+  </div>
+  <div class="region-section">
+    <div class="region-label">North Africa (6)</div>
+    <div class="country-grid">
+      <a class="country-card" href="/agriculture/crop-yield/egypt"><span class="flag">&#127466;&#127468;</span><span class="name">Egypt</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/morocco"><span class="flag">&#127474;&#127462;</span><span class="name">Morocco</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/algeria"><span class="flag">&#127465;&#127487;</span><span class="name">Algeria</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/tunisia"><span class="flag">&#127481;&#127475;</span><span class="name">Tunisia</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/libya"><span class="flag">&#127473;&#127486;</span><span class="name">Libya</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/sudan"><span class="flag">&#127480;&#127465;</span><span class="name">Sudan</span><span class="arrow">&rsaquo;</span></a>
+    </div>
+  </div>
+  <div class="region-section">
+    <div class="region-label">Island Nations (4)</div>
+    <div class="country-grid">
+      <a class="country-card" href="/agriculture/crop-yield/madagascar"><span class="flag">&#127474;&#127468;</span><span class="name">Madagascar</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/mauritius"><span class="flag">&#127474;&#127482;</span><span class="name">Mauritius</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/seychelles"><span class="flag">&#127480;&#127464;</span><span class="name">Seychelles</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/crop-yield/comoros"><span class="flag">&#127472;&#127474;</span><span class="name">Comoros</span><span class="arrow">&rsaquo;</span></a>
+    </div>
+  </div>
+</div>
+
+<section class="seo-content">
+  <h2>About the Crop Yield Estimator</h2>
+  <p>AfroTools' Crop Yield Estimator helps African farmers, agricultural advisors, and researchers estimate expected crop yields based on their specific conditions. Each country tool uses region-specific data including agroecological zones, soil types, growing seasons, and local market prices.</p>
+
+  <h2>How It Works</h2>
+  <p>Select your crop, region, farm size, and farming practices (irrigation, fertilizer, seed type). The calculator applies research-backed multipliers to national average yield data, producing an estimate with low, mid, and high ranges. You also get revenue projections in local currency and actionable recommendations.</p>
+
+  <h2>Frequently Asked Questions</h2>
+  <div class="faq">
+    <details>
+      <summary>How accurate are the yield estimates?</summary>
+      <p>Estimates are based on national average yields from FAOSTAT adjusted by research-backed multipliers for region, soil, irrigation, fertilizer, and seed type. They provide a reasonable range but actual yields depend on many factors including weather, pests, and management practices.</p>
+    </details>
+    <details>
+      <summary>What crops are covered?</summary>
+      <p>Over 40 crop types are in our database, including cereals (maize, rice, sorghum, millet, wheat, teff), roots and tubers (cassava, yam, sweet potato), legumes (cowpea, groundnut, soybean), cash crops (cocoa, coffee, tea, cotton), fruits, and vegetables. Each country page shows only the crops grown in that country.</p>
+    </details>
+    <details>
+      <summary>Where does the data come from?</summary>
+      <p>Primary sources include FAOSTAT (FAO), HarvestStat Africa, World Bank, national statistics bureaus, and CGIAR research centers. Yield data uses 3-5 year averages to smooth out weather variability.</p>
+    </details>
+    <details>
+      <summary>Can I use this for farm planning?</summary>
+      <p>Yes. The tool is designed to help with pre-season planning, input budgeting, and revenue forecasting. However, consult your local agricultural extension office for specific advice on your farm conditions.</p>
+    </details>
+  </div>
+</section>
+
+
+
+<section class="df-upgrade" data-df-upgrade="crop-yield-estimator">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Field planning workflow</span>
+      <h2>Crop Yield Estimator decision workspace</h2>
+      <p>Turn local farm assumptions into a quick planning summary before spending money or moving stock. This panel is tuned for crop yield estimator so the user can move from a thin page to a usable first decision.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: Crop Yield Estimator: farm planning summary ready with cost, buffer, timing, and field-check notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: formControls, saveExport, browserOk.</li><li>Source note: extension, buyer, input supplier, and farm-record references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Agriculture estimate only. Confirm local extension advice, weather, disease pressure, buyer price, and input quality before acting. Source/reference: extension, buyer, input supplier, and farm-record references.</p>
+    </div>
+    <form class="df-form" data-df-form="crop-yield-estimator">
+      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
+      <label>Quantity or area<input name="quantity" type="number" value="100" min="0" step="any" aria-label="Quantity or area"></label>
+      <label>Unit cost<input name="unitCost" type="number" value="2500" min="0" step="any" aria-label="Unit cost"></label>
+      <label>Risk buffer percent<input name="buffer" type="number" value="12" min="0" step="any" aria-label="Risk buffer percent"></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="crop-yield-estimator" data-df-base="Crop Yield Estimator: farm planning summary ready with cost, buffer, timing, and field-check notes." aria-live="polite">Crop Yield Estimator: farm planning summary ready with cost, buffer, timing, and field-check notes.</output>
+      <div class="df-actions"><button type="button" data-df-copy="crop-yield-estimator">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="crop-yield-estimator-faq-title">
+  <h2 id="crop-yield-estimator-faq-title">Crop Yield Estimator FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn local farm assumptions into a quick planning summary before spending money or moving stock. Use it to pressure-test crop yield numbers before committing money, paperwork, or plans.</p></details><details><summary>What should I verify?</summary><p>Agriculture estimate only. Confirm local extension advice, weather, disease pressure, buyer price, and input quality before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+</section>
+
+
+<afro-related-tools data-ssr="1" category="agriculture" current="crop-yield-estimator">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/agriculture/farm-profit/" data-related-tool data-id="farm-profit-calculator" data-name="Farm Profit/Loss Calculator" data-category="agriculture" data-icon="FP" data-desc="Complete farming profitability analysis — seeds, fertilizer, labor, transport, post-harvest losses. ROI, break-even yiel">Farm Profit/Loss Calculator</a></li><li><a href="/agriculture/cassava-processing/" data-related-tool data-id="cassava-processing-calculator" data-name="Cassava Processing Profit Calculator" data-category="agriculture" data-icon="CP" data-desc="Calculate profits from processing cassava into garri, fufu flour, HQCF, chips, or starch. Compare all pathways with loca">Cassava Processing Profit Calculator</a></li><li><a href="/agriculture/farm-budget/" data-related-tool data-id="farm-budget" data-name="Smallholder Farm Budget Planner" data-category="agriculture" data-icon="SF" data-desc="Plan your seasonal farming budget with cost breakdown and cash flow timeline. Know exactly how much you need before plan">Smallholder Farm Budget Planner</a></li><li><a href="/agriculture/fish-farming/" data-related-tool data-id="fish-farming-roi" data-name="Fish Farming ROI Calculator" data-category="agriculture" data-icon="FF" data-desc="Calculate aquaculture profitability for catfish, tilapia and trout. Full ROI with local feed prices, fingerling costs, p">Fish Farming ROI Calculator</a></li><li><a href="/agriculture/greenhouse/" data-related-tool data-id="greenhouse-cost-estimator" data-name="Greenhouse Cost Estimator" data-category="agriculture" data-icon="GC" data-desc="Estimate greenhouse setup costs, annual running expenses, ROI and payback period. 5 greenhouse types, 6 crops, local pri">Greenhouse Cost Estimator</a></li><li><a href="/agriculture/input-prices/" data-related-tool data-id="input-prices" data-name="Agri-Input Price Comparator" data-category="agriculture" data-icon="AI" data-desc="Compare fertilizer, seed, and agrochemical prices across brands and suppliers in 15 African countries. Compare value for">Agri-Input Price Comparator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+
+<!-- seo-internal-links -->
+<nav class="seo-links" aria-label="Crop Yield — Available Countries">
+<h2 class="seo-links-title">Crop Yield — Available Countries</h2>
+<ul class="seo-links-list"><li><a href="/agriculture/crop-yield/algeria">Crop Yield in Algeria</a></li><li><a href="/agriculture/crop-yield/angola">Crop Yield in Angola</a></li><li><a href="/agriculture/crop-yield/benin">Crop Yield in Benin</a></li><li><a href="/agriculture/crop-yield/botswana">Crop Yield in Botswana</a></li><li><a href="/agriculture/crop-yield/burkina-faso">Crop Yield in Burkina Faso</a></li><li><a href="/agriculture/crop-yield/burundi">Crop Yield in Burundi</a></li><li><a href="/agriculture/crop-yield/cabo-verde">Crop Yield in Cabo Verde</a></li><li><a href="/agriculture/crop-yield/cameroon">Crop Yield in Cameroon</a></li><li><a href="/agriculture/crop-yield/central-african-republic">Crop Yield in Central African Republic</a></li><li><a href="/agriculture/crop-yield/chad">Crop Yield in Chad</a></li><li><a href="/agriculture/crop-yield/comoros">Crop Yield in Comoros</a></li><li><a href="/agriculture/crop-yield/congo-brazzaville">Crop Yield in Congo-Brazzaville</a></li><li><a href="/agriculture/crop-yield/cote-d-ivoire">Crop Yield in Côte d'Ivoire</a></li><li><a href="/agriculture/crop-yield/djibouti">Crop Yield in Djibouti</a></li><li><a href="/agriculture/crop-yield/dr-congo">Crop Yield in DR Congo</a></li><li><a href="/agriculture/crop-yield/egypt">Crop Yield in Egypt</a></li><li><a href="/agriculture/crop-yield/equatorial-guinea">Crop Yield in Equatorial Guinea</a></li><li><a href="/agriculture/crop-yield/eritrea">Crop Yield in Eritrea</a></li><li><a href="/agriculture/crop-yield/eswatini">Crop Yield in Eswatini</a></li><li><a href="/agriculture/crop-yield/ethiopia">Crop Yield in Ethiopia</a></li><li><a href="/agriculture/crop-yield/gabon">Crop Yield in Gabon</a></li><li><a href="/agriculture/crop-yield/gambia">Crop Yield in Gambia</a></li><li><a href="/agriculture/crop-yield/ghana">Crop Yield in Ghana</a></li><li><a href="/agriculture/crop-yield/guinea-bissau">Crop Yield in Guinea-Bissau</a></li><li><a href="/agriculture/crop-yield/guinea">Crop Yield in Guinea</a></li><li><a href="/agriculture/crop-yield/kenya">Crop Yield in Kenya</a></li><li><a href="/agriculture/crop-yield/lesotho">Crop Yield in Lesotho</a></li><li><a href="/agriculture/crop-yield/liberia">Crop Yield in Liberia</a></li><li><a href="/agriculture/crop-yield/libya">Crop Yield in Libya</a></li><li><a href="/agriculture/crop-yield/madagascar">Crop Yield in Madagascar</a></li><li><a href="/agriculture/crop-yield/malawi">Crop Yield in Malawi</a></li><li><a href="/agriculture/crop-yield/mali">Crop Yield in Mali</a></li><li><a href="/agriculture/crop-yield/mauritania">Crop Yield in Mauritania</a></li><li><a href="/agriculture/crop-yield/mauritius">Crop Yield in Mauritius</a></li><li><a href="/agriculture/crop-yield/morocco">Crop Yield in Morocco</a></li><li><a href="/agriculture/crop-yield/mozambique">Crop Yield in Mozambique</a></li><li><a href="/agriculture/crop-yield/namibia">Crop Yield in Namibia</a></li><li><a href="/agriculture/crop-yield/niger">Crop Yield in Niger</a></li><li><a href="/agriculture/crop-yield/nigeria">Crop Yield in Nigeria</a></li><li><a href="/agriculture/crop-yield/rwanda">Crop Yield in Rwanda</a></li><li><a href="/agriculture/crop-yield/sao-tome-and-principe">Crop Yield in São Tomé & Príncipe</a></li><li><a href="/agriculture/crop-yield/senegal">Crop Yield in Senegal</a></li><li><a href="/agriculture/crop-yield/seychelles">Crop Yield in Seychelles</a></li><li><a href="/agriculture/crop-yield/sierra-leone">Crop Yield in Sierra Leone</a></li><li><a href="/agriculture/crop-yield/somalia">Crop Yield in Somalia</a></li><li><a href="/agriculture/crop-yield/south-africa">Crop Yield in South Africa</a></li><li><a href="/agriculture/crop-yield/south-sudan">Crop Yield in South Sudan</a></li><li><a href="/agriculture/crop-yield/sudan">Crop Yield in Sudan</a></li><li><a href="/agriculture/crop-yield/tanzania">Crop Yield in Tanzania</a></li><li><a href="/agriculture/crop-yield/togo">Crop Yield in Togo</a></li><li><a href="/agriculture/crop-yield/tunisia">Crop Yield in Tunisia</a></li><li><a href="/agriculture/crop-yield/uganda">Crop Yield in Uganda</a></li><li><a href="/agriculture/crop-yield/zambia">Crop Yield in Zambia</a></li><li><a href="/agriculture/crop-yield/zimbabwe">Crop Yield in Zimbabwe</a></li></ul>
+</nav>
+<!-- seo-internal-links -->
+<afro-footer></afro-footer>
+
+<script src="/data/agriculture/country-index.js?v=332e9259"></script>
+<script>
+(function () {
+  'use strict';
+
+  var countries = window.AfroTools.countryIndex;
+  var regionLabels = window.AfroTools.regionLabels;
+  var hub = document.getElementById('hubMain');
+
+  var regionOrder = ['west_africa', 'east_africa', 'central_africa', 'southern_africa', 'north_africa', 'island_nations'];
+
+  regionOrder.forEach(function (regionKey) {
+    var info = regionLabels[regionKey];
+    var group = countries.filter(function (c) { return c.region === regionKey; });
+    if (!group.length) return;
+
+    var section = document.createElement('div');
+    section.className = 'region-section';
+
+    var label = document.createElement('div');
+    label.className = 'region-label';
+    label.textContent = info.name + ' (' + group.length + ')';
+    section.appendChild(label);
+
+    var grid = document.createElement('div');
+    grid.className = 'country-grid';
+
+    group.forEach(function (c) {
+      var a = document.createElement('a');
+      a.className = 'country-card';
+      a.href = '/agriculture/crop-yield/' + c.slug;
+      a.innerHTML = '<span class="flag">' + c.flag + '</span><span class="name">' + c.name + '</span><span class="arrow">&rsaquo;</span>';
+      grid.appendChild(a);
+    });
+
+    section.appendChild(grid);
+    hub.appendChild(section);
+  });
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
+<script>if(typeof twemoji!=='undefined')twemoji.parse(document.body,{folder:'svg',ext:'.svg'});</script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

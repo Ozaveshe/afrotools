@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Split — CreatorSplit | AfroTools</title>
+  <meta name="robots" content="noindex, follow">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <link rel="stylesheet" href="style.css?v=6be58c61">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+  <script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+  <script src="/engines/creator-split-engine.js?v=37c4a0c3"></script>
+<meta property="og:url" content="https://afrotools.com/tools/creator-split/create">
+<link rel="canonical" href="https://afrotools.com/tools/creator-split/create">
+</head>
+<body class="top-level-page-ui-refresh">
+  <afro-navbar></afro-navbar>
+
+  <div class="cs-app">
+    <div class="cs-app-inner" style="padding-bottom:120px">
+      <div class="cs-app-header">
+        <a href="app.html" style="font-size:.78rem;color:rgba(255,255,255,.4);text-decoration:none">&larr; Dashboard</a>
+        <div class="cs-app-title">New Split</div>
+      </div>
+
+      <!-- PROGRESS BAR -->
+      <div class="cs-progress" id="progress-bar">
+        <div class="cs-progress-step active"></div>
+        <div class="cs-progress-step"></div>
+        <div class="cs-progress-step"></div>
+        <div class="cs-progress-step"></div>
+      </div>
+
+      <!-- STEP CONTAINER -->
+      <div id="step-container"></div>
+    </div>
+
+    <!-- BOTTOM BAR -->
+    <div class="cs-bottom-bar">
+      <button type="button" class="cs-btn cs-btn-secondary" id="btn-back" style="display:none">Back</button>
+      <button type="button" class="cs-btn cs-btn-primary" id="btn-next">Next</button>
+    </div>
+  </div>
+
+  <script>
+  (function() {
+    'use strict';
+    var CS = CreatorSplitEngine;
+    var step = 1;
+    var splitData = { project_type: '', name: '', description: '', work_url: '', currency: 'NGN' };
+    var collaborators = [{ name: 'You', role: '', percentage: 0, color: CS.COLLAB_COLORS[0], is_self: true, contact_whatsapp: '', contact_email: '' }];
+    var splitId = null;
+
+    var container = document.getElementById('step-container');
+    var btnBack = document.getElementById('btn-back');
+    var btnNext = document.getElementById('btn-next');
+
+    btnBack.addEventListener('click', function() { if (step > 1) { step--; renderStep(); } });
+    btnNext.addEventListener('click', handleNext);
+
+    function handleNext() {
+      if (step === 1) {
+        if (!splitData.project_type) return;
+        splitData.name = (document.getElementById('project-name') || {}).value || '';
+        splitData.work_url = (document.getElementById('project-url') || {}).value || '';
+        if (!splitData.name.trim()) { alert('Please enter a project name'); return; }
+        // Set default role for self
+        var roles = CS.ROLES_BY_TYPE[splitData.project_type] || [];
+        if (!collaborators[0].role && roles.length > 0) collaborators[0].role = roles[0];
+        step = 2; renderStep();
+      } else if (step === 2) {
+        if (collaborators.length < 2) { alert('Add at least one collaborator'); return; }
+        // Auto-suggest splits
+        var roles = collaborators.map(function(c) { return c.role; });
+        var suggestions = CS.suggestSplits(splitData.project_type, roles);
+        suggestions.forEach(function(s, i) {
+          if (collaborators[i]) collaborators[i].percentage = s.percentage;
+        });
+        step = 3; renderStep();
+      } else if (step === 3) {
+        var total = collaborators.reduce(function(sum, c) { return sum + c.percentage; }, 0);
+        if (total !== 100) { alert('Percentages must add up to 100% (currently ' + total + '%)'); return; }
+        step = 4; renderStep();
+      } else if (step === 4) {
+        saveSplit();
+      }
+    }
+
+    function updateProgress() {
+      var steps = document.querySelectorAll('.cs-progress-step');
+      steps.forEach(function(el, i) {
+        el.className = 'cs-progress-step';
+        if (i + 1 < step) el.classList.add('done');
+        if (i + 1 === step) el.classList.add('active');
+      });
+      btnBack.style.display = step > 1 ? '' : 'none';
+      btnNext.textContent = step === 4 ? 'Save Split' : 'Next';
+    }
+
+    function renderStep() {
+      updateProgress();
+      if (step === 1) renderStep1();
+      else if (step === 2) renderStep2();
+      else if (step === 3) renderStep3();
+      else if (step === 4) renderStep4();
+    }
+
+    // ── STEP 1: Project Type ──
+    function renderStep1() {
+      var html = '<div style="margin-bottom:24px"><div style="font-size:1.1rem;font-weight:900;margin-bottom:4px">What are you splitting?</div><div style="font-size:.78rem;color:rgba(255,255,255,.45)">Choose the type of project</div></div>';
+
+      html += '<div class="cs-type-grid">';
+      CS.PROJECT_TYPES.forEach(function(t) {
+        var sel = splitData.project_type === t.id ? ' selected' : '';
+        html += '<button type="button" class="cs-type-card' + sel + '" data-type="' + t.id + '"><div class="cs-type-icon">' + t.icon + '</div><div class="cs-type-label">' + t.label + '</div></button>';
+      });
+      html += '</div>';
+
+      html += '<div class="cs-field"><label class="cs-label">Project Name</label><input aria-label="E.g. Lagos Nights (Single)" type="text" class="cs-input" id="project-name" placeholder="e.g. Lagos Nights (Single)" value="' + (splitData.name || '') + '"></div>';
+      html += '<div class="cs-field"><label class="cs-label">Link to the work (optional)</label><input aria-label="YouTube, Spotify, portfolio link" type="text" class="cs-input" id="project-url" placeholder="YouTube, Spotify, portfolio link..." value="' + (splitData.work_url || '') + '"></div>';
+
+      container.innerHTML = html;
+
+      container.querySelectorAll('.cs-type-card').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          splitData.project_type = this.dataset.type;
+          container.querySelectorAll('.cs-type-card').forEach(function(b) { b.classList.remove('selected'); });
+          this.classList.add('selected');
+        });
+      });
+    }
+
+    // ── STEP 2: Collaborators ──
+    function renderStep2() {
+      var roles = CS.ROLES_BY_TYPE[splitData.project_type] || CS.ROLES_BY_TYPE.other;
+      var html = '<div style="margin-bottom:24px"><div style="font-size:1.1rem;font-weight:900;margin-bottom:4px">Who\'s involved?</div><div style="font-size:.78rem;color:rgba(255,255,255,.45)">Add everyone who should get a cut</div></div>';
+
+      html += '<div class="cs-collab-list">';
+      collaborators.forEach(function(c, i) {
+        var initials = c.name.split(' ').map(function(w) { return w.charAt(0); }).join('').slice(0, 2);
+        html += '<div class="cs-collab-card" data-index="' + i + '">' +
+          '<div class="cs-collab-avatar" style="background:' + c.color + '">' + initials + '</div>' +
+          '<div class="cs-collab-info">' +
+            (c.is_self ? '<div class="cs-collab-name">You</div>' : '<input aria-label="Name" type="text" class="cs-input" style="padding:6px 10px;font-size:.8rem;margin-bottom:4px" placeholder="Name" value="' + c.name + '" data-field="name" data-idx="' + i + '">') +
+            '<select class="cs-select" style="padding:6px 10px;font-size:.72rem" data-field="role" data-idx="' + i + '" aria-label="Select option">';
+        roles.forEach(function(r) {
+          html += '<option value="' + r + '"' + (c.role === r ? ' selected' : '') + '>' + r + '</option>';
+        });
+        html += '</select></div>';
+        if (!c.is_self) html += '<button type="button" class="cs-collab-remove" data-remove="' + i + '">&times;</button>';
+        html += '</div>';
+      });
+      html += '</div>';
+
+      html += '<button type="button" class="cs-add-collab" id="add-collab-btn">+ Add Collaborator</button>';
+
+      container.innerHTML = html;
+
+      // Event listeners
+      container.querySelectorAll('[data-field]').forEach(function(el) {
+        el.addEventListener('change', function() {
+          var idx = parseInt(this.dataset.idx);
+          var field = this.dataset.field;
+          collaborators[idx][field] = this.value;
+        });
+        el.addEventListener('input', function() {
+          var idx = parseInt(this.dataset.idx);
+          var field = this.dataset.field;
+          collaborators[idx][field] = this.value;
+        });
+      });
+
+      container.querySelectorAll('[data-remove]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var idx = parseInt(this.dataset.remove);
+          collaborators.splice(idx, 1);
+          renderStep2();
+        });
+      });
+
+      document.getElementById('add-collab-btn').addEventListener('click', function() {
+        var colorIdx = collaborators.length % CS.COLLAB_COLORS.length;
+        collaborators.push({ name: '', role: roles[0] || 'Collaborator', percentage: 0, color: CS.COLLAB_COLORS[colorIdx], is_self: false, contact_whatsapp: '', contact_email: '' });
+        renderStep2();
+      });
+    }
+
+    // ── STEP 3: The Split ──
+    function renderStep3() {
+      var html = '<div style="margin-bottom:24px"><div style="font-size:1.1rem;font-weight:900;margin-bottom:4px">Set the Split</div><div style="font-size:.78rem;color:rgba(255,255,255,.45)">AI-suggested splits based on roles. Adjust with sliders.</div></div>';
+
+      // Donut chart
+      html += '<div class="cs-donut-wrap"><div id="donut-chart">' + CS.renderDonutSVG(collaborators) + '</div>';
+      html += '<div class="cs-donut-legend" id="donut-legend">';
+      collaborators.forEach(function(c) {
+        html += '<div class="cs-legend-item"><div class="cs-legend-dot" style="background:' + c.color + '"></div><span class="cs-legend-name">' + c.name + '</span><span class="cs-legend-pct">' + c.percentage + '%</span></div>';
+      });
+      html += '</div></div>';
+
+      // Sliders
+      html += '<div class="cs-slider-list">';
+      collaborators.forEach(function(c, i) {
+        html += '<div class="cs-slider-row">' +
+          '<div class="cs-slider-color" style="background:' + c.color + '"></div>' +
+          '<div class="cs-slider-name">' + c.name + '</div>' +
+          '<input aria-label="Cs slider input" type="range" class="cs-slider-input" min="0" max="100" value="' + c.percentage + '" data-slider="' + i + '">' +
+          '<div class="cs-slider-val" id="slider-val-' + i + '">' + c.percentage + '%</div>' +
+        '</div>';
+      });
+      html += '</div>';
+
+      // Projection table
+      html += '<div style="margin-top:24px"><div style="font-size:.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--cs-primary);margin-bottom:10px">Earnings Projection</div>';
+      html += '<table class="cs-projection-table"><thead><tr><th>Person</th><th>Role</th><th>Split</th><th>If ' + CS.formatMoney(100000, splitData.currency) + '</th><th>If ' + CS.formatMoney(1000000, splitData.currency) + '</th></tr></thead><tbody id="projection-body">';
+      collaborators.forEach(function(c) {
+        html += '<tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:' + c.color + ';margin-right:6px"></span>' + c.name + '</td><td style="color:rgba(255,255,255,.5)">' + c.role + '</td><td style="font-weight:800;color:var(--cs-primary)">' + c.percentage + '%</td><td style="color:#22C55E">' + CS.formatMoney(Math.round(100000 * c.percentage / 100), splitData.currency) + '</td><td style="color:#22C55E">' + CS.formatMoney(Math.round(1000000 * c.percentage / 100), splitData.currency) + '</td></tr>';
+      });
+      html += '</tbody></table></div>';
+
+      container.innerHTML = html;
+
+      // Slider listeners
+      container.querySelectorAll('[data-slider]').forEach(function(slider) {
+        slider.addEventListener('input', function() {
+          var idx = parseInt(this.dataset.slider);
+          var newVal = parseInt(this.value);
+          var oldVal = collaborators[idx].percentage;
+          var diff = newVal - oldVal;
+
+          collaborators[idx].percentage = newVal;
+
+          // Distribute the difference among other collaborators proportionally
+          if (diff !== 0 && collaborators.length > 1) {
+            var othersTotal = 0;
+            collaborators.forEach(function(c, j) { if (j !== idx) othersTotal += c.percentage; });
+
+            if (othersTotal > 0) {
+              var remaining = 100 - newVal;
+              var runSum = 0;
+              collaborators.forEach(function(c, j) {
+                if (j === idx) return;
+                var proportion = c.percentage / othersTotal;
+                if (j === collaborators.length - 1 || (j === collaborators.length - 2 && idx === collaborators.length - 1)) {
+                  c.percentage = Math.max(0, remaining - runSum);
+                } else {
+                  c.percentage = Math.max(0, Math.round(remaining * proportion));
+                  runSum += c.percentage;
+                }
+              });
+            } else {
+              // Distribute equally
+              var each = Math.floor((100 - newVal) / (collaborators.length - 1));
+              var rem = (100 - newVal) - each * (collaborators.length - 1);
+              collaborators.forEach(function(c, j) {
+                if (j === idx) return;
+                c.percentage = each + (rem > 0 ? 1 : 0);
+                if (rem > 0) rem--;
+              });
+            }
+          }
+
+          // Update UI without full re-render
+          collaborators.forEach(function(c, j) {
+            var s = container.querySelector('[data-slider="' + j + '"]');
+            if (s && j !== idx) s.value = c.percentage;
+            var v = document.getElementById('slider-val-' + j);
+            if (v) v.textContent = c.percentage + '%';
+          });
+
+          // Update donut
+          document.getElementById('donut-chart').innerHTML = CS.renderDonutSVG(collaborators);
+
+          // Update legend
+          var legendItems = document.querySelectorAll('.cs-legend-pct');
+          collaborators.forEach(function(c, j) {
+            if (legendItems[j]) legendItems[j].textContent = c.percentage + '%';
+          });
+
+          // Update projection
+          var rows = document.getElementById('projection-body').querySelectorAll('tr');
+          collaborators.forEach(function(c, j) {
+            if (rows[j]) {
+              var cells = rows[j].querySelectorAll('td');
+              cells[2].textContent = c.percentage + '%';
+              cells[3].textContent = CS.formatMoney(Math.round(100000 * c.percentage / 100), splitData.currency);
+              cells[4].textContent = CS.formatMoney(Math.round(1000000 * c.percentage / 100), splitData.currency);
+            }
+          });
+        });
+      });
+    }
+
+    // ── STEP 4: Agreement ──
+    function renderStep4() {
+      var today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+      var typeObj = CS.PROJECT_TYPES.find(function(t) { return t.id === splitData.project_type; }) || {};
+
+      var html = '<div style="margin-bottom:24px"><div style="font-size:1.1rem;font-weight:900;margin-bottom:4px">Review Agreement</div><div style="font-size:.78rem;color:rgba(255,255,255,.45)">Share with your collaborators for acknowledgment</div></div>';
+
+      html += '<div class="cs-agreement">';
+      html += '<div class="cs-agreement-title">Split Agreement</div>';
+      html += '<div class="cs-agreement-section"><strong>Project:</strong> ' + splitData.name + '<br><strong>Type:</strong> ' + typeObj.label + '<br><strong>Date:</strong> ' + today + '</div>';
+
+      html += '<div class="cs-agreement-section"><strong>Parties & Split</strong></div>';
+      collaborators.forEach(function(c) {
+        html += '<div class="cs-agreement-row"><span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:' + c.color + ';margin-right:8px"></span>' + c.name + ' <span style="color:rgba(255,255,255,.4)">(' + c.role + ')</span></span><span style="font-weight:900;color:var(--cs-primary)">' + c.percentage + '%</span></div>';
+      });
+
+      html += '<div class="cs-agreement-section" style="margin-top:20px"><strong>Revenue Types Covered</strong><br>Streaming, sync/licensing, live performance, merchandise, and any other income generated by this project.</div>';
+
+      html += '<div class="cs-agreement-section"><strong>Terms</strong><br>1. All parties agree to the percentages above.<br>2. Earnings distributed within 14 days of receipt.<br>3. Changes require consent from all parties.<br>4. Any party may request an audit of earnings records.</div>';
+
+      html += '<div style="font-size:.7rem;color:rgba(255,255,255,.35);margin-top:12px;line-height:1.5;font-style:italic">This is a record of understanding between collaborators, not a legal contract. For legally binding agreements, consult a lawyer.</div>';
+      html += '</div>';
+
+      // Share buttons
+      html += '<div class="cs-share-btns">';
+      html += '<button type="button" class="cs-share-btn whatsapp" id="share-wa">WhatsApp</button>';
+      html += '<button type="button" class="cs-share-btn copy" id="share-copy">Copy Agreement</button>';
+      html += '</div>';
+
+      container.innerHTML = html;
+
+      document.getElementById('share-wa').addEventListener('click', function() {
+        // Build a temporary message
+        var msg = 'Hey! Here\'s our split agreement for *' + splitData.name + '*:\n\n';
+        collaborators.forEach(function(c) {
+          msg += '\u2022 ' + c.name + ' (' + c.role + '): *' + c.percentage + '%*\n';
+        });
+        msg += '\nGenerated by AfroTools CreatorSplit';
+        window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+      });
+
+      document.getElementById('share-copy').addEventListener('click', function() {
+        // Build agreement text
+        var text = 'COLLABORATION SPLIT AGREEMENT\n\n';
+        text += 'Project: ' + splitData.name + '\nType: ' + typeObj.label + '\nDate: ' + today + '\n\n';
+        text += 'PARTIES & SPLIT\n';
+        collaborators.forEach(function(c) {
+          text += '\u2022 ' + c.name + ' (' + c.role + ') \u2014 ' + c.percentage + '%\n';
+        });
+        text += '\nRevenue types covered: streaming, sync/licensing, live performance, merchandise, other.\n';
+        text += '\nGenerated by AfroTools CreatorSplit';
+        navigator.clipboard.writeText(text).then(function() {
+          var btn = document.getElementById('share-copy');
+          btn.textContent = 'Copied!';
+          setTimeout(function() { btn.textContent = 'Copy Agreement'; }, 2000);
+        });
+      });
+    }
+
+    // ── SAVE SPLIT ──
+    function saveSplit() {
+      var split = CS.createSplit({
+        name: splitData.name,
+        project_type: splitData.project_type,
+        description: splitData.description,
+        work_url: splitData.work_url,
+        currency: splitData.currency,
+        status: 'active'
+      });
+
+      collaborators.forEach(function(c) {
+        CS.addMember({
+          split_id: split.id,
+          name: c.name,
+          role: c.role,
+          percentage: c.percentage,
+          color: c.color,
+          is_self: c.is_self,
+          contact_whatsapp: c.contact_whatsapp,
+          contact_email: c.contact_email,
+          has_acknowledged: c.is_self
+        });
+      });
+
+      window.location.href = 'split.html?id=' + split.id;
+    }
+
+    renderStep();
+  })();
+  </script>
+</body>
+</html>

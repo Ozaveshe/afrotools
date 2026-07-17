@@ -1,0 +1,123 @@
+!function() {
+  "use strict";
+  function a(a, e) {
+    return isFinite(a) ? e + Math.abs(a).toLocaleString("en-US", {
+      maximumFractionDigits: 0
+    }) : e + "0";
+  }
+  window.AfroTools = window.AfroTools || {}, window.AfroTools.FarmPayrollEngine = {
+    calculate: function(e, t) {
+      var o = t;
+      if (!o) {
+        return {
+          error: !0,
+          message: "No country data"
+        };
+      }
+      var r = o.symbol || "", n = Math.max(1, parseInt(e.numWorkers) || 1), s = 0;
+      "permanent" === e.workerType ? s = parseFloat(e.grossPay) || 0 : "casual" === e.workerType || "seasonal" === e.workerType ? s = (parseFloat(e.grossPay) || 0) * (parseFloat(e.daysWorked) || 26) : "piece_rate" === e.workerType && (s = (parseFloat(e.ratePerUnit) || 0) * (parseFloat(e.unitsCompleted) || 0));
+      var i = (parseFloat(e.overtimeHours) || 0) * (s / 173.33) * ((o.laborLaw.overtimeRate || 1.5) - 1), l = (parseFloat(e.inKindHousing) || 0) + (parseFloat(e.inKindFood) || 0), p = s + i + l, m = [], y = 0, h = o.deductions || {};
+      if (h.pension && h.pension.rate_pct) {
+        var u = p * h.pension.rate_pct / 100;
+        m.push({
+          name: h.pension.name,
+          rate: h.pension.rate_pct,
+          amount: u,
+          notes: h.pension.notes
+        }), y += u;
+      }
+      if (h.health && h.health.rate_pct) {
+        var c = p * h.health.rate_pct / 100;
+        m.push({
+          name: h.health.name,
+          rate: h.health.rate_pct,
+          amount: c,
+          notes: h.health.notes
+        }), y += c;
+      }
+      if (h.other && h.other.rate_pct) {
+        var f = p * h.other.rate_pct / 100;
+        m.push({
+          name: h.other.name,
+          rate: h.other.rate_pct,
+          amount: f,
+          notes: h.other.notes
+        }), y += f;
+      }
+      var d = p > 2 * (o.nationalMinWage_monthly || o.agriMinWage_monthly || 0), g = p - y, w = [], _ = 0;
+      if (h.pension && h.pension.employerRate_pct) {
+        var v = p * h.pension.employerRate_pct / 100;
+        w.push({
+          name: "Employer " + h.pension.name,
+          amount: v
+        }), _ += v;
+      }
+      if (h.health && h.health.employerRate_pct) {
+        var k = p * h.health.employerRate_pct / 100;
+        w.push({
+          name: "Employer " + h.health.name,
+          amount: k
+        }), _ += k;
+      }
+      var F = p / 26 * (o.laborLaw.annualLeave_days || 15) / 12;
+      w.push({
+        name: "Annual Leave Provision",
+        amount: F
+      });
+      var M = p + (_ += F), b = o.agriMinWage_monthly || o.nationalMinWage_monthly, T = o.agriMinWage_daily, C = null;
+      if (b && "permanent" === e.workerType) {
+        var P = p - b;
+        C = {
+          compliant: P >= 0,
+          minWage: b,
+          gross: p,
+          diff: Math.abs(P),
+          diffPct: Math.abs(P / b * 100)
+        };
+      } else if (T && ("casual" === e.workerType || "seasonal" === e.workerType)) {
+        var W = parseFloat(e.grossPay) || 0, L = W - T;
+        C = {
+          compliant: L >= 0,
+          minWage: T,
+          gross: W,
+          diff: Math.abs(L),
+          diffPct: Math.abs(L / T * 100),
+          isDaily: !0
+        };
+      }
+      return {
+        sym: r,
+        currency: o.currency,
+        workerType: e.workerType,
+        numWorkers: n,
+        baseGross: s,
+        overtimePay: i,
+        inKindValue: l,
+        grossForDeductions: p,
+        deductions: m,
+        totalDeductions: y,
+        netPay: g,
+        employerContributions: w,
+        totalEmployerExtra: _,
+        totalEmployerCost: M,
+        farmMonthlyGross: p * n,
+        farmMonthlyNet: g * n,
+        farmMonthlyCost: M * n,
+        farmAnnualCost: M * n * 12,
+        mwCheck: C,
+        likelyTaxable: d,
+        laborLaw: o.laborLaw,
+        payeLink: o.payeLink,
+        payeCountryName: o.payeCountryName,
+        typicalDailyRate: o.typicalDailyRate,
+        fGross: a(p, r),
+        fNet: a(g, r),
+        fDeductions: a(y, r),
+        fEmployerCost: a(M, r),
+        fFarmMonthlyCost: a(M * n, r),
+        fFarmAnnualCost: a(M * n * 12, r)
+      };
+    },
+    fmt: a
+  };
+}();

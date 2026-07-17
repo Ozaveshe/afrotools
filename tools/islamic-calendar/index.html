@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Islamic Calendar Converter — Gregorian to Hijri | AfroTools</title>
+<meta name="description" content="Convert any Gregorian date to Hijri (Islamic) calendar and back. Accurate astronomical algorithm. See Islamic month names, significant dates, and days to Ramadan.">
+<meta property="og:title" content="Islamic Calendar Converter | AfroTools">
+<meta property="og:description" content="Accurate Gregorian ↔ Hijri date conversion. Islamic months, significant dates, days to Ramadan.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/islamic-calendar.webp">
+<meta property="og:url" content="https://afrotools.com/tools/islamic-calendar/">
+<meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Islamic Calendar Converter — Gregorian to Hijri | AfroTools">
+<meta name="twitter:description" content="Convert any Gregorian date to Hijri (Islamic) calendar and back. Accurate astronomical algorithm. See Islamic month names, significant dates, and days to Ramadan.">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb"><link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b"><link rel="stylesheet" href="/assets/css/energy.css?v=d1d794d4">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script><script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}
+:root{--en-accent:#D97706;--en-accent-dark:#B45309;--en-accent-light:#FEF3C7;--en-accent-pale:#FFFBEB;--en-shadow-hover:0 4px 16px rgba(217,119,6,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-hero,.en-tool-hero{background:linear-gradient(135deg,#0A1628 0%,#1c1400 50%,#3b2800 100%)!important}
+.date-display{background:linear-gradient(135deg,#0A1628 0%,#1c1400 50%,#3b2800 100%);border-radius:14px;padding:28px;color:#fff;text-align:center;margin-bottom:20px}
+.date-gregorian{font-size:.78rem;font-weight:600;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.date-hijri-big{font-family:"Instrument Serif",Georgia,serif;font-size:clamp(1.6rem,4vw,2.8rem);font-weight:400;color:#FEF3C7;line-height:1.2;margin-bottom:6px}
+.date-hijri-arabic{font-size:1.3rem;color:rgba(255,255,255,.6);margin-bottom:16px;direction:rtl}
+.date-arrow{color:#D97706;font-size:1.4rem;margin:12px 0}
+.sig-dates{display:flex;flex-direction:column;gap:10px}
+.sig-date-item{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#f8fafd;border:1px solid #e2e8f0;border-radius:10px}
+.sig-date-name{font-size:.88rem;font-weight:600;color:#0f172a}
+.sig-date-days{font-size:.82rem;color:#D97706;font-weight:700}
+.sig-date-gregorian{font-size:.78rem;color:#64748b}
+.countdown-box{background:#FFFBEB;border:2px solid #FEF3C7;border-radius:14px;padding:20px;text-align:center;margin-bottom:20px}
+.countdown-label{font-size:.78rem;font-weight:600;color:#B45309;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.countdown-num{font-size:2.4rem;font-weight:900;color:#D97706;line-height:1}
+.countdown-unit{font-size:.82rem;color:#92400e;margin-top:2px}
+</style>
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/islamic-calendar.webp">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Islamic Calendar Converter?","acceptedAnswer":{"@type":"Answer","text":"Enter your location and dates in the fields above. The Islamic Calendar Converter then gives you a clear schedule and reference you can use straight away."}},{"@type":"Question","name":"How accurate is the Islamic Calendar Converter?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm your local mosque, church or community timetable before you rely on it."}},{"@type":"Question","name":"Is the Islamic Calendar Converter free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Islamic Calendar Converter — Gregorian to Hijri",
+  "description": "Convert any Gregorian date to Hijri (Islamic) calendar and back. Accurate astronomical algorithm. See Islamic month names, significant dates, and days to Ramadan.",
+  "url": "https://afrotools.com/tools/islamic-calendar/",
+  "inLanguage": "en",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/islamic-calendar.webp"
+}
+</script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Islamic Calendar Converter — Gregorian to Hijri","item":"https://afrotools.com/tools/islamic-calendar/"}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/islamic-calendar/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/islamic-calendar/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/convertisseur-calendrier-islamique/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kalenda-ya-kiislamu/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/islamic-calendar/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar theme="dark" active="religious-cultural"></afro-navbar>
+
+<section class="en-tool-hero">
+<div class="en-tool-hero-inner">
+<div class="en-breadcrumb">
+<a href="/">Home</a><span class="en-breadcrumb-sep">›</span>
+<a href="/religious-cultural/">Religious &amp; Cultural</a><span class="en-breadcrumb-sep">›</span>
+<span class="en-breadcrumb-current">Islamic Calendar Converter</span>
+</div>
+<h1>Islamic Calendar <em>Converter</em></h1>
+<p>Accurately convert any date between the Gregorian and Hijri (Islamic) calendars. See nearby significant Islamic dates and how many days remain to Ramadan or Eid.</p>
+<div class="en-tool-hero-meta">
+<span class="en-tool-hero-pill">🗓️ Astronomical Algorithm</span>
+<span class="en-tool-hero-pill">☪️ Hijri ↔ Gregorian</span>
+<span class="en-tool-hero-pill">📅 2026 Dates</span>
+</div>
+</div>
+</section>
+
+<div class="en-tool-layout">
+
+<div class="en-card">
+<div class="en-card-title"><span class="en-card-title-icon">📅</span>Convert Gregorian to Hijri</div>
+<div class="en-form-grid en-form-grid-3">
+<div class="en-field">
+<label class="en-label">Day</label>
+<input aria-label="1–31" class="en-input" type="number" id="gDay" min="1" max="31" placeholder="1–31">
+</div>
+<div class="en-field">
+<label class="en-label">Month</label>
+<select class="en-select" id="gMonth" aria-label="G Month">
+<option value="1">January</option><option value="2">February</option><option value="3">March</option>
+<option value="4">April</option><option value="5">May</option><option value="6">June</option>
+<option value="7">July</option><option value="8">August</option><option value="9">September</option>
+<option value="10">October</option><option value="11">November</option><option value="12">December</option>
+</select>
+</div>
+<div class="en-field">
+<label class="en-label">Year</label>
+<input aria-label="E.g. 2026" class="en-input" type="number" id="gYear" min="1900" max="2100" placeholder="e.g. 2026">
+</div>
+</div>
+<div class="en-form-actions">
+<button type="button" class="en-btn" onclick="convertToHijri()">🌙 Convert to Hijri</button>
+<button type="button" class="en-btn en-btn-secondary" onclick="useToday()">Use Today</button>
+</div>
+</div>
+
+<div class="en-card">
+<div class="en-card-title"><span class="en-card-title-icon">🌙</span>Convert Hijri to Gregorian</div>
+<div class="en-form-grid en-form-grid-3">
+<div class="en-field">
+<label class="en-label">Hijri Day</label>
+<input aria-label="1–30" class="en-input" type="number" id="hDay" min="1" max="30" placeholder="1–30">
+</div>
+<div class="en-field">
+<label class="en-label">Hijri Month</label>
+<select class="en-select" id="hMonth" aria-label="H Month">
+<option value="1">1 — Muharram</option><option value="2">2 — Safar</option>
+<option value="3">3 — Rabi al-Awwal</option><option value="4">4 — Rabi al-Thani</option>
+<option value="5">5 — Jumada al-Awwal</option><option value="6">6 — Jumada al-Thani</option>
+<option value="7">7 — Rajab</option><option value="8">8 — Sha'ban</option>
+<option value="9">9 — Ramadan</option><option value="10">10 — Shawwal</option>
+<option value="11">11 — Dhu al-Qi'dah</option><option value="12">12 — Dhu al-Hijjah</option>
+</select>
+</div>
+<div class="en-field">
+<label class="en-label">Hijri Year</label>
+<input aria-label="E.g. 1447" class="en-input" type="number" id="hYear" min="1300" max="1600" placeholder="e.g. 1447">
+</div>
+</div>
+<div class="en-form-actions">
+<button type="button" class="en-btn en-btn-secondary" onclick="convertFromHijri()">📅 Convert to Gregorian</button>
+</div>
+</div>
+
+<!-- RESULTS -->
+<div id="results" class="en-results">
+
+<div class="date-display">
+<div class="date-gregorian" id="resGregorian">Gregorian date</div>
+<div class="date-arrow">↕</div>
+<div class="date-hijri-big" id="resHijri">Hijri date</div>
+<div class="date-hijri-arabic" id="resArabic"></div>
+<div style="font-size:.82rem;color:rgba(255,255,255,.55)" id="resMonthInfo"></div>
+</div>
+
+<div class="en-metrics" id="countdownMetrics"></div>
+
+<div class="en-card">
+<div class="en-card-title"><span class="en-card-title-icon">⭐</span>Upcoming Islamic Significant Dates</div>
+<div class="sig-dates" id="sigDatesList"></div>
+</div>
+
+<div class="en-card">
+<div class="en-card-title"><span class="en-card-title-icon">📖</span>About This Islamic Month</div>
+<div class="en-tip">
+<span class="en-tip-icon">🌙</span>
+<div class="en-tip-body">
+<div class="en-tip-label" id="monthName">Month Name</div>
+<div class="en-tip-text" id="monthInfo">Month information will appear here.</div>
+</div>
+</div>
+</div>
+
+</div><!-- /results -->
+
+</div>
+
+
+<section class="df-upgrade" data-df-upgrade="islamic-calendar">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Practical workflow</span>
+      <h2>Islamic Calendar Converter: quick guide</h2>
+      <p>Not sure how to get the most from the Islamic Calendar Converter? Enter your location and dates and it returns a clear schedule and reference — built for all 54 African countries.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear schedule and reference, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Islamic Calendar Converter takes your location and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm your local mosque, church or community timetable before you rely on the result.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm your local mosque, church or community timetable before acting.</p>
+    </div>
+    <form class="df-form" data-df-form="islamic-calendar">
+      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
+      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
+      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
+      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="islamic-calendar" data-df-base="Islamic Calendar Converter — enter your details above to see your result." aria-live="polite">Islamic Calendar Converter — enter your details above to see your result.</output>
+      <div class="df-actions"><button type="button" data-df-copy="islamic-calendar">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="islamic-calendar-faq-title">
+  <h2 id="islamic-calendar-faq-title">Islamic Calendar Converter — Gregorian to Hijri FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the Islamic Calendar Converter?</summary><p>Enter your location and dates in the fields above. The Islamic Calendar Converter then gives you a clear schedule and reference you can use straight away.</p></details><details><summary>How accurate is the Islamic Calendar Converter?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm your local mosque, church or community timetable before you rely on it.</p></details><details><summary>Is the Islamic Calendar Converter free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
+</section>
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+
+<section class="rs-upgrade-shell" data-rs-tool-id="islamic-calendar"></section>
+<script src="/assets/js/religious-cultural-apps.js?v=6fdda1a6" defer></script>
+<afro-related-tools data-ssr="1" category="religious-cultural" current="islamic-calendar">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/zakat-calculator/" data-related-tool data-id="zakat-calculator" data-name="Zakat Calculator" data-category="religious-cultural" data-icon="ZC" data-desc="Calculate zakat on cash, gold, silver, business inventory, receivables and liabilities with gold or silver nisab plannin">Zakat Calculator</a></li><li><a href="/tools/lobola-calculator/" data-related-tool data-id="lobola-calculator" data-name="Lobola Calculator" data-category="religious-cultural" data-icon="LC" data-desc="Estimate a respectful family budget for cash, livestock, gifts, and ceremony costs.">Lobola Calculator</a></li><li><a href="/tools/prayer-times/" data-related-tool data-id="prayer-times" data-name="Prayer Times and Qibla Planner" data-category="religious-cultural" data-icon="PT" data-desc="Plan daily salah times with African city presets, prayer method adjustments, Asr school choice and Qibla bearing.">Prayer Times and Qibla Planner</a></li><li><a href="/tools/faraid-inheritance/" data-related-tool data-id="faraid-inheritance" data-name="Islamic Inheritance Faraid Calculator" data-category="religious-cultural" data-icon="II" data-desc="Model common Faraid inheritance shares for spouse, parents, sons and daughters with estate deductions and scholar review">Islamic Inheritance Faraid Calculator</a></li><li><a href="/tools/ramadan-timetable/" data-related-tool data-id="ramadan-timetable" data-name="Ramadan Timetable Generator" data-category="religious-cultural" data-icon="RT" data-desc="Generate a Ramadan planning timetable with suhoor, iftar, taraweeh, last ten nights and Eid preparation markers.">Ramadan Timetable Generator</a></li><li><a href="/tools/hajj-budget/" data-related-tool data-id="hajj-budget" data-name="Hajj and Umrah Budget Calculator" data-category="religious-cultural" data-icon="HA" data-desc="Estimate Hajj or Umrah costs by origin, package level, travelers, days, visa, food, transport and contingency.">Hajj and Umrah Budget Calculator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+<script>
+var HIJRI_MONTHS=['Muharram','Safar','Rabi\' al-Awwal','Rabi\' al-Thani','Jumada al-Awwal','Jumada al-Thani','Rajab','Sha\'ban','Ramadan','Shawwal','Dhu al-Qi\'dah','Dhu al-Hijjah'];
+var HIJRI_ARABIC=['محرم','صفر','ربيع الأول','ربيع الثاني','جمادى الأولى','جمادى الثانية','رجب','شعبان','رمضان','شوال','ذو القعدة','ذو الحجة'];
+var MONTH_INFO=[
+  'Muharram is the first month of the Islamic year and one of the four sacred months. The 10th day (Ashura) is a significant day of fasting.',
+  'Safar is the second month. It follows Muharram and is a regular month with no particular festivals.',
+  'Rabi\' al-Awwal is the month of the Prophet Muhammad\'s (PBUH) birth. The 12th day is celebrated as Mawlid an-Nabi in many Muslim communities.',
+  'Rabi\' al-Thani (Rabi\' II) is the fourth month of the Hijri calendar.',
+  'Jumada al-Awwal is the fifth month. Part of the middle section of the Islamic year.',
+  'Jumada al-Thani is the sixth month of the Islamic calendar.',
+  'Rajab is the seventh month and one of the four sacred months. The 27th is Isra and Mi\'raj — the Prophet\'s night journey.',
+  'Sha\'ban is the month before Ramadan. The 15th night (Laylat al-Bara\'ah) is considered significant by many Muslims.',
+  'Ramadan is the ninth and holiest month — the month of fasting (Sawm). Muslims fast from Fajr to Maghrib. The last 10 nights include Laylat al-Qadr (Night of Power).',
+  'Shawwal is the month of Eid al-Fitr (1st Shawwal). Fasting 6 days in Shawwal is recommended Sunnah.',
+  'Dhu al-Qi\'dah is the eleventh month and one of the four sacred months.',
+  'Dhu al-Hijjah is the month of Hajj. The 10th is Eid al-Adha. The first 10 days are among the best days of the year in Islam.'
+];
+
+function gregorianToJulianDay(y,m,d){
+  if(m<=2){y--;m+=12;}
+  var A=Math.floor(y/100);
+  var B=2-A+Math.floor(A/4);
+  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+B-1524.5;
+}
+
+function julianDayToHijri(jd){
+  var jd2=Math.floor(jd)+0.5;
+  var z=Math.floor(jd2);
+  var a=Math.floor((z-1867216.25)/36524.25);
+  var b=z+1+a-Math.floor(a/4);
+  var c=b+1524;
+  var d=Math.floor((c-122.1)/365.25);
+  var e=Math.floor(365.25*d);
+  var f=Math.floor((c-e)/30.6001);
+  var day=c-e-Math.floor(30.6001*f);
+  var month=(f<14)?f-1:f-13;
+  var year=(month<=2)?d-4715:d-4716;
+  var jdEpoch=1948438.5;
+  var n=Math.floor(jd2-jdEpoch);
+  var hYear=Math.floor((30*n+10646)/10631);
+  var n2=n-Math.floor((10631*hYear-10617)/30);
+  var hMonth=Math.min(12,Math.ceil((n2-29)/29.5)+1);
+  var hDay=n2-Math.floor(29.5001*(hMonth-1))+1;
+  if(hDay<1){hDay=1;}if(hDay>30){hDay=30;}
+  if(hMonth<1){hMonth=1;}if(hMonth>12){hMonth=12;}
+  return{y:hYear,m:hMonth,d:hDay};
+}
+
+function hijriToGregorian(hy,hm,hd){
+  var n=Math.floor((11*hy+3)/30)+354*hy+30*hm-Math.floor((hm-1)/2)+hd+1948440-385;
+  return julianDayToGregorian(n);
+}
+
+function julianDayToGregorian(jd){
+  var z=Math.floor(jd+0.5);
+  var a,alpha;
+  if(z<2299161){a=z;}
+  else{alpha=Math.floor((z-1867216.25)/36524.25);a=z+1+alpha-Math.floor(alpha/4);}
+  var b=a+1524;
+  var c=Math.floor((b-122.1)/365.25);
+  var d=Math.floor(365.25*c);
+  var e=Math.floor((b-d)/30.6001);
+  var day=b-d-Math.floor(30.6001*e);
+  var month=(e<14)?e-1:e-13;
+  var year=(month>2)?c-4716:c-4715;
+  return{y:year,m:month,d:day};
+}
+
+function dateToJD(y,m,d){return gregorianToJulianDay(y,m,d);}
+
+function getSigDates(fromJD){
+  var events=[
+    {name:'Ramadan 2026 Start',jd:dateToJD(2026,3,1)},
+    {name:'Lailatul Qadr (Night of Power) ~2026',jd:dateToJD(2026,3,27)},
+    {name:'Eid al-Fitr 2026',jd:dateToJD(2026,3,31)},
+    {name:'Eid al-Adha 2026',jd:dateToJD(2026,6,6)},
+    {name:'Islamic New Year 1448 AH',jd:dateToJD(2026,6,27)},
+    {name:'Ashura (10 Muharram) 2026',jd:dateToJD(2026,7,6)},
+    {name:'Mawlid al-Nabi 2026',jd:dateToJD(2026,9,14)},
+    {name:'Ramadan 2027 Start',jd:dateToJD(2027,2,17)}
+  ];
+  var result=[];
+  events.forEach(function(ev){
+    var diff=Math.round(ev.jd-fromJD);
+    if(diff>=-1){
+      var greg=julianDayToGregorian(ev.jd);
+      result.push({name:ev.name,days:diff,date:greg.d+' '+['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][greg.m-1]+' '+greg.y});
+    }
+  });
+  return result.slice(0,5);
+}
+
+function useToday(){
+  var now=new Date();
+  document.getElementById('gDay').value=now.getDate();
+  document.getElementById('gMonth').value=now.getMonth()+1;
+  document.getElementById('gYear').value=now.getFullYear();
+  convertToHijri();
+}
+
+function convertToHijri(){
+  var d=parseInt(document.getElementById('gDay').value);
+  var m=parseInt(document.getElementById('gMonth').value);
+  var y=parseInt(document.getElementById('gYear').value);
+  if(!d||!m||!y){alert('Please enter a valid date.');return;}
+  var jd=dateToJD(y,m,d);
+  var h=julianDayToHijri(jd);
+  showResults(d,m,y,h.d,h.m,h.y,jd);
+}
+
+function convertFromHijri(){
+  var hd=parseInt(document.getElementById('hDay').value);
+  var hm=parseInt(document.getElementById('hMonth').value);
+  var hy=parseInt(document.getElementById('hYear').value);
+  if(!hd||!hm||!hy){alert('Please enter a valid Hijri date.');return;}
+  var g=hijriToGregorian(hy,hm,hd);
+  var jd=dateToJD(g.y,g.m,g.d);
+  showResults(g.d,g.m,g.y,hd,hm,hy,jd);
+}
+
+var GREG_MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+function showResults(gd,gm,gy,hd,hm,hy,jd){
+  var todayJD=dateToJD(new Date().getFullYear(),new Date().getMonth()+1,new Date().getDate());
+  document.getElementById('resGregorian').textContent=gd+' '+GREG_MONTHS[gm-1]+' '+gy+' (Gregorian)';
+  document.getElementById('resHijri').textContent=hd+' '+HIJRI_MONTHS[hm-1]+' '+hy+' AH';
+  document.getElementById('resArabic').textContent=hd+' '+HIJRI_ARABIC[hm-1]+' '+hy+'هـ';
+  document.getElementById('resMonthInfo').textContent='Month '+hm+' of 12 — '+HIJRI_MONTHS[hm-1];
+  document.getElementById('monthName').textContent=HIJRI_MONTHS[hm-1];
+  document.getElementById('monthInfo').textContent=MONTH_INFO[hm-1];
+  var ramadanJD=dateToJD(2026,3,1);
+  var eidJD=dateToJD(2026,3,31);
+  var daysToRamadan=Math.round(ramadanJD-jd);
+  var daysToEid=Math.round(eidJD-jd);
+  var metricsHtml='';
+  if(daysToRamadan>0){
+    metricsHtml+='<div class="en-metric"><div class="en-metric-label">Days to Ramadan 2026</div><div class="en-metric-value" style="color:#D97706">'+daysToRamadan+'</div><div class="en-metric-unit">days away</div><span class="en-metric-icon">🌙</span></div>';
+  } else if(daysToRamadan>=-29){
+    metricsHtml+='<div class="en-metric" style="border-color:#D97706"><div class="en-metric-label">Ramadan 2026</div><div class="en-metric-value" style="color:#D97706">'+(daysToRamadan===0?'Today!':Math.abs(daysToRamadan)+' days in')+'</div><div class="en-metric-unit">Ramadan is now</div><span class="en-metric-icon">🌙</span></div>';
+  }
+  if(daysToEid>0){
+    metricsHtml+='<div class="en-metric"><div class="en-metric-label">Days to Eid al-Fitr 2026</div><div class="en-metric-value" style="color:#D97706">'+daysToEid+'</div><div class="en-metric-unit">days away</div><span class="en-metric-icon">🌟</span></div>';
+  }
+  document.getElementById('countdownMetrics').innerHTML=metricsHtml;
+  var sigs=getSigDates(jd);
+  var sigHtml='';
+  sigs.forEach(function(s){
+    var badge=s.days===0?'<span style="background:#D97706;color:#fff;border-radius:6px;padding:2px 8px;font-size:.72rem;font-weight:700">Today</span>':
+      s.days<0?'<span style="background:#e2e8f0;color:#64748b;border-radius:6px;padding:2px 8px;font-size:.72rem;font-weight:700">'+Math.abs(s.days)+' days ago</span>':
+      '<span style="background:#FFFBEB;color:#B45309;border-radius:6px;padding:2px 8px;font-size:.72rem;font-weight:700">In '+s.days+' days</span>';
+    sigHtml+='<div class="sig-date-item"><div><div class="sig-date-name">'+s.name+'</div><div class="sig-date-gregorian">'+s.date+'</div></div>'+badge+'</div>';
+  });
+  document.getElementById('sigDatesList').innerHTML=sigHtml||'<div style="color:#64748b;font-size:.9rem">No upcoming dates found.</div>';
+  document.getElementById('results').classList.add('on');
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+useToday();
+</script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tenancy Deposit Calculator | AfroTools</title>
+<meta name="description" content="Calculate total move-in costs for renting in Nigeria, Kenya, South Africa, and Ghana. Includes rent, deposit, agent fees, agreement fees, and legal requirements.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Tenancy Deposit Calculator | AfroTools">
+<meta property="og:description" content="Calculate total move-in costs for renting across African countries.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/tenancy-deposit.webp">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/tenancy-deposit/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+:root{--afro-dark:#0f1419;--accent:#1d4ed8}
+.tool-hero{background:linear-gradient(135deg,#1e3a5f 0%,#1d4ed8 50%,#1e40af 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#bfdbfe}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#bfdbfe;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-em{background:rgba(191,219,254,.2);color:#bfdbfe;border:1px solid rgba(191,219,254,.4)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
+input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(29,78,216,.15)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{margin-bottom:14px}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px}
+.btn-primary{background:linear-gradient(135deg,#1e40af,#1d4ed8);color:#fff}
+.breakdown-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:.78rem}
+.breakdown-table th,.breakdown-table td{padding:10px;text-align:left;border-bottom:1px solid #e2e8f0}
+.breakdown-table th{font-weight:700;background:#f8fafc;font-size:.7rem;text-transform:uppercase}
+.breakdown-table td:last-child{text-align:right;font-weight:600}
+.breakdown-table tr.total{background:#eff6ff;font-weight:800;font-size:.88rem}
+.breakdown-table tr.total td{border-bottom:none;color:#1d4ed8}
+.sidebar .info-card{background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#1e3a5f;margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:#1e3a5f;line-height:1.6}
+.info-card ul{padding-left:16px;margin:6px 0}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
+</style>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Tenancy Deposit Calculator | AfroTools">
+<meta name="twitter:description" content="Calculate total move-in costs for renting across African countries.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/tenancy-deposit.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Tenancy Deposit Calculator",
+      "item": "https://afrotools.com/tools/tenancy-deposit/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="stylesheet" href="/assets/css/legal-enhancements.css?v=faefe7bf">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Tenancy Deposit Calculator",
+  "description": "Calculate total move-in costs for renting in Nigeria, Kenya, South Africa, and Ghana. Includes rent, deposit, agent fees, agreement fees, and legal requirements.",
+  "url": "https://afrotools.com/tools/tenancy-deposit/",
+  "inLanguage": "en",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/tenancy-deposit.webp"
+}
+</script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why do Nigerian landlords ask for 1-2 years rent upfront?","acceptedAnswer":{"@type":"Answer","text":"This practice stems from weak tenancy enforcement, difficulty evicting defaulting tenants, and landlords' desire for lump-sum investment capital. The Lagos Tenancy Law 2011 attempted to limit advance collection to 1 year for residential properties, but enforcement remains inconsistent."}},{"@type":"Question","name":"Is the security deposit refundable?","acceptedAnswer":{"@type":"Answer","text":"Yes, in all jurisdictions the security deposit should be refunded at the end of the tenancy, less any legitimate deductions for damages beyond normal wear and tear. In South Africa, the deposit must be held in an interest-bearing account and returned with interest within 7 days of lease end."}}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/tenancy-deposit/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/tenancy-deposit/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/caution-locative/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/amana-ya-upangaji/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/tenancy-deposit/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Tenancy Deposit</span></div>
+<h1>Tenancy <em>Deposit Calculator</em></h1>
+<p class="hero-sub">Calculate total move-in costs for renting in Nigeria, Kenya, South Africa, and Ghana. Includes advance rent, security deposit, agent fees, agreement fees, and other charges.</p>
+<div class="hero-badges"><span class="badge b-em">NG / KE / ZA / GH</span><span class="badge b-em">Move-In Costs</span><span class="badge b-em">Free</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calculator">
+<div class="card">
+<div class="card-head"><span class="card-title">Rental Details</span></div>
+<div class="card-body">
+<div class="row field">
+<div><label for="country">Country</label>
+<select id="country" onchange="updateDefaults()">
+<option value="ng">Nigeria</option>
+<option value="ke">Kenya</option>
+<option value="za">South Africa</option>
+<option value="gh">Ghana</option>
+</select></div>
+<div><label>Monthly Rent</label><input aria-label="Rent" type="number" id="rent" value="500000" min="0" step="10000"></div>
+</div>
+<div class="row field">
+<div><label>Advance Rent (Months)</label>
+<select id="advanceMonths" aria-label="Advance Months">
+<option value="12" selected>12 months (Nigeria standard)</option>
+<option value="6">6 months</option>
+<option value="3">3 months</option>
+<option value="2">2 months</option>
+<option value="1">1 month</option>
+</select></div>
+<div><label>Security Deposit (Months)</label>
+<select id="depositMonths" aria-label="Deposit Months">
+<option value="0">None</option>
+<option value="1" selected>1 month</option>
+<option value="2">2 months</option>
+<option value="3">3 months</option>
+</select></div>
+</div>
+<div class="row field">
+<div><label>Agent Fee (% of Annual Rent)</label>
+<select id="agentFee" aria-label="Agent Fee">
+<option value="0">No agent</option>
+<option value="5">5%</option>
+<option value="10" selected>10% (Nigeria standard)</option>
+<option value="15">15%</option>
+<option value="8.33">1 month rent (8.33%)</option>
+</select></div>
+<div><label>Agreement / Legal Fee</label>
+<select id="legalFee" aria-label="Legal Fee">
+<option value="0">None</option>
+<option value="5" selected>5% of annual rent</option>
+<option value="10">10% of annual rent</option>
+<option value="flat50000">Flat ₦50,000 / KSh 10,000</option>
+</select></div>
+</div>
+<div class="field"><label>Service Charge (Monthly, if applicable)</label><input aria-label="ServiceCharge" type="number" id="serviceCharge" value="0" min="0" step="5000"></div>
+<button type="button" class="btn btn-primary" onclick="calculate()">Calculate Move-In Cost</button>
+</div></div>
+
+<div class="card" id="resultCard" style="display:none">
+<div class="card-head"><span class="card-title">Total Move-In Cost Breakdown</span></div>
+<div class="card-body">
+<table class="breakdown-table" id="breakdownTable"></table>
+</div></div>
+</div>
+
+<div class="sidebar">
+<div class="card">
+<div class="card-head"><span class="card-title">Country Norms</span></div>
+<div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
+<p><strong>Nigeria:</strong> Typically 1-2 years advance rent. Agent fee 10% of annual rent. Legal fee 5-10%. Service charge varies.</p>
+<p style="margin-top:6px"><strong>Kenya:</strong> Usually 1 month deposit + 1 month advance. Agent fee ~1 month rent. Stamp duty on lease.</p>
+<p style="margin-top:6px"><strong>South Africa:</strong> 1-2 months deposit (held in trust). No agent fee to tenant. Monthly rent in advance.</p>
+<p style="margin-top:6px"><strong>Ghana:</strong> 1-2 years advance common. Agent fee 10%. Agreement fee varies. Stamp duty on lease.</p>
+</div></div>
+<div class="info-card">
+<h4>Tenant Rights</h4>
+<ul>
+<li>Get a signed tenancy agreement</li>
+<li>Document property condition at move-in</li>
+<li>Request receipts for all payments</li>
+<li>Security deposit should earn interest (SA)</li>
+<li>Know your notice period requirements</li>
+<li>Understand eviction procedures</li>
+</ul>
+</div>
+</div>
+</div></section>
+
+<section class="seo-section">
+<h2>Understanding Tenancy Costs in Africa</h2>
+<p>Renting a home in Africa involves significantly different cost structures depending on the country. In Nigeria and Ghana, landlords typically demand 1-2 years of rent upfront, making move-in costs extremely high. In Kenya and South Africa, the structure is more similar to Western markets with monthly payments and modest deposits — though the total upfront costs can still be substantial.</p>
+<p>In Nigeria, a typical move-in scenario involves: 1-2 years advance rent, a security/caution deposit (usually 1-3 months), an agent/commission fee (typically 10% of annual rent), a legal/agreement fee (5-10% of annual rent), and potentially a service charge (for estates and apartment complexes). For a ₦500,000/month apartment with 1-year advance, total move-in costs can easily exceed ₦7-8 million — a significant barrier to housing access.</p>
+<p>South Africa has the most tenant-friendly rental framework. The Rental Housing Act limits deposits to a reasonable amount (typically 1-2 months), requires landlords to hold deposits in an interest-bearing account, and prohibits charging tenants agent/finder fees. The Consumer Protection Act provides additional protections around lease terms and cancellation rights.</p>
+<p>Kenya sits in the middle ground. Standard practice is 1 month advance rent plus 1-2 months deposit. Agent fees (where applicable) are typically 1 month's rent. The Landlord and Tenant (Shops, Hotels, and Catering Establishments) Act provides some protections for commercial tenants, while residential tenancy is largely governed by common law and individual lease agreements.</p>
+<p>Ghana's rental market closely mirrors Nigeria's, with advance rent payments of 1-2 years being common, especially in Accra. The Rent Act 1963 (as amended) technically limits advance rent collection, but enforcement is weak. Agent fees typically run 10% of annual rent, and stamping of tenancy agreements is legally required but not always done in practice.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>Why do Nigerian landlords ask for 1-2 years rent upfront?</summary><p>This practice stems from weak tenancy enforcement, difficulty evicting defaulting tenants, and landlords' desire for lump-sum investment capital. The Lagos Tenancy Law 2011 attempted to limit advance collection to 1 year for residential properties, but enforcement remains inconsistent.</p></details>
+<details class="faq-item"><summary>Is the security deposit refundable?</summary><p>Yes, in all jurisdictions the security deposit should be refunded at the end of the tenancy, less any legitimate deductions for damages beyond normal wear and tear. In South Africa, the deposit must be held in an interest-bearing account and returned with interest within 7 days of lease end.</p></details>
+</section>
+
+<!-- LEGAL-WORKFLOW-COPILOT:START -->
+<section class="leg-workflow-copilot" aria-labelledby="legal-workflow-heading">
+  <script type="application/json" class="leg-workflow-data">{"slug":"tenancy-deposit","title":"Tenancy Deposit Calculator","workflowTitle":"Deposit and rent-advance risk check","coverage":"Rent deposit reference","decision":"Which amounts are rent, refundable deposit, agent fee, service charge or utility float","evidence":["Label every payment in the receipt and agreement","Take condition photos, meter readings and inventory before handover","State refund timing, deductions, inspection process and dispute route"],"redFlags":["One lump-sum payment with no breakdown","No signed inventory for furnished or high-value property","Deposit refund depends only on landlord discretion"],"related":[{"label":"Tenancy Agreement","href":"/tools/tenancy-agreement/"},{"label":"Rent Affordability","href":"/tools/rent-affordability/"},{"label":"Tenant Screening","href":"/tools/tenant-screening/"}],"competitor":{"group":"property","label":"Rentometer, AirDNA, Zillow Rental Manager and BuildZoom","patterns":["Property tools improve trust by showing comparable evidence, market assumptions, inspection or permit data and a dated report trail.","Rental platforms connect screening, lease, payments, deposit evidence and renewal steps instead of stopping at a calculator result.","Investment tools separate gross numbers from operating cost, vacancy, tax, permit and title risk so the user can defend the decision."],"implemented":["This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.","The app-specific checklist is not generic: it starts with \"Label every payment in the receipt and agreement\".","Saved workflows can be resumed from the dashboard and handed off to Tenancy Agreement when the matter naturally continues.","The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report."]}}</script>
+  <div class="leg-workflow-head">
+    <span class="leg-action-kicker">Case workspace</span>
+    <h2 id="legal-workflow-heading">Build, save and export this legal workflow</h2>
+    <p>This workspace turns the deposit and rent-advance risk check result into a reusable matter note, dashboard item and gated PDF checklist. Use the app first, then save the evidence trail.</p>
+  </div>
+  <div class="leg-workflow-grid">
+    <label class="leg-field"><span class="leg-f-label">Matter or project</span><input aria-label="E.g. Supplier DPA review" class="leg-f-input" data-workflow-field="matter" type="text" placeholder="e.g. Supplier DPA review"></label>
+    <label class="leg-field"><span class="leg-f-label">Country or regime</span><input aria-label="E.g. Kenya, NDPA, Lagos" class="leg-f-input" data-workflow-field="country" type="text" placeholder="e.g. Kenya, NDPA, Lagos"></label>
+    <label class="leg-field"><span class="leg-f-label">Target date</span><input aria-label="Leg f input" class="leg-f-input" data-workflow-field="date" type="date"></label>
+    <label class="leg-field"><span class="leg-f-label">Status</span><select class="leg-f-select" data-workflow-field="status"><option>Checking evidence</option><option>Ready to verify</option><option>Waiting on official source</option><option>Escalate before action</option></select></label>
+  </div>
+  <div class="leg-workflow-columns">
+    <div>
+      <h3 class="leg-mini-heading">Evidence checked</h3>
+      <div class="leg-workflow-checklist" data-workflow-evidence-list></div>
+    </div>
+    <div>
+      <h3 class="leg-mini-heading">Risk flags</h3>
+      <div class="leg-workflow-checklist warning" data-workflow-risk-list></div>
+    </div>
+  </div>
+  <label class="leg-field full"><span class="leg-f-label">Private notes</span><textarea class="leg-f-textarea" data-workflow-field="note" placeholder="Add facts, missing documents, portal references, lawyer comments, or next actions."></textarea></label>
+  <div class="leg-workflow-summary" data-workflow-summary></div>
+  <div class="leg-workflow-actions">
+    <button type="button" class="leg-copy-btn" data-workflow-build>Build handoff note</button>
+    <button type="button" class="leg-secondary-btn" data-workflow-save>Save to dashboard</button>
+    <button type="button" class="leg-secondary-btn" data-workflow-load>Load saved</button>
+    <a class="leg-secondary-btn" href="/dashboard/">Open dashboard</a>
+  </div>
+  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly aria-label="Text entry"></textarea>
+  <form class="leg-pdf-gate" data-workflow-gate novalidate>
+    <div>
+      <span class="leg-action-kicker">PDF gate</span>
+      <h3>Email the checklist and unlock print/PDF</h3>
+      <p>The core tool stays free. The deeper PDF pack captures email only when the user wants a portable report, checklist and dashboard reminder.</p>
+    </div>
+    <label class="leg-field"><span class="leg-f-label">Email</span><input aria-label="You@example.com" class="leg-f-input" data-workflow-field="email" data-workflow-email type="email" autocomplete="email" placeholder="you@example.com"></label>
+    <label class="leg-workflow-optin"><input type="checkbox" data-workflow-optin checked><span>Send me occasional AfroTools legal checklist updates.</span></label>
+    <div class="leg-workflow-actions compact">
+      <button type="submit" class="leg-copy-btn" data-workflow-pdf-gate>Email checklist + unlock PDF</button>
+      <button type="button" class="leg-secondary-btn" data-workflow-print>Print or save PDF</button>
+      <button type="button" class="leg-secondary-btn" data-workflow-copy>Copy handoff note</button>
+    </div>
+    <div class="leg-gate-status" data-workflow-gate-status></div>
+  </form>
+  <div class="leg-workflow-next">
+    <span>Continue workflow</span>
+    <div><a href="/tools/tenancy-agreement/">Tenancy Agreement</a><a href="/tools/rent-affordability/">Rent Affordability</a><a href="/tools/tenant-screening/">Tenant Screening</a></div>
+  </div>
+</section>
+<!-- LEGAL-WORKFLOW-COPILOT:END -->
+<!-- LEGAL-COMPETITOR-CHECK:START -->
+<section class="leg-competitor" aria-labelledby="legal-competitor-heading">
+  <div class="leg-action-kicker">Competitor check - 28 April 2026</div>
+  <div class="leg-competitor-head">
+    <h2 id="legal-competitor-heading">What stronger tools teach this app</h2>
+    <p>Benchmarked against Rentometer, AirDNA, Zillow Rental Manager and BuildZoom. The goal is not to copy them; it is to bring the useful workflow pattern into an Africa-first tool with official-source caution and local evidence capture.</p>
+  </div>
+  <div class="leg-competitor-grid">
+    <div>
+      <h3>Observed feature pattern</h3>
+      <ul><li>Property tools improve trust by showing comparable evidence, market assumptions, inspection or permit data and a dated report trail.</li><li>Rental platforms connect screening, lease, payments, deposit evidence and renewal steps instead of stopping at a calculator result.</li><li>Investment tools separate gross numbers from operating cost, vacancy, tax, permit and title risk so the user can defend the decision.</li></ul>
+    </div>
+    <div>
+      <h3>Implemented on this app</h3>
+      <ul><li>This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.</li><li>The app-specific checklist is not generic: it starts with &quot;Label every payment in the receipt and agreement&quot;.</li><li>Saved workflows can be resumed from the dashboard and handed off to Tenancy Agreement when the matter naturally continues.</li><li>The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report.</li></ul>
+    </div>
+    <div>
+      <h3>Best next move</h3>
+      <ul><li>Which amounts are rent, refundable deposit, agent fee, service charge or utility float</li><li>Label every payment in the receipt and agreement</li><li>One lump-sum payment with no breakdown</li></ul>
+    </div>
+  </div>
+</section>
+<!-- LEGAL-COMPETITOR-CHECK:END -->
+<!-- LEGAL-DEEP-IMPROVEMENT:START -->
+<section class="leg-upgrade" aria-labelledby="legal-upgrade-heading">
+  <div class="leg-upgrade-kicker">Reviewed 28 April 2026 · Rent deposit reference</div>
+  <h2 id="legal-upgrade-heading">Deposit and rent-advance risk check</h2>
+  <p>Deposit rules collide with local rent-in-advance customs, agent fees, caution deposits and informal receipts. This app should help tenants and landlords separate each money bucket.</p>
+  <div class="leg-upgrade-grid">
+    <div class="leg-upgrade-block">
+      <h3>Decisions this clarifies</h3>
+      <ul><li>Which amounts are rent, refundable deposit, agent fee, service charge or utility float</li><li>Whether local law caps deposit, rent advance or notice periods</li><li>Which evidence is needed to recover a deposit later</li></ul>
+    </div>
+    <div class="leg-upgrade-block">
+      <h3>Before you rely on it</h3>
+      <ul><li>Label every payment in the receipt and agreement</li><li>Take condition photos, meter readings and inventory before handover</li><li>State refund timing, deductions, inspection process and dispute route</li></ul>
+    </div>
+    <div class="leg-upgrade-block warning">
+      <h3>Red flags</h3>
+      <ul><li>One lump-sum payment with no breakdown</li><li>No signed inventory for furnished or high-value property</li><li>Deposit refund depends only on landlord discretion</li></ul>
+    </div>
+  </div>
+  <div class="leg-source-row">
+    <div>
+      <span>Primary checks</span>
+      <div class="leg-source-links"><a href="https://www.gov.za/services/services-residents/place-live/get-deeds-registry-information" target="_blank" rel="noopener">South Africa deeds registry information</a><a href="https://www.lc.gov.gh/services/registration-title/" target="_blank" rel="noopener">Ghana Lands Commission title registration</a><a href="https://ardhisasa.lands.go.ke/" target="_blank" rel="noopener">Kenya Ardhisasa land portal</a></div>
+    </div>
+    <div>
+      <span>Next best tools</span>
+      <div class="leg-source-links internal"><a href="/tools/tenancy-agreement/">Tenancy Agreement</a><a href="/tools/rent-affordability/">Rent Affordability</a><a href="/tools/tenant-screening/">Tenant Screening</a></div>
+    </div>
+  </div>
+</section>
+<!-- LEGAL-DEEP-IMPROVEMENT:END -->
+<!-- LEGAL-ACTION-PACK:START -->
+<section class="leg-action-pack" aria-labelledby="legal-action-pack-heading">
+  <div class="leg-action-head">
+    <span class="leg-action-kicker">Review pack</span>
+    <h2 id="legal-action-pack-heading">Save the deposit and rent-advance risk check trail</h2>
+    <p>Before filing, signing, publishing, or sending anything, keep a short record that links the app result to evidence and official-source checks.</p>
+  </div>
+  <div class="leg-action-grid">
+    <div>
+      <h3>Capture</h3>
+      <p>Save the country or regime, parties, dates, amounts, selected options, and final output. Add why this matters: Which amounts are rent, refundable deposit, agent fee, service charge or utility float.</p>
+    </div>
+    <div>
+      <h3>Attach</h3>
+      <p>Label every payment in the receipt and agreement. Also keep the strongest supporting document, receipt, portal reference, ID, contract, policy, or court file beside the generated result.</p>
+    </div>
+    <div>
+      <h3>Escalate</h3>
+      <p>If you see this risk, pause and get qualified help: One lump-sum payment with no breakdown.</p>
+    </div>
+  </div>
+  <label class="leg-action-copy-label">Copyable review note</label>
+  <textarea class="leg-action-copy-text" readonly aria-label="Text entry">Deposit and rent-advance risk check action pack
+Tool: tenancy-deposit
+Coverage: Rent deposit reference
+
+Result to save:
+- Country or regime selected, parties involved, dates, amounts, and the generated output from the app.
+- The reason this output was prepared: Which amounts are rent, refundable deposit, agent fee, service charge or utility float.
+
+Evidence to attach:
+- Label every payment in the receipt and agreement
+- Take condition photos, meter readings and inventory before handover
+- State refund timing, deductions, inspection process and dispute route
+
+Escalate before filing or signing if:
+- One lump-sum payment with no breakdown
+- No signed inventory for furnished or high-value property
+- Deposit refund depends only on landlord discretion
+
+Primary checks:
+- South Africa deeds registry information: https://www.gov.za/services/services-residents/place-live/get-deeds-registry-information
+- Ghana Lands Commission title registration: https://www.lc.gov.gh/services/registration-title/
+- Kenya Ardhisasa land portal: https://ardhisasa.lands.go.ke/
+
+Reviewed by AfroTools workflow on 28 April 2026. Informational only, not legal advice.</textarea>
+  <div class="leg-action-copy-row">
+    <button type="button" class="leg-action-copy-btn" data-legal-copy-action>Copy review pack</button>
+    <span>Paste this into your matter file, compliance folder, board pack, or lawyer handoff.</span>
+  </div>
+</section>
+<!-- LEGAL-ACTION-PACK:END -->
+<afro-related-tools category="legal" current="tenancy-deposit" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/business-registration/" data-related-tool data-id="business-registration" data-name="Business Registration Checklist" data-category="legal" data-icon="BR" data-desc="Step-by-step business registration checklist for 16 African countries. Documents, fees, timelines, regulatory bodies.">Business Registration Checklist</a></li><li><a href="/tools/nda-generator/" data-related-tool data-id="nda-generator" data-name="NDA Generator" data-category="legal" data-icon="NG" data-desc="Generate Non-Disclosure Agreements for African jurisdictions. Mutual and unilateral NDAs compliant with local contract l">NDA Generator</a></li><li><a href="/tools/rent-intelligence/" data-related-tool data-id="rent-intelligence" data-name="Rent Intelligence" data-category="legal" data-icon="RI" data-desc="Track rent asks, lease terms, deposits, and vacancy signals by neighborhood with moderated contributor data.">Rent Intelligence</a></li><li><a href="/tools/company-type-selector/" data-related-tool data-id="company-type-selector" data-name="Company Type Selector" data-category="legal" data-icon="CT" data-desc="Choose the right business structure for Africa — Sole Trader, LLC, PLC, Partnership. Tax, liability, compliance comparis">Company Type Selector</a></li><li><a href="/tools/land-title-check/" data-related-tool data-id="land-title-check" data-name="Land Title Verification Checklist" data-category="legal" data-icon="LT" data-desc="Verify land titles before buying property in Africa. Country-specific checklists for Nigeria (C of O), Kenya (Title Deed">Land Title Verification Checklist</a></li><li><a href="/tools/lease-risk-check/" data-related-tool data-id="lease-risk-check" data-name="Lease Risk Check" data-category="legal" data-icon="LR" data-desc="Nigeria-first lease scam and risky listing checker powered by contributor reports and reviewer approval.">Lease Risk Check</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+const CURRENCIES={ng:'₦',ke:'KSh ',za:'R ',gh:'GH₵'};
+function updateDefaults(){
+  const c=document.getElementById('country').value;
+  if(c==='ng'){document.getElementById('rent').value=500000;document.getElementById('advanceMonths').value='12';document.getElementById('depositMonths').value='1';document.getElementById('agentFee').value='10';document.getElementById('legalFee').value='5';}
+  else if(c==='ke'){document.getElementById('rent').value=50000;document.getElementById('advanceMonths').value='1';document.getElementById('depositMonths').value='1';document.getElementById('agentFee').value='8.33';document.getElementById('legalFee').value='0';}
+  else if(c==='za'){document.getElementById('rent').value=12000;document.getElementById('advanceMonths').value='1';document.getElementById('depositMonths').value='2';document.getElementById('agentFee').value='0';document.getElementById('legalFee').value='0';}
+  else if(c==='gh'){document.getElementById('rent').value=3000;document.getElementById('advanceMonths').value='12';document.getElementById('depositMonths').value='1';document.getElementById('agentFee').value='10';document.getElementById('legalFee').value='5';}
+}
+
+function calculate(){
+  const c=document.getElementById('country').value;
+  const cur=CURRENCIES[c];
+  const rent=+document.getElementById('rent').value;
+  const advMonths=+document.getElementById('advanceMonths').value;
+  const depMonths=+document.getElementById('depositMonths').value;
+  const agentPct=+document.getElementById('agentFee').value;
+  const legalVal=document.getElementById('legalFee').value;
+  const serviceCharge=+document.getElementById('serviceCharge').value;
+
+  const annualRent=rent*12;
+  const advanceRent=rent*advMonths;
+  const deposit=rent*depMonths;
+  const agentFee=annualRent*(agentPct/100);
+
+  let legalFee=0;
+  if(legalVal==='flat50000')legalFee=c==='ng'?50000:c==='ke'?10000:c==='za'?5000:500;
+  else legalFee=annualRent*(+legalVal/100);
+
+  const serviceTotal=serviceCharge*advMonths;
+  const total=advanceRent+deposit+agentFee+legalFee+serviceTotal;
+
+  const fmt=n=>cur+Math.round(n).toLocaleString('en');
+
+  let rows='<tr><th>Item</th><th>Amount</th></tr>';
+  rows+=`<tr><td>Advance Rent (${advMonths} month${advMonths>1?'s':''})</td><td>${fmt(advanceRent)}</td></tr>`;
+  if(deposit>0)rows+=`<tr><td>Security Deposit (${depMonths} month${depMonths>1?'s':''})</td><td>${fmt(deposit)}</td></tr>`;
+  if(agentFee>0)rows+=`<tr><td>Agent / Commission Fee (${agentPct}%)</td><td>${fmt(agentFee)}</td></tr>`;
+  if(legalFee>0)rows+=`<tr><td>Agreement / Legal Fee</td><td>${fmt(legalFee)}</td></tr>`;
+  if(serviceTotal>0)rows+=`<tr><td>Service Charge (${advMonths} months)</td><td>${fmt(serviceTotal)}</td></tr>`;
+  rows+=`<tr class="total"><td>Total Move-In Cost</td><td>${fmt(total)}</td></tr>`;
+  rows+=`<tr><td>Monthly Rent</td><td>${fmt(rent)}/mo</td></tr>`;
+  rows+=`<tr><td>Total as Multiple of Monthly Rent</td><td>${(total/rent).toFixed(1)}x</td></tr>`;
+
+  document.getElementById('breakdownTable').innerHTML=rows;
+  document.getElementById('resultCard').style.display='block';
+  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
+}
+</script>
+
+<script>
+(function(){
+  var target = document.getElementById('resultCard');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
+  div.innerHTML = '<save-result-button tool-slug="tenancy-deposit" tool-name="Tenancy Deposit"></save-result-button><share-result-button tool-name="Tenancy Deposit" tool-slug="tenancy-deposit"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script id="legal-action-copy-script">
+(function(){
+  document.addEventListener('click', function(event) {
+    var button = event.target.closest('[data-legal-copy-action]');
+    if (!button) return;
+    var section = button.closest('.leg-action-pack');
+    var area = section && section.querySelector('.leg-action-copy-text');
+    if (!area) return;
+    var original = button.textContent;
+    var done = function(){ button.textContent = "Copied"; setTimeout(function(){ button.textContent = original; }, 1800); };
+    var fallback = function(){ area.focus(); area.select(); try { document.execCommand("copy"); done(); } catch (err) { button.textContent = "Select text manually"; } };
+    if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(area.value).then(done).catch(fallback); } else { fallback(); }
+  });
+}());
+</script>
+<script src="/assets/js/legal-workflow-copilot.js?v=20da8404" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>African Mortgage Repayment Calculator | 14 Countries | AfroTools</title>
+<meta name="description" content="Estimate African mortgage repayments, total interest and a full amortisation schedule for Nigeria, Kenya, South Africa, Ghana and 14 countries. Free, no signup.">
+<meta property="og:title" content="African Mortgage Calculator — Free">
+<meta property="og:description" content="Calculate your monthly mortgage payment for Nigeria, Kenya, South Africa. See amortization schedule.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/mortgage-calculator.webp">
+<meta property="og:url" content="https://afrotools.com/tools/mortgage-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"African Mortgage Calculator","description":"Calculate monthly mortgage repayments, total interest cost, and amortisation schedule for supported African markets.","url":"https://afrotools.com/tools/mortgage-calculator/","inLanguage":"en","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/mortgage-calculator.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"African Mortgage Calculator","url":"https://afrotools.com/tools/mortgage-calculator/","description":"Calculate monthly mortgage repayments, total interest cost, and amortisation schedule for supported African markets.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/mortgage-calculator.webp"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+<script src="/assets/js/utils.js?v=869324ac" defer></script>
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7;color:#1d1d1f;-webkit-font-smoothing:antialiased}
+
+/* ── Hero ── */
+.hero{background:linear-gradient(160deg,#0d1117 0%,#0a1628 55%,#111827 100%);padding:64px 0 52px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-80px;right:-60px;width:400px;height:400px;background:radial-gradient(circle,rgba(0,98,204,.18) 0%,transparent 70%);pointer-events:none}
+.hero-inner{max-width:1160px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:.7rem;font-weight:600;color:rgba(255,255,255,.4);margin-bottom:14px;flex-wrap:wrap}
+.breadcrumb a{color:rgba(255,255,255,.5);text-decoration:none}.breadcrumb a:hover{color:#60b5ff}
+.breadcrumb span{color:rgba(255,255,255,.25)}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:.67rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#60b5ff;background:rgba(0,98,204,.15);border:1px solid rgba(0,98,204,.25);border-radius:100px;padding:4px 12px;margin-bottom:14px}
+.hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;color:#f0f6fc;letter-spacing:-.03em;line-height:1.1;margin-bottom:12px}
+.hero h1 span{color:#60b5ff}
+.hero-sub{font-size:.95rem;color:rgba(255,255,255,.5);max-width:580px;line-height:1.65;margin-bottom:28px}
+.hero-chips{display:flex;gap:8px;flex-wrap:wrap}
+.hero-chip{display:inline-flex;align-items:center;gap:5px;font-size:.72rem;font-weight:600;color:rgba(255,255,255,.6);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:5px 12px}
+
+/* ── Tool area ── */
+.tool-wrap{max-width:1160px;margin:0 auto;padding:40px 24px 80px;display:grid;grid-template-columns:1fr 380px;gap:28px;align-items:start}
+
+/* ── Card base ── */
+.card{background:#fff;border-radius:20px;padding:28px;box-shadow:0 2px 10px rgba(0,0,0,.06),0 0 0 1px rgba(0,0,0,.04)}
+.card-title{font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#9ca3af;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid #f3f4f6}
+
+/* ── Country selector ── */
+.country-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px}
+.ctab{padding:7px 14px;border-radius:100px;font-size:.78rem;font-weight:700;border:1.5px solid #e5e7eb;background:#f9fafb;color:#6e6e73;cursor:pointer;font-family:inherit;transition:all .18s}
+.ctab.active,.ctab:hover{border-color:var(--color-primary);background:#f0f7ff;color:var(--color-primary)}
+.ctab.active{background:linear-gradient(135deg,#0062CC,#0055D4);box-shadow:0 4px 14px rgba(0,98,204,.35);color:#fff;border-color:var(--color-primary)}
+
+/* ── Form fields ── */
+.fields-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.field label{display:block;font-size:.7rem;font-weight:700;color:#6e6e73;letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px}
+.field input,.field select{width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:12px;font-family:inherit;font-size:.88rem;color:#1d1d1f;background:#fafafa;outline:none;transition:border-color .18s,box-shadow .18s}
+.field input:focus,.field select:focus{border-color:var(--color-primary);background:#fff;box-shadow:0 0 0 4px rgba(0,98,204,.08)}
+.field .prefix-wrap{position:relative}
+.field .prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:.82rem;font-weight:700;color:#9ca3af;pointer-events:none}
+.field .prefix-wrap input{padding-left:36px}
+.field-hint{font-size:.7rem;color:#9ca3af;margin-top:4px}
+
+/* ── Loan type toggles ── */
+.loan-type{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px}
+.lt-btn{padding:10px 14px;border-radius:12px;border:1.5px solid #e5e7eb;background:#fafafa;text-align:center;cursor:pointer;transition:all .18s;font-family:inherit}
+.lt-btn:hover{border-color:var(--color-primary)}
+.lt-btn.active{border-color:var(--color-primary);background:#f0f7ff}
+.lt-btn .lt-name{font-size:.82rem;font-weight:700;color:#1d1d1f}
+.lt-btn .lt-rate{font-size:.72rem;color:#6e6e73;margin-top:2px}
+.lt-btn.active .lt-name{color:var(--color-primary)}
+
+/* ── Calculate button ── */
+.calc-btn{width:100%;padding:14px 24px;background:linear-gradient(135deg,#0062CC,#0055D4);box-shadow:0 4px 14px rgba(0,98,204,.35);color:#fff;border:none;border-radius:100px;font-family:inherit;font-size:.92rem;font-weight:800;cursor:pointer;transition:background .18s,transform .15s;margin-top:6px}
+.calc-btn:hover{background:#0059B3;transform:translateY(-1px)}
+.calc-btn:active{transform:scale(.98)}
+
+/* ── Results panel ── */
+.results{display:none}
+.results.show{display:block}
+.result-hero{background:linear-gradient(135deg,var(--color-primary) 0%,#0059B3 100%);border-radius:16px;padding:24px;margin-bottom:16px;text-align:center}
+.result-label{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:6px}
+.result-value{font-size:2.2rem;font-weight:800;color:#fff;letter-spacing:-.03em;line-height:1}
+.result-sub{font-size:.78rem;color:rgba(255,255,255,.6);margin-top:6px}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.rstat{background:#f9fafb;border:1px solid #f3f4f6;border-radius:12px;padding:14px;text-align:center}
+.rstat-label{font-size:.67rem;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px}
+.rstat-value{font-size:1.1rem;font-weight:800;color:#1d1d1f;letter-spacing:-.02em}
+.rstat-value.red{color:#dc2626}
+.rstat-value.green{color:#2563EB}
+
+/* ── Breakdown bar ── */
+.breakdown-bar{height:10px;border-radius:100px;overflow:hidden;background:#f3f4f6;margin:12px 0 6px;display:flex}
+.bb-principal{background:linear-gradient(135deg,#0062CC,#0055D4);box-shadow:0 4px 14px rgba(0,98,204,.35);height:100%}
+.bb-interest{background:#fca5a5;height:100%}
+.bb-legend{display:flex;gap:14px;font-size:.7rem;font-weight:600;color:#6e6e73}
+.bb-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:4px;vertical-align:middle}
+
+/* ── Amortisation table ── */
+.amort-section{margin-top:20px}
+.amort-toggle{width:100%;padding:10px 16px;background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:12px;font-family:inherit;font-size:.82rem;font-weight:700;color:var(--color-primary);cursor:pointer;text-align:left;transition:background .18s}
+.amort-toggle:hover{background:#f0f7ff}
+.amort-body{display:none;margin-top:12px;overflow-x:auto}
+.amort-body.show{display:block}
+.amort-table{width:100%;border-collapse:collapse;font-size:.78rem}
+.amort-table th{padding:8px 10px;background:#f9fafb;font-weight:700;color:#6e6e73;text-align:right;border-bottom:1px solid #f3f4f6;white-space:nowrap}
+.amort-table th:first-child{text-align:left}
+.amort-table td{padding:8px 10px;border-bottom:1px solid #f9fafb;text-align:right;color:#374151}
+.amort-table td:first-child{text-align:left;font-weight:600;color:#1d1d1f}
+.amort-table tr:last-child td{border-bottom:none}
+.amort-table .highlight td{background:#f0f7ff;font-weight:700}
+
+/* ── Sidebar ── */
+.sidebar{display:flex;flex-direction:column;gap:16px}
+.info-card{background:#fff;border-radius:16px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.05),0 0 0 1px rgba(0,0,0,.04)}
+.info-card h3{font-size:.85rem;font-weight:700;color:#1d1d1f;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.info-card p{font-size:.78rem;color:#6e6e73;line-height:1.65}
+.info-card ul{list-style:none;display:flex;flex-direction:column;gap:6px}
+.info-card li{font-size:.78rem;color:#6e6e73;line-height:1.5;display:flex;gap:6px}
+.info-card li::before{content:'•';color:var(--color-primary);flex-shrink:0;font-weight:700}
+.rate-table{width:100%;border-collapse:collapse;margin-top:8px}
+.rate-table td{padding:7px 10px;font-size:.78rem;border-bottom:1px solid #f3f4f6}
+.rate-table td:first-child{font-weight:600;color:#1d1d1f}
+.rate-table td:last-child{text-align:right;font-weight:700;color:var(--color-primary)}
+.rate-table tr:last-child td{border-bottom:none}
+
+/* ── FAQ ── */
+.faq-section{max-width:1160px;margin:0 auto;padding:0 24px 72px}
+.faq-title{font-size:1.2rem;font-weight:800;color:#1d1d1f;letter-spacing:-.02em;margin-bottom:20px}
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.faq-item{background:#fff;border-radius:16px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.05),0 0 0 1px rgba(0,0,0,.04)}
+.faq-q{font-size:.88rem;font-weight:700;color:#1d1d1f;margin-bottom:8px}
+.faq-a{font-size:.8rem;color:#6e6e73;line-height:1.65}
+
+@media(max-width:900px){.tool-wrap{grid-template-columns:1fr}.fields-grid{grid-template-columns:1fr}.faq-grid{grid-template-columns:1fr}}
+@media(max-width:480px){.hero{padding:48px 0 40px}.result-grid{grid-template-columns:1fr}}
+
+/* AI Advisor sidebar */
+.ai-advisor-card{background:#fff;border-radius:16px;border:1px solid #DBEAFE;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05);margin-bottom:16px}
+.ai-advisor-head{padding:14px 18px;border-bottom:1px solid #EFF6FF;display:flex;align-items:center;gap:9px}
+.ai-dot{width:8px;height:8px;border-radius:50%;background:#0062CC;animation:aiPulse 2s infinite;flex-shrink:0}
+@keyframes aiPulse{0%,100%{opacity:1}50%{opacity:.3}}
+.ai-title{font-size:.72rem;font-weight:700;letter-spacing:.06em;color:#0f172a}
+.ai-by{font-size:.62rem;color:#6B8CAE;margin-left:auto}
+.ai-advisor-body{padding:14px 18px}
+.ai-status{font-size:.78rem;color:#0f172a;line-height:1.6;margin-bottom:10px}
+.ai-consent{display:flex;gap:8px;align-items:flex-start;font-size:.72rem;color:#475569;line-height:1.45;margin:8px 0 10px}
+.ai-consent input{width:auto;margin-top:2px;flex:0 0 auto}
+.ai-msgs{max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.ai-msg-u{font-size:.76rem;padding:7px 10px;background:#0062CC;color:#fff;border-radius:6px;align-self:flex-end;max-width:90%;word-wrap:break-word}
+.ai-msg-a{font-size:.76rem;padding:7px 10px;background:#EFF6FF;color:#0f172a;border-radius:6px;align-self:flex-start;max-width:90%;line-height:1.55;word-wrap:break-word}
+.ai-thinking{font-size:.72rem;color:#9ca3af;font-style:italic;padding:4px 0}
+.ai-input-row{display:flex;gap:6px}
+.ai-input{flex:1;padding:9px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.8rem;outline:none;background:#fafafa}
+.ai-input:focus{border-color:#0062CC;background:#fff}
+.ai-send{padding:9px 14px;background:#0062CC;color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer}
+.ai-send:disabled{opacity:.5;cursor:not-allowed}
+</style>
+<script src="/assets/js/lib/save-state-classic.js?v=015b323f"></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:title" content="African Mortgage Calculator — Free">
+<meta name="twitter:description" content="Calculate your monthly mortgage payment for Nigeria, Kenya, South Africa. See amortization schedule.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/mortgage-calculator.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "African Mortgage Calculator",
+      "item": "https://afrotools.com/tools/mortgage-calculator/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/financial-focus.css?v=ff735f2c">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="stylesheet" href="/assets/css/finance-calculator-refresh.css?v=8a18478d">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Mortgage Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Mortgage Calculator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Mortgage Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Mortgage Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"What is the NHF (National Housing Fund) in Nigeria?","acceptedAnswer":{"@type":"Answer","text":"NHF is a government scheme requiring 2.5% of salary contribution. After 6 months, you qualify for loans up to ₦50M at a subsidised 6% rate — much lower than commercial bank rates of 18–26%."}},{"@type":"Question","name":"How much deposit do I need for a mortgage in Africa?","acceptedAnswer":{"@type":"Answer","text":"Deposit requirements vary: Nigeria requires 10–30%, Kenya 10–20%, South Africa as low as 0% for qualifying buyers (FLISP), Ghana 20–30%. Higher deposits mean lower rates."}},{"@type":"Question","name":"Why are mortgage rates so high in Ghana?","acceptedAnswer":{"@type":"Answer","text":"Ghana's mortgage rates (25–32%) reflect the central bank's policy rate (29%) and high inflation. They're tied to T-bill rates. The Ghana Home Loans (GHL) scheme offers some relief for formal sector workers."}},{"@type":"Question","name":"What is the maximum mortgage term in Africa?","acceptedAnswer":{"@type":"Answer","text":"Nigeria: up to 30 years (NHF), 15–20 years (commercial). Kenya: up to 25 years. South Africa: up to 30 years. Ghana: up to 20 years. Most banks require full repayment before retirement age."}},{"@type":"Question","name":"Should I use a fixed or variable rate mortgage?","acceptedAnswer":{"@type":"Answer","text":"Most African mortgages are variable rate, tied to the central bank rate. Fixed rates offer predictability. In high-inflation environments like Nigeria, variable rates carry more risk — budget for rate increases."}},{"@type":"Question","name":"What other costs should I budget for beyond the mortgage?","acceptedAnswer":{"@type":"Answer","text":"Budget for: Stamp Duty (1.5–8% in most countries), legal fees (1–2%), valuation fees, estate agent commission (3–5%), and home insurance. Use the Stamp Duty Calculator for your country's exact costs."}}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/mortgage-calculator/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/mortgage-calculator/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-hypothecaire/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-mkopo-wa-nyumba/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/mortgage-calculator/">
+</head>
+<body class="top-level-page-ui-refresh finance-calculator-refresh mortgage-calculator-refresh">
+<afro-navbar></afro-navbar>
+
+<!-- ── Saved Scenarios ── -->
+<div id="mort-saved-section" style="display:none;max-width:1160px;margin:0 auto;padding:20px 24px 0;">
+  <div style="background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:20px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+      <h3 style="font-size:.95rem;font-weight:800;color:#111827;margin:0;font-family:'DM Sans',sans-serif;">Your Saved Scenarios</h3>
+    </div>
+    <div id="mort-saved-grid" style="display:flex;flex-wrap:wrap;gap:10px;"></div>
+  </div>
+</div>
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <div class="hero-inner">
+    <nav class="breadcrumb">
+      <a href="/">Home</a><span>›</span>
+      <a href="/mortgage-property/">Mortgage & Property</a><span>›</span>
+      <span>Mortgage Calculator</span>
+    </nav>
+    <div class="hero-eyebrow">🏠 Mortgage & Property</div>
+    <h1>African Mortgage<br><span>Repayment Calculator</span></h1>
+    <p class="hero-sub">Calculate your monthly repayments, total interest cost, and full amortisation schedule — using actual rates from Nigerian NHF, Kenya's Housing Finance, South Africa's major banks, and more.</p>
+    <div class="hero-chips">
+      <span class="hero-chip">🇳🇬 Nigeria NHF 6%</span>
+      <span class="hero-chip">🇰🇪 Kenya ~13%</span>
+      <span class="hero-chip">🇿🇦 SA Prime 10.25%</span>
+      <span class="hero-chip">🇬🇭 Ghana ~28%</span>
+      <span class="hero-chip">🌍 14 Countries</span>
+      <span class="hero-chip">📊 Full Amortisation</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── Tool ── -->
+<div class="tool-wrap">
+
+  <!-- Main calculator -->
+  <div>
+    <!-- Country selector -->
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-title">Select Your Country</div>
+      <div class="country-tabs" id="countryTabs">
+        <button type="button" class="ctab active" data-country="NG" onclick="setCountry('NG',this)">🇳🇬 Nigeria</button>
+        <button type="button" class="ctab" data-country="KE" onclick="setCountry('KE',this)">🇰🇪 Kenya</button>
+        <button type="button" class="ctab" data-country="ZA" onclick="setCountry('ZA',this)">🇿🇦 South Africa</button>
+        <button type="button" class="ctab" data-country="GH" onclick="setCountry('GH',this)">🇬🇭 Ghana</button>
+        <button type="button" class="ctab" data-country="TZ" onclick="setCountry('TZ',this)">🇹🇿 Tanzania</button>
+        <button type="button" class="ctab" data-country="UG" onclick="setCountry('UG',this)">🇺🇬 Uganda</button>
+        <button type="button" class="ctab" data-country="EG" onclick="setCountry('EG',this)">🇪🇬 Egypt</button>
+        <button type="button" class="ctab" data-country="MA" onclick="setCountry('MA',this)">🇲🇦 Morocco</button>
+        <button type="button" class="ctab" data-country="ET" onclick="setCountry('ET',this)">🇪🇹 Ethiopia</button>
+        <button type="button" class="ctab" data-country="CI" onclick="setCountry('CI',this)">🇨🇮 Côte d'Ivoire</button>
+        <button type="button" class="ctab" data-country="BW" onclick="setCountry('BW',this)">🇧🇼 Botswana</button>
+        <button type="button" class="ctab" data-country="RW" onclick="setCountry('RW',this)">🇷🇼 Rwanda</button>
+        <button type="button" class="ctab" data-country="ZM" onclick="setCountry('ZM',this)">🇿🇲 Zambia</button>
+        <button type="button" class="ctab" data-country="SN" onclick="setCountry('SN',this)">🇸🇳 Senegal</button>
+      </div>
+
+      <!-- Loan type (country-specific) -->
+      <div class="card-title" style="margin-top:4px">Loan Type</div>
+      <div class="loan-type" id="loanTypes">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Inputs -->
+      <div class="fields-grid">
+        <div class="field">
+          <label for="homePrice">Property Value (<span id="currLabel">₦</span>)</label>
+          <div class="prefix-wrap">
+            <span class="prefix" id="currPrefix">₦</span>
+            <input type="number" id="homePrice" placeholder="25,000,000" value="25000000" min="0">
+          </div>
+        </div>
+        <div class="field">
+          <label for="deposit">Down Payment / Deposit</label>
+          <div class="prefix-wrap">
+            <span class="prefix" id="currPrefix2">₦</span>
+            <input type="number" id="deposit" placeholder="5,000,000" value="5000000" min="0" oninput="syncLTV()">
+          </div>
+          <div class="field-hint" id="ltvHint">LTV: 80% · Equity: 20%</div>
+        </div>
+        <div class="field">
+          <label for="loanAmt">Loan Amount</label>
+          <div class="prefix-wrap">
+            <span class="prefix" id="currPrefix3">₦</span>
+            <input type="number" id="loanAmt" placeholder="20,000,000" value="20000000" min="0">
+          </div>
+        </div>
+        <div class="field">
+          <label for="rate">Interest Rate (% per year)</label>
+          <input type="number" id="rate" placeholder="18" value="18" min="0" max="60" step="0.25">
+        </div>
+        <div class="field">
+          <label for="term">Loan Term (Years)</label>
+          <input type="number" id="term" placeholder="20" value="20" min="1" max="30">
+        </div>
+        <div class="field">
+          <label for="startMonth">Start Month</label>
+          <select id="startMonth"></select>
+          <script>!function(){var s=document.getElementById('startMonth'),y=new Date().getFullYear(),m=new Date().getMonth(),mn=['January','February','March','April','May','June','July','August','September','October','November','December'];for(var i=0;i<12;i++){var o=document.createElement('option');o.value=i+1;o.textContent=mn[i]+' '+y;if(i===m)o.selected=true;s.appendChild(o)}}()</script>
+        </div>
+      </div>
+
+      <!-- Optional extras -->
+      <div class="fields-grid" style="margin-top:0">
+        <div class="field">
+          <label for="insurance">Monthly Insurance (optional)</label>
+          <div class="prefix-wrap">
+            <span class="prefix" id="currPrefix4">₦</span>
+            <input aria-label="Line item amount" type="number" id="insurance" placeholder="0" value="0" min="0">
+          </div>
+        </div>
+        <div class="field">
+          <label for="serviceCharge">Monthly Service Charge</label>
+          <div class="prefix-wrap">
+            <span class="prefix" id="currPrefix5">₦</span>
+            <input aria-label="Line item amount" type="number" id="serviceCharge" placeholder="0" value="0" min="0">
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="calc-btn" onclick="calculate()">Calculate Mortgage →</button>
+      <p style="font-size:.7rem;color:#9ca3af;text-align:center;margin-top:10px;line-height:1.5">This is a planning estimate. Actual rates, fees and terms vary by lender, product and country — always confirm with your bank before you commit.</p>
+    </div>
+
+    <!-- Results -->
+    <div class="card results" id="results">
+      <div class="result-hero" role="status" aria-live="polite">
+        <div class="result-label">Monthly Repayment</div>
+        <div class="result-value" id="monthlyPayment">—</div>
+        <div class="result-sub" id="monthlyBreakdown">Principal + Interest</div>
+      </div>
+
+      <div class="result-grid">
+        <div class="rstat"><div class="rstat-label">Loan Amount</div><div class="rstat-value" id="rLoanAmt">—</div></div>
+        <div class="rstat"><div class="rstat-label">Total Interest</div><div class="rstat-value red" id="rTotalInterest">—</div></div>
+        <div class="rstat"><div class="rstat-label">Total Repaid</div><div class="rstat-value" id="rTotalPaid">—</div></div>
+        <div class="rstat"><div class="rstat-label">Loan End Date</div><div class="rstat-value" id="rEndDate">—</div></div>
+      </div>
+
+      <!-- Breakdown bar -->
+      <div style="margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;font-size:.72rem;font-weight:700;color:#6e6e73;margin-bottom:6px">
+          <span>Principal vs Interest breakdown</span>
+          <span id="rInterestPct">—</span>
+        </div>
+        <div class="breakdown-bar">
+          <div class="bb-principal" id="bbPrincipal" style="width:60%"></div>
+          <div class="bb-interest" style="flex:1"></div>
+        </div>
+        <div class="bb-legend">
+          <span><span class="bb-dot" style="background:linear-gradient(135deg,#0062CC,#0055D4);box-shadow:0 4px 14px rgba(0,98,204,.35)"></span>Principal <strong id="bbPrincipalPct">—</strong></span>
+          <span><span class="bb-dot" style="background:#fca5a5"></span>Interest <strong id="bbInterestPct">—</strong></span>
+        </div>
+      </div>
+
+      <!-- Amortisation toggle -->
+      <div class="amort-section">
+        <button type="button" class="amort-toggle" onclick="toggleAmort()">📊 View Full Amortisation Schedule ▾</button>
+        <div class="amort-body" id="amortBody">
+          <table class="amort-table" id="amortTable">
+            <thead>
+              <tr>
+                <th>Year</th>
+                <th>Monthly Payment</th>
+                <th>Principal</th>
+                <th>Interest</th>
+                <th>Balance Remaining</th>
+              </tr>
+            </thead>
+            <tbody id="amortRows"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- AI insight area -->
+      <div id="aiSection" style="margin-top:20px;display:none">
+        <div style="background:#f0f7ff;border:1px solid #bfdbfe;border-radius:12px;padding:16px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <span style="font-size:1.1rem">🤖</span>
+            <span style="font-size:.78rem;font-weight:700;color:#1e40af">AfroBot Analysis</span>
+          </div>
+          <p id="aiText" style="font-size:.8rem;color:#1e3a5f;line-height:1.65"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+
+    <!-- AI Advisor -->
+    <div class="ai-advisor-card" id="aiCard">
+      <div class="ai-advisor-head">
+        <span class="ai-dot"></span>
+        <span class="ai-title">AI Mortgage Calculator Advisor</span>
+        <span class="ai-by">Optional AI · provider required</span>
+      </div>
+      <div class="ai-advisor-body">
+        <div class="ai-status" id="aiStatus">Optional AI help can explain mortgage terms after you consent to sending your question. The calculator itself stays local.</div>
+        <div class="ai-chat" id="aiChat">
+          <div class="ai-msgs" id="aiMsgs"></div>
+          <label class="ai-consent"><input type="checkbox" id="aiConsent"> I consent to send this question and recent chat messages to the optional AI advisor. I will not include private lender, property, or identity details.</label>
+          <div class="ai-input-row">
+            <input aria-label="Ask a question" type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" onkeydown="if(event.key==='Enter')sendAI()">
+            <button type="button" class="ai-send" id="aiSend" onclick="sendAI()">&#x2192;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<div class="info-card">
+      <h3>🏦 Current Rates by Country</h3>
+      <table class="rate-table">
+        <tr><td>🇳🇬 Nigeria NHF</td><td>6%</td></tr>
+        <tr><td>🇳🇬 Nigeria Commercial</td><td>15–28%</td></tr>
+        <tr><td>🇰🇪 Kenya</td><td>12–17%</td></tr>
+        <tr><td>🇿🇦 South Africa</td><td>10.25%</td></tr>
+        <tr><td>🇬🇭 Ghana</td><td>24–36%</td></tr>
+        <tr><td>🇹🇿 Tanzania</td><td>15–19%</td></tr>
+        <tr><td>🇺🇬 Uganda</td><td>16–22%</td></tr>
+        <tr><td>🇪🇬 Egypt</td><td>12–26%</td></tr>
+        <tr><td>🇲🇦 Morocco</td><td>4–6%</td></tr>
+        <tr><td>🇪🇹 Ethiopia</td><td>8–16%</td></tr>
+        <tr><td>🇧🇼 Botswana</td><td>7–11%</td></tr>
+        <tr><td>🇷🇼 Rwanda</td><td>14–19%</td></tr>
+        <tr><td>🇿🇲 Zambia</td><td>16–28%</td></tr>
+        <tr><td>🇸🇳 Senegal</td><td>7–12%</td></tr>
+      </table>
+      <p style="font-size:.7rem;color:#9ca3af;margin-top:8px">Rates as of Q1 2026. Always confirm with your lender.</p>
+    </div>
+
+    <div class="info-card">
+      <h3>💡 Key Concepts</h3>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="padding:10px 12px;background:#f0f7ff;border-radius:10px;border-left:3px solid var(--color-primary)">
+          <div style="font-size:.78rem;font-weight:700;color:#1d1d1f;margin-bottom:2px">NHF (Nigeria)</div>
+          <div style="font-size:.72rem;color:#6e6e73;line-height:1.5">National Housing Fund. 6% fixed rate, max ₦50M loan, requires 6 months contribution</div>
+        </div>
+        <div style="padding:10px 12px;background:#f0f7ff;border-radius:10px;border-left:3px solid var(--color-primary)">
+          <div style="font-size:.78rem;font-weight:700;color:#1d1d1f;margin-bottom:2px">LTV (Loan-to-Value)</div>
+          <div style="font-size:.72rem;color:#6e6e73;line-height:1.5">Most African banks require 10–30% down payment. Lower LTV = better rates</div>
+        </div>
+        <div style="padding:10px 12px;background:#f0f7ff;border-radius:10px;border-left:3px solid var(--color-primary)">
+          <div style="font-size:.78rem;font-weight:700;color:#1d1d1f;margin-bottom:2px">Amortisation</div>
+          <div style="font-size:.72rem;color:#6e6e73;line-height:1.5">Each payment covers more principal over time as interest decreases</div>
+        </div>
+        <div style="padding:10px 12px;background:#f0f7ff;border-radius:10px;border-left:3px solid var(--color-primary)">
+          <div style="font-size:.78rem;font-weight:700;color:#1d1d1f;margin-bottom:2px">FLISP (South Africa)</div>
+          <div style="font-size:.72rem;color:#6e6e73;line-height:1.5">First-time home buyer subsidy for earners R3,501–R22,000/month</div>
+        </div>
+        <div style="padding:10px 12px;background:#fffbeb;border-radius:10px;border-left:3px solid #f59e0b">
+          <div style="font-size:.78rem;font-weight:700;color:#1d1d1f;margin-bottom:2px">KMRC (Kenya)</div>
+          <div style="font-size:.72rem;color:#6e6e73;line-height:1.5">Kenya Mortgage Refinance Company enables affordable ~9% loans via partner banks</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <h3>🔗 Related Tools</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <a href="/tools/stamp-duty/" style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 8px;background:#f9fafb;border-radius:12px;text-decoration:none;font-size:.72rem;font-weight:700;color:#1d1d1f;border:1.5px solid #e5e7eb;text-align:center;transition:all .18s" onmouseover="this.style.borderColor='#0062CC';this.style.background='#f0f7ff'" onmouseout="this.style.borderColor='#e5e7eb';this.style.background='#f9fafb'"><span style="font-size:1.2rem">🏷️</span>Stamp Duty</a>
+        <a href="/tools/mortgage-affordability/" style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 8px;background:#f9fafb;border-radius:12px;text-decoration:none;font-size:.72rem;font-weight:700;color:#1d1d1f;border:1.5px solid #e5e7eb;text-align:center;transition:all .18s" onmouseover="this.style.borderColor='#0062CC';this.style.background='#f0f7ff'" onmouseout="this.style.borderColor='#e5e7eb';this.style.background='#f9fafb'"><span style="font-size:1.2rem">💳</span>Affordability</a>
+        <a href="/tools/rental-yield/" style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 8px;background:#f9fafb;border-radius:12px;text-decoration:none;font-size:.72rem;font-weight:700;color:#1d1d1f;border:1.5px solid #e5e7eb;text-align:center;transition:all .18s" onmouseover="this.style.borderColor='#0062CC';this.style.background='#f0f7ff'" onmouseout="this.style.borderColor='#e5e7eb';this.style.background='#f9fafb'"><span style="font-size:1.2rem">📈</span>Rental Yield</a>
+        <a href="/tools/rent-vs-buy/" style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 8px;background:#f9fafb;border-radius:12px;text-decoration:none;font-size:.72rem;font-weight:700;color:#1d1d1f;border:1.5px solid #e5e7eb;text-align:center;transition:all .18s" onmouseover="this.style.borderColor='#0062CC';this.style.background='#f0f7ff'" onmouseout="this.style.borderColor='#e5e7eb';this.style.background='#f9fafb'"><span style="font-size:1.2rem">⚖️</span>Rent vs Buy</a>
+        <a href="/tools/property-transfer-cost/" style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 8px;background:#f9fafb;border-radius:12px;text-decoration:none;font-size:.72rem;font-weight:700;color:#1d1d1f;border:1.5px solid #e5e7eb;text-align:center;transition:all .18s" onmouseover="this.style.borderColor='#0062CC';this.style.background='#f0f7ff'" onmouseout="this.style.borderColor='#e5e7eb';this.style.background='#f9fafb'"><span style="font-size:1.2rem">💸</span>Transfer Costs</a>
+        <a href="/tools/home-loan-eligibility/" style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 8px;background:#f9fafb;border-radius:12px;text-decoration:none;font-size:.72rem;font-weight:700;color:#1d1d1f;border:1.5px solid #e5e7eb;text-align:center;transition:all .18s" onmouseover="this.style.borderColor='#0062CC';this.style.background='#f0f7ff'" onmouseout="this.style.borderColor='#e5e7eb';this.style.background='#f9fafb'"><span style="font-size:1.2rem">✅</span>Eligibility</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FAQ ── -->
+<section style="max-width:900px;margin:32px auto;padding:0 20px;">
+  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
+    <p>This mortgage calculator helps home buyers across Africa estimate monthly repayments, total interest, and the full cost of a home loan. Enter the property price, down payment, interest rate, and loan term, and the tool generates a detailed amortisation schedule showing how each payment splits between principal and interest over the life of the loan. It supports calculations in multiple African currencies and accounts for varying interest rate structures. First-time buyers, property investors, and financial advisors use it to compare loan scenarios, understand affordability, and plan for one of the biggest financial commitments of their lives.</p>
+  </div>
+</section>
+
+<div class="faq-section">
+  <h2 class="faq-title">Frequently Asked Questions</h2>
+  <div class="faq-grid">
+    <div class="faq-item">
+      <div class="faq-q">What is the NHF (National Housing Fund) in Nigeria?</div>
+      <div class="faq-a">NHF is a government scheme requiring 2.5% of salary contribution. After 6 months, you qualify for loans up to ₦50M at a subsidised 6% rate — much lower than commercial bank rates of 18–26%.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">How much deposit do I need for a mortgage in Africa?</div>
+      <div class="faq-a">Deposit requirements vary: Nigeria requires 10–30%, Kenya 10–20%, South Africa as low as 0% for qualifying buyers (FLISP), Ghana 20–30%. Higher deposits mean lower rates.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Why are mortgage rates so high in Ghana?</div>
+      <div class="faq-a">Ghana's mortgage rates (25–32%) reflect the central bank's policy rate (29%) and high inflation. They're tied to T-bill rates. The Ghana Home Loans (GHL) scheme offers some relief for formal sector workers.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What is the maximum mortgage term in Africa?</div>
+      <div class="faq-a">Nigeria: up to 30 years (NHF), 15–20 years (commercial). Kenya: up to 25 years. South Africa: up to 30 years. Ghana: up to 20 years. Most banks require full repayment before retirement age.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Should I use a fixed or variable rate mortgage?</div>
+      <div class="faq-a">Most African mortgages are variable rate, tied to the central bank rate. Fixed rates offer predictability. In high-inflation environments like Nigeria, variable rates carry more risk — budget for rate increases.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What other costs should I budget for beyond the mortgage?</div>
+      <div class="faq-a">Budget for: Stamp Duty (1.5–8% in most countries), legal fees (1–2%), valuation fees, estate agent commission (3–5%), and home insurance. Use the Stamp Duty Calculator for your country's exact costs.</div>
+    </div>
+  </div>
+</div>
+
+<section class="df-upgrade" data-df-upgrade="mortgage-calculator">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Mortgage stress test</span>
+      <h2>Turn the repayment into a buying checklist</h2>
+      <p>Not sure how to get the most from the Mortgage Calculator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Mortgage Calculator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
+    </div>
+    <form class="df-form" data-df-form="mortgage-calculator">
+      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="South Africa">South Africa</option><option value="Ghana">Ghana</option></select></label>
+      <label>Property price<input name="propertyPrice" type="number" value="45000000" min="0" step="any" aria-label="Property price"></label>
+      <label>Deposit percent<input name="deposit" type="number" value="20" min="0" max="100" step="any" aria-label="Deposit percent"></label>
+      <label>Annual rate percent<input name="rate" type="number" value="15" min="0" step="any" aria-label="Annual rate percent"></label>
+      <button type="submit">Create mortgage brief</button>
+      <output class="df-result" data-df-result="mortgage-calculator" data-df-base="Mortgage Calculator — enter your details above to see your result." aria-live="polite">Mortgage Calculator — enter your details above to see your result.</output>
+      <div class="df-actions"><button type="button" data-df-copy="mortgage-calculator">Copy brief</button><a class="df-action-link" href="#results">View repayment</a></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="mortgage-calculator-faq-title">
+  <h2 id="mortgage-calculator-faq-title">Mortgage Calculator FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the Mortgage Calculator?</summary><p>Enter your amounts, rates and dates in the fields above. The Mortgage Calculator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Mortgage Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Mortgage Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
+</section>
+<section class="df-upgrade" data-tool-verification-panel="mortgage-calculator" aria-labelledby="mortgage-verification-title">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Verification checklist</span>
+      <h2 id="mortgage-verification-title">Check the quote before you commit</h2>
+      <p>Use the repayment and amortisation output as a planning screen, then verify every lender-specific cost before paying deposits or signing documents.</p>
+      <ul class="df-upgrade__bullets"><li>Confirm APR, arrangement fees, valuation fees, legal fees, transfer taxes, insurance, service charges, and early-repayment rules.</li><li>Check title, survey, development approvals, and affordability buffers with qualified local professionals.</li><li>Privacy note: calculation inputs stay in the browser; avoid putting private property, bank, or identity details into the optional AI prompt.</li></ul>
+      <p class="df-upgrade__note"><strong>Freshness note:</strong> mortgage rates and housing costs change by lender, country, product, and date. This is not a lender quote, mortgage approval, valuation, legal advice, or tax advice.</p>
+    </div>
+  </div>
+</section>
+
+<afro-business-cta tool-name="African Mortgage Calculator" prospect-segment="property-finance" save-note="Calculate and copy a mortgage brief before comparing lenders or requesting a custom housing-finance widget."></afro-business-cta>
+<afro-related-tools category="financial" current="mortgage-calculator" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Tracker" data-category="financial" data-icon="AA" data-desc="Compare petrol, diesel, and LPG prices across 54 African countries, then estimate generator fuel costs in local currency">AfroFuel — African Fuel Price Tracker</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+// ── Country data ──
+const COUNTRIES = {
+  NG: { name: 'Nigeria', currency: '₦', loanTypes: [
+    { id: 'nhf', name: 'NHF Loan', rate: 6, desc: 'Gov. subsidised', note: 'Max ₦50M' },
+    { id: 'commercial', name: 'Commercial Bank', rate: 22, desc: '~18–26% (2025)', note: 'Variable' },
+  ]},
+  KE: { name: 'Kenya', currency: 'KSh', loanTypes: [
+    { id: 'hf', name: 'Housing Finance', rate: 13, desc: '~12.5–14%', note: 'Fixed/Variable' },
+    { id: 'commercial', name: 'Commercial Bank', rate: 14.5, desc: '~13–16%', note: 'Variable' },
+  ]},
+  ZA: { name: 'South Africa', currency: 'R', loanTypes: [
+    { id: 'standard', name: 'Standard (Prime)', rate: 10.25, desc: 'Prime rate (2026)', note: 'Variable' },
+    { id: 'flisp', name: 'FLISP Assisted', rate: 10.25, desc: 'First-time buyers', note: 'Subsidy applies' },
+  ]},
+  GH: { name: 'Ghana', currency: 'GH₵', loanTypes: [
+    { id: 'ghl', name: 'GHL/Fidelity', rate: 28, desc: '~25–30%', note: 'Formal sector' },
+    { id: 'commercial', name: 'Commercial Bank', rate: 32, desc: '~28–35%', note: 'Variable' },
+  ]},
+  TZ: { name: 'Tanzania', currency: 'TSh', loanTypes: [
+    { id: 'thb', name: 'THB Mortgage', rate: 15, desc: 'Tanzania Housing Bank', note: '' },
+    { id: 'commercial', name: 'Commercial Bank', rate: 17, desc: '~15–19%', note: 'Variable' },
+  ]},
+  UG: { name: 'Uganda', currency: 'USh', loanTypes: [
+    { id: 'dfcu', name: 'DFCU/Stanbic', rate: 20, desc: '~18–22%', note: 'Variable' },
+    { id: 'commercial', name: 'Commercial Bank', rate: 22, desc: '~20–25%', note: 'Variable' },
+  ]},
+  EG: { name: 'Egypt', currency: 'EGP', loanTypes: [
+    { id: 'subsidised', name: 'Social Housing', rate: 12, desc: 'Gov. subsidised (2025)', note: 'Low/mid income' },
+    { id: 'commercial', name: 'Commercial Bank', rate: 25, desc: '~22–28%', note: 'Variable' },
+  ]},
+  MA: { name: 'Morocco', currency: 'MAD', loanTypes: [
+    { id: 'standard', name: 'Standard Mortgage', rate: 4.5, desc: '~4–6%', note: 'Fixed/Variable' },
+    { id: 'vefa', name: 'VEFA (Off-plan)', rate: 5, desc: 'New construction', note: '' },
+  ]},
+  ET: { name: 'Ethiopia', currency: 'ETB', loanTypes: [
+    { id: 'cbeo', name: 'CBE / DBE', rate: 10, desc: '~8–12%', note: 'State banks' },
+    { id: 'commercial', name: 'Commercial Bank', rate: 14, desc: '~12–16%', note: '' },
+  ]},
+  CI: { name: "Côte d'Ivoire", currency: 'XOF', loanTypes: [
+    { id: 'bhci', name: 'BHCi Mortgage', rate: 7.5, desc: 'Housing bank', note: '' },
+    { id: 'commercial', name: 'Commercial Bank', rate: 11, desc: '~9–13%', note: '' },
+  ]},
+  BW: { name: 'Botswana', currency: 'BWP', loanTypes: [
+    { id: 'bbs', name: 'BBS / Stanbic', rate: 7.5, desc: 'Prime-linked', note: 'Fixed/Variable' },
+    { id: 'commercial', name: 'Commercial Bank', rate: 9, desc: '~7–11%', note: 'Variable' },
+  ]},
+  RW: { name: 'Rwanda', currency: 'RWF', loanTypes: [
+    { id: 'brd', name: 'BRD Housing', rate: 14, desc: 'Dev. bank', note: 'Up to 20 yrs' },
+    { id: 'commercial', name: 'Commercial Bank', rate: 17, desc: '~15–19%', note: 'Variable' },
+  ]},
+  ZM: { name: 'Zambia', currency: 'ZMW', loanTypes: [
+    { id: 'natsave', name: 'Natsave / Zanaco', rate: 18, desc: '~16–21%', note: 'Fixed/Variable' },
+    { id: 'commercial', name: 'Commercial Bank', rate: 24, desc: '~20–28%', note: 'Variable' },
+  ]},
+  SN: { name: 'Senegal', currency: 'XOF', loanTypes: [
+    { id: 'bhs', name: 'BHS Mortgage', rate: 7.5, desc: 'Housing bank', note: 'BCEAO zone' },
+    { id: 'commercial', name: 'Commercial Bank', rate: 10, desc: '~8–12%', note: 'Variable' },
+  ]},
+};
+
+let currentCountry = 'NG';
+let currentLoanType = 0;
+let amortData = [];
+
+function setCountry(code, btn) {
+  currentCountry = code;
+  currentLoanType = 0;
+  document.querySelectorAll('.ctab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const c = COUNTRIES[code];
+  // Update currency labels
+  ['currPrefix','currPrefix2','currPrefix3','currPrefix4','currPrefix5'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = c.currency;
+  });
+  document.getElementById('currLabel').textContent = c.currency;
+  // Update loan types
+  renderLoanTypes();
+  // Set default rate
+  document.getElementById('rate').value = c.loanTypes[0].rate;
+  // Set sensible defaults
+  const defaults = {
+    NG: [25000000, 5000000, 20000000],
+    KE: [5000000, 1000000, 4000000],
+    ZA: [1500000, 300000, 1200000],
+    GH: [500000, 100000, 400000],
+    TZ: [50000000, 10000000, 40000000],
+    UG: [80000000, 16000000, 64000000],
+    EG: [1500000, 300000, 1200000],
+    MA: [1200000, 240000, 960000],
+    ET: [1500000, 300000, 1200000],
+    CI: [15000000, 3000000, 12000000],
+    BW: [1200000, 240000, 960000],
+    RW: [50000000, 10000000, 40000000],
+    ZM: [1500000, 300000, 1200000],
+    SN: [25000000, 5000000, 20000000],
+  };
+  if (defaults[code]) {
+    document.getElementById('homePrice').value = defaults[code][0];
+    document.getElementById('deposit').value = defaults[code][1];
+    document.getElementById('loanAmt').value = defaults[code][2];
+  }
+}
+
+function renderLoanTypes() {
+  const c = COUNTRIES[currentCountry];
+  const wrap = document.getElementById('loanTypes');
+  wrap.innerHTML = c.loanTypes.map((lt, i) => `
+    <div class="lt-btn ${i === currentLoanType ? 'active' : ''}" role="button" tabindex="0" aria-pressed="${i === currentLoanType}" onclick="selectLoanType(${i}, this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectLoanType(${i}, this);}">
+      <div class="lt-name">${lt.name}</div>
+      <div class="lt-rate">${lt.rate}% — ${lt.desc}</div>
+    </div>`).join('');
+}
+
+function selectLoanType(idx, el) {
+  currentLoanType = idx;
+  document.querySelectorAll('.lt-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed','false'); });
+  el.classList.add('active');
+  el.setAttribute('aria-pressed','true');
+  document.getElementById('rate').value = COUNTRIES[currentCountry].loanTypes[idx].rate;
+}
+
+function syncLTV() {
+  const home = parseFloat(document.getElementById('homePrice').value) || 0;
+  const dep  = parseFloat(document.getElementById('deposit').value) || 0;
+  if (home > 0) {
+    const loan = Math.max(0, home - dep);
+    document.getElementById('loanAmt').value = loan;
+    const ltv = (loan / home * 100).toFixed(1);
+    const eq  = (dep / home * 100).toFixed(1);
+    document.getElementById('ltvHint').textContent = `LTV: ${ltv}% · Equity: ${eq}%`;
+  }
+}
+
+function fmt(n, curr) {
+  if (n >= 1e9) return curr + (n/1e9).toFixed(2) + 'B';
+  if (n >= 1e6) return curr + (n/1e6).toFixed(2) + 'M';
+  return curr + n.toLocaleString('en-NG', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+}
+
+function calculate() {
+  const c    = COUNTRIES[currentCountry];
+  const P    = parseFloat(document.getElementById('loanAmt').value) || 0;
+  const r    = (parseFloat(document.getElementById('rate').value) || 0) / 100 / 12;
+  const n    = (parseFloat(document.getElementById('term').value) || 0) * 12;
+  const ins  = parseFloat(document.getElementById('insurance').value) || 0;
+  const svc  = parseFloat(document.getElementById('serviceCharge').value) || 0;
+  const sm   = parseInt(document.getElementById('startMonth').value) || 1;
+
+  if (P <= 0 || n <= 0) { alert('Please fill all required fields.'); return; }
+
+  // Monthly payment formula: P*r*(1+r)^n / ((1+r)^n - 1)
+  const monthly = r === 0 ? P / n : P * r * Math.pow(1+r, n) / (Math.pow(1+r, n) - 1);
+  const totalPaid = monthly * n;
+  const totalInterest = totalPaid - P;
+  const totalPaidAllIn = totalPaid + (ins + svc) * n;
+  const totalMonthly = monthly + ins + svc;
+
+  // End date
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const endM = ((sm - 1 + (n % 12)) % 12);
+  const startYear = new Date().getFullYear();
+  const endY = startYear + Math.floor((sm - 1 + n) / 12);
+  const endDate = months[endM] + ' ' + endY;
+
+  // Update results
+  document.getElementById('monthlyPayment').textContent = fmt(totalMonthly, c.currency);
+  if (ins > 0 || svc > 0) {
+    document.getElementById('monthlyBreakdown').textContent =
+      `P+I: ${fmt(monthly, c.currency)} + Insurance/Fees: ${fmt(ins+svc, c.currency)}`;
+  } else {
+    document.getElementById('monthlyBreakdown').textContent = 'Principal + Interest';
+  }
+  document.getElementById('rLoanAmt').textContent = fmt(P, c.currency);
+  document.getElementById('rTotalInterest').textContent = fmt(totalInterest, c.currency);
+  document.getElementById('rTotalPaid').textContent = fmt(totalPaidAllIn, c.currency);
+  document.getElementById('rEndDate').textContent = endDate;
+
+  // Breakdown bar
+  const principalPct = (P / totalPaid * 100).toFixed(1);
+  const interestPct  = (totalInterest / totalPaid * 100).toFixed(1);
+  document.getElementById('bbPrincipal').style.width = principalPct + '%';
+  document.getElementById('bbPrincipalPct').textContent = principalPct + '%';
+  document.getElementById('bbInterestPct').textContent = interestPct + '%';
+  document.getElementById('rInterestPct').textContent = `Interest = ${interestPct}% of core loan repayments`;
+
+  // Build yearly amortisation
+  amortData = [];
+  let balance = P;
+  for (let yr = 1; yr <= n / 12; yr++) {
+    let yearPrincipal = 0, yearInterest = 0;
+    for (let m = 0; m < 12 && (yr-1)*12+m < n; m++) {
+      const intPmt = balance * r;
+      const prinPmt = monthly - intPmt;
+      yearPrincipal += prinPmt;
+      yearInterest  += intPmt;
+      balance = Math.max(0, balance - prinPmt);
+    }
+    amortData.push({ yr, yearPrincipal, yearInterest, balance: Math.max(0, balance) });
+  }
+
+  // Render table
+  const tbody = document.getElementById('amortRows');
+  tbody.innerHTML = amortData.map(row => `
+    <tr>
+      <td>Year ${row.yr}</td>
+      <td>${fmt(monthly, c.currency)}</td>
+      <td>${fmt(row.yearPrincipal, c.currency)}</td>
+      <td>${fmt(row.yearInterest, c.currency)}</td>
+      <td>${fmt(row.balance, c.currency)}</td>
+    </tr>`).join('');
+
+  document.getElementById('results').classList.add('show');
+
+  // Keep the calculator local-first. AI advisor calls only run from explicit user input.
+}
+
+async function showAiInsight(P, monthly, interest, c, total) {
+  if (typeof window.AfroTools === 'undefined' || !window.AfroTools.ai) return;
+  const aiSection = document.getElementById('aiSection');
+  const aiText    = document.getElementById('aiText');
+  aiSection.style.display = 'block';
+  aiText.textContent = 'Analysing your mortgage…';
+  try {
+    const prompt = `Mortgage for ${c.name}: Loan ${c.currency}${P.toLocaleString()}, monthly payment ${c.currency}${Math.round(monthly).toLocaleString()}, total interest ${c.currency}${Math.round(interest).toLocaleString()} (${(interest/P*100).toFixed(0)}% of principal). Give 3 specific, actionable insights for a ${c.name} homebuyer. Keep it under 100 words.`;
+    const reply = await window.AfroTools.ai.ask(prompt, 'You are an African property finance advisor. Give concise, practical advice.');
+    aiText.textContent = reply;
+  } catch {
+    aiSection.style.display = 'none';
+  }
+}
+
+function toggleAmort() {
+  const body = document.getElementById('amortBody');
+  body.classList.toggle('show');
+  const btn = document.querySelector('.amort-toggle');
+  btn.textContent = body.classList.contains('show')
+    ? '📊 Hide Amortisation Schedule ▴'
+    : '📊 View Full Amortisation Schedule ▾';
+}
+
+// Init
+renderLoanTypes();
+
+// ── Saved Scenarios ──
+(function(){
+  if(typeof SaveState==='undefined')return;
+  var ss=new SaveState('mortgage-calculator',{maxFree:10});
+  var section=document.getElementById('mort-saved-section');
+  var grid=document.getElementById('mort-saved-grid');
+  if(!section||!grid)return;
+
+  function esc(s){return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):'';}
+  function ago(ts){var s=Math.floor((Date.now()-ts)/1000);if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+'m ago';if(s<86400)return Math.floor(s/3600)+'h ago';var d=Math.floor(s/86400);if(d<30)return d+'d ago';return new Date(ts).toLocaleDateString('en-GB',{day:'numeric',month:'short'});}
+
+  function render(){
+    var items=ss.getAll();
+    if(!items.length){section.style.display='none';return;}
+    section.style.display='';
+    grid.innerHTML=items.map(function(it){
+      var d=it.data||{};
+      return '<div style="flex:1;min-width:200px;max-width:260px;background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:14px;cursor:pointer;transition:border-color .15s;" onmouseenter="this.style.borderColor=\'#0062CC\'" onmouseleave="this.style.borderColor=\'#e5e7eb\'" onclick="mortLoadSaved(\''+it.id+'\')">'+
+        '<div style="font-size:.82rem;font-weight:700;color:#111827;margin-bottom:3px;">'+esc(it.title)+'</div>'+
+        (d.monthly?'<div style="font-size:.78rem;font-weight:800;color:#0062CC;">'+esc(d.monthly)+'/mo</div>':'')+
+        '<div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;">'+
+        '<span style="font-size:.6rem;color:#9ca3af;">'+ago(it.updatedAt)+'</span>'+
+        '<button type="button" onclick="event.stopPropagation();mortDelSaved(\''+it.id+'\')" style="background:none;border:none;color:#ef4444;font-size:.65rem;font-weight:700;cursor:pointer;">Delete</button>'+
+        '</div></div>';
+    }).join('');
+  }
+  window.mortDelSaved=function(id){if(confirm('Delete this scenario?')){ss.delete(id);render();}};
+  window.mortLoadSaved=function(id){
+    var item=ss.load(id);if(!item||!item.data)return;
+    var d=item.data;
+    ['price','downPct','rate','term','income','rent'].forEach(function(k){
+      var el=document.getElementById(k);if(el&&d[k]!==undefined)el.value=d[k];
+    });
+    if(typeof calculate==='function')calculate();
+  };
+  window.mortSaveScenario=function(){
+    var name=prompt('Name this scenario (e.g., "3BR Lekki", "Cape Town Flat"):');
+    if(!name)return;
+    var monthly=document.querySelector('.result-value');
+    ss.save({title:name,data:{
+      price:document.getElementById('price')?document.getElementById('price').value:'',
+      downPct:document.getElementById('downPct')?document.getElementById('downPct').value:'',
+      rate:document.getElementById('rate')?document.getElementById('rate').value:'',
+      term:document.getElementById('term')?document.getElementById('term').value:'',
+      income:document.getElementById('income')?document.getElementById('income').value:'',
+      rent:document.getElementById('rent')?document.getElementById('rent').value:'',
+      monthly:monthly?monthly.textContent:''
+    }});
+    render();
+    alert('Scenario saved!');
+  };
+  render();
+})();
+</script>
+
+<script>
+var AI_MSGS=[];
+async function sendAI(){
+  var input=document.getElementById('aiInput');
+  var msgsEl=document.getElementById('aiMsgs');
+  var sendBtn=document.getElementById('aiSend');
+  var status=document.getElementById('aiStatus');
+  var consent=document.getElementById('aiConsent');
+  var q=input.value.trim();
+  if(!q)return;
+  if(!consent || !consent.checked){
+    if(status) status.textContent='Tick the optional AI consent box before sending a question. The calculator and mortgage brief still work locally.';
+    msgsEl.innerHTML+='<div class="ai-msg-a">Please tick the optional AI consent box before sending. Do not include private property, bank, or identity details.</div>';
+    msgsEl.scrollTop=msgsEl.scrollHeight;
+    input.focus();
+    return;
+  }
+  AI_MSGS.push({role:'user',content:q});
+  msgsEl.innerHTML+='<div class="ai-msg-u">'+q.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</div>';
+  input.value='';sendBtn.disabled=true;
+  var thinkEl=document.createElement('div');thinkEl.className='ai-thinking';thinkEl.textContent='Thinking\u2026';
+  msgsEl.appendChild(thinkEl);msgsEl.scrollTop=msgsEl.scrollHeight;
+  try{
+    var res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'mortgage-calculator',messages:AI_MSGS.slice(-6),context:''})});
+    var data=await res.json();
+    if(thinkEl.parentNode)thinkEl.remove();
+    var reply=data.reply||data.error||'Sorry, I could not get a response.';
+    AI_MSGS.push({role:'assistant',content:reply});
+    msgsEl.innerHTML+='<div class="ai-msg-a">'+reply.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')+'</div>';
+  }catch(e){
+    if(thinkEl.parentNode)thinkEl.remove();
+    msgsEl.innerHTML+='<div class="ai-msg-a">Sorry, the AI advisor is temporarily unavailable.</div>';
+  }
+  sendBtn.disabled=false;msgsEl.scrollTop=msgsEl.scrollHeight;input.focus();
+}
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/pages/financial-focus.js?v=22bd406b" defer></script>
+</body>
+</html>

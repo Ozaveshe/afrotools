@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<title>AfroTools OG Image Generator</title>
+<meta name="description" content="Internal AfroTools utility for generating social preview images for priority calculator and tool pages.">
+<style>
+  body { font-family: 'DM Sans', system-ui, sans-serif; background: #1a1a1a; color: #fff; padding: 20px; }
+  h1 { color: #5ddb9e; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 20px; }
+  .card { background: #222; border-radius: 8px; padding: 16px; }
+  .card canvas { width: 100%; border-radius: 4px; }
+  .card button { margin-top: 8px; padding: 8px 16px; background: #008751; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
+  .card button:hover { background: #00a863; }
+  #downloadAll { padding: 12px 24px; background: #0062CC; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; font-weight: 700; margin-bottom: 20px; }
+</style>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Instrument+Serif&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Instrument+Serif&display=swap"></noscript>
+<meta property="article:modified_time" content="2026-03-28">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=a1713d60">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
+</head>
+<body>
+<h1>AfroTools OG Image Generator (1200x630)</h1>
+<p>Click "Download All" or individual buttons. Save PNGs to <code>assets/img/</code></p>
+<button type="button" id="downloadAll">Download All Images</button>
+<div class="grid" id="grid"></div>
+
+<script>
+const W = 1200, H = 630;
+const BG_START = '#0c1a10';
+const BG_END = '#0f2516';
+const GREEN = '#008751';
+const ACCENT = '#5ddb9e';
+const WHITE = '#FAFAF8';
+const MUTED = 'rgba(250,250,248,0.55)';
+
+const IMAGES = [
+  { title: 'Nigeria PAYE Calculator', subtitle: 'Calculate your salary after tax in seconds', emoji: '\uD83C\uDDF3\uD83C\uDDEC', filename: 'og-ng-salary-tax.png' },
+  { title: 'Kenya PAYE Calculator', subtitle: 'KRA tax bands, SHIF, NSSF, AHL \u2014 all included', emoji: '\uD83C\uDDF0\uD83C\uDDEA', filename: 'og-ke-paye.png' },
+  { title: 'South Africa Tax Calculator', subtitle: 'SARS 2026 brackets, UIF, medical credits', emoji: '\uD83C\uDDFF\uD83C\uDDE6', filename: 'og-za-paye.png' },
+  { title: 'Ghana PAYE Calculator', subtitle: 'GRA tax rates, SSNIT, Tier II & III', emoji: '\uD83C\uDDEC\uD83C\uDDED', filename: 'og-gh-paye.png' },
+  { title: 'African VAT Calculator', subtitle: 'Add or remove VAT for any African country', emoji: '\uD83E\uDDFE', filename: 'og-vat.png' },
+  { title: 'Currency Converter', subtitle: 'Live exchange rates for all African currencies', emoji: '\uD83D\uDCB1', filename: 'og-fx.png' },
+  { title: 'Mobile Money Fee Calculator', subtitle: 'M-Pesa, MTN MoMo, Wave \u2014 compare fees', emoji: '\uD83D\uDCF1', filename: 'og-mobile-money.png' },
+  { title: 'Salary Benchmark', subtitle: 'See how your salary compares in your country', emoji: '\uD83D\uDCCA', filename: 'og-salary.png' },
+  { title: 'Monthly Budget Planner', subtitle: 'Plan your spending, maximize your savings', emoji: '\uD83D\uDCB0', filename: 'og-budget.png' },
+  { title: 'AfroTools', subtitle: 'Free calculators & tools built for Africa', emoji: '\uD83C\uDF0D', filename: 'og-default.png' },
+];
+
+function generateOGImage({ title, subtitle, emoji, filename }) {
+  const canvas = document.createElement('canvas');
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  /* Background gradient */
+  const grad = ctx.createLinearGradient(0, 0, W, H);
+  grad.addColorStop(0, BG_START);
+  grad.addColorStop(1, BG_END);
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  /* Decorative circle */
+  ctx.save();
+  ctx.globalAlpha = 0.06;
+  ctx.fillStyle = GREEN;
+  ctx.beginPath();
+  ctx.arc(W - 120, 140, 260, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+
+  /* Top accent bar */
+  ctx.fillStyle = GREEN;
+  ctx.fillRect(0, 0, W, 5);
+
+  /* Logo badge */
+  const px = 60;
+  ctx.fillStyle = GREEN;
+  roundRect(ctx, px, 50, 160, 42, 8);
+  ctx.fill();
+  ctx.font = 'bold 20px "DM Sans", system-ui, sans-serif';
+  ctx.fillStyle = WHITE;
+  ctx.textBaseline = 'middle';
+  ctx.fillText('AFROTOOLS', px + 14, 71);
+
+  /* Emoji */
+  ctx.font = '80px "Segoe UI Emoji", "Noto Color Emoji", "Apple Color Emoji", sans-serif';
+  ctx.textBaseline = 'top';
+  ctx.fillText(emoji, px, 140);
+
+  /* Title with word wrap */
+  ctx.fillStyle = WHITE;
+  ctx.font = 'bold 56px "Instrument Serif", Georgia, serif';
+  ctx.textBaseline = 'top';
+  const words = title.split(' ');
+  let line = '';
+  let y = 280;
+  for (const word of words) {
+    const test = line + word + ' ';
+    if (ctx.measureText(test).width > W - 140) {
+      ctx.fillText(line.trim(), px, y);
+      line = word + ' ';
+      y += 66;
+    } else {
+      line = test;
+    }
+  }
+  ctx.fillText(line.trim(), px, y);
+
+  /* Subtitle */
+  ctx.fillStyle = MUTED;
+  ctx.font = '500 26px "DM Sans", system-ui, sans-serif';
+  ctx.fillText(subtitle, px, y + 68);
+
+  /* Bottom brand bar */
+  const barH = 64;
+  const barY = H - barH;
+  ctx.fillStyle = GREEN;
+  ctx.fillRect(0, barY, W, barH);
+  ctx.fillStyle = 'rgba(255,255,255,0.25)';
+  ctx.fillRect(0, barY, W, 1);
+  ctx.font = '600 22px "DM Sans", system-ui, sans-serif';
+  ctx.fillStyle = WHITE;
+  ctx.textBaseline = 'middle';
+  ctx.fillText('afrotools.com', px, barY + barH / 2);
+
+  return { canvas, filename };
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+function downloadCanvas(canvas, filename) {
+  const a = document.createElement('a');
+  a.download = filename;
+  a.href = canvas.toDataURL('image/png');
+  a.click();
+}
+
+/* Render all */
+const grid = document.getElementById('grid');
+const items = [];
+
+// Wait for fonts to load
+document.fonts.ready.then(() => {
+  IMAGES.forEach(img => {
+    const { canvas, filename } = generateOGImage(img);
+    items.push({ canvas, filename });
+
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `<strong>${filename}</strong>`;
+    card.appendChild(canvas);
+    const btn = document.createElement('button');
+    btn.textContent = 'Download ' + filename;
+    btn.onclick = () => downloadCanvas(canvas, filename);
+    card.appendChild(btn);
+    grid.appendChild(card);
+  });
+});
+
+document.getElementById('downloadAll').onclick = () => {
+  items.forEach(({ canvas, filename }, i) => {
+    setTimeout(() => downloadCanvas(canvas, filename), i * 200);
+  });
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rent Intelligence | AfroTools</title>
+<meta name="description" content="Track rent asks, lease terms, deposits, and vacancy signals by city and neighborhood, then contribute verified rent data through AfroPoints.">
+<meta property="og:title" content="Rent Intelligence | AfroTools">
+<meta property="og:description" content="Track rent asks, lease terms, deposits, and vacancy signals by city and neighborhood, then contribute verified rent data through AfroPoints.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/rent-intelligence.webp">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/market-data.css?v=82be8cb4">
+<meta property="og:url" content="https://afrotools.com/tools/rent-intelligence/">
+<link rel="stylesheet" href="/assets/css/legal-enhancements.css?v=faefe7bf">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Rent Intelligence | AfroTools">
+<meta name="twitter:description" content="Track rent asks, lease terms, deposits, and vacancy signals by city and neighborhood, then contribute verified rent data through AfroPoints.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/rent-intelligence.webp">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Rent Intelligence",
+  "description": "Track rent asks, lease terms, deposits, and vacancy signals by city and neighborhood, then contribute verified rent data through AfroPoints.",
+  "url": "https://afrotools.com/tools/rent-intelligence/",
+  "inLanguage": "en",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/rent-intelligence.webp"
+}
+</script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Rent Intelligence","item":"https://afrotools.com/tools/rent-intelligence/"}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/rent-intelligence/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/rent-intelligence/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/intelligence-loyer/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/rent-intelligence/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<section class="md-hero">
+  <div class="md-hero-inner">
+    <div class="md-breadcrumb"><a href="/">AfroTools</a><span>/</span><a href="/tools/afropoints/">AfroPoints</a><span>/</span><span>Rent Intelligence</span></div>
+    <div class="md-eyebrow">Rent Intelligence</div>
+    <h1>Rent Intelligence</h1>
+    <p>Monitor live rent asks, deposits, lease terms, and vacancy patterns by city and neighborhood, with manual review on every publishable listing.</p>
+    <div class="md-chip-row"><span class="md-chip">Neighborhood rent asks</span><span class="md-chip">Deposit tracking</span><span class="md-chip">Manual review protected</span></div>
+  </div>
+</section>
+<div class="md-shell">
+  <div class="md-main">
+    <div class="md-panel">
+      <div class="md-panel-head"><div class="md-panel-title">Verified Rent Listings</div><div class="md-panel-subtitle">Only approved records appear in this feed.</div></div>
+      <div class="md-panel-body">
+        <div class="md-toolbar">
+          <div class="md-field"><label for="mdCountry">Country</label><select id="mdCountry" class="md-select" data-md-filter="country"></select></div>
+          <div class="md-field"><label for="mdCity">City</label><input id="mdCity" class="md-input" data-md-filter="city" placeholder="e.g. Lagos"></div>
+          <div class="md-field"><label for="mdPropertyType">Property Type</label><input id="mdPropertyType" class="md-input" data-md-filter="property_type" placeholder="e.g. Apartment"></div>
+          <div class="md-field"><label for="mdBedrooms">Bedrooms</label><input id="mdBedrooms" class="md-input" data-md-filter="bedrooms" placeholder="e.g. 2"></div>
+        </div>
+        <div class="md-actions"><button type="button" class="md-btn md-btn-secondary" id="mdRefresh">Refresh feed</button></div>
+        <div class="md-summary" id="mdSummary"></div>
+        <div class="md-grid" id="mdList"><div class="md-empty">Loading rent intelligence...</div></div>
+      </div>
+    </div>
+  </div>
+  <aside class="md-side">
+    <div class="md-panel">
+      <div class="md-panel-head"><div class="md-panel-title">Submit a Rent Ask</div><div class="md-panel-subtitle">Rent submissions always enter review before publication.</div></div>
+      <div class="md-panel-body">
+        <div class="md-form-field"><label for="mdReportCountry">Country</label><select id="mdReportCountry" class="md-select"></select></div>
+        <div class="md-form-field"><label for="mdReportCity">City</label><input id="mdReportCity" class="md-input" placeholder="e.g. Nairobi"></div>
+        <div class="md-form-field"><label for="mdReportNeighborhood">Neighborhood</label><input id="mdReportNeighborhood" class="md-input" placeholder="e.g. Westlands"></div>
+        <div class="md-form-field"><label for="mdReportCurrency">Currency</label><input id="mdReportCurrency" class="md-input" value="KES"></div>
+        <div class="md-form-field"><label for="mdReportMerchant">Agent or Listing Source</label><input id="mdReportMerchant" class="md-input" placeholder="Optional"></div>
+        <div id="mdReportFields"></div>
+        <div class="md-form-field"><label for="mdObservedAt">Observed At</label><input id="mdObservedAt" class="md-input" type="datetime-local"></div>
+        <div class="md-form-field"><label for="mdSourceType">Source Type</label><select id="mdSourceType" class="md-select"><option value="self_observed">I checked the listing myself</option><option value="merchant_quote">Agent or landlord quote</option><option value="official_notice">Formal listing or ad</option><option value="community_check">Community confirmation</option></select></div>
+        <div class="md-form-field"><label for="mdProofUrl">Proof URL</label><input id="mdProofUrl" class="md-input" placeholder="Listing URL or image"></div>
+        <div class="md-actions"><button type="button" class="md-btn md-btn-primary" id="mdSubmitReport">Submit Rent Data</button></div>
+      </div>
+    </div>
+    <div class="md-panel">
+      <div class="md-panel-head"><div class="md-panel-title">Commercial uses</div></div>
+      <div class="md-panel-body">
+        <ul class="md-list">
+          <li>Developers can benchmark asking rent and deposit pressure by neighborhood.</li>
+          <li>Recruiters can package rent trends with salary bands for relocation research.</li>
+          <li>Media can publish city-by-city affordability trackers grounded in fresh local data.</li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+</div>
+<div class="md-toast" id="mdToast"></div>
+<!-- LEGAL-WORKFLOW-COPILOT:START -->
+<section class="leg-workflow-copilot" aria-labelledby="legal-workflow-heading">
+  <script type="application/json" class="leg-workflow-data">{"slug":"rent-intelligence","title":"Rent Intelligence","workflowTitle":"Rent-market evidence check","coverage":"Contributor rent data","decision":"Whether a number is asking rent, achieved rent, renewal rent or service-charge-inclusive rent","evidence":["Compare at least three recent records from the same neighbourhood and property type","Separate rent, service charge, utilities and agency fees","Use the evidence to negotiate, not as a guaranteed market value"],"redFlags":["One viral listing treated as the market","No date, location precision or property condition attached to a rent record","Service charge and generator costs hidden outside the rent figure"],"related":[{"label":"Rent Affordability","href":"/tools/rent-affordability/"},{"label":"Rental Yield","href":"/tools/rental-yield/"},{"label":"Lease Risk Check","href":"/tools/lease-risk-check/"}],"competitor":{"group":"property","label":"Rentometer, AirDNA, Zillow Rental Manager and BuildZoom","patterns":["Property tools improve trust by showing comparable evidence, market assumptions, inspection or permit data and a dated report trail.","Rental platforms connect screening, lease, payments, deposit evidence and renewal steps instead of stopping at a calculator result.","Investment tools separate gross numbers from operating cost, vacancy, tax, permit and title risk so the user can defend the decision."],"implemented":["This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.","The app-specific checklist is not generic: it starts with \"Compare at least three recent records from the same neighbourhood and property type\".","Saved workflows can be resumed from the dashboard and handed off to Rent Affordability when the matter naturally continues.","The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report."]}}</script>
+  <div class="leg-workflow-head">
+    <span class="leg-action-kicker">Case workspace</span>
+    <h2 id="legal-workflow-heading">Build, save and export this legal workflow</h2>
+    <p>This workspace turns the rent-market evidence check result into a reusable matter note, dashboard item and gated PDF checklist. Use the app first, then save the evidence trail.</p>
+  </div>
+  <div class="leg-workflow-grid">
+    <label class="leg-field"><span class="leg-f-label">Matter or project</span><input aria-label="E.g. Supplier DPA review" class="leg-f-input" data-workflow-field="matter" type="text" placeholder="e.g. Supplier DPA review"></label>
+    <label class="leg-field"><span class="leg-f-label">Country or regime</span><input aria-label="E.g. Kenya, NDPA, Lagos" class="leg-f-input" data-workflow-field="country" type="text" placeholder="e.g. Kenya, NDPA, Lagos"></label>
+    <label class="leg-field"><span class="leg-f-label">Target date</span><input aria-label="Leg f input" class="leg-f-input" data-workflow-field="date" type="date"></label>
+    <label class="leg-field"><span class="leg-f-label">Status</span><select class="leg-f-select" data-workflow-field="status"><option>Checking evidence</option><option>Ready to verify</option><option>Waiting on official source</option><option>Escalate before action</option></select></label>
+  </div>
+  <div class="leg-workflow-columns">
+    <div>
+      <h3 class="leg-mini-heading">Evidence checked</h3>
+      <div class="leg-workflow-checklist" data-workflow-evidence-list></div>
+    </div>
+    <div>
+      <h3 class="leg-mini-heading">Risk flags</h3>
+      <div class="leg-workflow-checklist warning" data-workflow-risk-list></div>
+    </div>
+  </div>
+  <label class="leg-field full"><span class="leg-f-label">Private notes</span><textarea class="leg-f-textarea" data-workflow-field="note" placeholder="Add facts, missing documents, portal references, lawyer comments, or next actions."></textarea></label>
+  <div class="leg-workflow-summary" data-workflow-summary></div>
+  <div class="leg-workflow-actions">
+    <button type="button" class="leg-copy-btn" data-workflow-build>Build handoff note</button>
+    <button type="button" class="leg-secondary-btn" data-workflow-save>Save to dashboard</button>
+    <button type="button" class="leg-secondary-btn" data-workflow-load>Load saved</button>
+    <a class="leg-secondary-btn" href="/dashboard/">Open dashboard</a>
+  </div>
+  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly aria-label="Text entry"></textarea>
+  <form class="leg-pdf-gate" data-workflow-gate novalidate>
+    <div>
+      <span class="leg-action-kicker">PDF gate</span>
+      <h3>Email the checklist and unlock print/PDF</h3>
+      <p>The core tool stays free. The deeper PDF pack captures email only when the user wants a portable report, checklist and dashboard reminder.</p>
+    </div>
+    <label class="leg-field"><span class="leg-f-label">Email</span><input aria-label="You@example.com" class="leg-f-input" data-workflow-field="email" data-workflow-email type="email" autocomplete="email" placeholder="you@example.com"></label>
+    <label class="leg-workflow-optin"><input type="checkbox" data-workflow-optin checked><span>Send me occasional AfroTools legal checklist updates.</span></label>
+    <div class="leg-workflow-actions compact">
+      <button type="submit" class="leg-copy-btn" data-workflow-pdf-gate>Email checklist + unlock PDF</button>
+      <button type="button" class="leg-secondary-btn" data-workflow-print>Print or save PDF</button>
+      <button type="button" class="leg-secondary-btn" data-workflow-copy>Copy handoff note</button>
+    </div>
+    <div class="leg-gate-status" data-workflow-gate-status></div>
+  </form>
+  <div class="leg-workflow-next">
+    <span>Continue workflow</span>
+    <div><a href="/tools/rent-affordability/">Rent Affordability</a><a href="/tools/rental-yield/">Rental Yield</a><a href="/tools/lease-risk-check/">Lease Risk Check</a></div>
+  </div>
+</section>
+<!-- LEGAL-WORKFLOW-COPILOT:END -->
+<!-- LEGAL-COMPETITOR-CHECK:START -->
+<section class="leg-competitor" aria-labelledby="legal-competitor-heading">
+  <div class="leg-action-kicker">Competitor check - 28 April 2026</div>
+  <div class="leg-competitor-head">
+    <h2 id="legal-competitor-heading">What stronger tools teach this app</h2>
+    <p>Benchmarked against Rentometer, AirDNA, Zillow Rental Manager and BuildZoom. The goal is not to copy them; it is to bring the useful workflow pattern into an Africa-first tool with official-source caution and local evidence capture.</p>
+  </div>
+  <div class="leg-competitor-grid">
+    <div>
+      <h3>Observed feature pattern</h3>
+      <ul><li>Property tools improve trust by showing comparable evidence, market assumptions, inspection or permit data and a dated report trail.</li><li>Rental platforms connect screening, lease, payments, deposit evidence and renewal steps instead of stopping at a calculator result.</li><li>Investment tools separate gross numbers from operating cost, vacancy, tax, permit and title risk so the user can defend the decision.</li></ul>
+    </div>
+    <div>
+      <h3>Implemented on this app</h3>
+      <ul><li>This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.</li><li>The app-specific checklist is not generic: it starts with &quot;Compare at least three recent records from the same neighbourhood and property type&quot;.</li><li>Saved workflows can be resumed from the dashboard and handed off to Rent Affordability when the matter naturally continues.</li><li>The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report.</li></ul>
+    </div>
+    <div>
+      <h3>Best next move</h3>
+      <ul><li>Whether a number is asking rent, achieved rent, renewal rent or service-charge-inclusive rent</li><li>Compare at least three recent records from the same neighbourhood and property type</li><li>One viral listing treated as the market</li></ul>
+    </div>
+  </div>
+</section>
+<!-- LEGAL-COMPETITOR-CHECK:END -->
+<!-- LEGAL-DEEP-IMPROVEMENT:START -->
+<section class="leg-upgrade" aria-labelledby="legal-upgrade-heading">
+  <div class="leg-upgrade-kicker">Reviewed 28 April 2026 · Contributor rent data</div>
+  <h2 id="legal-upgrade-heading">Rent-market evidence check</h2>
+  <p>Rent intelligence is useful only when listing data is moderated, dated, neighbourhood-specific and separated from actual signed rents. The page should make freshness and source quality obvious.</p>
+  <div class="leg-upgrade-grid">
+    <div class="leg-upgrade-block">
+      <h3>Decisions this clarifies</h3>
+      <ul><li>Whether a number is asking rent, achieved rent, renewal rent or service-charge-inclusive rent</li><li>Which neighbourhood, property type and furnishing level make the comparison fair</li><li>Whether the data is fresh enough for negotiation or underwriting</li></ul>
+    </div>
+    <div class="leg-upgrade-block">
+      <h3>Before you rely on it</h3>
+      <ul><li>Compare at least three recent records from the same neighbourhood and property type</li><li>Separate rent, service charge, utilities and agency fees</li><li>Use the evidence to negotiate, not as a guaranteed market value</li></ul>
+    </div>
+    <div class="leg-upgrade-block warning">
+      <h3>Red flags</h3>
+      <ul><li>One viral listing treated as the market</li><li>No date, location precision or property condition attached to a rent record</li><li>Service charge and generator costs hidden outside the rent figure</li></ul>
+    </div>
+  </div>
+  <div class="leg-source-row">
+    <div>
+      <span>Primary checks</span>
+      <div class="leg-source-links"><a href="https://www.gov.za/services/services-residents/place-live/get-deeds-registry-information" target="_blank" rel="noopener">South Africa deeds registry information</a><a href="https://www.lc.gov.gh/services/registration-title/" target="_blank" rel="noopener">Ghana Lands Commission title registration</a><a href="https://ardhisasa.lands.go.ke/" target="_blank" rel="noopener">Kenya Ardhisasa land portal</a></div>
+    </div>
+    <div>
+      <span>Next best tools</span>
+      <div class="leg-source-links internal"><a href="/tools/rent-affordability/">Rent Affordability</a><a href="/tools/rental-yield/">Rental Yield</a><a href="/tools/lease-risk-check/">Lease Risk Check</a></div>
+    </div>
+  </div>
+</section>
+<!-- LEGAL-DEEP-IMPROVEMENT:END -->
+<!-- LEGAL-ACTION-PACK:START -->
+<section class="leg-action-pack" aria-labelledby="legal-action-pack-heading">
+  <div class="leg-action-head">
+    <span class="leg-action-kicker">Review pack</span>
+    <h2 id="legal-action-pack-heading">Save the rent-market evidence check trail</h2>
+    <p>Before filing, signing, publishing, or sending anything, keep a short record that links the app result to evidence and official-source checks.</p>
+  </div>
+  <div class="leg-action-grid">
+    <div>
+      <h3>Capture</h3>
+      <p>Save the country or regime, parties, dates, amounts, selected options, and final output. Add why this matters: Whether a number is asking rent, achieved rent, renewal rent or service-charge-inclusive rent.</p>
+    </div>
+    <div>
+      <h3>Attach</h3>
+      <p>Compare at least three recent records from the same neighbourhood and property type. Also keep the strongest supporting document, receipt, portal reference, ID, contract, policy, or court file beside the generated result.</p>
+    </div>
+    <div>
+      <h3>Escalate</h3>
+      <p>If you see this risk, pause and get qualified help: One viral listing treated as the market.</p>
+    </div>
+  </div>
+  <label class="leg-action-copy-label">Copyable review note</label>
+  <textarea class="leg-action-copy-text" readonly aria-label="Text entry">Rent-market evidence check action pack
+Tool: rent-intelligence
+Coverage: Contributor rent data
+
+Result to save:
+- Country or regime selected, parties involved, dates, amounts, and the generated output from the app.
+- The reason this output was prepared: Whether a number is asking rent, achieved rent, renewal rent or service-charge-inclusive rent.
+
+Evidence to attach:
+- Compare at least three recent records from the same neighbourhood and property type
+- Separate rent, service charge, utilities and agency fees
+- Use the evidence to negotiate, not as a guaranteed market value
+
+Escalate before filing or signing if:
+- One viral listing treated as the market
+- No date, location precision or property condition attached to a rent record
+- Service charge and generator costs hidden outside the rent figure
+
+Primary checks:
+- South Africa deeds registry information: https://www.gov.za/services/services-residents/place-live/get-deeds-registry-information
+- Ghana Lands Commission title registration: https://www.lc.gov.gh/services/registration-title/
+- Kenya Ardhisasa land portal: https://ardhisasa.lands.go.ke/
+
+Reviewed by AfroTools workflow on 28 April 2026. Informational only, not legal advice.</textarea>
+  <div class="leg-action-copy-row">
+    <button type="button" class="leg-action-copy-btn" data-legal-copy-action>Copy review pack</button>
+    <span>Paste this into your matter file, compliance folder, board pack, or lawyer handoff.</span>
+  </div>
+</section>
+<!-- LEGAL-ACTION-PACK:END -->
+<afro-related-tools data-ssr="1" category="legal" current="rent-intelligence">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/business-registration/" data-related-tool data-id="business-registration" data-name="Business Registration Checklist" data-category="legal" data-icon="BR" data-desc="Step-by-step business registration checklist for 16 African countries. Documents, fees, timelines, regulatory bodies.">Business Registration Checklist</a></li><li><a href="/tools/nda-generator/" data-related-tool data-id="nda-generator" data-name="NDA Generator" data-category="legal" data-icon="NG" data-desc="Generate Non-Disclosure Agreements for African jurisdictions. Mutual and unilateral NDAs compliant with local contract l">NDA Generator</a></li><li><a href="/tools/company-type-selector/" data-related-tool data-id="company-type-selector" data-name="Company Type Selector" data-category="legal" data-icon="CT" data-desc="Choose the right business structure for Africa — Sole Trader, LLC, PLC, Partnership. Tax, liability, compliance comparis">Company Type Selector</a></li><li><a href="/tools/land-title-check/" data-related-tool data-id="land-title-check" data-name="Land Title Verification Checklist" data-category="legal" data-icon="LT" data-desc="Verify land titles before buying property in Africa. Country-specific checklists for Nigeria (C of O), Kenya (Title Deed">Land Title Verification Checklist</a></li><li><a href="/tools/lease-risk-check/" data-related-tool data-id="lease-risk-check" data-name="Lease Risk Check" data-category="legal" data-icon="LR" data-desc="Nigeria-first lease scam and risky listing checker powered by contributor reports and reviewer approval.">Lease Risk Check</a></li><li><a href="/tools/contract-generator/" data-related-tool data-id="contract-gen" data-name="Contract Generator" data-category="legal" data-icon="CG" data-desc="5 templates: Tenancy, Employment, NDA, Freelance, Loan. Country-specific for NG, KE, ZA, GH. PDF export.">Contract Generator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/assets/js/afro-auth.js?v=4250956b"></script>
+<script src="/engines/afropoints-engine.js?v=2a5ea36e"></script>
+<script src="/assets/js/market-data-app.js?v=1b8c8bd6"></script>
+<script>
+document.getElementById('mdObservedAt').value = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+window.MarketDataApp.mount({
+  endpoint: '/api/rent-intelligence',
+  responseKey: 'listings',
+  subtype: 'rent_listing',
+  vertical: 'rent_intelligence',
+  reportButtonLabel: 'Submit Rent Data',
+  renderSummary: function (rows) {
+    return '<div class="md-stat"><div class="md-stat-value">' + rows.length + '</div><div class="md-stat-label">Verified rent records</div></div>' +
+      '<div class="md-stat"><div class="md-stat-value">' + rows.filter(function (row) { return row.deposit_amount; }).length + '</div><div class="md-stat-label">With deposit data</div></div>' +
+      '<div class="md-stat"><div class="md-stat-value">Review</div><div class="md-stat-label">All public listings are manually checked</div></div>';
+  },
+  renderCard: function (row, helpers) {
+    return '<article class="md-card"><h3>' + helpers.escapeHtml((row.property_type || 'Property') + ' - ' + (row.city || '')) + '</h3>' +
+      '<p>' + helpers.escapeHtml((row.neighborhood || 'Citywide') + ' | Lease ' + (row.lease_term_months || '?') + ' month(s)') + '</p>' +
+      '<div class="md-meta"><span class="md-pill">' + helpers.escapeHtml(row.monthly_rent || '') + ' ' + helpers.escapeHtml(row.currency_code || '') + '</span><span class="md-pill">Deposit ' + helpers.escapeHtml(row.deposit_amount || 'n/a') + '</span></div></article>';
+  }
+});
+</script>
+<script id="legal-action-copy-script">
+(function(){
+  document.addEventListener('click', function(event) {
+    var button = event.target.closest('[data-legal-copy-action]');
+    if (!button) return;
+    var section = button.closest('.leg-action-pack');
+    var area = section && section.querySelector('.leg-action-copy-text');
+    if (!area) return;
+    var original = button.textContent;
+    var done = function(){ button.textContent = "Copied"; setTimeout(function(){ button.textContent = original; }, 1800); };
+    var fallback = function(){ area.focus(); area.select(); try { document.execCommand("copy"); done(); } catch (err) { button.textContent = "Select text manually"; } };
+    if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(area.value).then(done).catch(fallback); } else { fallback(); }
+  });
+}());
+</script>
+<script src="/assets/js/legal-workflow-copilot.js?v=20da8404" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

@@ -1,0 +1,3961 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AfroRates — African Central Bank Rate Tracker | AfroTools</title>
+<meta name="description" content="Track latest available policy rates, inflation, real interest rates, T-bill yields, and MPC calendars for African countries with source and freshness labels.">
+<meta property="og:title" content="AfroRates — African Central Bank Rate Tracker">
+<meta property="og:description" content="Policy rates, inflation, and treasury yields for 54 African countries. Sortable tables, real rate rankings, and MPC meeting calendars.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/afrorates.webp">
+<meta property="og:url" content="https://afrotools.com/tools/afrorates/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="index, follow">
+
+<!-- JSON-LD: WebApplication + FAQPage -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"AfroRates","description":"African central bank rate tracker covering policy rates, inflation, T-bills, and MPC calendars across 54 countries.","url":"https://afrotools.com/tools/afrorates/","inLanguage":"en","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/afrorates.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"AfroRates","url":"https://afrotools.com/tools/afrorates/","description":"Track African central bank policy rates, inflation, treasury yields, and MPC calendars in one dashboard.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/afrorates.webp"}</script>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif&display=swap"></noscript>
+
+<!-- Shared CSS -->
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+
+<!-- AfroTools shared JS -->
+<script src="/assets/js/lib/live-data.js?v=bd400bd7"></script>
+<script src="/assets/js/components/live-data-status.js?v=c03da092"></script>
+<script src="/assets/js/lib/source-confidence.js?v=e7c3ebe4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+<script src="/assets/js/components/africa-map.js?v=c31c51b8" defer></script>
+<script src="/assets/js/components/api-cta.js?v=d7995525" defer></script>
+<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+
+<style>
+/* ══════════════════════════════════════════════════════════════════
+   AfroRates — African Central Bank Rate Tracker
+   Design: Apple-inspired, mobile-first
+   Tokens: #0062CC primary, #0063D1 secondary, #0A1628 dark, #F8FAFD light
+   Fonts: Instrument Serif (headings), DM Sans (body)
+   ══════════════════════════════════════════════════════════════════ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'DM Sans', -apple-system, system-ui, sans-serif;
+  background:
+    radial-gradient(circle at top right, rgba(0,98,204,.08), transparent 28%),
+    linear-gradient(180deg, #fbfdff 0%, #f4f7fb 100%);
+  color: #1d1d1f;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  overflow-x: clip;
+}
+
+body.afrorates-page {
+  max-width: 100%;
+}
+
+/* ── Hero ───────────────────────────────────────────────────── */
+.hero {
+  background: linear-gradient(160deg, #0d1117 0%, #0A1628 55%, #111827 100%);
+  padding: 64px 0 52px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  right: -60px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(0,98,204,.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -100px;
+  left: -80px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(0,99,209,.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .7rem;
+  font-weight: 600;
+  color: rgba(255,255,255,.4);
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.breadcrumb a {
+  color: rgba(255,255,255,.5);
+  text-decoration: none;
+  transition: color .2s;
+}
+
+.breadcrumb a:hover {
+  color: #60b5ff;
+}
+
+.breadcrumb span.sep {
+  color: rgba(255,255,255,.25);
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .67rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #60b5ff;
+  background: rgba(0,98,204,.15);
+  border: 1px solid rgba(0,98,204,.25);
+  border-radius: 100px;
+  padding: 4px 12px;
+  margin-bottom: 14px;
+}
+
+.hero h1 {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  font-weight: 400;
+  color: #f0f6fc;
+  line-height: 1.15;
+  margin-bottom: 12px;
+}
+
+.hero h1 em {
+  font-style: normal;
+  color: #60b5ff;
+}
+
+.hero-sub {
+  font-size: 1rem;
+  color: rgba(255,255,255,.5);
+  max-width: 600px;
+  line-height: 1.65;
+  margin-bottom: 0;
+}
+
+/* ── Headline Ticker ────────────────────────────────────────── */
+.ticker-wrap {
+  background: #0A1628;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  overflow: hidden;
+  position: relative;
+}
+
+.ticker-wrap::before,
+.ticker-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.ticker-wrap::before {
+  left: 0;
+  background: linear-gradient(90deg, #0A1628 0%, transparent 100%);
+}
+
+.ticker-wrap::after {
+  right: 0;
+  background: linear-gradient(270deg, #0A1628 0%, transparent 100%);
+}
+
+.ticker-track {
+  display: flex;
+  animation: ticker-scroll 35s linear infinite;
+  width: max-content;
+  max-width: none;
+  will-change: transform;
+}
+
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes ticker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 28px;
+  font-size: .82rem;
+  font-weight: 600;
+  color: rgba(255,255,255,.7);
+  white-space: nowrap;
+  border-right: 1px solid rgba(255,255,255,.06);
+}
+
+.ticker-rate {
+  color: #60b5ff;
+  font-weight: 700;
+}
+
+.ticker-dir {
+  font-size: .68rem;
+  margin-left: 2px;
+}
+
+.ticker-dir.up { color: #ef4444; }
+.ticker-dir.down { color: #22c55e; }
+.ticker-dir.hold { color: #6b7280; }
+
+/* ── Page Container ─────────────────────────────────────────── */
+.page-wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 28px 24px 64px;
+  min-width: 0;
+  overflow: clip;
+}
+
+/* ── Summary Stat Cards ─────────────────────────────────────── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: #fff;
+  border-radius: 18px;
+  border: 1px solid #e5e7eb;
+  padding: 18px 18px;
+  transition: box-shadow .2s, transform .2s;
+  box-shadow: 0 18px 40px rgba(10,22,40,.04);
+  min-width: 0;
+}
+
+.stat-card:hover {
+  box-shadow: 0 22px 40px rgba(10,22,40,.08);
+  transform: translateY(-1px);
+}
+
+.stat-label {
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+
+.stat-value {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: #0A1628;
+  line-height: 1.2;
+  letter-spacing: -.02em;
+}
+
+.stat-sub {
+  font-size: .75rem;
+  color: #9ca3af;
+  margin-top: 4px;
+}
+
+.stat-value .stat-unit {
+  font-size: .85rem;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.utility-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  padding: 12px 14px;
+  background: rgba(255,255,255,.84);
+  border: 1px solid rgba(229,231,235,.95);
+  border-radius: 18px;
+  box-shadow: 0 18px 40px rgba(10,22,40,.04);
+  backdrop-filter: blur(12px);
+}
+
+.utility-links {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.jump-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid #dbe3ee;
+  background: #fff;
+  color: #334155;
+  font-size: .76rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all .2s ease;
+}
+
+.jump-link:hover {
+  border-color: #0062CC;
+  color: #0062CC;
+  transform: translateY(-1px);
+}
+
+.utility-note {
+  flex: 1 1 240px;
+  min-width: 0;
+  font-size: .78rem;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.highlights-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.highlight-card {
+  background: #fff;
+  border-radius: 18px;
+  border: 1px solid #e5e7eb;
+  padding: 18px;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 18px 40px rgba(10,22,40,.04);
+  min-width: 0;
+}
+
+.highlight-card.is-positive {
+  border-color: rgba(22,163,74,.22);
+}
+
+.highlight-card.is-negative {
+  border-color: rgba(220,38,38,.18);
+}
+
+.highlight-kicker {
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.highlight-value {
+  font-size: 1.55rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -.03em;
+  color: #0A1628;
+}
+
+.highlight-name {
+  font-size: .94rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.highlight-meta {
+  font-size: .78rem;
+  line-height: 1.55;
+  color: #64748b;
+}
+
+.highlight-chip {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #0b63d1;
+  font-size: .66rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+/* ── Section Headers ────────────────────────────────────────── */
+.section {
+  margin-bottom: 32px;
+  scroll-margin-top: 96px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.section-title {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(1.45rem, 2vw, 1.8rem);
+  font-weight: 400;
+  color: #0A1628;
+  line-height: 1.2;
+}
+
+.section-sub {
+  font-size: .82rem;
+  color: #6b7280;
+  margin-top: 4px;
+  max-width: 760px;
+}
+
+.last-updated {
+  font-size: .72rem;
+  color: #64748b;
+  font-weight: 600;
+  background: rgba(255,255,255,.8);
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+}
+
+/* ── Rate Table Controls ────────────────────────────────────── */
+.table-controls {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.2fr) minmax(0, 2fr) auto auto;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding: 14px;
+  background: rgba(255,255,255,.86);
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  box-shadow: 0 18px 40px rgba(10,22,40,.04);
+  backdrop-filter: blur(12px);
+  min-width: 0;
+  overflow: hidden;
+}
+
+.search-box {
+  width: 100%;
+  height: 40px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 0 14px;
+  font-size: .85rem;
+  color: #1d1d1f;
+  background: #fff;
+  min-width: 0;
+  transition: border .2s, box-shadow .2s;
+  font-family: inherit;
+}
+
+.search-box:focus {
+  outline: none;
+  border-color: #0062CC;
+  box-shadow: 0 0 0 3px rgba(0,98,204,.12);
+}
+
+.search-box::placeholder {
+  color: #9ca3af;
+}
+
+.filter-pills {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  min-width: 0;
+  width: 100%;
+}
+
+.filter-btn {
+  flex: 0 1 auto;
+  height: 36px;
+  padding: 0 14px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: .78rem;
+  font-weight: 600;
+  color: #6b7280;
+  background: #fff;
+  cursor: pointer;
+  transition: all .2s;
+  font-family: inherit;
+}
+
+.filter-btn:hover {
+  border-color: #0062CC;
+  color: #0062CC;
+}
+
+.filter-btn.active {
+  background: #0062CC;
+  color: #fff;
+  border-color: #0062CC;
+}
+
+.sort-select {
+  width: 100%;
+  min-width: 0;
+  height: 40px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 0 32px 0 12px;
+  font-size: .78rem;
+  font-weight: 600;
+  color: #374151;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239CA3AF' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 10px center;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: 8px;
+  justify-self: end;
+  min-width: 0;
+}
+
+.toolbar-btn {
+  height: 40px;
+  padding: 0 14px;
+  border: 1.5px solid #dbe3ee;
+  border-radius: 12px;
+  background: #fff;
+  color: #0A1628;
+  font-size: .78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, color .2s ease, background .2s ease;
+  font-family: inherit;
+}
+
+.toolbar-btn:hover {
+  transform: translateY(-1px);
+  border-color: #0062CC;
+  color: #0062CC;
+  box-shadow: 0 10px 24px rgba(0,98,204,.12);
+}
+
+.toolbar-btn.primary {
+  background: #0A1628;
+  border-color: #0A1628;
+  color: #fff;
+}
+
+.toolbar-btn.primary:hover {
+  border-color: #0062CC;
+  background: #0062CC;
+  color: #fff;
+}
+
+/* ── Rate Table ─────────────────────────────────────────────── */
+.rate-table-wrap {
+  background: rgba(255,255,255,.92);
+  border-radius: 20px;
+  border: 1px solid #e5e7eb;
+  overflow: auto;
+  box-shadow: 0 18px 40px rgba(10,22,40,.04);
+  max-width: 100%;
+  overscroll-behavior-x: contain;
+}
+
+.rate-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.rate-table col.col-country { width: 26%; }
+.rate-table col.col-bank { width: 21%; }
+.rate-table col.col-rate { width: 13%; }
+.rate-table col.col-inflation { width: 13%; }
+.rate-table col.col-realrate { width: 13%; }
+.rate-table col.col-direction { width: 14%; }
+
+.rate-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.rate-table th {
+  background: #f9fafb;
+  font-size: .72rem;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  padding: 13px 12px;
+  text-align: left;
+  border-bottom: 2px solid #e5e7eb;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  transition: color .2s;
+}
+
+.rate-table th:hover {
+  color: #0062CC;
+}
+
+.rate-table th.sorted {
+  color: #0062CC;
+}
+
+.rate-table th .sort-icon {
+  margin-left: 4px;
+  opacity: .4;
+  font-size: .65rem;
+}
+
+.rate-table th.sorted .sort-icon {
+  opacity: 1;
+}
+
+.rate-table td {
+  padding: 11px 10px;
+  font-size: .81rem;
+  color: #374151;
+  border-bottom: 1px solid #f3f4f6;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rate-table tbody tr:nth-child(even) {
+  background: #fafbfc;
+}
+
+.rate-table tbody tr:hover {
+  background: #f0f6ff;
+}
+
+.country-cell {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.country-flag {
+  font-size: 1.1rem;
+}
+
+.country-code {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: #eef4ff;
+  color: #0b63d1;
+  font-size: .62rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.country-name {
+  font-weight: 600;
+  color: #111827;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bank-cell {
+  color: #475569;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.metric-cell,
+.direction-cell {
+  white-space: nowrap;
+}
+
+.rate-table tbody tr.row-focus {
+  background: #e9f3ff !important;
+  box-shadow: inset 0 0 0 1px rgba(0,98,204,.18);
+}
+
+.rate-val {
+  font-weight: 700;
+  color: #111827;
+  font-variant-numeric: tabular-nums;
+}
+
+.rate-na {
+  color: #d1d5db;
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* ── Direction Badges ───────────────────────────────────────── */
+.dir-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: .7rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 100px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.dir-hawk {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.dir-dove {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.dir-hold {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.table-footer {
+  margin-top: 8px;
+  font-size: .72rem;
+  color: #9ca3af;
+}
+
+/* ── Inflation Heatmap ──────────────────────────────────────── */
+.map-container {
+  background: #fff;
+  border-radius: 20px;
+  border: 1px solid #e5e7eb;
+  padding: 18px;
+  min-height: 0;
+  box-shadow: 0 18px 40px rgba(10,22,40,.04);
+  max-width: 100%;
+  overflow: hidden;
+}
+
+#inflation-map {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-height: 330px;
+}
+
+.map-legend {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-top: 16px;
+  justify-content: center;
+}
+
+.map-legend-inner {
+  text-align: center;
+  max-width: 100%;
+}
+
+.map-legend-bar {
+  height: 12px;
+  width: min(240px, 100%);
+  border-radius: 6px;
+  background: linear-gradient(90deg, #3b82f6 0%, #eab308 35%, #f97316 65%, #ef4444 100%);
+}
+
+.map-legend-labels {
+  display: flex;
+  justify-content: space-between;
+  width: min(240px, 100%);
+  margin-top: 4px;
+}
+
+.map-legend-labels span {
+  font-size: .65rem;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.map-selection {
+  margin-top: 14px;
+}
+
+.map-selection-card {
+  background: linear-gradient(180deg, rgba(255,255,255,.98) 0%, rgba(248,250,253,.98) 100%);
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 16px 18px;
+  box-shadow: 0 18px 40px rgba(10,22,40,.04);
+  min-width: 0;
+  overflow: hidden;
+}
+
+.map-selection-card.is-empty {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.map-selection-kicker {
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #0b63d1;
+  margin-bottom: 8px;
+}
+
+.map-selection-title {
+  font-size: 1.02rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.map-selection-copy {
+  font-size: .82rem;
+  line-height: 1.65;
+  color: #64748b;
+}
+
+.map-selection-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.map-selection-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.map-stat {
+  background: #fff;
+  border: 1px solid #e8eef6;
+  border-radius: 14px;
+  padding: 12px;
+}
+
+.map-stat-label {
+  font-size: .66rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.map-stat-value {
+  margin-top: 6px;
+  font-size: .98rem;
+  font-weight: 800;
+  color: #0A1628;
+}
+
+.map-stat-value.pos {
+  color: #16a34a;
+}
+
+.map-stat-value.neg {
+  color: #dc2626;
+}
+
+.map-selection-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.map-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1.5px solid #dbe3ee;
+  background: #fff;
+  color: #0A1628;
+  font-size: .78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .2s ease, border-color .2s ease, color .2s ease, box-shadow .2s ease, background .2s ease;
+  font-family: inherit;
+}
+
+.map-action-btn:hover {
+  transform: translateY(-1px);
+  border-color: #0062CC;
+  color: #0062CC;
+  box-shadow: 0 10px 24px rgba(0,98,204,.12);
+}
+
+.map-action-btn.primary {
+  background: #0A1628;
+  border-color: #0A1628;
+  color: #fff;
+}
+
+.map-action-btn.primary:hover {
+  background: #0062CC;
+  border-color: #0062CC;
+  color: #fff;
+}
+
+.map-action-btn:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ── Chart Cards ────────────────────────────────────────────── */
+.chart-card {
+  background: #fff;
+  border-radius: 20px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  box-shadow: 0 18px 40px rgba(10,22,40,.04);
+  min-width: 0;
+  max-width: 100%;
+}
+
+.chart-header {
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid #f3f4f6;
+  min-width: 0;
+}
+
+.chart-body {
+  padding: 14px 20px 20px;
+  min-width: 0;
+}
+
+.chart-controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  min-width: 0;
+}
+
+.country-chip {
+  max-width: 100%;
+  height: 30px;
+  padding: 0 12px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: .75rem;
+  font-weight: 600;
+  color: #6b7280;
+  background: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all .2s;
+  font-family: inherit;
+}
+
+.country-chip:hover {
+  border-color: #0062CC;
+  color: #0062CC;
+}
+
+.country-chip.active {
+  background: #0062CC;
+  color: #fff;
+  border-color: #0062CC;
+}
+
+.country-chip:disabled {
+  opacity: .42;
+  cursor: not-allowed;
+}
+
+.country-chip .remove {
+  margin-left: 2px;
+  font-size: .9rem;
+  line-height: 1;
+}
+
+.comparison-limit {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid #dbe3ee;
+  background: #f8fbff;
+  color: #64748b;
+  font-size: .72rem;
+  font-weight: 700;
+  max-width: 100%;
+  white-space: normal;
+}
+
+.comparison-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+  min-width: 0;
+}
+
+.comparison-overview {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+
+.comparison-overview-card {
+  background: linear-gradient(180deg, #f9fbff 0%, #ffffff 100%);
+  border: 1px solid #e5edf8;
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.65);
+  min-width: 0;
+}
+
+.comparison-overview-kicker {
+  font-size: .68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.comparison-overview-value {
+  font-size: 1.45rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -.03em;
+  color: #0A1628;
+}
+
+.comparison-overview-meta {
+  margin-top: 6px;
+  font-size: .78rem;
+  line-height: 1.6;
+  color: #64748b;
+}
+
+.comparison-bars {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.comparison-item {
+  background: linear-gradient(180deg, rgba(255,255,255,.98) 0%, rgba(248,250,253,.98) 100%);
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 14px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.comparison-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
+
+.comparison-top > div {
+  min-width: 0;
+}
+
+.comparison-country {
+  font-size: .92rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.comparison-bank {
+  margin-top: 4px;
+  font-size: .76rem;
+  line-height: 1.55;
+  color: #64748b;
+  overflow-wrap: anywhere;
+}
+
+.comparison-rate {
+  font-size: 1rem;
+  font-weight: 800;
+  white-space: nowrap;
+  color: #0A1628;
+}
+
+.comparison-track {
+  height: 10px;
+  margin: 12px 0 10px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: #e8eef8;
+}
+
+.comparison-fill {
+  height: 100%;
+  border-radius: inherit;
+}
+
+.comparison-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  min-width: 0;
+}
+
+.comparison-metric {
+  font-size: .75rem;
+  color: #64748b;
+}
+
+.comparison-metric strong {
+  color: #0f172a;
+  margin-right: 4px;
+}
+
+.comparison-empty {
+  padding: 18px;
+  border-radius: 18px;
+  border: 1px dashed #cbd5e1;
+  background: #f8fbff;
+  color: #64748b;
+  font-size: .82rem;
+  line-height: 1.6;
+}
+
+/* ── MPC Calendar ───────────────────────────────────────────── */
+.mpc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.mpc-card {
+  background: #fff;
+  border-radius: 18px;
+  border: 1px solid #e5e7eb;
+  padding: 16px;
+  display: flex;
+  gap: 12px;
+  transition: box-shadow .2s, transform .15s;
+  box-shadow: 0 18px 40px rgba(10,22,40,.04);
+}
+
+.mpc-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,.06);
+  transform: translateY(-1px);
+}
+
+.mpc-date-block {
+  min-width: 60px;
+  text-align: center;
+  flex-shrink: 0;
+  background: #f9fafb;
+  border-radius: 10px;
+  padding: 10px 8px;
+}
+
+.mpc-month {
+  font-size: .65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: #0062CC;
+}
+
+.mpc-day {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #0A1628;
+  line-height: 1.2;
+}
+
+.mpc-year {
+  font-size: .6rem;
+  color: #9ca3af;
+  font-weight: 600;
+}
+
+.mpc-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.mpc-bank {
+  font-size: .88rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mpc-country {
+  font-size: .78rem;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.mpc-rate {
+  font-size: .78rem;
+  color: #374151;
+}
+
+.mpc-rate strong {
+  color: #111827;
+}
+
+.mpc-expect {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: .68rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 100px;
+  margin-top: 8px;
+}
+
+.expect-hold {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.expect-cut {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.expect-hike {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.mpc-empty {
+  color: #6b7280;
+  font-size: .88rem;
+  padding: 24px;
+  text-align: center;
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  grid-column: 1 / -1;
+}
+
+/* ── Real Rate Chart ────────────────────────────────────────── */
+.realrate-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.realrate-panel {
+  background: #fff;
+  border-radius: 20px;
+  border: 1px solid #e5e7eb;
+  padding: 18px;
+  box-shadow: 0 18px 40px rgba(10,22,40,.04);
+  min-width: 0;
+}
+
+.realrate-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.realrate-panel-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #0A1628;
+}
+
+.realrate-panel-sub {
+  font-size: .78rem;
+  color: #64748b;
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+.realrate-list {
+  display: grid;
+  gap: 10px;
+}
+
+.realrate-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: start;
+  padding-top: 10px;
+  border-top: 1px solid #eef2f7;
+  min-width: 0;
+}
+
+.realrate-item:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+
+.realrate-rank {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: .72rem;
+  font-weight: 800;
+}
+
+.realrate-country {
+  font-size: .9rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.realrate-meta {
+  font-size: .76rem;
+  color: #64748b;
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+.realrate-score {
+  font-size: .96rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.realrate-score.pos {
+  color: #16a34a;
+}
+
+.realrate-score.neg {
+  color: #dc2626;
+}
+
+.realrate-footnote {
+  margin-top: 12px;
+  font-size: .76rem;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+/* ── Yields Section ─────────────────────────────────────────── */
+.yields-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.yield-card {
+  background: #fff;
+  border-radius: 18px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  transition: box-shadow .2s, transform .15s;
+  box-shadow: 0 18px 40px rgba(10,22,40,.04);
+}
+
+.yield-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,.06);
+  transform: translateY(-1px);
+}
+
+.yield-card-header {
+  background: linear-gradient(135deg, #0d1f3c 0%, #1a3a6b 100%);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.yield-card-flag {
+  font-size: 1.3rem;
+}
+
+.yield-card-name {
+  font-size: .88rem;
+  font-weight: 700;
+  color: #f0f6fc;
+}
+
+.yield-card-body {
+  padding: 14px 18px;
+}
+
+.yield-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: .82rem;
+}
+
+.yield-row:last-child {
+  border-bottom: none;
+}
+
+.yield-label {
+  color: #6b7280;
+}
+
+.yield-val {
+  font-weight: 700;
+  color: #111827;
+  font-variant-numeric: tabular-nums;
+}
+
+.yield-na {
+  color: #d1d5db;
+}
+
+.about-card {
+  background: linear-gradient(180deg, rgba(255,255,255,.94) 0%, rgba(248,250,253,.96) 100%);
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 18px 20px;
+  box-shadow: 0 18px 40px rgba(10,22,40,.04);
+}
+
+.about-kicker {
+  font-size: .7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: #0b63d1;
+  margin-bottom: 8px;
+}
+
+.about-card p {
+  font-size: .92rem;
+  line-height: 1.8;
+  color: #475569;
+}
+
+.partner-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 18px 40px rgba(10,22,40,.04);
+}
+
+.partner-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(240px, .9fr);
+  align-items: stretch;
+  min-width: 0;
+}
+
+.partner-primary {
+  padding: 18px;
+  background: linear-gradient(180deg, rgba(248,250,253,.94) 0%, #ffffff 100%);
+  border-right: 1px solid #eef2f7;
+}
+
+
+.partner-aside {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 22px;
+  background: linear-gradient(135deg, rgba(250,252,255,.96) 0%, rgba(242,247,255,.86) 100%);
+}
+
+.partner-kicker {
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #0b63d1;
+}
+
+.partner-aside h3 {
+  font-size: 1.02rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.35;
+}
+
+.partner-aside p {
+  font-size: .84rem;
+  line-height: 1.7;
+  color: #64748b;
+}
+
+.partner-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.partner-pill {
+  display: inline-flex;
+  align-items: center;
+  height: 30px;
+  padding: 0 11px;
+  border-radius: 999px;
+  border: 1px solid #dbe3ee;
+  background: rgba(255,255,255,.82);
+  color: #334155;
+  font-size: .72rem;
+  font-weight: 700;
+}
+
+.faq-shell {
+  max-width: 900px;
+}
+
+/* ── FAQ ────────────────────────────────────────────────────── */
+.faq-list {
+  max-width: none;
+  background: rgba(255,255,255,.84);
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 0 18px;
+  box-shadow: 0 18px 40px rgba(10,22,40,.04);
+}
+
+.faq-item {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.faq-item:last-child {
+  border-bottom: none;
+}
+
+.faq-q {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 16px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+}
+
+.faq-q h3 {
+  font-size: .95rem;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.4;
+}
+
+.faq-q .faq-icon {
+  font-size: 1.2rem;
+  color: #9ca3af;
+  transition: transform .3s;
+  flex-shrink: 0;
+}
+
+.faq-item.open .faq-q .faq-icon {
+  transform: rotate(45deg);
+}
+
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .35s ease;
+}
+
+.faq-item.open .faq-a {
+  max-height: 600px;
+}
+
+.faq-a-inner {
+  padding: 0 0 18px;
+  font-size: .88rem;
+  color: #4b5563;
+  line-height: 1.7;
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .stats-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .highlights-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .table-controls {
+    grid-template-columns: minmax(220px, 1fr) minmax(0, 1fr);
+  }
+
+  .toolbar-actions {
+    justify-self: start;
+  }
+
+  .realrate-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .comparison-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .map-selection-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 48px 0 42px;
+  }
+
+  .hero-inner,
+  .page-wrap {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .ticker-wrap::before,
+  .ticker-wrap::after {
+    width: 28px;
+  }
+
+  .ticker-item {
+    padding: 10px 18px;
+  }
+
+  .table-controls {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+    padding: 12px;
+    border-radius: 14px;
+  }
+
+  .search-box {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .sort-select {
+    width: 100%;
+  }
+
+  .filter-pills {
+    align-items: stretch;
+  }
+
+  .filter-btn {
+    min-width: 0;
+  }
+
+  .toolbar-actions {
+    width: 100%;
+    justify-self: stretch;
+  }
+
+  .toolbar-btn {
+    flex: 1 1 0;
+  }
+
+  .rate-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table.rate-table {
+    display: block !important;
+    width: 750px !important;
+    max-width: none !important;
+    min-width: 750px !important;
+    margin-left: max(0px, calc(750px - 100vw + 40px)) !important;
+    overflow: visible;
+  }
+
+  .map-container,
+  .chart-header,
+  .chart-body {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .map-legend-inner {
+    width: 100%;
+  }
+
+  .mpc-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .yields-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .stats-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .utility-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    overflow: hidden;
+  }
+
+  .utility-note {
+    flex-basis: auto;
+  }
+
+  .utility-links,
+  .jump-link {
+    max-width: 100%;
+  }
+
+  .highlights-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-value {
+    font-size: 1.35rem;
+  }
+
+  .partner-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .partner-primary {
+    border-right: none;
+    border-bottom: 1px solid #eef2f7;
+  }
+
+  .map-selection-card.is-empty {
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+
+  .page-wrap {
+    padding-top: 22px;
+    padding-bottom: 48px;
+  }
+
+  .yields-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-btn {
+    flex: 1 1 calc(33.333% - 6px);
+    padding: 0 8px;
+    font-size: .72rem;
+  }
+
+  .toolbar-actions {
+    flex-wrap: wrap;
+  }
+
+  .faq-list {
+    padding: 0 14px;
+  }
+
+  .stats-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .stat-card {
+    padding: 14px 16px;
+  }
+
+  .stat-value {
+    font-size: 1.2rem;
+  }
+
+  .comparison-metrics {
+    gap: 8px 10px;
+  }
+
+  .comparison-top {
+    flex-wrap: wrap;
+  }
+
+  .comparison-rate {
+    margin-left: auto;
+  }
+
+  .map-selection-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .map-action-btn {
+    flex: 1 1 100%;
+  }
+}
+</style>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:title" content="AfroRates — African Central Bank Rate Tracker">
+<meta name="twitter:description" content="Policy rates, inflation, and treasury yields for 54 African countries. Sortable tables, real rate rankings, and MPC meeting calendars.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/afrorates.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "AfroRates",
+      "item": "https://afrotools.com/tools/afrorates/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<style>
+.afrorates-refresh .hero {
+  background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%) !important;
+  border-bottom: 1px solid #d8e2ef;
+  color: #0f172a;
+  overflow: hidden;
+  padding: 46px 0 40px !important;
+}
+
+.afrorates-refresh .hero::before,
+.afrorates-refresh .hero::after {
+  display: none !important;
+}
+
+.afrorates-refresh .hero-inner {
+  max-width: 1120px;
+  padding-inline: 24px;
+  text-align: left;
+}
+
+.afrorates-refresh .breadcrumb {
+  color: #7b8ca5 !important;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  margin-bottom: 18px;
+}
+
+.afrorates-refresh .breadcrumb a {
+  color: #35517d !important;
+}
+
+.afrorates-refresh .breadcrumb a:hover {
+  color: #2457c5 !important;
+}
+
+.afrorates-refresh .breadcrumb .sep {
+  color: #a5b2c4 !important;
+}
+
+.afrorates-refresh .hero-eyebrow {
+  background: #eef6ff;
+  border: 1px solid #bcd4ff;
+  border-radius: 999px;
+  color: #2457c5;
+  font-size: 0.72rem;
+  letter-spacing: 0.11em;
+  margin-bottom: 14px;
+  padding: 6px 12px;
+}
+
+.afrorates-refresh .hero h1 {
+  color: #0f172a !important;
+  font-family: 'DM Sans', -apple-system, system-ui, sans-serif;
+  font-size: clamp(2.15rem, 4vw, 3.45rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.03;
+  margin-bottom: 14px;
+  max-width: 900px;
+}
+
+.afrorates-refresh .hero h1 em {
+  color: #2457c5 !important;
+  font-style: normal;
+}
+
+.afrorates-refresh .hero-sub {
+  color: #53657d !important;
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 690px;
+}
+
+.afrorates-refresh .ticker-wrap {
+  background: #0d1728;
+  border-bottom: 1px solid #1c2940;
+}
+
+.afrorates-refresh .ticker-wrap::before {
+  background: linear-gradient(90deg, #0d1728 0%, transparent 100%);
+}
+
+.afrorates-refresh .ticker-wrap::after {
+  background: linear-gradient(270deg, #0d1728 0%, transparent 100%);
+}
+
+.afrorates-refresh .page-wrap {
+  padding-top: 28px;
+}
+
+.afrorates-refresh .stat-card,
+.afrorates-refresh .utility-bar,
+.afrorates-refresh .highlight-card,
+.afrorates-refresh .table-controls,
+.afrorates-refresh .rate-table-wrap,
+.afrorates-refresh .map-container,
+.afrorates-refresh .chart-card,
+.afrorates-refresh .comparison-card,
+.afrorates-refresh .mpc-card,
+.afrorates-refresh .yield-card,
+.afrorates-refresh .faq-list {
+  border: 1px solid #d8e2ef;
+  border-radius: 8px;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
+}
+
+.afrorates-refresh .stat-card,
+.afrorates-refresh .highlight-card {
+  padding: 20px;
+}
+
+.afrorates-refresh .stat-label,
+.afrorates-refresh .highlight-kicker {
+  color: #52637a;
+  letter-spacing: 0.08em;
+}
+
+.afrorates-refresh .stat-value,
+.afrorates-refresh .highlight-value,
+.afrorates-refresh .section-title {
+  color: #0f172a;
+  font-family: 'DM Sans', -apple-system, system-ui, sans-serif;
+}
+
+.afrorates-refresh .section-title {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.afrorates-refresh .utility-bar {
+  align-items: center;
+  background: #fff;
+  padding: 14px;
+}
+
+.afrorates-refresh .jump-link {
+  border-radius: 8px;
+  min-height: 38px;
+}
+
+.afrorates-refresh .search-box,
+.afrorates-refresh .filter-btn,
+.afrorates-refresh .sort-select,
+.afrorates-refresh .toolbar-btn {
+  border-color: #c7d5e7;
+  border-radius: 8px;
+  min-height: 40px;
+}
+
+.afrorates-refresh .filter-btn.active,
+.afrorates-refresh .toolbar-btn.primary {
+  background: #2457c5;
+  border-color: #2457c5;
+}
+
+.afrorates-refresh a:focus-visible,
+.afrorates-refresh button:focus-visible,
+.afrorates-refresh input:focus-visible,
+.afrorates-refresh select:focus-visible {
+  outline: 3px solid rgba(36, 87, 197, 0.25);
+  outline-offset: 3px;
+}
+
+@media (max-width: 768px) {
+  .afrorates-refresh .hero {
+    padding: 34px 0 32px !important;
+  }
+
+  .afrorates-refresh .hero-inner,
+  .afrorates-refresh .page-wrap {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .afrorates-refresh .stats-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .afrorates-refresh .utility-links {
+    width: 100%;
+  }
+
+  .afrorates-refresh .jump-link {
+    flex: 1 1 calc(50% - 8px);
+  }
+
+  .afrorates-refresh table.rate-table {
+    margin-left: 0 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .afrorates-refresh .hero h1 {
+    font-size: 2rem;
+  }
+
+  .afrorates-refresh .stats-row {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a central bank policy rate? +","acceptedAnswer":{"@type":"Answer","text":"A central bank policy rate is the benchmark interest rate set by a country's central bank to influence borrowing costs, control inflation, and guide monetary policy across the economy. In Africa, these rates go by different names depending on the country and its institutional framework. Nigeria's Central Bank of Nigeria (CBN) calls it the Monetary Policy Rate (MPR), South Africa's South African Reserve Bank (SARB) uses the Repo Rate, Kenya's Central Bank of Kenya (CBK) uses the Central Bank Rate (CBR), and Egypt's Central Bank of Egypt (CBE) uses the Overnight Lending Rate. When a central bank raises its policy rate, commercial bank borrowing from the central bank becomes more expensive, which typically makes consumer and business loans more costly, thereby slowing spending and helping to reduce inflation. Conversely, when a central bank cuts the rate, borrowing becomes cheaper across the economy, which can stimulate growth, investment, and consumer spending. The policy rate is one of the most powerful tools available to central bankers for managing macroeconomic stability."}},{"@type":"Question","name":"How is the real interest rate calculated? +","acceptedAnswer":{"@type":"Answer","text":"The real interest rate is calculated by subtracting the headline inflation rate from the nominal policy rate. This gives you the actual purchasing power gain or loss from holding deposits at the benchmark rate. For example, if a country's policy rate is 27.50% and its headline inflation is 33.2%, the real interest rate is negative 5.70%. A negative real rate means that inflation is eroding the purchasing power of money faster than the nominal interest rate compensates for it. This situation is common in several African economies where central banks have raised rates aggressively but inflation still outpaces monetary tightening due to supply-side pressures, currency depreciation, or food price shocks. Positive real rates, on the other hand, indicate that depositors and bondholders are earning a genuine return above inflation, which tends to attract foreign capital inflows, support the local currency, and signal a more stable macroeconomic environment. The AfroRates dashboard computes real rates automatically for all 54 African countries, making it easy to compare which economies offer positive real yields versus those where inflation dominates."}},{"@type":"Question","name":"What do hawk, dove, and hold mean in monetary policy? +","acceptedAnswer":{"@type":"Answer","text":"In central banking terminology, these labels describe a central bank's current policy stance and direction of travel. A hawkish central bank is one that has recently raised interest rates or signals its intention to do so, typically in response to rising inflation, currency depreciation, or capital outflows. Hawkish policy aims to cool the economy by making borrowing more expensive. A dovish central bank has recently cut rates or signals easing ahead, usually to support economic growth, reduce government debt-servicing costs, or respond to a recession. A hold stance means the central bank has kept its rate unchanged at recent meetings, often because it is assessing the impact of previous moves, waiting for clearer economic signals, or balancing competing pressures. AfroRates classifies each African central bank based on its most recent rate decision from the JSON data feed. A rate increase signals hawkish policy, a decrease signals dovish policy, and no change signals a hold stance. These classifications help investors and analysts quickly scan the continent for monetary policy trends without reading through individual MPC statements."}},{"@type":"Question","name":"Which African countries have the highest policy rates? +","acceptedAnswer":{"@type":"Answer","text":"African countries with the highest policy rates are typically those battling severe or persistent inflation, currency instability, or both. Zimbabwe, Nigeria, Ghana, Egypt, and Malawi frequently top the list, with rates above 25% in many cases. These elevated rates reflect aggressive monetary tightening cycles aimed at stabilizing depreciating currencies, containing broad-based price pressures, and anchoring inflation expectations. High rates make it expensive for governments and businesses to borrow, but are considered necessary when inflation threatens to spiral out of control. At the other end of the spectrum, countries in the CFA franc zone, including members of the BCEAO (West African) and BEAC (Central African) monetary unions, tend to have much lower rates, often around 3 to 5 percent, because their currencies are pegged to the euro via France's Treasury, which provides an external anchor for monetary stability and limits the need for independently aggressive rate policy. The AfroRates dashboard lets you sort all 54 African countries by their current policy rates, inflation levels, or real rates to see the full distribution at a glance."}},{"@type":"Question","name":"What is an MPC meeting and why does it matter? +","acceptedAnswer":{"@type":"Answer","text":"An MPC (Monetary Policy Committee) meeting is a scheduled gathering of a central bank's senior decision-making body to review current economic conditions and decide on the benchmark interest rate. The committee typically assesses a range of indicators including inflation trends, GDP growth figures, exchange rate movements, employment data, fiscal developments, and global economic conditions before voting on whether to raise, lower, or maintain the policy rate. These meetings are critically important for financial markets because rate decisions directly affect commercial lending rates, mortgage costs, government bond yields, currency valuations, stock markets, and overall economic activity. For investors, traders, and businesses operating in African markets, knowing when MPC meetings are scheduled is essential for anticipating potential policy shifts and managing interest rate risk in bond portfolios, loan books, and foreign exchange positions. The AfroRates MPC calendar displays upcoming meetings for all African central banks that publish their schedules, along with the current rate and an expected direction based on recent policy stance."}},{"@type":"Question","name":"How do T-bill yields differ from the policy rate? +","acceptedAnswer":{"@type":"Answer","text":"Treasury bill (T-bill) yields are market-determined rates established through competitive government debt auctions, while the policy rate is an administratively set benchmark determined by the central bank's monetary policy committee. T-bill yields reflect what investors actually demand to lend money to the government for short periods (typically 91, 182, or 364 days), and they can trade above or below the policy rate depending on several factors. These include the supply of government securities relative to investor demand, prevailing liquidity conditions in the banking system, market expectations about future rate moves, and the government's fiscal position. In many African markets, 91-day T-bill yields closely track the policy rate during stable periods because banks use the central bank rate as their opportunity cost benchmark. However, yields can diverge significantly during periods of fiscal stress (when governments issue more debt to finance deficits), excess liquidity (when banks have surplus cash and bid yields down), or anticipated policy changes (when markets price in expected rate cuts or hikes ahead of MPC decisions). Longer-tenor T-bills at 182 and 364 days typically carry higher yields to compensate investors for additional duration risk and inflation uncertainty."}},{"@type":"Question","name":"What is the BCEAO and BEAC and why do multiple countries share the same rate? +","acceptedAnswer":{"@type":"Answer","text":"The BCEAO (Banque Centrale des Etats de l'Afrique de l'Ouest) is the central bank for the West African Economic and Monetary Union (WAEMU), covering eight countries that share the CFA franc (XOF): Benin, Burkina Faso, Cote d'Ivoire, Guinea-Bissau, Mali, Niger, Senegal, and Togo. The BEAC (Banque des Etats de l'Afrique Centrale) is the corresponding institution for the Central African Economic and Monetary Community (CEMAC), setting monetary policy for six nations using the Central African CFA franc (XAF): Cameroon, Central African Republic, Chad, Congo, Equatorial Guinea, and Gabon. Because these are formal monetary unions with a shared currency pegged to the euro at a fixed exchange rate (guaranteed by the French Treasury), the member countries cannot independently set their own policy rates. A single rate decision by the BCEAO or BEAC governing council applies uniformly to all member states. This can create tension when economic conditions differ significantly across member countries — for example, when one country faces high inflation while another experiences low growth and needs stimulus. It is one of the key structural features of African monetary policy that distinguishes the CFA zone countries from the rest of the continent."}},{"@type":"Question","name":"How often is AfroRates data updated? +","acceptedAnswer":{"@type":"Answer","text":"AfroRates data is sourced directly from central bank publications, national statistics offices, and official government debt management offices. Policy rates are updated within 24 hours of each MPC decision announcement. Inflation figures are updated monthly as national statistics offices release new consumer price index (CPI) data — though the timing varies by country, with some releasing data promptly and others with a one or two month lag. Treasury bill and bond yields are updated after each primary auction, which typically occurs weekly or bi-weekly depending on the market. MPC meeting dates are updated as central banks publish their annual meeting schedules, usually at the start of each calendar year. The dashboard displays a \"Last Updated\" timestamp so you always know how current the data is. The page also uses client-side caching with a 12-hour refresh interval, so it loads instantly on repeat visits while automatically checking for fresh data in the background when the cache expires. If a network error occurs, the dashboard gracefully falls back to cached data to ensure you always have access to the most recent available information."}},{"@type":"Question","name":"What to verify +","acceptedAnswer":{"@type":"Answer","text":"Before acting, open the named central bank, statistics office, treasury, or debt-management source and check the release date, unit, currency, auction tenor, meeting date, and whether a newer bulletin has been published."}},{"@type":"Question","name":"What is a central bank policy rate?","acceptedAnswer":{"@type":"Answer","text":"A central bank policy rate is the benchmark interest rate set by a country's central bank to influence borrowing costs, control inflation, and guide monetary policy across the economy. In Africa, these rates go by different names depending on the country and its institutional framework. Nigeria's Central Bank of Nigeria (CBN) calls it the Monetary Policy Rate (MPR), South Africa's South African Reserve Bank (SARB) uses the Repo Rate, Kenya's Central Bank of Kenya (CBK) uses the Central Bank Rate (CBR), and Egypt's Central Bank of Egypt (CBE) uses the Overnight Lending Rate. When a central bank raises its policy rate, commercial bank borrowing from the central bank becomes more expensive, which typically makes consumer and business loans more costly, thereby slowing spending and helping to reduce inflation. Conversely, when a central bank cuts the rate, borrowing becomes cheaper across the economy, which can stimulate growth, investment, and consumer spending. The policy rate is one of the most powerful tools available to central bankers for managing macroeconomic stability."}},{"@type":"Question","name":"How is the real interest rate calculated?","acceptedAnswer":{"@type":"Answer","text":"The real interest rate is calculated by subtracting the headline inflation rate from the nominal policy rate. This gives you the actual purchasing power gain or loss from holding deposits at the benchmark rate. For example, if a country's policy rate is 27.50% and its headline inflation is 33.2%, the real interest rate is negative 5.70%. A negative real rate means that inflation is eroding the purchasing power of money faster than the nominal interest rate compensates for it. This situation is common in several African economies where central banks have raised rates aggressively but inflation still outpaces monetary tightening due to supply-side pressures, currency depreciation, or food price shocks. Positive real rates, on the other hand, indicate that depositors and bondholders are earning a genuine return above inflation, which tends to attract foreign capital inflows, support the local currency, and signal a more stable macroeconomic environment. The AfroRates dashboard computes real rates automatically for all 54 African countries, making it easy to compare which economies offer positive real yields versus those where inflation dominates."}},{"@type":"Question","name":"What do hawk, dove, and hold mean in monetary policy?","acceptedAnswer":{"@type":"Answer","text":"In central banking terminology, these labels describe a central bank's current policy stance and direction of travel. A hawkish central bank is one that has recently raised interest rates or signals its intention to do so, typically in response to rising inflation, currency depreciation, or capital outflows. Hawkish policy aims to cool the economy by making borrowing more expensive. A dovish central bank has recently cut rates or signals easing ahead, usually to support economic growth, reduce government debt-servicing costs, or respond to a recession. A hold stance means the central bank has kept its rate unchanged at recent meetings, often because it is assessing the impact of previous moves, waiting for clearer economic signals, or balancing competing pressures. AfroRates classifies each African central bank based on its most recent rate decision from the JSON data feed. A rate increase signals hawkish policy, a decrease signals dovish policy, and no change signals a hold stance. These classifications help investors and analysts quickly scan the continent for monetary policy trends without reading through individual MPC statements."}},{"@type":"Question","name":"Which African countries have the highest policy rates?","acceptedAnswer":{"@type":"Answer","text":"African countries with the highest policy rates are typically those battling severe or persistent inflation, currency instability, or both. Zimbabwe, Nigeria, Ghana, Egypt, and Malawi frequently top the list, with rates above 25% in many cases. These elevated rates reflect aggressive monetary tightening cycles aimed at stabilizing depreciating currencies, containing broad-based price pressures, and anchoring inflation expectations. High rates make it expensive for governments and businesses to borrow, but are considered necessary when inflation threatens to spiral out of control. At the other end of the spectrum, countries in the CFA franc zone, including members of the BCEAO (West African) and BEAC (Central African) monetary unions, tend to have much lower rates, often around 3 to 5 percent, because their currencies are pegged to the euro via France's Treasury, which provides an external anchor for monetary stability and limits the need for independently aggressive rate policy. The AfroRates dashboard lets you sort all 54 African countries by their current policy rates, inflation levels, or real rates to see the full distribution at a glance."}},{"@type":"Question","name":"What is an MPC meeting and why does it matter?","acceptedAnswer":{"@type":"Answer","text":"An MPC (Monetary Policy Committee) meeting is a scheduled gathering of a central bank's senior decision-making body to review current economic conditions and decide on the benchmark interest rate. The committee typically assesses a range of indicators including inflation trends, GDP growth figures, exchange rate movements, employment data, fiscal developments, and global economic conditions before voting on whether to raise, lower, or maintain the policy rate. These meetings are critically important for financial markets because rate decisions directly affect commercial lending rates, mortgage costs, government bond yields, currency valuations, stock markets, and overall economic activity. For investors, traders, and businesses operating in African markets, knowing when MPC meetings are scheduled is essential for anticipating potential policy shifts and managing interest rate risk in bond portfolios, loan books, and foreign exchange positions. The AfroRates MPC calendar displays upcoming meetings for all African central banks that publish their schedules, along with the current rate and an expected direction based on recent policy stance."}},{"@type":"Question","name":"How do T-bill yields differ from the policy rate?","acceptedAnswer":{"@type":"Answer","text":"Treasury bill (T-bill) yields are market-determined rates established through competitive government debt auctions, while the policy rate is an administratively set benchmark determined by the central bank's monetary policy committee. T-bill yields reflect what investors actually demand to lend money to the government for short periods (typically 91, 182, or 364 days), and they can trade above or below the policy rate depending on several factors. These include the supply of government securities relative to investor demand, prevailing liquidity conditions in the banking system, market expectations about future rate moves, and the government's fiscal position. In many African markets, 91-day T-bill yields closely track the policy rate during stable periods because banks use the central bank rate as their opportunity cost benchmark. However, yields can diverge significantly during periods of fiscal stress (when governments issue more debt to finance deficits), excess liquidity (when banks have surplus cash and bid yields down), or anticipated policy changes (when markets price in expected rate cuts or hikes ahead of MPC decisions). Longer-tenor T-bills at 182 and 364 days typically carry higher yields to compensate investors for additional duration risk and inflation uncertainty."}},{"@type":"Question","name":"What is the BCEAO and BEAC and why do multiple countries share the same rate?","acceptedAnswer":{"@type":"Answer","text":"The BCEAO (Banque Centrale des Etats de l'Afrique de l'Ouest) is the central bank for the West African Economic and Monetary Union (WAEMU), covering eight countries that share the CFA franc (XOF): Benin, Burkina Faso, Cote d'Ivoire, Guinea-Bissau, Mali, Niger, Senegal, and Togo. The BEAC (Banque des Etats de l'Afrique Centrale) is the corresponding institution for the Central African Economic and Monetary Community (CEMAC), setting monetary policy for six nations using the Central African CFA franc (XAF): Cameroon, Central African Republic, Chad, Congo, Equatorial Guinea, and Gabon. Because these are formal monetary unions with a shared currency pegged to the euro at a fixed exchange rate (guaranteed by the French Treasury), the member countries cannot independently set their own policy rates. A single rate decision by the BCEAO or BEAC governing council applies uniformly to all member states. This can create tension when economic conditions differ significantly across member countries — for example, when one country faces high inflation while another experiences low growth and needs stimulus. It is one of the key structural features of African monetary policy that distinguishes the CFA zone countries from the rest of the continent."}},{"@type":"Question","name":"How often is AfroRates data updated?","acceptedAnswer":{"@type":"Answer","text":"AfroRates data is sourced directly from central bank publications, national statistics offices, and official government debt management offices. Policy rates are updated within 24 hours of each MPC decision announcement. Inflation figures are updated monthly as national statistics offices release new consumer price index (CPI) data — though the timing varies by country, with some releasing data promptly and others with a one or two month lag. Treasury bill and bond yields are updated after each primary auction, which typically occurs weekly or bi-weekly depending on the market. MPC meeting dates are updated as central banks publish their annual meeting schedules, usually at the start of each calendar year. The dashboard displays a \"Last Updated\" timestamp so you always know how current the data is. The page also uses client-side caching with a 12-hour refresh interval, so it loads instantly on repeat visits while automatically checking for fresh data in the background when the cache expires. If a network error occurs, the dashboard gracefully falls back to cached data to ensure you always have access to the most recent available information."}},{"@type":"Question","name":"What to verify","acceptedAnswer":{"@type":"Answer","text":"Before acting, open the named central bank, statistics office, treasury, or debt-management source and check the release date, unit, currency, auction tenor, meeting date, and whether a newer bulletin has been published."}}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/afrorates/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afrorates/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/afrotaux/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/viwango-benki/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/afrorates/">
+</head>
+
+<body class="top-level-page-ui-refresh afrorates-refresh">
+<!-- ══════════════════════════════════════════════════════════════
+     NAVBAR
+     ══════════════════════════════════════════════════════════════ -->
+<afro-navbar></afro-navbar>
+
+<!-- ══════════════════════════════════════════════════════════════
+     HERO SECTION
+     ══════════════════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-inner">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">AfroTools</a>
+      <span class="sep" aria-hidden="true">›</span>
+      <a href="/categories/">Finance &amp; Economy</a>
+      <span class="sep" aria-hidden="true">›</span>
+      <span>AfroRates</span>
+    </nav>
+    <div class="hero-eyebrow">🏦 Central Bank Rates</div>
+    <h1>AfroRates — African Central Bank <em>Rate Tracker</em></h1>
+    <p class="hero-sub">Track latest available policy rates, inflation, real yields, and upcoming MPC meetings with visible source and freshness labels.</p>
+    <div class="afro-source-meta" data-source-meta-id="afrorates-policy-rate-pack" data-source-meta-compact="true"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     HEADLINE TICKER — Scrolling marquee of key rates
+     ══════════════════════════════════════════════════════════════ -->
+<div class="ticker-wrap" role="marquee" aria-label="Key African central bank rates">
+  <div class="ticker-track" id="ticker-track">
+    <!-- Populated by JavaScript from /data/rates/latest.json -->
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     MAIN PAGE CONTENT
+     ══════════════════════════════════════════════════════════════ -->
+<div class="page-wrap">
+
+  <!-- ────────────────────────────────────────────────────────────
+       SUMMARY STAT CARDS — Key aggregate metrics
+       ──────────────────────────────────────────────────────────── -->
+  <div class="stats-row" id="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Median Policy Rate</div>
+      <div class="stat-value" id="stat-median-rate">Checking</div>
+      <div class="stat-sub">Across all 54 countries</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Avg Headline Inflation</div>
+      <div class="stat-value" id="stat-avg-inflation">Checking</div>
+      <div class="stat-sub">Continental average</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Countries in Tightening</div>
+      <div class="stat-value" id="stat-hawks">Checking</div>
+      <div class="stat-sub">Hawkish stance</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Upcoming MPC Meetings</div>
+      <div class="stat-value" id="stat-mpc-count">Checking</div>
+      <div class="stat-sub">Next 60 days</div>
+    </div>
+  </div>
+
+  <!-- ────────────────────────────────────────────────────────────
+       POLICY RATE TABLE — All 54 countries, sortable & filterable
+       ──────────────────────────────────────────────────────────── -->
+  <div class="utility-bar">
+    <div class="utility-links">
+      <a class="jump-link" href="#rate-table-section">Rates</a>
+      <a class="jump-link" href="#inflation-map-section">Heatmap</a>
+      <a class="jump-link" href="#comparison-section">Compare</a>
+      <a class="jump-link" href="#mpc-section">MPC</a>
+      <a class="jump-link" href="#realrate-section">Real Rates</a>
+      <a class="jump-link" href="#yields-section">Yields</a>
+      <a class="jump-link" href="#faq-section">FAQ</a>
+    </div>
+    <div class="utility-note">Jump to any section quickly, then export the filtered table when you need a working snapshot.</div>
+  </div>
+
+  <div class="highlights-grid" id="highlights-grid">
+    <article class="highlight-card">
+      <div class="highlight-kicker">Highest Policy Rate</div>
+      <div class="highlight-value">Checking</div>
+      <div class="highlight-name">Checking latest available data</div>
+      <div class="highlight-meta">Source and freshness will appear below.</div>
+    </article>
+    <article class="highlight-card">
+      <div class="highlight-kicker">Best Real Rate</div>
+      <div class="highlight-value">Checking</div>
+      <div class="highlight-name">Checking latest available data</div>
+      <div class="highlight-meta">Source and freshness will appear below.</div>
+    </article>
+    <article class="highlight-card">
+      <div class="highlight-kicker">Lowest Inflation</div>
+      <div class="highlight-value">Checking</div>
+      <div class="highlight-name">Checking latest available data</div>
+      <div class="highlight-meta">Source and freshness will appear below.</div>
+    </article>
+    <article class="highlight-card">
+      <div class="highlight-kicker">Next MPC Meeting</div>
+      <div class="highlight-value">Checking</div>
+      <div class="highlight-name">Checking latest available data</div>
+      <div class="highlight-meta">Source and freshness will appear below.</div>
+    </article>
+  </div>
+
+  <div class="section" id="rate-table-section">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Policy Rate Dashboard</h2>
+        <p class="section-sub">All 54 African countries — searchable, sortable, and exportable.</p>
+      </div>
+      <div class="last-updated live-data-status" id="last-updated">Checking latest available central bank data...</div>
+    </div>
+
+    <div class="table-controls">
+      <input
+        type="text"
+        class="search-box"
+        id="table-search"
+        placeholder="Search country or central bank..."
+        aria-label="Search countries"
+      >
+      <div class="filter-pills">
+        <button type="button" class="filter-btn active" data-region="all">All</button>
+        <button type="button" class="filter-btn" data-region="west">West</button>
+        <button type="button" class="filter-btn" data-region="east">East</button>
+        <button type="button" class="filter-btn" data-region="south">South</button>
+        <button type="button" class="filter-btn" data-region="north">North</button>
+        <button type="button" class="filter-btn" data-region="central">Central</button>
+      </div>
+      <select class="sort-select" id="sort-select" aria-label="Sort countries by">
+        <option value="country-asc">Country A–Z</option>
+        <option value="country-desc">Country Z–A</option>
+        <option value="rate-desc">Rate: High to Low</option>
+        <option value="rate-asc">Rate: Low to High</option>
+        <option value="inflation-desc">Inflation: High to Low</option>
+        <option value="inflation-asc">Inflation: Low to High</option>
+        <option value="realrate-desc">Real Rate: High to Low</option>
+        <option value="realrate-asc">Real Rate: Low to High</option>
+      </select>
+      <div class="toolbar-actions">
+        <button class="toolbar-btn" id="reset-filters" type="button">Reset</button>
+        <button class="toolbar-btn primary" id="export-csv" type="button">Export CSV</button>
+      </div>
+    </div>
+
+    <div class="rate-table-wrap">
+      <table class="rate-table" id="rate-table">
+        <colgroup>
+          <col class="col-country">
+          <col class="col-bank">
+          <col class="col-rate">
+          <col class="col-inflation">
+          <col class="col-realrate">
+          <col class="col-direction">
+        </colgroup>
+        <thead>
+          <tr>
+            <th data-sort="country">Country <span class="sort-icon">▲</span></th>
+            <th data-sort="bank">Central Bank <span class="sort-icon">▲</span></th>
+            <th data-sort="rate">Policy Rate <span class="sort-icon">▼</span></th>
+            <th data-sort="inflation">Inflation <span class="sort-icon">▼</span></th>
+            <th data-sort="realrate">Real Rate <span class="sort-icon">▼</span></th>
+            <th data-sort="direction">Direction <span class="sort-icon">▼</span></th>
+          </tr>
+        </thead>
+        <tbody id="rate-table-body">
+          <!-- Populated by JavaScript -->
+        </tbody>
+      </table>
+    </div>
+    <p class="table-footer" id="table-count">Checking latest available data...</p>
+  </div>
+
+  <!-- ────────────────────────────────────────────────────────────
+       INFLATION HEATMAP — <afro-map> colored by inflation rate
+       ──────────────────────────────────────────────────────────── -->
+  <div class="section" id="inflation-map-section">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Inflation Heatmap</h2>
+        <p class="section-sub">Headline inflation rates across the continent — blue is low, red is high</p>
+      </div>
+    </div>
+    <div class="map-container">
+      <afro-map
+        id="inflation-map"
+        data-metric="inflation"
+        data-colorscale="blue-red"
+        data-unit="%"
+      ></afro-map>
+      <div class="map-legend">
+        <div class="map-legend-inner">
+          <div class="map-legend-bar"></div>
+          <div class="map-legend-labels">
+            <span>&lt; 5%</span>
+            <span>15%</span>
+            <span>30%+</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="map-selection" id="map-selection">
+      <div class="map-selection-card is-empty">
+        <div>
+          <div class="map-selection-kicker">Map Interaction</div>
+          <div class="map-selection-title">Click any country to pin it</div>
+          <p class="map-selection-copy">We’ll show its inflation context, real rate, and quick actions for the table and comparison panel.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────────────────────────────────────────────────────────
+       RATE COMPARISON CHART — Select up to 5 countries (Chart.js)
+       ──────────────────────────────────────────────────────────── -->
+  <div class="section" id="comparison-section">
+    <div class="chart-card">
+      <div class="chart-header">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Rate Comparison</h2>
+            <p class="section-sub">Select up to 5 countries and compare policy rate, inflation, real rate, and next MPC date side by side.</p>
+          </div>
+          <div class="comparison-limit" id="comparison-limit">0 / 5 selected</div>
+        </div>
+        <div class="chart-controls" id="comparison-chips">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+      <div class="chart-body">
+        <div class="comparison-layout">
+          <div class="comparison-overview" id="comparison-overview">
+            <!-- Populated by JavaScript -->
+          </div>
+          <div class="comparison-bars" id="comparison-bars">
+            <!-- Populated by JavaScript -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────────────────────────────────────────────────────────
+       MPC MEETING CALENDAR — Upcoming central bank rate decisions
+       ──────────────────────────────────────────────────────────── -->
+  <div class="section" id="mpc-section">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">MPC Meeting Calendar</h2>
+        <p class="section-sub">Upcoming central bank rate decisions — next 60 days</p>
+      </div>
+    </div>
+    <div class="mpc-grid" id="mpc-grid">
+      <!-- Populated by JavaScript -->
+    </div>
+  </div>
+
+  <!-- ────────────────────────────────────────────────────────────
+       REAL INTEREST RATE RANKING — Horizontal bar chart (Chart.js)
+       ──────────────────────────────────────────────────────────── -->
+  <div class="section" id="realrate-section">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Real Rate Leaders &amp; Laggards</h2>
+        <p class="section-sub">The strongest saver-friendly markets and the deepest inflation drag, using policy rate minus headline inflation.</p>
+      </div>
+    </div>
+    <div class="realrate-grid" id="realrate-grid">
+      <!-- Populated by JavaScript -->
+    </div>
+    <p class="realrate-footnote">Use the main dashboard above and sort by Real Rate when you want the full 54-country ranking.</p>
+  </div>
+
+  <!-- ────────────────────────────────────────────────────────────
+       TREASURY BILL & BOND YIELDS — Top 5 markets
+       ──────────────────────────────────────────────────────────── -->
+  <div class="section" id="yields-section">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Treasury Bill &amp; Bond Yields</h2>
+        <p class="section-sub">Top 5 African markets — latest auction yields for T-bills and government bonds</p>
+      </div>
+    </div>
+    <div class="yields-grid" id="yields-grid">
+      <!-- Populated by JavaScript -->
+    </div>
+  </div>
+
+  <!-- ────────────────────────────────────────────────────────────
+       API CTA
+       ──────────────────────────────────────────────────────────── -->
+  <div style="margin-bottom:48px">
+    <afro-api-cta
+      data-api-name="AfroRates API"
+  data-description="Latest available central bank policy rates, inflation data, T-bill yields, and MPC schedules with freshness timestamps. JSON format."
+      data-docs-url="/docs/api/"
+      data-signup-url="/docs/api/#signup"
+    ></afro-api-cta>
+  </div>
+
+  <!-- ────────────────────────────────────────────────────────────
+       FAQ — 8 questions about African monetary policy (SEO)
+       ──────────────────────────────────────────────────────────── -->
+  <div class="section" id="about-section">
+    <div class="about-card">
+      <div class="about-kicker">About AfroRates</div>
+      <p>AfroRates is AfroTools' African central bank rates dashboard. It tracks policy rates, inflation, real rates, treasury-bill yields, and MPC calendars across 54 countries, making it easier to compare monetary conditions across regions and currency blocs. Use it when you need a continent-wide snapshot of interest-rate conditions rather than a general FX converter.</p>
+    </div>
+  </div>
+
+  <div class="section" id="partner-section">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Cross-Border Transfer Partner</h2>
+        <p class="section-sub">Useful if you want to act on rate differences, send money, or compare transfer rails across African corridors.</p>
+      </div>
+    </div>
+    <div class="partner-card">
+      <div class="partner-layout">
+        <div class="partner-aside">
+          <div class="partner-kicker">Why it sits here</div>
+          <h3>From macro signal to actual money movement</h3>
+          <p>AfroRates helps you read policy conditions across Africa. This partner block is the practical next step when you actually need to send funds, compare corridors, or move treasury cash across borders.</p>
+          <div class="partner-pills">
+            <span class="partner-pill">Mid-market pricing</span>
+            <span class="partner-pill">170+ countries</span>
+            <span class="partner-pill">Business payouts</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section faq-section" id="faq-section">
+    <div class="faq-shell">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Frequently Asked Questions</h2>
+          <p class="section-sub">Understanding African monetary policy, real rates, and how to read the dashboard.</p>
+        </div>
+      </div>
+      <div class="faq-list" id="faq-list">
+
+      <!-- FAQ 1 -->
+      <div class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">
+          <h3>What is a central bank policy rate?</h3>
+          <span class="faq-icon" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">
+            A central bank policy rate is the benchmark interest rate set by a country's central
+            bank to influence borrowing costs, control inflation, and guide monetary policy across
+            the economy. In Africa, these rates go by different names depending on the country and
+            its institutional framework. Nigeria's Central Bank of Nigeria (CBN) calls it the
+            Monetary Policy Rate (MPR), South Africa's South African Reserve Bank (SARB) uses the
+            Repo Rate, Kenya's Central Bank of Kenya (CBK) uses the Central Bank Rate (CBR), and
+            Egypt's Central Bank of Egypt (CBE) uses the Overnight Lending Rate. When a central
+            bank raises its policy rate, commercial bank borrowing from the central bank becomes
+            more expensive, which typically makes consumer and business loans more costly, thereby
+            slowing spending and helping to reduce inflation. Conversely, when a central bank cuts
+            the rate, borrowing becomes cheaper across the economy, which can stimulate growth,
+            investment, and consumer spending. The policy rate is one of the most powerful tools
+            available to central bankers for managing macroeconomic stability.
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 2 -->
+      <div class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">
+          <h3>How is the real interest rate calculated?</h3>
+          <span class="faq-icon" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">
+            The real interest rate is calculated by subtracting the headline inflation rate from
+            the nominal policy rate. This gives you the actual purchasing power gain or loss from
+            holding deposits at the benchmark rate. For example, if a country's policy rate is
+            27.50% and its headline inflation is 33.2%, the real interest rate is negative 5.70%.
+            A negative real rate means that inflation is eroding the purchasing power of money
+            faster than the nominal interest rate compensates for it. This situation is common in
+            several African economies where central banks have raised rates aggressively but
+            inflation still outpaces monetary tightening due to supply-side pressures, currency
+            depreciation, or food price shocks. Positive real rates, on the other hand, indicate
+            that depositors and bondholders are earning a genuine return above inflation, which
+            tends to attract foreign capital inflows, support the local currency, and signal a
+            more stable macroeconomic environment. The AfroRates dashboard computes real rates
+            automatically for all 54 African countries, making it easy to compare which economies
+            offer positive real yields versus those where inflation dominates.
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 3 -->
+      <div class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">
+          <h3>What do hawk, dove, and hold mean in monetary policy?</h3>
+          <span class="faq-icon" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">
+            In central banking terminology, these labels describe a central bank's current policy
+            stance and direction of travel. A hawkish central bank is one that has recently raised
+            interest rates or signals its intention to do so, typically in response to rising
+            inflation, currency depreciation, or capital outflows. Hawkish policy aims to cool the
+            economy by making borrowing more expensive. A dovish central bank has recently cut
+            rates or signals easing ahead, usually to support economic growth, reduce government
+            debt-servicing costs, or respond to a recession. A hold stance means the central bank
+            has kept its rate unchanged at recent meetings, often because it is assessing the
+            impact of previous moves, waiting for clearer economic signals, or balancing competing
+            pressures. AfroRates classifies each African central bank based on its most recent
+            rate decision from the JSON data feed. A rate increase signals hawkish policy, a
+            decrease signals dovish policy, and no change signals a hold stance. These
+            classifications help investors and analysts quickly scan the continent for monetary
+            policy trends without reading through individual MPC statements.
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 4 -->
+      <div class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">
+          <h3>Which African countries have the highest policy rates?</h3>
+          <span class="faq-icon" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">
+            African countries with the highest policy rates are typically those battling severe or
+            persistent inflation, currency instability, or both. Zimbabwe, Nigeria, Ghana, Egypt,
+            and Malawi frequently top the list, with rates above 25% in many cases. These
+            elevated rates reflect aggressive monetary tightening cycles aimed at stabilizing
+            depreciating currencies, containing broad-based price pressures, and anchoring
+            inflation expectations. High rates make it expensive for governments and businesses
+            to borrow, but are considered necessary when inflation threatens to spiral out of
+            control. At the other end of the spectrum, countries in the CFA franc zone, including
+            members of the BCEAO (West African) and BEAC (Central African) monetary unions, tend
+            to have much lower rates, often around 3 to 5 percent, because their currencies are
+            pegged to the euro via France's Treasury, which provides an external anchor for
+            monetary stability and limits the need for independently aggressive rate policy. The
+            AfroRates dashboard lets you sort all 54 African countries by their current policy
+            rates, inflation levels, or real rates to see the full distribution at a glance.
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 5 -->
+      <div class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">
+          <h3>What is an MPC meeting and why does it matter?</h3>
+          <span class="faq-icon" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">
+            An MPC (Monetary Policy Committee) meeting is a scheduled gathering of a central
+            bank's senior decision-making body to review current economic conditions and decide
+            on the benchmark interest rate. The committee typically assesses a range of indicators
+            including inflation trends, GDP growth figures, exchange rate movements, employment
+            data, fiscal developments, and global economic conditions before voting on whether to
+            raise, lower, or maintain the policy rate. These meetings are critically important for
+            financial markets because rate decisions directly affect commercial lending rates,
+            mortgage costs, government bond yields, currency valuations, stock markets, and
+            overall economic activity. For investors, traders, and businesses operating in African
+            markets, knowing when MPC meetings are scheduled is essential for anticipating
+            potential policy shifts and managing interest rate risk in bond portfolios, loan
+            books, and foreign exchange positions. The AfroRates MPC calendar displays upcoming
+            meetings for all African central banks that publish their schedules, along with the
+            current rate and an expected direction based on recent policy stance.
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 6 -->
+      <div class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">
+          <h3>How do T-bill yields differ from the policy rate?</h3>
+          <span class="faq-icon" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">
+            Treasury bill (T-bill) yields are market-determined rates established through
+            competitive government debt auctions, while the policy rate is an administratively
+            set benchmark determined by the central bank's monetary policy committee. T-bill
+            yields reflect what investors actually demand to lend money to the government for
+            short periods (typically 91, 182, or 364 days), and they can trade above or below the
+            policy rate depending on several factors. These include the supply of government
+            securities relative to investor demand, prevailing liquidity conditions in the banking
+            system, market expectations about future rate moves, and the government's fiscal
+            position. In many African markets, 91-day T-bill yields closely track the policy rate
+            during stable periods because banks use the central bank rate as their opportunity
+            cost benchmark. However, yields can diverge significantly during periods of fiscal
+            stress (when governments issue more debt to finance deficits), excess liquidity
+            (when banks have surplus cash and bid yields down), or anticipated policy changes
+            (when markets price in expected rate cuts or hikes ahead of MPC decisions).
+            Longer-tenor T-bills at 182 and 364 days typically carry higher yields to compensate
+            investors for additional duration risk and inflation uncertainty.
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 7 -->
+      <div class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">
+          <h3>What is the BCEAO and BEAC and why do multiple countries share the same rate?</h3>
+          <span class="faq-icon" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">
+            The BCEAO (Banque Centrale des Etats de l'Afrique de l'Ouest) is the central bank
+            for the West African Economic and Monetary Union (WAEMU), covering eight countries
+            that share the CFA franc (XOF): Benin, Burkina Faso, Cote d'Ivoire, Guinea-Bissau,
+            Mali, Niger, Senegal, and Togo. The BEAC (Banque des Etats de l'Afrique Centrale) is
+            the corresponding institution for the Central African Economic and Monetary Community
+            (CEMAC), setting monetary policy for six nations using the Central African CFA franc
+            (XAF): Cameroon, Central African Republic, Chad, Congo, Equatorial Guinea, and Gabon.
+            Because these are formal monetary unions with a shared currency pegged to the euro at
+            a fixed exchange rate (guaranteed by the French Treasury), the member countries cannot
+            independently set their own policy rates. A single rate decision by the BCEAO or BEAC
+            governing council applies uniformly to all member states. This can create tension when
+            economic conditions differ significantly across member countries — for example, when
+            one country faces high inflation while another experiences low growth and needs
+            stimulus. It is one of the key structural features of African monetary policy that
+            distinguishes the CFA zone countries from the rest of the continent.
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 8 -->
+      <div class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">
+          <h3>How often is AfroRates data updated?</h3>
+          <span class="faq-icon" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">
+            AfroRates data is sourced directly from central bank publications, national
+            statistics offices, and official government debt management offices. Policy rates
+            are updated within 24 hours of each MPC decision announcement. Inflation figures
+            are updated monthly as national statistics offices release new consumer price index
+            (CPI) data — though the timing varies by country, with some releasing data promptly
+            and others with a one or two month lag. Treasury bill and bond yields are updated
+            after each primary auction, which typically occurs weekly or bi-weekly depending on
+            the market. MPC meeting dates are updated as central banks publish their annual
+            meeting schedules, usually at the start of each calendar year. The dashboard
+            displays a "Last Updated" timestamp so you always know how current the data is.
+            The page also uses client-side caching with a 12-hour refresh interval, so it loads
+            instantly on repeat visits while automatically checking for fresh data in the
+            background when the cache expires. If a network error occurs, the dashboard
+            gracefully falls back to cached data to ensure you always have access to the most
+            recent available information.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</div><!-- end .page-wrap -->
+
+<!-- ══════════════════════════════════════════════════════════════
+     RELATED TOOLS & FOOTER
+     ══════════════════════════════════════════════════════════════ -->
+<section class="faq-section quality-verification-panel" data-tool-verification-panel aria-labelledby="afrorates-verification-title">
+  <div class="faq-inner">
+    <h2 id="afrorates-verification-title">AfroRates verification notes</h2>
+    <div class="faq-list">
+      <div class="faq-item"><button type="button" class="faq-q" aria-expanded="true"><h3>Methodology and freshness</h3><span class="faq-icon" aria-hidden="true">+</span></button><div class="faq-a" style="display:block"><div class="faq-a-inner">AfroRates shows latest available policy rates, inflation, real-rate estimates, treasury yields, and MPC calendar context from stored feeds and cached live-data responses. Treat every figure as a source-labeled planning reference, not financial advice, investment advice, a trading signal, or an official filing.</div></div></div>
+      <div class="faq-item"><button type="button" class="faq-q" aria-expanded="false"><h3>What to verify</h3><span class="faq-icon" aria-hidden="true">+</span></button><div class="faq-a"><div class="faq-a-inner">Before acting, open the named central bank, statistics office, treasury, or debt-management source and check the release date, unit, currency, auction tenor, meeting date, and whether a newer bulletin has been published.</div></div></div>
+      <div class="faq-item"><button type="button" class="faq-q" aria-expanded="false"><h3>Export path</h3><span class="faq-icon" aria-hidden="true">+</span></button><div class="faq-a"><div class="faq-a-inner">Use the table filters, comparison panel, CSV export, and API handoff as research aids. Keep an internal note of the source timestamp used for any report, forecast, policy memo, or editorial chart.</div></div></div>
+    </div>
+  </div>
+</section>
+<div style="max-width:960px;margin:0 auto 24px;padding:0 20px">
+  <afro-business-cta
+    tool-name="AfroRates"
+    save-note="Filter countries, export CSV, and save the source timestamp before using rate data in a report."></afro-business-cta>
+</div>
+<afro-related-tools category="financial" current="afrorates" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Tracker" data-category="financial" data-icon="AA" data-desc="Compare petrol, diesel, and LPG prices across 54 African countries, then estimate generator fuel costs in local currency">AfroFuel — African Fuel Price Tracker</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<!-- ══════════════════════════════════════════════════════════════
+     JAVASCRIPT — Dashboard Logic
+     ══════════════════════════════════════════════════════════════ -->
+<script>
+(function () {
+  'use strict';
+
+  /* ════════════════════════════════════════════════════════════════
+     COUNTRY FLAGS — ISO2 code to Unicode flag emoji
+     ════════════════════════════════════════════════════════════════ */
+  const FLAGS = {
+    DZ: '\u{1F1E9}\u{1F1FF}', // Algeria
+    AO: '\u{1F1E6}\u{1F1F4}', // Angola
+    BJ: '\u{1F1E7}\u{1F1EF}', // Benin
+    BW: '\u{1F1E7}\u{1F1FC}', // Botswana
+    BF: '\u{1F1E7}\u{1F1EB}', // Burkina Faso
+    BI: '\u{1F1E7}\u{1F1EE}', // Burundi
+    CV: '\u{1F1E8}\u{1F1FB}', // Cabo Verde
+    CM: '\u{1F1E8}\u{1F1F2}', // Cameroon
+    CF: '\u{1F1E8}\u{1F1EB}', // Central African Republic
+    TD: '\u{1F1F9}\u{1F1E9}', // Chad
+    KM: '\u{1F1F0}\u{1F1F2}', // Comoros
+    CG: '\u{1F1E8}\u{1F1EC}', // Congo
+    CD: '\u{1F1E8}\u{1F1E9}', // DR Congo
+    CI: '\u{1F1E8}\u{1F1EE}', // Cote d'Ivoire
+    DJ: '\u{1F1E9}\u{1F1EF}', // Djibouti
+    EG: '\u{1F1EA}\u{1F1EC}', // Egypt
+    GQ: '\u{1F1EC}\u{1F1F6}', // Equatorial Guinea
+    ER: '\u{1F1EA}\u{1F1F7}', // Eritrea
+    SZ: '\u{1F1F8}\u{1F1FF}', // Eswatini
+    ET: '\u{1F1EA}\u{1F1F9}', // Ethiopia
+    GA: '\u{1F1EC}\u{1F1E6}', // Gabon
+    GM: '\u{1F1EC}\u{1F1F2}', // Gambia
+    GH: '\u{1F1EC}\u{1F1ED}', // Ghana
+    GN: '\u{1F1EC}\u{1F1F3}', // Guinea
+    GW: '\u{1F1EC}\u{1F1FC}', // Guinea-Bissau
+    KE: '\u{1F1F0}\u{1F1EA}', // Kenya
+    LS: '\u{1F1F1}\u{1F1F8}', // Lesotho
+    LR: '\u{1F1F1}\u{1F1F7}', // Liberia
+    LY: '\u{1F1F1}\u{1F1FE}', // Libya
+    MG: '\u{1F1F2}\u{1F1EC}', // Madagascar
+    MW: '\u{1F1F2}\u{1F1FC}', // Malawi
+    ML: '\u{1F1F2}\u{1F1F1}', // Mali
+    MR: '\u{1F1F2}\u{1F1F7}', // Mauritania
+    MU: '\u{1F1F2}\u{1F1FA}', // Mauritius
+    MA: '\u{1F1F2}\u{1F1E6}', // Morocco
+    MZ: '\u{1F1F2}\u{1F1FF}', // Mozambique
+    NA: '\u{1F1F3}\u{1F1E6}', // Namibia
+    NE: '\u{1F1F3}\u{1F1EA}', // Niger
+    NG: '\u{1F1F3}\u{1F1EC}', // Nigeria
+    RW: '\u{1F1F7}\u{1F1FC}', // Rwanda
+    ST: '\u{1F1F8}\u{1F1F9}', // Sao Tome
+    SN: '\u{1F1F8}\u{1F1F3}', // Senegal
+    SC: '\u{1F1F8}\u{1F1E8}', // Seychelles
+    SL: '\u{1F1F8}\u{1F1F1}', // Sierra Leone
+    SO: '\u{1F1F8}\u{1F1F4}', // Somalia
+    ZA: '\u{1F1FF}\u{1F1E6}', // South Africa
+    SS: '\u{1F1F8}\u{1F1F8}', // South Sudan
+    SD: '\u{1F1F8}\u{1F1E9}', // Sudan
+    TZ: '\u{1F1F9}\u{1F1FF}', // Tanzania
+    TG: '\u{1F1F9}\u{1F1EC}', // Togo
+    TN: '\u{1F1F9}\u{1F1F3}', // Tunisia
+    UG: '\u{1F1FA}\u{1F1EC}', // Uganda
+    ZM: '\u{1F1FF}\u{1F1F2}', // Zambia
+    ZW: '\u{1F1FF}\u{1F1FC}'  // Zimbabwe
+  };
+
+  /* ════════════════════════════════════════════════════════════════
+     STATE
+     ════════════════════════════════════════════════════════════════ */
+  var allCountries = [];
+  var currentRegion = 'all';
+  var currentSearch = '';
+  var currentSort = 'country-asc';
+  var comparisonChart = null;
+  var selectedComparison = ['NG', 'KE', 'ZA', 'GH', 'EG'];
+  var selectedMapCountryCode = null;
+
+  /* ════════════════════════════════════════════════════════════════
+     DIRECTION LOGIC
+     Determines if a central bank is hawkish, dovish, or on hold
+     based on its most recent rate change direction.
+     ════════════════════════════════════════════════════════════════ */
+  function getDirection(country) {
+    if (!country.last_rate_change) return 'hold';
+    if (country.last_rate_change.direction === 'up') return 'hawk';
+    if (country.last_rate_change.direction === 'down') return 'dove';
+    return 'hold';
+  }
+
+  /**
+   * Returns an HTML badge span for the direction.
+   * hawk = red badge, dove = green badge, hold = grey badge
+   */
+  function dirBadgeHTML(dir) {
+    var badges = {
+      hawk: '<span class="dir-badge dir-hawk">\u{1F534} Hawk</span>',
+      dove: '<span class="dir-badge dir-dove">\u{1F7E2} Dove</span>',
+      hold: '<span class="dir-badge dir-hold">\u26AB Hold</span>'
+    };
+    return badges[dir] || badges.hold;
+  }
+
+  /* ════════════════════════════════════════════════════════════════
+     FORMATTING HELPERS
+     ════════════════════════════════════════════════════════════════ */
+
+  /**
+   * Format a rate value as HTML.
+   * null/undefined => styled "N/A"
+   */
+  function fmtRate(v) {
+    if (v === null || v === undefined) {
+      return '<span class="rate-na">N/A</span>';
+    }
+    return '<span class="rate-val">' + v.toFixed(2) + '%</span>';
+  }
+
+  /**
+   * Format real rate (policy_rate - inflation) as colored HTML.
+   * Positive = green, Negative = red
+   */
+  function fmtRealRate(c) {
+    if (c.policy_rate === null || c.policy_rate === undefined) {
+      return '<span class="rate-na">N/A</span>';
+    }
+    var rr = c.policy_rate - (c.inflation ? c.inflation.wb_headline || 0 : 0);
+    var color = rr >= 0 ? '#16a34a' : '#dc2626';
+    var sign = rr >= 0 ? '+' : '';
+    return '<span class="rate-val" style="color:' + color + '">' + sign + rr.toFixed(2) + '%</span>';
+  }
+
+  /**
+   * Return numeric real rate, or null if no policy rate.
+   */
+  function realRateNum(c) {
+    if (c.policy_rate === null || c.policy_rate === undefined) return null;
+    return c.policy_rate - (c.inflation ? c.inflation.wb_headline || 0 : 0);
+  }
+
+  /**
+   * Calculate the median of a numeric array.
+   */
+  function median(arr) {
+    if (arr.length === 0) return 0;
+    var sorted = arr.slice().sort(function (a, b) { return a - b; });
+    var mid = Math.floor(sorted.length / 2);
+    if (sorted.length % 2 === 0) {
+      return (sorted[mid - 1] + sorted[mid]) / 2;
+    }
+    return sorted[mid];
+  }
+
+  function formatShortDate(dateValue) {
+    if (!dateValue) return 'No date';
+    var d = new Date(dateValue);
+    return d.toLocaleDateString('en-GB', {
+      day: 'numeric',
+      month: 'short'
+    });
+  }
+
+  function directionLabel(dir) {
+    if (dir === 'hawk') return 'Hawkish';
+    if (dir === 'dove') return 'Dovish';
+    return 'On hold';
+  }
+
+  /* ════════════════════════════════════════════════════════════════
+     SUMMARY STATS
+     Computes and displays aggregate metrics in the stat cards.
+     ════════════════════════════════════════════════════════════════ */
+  function renderStats(data) {
+    // Median policy rate (only countries with a rate)
+    var rates = [];
+    var inflations = [];
+    var hawkCount = 0;
+    var mpcCount = 0;
+    var now = new Date();
+    var sixtyDaysOut = new Date(now.getTime() + 60 * 24 * 60 * 60 * 1000);
+
+    data.forEach(function (c) {
+      if (c.policy_rate !== null && c.policy_rate !== undefined) {
+        rates.push(c.policy_rate);
+      }
+      if (c.inflation && c.inflation.wb_headline !== null && c.inflation.wb_headline !== undefined) {
+        inflations.push(c.inflation.wb_headline);
+      }
+      if (getDirection(c) === 'hawk') {
+        hawkCount++;
+      }
+      if (c.next_mpc) {
+        var mpcDate = new Date(c.next_mpc);
+        if (mpcDate >= now && mpcDate <= sixtyDaysOut) {
+          mpcCount++;
+        }
+      }
+    });
+
+    var medianRate = median(rates);
+    var avgInflation = inflations.length > 0
+      ? inflations.reduce(function (s, v) { return s + v; }, 0) / inflations.length
+      : 0;
+
+    document.getElementById('stat-median-rate').innerHTML =
+      medianRate.toFixed(2) + '<span class="stat-unit">%</span>';
+    document.getElementById('stat-avg-inflation').innerHTML =
+      avgInflation.toFixed(1) + '<span class="stat-unit">%</span>';
+    document.getElementById('stat-hawks').innerHTML =
+      hawkCount + ' <span class="stat-unit">of ' + data.length + '</span>';
+    document.getElementById('stat-mpc-count').textContent = mpcCount;
+  }
+
+  function renderHighlights(data) {
+    var rateLeaders = data
+      .filter(function (c) { return c.policy_rate !== null && c.policy_rate !== undefined; })
+      .sort(function (a, b) { return b.policy_rate - a.policy_rate; });
+
+    var inflationLeaders = data
+      .filter(function (c) { return c.inflation && c.inflation.wb_headline !== null && c.inflation.wb_headline !== undefined; })
+      .sort(function (a, b) { return a.inflation.wb_headline - b.inflation.wb_headline; });
+
+    var realLeaders = data
+      .filter(function (c) { return realRateNum(c) !== null; })
+      .map(function (c) {
+        return {
+          country: c,
+          realRate: realRateNum(c)
+        };
+      })
+      .sort(function (a, b) { return b.realRate - a.realRate; });
+
+    var upcomingMeetings = data
+      .filter(function (c) {
+        return c.next_mpc && new Date(c.next_mpc) >= new Date();
+      })
+      .sort(function (a, b) { return new Date(a.next_mpc) - new Date(b.next_mpc); });
+
+    var highestRate = rateLeaders[0];
+    var lowestInflation = inflationLeaders[0];
+    var strongestReal = realLeaders[0];
+    var nextMeeting = upcomingMeetings[0];
+
+    var cards = [];
+
+    if (highestRate) {
+      cards.push(
+        '<article class="highlight-card">' +
+          '<div class="highlight-kicker">Highest Policy Rate</div>' +
+          '<div class="highlight-value">' + highestRate.policy_rate.toFixed(2) + '%</div>' +
+          '<div class="highlight-name">' + (FLAGS[highestRate.code] || '') + ' ' + highestRate.name + '</div>' +
+          '<div class="highlight-meta"><span class="highlight-chip">' + directionLabel(getDirection(highestRate)) + '</span> ' + highestRate.central_bank + '</div>' +
+        '</article>'
+      );
+    }
+
+    if (strongestReal) {
+      cards.push(
+        '<article class="highlight-card is-positive">' +
+          '<div class="highlight-kicker">Best Real Rate</div>' +
+          '<div class="highlight-value">+' + strongestReal.realRate.toFixed(2) + '%</div>' +
+          '<div class="highlight-name">' + (FLAGS[strongestReal.country.code] || '') + ' ' + strongestReal.country.name + '</div>' +
+          '<div class="highlight-meta">Policy ' + strongestReal.country.policy_rate.toFixed(2) + '% vs inflation ' + strongestReal.country.inflation.wb_headline.toFixed(2) + '%</div>' +
+        '</article>'
+      );
+    }
+
+    if (lowestInflation) {
+      cards.push(
+        '<article class="highlight-card">' +
+          '<div class="highlight-kicker">Lowest Inflation</div>' +
+          '<div class="highlight-value">' + lowestInflation.inflation.wb_headline.toFixed(2) + '%</div>' +
+          '<div class="highlight-name">' + (FLAGS[lowestInflation.code] || '') + ' ' + lowestInflation.name + '</div>' +
+          '<div class="highlight-meta">' + lowestInflation.central_bank + ' · Inflation release ' + (lowestInflation.inflation.date || 'latest') + '</div>' +
+        '</article>'
+      );
+    }
+
+    if (nextMeeting) {
+      var nextRate = nextMeeting.policy_rate !== null && nextMeeting.policy_rate !== undefined
+        ? nextMeeting.policy_rate.toFixed(2) + '%'
+        : 'N/A';
+
+      cards.push(
+        '<article class="highlight-card">' +
+          '<div class="highlight-kicker">Next MPC Meeting</div>' +
+          '<div class="highlight-value">' + formatShortDate(nextMeeting.next_mpc) + '</div>' +
+          '<div class="highlight-name">' + (FLAGS[nextMeeting.code] || '') + ' ' + nextMeeting.name + '</div>' +
+          '<div class="highlight-meta">' + nextMeeting.central_bank + ' · Current policy rate ' + nextRate + '</div>' +
+        '</article>'
+      );
+    }
+
+    document.getElementById('highlights-grid').innerHTML = cards.join('');
+  }
+
+  /* ════════════════════════════════════════════════════════════════
+     HEADLINE TICKER
+     Builds a scrolling marquee of top African central bank rates.
+     Doubled for seamless infinite loop animation.
+     ════════════════════════════════════════════════════════════════ */
+  function buildTicker(data) {
+    var tickerEntries = [
+      { code: 'NG', label: 'CBN MPR' },
+      { code: 'KE', label: 'CBK' },
+      { code: 'ZA', label: 'SARB' },
+      { code: 'GH', label: 'BoG' },
+      { code: 'EG', label: 'CBE' },
+      { code: 'ET', label: 'NBE' },
+      { code: 'TZ', label: 'BOT' },
+      { code: 'UG', label: 'BOU' },
+      { code: 'MA', label: 'BAM' },
+      { code: 'MZ', label: 'BM' },
+      { code: 'ZW', label: 'RBZ' },
+      { code: 'RW', label: 'BNR' }
+    ];
+
+    var items = [];
+    tickerEntries.forEach(function (t) {
+      var c = data.find(function (d) { return d.code === t.code; });
+      if (!c) return;
+
+      // Direction arrow for ticker
+      var dir = getDirection(c);
+      var dirHTML = '';
+      if (dir === 'hawk') {
+        dirHTML = '<span class="ticker-dir up">&#9650;</span>';
+      } else if (dir === 'dove') {
+        dirHTML = '<span class="ticker-dir down">&#9660;</span>';
+      } else {
+        dirHTML = '<span class="ticker-dir hold">&#9644;</span>';
+      }
+
+      var rateText = c.policy_rate !== null ? c.policy_rate.toFixed(2) + '%' : 'N/A';
+      items.push(
+        '<span class="ticker-item">' +
+          (FLAGS[t.code] || '') + ' ' + t.label + ': ' +
+          '<span class="ticker-rate">' + rateText + '</span> ' +
+          dirHTML +
+        '</span>'
+      );
+    });
+
+    // Double the items for seamless infinite scroll
+    var html = items.join('') + items.join('');
+    document.getElementById('ticker-track').innerHTML = html;
+  }
+
+  /* ════════════════════════════════════════════════════════════════
+     RATE TABLE — Filtering, Sorting, and Rendering
+     ════════════════════════════════════════════════════════════════ */
+
+  /**
+   * Returns a filtered and sorted copy of allCountries
+   * based on current region, search query, and sort setting.
+   */
+  function getFiltered() {
+    var list = allCountries.slice();
+
+    // Region filter
+    if (currentRegion !== 'all') {
+      list = list.filter(function (c) { return c.region === currentRegion; });
+    }
+
+    // Search filter — matches country name, central bank name, or code
+    if (currentSearch) {
+      var q = currentSearch.toLowerCase();
+      list = list.filter(function (c) {
+        return c.name.toLowerCase().indexOf(q) !== -1 ||
+               c.central_bank.toLowerCase().indexOf(q) !== -1 ||
+               c.code.toLowerCase().indexOf(q) !== -1;
+      });
+    }
+
+    // Parse sort key and direction
+    var parts = currentSort.split('-');
+    var field = parts[0];
+    var dir = parts[1];
+    var asc = dir === 'asc' ? 1 : -1;
+
+    list.sort(function (a, b) {
+      var va, vb;
+      switch (field) {
+        case 'country':
+          va = a.name;
+          vb = b.name;
+          return va.localeCompare(vb) * asc;
+
+        case 'rate':
+          va = a.policy_rate != null ? a.policy_rate : -999;
+          vb = b.policy_rate != null ? b.policy_rate : -999;
+          return (va - vb) * asc;
+
+        case 'inflation':
+          va = (a.inflation && a.inflation.wb_headline != null) ? a.inflation.wb_headline : -999;
+          vb = (b.inflation && b.inflation.wb_headline != null) ? b.inflation.wb_headline : -999;
+          return (va - vb) * asc;
+
+        case 'realrate':
+          va = realRateNum(a);
+          vb = realRateNum(b);
+          va = va !== null ? va : -999;
+          vb = vb !== null ? vb : -999;
+          return (va - vb) * asc;
+
+        default:
+          return 0;
+      }
+    });
+
+    return list;
+  }
+
+  /**
+   * Renders the rate table rows from filtered data.
+   */
+  function renderTable() {
+    var list = getFiltered();
+    var tbody = document.getElementById('rate-table-body');
+    var rows = [];
+
+    list.forEach(function (c) {
+      var dir = getDirection(c);
+      var inflVal = c.inflation ? c.inflation.wb_headline : null;
+
+      rows.push(
+        '<tr data-code="' + c.code + '">' +
+          '<td>' +
+            '<div class="country-cell">' +
+              '<span class="country-flag">' + (FLAGS[c.code] || '') + '</span>' +
+              '<span class="country-code">' + c.code + '</span>' +
+              '<span class="country-name">' + c.name + '</span>' +
+            '</div>' +
+          '</td>' +
+          '<td class="bank-cell">' + c.central_bank + '</td>' +
+          '<td class="metric-cell">' + fmtRate(c.policy_rate) + '</td>' +
+          '<td class="metric-cell">' + fmtRate(inflVal) + '</td>' +
+          '<td class="metric-cell">' + fmtRealRate(c) + '</td>' +
+          '<td class="direction-cell">' + dirBadgeHTML(dir) + '</td>' +
+        '</tr>'
+      );
+    });
+
+    tbody.innerHTML = rows.join('');
+    document.getElementById('table-count').textContent =
+      'Showing ' + list.length + ' of ' + allCountries.length + ' countries';
+  }
+
+  function setAllRegionFiltersActive() {
+    document.querySelectorAll('.filter-btn').forEach(function (btn) {
+      btn.classList.toggle('active', btn.getAttribute('data-region') === 'all');
+    });
+  }
+
+  function focusCountryRow(code) {
+    currentRegion = 'all';
+    currentSearch = '';
+    document.getElementById('table-search').value = '';
+    setAllRegionFiltersActive();
+    renderTable();
+
+    var targetRow = document.querySelector('#rate-table-body tr[data-code="' + code + '"]');
+    if (!targetRow) return;
+
+    targetRow.classList.add('row-focus');
+    targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(function () {
+      targetRow.classList.remove('row-focus');
+    }, 1800);
+  }
+
+  function renderMapSelection() {
+    var container = document.getElementById('map-selection');
+    if (!container) return;
+
+    if (!selectedMapCountryCode) {
+      container.innerHTML =
+        '<div class="map-selection-card is-empty">' +
+          '<div>' +
+            '<div class="map-selection-kicker">Map Interaction</div>' +
+            '<div class="map-selection-title">Click any country to pin it</div>' +
+            '<p class="map-selection-copy">We’ll show its inflation context, real rate, and quick actions for the table and comparison panel.</p>' +
+          '</div>' +
+        '</div>';
+      return;
+    }
+
+    var country = allCountries.find(function (item) { return item.code === selectedMapCountryCode; });
+    if (!country) return;
+
+    var inflationValue = country.inflation && country.inflation.wb_headline !== null && country.inflation.wb_headline !== undefined
+      ? country.inflation.wb_headline.toFixed(2) + '%'
+      : 'N/A';
+    var policyValue = country.policy_rate !== null && country.policy_rate !== undefined
+      ? country.policy_rate.toFixed(2) + '%'
+      : 'N/A';
+    var realValue = realRateNum(country);
+    var nextMeeting = country.next_mpc
+      ? new Date(country.next_mpc).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+      : 'Not listed';
+    var inComparison = selectedComparison.indexOf(country.code) !== -1;
+    var compareDisabled = !inComparison && selectedComparison.length >= 5;
+    var compareLocked = inComparison || compareDisabled;
+    var compareLabel = inComparison ? 'Already in comparison' : (compareDisabled ? 'Comparison full' : 'Add to comparison');
+
+    container.innerHTML =
+      '<div class="map-selection-card">' +
+        '<div class="map-selection-grid">' +
+          '<div>' +
+            '<div class="map-selection-kicker">Selected Country</div>' +
+            '<div class="map-selection-title">' + (FLAGS[country.code] || '') + ' ' + country.name + '</div>' +
+            '<p class="map-selection-copy">' + country.central_bank + ' · ' + directionLabel(getDirection(country)) + ' stance. Click actions below to jump to the rate table or send this market into the comparison module.</p>' +
+            '<div class="map-selection-actions">' +
+              '<button class="map-action-btn primary" type="button" id="map-view-country">View in table</button>' +
+              '<button class="map-action-btn" type="button" id="map-compare-country"' + (compareLocked ? ' disabled' : '') + '>' + compareLabel + '</button>' +
+              '<button class="map-action-btn" type="button" id="map-clear-country">Clear</button>' +
+            '</div>' +
+          '</div>' +
+          '<div class="map-selection-stats">' +
+            '<div class="map-stat">' +
+              '<div class="map-stat-label">Inflation</div>' +
+              '<div class="map-stat-value">' + inflationValue + '</div>' +
+            '</div>' +
+            '<div class="map-stat">' +
+              '<div class="map-stat-label">Policy Rate</div>' +
+              '<div class="map-stat-value">' + policyValue + '</div>' +
+            '</div>' +
+            '<div class="map-stat">' +
+              '<div class="map-stat-label">Real Rate</div>' +
+              '<div class="map-stat-value' + (realValue !== null ? (realValue >= 0 ? ' pos' : ' neg') : '') + '">' + (realValue !== null ? (realValue >= 0 ? '+' : '') + realValue.toFixed(2) + '%' : 'N/A') + '</div>' +
+            '</div>' +
+            '<div class="map-stat">' +
+              '<div class="map-stat-label">Next MPC</div>' +
+              '<div class="map-stat-value">' + nextMeeting + '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+
+    document.getElementById('map-view-country').addEventListener('click', function () {
+      document.getElementById('rate-table-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setTimeout(function () { focusCountryRow(country.code); }, 250);
+    });
+
+    document.getElementById('map-compare-country').addEventListener('click', function () {
+      if (compareLocked) return;
+      selectedComparison.push(country.code);
+      buildComparisonChips();
+      renderComparisonChart();
+      renderMapSelection();
+      document.getElementById('comparison-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    document.getElementById('map-clear-country').addEventListener('click', function () {
+      selectedMapCountryCode = null;
+      var mapEl = document.getElementById('inflation-map');
+      if (mapEl && typeof mapEl.highlightCountry === 'function') {
+        mapEl.highlightCountry('__none__');
+      }
+      renderMapSelection();
+    });
+  }
+
+  function resetFilters() {
+    currentRegion = 'all';
+    currentSearch = '';
+    currentSort = 'country-asc';
+
+    document.getElementById('table-search').value = '';
+    document.getElementById('sort-select').value = currentSort;
+
+    setAllRegionFiltersActive();
+
+    document.querySelectorAll('.rate-table th').forEach(function (h) {
+      h.classList.remove('sorted');
+    });
+
+    renderTable();
+  }
+
+  function exportFilteredCSV() {
+    var rows = getFiltered();
+    var headers = [
+      'Code',
+      'Country',
+      'Central Bank',
+      'Policy Rate',
+      'Inflation',
+      'Real Rate',
+      'Direction',
+      'Region',
+      'Next MPC'
+    ];
+
+    function escapeCSV(value) {
+      if (value === null || value === undefined) return '';
+      var text = String(value);
+      if (/[",\n]/.test(text)) {
+        return '"' + text.replace(/"/g, '""') + '"';
+      }
+      return text;
+    }
+
+    var csvRows = [headers.join(',')];
+
+    rows.forEach(function (c) {
+      csvRows.push([
+        c.code,
+        c.name,
+        c.central_bank,
+        c.policy_rate !== null && c.policy_rate !== undefined ? c.policy_rate.toFixed(2) : '',
+        c.inflation && c.inflation.wb_headline !== null && c.inflation.wb_headline !== undefined ? c.inflation.wb_headline.toFixed(2) : '',
+        realRateNum(c) !== null ? realRateNum(c).toFixed(2) : '',
+        directionLabel(getDirection(c)),
+        c.region || '',
+        c.next_mpc || ''
+      ].map(escapeCSV).join(','));
+    });
+
+    var blob = new Blob([csvRows.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement('a');
+    link.href = url;
+    link.download = 'afrorates-' + new Date().toISOString().slice(0, 10) + '.csv';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+
+  /* ── Filter Button Events ── */
+  document.querySelectorAll('.filter-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      // Remove active from all buttons
+      document.querySelectorAll('.filter-btn').forEach(function (b) {
+        b.classList.remove('active');
+      });
+      // Set active on clicked button
+      btn.classList.add('active');
+      currentRegion = btn.getAttribute('data-region');
+      renderTable();
+    });
+  });
+
+  /* ── Search Input Event ── */
+  document.getElementById('table-search').addEventListener('input', function (e) {
+    currentSearch = e.target.value;
+    renderTable();
+  });
+
+  /* ── Sort Select Event ── */
+  document.getElementById('sort-select').addEventListener('change', function (e) {
+    currentSort = e.target.value;
+    renderTable();
+  });
+
+  document.getElementById('reset-filters').addEventListener('click', resetFilters);
+  document.getElementById('export-csv').addEventListener('click', exportFilteredCSV);
+
+  /* ── Sortable Column Headers ── */
+  document.querySelectorAll('.rate-table th[data-sort]').forEach(function (th) {
+    th.addEventListener('click', function () {
+      var field = th.getAttribute('data-sort');
+      var sortMap = {
+        country: 'country',
+        bank: 'country',
+        rate: 'rate',
+        inflation: 'inflation',
+        realrate: 'realrate',
+        direction: 'rate'
+      };
+      var mapped = sortMap[field] || 'country';
+
+      // Toggle direction if already sorting by this field
+      if (currentSort.indexOf(mapped) === 0) {
+        currentSort = currentSort.indexOf('-asc') !== -1
+          ? mapped + '-desc'
+          : mapped + '-asc';
+      } else {
+        currentSort = mapped + '-desc';
+      }
+
+      // Update the select dropdown to match
+      var sel = document.getElementById('sort-select');
+      if (sel.querySelector('option[value="' + currentSort + '"]')) {
+        sel.value = currentSort;
+      }
+
+      // Highlight sorted column
+      document.querySelectorAll('.rate-table th').forEach(function (h) {
+        h.classList.remove('sorted');
+      });
+      th.classList.add('sorted');
+
+      renderTable();
+    });
+  });
+
+  /* ════════════════════════════════════════════════════════════════
+     INFLATION HEATMAP — Populate <afro-map> with inflation data
+     ════════════════════════════════════════════════════════════════ */
+  function populateMap(data) {
+    var mapEl = document.getElementById('inflation-map');
+
+    // The afro-map web component loads asynchronously.
+    // Retry until its setData method is available.
+    if (!mapEl || typeof mapEl.setData !== 'function') {
+      setTimeout(function () { populateMap(data); }, 500);
+      return;
+    }
+
+    var mapData = data.map(function (c) {
+      var val = c.inflation ? c.inflation.wb_headline : null;
+      return {
+        code: c.code,
+        value: val,
+        label: val != null ? val.toFixed(1) + '%' : 'N/A'
+      };
+    });
+
+    mapEl.setData(mapData);
+
+    if (!mapEl.dataset.mapBound) {
+      mapEl.addEventListener('country-click', function (event) {
+        selectedMapCountryCode = event.detail.code;
+        renderMapSelection();
+      });
+      mapEl.dataset.mapBound = 'true';
+    }
+
+    if (selectedMapCountryCode && typeof mapEl.highlightCountry === 'function') {
+      mapEl.highlightCountry(selectedMapCountryCode);
+    }
+
+    renderMapSelection();
+  }
+
+  /* ════════════════════════════════════════════════════════════════
+     RATE COMPARISON CHART — Bar chart comparing up to 5 countries
+     Uses Chart.js for rendering.
+     ════════════════════════════════════════════════════════════════ */
+  var CHART_COLORS = ['#0062CC', '#5AC8FA', '#34C759', '#FF9500', '#FF3B30', '#AF52DE'];
+
+  /**
+   * Build clickable country chips for the comparison chart.
+   * Active chips have a blue background. Max 5 selections.
+   */
+  function buildComparisonChips() {
+    var wrap = document.getElementById('comparison-chips');
+    var html = [];
+    var atLimit = selectedComparison.length >= 5;
+
+    allCountries.forEach(function (c) {
+      // Skip countries without a policy rate
+      if (c.policy_rate === null || c.policy_rate === undefined) return;
+
+      var isActive = selectedComparison.indexOf(c.code) !== -1;
+      html.push(
+        '<button type="button" class="country-chip' + (isActive ? ' active' : '') + '" ' +
+          (!isActive && atLimit ? 'disabled ' : '') +
+          'data-code="' + c.code + '">' +
+          (FLAGS[c.code] || '') + ' ' + c.name +
+          (isActive ? ' <span class="remove">&times;</span>' : '') +
+        '</button>'
+      );
+    });
+
+    wrap.innerHTML = html.join('');
+
+    // Attach click handlers
+    wrap.querySelectorAll('.country-chip').forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        var code = chip.getAttribute('data-code');
+        var idx = selectedComparison.indexOf(code);
+
+        if (idx !== -1) {
+          // Remove from selection
+          selectedComparison.splice(idx, 1);
+        } else if (selectedComparison.length < 5) {
+          // Add to selection (max 5)
+          selectedComparison.push(code);
+        }
+
+        buildComparisonChips();
+        renderComparisonChart();
+        renderMapSelection();
+      });
+    });
+  }
+
+  /**
+   * Render (or re-render) the comparison bar chart.
+   */
+  function renderComparisonChart() {
+    if (comparisonChart) {
+      comparisonChart.destroy();
+      comparisonChart = null;
+    }
+    var comparisonOverview = document.getElementById('comparison-overview');
+    var comparisonBars = document.getElementById('comparison-bars');
+    var comparisonLimit = document.getElementById('comparison-limit');
+    var selectedData = selectedComparison
+      .map(function (code) {
+        return allCountries.find(function (country) { return country.code === code; });
+      })
+      .filter(Boolean);
+
+    comparisonLimit.textContent = selectedData.length + ' / 5 selected' + (selectedData.length >= 5 ? ' · remove one to add another' : '');
+
+    if (selectedData.length === 0) {
+      comparisonOverview.innerHTML = '<div class="comparison-empty">Choose at least one market above to start comparing policy rate conditions.</div>';
+      comparisonBars.innerHTML = '';
+      return;
+    }
+
+    var sorted = selectedData.slice().sort(function (a, b) { return (b.policy_rate || 0) - (a.policy_rate || 0); });
+    var maxRate = sorted[0] && sorted[0].policy_rate ? sorted[0].policy_rate : 1;
+    var highest = sorted[0];
+    var lowest = sorted[sorted.length - 1];
+    var avgRate = sorted.reduce(function (sum, country) { return sum + (country.policy_rate || 0); }, 0) / sorted.length;
+    var avgReal = sorted.reduce(function (sum, country) { return sum + (realRateNum(country) || 0); }, 0) / sorted.length;
+    var spread = (highest.policy_rate || 0) - (lowest.policy_rate || 0);
+
+    comparisonOverview.innerHTML = [
+      '<article class="comparison-overview-card">' +
+        '<div class="comparison-overview-kicker">Active Set</div>' +
+        '<div class="comparison-overview-value">' + sorted.length + ' markets</div>' +
+        '<div class="comparison-overview-meta">Average policy rate <strong>' + avgRate.toFixed(2) + '%</strong><br>Average real rate <strong>' + (avgReal >= 0 ? '+' : '') + avgReal.toFixed(2) + '%</strong></div>' +
+      '</article>',
+      '<article class="comparison-overview-card">' +
+        '<div class="comparison-overview-kicker">Highest Selected Rate</div>' +
+        '<div class="comparison-overview-value">' + (highest.policy_rate || 0).toFixed(2) + '%</div>' +
+        '<div class="comparison-overview-meta">' + (FLAGS[highest.code] || '') + ' ' + highest.name + '<br>' + highest.central_bank + '</div>' +
+      '</article>',
+      '<article class="comparison-overview-card">' +
+        '<div class="comparison-overview-kicker">Rate Spread</div>' +
+        '<div class="comparison-overview-value">' + spread.toFixed(2) + '%</div>' +
+        '<div class="comparison-overview-meta">' + highest.name + ' versus ' + lowest.name + ' across the current comparison basket.</div>' +
+      '</article>'
+    ].join('');
+
+    comparisonBars.innerHTML = sorted.map(function (country, index) {
+      var rate = country.policy_rate || 0;
+      var real = realRateNum(country);
+      var inflationValue = country.inflation && country.inflation.wb_headline !== null && country.inflation.wb_headline !== undefined
+        ? country.inflation.wb_headline.toFixed(2) + '%'
+        : 'N/A';
+      var nextMeeting = country.next_mpc ? formatShortDate(country.next_mpc) : 'Not listed';
+      var width = Math.max((rate / maxRate) * 100, 10);
+      var fillColor = CHART_COLORS[index % CHART_COLORS.length];
+
+      return (
+        '<article class="comparison-item">' +
+          '<div class="comparison-top">' +
+            '<div>' +
+              '<div class="comparison-country">' + (FLAGS[country.code] || '') + ' ' + country.name + '</div>' +
+              '<div class="comparison-bank">' + country.central_bank + ' · ' + directionLabel(getDirection(country)) + '</div>' +
+            '</div>' +
+            '<div class="comparison-rate">' + rate.toFixed(2) + '%</div>' +
+          '</div>' +
+          '<div class="comparison-track">' +
+            '<div class="comparison-fill" style="width:' + width + '%;background:linear-gradient(90deg,' + fillColor + ' 0%,' + fillColor + 'CC 100%);"></div>' +
+          '</div>' +
+          '<div class="comparison-metrics">' +
+            '<span class="comparison-metric"><strong>Inflation</strong>' + inflationValue + '</span>' +
+            '<span class="comparison-metric"><strong>Real Rate</strong>' + (real !== null ? (real >= 0 ? '+' : '') + real.toFixed(2) + '%' : 'N/A') + '</span>' +
+            '<span class="comparison-metric"><strong>Next MPC</strong>' + nextMeeting + '</span>' +
+          '</div>' +
+        '</article>'
+      );
+    }).join('');
+  }
+
+  /* ════════════════════════════════════════════════════════════════
+     MPC MEETING CALENDAR
+     Renders upcoming MPC meetings as cards sorted by date.
+     ════════════════════════════════════════════════════════════════ */
+  function renderMPC(data) {
+    var now = new Date();
+    var sixtyDaysOut = new Date(now.getTime() + 60 * 24 * 60 * 60 * 1000);
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+    // Filter to countries with upcoming MPC dates within 60 days
+    var upcoming = [];
+    data.forEach(function (c) {
+      if (!c.next_mpc) return;
+      var mpcDate = new Date(c.next_mpc);
+      if (mpcDate >= now && mpcDate <= sixtyDaysOut) {
+        upcoming.push({
+          code: c.code,
+          name: c.name,
+          central_bank: c.central_bank,
+          policy_rate: c.policy_rate,
+          last_rate_change: c.last_rate_change,
+          mpcDate: mpcDate
+        });
+      }
+    });
+
+    // Sort by meeting date (earliest first)
+    upcoming.sort(function (a, b) { return a.mpcDate - b.mpcDate; });
+
+    var html = [];
+
+    if (upcoming.length === 0) {
+      html.push('<div class="mpc-empty">No MPC meetings scheduled in the next 60 days.</div>');
+    }
+
+    upcoming.forEach(function (c) {
+      var d = c.mpcDate;
+      var dir = getDirection(c);
+
+      // Expected outcome badge
+      var expectClass = 'expect-hold';
+      var expectLabel = 'Expected: Hold';
+      if (dir === 'hawk') {
+        expectClass = 'expect-hike';
+        expectLabel = 'Bias: Hold / Hike';
+      } else if (dir === 'dove') {
+        expectClass = 'expect-cut';
+        expectLabel = 'Bias: Hold / Cut';
+      }
+
+      var rateStr = c.policy_rate !== null ? c.policy_rate.toFixed(2) + '%' : 'N/A';
+
+      html.push(
+        '<div class="mpc-card">' +
+          '<div class="mpc-date-block">' +
+            '<div class="mpc-month">' + months[d.getMonth()] + '</div>' +
+            '<div class="mpc-day">' + d.getDate() + '</div>' +
+            '<div class="mpc-year">' + d.getFullYear() + '</div>' +
+          '</div>' +
+          '<div class="mpc-info">' +
+            '<div class="mpc-bank">' +
+              (FLAGS[c.code] || '') + ' ' + c.central_bank +
+            '</div>' +
+            '<div class="mpc-country">' + c.name + '</div>' +
+            '<div class="mpc-rate">Current rate: <strong>' + rateStr + '</strong></div>' +
+            '<div class="mpc-expect ' + expectClass + '">' + expectLabel + '</div>' +
+          '</div>' +
+        '</div>'
+      );
+    });
+
+    document.getElementById('mpc-grid').innerHTML = html.join('');
+  }
+
+  /* ════════════════════════════════════════════════════════════════
+     REAL INTEREST RATE RANKING — Horizontal bar chart
+     Green bars = positive real rate (saver-friendly)
+     Red bars = negative real rate (inflation eroding value)
+     Sorted from most positive to most negative.
+     ════════════════════════════════════════════════════════════════ */
+  function renderRealRateChart(data) {
+    var ranked = data
+      .filter(function (c) { return realRateNum(c) !== null; })
+      .map(function (c) {
+        return {
+          code: c.code,
+          name: c.name,
+          central_bank: c.central_bank,
+          policy_rate: c.policy_rate,
+          inflation: c.inflation ? c.inflation.wb_headline : null,
+          realRate: realRateNum(c)
+        };
+      })
+      .sort(function (a, b) { return b.realRate - a.realRate; });
+
+    ranked.forEach(function (entry, index) {
+      entry.rank = index + 1;
+    });
+
+    var leaders = ranked.slice(0, 8);
+    var laggards = ranked.slice(-8).sort(function (a, b) { return a.realRate - b.realRate; });
+
+    function buildPanel(title, subtitle, entries, isPositive) {
+      var items = entries.map(function (entry) {
+        var sign = entry.realRate >= 0 ? '+' : '';
+        return (
+          '<div class="realrate-item">' +
+            '<div class="realrate-rank">#' + entry.rank + '</div>' +
+            '<div>' +
+              '<div class="realrate-country">' + (FLAGS[entry.code] || '') + ' ' + entry.name + '</div>' +
+              '<div class="realrate-meta">' + entry.central_bank + ' · Policy ' + entry.policy_rate.toFixed(2) + '% · Inflation ' + entry.inflation.toFixed(2) + '%</div>' +
+            '</div>' +
+            '<div class="realrate-score ' + (isPositive ? 'pos' : 'neg') + '">' + sign + entry.realRate.toFixed(2) + '%</div>' +
+          '</div>'
+        );
+      }).join('');
+
+      return (
+        '<div class="realrate-panel">' +
+          '<div class="realrate-panel-header">' +
+            '<div>' +
+              '<div class="realrate-panel-title">' + title + '</div>' +
+              '<div class="realrate-panel-sub">' + subtitle + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="realrate-list">' + items + '</div>' +
+        '</div>'
+      );
+    }
+
+    document.getElementById('realrate-grid').innerHTML =
+      buildPanel(
+        'Top Positive Real Rates',
+        'Markets where policy rates are still running ahead of headline inflation.',
+        leaders,
+        true
+      ) +
+      buildPanel(
+        'Deepest Negative Real Rates',
+        'Markets where inflation is still outpacing the benchmark policy rate.',
+        laggards,
+        false
+      );
+  }
+
+  /* ════════════════════════════════════════════════════════════════
+     TREASURY BILL & BOND YIELD CARDS
+     Top 5 African markets: Nigeria, Kenya, South Africa, Ghana, Egypt
+     ════════════════════════════════════════════════════════════════ */
+  function renderYields(data) {
+    var yieldCountries = ['NG', 'KE', 'ZA', 'GH', 'EG'];
+    var html = [];
+
+    yieldCountries.forEach(function (code) {
+      var c = data.find(function (d) { return d.code === code; });
+      if (!c) return;
+
+      // Define the yield data rows
+      var yieldRows = [
+        { label: '91-Day T-Bill',  val: c.tbill_91d },
+        { label: '182-Day T-Bill', val: c.tbill_182d },
+        { label: '364-Day T-Bill', val: c.tbill_364d },
+        { label: '10-Year Bond',   val: c.bond_10y }
+      ];
+
+      // Build card HTML
+      var cardHTML =
+        '<div class="yield-card">' +
+          '<div class="yield-card-header">' +
+            '<span class="yield-card-flag">' + (FLAGS[code] || '') + '</span>' +
+            '<span class="yield-card-name">' + c.name + '</span>' +
+          '</div>' +
+          '<div class="yield-card-body">';
+
+      yieldRows.forEach(function (r) {
+        var valHTML;
+        if (r.val !== null && r.val !== undefined) {
+          valHTML = '<span class="yield-val">' + r.val.toFixed(2) + '%</span>';
+        } else {
+          valHTML = '<span class="yield-na">&mdash;</span>';
+        }
+
+        cardHTML +=
+          '<div class="yield-row">' +
+            '<span class="yield-label">' + r.label + '</span>' +
+            valHTML +
+          '</div>';
+      });
+
+      cardHTML += '</div></div>';
+      html.push(cardHTML);
+    });
+
+    document.getElementById('yields-grid').innerHTML = html.join('');
+  }
+
+  /* ════════════════════════════════════════════════════════════════
+     FAQ ACCORDION
+     Toggles open/close state on question click.
+     Updates aria-expanded for accessibility.
+     ════════════════════════════════════════════════════════════════ */
+  document.getElementById('faq-list').addEventListener('click', function (e) {
+    var qBtn = e.target.closest('.faq-q');
+    if (!qBtn) return;
+
+    var item = qBtn.closest('.faq-item');
+    var isOpen = item.classList.contains('open');
+
+    // Toggle this item
+    item.classList.toggle('open');
+    qBtn.setAttribute('aria-expanded', !isOpen);
+  });
+
+  /* ════════════════════════════════════════════════════════════════
+     INITIALIZATION — Called when data is fetched or loaded from cache
+     ════════════════════════════════════════════════════════════════ */
+  function setRatesStatus(state, options) {
+    options = options || {};
+    var el = document.getElementById('last-updated');
+    var status = window.AfroTools && window.AfroTools.LiveDataStatus;
+    if (status && el) {
+      status.update(el, {
+        state: state,
+        timestamp: options.timestamp,
+        source: options.source || 'Central bank data feed',
+        message: options.message,
+        retryLabel: options.retryLabel,
+        onRetry: options.onRetry
+      });
+      return;
+    }
+    if (el) {
+      el.textContent = options.message || 'Latest available central bank data';
+    }
+  }
+
+  function fetchRatesJson(url) {
+    return fetch(url, { cache: 'no-cache' }).then(function(res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    });
+  }
+
+  function loadStaticRatesFallback(reason) {
+    return fetchRatesJson('/data/rates/latest.json').then(function(json) {
+      json._statusSource = 'Static central bank snapshot';
+      json._statusFallback = true;
+      json._statusReason = reason || '';
+      onDataReady(json);
+    }).catch(function(err) {
+      console.warn('AfroRates: static fallback unavailable', err);
+      setRatesStatus('error', {
+        source: 'AfroTools rates feed',
+        message: 'Central bank data unavailable. Please retry shortly.',
+        retryLabel: 'Retry',
+        onRetry: fetchRatesData
+      });
+      document.getElementById('table-count').textContent = 'Central bank data unavailable. Please retry shortly.';
+      document.getElementById('highlights-grid').innerHTML =
+        '<article class="highlight-card"><div class="highlight-kicker">Data unavailable</div><div class="highlight-value">Unavailable</div><div class="highlight-name">No latest snapshot could be loaded</div><div class="highlight-meta">Retry the data feed or open the API docs.</div></article>';
+    });
+  }
+
+  function fetchRatesData() {
+    setRatesStatus('loading', {
+      source: 'AfroTools rates API',
+      message: 'Checking latest available central bank data'
+    });
+    if (location.hostname === '127.0.0.1' || location.hostname === 'localhost') {
+      return loadStaticRatesFallback('local static smoke uses the bundled rates snapshot');
+    }
+    return fetchRatesJson('/api/rates').then(function(json) {
+      if (!json || !Array.isArray(json.countries) || json.countries.length < 30) {
+        var count = json && json.countries ? json.countries.length : 0;
+        throw new Error('Rates API returned partial coverage (' + count + ' markets)');
+      }
+      json._statusSource = 'AfroTools rates API';
+      json._statusFallback = false;
+      onDataReady(json);
+    }).catch(function(err) {
+      console.warn('AfroRates: live API unavailable or partial, using static snapshot', err);
+      return loadStaticRatesFallback(err.message);
+    });
+  }
+
+  function onDataReady(json) {
+    var data = json.countries || json;
+    allCountries = data;
+
+    // Update "Last updated" timestamp
+    if (json.timestamp) {
+      var d = new Date(json.timestamp);
+      var ageDays = Math.floor((Date.now() - d.getTime()) / 86400000);
+      var label = 'Last snapshot: ' + d.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      });
+      if (ageDays > 14) {
+        label += ' · ' + ageDays + ' days old';
+      }
+      if (json._verification && json._verification.verified_count) {
+        label += ' · ' + json._verification.verified_count + ' official records verified';
+      }
+      if (json._verification && json._verification.manual_official_count) {
+        label += ' · ' + json._verification.manual_official_count + ' manual official override';
+        if (json._verification.manual_official_count > 1) {
+          label += 's';
+        }
+      }
+      document.getElementById('last-updated').textContent = label;
+    }
+    var status = window.AfroTools && window.AfroTools.LiveDataStatus;
+    var timestamp = json.timestamp || null;
+    var state = json._statusFallback
+      ? (status && status.stateForTimestamp(timestamp, { liveMinutes: 24 * 60, staleMinutes: 45 * 24 * 60 }) === 'stale' ? 'stale' : 'cached')
+      : (status ? status.stateForTimestamp(timestamp, { liveMinutes: 24 * 60, staleMinutes: 45 * 24 * 60 }) : 'live');
+    var statusMessage = json._statusFallback ? 'Showing latest available reference snapshot' : 'Latest central bank feed loaded';
+    if (json._statusReason) {
+      statusMessage += ' after live API returned partial coverage';
+    }
+    if (json._verification && json._verification.verified_count) {
+      statusMessage += ' - ' + json._verification.verified_count + ' official records verified';
+    }
+    setRatesStatus(state, {
+      timestamp: timestamp,
+      source: json._statusSource || json.source || 'Central bank data feed',
+      message: statusMessage
+    });
+
+    // Render all sections
+    renderStats(data);
+    renderHighlights(data);
+    buildTicker(data);
+    renderTable();
+    populateMap(data);
+    buildComparisonChips();
+    renderComparisonChart();
+    renderMPC(data);
+    renderRealRateChart(data);
+    renderYields(data);
+  }
+
+  /* ════════════════════════════════════════════════════════════════
+     DATA FETCHING — LiveData with 12-hour refresh and caching
+     ════════════════════════════════════════════════════════════════ */
+  var TWELVE_HOURS = 12 * 60 * 60 * 1000;
+  fetchRatesData();
+  setInterval(fetchRatesData, TWELVE_HOURS);
+
+})();
+</script>
+
+<script>
+// Save/Share buttons — manual placement needed
+(function(){
+  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
+  div.innerHTML = '<save-result-button tool-slug="afrorates" tool-name="Afrorates"></save-result-button><share-result-button tool-name="Afrorates" tool-slug="afrorates"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+</body>
+</html>

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medication Dosage Calculator | AfroTools</title>
+<meta name="description" content="Calculate medication dosages by weight. Covers paracetamol, amoxicillin, antimalarials (Coartem), deworming (mebendazole), zinc, cotrimoxazole, erythromycin, and more. Paediatric and adult dosing for African medicines.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Medication Dosage Calculator | AfroTools">
+<meta property="og:description" content="Calculate weight-based medication dosages for adults and children.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/drug-dosage.webp">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/drug-dosage/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+:root{--afro-dark:#0f1419;--accent:#dc2626}
+.tool-hero{background:linear-gradient(135deg,#991b1b 0%,#dc2626 50%,#b91c1c 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#fecaca}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#fecaca;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-em{background:rgba(254,202,202,.2);color:#fecaca;border:1px solid rgba(254,202,202,.4)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
+input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(220,38,38,.15)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px}
+.btn-primary{background:linear-gradient(135deg,#b91c1c,#dc2626);color:#fff}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
+.result-box .num{font-size:1.3rem;font-weight:800;color:#dc2626}
+.result-box .lbl{font-size:.68rem;color:#64748b;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
+.result-box.highlight{background:linear-gradient(135deg,#fef2f2,#fee2e2);border-color:#fecaca;grid-column:1/-1}
+.result-box.highlight .num{font-size:1.8rem}
+.warning{background:#fef3c7;border:1px solid #fde68a;border-radius:8px;padding:14px;margin-top:14px;font-size:.78rem;color:#92400e;line-height:1.6}
+.warning strong{color:#78350f}
+.disclaimer{background:#fef2f2;border:2px solid #fecaca;border-radius:8px;padding:16px;margin-top:18px;font-size:.78rem;color:#991b1b;line-height:1.6}
+.sidebar .info-card{background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#991b1b;margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:#991b1b;line-height:1.6}
+.info-card ul{padding-left:16px;margin:6px 0}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
+</style>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Medication Dosage Calculator | AfroTools">
+<meta name="twitter:description" content="Calculate weight-based medication dosages for adults and children.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/drug-dosage.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Medication Dosage Calculator",
+      "item": "https://afrotools.com/tools/drug-dosage/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="stylesheet" href="/assets/css/health-enhancements.css?v=e7e3e3a6">
+<meta name="tool-id" content="drug-dosage">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Medication Dosage Calculator",
+  "description": "Calculate medication dosages by weight. Covers paracetamol, amoxicillin, antimalarials (Coartem), deworming (mebendazole), zinc, cotrimoxazole, erythromycin, and more. Paediatric and adult dosing for African medicines.",
+  "url": "https://afrotools.com/tools/drug-dosage/",
+  "inLanguage": "en",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/drug-dosage.webp"
+}
+</script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Can I give adult medication to children?","acceptedAnswer":{"@type":"Answer","text":"It depends on the medication. Some adult formulations (like paracetamol and ibuprofen) can be given to children at weight-appropriate doses, but the tablet strengths are usually too high. Use paediatric formulations (syrups/suspensions) for children. NEVER give aspirin to children under 16 (risk of Reye's syndrome). Some antibiotics also have different paediatric formulations."}},{"@type":"Question","name":"What if I miss a dose?","acceptedAnswer":{"@type":"Answer","text":"Take the missed dose as soon as you remember, unless it's almost time for your next dose. Never take a double dose to make up for a missed one. For antibiotics, try to maintain regular intervals. If you miss multiple doses, contact your healthcare provider for guidance on whether to restart or continue the course."}},{"@type":"Question","name":"How often should children be dewormed in Africa?","acceptedAnswer":{"@type":"Answer","text":"WHO recommends preventive deworming every 6-12 months for school-age children (5-15 years) in areas where intestinal worm prevalence exceeds 20%. Sub-Saharan Africa has some of the highest worm burden globally. Many countries run mass drug administration (MDA) programmes through schools. At home, mebendazole 500mg or albendazole 400mg as a single dose is standard treatment. Children under 2 should NOT be dewormed without a doctor's advice."}},{"@type":"Question","name":"Is cotrimoxazole (Septrin) available over the counter in Africa?","acceptedAnswer":{"@type":"Answer","text":"Yes. Cotrimoxazole (Septrin, Bactrim) is widely available at pharmacies and patent medicine stores across Africa without a prescription. It is heavily used for UTIs, respiratory infections, and childhood diarrhoea. Importantly, it is also used as daily prophylaxis for HIV-positive patients and children exposed to HIV, under national ART guidelines in Kenya, Nigeria, Uganda, Tanzania, and most other African countries."}},{"@type":"Question","name":"Why give zinc WITH oral rehydration salts (ORS)?","acceptedAnswer":{"@type":"Answer","text":"ORS replaces fluids and electrolytes lost during diarrhoea. Zinc supplements, given alongside ORS, have been shown in clinical trials to reduce the duration of diarrhoea by up to 25% and severity by up to 40%. Zinc also helps restore gut lining integrity. WHO and UNICEF strongly recommend the combination for children under 5 in developing countries. Zinc alone does not treat dehydration — both are needed together."}}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/drug-dosage/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/drug-dosage/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/dosage-medicament/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-dozi-ya-dawa/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/drug-dosage/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Drug Dosage</span></div>
+<h1>Medication <em>Dosage Calculator</em></h1>
+<p class="hero-sub">Calculate weight-based medication dosages for common drugs. Covers paediatric and adult dosing for pain relief, antibiotics, antimalarials, and more.</p>
+<div class="hero-badges"><span class="badge b-em">Weight-Based</span><span class="badge b-em">Paediatric</span><span class="badge b-em">Common Drugs</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calculator">
+<div class="disclaimer"><strong>DISCLAIMER:</strong> This calculator is for educational and reference purposes only. It does NOT replace professional medical advice. Always consult a doctor, pharmacist, or qualified healthcare provider before taking any medication. Dosages may vary based on individual health conditions, kidney/liver function, and drug interactions.</div>
+
+<div class="card" style="margin-top:18px">
+<div class="card-head"><span class="card-title">Patient & Medication Details</span></div>
+<div class="card-body">
+<div class="row" style="margin-bottom:14px">
+<div><label for="patientType">Patient Type</label>
+<select id="patientType" onchange="updateDrugs()">
+<option value="adult">Adult (12+ years)</option>
+<option value="child">Child (1-12 years)</option>
+<option value="infant">Infant (3-12 months)</option>
+</select></div>
+<div><label>Body Weight (kg)</label><input aria-label="Weight" type="number" id="weight" value="70" min="3" max="200" step="0.5"></div>
+</div>
+<div style="margin-bottom:14px">
+<label>Medication</label>
+<select id="drug" onchange="updateDrugInfo()" aria-label="Drug">
+<option value="paracetamol">Paracetamol (Acetaminophen)</option>
+<option value="ibuprofen">Ibuprofen</option>
+<option value="amoxicillin">Amoxicillin</option>
+<option value="metronidazole">Metronidazole (Flagyl)</option>
+<option value="artemether">Artemether-Lumefantrine (Coartem)</option>
+<option value="ciprofloxacin">Ciprofloxacin</option>
+<option value="azithromycin">Azithromycin</option>
+<option value="cetirizine">Cetirizine (Allergy)</option>
+<option value="omeprazole">Omeprazole</option>
+<option value="ors">ORS (Oral Rehydration Salts)</option>
+<option value="zinc">Zinc Sulfate (Diarrhoea)</option>
+<option value="mebendazole">Mebendazole / Albendazole (Deworming)</option>
+<option value="cotrimoxazole">Cotrimoxazole (Bactrim / Septrin)</option>
+<option value="erythromycin">Erythromycin</option>
+<option value="chloroquine">Chloroquine (Malaria Prophylaxis)</option>
+</select>
+</div>
+<div id="drugDesc" style="font-size:.78rem;color:#64748b;margin-bottom:14px;line-height:1.6;background:#f8fafc;padding:10px;border-radius:6px"></div>
+<button type="button" class="btn btn-primary" onclick="calculate()">Calculate Dosage</button>
+</div></div>
+
+<div class="card" id="resultCard" style="display:none">
+<div class="card-head"><span class="card-title">Dosage Result</span></div>
+<div class="card-body">
+<div class="result-grid" id="resultGrid"></div>
+<div class="warning" id="warnings"></div>
+</div></div>
+</div>
+
+<div class="sidebar">
+<div class="card">
+<div class="card-head"><span class="card-title">Important Notes</span></div>
+<div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
+<p><strong>Always verify</strong> dosages with the medication packaging or a pharmacist.</p>
+<p style="margin-top:6px"><strong>Maximum doses</strong> should never be exceeded regardless of body weight.</p>
+<p style="margin-top:6px"><strong>Allergies:</strong> Check for known drug allergies before taking any medication.</p>
+<p style="margin-top:6px"><strong>Interactions:</strong> Some drugs interact with each other. Tell your pharmacist about all medications you're taking.</p>
+<p style="margin-top:6px"><strong>Nigeria (NAFDAC):</strong> Only purchase medications with a valid NAFDAC registration number on the packaging. Counterfeit medicines are a serious risk.</p>
+</div></div>
+<div class="info-card">
+<h4>Common African Brands</h4>
+<ul>
+<li><strong>Paracetamol:</strong> Panadol, Emzor, Tylenol</li>
+<li><strong>Ibuprofen:</strong> Brufen, Ibucap</li>
+<li><strong>Amoxicillin:</strong> Amoxil, Augmentin</li>
+<li><strong>Artemether:</strong> Coartem, Lonart, Artefan</li>
+<li><strong>Metronidazole:</strong> Flagyl, Trogyl</li>
+<li><strong>Cotrimoxazole:</strong> Septrin, Bactrim, Sulprin</li>
+<li><strong>Erythromycin:</strong> Eritrocin, Erymax</li>
+<li><strong>Mebendazole:</strong> Vermox, Mebex, Wormin</li>
+<li><strong>Albendazole:</strong> Zentel, Albenza</li>
+</ul>
+</div>
+<div class="info-card" style="margin-top:10px">
+<h4>When to See a Doctor</h4>
+<ul>
+<li>Symptoms persist after 3 days</li>
+<li>High fever (&gt; 39°C / 102°F)</li>
+<li>Difficulty breathing</li>
+<li>Severe pain or swelling</li>
+<li>Allergic reaction (rash, swelling)</li>
+<li>Children under 3 months</li>
+</ul>
+</div>
+</div>
+</div></section>
+
+<section class="seo-section">
+<h2>Understanding Medication Dosages</h2>
+<p>Correct medication dosing is critical for treatment effectiveness and safety. Under-dosing can lead to treatment failure (especially with antibiotics, contributing to antimicrobial resistance), while overdosing can cause serious side effects or toxicity. This is particularly important in Africa where access to healthcare professionals may be limited in rural areas.</p>
+<p>Weight-based dosing (mg per kg of body weight) is the standard approach for most medications, especially in paediatrics. Children are NOT simply "small adults" — their metabolism, organ function, and drug clearance differ significantly from adults. A child's dose should always be calculated based on their actual weight, not estimated or guessed.</p>
+<p>In many African countries, over-the-counter medications are widely available from pharmacies and patent medicine stores. Common drugs like paracetamol, ibuprofen, antimalarials (Coartem/ACTs), and antibiotics are frequently self-administered. While self-medication is sometimes necessary due to healthcare access limitations, knowing the correct dosage is crucial for safety.</p>
+<p>This calculator provides general dosing guidelines based on widely accepted medical references. However, individual factors like kidney function, liver disease, pregnancy, breastfeeding, and drug interactions can significantly alter the appropriate dose. Always consult a qualified healthcare provider when possible, and always complete the full course of antibiotics even if you feel better.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>Can I give adult medication to children?</summary><p>It depends on the medication. Some adult formulations (like paracetamol and ibuprofen) can be given to children at weight-appropriate doses, but the tablet strengths are usually too high. Use paediatric formulations (syrups/suspensions) for children. NEVER give aspirin to children under 16 (risk of Reye's syndrome). Some antibiotics also have different paediatric formulations.</p></details>
+<details class="faq-item"><summary>What if I miss a dose?</summary><p>Take the missed dose as soon as you remember, unless it's almost time for your next dose. Never take a double dose to make up for a missed one. For antibiotics, try to maintain regular intervals. If you miss multiple doses, contact your healthcare provider for guidance on whether to restart or continue the course.</p></details>
+<details class="faq-item"><summary>How often should children be dewormed in Africa?</summary><p>WHO recommends preventive deworming every 6-12 months for school-age children (5-15 years) in areas where intestinal worm prevalence exceeds 20%. Sub-Saharan Africa has some of the highest worm burden globally. Many countries run mass drug administration (MDA) programmes through schools. At home, mebendazole 500mg or albendazole 400mg as a single dose is standard treatment. Children under 2 should NOT be dewormed without a doctor's advice.</p></details>
+<details class="faq-item"><summary>Is cotrimoxazole (Septrin) available over the counter in Africa?</summary><p>Yes. Cotrimoxazole (Septrin, Bactrim) is widely available at pharmacies and patent medicine stores across Africa without a prescription. It is heavily used for UTIs, respiratory infections, and childhood diarrhoea. Importantly, it is also used as daily prophylaxis for HIV-positive patients and children exposed to HIV, under national ART guidelines in Kenya, Nigeria, Uganda, Tanzania, and most other African countries.</p></details>
+<details class="faq-item"><summary>Why give zinc WITH oral rehydration salts (ORS)?</summary><p>ORS replaces fluids and electrolytes lost during diarrhoea. Zinc supplements, given alongside ORS, have been shown in clinical trials to reduce the duration of diarrhoea by up to 25% and severity by up to 40%. Zinc also helps restore gut lining integrity. WHO and UNICEF strongly recommend the combination for children under 5 in developing countries. Zinc alone does not treat dehydration — both are needed together.</p></details>
+</section>
+
+
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+<afro-related-tools category="health" current="drug-dosage" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/medical-report/" data-related-tool data-id="medical-report" data-name="Medical Report Interpreter" data-category="health" data-icon="MR" data-desc="Upload or paste lab results and get plain-English explanations for CBC, lipid, liver, kidney, thyroid, and diabetes mark">Medical Report Interpreter</a></li><li><a href="/tools/genotype-checker/" data-related-tool data-id="genotype-checker" data-name="Genotype Compatibility Checker" data-category="health" data-icon="GC" data-desc="Full pre-marriage genotype and blood group compatibility check. Sickle cell Punnett square, Rh factor incompatibility, b">Genotype Compatibility Checker</a></li><li><a href="/tools/childbirth-cost/" data-related-tool data-id="childbirth-cost" data-name="Childbirth Cost Calculator" data-category="health" data-icon="CC" data-desc="Compare delivery costs across public hospitals, private clinics, and premium facilities in Nigeria, Kenya, South Africa,">Childbirth Cost Calculator</a></li><li><a href="/tools/drug-price-compare/" data-related-tool data-id="drug-price-compare" data-name="Drug/Medicine Price Comparator" data-category="health" data-icon="DM" data-desc="Compare brand vs generic medicine prices across African countries. See savings on antimalarials, antibiotics, diabetes, ">Drug/Medicine Price Comparator</a></li><li><a href="/tools/blood-group/" data-related-tool data-id="blood-group" data-name="Blood Group Compatibility Checker" data-category="health" data-icon="BG" data-desc="Check blood transfusion compatibility (donor/recipient) and pregnancy Rh incompatibility. Includes African blood group f">Blood Group Compatibility Checker</a></li><li><a href="/tools/african-meal-plan/" data-related-tool data-id="african-meal-plan" data-name="African Meal Plan Generator" data-category="health" data-icon="AM" data-desc="Generate a personalized 7-day meal plan using African foods. Choose region (West/East/Southern/North Africa), health goa">African Meal Plan Generator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<!-- HEALTH-DEEP-IMPROVEMENT:START -->
+<section class="health-deep" aria-labelledby="health-deep-title">
+<span class="health-deep-kicker">Deep Review - 27 April 2026</span>
+<h2 id="health-deep-title">Use Medication Dosage Calculator in a safer care workflow</h2>
+<p class="health-deep-lead">Dosage tools are high-risk, so the added layer pushes verification, age/weight checks, formulation awareness, and professional confirmation before use.</p>
+<div class="health-deep-grid">
+<div class="health-deep-block"><h3>Use It To Decide</h3><ul><li>Whether prevention or follow-up steps are missing</li><li>Which dates, doses, symptoms, or exposure details should be documented</li><li>When the situation should move from self-checking to urgent care</li></ul></div>
+<div class="health-deep-block"><h3>Better Workflow</h3><ul><li>Use the tool as a checklist or tracker, not a treatment order</li><li>Confirm medication, test, vaccine, and outbreak guidance locally</li><li>Save the result for a clinician or community health worker</li></ul></div>
+<div class="health-deep-block warning"><h3>Do Not Ignore</h3><ul><li>Infants, pregnancy, liver or kidney disease, allergies, or multiple medicines</li><li>Dose units that do not match the bottle, tablet, or suspension strength</li><li>Any overdose, poisoning concern, or severe reaction</li></ul></div>
+</div>
+<div class="health-source-row">
+<div><span>Official Context</span><div class="health-source-links"><a href="https://www.who.int/news-room/fact-sheets/detail/malaria">WHO malaria</a><a href="https://www.who.int/news-room/fact-sheets/detail/drinking-water">WHO drinking water</a><a href="https://www.who.int/news-room/fact-sheets/detail/hiv-aids">WHO HIV</a><a href="https://www.who.int/news-room/fact-sheets/detail/tuberculosis">WHO tuberculosis</a><a href="https://www.who.int/news-room/fact-sheets/detail/cholera">WHO cholera</a><a href="https://www.who.int/news-room/fact-sheets/detail/ebola-virus-disease">WHO Ebola disease</a><a href="https://www.who.int/news-room/fact-sheets/detail/hepatitis-b">WHO hepatitis B</a></div></div>
+<div><span>Related AfroTools</span><div class="health-source-links internal"><a href="/tools/drug-dosage/">Medication Dosage Calculator</a><a href="/tools/malaria-risk/">Malaria Risk by Region</a><a href="/tools/water-quality/">Water Safety Checker</a><a href="/tools/tb-tracker/">Tuberculosis Treatment Tracker</a></div></div>
+</div>
+</section>
+<!-- HEALTH-DEEP-IMPROVEMENT:END -->
+<!-- HEALTH-COMPLETE-PACKAGE:START -->
+<section class="health-action-kit" data-health-tool-id="drug-dosage" data-health-tool-name="Medication Dosage Calculator" data-health-href="/tools/drug-dosage/" data-health-bucket="clinical" data-health-journey="clinical" data-health-source-name="WHO essential medicines" data-health-source-url="https://www.who.int/groups/expert-committee-on-selection-and-use-of-essential-medicines/essential-medicines-lists" data-health-competitor="Medscape and Epocrates" data-health-feature="Medication tools need age, weight, formulation, interaction, and professional-check gates." aria-labelledby="health-action-title-drug-dosage">
+<span class="health-action-kicker">Complete package upgrade</span>
+<h2 id="health-action-title-drug-dosage">Medication Dosage Calculator: save, export, and continue the workflow</h2>
+<p>This app now has its own benchmarked improvement layer, dashboard handoff, email-gated PDF plan, and a route into the Clinical safety checklist workflow.</p>
+<div class="health-action-grid">
+<div class="health-action-card">
+<h3>Competitor feature checked</h3>
+<p><strong>Medscape and Epocrates</strong>: Medication tools need age, weight, formulation, interaction, and professional-check gates.</p>
+<p><strong>Implemented here:</strong> Added stricter workflow copy, save/PDF actions, and a medication-verification benchmark block.</p>
+<p><a href="https://www.who.int/groups/expert-committee-on-selection-and-use-of-essential-medicines/essential-medicines-lists" rel="noopener" target="_blank">WHO essential medicines</a></p>
+</div>
+<div class="health-action-card">
+<h3>Dashboard and PDF actions</h3>
+<ul>
+<li>Save this health plan to the dashboard workspace on this device.</li>
+<li>Unlock a PDF version through the Health email gate for follow-up and visit prep.</li>
+<li>Signed-in sessions attempt account workspace sync when the shared workspace API is available.</li>
+</ul>
+<div class="health-action-buttons">
+<button type="button" class="health-workflow-btn" data-health-action="save" data-health-tool-id="drug-dosage">Save to dashboard</button>
+<button type="button" class="health-workflow-btn secondary" data-health-action="pdf" data-health-tool-id="drug-dosage">Get PDF plan</button>
+</div>
+</div>
+</div>
+<div class="health-action-card" style="margin-top:1rem">
+<h3>Continue in Clinical safety checklist</h3>
+<div class="health-action-links">
+<a href="/tools/malaria-risk/">Open workflow hub</a>
+<a href="/tools/malaria-risk/">Malaria Risk by Region</a><a href="/tools/water-quality/">Water Safety Checker</a><a href="/tools/hiv-treatment-cost/">HIV/AIDS Treatment Cost Calculator</a><a href="/tools/tb-tracker/">Tuberculosis Treatment Tracker</a>
+</div>
+</div>
+</section>
+<!-- HEALTH-COMPLETE-PACKAGE:END -->
+<afro-footer></afro-footer>
+
+<script>
+const DRUGS = {
+  paracetamol: {
+    name: 'Paracetamol (Acetaminophen)',
+    desc: 'Pain relief and fever reduction. Available as tablets (500mg, 1000mg), syrup (120mg/5ml, 250mg/5ml).',
+    adult: { dose: 15, unit: 'mg', freq: 'every 4-6 hours', maxDaily: 4000, maxSingle: 1000 },
+    child: { dose: 15, unit: 'mg', freq: 'every 4-6 hours', maxDaily: 60, maxSingle: 15, perKg: true },
+    infant: { dose: 10, unit: 'mg', freq: 'every 4-6 hours', maxDaily: 40, maxSingle: 10, perKg: true },
+    warnings: 'Do not exceed 4g (4000mg) per day for adults. Risk of liver damage with overdose. Avoid alcohol.'
+  },
+  ibuprofen: {
+    name: 'Ibuprofen',
+    desc: 'Anti-inflammatory pain relief. Available as tablets (200mg, 400mg), syrup (100mg/5ml).',
+    adult: { dose: 5, unit: 'mg', freq: 'every 6-8 hours', maxDaily: 1200, maxSingle: 400 },
+    child: { dose: 10, unit: 'mg', freq: 'every 6-8 hours', maxDaily: 40, maxSingle: 10, perKg: true },
+    infant: { dose: 5, unit: 'mg', freq: 'every 6-8 hours', maxDaily: 30, maxSingle: 10, perKg: true },
+    warnings: 'Take with food. Not recommended for patients with stomach ulcers, kidney disease, or asthma triggered by NSAIDs. Avoid in third trimester of pregnancy.'
+  },
+  amoxicillin: {
+    name: 'Amoxicillin',
+    desc: 'Broad-spectrum antibiotic. Available as capsules (250mg, 500mg), syrup (125mg/5ml, 250mg/5ml).',
+    adult: { dose: 7.5, unit: 'mg', freq: 'every 8 hours', maxDaily: 3000, maxSingle: 1000 },
+    child: { dose: 25, unit: 'mg', freq: 'every 8 hours', maxDaily: 100, maxSingle: 30, perKg: true },
+    infant: { dose: 25, unit: 'mg', freq: 'every 8 hours', maxDaily: 100, maxSingle: 30, perKg: true },
+    warnings: 'Complete the full course (usually 5-7 days). Check for penicillin allergy. May cause diarrhoea.'
+  },
+  metronidazole: {
+    name: 'Metronidazole (Flagyl)',
+    desc: 'Antibiotic/antiprotozoal. Used for infections, diarrhoea, dental infections. Tablets (200mg, 400mg).',
+    adult: { dose: 5, unit: 'mg', freq: 'every 8 hours', maxDaily: 2000, maxSingle: 800 },
+    child: { dose: 7.5, unit: 'mg', freq: 'every 8 hours', maxDaily: 30, maxSingle: 10, perKg: true },
+    infant: { dose: 7.5, unit: 'mg', freq: 'every 8 hours', maxDaily: 30, maxSingle: 10, perKg: true },
+    warnings: 'DO NOT drink alcohol during treatment and for 48 hours after. May cause metallic taste. Complete full course.'
+  },
+  artemether: {
+    name: 'Artemether-Lumefantrine (Coartem)',
+    desc: 'First-line antimalarial (ACT). Tablets contain 20mg artemether + 120mg lumefantrine.',
+    adult: { dose: 0, unit: 'tablets', freq: 'at 0, 8, 24, 36, 48, 60 hours (6 doses)', maxDaily: 0, maxSingle: 4, fixed: true, fixedDose: '4 tablets per dose x 6 doses = 24 tablets total' },
+    child: { dose: 0, unit: 'tablets', freq: 'at 0, 8, 24, 36, 48, 60 hours', maxDaily: 0, maxSingle: 0, perKg: false, weightBased: true },
+    infant: { dose: 0, unit: 'tablets', freq: 'at 0, 8, 24, 36, 48, 60 hours', maxDaily: 0, maxSingle: 0, perKg: false, weightBased: true },
+    warnings: 'Take with food or milk for better absorption. Complete all 6 doses over 3 days. Confirm malaria with test before taking. Not for prevention.'
+  },
+  ciprofloxacin: {
+    name: 'Ciprofloxacin',
+    desc: 'Fluoroquinolone antibiotic. Tablets (250mg, 500mg). For urinary tract, respiratory, GI infections.',
+    adult: { dose: 7, unit: 'mg', freq: 'every 12 hours', maxDaily: 1500, maxSingle: 750 },
+    child: { dose: 10, unit: 'mg', freq: 'every 12 hours', maxDaily: 30, maxSingle: 15, perKg: true },
+    infant: { dose: 0, unit: 'mg', freq: '', maxDaily: 0, maxSingle: 0, perKg: true, contraindicated: true },
+    warnings: 'Not recommended for children under 18 except in severe cases. Avoid dairy and antacids within 2 hours. May cause tendon problems.'
+  },
+  azithromycin: {
+    name: 'Azithromycin',
+    desc: 'Macrolide antibiotic. Tablets (250mg, 500mg). For respiratory, skin, STI infections.',
+    adult: { dose: 0, unit: 'mg', freq: 'once daily for 3 days', maxDaily: 500, maxSingle: 500, fixed: true, fixedDose: '500mg once daily for 3 days (total 1.5g)' },
+    child: { dose: 10, unit: 'mg', freq: 'once daily for 3 days', maxDaily: 10, maxSingle: 10, perKg: true },
+    infant: { dose: 10, unit: 'mg', freq: 'once daily for 3 days', maxDaily: 10, maxSingle: 10, perKg: true },
+    warnings: 'Take on an empty stomach (1 hour before or 2 hours after food). May cause nausea and diarrhoea.'
+  },
+  cetirizine: {
+    name: 'Cetirizine',
+    desc: 'Antihistamine for allergies. Tablets (10mg), syrup (5mg/5ml).',
+    adult: { dose: 0, unit: 'mg', freq: 'once daily', maxDaily: 10, maxSingle: 10, fixed: true, fixedDose: '10mg once daily' },
+    child: { dose: 0, unit: 'mg', freq: 'once daily', maxDaily: 0, maxSingle: 0, perKg: false, ageBased: true },
+    infant: { dose: 0, unit: 'mg', freq: 'once daily', maxDaily: 2.5, maxSingle: 2.5, fixed: true, fixedDose: '2.5mg once daily (for 6-12 months)' },
+    warnings: 'May cause drowsiness. Avoid driving until you know how it affects you. Generally well tolerated.'
+  },
+  omeprazole: {
+    name: 'Omeprazole',
+    desc: 'Proton pump inhibitor for acid reflux, ulcers. Capsules (10mg, 20mg, 40mg).',
+    adult: { dose: 0, unit: 'mg', freq: 'once daily before breakfast', maxDaily: 40, maxSingle: 40, fixed: true, fixedDose: '20mg once daily (40mg for severe cases)' },
+    child: { dose: 1, unit: 'mg', freq: 'once daily', maxDaily: 20, maxSingle: 20, perKg: true },
+    infant: { dose: 0, unit: 'mg', freq: '', maxDaily: 0, maxSingle: 0, perKg: true, contraindicated: true },
+    warnings: 'Take 30 minutes before food. Swallow whole, do not crush. Long-term use may affect calcium absorption.'
+  },
+  ors: {
+    name: 'ORS (Oral Rehydration Salts)',
+    desc: 'For dehydration from diarrhoea/vomiting. WHO formula: 1 sachet in 1 litre clean water.',
+    adult: { dose: 0, unit: 'ml', freq: 'after each loose stool', maxDaily: 0, maxSingle: 0, fixed: true, fixedDose: '200-400ml after each loose stool' },
+    child: { dose: 0, unit: 'ml', freq: 'after each loose stool', maxDaily: 0, maxSingle: 0, perKg: false, ageBased: true },
+    infant: { dose: 0, unit: 'ml', freq: 'after each loose stool', maxDaily: 0, maxSingle: 0, fixed: true, fixedDose: '50-100ml after each loose stool' },
+    warnings: 'Sip slowly and frequently. Continue breastfeeding for infants. Seek medical attention if dehydration is severe, if there is blood in stool, or if symptoms persist beyond 24-48 hours.'
+  },
+  zinc: {
+    name: 'Zinc Sulfate (Diarrhoea)',
+    desc: 'WHO-recommended zinc supplementation for childhood diarrhoea. Dispersible tablets (10mg, 20mg). Reduces duration and severity by up to 40%.',
+    adult: { dose: 0, unit: 'mg', freq: 'once daily for 10 days', maxDaily: 40, maxSingle: 40, fixed: true, fixedDose: '20-40mg once daily for 10 days' },
+    child: { dose: 0, unit: 'mg', freq: 'once daily for 10 days', maxDaily: 0, maxSingle: 0, perKg: false, ageBased: true },
+    infant: { dose: 0, unit: 'mg', freq: 'once daily for 10 days', maxDaily: 10, maxSingle: 10, fixed: true, fixedDose: '10mg once daily for 10 days (infants 6-12 months)' },
+    warnings: 'Always give WITH ORS — zinc alone does not treat dehydration. Dissolve tablet in breast milk or water. WHO recommends zinc for ALL children with acute diarrhoea in developing countries. Can significantly reduce child mortality from diarrhoea.'
+  },
+  mebendazole: {
+    name: 'Mebendazole / Albendazole (Deworming)',
+    desc: 'Antiparasitic for intestinal worms (roundworm, hookworm, tapeworm, whipworm). WHO Essential Medicine. Tablets: mebendazole 100mg/500mg, albendazole 200mg/400mg.',
+    adult: { dose: 0, unit: 'mg', freq: 'single dose', maxDaily: 500, maxSingle: 500, fixed: true, fixedDose: 'Mebendazole 500mg OR Albendazole 400mg — single dose' },
+    child: { dose: 0, unit: 'mg', freq: 'single dose', maxDaily: 500, maxSingle: 500, fixed: true, fixedDose: 'Mebendazole 500mg OR Albendazole 400mg (children ≥ 2 years — same dose as adult)' },
+    infant: { dose: 0, unit: 'mg', freq: '', maxDaily: 0, maxSingle: 0, contraindicated: true },
+    warnings: 'NOT for children under 2 years or during first trimester of pregnancy. For heavy hookworm infections: mebendazole 100mg twice daily × 3 days is more effective. WHO recommends school-age deworming every 6-12 months in endemic areas across Africa.'
+  },
+  cotrimoxazole: {
+    name: 'Cotrimoxazole (Bactrim / Septrin)',
+    desc: 'Sulfonamide antibiotic (trimethoprim + sulfamethoxazole). Tablets (480mg, 960mg DS), syrup (240mg/5ml). Extensively used across Africa for UTIs, chest infections, HIV prophylaxis.',
+    adult: { dose: 0, unit: 'mg', freq: 'twice daily for 5-7 days', maxDaily: 1920, maxSingle: 960, fixed: true, fixedDose: '960mg (1 DS tablet) twice daily for 5-7 days' },
+    child: { dose: 36, unit: 'mg', freq: 'twice daily for 5-7 days', maxDaily: 36, maxSingle: 18, perKg: true },
+    infant: { dose: 36, unit: 'mg', freq: 'twice daily for 5-7 days', maxDaily: 36, maxSingle: 18, perKg: true },
+    warnings: 'Avoid in G6PD deficiency (risk of haemolysis). Avoid in late pregnancy and for newborns under 6 weeks. Drink plenty of water. Used as daily prophylaxis for HIV-positive children under national ART guidelines in sub-Saharan Africa.'
+  },
+  erythromycin: {
+    name: 'Erythromycin',
+    desc: 'Macrolide antibiotic, preferred alternative for penicillin-allergic patients. Tablets (250mg, 500mg), syrup (125mg/5ml, 250mg/5ml). Used for chest, skin, ear, and STI infections.',
+    adult: { dose: 0, unit: 'mg', freq: 'every 6 hours for 5-7 days', maxDaily: 2000, maxSingle: 500, fixed: true, fixedDose: '500mg every 6 hours (250mg for mild infections)' },
+    child: { dose: 30, unit: 'mg', freq: 'divided every 6-8 hours', maxDaily: 50, maxSingle: 12.5, perKg: true },
+    infant: { dose: 30, unit: 'mg', freq: 'divided every 6-8 hours', maxDaily: 50, maxSingle: 12.5, perKg: true },
+    warnings: 'Best absorbed on empty stomach (1 hour before food). May cause nausea and stomach pain — take with a small amount of food if necessary. Key use in Africa: whooping cough (pertussis), chlamydia, and atypical pneumonia.'
+  },
+  chloroquine: {
+    name: 'Chloroquine (Malaria Prophylaxis)',
+    desc: 'For malaria prevention in chloroquine-sensitive areas. Tablets (150mg base, 250mg salt). Resistance is widespread — confirm sensitivity with local health authority before use.',
+    adult: { dose: 0, unit: 'mg base', freq: 'once weekly (start 1 week before travel, continue 4 weeks after)', maxDaily: 300, maxSingle: 300, fixed: true, fixedDose: '300mg base (2 tablets) once weekly for prophylaxis' },
+    child: { dose: 5, unit: 'mg base', freq: 'once weekly', maxDaily: 5, maxSingle: 5, perKg: true },
+    infant: { dose: 5, unit: 'mg base', freq: 'once weekly', maxDaily: 5, maxSingle: 5, perKg: true },
+    warnings: '⚠️ Chloroquine resistance is widespread in most of Africa. NOT recommended for treatment in most sub-Saharan countries — use Coartem (artemether-lumefantrine) for treatment. Prophylaxis only in confirmed sensitive areas (parts of North Africa, Central America). Consult a travel clinic or doctor before use.'
+  }
+};
+
+function updateDrugs() {
+  const pt = document.getElementById('patientType').value;
+  if (pt === 'adult') document.getElementById('weight').value = 70;
+  else if (pt === 'child') document.getElementById('weight').value = 20;
+  else document.getElementById('weight').value = 8;
+  updateDrugInfo();
+}
+
+function updateDrugInfo() {
+  const drug = DRUGS[document.getElementById('drug').value];
+  document.getElementById('drugDesc').innerHTML = `<strong>${drug.name}:</strong> ${drug.desc}`;
+}
+
+function calculate() {
+  const drugKey = document.getElementById('drug').value;
+  const drug = DRUGS[drugKey];
+  const pt = document.getElementById('patientType').value;
+  const weight = +document.getElementById('weight').value;
+  const dosing = drug[pt];
+
+  if (dosing.contraindicated) {
+    document.getElementById('resultGrid').innerHTML = `<div class="result-box highlight" style="background:#fef2f2;border-color:#fca5a5"><div class="num" style="color:#dc2626">CONTRAINDICATED</div><div class="lbl">Not recommended for this age group</div></div>`;
+    document.getElementById('warnings').innerHTML = `<strong>Warning:</strong> ${drug.name} is generally not recommended for ${pt === 'infant' ? 'infants' : 'this age group'}. Consult a doctor for alternatives.`;
+    document.getElementById('resultCard').style.display = 'block';
+    return;
+  }
+
+  let singleDose, dailyMax, html = '';
+
+  if (dosing.fixed) {
+    html += `<div class="result-box highlight"><div class="num">${dosing.fixedDose}</div><div class="lbl">Recommended Dose</div></div>`;
+    html += `<div class="result-box"><div class="num">${dosing.freq}</div><div class="lbl">Frequency</div></div>`;
+    html += `<div class="result-box"><div class="num">${weight} kg</div><div class="lbl">Body Weight</div></div>`;
+  } else if (dosing.perKg) {
+    singleDose = Math.min(dosing.dose * weight, dosing.maxSingle * weight);
+    dailyMax = dosing.maxDaily * weight;
+    if (pt === 'adult') {
+      singleDose = Math.min(dosing.dose * weight, dosing.maxSingle);
+      dailyMax = dosing.maxDaily;
+    }
+
+    html += `<div class="result-box highlight"><div class="num">${Math.round(singleDose)} mg</div><div class="lbl">Single Dose</div></div>`;
+    html += `<div class="result-box"><div class="num">${dosing.freq}</div><div class="lbl">Frequency</div></div>`;
+    html += `<div class="result-box"><div class="num">${Math.round(dailyMax)} mg</div><div class="lbl">Max Daily</div></div>`;
+    html += `<div class="result-box"><div class="num">${weight} kg</div><div class="lbl">Body Weight</div></div>`;
+    html += `<div class="result-box"><div class="num">${dosing.dose} mg/kg</div><div class="lbl">Dose per kg</div></div>`;
+  } else if (dosing.weightBased && drugKey === 'artemether') {
+    // Coartem weight-based dosing
+    let tablets;
+    if (weight < 5) tablets = 'Consult doctor';
+    else if (weight < 15) tablets = '1 tablet';
+    else if (weight < 25) tablets = '2 tablets';
+    else if (weight < 35) tablets = '3 tablets';
+    else tablets = '4 tablets';
+    html += `<div class="result-box highlight"><div class="num">${tablets} per dose</div><div class="lbl">Dose (6 doses over 3 days)</div></div>`;
+    html += `<div class="result-box"><div class="num">${dosing.freq}</div><div class="lbl">Schedule</div></div>`;
+    html += `<div class="result-box"><div class="num">${weight} kg</div><div class="lbl">Body Weight</div></div>`;
+  } else if (dosing.ageBased) {
+    if (drugKey === 'cetirizine') {
+      const dose = weight < 15 ? '2.5mg' : weight < 30 ? '5mg' : '10mg';
+      html += `<div class="result-box highlight"><div class="num">${dose} once daily</div><div class="lbl">Recommended Dose</div></div>`;
+    } else if (drugKey === 'ors') {
+      const dose = weight < 10 ? '50-100ml' : weight < 20 ? '100-200ml' : '200-400ml';
+      html += `<div class="result-box highlight"><div class="num">${dose} per stool</div><div class="lbl">After Each Loose Stool</div></div>`;
+    } else if (drugKey === 'zinc') {
+      const dose = weight < 10 ? '10mg' : '20mg';
+      html += `<div class="result-box highlight"><div class="num">${dose} once daily × 10 days</div><div class="lbl">Zinc Dose (With ORS)</div></div>`;
+    }
+    html += `<div class="result-box"><div class="num">${weight} kg</div><div class="lbl">Body Weight</div></div>`;
+  }
+
+  document.getElementById('resultGrid').innerHTML = html;
+  document.getElementById('warnings').innerHTML = `<strong>Important:</strong> ${drug.warnings}`;
+  document.getElementById('resultCard').style.display = 'block';
+  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
+}
+
+updateDrugInfo();
+</script>
+
+<script>
+(function(){
+  var target = document.getElementById('resultCard');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
+  div.innerHTML = '<save-result-button tool-slug="drug-dosage" tool-name="Drug Dosage"></save-result-button><share-result-button tool-name="Drug Dosage" tool-slug="drug-dosage"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
+<script src="/assets/js/health-workflow.js?v=e8ad8f1d" defer></script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

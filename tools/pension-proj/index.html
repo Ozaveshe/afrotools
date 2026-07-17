@@ -1,0 +1,1974 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pension Projection Calculator for Africa (54 Countries) | AfroTools</title>
+<meta name="description" content="Project your pension pot at retirement across all 54 African countries. Model contributions, employer match, growth and inflation with Monte Carlo scenarios.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Pension Projection Calculator for Africa | AfroTools">
+<meta property="og:description" content="Project your pension fund growth across all 54 African nations. Monte Carlo simulations, real vs nominal values, PFA comparison, AVC optimizer, drawdown calculator.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/pension-proj.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/pension-proj/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Pension Projection Calculator for Africa | AfroTools">
+<meta name="twitter:description" content="Project your pension fund growth across 54 African countries with Monte Carlo simulations.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{--em:#059669;--em-dark:#047857;--em-darker:#064e3b;--em-light:#a7f3d0;--em-bg:#ecfdf5;--dark:#0f1419;--gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-200:#e2e8f0;--gray-300:#cbd5e1;--gray-400:#94a3b8;--gray-500:#64748b;--gray-600:#475569;--gray-700:#334155;--gray-800:#1e293b;--radius:10px;--shadow:0 1px 8px rgba(0,0,0,.05)}
+
+/* Hero */
+.tool-hero{background:linear-gradient(135deg,#064e3b 0%,#059669 50%,#047857 100%);padding:48px 0 40px;position:relative;overflow:hidden}
+.tool-hero::before{content:'';position:absolute;top:-60%;right:-10%;width:500px;height:500px;border-radius:50%;background:rgba(167,243,208,.08)}
+.tool-hero::after{content:'';position:absolute;bottom:-40%;left:-5%;width:400px;height:400px;border-radius:50%;background:rgba(255,255,255,.04)}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.35);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.35);text-decoration:none;transition:color .2s}.breadcrumb a:hover{color:rgba(255,255,255,.7)}
+.breadcrumb span{color:var(--em-light)}
+h1{font-size:clamp(1.6rem,4vw,2.5rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:var(--em-light);font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.5);line-height:1.65;max-width:600px;margin-bottom:16px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.66rem;font-weight:700;letter-spacing:.05em}
+.b-em{background:rgba(167,243,208,.18);color:var(--em-light);border:1px solid rgba(167,243,208,.35)}
+.b-gold{background:rgba(251,191,36,.15);color:#fbbf24;border:1px solid rgba(251,191,36,.35)}
+
+/* Main Layout */
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 360px;gap:22px;align-items:start}
+.tool-main-inner>*{min-width:0}
+
+/* Cards */
+.card{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid var(--gray-100);background:var(--gray-50);display:flex;justify-content:space-between;align-items:center}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dark)}
+.card-body{padding:22px}
+
+/* Form */
+.field{margin-bottom:16px}
+.f-label{font-size:.73rem;font-weight:700;color:var(--dark);margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.f-label .hint{font-weight:400;color:var(--gray-400);font-size:.68rem}
+.f-input,.f-select{width:100%;padding:10px 13px;background:var(--gray-50);border:1.5px solid var(--gray-300);border-radius:7px;font-size:.92rem;font-weight:600;color:var(--dark);outline:none;font-family:'DM Sans',sans-serif;transition:border .2s,box-shadow .2s}
+.f-input:focus,.f-select:focus{border-color:var(--em);box-shadow:0 0 0 3px rgba(5,150,105,.12)}
+.f-input[readonly]{background:var(--gray-100);color:var(--gray-500);cursor:default}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+
+/* Toggle */
+.toggle-group{display:flex;border:1.5px solid var(--gray-200);border-radius:8px;overflow:hidden;margin-bottom:16px}
+.toggle-btn{flex:1;padding:10px 8px;text-align:center;font-size:.75rem;font-weight:700;cursor:pointer;background:var(--gray-50);color:var(--gray-500);border:none;font-family:'DM Sans',sans-serif;transition:all .2s}
+.toggle-btn.active{background:var(--em);color:#fff}
+.toggle-btn:not(:last-child){border-right:1.5px solid var(--gray-200)}
+
+/* Slider */
+.slider-wrap{position:relative;padding-bottom:8px}
+.slider-wrap input[type="range"]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:3px;background:linear-gradient(to right,var(--em) 0%,var(--em) var(--val,50%),var(--gray-200) var(--val,50%));outline:none;cursor:pointer}
+.slider-wrap input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--em);border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.2);cursor:pointer;transition:transform .15s}
+.slider-wrap input[type="range"]::-webkit-slider-thumb:hover{transform:scale(1.15)}
+.slider-wrap input[type="range"]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--em);border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.2);cursor:pointer}
+.slider-val{display:inline-block;background:var(--em);color:#fff;font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:4px;margin-left:8px}
+
+/* Buttons */
+.btn{display:block;width:100%;padding:13px;border:none;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .18s}
+.btn-primary{background:linear-gradient(135deg,var(--em-dark),var(--em));color:#fff}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(5,150,105,.3)}
+.btn-outline{background:transparent;border:1.5px solid var(--gray-300);color:var(--gray-600)}
+.btn-outline:hover{border-color:var(--em);color:var(--em)}
+.btn+.btn{margin-top:10px}
+.btn-row{display:flex;gap:10px;margin-top:16px}
+.btn-row .btn{margin-top:0}
+
+/* Results */
+#resultSection{display:none}
+.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.result-box{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:8px;padding:16px;text-align:center;transition:transform .2s,box-shadow .2s}
+.result-box:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.result-box.highlight{background:var(--em-bg);border-color:var(--em-light)}
+.r-label{font-size:.66rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--gray-500);margin-bottom:4px}
+.r-value{font-size:1.25rem;font-weight:800;color:var(--dark)}
+.r-value.green{color:var(--em)}
+.r-value.gold{color:#d97706}
+.r-sub{font-size:.68rem;color:var(--gray-400);margin-top:2px}
+
+/* Count-up animation */
+.r-value[data-target]{opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s}
+.r-value.visible{opacity:1;transform:translateY(0)}
+
+/* Progress Ring */
+.progress-ring-wrap{display:flex;align-items:center;justify-content:center;gap:18px;margin:20px 0}
+.progress-ring{position:relative;width:120px;height:120px}
+.progress-ring svg{transform:rotate(-90deg)}
+.progress-ring circle{fill:none;stroke-width:8}
+.progress-ring .bg{stroke:var(--gray-200)}
+.progress-ring .fg{stroke:var(--em);stroke-linecap:round;transition:stroke-dashoffset 1.2s ease}
+.progress-ring .center-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.progress-ring .center-text .big{font-size:1.6rem;font-weight:800;color:var(--em);display:block}
+.progress-ring .center-text .small{font-size:.62rem;font-weight:600;color:var(--gray-500);text-transform:uppercase;letter-spacing:.04em}
+.ring-legend{text-align:left}
+.ring-legend div{font-size:.78rem;color:var(--gray-600);margin-bottom:6px}
+.ring-legend .val{font-weight:700;color:var(--dark)}
+
+/* Chart */
+.chart-container{position:relative;width:100%;margin:20px 0}
+.chart-tabs{display:flex;gap:0;margin-bottom:14px;border:1px solid var(--gray-200);border-radius:6px;overflow:hidden}
+.chart-tab{flex:1;padding:8px;text-align:center;font-size:.7rem;font-weight:700;cursor:pointer;background:var(--gray-50);color:var(--gray-500);border:none;font-family:'DM Sans',sans-serif;transition:all .15s}
+.chart-tab.active{background:var(--em);color:#fff}
+.chart-canvas-wrap{position:relative;width:100%;height:280px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:8px;overflow:hidden}
+.chart-canvas-wrap canvas{display:block;width:100%;height:100%}
+.chart-tooltip{position:absolute;display:none;background:var(--dark);color:#fff;padding:8px 12px;border-radius:6px;font-size:.72rem;font-weight:600;pointer-events:none;white-space:nowrap;z-index:10;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.chart-legend{display:flex;justify-content:center;gap:18px;margin-top:10px}
+.chart-legend span{display:flex;align-items:center;gap:5px;font-size:.68rem;font-weight:600;color:var(--gray-500)}
+.chart-legend span::before{content:'';width:10px;height:3px;border-radius:2px;display:block}
+.leg-opt::before{background:#10b981}.leg-mod::before{background:var(--em-dark)}.leg-pes::before{background:#f59e0b}
+.leg-contrib::before{background:var(--em-light)}.leg-returns::before{background:var(--em)}
+.leg-p90::before{background:rgba(5,150,105,.15)}.leg-p50::before{background:var(--em)}.leg-p10::before{background:rgba(245,158,11,.3)}
+
+/* Monte Carlo */
+.mc-bar-wrap{margin:16px 0}
+.mc-bar{height:28px;background:var(--gray-100);border-radius:6px;overflow:hidden;position:relative}
+.mc-bar-fill{height:100%;border-radius:6px;transition:width 1s ease}
+.mc-bar-fill.good{background:linear-gradient(90deg,var(--em),#34d399)}
+.mc-bar-fill.ok{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+.mc-bar-fill.bad{background:linear-gradient(90deg,#ef4444,#f87171)}
+.mc-bar-label{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:.72rem;font-weight:700;color:var(--dark)}
+.mc-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.mc-stat{text-align:center;padding:10px;background:var(--gray-50);border-radius:6px;border:1px solid var(--gray-200)}
+.mc-stat .label{font-size:.62rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--gray-500);margin-bottom:2px}
+.mc-stat .value{font-size:.92rem;font-weight:800;color:var(--dark)}
+
+/* Scenario comparison */
+.scenario-table{width:100%;border-collapse:collapse;font-size:.78rem;margin-top:14px}
+.scenario-table th{background:var(--em-bg);color:var(--em-dark);font-weight:700;padding:10px;text-align:right;font-size:.66rem;text-transform:uppercase;letter-spacing:.06em;border-bottom:2px solid var(--em-light)}
+.scenario-table th:first-child{text-align:left}
+.scenario-table td{padding:9px 10px;border-bottom:1px solid var(--gray-100);text-align:right;color:var(--gray-600)}
+.scenario-table td:first-child{text-align:left;font-weight:600;color:var(--dark)}
+.scenario-table tr.highlight-row{background:var(--em-bg)}
+.scenario-table tr:hover td{background:var(--gray-50)}
+
+/* Year-by-year table */
+.table-wrap{max-height:400px;overflow-y:auto;border:1px solid var(--gray-200);border-radius:8px;margin-top:14px}
+.proj-table{width:100%;border-collapse:collapse;font-size:.75rem}
+.proj-table th{position:sticky;top:0;background:var(--em-bg);color:var(--em-dark);font-weight:700;padding:9px 10px;text-align:right;font-size:.66rem;text-transform:uppercase;letter-spacing:.06em;border-bottom:2px solid var(--em-light);z-index:2}
+.proj-table th:first-child{text-align:left}
+.proj-table td{padding:8px 10px;border-bottom:1px solid var(--gray-100);text-align:right;color:var(--gray-600)}
+.proj-table td:first-child{text-align:left;font-weight:600;color:var(--dark)}
+.proj-table td:last-child{font-weight:700;color:var(--em-dark)}
+.proj-table tr:hover td{background:var(--gray-50)}
+
+/* Lump sum vs annuity */
+.comparison-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.cmp-card{border:1.5px solid var(--gray-200);border-radius:8px;padding:18px;text-align:center;transition:border-color .2s}
+.cmp-card.recommended{border-color:var(--em);background:var(--em-bg)}
+.cmp-card .cmp-title{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--gray-500);margin-bottom:6px}
+.cmp-card .cmp-value{font-size:1.2rem;font-weight:800;color:var(--dark);margin-bottom:4px}
+.cmp-card .cmp-sub{font-size:.72rem;color:var(--gray-500)}
+.cmp-card.recommended .cmp-title{color:var(--em-dark)}
+.cmp-tag{display:inline-block;font-size:.6rem;font-weight:700;padding:2px 8px;border-radius:3px;background:var(--em);color:#fff;margin-bottom:6px}
+
+/* Export */
+.export-row{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.export-btn{padding:8px 16px;border:1.5px solid var(--gray-300);border-radius:6px;font-size:.72rem;font-weight:700;cursor:pointer;background:#fff;color:var(--gray-600);font-family:'DM Sans',sans-serif;transition:all .15s;display:flex;align-items:center;gap:5px}
+.export-btn:hover{border-color:var(--em);color:var(--em)}
+.export-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+
+/* Sidebar */
+.sidebar .info-card{background:var(--em-bg);border:1px solid var(--em-light);border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--em-dark);margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:var(--em-dark);line-height:1.6}
+.info-card ul{padding-left:16px;margin:6px 0 0}
+.rates-table{width:100%;border-collapse:collapse;font-size:.72rem}
+.rates-table th{text-align:left;padding:6px;color:var(--gray-500);font-size:.64rem;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--gray-200)}
+.rates-table th:nth-child(2),.rates-table th:nth-child(3),.rates-table th:nth-child(4){text-align:right}
+.rates-table td{padding:5px 6px;border-bottom:1px solid var(--gray-100);color:var(--gray-600)}
+.rates-table td:nth-child(2),.rates-table td:nth-child(3),.rates-table td:nth-child(4){text-align:right;font-weight:600}
+.rates-table tr:hover td{background:var(--gray-50)}
+.rates-table .active-row td{background:var(--em-bg);color:var(--em-dark);font-weight:700}
+
+/* Informal badge */
+.informal-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:4px;font-size:.65rem;font-weight:700;background:rgba(251,191,36,.15);color:#d97706;border:1px solid rgba(251,191,36,.3);margin-left:8px}
+
+/* SEO */
+.seo-section{max-width:840px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.35rem;font-weight:800;color:var(--dark);margin:36px 0 14px}
+.seo-section h2:first-child{margin-top:0}
+.seo-section p,.seo-section li{font-size:.9rem;color:var(--gray-600);line-height:1.8}
+.seo-section ul{padding-left:20px;margin:8px 0}
+.faq{margin-top:20px}
+.faq details{border:1px solid var(--gray-200);border-radius:8px;margin-bottom:10px;overflow:hidden}
+.faq summary{padding:14px 18px;font-weight:700;font-size:.88rem;cursor:pointer;background:var(--gray-50);color:var(--dark);list-style:none;display:flex;justify-content:space-between;align-items:center}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:'+';font-size:1.1rem;font-weight:700;color:var(--gray-400);transition:transform .2s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details[open] summary{border-bottom:1px solid var(--gray-200)}
+.faq .faq-body{padding:14px 18px;font-size:.85rem;color:var(--gray-600);line-height:1.7}
+
+/* Responsive */
+@media(max-width:900px){.tool-main-inner{grid-template-columns:1fr}.result-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:768px){.result-grid{grid-template-columns:repeat(2,1fr)}.field-row,.field-row-3{grid-template-columns:1fr}.comparison-cards{grid-template-columns:1fr}.mc-stats{grid-template-columns:repeat(3,1fr)}.chart-canvas-wrap{height:220px}.scenario-table{font-size:.7rem}.rates-table{font-size:.66rem}}
+@media(max-width:480px){.tool-main-inner{padding:0 14px}.card-body,.card-head{padding-left:16px;padding-right:16px}.result-grid{grid-template-columns:1fr 1fr}.r-value{font-size:1.05rem}.progress-ring-wrap{flex-direction:column;gap:12px}.mc-stats{grid-template-columns:1fr 1fr 1fr}.export-row{flex-direction:column}.export-btn{width:100%;justify-content:center}.toggle-group,.chart-tabs{flex-wrap:wrap}.toggle-btn,.chart-tab{min-width:120px}.table-wrap,.scenario-table,.proj-table,.rates-table{max-width:100%;overflow-x:auto}}
+
+/* AI Advisor sidebar */
+.ai-advisor-card{background:#fff;border-radius:16px;border:1px solid #DBEAFE;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05);margin-bottom:16px}
+.ai-advisor-head{padding:14px 18px;border-bottom:1px solid #EFF6FF;display:flex;align-items:center;gap:9px}
+.ai-dot{width:8px;height:8px;border-radius:50%;background:#0062CC;animation:aiPulse 2s infinite;flex-shrink:0}
+@keyframes aiPulse{0%,100%{opacity:1}50%{opacity:.3}}
+.ai-title{font-size:.72rem;font-weight:700;letter-spacing:.06em;color:#0f172a}
+.ai-by{font-size:.62rem;color:#6B8CAE;margin-left:auto}
+.ai-advisor-body{padding:14px 18px}
+.ai-status{font-size:.78rem;color:#0f172a;line-height:1.6;margin-bottom:10px}
+.ai-msgs{max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.ai-msg-u{font-size:.76rem;padding:7px 10px;background:#0062CC;color:#fff;border-radius:6px;align-self:flex-end;max-width:90%;word-wrap:break-word}
+.ai-msg-a{font-size:.76rem;padding:7px 10px;background:#EFF6FF;color:#0f172a;border-radius:6px;align-self:flex-start;max-width:90%;line-height:1.55;word-wrap:break-word}
+.ai-thinking{font-size:.72rem;color:#9ca3af;font-style:italic;padding:4px 0}
+.ai-input-row{display:flex;gap:6px}
+.ai-input{flex:1;padding:9px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.8rem;outline:none;background:#fafafa}
+.ai-input:focus{border-color:#0062CC;background:#fff}
+.ai-send{padding:9px 14px;background:#0062CC;color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer}
+.ai-send:disabled{opacity:.5;cursor:not-allowed}
+
+/* ── Real Return Dashboard ── */
+.real-dashboard{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:var(--radius);padding:20px;color:#fff}
+.real-dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
+.real-dash-box{background:rgba(255,255,255,.08);border-radius:8px;padding:14px;text-align:center}
+.real-dash-box.warning{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3)}
+.real-dash-label{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.5);margin-bottom:4px}
+.real-dash-value{font-size:1.1rem;font-weight:800;color:#fff}
+.real-dash-value.red{color:#f87171}
+.real-dash-callout{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:6px;padding:10px 14px;font-size:.76rem;color:#fca5a5;margin-top:12px;line-height:1.6}
+/* ── Start Now vs Later ── */
+.start-now-card{background:linear-gradient(135deg,#7c3aed,#6d28d9);border-radius:8px;padding:20px;color:#fff}
+.start-now-title{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(255,255,255,.5);margin-bottom:12px}
+.sn-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.sn-box{background:rgba(255,255,255,.1);border-radius:8px;padding:12px;text-align:center}
+.sn-label{font-size:.62rem;font-weight:600;color:rgba(255,255,255,.55);margin-bottom:3px}
+.sn-value{font-size:1rem;font-weight:800;color:#fff}
+.sn-cost{font-size:.88rem;font-weight:800;color:#fbbf24;text-align:center;margin:10px 0;padding:10px;background:rgba(251,191,36,.12);border-radius:6px}
+.sn-share-btn{padding:7px 14px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);border-radius:6px;color:#fff;font-family:'DM Sans',sans-serif;font-size:.7rem;font-weight:700;cursor:pointer;margin-top:10px}
+.sn-share-btn:hover{background:rgba(255,255,255,.25)}
+/* ── AVC Optimizer ── */
+.avc-result{background:var(--em-bg);border:1px solid var(--em-light);border-radius:8px;padding:14px;margin-top:14px;display:none}
+.avc-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px}
+.avc-stat{text-align:center}
+.avc-stat .label{font-size:.62rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--gray-500);margin-bottom:2px}
+.avc-stat .value{font-size:.9rem;font-weight:800;color:var(--em-dark)}
+/* ── Drawdown Calculator ── */
+.drawdown-inputs{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:end;margin-bottom:10px}
+.drawdown-result{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:8px;padding:16px;margin-top:14px;display:none}
+.dd-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.dd-box{text-align:center;padding:12px;background:#fff;border:1px solid var(--gray-200);border-radius:6px}
+.dd-label{font-size:.62rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--gray-500);margin-bottom:3px}
+.dd-value{font-size:1rem;font-weight:800;color:var(--dark)}
+.dd-value.green{color:var(--em)}.dd-value.red{color:#ef4444}
+.safe-rate-box{background:var(--em-bg);border:1px solid var(--em-light);border-radius:6px;padding:10px 14px;font-size:.76rem;color:var(--em-dark);line-height:1.6}
+/* ── Death & Disability Benefits ── */
+.death-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:12px 0}
+.db-box{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:8px;padding:14px;text-align:center}
+.db-label{font-size:.62rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--gray-500);margin-bottom:4px}
+.db-value{font-size:1rem;font-weight:800;color:var(--dark)}
+.db-note{font-size:.65rem;color:var(--gray-400);margin-top:2px}
+.db-cta{margin-top:10px;padding:10px 14px;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;font-size:.76rem;color:#92400e;line-height:1.6}
+/* ── PFA Table (Nigeria) ── */
+#pfaSection{display:none}
+.pfa-table{width:100%;border-collapse:collapse;font-size:.73rem;margin-top:12px}
+.pfa-table th{background:#faf5ff;color:#6d28d9;font-weight:700;padding:8px 10px;text-align:right;font-size:.63rem;text-transform:uppercase;letter-spacing:.06em;border-bottom:2px solid #ddd6fe}
+.pfa-table th:first-child{text-align:left}
+.pfa-table td{padding:7px 10px;border-bottom:1px solid var(--gray-100);text-align:right;color:var(--gray-600)}
+.pfa-table td:first-child{text-align:left;font-weight:600;color:var(--dark)}
+.pfa-table tr.pfa-highlight td{background:#faf5ff;font-weight:700;color:#5b21b6}
+.pfa-table tr.pfa-below td{color:#b45309}
+.pfa-alert{border-radius:6px;padding:10px 14px;font-size:.74rem;margin-top:10px;line-height:1.6;border:1px solid #fde68a;background:#fffbeb;color:#92400e}
+.pfa-transfer-link{color:#7c3aed;font-weight:700;text-decoration:none}
+.pfa-transfer-link:hover{text-decoration:underline}
+/* ── Generic projection note ── */
+.generic-proj-note{display:none;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:8px 14px;font-size:.74rem;color:#92400e;margin-bottom:14px}
+@media(max-width:768px){.real-dash-grid,.sn-grid,.dd-grid{grid-template-columns:1fr}.death-grid,.avc-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.death-grid,.avc-grid{grid-template-columns:1fr}}
+
+/* ── Loading button state ── */
+.btn-calculating{pointer-events:none;opacity:.78;position:relative}
+.btn-text{transition:opacity .15s}
+.btn-calculating .btn-text{opacity:0}
+.btn-spin{display:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:18px;height:18px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:btnSpin .65s linear infinite}
+.btn-calculating .btn-spin{display:block}
+@keyframes btnSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+
+/* ── Empty state placeholder ── */
+.card-empty{padding:28px 22px;text-align:center}
+.card-empty-icon{width:36px;height:36px;stroke:var(--gray-300);fill:none;stroke-width:1.5;margin:0 auto 10px;display:block}
+.card-empty-text{font-size:.78rem;color:var(--gray-400);line-height:1.6;margin:0}
+
+/* ── Focus visible (Windows HC mode) ── */
+.f-input:focus-visible,.f-select:focus-visible{outline:2px solid var(--em);outline-offset:1px}
+.slider-wrap input[type="range"]:focus-visible{outline:2px solid var(--em);outline-offset:3px;border-radius:4px}
+.btn:focus-visible{outline:2px solid var(--em);outline-offset:2px}
+.toggle-btn:focus-visible{outline:2px solid var(--em);outline-offset:-2px}
+
+/* ── Reduced motion ── */
+@media(prefers-reduced-motion:reduce){
+  .progress-ring .fg,.mc-bar-fill{transition:none}
+  .r-value[data-target]{transition:none;opacity:1;transform:none}
+  .btn-spin{animation:none;border:2.5px solid rgba(255,255,255,.6)}
+  .btn-primary:hover{transform:none;box-shadow:none}
+  .slider-wrap input[type="range"]::-webkit-slider-thumb:hover{transform:scale(1)}
+  .result-box:hover{transform:none}
+  .breadcrumb a{transition:none}
+}
+
+/* ── Inline warning / check SVG icons ── */
+.icon-warn{display:inline-block;vertical-align:middle;margin-right:5px;flex-shrink:0}
+.icon-ok{display:inline-block;vertical-align:middle;margin-right:5px;color:#16a34a}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Pension Projection Calculator for Africa","description":"Project your pension fund value at retirement across 54 African countries. Monte Carlo simulations, inflation-adjusted projections, country-specific pension rules.","url":"https://afrotools.com/tools/pension-proj/","inLanguage":"en","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/pension-proj.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Pension Projection Calculator for Africa","url":"https://afrotools.com/tools/pension-proj/","description":"Project your pension fund value at retirement across 54 African countries. Monte Carlo simulations, inflation-adjusted projections, country-specific pension rules.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/pension-proj.webp"}</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What rate of return should I expect from my pension fund?","acceptedAnswer":{"@type":"Answer","text":"Returns vary by country and fund type. Nigerian PFAs have historically delivered 8-12% annually. Kenya NSSF targets about 10%. South African retirement funds average 9-11% before fees. Use a conservative estimate (8-10%) for long-term planning, and check your annual fund statement for actual performance."}},{"@type":"Question","name":"Can I add extra money to my pension fund?","acceptedAnswer":{"@type":"Answer","text":"Yes, most African pension schemes allow voluntary top-ups. In Nigeria, Additional Voluntary Contributions (AVCs) enjoy tax benefits. Kenya NSSF allows voluntary contributions. South Africa offers tax deductions up to 27.5% of taxable income for retirement contributions. These extra contributions can significantly boost your retirement fund."}},{"@type":"Question","name":"At what age can I access my pension?","acceptedAnswer":{"@type":"Answer","text":"Retirement ages vary by country. Nigeria: age 50 or upon retirement, whichever comes first. Kenya: age 50 for NSSF. South Africa: typically 55-65 depending on fund rules. Ghana: age 60 for SSNIT. Some countries allow early access under specific conditions like unemployment, disability, or terminal illness."}},{"@type":"Question","name":"Should I take a lump sum or buy an annuity at retirement?","acceptedAnswer":{"@type":"Answer","text":"This depends on your situation. An annuity provides guaranteed monthly income for life, protecting against longevity risk. A lump sum gives flexibility but you risk outliving your savings. In Nigeria, PenCom requires part of your fund to provide regular income. In South Africa, you can take up to one-third as a tax-free lump sum (up to certain limits). Consider your health, other income sources, and risk tolerance when deciding."}},{"@type":"Question","name":"How does inflation affect my pension projection?","acceptedAnswer":{"@type":"Answer","text":"Inflation reduces the purchasing power of your future pension. Use the \"Real (Today's Money)\" toggle in the results to see what your projected pension would buy in today's terms. For countries with high inflation (Nigeria, Ghana, Egypt), the difference between nominal and real values can be dramatic over 20-30 years."}},{"@type":"Question","name":"What happens to my pension if I change jobs?","acceptedAnswer":{"@type":"Answer","text":"In most African defined contribution schemes, your pension is portable. In Nigeria, your RSA (Retirement Savings Account) stays with you regardless of employer. In Kenya, you can transfer your NSSF balance. South Africa allows transfers between approved funds. Check country-specific rules for any transfer fees or waiting periods."}},{"@type":"Question","name":"I'm in the informal sector. Can I still save for a pension?","acceptedAnswer":{"@type":"Answer","text":"Yes. Nigeria's Micro Pension Plan allows informal sector workers to save voluntarily. Kenya has the Mbao Pension Plan. South Africa's SARS allows anyone to contribute to a Retirement Annuity. Use the \"Informal / Self-Employed\" mode in this calculator to model voluntary-only contributions without employer matching."}},{"@type":"Question","name":"How reliable is the Monte Carlo simulation?","acceptedAnswer":{"@type":"Answer","text":"The Monte Carlo simulation runs 500 randomized scenarios with returns varying around your expected rate. It gives a probabilistic view rather than a single projection. While not a guarantee, it helps you understand the range of possible outcomes and the likelihood of reaching your target. A probability above 70% is generally considered a reasonable plan."}}]}
+</script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pension-proj.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Pension Projection Calculator for Africa",
+      "item": "https://afrotools.com/tools/pension-proj/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<script src="/assets/js/lib/auto-email-gate.js?v=fa3f2d98" defer></script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/pension-proj/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pension-proj/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/projection-pension-simple/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pension-proj/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Pension Projection</span></div>
+<h1>Pension <em>Projection Calculator</em></h1>
+<p class="hero-sub">Project your pension fund across all 54 African nations. Real vs nominal values, PFA comparison, AVC optimizer, drawdown planning, death benefits — the full picture.</p>
+<div class="hero-badges">
+<span class="badge b-em">All 54 Countries</span>
+<span class="badge b-em">Monte Carlo</span>
+<span class="badge b-em">Real vs Nominal</span>
+<span class="badge b-em">AVC Optimizer</span>
+<span class="badge b-gold">PFA Comparison</span>
+</div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calculator">
+
+<!-- Input Card -->
+<div class="card">
+<div class="card-head">
+<span class="card-title">Your Pension Details</span>
+<span id="informalBadge" class="informal-badge" style="display:none">Informal Sector</span>
+</div>
+<div class="card-body">
+
+<!-- Employment Mode Toggle -->
+<div class="f-label">Employment Mode</div>
+<div class="toggle-group" id="modeToggle">
+<button type="button" class="toggle-btn active" data-mode="formal" onclick="setMode('formal')">Formal Employment</button>
+<button type="button" class="toggle-btn" data-mode="informal" onclick="setMode('informal')">Informal / Self-Employed</button>
+</div>
+
+<div class="field-row" style="margin-bottom:16px">
+<div class="field">
+<label class="f-label" for="country">Country</label>
+<select class="f-select" id="country" onchange="updateCountry()">
+<option value="NG">Nigeria (PenCom)</option>
+<option value="KE">Kenya (NSSF)</option>
+<option value="ZA">South Africa</option>
+<option value="GH">Ghana (SSNIT)</option>
+<option value="EG">Egypt (Social Insurance)</option>
+<option value="TZ">Tanzania (NSSF)</option>
+<option value="UG">Uganda (NSSF)</option>
+<option value="RW">Rwanda (RSSB)</option>
+<option value="ET">Ethiopia</option>
+<option value="BW">Botswana</option>
+<option value="ZM">Zambia (NAPSA)</option>
+<option value="MZ">Mozambique (INSS)</option>
+<option value="MU">Mauritius (NSF)</option>
+<option value="SN">Senegal (IPRES)</option>
+<option value="MA">Morocco (CNSS)</option>
+<option value="DZ">Algeria (CNAS)</option>
+<option value="AO">Angola (INSS)</option>
+<option value="BJ">Benin (FNRB)</option>
+<option value="BF">Burkina Faso (CNSS)</option>
+<option value="BI">Burundi (INSS)</option>
+<option value="CV">Cabo Verde (INPS)</option>
+<option value="CM">Cameroon (CNPS)</option>
+<option value="CF">Central African Republic</option>
+<option value="TD">Chad (CNPS)</option>
+<option value="KM">Comoros</option>
+<option value="CD">DR Congo (INSS)</option>
+<option value="CG">Republic of Congo (CNSS)</option>
+<option value="CI">Côte d'Ivoire (CNPS)</option>
+<option value="DJ">Djibouti (CNSS)</option>
+<option value="GQ">Equatorial Guinea (INSESO)</option>
+<option value="ER">Eritrea (PSSB)</option>
+<option value="SZ">Eswatini (SNPF)</option>
+<option value="GA">Gabon (CNSS)</option>
+<option value="GM">Gambia (SSHFC)</option>
+<option value="GN">Guinea (CNSS)</option>
+<option value="GW">Guinea-Bissau (INPS)</option>
+<option value="LS">Lesotho (LASF)</option>
+<option value="LR">Liberia (NASSCORP)</option>
+<option value="LY">Libya (Social Security)</option>
+<option value="MG">Madagascar (CNaPS)</option>
+<option value="MW">Malawi (MERA)</option>
+<option value="ML">Mali (INPS)</option>
+<option value="MR">Mauritania (CNSS)</option>
+<option value="NA">Namibia (GIPF)</option>
+<option value="NE">Niger (CNSS)</option>
+<option value="ST">São Tomé &amp; Príncipe (INSS)</option>
+<option value="SC">Seychelles (SPS)</option>
+<option value="SL">Sierra Leone (NASSIT)</option>
+<option value="SO">Somalia (Generic)</option>
+<option value="SS">South Sudan (Generic)</option>
+<option value="SD">Sudan (SSC)</option>
+<option value="TG">Togo (CNSS)</option>
+<option value="TN">Tunisia (CNSS)</option>
+<option value="ZW">Zimbabwe (NSSA)</option>
+</select>
+</div>
+<div class="field">
+<label class="f-label">Currency</label>
+<input aria-label="Currency" type="text" class="f-input" id="currency" value="NGN" readonly>
+</div>
+</div>
+
+<div class="field-row" style="margin-bottom:16px">
+<div class="field">
+<label class="f-label">Current Age</label>
+<input aria-label="CurrentAge" type="number" class="f-input" id="currentAge" value="30" min="18" max="70">
+</div>
+<div class="field">
+<label class="f-label">Retirement Age</label>
+<input aria-label="RetireAge" type="number" class="f-input" id="retireAge" value="60" min="40" max="75">
+</div>
+</div>
+
+<div class="field-row" style="margin-bottom:16px">
+<div class="field">
+<label class="f-label">Monthly Gross Salary <span class="hint">or Income</span></label>
+<input aria-label="Salary" type="number" class="f-input" id="salary" value="500000" min="1000" step="10000">
+</div>
+<div class="field">
+<label class="f-label">Annual Salary Increase %</label>
+<input aria-label="SalaryGrowth" type="number" class="f-input" id="salaryGrowth" value="5" min="0" max="30" step="0.5">
+</div>
+</div>
+
+<!-- Contribution Slider -->
+<div class="field" id="empContribField">
+<label class="f-label">Employee Contribution: <span class="slider-val" id="empContribVal">8%</span></label>
+<div class="slider-wrap">
+<input aria-label="EmpContrib" type="range" id="empContrib" min="0" max="30" step="0.5" value="8" oninput="updateSlider(this,'empContribVal')">
+</div>
+</div>
+
+<div class="field" id="erContribField">
+<label class="f-label">Employer Contribution: <span class="slider-val" id="erContribVal">10%</span></label>
+<div class="slider-wrap">
+<input aria-label="ErContrib" type="range" id="erContrib" min="0" max="30" step="0.5" value="10" oninput="updateSlider(this,'erContribVal')">
+</div>
+</div>
+
+<div class="field-row" style="margin-bottom:16px">
+<div class="field">
+<label class="f-label">Expected Fund Return % <span class="hint">(annual)</span></label>
+<input aria-label="ReturnRate" type="number" class="f-input" id="returnRate" value="10" min="0" max="30" step="0.5">
+</div>
+<div class="field">
+<label class="f-label">Current Pension Balance</label>
+<input aria-label="CurrentBalance" type="number" class="f-input" id="currentBalance" value="0" min="0" step="50000">
+</div>
+</div>
+
+<div class="field-row" style="margin-bottom:16px">
+<div class="field">
+<label class="f-label">Extra Voluntary Contribution <span class="hint">(monthly)</span></label>
+<input aria-label="Voluntary" type="number" class="f-input" id="voluntary" value="0" min="0" step="5000">
+</div>
+<div class="field">
+<label class="f-label">Inflation Rate % <span class="hint">(annual)</span></label>
+<input aria-label="InflationRate" type="number" class="f-input" id="inflationRate" value="8" min="0" max="40" step="0.5">
+</div>
+</div>
+
+<div class="field">
+<label class="f-label">Target Monthly Retirement Income <span class="hint">(optional)</span></label>
+<input aria-label="Leave 0 for no target" type="number" class="f-input" id="targetIncome" value="0" min="0" step="50000" placeholder="Leave 0 for no target">
+</div>
+
+<button type="button" class="btn btn-primary" id="calcBtn" onclick="calculate()"><span class="btn-text">Project My Pension</span><span class="btn-spin" aria-hidden="true"></span></button>
+</div>
+</div>
+
+<!-- Results Section -->
+<div id="resultSection">
+<div class="generic-proj-note" id="genericProjNote"></div>
+<p style="font-size:.72rem;color:var(--gray-500);line-height:1.6;margin:0 0 16px;padding:10px 14px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:6px" role="note">Estimate only, not financial advice. Investment growth is not guaranteed and actual returns, inflation, fees and pension rules will vary. Confirm figures with your provider or a licensed adviser before making retirement decisions.</p>
+
+<!-- Summary Cards -->
+<div class="card">
+<div class="card-head">
+<span class="card-title">Pension Projection Summary</span>
+<div id="viewToggle" class="toggle-group" style="margin:0;border:1px solid var(--gray-300);width:auto">
+<button type="button" class="toggle-btn active" data-view="nominal" onclick="toggleView('nominal')" style="padding:6px 14px;font-size:.65rem">Nominal</button>
+<button type="button" class="toggle-btn" data-view="real" onclick="toggleView('real')" style="padding:6px 14px;font-size:.65rem">Real (Today's Money)</button>
+</div>
+</div>
+<div class="card-body">
+<div class="result-grid" id="resultGrid"></div>
+
+<!-- Progress Ring -->
+<div class="progress-ring-wrap">
+<div class="progress-ring">
+<svg width="120" height="120">
+<circle class="bg" cx="60" cy="60" r="52"></circle>
+<circle class="fg" id="ringFg" cx="60" cy="60" r="52" stroke-dasharray="326.73" stroke-dashoffset="326.73"></circle>
+</svg>
+<div class="center-text">
+<span class="big" id="ringYears">0</span>
+<span class="small">years left</span>
+</div>
+</div>
+<div class="ring-legend" id="ringLegend"></div>
+</div>
+
+<!-- Export -->
+<div class="export-row">
+<button type="button" class="export-btn" onclick="exportCSV()">
+<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+Export CSV
+</button>
+<button type="button" class="export-btn" onclick="printResults()">
+<svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+Print
+</button>
+<button type="button" class="export-btn" onclick="shareResults()">
+<svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+Share
+</button>
+</div>
+<div class="result-actions" style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
+  <save-result-button
+    tool-slug="pension-proj"
+    tool-name="Pension Proj">
+  </save-result-button>
+  <share-result-button
+    tool-name="Pension Proj"
+    tool-slug="pension-proj">
+  </share-result-button>
+</div>
+</div>
+</div>
+
+<!-- Growth Chart -->
+<div class="card">
+<div class="card-head"><span class="card-title">Projection Chart</span></div>
+<div class="card-body">
+<div class="chart-tabs" id="chartTabs">
+<button type="button" class="chart-tab active" data-chart="scenarios" onclick="switchChart('scenarios')">3 Scenarios</button>
+<button type="button" class="chart-tab" data-chart="breakdown" onclick="switchChart('breakdown')">Contrib vs Returns</button>
+<button type="button" class="chart-tab" data-chart="montecarlo" onclick="switchChart('montecarlo')">Monte Carlo Fan</button>
+</div>
+<div class="chart-canvas-wrap">
+<canvas id="projChart"></canvas>
+<div class="chart-tooltip" id="chartTooltip"></div>
+</div>
+<div class="chart-legend" id="chartLegend"></div>
+</div>
+</div>
+
+<!-- Monte Carlo -->
+<div class="card">
+<div class="card-head"><span class="card-title">Monte Carlo Simulation</span><span style="font-size:.65rem;color:var(--gray-400)">500 scenarios</span></div>
+<div class="card-body">
+<p style="font-size:.78rem;color:var(--gray-500);margin-bottom:14px">Probability of reaching your retirement goal based on 500 randomized return scenarios.</p>
+<div class="mc-bar-wrap">
+<div class="mc-bar"><div class="mc-bar-fill" id="mcBarFill" style="width:0%"></div><span class="mc-bar-label" id="mcBarLabel">0%</span></div>
+</div>
+<div style="text-align:center;font-size:.72rem;color:var(--gray-500);margin-top:6px" id="mcVerdict"></div>
+<div class="mc-stats" id="mcStats"></div>
+</div>
+</div>
+
+<!-- Lump Sum vs Annuity -->
+<div class="card">
+<div class="card-head"><span class="card-title">Lump Sum vs Annuity at Retirement</span></div>
+<div class="card-body">
+<p style="font-size:.78rem;color:var(--gray-500);margin-bottom:12px">Compare taking a lump sum versus buying an annuity with your projected pension pot.</p>
+<div class="comparison-cards" id="comparisonCards"></div>
+</div>
+</div>
+
+<!-- What-If Scenarios -->
+<div class="card">
+<div class="card-head"><span class="card-title">What-If Scenario Comparison</span></div>
+<div class="card-body">
+<p style="font-size:.78rem;color:var(--gray-500);margin-bottom:12px">See how different retirement ages and contribution levels change your outcome.</p>
+<div style="overflow-x:auto"><table class="scenario-table" id="scenarioTable"></table></div>
+</div>
+</div>
+
+<!-- Year-by-year -->
+<div class="card">
+<div class="card-head"><span class="card-title">Year-by-Year Projection</span></div>
+<div class="card-body">
+<div class="table-wrap"><table class="proj-table" id="projTable"></table></div>
+</div>
+</div>
+
+<!-- Real Return Dashboard -->
+<div class="card">
+<div class="card-head"><span class="card-title">Real Return Dashboard</span><span style="font-size:.65rem;color:var(--gray-400)">Inflation-adjusted truth</span></div>
+<div class="card-body"><div id="realDash"><div class="card-empty"><svg class="card-empty-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg><p class="card-empty-text">Run the projection to see nominal vs real purchasing power — often 60–80% less than the headline number.</p></div></div></div>
+</div>
+
+<!-- Start Now vs 5 Years Later -->
+<div class="card">
+<div class="card-head"><span class="card-title">Start Now vs. 5 Years Later</span><span style="font-size:.65rem;color:var(--gray-400)">The cost of delay</span></div>
+<div class="card-body"><div id="startNowContent"><div class="card-empty"><svg class="card-empty-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><p class="card-empty-text">Run the projection to see how much a 5-year delay costs you — the most viral number in retirement planning.</p></div></div></div>
+</div>
+
+<!-- AVC Optimizer -->
+<div class="card">
+<div class="card-head"><span class="card-title">AVC Optimizer — Voluntary Contributions</span></div>
+<div class="card-body">
+<p style="font-size:.78rem;color:var(--gray-500);margin-bottom:14px">Move the slider to see how extra monthly contributions change your retirement outcome.</p>
+<div class="field">
+<label class="f-label">Extra Monthly AVC: <span class="slider-val" id="avcSliderVal">0</span></label>
+<div class="slider-wrap"><input aria-label="AvcSlider" type="range" id="avcSlider" min="0" max="100000" step="1000" value="0" oninput="updateAVC(this)"></div>
+</div>
+<div class="avc-result" id="avcResult"></div>
+</div>
+</div>
+
+<!-- Drawdown Calculator -->
+<div class="card">
+<div class="card-head"><span class="card-title">Drawdown Calculator</span><span style="font-size:.65rem;color:var(--gray-400)">How long does your fund last?</span></div>
+<div class="card-body">
+<p style="font-size:.78rem;color:var(--gray-500);margin-bottom:12px">Enter your monthly withdrawal need to see how long your projected fund will last.</p>
+<div class="drawdown-inputs">
+<div class="field" style="margin:0">
+<label class="f-label">Monthly Withdrawal Need</label>
+<input aria-label="E.g. 150000" type="number" class="f-input" id="ddMonthly" placeholder="e.g. 150000" step="10000" min="0">
+</div>
+<button type="button" class="btn btn-outline" style="width:auto;padding:10px 20px;white-space:nowrap" onclick="calcDrawdown()">Calculate</button>
+</div>
+<div class="drawdown-result" id="drawdownResult"></div>
+</div>
+</div>
+
+<!-- Death & Disability Benefits -->
+<div class="card">
+<div class="card-head"><span class="card-title">Death &amp; Disability Benefits</span></div>
+<div class="card-body">
+<p style="font-size:.78rem;color:var(--gray-500);margin-bottom:12px">Estimated benefits payable to your next of kin or in case of permanent disability.</p>
+<div id="deathBenefitContent"><div class="card-empty"><svg class="card-empty-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><p class="card-empty-text">Run the projection to see your RSA death benefit + group life insurance estimate for your next of kin.</p></div></div>
+</div>
+</div>
+
+</div><!-- end resultSection -->
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar">
+
+    <!-- AI Advisor -->
+    <div class="ai-advisor-card" id="aiCard">
+      <div class="ai-advisor-head">
+        <span class="ai-dot"></span>
+        <span class="ai-title">AI Pension Proj Advisor</span>
+        <span class="ai-by">Optional AI · provider required</span>
+      </div>
+      <div class="ai-advisor-body">
+        <div class="ai-status" id="aiStatus">Ask me anything about this tool &mdash; I can help explain results, suggest strategies, and answer questions.</div>
+        <div class="ai-chat" id="aiChat">
+          <div class="ai-msgs" id="aiMsgs"></div>
+          <div class="ai-input-row">
+            <input aria-label="Ask a question" type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" onkeydown="if(event.key==='Enter')sendAI()">
+            <button type="button" class="ai-send" id="aiSend" onclick="sendAI()">&#x2192;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<div class="card">
+<div class="card-head"><span class="card-title">Pension Rates — 54 Countries</span></div>
+<div class="card-body" style="padding:12px">
+<div style="overflow-x:auto">
+<table class="rates-table" id="ratesTable">
+<thead><tr><th>Country</th><th>Employee</th><th>Employer</th><th>Inflation</th></tr></thead>
+<tbody id="ratesBody"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div class="info-card">
+<h4>How It Works</h4>
+<ul>
+<li>Monthly contributions compound over time</li>
+<li>Employer match doubles your investment</li>
+<li>Salary growth increases future contributions</li>
+<li>Monte Carlo models return variability</li>
+<li>"Real" values show today's purchasing power</li>
+</ul>
+</div>
+
+<div class="info-card" style="margin-top:10px">
+<h4>Tips to Maximise Your Pension</h4>
+<ul>
+<li>Start early: time is the biggest growth factor</li>
+<li>Add voluntary contributions (AVCs)</li>
+<li>Choose growth-oriented fund portfolios</li>
+<li>Avoid early withdrawals and loans</li>
+<li>Review your statement at least annually</li>
+<li>Utilise tax deductions for retirement savings</li>
+</ul>
+</div>
+
+<div class="info-card" style="margin-top:10px">
+<h4>Country-Specific Notes</h4>
+<p id="countryNotes">Nigeria PenCom requires 8% employee + 10% employer contribution on Basic + Housing + Transport allowances. Funds are managed by licensed Pension Fund Administrators (PFAs).</p>
+</div>
+
+<!-- PFA Comparison (Nigeria only) -->
+<div id="pfaSection" class="card" style="margin-top:18px">
+<div class="card-head" style="background:#faf5ff;border-bottom-color:#ddd6fe">
+<span class="card-title" style="color:#6d28d9">PFA Performance — Nigeria</span>
+<span style="font-size:.65rem;color:#a78bfa">PenCom Data 2025</span>
+</div>
+<div class="card-body" style="padding:14px">
+<div class="field" style="margin-bottom:12px">
+<label class="f-label" for="pfaSelect">Your PFA</label>
+<select class="f-select" id="pfaSelect" onchange="updatePFAComparison()" style="font-size:.8rem">
+<option value="">— Select your PFA —</option>
+</select>
+</div>
+<div id="pfaTableWrap" style="overflow-x:auto"></div>
+<div id="pfaAlert"></div>
+</div>
+</div>
+</div>
+</div></section>
+
+<!-- SEO Section -->
+<section class="seo-section">
+<h2>How to Project Your Pension Fund in Africa</h2>
+<p>Understanding your projected pension value is essential for retirement planning. Africa has a growing pension industry with diverse schemes across its nations. From Nigeria's Contributory Pension Scheme to South Africa's well-developed private retirement funds, each country has unique rules governing contribution rates, tax benefits, and withdrawal options.</p>
+<p>This calculator helps you project your pension growth using compound interest with monthly contributions, accounting for salary increases, employer matching, voluntary contributions, and expected investment returns. The Monte Carlo simulation adds a probabilistic layer, running 500 randomized scenarios to estimate the likelihood of reaching your retirement goals.</p>
+
+<h2>Understanding Pension Schemes Across Africa</h2>
+<p>African pension systems generally fall into two categories: defined benefit (DB) schemes, where retirement income is based on a formula tied to salary and years of service, and defined contribution (DC) schemes, where the retirement benefit depends on accumulated contributions and investment returns.</p>
+<ul>
+<li><strong>Nigeria (PenCom)</strong>: Contributory scheme with 8% employee + 10% employer of basic, housing, and transport allowances.</li>
+<li><strong>Kenya (NSSF)</strong>: Two-tier system with 6% employee + 6% employer, upper earnings limit of KSh 72,000.</li>
+<li><strong>South Africa</strong>: Voluntary private funds, typical 7.5% + 7.5%, tax deductible up to 27.5% of taxable income.</li>
+<li><strong>Ghana (SSNIT)</strong>: Three-tier system with 5.5% employee + 13% employer (Tier 1 and 2).</li>
+<li><strong>Egypt</strong>: Social insurance with 11% employee + 18.75% employer contributions.</li>
+</ul>
+
+<h2>The Power of Compound Interest in Pension Growth</h2>
+<p>The most powerful factor in pension growth is time. Starting your pension contributions at age 25 versus 35 can result in nearly double the final pension pot, even with the same monthly contribution. This is because compound interest allows your returns to generate their own returns, creating exponential growth over decades.</p>
+
+<h2>Inflation and Your Pension</h2>
+<p>Inflation is often called the silent killer of retirement savings. In many African countries, inflation rates run between 5% and 15% annually. A pension pot of 50 million Naira projected for 30 years from now may only purchase what 5 million Naira buys today. Always look at inflation-adjusted (real) values when planning your retirement to understand the true purchasing power of your future savings.</p>
+
+<h2>Frequently Asked Questions</h2>
+
+<div class="faq">
+<details>
+<summary>What rate of return should I expect from my pension fund?</summary>
+<div class="faq-body">Returns vary by country and fund type. Nigerian PFAs have historically delivered 8-12% annually. Kenya NSSF targets about 10%. South African retirement funds average 9-11% before fees. Use a conservative estimate (8-10%) for long-term planning, and check your annual fund statement for actual performance.</div>
+</details>
+<details>
+<summary>Can I add extra money to my pension fund?</summary>
+<div class="faq-body">Yes, most African pension schemes allow voluntary top-ups. In Nigeria, Additional Voluntary Contributions (AVCs) enjoy tax benefits. Kenya NSSF allows voluntary contributions. South Africa offers tax deductions up to 27.5% of taxable income for retirement contributions. These extra contributions can significantly boost your retirement fund.</div>
+</details>
+<details>
+<summary>At what age can I access my pension?</summary>
+<div class="faq-body">Retirement ages vary by country. Nigeria: age 50 or upon retirement, whichever comes first. Kenya: age 50 for NSSF. South Africa: typically 55-65 depending on fund rules. Ghana: age 60 for SSNIT. Some countries allow early access under specific conditions like unemployment, disability, or terminal illness.</div>
+</details>
+<details>
+<summary>Should I take a lump sum or buy an annuity at retirement?</summary>
+<div class="faq-body">This depends on your situation. An annuity provides guaranteed monthly income for life, protecting against longevity risk. A lump sum gives flexibility but you risk outliving your savings. In Nigeria, PenCom requires part of your fund to provide regular income. In South Africa, you can take up to one-third as a tax-free lump sum (up to certain limits). Consider your health, other income sources, and risk tolerance when deciding.</div>
+</details>
+<details>
+<summary>How does inflation affect my pension projection?</summary>
+<div class="faq-body">Inflation reduces the purchasing power of your future pension. Use the "Real (Today's Money)" toggle in the results to see what your projected pension would buy in today's terms. For countries with high inflation (Nigeria, Ghana, Egypt), the difference between nominal and real values can be dramatic over 20-30 years.</div>
+</details>
+<details>
+<summary>What happens to my pension if I change jobs?</summary>
+<div class="faq-body">In most African defined contribution schemes, your pension is portable. In Nigeria, your RSA (Retirement Savings Account) stays with you regardless of employer. In Kenya, you can transfer your NSSF balance. South Africa allows transfers between approved funds. Check country-specific rules for any transfer fees or waiting periods.</div>
+</details>
+<details>
+<summary>I'm in the informal sector. Can I still save for a pension?</summary>
+<div class="faq-body">Yes. Nigeria's Micro Pension Plan allows informal sector workers to save voluntarily. Kenya has the Mbao Pension Plan. South Africa's SARS allows anyone to contribute to a Retirement Annuity. Use the "Informal / Self-Employed" mode in this calculator to model voluntary-only contributions without employer matching.</div>
+</details>
+<details>
+<summary>How reliable is the Monte Carlo simulation?</summary>
+<div class="faq-body">The Monte Carlo simulation runs 500 randomized scenarios with returns varying around your expected rate. It gives a probabilistic view rather than a single projection. While not a guarantee, it helps you understand the range of possible outcomes and the likelihood of reaching your target. A probability above 70% is generally considered a reasonable plan.</div>
+</details>
+</div>
+</section>
+
+<section class="tool-verification-sec" data-tool-verification-panel="pension-proj">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Retirement planning check</span>
+          <h2 class="tool-verification-title">Stress-test the pension projection before changing contributions</h2>
+          <p class="tool-verification-lead">The app models contribution rates, employer match, voluntary saving, inflation, drawdown, and probabilistic outcomes from your assumptions.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Scenario projection</span>
+          <p class="tool-verification-note">No pension provider, employer, or regulator receives your inputs.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>What to check</h3>
+          <ul class="tool-verification-list">
+            <li>Confirm statutory contribution rates, employer policy, fees, vesting, and withdrawal rules for your country and provider.</li>
+            <li>Run at least one lower-return or higher-inflation case before relying on the target probability.</li>
+            <li>Save or export the result for retirement-advisor, HR, or household planning review.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Limitations</h3>
+          <ul class="tool-verification-list">
+            <li>Investment returns, inflation, salary growth, tax relief, and pension regulations can change materially over time.</li>
+            <li>The Monte Carlo output is a planning range, not a guarantee that a target income will be met.</li>
+            <li>Salary and retirement entries are processed locally unless you separately choose a networked feature.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <a class="tool-verification-report" href="#resultSection">Review projection</a>
+        <p class="tool-verification-disclaimer">Disclaimer: estimate only. Source/freshness note: verify with current pension law, provider fees, tax rules, and fund performance before making retirement decisions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<afro-business-cta tool-name="Pension Projection Calculator" prospect-segment="hr-payroll" save-note="Build the projection, then export or save the plan for HR, advisor, payroll, or household retirement review."></afro-business-cta>
+<afro-related-tools category="financial" current="pension-proj" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Tracker" data-category="financial" data-icon="AA" data-desc="Compare petrol, diesel, and LPG prices across 54 African countries, then estimate generator fuel costs in local currency">AfroFuel — African Fuel Price Tracker</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+/* ==========================================================================
+   PENSION PROJECTION CALCULATOR — AfroTools
+   15 African countries, Monte Carlo, inflation-adjusted, scenarios
+   ========================================================================== */
+
+// ── Country Data ──
+const COUNTRIES = {
+  NG: { name:'Nigeria', scheme:'PenCom', currency:'NGN', symbol:'\u20a6', emp:8, er:10, ret:10, inflation:8, retireAge:60, annuityRate:6, lumpPct:25, notes:'PenCom requires 8% employee + 10% employer on Basic + Housing + Transport. Funds managed by licensed PFAs. Minimum pension guarantee applies. AVCs are tax-deductible.' },
+  KE: { name:'Kenya', scheme:'NSSF', currency:'KES', symbol:'KSh', emp:6, er:6, ret:10, inflation:6, retireAge:60, annuityRate:5.5, lumpPct:33, notes:'NSSF Tier I & II system. 6% + 6% with upper earnings limit of KSh 72,000/month. Mbao Pension Plan available for informal sector workers.' },
+  ZA: { name:'South Africa', scheme:'Retirement Fund', currency:'ZAR', symbol:'R', emp:7.5, er:7.5, ret:9, inflation:5, retireAge:65, annuityRate:5, lumpPct:33, notes:'Voluntary private funds with typical 7.5% + 7.5%. Tax deductible up to 27.5% of taxable income (max R350,000/year). Two-pot system allows limited pre-retirement access.' },
+  GH: { name:'Ghana', scheme:'SSNIT', currency:'GHS', symbol:'GH\u20b5', emp:5.5, er:13, ret:10, inflation:10, retireAge:60, annuityRate:6, lumpPct:25, notes:'Three-tier system: Tier 1 (SSNIT) 13.5%, Tier 2 (occupational) 5%, Tier 3 (voluntary). Employee pays 5.5%, employer pays 13% of basic salary.' },
+  EG: { name:'Egypt', scheme:'Social Insurance', currency:'EGP', symbol:'E\u00a3', emp:11, er:18.75, ret:9, inflation:12, retireAge:60, annuityRate:7, lumpPct:20, notes:'Social insurance: 11% employee + 18.75% employer. Covers old age, disability, and survivors. Maximum insurable salary applies.' },
+  TZ: { name:'Tanzania', scheme:'NSSF', currency:'TZS', symbol:'TSh', emp:10, er:10, ret:9, inflation:5, retireAge:60, annuityRate:5.5, lumpPct:50, notes:'NSSF: 10% employee + 10% employer of gross salary. Covers retirement, invalidity, survivors, health, and maternity benefits.' },
+  UG: { name:'Uganda', scheme:'NSSF', currency:'UGX', symbol:'USh', emp:5, er:10, ret:9, inflation:5, retireAge:55, annuityRate:5.5, lumpPct:50, notes:'NSSF: 5% employee + 10% employer. Mid-term access allowed at age 45 for up to 20% of savings. Full access at 55 or upon emigration.' },
+  RW: { name:'Rwanda', scheme:'RSSB', currency:'RWF', symbol:'FRw', emp:6, er:6, ret:8, inflation:6, retireAge:60, annuityRate:5, lumpPct:40, notes:'RSSB: 6% employee + 6% employer (rates have been increasing). Covers pension, occupational hazards, maternity, and medical.' },
+  ET: { name:'Ethiopia', scheme:'Pension Agency', currency:'ETB', symbol:'Br', emp:7, er:11, ret:8, inflation:15, retireAge:60, annuityRate:7, lumpPct:25, notes:'7% employee + 11% employer for both civil and private sector. Government employees have separate pension provisions. High inflation impacts real returns significantly.' },
+  BW: { name:'Botswana', scheme:'Voluntary/Employer', currency:'BWP', symbol:'P', emp:5, er:10, ret:8, inflation:4, retireAge:60, annuityRate:4.5, lumpPct:50, notes:'No mandatory national pension for private sector. Employer-sponsored schemes common at 5% + 10%. Botswana Public Officers\' Pension Fund for government employees.' },
+  ZM: { name:'Zambia', scheme:'NAPSA', currency:'ZMW', symbol:'ZK', emp:5, er:5, ret:8, inflation:10, retireAge:55, annuityRate:6, lumpPct:30, notes:'NAPSA: 5% employee + 5% employer of gross earnings. Maximum pensionable earnings ceiling applies. Optional supplementary schemes available.' },
+  MZ: { name:'Mozambique', scheme:'INSS', currency:'MZN', symbol:'MT', emp:3, er:4, ret:7, inflation:7, retireAge:60, annuityRate:5, lumpPct:33, notes:'INSS: 3% employee + 4% employer. Covers old age, disability, survivors, and funeral grants. Applies to formal sector workers.' },
+  MU: { name:'Mauritius', scheme:'NSF', currency:'MUR', symbol:'Rs', emp:3, er:6, ret:7, inflation:4, retireAge:65, annuityRate:4, lumpPct:25, notes:'NSF: 3% employee + 6% employer. Universal basic retirement pension provided by government. Private pension schemes offer additional savings with tax benefits.' },
+  SN: { name:'Senegal', scheme:'IPRES', currency:'XOF', symbol:'CFA', emp:5.6, er:8.4, ret:7, inflation:3, retireAge:60, annuityRate:4.5, lumpPct:25, notes:'IPRES: 5.6% employee + 8.4% employer. Two regimes: general (up to earnings ceiling) and supplementary (cadres). CFA franc pegged to Euro provides currency stability.' },
+  MA: { name:'Morocco', scheme:'CNSS', currency:'MAD', symbol:'MAD', emp:4.48, er:8.98, ret:7, inflation:3, retireAge:60, annuityRate:4.5, lumpPct:25, notes:'CNSS: 4.48% employee + 8.98% employer. Mandatory for all private sector employees. CIMR provides supplementary pensions. Monthly ceiling of MAD 6,000 for base regime.' },
+  // ── Expanded 39 countries ──
+  DZ: { name:'Algeria', scheme:'CNAS', currency:'DZD', symbol:'DA', emp:9, er:26, ret:7, inflation:5, retireAge:60, annuityRate:4.5, lumpPct:25, generic:false, notes:'CNAS: 9% employee + 26% employer. Defined benefit linked to years of service and salary. Retirement at 60 (men) or 55 (women).' },
+  AO: { name:'Angola', scheme:'INSS', currency:'AOA', symbol:'Kz', emp:3, er:8, ret:7, inflation:18, retireAge:60, annuityRate:5, lumpPct:25, generic:true, notes:'INSS: 3% employee + 8% employer. Angola\'s high inflation (18-20%) significantly erodes real pension values. Generic projection — Angola pension data is limited.' },
+  BJ: { name:'Benin', scheme:'FNRB', currency:'XOF', symbol:'CFA', emp:3.6, er:6.4, ret:6, inflation:3, retireAge:60, annuityRate:4, lumpPct:25, generic:true, notes:'FNRB: 3.6% employee + 6.4% employer. CFA franc pegged to Euro provides currency stability. Generic projection — Benin pension data is limited.' },
+  BF: { name:'Burkina Faso', scheme:'CNSS', currency:'XOF', symbol:'CFA', emp:5, er:12, ret:6, inflation:4, retireAge:56, annuityRate:4, lumpPct:25, generic:true, notes:'CNSS: 5% employee + 12% employer. Retirement at 56. Generic projection — Burkina Faso pension data is limited.' },
+  BI: { name:'Burundi', scheme:'INSS', currency:'BIF', symbol:'FBu', emp:4, er:6, ret:6, inflation:12, retireAge:60, annuityRate:4, lumpPct:25, generic:true, notes:'INSS: 4% employee + 6% employer. High informal sector means limited pension coverage. Generic projection — Burundi pension data is limited.' },
+  CV: { name:'Cabo Verde', scheme:'INPS', currency:'CVE', symbol:'$', emp:8, er:16, ret:7, inflation:3, retireAge:65, annuityRate:4.5, lumpPct:30, generic:false, notes:'INPS: 8% employee + 16% employer. Well-developed system. Defined benefit scheme. Retirement at 65.' },
+  CM: { name:'Cameroon', scheme:'CNPS', currency:'XAF', symbol:'FCFA', emp:2.8, er:8.4, ret:6, inflation:4, retireAge:60, annuityRate:4, lumpPct:25, generic:true, notes:'CNPS: 2.8% employee + 8.4% employer. CFA franc. Limited coverage for informal workers. Generic projection — Cameroon pension data is limited.' },
+  CF: { name:'Central African Republic', scheme:'OCSS', currency:'XAF', symbol:'FCFA', emp:2, er:3, ret:5, inflation:5, retireAge:60, annuityRate:3.5, lumpPct:25, generic:true, notes:'OCSS: 2% employee + 3% employer. Very limited pension coverage. Generic projection — CAR pension data is limited.' },
+  TD: { name:'Chad', scheme:'CNPS', currency:'XAF', symbol:'FCFA', emp:3, er:5, ret:5, inflation:5, retireAge:60, annuityRate:3.5, lumpPct:25, generic:true, notes:'CNPS: 3% employee + 5% employer. Limited formal employment coverage. Generic projection — Chad pension data is limited.' },
+  KM: { name:'Comoros', scheme:'Social Security', currency:'KMF', symbol:'CF', emp:4, er:8, ret:5, inflation:5, retireAge:60, annuityRate:3.5, lumpPct:25, generic:true, notes:'Basic social security system. Limited formal coverage. Generic projection — Comoros pension data is limited.' },
+  CD: { name:'DR Congo', scheme:'INSS', currency:'CDF', symbol:'FC', emp:5, er:9, ret:6, inflation:18, retireAge:65, annuityRate:5, lumpPct:25, generic:true, notes:'INSS: 5% employee + 9% employer. High inflation environment significantly erodes real values. Generic projection — DRC pension data is limited.' },
+  CG: { name:'Republic of Congo', scheme:'CNSS', currency:'XAF', symbol:'FCFA', emp:4, er:8, ret:6, inflation:4, retireAge:60, annuityRate:4, lumpPct:25, generic:true, notes:'CNSS: 4% employee + 8% employer. Oil-dependent economy. Generic projection — Congo pension data is limited.' },
+  CI: { name:"Côte d'Ivoire", scheme:'CNPS', currency:'XOF', symbol:'CFA', emp:6.3, er:4.8, ret:7, inflation:3, retireAge:60, annuityRate:4.5, lumpPct:25, generic:false, notes:"CNPS: 6.3% employee + 4.8% employer. Note: employee rate exceeds employer rate. CFA franc stability. Three-branch pension system." },
+  DJ: { name:'Djibouti', scheme:'OPS/CNSS', currency:'DJF', symbol:'Fdj', emp:4, er:8, ret:6, inflation:4, retireAge:60, annuityRate:4, lumpPct:25, generic:true, notes:'OPS for public sector, CNSS for private. 4% employee + 8% employer. Generic projection — Djibouti pension data is limited.' },
+  GQ: { name:'Equatorial Guinea', scheme:'INSESO', currency:'XAF', symbol:'FCFA', emp:4.5, er:21.5, ret:7, inflation:4, retireAge:65, annuityRate:4.5, lumpPct:25, generic:true, notes:"INSESO: 4.5% employee + 21.5% employer (one of Africa's highest employer rates). Oil wealth funds social security. Generic projection." },
+  ER: { name:'Eritrea', scheme:'PSSB', currency:'ERN', symbol:'Nfk', emp:4, er:8, ret:5, inflation:9, retireAge:60, annuityRate:4, lumpPct:25, generic:true, notes:'Public Social Security Bureau. Limited private sector coverage. Generic projection — Eritrea pension data is limited.' },
+  SZ: { name:'Eswatini', scheme:'SNPF', currency:'SZL', symbol:'E', emp:5, er:5, ret:8, inflation:5, retireAge:50, annuityRate:4.5, lumpPct:33, generic:true, notes:'SNPF: 5% employee + 5% employer. Retirement at 50. Generic projection — Eswatini pension data is limited.' },
+  GA: { name:'Gabon', scheme:'CNSS', currency:'XAF', symbol:'FCFA', emp:2.5, er:5, ret:6, inflation:3, retireAge:60, annuityRate:4, lumpPct:25, generic:true, notes:'CNSS: 2.5% employee + 5% employer. Generic projection — Gabon pension data is limited.' },
+  GM: { name:'Gambia', scheme:'SSHFC', currency:'GMD', symbol:'D', emp:5, er:10, ret:7, inflation:10, retireAge:60, annuityRate:4.5, lumpPct:33, generic:true, notes:'SSHFC: 5% employee + 10% employer. Both defined benefit and contribution components. Generic projection.' },
+  GN: { name:'Guinea', scheme:'CNSS', currency:'GNF', symbol:'FG', emp:5, er:10, ret:6, inflation:10, retireAge:55, annuityRate:4, lumpPct:25, generic:true, notes:'CNSS: 5% employee + 10% employer. High inflation impacts real returns. Generic projection — Guinea pension data is limited.' },
+  GW: { name:'Guinea-Bissau', scheme:'INPS', currency:'XOF', symbol:'CFA', emp:3, er:5, ret:5, inflation:4, retireAge:60, annuityRate:3.5, lumpPct:25, generic:true, notes:'INPS: 3% employee + 5% employer. Very limited formal coverage. Generic projection — Guinea-Bissau pension data is limited.' },
+  LS: { name:'Lesotho', scheme:'LASF', currency:'LSL', symbol:'L', emp:5, er:10, ret:7, inflation:6, retireAge:60, annuityRate:4.5, lumpPct:33, generic:true, notes:'LASF for public sector. 5% employee + 10% employer. Generic projection — Lesotho pension data is limited.' },
+  LR: { name:'Liberia', scheme:'NASSCORP', currency:'LRD', symbol:'L$', emp:3, er:5, ret:6, inflation:8, retireAge:60, annuityRate:4, lumpPct:25, generic:true, notes:'NASSCORP: 3% employee + 5% employer. Very limited coverage for informal sector. Generic projection.' },
+  LY: { name:'Libya', scheme:'Social Security', currency:'LYD', symbol:'LD', emp:3.75, er:11.25, ret:7, inflation:5, retireAge:65, annuityRate:4.5, lumpPct:25, generic:true, notes:'Social Security Fund: 3.75% employee + 11.25% employer. Disrupted by political instability. Generic projection.' },
+  MG: { name:'Madagascar', scheme:'CNaPS', currency:'MGA', symbol:'Ar', emp:1, er:13, ret:6, inflation:8, retireAge:60, annuityRate:4, lumpPct:25, generic:true, notes:'CNaPS: 1% employee + 13% employer. Very low employee rate but high employer contribution. Generic projection.' },
+  MW: { name:'Malawi', scheme:'MERA', currency:'MWK', symbol:'K', emp:5, er:10, ret:7, inflation:22, retireAge:55, annuityRate:5, lumpPct:33, generic:true, notes:'MERA-regulated schemes: 5% employee + 10% employer. Very high inflation (20-25%) severely erodes real pension values. Generic projection.' },
+  ML: { name:'Mali', scheme:'INPS', currency:'XOF', symbol:'CFA', emp:3.6, er:8.4, ret:6, inflation:4, retireAge:58, annuityRate:4, lumpPct:25, generic:true, notes:'INPS: 3.6% employee + 8.4% employer. Retirement at 58. CFA franc. Generic projection — Mali pension data is limited.' },
+  MR: { name:'Mauritania', scheme:'CNSS', currency:'MRU', symbol:'UM', emp:2, er:3, ret:5, inflation:7, retireAge:60, annuityRate:3.5, lumpPct:25, generic:true, notes:'CNSS: 2% employee + 3% employer. Very low contribution rates. Generic projection — Mauritania pension data is limited.' },
+  NA: { name:'Namibia', scheme:'GIPF', currency:'NAD', symbol:'N$', emp:7, er:7, ret:8, inflation:5, retireAge:60, annuityRate:4.5, lumpPct:33, generic:true, notes:'GIPF for government; employer schemes for private sector. Typical 7% + 7%. Tax deductible contributions. Similar to SA pension framework.' },
+  NE: { name:'Niger', scheme:'CNSS', currency:'XOF', symbol:'CFA', emp:4, er:12, ret:6, inflation:4, retireAge:60, annuityRate:4, lumpPct:25, generic:true, notes:'CNSS: 4% employee + 12% employer. CFA franc. Generic projection — Niger pension data is limited.' },
+  ST: { name:'São Tomé & Príncipe', scheme:'INSS', currency:'STN', symbol:'Db', emp:8, er:15, ret:6, inflation:7, retireAge:62, annuityRate:4, lumpPct:25, generic:true, notes:'INSS: 8% employee + 15% employer. Generic projection — São Tomé & Príncipe pension data is limited.' },
+  SC: { name:'Seychelles', scheme:'SPS', currency:'SCR', symbol:'Rs', emp:2.5, er:10, ret:7, inflation:4, retireAge:63, annuityRate:4.5, lumpPct:25, generic:false, notes:'SPS: 2.5% employee + 10% employer. Universal basic pension also provided. Island economy with relatively stable outlook.' },
+  SL: { name:'Sierra Leone', scheme:'NASSIT', currency:'SLL', symbol:'Le', emp:5, er:10, ret:6, inflation:15, retireAge:60, annuityRate:4, lumpPct:33, generic:true, notes:'NASSIT: 5% employee + 10% employer. High inflation environment. Generic projection — Sierra Leone pension data is limited.' },
+  SO: { name:'Somalia', scheme:'None (Generic)', currency:'SOS', symbol:'Sh', emp:0, er:0, ret:5, inflation:5, retireAge:60, annuityRate:3.5, lumpPct:0, generic:true, notes:'No formal pension system. Use this tool to model voluntary savings only. Set contributions manually. Generic projection.' },
+  SS: { name:'South Sudan', scheme:'None (Generic)', currency:'SSP', symbol:'£', emp:0, er:0, ret:5, inflation:25, retireAge:60, annuityRate:3.5, lumpPct:0, generic:true, notes:'No formal private pension system. Very high inflation environment. Use to model voluntary savings only. Generic projection.' },
+  SD: { name:'Sudan', scheme:'SSC', currency:'SDG', symbol:'SDG', emp:8, er:17, ret:6, inflation:30, retireAge:60, annuityRate:4, lumpPct:25, generic:true, notes:'SSC: 8% employee + 17% employer. Extremely high inflation severely impacts real pension values. Generic projection — Sudan pension data is limited.' },
+  TG: { name:'Togo', scheme:'CNSS', currency:'XOF', symbol:'CFA', emp:4, er:8, ret:6, inflation:4, retireAge:60, annuityRate:4, lumpPct:25, generic:true, notes:'CNSS: 4% employee + 8% employer. CFA franc stability. Generic projection — Togo pension data is limited.' },
+  TN: { name:'Tunisia', scheme:'CNSS', currency:'TND', symbol:'DT', emp:9.18, er:16.57, ret:7, inflation:7, retireAge:60, annuityRate:5, lumpPct:25, generic:false, notes:'CNSS: 9.18% employee + 16.57% employer. Well-developed system. Multiple regimes for different sectors. Retirement at 60.' },
+  ZW: { name:'Zimbabwe', scheme:'NSSA', currency:'ZWL', symbol:'$', emp:4.5, er:4.5, ret:8, inflation:20, retireAge:60, annuityRate:5, lumpPct:33, generic:true, notes:'NSSA: 4.5% employee + 4.5% employer. High inflation and currency instability. Consider USD-denominated savings. Generic projection.' }
+};
+
+// ── State ──
+let currentMode = 'formal';
+let currentView = 'nominal';
+let currentChart = 'scenarios';
+let calcResults = null;
+
+// ── PFA Data (Nigeria PenCom 2025) ──
+var PFA_DATA = [
+  { name:'Stanbic IBTC',        r1:12.4, r3:11.8, r5:12.1, net:11.3 },
+  { name:'ARM Pension',          r1:11.9, r3:11.2, r5:11.6, net:10.8 },
+  { name:'Zenith Pension',       r1:11.5, r3:10.9, r5:11.2, net:10.4 },
+  { name:'AXA Mansard Pension',  r1:11.1, r3:10.6, r5:10.9, net:10.1 },
+  { name:'NLPC Pension',         r1:10.8, r3:10.3, r5:10.7, net:9.9  },
+  { name:'Premium Pension',      r1:10.4, r3:9.8,  r5:10.2, net:9.4  },
+  { name:'Access Pensions',      r1:10.2, r3:9.7,  r5:10.0, net:9.2  },
+  { name:'Oak Pensions',         r1:9.8,  r3:9.3,  r5:9.7,  net:8.9  },
+  { name:'Sigma Pensions',       r1:9.6,  r3:9.2,  r5:9.5,  net:8.7  },
+  { name:'Fidelity Pension',     r1:9.4,  r3:9.0,  r5:9.3,  net:8.5  },
+  { name:'IEI-Anchor Pension',   r1:8.9,  r3:8.5,  r5:8.8,  net:8.0  },
+  { name:'Crusader Sterling',    r1:8.2,  r3:8.7,  r5:8.9,  net:8.1  },
+];
+var PFA_MEDIAN_5Y = 10.3;
+
+// ── Inline SVG icons (no emoji) ──
+var SVG_WARN = '<svg class="icon-warn" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+var SVG_CHECK = '<svg class="icon-ok" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>';
+var SVG_WA = '<svg width="13" height="13" viewBox="0 0 32 32" fill="#25D366" aria-hidden="true" style="vertical-align:middle;margin-right:5px;flex-shrink:0"><path d="M16 3C8.832 3 3 8.832 3 16c0 2.387.633 4.629 1.742 6.57L3 29l6.617-1.723A13.01 13.01 0 0016 29c7.168 0 13-5.832 13-13S23.168 3 16 3zm0 2c6.086 0 11 4.914 11 11s-4.914 11-11 11a11.02 11.02 0 01-5.328-1.367l-.379-.219-3.93 1.023 1.047-3.813-.238-.386A11.04 11.04 0 015 16c0-6.086 4.914-11 11-11zm-2.563 5.438c-.183 0-.476.066-.727.328-.25.262-.953.93-.953 2.27s.977 2.632 1.113 2.816c.137.184 1.887 3.016 4.637 4.105.644.277 1.148.441 1.539.566.648.203 1.238.175 1.703.106.52-.074 1.598-.652 1.824-1.285.226-.633.226-1.172.156-1.285-.066-.113-.25-.18-.52-.313-.27-.133-1.598-.789-1.848-.879-.25-.09-.429-.133-.617.137-.184.27-.723.879-.883 1.063-.16.184-.32.207-.59.07-.27-.133-1.14-.422-2.176-1.344-.804-.715-1.348-1.598-1.508-1.867-.16-.27-.016-.418.121-.555.121-.121.27-.316.406-.473.133-.16.18-.27.27-.45.09-.184.047-.344-.023-.477-.07-.133-.617-1.484-.848-2.035-.223-.535-.453-.453-.617-.453z"/></svg>';
+
+// ── Helpers ──
+function $(id){ return document.getElementById(id); }
+function fmt(n, sym){
+  if(Math.abs(n) >= 1e9) return sym + ' ' + (n/1e9).toFixed(2) + 'B';
+  if(Math.abs(n) >= 1e6) return sym + ' ' + (n/1e6).toFixed(2) + 'M';
+  return sym + ' ' + Math.round(n).toLocaleString('en');
+}
+function fmtShort(n, sym){
+  if(Math.abs(n) >= 1e9) return sym + (n/1e9).toFixed(1) + 'B';
+  if(Math.abs(n) >= 1e6) return sym + (n/1e6).toFixed(1) + 'M';
+  if(Math.abs(n) >= 1e3) return sym + (n/1e3).toFixed(0) + 'K';
+  return sym + Math.round(n).toLocaleString('en');
+}
+
+// ── Slider update ──
+function updateSlider(el, labelId){
+  const val = el.value;
+  $(labelId).textContent = val + '%';
+  el.style.setProperty('--val', (val / 30 * 100) + '%');
+}
+
+// ── Mode toggle ──
+function setMode(mode){
+  currentMode = mode;
+  document.querySelectorAll('#modeToggle .toggle-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.mode === mode);
+  });
+  const erField = $('erContribField');
+  const badge = $('informalBadge');
+  if(mode === 'informal'){
+    erField.style.display = 'none';
+    $('erContrib').value = 0;
+    updateSlider($('erContrib'), 'erContribVal');
+    badge.style.display = 'inline-flex';
+  } else {
+    erField.style.display = '';
+    badge.style.display = 'none';
+    updateCountry();
+  }
+}
+
+// ── View toggle ──
+function toggleView(view){
+  currentView = view;
+  document.querySelectorAll('#viewToggle .toggle-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.view === view);
+  });
+  if(calcResults) renderResults();
+}
+
+// ── Country update ──
+function updateCountry(){
+  const code = $('country').value;
+  const c = COUNTRIES[code];
+  $('currency').value = c.currency;
+  $('retireAge').value = c.retireAge;
+  $('returnRate').value = c.ret;
+  $('inflationRate').value = c.inflation;
+  if(currentMode === 'formal'){
+    $('empContrib').value = c.emp;
+    $('erContrib').value = c.er;
+    updateSlider($('empContrib'), 'empContribVal');
+    updateSlider($('erContrib'), 'erContribVal');
+  } else {
+    $('empContrib').value = c.emp;
+    updateSlider($('empContrib'), 'empContribVal');
+  }
+  $('countryNotes').textContent = c.notes;
+  highlightRatesRow(code);
+  updatePFASection();
+  // Sync AVC slider label to new currency
+  var avcSl = $('avcSlider');
+  if(avcSl && +avcSl.value === 0) $('avcSliderVal').textContent = c.symbol + ' 0';
+}
+
+// ── Build rates table ──
+function buildRatesTable(){
+  let html = '';
+  for(const [code, c] of Object.entries(COUNTRIES)){
+    html += `<tr data-code="${code}"><td>${c.name}</td><td>${c.emp}%</td><td>${c.er}%</td><td>${c.inflation}%</td></tr>`;
+  }
+  $('ratesBody').innerHTML = html;
+  highlightRatesRow($('country').value);
+}
+function highlightRatesRow(code){
+  document.querySelectorAll('#ratesBody tr').forEach(tr => {
+    tr.classList.toggle('active-row', tr.dataset.code === code);
+  });
+}
+
+// ── Core projection ──
+function projectPension(params){
+  const { salary, salaryGrowth, empPct, erPct, annualReturn, balance0, voluntary, years, inflation } = params;
+  const monthlyReturn = annualReturn / 12;
+  let balance = balance0;
+  let monthlySalary = salary;
+  let totalContrib = balance0;
+  let totalReturns = 0;
+  const yearData = [];
+
+  for(let y = 1; y <= years; y++){
+    let yearContrib = 0, yearReturns = 0;
+    for(let m = 0; m < 12; m++){
+      const empC = monthlySalary * empPct;
+      const erC = monthlySalary * erPct;
+      const mc = empC + erC + voluntary;
+      const mr = balance * monthlyReturn;
+      balance += mc + mr;
+      yearContrib += mc;
+      yearReturns += mr;
+    }
+    totalContrib += yearContrib;
+    totalReturns += yearReturns;
+    monthlySalary *= (1 + salaryGrowth);
+
+    const inflationFactor = Math.pow(1 + inflation, y);
+    yearData.push({
+      year: y, salary: monthlySalary, yearContrib, yearReturns, balance,
+      realBalance: balance / inflationFactor,
+      totalContrib, totalReturns
+    });
+  }
+  return { balance, totalContrib, totalReturns, yearData };
+}
+
+// ── Monte Carlo ──
+function runMonteCarlo(params, numSims){
+  const results = [];
+  const { salary, salaryGrowth, empPct, erPct, annualReturn, balance0, voluntary, years } = params;
+  const stdDev = annualReturn * 0.4; // volatility ~40% of expected return
+
+  for(let s = 0; s < numSims; s++){
+    let balance = balance0;
+    let monthlySalary = salary;
+    for(let y = 0; y < years; y++){
+      // Box-Muller for normal distribution
+      const u1 = Math.random(), u2 = Math.random();
+      const z = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+      const yearReturn = annualReturn + z * stdDev;
+      const monthlyRet = Math.max(yearReturn, -0.3) / 12; // floor at -30%
+
+      for(let m = 0; m < 12; m++){
+        const mc = monthlySalary * empPct + monthlySalary * erPct + voluntary;
+        balance += mc + balance * monthlyRet;
+        if(balance < 0) balance = 0;
+      }
+      monthlySalary *= (1 + salaryGrowth);
+    }
+    results.push(balance);
+  }
+  results.sort((a,b) => a - b);
+  return results;
+}
+
+function getPercentile(arr, p){
+  const idx = Math.floor(arr.length * p / 100);
+  return arr[Math.min(idx, arr.length - 1)];
+}
+
+// ── Monte Carlo year-by-year percentiles for fan chart ──
+function runMonteCarloYearly(params, numSims){
+  const { salary, salaryGrowth, empPct, erPct, annualReturn, balance0, voluntary, years } = params;
+  const stdDev = annualReturn * 0.4;
+  const yearlyResults = Array.from({length: years}, () => []);
+
+  for(let s = 0; s < numSims; s++){
+    let balance = balance0;
+    let monthlySalary = salary;
+    for(let y = 0; y < years; y++){
+      const u1 = Math.random(), u2 = Math.random();
+      const z = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+      const yearReturn = annualReturn + z * stdDev;
+      const monthlyRet = Math.max(yearReturn, -0.3) / 12;
+      for(let m = 0; m < 12; m++){
+        const mc = monthlySalary * empPct + monthlySalary * erPct + voluntary;
+        balance += mc + balance * monthlyRet;
+        if(balance < 0) balance = 0;
+      }
+      monthlySalary *= (1 + salaryGrowth);
+      yearlyResults[y].push(balance);
+    }
+  }
+  return yearlyResults.map(arr => {
+    arr.sort((a,b) => a - b);
+    return {
+      p10: getPercentile(arr, 10),
+      p25: getPercentile(arr, 25),
+      p50: getPercentile(arr, 50),
+      p75: getPercentile(arr, 75),
+      p90: getPercentile(arr, 90)
+    };
+  });
+}
+
+// ── Main calculate ──
+function calculate(){
+  const code = $('country').value;
+  const c = COUNTRIES[code];
+  const currentAge = +$('currentAge').value;
+  const retireAge = +$('retireAge').value;
+  const years = retireAge - currentAge;
+
+  if(years <= 0){ alert('Retirement age must be greater than current age.'); return; }
+  if(years > 55){ alert('Projection period is too long. Check your ages.'); return; }
+
+  // Show loading state — defer heavy work so browser can repaint
+  const btn = $('calcBtn');
+  btn.classList.add('btn-calculating');
+  btn.setAttribute('aria-busy', 'true');
+  requestAnimationFrame(() => requestAnimationFrame(() => _runCalculation(code, c, currentAge, retireAge, years)));
+}
+
+function _runCalculation(code, c, currentAge, retireAge, years){
+  const btn = $('calcBtn');
+
+  const params = {
+    salary: +$('salary').value,
+    salaryGrowth: +$('salaryGrowth').value / 100,
+    empPct: +$('empContrib').value / 100,
+    erPct: +$('erContrib').value / 100,
+    annualReturn: +$('returnRate').value / 100,
+    balance0: +$('currentBalance').value,
+    voluntary: +$('voluntary').value,
+    years,
+    inflation: +$('inflationRate').value / 100
+  };
+
+  // Main projection (moderate)
+  const moderate = projectPension(params);
+
+  // Optimistic (+2% return)
+  const optimistic = projectPension({...params, annualReturn: params.annualReturn + 0.02});
+
+  // Pessimistic (-2% return)
+  const pessimistic = projectPension({...params, annualReturn: Math.max(params.annualReturn - 0.02, 0.01)});
+
+  // Monte Carlo
+  const mcResults = runMonteCarlo(params, 500);
+  const mcYearly = runMonteCarloYearly(params, 200); // fewer for yearly to keep fast
+
+  // Target
+  const targetIncome = +$('targetIncome').value;
+  const targetPot = targetIncome > 0 ? targetIncome * 12 * 20 : moderate.balance * 0.8; // 20 years drawdown
+
+  // Probability of reaching target
+  const mcAboveTarget = mcResults.filter(v => v >= targetPot).length;
+  const mcProbability = (mcAboveTarget / mcResults.length) * 100;
+
+  // Annuity calculation
+  const annuityRate = c.annuityRate / 100;
+  const lumpPct = c.lumpPct / 100;
+  const lumpSum = moderate.balance * lumpPct;
+  const annuityPot = moderate.balance * (1 - lumpPct);
+  // Simple annuity: monthly income = pot * (rate/12) / (1 - (1+rate/12)^-240) for 20 years
+  const mr = annuityRate / 12;
+  const n = 240; // 20 years
+  const monthlyAnnuity = annuityPot * (mr / (1 - Math.pow(1 + mr, -n)));
+
+  // Programmed withdrawal (self-managed drawdown over 25 years)
+  const pwYears = 25;
+  const pwMonthly = moderate.balance * ((params.annualReturn/12) / (1 - Math.pow(1 + params.annualReturn/12, -(pwYears*12))));
+
+  // What-if scenarios
+  const scenarios = [];
+  const scenarioAges = [retireAge - 5, retireAge, retireAge + 5].filter(a => a > currentAge && a <= 75);
+  const scenarioContribs = [0, Math.round(params.voluntary), Math.round(params.salary * 0.05)];
+  for(const age of scenarioAges){
+    const yrs = age - currentAge;
+    if(yrs <= 0) continue;
+    for(const vol of scenarioContribs){
+      const p = {...params, years: yrs, voluntary: vol};
+      const r = projectPension(p);
+      const inflFactor = Math.pow(1 + params.inflation, yrs);
+      scenarios.push({
+        retireAge: age,
+        voluntary: vol,
+        balance: r.balance,
+        realBalance: r.balance / inflFactor,
+        monthlyIncome: r.balance / (20 * 12),
+        realMonthlyIncome: (r.balance / inflFactor) / (20 * 12)
+      });
+    }
+  }
+
+  calcResults = {
+    code, c, currentAge, retireAge, years, params,
+    moderate, optimistic, pessimistic,
+    mcResults, mcYearly, mcProbability, targetPot, targetIncome,
+    lumpSum, annuityPot, monthlyAnnuity, pwMonthly,
+    scenarios
+  };
+
+  $('resultSection').style.display = 'block';
+  renderResults();
+  drawChart();
+
+  $('resultSection').scrollIntoView({ behavior:'smooth', block:'start' });
+  gtag('event','pension_calculated',{ country: code, years: years, mode: currentMode });
+  btn.classList.remove('btn-calculating');
+  btn.removeAttribute('aria-busy');
+}
+
+// ── Render Results ──
+function renderResults(){
+  const { code, c, years, moderate, optimistic, pessimistic, mcProbability, mcResults,
+          lumpSum, annuityPot, monthlyAnnuity, pwMonthly, scenarios, params, retireAge, currentAge, targetPot } = calcResults;
+  const sym = c.symbol;
+  const isReal = currentView === 'real';
+  const inflFactor = Math.pow(1 + params.inflation, years);
+
+  const val = (n) => isReal ? n / inflFactor : n;
+  const label = isReal ? ' (today\'s money)' : '';
+
+  // Result grid
+  const monthlyPension = val(moderate.balance) / (20 * 12);
+  const returnsShare = ((moderate.totalReturns / (moderate.totalContrib + moderate.totalReturns)) * 100).toFixed(0);
+
+  $('resultGrid').innerHTML = `
+    <div class="result-box highlight"><div class="r-label">Projected Pension${label}</div><div class="r-value green" data-target="${Math.round(val(moderate.balance))}">${fmt(val(moderate.balance), sym)}</div></div>
+    <div class="result-box"><div class="r-label">Total Contributions</div><div class="r-value" data-target="${Math.round(val(moderate.totalContrib))}">${fmt(val(moderate.totalContrib), sym)}</div></div>
+    <div class="result-box"><div class="r-label">Investment Returns</div><div class="r-value green" data-target="${Math.round(val(moderate.totalReturns))}">${fmt(val(moderate.totalReturns), sym)}</div></div>
+    <div class="result-box"><div class="r-label">Est. Monthly Pension</div><div class="r-value green">${fmt(monthlyPension, sym)}</div><div class="r-sub">20-year drawdown</div></div>
+    <div class="result-box"><div class="r-label">Returns Share</div><div class="r-value">${returnsShare}%</div><div class="r-sub">of total pot</div></div>
+    <div class="result-box"><div class="r-label">Optimistic Scenario</div><div class="r-value green">${fmt(val(optimistic.balance), sym)}</div><div class="r-sub">+2% return</div></div>
+  `;
+
+  // Animate count-up
+  requestAnimationFrame(() => {
+    document.querySelectorAll('.r-value[data-target]').forEach(el => el.classList.add('visible'));
+  });
+
+  // Progress ring
+  const circumference = 2 * Math.PI * 52; // r=52
+  const progress = Math.min(years / 45, 1);
+  $('ringFg').style.strokeDashoffset = circumference * (1 - progress);
+  $('ringYears').textContent = years;
+  $('ringLegend').innerHTML = `
+    <div>Current Age: <span class="val">${currentAge}</span></div>
+    <div>Retire at: <span class="val">${retireAge}</span></div>
+    <div>Monthly contribution: <span class="val">${fmt(params.salary * (params.empPct + params.erPct) + params.voluntary, sym)}</span></div>
+    <div>Final salary (est.): <span class="val">${fmt(params.salary * Math.pow(1 + params.salaryGrowth, years), sym)}</span></div>
+  `;
+
+  // Monte Carlo
+  const p10 = getPercentile(mcResults, 10);
+  const p50 = getPercentile(mcResults, 50);
+  const p90 = getPercentile(mcResults, 90);
+  const prob = Math.round(mcProbability);
+  const barClass = prob >= 70 ? 'good' : prob >= 40 ? 'ok' : 'bad';
+  $('mcBarFill').className = 'mc-bar-fill ' + barClass;
+  setTimeout(() => { $('mcBarFill').style.width = prob + '%'; }, 100);
+  $('mcBarLabel').textContent = prob + '%';
+  $('mcVerdict').textContent = prob >= 70 ? 'Good chance of reaching your target' : prob >= 40 ? 'Moderate chance — consider increasing contributions' : 'Low probability — increase contributions or extend timeline';
+  $('mcStats').innerHTML = `
+    <div class="mc-stat"><div class="label">Worst 10%</div><div class="value">${fmtShort(val(p10), sym)}</div></div>
+    <div class="mc-stat"><div class="label">Median</div><div class="value">${fmtShort(val(p50), sym)}</div></div>
+    <div class="mc-stat"><div class="label">Best 10%</div><div class="value">${fmtShort(val(p90), sym)}</div></div>
+  `;
+
+  // Lump sum vs annuity
+  $('comparisonCards').innerHTML = `
+    <div class="cmp-card">
+      <div class="cmp-title">Lump Sum (${Math.round(c.lumpPct)}%)</div>
+      <div class="cmp-value">${fmt(val(lumpSum), sym)}</div>
+      <div class="cmp-sub">One-time payout</div>
+      <div style="margin-top:8px;font-size:.72rem;color:var(--gray-500)">Remaining ${100 - Math.round(c.lumpPct)}% buys annuity:</div>
+      <div style="font-weight:700;color:var(--em-dark);font-size:.88rem;margin-top:4px">${fmt(val(monthlyAnnuity), sym)}/mo</div>
+    </div>
+    <div class="cmp-card recommended">
+      <div class="cmp-tag">Full Drawdown</div>
+      <div class="cmp-title">Programmed Withdrawal</div>
+      <div class="cmp-value">${fmt(val(pwMonthly), sym)}/mo</div>
+      <div class="cmp-sub">Self-managed over 25 years</div>
+      <div style="margin-top:8px;font-size:.72rem;color:var(--gray-500)">Total pot invested:</div>
+      <div style="font-weight:700;color:var(--em-dark);font-size:.88rem;margin-top:4px">${fmt(val(moderate.balance), sym)}</div>
+    </div>
+  `;
+
+  // What-if scenarios table
+  let scenHtml = '<thead><tr><th style="text-align:left">Scenario</th><th>Retire Age</th><th>Extra Monthly</th><th>Pension Pot' + label + '</th><th>Monthly Income</th></tr></thead><tbody>';
+  scenarios.forEach((s, i) => {
+    const isBase = s.retireAge === retireAge && s.voluntary === Math.round(params.voluntary);
+    const sv = isReal ? s.realBalance : s.balance;
+    const mi = isReal ? s.realMonthlyIncome : s.monthlyIncome;
+    scenHtml += `<tr class="${isBase ? 'highlight-row' : ''}"><td>${isBase ? 'Current plan' : 'Scenario ' + (i+1)}</td><td style="text-align:right">${s.retireAge}</td><td style="text-align:right">${fmt(s.voluntary, sym)}</td><td style="text-align:right;font-weight:700">${fmt(sv, sym)}</td><td style="text-align:right">${fmt(mi, sym)}</td></tr>`;
+  });
+  scenHtml += '</tbody>';
+  $('scenarioTable').innerHTML = scenHtml;
+
+  // Year-by-year table
+  const yd = moderate.yearData;
+  let tableHtml = '<thead><tr><th style="text-align:left">Yr</th><th>Age</th><th>Annual Contrib</th><th>Returns</th><th>Balance' + label + '</th></tr></thead><tbody>';
+  yd.forEach(d => {
+    const bal = isReal ? d.realBalance : d.balance;
+    tableHtml += `<tr><td>${d.year}</td><td style="text-align:right">${currentAge + d.year}</td><td style="text-align:right">${fmt(val(d.yearContrib), sym)}</td><td style="text-align:right">${fmt(val(d.yearReturns), sym)}</td><td style="text-align:right">${fmt(bal, sym)}</td></tr>`;
+  });
+  tableHtml += '</tbody>';
+  $('projTable').innerHTML = tableHtml;
+
+  // ── New feature renders ──
+  renderRealDashboard();
+  renderStartNow();
+  renderDeathBenefit();
+  // Reset AVC slider
+  var avcSl = $('avcSlider');
+  if(avcSl){ avcSl.value = 0; avcSl.style.setProperty('--val', '0%'); }
+  $('avcSliderVal').textContent = c.symbol + ' 0';
+  $('avcResult').style.display = 'none';
+  // Reset drawdown result
+  $('drawdownResult').style.display = 'none';
+  // Generic projection note
+  var note = $('genericProjNote');
+  if(note){
+    if(c.generic){ note.style.display = 'block'; note.textContent = 'Generic projection \u2014 ' + c.name + ' pension system data is limited. Statutory contribution rates used. Actual scheme rules may differ.'; }
+    else { note.style.display = 'none'; }
+  }
+  // PFA comparison (Nigeria)
+  if(code === 'NG' && $('pfaSelect').value) updatePFAComparison();
+}
+
+// ── Chart Drawing ──
+function switchChart(type){
+  currentChart = type;
+  document.querySelectorAll('.chart-tab').forEach(t => t.classList.toggle('active', t.dataset.chart === type));
+  drawChart();
+}
+
+function drawChart(){
+  if(!calcResults) return;
+  const canvas = $('projChart');
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  canvas.style.width = rect.width + 'px';
+  canvas.style.height = rect.height + 'px';
+  ctx.scale(dpr, dpr);
+  const W = rect.width, H = rect.height;
+  ctx.clearRect(0, 0, W, H);
+
+  const pad = { top:20, right:20, bottom:36, left:70 };
+  const cw = W - pad.left - pad.right;
+  const ch = H - pad.top - pad.bottom;
+
+  const { moderate, optimistic, pessimistic, mcYearly, years, params, c } = calcResults;
+  const sym = c.symbol;
+  const isReal = currentView === 'real';
+
+  if(currentChart === 'scenarios') drawScenarios(ctx, cw, ch, pad, W, H, sym, isReal);
+  else if(currentChart === 'breakdown') drawBreakdown(ctx, cw, ch, pad, W, H, sym, isReal);
+  else if(currentChart === 'montecarlo') drawMonteCarlo(ctx, cw, ch, pad, W, H, sym, isReal);
+
+  updateChartLegend();
+  setupChartTooltip(canvas, pad, cw, ch, W, H);
+}
+
+function drawScenarios(ctx, cw, ch, pad, W, H, sym, isReal){
+  const { moderate, optimistic, pessimistic, years, params } = calcResults;
+  const optData = optimistic.yearData;
+  const modData = moderate.yearData;
+  const pesData = pessimistic.yearData;
+
+  const getVal = (d) => {
+    const inflFactor = Math.pow(1 + params.inflation, d.year);
+    return isReal ? d.balance / inflFactor : d.balance;
+  };
+
+  const maxVal = Math.max(...optData.map(getVal));
+  const x = (i) => pad.left + (i / (years - 1)) * cw;
+  const y = (v) => pad.top + ch - (v / maxVal) * ch;
+
+  // Grid
+  drawGrid(ctx, pad, cw, ch, maxVal, years, sym);
+
+  // Area fill for optimistic-pessimistic range
+  ctx.beginPath();
+  optData.forEach((d, i) => { i === 0 ? ctx.moveTo(x(i), y(getVal(d))) : ctx.lineTo(x(i), y(getVal(d))); });
+  for(let i = pesData.length - 1; i >= 0; i--) ctx.lineTo(x(i), y(getVal(pesData[i])));
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(5,150,105,0.08)';
+  ctx.fill();
+
+  // Lines
+  drawLine(ctx, pesData, x, y, getVal, '#f59e0b', 1.5);
+  drawLine(ctx, modData, x, y, getVal, '#047857', 2.5);
+  drawLine(ctx, optData, x, y, getVal, '#10b981', 1.5);
+
+  // Endpoints
+  [optData, modData, pesData].forEach((data, idx) => {
+    const last = data[data.length - 1];
+    const colors = ['#10b981','#047857','#f59e0b'];
+    ctx.beginPath();
+    ctx.arc(x(data.length - 1), y(getVal(last)), 4, 0, Math.PI * 2);
+    ctx.fillStyle = colors[idx];
+    ctx.fill();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  });
+}
+
+function drawBreakdown(ctx, cw, ch, pad, W, H, sym, isReal){
+  const { moderate, years, params } = calcResults;
+  const data = moderate.yearData;
+
+  const getContrib = (d) => {
+    const inflFactor = Math.pow(1 + params.inflation, d.year);
+    return isReal ? d.totalContrib / inflFactor : d.totalContrib;
+  };
+  const getReturns = (d) => {
+    const inflFactor = Math.pow(1 + params.inflation, d.year);
+    return isReal ? d.totalReturns / inflFactor : d.totalReturns;
+  };
+  const getTotal = (d) => getContrib(d) + getReturns(d);
+
+  const maxVal = Math.max(...data.map(getTotal));
+  const x = (i) => pad.left + (i / (years - 1)) * cw;
+  const y = (v) => pad.top + ch - (v / maxVal) * ch;
+
+  drawGrid(ctx, pad, cw, ch, maxVal, years, sym);
+
+  // Stacked area — returns on top of contributions
+  // Returns area
+  ctx.beginPath();
+  data.forEach((d, i) => { i === 0 ? ctx.moveTo(x(i), y(getTotal(d))) : ctx.lineTo(x(i), y(getTotal(d))); });
+  for(let i = data.length - 1; i >= 0; i--) ctx.lineTo(x(i), y(getContrib(data[i])));
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(5,150,105,0.3)';
+  ctx.fill();
+
+  // Contributions area
+  ctx.beginPath();
+  data.forEach((d, i) => { i === 0 ? ctx.moveTo(x(i), y(getContrib(d))) : ctx.lineTo(x(i), y(getContrib(d))); });
+  ctx.lineTo(x(data.length - 1), y(0));
+  ctx.lineTo(x(0), y(0));
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(167,243,208,0.5)';
+  ctx.fill();
+
+  // Lines
+  drawLine(ctx, data, x, y, getTotal, '#047857', 2);
+  drawLine(ctx, data, x, y, getContrib, '#34d399', 2);
+}
+
+function drawMonteCarlo(ctx, cw, ch, pad, W, H, sym, isReal){
+  const { mcYearly, years, params, moderate } = calcResults;
+
+  const getVal = (pctObj, key, yr) => {
+    const v = pctObj[key];
+    return isReal ? v / Math.pow(1 + params.inflation, yr + 1) : v;
+  };
+
+  const maxVal = Math.max(...mcYearly.map((p, i) => getVal(p, 'p90', i)));
+  const x = (i) => pad.left + (i / (years - 1)) * cw;
+  const y = (v) => pad.top + ch - (v / maxVal) * ch;
+
+  drawGrid(ctx, pad, cw, ch, maxVal, years, sym);
+
+  // Fan: p10 to p90
+  ctx.beginPath();
+  mcYearly.forEach((p, i) => { i === 0 ? ctx.moveTo(x(i), y(getVal(p,'p90',i))) : ctx.lineTo(x(i), y(getVal(p,'p90',i))); });
+  for(let i = mcYearly.length - 1; i >= 0; i--) ctx.lineTo(x(i), y(getVal(mcYearly[i],'p10',i)));
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(5,150,105,0.08)';
+  ctx.fill();
+
+  // Fan: p25 to p75
+  ctx.beginPath();
+  mcYearly.forEach((p, i) => { i === 0 ? ctx.moveTo(x(i), y(getVal(p,'p75',i))) : ctx.lineTo(x(i), y(getVal(p,'p75',i))); });
+  for(let i = mcYearly.length - 1; i >= 0; i--) ctx.lineTo(x(i), y(getVal(mcYearly[i],'p25',i)));
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(5,150,105,0.15)';
+  ctx.fill();
+
+  // Median line
+  ctx.beginPath();
+  mcYearly.forEach((p, i) => {
+    const v = getVal(p, 'p50', i);
+    i === 0 ? ctx.moveTo(x(i), y(v)) : ctx.lineTo(x(i), y(v));
+  });
+  ctx.strokeStyle = '#047857';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+}
+
+function drawLine(ctx, data, xFn, yFn, valFn, color, width){
+  ctx.beginPath();
+  data.forEach((d, i) => {
+    i === 0 ? ctx.moveTo(xFn(i), yFn(valFn(d))) : ctx.lineTo(xFn(i), yFn(valFn(d)));
+  });
+  ctx.strokeStyle = color;
+  ctx.lineWidth = width;
+  ctx.stroke();
+}
+
+function drawGrid(ctx, pad, cw, ch, maxVal, years, sym){
+  ctx.strokeStyle = '#e2e8f0';
+  ctx.lineWidth = 0.5;
+  ctx.fillStyle = '#94a3b8';
+  ctx.font = '10px DM Sans, sans-serif';
+  ctx.textAlign = 'right';
+
+  // Y axis
+  for(let i = 0; i <= 4; i++){
+    const v = (maxVal / 4) * i;
+    const py = pad.top + ch - (v / maxVal) * ch;
+    ctx.beginPath();
+    ctx.moveTo(pad.left, py);
+    ctx.lineTo(pad.left + cw, py);
+    ctx.stroke();
+    ctx.fillText(fmtShort(v, sym), pad.left - 6, py + 3);
+  }
+
+  // X axis
+  ctx.textAlign = 'center';
+  const step = Math.max(1, Math.floor(years / 6));
+  for(let i = 0; i < years; i += step){
+    const px = pad.left + (i / (years - 1)) * cw;
+    ctx.fillText('Yr ' + (i + 1), px, pad.top + ch + 18);
+  }
+  // Last year
+  const px = pad.left + cw;
+  ctx.fillText('Yr ' + years, px, pad.top + ch + 18);
+}
+
+function updateChartLegend(){
+  const legends = {
+    scenarios: '<span class="leg-opt">Optimistic (+2%)</span><span class="leg-mod">Moderate</span><span class="leg-pes">Pessimistic (-2%)</span>',
+    breakdown: '<span class="leg-contrib">Contributions</span><span class="leg-returns">Investment Returns</span>',
+    montecarlo: '<span class="leg-p90">10th-90th %ile</span><span class="leg-p50">Median (50th)</span><span class="leg-p10">25th-75th %ile</span>'
+  };
+  $('chartLegend').innerHTML = legends[currentChart] || '';
+}
+
+// ── Chart Tooltip ──
+function setupChartTooltip(canvas, pad, cw, ch, W, H){
+  const tooltip = $('chartTooltip');
+  const { moderate, optimistic, pessimistic, mcYearly, years, params, c, currentAge } = calcResults;
+  const sym = c.symbol;
+  const isReal = currentView === 'real';
+
+  canvas.onmousemove = function(e){
+    const rect = canvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+
+    if(mx < pad.left || mx > pad.left + cw || my < pad.top || my > pad.top + ch){
+      tooltip.style.display = 'none';
+      return;
+    }
+
+    const yearIdx = Math.round(((mx - pad.left) / cw) * (years - 1));
+    if(yearIdx < 0 || yearIdx >= years){ tooltip.style.display = 'none'; return; }
+
+    const inflFactor = Math.pow(1 + params.inflation, yearIdx + 1);
+    const adj = (v) => isReal ? v / inflFactor : v;
+    let text = `Year ${yearIdx + 1} (Age ${currentAge + yearIdx + 1})`;
+
+    if(currentChart === 'scenarios'){
+      text += `<br>Optimistic: ${fmt(adj(optimistic.yearData[yearIdx].balance), sym)}`;
+      text += `<br>Moderate: ${fmt(adj(moderate.yearData[yearIdx].balance), sym)}`;
+      text += `<br>Pessimistic: ${fmt(adj(pessimistic.yearData[yearIdx].balance), sym)}`;
+    } else if(currentChart === 'breakdown'){
+      text += `<br>Contributions: ${fmt(adj(moderate.yearData[yearIdx].totalContrib), sym)}`;
+      text += `<br>Returns: ${fmt(adj(moderate.yearData[yearIdx].totalReturns), sym)}`;
+      text += `<br>Total: ${fmt(adj(moderate.yearData[yearIdx].balance), sym)}`;
+    } else if(currentChart === 'montecarlo' && mcYearly[yearIdx]){
+      const p = mcYearly[yearIdx];
+      text += `<br>90th %ile: ${fmt(adj(p.p90), sym)}`;
+      text += `<br>Median: ${fmt(adj(p.p50), sym)}`;
+      text += `<br>10th %ile: ${fmt(adj(p.p10), sym)}`;
+    }
+
+    tooltip.innerHTML = text;
+    tooltip.style.display = 'block';
+    const tx = mx + 15;
+    const ty = my - 10;
+    tooltip.style.left = (tx + tooltip.offsetWidth > W ? mx - tooltip.offsetWidth - 10 : tx) + 'px';
+    tooltip.style.top = (ty < 0 ? 10 : ty) + 'px';
+  };
+
+  canvas.onmouseleave = function(){
+    tooltip.style.display = 'none';
+  };
+}
+
+// ── Export ──
+function exportCSV(){
+  if(!calcResults) return;
+  const { moderate, c, currentAge, params } = calcResults;
+  const sym = c.currency;
+  const isReal = currentView === 'real';
+  let csv = 'Year,Age,Annual Contribution,Annual Returns,Balance\n';
+  moderate.yearData.forEach(d => {
+    const inflFactor = Math.pow(1 + params.inflation, d.year);
+    const bal = isReal ? d.realBalance : d.balance;
+    const contrib = isReal ? d.yearContrib / inflFactor : d.yearContrib;
+    const ret = isReal ? d.yearReturns / inflFactor : d.yearReturns;
+    csv += `${d.year},${currentAge + d.year},${Math.round(contrib)},${Math.round(ret)},${Math.round(bal)}\n`;
+  });
+  const blob = new Blob([csv], { type:'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `pension-projection-${c.name.toLowerCase()}-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  gtag('event','pension_export',{ format:'csv', country: calcResults.code });
+}
+
+function printResults(){
+  window.print();
+}
+
+function shareResults(){
+  if(!calcResults) return;
+  const { moderate, c, retireAge, years } = calcResults;
+  const text = `My projected pension in ${c.name} at age ${retireAge}: ${fmt(moderate.balance, c.symbol)} after ${years} years of saving. Calculate yours at afrotools.com/tools/pension-proj/`;
+  if(navigator.share){
+    navigator.share({ title:'Pension Projection', text, url:'https://afrotools.com/tools/pension-proj/' });
+  } else {
+    navigator.clipboard.writeText(text).then(() => alert('Results copied to clipboard!'));
+  }
+  gtag('event','pension_share',{ country: calcResults.code });
+}
+
+// ── Init ──
+function init(){
+  buildRatesTable();
+  buildPFASelect();
+  updateSlider($('empContrib'), 'empContribVal');
+  updateSlider($('erContrib'), 'erContribVal');
+  updateCountry();
+
+  // Resize handler for chart
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => { if(calcResults) drawChart(); }, 200);
+  });
+}
+
+// ── Real Return Dashboard ──
+function renderRealDashboard(){
+  if(!calcResults) return;
+  var { c, moderate, params, years } = calcResults;
+  var sym = c.symbol;
+  var inflFactor = Math.pow(1 + params.inflation, years);
+  var nominal = moderate.balance;
+  var real = nominal / inflFactor;
+  var pct = ((real / nominal) * 100).toFixed(0);
+  var inf = (params.inflation * 100).toFixed(0);
+  $('realDash').innerHTML =
+    '<div class="real-dashboard">' +
+    '<div style="margin-bottom:12px;font-size:.78rem;color:rgba(255,255,255,.7);line-height:1.5">Your pension in <strong style="color:#fff">nominal</strong> terms vs what it will actually <strong style="color:#c4b5fd">buy in today\'s money</strong>.</div>' +
+    '<div class="real-dash-grid">' +
+    '<div class="real-dash-box"><div class="real-dash-label">Nominal value at retirement</div><div class="real-dash-value">' + fmt(nominal, sym) + '</div><div style="font-size:.65rem;color:rgba(255,255,255,.4);margin-top:3px">What the number says</div></div>' +
+    '<div class="real-dash-box warning"><div class="real-dash-label">In today\'s money (real)</div><div class="real-dash-value red">' + fmt(real, sym) + '</div><div style="font-size:.65rem;color:rgba(255,255,255,.4);margin-top:3px">What it will actually buy</div></div>' +
+    '</div>' +
+    '<div class="real-dash-callout" style="display:flex;gap:8px;align-items:flex-start">' + SVG_WARN + '<span>At ' + c.name + '\'s ' + inf + '% average inflation, ' + sym + ' 1M today will be worth only <strong>' + sym + ' ' + Number(Math.round(1e6 / inflFactor)).toLocaleString() + '</strong> in ' + years + ' years.<br>' +
+    'Your nominal pension of ' + fmtShort(nominal, sym) + ' has real purchasing power of only <strong>' + fmtShort(real, sym) + '</strong> — that\'s <strong>' + pct + '%</strong> of the nominal figure.</span></div>' +
+    '</div>';
+}
+
+// ── Start Now vs 5 Years Later ──
+function renderStartNow(){
+  if(!calcResults) return;
+  var { c, params, currentAge, years } = calcResults;
+  var sym = c.symbol;
+  var el = $('startNowContent');
+  if(years <= 5){ el.innerHTML = '<p style="font-size:.78rem;color:var(--gray-500)">Less than 5 years to retirement — comparison not applicable.</p>'; return; }
+  var nowResult = projectPension(params);
+  var laterParams = Object.assign({}, params, { years: years - 5, balance0: 0 });
+  var laterResult = projectPension(laterParams);
+  var cost = nowResult.balance - laterResult.balance;
+  var costPct = ((cost / nowResult.balance) * 100).toFixed(0);
+  el.innerHTML =
+    '<div class="start-now-card">' +
+    '<div class="start-now-title">Starting at age ' + currentAge + ' vs age ' + (currentAge + 5) + '</div>' +
+    '<div class="sn-grid">' +
+    '<div class="sn-box"><div class="sn-label">Start now (age ' + currentAge + ')</div><div class="sn-value">' + fmt(nowResult.balance, sym) + '</div></div>' +
+    '<div class="sn-box"><div class="sn-label">Wait 5 years (age ' + (currentAge + 5) + ')</div><div class="sn-value">' + fmt(laterResult.balance, sym) + '</div></div>' +
+    '</div>' +
+    '<div class="sn-cost">The 5-year delay costs you ' + fmt(cost, sym) + ' (' + costPct + '% less)</div>' +
+    '<div style="text-align:center"><button type="button" class="sn-share-btn" onclick="shareStartNow(\'' + encodeURIComponent(fmt(cost, sym)) + '\',' + currentAge + ',' + (currentAge + 5) + ')">Share via WhatsApp</button></div>' +
+    '</div>';
+}
+
+function shareStartNow(costEnc, age1, age2){
+  var cost = decodeURIComponent(costEnc);
+  var msg = 'I just used AfroTools Pension Calculator and discovered: waiting 5 years to start saving (starting at ' + age2 + ' instead of ' + age1 + ') costs ' + cost + ' in retirement savings. Start your pension TODAY! https://afrotools.com/tools/pension-proj/';
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+
+// ── AVC Optimizer ──
+function updateAVC(el){
+  if(!calcResults) return;
+  var avcAmt = +el.value;
+  var { c, params, years } = calcResults;
+  var sym = c.symbol;
+  $('avcSliderVal').textContent = sym + ' ' + avcAmt.toLocaleString();
+  el.style.setProperty('--val', (avcAmt / 100000 * 100) + '%');
+  if(avcAmt === 0){ $('avcResult').style.display = 'none'; return; }
+  var baseResult = projectPension(params);
+  var avcParams = Object.assign({}, params, { voluntary: params.voluntary + avcAmt });
+  var avcResult = projectPension(avcParams);
+  var gain = avcResult.balance - baseResult.balance;
+  var code = calcResults.code;
+  var taxRate = code === 'NG' ? 0.24 : code === 'ZA' ? 0.26 : code === 'KE' ? 0.25 : code === 'GH' ? 0.25 : 0.20;
+  var taxSaving = avcAmt * taxRate;
+  var netCost = avcAmt - taxSaving;
+  // Estimate years sooner to reach base target
+  var yearsSooner = 0;
+  for(var yr = 1; yr < years; yr++){
+    var testParams = Object.assign({}, params, { voluntary: params.voluntary + avcAmt, years: yr });
+    var testResult = projectPension(testParams);
+    if(testResult.balance >= baseResult.balance){ yearsSooner = years - yr; break; }
+  }
+  $('avcResult').style.display = 'block';
+  $('avcResult').innerHTML =
+    '<div class="avc-grid">' +
+    '<div class="avc-stat"><div class="label">Additional Fund</div><div class="value">+' + fmtShort(gain, sym) + '</div></div>' +
+    '<div class="avc-stat"><div class="label">Monthly Tax Saving</div><div class="value">' + sym + ' ' + Math.round(taxSaving).toLocaleString() + '</div></div>' +
+    '<div class="avc-stat"><div class="label">Net Cost/Month</div><div class="value">' + sym + ' ' + Math.round(netCost).toLocaleString() + '</div></div>' +
+    '</div>' +
+    '<div style="font-size:.76rem;color:var(--em-dark);line-height:1.6">' +
+    (yearsSooner > 0 ? '<strong>Retire ' + yearsSooner + ' year' + (yearsSooner === 1 ? '' : 's') + ' sooner</strong> — this AVC reaches your current target fund faster.<br>' : '') +
+    'Net cost after ' + (taxRate * 100).toFixed(0) + '% tax relief: <strong>' + sym + ' ' + Math.round(netCost).toLocaleString() + '/month</strong>. Your pension grows by an extra <strong>' + fmtShort(gain, sym) + '</strong> at retirement.' +
+    '</div>';
+}
+
+// ── Drawdown Calculator ──
+function calcDrawdown(){
+  if(!calcResults){ alert('Run the projection first.'); return; }
+  var monthly = +$('ddMonthly').value;
+  if(!monthly || monthly <= 0){ alert('Enter a monthly withdrawal amount.'); return; }
+  var { moderate, params, c } = calcResults;
+  var fund = moderate.balance;
+  var sym = c.symbol;
+  var nomReturn = params.annualReturn;
+  var inflation = params.inflation;
+  var realReturn = (1 + nomReturn) / (1 + inflation) - 1;
+  function monthsLasting(fundAmt, monthlyW, annualRet){
+    var mr = annualRet / 12;
+    if(mr <= 0) return Math.floor(fundAmt / monthlyW);
+    var ratio = fundAmt * mr / monthlyW;
+    if(ratio >= 1) return Infinity;
+    return Math.floor(-Math.log(1 - ratio) / Math.log(1 + mr));
+  }
+  var nomMonths = monthsLasting(fund, monthly, nomReturn);
+  // Real withdrawal = monthly need in future money terms
+  var futureMonthly = monthly * Math.pow(1 + inflation, calcResults.years);
+  var realMonths = monthsLasting(fund, futureMonthly, realReturn);
+  var nomYears = nomMonths === Infinity ? '&infin; (sustainable)' : (nomMonths / 12).toFixed(1) + ' years';
+  var realYears = realMonths === Infinity ? '&infin; (sustainable)' : (realMonths / 12).toFixed(1) + ' years';
+  var safeMonthly = fund * 0.035 / 12;
+  var nomClass = nomMonths === Infinity || nomMonths / 12 >= 25 ? 'green' : nomMonths / 12 >= 15 ? '' : 'red';
+  var realClass = realMonths === Infinity || realMonths / 12 >= 20 ? 'green' : realMonths / 12 >= 10 ? '' : 'red';
+  $('drawdownResult').style.display = 'block';
+  $('drawdownResult').innerHTML =
+    '<div class="dd-grid">' +
+    '<div class="dd-box"><div class="dd-label">At nominal return (' + (nomReturn * 100).toFixed(1) + '%)</div><div class="dd-value ' + nomClass + '">' + nomYears + '</div></div>' +
+    '<div class="dd-box"><div class="dd-label">Inflation-adjusted (real)</div><div class="dd-value ' + realClass + '">' + realYears + '</div></div>' +
+    '</div>' +
+    '<div class="safe-rate-box"><strong>Safe withdrawal (3.5% Africa rule):</strong> ' + fmt(safeMonthly, sym) + '/month — withdraw this amount indefinitely without depleting your fund (assuming returns stay above inflation).</div>';
+}
+
+// ── Death & Disability Benefits ──
+function renderDeathBenefit(){
+  if(!calcResults) return;
+  var { c, params, code } = calcResults;
+  var sym = c.symbol;
+  var currentRSA = params.balance0 > 0 ? params.balance0 : params.salary * (params.empPct + params.erPct) * 12 * 2;
+  var annualBasic = params.salary * 12;
+  var groupLife = annualBasic * 3;
+  var noteHtml = code === 'NG'
+    ? '<div style="font-size:.74rem;color:var(--em-dark);margin-top:10px"><strong>Nigeria-specific:</strong> PenCom mandates group life insurance at 3&times; annual basic salary. RSA balance goes to named beneficiaries. Disability pension applies if permanently unable to work before retirement.</div>'
+    : '<div style="font-size:.74rem;color:var(--em-dark);margin-top:10px"><strong>' + c.name + ':</strong> Benefits vary by scheme. Your pension balance typically goes to named beneficiaries. Group life insurance depends on your employer\'s policy. Check your scheme rules.</div>';
+  $('deathBenefitContent').innerHTML =
+    '<div class="death-grid">' +
+    '<div class="db-box"><div class="db-label">RSA Balance to Beneficiaries</div><div class="db-value">' + fmt(currentRSA, sym) + '</div><div class="db-note">Current pension balance (est.)</div></div>' +
+    '<div class="db-box"><div class="db-label">Group Life Insurance</div><div class="db-value">' + fmt(groupLife, sym) + '</div><div class="db-note">3&times; annual basic salary</div></div>' +
+    '<div class="db-box"><div class="db-label">Total to Next of Kin</div><div class="db-value" style="color:var(--em)">' + fmt(currentRSA + groupLife, sym) + '</div><div class="db-note">RSA + group life</div></div>' +
+    '</div>' +
+    noteHtml +
+    '<div class="db-cta" style="display:flex;gap:8px;align-items:flex-start">'+SVG_WARN+'<span>Have you named your beneficiaries? Update them with your PFA/pension administrator to ensure your family receives these benefits without delays.</span></div>';
+}
+
+// ── PFA Section (Nigeria) ──
+function buildPFASelect(){
+  var sel = $('pfaSelect');
+  if(!sel) return;
+  PFA_DATA.forEach(function(pfa){
+    var opt = document.createElement('option');
+    opt.value = pfa.name;
+    opt.textContent = pfa.name;
+    sel.appendChild(opt);
+  });
+}
+
+function updatePFASection(){
+  var sec = $('pfaSection');
+  if(sec) sec.style.display = $('country').value === 'NG' ? 'block' : 'none';
+}
+
+function updatePFAComparison(){
+  var selectedPFA = $('pfaSelect').value;
+  // Build table (always show all PFAs)
+  var tableHtml = '<table class="pfa-table"><thead><tr><th style="text-align:left">PFA</th><th>1-Year</th><th>3-Year</th><th>5-Year</th><th>Net Fees</th></tr></thead><tbody>';
+  PFA_DATA.forEach(function(pfa){
+    var isSelected = pfa.name === selectedPFA;
+    var isBelow = pfa.r5 < PFA_MEDIAN_5Y;
+    var cls = isSelected ? 'pfa-highlight' : (isBelow ? 'pfa-below' : '');
+    tableHtml += '<tr class="' + cls + '"><td>' + (isSelected ? '&#9733; ' : '') + pfa.name + '</td>' +
+      '<td>' + pfa.r1.toFixed(1) + '%</td><td>' + pfa.r3.toFixed(1) + '%</td><td>' + pfa.r5.toFixed(1) + '%</td><td>' + pfa.net.toFixed(1) + '%</td></tr>';
+  });
+  tableHtml += '</tbody></table><div style="font-size:.64rem;color:var(--gray-400);margin-top:6px">Median 5-year return: ' + PFA_MEDIAN_5Y + '% | Source: PenCom Quarterly Report 2025</div>';
+  $('pfaTableWrap').innerHTML = tableHtml;
+  var alertHtml = '';
+  if(selectedPFA){
+    var myPFA = PFA_DATA.find(function(p){ return p.name === selectedPFA; });
+    if(myPFA){
+      if(myPFA.r5 < PFA_MEDIAN_5Y){
+        var diff = PFA_MEDIAN_5Y - myPFA.r5;
+        var annualLoss = calcResults ? calcResults.moderate.balance * (diff / 100) / Math.max(calcResults.years, 1) : 0;
+        alertHtml = '<div class="pfa-alert" style="display:flex;gap:8px;align-items:flex-start">'+SVG_WARN+'<span>You are in <strong>' + selectedPFA + '</strong> — their 5-year return (' + myPFA.r5.toFixed(1) + '%) is below the median (' + PFA_MEDIAN_5Y + '%).' +
+          (annualLoss > 0 ? ' You\'re losing approximately <strong>&#8358; ' + Math.round(annualLoss).toLocaleString() + '/year</strong> vs the median fund.' : '') +
+          ' <a href="https://www.pencom.gov.ng" target="_blank" rel="noopener" class="pfa-transfer-link">How to transfer your RSA &rarr;</a> (One transfer per year allowed)</span></div>';
+      } else {
+        alertHtml = '<div class="pfa-alert" style="background:#f0fdf4;border-color:#bbf7d0;color:#166534;display:flex;gap:8px;align-items:flex-start">'+SVG_CHECK+'<span><strong>' + selectedPFA + '</strong> is performing at or above the median (' + PFA_MEDIAN_5Y + '% 5-year return). You\'re in a good fund.</span></div>';
+      }
+    }
+  }
+  $('pfaAlert').innerHTML = alertHtml;
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+
+<script>
+var AI_MSGS=[];
+async function sendAI(){
+  var input=document.getElementById('aiInput');
+  var msgsEl=document.getElementById('aiMsgs');
+  var sendBtn=document.getElementById('aiSend');
+  var q=input.value.trim();
+  if(!q)return;
+  AI_MSGS.push({role:'user',content:q});
+  msgsEl.innerHTML+='<div class="ai-msg-u">'+q.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</div>';
+  input.value='';sendBtn.disabled=true;
+  var thinkEl=document.createElement('div');thinkEl.className='ai-thinking';thinkEl.textContent='Thinking\u2026';
+  msgsEl.appendChild(thinkEl);msgsEl.scrollTop=msgsEl.scrollHeight;
+  try{
+    var res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'pension-proj',messages:AI_MSGS.slice(-6),context:''})});
+    var data=await res.json();
+    if(thinkEl.parentNode)thinkEl.remove();
+    var reply=data.reply||data.error||'Sorry, I could not get a response.';
+    AI_MSGS.push({role:'assistant',content:reply});
+    msgsEl.innerHTML+='<div class="ai-msg-a">'+reply.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')+'</div>';
+  }catch(e){
+    if(thinkEl.parentNode)thinkEl.remove();
+    msgsEl.innerHTML+='<div class="ai-msg-a">Sorry, the AI advisor is temporarily unavailable.</div>';
+  }
+  sendBtn.disabled=false;msgsEl.scrollTop=msgsEl.scrollHeight;input.focus();
+}
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+</body>
+</html>

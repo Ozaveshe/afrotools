@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>African Cost of Living Comparator | AfroTools</title>
+<meta name="description" content="Compare cost of living between African cities. Rent, food, transport, utilities, and lifestyle costs for Lagos, Nairobi, Johannesburg, Accra, Cairo, and more.">
+<meta name="robots" content="index, follow">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="African Cost of Living Comparator | AfroTools">
+<meta property="og:description" content="Compare living costs between major African cities side by side.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/cost-of-living.webp">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/cost-of-living/">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="African Cost of Living Comparator | AfroTools"><meta name="twitter:description" content="Compare living costs between major African cities side by side."><meta name="twitter:image" content="https://afrotools.com/assets/img/tools/cost-of-living.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+:root{--afro-dark:#0f1419;--accent:#0062CC}
+.tool-hero{background:linear-gradient(135deg,#0A1628 0%,#0063D1 50%,#0062CC 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#4DA3FF}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#4DA3FF;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-em{background:rgba(77,163,255,.2);color:#4DA3FF;border:1px solid rgba(77,163,255,.4)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+select,input{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
+select:focus,input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,98,204,.15)}
+.sel-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
+.budget-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:14px}
+.compare-table{width:100%;border-collapse:collapse}
+.compare-table th,.compare-table td{padding:10px 14px;text-align:left;border-bottom:1px solid #f1f5f9;font-size:.82rem}
+.compare-table th{background:#f8fafc;font-weight:700;color:#64748b;font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;position:sticky;top:0}
+.compare-table td.cat{font-weight:700;color:var(--afro-dark);background:#fafafa}
+.compare-table td.val{font-weight:600;color:#0062CC}
+.cheaper{color:#0062CC!important;font-weight:800!important}
+.expensive{color:#dc2626!important}
+.bar{height:6px;border-radius:3px;background:#e2e8f0;margin-top:4px}
+.bar-fill{height:100%;border-radius:3px;background:#0062CC}
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+.sum-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;text-align:center}
+.sum-box .num{font-size:1.4rem;font-weight:800;color:#0062CC}
+.sum-box .lbl{font-size:.68rem;color:#64748b;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
+.budget-plan{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin:0 0 18px}
+.budget-plan h3{font-size:1rem;font-weight:800;color:var(--afro-dark);margin:0 0 10px}
+.budget-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.budget-card{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:10px}
+.budget-card strong{display:block;color:#0062CC;font-size:1.05rem}.budget-card span{font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:#64748b;font-weight:700}
+.budget-note{margin-top:10px;font-size:.86rem;color:#475569;line-height:1.6}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.sel-row,.budget-row{grid-template-columns:1fr}.summary,.budget-grid{grid-template-columns:1fr}}
+.mfun{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.mfun-card{padding:16px;border-radius:10px;text-align:center}
+.mfun-card.gold{background:#FFF8E7;border:1.5px solid rgba(212,168,67,.3)}
+.mfun-card.blue{background:#E8F2FF;border:1.5px solid rgba(0,98,204,.2)}
+.mfun-card.rose{background:#fff1f2;border:1.5px solid rgba(225,29,72,.2)}
+.mfun-card.green{background:#f0fdf4;border:1.5px solid #86efac}
+.mfun-emoji{font-size:2rem;margin-bottom:6px}
+.mfun-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.mfun-card.gold .mfun-title{color:#92400e}
+.mfun-card.blue .mfun-title{color:#1e40af}
+.mfun-card.rose .mfun-title{color:#be123c}
+.mfun-card.green .mfun-title{color:#166534}
+.mfun-text{font-size:.78rem;font-weight:600;color:#1e293b;line-height:1.5}
+.mfun-dyk{margin-top:16px;background:linear-gradient(135deg,#faf5ff,#f3e8ff);border:1.5px solid #c4b5fd;border-radius:12px;padding:18px}
+.mfun-dyk-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6d28d9;margin-bottom:8px}
+.mfun-dyk-text{font-size:.82rem;color:#4c1d95;line-height:1.7}
+@media(max-width:500px){.mfun{grid-template-columns:1fr}}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "African Cost of Living Comparator",
+  "description": "Compare cost of living between African cities. Rent, food, transport, utilities, and lifestyle costs for Lagos, Nairobi, Johannesburg, Accra, Cairo, and more.",
+  "url": "https://afrotools.com/tools/cost-of-living/",
+  "inLanguage": "en",
+  "applicationCategory": "WebApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/cost-of-living.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "African Cost of Living Comparator",
+  "url": "https://afrotools.com/tools/cost-of-living/",
+  "description": "Compare cost of living between African cities. Rent, food, transport, utilities, and lifestyle costs for Lagos, Nairobi, Johannesburg, Accra, Cairo, and more.",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/cost-of-living.webp"
+}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Which African city has the lowest cost of living? ↓","acceptedAnswer":{"@type":"Answer","text":"Among major African cities, Addis Ababa, Kampala, and Dar es Salaam tend to be the most affordable for overall living costs. Cairo is also relatively affordable in USD terms, though exchange rate volatility affects real purchasing power. Costs vary significantly by neighbourhood and lifestyle."}},{"@type":"Question","name":"How much does rent cost in Lagos compared to Johannesburg? ↓","acceptedAnswer":{"@type":"Answer","text":"A one-bedroom apartment in a central area of Lagos typically costs $300-500/month, while the same in Johannesburg runs $550-700/month. However, Lagos has extreme variation — mainland apartments can be as low as $200, while Victoria Island exceeds $1,500/month."}},{"@type":"Question","name":"What is the biggest expense when living in an African city? ↓","acceptedAnswer":{"@type":"Answer","text":"Housing (rent) is typically the largest expense, often accounting for 30-50% of total living costs. Rent can vary by a factor of 5x between the cheapest and most expensive African cities. After rent, food and transport are usually the next largest categories."}},{"@type":"Question","name":"Are these cost of living figures accurate and up to date? ↓","acceptedAnswer":{"@type":"Answer","text":"The figures are estimated averages based on 2024-2025 data from multiple sources. Actual costs vary based on neighbourhood, lifestyle, and exchange rates. Expat-oriented areas can cost 2-3x more than local neighbourhoods. Use these as directional guides rather than exact figures."}},{"@type":"Question","name":"How does remote work affect cost of living comparisons in African cities? ↓","acceptedAnswer":{"@type":"Answer","text":"Remote workers earning in USD or EUR can live very comfortably in most African cities. A $2,000/month remote salary goes roughly 3-4x further in Kampala or Addis Ababa than in London. Key factors to consider: internet reliability (Nairobi and Kigali lead with fast, affordable fibre), visa requirements, and co-working space costs. Nairobi, Accra, Cape Town, and Kigali have emerged as major African hubs for remote workers and digital nomads."}},{"@type":"Question","name":"Which African city has the best value for families? ↓","acceptedAnswer":{"@type":"Answer","text":"Kigali (Rwanda) consistently ranks as the best value for families: clean streets, low crime, affordable healthcare, good international schools, and reliable power. Accra and Nairobi also score well for family living with established international school systems and expat communities. Cairo offers exceptional affordability with good private healthcare, though traffic and pollution are considerations. Cape Town and Johannesburg offer the most developed infrastructure but higher costs."}},{"@type":"Question","name":"How do I use the African Cost of Living Comparator?","acceptedAnswer":{"@type":"Answer","text":"Enter your details in the fields above. The African Cost of Living Comparator then gives you a clear, locally-relevant result you can use straight away."}},{"@type":"Question","name":"How accurate is the African Cost of Living Comparator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm a local source for anything important before you rely on it."}},{"@type":"Question","name":"Is the African Cost of Living Comparator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}}]}
+</script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "African Cost of Living Comparator",
+      "item": "https://afrotools.com/tools/cost-of-living/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=c0a56b60">
+<script src="/assets/js/african-workflow.js?v=cf96f534" defer></script>
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/cost-of-living/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/cost-of-living/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/cout-de-la-vie/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/gharama-za-maisha/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/cost-of-living/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Cost of Living</span></div>
+<h1>African <em>Cost of Living Comparator</em></h1>
+<p class="hero-sub">Compare living costs between major African cities. See side-by-side prices for rent, food, transport, utilities, and more. All figures in USD for easy comparison.</p>
+<div class="hero-badges"><span class="badge b-em">12 Cities</span><span class="badge b-em">USD Comparison</span><span class="badge b-em">2025 Data</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="card">
+<div class="card-head"><span class="card-title">Select Cities to Compare</span></div>
+<div class="card-body">
+<div class="sel-row">
+<div><label for="city1">City 1</label><select id="city1" onchange="compare()"></select></div>
+<div><label>City 2</label><select id="city2" onchange="compare()" aria-label="City2"></select></div>
+<div><label>Display Currency</label><select id="curr" onchange="compare()" aria-label="Curr"><option value="USD">USD ($)</option><option value="local">Local Currency</option></select></div>
+</div>
+<div class="budget-row">
+<div><label>Monthly Income (USD)</label><input aria-label="IncomeUsd" id="incomeUsd" type="number" value="2000" min="0" oninput="compare()"></div>
+<div><label>Household Size</label><input aria-label="HouseholdSize" id="householdSize" type="number" value="1" min="1" max="12" oninput="compare()"></div>
+<div><label>Housing</label><select id="housingType" onchange="compare()" aria-label="Housing Type"><option value="rent1bed">1-bedroom</option><option value="rent3bed">3-bedroom family home</option></select></div>
+<div><label>Lifestyle</label><select id="lifestyle" onchange="compare()" aria-label="Lifestyle"><option value="local">Mostly local</option><option value="mixed" selected>Mixed local/expat</option><option value="expat">Expat-heavy</option></select></div>
+</div>
+</div></div>
+
+<div class="card" style="margin-top:18px">
+<div class="card-head"><span class="card-title">Comparison Results</span></div>
+<div class="card-body">
+<div class="summary" id="summary"></div>
+<div class="budget-plan" id="budgetPlan"></div>
+<div style="overflow-x:auto"><table class="compare-table" id="table"></table></div>
+</div></div>
+</div></section>
+
+<section class="seo-section">
+<h2>Cost of Living Across Africa</h2>
+<p>Africa's major cities vary dramatically in living costs. A comfortable lifestyle in Nairobi costs significantly less than in Johannesburg or Cairo, while Lagos sits somewhere in between depending on the neighbourhood. Understanding these differences is crucial for anyone relocating for work, starting a business, or considering remote work from an African city.</p>
+<p>Housing is typically the largest expense, varying by a factor of 5x between the most and least expensive African cities. A one-bedroom apartment in a good area of Johannesburg might cost $600-800/month, while a similar apartment in Accra or Nairobi could be $300-500. Lagos varies wildly — from $200 in the mainland to $1,500+ on Victoria Island.</p>
+<p>Food costs depend heavily on whether you eat local or imported food. Local market food is remarkably affordable across Africa, but imported goods and restaurant dining can be expensive, especially in cities like Luanda (historically one of the world's most expensive cities due to import dependency) and Johannesburg.</p>
+<p>Transport costs have been transformed by ride-hailing services (Uber, Bolt, InDrive) which are now available in most major African cities. Public transport remains the most affordable option, with systems like Nairobi's matatus, Lagos BRT, and Johannesburg's Gautrain offering different price-service tradeoffs. Internet costs vary significantly — Nigeria and Ghana tend to be more expensive per GB than Kenya or South Africa.</p>
+<p>Fuel prices can change household transport, generator, and delivery budgets. Use <a href="/tools/fuel-tracker/">AfroFuel to compare African petrol, diesel, and LPG prices</a> alongside this cost-of-living comparison.</p>
+
+</section>
+
+<section style="max-width:800px;margin:0 auto;padding:48px 24px">
+<h2 style="font-size:1.3rem;font-weight:800;margin-bottom:16px">Frequently Asked Questions</h2>
+<details style="border:1.5px solid #e2e8f0;border-radius:10px;margin-bottom:10px;overflow:hidden" open>
+  <summary style="padding:16px 20px;font-size:.92rem;font-weight:700;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between">Which African city has the lowest cost of living?<span style="font-size:.8rem;color:#64748b">&#8595;</span></summary>
+  <div style="padding:0 20px 16px;font-size:.87rem;color:#64748b;line-height:1.7;border-top:1px solid #e2e8f0;padding-top:14px">Among major African cities, Addis Ababa, Kampala, and Dar es Salaam tend to be the most affordable for overall living costs. Cairo is also relatively affordable in USD terms, though exchange rate volatility affects real purchasing power. Costs vary significantly by neighbourhood and lifestyle.</div>
+</details>
+<details style="border:1.5px solid #e2e8f0;border-radius:10px;margin-bottom:10px;overflow:hidden">
+  <summary style="padding:16px 20px;font-size:.92rem;font-weight:700;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between">How much does rent cost in Lagos compared to Johannesburg?<span style="font-size:.8rem;color:#64748b">&#8595;</span></summary>
+  <div style="padding:0 20px 16px;font-size:.87rem;color:#64748b;line-height:1.7;border-top:1px solid #e2e8f0;padding-top:14px">A one-bedroom apartment in a central area of Lagos typically costs $300-500/month, while the same in Johannesburg runs $550-700/month. However, Lagos has extreme variation — mainland apartments can be as low as $200, while Victoria Island exceeds $1,500/month.</div>
+</details>
+<details style="border:1.5px solid #e2e8f0;border-radius:10px;margin-bottom:10px;overflow:hidden">
+  <summary style="padding:16px 20px;font-size:.92rem;font-weight:700;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between">What is the biggest expense when living in an African city?<span style="font-size:.8rem;color:#64748b">&#8595;</span></summary>
+  <div style="padding:0 20px 16px;font-size:.87rem;color:#64748b;line-height:1.7;border-top:1px solid #e2e8f0;padding-top:14px">Housing (rent) is typically the largest expense, often accounting for 30-50% of total living costs. Rent can vary by a factor of 5x between the cheapest and most expensive African cities. After rent, food and transport are usually the next largest categories.</div>
+</details>
+<details style="border:1.5px solid #e2e8f0;border-radius:10px;margin-bottom:10px;overflow:hidden">
+  <summary style="padding:16px 20px;font-size:.92rem;font-weight:700;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between">Are these cost of living figures accurate and up to date?<span style="font-size:.8rem;color:#64748b">&#8595;</span></summary>
+  <div style="padding:0 20px 16px;font-size:.87rem;color:#64748b;line-height:1.7;border-top:1px solid #e2e8f0;padding-top:14px">The figures are estimated averages based on 2024-2025 data from multiple sources. Actual costs vary based on neighbourhood, lifestyle, and exchange rates. Expat-oriented areas can cost 2-3x more than local neighbourhoods. Use these as directional guides rather than exact figures.</div>
+</details>
+<details style="border:1.5px solid #e2e8f0;border-radius:10px;margin-bottom:10px;overflow:hidden">
+  <summary style="padding:16px 20px;font-size:.92rem;font-weight:700;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between">How does remote work affect cost of living comparisons in African cities?<span style="font-size:.8rem;color:#64748b">&#8595;</span></summary>
+  <div style="padding:0 20px 16px;font-size:.87rem;color:#64748b;line-height:1.7;border-top:1px solid #e2e8f0;padding-top:14px">Remote workers earning in USD or EUR can live very comfortably in most African cities. A $2,000/month remote salary goes roughly 3-4x further in Kampala or Addis Ababa than in London. Key factors to consider: internet reliability (Nairobi and Kigali lead with fast, affordable fibre), visa requirements, and co-working space costs. Nairobi, Accra, Cape Town, and Kigali have emerged as major African hubs for remote workers and digital nomads.</div>
+</details>
+<details style="border:1.5px solid #e2e8f0;border-radius:10px;margin-bottom:10px;overflow:hidden">
+  <summary style="padding:16px 20px;font-size:.92rem;font-weight:700;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between">Which African city has the best value for families?<span style="font-size:.8rem;color:#64748b">&#8595;</span></summary>
+  <div style="padding:0 20px 16px;font-size:.87rem;color:#64748b;line-height:1.7;border-top:1px solid #e2e8f0;padding-top:14px">Kigali (Rwanda) consistently ranks as the best value for families: clean streets, low crime, affordable healthcare, good international schools, and reliable power. Accra and Nairobi also score well for family living with established international school systems and expat communities. Cairo offers exceptional affordability with good private healthcare, though traffic and pollution are considerations. Cape Town and Johannesburg offer the most developed infrastructure but higher costs.</div>
+</details>
+</section>
+
+<section class="df-upgrade" data-df-upgrade="cost-of-living">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Relocation budget</span>
+      <h2>Turn the city comparison into a move budget</h2>
+      <p>Not sure how to get the most from the African Cost of Living Comparator? Enter your details and it returns a clear, locally-relevant result — built for all 54 African countries.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear, locally-relevant result, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the African Cost of Living Comparator takes your details and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm a local source for anything important before you rely on the result.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm a local source for anything important before acting.</p>
+    </div>
+    <form class="df-form" data-df-form="cost-of-living">
+      <label>Target city<input name="city" type="text" value="Nairobi" aria-label="Target city"></label>
+      <label>Monthly income (USD)<input name="income" type="number" value="2000" min="0" step="any" aria-label="Monthly income"></label>
+      <label>Household size<input name="household" type="number" value="2" min="1" step="1" aria-label="Household size"></label>
+      <label>Buffer percent<input name="buffer" type="number" value="15" min="0" step="any" aria-label="Buffer percent"></label>
+      <button type="submit">Create relocation brief</button>
+      <output class="df-result" data-df-result="cost-of-living" data-df-base="African Cost of Living Comparator — enter your details above to see your result." aria-live="polite">African Cost of Living Comparator — enter your details above to see your result.</output>
+      <div class="df-actions"><button type="button" data-df-copy="cost-of-living">Copy brief</button><a class="df-action-link" href="#summary">View comparison</a></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="cost-of-living-faq-title">
+  <h2 id="cost-of-living-faq-title">African Cost of Living Comparator FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the African Cost of Living Comparator?</summary><p>Enter your details in the fields above. The African Cost of Living Comparator then gives you a clear, locally-relevant result you can use straight away.</p></details><details><summary>How accurate is the African Cost of Living Comparator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm a local source for anything important before you rely on it.</p></details><details><summary>Is the African Cost of Living Comparator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
+</section>
+<afro-related-tools category="african" current="cost-of-living" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/afropoints/" data-related-tool data-id="afropoints" data-name="AfroPoints — Earn Money Contributing Data" data-category="african" data-icon="AE" data-desc="Earn real money by sharing African market data — prices, rates, salaries, costs. Contribute, earn points, cash out via m">AfroPoints — Earn Money Contributing Data</a></li><li><a href="/tools/remittance-compare/" data-related-tool data-id="remittance-compare" data-name="Remittance Comparator" data-category="african" data-icon="RC" data-desc="Compare Wise, WorldRemit, Western Union and 8 more. Find cheapest way to send money to Africa.">Remittance Comparator</a></li><li><a href="/tools/remittance-v2/" data-related-tool data-id="remittance-v2" data-name="Remittance Comparator Pro" data-category="african" data-icon="RC" data-desc="Compare editable remittance quotes by recipient value, FX margin, fee, speed, and payout method.">Remittance Comparator Pro</a></li><li><a href="/tools/afroatlas/" data-related-tool data-id="afroatlas" data-name="AfroAtlas — Africa Resource Explorer" data-category="african" data-icon="AA" data-desc="Interactive explorer for African country profiles, GDP, natural resources, trade data, rankings, and side-by-side compar">AfroAtlas — Africa Resource Explorer</a></li><li><a href="/tools/informal-fx-watch/" data-related-tool data-id="informal-fx-watch" data-name="Informal FX Watch" data-category="african" data-icon="IF" data-desc="Track street, BDC, and P2P informal FX spreads across African markets with contributor-backed quotes.">Informal FX Watch</a></li><li><a href="/tools/africa-conflict/" data-related-tool data-id="africa-conflict" data-name="AfroConflict — Conflict Intelligence" data-category="african" data-icon="AC" data-desc="Africa conflict intelligence dashboard — active conflicts, displacement tracker, economic impact, actor networks, scenar">AfroConflict — Conflict Intelligence</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+var CITIES = {
+  lagos: { name: 'Lagos, Nigeria', currency: 'NGN', rate: 1550,
+    rent1bed: 350, rent3bed: 800, meal: 3, restaurant: 12, coffee: 2.5, beer: 1.5,
+    grocery: 150, transport: 40, uber5km: 3, internet: 25, electricity: 30, gym: 25,
+    cinema: 5, water: 8, phone: 10, domestic: 80 },
+  nairobi: { name: 'Nairobi, Kenya', currency: 'KES', rate: 153,
+    rent1bed: 400, rent3bed: 900, meal: 3.5, restaurant: 15, coffee: 2, beer: 2,
+    grocery: 160, transport: 35, uber5km: 3, internet: 20, electricity: 25, gym: 30,
+    cinema: 6, water: 6, phone: 8, domestic: 70 },
+  joburg: { name: 'Johannesburg, SA', currency: 'ZAR', rate: 18.5,
+    rent1bed: 550, rent3bed: 1200, meal: 5, restaurant: 20, coffee: 3, beer: 2.5,
+    grocery: 200, transport: 50, uber5km: 4, internet: 30, electricity: 50, gym: 35,
+    cinema: 8, water: 10, phone: 12, domestic: 100 },
+  accra: { name: 'Accra, Ghana', currency: 'GHS', rate: 15.5,
+    rent1bed: 350, rent3bed: 750, meal: 3, restaurant: 12, coffee: 2.5, beer: 2,
+    grocery: 140, transport: 30, uber5km: 2.5, internet: 25, electricity: 25, gym: 25,
+    cinema: 5, water: 5, phone: 8, domestic: 60 },
+  cairo: { name: 'Cairo, Egypt', currency: 'EGP', rate: 50,
+    rent1bed: 250, rent3bed: 500, meal: 2, restaurant: 10, coffee: 1.5, beer: 2,
+    grocery: 100, transport: 20, uber5km: 2, internet: 12, electricity: 15, gym: 15,
+    cinema: 4, water: 3, phone: 5, domestic: 50 },
+  dar: { name: 'Dar es Salaam, TZ', currency: 'TZS', rate: 2700,
+    rent1bed: 300, rent3bed: 600, meal: 2.5, restaurant: 10, coffee: 2, beer: 1.5,
+    grocery: 120, transport: 25, uber5km: 2, internet: 20, electricity: 20, gym: 20,
+    cinema: 4, water: 5, phone: 6, domestic: 50 },
+  kampala: { name: 'Kampala, Uganda', currency: 'UGX', rate: 3800,
+    rent1bed: 250, rent3bed: 500, meal: 2, restaurant: 8, coffee: 2, beer: 1.5,
+    grocery: 100, transport: 20, uber5km: 2, internet: 18, electricity: 15, gym: 20,
+    cinema: 4, water: 4, phone: 5, domestic: 40 },
+  kigali: { name: 'Kigali, Rwanda', currency: 'RWF', rate: 1350,
+    rent1bed: 300, rent3bed: 600, meal: 3, restaurant: 10, coffee: 2, beer: 1.5,
+    grocery: 120, transport: 20, uber5km: 2, internet: 20, electricity: 15, gym: 25,
+    cinema: 5, water: 5, phone: 6, domestic: 50 },
+  cape: { name: 'Cape Town, SA', currency: 'ZAR', rate: 18.5,
+    rent1bed: 650, rent3bed: 1400, meal: 5, restaurant: 22, coffee: 3, beer: 2.5,
+    grocery: 210, transport: 50, uber5km: 4.5, internet: 30, electricity: 55, gym: 35,
+    cinema: 8, water: 10, phone: 12, domestic: 110 },
+  addis: { name: 'Addis Ababa, Ethiopia', currency: 'ETB', rate: 57,
+    rent1bed: 200, rent3bed: 400, meal: 2, restaurant: 6, coffee: 1, beer: 1,
+    grocery: 80, transport: 15, uber5km: 1.5, internet: 15, electricity: 10, gym: 15,
+    cinema: 3, water: 3, phone: 4, domestic: 30 },
+  casablanca: { name: 'Casablanca, Morocco', currency: 'MAD', rate: 10,
+    rent1bed: 350, rent3bed: 700, meal: 3, restaurant: 12, coffee: 1.5, beer: 3,
+    grocery: 150, transport: 25, uber5km: 3, internet: 15, electricity: 30, gym: 25,
+    cinema: 5, water: 5, phone: 8, domestic: 60 },
+  abuja: { name: 'Abuja, Nigeria', currency: 'NGN', rate: 1550,
+    rent1bed: 400, rent3bed: 900, meal: 3, restaurant: 12, coffee: 2.5, beer: 1.5,
+    grocery: 160, transport: 35, uber5km: 3, internet: 25, electricity: 30, gym: 25,
+    cinema: 5, water: 8, phone: 10, domestic: 70 }
+};
+
+var ITEMS = [
+  { key: 'rent1bed', label: '1-Bedroom Apartment (centre)', cat: 'Housing', monthly: true },
+  { key: 'rent3bed', label: '3-Bedroom Apartment (centre)', cat: 'Housing', monthly: true },
+  { key: 'meal', label: 'Local Restaurant Meal', cat: 'Food' },
+  { key: 'restaurant', label: 'Mid-Range Restaurant (2 people)', cat: 'Food' },
+  { key: 'coffee', label: 'Cappuccino', cat: 'Food' },
+  { key: 'beer', label: 'Local Beer (500ml)', cat: 'Food' },
+  { key: 'grocery', label: 'Monthly Groceries (1 person)', cat: 'Food', monthly: true },
+  { key: 'transport', label: 'Monthly Public Transport', cat: 'Transport', monthly: true },
+  { key: 'uber5km', label: 'Uber/Bolt (5km ride)', cat: 'Transport' },
+  { key: 'internet', label: 'Internet (unlimited/month)', cat: 'Utilities', monthly: true },
+  { key: 'electricity', label: 'Electricity (monthly)', cat: 'Utilities', monthly: true },
+  { key: 'water', label: 'Water (monthly)', cat: 'Utilities', monthly: true },
+  { key: 'phone', label: 'Mobile Plan (monthly)', cat: 'Utilities', monthly: true },
+  { key: 'gym', label: 'Gym Membership (monthly)', cat: 'Lifestyle', monthly: true },
+  { key: 'cinema', label: 'Cinema Ticket', cat: 'Lifestyle' },
+  { key: 'domestic', label: 'Domestic Help (monthly)', cat: 'Lifestyle', monthly: true }
+];
+
+// Populate selects
+var cityKeys = Object.keys(CITIES);
+['city1','city2'].forEach(function(id, i) {
+  var sel = document.getElementById(id);
+  cityKeys.forEach(function(k) {
+    var opt = document.createElement('option');
+    opt.value = k; opt.textContent = CITIES[k].name;
+    sel.appendChild(opt);
+  });
+  sel.value = cityKeys[i === 0 ? 0 : 2]; // Lagos vs Joburg default
+});
+
+function fmtVal(v, city, useLocal) {
+  if (useLocal) return city.currency + ' ' + Math.round(v * city.rate).toLocaleString('en');
+  return '$' + v.toLocaleString('en', {minimumFractionDigits: v < 10 ? 1 : 0, maximumFractionDigits: v < 10 ? 1 : 0});
+}
+var lastCostBrief = '';
+function getProfile() {
+  return {
+    income: Number(document.getElementById('incomeUsd').value) || 0,
+    people: Math.max(1, Number(document.getElementById('householdSize').value) || 1),
+    housing: document.getElementById('housingType').value,
+    lifestyle: document.getElementById('lifestyle').value
+  };
+}
+function monthlyCost(city, profile) {
+  var lifestyleFactor = profile.lifestyle === 'expat' ? 1.35 : profile.lifestyle === 'local' ? 0.85 : 1;
+  var rent = city[profile.housing] || city.rent1bed;
+  var grocery = city.grocery * (1 + (profile.people - 1) * 0.7) * lifestyleFactor;
+  var transport = city.transport * Math.min(profile.people, 2) * lifestyleFactor;
+  var utilities = (city.internet + city.electricity + city.water + city.phone * profile.people) * lifestyleFactor;
+  var lifestyle = (city.gym + city.domestic + city.restaurant * 2 + city.cinema * 2) * lifestyleFactor;
+  return { total: rent + grocery + transport + utilities + lifestyle, rent: rent, grocery: grocery, transport: transport, utilities: utilities, lifestyle: lifestyle };
+}
+function renderBudgetPlan(c1, c2, m1, m2, profile, useLocal) {
+  var cheaper = m1.total <= m2.total ? c1 : c2;
+  var cheaperCost = Math.min(m1.total, m2.total);
+  var expensiveCost = Math.max(m1.total, m2.total);
+  var incomeGap = profile.income ? profile.income - cheaperCost : 0;
+  var rentShare = (cheaper === c1 ? m1.rent : m2.rent) / cheaperCost * 100;
+  var annualSavings = (expensiveCost - cheaperCost) * 12;
+  var status = !profile.income ? 'Add income to check runway' : incomeGap >= 0 ? 'Budget fits with $' + Math.round(incomeGap).toLocaleString('en') + ' monthly buffer' : 'Budget gap of $' + Math.abs(Math.round(incomeGap)).toLocaleString('en') + ' per month';
+  lastCostBrief = 'Cost of living plan: ' + cheaper.name + ' is cheaper for this profile at about $' + Math.round(cheaperCost).toLocaleString('en') + ' per month. Rent share is ' + rentShare.toFixed(0) + '%. Annual difference versus the other city is about $' + Math.round(annualSavings).toLocaleString('en') + '. ' + status + '.';
+  document.getElementById('budgetPlan').innerHTML =
+    '<h3>Personal Monthly Budget</h3><div class="budget-grid">' +
+    '<div class="budget-card"><strong>' + cheaper.name + '</strong><span>Cheaper city</span></div>' +
+    '<div class="budget-card"><strong>$' + Math.round(cheaperCost).toLocaleString('en') + '</strong><span>Profile monthly cost</span></div>' +
+    '<div class="budget-card"><strong>' + rentShare.toFixed(0) + '%</strong><span>Rent share</span></div>' +
+    '<div class="budget-card"><strong>$' + Math.round(annualSavings).toLocaleString('en') + '</strong><span>Annual difference</span></div>' +
+    '</div><div class="budget-note">' + status + '. Figures are directional. Price-check rent, school, healthcare, and commute patterns before relocating. <button type="button" class="btn" style="margin-left:8px;padding:6px 10px;font-size:.78rem" onclick="copyCostBrief()">Copy Brief</button></div>';
+}
+function copyCostBrief() {
+  navigator.clipboard.writeText(lastCostBrief).catch(function () { window.prompt('Copy cost brief', lastCostBrief); });
+}
+
+function compare() {
+  var c1 = CITIES[document.getElementById('city1').value];
+  var c2 = CITIES[document.getElementById('city2').value];
+  var useLocal = document.getElementById('curr').value === 'local';
+  var profile = getProfile();
+
+  // Summary
+  var monthlyBreakdown1 = monthlyCost(c1, profile);
+  var monthlyBreakdown2 = monthlyCost(c2, profile);
+  var monthly1 = monthlyBreakdown1.total, monthly2 = monthlyBreakdown2.total;
+  var diff = ((monthly2 - monthly1) / monthly1 * 100);
+
+  var sumHtml = '<div class="sum-box"><div class="num">' + fmtVal(monthly1, c1, useLocal) + '/mo</div><div class="lbl">' + c1.name + ' Total Monthly</div></div>';
+  sumHtml += '<div class="sum-box"><div class="num">' + fmtVal(monthly2, c2, useLocal) + '/mo</div><div class="lbl">' + c2.name + ' Total Monthly</div></div>';
+  document.getElementById('summary').innerHTML = sumHtml;
+  renderBudgetPlan(c1, c2, monthlyBreakdown1, monthlyBreakdown2, profile, useLocal);
+
+  // Table
+  var html = '<thead><tr><th>Item</th><th>' + c1.name + '</th><th>' + c2.name + '</th><th>Difference</th></tr></thead><tbody>';
+  var lastCat = '';
+  ITEMS.forEach(function(item) {
+    if (item.cat !== lastCat) {
+      html += '<tr><td class="cat" colspan="4">' + item.cat + '</td></tr>';
+      lastCat = item.cat;
+    }
+    var v1 = c1[item.key], v2 = c2[item.key];
+    var pctDiff = ((v2 - v1) / v1 * 100);
+    var cheaper = v1 <= v2 ? 'cheaper' : '';
+    var cheaper2 = v2 <= v1 ? 'cheaper' : '';
+    var diffStr = pctDiff > 0 ? ('+' + pctDiff.toFixed(0) + '%') : (pctDiff.toFixed(0) + '%');
+    var diffClr = pctDiff > 5 ? 'expensive' : pctDiff < -5 ? 'cheaper' : '';
+    var maxV = Math.max(v1, v2);
+    html += '<tr>' +
+      '<td>' + item.label + '</td>' +
+      '<td class="val ' + cheaper + '">' + fmtVal(v1, c1, useLocal) + '<div class="bar"><div class="bar-fill" style="width:' + (v1/maxV*100) + '%"></div></div></td>' +
+      '<td class="val ' + cheaper2 + '">' + fmtVal(v2, c2, useLocal) + '<div class="bar"><div class="bar-fill" style="width:' + (v2/maxV*100) + '%;background:' + (v2>v1?'#dc2626':'#0062CC') + '"></div></div></td>' +
+      '<td class="' + diffClr + '" style="font-weight:700;font-size:.78rem">' + diffStr + '</td>' +
+      '</tr>';
+  });
+  html += '</tbody>';
+  document.getElementById('table').innerHTML = html;
+
+  // Fun comparisons
+  var funDiv = document.getElementById('colFunComparisons');
+  if (!funDiv) {
+    funDiv = document.createElement('div');
+    funDiv.id = 'colFunComparisons';
+    document.getElementById('table').parentElement.parentElement.appendChild(funDiv);
+  }
+
+  var rentDiff = Math.abs(c1.rent1bed - c2.rent1bed);
+  var groceryC1 = c1.grocery;
+  var groceryC2 = c2.grocery;
+  var taxiC1 = c1.uber5km;
+  var taxiC2 = c2.uber5km;
+  var nightOutC1 = c1.restaurant + c1.beer * 3;
+  var nightOutC2 = c2.restaurant + c2.beer * 3;
+  var cheaperCity = monthly1 <= monthly2 ? c1.name : c2.name;
+  var moreExpCity = monthly1 > monthly2 ? c1.name : c2.name;
+  var absDiff = Math.abs(diff).toFixed(0);
+
+  funDiv.innerHTML = '<div class="mfun">'
+    + '<div class="mfun-card gold"><div class="mfun-emoji">🏠</div><div class="mfun-title">Rent Difference</div><div class="mfun-text">$' + rentDiff + '/mo for a 1-bed apartment</div></div>'
+    + '<div class="mfun-card blue"><div class="mfun-emoji">🍚</div><div class="mfun-title">Grocery Basket</div><div class="mfun-text">$' + groceryC1 + ' vs $' + groceryC2 + '/mo</div></div>'
+    + '<div class="mfun-card rose"><div class="mfun-emoji">🚕</div><div class="mfun-title">Taxi Rides</div><div class="mfun-text">5km: $' + taxiC1.toFixed(1) + ' vs $' + taxiC2.toFixed(1) + '</div></div>'
+    + '<div class="mfun-card green"><div class="mfun-emoji">🍺</div><div class="mfun-title">Social Life</div><div class="mfun-text">Night out: $' + nightOutC1.toFixed(0) + ' vs $' + nightOutC2.toFixed(0) + '</div></div>'
+    + '</div>'
+    + '<div class="mfun-dyk"><div class="mfun-dyk-title">💡 Did You Know?</div><div class="mfun-dyk-text">Luanda, Angola was once ranked the MOST expensive city in the world \u2014 more expensive than Tokyo, London, and New York! A simple lunch could cost $100. Oil money changed everything. 🇦🇴💰</div></div>';
+}
+
+compare();
+</script>
+
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

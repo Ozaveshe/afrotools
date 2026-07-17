@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study Planner & Timetable Generator - Africa Exam Prep</title>
+<meta name="description" content="Create a personalised Africa exam study plan for ECZ, UNEB, NECTA, WAEC Ghana, KNEC, ZIMSEC, NSC, WAEC, JAMB, KCSE, or custom subjects.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta name="tool-id" content="study-planner">
+<meta property="og:title" content="Study Planner & Timetable Generator | AfroTools">
+<meta property="og:description" content="Create a source-aware Africa exam study timetable with subjects, exam dates, weekly hours, countdown, timetable, and flashcard handoffs.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/study-planner.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/study-planner/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Study Planner & Timetable Generator | AfroTools">
+<meta name="twitter:description" content="Create a personalised Africa exam study timetable with source notes and prep-tool handoffs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/education-study-focus.css?v=dcf1c512">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script>
+<script src="/assets/js/afro-auth.js?v=4250956b" defer></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--green:#0062CC;--green-light:#4DA3FF;--green-pale:#E8F2FF;--dark:#0A1628;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;--bg:#FAFAF8;--card:#fff;--radius:14px;--shadow:0 2px 12px rgba(0,0,0,.06)}
+
+/* ── Hero ── */
+.sp-hero{background:var(--dark);padding:48px 0 40px;position:relative;overflow:hidden}
+.sp-hero::before{content:'';position:absolute;top:-60%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(0,98,204,.15) 0%,transparent 70%);pointer-events:none}
+.sp-hero-inner{max-width:900px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+.sp-breadcrumb{font-size:.75rem;font-weight:500;color:rgba(255,255,255,.35);letter-spacing:.06em;margin-bottom:16px}
+.sp-breadcrumb a{color:rgba(255,255,255,.35);text-decoration:none;transition:color .2s}
+.sp-breadcrumb a:hover{color:var(--green-light)}
+.sp-breadcrumb .current{color:var(--green-light)}
+.sp-hero h1{font-family:'Instrument Serif',serif;font-size:clamp(2rem,5vw,3rem);font-weight:400;color:#fff;line-height:1.15;margin-bottom:12px}
+.sp-hero h1 span{color:var(--green-light);font-style:italic}
+.sp-hero-sub{font-size:.95rem;color:rgba(255,255,255,.5);line-height:1.6;max-width:540px;margin-bottom:20px}
+.sp-tags{display:flex;flex-wrap:wrap;gap:8px}
+.sp-tag{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:100px;font-size:.75rem;font-weight:600;background:rgba(77,163,255,.1);color:var(--green-light);border:1px solid rgba(77,163,255,.2);letter-spacing:.02em}
+
+/* ── Layout ── */
+.sp-app{max-width:900px;margin:0 auto;padding:32px 24px 80px}
+
+/* ── Tabs ── */
+.sp-tabs{display:flex;gap:4px;background:#f1f5f9;border-radius:12px;padding:4px;margin-bottom:28px}
+.sp-tab{flex:1;padding:10px 16px;border:none;background:none;border-radius:10px;font-size:.82rem;font-weight:600;color:var(--muted);cursor:pointer;font-family:inherit;transition:all .2s}
+.sp-tab.active{background:var(--card);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.sp-tab:hover:not(.active){color:var(--text)}
+.sp-panel{display:none}
+.sp-panel.active{display:block}
+
+/* ── Cards ── */
+.sp-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.sp-card+.sp-card{margin-top:16px}
+.sp-card-head{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f1f5f9}
+.sp-card-label{font-size:.78rem;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px}
+.sp-card-label .icon{font-size:1rem}
+.sp-card-body{padding:20px}
+
+/* ── Presets ── */
+.sp-presets{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:20px}
+.sp-preset{padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;background:var(--card);cursor:pointer;text-align:left;font-family:inherit;transition:all .2s}
+.sp-preset:hover{border-color:var(--green);background:var(--green-pale)}
+.sp-preset.selected{border-color:var(--green);background:var(--green-pale)}
+.sp-preset-name{font-size:.82rem;font-weight:700;color:var(--text);display:flex;align-items:center;gap:6px}
+.sp-preset-desc{font-size:.72rem;color:var(--muted);margin-top:3px}
+.sp-exam-context{display:grid;gap:8px;margin:0 0 20px;padding:14px 16px;border:1px solid #dbeafe;border-radius:12px;background:#f8fbff;color:#475569;font-size:.82rem;line-height:1.6}
+.sp-exam-context strong{color:var(--text)}
+.sp-exam-context a{color:var(--green);font-weight:800;text-decoration:none}
+.sp-exam-context .sp-context-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
+.sp-context-actions a,.sp-context-actions button{display:inline-flex;align-items:center;min-height:32px;padding:7px 11px;border-radius:8px;border:1px solid #bfdbfe;background:#fff;color:var(--green);font-size:.74rem;font-weight:800;text-decoration:none;font-family:inherit;cursor:pointer}
+.sp-context-actions a:hover,.sp-context-actions button:hover{border-color:var(--green);background:var(--green-pale)}
+
+/* ── Subject pills ── */
+.sp-subjects{display:flex;flex-direction:column;gap:10px}
+.sp-subject{display:grid;grid-template-columns:1fr auto auto auto;gap:10px;align-items:center;padding:12px 14px;background:#f8fafc;border:1px solid var(--border);border-radius:10px;transition:all .2s}
+.sp-subject:hover{border-color:#cbd5e1}
+.sp-subject input[type="text"]{border:none;background:none;font-size:.88rem;font-weight:600;color:var(--text);font-family:inherit;padding:0;outline:none;min-width:0}
+.sp-subject input[type="text"]::placeholder{color:#cbd5e1;font-weight:400}
+.sp-diff-toggle{display:flex;gap:2px;background:#e2e8f0;border-radius:8px;padding:2px}
+.sp-diff-btn{padding:5px 10px;border:none;border-radius:6px;font-size:.7rem;font-weight:700;cursor:pointer;font-family:inherit;background:none;color:var(--muted);transition:all .15s;letter-spacing:.02em}
+.sp-diff-btn.active[data-d="easy"]{background:#dcfce7;color:#16a34a}
+.sp-diff-btn.active[data-d="medium"]{background:#fef3c7;color:#d97706}
+.sp-diff-btn.active[data-d="hard"]{background:#fee2e2;color:#dc2626}
+.sp-exam-date{width:120px;padding:5px 8px;border:1.5px solid var(--border);border-radius:8px;font-size:.78rem;font-family:inherit;background:var(--card);color:var(--text)}
+.sp-exam-date:focus{outline:none;border-color:var(--green)}
+.sp-remove{width:32px;height:32px;border:none;border-radius:8px;background:none;cursor:pointer;font-size:1rem;color:#cbd5e1;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.sp-remove:hover{background:#fee2e2;color:#dc2626}
+
+.sp-add-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:12px;border:2px dashed #e2e8f0;border-radius:10px;background:none;cursor:pointer;font-size:.82rem;font-weight:600;color:var(--muted);font-family:inherit;transition:all .2s;margin-top:10px}
+.sp-add-btn:hover{border-color:var(--green);color:var(--green);background:var(--green-pale)}
+
+/* ── Schedule preferences ── */
+.sp-prefs{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.sp-field label{display:block;font-size:.72rem;font-weight:600;color:var(--muted);letter-spacing:.03em;margin-bottom:6px}
+.sp-field input,.sp-field select{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:.85rem;font-family:inherit;background:var(--card);color:var(--text);transition:border .2s}
+.sp-field input:focus,.sp-field select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(0,98,204,.1)}
+
+/* ── Generate button ── */
+.sp-generate{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px 24px;border:none;border-radius:12px;font-size:.92rem;font-weight:700;cursor:pointer;font-family:inherit;background:var(--green);color:#fff;transition:all .2s;margin-top:24px;box-shadow:0 4px 16px rgba(0,98,204,.25)}
+.sp-generate:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,98,204,.3)}
+.sp-generate:active{transform:translateY(0)}
+
+/* ── Results ── */
+.sp-results{display:none}
+.sp-results.show{display:block;animation:fadeUp .4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Stats bar ── */
+.sp-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.sp-stat{text-align:center;padding:16px 12px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+.sp-stat-num{font-family:'Instrument Serif',serif;font-size:1.8rem;color:var(--green);line-height:1}
+.sp-stat-label{font-size:.7rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
+
+/* ── Subject breakdown ── */
+.sp-breakdown{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.sp-break-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:100px;font-size:.75rem;font-weight:600;border:1px solid var(--border);background:var(--card)}
+.sp-break-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.sp-break-hours{color:var(--muted);font-weight:500}
+.sp-plan-summary{display:grid;gap:10px;margin-bottom:16px;padding:16px;border:1px solid #dbeafe;border-radius:var(--radius);background:#f8fbff;font-size:.82rem;line-height:1.65;color:#475569}
+.sp-plan-summary h2{margin:0;font-size:.95rem;color:var(--text)}
+.sp-plan-summary ul{margin:0;padding-left:18px}
+.sp-plan-summary a{color:var(--green);font-weight:800;text-decoration:none}
+.sp-session-progress{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.sp-progress-card{padding:14px 16px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+.sp-progress-card strong{display:block;font-size:1.25rem;color:var(--green);line-height:1}
+.sp-progress-card span{display:block;margin-top:4px;font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.sp-slot-session{display:flex;align-items:flex-start;gap:7px;width:100%;border:0;background:transparent;color:inherit;font:inherit;text-align:left;padding:0;cursor:pointer}
+.sp-slot-session input{width:15px!important;min-width:15px;height:15px;margin-top:1px;flex:0 0 auto;accent-color:var(--green)}
+.sp-slot-subject{line-height:1.35}
+.sp-slot-session.done .sp-slot-subject{text-decoration:line-through;opacity:.62}
+.sp-action-status{min-height:20px;margin-top:10px;color:var(--green);font-size:.8rem;font-weight:800}
+
+/* ── Timetable ── */
+.sp-table-wrap{display:block;width:100%;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--border);border-radius:var(--radius);background:var(--card)}
+.sp-table{width:100%;min-width:720px;border-collapse:collapse;font-size:.8rem}
+.sp-table th{background:#f8fafc;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);position:sticky;top:0}
+.sp-table td{padding:6px 8px;border-bottom:1px solid #f8fafc;vertical-align:top}
+.sp-table tr:last-child td{border-bottom:none}
+.sp-time-cell{white-space:nowrap;font-weight:600;color:var(--muted);font-size:.72rem;padding-top:10px!important}
+.sp-slot{display:block;border-radius:8px;padding:7px 10px;font-size:.75rem;font-weight:600;margin:2px 0;border-left:3px solid;transition:transform .1s}
+.sp-slot:hover{transform:scale(1.02)}
+.sp-free{color:#e2e8f0;font-size:.72rem;padding:7px 10px}
+.sp-daytotal{font-size:.72rem;font-weight:700;color:var(--muted);padding-top:10px!important;border-top:1px solid var(--border)!important}
+
+/* ── Actions bar ── */
+.sp-actions{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.sp-action-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border:1.5px solid var(--border);border-radius:10px;background:var(--card);cursor:pointer;font-size:.8rem;font-weight:600;color:var(--text);font-family:inherit;transition:all .2s}
+.sp-action-btn:hover{border-color:var(--green);color:var(--green)}
+.sp-action-btn.primary{background:var(--green);color:#fff;border-color:var(--green)}
+.sp-action-btn.primary:hover{background:#0063D1}
+
+/* ── Tips section ── */
+.sp-tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:24px}
+.sp-tip{padding:16px;background:var(--green-pale);border-radius:var(--radius);border:1px solid rgba(0,98,204,.12)}
+.sp-tip-title{font-size:.78rem;font-weight:700;color:var(--green);margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.sp-tip-text{font-size:.78rem;color:#0A1628;line-height:1.5}
+
+/* ── SEO ── */
+.sp-seo{max-width:700px;margin:0 auto;padding:56px 24px}
+.sp-seo h2{font-family:'Instrument Serif',serif;font-size:1.5rem;color:var(--text);margin-bottom:12px}
+.sp-seo p{font-size:.9rem;color:var(--muted);line-height:1.75;margin-bottom:16px}
+.sp-faq{border-bottom:1px solid var(--border);padding:14px 0}
+.sp-faq summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--text);list-style:none;display:flex;justify-content:space-between;align-items:center}
+.sp-faq summary::after{content:'+';font-size:1.2rem;color:var(--muted);transition:transform .2s}
+.sp-faq[open] summary::after{transform:rotate(45deg)}
+.sp-faq p{margin-top:8px;font-size:.84rem;color:var(--muted);line-height:1.7}
+
+/* ── Mobile ── */
+@media(max-width:768px){
+  .sp-hero{padding:36px 0 32px}
+  .sp-hero h1{font-size:1.8rem}
+  .sp-app{padding:20px 16px 60px}
+  .sp-prefs{grid-template-columns:1fr}
+  .sp-stats{grid-template-columns:1fr 1fr 1fr;gap:8px}
+  .sp-session-progress{grid-template-columns:1fr 1fr 1fr;gap:8px}
+  .sp-stat{padding:12px 8px}
+  .sp-stat-num{font-size:1.4rem}
+  .sp-subject{grid-template-columns:1fr auto;gap:8px}
+  .sp-subject input[type="text"]{font-size:.85rem;grid-column:1;min-width:0}
+  .sp-diff-toggle{grid-column:2;align-self:center}
+  .sp-exam-date{width:100%;grid-column:1/-1}
+  .sp-remove{grid-row:1;grid-column:2;justify-self:end;display:none}
+  .sp-subject:hover .sp-remove{display:flex}
+  .sp-presets{grid-template-columns:1fr 1fr}
+  .sp-tips{grid-template-columns:1fr}
+  .sp-table{font-size:.72rem}
+  .sp-slot{padding:5px 7px;font-size:.68rem}
+  .sp-actions{flex-direction:column}
+  .sp-action-btn{justify-content:center}
+  .sp-action-status{text-align:center}
+}
+@media(max-width:400px){
+  .sp-subject{grid-template-columns:1fr;gap:6px}
+  .sp-diff-toggle{grid-column:1;justify-self:start}
+  .sp-exam-date{grid-column:1}
+  .sp-remove{grid-row:auto;grid-column:1;justify-self:end;display:flex}
+  .sp-presets{grid-template-columns:1fr}
+}
+
+/* ── Pomodoro Timer ── */
+.sp-pomodoro{margin-top:20px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.sp-pomodoro-head{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f1f5f9}
+.sp-pomodoro-label{font-size:.78rem;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px}
+.sp-pomodoro-phase{font-size:.72rem;font-weight:600;padding:4px 10px;border-radius:100px}
+.sp-pomodoro-phase.work{background:var(--green-pale);color:var(--green)}
+.sp-pomodoro-phase.break{background:#dcfce7;color:#16a34a}
+.sp-pomodoro-body{padding:28px 20px;text-align:center}
+.sp-pomo-display{font-family:'Instrument Serif',serif;font-size:4rem;color:var(--text);line-height:1;margin-bottom:6px;font-variant-numeric:tabular-nums}
+.sp-pomo-status{font-size:.8rem;font-weight:500;color:var(--muted);margin-bottom:20px}
+.sp-pomo-progress{width:100%;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden;margin-bottom:20px}
+.sp-pomo-bar{height:100%;background:var(--green);border-radius:3px;transition:width .5s ease}
+.sp-pomo-controls{display:flex;gap:8px;justify-content:center}
+.sp-pomo-btn{padding:10px 20px;border:1.5px solid var(--border);border-radius:10px;background:var(--card);cursor:pointer;font-size:.82rem;font-weight:600;color:var(--text);font-family:inherit;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.sp-pomo-btn:hover{border-color:var(--green);color:var(--green)}
+.sp-pomo-btn.primary{background:var(--green);color:#fff;border-color:var(--green)}
+.sp-pomo-btn.primary:hover{background:#0063D1}
+.sp-pomo-btn:disabled{opacity:.4;cursor:not-allowed}
+.sp-pomo-rounds{display:flex;gap:6px;justify-content:center;margin-top:16px}
+.sp-pomo-dot{width:10px;height:10px;border-radius:50%;background:#e2e8f0;transition:background .2s}
+.sp-pomo-dot.done{background:var(--green)}
+.sp-pomo-dot.active{background:var(--green);box-shadow:0 0 0 3px rgba(0,98,204,.2)}
+
+/* ── Print ── */
+@media print{
+  .sp-hero,.sp-tabs,.sp-seo,afro-navbar,afro-footer,afro-related-tools,afro-newsletter-cta,.sp-actions,.sp-tips,.sp-presets,.sp-add-btn,.sp-generate,.sp-card:has(.sp-subjects),.sp-card:has(.sp-prefs),.sp-pomodoro{display:none!important}
+  .sp-results{display:block!important}
+  .sp-app{padding:0}
+  .sp-table-wrap{border:1px solid #ccc}
+}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Study Planner & Timetable Generator",
+  "description": "Create a personalised Africa exam study timetable with source notes, weekly schedule, countdown, timetable, and flashcard handoffs.",
+  "url": "https://afrotools.com/tools/study-planner/",
+  "inLanguage": "en",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/study-planner.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Study Planner & Timetable Generator",
+  "url": "https://afrotools.com/tools/study-planner/",
+  "description": "Create a personalised Africa exam study timetable with source notes, weekly schedule, countdown, timetable, and flashcard handoffs.",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/study-planner.webp"
+}
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Education","item":"https://afrotools.com/education/"},{"@type":"ListItem","position":3,"name":"Study Planner","item":"https://afrotools.com/tools/study-planner/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How does the difficulty weighting work?","acceptedAnswer":{"@type":"Answer","text":"Hard subjects get 3x the time allocation, Medium gets 2x, and Easy gets 1x. For example, with 3 subjects (1 hard, 1 medium, 1 easy), the total weight is 6. The hard subject gets 50% of study time, medium gets 33%, easy gets 17%."}},{"@type":"Question","name":"Can I save my timetable?","acceptedAnswer":{"@type":"Answer","text":"Click \"Print / PDF\" to save as PDF or print directly. Your subjects are also saved in your browser so they'll be there when you return."}},{"@type":"Question","name":"How many hours should I study per day?","acceptedAnswer":{"@type":"Answer","text":"For exam prep, 4-6 hours of focused study per day is effective. Quality beats quantity — use active recall and spaced repetition. Take regular breaks with the Pomodoro technique."}}]}</script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/study-planner.webp">
+<meta property="article:modified_time" content="2026-03-28">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/study-planner/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/study-planner/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/planificateur-etudes/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/mpango-masomo/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/study-planner/">
+</head>
+<body class="top-level-page-ui-refresh" data-education-study-focus="true">
+<afro-navbar></afro-navbar>
+
+<!-- Hero -->
+<section class="sp-hero">
+<div class="sp-hero-inner">
+  <div class="sp-breadcrumb"><a href="/">Home</a> / <a href="/education/">Education</a> / <span class="current">Study Planner</span></div>
+  <h1>Study Planner &amp; Timetable. <span>Ace your exams.</span></h1>
+  <p class="sp-hero-sub">Drop in your subjects, set how much time you have, and get a balanced weekly timetable that gives harder subjects more attention.</p>
+  <div class="sp-tags">
+    <span class="sp-tag">WAEC / NECO</span>
+    <span class="sp-tag">JAMB Prep</span>
+    <span class="sp-tag">KCSE</span>
+    <span class="sp-tag">ECZ / UNEB / NECTA</span>
+    <span class="sp-tag">University</span>
+  </div>
+</div>
+</section>
+
+<!-- App -->
+<div class="sp-app">
+
+<!-- Tabs -->
+<div class="sp-tabs">
+  <button type="button" class="sp-tab active" data-tab="setup" onclick="switchTab('setup')">Setup</button>
+  <button type="button" class="sp-tab" data-tab="timetable" onclick="switchTab('timetable')">Timetable</button>
+  <button type="button" class="sp-tab" data-tab="tips" onclick="switchTab('tips')">Study Tips</button>
+</div>
+
+<!-- Setup Panel -->
+<div class="sp-panel active" id="panel-setup">
+
+<!-- Presets -->
+<div class="sp-presets">
+  <button type="button" class="sp-preset selected" data-key="waec" onclick="loadPreset('waec',this)">
+    <div class="sp-preset-name">WAEC / SSCE</div>
+    <div class="sp-preset-desc">7 core subjects</div>
+  </button>
+  <button type="button" class="sp-preset" data-key="jamb" onclick="loadPreset('jamb',this)">
+    <div class="sp-preset-name">JAMB UTME</div>
+    <div class="sp-preset-desc">4 subjects</div>
+  </button>
+  <button type="button" class="sp-preset" data-key="kcse" onclick="loadPreset('kcse',this)">
+    <div class="sp-preset-name">Kenya KCSE</div>
+    <div class="sp-preset-desc">7 subjects</div>
+  </button>
+  <button type="button" class="sp-preset" data-key="zambia-grade-12" onclick="loadPreset('zambia-grade-12',this)">
+    <div class="sp-preset-name">Zambia Grade 12</div>
+    <div class="sp-preset-desc">ECZ school certificate</div>
+  </button>
+  <button type="button" class="sp-preset" data-key="tanzania-csee" onclick="loadPreset('tanzania-csee',this)">
+    <div class="sp-preset-name">Tanzania CSEE</div>
+    <div class="sp-preset-desc">NECTA Form Four</div>
+  </button>
+  <button type="button" class="sp-preset" data-key="south-africa-nsc" onclick="loadPreset('south-africa-nsc',this)">
+    <div class="sp-preset-name">South Africa NSC</div>
+    <div class="sp-preset-desc">Matric / APS prep</div>
+  </button>
+  <button type="button" class="sp-preset" data-key="uni" onclick="loadPreset('uni',this)">
+    <div class="sp-preset-name">University</div>
+    <div class="sp-preset-desc">5 courses</div>
+  </button>
+  <button type="button" class="sp-preset" data-key="custom" onclick="loadPreset('custom',this)">
+    <div class="sp-preset-name">Custom</div>
+    <div class="sp-preset-desc">Start blank</div>
+  </button>
+</div>
+<div class="sp-exam-context" id="examContext" aria-live="polite">
+  <div><strong>Custom study plan.</strong> Choose an Africa exam preset to load subjects, dates, source notes, and handoff links.</div>
+</div>
+
+<!-- Subjects -->
+<div class="sp-card">
+  <div class="sp-card-head">
+    <span class="sp-card-label"><span class="icon">&#128218;</span> Subjects</span>
+    <span style="font-size:.72rem;color:var(--muted)" id="subjectCount">7 subjects</span>
+  </div>
+  <div class="sp-card-body">
+    <div class="sp-subjects" id="subjectList"></div>
+    <button type="button" class="sp-add-btn" onclick="addSubject('','medium','')">+ Add subject</button>
+  </div>
+</div>
+
+<!-- Schedule Preferences -->
+<div class="sp-card">
+  <div class="sp-card-head">
+    <span class="sp-card-label"><span class="icon">&#9200;</span> Schedule</span>
+  </div>
+  <div class="sp-card-body">
+    <div class="sp-prefs">
+      <div class="sp-field">
+        <label for="hoursPerDay">Hours per day</label>
+        <input aria-label="Hours per day" type="number" id="hoursPerDay" value="4" min="1" max="12" step="0.5">
+      </div>
+      <div class="sp-field">
+        <label for="daysPerWeek">Days per week</label>
+        <select id="daysPerWeek" aria-label="Days per week">
+          <option value="5">5 days (Mon - Fri)</option>
+          <option value="6" selected>6 days (Mon - Sat)</option>
+          <option value="7">7 days (Every day)</option>
+        </select>
+      </div>
+      <div class="sp-field">
+        <label for="sessionLength">Session length</label>
+        <select id="sessionLength" aria-label="Session length">
+          <option value="0.5">30 min</option>
+          <option value="1" selected>1 hour</option>
+          <option value="1.5">1.5 hours</option>
+          <option value="2">2 hours</option>
+        </select>
+      </div>
+      <div class="sp-field">
+        <label for="startTime">Start time</label>
+        <input aria-label="Start time" type="time" id="startTime" value="08:00">
+      </div>
+    </div>
+  </div>
+</div>
+
+<button type="button" class="sp-generate" onclick="generate()">Generate Timetable &rarr;</button>
+</div>
+
+<!-- Timetable Panel -->
+<div class="sp-panel" id="panel-timetable">
+  <div class="sp-results" id="resultsArea">
+    <div class="sp-plan-summary" id="planSummary"></div>
+    <div class="sp-stats" id="statsBar"></div>
+    <div class="sp-session-progress" id="sessionProgress" aria-live="polite"></div>
+    <div class="sp-breakdown" id="breakdown"></div>
+    <div class="sp-table-wrap"><table class="sp-table" id="timetable"></table></div>
+    <div class="sp-actions">
+      <button type="button" class="sp-action-btn primary" onclick="printTable()">Print / PDF</button>
+      <button type="button" class="sp-action-btn" onclick="switchTab('setup')">Edit subjects</button>
+      <button type="button" class="sp-action-btn" onclick="regenerate()">Shuffle timetable</button>
+      <button type="button" class="sp-action-btn" onclick="copyStudyProgress()">Copy progress</button>
+      <button type="button" class="sp-action-btn" onclick="resetStudyProgress()">Reset progress</button>
+      <button type="button" class="sp-action-btn" onclick="showPomodoro()">Focus timer</button>
+    </div>
+    <div class="sp-action-status" id="studyActionStatus" aria-live="polite"></div>
+    <!-- Pomodoro Timer -->
+    <div class="sp-pomodoro" id="pomodoroTimer" style="display:none">
+      <div class="sp-pomodoro-head">
+        <span class="sp-pomodoro-label"><span class="icon">&#127813;</span> Pomodoro Timer</span>
+        <span class="sp-pomodoro-phase work" id="pomoPhaseLabel">Work</span>
+      </div>
+      <div class="sp-pomodoro-body">
+        <div class="sp-pomo-display" id="pomoDisplay">25:00</div>
+        <div class="sp-pomo-status" id="pomoStatus">Ready to focus</div>
+        <div class="sp-pomo-progress"><div class="sp-pomo-bar" id="pomoBar" style="width:100%"></div></div>
+        <div class="sp-pomo-controls">
+          <button type="button" class="sp-pomo-btn primary" id="pomoStartBtn" onclick="pomoStartPause()">&#9654; Start</button>
+          <button type="button" class="sp-pomo-btn" id="pomoResetBtn" onclick="pomoReset()">&#8635; Reset</button>
+          <button type="button" class="sp-pomo-btn" id="pomoSkipBtn" onclick="pomoSkip()">&#9197; Skip</button>
+        </div>
+        <div class="sp-pomo-rounds" id="pomoRounds">
+          <span class="sp-pomo-dot active"></span>
+          <span class="sp-pomo-dot"></span>
+          <span class="sp-pomo-dot"></span>
+          <span class="sp-pomo-dot"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="emptyTimetable" style="text-align:center;padding:60px 20px">
+    <div style="font-size:2.5rem;margin-bottom:12px">&#128197;</div>
+    <p style="font-size:.95rem;font-weight:600;color:var(--text);margin-bottom:6px">No timetable yet</p>
+    <p style="font-size:.82rem;color:var(--muted);margin-bottom:20px">Add your subjects and hit generate</p>
+    <button type="button" class="sp-action-btn primary" onclick="switchTab('setup')">Go to Setup</button>
+  </div>
+</div>
+
+<!-- Tips Panel -->
+<div class="sp-panel" id="panel-tips">
+  <div class="sp-tips">
+    <div class="sp-tip">
+      <div class="sp-tip-title">&#127813; Pomodoro Technique</div>
+      <div class="sp-tip-text">Study for 25 minutes, then take a 5-min break. After 4 rounds, take a longer 15-30 min break. Keeps your brain fresh.</div>
+    </div>
+    <div class="sp-tip">
+      <div class="sp-tip-title">&#129504; Active Recall</div>
+      <div class="sp-tip-text">Don't just re-read notes. Close the book and try to recall what you just studied. This is 3x more effective than passive reading.</div>
+    </div>
+    <div class="sp-tip">
+      <div class="sp-tip-title">&#128257; Spaced Repetition</div>
+      <div class="sp-tip-text">Review material at increasing intervals: 1 day, 3 days, 7 days, 14 days. This moves info from short-term to long-term memory.</div>
+    </div>
+    <div class="sp-tip">
+      <div class="sp-tip-title">&#127749; Hard Subjects First</div>
+      <div class="sp-tip-text">Tackle your hardest subjects in the morning when your brain is freshest. Save easier subjects for later when energy dips.</div>
+    </div>
+    <div class="sp-tip">
+      <div class="sp-tip-title">&#128221; Daily Review</div>
+      <div class="sp-tip-text">Spend the first 15 minutes of each study session reviewing what you covered yesterday. This compounds over time.</div>
+    </div>
+    <div class="sp-tip">
+      <div class="sp-tip-title">&#128164; Sleep Matters</div>
+      <div class="sp-tip-text">Your brain consolidates memories during sleep. 7-8 hours of sleep beats an all-night cramming session every time.</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end sp-app -->
+
+<!-- SEO -->
+<section class="sp-seo">
+<h2>Free Study Timetable Generator for African Students</h2>
+<p>Effective study planning is the difference between passing and excelling. Use the planner for ECZ, UNEB, NECTA, WAEC Ghana, KNEC, ZIMSEC, South Africa NSC, WAEC, JAMB, KCSE, or university semester exams. Presets load useful subjects and source notes; custom rows let you add exact paper dates.</p>
+<p>This study planner automatically allocates more hours to difficult subjects, creates balanced daily schedules, and generates a printable weekly timetable. It also links into the matching countdown, exam timetable, and flashcard deck. No signup required; your data stays in your browser.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="sp-faq"><summary>How does the difficulty weighting work?</summary><p>Hard subjects get 3x the time allocation, Medium gets 2x, and Easy gets 1x. For example, with 3 subjects (1 hard, 1 medium, 1 easy), the total weight is 6. The hard subject gets 50% of study time, medium gets 33%, easy gets 17%.</p></details>
+<details class="sp-faq"><summary>Can I save my timetable?</summary><p>Click "Print / PDF" to save as PDF or print directly. Your subjects are also saved in your browser so they'll be there when you return.</p></details>
+<details class="sp-faq"><summary>How many hours should I study per day?</summary><p>For exam prep, 4-6 hours of focused study per day is effective. Quality beats quantity — use active recall and spaced repetition. Take regular breaks with the Pomodoro technique.</p></details>
+</section>
+
+
+
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+<afro-related-tools category="education" current="study-planner" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/education-hub/" data-related-tool data-id="education-hub" data-name="Education Hub" data-category="education" data-icon="EH" data-desc="Your complete education journey for GPA, JAMB, IELTS pathway planning, and personalized scholarship matching.">Education Hub</a></li><li><a href="/tools/waec-calculator/" data-related-tool data-id="waec-calculator" data-name="WAEC/NECO Grade Calculator" data-category="education" data-icon="WN" data-desc="Aggregate score, JAMB + O’Level eligibility, GPA converter (4.0 &amp; 5.0 scale), Ghana WASSCE. 12 universities, all cut-off">WAEC/NECO Grade Calculator</a></li><li><a href="/tools/scholarship-finder/" data-related-tool data-id="scholarship-finder" data-name="African Scholarship Finder" data-category="education" data-icon="AS" data-desc="Quick scholarship check using source-linked opportunities where available, with profile-aware match scoring, fit notes, ">African Scholarship Finder</a></li><li><a href="/tools/study-abroad-cost/" data-related-tool data-id="study-abroad-cost" data-name="Study Abroad Cost Calculator" data-category="education" data-icon="SA" data-desc="Total cost of studying abroad from Africa — tuition, visa, accommodation, living expenses. 20 destination countries.">Study Abroad Cost Calculator</a></li><li><a href="/tools/jamb-aggregate/" data-related-tool data-id="jamb-aggregate" data-name="JAMB Aggregate Calculator" data-category="education" data-icon="JA" data-desc="Calculate JAMB aggregate score for any Nigerian university department.">JAMB Aggregate Calculator</a></li><li><a href="/tools/scientific-calc/" data-related-tool data-id="scientific-calc" data-name="Scientific Calculator" data-category="education" data-icon="SC" data-desc="Full scientific calculator with graphing. Works offline. African exam mode.">Scientific Calculator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+var COLORS = ['#008751','#6366f1','#ea580c','#dc2626','#2563eb','#ca8a04','#9333ea','#059669','#be185d','#0284c7','#0d9488','#7c3aed'];
+var DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+var PRESETS_DATA = {
+  waec:[['English','medium'],['Mathematics','hard'],['Physics','hard'],['Chemistry','medium'],['Biology','medium'],['Civic Education','easy'],['Further Maths','hard']],
+  jamb:[['English','medium'],['Mathematics','hard'],['Physics','hard'],['Chemistry','medium']],
+  kcse:[['English','medium'],['Mathematics','hard'],['Physics','hard'],['Chemistry','medium'],['Biology','medium'],['Kiswahili','easy'],['History','medium']],
+  'zambia-grade-7':[['Mathematics','hard'],['English','medium'],['Integrated Science','medium'],['Social Studies','medium'],['Special Paper','hard']],
+  'zambia-grade-12':[['Mathematics','hard'],['English Language','medium'],['Biology','medium'],['Chemistry','hard'],['Physics','hard']],
+  'zambia-gce':[['Mathematics','hard'],['English Language','medium'],['Biology','medium'],['Commerce','medium'],['Civic Education','easy']],
+  'uganda-uneb-registration':[['Mathematics','hard'],['English','medium'],['Science','medium'],['Social Studies','medium'],['CRE/IRE','easy']],
+  'tanzania-csee':[['Basic Mathematics','hard'],['English Language','medium'],['Kiswahili','medium'],['Biology','medium'],['Geography','medium']],
+  'south-africa-nsc':[['Mathematics','hard'],['English Home Language','medium'],['Life Sciences','medium'],['Physical Sciences','hard'],['Geography','medium']],
+  'ghana-waec':[['Core Mathematics','hard'],['English Language','medium'],['Integrated Science','medium'],['Social Studies','medium'],['Elective subject','hard']],
+  'kenya-kcse':[['Mathematics','hard'],['English','medium'],['Kiswahili','medium'],['Biology','medium'],['Chemistry','hard']],
+  'zimbabwe-zimsec':[['Mathematics','hard'],['English Language','medium'],['Integrated Science','medium'],['History','medium'],['Geography','medium']],
+  uni:[['Course 1','hard'],['Course 2','medium'],['Course 3','medium'],['Course 4','easy'],['Course 5','hard']],
+  custom:[]
+};
+
+var EXAM_META = {
+  'zambia-gce':{name:'Zambia ECZ GCE 2026',targetDate:'2026-07-22',source:'https://www.exams-council.org.zm/gce/',note:'ECZ lists the 2026 GCE timetable as 3 July to 22 July 2026.',checklist:['Check remaining paper dates against ECZ','Prioritise weak subjects and past papers','Prepare ID, stationery, calculator, and centre route']},
+  'uganda-uneb-registration':{name:'Uganda UNEB PLE/UCE/UACE 2026',targetDate:'2026-07-31',source:'https://uneb.ac.ug/2026/06/01/uneb-normal-registration-extended-to-30th-june-2026/',note:'UNEB says late registration runs from 1 July to 31 July 2026.',checklist:['Confirm registration status with school','Collect candidate documents','Plan weekly revision after registration']},
+  'zambia-grade-7':{name:'Zambia ECZ Grade 7 2026',targetDate:'2026-10-26',source:'https://www.exams-council.org.zm/grade-7/',note:'ECZ lists the 2026 Grade 7 exam window as 26 October to 30 October 2026.',checklist:['Print the official subject timetable','Run two timed practice sets per week','Prepare transport and exam materials']},
+  'zambia-grade-12':{name:'Zambia ECZ Grade 12 2026',targetDate:'2026-10-30',source:'https://www.exams-council.org.zm/grade-12/',note:'ECZ lists the 2026 School Certificate exam window as 30 October to 17 November 2026.',checklist:['Map every subject to its ECZ paper date','Separate practical and theory revision','Schedule weekly timed past papers']},
+  'tanzania-csee':{name:'Tanzania NECTA CSEE 2026',targetDate:'2026-11-02',source:'https://necta.go.tz/pages/csee',note:'NECTA states CSEE is administered in the first week of November every year. Treat this as a planning anchor until the final paper timetable is confirmed.',checklist:['Confirm final NECTA paper dates','Separate Kiswahili and English writing practice','Run science diagram drills']},
+  'south-africa-nsc':{name:'South Africa NSC 2026',targetDate:'2026-10-12',source:'https://www.education.gov.za/?link=984&mid=4149&portalid=0&tabid=338',note:'The DBE publishes the 2026 November NSC timetable. Confirm each subject paper on the official PDF.',checklist:['Check DBE subject paper dates','Set APS target per course','Plan past-paper weekends']},
+  'ghana-waec':{name:'Ghana WAEC BECE/WASSCE 2026',targetDate:'',source:'https://waecgh.org/timetable/',note:'WAEC Ghana lists 2026 BECE, WASSCE school, and private candidate timetables. Add the exact first paper date to each subject row.',checklist:['Download the correct WAEC Ghana timetable','Add first paper date above','Separate core and elective revision']},
+  'kenya-kcse':{name:'Kenya KNEC KCSE 2026',targetDate:'',source:'https://www.knec.ac.ke/2026-kcse-timetable/',note:'KNEC has the 2026 KCSE timetable posted. Add the exact first paper date to each subject row.',checklist:['Check KNEC paper order','Set target mean grade and cluster goals','Run one timed paper per subject weekly']},
+  'zimbabwe-zimsec':{name:'Zimbabwe ZIMSEC O/A Level 2026',targetDate:'',source:'https://www5.zimsec.co.zw/timetables/',note:'ZIMSEC publishes timetable downloads. Add the exact paper date from the correct O Level or A Level timetable.',checklist:['Download the correct ZIMSEC level timetable','Add the first paper date','Split syllabus gaps from past-paper practice']}
+};
+
+var subjectId = 0;
+var generated = false;
+var subjectList = document.getElementById('subjectList');
+var activePresetKey = '';
+var STUDY_PROGRESS_KEY = 'afrotools.studyPlanner.sessionProgress.v1';
+var completedSessions = {};
+var currentSessionPlan = [];
+var shuffleSeed = 0;
+
+function loadStudyProgress() {
+  try { completedSessions = JSON.parse(localStorage.getItem(STUDY_PROGRESS_KEY) || '{}') || {}; }
+  catch (e) { completedSessions = {}; }
+}
+
+function saveStudyProgress() {
+  try { localStorage.setItem(STUDY_PROGRESS_KEY, JSON.stringify(completedSessions)); } catch (e) {}
+}
+
+function setStudyActionStatus(message) {
+  var el = document.getElementById('studyActionStatus');
+  if (el) el.textContent = message || '';
+}
+
+function slugify(value) {
+  return String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'session';
+}
+
+function makeSessionId(day, slot, time, subject) {
+  return slugify([activePresetKey || 'custom', day, slot, time].join('-'));
+}
+
+function hashString(value) {
+  var hash = 2166136261;
+  value = String(value || '');
+  for (var i = 0; i < value.length; i++) {
+    hash ^= value.charCodeAt(i);
+    hash += (hash << 1) + (hash << 4) + (hash << 7) + (hash << 8) + (hash << 24);
+  }
+  return hash >>> 0;
+}
+
+function seededRandom(seed) {
+  var state = seed || 1;
+  return function() {
+    state = (state * 1664525 + 1013904223) >>> 0;
+    return state / 4294967296;
+  };
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.sp-tab').forEach(function(t) { t.classList.toggle('active', t.dataset.tab === tab); });
+  document.querySelectorAll('.sp-panel').forEach(function(p) { p.classList.toggle('active', p.id === 'panel-' + tab); });
+}
+
+function updateCount() {
+  var c = subjectList.children.length;
+  document.getElementById('subjectCount').textContent = c + ' subject' + (c !== 1 ? 's' : '');
+}
+
+function addSubject(name, difficulty, examDate) {
+  var id = subjectId++;
+  var div = document.createElement('div');
+  div.className = 'sp-subject';
+  div.id = 'sub-' + id;
+  div.innerHTML =
+    '<input aria-label="Subject name" type="text" value="' + name + '" placeholder="Subject name">' +
+    '<div class="sp-diff-toggle">' +
+      '<button type="button" class="sp-diff-btn' + (difficulty === 'easy' ? ' active' : '') + '" data-d="easy" onclick="setDiff(this)">Easy</button>' +
+      '<button type="button" class="sp-diff-btn' + (difficulty === 'medium' ? ' active' : '') + '" data-d="medium" onclick="setDiff(this)">Med</button>' +
+      '<button type="button" class="sp-diff-btn' + (difficulty === 'hard' ? ' active' : '') + '" data-d="hard" onclick="setDiff(this)">Hard</button>' +
+    '</div>' +
+    '<input aria-label="Exam date" type="date" class="sp-exam-date" value="' + examDate + '">' +
+    '<button type="button" class="sp-remove" onclick="removeSub(this)" title="Remove">&times;</button>';
+  subjectList.appendChild(div);
+  updateCount();
+  saveToLocal();
+}
+
+function setDiff(btn) {
+  var siblings = btn.parentElement.querySelectorAll('.sp-diff-btn');
+  siblings.forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  saveToLocal();
+}
+
+function removeSub(btn) {
+  btn.closest('.sp-subject').remove();
+  updateCount();
+  saveToLocal();
+}
+
+function loadPreset(key, el) {
+  document.querySelectorAll('.sp-preset').forEach(function(p) { p.classList.remove('selected'); });
+  if (el) el.classList.add('selected');
+  subjectList.innerHTML = '';
+  subjectId = 0;
+  activePresetKey = key;
+  var meta = EXAM_META[key];
+  var targetDate = meta ? (meta.targetDate || '') : '';
+  PRESETS_DATA[key].forEach(function(s) { addSubject(s[0], s[1], targetDate); });
+  updateExamContext(key);
+}
+
+function updateExamContext(key) {
+  var box = document.getElementById('examContext');
+  if (!box) return;
+  var meta = EXAM_META[key];
+  if (!meta) {
+    box.innerHTML = '<div><strong>Custom study plan.</strong> Add subjects, exam dates, and weekly hours. Your data stays in this browser.</div>';
+    return;
+  }
+  var dateText = meta.targetDate ? ('Target date: ' + fmtDate(meta.targetDate) + '.') : 'Exact paper date required from the official timetable.';
+  box.innerHTML = '<div><strong>' + esc(meta.name) + '.</strong> ' + esc(dateText) + ' ' + esc(meta.note) + '</div>' +
+    '<div class="sp-context-actions">' +
+    '<a href="' + esc(meta.source) + '" target="_blank" rel="noopener">Official source</a>' +
+    '<a href="/tools/exam-countdown/?exam=' + encodeURIComponent(key) + '">Countdown</a>' +
+    '<a href="/tools/exam-timetable/?exam=' + encodeURIComponent(key) + '">Exam timetable</a>' +
+    '<a href="/tools/flashcard-maker/?exam=' + encodeURIComponent(key) + '">Flashcards</a>' +
+    '<a href="/tools/grade-tracker/?exam=' + encodeURIComponent(key) + '">Score tracker</a>' +
+    '</div>';
+}
+
+function presetKeyFromQuery(value) {
+  var aliases = {
+    'ecz-grade-12': 'zambia-grade-12',
+    'ecz-grade-7': 'zambia-grade-7',
+    'uganda-uneb': 'uganda-uneb-registration',
+    'kenya-kcse-exam': 'kenya-kcse'
+  };
+  return PRESETS_DATA[value] ? value : (aliases[value] || '');
+}
+
+function fmtDate(dateStr) {
+  if (!dateStr) return '';
+  var d = new Date(dateStr + 'T00:00:00');
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function esc(value) {
+  return String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+function getSubjects() {
+  var rows = subjectList.querySelectorAll('.sp-subject');
+  var subjects = [];
+  rows.forEach(function(row, i) {
+    var name = row.querySelector('input[type="text"]').value || ('Subject ' + (i + 1));
+    var activeBtn = row.querySelector('.sp-diff-btn.active');
+    var diff = activeBtn ? activeBtn.dataset.d : 'medium';
+    var weight = diff === 'hard' ? 3 : diff === 'medium' ? 2 : 1;
+    var examDate = row.querySelector('.sp-exam-date').value;
+    subjects.push({ name: name, diff: diff, weight: weight, color: COLORS[i % COLORS.length], examDate: examDate });
+  });
+  return subjects;
+}
+
+function generate() {
+  var subjects = getSubjects();
+  if (subjects.length === 0) { AfroTools.toast.error('Add at least one subject'); return; }
+
+  var hoursPerDay = +document.getElementById('hoursPerDay').value;
+  var daysPerWeek = +document.getElementById('daysPerWeek').value;
+  var sessionLen = +document.getElementById('sessionLength').value;
+  var startTime = document.getElementById('startTime').value;
+
+  var totalWeeklyHours = hoursPerDay * daysPerWeek;
+  var sessionsPerDay = Math.floor(hoursPerDay / sessionLen);
+  var totalSessions = sessionsPerDay * daysPerWeek;
+  var totalWeight = subjects.reduce(function(s, sub) { return s + sub.weight; }, 0);
+
+  // Allocate sessions proportionally
+  var allocated = 0;
+  subjects.forEach(function(sub) {
+    sub.sessions = Math.max(1, Math.round((sub.weight / totalWeight) * totalSessions));
+    allocated += sub.sessions;
+  });
+  while (allocated > totalSessions) { subjects[subjects.length - 1].sessions--; allocated--; }
+  while (allocated < totalSessions) { subjects[0].sessions++; allocated++; }
+  subjects.forEach(function(s) { s.hours = (s.sessions * sessionLen).toFixed(1); });
+
+  // Build schedule
+  var schedule = [];
+  for (var d = 0; d < daysPerWeek; d++) schedule.push([]);
+
+  var pool = [];
+  subjects.forEach(function(sub) { for (var i = 0; i < sub.sessions; i++) pool.push(sub); });
+
+  var random = seededRandom(hashString([
+    activePresetKey || 'custom',
+    hoursPerDay,
+    daysPerWeek,
+    sessionLen,
+    startTime,
+    shuffleSeed,
+    subjects.map(function(s) { return s.name + ':' + s.diff + ':' + (s.examDate || ''); }).join('|')
+  ].join('~')));
+
+  // Shuffle pool for variety, but keep it stable for the same inputs.
+  for (var i = pool.length - 1; i > 0; i--) {
+    var j = Math.floor(random() * (i + 1));
+    var temp = pool[i]; pool[i] = pool[j]; pool[j] = temp;
+  }
+
+  var dayIdx = 0;
+  pool.forEach(function(sub) {
+    var placed = false;
+    for (var attempt = 0; attempt < daysPerWeek; attempt++) {
+      var idx = (dayIdx + attempt) % daysPerWeek;
+      if (schedule[idx].length < sessionsPerDay) {
+        var alreadyHas = schedule[idx].filter(function(s) { return s.name === sub.name; }).length;
+        if (alreadyHas === 0 || attempt === daysPerWeek - 1) {
+          schedule[idx].push(sub);
+          dayIdx = (idx + 1) % daysPerWeek;
+          placed = true;
+          break;
+        }
+      }
+    }
+    if (!placed) {
+      for (var idx2 = 0; idx2 < daysPerWeek; idx2++) {
+        if (schedule[idx2].length < sessionsPerDay) { schedule[idx2].push(sub); break; }
+      }
+    }
+  });
+
+  // Stats
+  var nearestExam = '';
+  subjects.forEach(function(s) {
+    if (s.examDate && (!nearestExam || s.examDate < nearestExam)) nearestExam = s.examDate;
+  });
+  var daysLeft = '';
+  if (nearestExam) {
+    var diff = Math.ceil((new Date(nearestExam) - new Date()) / (1000 * 60 * 60 * 24));
+    daysLeft = diff > 0 ? diff : 0;
+  }
+
+  document.getElementById('statsBar').innerHTML =
+    '<div class="sp-stat"><div class="sp-stat-num">' + totalWeeklyHours + 'h</div><div class="sp-stat-label">Weekly Hours</div></div>' +
+    '<div class="sp-stat"><div class="sp-stat-num">' + subjects.length + '</div><div class="sp-stat-label">Subjects</div></div>' +
+    '<div class="sp-stat"><div class="sp-stat-num">' + (daysLeft !== '' ? daysLeft + 'd' : '--') + '</div><div class="sp-stat-label">' + (daysLeft !== '' ? 'Until Exam' : 'No Exam Date') + '</div></div>';
+
+  renderPlanSummary(subjects, totalWeeklyHours, daysLeft);
+  currentSessionPlan = [];
+  setStudyActionStatus('');
+
+  // Breakdown pills
+  var bk = '';
+  subjects.forEach(function(s) {
+    bk += '<span class="sp-break-pill"><span class="sp-break-dot" style="background:' + s.color + '"></span>' + s.name + ' <span class="sp-break-hours">' + s.hours + 'h</span></span>';
+  });
+  document.getElementById('breakdown').innerHTML = bk;
+
+  // Render timetable
+  var parts = startTime.split(':');
+  var startH = +parts[0], startM = +parts[1];
+  var table = '<tr><th>Time</th>';
+  for (var d2 = 0; d2 < daysPerWeek; d2++) table += '<th>' + DAYS[d2].slice(0, 3) + '</th>';
+  table += '</tr>';
+
+  for (var slot = 0; slot < sessionsPerDay; slot++) {
+    var slotStartMin = startH * 60 + startM + (slot * sessionLen * 60);
+    var slotEndMin = slotStartMin + sessionLen * 60;
+    var timeStr = String(Math.floor(slotStartMin / 60)).padStart(2, '0') + ':' + String(slotStartMin % 60).padStart(2, '0') + ' - ' + String(Math.floor(slotEndMin / 60)).padStart(2, '0') + ':' + String(slotEndMin % 60).padStart(2, '0');
+    table += '<tr><td class="sp-time-cell">' + timeStr + '</td>';
+    for (var d3 = 0; d3 < daysPerWeek; d3++) {
+      var sub = schedule[d3][slot];
+      if (sub) {
+        var sessionId = makeSessionId(DAYS[d3], slot, timeStr, sub.name);
+        var done = !!completedSessions[sessionId];
+        currentSessionPlan.push({ id: sessionId, day: DAYS[d3], time: timeStr, subject: sub.name, done: done });
+        table += '<td><span class="sp-slot" style="background:' + sub.color + '12;color:' + sub.color + ';border-color:' + sub.color + '">' +
+          '<label class="sp-slot-session' + (done ? ' done' : '') + '">' +
+          '<input type="checkbox" data-session-id="' + esc(sessionId) + '" onchange="toggleStudySession(this)"' + (done ? ' checked' : '') + '>' +
+          '<span class="sp-slot-subject">' + esc(sub.name) + '</span></label></span></td>';
+      } else {
+        table += '<td><span class="sp-free">Free</span></td>';
+      }
+    }
+    table += '</tr>';
+  }
+
+  // Day totals
+  table += '<tr><td class="sp-daytotal">Total</td>';
+  for (var d4 = 0; d4 < daysPerWeek; d4++) {
+    table += '<td class="sp-daytotal">' + (schedule[d4].length * sessionLen).toFixed(1) + 'h</td>';
+  }
+  table += '</tr>';
+
+  document.getElementById('timetable').innerHTML = table;
+  updateStudyProgress();
+  document.getElementById('resultsArea').classList.add('show');
+  document.getElementById('emptyTimetable').style.display = 'none';
+  generated = true;
+  switchTab('timetable');
+  saveToLocal();
+}
+
+function renderPlanSummary(subjects, totalWeeklyHours, daysLeft) {
+  var meta = EXAM_META[activePresetKey];
+  var title = meta ? meta.name : 'Custom study plan';
+  var hardSubjects = subjects.filter(function(s) { return s.diff === 'hard'; }).map(function(s) { return s.name; }).slice(0, 3);
+  var checklist = meta && meta.checklist ? meta.checklist.slice(0, 3) : ['Confirm every paper date before printing', 'Use active recall after each session', 'Turn mistakes into flashcards'];
+  var deadlineText = daysLeft !== '' ? (daysLeft + ' days to nearest dated paper') : 'Add paper dates to unlock countdown context';
+  var links = activePresetKey && EXAM_META[activePresetKey] ?
+    '<div class="sp-context-actions"><a href="/tools/exam-countdown/?exam=' + encodeURIComponent(activePresetKey) + '">Open countdown</a><a href="/tools/exam-timetable/?exam=' + encodeURIComponent(activePresetKey) + '">Exam timetable</a><a href="/tools/flashcard-maker/?exam=' + encodeURIComponent(activePresetKey) + '">Flashcards</a><a href="/tools/grade-tracker/?exam=' + encodeURIComponent(activePresetKey) + '">Track scores</a><button type="button" onclick="copyStudyPlan()">Copy plan</button></div>' :
+    '<div class="sp-context-actions"><button type="button" onclick="copyStudyPlan()">Copy plan</button></div>';
+  var list = checklist.map(function(item) { return '<li>' + esc(item) + '</li>'; }).join('');
+  document.getElementById('planSummary').innerHTML =
+    '<h2>' + esc(title) + '</h2>' +
+    '<p>' + esc(deadlineText) + ' | ' + totalWeeklyHours + ' planned study hours per week | Priority subjects: ' + esc(hardSubjects.join(', ') || 'set difficulty per subject') + '</p>' +
+    '<ul>' + list + '</ul>' + links;
+}
+
+function copyStudyText(text, successMessage, promptTitle) {
+  var fallback = function() {
+    var field = document.createElement('textarea');
+    field.value = text;
+    field.setAttribute('readonly', 'readonly');
+    field.style.position = 'fixed';
+    field.style.left = '-9999px';
+    document.body.appendChild(field);
+    field.select();
+    try {
+      document.execCommand('copy');
+      setStudyActionStatus(successMessage);
+    } catch (e) {
+      window.prompt(promptTitle, text);
+      setStudyActionStatus('Copy prompt opened.');
+    }
+    field.remove();
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() {
+      setStudyActionStatus(successMessage);
+    }).catch(fallback);
+  } else {
+    fallback();
+  }
+}
+
+function copyStudyPlan() {
+  var subjects = getSubjects();
+  var meta = EXAM_META[activePresetKey];
+  var title = meta ? meta.name : 'Custom study plan';
+  var lines = [title, 'Weekly hours: ' + document.getElementById('hoursPerDay').value + ' x ' + document.getElementById('daysPerWeek').value + ' days', 'Subjects: ' + subjects.map(function(s) { return s.name + ' (' + s.diff + ')'; }).join('; ')];
+  if (meta) lines.push('Source: ' + meta.source);
+  copyStudyText(lines.join('\n'), 'Study plan copied.', 'Copy study plan');
+}
+
+function toggleStudySession(input) {
+  var id = input && input.dataset ? input.dataset.sessionId : '';
+  if (!id) return;
+  if (input.checked) completedSessions[id] = { doneAt: new Date().toISOString() };
+  else delete completedSessions[id];
+  saveStudyProgress();
+  var label = input.closest ? input.closest('.sp-slot-session') : null;
+  if (label) label.classList.toggle('done', input.checked);
+  updateStudyProgress();
+}
+
+function updateStudyProgress() {
+  var box = document.getElementById('sessionProgress');
+  if (!box) return;
+  var total = currentSessionPlan.length;
+  var done = currentSessionPlan.filter(function(session) { return !!completedSessions[session.id]; }).length;
+  var pct = total ? Math.round((done / total) * 100) : 0;
+  var next = currentSessionPlan.find(function(session) { return !completedSessions[session.id]; });
+  box.innerHTML =
+    '<div class="sp-progress-card"><strong>' + done + '/' + total + '</strong><span>sessions done</span></div>' +
+    '<div class="sp-progress-card"><strong>' + pct + '%</strong><span>weekly progress</span></div>' +
+    '<div class="sp-progress-card"><strong>' + esc(next ? next.day.slice(0, 3) : 'Done') + '</strong><span>' + esc(next ? next.subject : 'all sessions complete') + '</span></div>';
+}
+
+function copyStudyProgress() {
+  if (!generated) generate();
+  var meta = EXAM_META[activePresetKey];
+  var title = meta ? meta.name : 'Custom study plan';
+  var done = currentSessionPlan.filter(function(session) { return !!completedSessions[session.id]; });
+  var next = currentSessionPlan.filter(function(session) { return !completedSessions[session.id]; }).slice(0, 5);
+  var text = [
+    title + ' progress',
+    'Completed: ' + done.length + ' of ' + currentSessionPlan.length + ' sessions',
+    '',
+    'Next sessions:',
+    next.length ? next.map(function(session, index) { return (index + 1) + '. ' + session.day + ' ' + session.time + ' - ' + session.subject; }).join('\n') : 'All generated sessions are complete.',
+    '',
+    activePresetKey ? 'Open flashcards: https://afrotools.com/tools/flashcard-maker/?exam=' + encodeURIComponent(activePresetKey) : 'Open flashcards: https://afrotools.com/tools/flashcard-maker/',
+    activePresetKey ? 'Track scores: https://afrotools.com/tools/grade-tracker/?exam=' + encodeURIComponent(activePresetKey) : 'Track scores: https://afrotools.com/tools/grade-tracker/'
+  ].join('\n');
+  copyStudyText(text, 'Progress summary copied.', 'Copy study progress');
+}
+
+function resetStudyProgress() {
+  if (!currentSessionPlan.length) { setStudyActionStatus('Generate a timetable first.'); return; }
+  completedSessions = {};
+  saveStudyProgress();
+  document.querySelectorAll('.sp-slot-session input[type="checkbox"]').forEach(function(input) {
+    input.checked = false;
+    var label = input.closest ? input.closest('.sp-slot-session') : null;
+    if (label) label.classList.remove('done');
+  });
+  updateStudyProgress();
+  setStudyActionStatus('Progress reset for this timetable.');
+}
+
+function regenerate() {
+  shuffleSeed++;
+  completedSessions = {};
+  saveStudyProgress();
+  generate();
+  setStudyActionStatus('Timetable shuffled and progress reset for the new order.');
+}
+
+function printTable() { window.print(); }
+
+// LocalStorage
+function saveToLocal() {
+  try {
+    var subjects = getSubjects();
+    var prefs = {
+      hoursPerDay: document.getElementById('hoursPerDay').value,
+      daysPerWeek: document.getElementById('daysPerWeek').value,
+      sessionLength: document.getElementById('sessionLength').value,
+      startTime: document.getElementById('startTime').value,
+      activePresetKey: activePresetKey,
+      shuffleSeed: shuffleSeed
+    };
+    localStorage.setItem('sp_subjects', JSON.stringify(subjects));
+    localStorage.setItem('sp_prefs', JSON.stringify(prefs));
+  } catch (e) {}
+}
+
+function loadFromLocal() {
+  try {
+    var saved = localStorage.getItem('sp_subjects');
+    var prefs = localStorage.getItem('sp_prefs');
+    if (saved) {
+      var subjects = JSON.parse(saved);
+      if (subjects.length > 0) {
+        subjectList.innerHTML = '';
+        subjectId = 0;
+        document.querySelectorAll('.sp-preset').forEach(function(p) { p.classList.remove('selected'); });
+        subjects.forEach(function(s) { addSubject(s.name, s.diff, s.examDate || ''); });
+        if (prefs) {
+          var p = JSON.parse(prefs);
+          if (p.hoursPerDay) document.getElementById('hoursPerDay').value = p.hoursPerDay;
+          if (p.daysPerWeek) document.getElementById('daysPerWeek').value = p.daysPerWeek;
+          if (p.sessionLength) document.getElementById('sessionLength').value = p.sessionLength;
+          if (p.startTime) document.getElementById('startTime').value = p.startTime;
+          if (p.activePresetKey) activePresetKey = p.activePresetKey;
+          if (typeof p.shuffleSeed === 'number') shuffleSeed = p.shuffleSeed;
+        }
+        updateExamContext(activePresetKey);
+        if (activePresetKey) {
+          var presetBtn = document.querySelector('.sp-preset[data-key="' + activePresetKey + '"]');
+          if (presetBtn) presetBtn.classList.add('selected');
+        }
+        return true;
+      }
+    }
+  } catch (e) {}
+  return false;
+}
+
+// ── Exam date validation ──
+document.getElementById('subjectList').addEventListener('change', function(e) {
+  if (e.target && e.target.classList.contains('sp-exam-date')) {
+    var val = e.target.value;
+    if (val) {
+      var today = new Date();
+      today.setHours(0, 0, 0, 0);
+      var picked = new Date(val + 'T00:00:00');
+      if (picked < today) {
+        AfroTools.toast.error('Exam date cannot be in the past');
+        e.target.value = '';
+      }
+    }
+  }
+});
+
+// ── Pomodoro Timer ──
+var POMO_WORK = 25 * 60;   // 25 minutes in seconds
+var POMO_BREAK = 5 * 60;   // 5 minutes in seconds
+var POMO_LONG_BREAK = 15 * 60; // 15 minutes after 4 rounds
+var pomoTime = POMO_WORK;
+var pomoTotal = POMO_WORK;
+var pomoRunning = false;
+var pomoInterval = null;
+var pomoIsBreak = false;
+var pomoRound = 0; // 0-based, current round index
+
+function showPomodoro() {
+  var el = document.getElementById('pomodoroTimer');
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+  if (el.style.display === 'block') {
+    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+function pomoUpdateDisplay() {
+  var mins = Math.floor(pomoTime / 60);
+  var secs = pomoTime % 60;
+  document.getElementById('pomoDisplay').textContent =
+    String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+  var pct = pomoTotal > 0 ? (pomoTime / pomoTotal) * 100 : 0;
+  document.getElementById('pomoBar').style.width = pct + '%';
+}
+
+function pomoUpdateRounds() {
+  var dots = '';
+  for (var i = 0; i < 4; i++) {
+    var cls = 'sp-pomo-dot';
+    if (i < pomoRound) cls += ' done';
+    if (i === pomoRound) cls += ' active';
+    dots += '<span class="' + cls + '"></span>';
+  }
+  document.getElementById('pomoRounds').innerHTML = dots;
+}
+
+function pomoTick() {
+  if (pomoTime <= 0) {
+    clearInterval(pomoInterval);
+    pomoInterval = null;
+    pomoRunning = false;
+    document.getElementById('pomoStartBtn').innerHTML = '&#9654; Start';
+
+    if (!pomoIsBreak) {
+      // Work session complete
+      pomoRound++;
+      pomoUpdateRounds();
+      AfroTools.toast.success('Work session complete! Time for a break.');
+      // Switch to break
+      pomoIsBreak = true;
+      if (pomoRound >= 4) {
+        pomoTime = POMO_LONG_BREAK;
+        pomoTotal = POMO_LONG_BREAK;
+        document.getElementById('pomoStatus').textContent = 'Long break — you earned it!';
+      } else {
+        pomoTime = POMO_BREAK;
+        pomoTotal = POMO_BREAK;
+        document.getElementById('pomoStatus').textContent = 'Short break — relax';
+      }
+      var phaseLabel = document.getElementById('pomoPhaseLabel');
+      phaseLabel.textContent = 'Break';
+      phaseLabel.className = 'sp-pomodoro-phase break';
+    } else {
+      // Break complete
+      AfroTools.toast.info('Break over! Ready for the next session.');
+      if (pomoRound >= 4) {
+        pomoRound = 0;
+      }
+      pomoIsBreak = false;
+      pomoTime = POMO_WORK;
+      pomoTotal = POMO_WORK;
+      document.getElementById('pomoStatus').textContent = 'Ready to focus';
+      var phaseLabel2 = document.getElementById('pomoPhaseLabel');
+      phaseLabel2.textContent = 'Work';
+      phaseLabel2.className = 'sp-pomodoro-phase work';
+    }
+    pomoUpdateDisplay();
+    pomoUpdateRounds();
+    return;
+  }
+  pomoTime--;
+  pomoUpdateDisplay();
+}
+
+function pomoStartPause() {
+  if (pomoRunning) {
+    // Pause
+    clearInterval(pomoInterval);
+    pomoInterval = null;
+    pomoRunning = false;
+    document.getElementById('pomoStartBtn').innerHTML = '&#9654; Resume';
+    document.getElementById('pomoStatus').textContent = 'Paused';
+  } else {
+    // Start
+    pomoRunning = true;
+    document.getElementById('pomoStartBtn').innerHTML = '&#10074;&#10074; Pause';
+    document.getElementById('pomoStatus').textContent = pomoIsBreak ? 'Break time — relax' : 'Stay focused!';
+    pomoInterval = setInterval(pomoTick, 1000);
+  }
+}
+
+function pomoReset() {
+  clearInterval(pomoInterval);
+  pomoInterval = null;
+  pomoRunning = false;
+  pomoIsBreak = false;
+  pomoTime = POMO_WORK;
+  pomoTotal = POMO_WORK;
+  pomoRound = 0;
+  document.getElementById('pomoStartBtn').innerHTML = '&#9654; Start';
+  document.getElementById('pomoStatus').textContent = 'Ready to focus';
+  var phaseLabel = document.getElementById('pomoPhaseLabel');
+  phaseLabel.textContent = 'Work';
+  phaseLabel.className = 'sp-pomodoro-phase work';
+  pomoUpdateDisplay();
+  pomoUpdateRounds();
+}
+
+function pomoSkip() {
+  clearInterval(pomoInterval);
+  pomoInterval = null;
+  pomoRunning = false;
+  pomoTime = 0;
+  pomoTick();
+}
+
+function initPresetFromQuery() {
+  var params = new URLSearchParams(window.location.search);
+  var key = presetKeyFromQuery(params.get('exam') || params.get('preset') || params.get('deck') || '');
+  if (!key) return false;
+  var btn = document.querySelector('.sp-preset[data-key="' + key + '"]');
+  loadPreset(key, btn);
+  generate();
+  return true;
+}
+
+// Init
+loadStudyProgress();
+if (!initPresetFromQuery() && !loadFromLocal()) {
+  loadPreset('waec', document.querySelector('.sp-preset[data-key="waec"]'));
+}
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/pages/education-study-focus.js?v=15b48deb" defer></script>
+<script>
+document.addEventListener('click', function(event) {
+  var button = event.target && event.target.closest ? event.target.closest('[data-study-copy-plan]') : null;
+  if (!button) return;
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  var panel = button.closest('.study-export-panel');
+  var status = panel ? panel.querySelector('.study-export-status') : null;
+  var stats = document.getElementById('statsBar') ? document.getElementById('statsBar').innerText.trim() : '';
+  var breakdown = document.getElementById('breakdown') ? document.getElementById('breakdown').innerText.trim() : '';
+  var timetable = document.getElementById('timetable') ? document.getElementById('timetable').innerText.trim() : '';
+  var subjects = typeof getSubjects === 'function' ? getSubjects() : [];
+  var text = [
+    'AfroTools Study Planner',
+    '',
+    'Subjects',
+    subjects.length ? subjects.map(function(subject) { return '- ' + subject.name + ' (' + subject.diff + ')'; }).join('\n') : 'No subjects added.',
+    '',
+    'Summary',
+    stats || 'No timetable generated yet.',
+    '',
+    'Breakdown',
+    breakdown || 'Generate a timetable to see weighted hours.',
+    '',
+    'Timetable',
+    timetable || 'Generate a timetable to export the weekly plan.',
+    '',
+    'Note: Planning timetable only. Confirm school, exam, and adviser requirements before relying on this plan.'
+  ].join('\n');
+  var copied = function() {
+    if (status) status.textContent = 'Study plan copied.';
+  };
+  var fallback = function() {
+    var field = document.createElement('textarea');
+    field.value = text;
+    field.setAttribute('readonly', 'readonly');
+    field.style.position = 'fixed';
+    field.style.left = '-9999px';
+    document.body.appendChild(field);
+    field.select();
+    try {
+      document.execCommand('copy');
+      copied();
+    } catch (error) {
+      window.prompt('Copy study plan', text);
+      if (status) status.textContent = 'Copy prompt opened.';
+    }
+    field.remove();
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(copied).catch(fallback);
+  } else {
+    fallback();
+  }
+}, true);
+</script>
+</body>
+</html>

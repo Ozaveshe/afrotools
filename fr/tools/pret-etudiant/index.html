@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculateur prêt étudiant Afrique | AfroTools</title>
+  <meta name="description" content="Estimez mensualité, intérêts, frais, durée et charge sur revenu pour un prêt étudiant HELB, NSFAS, SLTF ou privé. Scénario éducatif avec sources.">
+  <meta property="og:title" content="Calculateur prêt étudiant Afrique | AfroTools">
+  <meta property="og:description" content="Comparez mensualité, coût total, intérêts et risque d'effort pour un prêt étudiant africain.">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/loan-compare.webp">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://afrotools.com/fr/tools/pret-etudiant/">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+  <script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+  <script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+<style>
+    :root {
+      --loan-ink: #111827;
+      --loan-muted: #5b6475;
+      --loan-line: #dde5f0;
+      --loan-blue: #2459c7;
+      --loan-green: #0f7a55;
+      --loan-red: #b42318;
+      --loan-cream: #f7f9fc;
+      --loan-card: #ffffff;
+    }
+
+    body {
+      margin: 0;
+      background: #f4f7fb;
+      color: var(--loan-ink);
+    }
+
+    .loan-shell {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 32px 20px 72px;
+    }
+
+    .loan-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(310px, .95fr);
+      gap: 24px;
+      align-items: stretch;
+      padding: 34px;
+      border: 1px solid var(--loan-line);
+      border-radius: 16px;
+      background:
+        radial-gradient(circle at 85% 20%, rgba(36, 89, 199, .12), transparent 30%),
+        linear-gradient(135deg, #ffffff 0%, #f1f6ff 100%);
+      box-shadow: 0 20px 70px rgba(19, 33, 68, .08);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      width: fit-content;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 14px;
+      padding: 7px 10px;
+      border: 1px solid #cbd9ff;
+      border-radius: 999px;
+      color: #1746a2;
+      background: #eef4ff;
+      font-size: .74rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 720px;
+      margin: 0;
+      font-size: clamp(2.1rem, 5vw, 4.15rem);
+      line-height: .98;
+      letter-spacing: 0;
+    }
+
+    .hero-copy {
+      max-width: 660px;
+      margin: 18px 0 0;
+      color: var(--loan-muted);
+      font-size: 1.02rem;
+      line-height: 1.75;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border: 1px solid var(--loan-line);
+      border-radius: 10px;
+      color: var(--loan-ink);
+      background: #fff;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .button.primary {
+      border-color: var(--loan-blue);
+      color: #fff;
+      background: var(--loan-blue);
+    }
+
+    .button.ghost {
+      background: transparent;
+    }
+
+    .hero-panel {
+      display: grid;
+      gap: 12px;
+      align-content: start;
+      padding: 20px;
+      border: 1px solid var(--loan-line);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, .82);
+    }
+
+    .mini-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid var(--loan-line);
+      border-radius: 12px;
+      background: #fff;
+    }
+
+    .mini-icon {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border-radius: 11px;
+      background: #eaf1ff;
+      color: var(--loan-blue);
+      font-weight: 900;
+    }
+
+    .mini-row strong,
+    .mini-row span {
+      display: block;
+    }
+
+    .mini-row span {
+      margin-top: 3px;
+      color: var(--loan-muted);
+      font-size: .85rem;
+    }
+
+    .app-grid {
+      display: grid;
+      grid-template-columns: minmax(0, .95fr) minmax(360px, 1.05fr);
+      gap: 22px;
+      margin-top: 24px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 1px solid var(--loan-line);
+      border-radius: 16px;
+      background: var(--loan-card);
+      box-shadow: 0 16px 46px rgba(19, 33, 68, .06);
+      overflow: hidden;
+    }
+
+    .panel-head {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--loan-line);
+      background: #fbfdff;
+    }
+
+    .panel-head h2 {
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    .panel-head p {
+      margin: 6px 0 0;
+      color: var(--loan-muted);
+      font-size: .9rem;
+      line-height: 1.55;
+    }
+
+    .panel-body {
+      padding: 20px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      color: #334155;
+      font-size: .82rem;
+      font-weight: 800;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      min-height: 44px;
+      box-sizing: border-box;
+      border: 1px solid #cdd7e5;
+      border-radius: 10px;
+      background: #fff;
+      color: var(--loan-ink);
+      font: inherit;
+      padding: 10px 12px;
+    }
+
+    textarea {
+      min-height: 82px;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus,
+    button:focus-visible,
+    a:focus-visible {
+      outline: 3px solid rgba(36, 89, 199, .24);
+      outline-offset: 2px;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .result-hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .metric {
+      padding: 16px;
+      border: 1px solid var(--loan-line);
+      border-radius: 14px;
+      background: #f8fbff;
+    }
+
+    .metric span {
+      display: block;
+      color: var(--loan-muted);
+      font-size: .76rem;
+      font-weight: 800;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: 8px;
+      font-size: clamp(1.25rem, 4vw, 2rem);
+      line-height: 1.05;
+    }
+
+    .metric.wide {
+      grid-column: 1 / -1;
+    }
+
+    .risk {
+      border-left: 5px solid var(--loan-green);
+    }
+
+    .risk.warn {
+      border-left-color: #c27803;
+    }
+
+    .risk.danger {
+      border-left-color: var(--loan-red);
+    }
+
+    .explain {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 12px;
+      background: #fff8e7;
+      color: #684100;
+      font-size: .92rem;
+      line-height: 1.65;
+    }
+
+    .schedule-wrap {
+      margin-top: 16px;
+      overflow-x: auto;
+      border: 1px solid var(--loan-line);
+      border-radius: 12px;
+    }
+
+    table {
+      width: 100%;
+      min-width: 620px;
+      border-collapse: collapse;
+      font-size: .86rem;
+    }
+
+    th,
+    td {
+      padding: 11px 12px;
+      border-bottom: 1px solid #edf1f7;
+      text-align: right;
+    }
+
+    th:first-child,
+    td:first-child {
+      text-align: left;
+    }
+
+    th {
+      color: #334155;
+      background: #f8fbff;
+      font-size: .76rem;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .status {
+      min-height: 22px;
+      margin-top: 12px;
+      color: var(--loan-muted);
+      font-size: .88rem;
+      font-weight: 700;
+    }
+
+    .source-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .source-card {
+      border: 1px solid var(--loan-line);
+      border-radius: 14px;
+      padding: 16px;
+      background: #fff;
+    }
+
+    .source-card h3 {
+      margin: 0 0 8px;
+      font-size: .96rem;
+    }
+
+    .source-card p {
+      margin: 0 0 12px;
+      color: var(--loan-muted);
+      font-size: .88rem;
+      line-height: 1.55;
+    }
+
+    .source-card a {
+      color: var(--loan-blue);
+      font-weight: 800;
+    }
+
+    .faq {
+      margin-top: 24px;
+      display: grid;
+      gap: 10px;
+    }
+
+    details {
+      border: 1px solid var(--loan-line);
+      border-radius: 12px;
+      background: #fff;
+      padding: 14px 16px;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    details p {
+      margin: 10px 0 0;
+      color: var(--loan-muted);
+      line-height: 1.7;
+    }
+
+    .note {
+      margin-top: 20px;
+      padding: 16px;
+      border: 1px solid #f6d99a;
+      border-radius: 14px;
+      background: #fff8e7;
+      color: #684100;
+      line-height: 1.65;
+    }
+
+    @media (max-width: 860px) {
+      .loan-hero,
+      .app-grid,
+      .source-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .loan-hero {
+        padding: 24px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .loan-shell {
+        padding: 18px 14px 56px;
+      }
+
+      .form-grid,
+      .result-hero {
+        grid-template-columns: 1fr;
+      }
+
+      .button {
+        width: 100%;
+      }
+    }
+  </style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Calculateur prêt étudiant Afrique","url":"https://afrotools.com/fr/tools/pret-etudiant","description":"Estimateur de remboursement de prêt étudiant pour comparer mensualité, intérêts, frais et effort sur revenu.","applicationCategory":"FinanceApplication","operatingSystem":"Web","inLanguage":"fr","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/loan-compare.webp"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"fr","mainEntity":[{"@type":"Question","name":"Ce calculateur donne-t-il un montant officiel de prêt étudiant ?","acceptedAnswer":{"@type":"Answer","text":"Non. Il fournit un scénario éducatif base sur vos hypothèses. Vérifiez toujours les conditions récentes aupres de l'organisme ou du preteur."}},{"@type":"Question","name":"Pourquoi le revenu mensuel est-il demande ?","acceptedAnswer":{"@type":"Answer","text":"Le revenu permet d'estimer l'effort de remboursement. Une mensualité faible peut rester risquee si elle absorbe une grande part du revenu disponible."}},{"@type":"Question","name":"Les taux HELB, NSFAS ou SLTF sont-ils garantis ?","acceptedAnswer":{"@type":"Answer","text":"Non. Les valeurs proposees sont des points de départ à vérifier. Les regles, frais, grace periods et taux peuvent changer selon l'année, le produit et le contrat signe."}}]}</script>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Calculateur prêt étudiant Afrique | AfroTools">
+<meta name="twitter:description" content="Estimez mensualité, intérêts, frais, durée et charge sur revenu pour un prêt étudiant HELB, NSFAS, SLTF ou privé. Scénario éducatif avec sources.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/loan-compare.webp">
+<link rel="canonical" href="https://afrotools.com/fr/tools/pret-etudiant/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/student-loan/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/pret-etudiant/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/student-loan/">
+</head>
+<body class="top-level-page-ui-refresh">
+  <afro-navbar></afro-navbar>
+
+  <main class="loan-shell">
+    <section class="loan-hero">
+      <div>
+        <span class="eyebrow">Prêt étudiant - scénario 2026</span>
+        <h1>Voyez la mensualité avant de signer.</h1>
+        <p class="hero-copy">Comparez un prêt étudiant public ou privé avec intérêts, frais annuels, grace period, paiement supplementaire et charge sur revenu. Le résultat reste un scénario de planification, pas une offre officielle.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#calculator">Calculer maintenant</a>
+          <button class="button ghost" type="button" id="sampleBtn">Charger un exemple</button>
+        </div>
+      </div>
+      <aside class="hero-panel" aria-label="Ce que le calculateur vérifié">
+        <div class="mini-row">
+          <span class="mini-icon">1</span>
+          <div><strong>Coût reel</strong><span>Capital, intérêts, frais annuels et coût total rembourse.</span></div>
+          <strong>OK</strong>
+        </div>
+        <div class="mini-row">
+          <span class="mini-icon">2</span>
+          <div><strong>Charge sur revenu</strong><span>Mensualité comparee au revenu mensuel attendu.</span></div>
+          <strong>OK</strong>
+        </div>
+        <div class="mini-row">
+          <span class="mini-icon">3</span>
+          <div><strong>Sources à vérifier</strong><span>HELB, NSFAS, SLTF et votre contrat de prêt.</span></div>
+          <strong>OK</strong>
+        </div>
+      </aside>
+    </section>
+
+    <section class="app-grid" id="calculator">
+      <form class="panel" id="loanForm">
+        <div class="panel-head">
+          <h2>Hypothèses du prêt</h2>
+          <p>Modifiez les valeurs selon votre pays, votre contrat ou l'offre recue du preteur.</p>
+        </div>
+        <div class="panel-body">
+          <div class="form-grid">
+            <div class="field full">
+              <label for="program">Programme ou type de prêt</label>
+              <select id="program">
+                <option value="custom">Prêt privé ou contrat personnalise</option>
+                <option value="helb">Kenya HELB - point de départ officiel à vérifier</option>
+                <option value="nsfas">Afrique du Sud NSFAS - ancien prêt ou contrat individuel</option>
+                <option value="sltf">Ghana SLTF - point de départ officiel à vérifier</option>
+                <option value="nigeria">Nigeria - prêt éducation privé</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="currency">Devise</label>
+              <select id="currency">
+                <option value="KES">KES</option>
+                <option value="ZAR">ZAR</option>
+                <option value="GHS">GHS</option>
+                <option value="NGN">NGN</option>
+                <option value="USD">USD</option>
+                <option value="XOF">XOF</option>
+                <option value="XAF">XAF</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="principal">Montant emprunte</label>
+              <input id="principal" type="number" min="0" step="1000" value="500000" inputmode="decimal">
+            </div>
+            <div class="field">
+              <label for="rate">Taux annuel (%)</label>
+              <input id="rate" type="number" min="0" max="60" step="0.1" value="4" inputmode="decimal">
+            </div>
+            <div class="field">
+              <label for="annualFee">Frais annuels</label>
+              <input id="annualFee" type="number" min="0" step="100" value="1000" inputmode="decimal">
+            </div>
+            <div class="field">
+              <label for="grace">Grace period (mois)</label>
+              <input id="grace" type="number" min="0" max="84" step="1" value="12" inputmode="numeric">
+            </div>
+            <div class="field">
+              <label for="years">Durée de remboursement (ans)</label>
+              <input id="years" type="number" min="1" max="30" step="1" value="10" inputmode="numeric">
+            </div>
+            <div class="field">
+              <label for="extra">Paiement supplementaire mensuel</label>
+              <input id="extra" type="number" min="0" step="100" value="0" inputmode="decimal">
+            </div>
+            <div class="field">
+              <label for="income">Revenu mensuel attendu</label>
+              <input id="income" type="number" min="0" step="1000" value="90000" inputmode="decimal">
+            </div>
+            <div class="field full">
+              <label for="note">Note personnelle</label>
+              <textarea id="note" placeholder="Exemple: offre HELB, contrat bancaire, remboursement apres service national..."></textarea>
+            </div>
+          </div>
+          <div class="controls">
+            <button class="button primary" type="submit">Calculer le remboursement</button>
+            <button class="button" type="button" id="copyBtn">Copier le résumé</button>
+            <button class="button" type="button" id="downloadBtn">Télécharger TXT</button>
+            <button class="button" type="button" id="saveBtn">Sauver localement</button>
+          </div>
+          <p class="status" id="status" aria-live="polite"></p>
+        </div>
+      </form>
+
+      <section class="panel" aria-labelledby="resultTitle">
+        <div class="panel-head">
+          <h2 id="resultTitle">Résultat du scénario</h2>
+          <p>Le calcul utilise une mensualité amortie, puis ajoute l'effet des frais annuels dans le coût total.</p>
+        </div>
+        <div class="panel-body">
+          <div class="result-hero" id="result" aria-live="polite"></div>
+          <p class="explain" id="explain">Remplissez le formulaire puis lancez le calcul. Les valeurs officielles doivent toujours être confirmees aupres du preteur ou de l'autorite.</p>
+          <div class="schedule-wrap">
+            <table aria-label="Calendrier de remboursement">
+              <thead>
+                <tr>
+                  <th>Mois</th>
+                  <th>Paiement</th>
+                  <th>Intérêt</th>
+                  <th>Capital</th>
+                  <th>Solde</th>
+                </tr>
+              </thead>
+              <tbody id="scheduleBody">
+                <tr><td colspan="5">Aucun calendrier calcule.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section class="source-grid" data-tool-verification-panel aria-label="Sources et vérification">
+      <article class="source-card">
+        <h3>Kenya HELB</h3>
+        <p>La page officielle HELB indique un intérêt de 4% et des frais de ledger annuels pour certains prêts.</p>
+        <a href="https://www.helb.co.ke/helb-products/helb-loans/undergraduate-loans/" rel="noopener" target="_blank">Vérifier HELB</a>
+      </article>
+      <article class="source-card">
+        <h3>Afrique du Sud NSFAS</h3>
+        <p>NSFAS publie les informations de remboursement et les canaux officiels pour les anciens prêts ou contrats applicables.</p>
+        <a href="https://www.nsfas.org.za/content/repayments.html" rel="noopener" target="_blank">Vérifier NSFAS</a>
+      </article>
+      <article class="source-card">
+        <h3>Ghana SLTF</h3>
+        <p>SLTF decrit la logique de taux liee au Treasury bill, le plafond annonce et les périodes de remboursement.</p>
+        <a href="https://www.sltf.gov.gh/loan-repayment/" rel="noopener" target="_blank">Vérifier SLTF</a>
+      </article>
+    </section>
+
+    <section class="note">
+      <strong>Limite importante.</strong> Ce calculateur est une aide éducative. Il ne remplace pas une offre de prêt, un releve officiel, un conseil financier, ni les conditions de votre contrat. Sources revues le 17 juin 2026; vérifiez les pages officielles avant de payer, refinancer ou signer.
+    </section>
+
+    <section class="faq" aria-label="Questions fréquentes">
+      <details>
+        <summary>Comment la mensualité est-elle calculee ?</summary>
+        <p>Le calcul applique d'abord les intérêts pendant la grace period, puis utilise une formule d'amortissement mensuel sur la durée choisie. Les frais annuels sont ajoutes au coût total et signales separement.</p>
+      </details>
+      <details>
+        <summary>Que signifie le niveau de risque ?</summary>
+        <p>Il compare la mensualité au revenu mensuel attendu. En dessous de 10%, le scénario est plus respirable; au-dessus de 20%, il peut devenir lourd, surtout avec loyer, transport ou dependants.</p>
+      </details>
+      <details>
+        <summary>Puis-je utiliser ce résultat pour HELB, NSFAS ou SLTF ?</summary>
+        <p>Oui comme brouillon de discussion. Non comme montant officiel. Utilisez les liens de vérification et votre contrat pour confirmer taux, frais, grace period, seuils de revenu et pénalités.</p>
+      </details>
+    </section>
+
+    <afro-business-cta
+      tool-name="Calculateur pret etudiant"
+      save-note="Sauvez des scenarios de pret etudiant, comparez les conditions et exportez un resume avant de parler au preteur."></afro-business-cta>
+    <afro-related-tools category="financial" current="pret-etudiant-fr"></afro-related-tools>
+  </main>
+
+  <afro-footer></afro-footer>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var presets = {
+        custom: { currency: 'KES', principal: 500000, rate: 10, annualFee: 0, grace: 12, years: 7, income: 90000, note: 'Pret prive ou contrat personnalise.' },
+        helb: { currency: 'KES', principal: 500000, rate: 4, annualFee: 1000, grace: 12, years: 10, income: 90000, note: 'Point de depart HELB. Verifier les conditions exactes du produit.' },
+        nsfas: { currency: 'ZAR', principal: 85000, rate: 0, annualFee: 0, grace: 0, years: 5, income: 12000, note: 'Ancien pret ou contrat individuel NSFAS. Verifier votre releve.' },
+        sltf: { currency: 'GHS', principal: 24000, rate: 12, annualFee: 0, grace: 24, years: 6, income: 3500, note: 'Point de depart SLTF. Verifier le taux applicable et le releve.' },
+        nigeria: { currency: 'NGN', principal: 2000000, rate: 18, annualFee: 0, grace: 6, years: 5, income: 250000, note: 'Pret education prive au Nigeria. Comparer frais et penalites.' }
+      };
+
+      var ids = ['program', 'currency', 'principal', 'rate', 'annualFee', 'grace', 'years', 'extra', 'income', 'note'];
+      var state = { summary: '' };
+
+      function el(id) {
+        return document.getElementById(id);
+      }
+
+      function num(id) {
+        return Number(el(id).value || 0);
+      }
+
+      function money(value, currency) {
+        return currency + ' ' + Math.round(value).toLocaleString('fr-FR');
+      }
+
+      function setStatus(text) {
+        el('status').textContent = text;
+      }
+
+      function applyPreset(name) {
+        var preset = presets[name] || presets.custom;
+        el('currency').value = preset.currency;
+        el('principal').value = preset.principal;
+        el('rate').value = preset.rate;
+        el('annualFee').value = preset.annualFee;
+        el('grace').value = preset.grace;
+        el('years').value = preset.years;
+        el('income').value = preset.income;
+        el('note').value = preset.note;
+      }
+
+      function calculate() {
+        var currency = el('currency').value;
+        var principal = Math.max(0, num('principal'));
+        var annualRate = Math.max(0, num('rate')) / 100;
+        var monthlyRate = annualRate / 12;
+        var annualFee = Math.max(0, num('annualFee'));
+        var graceMonths = Math.max(0, Math.round(num('grace')));
+        var repaymentMonths = Math.max(1, Math.round(num('years') * 12));
+        var extra = Math.max(0, num('extra'));
+        var income = Math.max(0, num('income'));
+        var balanceAfterGrace = principal;
+
+        for (var i = 0; i < graceMonths; i += 1) {
+          balanceAfterGrace += balanceAfterGrace * monthlyRate;
+        }
+
+        var basePayment = monthlyRate === 0
+          ? balanceAfterGrace / repaymentMonths
+          : balanceAfterGrace * (monthlyRate * Math.pow(1 + monthlyRate, repaymentMonths)) / (Math.pow(1 + monthlyRate, repaymentMonths) - 1);
+        var monthlyPayment = basePayment + extra;
+
+        var balance = balanceAfterGrace;
+        var totalPaid = 0;
+        var totalInterest = 0;
+        var rows = [];
+        var month = 0;
+
+        while (balance > 0.5 && month < 720) {
+          month += 1;
+          var interest = balance * monthlyRate;
+          var payment = Math.min(monthlyPayment, balance + interest);
+          var principalPart = Math.max(0, payment - interest);
+          balance = Math.max(0, balance - principalPart);
+          totalPaid += payment;
+          totalInterest += interest;
+
+          if (month <= 12 || month % 12 === 0 || balance <= 0.5) {
+            rows.push({ month: month, payment: payment, interest: interest, principal: principalPart, balance: balance });
+          }
+        }
+
+        var feeYears = Math.ceil((graceMonths + month) / 12);
+        var totalFees = annualFee * feeYears;
+        var grandTotal = totalPaid + totalFees;
+        var burden = income > 0 ? (monthlyPayment / income) * 100 : 0;
+        var riskClass = burden > 20 ? 'danger' : burden > 10 ? 'warn' : '';
+        var riskText = burden > 20 ? 'Risque eleve' : burden > 10 ? 'A surveiller' : 'Plus respirable';
+        var interestDuringGrace = Math.max(0, balanceAfterGrace - principal);
+
+        el('result').innerHTML = [
+          '<div class="metric"><span>Mensualite</span><strong>' + money(monthlyPayment, currency) + '</strong></div>',
+          '<div class="metric"><span>Cout total</span><strong>' + money(grandTotal, currency) + '</strong></div>',
+          '<div class="metric"><span>Interets</span><strong>' + money(totalInterest, currency) + '</strong></div>',
+          '<div class="metric"><span>Frais estimes</span><strong>' + money(totalFees, currency) + '</strong></div>',
+          '<div class="metric"><span>Solde apres grace</span><strong>' + money(balanceAfterGrace, currency) + '</strong></div>',
+          '<div class="metric risk ' + riskClass + '"><span>Effort revenu</span><strong>' + burden.toFixed(1) + '%</strong></div>',
+          '<div class="metric wide"><span>Diagnostic</span><strong>' + riskText + ' - remboursement en ' + month + ' mois</strong></div>'
+        ].join('');
+
+        el('explain').textContent = 'Interets pendant la grace period: ' + money(interestDuringGrace, currency) + '. Cout total estime: ' + money(grandTotal, currency) + '. Effort mensuel: ' + burden.toFixed(1) + '% du revenu indique. Verifiez le contrat, les penalites et les frais avant decision.';
+
+        el('scheduleBody').innerHTML = rows.map(function (row) {
+          return '<tr><td>' + row.month + '</td><td>' + money(row.payment, currency) + '</td><td>' + money(row.interest, currency) + '</td><td>' + money(row.principal, currency) + '</td><td>' + money(row.balance, currency) + '</td></tr>';
+        }).join('');
+
+        state.summary = [
+          'AfroTools - Calculateur pret etudiant',
+          'Programme: ' + el('program').selectedOptions[0].textContent,
+          'Montant: ' + money(principal, currency),
+          'Taux annuel: ' + num('rate') + '%',
+          'Frais annuels: ' + money(annualFee, currency),
+          'Grace period: ' + graceMonths + ' mois',
+          'Mensualite estimee: ' + money(monthlyPayment, currency),
+          'Cout total estime: ' + money(grandTotal, currency),
+          'Effort revenu: ' + burden.toFixed(1) + '%',
+          'Diagnostic: ' + riskText,
+          'Note: ' + (el('note').value || 'Aucune note'),
+          'Limite: scenario educatif, non officiel. Verifier les sources et le contrat.'
+        ].join('\\n');
+
+        setStatus('Scenario calcule. Resume pret a copier, telecharger ou sauver localement.');
+        return state.summary;
+      }
+
+      function downloadText() {
+        var summary = state.summary || calculate();
+        var blob = new Blob([summary], { type: 'text/plain;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var link = document.createElement('a');
+        link.href = url;
+        link.download = 'pret-etudiant-afrotools.txt';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+        setStatus('Fichier TXT prepare.');
+      }
+
+      function saveLocal() {
+        var summary = state.summary || calculate();
+        var payload = {
+          savedAt: new Date().toISOString(),
+          inputs: ids.reduce(function (acc, id) {
+            acc[id] = el(id).value;
+            return acc;
+          }, {}),
+          summary: summary
+        };
+        localStorage.setItem('afrotools:pret-etudiant-fr:last', JSON.stringify(payload));
+        setStatus('Scenario sauve dans ce navigateur.');
+      }
+
+      function copySummary() {
+        var summary = state.summary || calculate();
+        if (!navigator.clipboard || !navigator.clipboard.writeText) {
+          setStatus('Copie bloquee par le navigateur. Le resume reste visible dans le resultat.');
+          return;
+        }
+        navigator.clipboard.writeText(summary).then(function () {
+          setStatus('Resume copie.');
+        }).catch(function () {
+          setStatus('Copie bloquee par le navigateur. Le resume reste disponible en telechargement.');
+        });
+      }
+
+      el('program').addEventListener('change', function () {
+        applyPreset(el('program').value);
+        calculate();
+      });
+
+      el('sampleBtn').addEventListener('click', function () {
+        el('program').value = 'helb';
+        applyPreset('helb');
+        calculate();
+        location.hash = '#calculator';
+      });
+
+      el('loanForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        calculate();
+      });
+
+      el('copyBtn').addEventListener('click', copySummary);
+      el('downloadBtn').addEventListener('click', downloadText);
+      el('saveBtn').addEventListener('click', saveLocal);
+
+      calculate();
+    }());
+  </script>
+</body>
+</html>

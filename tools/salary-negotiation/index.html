@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="view-transition" content="same-origin">
+<title>Salary Negotiation Calculator Africa — Market Rates & Counter-Offer | AfroTools</title>
+<meta name="description" content="African salary negotiation calculator. Market rates by country, role, and industry. 25th/50th/75th percentile. Counter-offer range, negotiation script template, total comp calculator.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Salary Negotiation Calculator — Africa | AfroTools">
+<meta property="og:description" content="Know your market rate before negotiating. Nigeria, Kenya, SA, Ghana salary data. Counter-offer strategy, negotiation script, total compensation breakdown.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/salary-negotiation.webp">
+<meta property="og:url" content="https://afrotools.com/tools/salary-negotiation/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Salary Negotiation Calculator Africa — Market Rates &amp; Counter-Offer | AfroTools">
+<meta name="twitter:description" content="African salary negotiation calculator. Market rates by country, role, and industry. 25th/50th/75th percentile. Counter-offer range, negotiation script template, total comp calculator.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/energy.css?v=d1d794d4">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+<style>
+:root{--en-accent:#6366F1;--en-accent-dark:#4F46E5;--en-accent-light:#E0E7FF;--en-accent-pale:#EEF2FF;--en-shadow-hover:0 4px 16px rgba(99,102,241,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#13111c 50%,#1e1b4b 100%)!important}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+.script-box{background:#f0fdf4;border:1px solid #bbf7d0;border-left:4px solid #16a34a;border-radius:10px;padding:18px 20px;font-size:.88rem;color:#14532d;line-height:1.7;white-space:pre-wrap}
+.percentile-bar{display:flex;align-items:center;gap:12px;margin:8px 0}
+.pbar-label{width:80px;font-size:.78rem;font-weight:700;color:#64748b;flex-shrink:0}
+.pbar-track{flex:1;background:#e2e8f0;border-radius:6px;height:10px;position:relative;overflow:visible}
+.pbar-fill{height:10px;border-radius:6px;background:linear-gradient(90deg,var(--en-accent-light),var(--en-accent))}
+.pbar-val{width:80px;font-size:.82rem;font-weight:700;color:var(--en-accent-dark);text-align:right;flex-shrink:0}
+.offer-marker{position:absolute;top:-4px;width:4px;height:18px;background:#ef4444;border-radius:2px}
+.sn-result-note{margin-top:12px;border:1px solid #c7d2fe;background:#eef2ff;border-radius:10px;padding:12px 14px;color:#312e81;font-size:.82rem;line-height:1.6}
+.sn-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.sn-action-btn{border:1px solid #c7d2fe;background:#fff;color:#3730a3;border-radius:10px;padding:10px 14px;font-size:.84rem;font-weight:800;cursor:pointer;font-family:inherit}
+.sn-action-btn:hover{background:#eef2ff}
+.sn-action-btn:focus-visible{outline:2px solid var(--en-accent);outline-offset:2px}
+.sn-status{min-height:1.2em;margin-top:8px;font-size:.78rem;color:#64748b}
+.method-card p{margin:.45rem 0 0;color:#475569;line-height:1.65;font-size:.9rem}
+.method-list{margin:.75rem 0 0;padding-left:1.15rem;color:#475569;line-height:1.65;font-size:.88rem}
+@media(max-width:600px){.sn-actions .sn-action-btn{width:100%}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Career Tools","item":"https://afrotools.com/career/"},{"@type":"ListItem","position":3,"name":"Salary Negotiation Calculator","item":"https://afrotools.com/tools/salary-negotiation/"}]}</script>
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/salary-negotiation.webp">
+<link rel="stylesheet" href="/assets/css/career-tool-focus.css?v=98967bec">
+
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Salary Negotiation Calculator Africa — Market Rates & Counter-Offer",
+  "description": "African salary negotiation calculator. Market rates by country, role, and industry. 25th/50th/75th percentile. Counter-offer range, negotiation script template, total comp calculator.",
+  "url": "https://afrotools.com/tools/salary-negotiation/",
+  "inLanguage": "en",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/salary-negotiation.webp"
+}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/salary-negotiation/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/salary-negotiation/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/negociation-salaire/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/majadiliano-ya-mshahara/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/salary-negotiation/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar theme="dark" active="career"></afro-navbar>
+
+<div class="en-tool-hero">
+  <div class="en-tool-hero-inner">
+    <nav class="en-breadcrumb"><a href="/">AfroTools</a><span class="en-breadcrumb-sep">/</span><a href="/career/">Career</a><span class="en-breadcrumb-sep">/</span><span class="en-breadcrumb-current">Salary Negotiation</span></nav>
+    <h1>Salary Negotiation <em>Calculator</em></h1>
+    <p>Know your market rate before negotiating. Compare your offer against 25th/50th/75th percentile data for your role, industry, and country. Get a negotiation script.</p>
+    <div class="en-tool-hero-meta">
+      <span class="en-tool-hero-pill">💰 15 Countries</span>
+      <span class="en-tool-hero-pill">📊 Market Data</span>
+      <span class="en-tool-hero-pill">Free</span>
+    </div>
+  </div>
+</div>
+
+<div class="en-tool-layout">
+
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">💼</div>Your Details</div>
+    <div class="en-form-grid en-form-grid-2">
+      <div class="en-field">
+        <label class="en-label" for="country">Country</label>
+        <select class="en-select" id="country">
+          <option value="NG">Nigeria</option>
+          <option value="KE">Kenya</option>
+          <option value="ZA">South Africa</option>
+          <option value="GH">Ghana</option>
+          <option value="EG">Egypt</option>
+          <option value="ET">Ethiopia</option>
+          <option value="RW">Rwanda</option>
+          <option value="CI">Côte d'Ivoire</option>
+          <option value="SN">Senegal</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Industry</label>
+        <select class="en-select" id="industry" aria-label="Industry">
+          <option value="tech">Technology / Software</option>
+          <option value="banking">Banking / Finance</option>
+          <option value="oil">Oil & Gas / Energy</option>
+          <option value="fmcg">FMCG / Manufacturing</option>
+          <option value="telco">Telecoms</option>
+          <option value="ngo">NGO / Development</option>
+          <option value="govt">Government / Civil Service</option>
+          <option value="consulting">Consulting</option>
+          <option value="healthcare">Healthcare</option>
+          <option value="media">Media / Creative</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Role / Level</label>
+        <select class="en-select" id="role" aria-label="Role">
+          <option value="entry">Entry Level / Graduate</option>
+          <option value="junior">Junior (1–3 years)</option>
+          <option value="mid" selected>Mid-Level (3–7 years)</option>
+          <option value="senior">Senior (7–12 years)</option>
+          <option value="manager">Manager / Team Lead</option>
+          <option value="director">Director / Head of</option>
+          <option value="exec">C-Suite / Executive</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Years of Experience</label>
+        <input aria-label="Experience" class="en-input" type="number" id="experience" value="5" min="0" max="40">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Current Salary (monthly, local currency)</label>
+        <input aria-label="E.g. 500000 for ₦500k" class="en-input" type="number" id="currentSalary" placeholder="e.g. 500000 for ₦500k">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Offer Received (monthly, local currency)</label>
+        <input aria-label="Leave blank if pre offer" class="en-input" type="number" id="offerSalary" placeholder="Leave blank if pre-offer">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Company Size</label>
+        <select class="en-select" id="companySize" aria-label="Company Size">
+          <option value="startup">Startup (&lt;50 staff)</option>
+          <option value="sme">SME (50–500 staff)</option>
+          <option value="large" selected>Large (500+ staff)</option>
+          <option value="multinational">Multinational / MNC</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Location</label>
+        <select class="en-select" id="location" aria-label="Location">
+          <option value="capital">Capital City (Tier 1)</option>
+          <option value="major">Major City (Tier 2)</option>
+          <option value="other">Other City / Town</option>
+        </select>
+      </div>
+    </div>
+    <div class="en-form-actions">
+      <button type="button" class="en-btn en-btn-full" onclick="calcNegotiation()">Calculate Negotiation Range →</button>
+    </div>
+  </div>
+
+  <div class="en-results" id="results">
+    <div class="en-results-hero">
+      <div class="en-results-hero-grid">
+        <div>
+          <div class="en-results-hero-label">Your Target Salary (Monthly)</div>
+          <div class="en-results-hero-value" id="targetSalary">₦0</div>
+          <div class="en-results-hero-sub" id="marketPosition">Market position: 50th percentile</div>
+        </div>
+        <div class="en-results-hero-aside">
+          <div style="font-size:.82rem;color:rgba(255,255,255,.6);margin-bottom:4px">Confidence Score</div>
+          <div style="font-size:2rem;font-weight:900;color:var(--en-accent)" id="confScore">75%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">📊</div>Market Rate Percentiles</div>
+      <div id="percentileBars"></div>
+      <div id="offerAssessment" style="margin-top:16px;padding:14px;border-radius:8px;font-size:.88rem;line-height:1.6"></div>
+    </div>
+
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">💰</div>Your Negotiation Range</div>
+      <div class="en-metrics" id="rangeMetrics"></div>
+    </div>
+
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">📝</div>Negotiation Script</div>
+      <div class="script-box" id="negotiationScript"></div>
+      <p class="sn-result-note"><strong>Private planning note.</strong> Salary entries stay in this browser. The market table is an internal planning dataset reviewed in 2026, not a live salary survey or guaranteed offer outcome. Verify current market evidence, written benefits, tax effects, and contract terms before negotiating.</p>
+      <div class="sn-actions">
+        <button type="button" class="sn-action-btn" onclick="copyNegotiationSummary()">Copy plan</button>
+        <button type="button" class="sn-action-btn" data-no-gate="true" onclick="downloadNegotiationSummary()">Download TXT</button>
+        <button type="button" class="sn-action-btn" onclick="saveNegotiationSummary()">Save locally</button>
+      </div>
+      <div class="sn-status" id="sn-status" role="status" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <div class="en-card method-card" aria-labelledby="salary-negotiation-method-title">
+    <div class="en-card-title" id="salary-negotiation-method-title"><div class="en-card-title-icon">CK</div>Method and checks</div>
+    <p>This MVP compares your current pay or offer against country, industry, role, experience, company-size, and location assumptions to produce a target, walk-away floor, counter-offer ask, confidence score, and negotiation script.</p>
+    <ul class="method-list">
+      <li>Use the percentile range as a private planning estimate, then verify current market evidence before speaking with HR, a recruiter, or your manager.</li>
+      <li>Check written benefits, bonus rules, equity terms, probation, notice period, tax effects, remote-work terms, non-compete clauses, and timing before accepting or rejecting an offer.</li>
+      <li>This is career planning support, not legal, tax, immigration, financial, employment, union, or HR policy advice, and it does not guarantee a raise, offer, or promotion.</li>
+    </ul>
+  </div>
+
+</div>
+
+<script>
+// Base monthly salaries in local currency (median/50th percentile for mid-level, large company, capital city)
+var BASE = {
+  NG:{sym:'₦',div:1000,unit:'k',
+    tech:{entry:200,junior:400,mid:900,senior:2000,manager:3500,director:6000,exec:12000},
+    banking:{entry:180,junior:350,mid:800,senior:1800,manager:3000,director:5500,exec:10000},
+    oil:{entry:300,junior:600,mid:1500,senior:3500,manager:6000,director:10000,exec:20000},
+    fmcg:{entry:150,junior:280,mid:550,senior:1200,manager:2000,director:3500,exec:7000},
+    telco:{entry:200,junior:380,mid:850,senior:1900,manager:3200,director:5500,exec:11000},
+    ngo:{entry:150,junior:300,mid:600,senior:1300,manager:2200,director:3500,exec:6000},
+    govt:{entry:80,junior:150,mid:280,senior:500,manager:900,director:1500,exec:3000},
+    consulting:{entry:200,junior:400,mid:800,senior:1800,manager:3000,director:5000,exec:10000},
+    healthcare:{entry:150,junior:280,mid:550,senior:1100,manager:1800,director:3000,exec:5500},
+    media:{entry:100,junior:200,mid:400,senior:800,manager:1300,director:2000,exec:4000}
+  },
+  KE:{sym:'KES',div:1000,unit:'k',
+    tech:{entry:50,junior:80,mid:180,senior:350,manager:600,director:1000,exec:2000},
+    banking:{entry:40,junior:70,mid:150,senior:300,manager:500,director:900,exec:1800},
+    oil:{entry:60,junior:100,mid:220,senior:450,manager:750,director:1300,exec:2500},
+    fmcg:{entry:35,junior:60,mid:130,senior:260,manager:430,director:750,exec:1500},
+    telco:{entry:45,junior:75,mid:160,senior:320,manager:530,director:920,exec:1800},
+    ngo:{entry:45,junior:80,mid:170,senior:340,manager:580,director:950,exec:1800},
+    govt:{entry:25,junior:40,mid:80,senior:150,manager:260,director:450,exec:900},
+    consulting:{entry:50,junior:85,mid:185,senior:370,manager:620,director:1050,exec:2100},
+    healthcare:{entry:35,junior:60,mid:130,senior:260,manager:430,director:720,exec:1400},
+    media:{entry:30,junior:50,mid:110,senior:220,manager:360,director:600,exec:1200}
+  },
+  ZA:{sym:'R',div:1000,unit:'k',
+    tech:{entry:22,junior:38,mid:72,senior:130,manager:200,director:320,exec:600},
+    banking:{entry:20,junior:35,mid:65,senior:120,manager:190,director:310,exec:580},
+    oil:{entry:28,junior:50,mid:95,senior:175,manager:270,director:430,exec:800},
+    fmcg:{entry:18,junior:30,mid:58,senior:105,manager:165,director:265,exec:500},
+    telco:{entry:22,junior:37,mid:70,senior:128,manager:198,director:318,exec:595},
+    ngo:{entry:18,junior:30,mid:58,senior:108,manager:170,director:280,exec:520},
+    govt:{entry:15,junior:26,mid:48,senior:88,manager:138,director:220,exec:420},
+    consulting:{entry:24,junior:40,mid:76,senior:138,manager:215,director:345,exec:640},
+    healthcare:{entry:22,junior:36,mid:68,senior:124,manager:194,director:312,exec:580},
+    media:{entry:16,junior:26,mid:50,senior:90,manager:142,director:228,exec:430}
+  },
+  GH:{sym:'GHS',div:1000,unit:'k',
+    tech:{entry:2,junior:3.5,mid:7,senior:15,manager:28,director:48,exec:90},
+    banking:{entry:1.8,junior:3.2,mid:6.5,senior:14,manager:26,director:45,exec:85},
+    oil:{entry:2.5,junior:4.5,mid:9,senior:19,manager:35,director:60,exec:110},
+    fmcg:{entry:1.5,junior:2.8,mid:5.5,senior:11,manager:21,director:36,exec:68},
+    telco:{entry:2,junior:3.5,mid:7,senior:15,manager:27,director:47,exec:88},
+    ngo:{entry:1.8,junior:3.2,mid:6.5,senior:14,manager:26,director:45,exec:85},
+    govt:{entry:1.2,junior:2,mid:4,senior:7.5,manager:14,director:24,exec:45},
+    consulting:{entry:2,junior:3.6,mid:7.2,senior:15.5,manager:29,director:50,exec:94},
+    healthcare:{entry:1.5,junior:2.8,mid:5.5,senior:11.5,manager:21,director:36,exec:68},
+    media:{entry:1.2,junior:2,mid:4,senior:8.5,manager:16,director:27,exec:51}
+  },
+  EG:{sym:'EGP',div:1000,unit:'k',
+    tech:{entry:4,junior:7,mid:15,senior:30,manager:50,director:85,exec:160},
+    banking:{entry:3.5,junior:6,mid:13,senior:26,manager:43,director:73,exec:140},
+    oil:{entry:5,junior:9,mid:19,senior:38,manager:63,director:107,exec:200},
+    fmcg:{entry:3,junior:5.5,mid:11.5,senior:23,manager:38,director:65,exec:122},
+    telco:{entry:4,junior:7,mid:15,senior:30,manager:50,director:85,exec:160},
+    ngo:{entry:3.5,junior:6.2,mid:13,senior:26,manager:44,director:75,exec:140},
+    govt:{entry:2,junior:3.5,mid:7,senior:14,manager:23,director:39,exec:74},
+    consulting:{entry:4.2,junior:7.4,mid:15.6,senior:31,manager:52,director:88,exec:165},
+    healthcare:{entry:3,junior:5.5,mid:11.5,senior:23,manager:38,director:65,exec:122},
+    media:{entry:2.5,junior:4.5,mid:9.5,senior:19,manager:31,director:53,exec:100}
+  },
+  ET:{sym:'ETB',div:1000,unit:'k',
+    tech:{entry:8,junior:14,mid:28,senior:55,manager:90,director:150,exec:280},
+    banking:{entry:7,junior:12,mid:25,senior:48,manager:80,director:135,exec:255},
+    oil:{entry:9,junior:16,mid:32,senior:63,manager:104,director:175,exec:330},
+    fmcg:{entry:6,junior:10.5,mid:21,senior:41,manager:68,director:115,exec:215},
+    telco:{entry:8,junior:14,mid:28,senior:55,manager:90,director:152,exec:285},
+    ngo:{entry:8,junior:14,mid:30,senior:60,manager:100,director:168,exec:315},
+    govt:{entry:4,junior:7,mid:14,senior:27,manager:45,director:75,exec:142},
+    consulting:{entry:8.4,junior:14.7,mid:29.5,senior:57.8,manager:94.5,director:158,exec:296},
+    healthcare:{entry:6,junior:10.5,mid:21,senior:41,manager:68,director:114,exec:215},
+    media:{entry:5,junior:8.7,mid:17.5,senior:34,manager:56,director:95,exec:178}
+  },
+  RW:{sym:'RWF',div:100000,unit:'00k',
+    tech:{entry:2,junior:4,mid:9,senior:18,manager:30,director:50,exec:95},
+    banking:{entry:1.8,junior:3.5,mid:8,senior:16,manager:27,director:45,exec:85},
+    oil:{entry:2.2,junior:4.4,mid:10,senior:20,manager:33,director:55,exec:105},
+    fmcg:{entry:1.6,junior:3.2,mid:7,senior:14,manager:23,director:39,exec:73},
+    telco:{entry:2,junior:4,mid:9,senior:18,manager:30,director:50,exec:96},
+    ngo:{entry:2.2,junior:4.4,mid:10,senior:20,manager:33,director:56,exec:105},
+    govt:{entry:1,junior:2,mid:4.5,senior:9,manager:15,director:25,exec:48},
+    consulting:{entry:2.1,junior:4.2,mid:9.5,senior:19,manager:31,director:52,exec:99},
+    healthcare:{entry:1.6,junior:3.2,mid:7,senior:14,manager:23,director:39,exec:73},
+    media:{entry:1.3,junior:2.6,mid:5.8,senior:11.5,manager:19,director:32,exec:61}
+  },
+  CI:{sym:'XOF',div:100000,unit:'00k CFA',
+    tech:{entry:1.5,junior:2.8,mid:6,senior:12,manager:20,director:33,exec:63},
+    banking:{entry:1.4,junior:2.5,mid:5.5,senior:11,manager:18,director:30,exec:57},
+    oil:{entry:1.8,junior:3.3,mid:7.2,senior:14.4,manager:24,director:40,exec:76},
+    fmcg:{entry:1.2,junior:2.2,mid:4.8,senior:9.6,manager:16,director:26,exec:50},
+    telco:{entry:1.5,junior:2.8,mid:6,senior:12,manager:20,director:33,exec:63},
+    ngo:{entry:1.6,junior:2.9,mid:6.5,senior:13,manager:21.5,director:36,exec:68},
+    govt:{entry:0.8,junior:1.4,mid:3,senior:6,manager:10,director:17,exec:32},
+    consulting:{entry:1.6,junior:2.9,mid:6.3,senior:12.6,manager:21,director:35,exec:66},
+    healthcare:{entry:1.2,junior:2.2,mid:4.8,senior:9.6,manager:16,director:26,exec:50},
+    media:{entry:1,junior:1.8,mid:3.9,senior:7.8,manager:13,director:21.5,exec:41}
+  },
+  SN:{sym:'XOF',div:100000,unit:'00k CFA',
+    tech:{entry:1.3,junior:2.5,mid:5.5,senior:11,manager:18,director:30,exec:57},
+    banking:{entry:1.2,junior:2.2,mid:5,senior:10,manager:16.5,director:27.5,exec:52},
+    oil:{entry:1.6,junior:3,mid:6.6,senior:13,manager:22,director:36.5,exec:69},
+    fmcg:{entry:1.1,junior:2,mid:4.4,senior:8.8,manager:14.5,director:24,exec:46},
+    telco:{entry:1.3,junior:2.5,mid:5.5,senior:11,manager:18,director:30,exec:57},
+    ngo:{entry:1.5,junior:2.7,mid:6,senior:12,manager:19.8,director:33,exec:62},
+    govt:{entry:0.7,junior:1.3,mid:2.75,senior:5.5,manager:9,director:15.5,exec:29.5},
+    consulting:{entry:1.4,junior:2.6,mid:5.8,senior:11.5,manager:19,director:32,exec:60},
+    healthcare:{entry:1.1,junior:2,mid:4.4,senior:8.8,manager:14.5,max:24,exec:46},
+    media:{entry:0.9,junior:1.7,mid:3.6,senior:7.2,manager:12,director:20,exec:38}
+  }
+};
+
+var COMPANY_MULT={startup:0.85,sme:0.9,large:1,multinational:1.2};
+var LOCATION_MULT={capital:1,major:0.85,other:0.75};
+var P25=0.72; var P50=1; var P75=1.32;
+var LAST_NEGOTIATION_RESULT = null;
+
+function fmtSal(n,sym,div,unit){
+  if(n>=1000) return sym+Math.round(n).toLocaleString();
+  return sym+(n).toFixed(1)+unit;
+}
+
+function calcNegotiation(){
+  var country=document.getElementById('country').value;
+  var industry=document.getElementById('industry').value;
+  var role=document.getElementById('role').value;
+  var exp=parseInt(document.getElementById('experience').value)||5;
+  var current=parseFloat(document.getElementById('currentSalary').value)||0;
+  var offer=parseFloat(document.getElementById('offerSalary').value)||0;
+  var compSize=document.getElementById('companySize').value;
+  var loc=document.getElementById('location').value;
+
+  var d=BASE[country];
+  if(!d||!d[industry])return alert('Data not available for this combination.');
+  var sym=d.sym; var div=d.div; var unit=d.unit;
+
+  var base=d[industry][role]*div; // base median salary
+  var compMult=COMPANY_MULT[compSize];
+  var locMult=LOCATION_MULT[loc];
+  var expAdj=1+Math.max(0,exp-5)*0.03; // 3% per year above 5
+
+  var median=Math.round(base*compMult*locMult*expAdj);
+  var p25=Math.round(median*P25);
+  var p75=Math.round(median*P75);
+  var walkaway=Math.round(median*0.88);
+  var counter=Math.round(median*1.12);
+  var target=median;
+
+  // Confidence score based on how close offer is to market
+  var confidence=75;
+  var offerAssessment='';
+  if(offer>0){
+    var offerRatio=offer/median;
+    if(offerRatio<0.85){confidence=90;offerAssessment='⚠️ This offer is BELOW market rate ('+Math.round((1-offerRatio)*100)+'% below median). You have strong grounds to negotiate.';}
+    else if(offerRatio<0.95){confidence=80;offerAssessment='💡 This offer is slightly below market median. Counter-offer is recommended.';}
+    else if(offerRatio<=1.05){confidence=65;offerAssessment='✅ This offer is at market rate. You can still negotiate non-salary benefits (bonus, leave, remote work).';}
+    else if(offerRatio<=1.15){confidence=55;offerAssessment='🟢 This offer is above median market rate. Consider accepting or negotiate non-salary benefits.';}
+    else{confidence=40;offerAssessment='🏆 This offer is significantly above market rate. You are in a strong position. Accept or negotiate extra leave/remote days.';}
+  } else {
+    offerAssessment='Enter the offer received to see assessment. Your counter-offer range is shown below.';
+  }
+
+  document.getElementById('targetSalary').textContent=sym+median.toLocaleString();
+  document.getElementById('marketPosition').textContent='50th percentile for '+role+' in '+industry;
+  document.getElementById('confScore').textContent=confidence+'%';
+
+  // Percentile bars
+  var maxVal=p75*1.1;
+  function pct(v){return Math.round(v/maxVal*100);}
+  var barsHTML='<div style="margin-bottom:16px">';
+  [[p25,'25th Percentile (low)'],[median,'50th Percentile (median)'],[p75,'75th Percentile (top)']].forEach(function(p){
+    barsHTML+='<div class="percentile-bar">'+
+      '<div class="pbar-label">'+p[1].split(' ')[0]+'</div>'+
+      '<div class="pbar-track">'+
+        '<div class="pbar-fill" style="width:'+pct(p[0])+'%"></div>'+
+        (offer>0?'<div class="offer-marker" style="left:'+pct(offer)+'%;display:'+(offer>0?'block':'none')+'"></div>':'')+
+      '</div>'+
+      '<div class="pbar-val">'+sym+p[0].toLocaleString()+'</div>'+
+    '</div>';
+  });
+  if(offer>0) barsHTML+='<div style="font-size:.78rem;color:#ef4444;margin-top:4px">▲ Red line = your offer ('+sym+offer.toLocaleString()+')</div>';
+  barsHTML+='</div>';
+  document.getElementById('percentileBars').innerHTML=barsHTML;
+  document.getElementById('offerAssessment').innerHTML='<div style="background:'+(offer>0&&offer<median?'#fef2f2':'#f0fdf4')+';border-radius:8px;padding:12px 16px;border:1px solid '+(offer>0&&offer<median?'#fecaca':'#bbf7d0')+'">'+offerAssessment+'</div>';
+
+  // Range metrics
+  document.getElementById('rangeMetrics').innerHTML=[
+    {label:'Walk-Away Floor',value:sym+walkaway.toLocaleString(),unit:'Minimum to accept'},
+    {label:'Target (50th %ile)',value:sym+target.toLocaleString(),unit:'Market median'},
+    {label:'Counter-Offer Ask',value:sym+counter.toLocaleString(),unit:'12% above median'},
+    {label:'Stretch Ask',value:sym+p75.toLocaleString(),unit:'75th percentile'}
+  ].map(function(m){
+    return '<div class="en-metric"><div class="en-metric-label">'+m.label+'</div><div class="en-metric-value" style="font-size:1.2rem">'+m.value+'</div><div class="en-metric-unit">'+m.unit+'</div></div>';
+  }).join('');
+
+  // Script
+  var companyType=document.getElementById('companySize').options[document.getElementById('companySize').selectedIndex].text;
+  document.getElementById('negotiationScript').textContent=
+`"Thank you for this offer. I'm genuinely excited about this opportunity and the role aligns well with my goals.
+
+I've done some research on market compensation for [${role.replace('_',' ')}] roles in ${country}'s ${industry} sector. Based on my ${exp} years of experience and the value I'll bring, I was expecting a package closer to ${sym}${counter.toLocaleString()} per month.
+
+I'd like to ask: is there flexibility to move the offer to ${sym}${target.toLocaleString()}–${sym}${counter.toLocaleString()}? I'm very motivated to join the team and I believe this range reflects fair market value while allowing me to fully commit.
+
+If the base salary is fixed, I'm open to discussing other elements — such as performance bonus, additional leave days, remote work flexibility, or a performance review after 6 months."`;
+
+  LAST_NEGOTIATION_RESULT = {
+    country: country,
+    industry: industry,
+    role: role,
+    experience: exp,
+    current: current,
+    offer: offer,
+    companyType: companyType,
+    location: loc,
+    symbol: sym,
+    p25: p25,
+    median: median,
+    p75: p75,
+    walkaway: walkaway,
+    counter: counter,
+    target: target,
+    confidence: confidence,
+    assessment: offerAssessment,
+    script: document.getElementById('negotiationScript').textContent
+  };
+  var status = document.getElementById('sn-status');
+  if (status) status.textContent = 'Negotiation plan ready to copy or download.';
+  document.getElementById('results').className='en-results on';
+}
+
+function buildNegotiationSummary() {
+  if (!LAST_NEGOTIATION_RESULT) return '';
+  var r = LAST_NEGOTIATION_RESULT;
+  return [
+    'AfroTools Salary Negotiation Plan',
+    'Country: ' + r.country,
+    'Industry: ' + r.industry,
+    'Role: ' + r.role,
+    'Experience: ' + r.experience + ' years',
+    r.current ? 'Current salary: ' + r.symbol + r.current.toLocaleString() : 'Current salary: not entered',
+    r.offer ? 'Offer received: ' + r.symbol + r.offer.toLocaleString() : 'Offer received: not entered',
+    '25th percentile: ' + r.symbol + r.p25.toLocaleString(),
+    'Median target: ' + r.symbol + r.target.toLocaleString(),
+    '75th percentile: ' + r.symbol + r.p75.toLocaleString(),
+    'Walk-away floor: ' + r.symbol + r.walkaway.toLocaleString(),
+    'Counter-offer ask: ' + r.symbol + r.counter.toLocaleString(),
+    'Confidence score: ' + r.confidence + '%',
+    'Assessment: ' + r.assessment.replace(/<[^>]+>/g, ''),
+    '',
+    'Script:',
+    r.script,
+    '',
+    'Assumptions: private planning estimate using a reviewed 2026 internal market table. Verify live market evidence, written benefits, tax effects, contract terms and role scope before negotiating.'
+  ].join('\n');
+}
+
+function copyNegotiationSummary() {
+  var text = buildNegotiationSummary();
+  var status = document.getElementById('sn-status');
+  if (!text) { status.textContent = 'Run the calculator first.'; return; }
+  navigator.clipboard.writeText(text).then(function() {
+    status.textContent = 'Negotiation plan copied.';
+  }).catch(function() {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    status.textContent = 'Negotiation plan copied.';
+  });
+}
+
+function downloadNegotiationSummary() {
+  var text = buildNegotiationSummary();
+  var status = document.getElementById('sn-status');
+  if (!text) { status.textContent = 'Run the calculator first.'; return; }
+  var blob = new Blob([text], {type:'text/plain'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'salary-negotiation-plan.txt';
+  a.dataset.noPdfGate = 'true';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  status.textContent = 'TXT plan downloaded.';
+}
+
+function saveNegotiationSummary() {
+  var text = buildNegotiationSummary();
+  var status = document.getElementById('sn-status');
+  if (!text) { status.textContent = 'Run the calculator first.'; return; }
+  try {
+    localStorage.setItem('afrotools-salary-negotiation-plan', JSON.stringify({ savedAt: Date.now(), plan: LAST_NEGOTIATION_RESULT, report: text }));
+    status.textContent = 'Negotiation plan saved in this browser.';
+  } catch (err) {
+    status.textContent = 'Could not save locally. Copy or download the plan instead.';
+  }
+}
+</script>
+
+<afro-business-cta tool-name="Salary Negotiation Calculator" prospect-segment="career-workforce" save-note="Run the salary plan, then copy or download the negotiation script before discussing a raise, offer, or contract terms."></afro-business-cta>
+<afro-related-tools data-ssr="1" category="career" current="salary-negotiation">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/career-growth/" data-related-tool data-id="career-growth" data-name="Career Growth Trajectory Calculator" data-category="career" data-icon="CG" data-desc="Plot your career growth trajectory. Predict salary milestones, time to promotion, and lifetime earnings across 15 Africa">Career Growth Trajectory Calculator</a></li><li><a href="/tools/career-switch/" data-related-tool data-id="career-switch" data-name="Career Switch Financial Impact Calculator Africa" data-category="career" data-icon="CS" data-desc="Calculate the true financial cost of switching careers in Africa. Foregone income during retraining, break-even timeline">Career Switch Financial Impact Calculator Africa</a></li><li><a href="/tools/retirement-readiness/" data-related-tool data-id="retirement-readiness" data-name="Retirement Readiness Score" data-category="career" data-icon="RR" data-desc="Calculate your retirement readiness score. Project savings, check pension adequacy, find your monthly shortfall across 1">Retirement Readiness Score</a></li><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+<script src="/assets/js/pages/career-tool-focus.js?v=42cb5afb" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

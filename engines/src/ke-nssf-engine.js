@@ -1,0 +1,59 @@
+!function(e) {
+  "use strict";
+  var l = e.AfroTools && e.AfroTools.payroll && e.AfroTools.payroll.ke;
+  if (l) {
+    var o = {
+      LEL: l.NSSF_LOWER_LIMIT,
+      UEL: l.NSSF_UPPER_LIMIT,
+      RATE: l.NSSF_RATE,
+      OLD_FLAT: l.LEGACY_NSSF_FLAT,
+      SHIF_RATE: l.SHIF_RATE,
+      SHIF_MIN: l.SHIF_MINIMUM,
+      AHL_RATE: l.AHL_RATE,
+      calculateNSSF: function(e, o) {
+        return l.calculateNssf(e, o || "new");
+      },
+      calculateSHIF: function(e) {
+        return l.calculateShif(e);
+      },
+      calculateAHL: function(e) {
+        return l.calculateAhl(e);
+      },
+      getAllDeductions: function(e, o) {
+        var t = l.calculateStatutoryBurden(e, o || "new");
+        return {
+          nssf: t.nssf,
+          employee: {
+            nssf: t.employee.nssf,
+            shif: t.employee.shif,
+            ahl: t.employee.ahl,
+            total: t.employee.total,
+            pctOfGross: t.gross > 0 ? t.employee.total / t.gross * 100 : 0
+          },
+          employer: {
+            nssf: t.employer.nssf,
+            shif: t.employer.shif,
+            ahl: t.employer.ahl,
+            total: t.employer.total,
+            pctOfGross: t.gross > 0 ? t.employer.total / t.gross * 100 : 0
+          }
+        };
+      },
+      compareActs: function(e) {
+        var o = l.calculateNssf(e, "new"), t = l.calculateNssf(e, "old"), a = o.totalEmployee - t.totalEmployee;
+        return {
+          oldActEmployee: t.totalEmployee,
+          newActEmployee: o.totalEmployee,
+          monthlyDifference: a,
+          annualDifference: 12 * a,
+          multiplier: t.totalEmployee > 0 ? o.totalEmployee / t.totalEmployee : 0
+        };
+      },
+      projectRetirement: function(e, l, o) {
+        var t = (o || 0) / 12, a = 12 * l;
+        return t > 0 && a > 0 ? e * ((Math.pow(1 + t, a) - 1) / t) : e * a;
+      }
+    };
+    "undefined" != typeof module && module.exports ? module.exports = o : e.KE_NSSF = o;
+  }
+}("undefined" != typeof globalThis ? globalThis : this);

@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="view-transition" content="same-origin">
+<title>Générateur .htaccess | Apache redirects cache sécurité | AfroTools</title>
+<meta name="description" content="Créez un fichier .htaccess Apache avec HTTPS, hote canonique, redirections, cache, compression, headers et checklist de test.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="Générateur .htaccess | AfroTools">
+<meta property="og:description" content="Générez des regles Apache .htaccess pour redirections, HTTPS, cache, compression et headers.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/htaccess-gen.webp">
+<meta property="og:url" content="https://afrotools.com/fr/tools/generateur-htaccess/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Générateur .htaccess | AfroTools">
+<meta name="twitter:description" content="Générez des regles Apache .htaccess pour redirections, HTTPS, cache, compression et headers.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/htaccess-gen.webp">
+<meta name="robots" content="index, follow">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+  :root {
+    --ht-ink: #101828;
+    --ht-muted: #5d6d83;
+    --ht-line: #d9e3f0;
+    --ht-soft: #f4f8fc;
+    --ht-card: #fff;
+    --ht-blue: #2857c5;
+    --ht-green: #127a54;
+    --ht-gold: #a26000;
+  }
+  body { background: #f6f8fb; color: var(--ht-ink); }
+  .ht-wrap { max-width: 1180px; margin: 0 auto; padding: 32px 18px 58px; }
+  .ht-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(330px, .9fr);
+    gap: 24px;
+    align-items: start;
+    margin: 18px 0 24px;
+  }
+  .ht-panel, .ht-card {
+    background: var(--ht-card);
+    border: 1px solid var(--ht-line);
+    border-radius: 8px;
+    box-shadow: 0 18px 40px rgba(16, 24, 40, .06);
+  }
+  .ht-panel { padding: 30px; }
+  .ht-eyebrow {
+    color: var(--ht-blue);
+    font-size: .75rem;
+    font-weight: 900;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin: 0 0 12px;
+  }
+  h1 { font-size: clamp(2rem, 5vw, 3.7rem); line-height: 1; letter-spacing: 0; margin: 0 0 16px; }
+  .ht-lead { color: var(--ht-muted); line-height: 1.75; font-size: 1.05rem; max-width: 65ch; }
+  .ht-pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+  .ht-pill {
+    border: 1px solid var(--ht-line);
+    border-radius: 999px;
+    padding: 8px 12px;
+    background: var(--ht-soft);
+    color: #24405f;
+    font-weight: 850;
+    font-size: .86rem;
+  }
+  .ht-card { padding: 22px; }
+  .ht-form { display: grid; gap: 15px; }
+  .ht-grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .ht-field label, .ht-field legend {
+    display: block;
+    margin: 0 0 7px;
+    color: #23364e;
+    font-size: .84rem;
+    font-weight: 850;
+  }
+  .ht-field input, .ht-field select, .ht-field textarea {
+    width: 100%;
+    min-height: 46px;
+    border: 1px solid #c7d4e5;
+    border-radius: 8px;
+    background: #fff;
+    color: var(--ht-ink);
+    padding: 11px 12px;
+    font: inherit;
+  }
+  .ht-field textarea { min-height: 86px; resize: vertical; }
+  .ht-checks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; border: 0; padding: 0; margin: 0; }
+  .ht-checks label {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 42px;
+    border: 1px solid var(--ht-line);
+    border-radius: 8px;
+    background: #fff;
+    padding: 8px 10px;
+    font-weight: 750;
+    color: #26374f;
+  }
+  .ht-checks input { width: 18px; height: 18px; }
+  .ht-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+  .ht-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    border: 1px solid #c7d4e5;
+    border-radius: 8px;
+    padding: 0 15px;
+    background: #fff;
+    color: #1d2d44;
+    font-weight: 850;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .ht-btn.primary { background: var(--ht-blue); border-color: var(--ht-blue); color: #fff; }
+  .ht-btn:focus-visible, .ht-field input:focus-visible, .ht-field select:focus-visible, .ht-field textarea:focus-visible {
+    outline: 3px solid rgba(40, 87, 197, .22);
+    outline-offset: 2px;
+  }
+  .ht-warning {
+    display: none;
+    border-left: 4px solid var(--ht-gold);
+    border-radius: 8px;
+    background: #fff8e8;
+    color: #6b4300;
+    padding: 12px 14px;
+    font-weight: 750;
+    white-space: pre-line;
+  }
+  .ht-warning.show { display: block; }
+  .ht-results { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, .72fr); gap: 20px; margin-top: 20px; }
+  .ht-code {
+    width: 100%;
+    min-height: 430px;
+    border: 1px solid var(--ht-line);
+    border-radius: 8px;
+    padding: 16px;
+    background: #0c1727;
+    color: #e6edf7;
+    font: .9rem/1.55 Consolas, Monaco, monospace;
+    white-space: pre;
+    overflow: auto;
+  }
+  .ht-output {
+    border: 1px solid var(--ht-line);
+    border-radius: 8px;
+    background: #fff;
+    padding: 16px;
+    color: #22334c;
+    line-height: 1.7;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+  }
+  .ht-sections { display: grid; grid-template-columns: minmax(0, 1fr) minmax(290px, .46fr); gap: 20px; margin-top: 22px; }
+  .ht-section {
+    border: 1px solid var(--ht-line);
+    border-radius: 8px;
+    background: #fff;
+    padding: 22px;
+  }
+  .ht-section h2 { margin: 0 0 12px; font-size: 1.28rem; }
+  .ht-section p, .ht-section li { color: var(--ht-muted); line-height: 1.72; }
+  .ht-section ul, .ht-section ol { padding-left: 1.2rem; }
+  .ht-source-list { list-style: none; padding: 0; display: grid; gap: 10px; }
+  .ht-source-list a {
+    display: block;
+    border: 1px solid var(--ht-line);
+    border-radius: 8px;
+    padding: 12px;
+    background: #f8fbff;
+    color: #174ea6;
+    font-weight: 850;
+    text-decoration: none;
+  }
+  .ht-faq details { border-top: 1px solid var(--ht-line); padding: 14px 0; }
+  .ht-faq summary { cursor: pointer; font-weight: 850; color: #1f3048; }
+  @media (max-width: 920px) {
+    .ht-hero, .ht-results, .ht-sections { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 680px) {
+    .ht-wrap { padding-inline: 14px; }
+    .ht-panel, .ht-card, .ht-section { padding: 18px; }
+    .ht-grid-2, .ht-checks { grid-template-columns: 1fr; }
+    .ht-actions .ht-btn { flex: 1 1 150px; }
+  }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Générateur .htaccess","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://afrotools.com/fr/tools/generateur-htaccess/","description":"Générateur local de fichier .htaccess Apache avec redirects, cache, compression, headers, copie et export.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"image":"https://afrotools.com/assets/img/tools/htaccess-gen.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Le fichier .htaccess fonctionne-t-il sur tous les serveurs ?","acceptedAnswer":{"@type":"Answer","text":"Non. Il concerne Apache et seulement les repertoires ou AllowOverride autorise les fichiers .htaccess."}},{"@type":"Question","name":"Puis-je deployer le résultat sans test ?","acceptedAnswer":{"@type":"Answer","text":"Non. Testez sur staging, gardez une copie de l'ancien fichier et vérifiez les redirections, les codes HTTP et les journaux d'erreur."}},{"@type":"Question","name":"Les headers de sécurité sont-ils suffisants ?","acceptedAnswer":{"@type":"Answer","text":"Non. Ils aident mais ne remplacent pas une configuration serveur complete, une politique CSP adaptée et un audit sécurité."}}]}</script>
+<link rel="canonical" href="https://afrotools.com/fr/tools/generateur-htaccess/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-htaccess/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/fr/tools/generateur-htaccess/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="tools"></afro-navbar>
+<main class="ht-wrap">
+  <section class="ht-hero">
+    <div class="ht-panel">
+      <p class="ht-eyebrow">Apache config</p>
+      <h1>Générateur .htaccess</h1>
+      <p class="ht-lead">Créez un fichier .htaccess lisible pour Apache: HTTPS, hote canonique, redirections, cache, compression et quelques headers. L'outil ajoute aussi une checklist, parce qu'un .htaccess non teste peut casser un site très vite.</p>
+      <div class="ht-pills" aria-label="Fonctions">
+        <span class="ht-pill">mod_rewrite</span>
+        <span class="ht-pill">Cache-Control</span>
+        <span class="ht-pill">Checklist deploy</span>
+      </div>
+    </div>
+
+    <section class="ht-card" aria-labelledby="tool-title">
+      <h2 id="tool-title">Règles à générer</h2>
+      <form class="ht-form" id="ht-form">
+        <div class="ht-grid-2">
+          <div class="ht-field">
+            <label for="domain">Domaine canonique</label>
+            <input id="domain" value="example.com" autocomplete="off">
+          </div>
+          <div class="ht-field">
+            <label for="host-mode">Hote canonique</label>
+            <select id="host-mode">
+              <option value="nonwww">example.com sans www</option>
+              <option value="www">www.example.com</option>
+              <option value="none">Ne pas forcer l'hote</option>
+            </select>
+          </div>
+        </div>
+        <fieldset class="ht-checks">
+          <legend>Modules et blocs</legend>
+          <label><input type="checkbox" id="force-https" checked> forcer HTTPS</label>
+          <label><input type="checkbox" id="compression" checked> compression deflate</label>
+          <label><input type="checkbox" id="cache" checked> cache assets</label>
+          <label><input type="checkbox" id="security" checked> headers basiques</label>
+          <label><input type="checkbox" id="directory" checked> bloquer listing dossiers</label>
+          <label><input type="checkbox" id="fallback"> fallback SPA vers index.html</label>
+        </fieldset>
+        <div class="ht-field">
+          <label for="redirects">Redirections 301 facultatives, une par ligne: /ancien => /nouveau</label>
+          <textarea id="redirects">/old-page => /new-page
+/fr/ancien-outil => /fr/tools/generateur-htaccess/</textarea>
+        </div>
+        <div class="ht-actions">
+          <button class="ht-btn primary" type="submit">Générer</button>
+          <button class="ht-btn" type="button" id="copy-result">Copier</button>
+          <button class="ht-btn" type="button" id="download-result">Télécharger .htaccess</button>
+          <button class="ht-btn" type="button" id="save-result">Sauvegarder localement</button>
+        </div>
+        <div class="ht-warning" id="warning" role="alert"></div>
+        <p class="ht-lead" id="status" aria-live="polite" style="font-size:.92rem;margin:0"></p>
+      </form>
+    </section>
+  </section>
+
+  <section class="ht-card" aria-labelledby="result-title">
+    <h2 id="result-title">Fichier genere</h2>
+    <div class="ht-results">
+      <textarea id="code-output" class="ht-code" readonly aria-label="Code htaccess genere"></textarea>
+      <div class="ht-output" id="summary-output"></div>
+    </div>
+  </section>
+
+  <div class="ht-sections">
+    <section class="ht-section">
+      <h2>Méthodologie et limites</h2>
+      <p><strong>Méthodologie.</strong> L'outil genere des blocs Apache courants dans des sections `<IfModule>`: `mod_rewrite` pour les redirections, `mod_deflate` pour la compression, `mod_expires` et `mod_headers` pour cache et headers. Les redirections saisies sont transformees en `Redirect 301` simples.</p>
+      <ul>
+        <li>Apache ignore `.htaccess` si `AllowOverride` ne l'autorise pas pour le repertoire.</li>
+        <li>Les règles en contexte `.htaccess` peuvent se comporter differemment des règles dans la configuration principale.</li>
+        <li>Testez sur staging, gardez un backup et vérifiez les journaux d'erreur avant production.</li>
+        <li>Avertissement: cet outil ne remplace pas un administrateur serveur, un audit sécurité ou une configuration Apache complete.</li>
+      </ul>
+    </section>
+
+    <aside class="ht-section" aria-labelledby="sources-title" data-tool-verification-panel>
+      <h2 id="sources-title">Sources &amp; vérification</h2>
+      <ul class="ht-source-list">
+        <li><a href="https://httpd.apache.org/docs/2.4/howto/htaccess.html" target="_blank" rel="noopener">Source officielle Apache: .htaccess files</a></li>
+        <li><a href="https://httpd.apache.org/docs/current/mod/mod_rewrite.html" target="_blank" rel="noopener">Source officielle Apache: mod_rewrite</a></li>
+        <li><a href="https://httpd.apache.org/docs/2.4/rewrite/intro.html" target="_blank" rel="noopener">Source officielle Apache: rewrite introduction</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control" target="_blank" rel="noopener">MDN Web Docs: Cache-Control</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status" target="_blank" rel="noopener">MDN Web Docs: HTTP status codes</a></li>
+      </ul>
+    </aside>
+  </div>
+
+  <section class="ht-section ht-faq" aria-labelledby="faq-title">
+    <h2 id="faq-title">Questions fréquentes</h2>
+    <details>
+      <summary>Le fichier .htaccess fonctionne-t-il avec Nginx ?</summary>
+      <p>Non. `.htaccess` est lie a Apache. Nginx utilise sa configuration serveur, pas des fichiers `.htaccess` par repertoire.</p>
+    </details>
+    <details>
+      <summary>Pourquoi tester avant production ?</summary>
+      <p>Une mauvaise regle peut créer une boucle de redirection, casser les assets ou renvoyer des erreurs 500. Testez chaque bloc progressivement.</p>
+    </details>
+    <details>
+      <summary>Les headers generes suffisent-ils pour la sécurité ?</summary>
+      <p>Non. Ils sont une base prudente, mais la CSP, les cookies, le TLS et les permissions doivent être adaptés a votre application.</p>
+    </details>
+  </section>
+
+  <section class="ht-section" aria-labelledby="related-title">
+    <h2 id="related-title">Outils lies</h2>
+    <div class="ht-actions">
+      <a class="ht-btn" href="/fr/tools/meta-tag-generator/">Meta tags</a>
+      <a class="ht-btn" href="/fr/tools/dev-tools/">Minificateur HTML</a>
+      <a class="ht-btn" href="/fr/tools/hash-generator/">Générateur de hash</a>
+      <a class="ht-btn" href="/custom-calculators/">Outil dev sur mesure</a>
+    </div>
+  </section>
+</main>
+<afro-footer></afro-footer>
+<script>
+(function () {
+  'use strict';
+
+  const STORAGE_KEY = 'afrotools_generateur_htaccess_fr_v1';
+  const fields = {
+    domain: document.getElementById('domain'),
+    hostMode: document.getElementById('host-mode'),
+    forceHttps: document.getElementById('force-https'),
+    compression: document.getElementById('compression'),
+    cache: document.getElementById('cache'),
+    security: document.getElementById('security'),
+    directory: document.getElementById('directory'),
+    fallback: document.getElementById('fallback'),
+    redirects: document.getElementById('redirects')
+  };
+  const codeOutput = document.getElementById('code-output');
+  const summaryOutput = document.getElementById('summary-output');
+  const warning = document.getElementById('warning');
+  const status = document.getElementById('status');
+
+  function clean(value) {
+    return String(value || '').trim();
+  }
+
+  function sanitizeDomain(value) {
+    return clean(value).replace(/^https?:\/\//i, '').replace(/\/.*$/, '').replace(/^www\./i, '');
+  }
+
+  function parseRedirects(text) {
+    return clean(text).split(/\n+/).map(function (line) {
+      const parts = line.split('=>').map(clean);
+      if (parts.length !== 2 || !parts[0] || !parts[1]) return null;
+      return { from: parts[0], to: parts[1] };
+    }).filter(Boolean);
+  }
+
+  function build() {
+    warning.classList.remove('show');
+    warning.textContent = '';
+    const domain = sanitizeDomain(fields.domain.value) || 'example.com';
+    const canonical = fields.hostMode.value === 'www' ? 'www.' + domain : domain;
+    const redirects = parseRedirects(fields.redirects.value);
+    const warnings = [];
+    const lines = [
+      '# Generated by AfroTools - review before production',
+      '# Requires Apache and AllowOverride permissions for this directory',
+      ''
+    ];
+
+    if (fields.directory.checked) {
+      lines.push('# Disable directory listing');
+      lines.push('Options -Indexes');
+      lines.push('');
+    }
+
+    if (fields.forceHttps.checked || fields.hostMode.value !== 'none') {
+      lines.push('<IfModule mod_rewrite.c>');
+      lines.push('RewriteEngine On');
+      if (fields.forceHttps.checked) {
+        lines.push('');
+        lines.push('# Force HTTPS');
+        lines.push('RewriteCond %{HTTPS} !=on');
+        lines.push('RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]');
+      }
+      if (fields.hostMode.value !== 'none') {
+        lines.push('');
+        lines.push('# Force canonical host');
+        lines.push('RewriteCond %{HTTP_HOST} !^' + canonical.replace(/\./g, '\\.') + '$ [NC]');
+        lines.push('RewriteRule ^ https://' + canonical + '%{REQUEST_URI} [L,R=301]');
+      }
+      if (fields.fallback.checked) {
+        lines.push('');
+        lines.push('# SPA fallback - enable only for single-page apps');
+        lines.push('RewriteCond %{REQUEST_FILENAME} !-f');
+        lines.push('RewriteCond %{REQUEST_FILENAME} !-d');
+        lines.push('RewriteRule ^ index.html [L]');
+        warnings.push('SPA fallback active: verifier que cela ne masque pas les vraies erreurs 404.');
+      }
+      lines.push('</IfModule>');
+      lines.push('');
+    }
+
+    if (redirects.length) {
+      lines.push('# Simple 301 redirects');
+      redirects.forEach(function (item) {
+        lines.push('Redirect 301 ' + item.from + ' ' + item.to);
+      });
+      lines.push('');
+    }
+
+    if (fields.compression.checked) {
+      lines.push('<IfModule mod_deflate.c>');
+      lines.push('  AddOutputFilterByType DEFLATE text/html text/plain text/css application/javascript application/json image/svg+xml');
+      lines.push('</IfModule>');
+      lines.push('');
+    }
+
+    if (fields.cache.checked) {
+      lines.push('<IfModule mod_expires.c>');
+      lines.push('  ExpiresActive On');
+      lines.push('  ExpiresByType text/css "access plus 7 days"');
+      lines.push('  ExpiresByType application/javascript "access plus 7 days"');
+      lines.push('  ExpiresByType image/webp "access plus 30 days"');
+      lines.push('  ExpiresByType image/png "access plus 30 days"');
+      lines.push('  ExpiresByType image/jpeg "access plus 30 days"');
+      lines.push('</IfModule>');
+      lines.push('');
+      lines.push('<IfModule mod_headers.c>');
+      lines.push('  <FilesMatch "\\.(css|js|png|jpg|jpeg|webp|svg)$">');
+      lines.push('    Header set Cache-Control "public, max-age=604800"');
+      lines.push('  </FilesMatch>');
+      lines.push('</IfModule>');
+      lines.push('');
+    }
+
+    if (fields.security.checked) {
+      lines.push('<IfModule mod_headers.c>');
+      lines.push('  Header always set X-Content-Type-Options "nosniff"');
+      lines.push('  Header always set Referrer-Policy "strict-origin-when-cross-origin"');
+      lines.push('  Header always set X-Frame-Options "SAMEORIGIN"');
+      lines.push('</IfModule>');
+      lines.push('');
+      warnings.push('Security headers are basic. Add a tested Content-Security-Policy separately when ready.');
+    }
+
+    warnings.push('Test with curl -I, browser devtools and Apache error logs before deploy.');
+    warnings.push('If AllowOverride is None, Apache ignores this .htaccess file.');
+    const code = lines.join('\n').trim() + '\n';
+    const summary = [
+      'Domaine canonique: ' + canonical,
+      'HTTPS: ' + (fields.forceHttps.checked ? 'oui' : 'non'),
+      'Redirections 301: ' + redirects.length,
+      'Cache assets: ' + (fields.cache.checked ? 'oui' : 'non'),
+      'Compression: ' + (fields.compression.checked ? 'oui' : 'non'),
+      'Headers securite basiques: ' + (fields.security.checked ? 'oui' : 'non'),
+      '',
+      'Checklist:',
+      '- Sauvegarder l ancien .htaccess',
+      '- Tester sur staging',
+      '- Verifier 200/301/404 avec curl -I',
+      '- Surveiller les logs Apache apres deploy',
+      '',
+      'Avertissement: configuration indicative; verifier avec votre hebergeur ou administrateur serveur.'
+    ].join('\n');
+    codeOutput.value = code;
+    summaryOutput.textContent = summary;
+    warning.textContent = warnings.join('\n');
+    warning.classList.add('show');
+    status.textContent = 'Fichier .htaccess genere.';
+    return { code, summary, warnings, domain: canonical, redirects };
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
+    codeOutput.focus();
+    codeOutput.select();
+    document.execCommand('copy');
+    return Promise.resolve();
+  }
+
+  document.getElementById('ht-form').addEventListener('submit', function (event) {
+    event.preventDefault();
+    build();
+  });
+
+  document.getElementById('copy-result').addEventListener('click', function () {
+    const result = build();
+    copyText(result.code).then(function () {
+      status.textContent = 'Code copie.';
+    });
+  });
+
+  document.getElementById('download-result').addEventListener('click', function () {
+    const result = build();
+    const blob = new Blob([result.code], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = '.htaccess';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    status.textContent = 'Fichier .htaccess prepare.';
+  });
+
+  document.getElementById('save-result').addEventListener('click', function () {
+    const result = build();
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ savedAt: new Date().toISOString(), settings: Object.fromEntries(Object.entries(fields).map(function (entry) { return [entry[0], entry[1].type === 'checkbox' ? entry[1].checked : entry[1].value]; })), code: result.code, summary: result.summary }));
+      status.textContent = 'Instantane sauvegarde dans ce navigateur.';
+    } catch (error) {
+      status.textContent = 'Sauvegarde locale indisponible dans ce navigateur.';
+    }
+  });
+
+  Object.values(fields).forEach(function (field) {
+    field.addEventListener('input', build);
+    field.addEventListener('change', build);
+  });
+
+  build();
+})();
+</script>
+</body>
+</html>

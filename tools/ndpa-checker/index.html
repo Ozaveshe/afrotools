@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NDPA Compliance Checker for Nigeria Data Protection Act | AfroTools</title>
+<meta name="description" content="Free NDPA compliance checker for Nigerian businesses. 20 yes/no questions covering all Nigeria Data Protection Act 2023 requirements. Get your compliance score instantly.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="NDPA Compliance Checker — Nigeria Data Protection Act 2023 | AfroTools">
+<meta property="og:description" content="Assess your NDPA compliance in minutes. 20-question checklist covering lawful basis, DPO, breach notification, DPIA, and all key NDPA 2023 requirements.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/ndpa-checker.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/ndpa-checker/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "NDPA Compliance Checker",
+  "description": "Interactive Nigeria Data Protection Act 2023 compliance checklist for businesses operating in Nigeria.",
+  "url": "https://afrotools.com/tools/ndpa-checker/",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "NGN"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/ndpa-checker.webp"
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/legal.css?v=a2330ea1">
+<link rel="stylesheet" href="/assets/css/legal-enhancements.css?v=faefe7bf">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}
+.leg-check-item{display:flex;align-items:flex-start;gap:.9rem;padding:.9rem 1rem;border-bottom:1px solid #f1f5f9;border-radius:8px;margin-bottom:4px;background:#fff;border:1.5px solid #e5e7eb;cursor:pointer;transition:border-color .2s}
+.leg-check-item:hover{border-color:#ddd6fe}
+.leg-check-item.checked{border-color:#7c3aed;background:#faf5ff}
+.check-box{width:24px;height:24px;border:2px solid #d1d5db;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;margin-top:2px}
+.leg-check-item.checked .check-box{background:#7c3aed;border-color:#7c3aed;color:#fff}
+.check-num{font-size:.7rem;font-weight:700;color:#9ca3af;margin-top:4px;flex-shrink:0;width:20px;text-align:right}
+.check-content{flex:1}
+.check-q{font-size:.88rem;font-weight:600;color:#1a1a2e;line-height:1.4}
+.check-ref{font-size:.72rem;color:#7c3aed;margin-top:3px;font-weight:600}
+.score-bar-wrap{background:#e5e7eb;border-radius:100px;height:10px;overflow:hidden;margin:1rem 0 .5rem}
+.score-bar{height:100%;border-radius:100px;transition:width .6s ease}
+.score-bar.high{background:linear-gradient(90deg,#16a34a,#22c55e)}
+.score-bar.medium{background:linear-gradient(90deg,#d97706,#f59e0b)}
+.score-bar.low{background:linear-gradient(90deg,#dc2626,#ef4444)}
+.score-pct{font-size:2.5rem;font-weight:800}
+.score-pct.high{color:#16a34a}.score-pct.medium{color:#d97706}.score-pct.low{color:#dc2626}
+.reco-item{display:flex;gap:.6rem;align-items:flex-start;padding:.6rem 0;border-bottom:1px solid #f1f5f9;font-size:.84rem}
+.reco-item:last-child{border-bottom:none}
+.reco-num{font-size:.7rem;font-weight:700;color:#7c3aed;background:#f5f3ff;border-radius:4px;padding:2px 6px;flex-shrink:0;margin-top:1px}
+.live-score{position:sticky;top:0;z-index:10;background:#fff;border-bottom:2px solid #e5e7eb;padding:.75rem 1rem;display:flex;align-items:center;gap:1rem}
+.live-score-num{font-size:1.4rem;font-weight:800;color:#7c3aed}
+.live-score-label{font-size:.8rem;color:#6b7280}
+.law-overview{background:linear-gradient(135deg,#1e0a3c,#2d1b69);color:#fff;border-radius:18px;padding:1.5rem;margin-bottom:1.5rem}
+.law-overview h3{font-size:1rem;font-weight:700;margin-bottom:.75rem;color:#a78bfa}
+.law-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.75rem}
+.law-fact{background:rgba(255,255,255,.08);border-radius:10px;padding:.75rem}
+.law-fact-label{font-size:.7rem;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.05em}
+.law-fact-val{font-size:.9rem;font-weight:700;color:#fff;margin-top:3px}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem}
+.contact-item{background:#f8fafc;border:1px solid #e5e7eb;border-radius:10px;padding:1rem}
+.contact-label{font-size:.72rem;font-weight:700;text-transform:uppercase;color:#6b7280;letter-spacing:.04em}
+.contact-val{font-size:.88rem;color:#1a1a2e;margin-top:4px;font-weight:600}
+@media(max-width:600px){.contact-grid{grid-template-columns:1fr}.law-facts{grid-template-columns:1fr 1fr}}
+</style>
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/ndpa-checker.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NDPA Compliance Checker for Nigeria Data Protection Act | AfroTools">
+<meta name="twitter:description" content="Free NDPA compliance checker for Nigerian businesses. 20 yes/no questions covering all Nigeria Data Protection Act 2023 requirements. Get your compliance score instantly.">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"NDPA Compliance Checker for Nigeria Data Protection Act","item":"https://afrotools.com/tools/ndpa-checker/"}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/ndpa-checker/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/ndpa-checker/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/verificateur-ndpa/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ukaguzi-wa-ndpa-nigeria/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/ndpa-checker/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar theme="dark" active="legal"></afro-navbar>
+
+<div class="leg-tool-hero">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a> <span>›</span> <a href="/legal/">Legal &amp; Compliance</a> <span>›</span> NDPA Compliance Checker
+    </nav>
+    <h1>🇳🇬 <em>NDPA</em> Compliance Checker</h1>
+    <p class="leg-tool-hero-sub">Nigeria Data Protection Act 2023 — 20-question self-assessment checklist for businesses processing personal data in Nigeria. Get your compliance score instantly.</p>
+    <div class="leg-badges" style="margin-top:1rem">
+      <span class="leg-badge">NDPA 2023</span>
+      <span class="leg-badge">Free Tool</span>
+      <span class="leg-badge">20 Questions</span>
+      <span class="leg-badge">Instant Score</span>
+    </div>
+  </div>
+</div>
+
+<div class="leg-main">
+
+  <!-- Law Overview Card -->
+  <div class="law-overview">
+    <h3>📋 About the Nigeria Data Protection Act 2023</h3>
+    <div class="law-facts">
+      <div class="law-fact"><div class="law-fact-label">Law Enacted</div><div class="law-fact-val">2023</div></div>
+      <div class="law-fact"><div class="law-fact-label">Regulator</div><div class="law-fact-val">NDPC</div></div>
+      <div class="law-fact"><div class="law-fact-label">Max Penalty</div><div class="law-fact-val">₦10M or 2%</div></div>
+      <div class="law-fact"><div class="law-fact-label">Breach Notice</div><div class="law-fact-val">72 hours</div></div>
+      <div class="law-fact"><div class="law-fact-label">Applies To</div><div class="law-fact-val">All processors in NG</div></div>
+      <div class="law-fact"><div class="law-fact-label">DPO Required</div><div class="law-fact-val">Major controllers</div></div>
+    </div>
+  </div>
+
+  <!-- Live Score Bar -->
+  <div class="live-score" id="liveScoreBar">
+    <div>
+      <div class="live-score-num" id="liveScoreNum">0/20</div>
+      <div class="live-score-label">questions answered yes</div>
+    </div>
+    <div style="flex:1">
+      <div class="score-bar-wrap" style="margin:0">
+        <div class="score-bar low" id="liveBarFill" style="width:0%"></div>
+      </div>
+    </div>
+    <div id="liveScorePct" style="font-size:1rem;font-weight:700;color:#7c3aed">0%</div>
+  </div>
+
+  <!-- Checklist -->
+  <div class="leg-card" style="margin-top:1.25rem">
+    <div class="leg-card-head" aria-expanded="true" onclick="toggleCard(this)">
+      <span style="font-size:1.2rem">✅</span>
+      <h2>NDPA 2023 Compliance Checklist</h2>
+      <span class="leg-card-toggle">▾</span>
+    </div>
+    <div class="leg-card-body" id="checklistBody">
+      <p style="font-size:.85rem;color:#6b7280;margin-bottom:1rem">Click each item to mark as <strong>Yes, we comply</strong>. Your score updates in real time.</p>
+      <div id="checklistItems"></div>
+      <button type="button" class="leg-calc-btn" onclick="showResults()" style="margin-top:1.5rem">Calculate My Compliance Score →</button>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div class="leg-results" id="resultsSection">
+    <div class="leg-card">
+      <div class="leg-card-head" aria-expanded="true" onclick="toggleCard(this)">
+        <span style="font-size:1.2rem">📊</span>
+        <h2>Your Compliance Score</h2>
+        <span class="leg-card-toggle">▾</span>
+      </div>
+      <div class="leg-card-body">
+        <div style="text-align:center;padding:1.5rem 1rem">
+          <div id="scoreCircle" class="leg-score-circle" style="margin:0 auto 1rem">
+            <span id="scoreCircleNum">0%</span>
+          </div>
+          <div id="scoreLevelBadge" style="font-size:1rem;font-weight:700;margin-bottom:.5rem"></div>
+          <p id="scoreMsg" style="font-size:.88rem;color:#6b7280;max-width:400px;margin:0 auto"></p>
+        </div>
+        <div id="scoreBarSection" style="margin:1.5rem 0">
+          <div style="display:flex;justify-content:space-between;font-size:.78rem;color:#6b7280;margin-bottom:.35rem">
+            <span>Compliance Score</span>
+            <span id="scoreBarPct">0%</span>
+          </div>
+          <div class="score-bar-wrap">
+            <div class="score-bar low" id="scoreBarFill" style="width:0%"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.72rem;color:#9ca3af;margin-top:.3rem">
+            <span>0%</span><span style="color:#dc2626">50% (Low)</span><span style="color:#d97706">80% (Medium)</span><span style="color:#16a34a">100% (High)</span>
+          </div>
+        </div>
+        <div id="recoSection"></div>
+      </div>
+    </div>
+
+    <!-- Key Deadlines & Contacts -->
+    <div class="leg-card">
+      <div class="leg-card-head" aria-expanded="true" onclick="toggleCard(this)">
+        <span style="font-size:1.2rem">📅</span>
+        <h2>Key NDPA Deadlines &amp; Contacts</h2>
+        <span class="leg-card-toggle">▾</span>
+      </div>
+      <div class="leg-card-body">
+        <table class="leg-summary-table">
+          <thead><tr><th>Obligation</th><th>Deadline / Threshold</th></tr></thead>
+          <tbody>
+            <tr><td>Breach notification to NDPC</td><td>Within 72 hours of discovery</td></tr>
+            <tr><td>Data subject rights response</td><td>Acknowledge within 72 hours; resolve within reasonable time</td></tr>
+            <tr><td>Annual audit report filing (major controllers)</td><td>By 15 March each year</td></tr>
+            <tr><td>DPO appointment (major controllers)</td><td>Immediate obligation on designation</td></tr>
+            <tr><td>NDPC registration (major controllers)</td><td>Within 6 months of designation</td></tr>
+            <tr><td>DPIA for high-risk processing</td><td>Before commencement of processing</td></tr>
+          </tbody>
+        </table>
+        <div class="contact-grid" style="margin-top:1.25rem">
+          <div class="contact-item">
+            <div class="contact-label">Regulator</div>
+            <div class="contact-val">Nigeria Data Protection Commission (NDPC)</div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-label">Portal</div>
+            <div class="contact-val">ndpc.gov.ng</div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-label">Penalties</div>
+            <div class="contact-val">Up to ₦10,000,000 or 2% of annual gross revenue (whichever is higher)</div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-label">Criminal Sanction</div>
+            <div class="contact-val">Up to 3 years imprisonment for individuals</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEO Content -->
+  <!-- LEGAL-WORKFLOW-COPILOT:START -->
+<section class="leg-workflow-copilot" aria-labelledby="legal-workflow-heading">
+  <script type="application/json" class="leg-workflow-data">{"slug":"ndpa-checker","title":"Ndpa Checker","workflowTitle":"NDPA control audit","coverage":"Nigeria","decision":"Whether the business is likely to be a data controller or processor of major importance","evidence":["Keep a register of processing activities before answering the checklist","Attach evidence for each yes answer, such as policy, log, contract or training record","Prioritise breach response, processor contracts and privacy notice fixes first"],"redFlags":["Marking yes because a policy exists but staff cannot execute it","Using consent as the lawful basis for every processing activity","Sending data abroad without a transfer basis and processor contract"],"related":[{"label":"Privacy Policy Generator","href":"/tools/privacy-policy-gen/"},{"label":"DPA Generator","href":"/tools/dpa-generator/"},{"label":"DPIA Tool","href":"/tools/dpia-tool/"}],"competitor":{"group":"privacy","label":"Termly, OneTrust and enterprise consent platforms","patterns":["Mature privacy tools scan or map real processing activity, then connect policies, cookie choices, DSARs, consent logs and regulator evidence.","They preserve an audit trail instead of leaving users with a static policy that drifts away from the product.","They route high-risk processing into DPIA, breach and processor-contract workflows before launch or vendor onboarding."],"implemented":["This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.","The app-specific checklist is not generic: it starts with \"Keep a register of processing activities before answering the checklist\".","Saved workflows can be resumed from the dashboard and handed off to Privacy Policy Generator when the matter naturally continues.","The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report."]}}</script>
+  <div class="leg-workflow-head">
+    <span class="leg-action-kicker">Case workspace</span>
+    <h2 id="legal-workflow-heading">Build, save and export this legal workflow</h2>
+    <p>This workspace turns the ndpa control audit result into a reusable matter note, dashboard item and gated PDF checklist. Use the app first, then save the evidence trail.</p>
+  </div>
+  <div class="leg-workflow-grid">
+    <label class="leg-field"><span class="leg-f-label">Matter or project</span><input aria-label="E.g. Supplier DPA review" class="leg-f-input" data-workflow-field="matter" type="text" placeholder="e.g. Supplier DPA review"></label>
+    <label class="leg-field"><span class="leg-f-label">Country or regime</span><input aria-label="E.g. Kenya, NDPA, Lagos" class="leg-f-input" data-workflow-field="country" type="text" placeholder="e.g. Kenya, NDPA, Lagos"></label>
+    <label class="leg-field"><span class="leg-f-label">Target date</span><input aria-label="Leg f input" class="leg-f-input" data-workflow-field="date" type="date"></label>
+    <label class="leg-field"><span class="leg-f-label">Status</span><select class="leg-f-select" data-workflow-field="status"><option>Checking evidence</option><option>Ready to verify</option><option>Waiting on official source</option><option>Escalate before action</option></select></label>
+  </div>
+  <div class="leg-workflow-columns">
+    <div>
+      <h3 class="leg-mini-heading">Evidence checked</h3>
+      <div class="leg-workflow-checklist" data-workflow-evidence-list></div>
+    </div>
+    <div>
+      <h3 class="leg-mini-heading">Risk flags</h3>
+      <div class="leg-workflow-checklist warning" data-workflow-risk-list></div>
+    </div>
+  </div>
+  <label class="leg-field full"><span class="leg-f-label">Private notes</span><textarea class="leg-f-textarea" data-workflow-field="note" placeholder="Add facts, missing documents, portal references, lawyer comments, or next actions."></textarea></label>
+  <div class="leg-workflow-summary" data-workflow-summary></div>
+  <div class="leg-workflow-actions">
+    <button type="button" class="leg-copy-btn" data-workflow-build>Build handoff note</button>
+    <button type="button" class="leg-secondary-btn" data-workflow-save>Save to dashboard</button>
+    <button type="button" class="leg-secondary-btn" data-workflow-load>Load saved</button>
+    <a class="leg-secondary-btn" href="/dashboard/">Open dashboard</a>
+  </div>
+  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly aria-label="Text entry"></textarea>
+  <form class="leg-pdf-gate" data-workflow-gate novalidate>
+    <div>
+      <span class="leg-action-kicker">PDF gate</span>
+      <h3>Email the checklist and unlock print/PDF</h3>
+      <p>The core tool stays free. The deeper PDF pack captures email only when the user wants a portable report, checklist and dashboard reminder.</p>
+    </div>
+    <label class="leg-field"><span class="leg-f-label">Email</span><input aria-label="You@example.com" class="leg-f-input" data-workflow-field="email" data-workflow-email type="email" autocomplete="email" placeholder="you@example.com"></label>
+    <label class="leg-workflow-optin"><input type="checkbox" data-workflow-optin checked><span>Send me occasional AfroTools legal checklist updates.</span></label>
+    <div class="leg-workflow-actions compact">
+      <button type="submit" class="leg-copy-btn" data-workflow-pdf-gate>Email checklist + unlock PDF</button>
+      <button type="button" class="leg-secondary-btn" data-workflow-print>Print or save PDF</button>
+      <button type="button" class="leg-secondary-btn" data-workflow-copy>Copy handoff note</button>
+    </div>
+    <div class="leg-gate-status" data-workflow-gate-status></div>
+  </form>
+  <div class="leg-workflow-next">
+    <span>Continue workflow</span>
+    <div><a href="/tools/privacy-policy-gen/">Privacy Policy Generator</a><a href="/tools/dpa-generator/">DPA Generator</a><a href="/tools/dpia-tool/">DPIA Tool</a></div>
+  </div>
+</section>
+<!-- LEGAL-WORKFLOW-COPILOT:END -->
+<!-- LEGAL-COMPETITOR-CHECK:START -->
+<section class="leg-competitor" aria-labelledby="legal-competitor-heading">
+  <div class="leg-action-kicker">Competitor check - 28 April 2026</div>
+  <div class="leg-competitor-head">
+    <h2 id="legal-competitor-heading">What stronger tools teach this app</h2>
+    <p>Benchmarked against Termly, OneTrust and enterprise consent platforms. The goal is not to copy them; it is to bring the useful workflow pattern into an Africa-first tool with official-source caution and local evidence capture.</p>
+  </div>
+  <div class="leg-competitor-grid">
+    <div>
+      <h3>Observed feature pattern</h3>
+      <ul><li>Mature privacy tools scan or map real processing activity, then connect policies, cookie choices, DSARs, consent logs and regulator evidence.</li><li>They preserve an audit trail instead of leaving users with a static policy that drifts away from the product.</li><li>They route high-risk processing into DPIA, breach and processor-contract workflows before launch or vendor onboarding.</li></ul>
+    </div>
+    <div>
+      <h3>Implemented on this app</h3>
+      <ul><li>This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.</li><li>The app-specific checklist is not generic: it starts with &quot;Keep a register of processing activities before answering the checklist&quot;.</li><li>Saved workflows can be resumed from the dashboard and handed off to Privacy Policy Generator when the matter naturally continues.</li><li>The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report.</li></ul>
+    </div>
+    <div>
+      <h3>Best next move</h3>
+      <ul><li>Whether the business is likely to be a data controller or processor of major importance</li><li>Keep a register of processing activities before answering the checklist</li><li>Marking yes because a policy exists but staff cannot execute it</li></ul>
+    </div>
+  </div>
+</section>
+<!-- LEGAL-COMPETITOR-CHECK:END -->
+<!-- LEGAL-DEEP-IMPROVEMENT:START -->
+<section class="leg-upgrade" aria-labelledby="legal-upgrade-heading">
+  <div class="leg-upgrade-kicker">Reviewed 28 April 2026 · Nigeria</div>
+  <h2 id="legal-upgrade-heading">NDPA control audit</h2>
+  <p>The checker is most useful when the score becomes a remediation list: lawful basis, privacy notice, data-subject rights, processor contracts, breach response, DPIA, registration and audit evidence.</p>
+  <div class="leg-upgrade-grid">
+    <div class="leg-upgrade-block">
+      <h3>Decisions this clarifies</h3>
+      <ul><li>Whether the business is likely to be a data controller or processor of major importance</li><li>Which controls must be documented before a regulator, partner, or enterprise customer asks</li><li>Which gaps create immediate breach, audit, or cross-border-transfer risk</li></ul>
+    </div>
+    <div class="leg-upgrade-block">
+      <h3>Before you rely on it</h3>
+      <ul><li>Keep a register of processing activities before answering the checklist</li><li>Attach evidence for each yes answer, such as policy, log, contract or training record</li><li>Prioritise breach response, processor contracts and privacy notice fixes first</li></ul>
+    </div>
+    <div class="leg-upgrade-block warning">
+      <h3>Red flags</h3>
+      <ul><li>Marking yes because a policy exists but staff cannot execute it</li><li>Using consent as the lawful basis for every processing activity</li><li>Sending data abroad without a transfer basis and processor contract</li></ul>
+    </div>
+  </div>
+  <div class="leg-source-row">
+    <div>
+      <span>Primary checks</span>
+      <div class="leg-source-links"><a href="https://www.ndpc.gov.ng/ndp-act-2023/" target="_blank" rel="noopener">Nigeria Data Protection Commission</a><a href="https://www.ndpc.gov.ng/" target="_blank" rel="noopener">NDPC services</a></div>
+    </div>
+    <div>
+      <span>Next best tools</span>
+      <div class="leg-source-links internal"><a href="/tools/privacy-policy-gen/">Privacy Policy Generator</a><a href="/tools/dpa-generator/">DPA Generator</a><a href="/tools/dpia-tool/">DPIA Tool</a></div>
+    </div>
+  </div>
+</section>
+<!-- LEGAL-DEEP-IMPROVEMENT:END -->
+<!-- LEGAL-ACTION-PACK:START -->
+<section class="leg-action-pack" aria-labelledby="legal-action-pack-heading">
+  <div class="leg-action-head">
+    <span class="leg-action-kicker">Review pack</span>
+    <h2 id="legal-action-pack-heading">Save the ndpa control audit trail</h2>
+    <p>Before filing, signing, publishing, or sending anything, keep a short record that links the app result to evidence and official-source checks.</p>
+  </div>
+  <div class="leg-action-grid">
+    <div>
+      <h3>Capture</h3>
+      <p>Save the country or regime, parties, dates, amounts, selected options, and final output. Add why this matters: Whether the business is likely to be a data controller or processor of major importance.</p>
+    </div>
+    <div>
+      <h3>Attach</h3>
+      <p>Keep a register of processing activities before answering the checklist. Also keep the strongest supporting document, receipt, portal reference, ID, contract, policy, or court file beside the generated result.</p>
+    </div>
+    <div>
+      <h3>Escalate</h3>
+      <p>If you see this risk, pause and get qualified help: Marking yes because a policy exists but staff cannot execute it.</p>
+    </div>
+  </div>
+  <label class="leg-action-copy-label">Copyable review note</label>
+  <textarea class="leg-action-copy-text" readonly aria-label="Text entry">NDPA control audit action pack
+Tool: ndpa-checker
+Coverage: Nigeria
+
+Result to save:
+- Country or regime selected, parties involved, dates, amounts, and the generated output from the app.
+- The reason this output was prepared: Whether the business is likely to be a data controller or processor of major importance.
+
+Evidence to attach:
+- Keep a register of processing activities before answering the checklist
+- Attach evidence for each yes answer, such as policy, log, contract or training record
+- Prioritise breach response, processor contracts and privacy notice fixes first
+
+Escalate before filing or signing if:
+- Marking yes because a policy exists but staff cannot execute it
+- Using consent as the lawful basis for every processing activity
+- Sending data abroad without a transfer basis and processor contract
+
+Primary checks:
+- Nigeria Data Protection Commission: https://www.ndpc.gov.ng/ndp-act-2023/
+- NDPC services: https://www.ndpc.gov.ng/
+
+Reviewed by AfroTools workflow on 28 April 2026. Informational only, not legal advice.</textarea>
+  <div class="leg-action-copy-row">
+    <button type="button" class="leg-action-copy-btn" data-legal-copy-action>Copy review pack</button>
+    <span>Paste this into your matter file, compliance folder, board pack, or lawyer handoff.</span>
+  </div>
+</section>
+<!-- LEGAL-ACTION-PACK:END -->
+<div class="leg-seo">
+    <h2>Understanding NDPA 2023 Compliance in Nigeria</h2>
+    <p>The Nigeria Data Protection Act 2023 (NDPA) is Nigeria's comprehensive data protection legislation, replacing the earlier Nigeria Data Protection Regulation (NDPR) 2019. It establishes the Nigeria Data Protection Commission (NDPC) as the primary regulatory authority and introduces significantly stronger enforcement powers.</p>
+    <p>All organisations that process personal data of Nigerian residents must comply with the NDPA, regardless of whether the organisation is based in Nigeria or abroad. The Act applies to any processing of personal data where the data subject is in Nigeria or the processing relates to activities targeting Nigerian residents.</p>
+    <ul>
+      <li><strong>Major data controllers</strong> are organisations that process personal data of more than 2,000 data subjects within a 6-month period, or process sensitive personal data of more than 400 data subjects within the same period.</li>
+      <li><strong>Sensitive personal data</strong> under the NDPA includes health data, biometric data, religious beliefs, political opinions, trade union membership, and sexual orientation.</li>
+      <li><strong>Data Protection Officers (DPOs)</strong> must be appointed by major data controllers and must be suitably qualified. The DPO must be registered with the NDPC.</li>
+      <li><strong>Data Protection Impact Assessments (DPIAs)</strong> are required before commencing any processing that is likely to result in a high risk to data subjects' rights and freedoms.</li>
+    </ul>
+    <p>Non-compliance with the NDPA can result in administrative fines of up to ₦10,000,000 or 2% of annual gross revenue (whichever is higher), as well as criminal sanctions for individuals involved in serious breaches.</p>
+  </div>
+
+  <div class="leg-disclaimer">
+    <strong>Disclaimer</strong>
+    This tool provides general information and educational resources only. Not legal advice. Results are indicative only and should not be relied upon as a definitive legal assessment. Consult a qualified data protection lawyer for specific legal advice tailored to your organisation's circumstances.
+  </div>
+</div>
+
+
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+<afro-related-tools data-ssr="1" category="legal" current="ndpa-checker">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/business-registration/" data-related-tool data-id="business-registration" data-name="Business Registration Checklist" data-category="legal" data-icon="BR" data-desc="Step-by-step business registration checklist for 16 African countries. Documents, fees, timelines, regulatory bodies.">Business Registration Checklist</a></li><li><a href="/tools/nda-generator/" data-related-tool data-id="nda-generator" data-name="NDA Generator" data-category="legal" data-icon="NG" data-desc="Generate Non-Disclosure Agreements for African jurisdictions. Mutual and unilateral NDAs compliant with local contract l">NDA Generator</a></li><li><a href="/tools/rent-intelligence/" data-related-tool data-id="rent-intelligence" data-name="Rent Intelligence" data-category="legal" data-icon="RI" data-desc="Track rent asks, lease terms, deposits, and vacancy signals by neighborhood with moderated contributor data.">Rent Intelligence</a></li><li><a href="/tools/company-type-selector/" data-related-tool data-id="company-type-selector" data-name="Company Type Selector" data-category="legal" data-icon="CT" data-desc="Choose the right business structure for Africa — Sole Trader, LLC, PLC, Partnership. Tax, liability, compliance comparis">Company Type Selector</a></li><li><a href="/tools/land-title-check/" data-related-tool data-id="land-title-check" data-name="Land Title Verification Checklist" data-category="legal" data-icon="LT" data-desc="Verify land titles before buying property in Africa. Country-specific checklists for Nigeria (C of O), Kenya (Title Deed">Land Title Verification Checklist</a></li><li><a href="/tools/lease-risk-check/" data-related-tool data-id="lease-risk-check" data-name="Lease Risk Check" data-category="legal" data-icon="LR" data-desc="Nigeria-first lease scam and risky listing checker powered by contributor reports and reviewer approval.">Lease Risk Check</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<script defer src="/assets/js/components/navbar.min.js?v=ecde82fa"></script>
+<script defer src="/assets/js/components/footer.min.js?v=dfb30911"></script>
+<script src="/data/legal/country-legal-index.js?v=02e28276"></script>
+<script src="/engines/legal-engine.js?v=cade292f"></script>
+<script>
+var QUESTIONS = [
+  {q:"Do you have a documented lawful basis for each personal data processing activity?", ref:"NDPA s.25 — Lawful basis"},
+  {q:"Have you published a compliant privacy policy that is accessible to all data subjects?", ref:"NDPA s.34 — Transparency obligation"},
+  {q:"Do you collect only data that is necessary for the stated purpose (data minimisation)?", ref:"NDPA s.24(c) — Minimisation principle"},
+  {q:"Do you have mechanisms for data subjects to exercise their rights (access, erasure, portability, objection)?", ref:"NDPA ss.35–42 — Data subject rights"},
+  {q:"Do you have a documented process for responding to data subject requests within the prescribed timeframes?", ref:"NDPA s.43 — Rights response obligation"},
+  {q:"Have you conducted a Data Protection Impact Assessment (DPIA) for all high-risk processing activities?", ref:"NDPA s.44 — DPIA requirement"},
+  {q:"Have you appointed a Data Protection Officer (DPO) if you are classified as a major data controller?", ref:"NDPA s.48 — DPO requirement"},
+  {q:"Have you filed your annual data protection audit/report with the NDPC (if a major data controller)?", ref:"NDPA s.63 — Annual audit obligation"},
+  {q:"Do you have a documented data breach response plan with clearly assigned responsibilities?", ref:"NDPA s.40 — Security obligation"},
+  {q:"Can you notify the NDPC within 72 hours of discovering a personal data breach?", ref:"NDPA s.40(3) — Breach notification timeline"},
+  {q:"Do you have written Data Processing Agreements (DPAs) in place with all third-party processors?", ref:"NDPA s.36 — Controller-processor contracts"},
+  {q:"If you transfer data outside Nigeria, do you have adequate transfer safeguards in place?", ref:"NDPA ss.45–47 — Cross-border transfers"},
+  {q:"Do you obtain explicit consent when processing sensitive categories of personal data?", ref:"NDPA s.30 — Sensitive data processing"},
+  {q:"Do you maintain a retention schedule and delete or anonymise data when it is no longer needed?", ref:"NDPA s.24(e) — Storage limitation"},
+  {q:"Are all staff who handle personal data trained on their data protection obligations?", ref:"NDPA s.48(2) — Staff training"},
+  {q:"Do you maintain a Record of Processing Activities (ROPA) documenting all processing operations?", ref:"NDPA s.63 — ROPA requirement"},
+  {q:"Is your website/app cookie usage compliant, with user consent obtained before non-essential cookies are set?", ref:"NDPA s.34 — Cookie consent"},
+  {q:"Do you have technical and organisational security measures appropriate to the risk (e.g. encryption, access controls)?", ref:"NDPA s.40 — Security measures"},
+  {q:"Have you registered with the NDPC if you are designated as a major data controller?", ref:"NDPA s.63 — NDPC registration"},
+  {q:"Do you have a mechanism for data subjects to lodge complaints with your organisation and with the NDPC?", ref:"NDPA s.43(4) — Complaint mechanism"}
+];
+
+var checked = {};
+
+function renderChecklist(){
+  var html = '';
+  QUESTIONS.forEach(function(item, i){
+    html += '<div class="leg-check-item" id="qi'+i+'" onclick="toggleCheck('+i+')">' +
+      '<div class="check-box" id="cb'+i+'">✓</div>' +
+      '<span class="check-num">'+(i+1)+'.</span>' +
+      '<div class="check-content"><div class="check-q">'+item.q+'</div><div class="check-ref">'+item.ref+'</div></div>' +
+      '</div>';
+  });
+  document.getElementById('checklistItems').innerHTML = html;
+}
+
+function toggleCheck(i){
+  checked[i] = !checked[i];
+  var el = document.getElementById('qi'+i);
+  var cb = document.getElementById('cb'+i);
+  if(checked[i]){
+    el.classList.add('checked');
+    cb.style.background = '#7c3aed';
+    cb.style.borderColor = '#7c3aed';
+    cb.style.color = '#fff';
+  } else {
+    el.classList.remove('checked');
+    cb.style.background = '';
+    cb.style.borderColor = '#d1d5db';
+    cb.style.color = '';
+  }
+  updateLiveScore();
+}
+
+function getScore(){
+  var yes = Object.values(checked).filter(Boolean).length;
+  return {yes: yes, pct: Math.round(yes/QUESTIONS.length*100)};
+}
+
+function updateLiveScore(){
+  var s = getScore();
+  document.getElementById('liveScoreNum').textContent = s.yes+'/'+QUESTIONS.length;
+  document.getElementById('liveScorePct').textContent = s.pct+'%';
+  var bar = document.getElementById('liveBarFill');
+  bar.style.width = s.pct+'%';
+  bar.className = 'score-bar '+(s.pct>=80?'high':s.pct>=50?'medium':'low');
+}
+
+function showResults(){
+  var s = getScore();
+  var level = s.pct>=80?'high':s.pct>=50?'medium':'low';
+  var levelLabels = {high:'High Compliance',medium:'Medium Compliance',low:'Low Compliance'};
+  var msgs = {
+    high:'Your organisation demonstrates strong NDPA compliance. Maintain your practices and ensure ongoing staff training and regular DPIA reviews.',
+    medium:'Your organisation has partial compliance. Address the gaps identified below before the NDPC undertakes enforcement action.',
+    low:'Significant compliance gaps exist. Immediate action is required. Consider engaging a qualified data protection consultant.'
+  };
+  var circle = document.getElementById('scoreCircle');
+  circle.className = 'leg-score-circle '+level;
+  document.getElementById('scoreCircleNum').textContent = s.pct+'%';
+  document.getElementById('scoreLevelBadge').innerHTML = '<span style="padding:4px 16px;border-radius:100px;background:'+(level==='high'?'#dcfce7':level==='medium'?'#fef9c3':'#fef2f2')+';color:'+(level==='high'?'#15803d':level==='medium'?'#92400e':'#991b1b')+'">'+levelLabels[level]+'</span>';
+  document.getElementById('scoreMsg').textContent = msgs[level];
+  var barFill = document.getElementById('scoreBarFill');
+  barFill.style.width = s.pct+'%';
+  barFill.className = 'score-bar '+level;
+  document.getElementById('scoreBarPct').textContent = s.pct+'%';
+
+  // Build recommendations
+  var missing = [];
+  QUESTIONS.forEach(function(item,i){ if(!checked[i]) missing.push({n:i+1,q:item.q,ref:item.ref}); });
+  var recoHtml = '';
+  if(missing.length === 0){
+    recoHtml = '<div class="leg-success">Congratulations — you answered yes to all 20 questions. Maintain your compliance programme with regular reviews and staff training.</div>';
+  } else {
+    recoHtml = '<div class="leg-warn" style="margin-bottom:1rem"><strong>Action Required:</strong> '+missing.length+' gap'+(missing.length>1?'s':'')+' identified. Address the following to improve your NDPA compliance:</div>';
+    recoHtml += '<div>';
+    missing.slice(0,10).forEach(function(m){
+      recoHtml += '<div class="reco-item"><span class="reco-num">Q'+m.n+'</span><div><div style="font-weight:600;font-size:.84rem;color:#1a1a2e">'+m.q+'</div><div style="font-size:.72rem;color:#7c3aed;margin-top:2px">'+m.ref+'</div></div></div>';
+    });
+    if(missing.length>10) recoHtml += '<div style="text-align:center;font-size:.82rem;color:#6b7280;padding:.75rem">... and '+(missing.length-10)+' more gaps</div>';
+    recoHtml += '</div>';
+  }
+  document.getElementById('recoSection').innerHTML = recoHtml;
+
+  var results = document.getElementById('resultsSection');
+  results.classList.add('on');
+  results.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function toggleCard(head){
+  var body = head.nextElementSibling;
+  var expanded = head.getAttribute('aria-expanded') === 'true';
+  head.setAttribute('aria-expanded', !expanded);
+  body.classList.toggle('collapsed', expanded);
+}
+
+renderChecklist();
+</script>
+<script id="legal-action-copy-script">
+(function(){
+  document.addEventListener('click', function(event) {
+    var button = event.target.closest('[data-legal-copy-action]');
+    if (!button) return;
+    var section = button.closest('.leg-action-pack');
+    var area = section && section.querySelector('.leg-action-copy-text');
+    if (!area) return;
+    var original = button.textContent;
+    var done = function(){ button.textContent = "Copied"; setTimeout(function(){ button.textContent = original; }, 1800); };
+    var fallback = function(){ area.focus(); area.select(); try { document.execCommand("copy"); done(); } catch (err) { button.textContent = "Select text manually"; } };
+    if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(area.value).then(done).catch(fallback); } else { fallback(); }
+  });
+}());
+</script>
+<script src="/assets/js/legal-workflow-copilot.js?v=20da8404" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

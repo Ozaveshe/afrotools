@@ -1,0 +1,100 @@
+!function() {
+  "use strict";
+  window.AfroTools = window.AfroTools || {};
+  var e = null, n = [ {
+    key: "retail",
+    name: "Retail / Trading",
+    icon: "🛒"
+  }, {
+    key: "food",
+    name: "Food & Beverage",
+    icon: "🍔"
+  }, {
+    key: "construction",
+    name: "Construction",
+    icon: "🏗️"
+  }, {
+    key: "healthcare",
+    name: "Healthcare / Pharmacy",
+    icon: "🏥"
+  }, {
+    key: "financial",
+    name: "Financial Services",
+    icon: "🏦"
+  }, {
+    key: "education",
+    name: "Education",
+    icon: "🎓"
+  }, {
+    key: "manufacturing",
+    name: "Manufacturing",
+    icon: "🏭"
+  }, {
+    key: "transport",
+    name: "Transport / Logistics",
+    icon: "🚚"
+  }, {
+    key: "technology",
+    name: "Technology / Telecom",
+    icon: "💻"
+  }, {
+    key: "mining",
+    name: "Mining & Extractives",
+    icon: "⛏️"
+  }, {
+    key: "agriculture",
+    name: "Agriculture",
+    icon: "🌾"
+  }, {
+    key: "hotel",
+    name: "Hotel / Hospitality",
+    icon: "🏨"
+  } ];
+  window.AfroTools.BusinessLicenseEngine = {
+    getIndustries: function() {
+      return n;
+    },
+    getLicenses: function(n, r) {
+      var t = (e || (e = window.AfroTools.businessLicenseData), e);
+      return t && t.licenses[n] && t.licenses[n][r] || [];
+    },
+    renderIndustryTabs: function(e) {
+      for (var r = '<div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem">', t = 0; t < n.length; t++) {
+        var i = n[t];
+        r += '<button class="lic-tab' + (0 === t ? " active" : "") + '" data-industry="' + i.key + '" style="padding:.6rem 1rem;min-height:44px;border-radius:8px;border:1px solid #9ca3af;background:' + (0 === t ? "var(--leg,#7c3aed)" : "#fff") + ";color:" + (0 === t ? "#fff" : "#374151") + ';font-size:.82rem;font-weight:600;cursor:pointer;transition:background .2s,color .2s">' + i.icon + " " + i.name + "</button>";
+      }
+      return r + "</div>";
+    },
+    renderLicenseCards: function(e, n) {
+      var r = this.getLicenses(e, n);
+      if (!r.length) {
+        return '<p style="color:#94a3b8;text-align:center;padding:2rem">No specific license data available for this industry in this country. Contact local authorities for requirements.</p>';
+      }
+      for (var t = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem">', i = 0; i < r.length; i++) {
+        var a = r[i], o = a.mandatory ? "#dc2626" : "#d97706", s = a.mandatory ? "#fee2e2" : "#fef3c7", c = a.mandatory ? "MANDATORY" : "CONDITIONAL";
+        t += '<div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.25rem;box-shadow:0 1px 3px rgba(0,0,0,.05)">',
+        t += '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.75rem"><strong style="font-size:.95rem;color:#1e293b">' + a.name + '</strong><span style="padding:.2rem .5rem;border-radius:4px;font-size:.65rem;font-weight:700;background:' + s + ";color:" + o + '">' + c + "</span></div>",
+        t += '<div style="font-size:.82rem;color:#64748b;margin-bottom:.5rem">' + a.auth + "</div>",
+        t += '<div style="display:flex;gap:1rem;font-size:.8rem;color:#475569;flex-wrap:wrap">',
+        a.cost && (t += "<span><strong>Cost:</strong> " + a.cost + "</span>"), a.renewal && (t += "<span><strong>Renewal:</strong> " + a.renewal + "</span>"),
+        a.processingTime && (t += "<span><strong>Time:</strong> " + a.processingTime + "</span>"),
+        t += "</div></div>";
+      }
+      return t + "</div>";
+    },
+    initPage: function(e) {
+      var n = this, r = document.getElementById("licTabs"), t = document.getElementById("licCards");
+      r && t && (r.innerHTML = n.renderIndustryTabs(e), t.innerHTML = n.renderLicenseCards(e, "retail"),
+      r.addEventListener("click", function(i) {
+        var a = i.target.closest(".lic-tab");
+        if (a) {
+          for (var o = a.getAttribute("data-industry"), s = r.querySelectorAll(".lic-tab"), c = 0; c < s.length; c++) {
+            s[c].classList.remove("active"), s[c].style.background = "#fff", s[c].style.color = "#374151";
+          }
+          a.classList.add("active"), a.style.background = "var(--leg,#7c3aed)", a.style.color = "#fff",
+          t.innerHTML = n.renderLicenseCards(e, o);
+        }
+      }));
+    }
+  };
+}();

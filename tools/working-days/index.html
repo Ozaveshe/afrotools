@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Working Days Calculator — Business Days Between Dates</title>
+<meta name="description" content="Calculate the number of working (business) days between two dates. Excludes weekends and public holidays for Nigeria, Kenya, South Africa, and Ghana.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Working Days Calculator | AfroTools">
+<meta property="og:description" content="Count business days between dates. Excludes weekends and African public holidays.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/working-days.webp">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/working-days/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
+.tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;position:relative;overflow:hidden}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;position:relative}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:var(--afro-blue)}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+.tool-hero h1 em{color:var(--afro-blue);font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-blue{background:rgba(0,113,227,.18);color:var(--color-primary);border:1px solid rgba(0,113,227,.38)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:900px;margin:0 auto;padding:0 24px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+.field{margin-bottom:16px}
+.f-label{font-size:.75rem;font-weight:700;color:var(--afro-dark);margin-bottom:6px;display:block}
+.f-input,.f-select{width:100%;padding:11px 13px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;font-weight:600;color:var(--afro-dark);outline:none;font-family:'Inter',sans-serif}
+.f-input:focus,.f-select:focus{border-color:var(--afro-blue);box-shadow:0 0 0 3px rgba(0,113,227,.1)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.calc-btn{width:100%;padding:13px;background:linear-gradient(135deg,#0062CC,#0055D4);box-shadow:0 4px 14px rgba(0,98,204,.35);color:#fff;border:none;border-radius:8px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:'Inter',sans-serif}
+.calc-btn:hover{background:#0059B3;transform:translateY(-1px)}
+.result-display{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:12px;padding:28px;text-align:center;margin-top:18px}
+.result-big{font-size:3rem;font-weight:800;color:#38bdf8;line-height:1}
+.result-lbl{font-size:.72rem;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.result-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+.result-sub{padding:12px;background:rgba(255,255,255,.06);border-radius:8px;text-align:center}
+.result-sub-val{font-size:1.2rem;font-weight:800;color:#fff}
+.result-sub-lbl{font-size:.6rem;font-weight:600;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+.holiday-list{margin-top:14px;max-height:200px;overflow-y:auto}
+.hol-item{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;font-size:.78rem}
+.hol-name{color:#334155;font-weight:600}
+.hol-date{color:#64748b}
+@media(max-width:600px){.field-row{grid-template-columns:1fr}.result-row{grid-template-columns:1fr}}
+details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-details-marker{display:none}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Working Days Calculator",
+  "description": "Calculate working (business) days between two dates. Excludes weekends and African public holidays.",
+  "url": "https://afrotools.com/tools/working-days/",
+  "inLanguage": "en",
+  "applicationCategory": "WebApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/working-days.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Working Days Calculator",
+  "url": "https://afrotools.com/tools/working-days/",
+  "description": "Calculate working (business) days between two dates. Excludes weekends and African public holidays.",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/working-days.webp"
+}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How are working days counted?","acceptedAnswer":{"@type":"Answer","text":"Working days are Monday through Friday, excluding weekends (Saturday and Sunday) and public holidays for the selected country."}},{"@type":"Question","name":"Which countries' holidays are supported?","acceptedAnswer":{"@type":"Answer","text":"Nigeria, Kenya, South Africa, and Ghana. You can also choose weekends only without country-specific holidays."}},{"@type":"Question","name":"Are Islamic holidays included?","acceptedAnswer":{"@type":"Answer","text":"Major Islamic holidays like Eid al-Fitr and Eid al-Adha are included for Nigeria. Since these dates shift annually based on the lunar calendar, approximate dates are used."}},{"@type":"Question","name":"How do I use the Working Days Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your data in the fields above. The Working Days Calculator then gives you an organised, ready-to-use result you can use straight away."}},{"@type":"Question","name":"How accurate is the Working Days Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm the figures before you share them before you rely on it."}},{"@type":"Question","name":"Is the Working Days Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}}]}
+</script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Working Days Calculator | AfroTools">
+<meta name="twitter:description" content="Count business days between dates. Excludes weekends and African public holidays.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/working-days.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Working Days Calculator",
+      "item": "https://afrotools.com/tools/working-days/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/data-productivity-focus.css?v=b68786ac">
+<script src="/assets/js/pages/data-productivity-tool-focus.js?v=539704c2" defer></script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/working-days/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/working-days/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/jours-ouvrables/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/siku-za-kazi/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/working-days/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="tools"></afro-navbar>
+<div class="tool-hero"><div class="tool-hero-inner">
+  <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/tools/">Tools</a> / <span>Working Days</span></div>
+  <h1>Working Days <em>Calculator</em></h1>
+  <p class="hero-sub">Count the number of business days between two dates. Automatically excludes weekends and public holidays for 6 African countries.</p>
+  <div class="hero-badges"><span class="badge b-blue">6 Countries</span><span class="badge b-blue">Public Holidays</span><span class="badge b-blue">Instant</span></div>
+</div></div>
+
+<div class="tool-main"><div class="tool-main-inner">
+  <div class="card">
+    <div class="card-head"><span class="card-title">Calculate Working Days</span></div>
+    <div class="card-body">
+      <div class="field-row">
+        <div class="field"><label class="f-label">Start Date</label><input aria-label="StartDate" type="date" class="f-input" id="startDate"></div>
+        <div class="field"><label class="f-label">End Date</label><input aria-label="EndDate" type="date" class="f-input" id="endDate"></div>
+      </div>
+      <div class="field">
+        <label class="f-label">Country (for public holidays)</label>
+        <select class="f-select" id="country" aria-label="Country">
+          <option value="ng">Nigeria</option>
+          <option value="ke">Kenya</option>
+          <option value="za">South Africa</option>
+          <option value="gh">Ghana</option>
+          <option value="ug">Uganda</option>
+          <option value="tz">Tanzania</option>
+          <option value="none">No holidays (weekends only)</option>
+        </select>
+      </div>
+      <button type="button" class="calc-btn" onclick="calculate()">Calculate</button>
+
+      <div class="result-display" id="results" style="display:none">
+        <div class="result-lbl">Working Days</div>
+        <div class="result-big" id="workDays">0</div>
+        <div class="result-row">
+          <div class="result-sub"><div class="result-sub-lbl">Calendar Days</div><div class="result-sub-val" id="calDays">0</div></div>
+          <div class="result-sub"><div class="result-sub-lbl">Weekend Days</div><div class="result-sub-val" id="weekendDays">0</div></div>
+          <div class="result-sub"><div class="result-sub-lbl">Public Holidays</div><div class="result-sub-val" id="holDays">0</div></div>
+        </div>
+      </div>
+
+      <div class="holiday-list" id="holList"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">About This Tool</span></div>
+    <div class="card-body">
+      <h2 style="font-size:1.1rem;font-weight:800;color:#111;margin-bottom:12px">How the Working Days Calculator Works</h2>
+      <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
+        This tool counts every day between your start and end dates, then subtracts <strong>weekends</strong> (Saturdays and Sundays) and <strong>public holidays</strong> for the selected country. The result is the number of actual working (business) days.
+      </p>
+      <h3 style="font-size:.95rem;font-weight:700;color:#111;margin-bottom:8px">Common Uses</h3>
+      <ul style="font-size:.85rem;color:#475569;line-height:1.8;padding-left:20px;margin-bottom:12px">
+        <li><strong>Project planning:</strong> Calculate delivery timelines in business days</li>
+        <li><strong>Leave calculations:</strong> Determine how many annual leave days you need</li>
+        <li><strong>Payment terms:</strong> Count "net 30 business days" for invoices</li>
+        <li><strong>Legal deadlines:</strong> Courts and regulators often count business days</li>
+      </ul>
+      <h3 style="font-size:.95rem;font-weight:700;color:#111;margin-bottom:8px">African Working Week</h3>
+      <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
+        Most African countries follow a Monday-Friday working week, though some <strong>North African countries</strong> observe a Sunday-Thursday week. Nigeria, Kenya, South Africa, and Ghana all use Monday-Friday. According to the <a href="https://www.ilo.org/" target="_blank" rel="noopener" style="color:var(--afro-blue)">International Labour Organization</a>, the standard working week is 40-48 hours across most of Africa.
+      </p>
+      <p style="font-size:.85rem;color:#475569;line-height:1.7">
+        For related tools, check our <a href="/tools/age-calculator/" style="color:var(--afro-blue)">Age Calculator</a> and <a href="/tools/countdown-timer/" style="color:var(--afro-blue)">Countdown Timer</a>.
+      </p>
+    </div>
+  </div>
+
+
+<section style="max-width:900px;margin:32px auto;padding:0 20px;">
+  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
+    <p>The Working Days Calculator counts business days between two dates, excluding weekends and public holidays for African countries including Nigeria, Kenya, South Africa, and Ghana. Enter your start and end dates, select your country, and the tool shows the exact number of working days along with a calendar view highlighting excluded days. It is essential for calculating project timelines, employee leave balances, contract durations, and payment terms that reference business days. HR managers, project planners, payroll administrators, and anyone who needs accurate business day counts for African markets will find this tool saves time and prevents scheduling errors.</p>
+  </div>
+</section>
+    <h2 style="font-size:1.15rem;font-weight:800;color:#111;margin-bottom:14px">Frequently Asked Questions</h2>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">How are working days counted?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Working days are Monday through Friday, excluding weekends (Saturday and Sunday) and public holidays for the selected country.</div></details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Which countries' holidays are supported?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Nigeria, Kenya, South Africa, and Ghana. You can also choose weekends only without country-specific holidays.</div></details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Are Islamic holidays included?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Major Islamic holidays like Eid al-Fitr and Eid al-Adha are included for Nigeria. Since these dates shift annually based on the lunar calendar, approximate dates are used.</div></details>
+  </section>
+</div></div>
+
+<afro-footer></afro-footer>
+
+<script>
+/* Easter calculation (Anonymous Gregorian algorithm) */
+function easterDate(year){
+  var a=year%19,b=Math.floor(year/100),c=year%100;
+  var d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25);
+  var g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30;
+  var i=Math.floor(c/4),k=c%4;
+  var l=(32+2*e+2*i-h-k)%7;
+  var m=Math.floor((a+11*h+22*l)/451);
+  var month=Math.floor((h+l-7*m+114)/31);
+  var day=((h+l-7*m+114)%31)+1;
+  return new Date(year,month-1,day);
+}
+
+function addDays(d,n){var r=new Date(d);r.setDate(r.getDate()+n);return r;}
+
+/* Approximate Islamic dates */
+function islamicDates(year){
+  var base={eidFitr:[2025,2,30],eidAdha:[2025,5,6],mawlid:[2025,8,5]};
+  var diff=year-2025;
+  function shift(b){
+    var d=new Date(b[0],b[1],b[2]);
+    d.setDate(d.getDate()-Math.round(diff*10.63));
+    while(d.getFullYear()<year)d.setDate(d.getDate()+354);
+    while(d.getFullYear()>year)d.setDate(d.getDate()-354);
+    return d;
+  }
+  return{eidFitr:shift(base.eidFitr),eidAdha:shift(base.eidAdha),mawlid:shift(base.mawlid)};
+}
+
+function getHolidayDates(country,year){
+  var easter=easterDate(year);
+  var goodFri=addDays(easter,-2);
+  var easterMon=addDays(easter,1);
+  var isl=islamicDates(year);
+  var hols=[];
+  function add(d,n){hols.push({date:new Date(d),name:n});}
+  function fixed(m,d,n){add(new Date(year,m-1,d),n);}
+
+  if(country==='ng'){
+    fixed(1,1,"New Year's Day");
+    add(isl.eidFitr,'Eid al-Fitr (est.)');add(addDays(isl.eidFitr,1),'Eid al-Fitr Day 2');
+    add(goodFri,'Good Friday');add(easterMon,'Easter Monday');
+    fixed(5,1,"Workers' Day");
+    add(isl.eidAdha,'Eid al-Adha (est.)');add(addDays(isl.eidAdha,1),'Eid al-Adha Day 2');
+    fixed(6,12,'Democracy Day');add(isl.mawlid,'Mawlid (est.)');
+    fixed(10,1,'Independence Day');fixed(12,25,'Christmas Day');fixed(12,26,'Boxing Day');
+  } else if(country==='ke'){
+    fixed(1,1,"New Year's Day");add(isl.eidFitr,'Eid al-Fitr (est.)');
+    add(goodFri,'Good Friday');add(easterMon,'Easter Monday');
+    fixed(5,1,'Labour Day');fixed(6,1,'Madaraka Day');add(isl.eidAdha,'Eid al-Adha (est.)');
+    fixed(10,10,'Huduma Day');fixed(10,20,'Mashujaa Day');
+    fixed(12,12,'Jamhuri Day');fixed(12,25,'Christmas Day');fixed(12,26,'Boxing Day');
+  } else if(country==='za'){
+    fixed(1,1,"New Year's Day");fixed(3,21,'Human Rights Day');
+    add(goodFri,'Good Friday');add(easterMon,'Family Day');
+    fixed(4,27,'Freedom Day');fixed(5,1,"Workers' Day");fixed(6,16,'Youth Day');
+    fixed(8,9,"National Women's Day");fixed(9,24,'Heritage Day');
+    fixed(12,16,'Day of Reconciliation');fixed(12,25,'Christmas Day');fixed(12,26,'Day of Goodwill');
+  } else if(country==='gh'){
+    fixed(1,1,"New Year's Day");fixed(1,7,'Constitution Day');fixed(3,6,'Independence Day');
+    add(isl.eidFitr,'Eid al-Fitr (est.)');add(goodFri,'Good Friday');add(easterMon,'Easter Monday');
+    fixed(5,1,'May Day');fixed(5,25,'Africa Day');add(isl.eidAdha,'Eid al-Adha (est.)');
+    fixed(7,1,'Republic Day');fixed(8,4,"Founders' Day");fixed(9,21,'Kwame Nkrumah Day');
+    fixed(12,25,'Christmas Day');fixed(12,26,'Boxing Day');
+  } else if(country==='ug'){
+    fixed(1,1,"New Year's Day");fixed(1,26,'NRM Liberation Day');
+    fixed(3,8,"Women's Day");add(goodFri,'Good Friday');add(easterMon,'Easter Monday');
+    fixed(5,1,'Labour Day');fixed(6,3,"Martyrs' Day");fixed(6,9,'National Heroes Day');
+    add(isl.eidFitr,'Eid al-Fitr (est.)');add(isl.eidAdha,'Eid al-Adha (est.)');
+    fixed(10,9,'Independence Day');fixed(12,25,'Christmas Day');fixed(12,26,'Boxing Day');
+  } else if(country==='tz'){
+    fixed(1,1,"New Year's Day");fixed(1,12,'Zanzibar Revolution Day');
+    add(isl.eidFitr,'Eid al-Fitr (est.)');fixed(4,7,'Karume Day');
+    add(goodFri,'Good Friday');add(easterMon,'Easter Monday');
+    fixed(4,26,'Union Day');fixed(5,1,"Workers' Day");add(isl.eidAdha,'Eid al-Adha (est.)');
+    fixed(7,7,'Saba Saba Day');fixed(8,8,'Nane Nane Day');add(isl.mawlid,'Maulid (est.)');
+    fixed(12,9,'Independence Day');fixed(12,25,'Christmas Day');fixed(12,26,'Boxing Day');
+  }
+  return hols;
+}
+
+function isHoliday(date,holidays){
+  const t=date.getTime();
+  return holidays.some(h=>h.date.getTime()===t);
+}
+
+function calculate(){
+  const startStr=document.getElementById('startDate').value;
+  const endStr=document.getElementById('endDate').value;
+  const country=document.getElementById('country').value;
+  if(!startStr||!endStr){alert('Please select both dates');return;}
+
+  const start=new Date(startStr+'T00:00:00');
+  const end=new Date(endStr+'T00:00:00');
+  if(start>end){alert('Start date must be before end date');return;}
+
+  // Get holidays for all years in range
+  const holidays=[];
+  for(let y=start.getFullYear();y<=end.getFullYear();y++){
+    holidays.push(...getHolidayDates(country,y));
+  }
+
+  let calDays=0,weekendDays=0,holDays=0,workDays=0;
+  const matchedHols=[];
+  const d=new Date(start);
+
+  while(d<=end){
+    calDays++;
+    const dow=d.getDay();
+    if(dow===0||dow===6){
+      weekendDays++;
+    } else if(isHoliday(d,holidays)){
+      holDays++;
+      const hol=holidays.find(h=>h.date.getTime()===d.getTime());
+      if(hol) matchedHols.push({date:new Date(d),name:hol.name});
+    } else {
+      workDays++;
+    }
+    d.setDate(d.getDate()+1);
+  }
+
+  document.getElementById('workDays').textContent=workDays;
+  document.getElementById('calDays').textContent=calDays;
+  document.getElementById('weekendDays').textContent=weekendDays;
+  document.getElementById('holDays').textContent=holDays;
+  document.getElementById('results').style.display='block';
+
+  // Show matched holidays
+  const holList=document.getElementById('holList');
+  if(matchedHols.length>0){
+    const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    holList.innerHTML='<div style="font-size:.72rem;font-weight:700;color:var(--afro-dark);letter-spacing:.08em;text-transform:uppercase;margin-top:14px;margin-bottom:8px">Public Holidays in Range</div>'+
+      matchedHols.map(h=>`<div class="hol-item"><span class="hol-name">${esc(h.name)}</span><span class="hol-date">${h.date.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}</span></div>`).join('');
+  } else {
+    holList.innerHTML='';
+  }
+}
+
+// Set defaults: today to 3 months from now
+const today=new Date();
+const future=new Date();future.setMonth(future.getMonth()+3);
+document.getElementById('startDate').value=today.toISOString().split('T')[0];
+document.getElementById('endDate').value=future.toISOString().split('T')[0];
+calculate();
+</script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
+
+<section class="df-upgrade" data-df-upgrade="working-days">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Practical workflow</span>
+      <h2>Working Days Calculator: quick guide</h2>
+      <p>Not sure how to get the most from the Working Days Calculator? Enter your data and it returns an organised, ready-to-use result — built for all 54 African countries.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> an organised, ready-to-use result, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Working Days Calculator takes your data and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm the figures before you share them before you rely on the result.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm the figures before you share them before acting.</p>
+    </div>
+    <form class="df-form" data-df-form="working-days">
+      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
+      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
+      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
+      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="working-days" data-df-base="Working Days Calculator — enter your details above to see your result." aria-live="polite">Working Days Calculator — enter your details above to see your result.</output>
+      <div class="df-actions"><button type="button" data-df-copy="working-days">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="working-days-faq-title">
+  <h2 id="working-days-faq-title">Working Days Calculator FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the Working Days Calculator?</summary><p>Enter your data in the fields above. The Working Days Calculator then gives you an organised, ready-to-use result you can use straight away.</p></details><details><summary>How accurate is the Working Days Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm the figures before you share them before you rely on it.</p></details><details><summary>Is the Working Days Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
+</section>
+<afro-related-tools data-ssr="1" category="data-productivity" current="working-days">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/unit-converter/" data-related-tool data-id="unit-converter" data-name="Unit Converter (African)" data-category="data-productivity" data-icon="UC" data-desc="Convert units including African measurements: Nigerian plots, SA morgen, etc.">Unit Converter (African)</a></li><li><a href="/tools/budget-planner/" data-related-tool data-id="budget-planner" data-name="Monthly Budget Planner" data-category="data-productivity" data-icon="MB" data-desc="50/30/20 rule adapted for African income patterns and mobile money.">Monthly Budget Planner</a></li><li><a href="/tools/public-holidays/" data-related-tool data-id="public-holidays" data-name="African Public Holiday Calendar" data-category="data-productivity" data-icon="AP" data-desc="Public holiday reference for supported African countries. iCal export. Per-country.">African Public Holiday Calendar</a></li><li><a href="/tools/grade-tracker/" data-related-tool data-id="grade-tracker" data-name="Student Grade Tracker" data-category="data-productivity" data-icon="SG" data-desc="Track CA and exam scores with Africa exam presets, risk flags, GPA, CGPA, and revision handoffs.">Student Grade Tracker</a></li><li><a href="/tools/pomodoro/" data-related-tool data-id="pomodoro" data-name="Pomodoro Timer" data-category="data-productivity" data-icon="PT" data-desc="Focus timer with African language motivational quotes. Works offline.">Pomodoro Timer</a></li><li><a href="/tools/age-calculator/" data-related-tool data-id="age-calculator" data-name="Age Calculator" data-category="data-productivity" data-icon="AC" data-desc="Exact age in years/months/days. Next birthday countdown.">Age Calculator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+
+<script>
+(function(){
+  var target = document.getElementById('results');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
+  div.innerHTML = '<save-result-button tool-slug="working-days" tool-name="Working Days"></save-result-button><share-result-button tool-name="Working Days" tool-slug="working-days"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+</body>
+</html>

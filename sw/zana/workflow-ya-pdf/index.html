@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>mchakato wa kazi ya PDF - jenga mtiririko wa kazi za PDF | AfroTools</title>
+<meta name="description" content="Jenga workflow ya PDF kwa repair, optimize, compress, watermark, page numbers, rotate, merge, encrypt na report export kwenye kivinjari.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Workflow ya PDF - jenga mtiririko wa kazi za PDF | AfroTools">
+<meta property="og:description" content="Jenga workflow ya PDF kwa repair, optimize, compress, watermark, page numbers, rotate, merge, encrypt na report export kwenye kivinjari.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/sw/zana/workflow-ya-pdf/">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Workflow ya PDF - jenga mtiririko wa kazi za PDF | AfroTools">
+<meta name="twitter:description" content="Jenga workflow ya PDF kwa repair, optimize, compress, watermark, page numbers, rotate, merge, encrypt na report export kwenye kivinjari.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/related-tools.js?v=4123e336" defer></script>
+<style>
+  :root {
+    --afro-green: var(--color-primary);
+    --afro-dark: #0f1419;
+    --afro-light: #f5f7fa;
+  }
+
+  /* Hero */
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .tool-hero::after {
+    content: '\26D3'; /* chain link */
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8rem;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .breadcrumb a { color: rgba(255,255,255,0.3); text-decoration: none; }
+  .breadcrumb span { color: var(--afro-green); }
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+  h1 em { color: var(--afro-green); font-style: normal; }
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 14px;
+  }
+  .hero-badges { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 6px; }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  .b-green {
+    background: rgba(0,113,227,0.18);
+    color: var(--color-primary);
+    border: 1px solid rgba(0,113,227,0.38);
+  }
+
+  /* Main */
+  .tool-main { padding: 28px 0 72px; }
+  .tool-main-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* Cards */
+  .card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+  }
+  .card + .card { margin-top: 18px; }
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f9fafb;
+  }
+  .card-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #374151;
+  }
+  .card-body { padding: 22px; }
+
+  /* Upload */
+  .file-input-wrapper { position: relative; display: inline-block; width: 100%; }
+  .file-input-wrapper input[type="file"] { position:absolute;width:1px;height:1px;opacity:0;overflow:hidden; }
+  .file-input-label {
+    display: block;
+    padding: 36px 20px;
+    background: #EFF6FF;
+    border: 2px dashed #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+    color: #334155;
+    font-weight: 600;
+  }
+  .file-input-label:hover { border-color: var(--afro-green); background: #EFF6FF; }
+  .file-input-label.dragover { border-color: var(--afro-green); background: rgba(0,113,227,0.1); }
+  .file-emoji { font-size: 32px; margin-bottom: 10px; }
+  .file-info {
+    display: none;
+    margin-top: 14px;
+    padding: 12px 16px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 7px;
+    font-size: 0.82rem;
+  }
+  .file-info .fi-name { font-weight: 700; color: #111; }
+  .file-info .fi-meta { color: #6b7280; margin-top: 2px; }
+  .file-info .fi-clear {
+    background: none;
+    border: none;
+    color: #dc2626;
+    font-weight: 700;
+    font-size: 0.78rem;
+    cursor: pointer;
+    margin-top: 6px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* Pipeline Strip */
+  .pipeline-section { margin-top: 18px; }
+  .pipeline-strip {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 16px 0;
+    overflow-x: auto;
+    min-height: 120px;
+  }
+  .pipeline-strip::-webkit-scrollbar { height: 5px; }
+  .pipeline-strip::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+  .pipeline-step {
+    position: relative;
+    min-width: 130px;
+    max-width: 150px;
+    background: #fff;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 14px 12px 10px;
+    text-align: center;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    flex-shrink: 0;
+    cursor: grab;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    user-select: none;
+  }
+  .pipeline-step:hover { border-color: var(--afro-green); box-shadow: 0 2px 12px rgba(0,0,0,0.1); }
+  .pipeline-step.dragging { opacity: 0.35; transform: scale(0.95); }
+  .pipeline-step.drag-over { border-color: var(--afro-green); box-shadow: 0 0 0 3px rgba(0,113,227,0.2); }
+  .ps-icon { font-size: 24px; margin-bottom: 6px; }
+  .ps-name { font-size: 0.78rem; font-weight: 700; color: #111; }
+  .ps-sub { font-size: 0.65rem; color: #9ca3af; margin-top: 2px; min-height: 14px; }
+  .ps-actions { display: flex; justify-content: center; gap: 4px; margin-top: 8px; }
+  .ps-config, .ps-remove {
+    width: 26px;
+    height: 26px;
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.15s;
+  }
+  .ps-config:hover { background: #EFF6FF; border-color: var(--afro-green); }
+  .ps-remove:hover { background: #fef2f2; border-color: #fca5a5; color: #dc2626; }
+  .pipeline-arrow {
+    font-size: 20px;
+    color: #d1d5db;
+    padding: 0 6px;
+    flex-shrink: 0;
+    font-weight: 700;
+    user-select: none;
+  }
+  .pipeline-add {
+    min-width: 110px;
+    height: 88px;
+    border: 2px dashed #d1d5db;
+    background: transparent;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--afro-green);
+    cursor: pointer;
+    transition: 0.15s;
+    flex-shrink: 0;
+  }
+  .pipeline-add:hover { border-color: var(--afro-green); background: #EFF6FF; }
+  .pipeline-empty {
+    text-align: center;
+    padding: 24px;
+    color: #9ca3af;
+    font-size: 0.88rem;
+    font-weight: 500;
+  }
+
+  .workflow-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .mini-btn {
+    border: 1.5px solid #dbeafe;
+    background: #EFF6FF;
+    color: #0f172a;
+    border-radius: 7px;
+    padding: 8px 10px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .mini-btn:hover {
+    border-color: var(--afro-green);
+    color: var(--afro-green);
+  }
+
+  .mini-btn:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+  }
+
+  /* Operation Palette */
+  .palette-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10,15,10,0.6);
+    backdrop-filter: blur(4px);
+    z-index: 950;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .palette-overlay.on { display: flex; }
+  .palette-box {
+    background: #fff;
+    border-radius: 16px;
+    max-width: 560px;
+    width: 100%;
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 24px 48px rgba(0,0,0,0.25);
+  }
+  .pal-head {
+    padding: 20px 24px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .pal-head h2 { font-size: 18px; font-weight: 800; color: #111; }
+  .pal-close {
+    width: 34px;
+    height: 34px;
+    border: none;
+    background: #f3f4f6;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+    transition: 0.15s;
+  }
+  .pal-close:hover { background: #e5e7eb; color: #111; }
+  .pal-body { padding: 20px 24px; overflow-y: auto; }
+  .pal-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .pal-op {
+    padding: 18px 12px;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: center;
+    transition: 0.2s;
+    background: #fff;
+  }
+  .pal-op:hover { border-color: var(--afro-green); background: #EFF6FF; }
+  .pal-op-icon { font-size: 28px; margin-bottom: 8px; }
+  .pal-op-name { font-size: 0.82rem; font-weight: 700; color: #111; }
+  .pal-op-desc { font-size: 0.68rem; color: #9ca3af; margin-top: 3px; }
+
+  /* Config Modal */
+  .config-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10,15,10,0.6);
+    backdrop-filter: blur(4px);
+    z-index: 960;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .config-overlay.on { display: flex; }
+  .config-box {
+    background: #fff;
+    border-radius: 16px;
+    max-width: 480px;
+    width: 100%;
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 24px 48px rgba(0,0,0,0.25);
+  }
+  .cfg-head {
+    padding: 20px 24px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .cfg-head h2 { font-size: 16px; font-weight: 800; color: #111; }
+  .cfg-close {
+    width: 34px;
+    height: 34px;
+    border: none;
+    background: #f3f4f6;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+    transition: 0.15s;
+  }
+  .cfg-close:hover { background: #e5e7eb; color: #111; }
+  .cfg-body { padding: 20px 24px; overflow-y: auto; flex: 1; }
+  .cfg-foot {
+    padding: 16px 24px;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  /* Config Form Controls */
+  .cfg-field { margin-bottom: 16px; }
+  .cfg-field:last-child { margin-bottom: 0; }
+  .cfg-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #374151;
+    margin-bottom: 6px;
+  }
+  .cfg-input {
+    width: 100%;
+    padding: 10px 13px;
+    background: #EFF6FF;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 7px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1e293b;
+    outline: none;
+    transition: border-color 0.18s;
+    font-family: 'DM Sans', sans-serif;
+    box-sizing: border-box;
+  }
+  .cfg-input:focus { border-color: var(--afro-green); background: #fff; }
+  .cfg-select {
+    width: 100%;
+    padding: 10px 13px;
+    background: #EFF6FF;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 7px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1e293b;
+    outline: none;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    box-sizing: border-box;
+  }
+  .cfg-slider-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .cfg-slider-row input[type="range"] { flex: 1; accent-color: var(--afro-green); }
+  .cfg-slider-row .cfg-val {
+    min-width: 36px;
+    text-align: right;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #111;
+  }
+  .cfg-color-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .cfg-color-row input[type="color"] {
+    width: 44px;
+    height: 36px;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 2px;
+  }
+  .cfg-color-row .cfg-hex {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #6b7280;
+  }
+  .preset-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .preset-btn {
+    padding: 14px 10px;
+    background: #EFF6FF;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #334155;
+    font-family: 'DM Sans', sans-serif;
+    text-align: center;
+  }
+  .preset-btn:hover { border-color: var(--afro-green); }
+  .preset-btn.on { border-color: var(--afro-green); background: var(--color-primary); color: #fff; }
+  .preset-desc { font-size: 0.62rem; color: #9ca3af; margin-top: 3px; font-weight: 500; }
+  .preset-btn.on .preset-desc { color: rgba(255,255,255,0.7); }
+  .angle-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .angle-btn {
+    padding: 16px 10px;
+    background: #EFF6FF;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #334155;
+    font-family: 'DM Sans', sans-serif;
+    text-align: center;
+  }
+  .angle-btn:hover { border-color: var(--afro-green); }
+  .angle-btn.on { border-color: var(--afro-green); background: var(--color-primary); color: #fff; }
+  .pos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .pos-btn {
+    padding: 12px 6px;
+    background: #EFF6FF;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #334155;
+    font-family: 'DM Sans', sans-serif;
+    text-align: center;
+  }
+  .pos-btn:hover { border-color: var(--afro-green); }
+  .pos-btn.on { border-color: var(--afro-green); background: var(--color-primary); color: #fff; }
+
+  /* Merge extra files */
+  .merge-files { margin-top: 10px; }
+  .merge-file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    font-size: 0.78rem;
+  }
+  .merge-file-item .mf-name { font-weight: 600; color: #111; }
+  .merge-file-item .mf-size { color: #9ca3af; }
+  .merge-file-item .mf-remove {
+    background: none;
+    border: none;
+    color: #dc2626;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* Action Buttons */
+  .btn-primary {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.15s;
+    background: var(--color-primary);
+    color: #fff;
+  }
+  .btn-primary:hover { filter: brightness(1.1); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-secondary {
+    padding: 10px 22px;
+    border: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    transition: 0.15s;
+    background: #f3f4f6;
+    color: #374151;
+  }
+  .btn-secondary:hover { background: #e5e7eb; }
+
+  /* Run & Progress */
+  .run-section { margin-top: 18px; text-align: center; }
+  .run-toolbar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  .run-btn {
+    padding: 14px 36px;
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    background: var(--color-primary);
+    color: #fff;
+    transition: 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .run-btn:hover { filter: brightness(1.1); }
+  .run-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .progress-section {
+    display: none;
+    margin-top: 18px;
+  }
+  .progress-section.on { display: block; }
+  .progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 100px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--color-primary);
+    border-radius: 100px;
+    width: 0%;
+    transition: width 0.3s;
+  }
+  .progress-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #6b7280;
+    text-align: center;
+  }
+
+  /* Result */
+  .result-card {
+    display: none;
+    margin-top: 18px;
+  }
+  .result-card.on { display: block; }
+  .result-body {
+    padding: 22px;
+    text-align: center;
+  }
+  .result-icon { font-size: 36px; margin-bottom: 10px; }
+  .result-msg { font-size: 0.9rem; font-weight: 600; color: #111; margin-bottom: 6px; }
+  .result-size { font-size: 0.78rem; color: #6b7280; margin-bottom: 16px; }
+  .download-btn {
+    padding: 12px 32px;
+    border: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    background: var(--color-primary);
+    color: #fff;
+    transition: 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .download-btn:hover { filter: brightness(1.1); }
+
+  .result-actions-row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+
+  .workflow-report {
+    margin-top: 14px;
+    text-align: left;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 12px;
+    color: #475569;
+    font-size: 0.74rem;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    max-height: 220px;
+    overflow: auto;
+  }
+
+  /* SEO Section */
+  .seo-section {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 48px 24px 0;
+  }
+  .seo-section h2 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #111;
+    margin-bottom: 14px;
+  }
+  .seo-section p {
+    font-size: 0.88rem;
+    color: #4b5563;
+    line-height: 1.7;
+    margin-bottom: 14px;
+  }
+
+  /* FAQ */
+  .faq-section {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 24px 0;
+  }
+  .faq-section h2 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #111;
+    margin-bottom: 18px;
+  }
+  .faq-item {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .faq-q {
+    padding: 14px 18px;
+    background: #f9fafb;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #111;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+  }
+  .faq-q::after { content: '+'; font-size: 1.2rem; color: #9ca3af; transition: 0.2s; }
+  .faq-item.open .faq-q::after { content: '\2212'; }
+  .faq-a {
+    display: none;
+    padding: 14px 18px;
+    font-size: 0.82rem;
+    color: #4b5563;
+    line-height: 1.7;
+  }
+  .faq-item.open .faq-a { display: block; }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .pal-grid { grid-template-columns: repeat(2, 1fr); }
+    .pipeline-step { min-width: 110px; }
+    .pipeline-strip { flex-wrap: wrap; gap: 8px; }
+    .pipeline-arrow { display: none; }
+    .palette-box, .config-box { max-width: 100%; margin: 10px; border-radius: 12px; }
+    .preset-grid { grid-template-columns: 1fr 1fr; }
+    .pos-grid { grid-template-columns: repeat(3, 1fr); }
+    .angle-grid { grid-template-columns: repeat(3, 1fr); }
+    .workflow-toolbar { justify-content: flex-start; }
+    .mini-btn { width: 100%; justify-content: center; }
+  }
+</style>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+
+
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="article:modified_time" content="2026-05-01">
+<meta name="tool-id" content="pdf-workflow">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Workflow ya PDF","url":"https://afrotools.com/sw/zana/workflow-ya-pdf/","applicationCategory":"BusinessApplication","operatingSystem":"Any","inLanguage":"sw","description":"Jenga workflow ya PDF kwa repair, optimize, compress, watermark, page numbers, rotate, merge, encrypt na report export kwenye kivinjari.","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Hati na PDF","item":"https://afrotools.com/sw/hati-na-pdf/"},{"@type":"ListItem","position":4,"name":"Workflow ya PDF","item":"https://afrotools.com/sw/zana/workflow-ya-pdf/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Je, mpangilio wa hatua una umuhimu?","acceptedAnswer":{"@type":"Answer","text":"Ndiyo. Hatua hutekelezwa kwa mpangilio ulioweka. Kwa mfano, kuongeza watermark kabla au baada ya compression kunaweza kubadilisha ubora wa alama."}},{"@type":"Question","name":"Je, workflow ni ushauri wa kisheria au rasmi?","acceptedAnswer":{"@type":"Answer","text":"Hapana. Ni workspace ya kurahisisha kazi za PDF. Hakiki output kabla ya kuwasilisha hati rasmi au nyeti."}}]}</script>
+<link rel="stylesheet" href="/assets/css/sw-zana-mobile.css?v=adecdf8a">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<style data-localized-verification-style>
+.localized-verification-panel{max-width:1120px;margin:18px auto;padding:16px 18px;border:1px solid #bfdbfe;border-radius:14px;background:linear-gradient(135deg,#eff6ff 0%,#fff 58%,#ecfdf5 100%);box-shadow:0 12px 28px rgba(15,23,42,.06);color:#0f172a}.localized-verification-panel h2{margin:0 0 8px;font-size:1.05rem;letter-spacing:-.01em}.localized-verification-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:10px}.localized-verification-grid div{border:1px solid #dbeafe;border-radius:12px;background:#fff;padding:11px;line-height:1.5;color:#475569}.localized-verification-grid strong{display:block;color:#0f172a;margin-bottom:4px}.localized-verification-panel p{margin:10px 0 0;color:#475569;line-height:1.58}@media(max-width:640px){.localized-verification-panel{margin:14px 12px;padding:14px}}
+</style>
+<link rel="canonical" href="https://afrotools.com/sw/zana/workflow-ya-pdf/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-workflow/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/flux-pdf/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/workflow-ya-pdf/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-workflow/">
+</head>
+<body class="top-level-page-ui-refresh">
+<section class="localized-verification-panel" data-tool-verification-panel aria-label="Mbinu, vyanzo na mipaka">
+<h2>Mbinu, vyanzo na hatua inayofuata</h2>
+<div class="localized-verification-grid"><div><strong>Mbinu</strong>Matokeo hutumia taarifa unazoingiza kwenye zana hii na hutoa makadirio ya kupanga, kulinganisha au kuandaa maamuzi.</div><div><strong>Vyanzo vya kuthibitisha</strong>Hakiki viwango, ada, masharti, leseni, nyaraka au bei na mamlaka rasmi, mtoa huduma, benki, bima, daktari au mshauri husika.</div><div><strong>Hatua muhimu</strong>Hifadhi tarehe, nchi, sarafu, maelezo uliyotumia na matokeo kabla ya kutuma ombi, kulipa, kusaini au kusafiri.</div></div>
+<p>Hii si nukuu rasmi, ushauri wa kitaalamu wala idhini ya mwisho. Tumia kama hatua ya kwanza, kisha thibitisha na chanzo kinachowajibika.</p>
+</section>
+<afro-navbar></afro-navbar>
+
+<!-- Hero -->
+<section class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/sw/">AfroTools</a> &rsaquo; <a href="/sw/zana-za-pdf/">Zana za PDF</a> &rsaquo; <span>Mjenzi wa mchakato wa kazi</span>
+    </div>
+    <h1>PDF <em>mchakato wa kazi</em> Builder</h1>
+    <p class="hero-sub">Jenga recipe za PDF zinazoweza kurudiwa kwenye kivinjari: repair, optimize, keep pages, compress, watermark, merge, namba, flatten, rotate na encrypt bila kuruka kati ya zana.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">Recipe za kurudia</span>
+      <span class="badge b-green">Kwenye kivinjari</span>
+      <span class="badge b-green">AES-256</span>
+      <span class="badge b-green">Ripoti</span>
+    </div>
+  </div>
+</section>
+
+<!-- Main -->
+<div class="tool-main">
+  <div class="tool-main-inner">
+
+    <!-- Pakia Card -->
+    <div class="card" id="uploadCard">
+      <div class="card-head">
+        <span class="card-title">Pakia PDF</span>
+      </div>
+      <div class="card-body">
+        <div class="file-input-wrapper">
+          <input type="file" id="pdfFailiInput" accept=".pdf,application/pdf">
+          <label class="file-input-label" for="pdfFailiInput" id="uploadLabel">
+            <div class="file-emoji">&#128196;</div>
+            <div>Buruta PDF yako hapa au <span style="color:var(--afro-green);font-weight:700;text-decoration:underline">browse</span></div>
+            <div style="font-size:0.72rem;color:#9ca3af;margin-top:6px;">PDF pekee</div>
+          </label>
+        </div>
+        <div class="file-info" id="fileInfo">
+          <div class="fi-name" id="fileName"></div>
+          <div class="fi-meta" id="fileMeta"></div>
+          <button type="button" class="fi-clear" id="clearFaili">Ondoa faili</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mtiririko Builder -->
+    <div class="card pipeline-section" id="pipelineCard" style="display:none;">
+      <div class="card-head">
+        <span class="card-title">Mtiririko</span>
+        <div class="workflow-toolbar">
+          <button class="mini-btn" id="quickPresetBtn" type="button">Ongeza preset ya ukaguzi</button>
+          <button class="mini-btn" id="savePresetBtn" type="button">Hifadhi recipe</button>
+          <button class="mini-btn" id="loadPresetBtn" type="button">Pakia recipe</button>
+          <button class="mini-btn" id="exportPresetBtn" type="button">Export recipe</button>
+          <button class="mini-btn" id="importPresetBtn" type="button">Import recipe</button>
+          <input aria-label="ImportPresetInput" type="file" id="importPresetInput" accept="application/json,.json" hidden>
+          <span style="font-size:0.72rem;color:#9ca3af;font-weight:600;" id="stepCount">Hatua 0</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="pipeline-strip" id="pipelineStrip">
+          <div class="pipeline-empty">Bofya &ldquo;+ Ongeza Hatua&rdquo; kuanza kujenga mtiririko</div>
+          <button type="button" class="pipeline-add" id="addStepBtn">+ Ongeza Hatua</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Run Section -->
+    <div class="run-section" id="runSection" style="display:none;">
+      <button type="button" class="run-btn" id="runBtn" disabled>
+        &#9654; Endesha mtiririko
+      </button>
+      <div class="run-toolbar">
+        <button class="mini-btn" id="validateBtn" type="button">Hakiki mchakato wa kazi</button>
+        <button class="mini-btn" id="clearMtiririkoBtn" type="button">Futa hatua</button>
+      </div>
+      <div class="progress-section" id="progressSection">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-label" id="progressLabel">Inaandaa...</div>
+      </div>
+    </div>
+
+    <!-- Matokeo -->
+    <div class="card result-card" id="resultCard">
+      <div class="result-body">
+        <div class="result-icon" id="resultIcon">&#10004;&#65039;</div>
+        <div class="result-msg" id="resultMsg">Mtiririko umekamilika!</div>
+        <div class="result-size" id="resultSize"></div>
+        <div class="result-actions-row">
+          <button type="button" class="download-btn" id="downloadBtn">&#128229; Pakua PDF</button>
+          <button class="mini-btn" id="downloadRipotiBtn" type="button">Pakua ripoti</button>
+        </div>
+        <div class="workflow-report" id="workflowRipoti" style="display:none"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Operation Palette Modal -->
+<div class="palette-overlay" id="paletteOverlay">
+  <div class="palette-box">
+    <div class="pal-head">
+      <h2>Ongeza kazi</h2>
+      <button type="button" class="pal-close" id="paletteClose">&times;</button>
+    </div>
+    <div class="pal-body">
+      <div class="pal-grid" id="paletteGrid">
+        <div class="pal-op" data-op="repair">
+          <div class="pal-op-icon">&#128295;</div>
+          <div class="pal-op-name">Repair</div>
+          <div class="pal-op-desc">Jenga muundo upya</div>
+        </div>
+        <div class="pal-op" data-op="optimize">
+          <div class="pal-op-icon">&#9889;</div>
+          <div class="pal-op-name">Optimize</div>
+          <div class="pal-op-desc">Safisha matokeo</div>
+        </div>
+        <div class="pal-op" data-op="compress">
+          <div class="pal-op-icon">&#128476;</div>
+          <div class="pal-op-name">Compress</div>
+          <div class="pal-op-desc">Punguza ukubwa wa faili</div>
+        </div>
+        <div class="pal-op" data-op="watermark">
+          <div class="pal-op-icon">&#128167;</div>
+          <div class="pal-op-name">Watermark</div>
+          <div class="pal-op-desc">Ongeza maandishi juu</div>
+        </div>
+        <div class="pal-op" data-op="password">
+          <div class="pal-op-icon">&#128274;</div>
+          <div class="pal-op-name">Nenosiri</div>
+          <div class="pal-op-desc">Encrypt PDF</div>
+        </div>
+        <div class="pal-op" data-op="pageNumbers">
+          <div class="pal-op-icon">#&#65039;&#8419;</div>
+          <div class="pal-op-name">Namba za kurasa</div>
+          <div class="pal-op-desc">Weka namba kila ukurasa</div>
+        </div>
+        <div class="pal-op" data-op="keepKurasa">
+          <div class="pal-op-icon">&#9986;</div>
+          <div class="pal-op-name">Baki na kurasa</div>
+          <div class="pal-op-desc">Toa range</div>
+        </div>
+        <div class="pal-op" data-op="flatten">
+          <div class="pal-op-icon">&#128444;</div>
+          <div class="pal-op-name">Flatten</div>
+          <div class="pal-op-desc">Nakili ya picha</div>
+        </div>
+        <div class="pal-op" data-op="rotate">
+          <div class="pal-op-icon">&#128260;</div>
+          <div class="pal-op-name">Zungusha zote</div>
+          <div class="pal-op-desc">Zungusha kila ukurasa</div>
+        </div>
+        <div class="pal-op" data-op="merge">
+          <div class="pal-op-icon">&#128209;</div>
+          <div class="pal-op-name">Unganisha</div>
+          <div class="pal-op-desc">Ongeza PDF nyingine</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Config Modal -->
+<div class="config-overlay" id="configOverlay">
+  <div class="config-box">
+    <div class="cfg-head">
+      <h2 id="configTitle">Sanidi</h2>
+      <button type="button" class="cfg-close" id="configClose">&times;</button>
+    </div>
+    <div class="cfg-body" id="configBody"></div>
+    <div class="cfg-foot">
+      <button type="button" class="btn-secondary" id="configGhairi">Ghairi</button>
+      <button type="button" class="btn-primary" id="configHifadhi">Hifadhi</button>
+    </div>
+  </div>
+</div>
+
+<!-- SEO Section -->
+<section class="seo-section">
+  <h2>Automate mchakato wa kazi yako ya PDF</h2>
+  <p>mchakato wa kazi ya PDF inakuwezesha kuunganisha hatua nyingi za PDF kuwa mnyororo unaoweza kutumika tena. Badala ya kupakua na kupakia upya faili kati ya kila hatua, panga mapishi yote mara moja, yaendeshe kwa mpangilio, kisha upakue ripoti ya kilichofanyika.</p>
+  <p>Anza kwa kupakia PDF, kisha ongeza hatua kutoka kwenye orodha ya vitendo: kutengeneza au kuboresha muundo, kubakiza safu maalumu za kurasa, kushinikiza, watermark, kusimba kwa AES-256, kuweka namba za kurasa, kuzungusha, kugandisha, au kuunganisha PDF nyingine. Mapishi yanaweza kuhifadhiwa kwenye kivinjari chako au kuhamishwa kama JSON kwa kompyuta nyingine.</p>
+</section>
+
+<!-- FAQ Section -->
+
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+<section class="faq-section">
+  <h2>Maswali ya mara kwa mara</h2>
+  <div class="faq-item">
+    <div class="faq-q">Je, mpangilio wa hatua una umuhimu?</div>
+    <div class="faq-a">Ndiyo. Vitendo hufanyika kwa mfuatano kutoka kushoto kwenda kulia. Mfano, ukishinikiza kabla ya kuweka watermark, maandishi ya watermark yatabaki makali. Ukishinikiza baadaye, watermark inaweza kupoteza ubora kidogo. Mpangilio wa kawaida ni: unganisha, zungusha, namba za kurasa, watermark, shinikiza, nenosiri.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">Je, faili zangu zinapakiwa kwenye seva?</div>
+    <div class="faq-a">Hapana. mchakato wa kazi hufanyika kwenye kivinjari chako kwa pdf.js, pdf-lib na qpdf/WASM za ndani. PDF yako haitoki kamwe kwenye kifaa chako.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">Naweza kutumia kazi ileile zaidi ya mara moja?</div>
+    <div class="faq-a">Ndiyo. Unaweza kuongeza kazi ileile mara kadhaa kwa mipangilio tofauti. Kwa mfano, unaweza kuongeza hatua mbili za watermark kuweka maandishi juu na chini ya kila ukurasa.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">Is there a page or file size limit?</div>
+    <div class="faq-a">Hakuna kikomo rasmi, lakini PDF kubwa sana (zaidi ya MB 100 au kurasa mamia) zinaweza kuchakatwa polepole kwa kuwa kila kitu hufanyika kwenye kivinjari. Kwa matokeo bora, tumia faili chini ya MB 50.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">Hatua ya Kushinikiza inafanya nini hasa?</div>
+    <div class="faq-a">Hatua ya kushinikiza hubadilisha kurasa kuwa picha kwa ubora uliochagua na kuijenga upya PDF. Hii inaweza kupunguza ukubwa kwa faili zenye picha nyingi, lakini pia hufanya maandishi kuwa ya picha. Tumia 'boresha' unapotaka usafishaji wa muundo pekee.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">Naweza kuhifadhi mchakato wa kazi?</div>
+    <div class="faq-a">Ndiyo. Unaweza kuhifadhi recipe kwenye kivinjari hii, kuipakia baadaye au export/import kama JSON ili mtu mwingine wa timu atumie hatua zilezile.</div>
+  </div>
+</section>
+
+<afro-related-tools category="document-pdf" current="pdf-workflow"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<email-gate-modal></email-gate-modal>
+<script src="/assets/js/lib/auto-email-gate.js?v=fa3f2d98" defer></script>
+<script src="/assets/js/lib/pdf-utils.js?v=dd2ba85f"></script>
+<script src="/assets/vendor/pdf-lib/pdf-lib.min.js?v=dec481b1"></script>
+<script src="/assets/vendor/qpdf/qpdf.js?v=5842eaa2"></script>
+<script src="/assets/js/pages/pdf-workflow.js?v=f9d5f5aa"></script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
+<script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
+<script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
+
+<script>
+(function(){
+  var target = document.getElementById('resultCard');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
+  div.innerHTML = '<share-result-button tool-name="PDF Workflow" tool-slug="pdf-workflow"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script>
+(function(){
+  const textMap = new Map([["Upload PDF","Pakia PDF"],["Download PDF","Pakua PDF"],["Download ZIP","Pakua ZIP"],["Download Report","Pakua ripoti"],["Download result","Pakua matokeo"],["Download audit CSV","Pakua audit CSV"],["Download CSV","Pakua CSV"],["Download Text","Pakua maandishi"],["Download Audio","Pakua sauti"],["Clear","Futa"],["Copy","Nakili"],["Save","Hifadhi"],["Cancel","Ghairi"],["Close","Funga"],["Remove file","Ondoa faili"],["Remove","Ondoa"],["Add Step","Ongeza Hatua"],["Run Pipeline","Endesha mtiririko"],["Validate workflow","Hakiki workflow"],["Repair PDF","Rekebisha PDF"],["Translate PDF","Tafsiri PDF"],["Convert to PDF","Badilisha kuwa PDF"],["Find Matches","Tafuta matches"],["Replace Selected","Badilisha iliyochaguliwa"],["Replace All","Badilisha zote"],["Run Comparison","Endesha ulinganisho"],["Copy Summary","Nakili muhtasari"],["Loading voices...","Inapakia sauti..."],["Upload a PDF to get started.","Pakia PDF kuanza."],["No file selected","Hakuna faili iliyochaguliwa"],["Processing...","Inachakata..."],["Ready","Tayari"],["Error","Hitilafu"]]);
+  const attrMap = textMap;
+  function swapText(node){
+    const raw = node.textContent || '';
+    const trimmed = raw.trim();
+    if (!trimmed || !textMap.has(trimmed)) return;
+    node.textContent = raw.replace(trimmed, textMap.get(trimmed));
+  }
+  function walk(root){
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node){
+        const parent = node.parentElement;
+        if (!parent || /^(SCRIPT|STYLE|NOSCRIPT)$/i.test(parent.tagName)) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(swapText);
+    root.querySelectorAll && root.querySelectorAll('[placeholder],[aria-label],button,input[type="button"],input[type="submit"]').forEach(el => {
+      ['placeholder','aria-label','value','title'].forEach(attr => {
+        const value = el.getAttribute(attr);
+        if (value && attrMap.has(value.trim())) el.setAttribute(attr, attrMap.get(value.trim()));
+      });
+    });
+  }
+  function run(){ walk(document.body); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
+  new MutationObserver(mutations => {
+    for (const mutation of mutations) {
+      mutation.addedNodes.forEach(node => {
+        if (node.nodeType === Node.TEXT_NODE) swapText(node);
+        else if (node.nodeType === Node.ELEMENT_NODE) walk(node);
+      });
+    }
+  }).observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script>
+  <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
+</body>
+</html>

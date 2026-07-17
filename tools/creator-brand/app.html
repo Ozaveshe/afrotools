@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CreatorBrand Workspace | AfroTools</title>
+  <meta name="robots" content="noindex, follow">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <link rel="stylesheet" href="style.css?v=421ee208">
+  <style>
+    .cbk-loading-status { text-align:center; font-size:.85rem; color:#64748b; margin-top:8px; opacity:0; transition:opacity .3s; }
+    .cbk-loading-status.active { opacity:1; }
+    .cbk-loading-dot { display:inline-block; animation:cbk-dot-bounce .6s ease-in-out infinite; }
+    .cbk-loading-dot:nth-child(2) { animation-delay:.2s; }
+    .cbk-loading-dot:nth-child(3) { animation-delay:.4s; }
+    @keyframes cbk-dot-bounce { 0%,100%{opacity:.3} 50%{opacity:1} }
+    @media (max-width: 768px) {
+      .cbk-guide-do-dont { grid-template-columns: 1fr; }
+    }
+  </style>
+  <script src="/assets/js/supabase-auth.js?v=0c644f2e" defer></script>
+  <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
+<meta property="og:url" content="https://afrotools.com/tools/creator-brand/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c4853917">
+<script src="/assets/js/lib/dark-mode.js?v=5cb64ba3" defer></script>
+<link rel="canonical" href="https://afrotools.com/tools/creator-brand/app">
+</head>
+<body class="cbk-app top-level-page-ui-refresh">
+
+  <!-- TOPBAR -->
+  <div class="cbk-topbar">
+    <a href="index.html" class="cbk-topbar-back">&larr;</a>
+    <a href="index.html" class="cbk-topbar-brand">&#127912; CreatorBrand</a>
+    <div class="cbk-topbar-actions">
+      <button type="button" class="cbk-topbar-btn" id="importBtn">Import</button>
+      <button type="button" class="cbk-topbar-btn primary" id="exportJsonBtn">Export JSON</button>
+    </div>
+  </div>
+
+  <!-- LAYOUT: SIDEBAR + WORKSPACE -->
+  <div class="cbk-layout">
+
+    <!-- SIDEBAR -->
+    <nav class="cbk-sidebar">
+      <div class="cbk-sidebar-label">Brand Kit</div>
+      <button type="button" class="cbk-nav-item active" data-section="profile"><span class="cbk-nav-icon">&#128100;</span>Profile</button>
+      <button type="button" class="cbk-nav-item" data-section="logos"><span class="cbk-nav-icon">&#127912;</span>Logos</button>
+      <button type="button" class="cbk-nav-item" data-section="colors"><span class="cbk-nav-icon">&#127752;</span>Colors</button>
+      <button type="button" class="cbk-nav-item" data-section="typography"><span class="cbk-nav-icon">&#128288;</span>Typography</button>
+      <button type="button" class="cbk-nav-item" data-section="voice"><span class="cbk-nav-icon">&#128227;</span>Voice</button>
+      <div class="cbk-sidebar-label">Output</div>
+      <button type="button" class="cbk-nav-item" data-section="guide"><span class="cbk-nav-icon">&#128214;</span>Brand Guide</button>
+      <button type="button" class="cbk-nav-item" data-section="export"><span class="cbk-nav-icon">&#128230;</span>Export</button>
+    </nav>
+
+    <!-- WORKSPACE -->
+    <div class="cbk-workspace">
+
+      <!-- ===== PROFILE ===== -->
+      <div class="cbk-section active" id="sec-profile">
+        <h2 class="cbk-section-title">Brand Profile</h2>
+        <p class="cbk-section-desc">The foundation of your brand kit. Fill in the basics.</p>
+
+        <div class="cbk-card">
+          <div class="cbk-form-row">
+            <div class="cbk-form-group">
+              <label class="cbk-form-label">Brand Name</label>
+              <input aria-label="E.g. Nkem Studios" type="text" class="cbk-form-input" id="brandName" placeholder="e.g. Nkem Studios" data-field="name">
+            </div>
+            <div class="cbk-form-group">
+              <label class="cbk-form-label">Tagline</label>
+              <input aria-label="E.g. Create without limits" type="text" class="cbk-form-input" id="brandTagline" placeholder="e.g. Create without limits" data-field="tagline">
+            </div>
+          </div>
+          <div class="cbk-form-group">
+            <label class="cbk-form-label">Mission (1 paragraph)</label>
+            <textarea class="cbk-form-textarea" id="brandMission" rows="3" placeholder="What does your brand exist to do?" data-field="mission" aria-label="What does your brand exist to do?"></textarea>
+          </div>
+          <div class="cbk-form-group">
+            <label class="cbk-form-label">Brand Story</label>
+            <textarea class="cbk-form-textarea" id="brandStory" rows="5" placeholder="How did your brand come to be? What drives you?" data-field="story" aria-label="How did your brand come to be? What drives you?"></textarea>
+          </div>
+          <div class="cbk-form-row">
+            <div class="cbk-form-group">
+              <label class="cbk-form-label">Industry</label>
+              <select class="cbk-form-select" id="brandIndustry" data-field="industry" aria-label="Brand Industry">
+                <option value="">Select industry...</option>
+                <option value="fashion">Fashion &amp; Beauty</option>
+                <option value="tech">Technology</option>
+                <option value="food">Food &amp; Beverage</option>
+                <option value="media">Media &amp; Entertainment</option>
+                <option value="education">Education</option>
+                <option value="health">Health &amp; Wellness</option>
+                <option value="finance">Finance</option>
+                <option value="travel">Travel &amp; Hospitality</option>
+                <option value="real-estate">Real Estate</option>
+                <option value="agriculture">Agriculture</option>
+                <option value="ecommerce">E-commerce</option>
+                <option value="creative">Creative Services</option>
+                <option value="nonprofit">Non-profit</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="cbk-form-group">
+              <label class="cbk-form-label" for="brandAudience">Target Audience</label>
+              <textarea class="cbk-form-textarea" id="brandAudience" rows="2" placeholder="Who is your brand for?" data-field="audience" style="min-height:44px"></textarea>
+            </div>
+          </div>
+          <button type="button" class="cbk-btn" id="saveProfileBtn">Save Profile</button>
+        </div>
+      </div>
+
+      <!-- ===== LOGOS ===== -->
+      <div class="cbk-section" id="sec-logos">
+        <h2 class="cbk-section-title">Logo Library</h2>
+        <p class="cbk-section-desc">Add up to 5 logo variations. Preview each on light and dark backgrounds.</p>
+
+        <div class="cbk-logo-grid" id="logoGrid"></div>
+        <div style="margin-top:16px;">
+          <button type="button" class="cbk-btn secondary small" id="downloadAllLogosBtn">&#128230; Download All (concept)</button>
+        </div>
+      </div>
+
+      <!-- ===== COLORS ===== -->
+      <div class="cbk-section" id="sec-colors">
+        <h2 class="cbk-section-title">Color Palette</h2>
+        <p class="cbk-section-desc">Define your brand colors. Auto-generated tints, shades, and WCAG contrast checks.</p>
+
+        <div class="cbk-color-grid" id="colorGrid"></div>
+
+        <div class="cbk-card" style="margin-top:20px;">
+          <div class="cbk-card-title">&#9878;&#65039; Contrast Checker</div>
+          <div class="cbk-contrast-grid" id="contrastGrid"></div>
+        </div>
+
+        <div class="cbk-card" style="margin-top:16px;">
+          <div class="cbk-card-title">&#128203; Export Palette</div>
+          <div class="cbk-export-tabs" id="colorExportTabs">
+            <button type="button" class="cbk-export-tab active" data-fmt="css">CSS Variables</button>
+            <button type="button" class="cbk-export-tab" data-fmt="tailwind">Tailwind</button>
+            <button type="button" class="cbk-export-tab" data-fmt="figma">Figma JSON</button>
+          </div>
+          <div class="cbk-export-code" id="colorExportCode" style="position:relative;">
+            <button type="button" class="cbk-copy-btn" id="copyColorExport">Copy</button>
+            <pre id="colorExportPre" style="margin:0;white-space:pre-wrap;font:inherit;color:inherit;"></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== TYPOGRAPHY ===== -->
+      <div class="cbk-section" id="sec-typography">
+        <h2 class="cbk-section-title">Typography</h2>
+        <p class="cbk-section-desc">Pick fonts for headings, body text, and accents. See a live preview and pairing score.</p>
+
+        <div class="cbk-font-slots" id="fontSlots"></div>
+
+        <div class="cbk-card" style="margin-top:20px;">
+          <div class="cbk-card-title">&#128065;&#65039; Live Preview</div>
+          <div id="fontLivePreview">
+            <div class="cbk-font-preview-text heading" id="previewHeading">The quick brown fox jumps over the lazy dog</div>
+            <div class="cbk-font-preview-text body" id="previewBody" style="margin-top:12px">Africa is not a country. It is a continent of 54 nations, each with its own culture, language, and story. When you build for Africa, you build for a billion people with a billion different needs.</div>
+            <div class="cbk-font-preview-text accent" id="previewAccent" style="margin-top:12px">Featured Collection &mdash; New Arrivals</div>
+          </div>
+          <div id="pairingScoreWrap" style="margin-top:16px;"></div>
+        </div>
+
+        <div class="cbk-card" style="margin-top:16px;">
+          <div class="cbk-card-title">&#128279; Google Fonts Link</div>
+          <div class="cbk-export-code" style="position:relative;">
+            <button type="button" class="cbk-copy-btn" id="copyFontLink">Copy</button>
+            <pre id="fontLinkPre" style="margin:0;white-space:pre-wrap;font:inherit;color:inherit;"></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== VOICE ===== -->
+      <div class="cbk-section" id="sec-voice">
+        <h2 class="cbk-section-title">Tone of Voice</h2>
+        <p class="cbk-section-desc">Define how your brand speaks. Sliders, attributes, and AI-generated sample posts.</p>
+
+        <div class="cbk-voice-scales" id="voiceScales"></div>
+
+        <div class="cbk-card">
+          <div class="cbk-tags-section">
+            <div class="cbk-tags-label positive">&#9989; We are...</div>
+            <div class="cbk-tags-wrap" id="weAreWrap"></div>
+            <div class="cbk-tag-add-row">
+              <input aria-label="Add attribute" type="text" class="cbk-tag-add-input" id="weAreInput" placeholder="Add attribute...">
+              <button type="button" class="cbk-btn small" id="weAreAddBtn">Add</button>
+            </div>
+          </div>
+          <div class="cbk-tags-section">
+            <div class="cbk-tags-label negative">&#10060; We are not...</div>
+            <div class="cbk-tags-wrap" id="weAreNotWrap"></div>
+            <div class="cbk-tag-add-row">
+              <input aria-label="Add attribute" type="text" class="cbk-tag-add-input" id="weAreNotInput" placeholder="Add attribute...">
+              <button type="button" class="cbk-btn small secondary" id="weAreNotAddBtn">Add</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="cbk-card">
+          <div class="cbk-card-title">&#10024; AI Sample Posts</div>
+          <p style="font-size:13px;margin-bottom:14px;">Generate 3 sample social posts that match your tone of voice.</p>
+          <button type="button" class="cbk-btn" id="generateVoiceBtn"><span class="cbk-spinner"></span>Generate Samples</button>
+          <div class="cbk-loading-status" id="loadingStatus"></div>
+          <div class="cbk-ai-samples" id="aiSamples"></div>
+        </div>
+      </div>
+
+      <!-- ===== BRAND GUIDE ===== -->
+      <div class="cbk-section" id="sec-guide">
+        <h2 class="cbk-section-title">Brand Guide</h2>
+        <p class="cbk-section-desc">Auto-generated from your kit. Print or export as a standalone HTML page.</p>
+
+        <div style="margin-bottom:16px;display:flex;gap:12px;">
+          <button type="button" class="cbk-btn" id="generateGuideBtn">Generate Brand Guide</button>
+          <button type="button" class="cbk-btn secondary" id="printGuideBtn">&#128424; Print</button>
+          <button type="button" class="cbk-btn secondary" id="exportGuideBtn">&#128230; Export HTML</button>
+        </div>
+
+        <div id="guidePreview"></div>
+      </div>
+
+      <!-- ===== EXPORT ===== -->
+      <div class="cbk-section" id="sec-export">
+        <h2 class="cbk-section-title">Export &amp; Sync</h2>
+        <p class="cbk-section-desc">Export your full brand kit or sync with other Creator Suite tools.</p>
+
+        <div class="cbk-card">
+          <div class="cbk-card-title">&#128279; Cross-Tool Sync</div>
+          <p style="font-size:13px;margin-bottom:12px;">Your brand kit is automatically saved to <code style="background:rgba(255,255,255,.08);padding:2px 6px;border-radius:4px;font-size:12px;">afro_brand_kit</code> in localStorage. Other Creator Suite tools read this key to apply your brand colors, fonts, and voice settings.</p>
+          <div id="syncStatus" style="font-size:13px;color:var(--cbk-primary);font-weight:600;"></div>
+        </div>
+
+        <div class="cbk-card">
+          <div class="cbk-card-title">&#128230; Full Kit Export</div>
+          <div class="cbk-export-actions">
+            <button type="button" class="cbk-btn" id="exportFullJsonBtn">Download JSON</button>
+            <button type="button" class="cbk-btn secondary" id="copyFullJsonBtn">Copy to Clipboard</button>
+          </div>
+        </div>
+
+        <div class="cbk-card">
+          <div class="cbk-card-title">&#128229; Import Kit</div>
+          <p style="font-size:13px;margin-bottom:12px;">Paste a previously exported JSON to restore your brand kit.</p>
+          <textarea class="cbk-form-textarea" id="importTextarea" rows="4" placeholder="Paste JSON here..." aria-label="Paste JSON here..."></textarea>
+          <button type="button" class="cbk-btn secondary small" id="importApplyBtn" style="margin-top:8px;">Apply Import</button>
+        </div>
+      </div>
+
+    </div><!-- /workspace -->
+  </div><!-- /layout -->
+
+  <!-- BOTTOM NAV (mobile) -->
+  <nav class="cbk-bottom-nav">
+    <button type="button" data-section="profile" class="active"><span class="cbk-bnav-icon">&#128100;</span>Profile</button>
+    <button type="button" data-section="logos"><span class="cbk-bnav-icon">&#127912;</span>Logos</button>
+    <button type="button" data-section="colors"><span class="cbk-bnav-icon">&#127752;</span>Colors</button>
+    <button type="button" data-section="typography"><span class="cbk-bnav-icon">&#128288;</span>Type</button>
+    <button type="button" data-section="voice"><span class="cbk-bnav-icon">&#128227;</span>Voice</button>
+    <button type="button" data-section="guide"><span class="cbk-bnav-icon">&#128214;</span>Guide</button>
+  </nav>
+
+  <!-- TOAST -->
+  <div class="cbk-toast" id="toast"></div>
+
+<script>
+!function() {
+  "use strict";
+
+  /* ========================================
+     STATE
+  ======================================== */
+  var STORAGE_KEY = 'afro_brand_kit';
+  var DEFAULT_KIT = {
+    profile: { name: '', tagline: '', mission: '', story: '', industry: '', audience: '' },
+    logos: [
+      { slot: 'Primary', url: '' },
+      { slot: 'Secondary', url: '' },
+      { slot: 'Icon / Mark', url: '' },
+      { slot: 'Light Background', url: '' },
+      { slot: 'Dark Background', url: '' }
+    ],
+    colors: [
+      { name: 'Primary', hex: '#EAB308' },
+      { name: 'Secondary', hex: '#1E293B' },
+      { name: 'Accent', hex: '#22C55E' },
+      { name: 'Background', hex: '#F8FAFC' },
+      { name: 'Text', hex: '#0F172A' }
+    ],
+    fonts: {
+      heading: 'Sora',
+      body: 'DM Sans',
+      accent: 'Sora'
+    },
+    voice: {
+      scales: { formality: 50, seriousness: 50, professionalism: 50, boldness: 50 },
+      weAre: [],
+      weAreNot: []
+    }
+  };
+
+  var kit = loadKit();
+
+  function loadKit() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        var parsed = JSON.parse(raw);
+        // Merge with defaults for any missing keys
+        return Object.assign({}, DEFAULT_KIT, parsed, {
+          profile: Object.assign({}, DEFAULT_KIT.profile, parsed.profile || {}),
+          fonts: Object.assign({}, DEFAULT_KIT.fonts, parsed.fonts || {}),
+          voice: Object.assign({}, DEFAULT_KIT.voice, parsed.voice || {},
+            { scales: Object.assign({}, DEFAULT_KIT.voice.scales, (parsed.voice || {}).scales || {}) })
+        });
+      }
+    } catch(e) {}
+    return JSON.parse(JSON.stringify(DEFAULT_KIT));
+  }
+
+  function saveKit() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(kit));
+  }
+
+  /* ========================================
+     VERB SPINNER
+  ======================================== */
+  var ACTION_VERBS = [
+    "Crafting your brand identity",
+    "Analyzing brand positioning",
+    "Generating color palettes",
+    "Defining your voice",
+    "Building brand guidelines",
+    "Selecting typography",
+    "Designing visual identity",
+    "Mapping brand personality",
+    "Curating brand elements",
+    "Structuring your brand story",
+    "Refining brand aesthetics",
+    "Engineering brand consistency",
+    "Composing brand messaging",
+    "Forging your brand DNA",
+    "Architecting brand presence",
+    "Polishing brand details"
+  ];
+
+  var verbTimer = null;
+  var verbIndex = 0;
+  function startVerbCycling() {
+    var el = document.getElementById('loadingStatus');
+    el.classList.add('active');
+    verbIndex = Math.floor(Math.random() * ACTION_VERBS.length);
+    updateVerb();
+    verbTimer = setInterval(updateVerb, 2200);
+  }
+  function updateVerb() {
+    var el = document.getElementById('loadingStatus');
+    var verb = ACTION_VERBS[verbIndex % ACTION_VERBS.length];
+    el.innerHTML = verb + '<span class="cbk-loading-dot">.</span><span class="cbk-loading-dot">.</span><span class="cbk-loading-dot">.</span>';
+    verbIndex++;
+  }
+  function stopVerbCycling() {
+    if (verbTimer) { clearInterval(verbTimer); verbTimer = null; }
+    var el = document.getElementById('loadingStatus');
+    el.classList.remove('active');
+  }
+
+  /* ========================================
+     TOAST
+  ======================================== */
+  function toast(msg) {
+    var el = document.getElementById('toast');
+    el.textContent = msg; el.classList.add('show');
+    setTimeout(function() { el.classList.remove('show'); }, 2500);
+  }
+
+  /* ========================================
+     NAVIGATION
+  ======================================== */
+  function switchSection(sectionId) {
+    document.querySelectorAll('.cbk-section').forEach(function(s) { s.classList.remove('active'); });
+    document.querySelectorAll('.cbk-nav-item').forEach(function(n) { n.classList.remove('active'); });
+    document.querySelectorAll('.cbk-bottom-nav button').forEach(function(b) { b.classList.remove('active'); });
+
+    var sec = document.getElementById('sec-' + sectionId);
+    if (sec) sec.classList.add('active');
+
+    document.querySelectorAll('.cbk-nav-item[data-section="' + sectionId + '"]').forEach(function(n) { n.classList.add('active'); });
+    document.querySelectorAll('.cbk-bottom-nav button[data-section="' + sectionId + '"]').forEach(function(b) { b.classList.add('active'); });
+  }
+
+  document.querySelectorAll('.cbk-nav-item, .cbk-bottom-nav button').forEach(function(btn) {
+    if (!btn.getAttribute('data-section')) return;
+    btn.onclick = function() { switchSection(btn.getAttribute('data-section')); };
+  });
+
+  /* ========================================
+     HELPERS
+  ======================================== */
+  function escapeHtml(str) {
+    return (str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function hexToRgb(hex) {
+    var r = parseInt(hex.slice(1,3), 16);
+    var g = parseInt(hex.slice(3,5), 16);
+    var b = parseInt(hex.slice(5,7), 16);
+    return { r: r, g: g, b: b };
+  }
+
+  function rgbToHex(r, g, b) {
+    return '#' + [r,g,b].map(function(x) { var h = Math.round(Math.max(0,Math.min(255,x))).toString(16); return h.length === 1 ? '0'+h : h; }).join('');
+  }
+
+  function tintColor(hex, pct) {
+    var c = hexToRgb(hex);
+    return rgbToHex(c.r + (255-c.r)*pct, c.g + (255-c.g)*pct, c.b + (255-c.b)*pct);
+  }
+
+  function shadeColor(hex, pct) {
+    var c = hexToRgb(hex);
+    return rgbToHex(c.r*(1-pct), c.g*(1-pct), c.b*(1-pct));
+  }
+
+  function luminance(hex) {
+    var c = hexToRgb(hex);
+    var a = [c.r, c.g, c.b].map(function(v) {
+      v = v / 255;
+      return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
+  }
+
+  function contrastRatio(hex1, hex2) {
+    var l1 = luminance(hex1);
+    var l2 = luminance(hex2);
+    var lighter = Math.max(l1, l2);
+    var darker = Math.min(l1, l2);
+    return (lighter + 0.05) / (darker + 0.05);
+  }
+
+  function copyText(text) {
+    navigator.clipboard.writeText(text).then(function() { toast('Copied!'); });
+  }
+
+  /* ========================================
+     AUTH
+  ======================================== */
+  function getToken() {
+    try {
+      var raw = localStorage.getItem('sb-zpclagtgczsygrgztlts-auth-token');
+      if (raw) { var d = JSON.parse(raw); return d.access_token || ''; }
+    } catch(e) {}
+    return '';
+  }
+
+  function authHeaders() {
+    var t = getToken();
+    return { 'Content-Type': 'application/json', 'Authorization': t ? 'Bearer ' + t : '' };
+  }
+
+  /* ========================================
+     GOOGLE FONTS
+  ======================================== */
+  var GOOGLE_FONTS = [
+    'Sora', 'DM Sans', 'Inter', 'Poppins', 'Montserrat', 'Roboto', 'Open Sans',
+    'Lato', 'Raleway', 'Playfair Display', 'Merriweather', 'Nunito', 'Work Sans',
+    'Space Grotesk', 'Outfit', 'Rubik', 'Oswald', 'Manrope', 'Instrument Serif', 'Bitter'
+  ];
+
+  var FONT_CATEGORIES = {
+    'Sora': 'sans', 'DM Sans': 'sans', 'Inter': 'sans', 'Poppins': 'sans', 'Montserrat': 'sans',
+    'Roboto': 'sans', 'Open Sans': 'sans', 'Lato': 'sans', 'Raleway': 'sans',
+    'Playfair Display': 'serif', 'Merriweather': 'serif', 'Instrument Serif': 'serif', 'Bitter': 'serif',
+    'Nunito': 'sans', 'Work Sans': 'sans', 'Space Grotesk': 'sans', 'Outfit': 'sans',
+    'Rubik': 'sans', 'Oswald': 'display', 'Manrope': 'sans'
+  };
+
+  var loadedFonts = {};
+  function loadGoogleFont(name) {
+    if (loadedFonts[name]) return;
+    loadedFonts[name] = true;
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css2?family=' + encodeURIComponent(name) + ':wght@400;500;600;700;800&display=swap';
+    document.head.appendChild(link);
+  }
+
+  function fontPairingScore(heading, body) {
+    var hCat = FONT_CATEGORIES[heading] || 'sans';
+    var bCat = FONT_CATEGORIES[body] || 'sans';
+    if ((hCat === 'serif' && bCat === 'sans') || (hCat === 'sans' && bCat === 'serif')) return { score: 'good', label: 'Great pairing' };
+    if (heading === body) return { score: 'ok', label: 'Same font — consistent but safe' };
+    if (hCat === 'display' && bCat === 'display') return { score: 'bad', label: 'Two display fonts — may clash' };
+    if (hCat === bCat) return { score: 'ok', label: 'Similar category — works but less contrast' };
+    return { score: 'ok', label: 'Decent pairing' };
+  }
+
+  /* ========================================
+     1. PROFILE
+  ======================================== */
+  function initProfile() {
+    var p = kit.profile;
+    document.getElementById('brandName').value = p.name || '';
+    document.getElementById('brandTagline').value = p.tagline || '';
+    document.getElementById('brandMission').value = p.mission || '';
+    document.getElementById('brandStory').value = p.story || '';
+    document.getElementById('brandIndustry').value = p.industry || '';
+    document.getElementById('brandAudience').value = p.audience || '';
+  }
+
+  document.getElementById('saveProfileBtn').onclick = function() {
+    kit.profile.name = document.getElementById('brandName').value.trim();
+    kit.profile.tagline = document.getElementById('brandTagline').value.trim();
+    kit.profile.mission = document.getElementById('brandMission').value.trim();
+    kit.profile.story = document.getElementById('brandStory').value.trim();
+    kit.profile.industry = document.getElementById('brandIndustry').value;
+    kit.profile.audience = document.getElementById('brandAudience').value.trim();
+    saveKit();
+    toast('Profile saved!');
+  };
+
+  /* ========================================
+     2. LOGOS
+  ======================================== */
+  function renderLogos() {
+    var grid = document.getElementById('logoGrid');
+    var html = '';
+    kit.logos.forEach(function(logo, i) {
+      html += '<div class="cbk-logo-slot">';
+      html += '<div class="cbk-logo-slot-header"><span>' + escapeHtml(logo.slot) + '</span>';
+      if (logo.url) html += '<button type="button" class="cbk-btn small secondary" data-logo-dl="' + i + '" style="padding:4px 8px;font-size:10px;">&#11015; Save</button>';
+      html += '</div>';
+      html += '<div class="cbk-logo-previews">';
+      html += '<div class="cbk-logo-preview light">' + (logo.url ? '<img src="' + escapeHtml(logo.url) + '" alt="' + escapeHtml(logo.slot) + '">' : 'Light') + '</div>';
+      html += '<div class="cbk-logo-preview dark">' + (logo.url ? '<img src="' + escapeHtml(logo.url) + '" alt="' + escapeHtml(logo.slot) + '">' : 'Dark') + '</div>';
+      html += '</div>';
+      html += '<div class="cbk-logo-url-row">';
+      html += '<input aria-label="Image URL" type="text" class="cbk-logo-url-input" placeholder="Image URL..." value="' + escapeHtml(logo.url) + '" data-logo-idx="' + i + '">';
+      html += '<button type="button" class="cbk-btn small" data-logo-set="' + i + '" style="padding:8px 12px;">Set</button>';
+      html += '</div>';
+      html += '</div>';
+    });
+    grid.innerHTML = html;
+
+    // Wire set buttons
+    grid.querySelectorAll('[data-logo-set]').forEach(function(btn) {
+      btn.onclick = function() {
+        var idx = parseInt(btn.getAttribute('data-logo-set'));
+        var input = grid.querySelector('[data-logo-idx="' + idx + '"]');
+        kit.logos[idx].url = (input.value || '').trim();
+        saveKit();
+        renderLogos();
+        toast('Logo updated!');
+      };
+    });
+
+    // Wire download buttons
+    grid.querySelectorAll('[data-logo-dl]').forEach(function(btn) {
+      btn.onclick = function() {
+        var idx = parseInt(btn.getAttribute('data-logo-dl'));
+        var url = kit.logos[idx].url;
+        if (url) { window.open(url, '_blank'); }
+      };
+    });
+  }
+
+  document.getElementById('downloadAllLogosBtn').onclick = function() {
+    toast('ZIP download requires JSZip — open each logo URL individually for now');
+    kit.logos.forEach(function(l) { if (l.url) window.open(l.url, '_blank'); });
+  };
+
+  /* ========================================
+     3. COLORS
+  ======================================== */
+  function renderColors() {
+    var grid = document.getElementById('colorGrid');
+    var html = '';
+    kit.colors.forEach(function(c, i) {
+      var tints = [tintColor(c.hex, 0.1), tintColor(c.hex, 0.2), tintColor(c.hex, 0.3)];
+      var shades = [shadeColor(c.hex, 0.1), shadeColor(c.hex, 0.2), shadeColor(c.hex, 0.3)];
+
+      html += '<div class="cbk-color-card">';
+      html += '<div class="cbk-color-swatch" style="background:' + c.hex + '"><input type="color" value="' + c.hex + '" data-color-pick="' + i + '" aria-label="Input value"></div>';
+      html += '<div class="cbk-color-body">';
+      html += '<div class="cbk-color-name">' + escapeHtml(c.name) + '</div>';
+      html += '<div class="cbk-color-hex-row"><input aria-label="Cbk color hex input" type="text" class="cbk-color-hex-input" value="' + c.hex + '" data-color-hex="' + i + '"><button type="button" class="cbk-btn small secondary" data-color-apply="' + i + '" style="padding:6px 10px;font-size:11px;">Set</button></div>';
+      html += '<div class="cbk-color-tints" title="Tints: 10%, 20%, 30% | Shades: 10%, 20%, 30%">';
+      tints.forEach(function(t) { html += '<div class="cbk-color-tint" style="background:' + t + '"></div>'; });
+      shades.forEach(function(s) { html += '<div class="cbk-color-tint" style="background:' + s + '"></div>'; });
+      html += '</div>';
+      html += '</div></div>';
+    });
+    grid.innerHTML = html;
+
+    // Wire color pickers
+    grid.querySelectorAll('[data-color-pick]').forEach(function(input) {
+      input.oninput = function() {
+        var idx = parseInt(input.getAttribute('data-color-pick'));
+        kit.colors[idx].hex = input.value;
+        saveKit(); renderColors(); renderContrast(); updateColorExport();
+      };
+    });
+
+    // Wire hex inputs
+    grid.querySelectorAll('[data-color-apply]').forEach(function(btn) {
+      btn.onclick = function() {
+        var idx = parseInt(btn.getAttribute('data-color-apply'));
+        var hexInput = grid.querySelector('[data-color-hex="' + idx + '"]');
+        var val = (hexInput.value || '').trim();
+        if (/^#[0-9a-fA-F]{6}$/.test(val)) {
+          kit.colors[idx].hex = val;
+          saveKit(); renderColors(); renderContrast(); updateColorExport();
+          toast('Color updated!');
+        } else {
+          toast('Enter a valid hex (e.g. #EAB308)');
+        }
+      };
+    });
+
+    renderContrast();
+    updateColorExport();
+  }
+
+  function renderContrast() {
+    var grid = document.getElementById('contrastGrid');
+    var pairs = [
+      { fg: 'Text', bg: 'Background', label: 'Text on Background' },
+      { fg: 'Primary', bg: 'Background', label: 'Primary on Background' },
+      { fg: 'Background', bg: 'Primary', label: 'Background on Primary' },
+      { fg: 'Text', bg: 'Primary', label: 'Text on Primary' }
+    ];
+
+    var colorMap = {};
+    kit.colors.forEach(function(c) { colorMap[c.name] = c.hex; });
+
+    var html = '';
+    pairs.forEach(function(pair) {
+      var fgHex = colorMap[pair.fg] || '#000000';
+      var bgHex = colorMap[pair.bg] || '#ffffff';
+      var ratio = contrastRatio(fgHex, bgHex);
+      var aa = ratio >= 4.5;
+      var aaa = ratio >= 7;
+      var aaLarge = ratio >= 3;
+
+      html += '<div class="cbk-contrast-item" style="background:' + bgHex + ';color:' + fgHex + ';border:1px solid rgba(255,255,255,.1);">';
+      html += '<div class="cbk-contrast-label" style="color:' + fgHex + '">' + escapeHtml(pair.label) + '</div>';
+      html += '<div class="cbk-contrast-ratio" style="color:' + fgHex + '">' + ratio.toFixed(2) + ':1</div>';
+      html += '<div class="cbk-contrast-badges">';
+      html += '<span class="cbk-contrast-badge ' + (aa ? 'pass' : 'fail') + '">AA ' + (aa ? 'PASS' : 'FAIL') + '</span>';
+      html += '<span class="cbk-contrast-badge ' + (aaa ? 'pass' : 'fail') + '">AAA ' + (aaa ? 'PASS' : 'FAIL') + '</span>';
+      html += '<span class="cbk-contrast-badge ' + (aaLarge ? 'pass' : 'fail') + '">AA Large ' + (aaLarge ? 'PASS' : 'FAIL') + '</span>';
+      html += '</div></div>';
+    });
+    grid.innerHTML = html;
+  }
+
+  var currentColorFmt = 'css';
+  function updateColorExport() {
+    var pre = document.getElementById('colorExportPre');
+    var output = '';
+
+    if (currentColorFmt === 'css') {
+      output = ':root {\n';
+      kit.colors.forEach(function(c) {
+        var varName = '--brand-' + c.name.toLowerCase().replace(/\s+/g, '-');
+        output += '  ' + varName + ': ' + c.hex + ';\n';
+      });
+      output += '}';
+    } else if (currentColorFmt === 'tailwind') {
+      output = 'module.exports = {\n  theme: {\n    extend: {\n      colors: {\n        brand: {\n';
+      kit.colors.forEach(function(c) {
+        var key = c.name.toLowerCase().replace(/\s+/g, '-');
+        output += "          '" + key + "': '" + c.hex + "',\n";
+      });
+      output += '        }\n      }\n    }\n  }\n}';
+    } else {
+      var figma = { colors: {} };
+      kit.colors.forEach(function(c) {
+        var rgb = hexToRgb(c.hex);
+        figma.colors[c.name] = { hex: c.hex, r: rgb.r, g: rgb.g, b: rgb.b };
+      });
+      output = JSON.stringify(figma, null, 2);
+    }
+
+    pre.textContent = output;
+  }
+
+  document.getElementById('colorExportTabs').onclick = function(e) {
+    var tab = e.target.closest('.cbk-export-tab');
+    if (!tab) return;
+    document.querySelectorAll('#colorExportTabs .cbk-export-tab').forEach(function(t) { t.classList.remove('active'); });
+    tab.classList.add('active');
+    currentColorFmt = tab.getAttribute('data-fmt');
+    updateColorExport();
+  };
+
+  document.getElementById('copyColorExport').onclick = function() {
+    copyText(document.getElementById('colorExportPre').textContent);
+  };
+
+  /* ========================================
+     4. TYPOGRAPHY
+  ======================================== */
+  function renderFontSlots() {
+    var container = document.getElementById('fontSlots');
+    var slots = [
+      { key: 'heading', label: 'Heading Font' },
+      { key: 'body', label: 'Body Font' },
+      { key: 'accent', label: 'Accent Font' }
+    ];
+
+    var html = '';
+    slots.forEach(function(slot) {
+      var current = kit.fonts[slot.key] || 'DM Sans';
+      html += '<div class="cbk-font-slot">';
+      html += '<div class="cbk-font-slot-label">' + slot.label + '</div>';
+      html += '<select class="cbk-form-select" data-font-slot="' + slot.key + '" aria-label="Select option">';
+      GOOGLE_FONTS.forEach(function(f) {
+        html += '<option value="' + f + '"' + (f === current ? ' selected' : '') + '>' + f + '</option>';
+      });
+      html += '</select>';
+      html += '</div>';
+    });
+    container.innerHTML = html;
+
+    // Wire selects
+    container.querySelectorAll('[data-font-slot]').forEach(function(sel) {
+      sel.onchange = function() {
+        var slot = sel.getAttribute('data-font-slot');
+        kit.fonts[slot] = sel.value;
+        loadGoogleFont(sel.value);
+        saveKit();
+        updateFontPreview();
+      };
+    });
+
+    // Load current fonts
+    Object.values(kit.fonts).forEach(function(f) { if (f) loadGoogleFont(f); });
+    updateFontPreview();
+  }
+
+  function updateFontPreview() {
+    var h = kit.fonts.heading || 'Sora';
+    var b = kit.fonts.body || 'DM Sans';
+    var a = kit.fonts.accent || 'Sora';
+
+    document.getElementById('previewHeading').style.fontFamily = "'" + h + "', sans-serif";
+    document.getElementById('previewBody').style.fontFamily = "'" + b + "', sans-serif";
+    document.getElementById('previewAccent').style.fontFamily = "'" + a + "', sans-serif";
+
+    // Pairing score
+    var score = fontPairingScore(h, b);
+    var wrap = document.getElementById('pairingScoreWrap');
+    wrap.innerHTML = '<div class="cbk-pairing-score ' + score.score + '">' +
+      (score.score === 'good' ? '&#9989;' : score.score === 'ok' ? '&#128993;' : '&#128308;') +
+      ' ' + escapeHtml(score.label) + '</div>';
+
+    // Font link
+    var families = [];
+    var seen = {};
+    [h, b, a].forEach(function(f) {
+      if (!seen[f]) { seen[f] = true; families.push(f); }
+    });
+    var link = '<link href="https://fonts.googleapis.com/css2?';
+    link += families.map(function(f) { return 'family=' + encodeURIComponent(f) + ':wght@400;500;600;700;800'; }).join('&');
+    link += '&display=swap" rel="stylesheet">';
+    document.getElementById('fontLinkPre').textContent = link;
+  }
+
+  document.getElementById('copyFontLink').onclick = function() {
+    copyText(document.getElementById('fontLinkPre').textContent);
+  };
+
+  /* ========================================
+     5. VOICE
+  ======================================== */
+  var VOICE_SCALES = [
+    { key: 'formality', left: 'Formal', right: 'Casual' },
+    { key: 'seriousness', left: 'Serious', right: 'Playful' },
+    { key: 'professionalism', left: 'Professional', right: 'Friendly' },
+    { key: 'boldness', left: 'Reserved', right: 'Bold' }
+  ];
+
+  function renderVoice() {
+    var container = document.getElementById('voiceScales');
+    var html = '';
+    VOICE_SCALES.forEach(function(scale) {
+      var val = kit.voice.scales[scale.key] || 50;
+      html += '<div class="cbk-voice-scale">';
+      html += '<div class="cbk-voice-scale-labels"><span>' + scale.left + '</span><span>' + scale.right + '</span></div>';
+      html += '<input aria-label="Cbk voice range" type="range" class="cbk-voice-range" min="0" max="100" value="' + val + '" data-voice-scale="' + scale.key + '">';
+      html += '<div class="cbk-voice-value" id="voiceVal-' + scale.key + '">' + val + '</div>';
+      html += '</div>';
+    });
+    container.innerHTML = html;
+
+    container.querySelectorAll('[data-voice-scale]').forEach(function(range) {
+      range.oninput = function() {
+        var key = range.getAttribute('data-voice-scale');
+        kit.voice.scales[key] = parseInt(range.value);
+        document.getElementById('voiceVal-' + key).textContent = range.value;
+        saveKit();
+      };
+    });
+
+    renderTags('weAre', kit.voice.weAre, 'positive');
+    renderTags('weAreNot', kit.voice.weAreNot, 'negative');
+  }
+
+  function renderTags(type, list, cls) {
+    var wrap = document.getElementById(type + 'Wrap');
+    var html = '';
+    list.forEach(function(item, i) {
+      html += '<span class="cbk-tag ' + cls + '">' + escapeHtml(item) + '<button type="button" class="cbk-tag-remove" data-tag-type="' + type + '" data-tag-idx="' + i + '">&times;</button></span>';
+    });
+    wrap.innerHTML = html;
+
+    wrap.querySelectorAll('.cbk-tag-remove').forEach(function(btn) {
+      btn.onclick = function() {
+        var t = btn.getAttribute('data-tag-type');
+        var idx = parseInt(btn.getAttribute('data-tag-idx'));
+        if (t === 'weAre') kit.voice.weAre.splice(idx, 1);
+        else kit.voice.weAreNot.splice(idx, 1);
+        saveKit();
+        renderTags(t, t === 'weAre' ? kit.voice.weAre : kit.voice.weAreNot, t === 'weAre' ? 'positive' : 'negative');
+      };
+    });
+  }
+
+  function addTag(type, inputId) {
+    var input = document.getElementById(inputId);
+    var val = (input.value || '').trim();
+    if (!val) return;
+    if (type === 'weAre') {
+      kit.voice.weAre.push(val);
+      renderTags('weAre', kit.voice.weAre, 'positive');
+    } else {
+      kit.voice.weAreNot.push(val);
+      renderTags('weAreNot', kit.voice.weAreNot, 'negative');
+    }
+    input.value = '';
+    saveKit();
+  }
+
+  document.getElementById('weAreAddBtn').onclick = function() { addTag('weAre', 'weAreInput'); };
+  document.getElementById('weAreNotAddBtn').onclick = function() { addTag('weAreNot', 'weAreNotInput'); };
+
+  document.getElementById('weAreInput').onkeydown = function(e) { if (e.key === 'Enter') { e.preventDefault(); addTag('weAre', 'weAreInput'); } };
+  document.getElementById('weAreNotInput').onkeydown = function(e) { if (e.key === 'Enter') { e.preventDefault(); addTag('weAreNot', 'weAreNotInput'); } };
+
+  // AI Voice Samples
+  document.getElementById('generateVoiceBtn').onclick = function() {
+    var btn = document.getElementById('generateVoiceBtn');
+    btn.classList.add('loading'); btn.disabled = true;
+    startVerbCycling();
+
+    var scaleDescs = [];
+    VOICE_SCALES.forEach(function(scale) {
+      var val = kit.voice.scales[scale.key] || 50;
+      var desc = val < 30 ? scale.left : val > 70 ? scale.right : 'balanced ' + scale.left + '/' + scale.right;
+      scaleDescs.push(desc);
+    });
+
+    var voiceDesc = 'Brand: ' + (kit.profile.name || 'My Brand') + '. ';
+    voiceDesc += 'Tone: ' + scaleDescs.join(', ') + '. ';
+    if (kit.voice.weAre.length) voiceDesc += 'We are: ' + kit.voice.weAre.join(', ') + '. ';
+    if (kit.voice.weAreNot.length) voiceDesc += 'We are NOT: ' + kit.voice.weAreNot.join(', ') + '. ';
+    if (kit.profile.industry) voiceDesc += 'Industry: ' + kit.profile.industry + '. ';
+
+    var prompt = 'You are a brand voice consultant. Given this brand voice profile, generate exactly 3 sample social media posts that perfectly match this tone. Each should be 2-4 sentences, feel authentic, and be ready to post.\n\nVoice profile: ' + voiceDesc + '\n\nReturn ONLY 3 posts, each separated by ---. No labels, no numbering.';
+
+    fetch('/.netlify/functions/ai-advisor', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ tool: 'creator-brand', message: prompt })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      btn.classList.remove('loading'); btn.disabled = false;
+      stopVerbCycling();
+      var text = data.reply || data.output || data.message || '';
+      var posts = text.split('---').map(function(s) { return s.trim(); }).filter(function(s) { return s.length > 10; });
+      if (!posts.length) posts = [text];
+
+      var html = '';
+      posts.slice(0, 3).forEach(function(post, i) {
+        html += '<div class="cbk-ai-sample">';
+        html += '<div class="cbk-ai-sample-label">Sample Post ' + (i + 1) + '</div>';
+        html += '<div class="cbk-ai-sample-text">' + escapeHtml(post) + '</div>';
+        html += '</div>';
+      });
+      document.getElementById('aiSamples').innerHTML = html;
+    })
+    .catch(function() {
+      btn.classList.remove('loading'); btn.disabled = false;
+      stopVerbCycling();
+      toast('AI generation failed. Try again.');
+    });
+  };
+
+  /* ========================================
+     6. BRAND GUIDE GENERATOR
+  ======================================== */
+  document.getElementById('generateGuideBtn').onclick = function() {
+    renderBrandGuide();
+  };
+
+  function renderBrandGuide() {
+    var p = kit.profile;
+    var colorMap = {};
+    kit.colors.forEach(function(c) { colorMap[c.name] = c.hex; });
+
+    var html = '<div class="cbk-guide-container">';
+
+    // Header
+    html += '<div class="cbk-guide-header" style="background:linear-gradient(135deg, ' + (colorMap.Primary || '#1a1a1a') + ', ' + (colorMap.Secondary || '#2a2a2a') + ');">';
+    html += '<h1 style="color:' + (colorMap.Background || '#fff') + ';font-family:\'' + (kit.fonts.heading || 'Sora') + '\',sans-serif;">' + escapeHtml(p.name || 'Brand Name') + '</h1>';
+    html += '<p style="color:rgba(255,255,255,.7)">' + escapeHtml(p.tagline || 'Brand Guidelines') + '</p>';
+    html += '</div>';
+
+    // Mission
+    if (p.mission) {
+      html += '<div class="cbk-guide-section"><h2>Mission</h2><p>' + escapeHtml(p.mission) + '</p></div>';
+    }
+
+    // Logo Usage
+    var hasLogos = kit.logos.some(function(l) { return l.url; });
+    if (hasLogos) {
+      html += '<div class="cbk-guide-section"><h2>Logo Usage</h2>';
+      html += '<div style="display:flex;gap:16px;flex-wrap:wrap;">';
+      kit.logos.forEach(function(logo) {
+        if (!logo.url) return;
+        html += '<div style="text-align:center;"><div style="width:120px;height:80px;display:flex;align-items:center;justify-content:center;background:#f9f9f9;border-radius:8px;border:1px solid #e5e7eb;margin-bottom:4px;"><img src="' + escapeHtml(logo.url) + '" style="max-width:90%;max-height:90%;object-fit:contain;"></div>';
+        html += '<div style="font-size:11px;color:#666;">' + escapeHtml(logo.slot) + '</div></div>';
+      });
+      html += '</div></div>';
+    }
+
+    // Colors
+    html += '<div class="cbk-guide-section"><h2>Color Palette</h2>';
+    html += '<div class="cbk-guide-colors">';
+    kit.colors.forEach(function(c) {
+      html += '<div class="cbk-guide-color-chip"><div class="cbk-guide-color-swatch" style="background:' + c.hex + '"></div>';
+      html += '<div class="cbk-guide-color-label">' + escapeHtml(c.name) + '</div>';
+      html += '<div class="cbk-guide-color-hex">' + c.hex + '</div></div>';
+    });
+    html += '</div></div>';
+
+    // Typography
+    html += '<div class="cbk-guide-section"><h2>Typography</h2>';
+    var fontEntries = [
+      { label: 'Heading', font: kit.fonts.heading },
+      { label: 'Body', font: kit.fonts.body },
+      { label: 'Accent', font: kit.fonts.accent }
+    ];
+    fontEntries.forEach(function(entry) {
+      html += '<div class="cbk-guide-font-sample">';
+      html += '<div class="cbk-guide-font-label">' + entry.label + '</div>';
+      html += '<div style="font-family:\'' + entry.font + '\',sans-serif;font-size:' + (entry.label === 'Heading' ? '24px' : entry.label === 'Body' ? '15px' : '12px') + ';font-weight:' + (entry.label === 'Heading' ? '700' : '400') + ';color:#222;' + (entry.label === 'Accent' ? 'text-transform:uppercase;letter-spacing:1px;' : '') + '">' + entry.font + ' — The quick brown fox</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+
+    // Tone of Voice
+    html += '<div class="cbk-guide-section"><h2>Tone of Voice</h2>';
+    VOICE_SCALES.forEach(function(scale) {
+      var val = kit.voice.scales[scale.key] || 50;
+      html += '<div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;font-size:12px;color:#666;margin-bottom:4px;"><span>' + scale.left + '</span><span>' + scale.right + '</span></div>';
+      html += '<div style="height:8px;background:#e5e7eb;border-radius:4px;position:relative;"><div style="position:absolute;left:' + val + '%;top:-2px;width:12px;height:12px;border-radius:50%;background:' + (colorMap.Primary || '#EAB308') + ';transform:translateX(-50%);"></div></div></div>';
+    });
+
+    // Do's and Don'ts
+    if (kit.voice.weAre.length || kit.voice.weAreNot.length) {
+      html += '<div class="cbk-guide-do-dont">';
+      if (kit.voice.weAre.length) {
+        html += '<div class="cbk-guide-do"><h3>We Are</h3><ul>';
+        kit.voice.weAre.forEach(function(item) { html += '<li>' + escapeHtml(item) + '</li>'; });
+        html += '</ul></div>';
+      }
+      if (kit.voice.weAreNot.length) {
+        html += '<div class="cbk-guide-dont"><h3>We Are Not</h3><ul>';
+        kit.voice.weAreNot.forEach(function(item) { html += '<li>' + escapeHtml(item) + '</li>'; });
+        html += '</ul></div>';
+      }
+      html += '</div>';
+    }
+    html += '</div>';
+
+    html += '</div>'; // /container
+
+    document.getElementById('guidePreview').innerHTML = html;
+  }
+
+  // Print
+  document.getElementById('printGuideBtn').onclick = function() {
+    var preview = document.getElementById('guidePreview');
+    if (!preview.innerHTML.trim()) { toast('Generate the guide first'); return; }
+    var win = window.open('', '_blank');
+    win.document.write('<!DOCTYPE html><html><head><title>' + escapeHtml(kit.profile.name || 'Brand') + ' — Brand Guide</title>');
+    win.document.write('<link href="https://fonts.googleapis.com/css2?family=' + encodeURIComponent(kit.fonts.heading || 'Sora') + ':wght@400;700;800&family=' + encodeURIComponent(kit.fonts.body || 'DM Sans') + ':wght@400;500;600&display=swap" rel="stylesheet">');
+    win.document.write('<style>body{margin:0;font-family:"' + (kit.fonts.body || 'DM Sans') + '",sans-serif;} h1,h2,h3{font-family:"' + (kit.fonts.heading || 'Sora') + '",sans-serif;} .cbk-guide-container{max-width:800px;margin:0 auto;} .cbk-guide-header{padding:40px 48px;color:#fff;} .cbk-guide-header h1{font-size:32px;font-weight:800;margin:0 0 4px;} .cbk-guide-header p{margin:0;opacity:.7;font-size:14px;} .cbk-guide-section{padding:32px 48px;border-bottom:1px solid #e5e7eb;} .cbk-guide-section:last-child{border-bottom:none;} .cbk-guide-section h2{font-size:20px;font-weight:700;margin:0 0 16px;color:#111;} .cbk-guide-section p{font-size:14px;line-height:1.7;color:#444;margin:0;} .cbk-guide-colors{display:flex;gap:12px;flex-wrap:wrap;} .cbk-guide-color-chip{width:80px;text-align:center;} .cbk-guide-color-swatch{width:80px;height:80px;border-radius:12px;margin-bottom:6px;border:1px solid rgba(0,0,0,.08);} .cbk-guide-color-label{font-size:11px;font-weight:600;color:#666;} .cbk-guide-color-hex{font-size:11px;color:#999;} .cbk-guide-font-sample{margin-bottom:16px;} .cbk-guide-font-label{font-size:11px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;} .cbk-guide-do-dont{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:16px;} @media screen and (max-width:768px){.cbk-guide-do-dont{grid-template-columns:1fr;}} .cbk-guide-do{background:#f0fdf4;padding:16px;border-radius:10px;} .cbk-guide-dont{background:#fef2f2;padding:16px;border-radius:10px;} .cbk-guide-do h3{color:#22c55e;font-size:14px;margin:0 0 8px;} .cbk-guide-dont h3{color:#ef4444;font-size:14px;margin:0 0 8px;} .cbk-guide-do li,.cbk-guide-dont li{font-size:13px;color:#444;line-height:1.7;} @media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}</style>');
+    win.document.write('</head><body>');
+    win.document.write(preview.querySelector('.cbk-guide-container').outerHTML);
+    win.document.write('</body></html>');
+    win.document.close();
+    setTimeout(function() { win.print(); }, 500);
+  };
+
+  // Export HTML
+  document.getElementById('exportGuideBtn').onclick = function() {
+    var preview = document.getElementById('guidePreview');
+    if (!preview.innerHTML.trim()) { toast('Generate the guide first'); return; }
+    var guideHTML = preview.querySelector('.cbk-guide-container');
+    if (!guideHTML) { toast('Generate the guide first'); return; }
+
+    var fullHTML = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8">\n\n<title>' + escapeHtml(kit.profile.name || 'Brand') + ' — Brand Guide</title>\n';
+    fullHTML += '<link href="https://fonts.googleapis.com/css2?family=' + encodeURIComponent(kit.fonts.heading || 'Sora') + ':wght@400;700;800&family=' + encodeURIComponent(kit.fonts.body || 'DM Sans') + ':wght@400;500;600&display=swap" rel="stylesheet">\n';
+    fullHTML += '<style>body{margin:0;font-family:"' + (kit.fonts.body || 'DM Sans') + '",sans-serif;background:#f8f8f8;padding:40px 20px;} h1,h2,h3{font-family:"' + (kit.fonts.heading || 'Sora') + '",sans-serif;} .cbk-guide-container{max-width:800px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);} .cbk-guide-header{padding:40px 48px;color:#fff;} .cbk-guide-header h1{font-size:32px;font-weight:800;margin:0 0 4px;} .cbk-guide-header p{margin:0;opacity:.7;font-size:14px;} .cbk-guide-section{padding:32px 48px;border-bottom:1px solid #e5e7eb;} .cbk-guide-section:last-child{border-bottom:none;} .cbk-guide-section h2{font-size:20px;font-weight:700;margin:0 0 16px;color:#111;} .cbk-guide-section p{font-size:14px;line-height:1.7;color:#444;margin:0;} .cbk-guide-colors{display:flex;gap:12px;flex-wrap:wrap;} .cbk-guide-color-chip{width:80px;text-align:center;} .cbk-guide-color-swatch{width:80px;height:80px;border-radius:12px;margin-bottom:6px;border:1px solid rgba(0,0,0,.08);} .cbk-guide-color-label{font-size:11px;font-weight:600;color:#666;} .cbk-guide-color-hex{font-size:11px;color:#999;} .cbk-guide-font-sample{margin-bottom:16px;} .cbk-guide-font-label{font-size:11px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;} .cbk-guide-do-dont{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:16px;} @media screen and (max-width:768px){.cbk-guide-do-dont{grid-template-columns:1fr;}} .cbk-guide-do{background:#f0fdf4;padding:16px;border-radius:10px;} .cbk-guide-dont{background:#fef2f2;padding:16px;border-radius:10px;} .cbk-guide-do h3{color:#22c55e;font-size:14px;margin:0 0 8px;} .cbk-guide-dont h3{color:#ef4444;font-size:14px;margin:0 0 8px;} .cbk-guide-do li,.cbk-guide-dont li{font-size:13px;color:#444;line-height:1.7;}</style>\n';
+    fullHTML += '</head>\n<body>\n' + guideHTML.outerHTML + '\n</body>\n</html>';
+
+    var blob = new Blob([fullHTML], { type: 'text/html' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = (kit.profile.name || 'brand').replace(/\s+/g, '-').toLowerCase() + '-guide.html';
+    a.click();
+    URL.revokeObjectURL(url);
+    toast('Brand guide exported!');
+  };
+
+  /* ========================================
+     7. EXPORT / IMPORT / SYNC
+  ======================================== */
+  function updateSyncStatus() {
+    var el = document.getElementById('syncStatus');
+    var data = localStorage.getItem(STORAGE_KEY);
+    if (data) {
+      el.innerHTML = '&#9989; Brand kit synced to localStorage (' + (data.length / 1024).toFixed(1) + ' KB)';
+    } else {
+      el.innerHTML = '&#9888;&#65039; No brand kit saved yet';
+    }
+  }
+
+  document.getElementById('exportJsonBtn').onclick = function() {
+    downloadJSON();
+  };
+
+  document.getElementById('exportFullJsonBtn').onclick = function() {
+    downloadJSON();
+  };
+
+  function downloadJSON() {
+    var blob = new Blob([JSON.stringify(kit, null, 2)], { type: 'application/json' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = (kit.profile.name || 'brand').replace(/\s+/g, '-').toLowerCase() + '-kit.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    toast('JSON exported!');
+  }
+
+  document.getElementById('copyFullJsonBtn').onclick = function() {
+    copyText(JSON.stringify(kit, null, 2));
+  };
+
+  document.getElementById('importBtn').onclick = function() {
+    switchSection('export');
+    setTimeout(function() { document.getElementById('importTextarea').focus(); }, 200);
+  };
+
+  document.getElementById('importApplyBtn').onclick = function() {
+    var raw = document.getElementById('importTextarea').value.trim();
+    if (!raw) { toast('Paste JSON first'); return; }
+    try {
+      var imported = JSON.parse(raw);
+      kit = Object.assign({}, DEFAULT_KIT, imported, {
+        profile: Object.assign({}, DEFAULT_KIT.profile, imported.profile || {}),
+        fonts: Object.assign({}, DEFAULT_KIT.fonts, imported.fonts || {}),
+        voice: Object.assign({}, DEFAULT_KIT.voice, imported.voice || {},
+          { scales: Object.assign({}, DEFAULT_KIT.voice.scales, (imported.voice || {}).scales || {}) })
+      });
+      if (!Array.isArray(kit.logos)) kit.logos = DEFAULT_KIT.logos;
+      if (!Array.isArray(kit.colors)) kit.colors = DEFAULT_KIT.colors;
+      if (!Array.isArray(kit.voice.weAre)) kit.voice.weAre = [];
+      if (!Array.isArray(kit.voice.weAreNot)) kit.voice.weAreNot = [];
+      saveKit();
+      initAll();
+      toast('Brand kit imported!');
+    } catch(e) {
+      toast('Invalid JSON format');
+    }
+  };
+
+  /* ========================================
+     INIT
+  ======================================== */
+  function initAll() {
+    initProfile();
+    renderLogos();
+    renderColors();
+    renderFontSlots();
+    renderVoice();
+    updateSyncStatus();
+  }
+
+  initAll();
+
+}();
+</script>
+</body>
+</html>

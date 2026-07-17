@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Break-Even Calculator for African Businesses | AfroTools</title>
+<meta name="description" content="Calculate the monthly sales units and revenue needed to cover fixed and variable costs. Test pricing, margin of safety, sensitivity scenarios, and export a break-even report.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Break Even Calculator | AfroTools">
+<meta property="og:description" content="Calculate break-even units, revenue, margin of safety, sensitivity scenarios, and export a planning report.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/break-even.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/break-even/">
+<meta property="og:site_name" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --afro-green: var(--color-primary);
+    --afro-red: #ef4444;
+    --afro-dark: #1e293b;
+    --afro-slate: #0f1419;
+  }
+
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #2d3748 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-hero::after {
+    content: '📈';
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8rem;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--afro-green);
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    color: var(--afro-green);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.6;
+    max-width: 700px;
+    margin-bottom: 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .b-green {
+    background: rgba(0, 113, 227, 0.18);
+    color: var(--color-primary);
+    border: 1px solid rgba(0, 113, 227, 0.38);
+  }
+
+  .tool-main {
+    padding: 28px 0 72px;
+  }
+
+  .tool-main-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 22px;
+    align-items: start;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .card + .card {
+    margin-top: 18px;
+  }
+
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #f1f5f9;
+    background: #f8fafc;
+  }
+
+  .card-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--afro-dark);
+  }
+
+  .card-body {
+    padding: 22px;
+  }
+
+  .field {
+    margin-bottom: 16px;
+  }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .f-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--afro-dark);
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .f-input, .f-select {
+    width: 100%;
+    padding: 10px 12px;
+    background: #f8fafc;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 7px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--afro-dark);
+    outline: none;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.18s;
+  }
+
+  .f-input:focus, .f-select:focus {
+    border-color: var(--afro-green);
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+  }
+
+  .calc-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--afro-green);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .calc-btn:hover {
+    background: #0059B3;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 113, 227, 0.3);
+  }
+
+  .calc-btn.secondary {
+    background: #0284c7;
+    margin-top: 8px;
+  }
+
+  .calc-btn.secondary:hover {
+    background: #0369a1;
+  }
+
+  .fixed-costs-list {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 12px;
+    font-size: 0.8rem;
+  }
+
+  .cost-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .cost-item:last-child {
+    border-bottom: none;
+  }
+
+  .cost-item-label {
+    color: #475569;
+  }
+
+  .cost-item-value {
+    font-weight: 700;
+    color: var(--afro-dark);
+  }
+
+  .cost-total {
+    border-top: 1.5px solid #cbd5e1;
+    padding-top: 8px;
+    margin-top: 8px;
+    font-weight: 700;
+    color: var(--afro-dark);
+  }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .kpi-card {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+  }
+
+  .kpi-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #475569;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .kpi-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--afro-green);
+  }
+
+  .kpi-subtext {
+    font-size: 0.7rem;
+    color: #64748b;
+    margin-top: 4px;
+  }
+
+  .chart-container {
+    position: relative;
+    height: 280px;
+    margin: 16px 0;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 12px;
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+    margin-top: 12px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+
+  th {
+    background: #f8fafc;
+    padding: 10px;
+    text-align: left;
+    font-weight: 700;
+    color: var(--afro-dark);
+    border-bottom: 2px solid #cbd5e1;
+  }
+
+  td {
+    padding: 10px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #475569;
+  }
+
+  tr.be-row td {
+    background: #EFF6FF;
+    font-weight: 700;
+  }
+
+  .action-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .action-plan-box {
+    border: 1px solid #cbd5e1;
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 12px;
+    color: #475569;
+    font-size: 0.82rem;
+    line-height: 1.55;
+  }
+
+  .action-plan-box strong {
+    display: block;
+    color: var(--afro-dark);
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+  }
+
+  .action-plan-box ul {
+    margin: 6px 0 0;
+    padding-left: 18px;
+  }
+
+  .action-status {
+    min-height: 20px;
+    margin-top: 8px;
+    color: #475569;
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+
+  .break-next-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .break-next-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #fff;
+    padding: 14px;
+  }
+
+  .break-next-card strong {
+    display: block;
+    color: var(--afro-dark);
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+  }
+
+  .break-next-card span {
+    display: block;
+    color: #52637a;
+    font-size: 0.8rem;
+    line-height: 1.55;
+  }
+
+  .action-btn {
+    padding: 10px 12px;
+    background: var(--afro-green);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+
+  .action-btn:hover {
+    background: #0059B3;
+  }
+
+  .action-btn.alt {
+    background: #0284c7;
+  }
+
+  .action-btn.alt:hover {
+    background: #0369a1;
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .info-card {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .info-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--afro-dark);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .info-text {
+    font-size: 0.8rem;
+    color: #475569;
+    line-height: 1.6;
+  }
+
+  .info-text strong {
+    color: var(--afro-dark);
+  }
+
+  .insight-box {
+    background: #EFF6FF;
+    border: 1px solid #93C5FD;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 0.8rem;
+    color: #1E3A5F;
+    margin-top: 12px;
+  }
+
+  /* Site coherence pass */
+  .tool-hero {
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .tool-hero::after {
+    display: none;
+  }
+
+  .breadcrumb,
+  .breadcrumb a {
+    color: #64748b;
+  }
+
+  .breadcrumb span,
+  .breadcrumb a:hover {
+    color: #0057B8;
+  }
+
+  .tool-hero h1 {
+    color: #0f172a;
+    letter-spacing: 0;
+  }
+
+  .tool-hero h1 em {
+    color: #0057B8;
+  }
+
+  .hero-sub {
+    color: #475569;
+  }
+
+  .badge,
+  .card,
+  .kpi-card,
+  .action-plan-box,
+  .info-card,
+  .insight-box,
+  .fixed-costs-list {
+    border-radius: 8px;
+    box-shadow: none;
+  }
+
+  .badge {
+    background: #fff;
+    color: #475569;
+    border: 1px solid #dbe3ef;
+  }
+
+  .card {
+    border-color: #e2e8f0;
+  }
+
+  .card-header {
+    background: #f8fafc;
+  }
+
+  .f-input,
+  .f-select,
+  .calc-btn,
+  .action-btn {
+    border-radius: 8px;
+  }
+
+  .calc-btn,
+  .action-btn {
+    min-height: 44px;
+    box-shadow: none;
+  }
+
+  .calc-btn:hover,
+  .action-btn:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .f-input:focus-visible,
+  .f-select:focus-visible,
+  .calc-btn:focus-visible,
+  .action-btn:focus-visible {
+    outline: 2px solid #0057B8;
+    outline-offset: 2px;
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table-wrapper table {
+    min-width: 620px;
+  }
+
+  @media (max-width: 768px) {
+    .tool-hero {
+      padding: 36px 0 28px;
+    }
+
+    .tool-hero-inner,
+    .tool-main-inner {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+
+    .tool-main-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .field-row {
+      grid-template-columns: 1fr;
+    }
+
+    .kpi-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .action-buttons,
+    .break-next-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+<link rel="stylesheet" href="/assets/css/vat-business-tax-focus.css?v=70162817">
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Break-Even Calculator","description":"Calculate break-even units, revenue, contribution margin, margin of safety, and sensitivity scenarios from user-entered costs and price.","url":"https://afrotools.com/tools/break-even/","inLanguage":"en","applicationCategory":"BusinessApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/break-even.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Break-Even Calculator for African Businesses","url":"https://afrotools.com/tools/break-even/","description":"Calculate the sales units and revenue needed to cover fixed and variable costs, then test pricing and cost sensitivity.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/break-even.webp"}</script>
+<script src="/assets/js/lib/chart-config.js?v=b81750bb"></script>
+<script src="/assets/js/lib/pdf-template.js?v=980345b6" defer></script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Break Even Calculator | AfroTools">
+<meta name="twitter:description" content="Calculate break-even units, revenue, margin of safety, sensitivity scenarios, and export a planning report.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/break-even.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Break Even Calculator",
+      "item": "https://afrotools.com/tools/break-even/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Break-Even Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Break-Even Calculator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Break-Even Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Break-Even Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"What is a break-even point?","acceptedAnswer":{"@type":"Answer","text":"The break-even point is the number of units you need to sell (or total revenue you need to earn) for your total revenue to exactly equal your total costs. Beyond this point, every additional sale generates profit."}},{"@type":"Question","name":"What is sensitivity analysis in this context?","acceptedAnswer":{"@type":"Answer","text":"Sensitivity analysis shows how your break-even point changes when you adjust key variables like selling price, fixed costs, or variable costs. This helps you understand which factors have the biggest impact on your profitability."}},{"@type":"Question","name":"Can I download the break-even report?","acceptedAnswer":{"@type":"Answer","text":"Yes. The calculator generates a professional PDF report that includes your inputs, break-even figures, charts, and sensitivity analysis. You can download and share it with business partners or investors."}},{"@type":"Question","name":"What are fixed costs vs variable costs?","acceptedAnswer":{"@type":"Answer","text":"Fixed costs remain the same regardless of how many units you sell (rent, salaries, insurance). Variable costs change with each unit produced or sold (raw materials, packaging, shipping per item)."}},{"@type":"Question","name":"Is this calculator suitable for service businesses?","acceptedAnswer":{"@type":"Answer","text":"Absolutely. For service businesses, treat each service engagement as a \"unit.\" Your fixed costs might include office rent and software subscriptions, while variable costs could be staff time or materials per job."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/break-even/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/break-even/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/seuil-rentabilite/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-break-even/">
+<link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/dawo-da-jari/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/break-even/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="/">AfroTools</a> / <span>Tools</span></div>
+    <h1>Break Even <em>Calculator</em></h1>
+    <p class="hero-sub">Enter costs, price, and expected sales to see the minimum units and revenue needed to cover costs, then test price or cost pressure before you share the plan.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">Interactive Charts</span>
+      <span class="badge b-green">Sensitivity Analysis</span>
+      <span class="badge b-green">PDF Report</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <!-- Quick Example Presets -->
+      <div class="card" style="margin-bottom:18px">
+        <div class="card-head"><span class="card-title">🚀 African Business Examples (click to fill)</span></div>
+        <div class="card-body" style="padding:16px">
+          <div style="display:flex;flex-wrap:wrap;gap:8px;" id="bizPresets"></div>
+        </div>
+      </div>
+
+      <!-- Input Section -->
+      <div class="card">
+        <div class="card-head"><span class="card-title">Business Cost Information</span></div>
+        <div class="card-body">
+          <div class="field">
+            <label class="f-label">Business Name (for report)</label>
+            <input aria-label="E.g., My Tailoring Shop" type="text" class="f-input" id="businessName" placeholder="e.g., My Tailoring Shop">
+          </div>
+
+          <div style="border-bottom: 2px solid #e2e8f0; padding-bottom: 14px; margin-bottom: 14px;">
+            <div style="font-size: 0.75rem; font-weight: 700; color: var(--afro-dark); margin-bottom: 10px;">FIXED MONTHLY COSTS</div>
+
+            <div class="field-row">
+              <div class="field">
+                <label class="f-label">Rent</label>
+                <input aria-label="F input cost input" type="number" class="f-input cost-input" data-label="Rent" value="5000" step="100">
+              </div>
+              <div class="field">
+                <label class="f-label">Salaries/Labour</label>
+                <input aria-label="F input cost input" type="number" class="f-input cost-input" data-label="Salaries" value="3000" step="100">
+              </div>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label class="f-label">Utilities (electricity, water)</label>
+                <input aria-label="F input cost input" type="number" class="f-input cost-input" data-label="Utilities" value="1000" step="100">
+              </div>
+              <div class="field">
+                <label class="f-label">Insurance</label>
+                <input aria-label="F input cost input" type="number" class="f-input cost-input" data-label="Insurance" value="500" step="100">
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="f-label">Other Fixed Costs</label>
+              <input aria-label="F input cost input" type="number" class="f-input cost-input" data-label="Other" value="500" step="100">
+            </div>
+
+            <div class="fixed-costs-list" id="costsList"></div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label class="f-label">Variable Cost per Unit</label>
+              <input aria-label="Cost to produce 1 unit" type="number" class="f-input" id="varCost" placeholder="Cost to produce 1 unit" value="50" step="0.01">
+            </div>
+            <div class="field">
+              <label class="f-label">Selling Price per Unit</label>
+              <input aria-label="Price per unit" type="number" class="f-input" id="sellingPrice" placeholder="Price per unit" value="150" step="0.01">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="f-label">Currency</label>
+            <select class="f-select" id="currency" aria-label="Currency">
+              <option value="$">USD ($)</option>
+              <option value="₦">NGN (₦)</option>
+              <option value="KSh ">KES (KSh)</option>
+              <option value="R">ZAR (R)</option>
+              <option value="GH₵">GHS (GH₵)</option>
+              <option value="TSh ">TZS (TSh)</option>
+              <option value="USh ">UGX (USh)</option>
+              <option value="Br ">ETB (Birr)</option>
+              <option value="CFA ">XOF/XAF (CFA)</option>
+              <option value="RF ">RWF (RF)</option>
+              <option value="E£">EGP (E£)</option>
+              <option value="£">GBP (£)</option>
+              <option value="€">EUR (€)</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="f-label">Current/Expected Monthly Sales Volume</label>
+            <input aria-label="Units sold per month" type="number" class="f-input" id="currentSales" placeholder="Units sold per month" value="200" step="1">
+          </div>
+
+          <button type="button" class="calc-btn" onclick="calculateBreakEven()">Calculate Break-Even</button>
+        </div>
+      </div>
+
+      <!-- KPI Cards -->
+      <div class="kpi-grid" id="kpiSection" style="display: none;">
+        <div class="kpi-card">
+          <div class="kpi-label">Break-Even Units</div>
+          <div class="kpi-value" id="beUnits">0</div>
+          <div class="kpi-subtext">per month</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Break-Even Revenue</div>
+          <div class="kpi-value" id="beRevenue">0</div>
+          <div class="kpi-subtext" id="beRevenueNote"></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Contribution Margin</div>
+          <div class="kpi-value" id="contribMargin">0</div>
+          <div class="kpi-subtext">per unit</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Margin of Safety</div>
+          <div class="kpi-value" id="marginSafety">0%</div>
+          <div class="kpi-subtext" id="safetyText"></div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="card" id="chartCard" style="display: none;">
+        <div class="card-head"><span class="card-title">Break-Even Analysis Chart</span></div>
+        <div class="card-body">
+          <div class="chart-container">
+            <canvas id="breakEvenChart"></canvas>
+          </div>
+          <div style="font-size: 0.75rem; color: #475569; text-align: center; margin-top: 8px;">
+            Green zone = Profit area | Red zone = Loss area
+          </div>
+        </div>
+      </div>
+
+      <!-- Profit Zone Analysis -->
+      <div class="card" id="profitZoneCard" style="display: none;">
+        <div class="card-head"><span class="card-title">Profit Zone at Different Sales Levels</span></div>
+        <div class="card-body">
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>% of Break-Even</th>
+                  <th>Units</th>
+                  <th>Revenue</th>
+                  <th>Profit/Loss</th>
+                </tr>
+              </thead>
+              <tbody id="profitZoneTable">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sensitivity Analysis -->
+      <div class="card" id="sensitivityCard" style="display: none;">
+        <div class="card-head"><span class="card-title">Sensitivity Analysis</span></div>
+        <div class="card-body">
+          <div style="font-size: 0.8rem; color: #475569; margin-bottom: 12px;">
+            How does break-even change if key factors shift?
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Scenario</th>
+                  <th>Change</th>
+                  <th>New Break-Even</th>
+                  <th>Impact</th>
+                </tr>
+              </thead>
+              <tbody id="sensitivityTable">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="card" id="actionsCard" style="display: none;">
+        <div class="card-head"><span class="card-title">Actions</span></div>
+        <div class="card-body">
+          <div class="action-plan-box" id="breakEvenActionPlan" aria-live="polite"><strong>Use this result as a decision checklist.</strong><span>Copy the action plan, download the PDF, or save the calculation after checking the assumptions.</span></div>
+          <div class="action-buttons">
+            <button type="button" class="action-btn" onclick="copyBreakEvenPlan()">Copy action plan</button>
+            <button type="button" class="action-btn" onclick="downloadPDF()">Download PDF report</button>
+            <button type="button" class="action-btn alt" onclick="printChart()">Print</button>
+          </div>
+          <button type="button" class="action-btn" style="width: 100%; margin-top: 8px;" onclick="saveBreakEven()">Save calculation</button>
+          <div class="action-status" id="breakEvenActionStatus" role="status" aria-live="polite"></div>
+          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+            <save-result-button tool-slug="break-even" tool-name="Break Even Calculator"></save-result-button>
+            <share-result-button tool-name="Break Even Calculator" tool-slug="break-even"></share-result-button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="info-card">
+        <div class="info-title">What is Break-Even?</div>
+        <div class="info-text">
+          Break-even is the point where your total revenue equals your total costs. At this point, you make zero profit or loss.<br><br>
+          <strong>Formula:</strong> Fixed Costs ÷ (Selling Price - Variable Cost)
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Key Metrics</div>
+        <div class="info-text">
+          <strong>Contribution Margin:</strong> Selling Price minus Variable Cost. The portion of each sale that covers fixed costs.<br><br>
+          <strong>Margin of Safety:</strong> How much sales can drop before you hit break-even.
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Why It Matters</div>
+        <div class="info-text">
+          Use break-even before changing price, hiring, borrowing, or buying stock. It gives you:<br><br>
+          Pricing floor<br>
+          Monthly sales target<br>
+          Cost pressure check<br>
+          Safer growth assumptions
+        </div>
+      </div>
+
+      <div class="insight-box" id="insightBox" style="display: none;"></div>
+    </div>
+  </div>
+</div>
+
+<afro-related-tools category="ecommerce" current="break-even" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/vat-calculator/" data-related-tool data-id="vat-calc-pan-african" data-name="VAT Calculator (Pan-African)" data-category="ecommerce" data-icon="VC" data-desc="All 50+ African countries. Add VAT, extract VAT, compare countries side-by-side. 2025/26 rates.">VAT Calculator (Pan-African)</a></li><li><a href="/nigeria/ng-vat" data-related-tool data-id="ng-vat" data-name="Nigeria VAT Calculator" data-category="ecommerce" data-icon="NV" data-desc="NTA 2026 VAT: 7.5% standard, zero-rated, exempt categories. Reverse VAT included.">Nigeria VAT Calculator</a></li><li><a href="/south-africa/za-vat" data-related-tool data-id="za-vat" data-name="South Africa VAT Calculator" data-category="ecommerce" data-icon="SA" data-desc="SARS VAT 15%, zero-rated, exempt. Inclusive/exclusive. Vendor registration threshold.">South Africa VAT Calculator</a></li><li><a href="/kenya/ke-vat" data-related-tool data-id="ke-vat" data-name="Kenya VAT Calculator" data-category="ecommerce" data-icon="KV" data-desc="KRA VAT 16%, zero-rated, exempt. Reverse VAT and inclusive/exclusive toggle.">Kenya VAT Calculator</a></li><li><a href="/egypt/eg-vat" data-related-tool data-id="eg-vat" data-name="Egypt VAT Calculator" data-category="ecommerce" data-icon="EV" data-desc="ETA VAT 14%. Standard + reduced rates. Table tax.">Egypt VAT Calculator</a></li><li><a href="/ghana/gh-vat" data-related-tool data-id="gh-vat" data-name="Ghana VAT Calculator" data-category="ecommerce" data-icon="GV" data-desc="GRA VAT 15% + 2.5% NHIL + 2.5% GETFund. Standard effective charge and zero-rated supplies.">Ghana VAT Calculator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+
+<section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
+  <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Break-even workflow</h2>
+  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
+    <p>Start with the calculator, then use the result as a monthly operating target. If the break-even number is too high, test three moves before acting: raise price, reduce fixed costs, or reduce variable cost per unit. Export or copy the result only after the assumptions match current supplier prices, rent, labour, tax, and realistic demand.</p>
+  </div>
+
+<section class="df-upgrade" data-df-upgrade="break-even">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Break-even action path</span>
+      <h2>Use the result as a monthly target</h2>
+      <p>Not sure how to get the most from the Break-Even Calculator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Break-Even Calculator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
+    </div>
+    <div class="break-next-grid" aria-label="Break-even next steps">
+      <div class="break-next-card"><strong>1. Enter real costs</strong><span>Rent, labour, utilities, other fixed costs, variable cost per unit, price, and expected monthly sales.</span></div>
+      <div class="break-next-card"><strong>2. Stress-test price</strong><span>Check whether a discount, supplier increase, or fixed-cost jump makes break-even unrealistic.</span></div>
+      <div class="break-next-card"><strong>3. Export the plan</strong><span>Download PDF, save locally, or copy the action plan after calculating.</span></div>
+    </div>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="break-even-faq-title">
+  <h2 id="break-even-faq-title">Break-even FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the Break-Even Calculator?</summary><p>Enter your amounts, rates and dates in the fields above. The Break-Even Calculator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Break-Even Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Break-Even Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
+</section>
+<section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="break-even-verification-title">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Sources &amp; verification</span>
+          <h2 class="tool-verification-title" id="break-even-verification-title">Break-even methodology</h2>
+          <p class="tool-verification-lead">The calculator uses fixed costs, selling price, variable cost per unit, and expected sales to calculate contribution margin, break-even units, break-even revenue, margin of safety, sensitivity rows, and a copyable action plan.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Planning estimate</span>
+          <p class="tool-verification-note">Reviewed 2026. Supplier prices, rent, wages, tax, delivery, payment timing, and demand assumptions can change quickly.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>Before acting</h3>
+          <ul class="tool-verification-list">
+            <li>Verify current rent, payroll, utilities, supplier quotes, packaging, delivery, taxes, platform fees, and collection timing.</li>
+            <li>Stress-test a price cut, supplier increase, fixed-cost jump, and slower sales before taking debt, hiring, or expanding stock.</li>
+            <li>Attach source documents and real sales evidence before sharing the PDF with a lender, investor, or partner.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Privacy and limits</h3>
+          <p class="tool-verification-meta"><strong>Disclaimer:</strong> Inputs are processed locally until you choose to save, copy, print, share, or download. This is not financial advice, tax advice, funding approval, or a guaranteed profit forecast.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<afro-business-cta tool-name="Break-Even Calculator" save-note="Calculate break-even, then copy the action plan, save locally, print, share, or download the PDF report for partner, lender, or internal review."></afro-business-cta>
+  <div class="landing-faq" style="display:flex;flex-direction:column;gap:8px;">
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">What is a break-even point?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">The break-even point is the number of units you need to sell (or total revenue you need to earn) for your total revenue to exactly equal your total costs. Beyond this point, every additional sale generates profit.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">What is sensitivity analysis in this context?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Sensitivity analysis shows how your break-even point changes when you adjust key variables like selling price, fixed costs, or variable costs. This helps you understand which factors have the biggest impact on your profitability.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Can I download the break-even report?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Yes. The calculator generates a professional PDF report that includes your inputs, break-even figures, charts, and sensitivity analysis. You can download and share it with business partners or investors.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">What are fixed costs vs variable costs?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Fixed costs remain the same regardless of how many units you sell (rent, salaries, insurance). Variable costs change with each unit produced or sold (raw materials, packaging, shipping per item).</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Is this calculator suitable for service businesses?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Absolutely. For service businesses, treat each service engagement as a "unit." Your fixed costs might include office rent and software subscriptions, while variable costs could be staff time or materials per job.</p>
+    </details>
+  </div>
+</section>
+
+<afro-footer></afro-footer>
+
+<!-- auth handled by navbar (supabase-auth.js) -->
+<script>
+var BIZ_PRESETS = [
+  {label:'🧵 Tailoring (Lagos)',name:'Tailoring Shop',rent:40000,salary:60000,util:15000,ins:5000,other:10000,varCost:1200,price:4500,sales:60,curr:'₦'},
+  {label:'🍽️ Food Stall (Nairobi)',name:'Food Stall',rent:8000,salary:15000,util:3000,ins:1000,other:2000,varCost:200,price:600,sales:300,curr:'KSh '},
+  {label:'💈 Barbershop (Accra)',name:'Barbershop',rent:400,salary:600,util:150,ins:50,other:100,varCost:5,price:30,sales:200,curr:'GH₵'},
+  {label:'🥗 Restaurant (Lagos)',name:'Restaurant',rent:200000,salary:300000,util:80000,ins:20000,other:50000,varCost:1800,price:5500,sales:180,curr:'₦'},
+  {label:'🛒 Mini-Mart (Johannesburg)',name:'Mini-Mart',rent:8000,salary:12000,util:3000,ins:1500,other:2500,varCost:15,price:35,sales:1500,curr:'R'},
+  {label:'💻 Freelance Dev (Remote)',name:'Web Dev Freelance',rent:1000,salary:0,util:500,ins:200,other:300,varCost:0,price:50000,sales:3,curr:'₦'},
+  {label:'🏫 Tutorial Centre (Abuja)',name:'Tutorial Centre',rent:60000,salary:120000,util:20000,ins:5000,other:10000,varCost:0,price:15000,sales:25,curr:'₦'},
+  {label:'🐔 Poultry Farm (Ibadan)',name:'Poultry Farm',rent:30000,salary:40000,util:25000,ins:10000,other:15000,varCost:1800,price:4200,sales:120,curr:'₦'}
+];
+
+function initPresets() {
+  var el = document.getElementById('bizPresets');
+  el.innerHTML = BIZ_PRESETS.map(function(p,i){
+    return '<button type="button" onclick="loadPreset('+i+')" style="padding:6px 12px;border-radius:6px;border:1.5px solid #e2e8f0;background:#f8fafc;font-size:.78rem;font-weight:600;cursor:pointer;font-family:\'DM Sans\',sans-serif;color:#0f172a;transition:all .15s" onmouseover="this.style.borderColor=\'var(--afro-green)\';this.style.color=\'var(--afro-green)\'" onmouseout="this.style.borderColor=\'#e2e8f0\';this.style.color=\'#0f172a\'">'+p.label+'</button>';
+  }).join('');
+}
+
+function loadPreset(i) {
+  var p = BIZ_PRESETS[i];
+  document.getElementById('businessName').value = p.name;
+  var inputs = document.querySelectorAll('.cost-input');
+  var vals = [p.rent, p.salary, p.util, p.ins, p.other];
+  inputs.forEach(function(inp, idx){ if(vals[idx]!==undefined) inp.value = vals[idx]; });
+  document.getElementById('varCost').value = p.varCost;
+  document.getElementById('sellingPrice').value = p.price;
+  document.getElementById('currentSales').value = p.sales;
+  var curr = document.getElementById('currency');
+  for(var j=0; j<curr.options.length; j++){
+    if(curr.options[j].value === p.curr){ curr.selectedIndex = j; break; }
+  }
+  updateCostsList();
+}
+
+  var beChart = null;
+
+  // Update costs list
+  function updateCostsList() {
+    const inputs = document.querySelectorAll('.cost-input');
+    const list = document.getElementById('costsList');
+    let total = 0;
+
+    let html = '';
+    inputs.forEach(input => {
+      const label = input.dataset.label;
+      const value = parseFloat(input.value) || 0;
+      total += value;
+      if (value > 0) {
+        html += `<div class="cost-item"><span class="cost-item-label">${label}</span><span class="cost-item-value">${value.toLocaleString()}</span></div>`;
+      }
+    });
+
+    html += `<div class="cost-total">Total: <span style="color: var(--afro-green);">${total.toLocaleString()}</span></div>`;
+    list.innerHTML = html;
+    return total;
+  }
+
+  document.querySelectorAll('.cost-input').forEach(input => {
+    input.addEventListener('input', updateCostsList);
+  });
+
+  function calculateBreakEven() {
+    const fixedCosts = updateCostsList();
+    const varCost = parseFloat(document.getElementById('varCost').value) || 0;
+    const sellingPrice = parseFloat(document.getElementById('sellingPrice').value) || 0;
+    const currentSales = parseFloat(document.getElementById('currentSales').value) || 0;
+    const currency = document.getElementById('currency').value;
+
+    if (sellingPrice <= varCost) {
+      alert('Selling price must be higher than variable cost per unit');
+      return;
+    }
+
+    const contribMargin = sellingPrice - varCost;
+    const breakEvenUnits = Math.ceil(fixedCosts / contribMargin);
+    const breakEvenRevenue = breakEvenUnits * sellingPrice;
+    const marginOfSafety = currentSales > 0 ? ((currentSales - breakEvenUnits) / currentSales * 100).toFixed(1) : 0;
+
+    // Update KPIs
+    document.getElementById('beUnits').textContent = breakEvenUnits.toLocaleString();
+    document.getElementById('beRevenue').textContent = `${currency}${breakEvenRevenue.toLocaleString('en', {maximumFractionDigits: 0})}`;
+    document.getElementById('contribMargin').textContent = `${currency}${contribMargin.toFixed(2)}`;
+    document.getElementById('marginSafety').textContent = marginOfSafety > 0 ? marginOfSafety + '%' : 'N/A';
+
+    if (currentSales > breakEvenUnits) {
+      document.getElementById('safetyText').textContent = `You can drop ${marginOfSafety}% before breaking even`;
+    } else {
+      document.getElementById('safetyText').textContent = `Current sales below break-even`;
+    }
+
+    document.getElementById('kpiSection').style.display = 'grid';
+    document.getElementById('chartCard').style.display = 'block';
+    document.getElementById('profitZoneCard').style.display = 'block';
+    document.getElementById('sensitivityCard').style.display = 'block';
+    document.getElementById('actionsCard').style.display = 'block';
+
+    // Chart
+    try {
+      if (window.Chart) {
+        drawBreakEvenChart(breakEvenUnits, fixedCosts, varCost, sellingPrice, contribMargin);
+      } else {
+        var chartNote = document.querySelector('#chartCard .card-body > div:last-child');
+        if (chartNote) chartNote.textContent = 'Chart library unavailable in this browser; use the tables and action plan below.';
+      }
+    } catch (e) {
+      var fallbackNote = document.querySelector('#chartCard .card-body > div:last-child');
+      if (fallbackNote) fallbackNote.textContent = 'Chart could not render; use the tables and action plan below.';
+    }
+
+    // Profit Zone
+    generateProfitZone(breakEvenUnits, fixedCosts, varCost, sellingPrice, currency);
+
+    // Sensitivity
+    generateSensitivity(breakEvenUnits, fixedCosts, varCost, sellingPrice, currency);
+
+    // Insight
+    generateInsight(currentSales, breakEvenUnits, marginOfSafety);
+
+    // Store for export
+    window.beData = {
+      businessName: document.getElementById('businessName').value || 'My Business',
+      fixedCosts, varCost, sellingPrice, currentSales,
+      breakEvenUnits, breakEvenRevenue, marginOfSafety, contribMargin,
+      currency, date: new Date().toLocaleDateString()
+    };
+    renderBreakEvenActionPlan();
+
+    // Wire up save/share buttons
+    var _saveBtn = document.querySelector('save-result-button');
+    if (_saveBtn) _saveBtn.setData({
+      inputs: { fixedCosts: fixedCosts, varCost: varCost, sellingPrice: sellingPrice, currentSales: currentSales },
+      outputs: { breakEvenUnits: breakEvenUnits, breakEvenRevenue: breakEvenRevenue, contribMargin: contribMargin, marginOfSafety: marginOfSafety }
+    });
+    var _shareBtn = document.querySelector('share-result-button');
+    if (_shareBtn) _shareBtn.setResult({
+      headline: 'My Break-Even Point',
+      mainValue: breakEvenUnits.toLocaleString() + ' units',
+      subValues: [
+        { label: 'Revenue', value: currency + breakEvenRevenue.toLocaleString('en', {maximumFractionDigits: 0}) },
+        { label: 'Margin', value: currency + contribMargin.toFixed(2) + '/unit' },
+        { label: 'Safety', value: marginOfSafety + '%' }
+      ]
+    });
+  }
+
+  function drawBreakEvenChart(beUnits, fc, vc, sp, cm) {
+    const maxUnits = beUnits * 1.5;
+    const ctx = document.getElementById('breakEvenChart').getContext('2d');
+
+    const labels = [];
+    const totalCostData = [];
+    const revenueData = [];
+
+    for (let i = 0; i <= maxUnits; i += Math.ceil(maxUnits / 20)) {
+      labels.push(i);
+      totalCostData.push(fc + (vc * i));
+      revenueData.push(sp * i);
+    }
+
+    if (beChart) {
+      beChart.destroy();
+    }
+
+    beChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Total Revenue',
+            data: revenueData,
+            borderColor: '#0062CC',
+            backgroundColor: 'rgba(0, 98, 204, 0.1)',
+            borderWidth: 3,
+            fill: true,
+            tension: 0.4
+          },
+          {
+            label: 'Total Cost',
+            data: totalCostData,
+            borderColor: '#ef4444',
+            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+            borderWidth: 3,
+            fill: true,
+            tension: 0.4
+          },
+          {
+            label: 'Fixed Cost',
+            data: Array(labels.length).fill(fc),
+            borderColor: '#94a3b8',
+            borderDash: [5, 5],
+            borderWidth: 2,
+            fill: false,
+            tension: 0
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: { font: { family: "'DM Sans', sans-serif" } }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: { display: true, text: 'Amount' }
+          },
+          x: {
+            title: { display: true, text: 'Units Sold' }
+          }
+        }
+      }
+    });
+  }
+
+  function generateProfitZone(beUnits, fc, vc, sp, currency) {
+    const levels = [50, 100, 150, 200, 250];
+    const tbody = document.getElementById('profitZoneTable');
+    tbody.innerHTML = '';
+
+    levels.forEach(pct => {
+      const units = Math.ceil(beUnits * (pct / 100));
+      const revenue = units * sp;
+      const totalCost = fc + (units * vc);
+      const profit = revenue - totalCost;
+
+      const tr = document.createElement('tr');
+      if (pct === 100) tr.className = 'be-row';
+
+      const profitClass = profit >= 0 ? 'color: var(--afro-green);' : 'color: var(--afro-red);';
+      tr.innerHTML = `
+        <td>${pct}%</td>
+        <td>${units.toLocaleString()}</td>
+        <td>${currency}${revenue.toLocaleString('en', {maximumFractionDigits: 0})}</td>
+        <td style="${profitClass} font-weight: 700;">${profit >= 0 ? '+' : ''}${currency}${profit.toLocaleString('en', {maximumFractionDigits: 0})}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function generateSensitivity(baseBeUnits, fc, vc, sp, currency) {
+    const scenarios = [
+      { label: 'Price -20%', change: 'selling', amount: -20 },
+      { label: 'Price -10%', change: 'selling', amount: -10 },
+      { label: 'Price +10%', change: 'selling', amount: 10 },
+      { label: 'Price +20%', change: 'selling', amount: 20 },
+      { label: 'Costs +10%', change: 'fixed', amount: 10 },
+      { label: 'Costs +20%', change: 'fixed', amount: 20 }
+    ];
+
+    const tbody = document.getElementById('sensitivityTable');
+    tbody.innerHTML = '';
+
+    scenarios.forEach(s => {
+      let newBe;
+      let newPrice = sp;
+      let newFixed = fc;
+
+      if (s.change === 'selling') {
+        newPrice = sp * (1 + (s.amount / 100));
+        if (newPrice <= vc) { newBe = '∞'; } else { newBe = Math.ceil(fc / (newPrice - vc)); }
+      } else {
+        newFixed = fc * (1 + (s.amount / 100));
+        if (sp <= vc) { newBe = '∞'; } else { newBe = Math.ceil(newFixed / (sp - vc)); }
+      }
+
+      const isInf = newBe === '∞';
+      const change = isInf ? Infinity : newBe - baseBeUnits;
+      const changeClass = change >= 0 ? 'color: var(--afro-red);' : 'color: var(--afro-green);';
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${s.label}</td>
+        <td>${s.amount > 0 ? '+' : ''}${s.amount}%</td>
+        <td><strong>${isInf ? '∞' : newBe.toLocaleString()}</strong> units</td>
+        <td style="${changeClass} font-weight: 700;">${isInf ? '∞' : (change >= 0 ? '+' : '') + change.toLocaleString() + ' units'}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function generateInsight(currentSales, beUnits, marginOfSafety) {
+    const box = document.getElementById('insightBox');
+    let insight = '';
+
+    if (currentSales >= beUnits * 1.2) {
+      insight = `✓ <strong>Strong Position:</strong> Your current sales are ${((currentSales - beUnits) / beUnits * 100).toFixed(0)}% above break-even. You have ${marginOfSafety}% margin of safety.`;
+    } else if (currentSales >= beUnits) {
+      insight = `✓ <strong>At Break-Even:</strong> You're at or near break-even. Focus on increasing sales to build profit.`;
+    } else {
+      insight = `⚠ <strong>Below Break-Even:</strong> Current sales don't cover costs. You need ${beUnits - currentSales} more units per month.`;
+    }
+
+    box.innerHTML = insight;
+    box.style.display = 'block';
+  }
+
+  function breakEvenPlanText() {
+    var data = window.beData;
+    if (!data) return 'Calculate break-even first.';
+    var c = data.currency;
+    var profitLoss = (data.currentSales * data.sellingPrice) - (data.fixedCosts + data.currentSales * data.varCost);
+    var gap = data.currentSales - data.breakEvenUnits;
+    return [
+      'AfroTools break-even action plan',
+      'Business: ' + (data.businessName || 'My Business'),
+      'Break-even units: ' + data.breakEvenUnits.toLocaleString() + ' per month',
+      'Break-even revenue: ' + c + data.breakEvenRevenue.toLocaleString('en', {maximumFractionDigits: 0}),
+      'Contribution margin: ' + c + data.contribMargin.toFixed(2) + ' per unit',
+      'Current sales gap: ' + (gap >= 0 ? '+' : '') + gap.toLocaleString() + ' units versus break-even',
+      'Monthly profit/loss at current sales: ' + (profitLoss >= 0 ? '+' : '') + c + profitLoss.toLocaleString('en', {maximumFractionDigits: 0}),
+      'Next checks: verify supplier prices, rent, labour, delivery, tax, payment timing, seasonality, and realistic sales volume before acting.'
+    ].join('\n');
+  }
+
+  function renderBreakEvenActionPlan() {
+    var target = document.getElementById('breakEvenActionPlan');
+    var data = window.beData;
+    if (!target || !data) return;
+    var gap = data.currentSales - data.breakEvenUnits;
+    var status = gap >= 0 ? 'Current sales are above break-even by ' + gap.toLocaleString() + ' units.' : 'Current sales are below break-even by ' + Math.abs(gap).toLocaleString() + ' units.';
+    var action = gap >= 0 ? 'Stress-test a price drop or supplier cost increase before expanding.' : 'Close the gap by raising price, lowering variable costs, cutting fixed costs, or increasing sales volume.';
+    target.innerHTML = '<strong>' + status + '</strong><ul><li>Break-even revenue: ' + data.currency + data.breakEvenRevenue.toLocaleString('en', {maximumFractionDigits: 0}) + '</li><li>Contribution margin: ' + data.currency + data.contribMargin.toFixed(2) + ' per unit</li><li>' + action + '</li><li>Export only after checking current costs and demand assumptions.</li></ul>';
+  }
+
+  function setBreakEvenActionStatus(message) {
+    var status = document.getElementById('breakEvenActionStatus');
+    if (status) status.textContent = message || '';
+  }
+
+  function copyBreakEvenPlan() {
+    if (!window.beData) { setBreakEvenActionStatus('Calculate break-even first.'); return; }
+    var text = breakEvenPlanText();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ setBreakEvenActionStatus('Action plan copied. No data was sent to AfroTools.'); }).catch(function(){ setBreakEvenActionStatus(text); });
+    } else {
+      setBreakEvenActionStatus(text);
+    }
+  }
+
+  function downloadPDF() {
+    var data = window.beData;
+    if (!data) { alert('Please calculate break-even first'); return; }
+    if (!window.AfroTools || !window.AfroTools.pdf) { alert('PDF engine loading, please try again.'); return; }
+
+    var c = data.currency;
+    var fmt = function(v) { return c + Number(v).toLocaleString('en', {maximumFractionDigits: 0}); };
+    var profitLoss = (data.currentSales * data.sellingPrice) - (data.fixedCosts + data.currentSales * data.varCost);
+    var chartImg = null;
+    try { var cv = document.getElementById('breakEvenChart'); if (cv) chartImg = cv.toDataURL('image/png'); } catch(e) {}
+
+    window.AfroTools.pdf.generate({
+      toolId: 'break-even',
+      title: 'Break-Even Analysis',
+      subtitle: data.businessName || 'Business Report',
+      country: 'Pan-African',
+      heroStats: [
+        { label: 'Break-Even Units', value: data.breakEvenUnits.toLocaleString(), highlight: true },
+        { label: 'Break-Even Revenue', value: fmt(data.breakEvenRevenue), highlight: true },
+        { label: 'Contribution Margin', value: fmt(data.contribMargin) },
+        { label: 'Margin of Safety', value: data.marginOfSafety + '%' }
+      ],
+      sections: [
+        {
+          title: 'Cost Structure',
+          rows: [
+            { label: 'Fixed Costs (Monthly)', value: fmt(data.fixedCosts) },
+            { label: 'Variable Cost per Unit', value: fmt(data.varCost) },
+            { label: 'Selling Price per Unit', value: fmt(data.sellingPrice) },
+            { label: 'Contribution Margin per Unit', value: fmt(data.contribMargin), type: 'subtotal' }
+          ]
+        },
+        {
+          title: 'Break-Even Results',
+          rows: [
+            { label: 'Break-Even Point', value: data.breakEvenUnits.toLocaleString() + ' units', type: 'total', highlight: true },
+            { label: 'Break-Even Revenue', value: fmt(data.breakEvenRevenue) },
+            { label: 'Current Monthly Sales', value: data.currentSales.toLocaleString() + ' units' },
+            { label: 'Margin of Safety', value: data.marginOfSafety + '%' },
+            { label: 'Monthly Profit/Loss', value: (profitLoss >= 0 ? '+' : '') + fmt(profitLoss), type: 'total', color: profitLoss >= 0 ? 'green' : 'red' }
+          ]
+        }
+      ],
+      chartImage: chartImg,
+      source: 'Break-even analysis based on user-provided cost structure. Formula: Fixed Costs / (Selling Price - Variable Cost per Unit).',
+      disclaimer: 'Planning estimate only. Not financial advice, funding approval, or a guaranteed profit forecast. Verify current costs, sales volume, tax treatment, payment timing, and market conditions before acting.'
+    });
+  }
+
+  function printChart() {
+    window.print();
+  }
+
+  function saveBreakEven() {
+    const data = window.beData;
+    if (!data) {
+      alert('Please calculate break-even first');
+      return;
+    }
+
+    const saved = JSON.parse(localStorage.getItem('breakEvenSaved') || '[]');
+    saved.unshift(data);
+    saved.splice(5);
+    localStorage.setItem('breakEvenSaved', JSON.stringify(saved));
+    alert('Calculation saved!');
+  }
+
+  // Initial update
+  updateCostsList();
+  initPresets();
+</script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
+
+<script src="/assets/js/pages/vat-business-tax-focus.js?v=1a6b9ed2" defer></script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

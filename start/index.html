@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Choose your African country and start AfroTools across documents, business, health, education, agriculture, property, developer tools, finance, and local services.">
+  <title>Start by Country | AfroTools</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <script src="/assets/js/data/african-countries.js?v=32a88a32" defer></script>
+  <script src="/assets/js/components/country-selector.js?v=c13ac60b" defer></script>
+  <script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+  <style>
+    body{margin:0;background:#f7f9fc;color:#0f172a;font-family:"DM Sans",system-ui,sans-serif}
+    .start-main{min-height:calc(100vh - 160px);padding:86px 20px 58px}
+    .start-wrap{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,440px);gap:40px;align-items:start}
+    .start-kicker{display:inline-flex;margin-bottom:13px;padding:7px 12px;border:1px solid #c7ddf8;border-radius:8px;background:#fff;color:#074f9f;font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+    .start-title{font-size:clamp(2.15rem,4vw,3.8rem);line-height:1.04;letter-spacing:0;margin:0 0 14px;font-weight:800;color:#111827}
+    .start-copy{max-width:610px;margin:0;color:#526173;font-size:1rem;line-height:1.62}
+    .start-proof{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;max-width:560px;margin:18px 0 0}
+    .start-proof span{border:1px solid #dbe4ef;background:#fff;border-radius:10px;padding:10px 12px;color:#64748b;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+    .start-proof strong{display:block;color:#0f172a;font-size:1.08rem;line-height:1.1;letter-spacing:0;text-transform:none;margin-bottom:3px}
+    .start-lanes{margin-top:20px;max-width:650px}
+    .start-lanes-title{margin:0 0 10px;color:#64748b;font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em}
+    .start-lane-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .start-lane{border:1px solid #dbe4ef;background:#fff;border-radius:10px;padding:10px 12px;color:#0f172a;text-decoration:none;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;transition:border-color .18s,box-shadow .18s,transform .18s}
+    .start-lane:hover{border-color:#0062cc;box-shadow:0 12px 26px rgba(15,23,42,.08);transform:translateY(-1px)}
+    .start-lane:focus-visible,.start-submit:focus-visible,.start-goal-card:focus-visible,.start-preview a:focus-visible{outline:3px solid rgba(0,98,204,.24);outline-offset:2px}
+    .start-lane b{font-size:.84rem;line-height:1.2}
+    .start-lane span{font-size:.72rem;line-height:1.35;color:#64748b;font-weight:700;text-align:right}
+    .start-summary{max-width:610px;margin-top:18px;padding:12px 14px;border:1px solid #dbe4ef;border-radius:12px;background:#fff;color:#334155;font-size:.85rem;line-height:1.55;font-weight:700}
+    .start-panel{background:#fff;border:1px solid #dbe4ef;border-radius:14px;box-shadow:0 22px 60px rgba(15,23,42,.08);padding:22px}
+    .start-panel-title{margin:0 0 4px;color:#0f172a;font-size:1.08rem;font-weight:900}
+    .start-panel-copy{margin:0 0 14px;color:#64748b;font-size:.84rem;line-height:1.5}
+    .start-form{display:grid;gap:12px}
+    .field{display:grid;gap:8px}
+    .field label{font-size:.82rem;font-weight:800;color:#334155}
+    .field select{width:100%;min-height:46px;border:1.5px solid #dbe4ef;border-radius:12px;background:#fff;color:#0f172a;font:inherit;font-weight:700;padding:10px 12px}
+    .start-submit{min-height:48px;border:0;border-radius:12px;background:#0062cc;color:#fff;font:inherit;font-weight:800;cursor:pointer;box-shadow:0 10px 24px rgba(0,98,204,.2)}
+    .start-submit:hover{background:#074f9f}
+    .start-goals{margin:14px 0 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+    .start-goal-card{min-height:42px;border:1px solid #dbe4ef;background:#fbfdff;border-radius:10px;padding:9px 10px;color:#0f172a;text-align:left;font:inherit;cursor:pointer;display:flex;align-items:center}
+    .start-goal-card strong{font-size:.78rem;line-height:1.2}
+    .start-goal-card span{display:none}
+    .start-goal-card.is-active{border-color:#0f172a;background:#0f172a;color:#fff;box-shadow:0 10px 22px rgba(15,23,42,.12)}
+    .start-preview{margin-top:16px;border:1px solid #dbe4ef;background:#f8fbff;border-radius:12px;padding:14px;display:grid;gap:10px}
+    .start-preview-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+    .start-preview-title{margin:0;color:#64748b;font-size:.7rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em}
+    .start-preview-route{margin:2px 0 0;color:#0f172a;font-size:.9rem;font-weight:800;line-height:1.35}
+    .start-preview-top>a{color:#0062cc;font-size:.76rem;font-weight:900;text-decoration:none;white-space:nowrap}
+    .start-directs{display:grid;gap:7px}
+    .start-directs a{display:flex;justify-content:space-between;gap:12px;align-items:center;min-height:40px;padding:9px 10px;border:1px solid #dbe4ef;border-radius:10px;color:#0f172a;text-decoration:none;font-weight:800;background:#fff}
+    .start-directs a span:last-child{color:#0062cc;font-size:.76rem;white-space:nowrap}
+    .start-directs a:hover{border-color:#0062cc;color:#0062cc}
+    .start-note{margin-top:12px;color:#64748b;font-size:.78rem;line-height:1.5}
+    @media(max-width:980px){.start-wrap{grid-template-columns:1fr;gap:28px}.start-lane-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:860px){.start-main{padding-top:84px}.start-panel{padding:20px}.start-proof{grid-template-columns:1fr 1fr}.start-goals{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:560px){.start-main{padding-left:14px;padding-right:14px}.start-proof,.start-lane-grid,.start-goals{grid-template-columns:1fr}.start-title{font-size:2.35rem}.start-lane span{text-align:left}}
+  </style>
+<meta property="og:url" content="https://afrotools.com/start/">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/start/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/start/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/start/">
+</head>
+<body class="top-level-page-ui-refresh">
+  <afro-navbar></afro-navbar>
+  <main class="start-main">
+    <div class="start-wrap">
+      <section aria-labelledby="start-title">
+        <div class="start-kicker">Country-first setup</div>
+        <h1 class="start-title" id="start-title">Choose a country. Open the right tools.</h1>
+        <p class="start-copy">Pick one country context, then jump straight into a focused lane. You still get the full AfroTools directory, but local tools and country-aware examples come first.</p>
+        <div class="start-proof" aria-label="AfroTools platform coverage">
+          <span><strong>2,594+</strong>tools</span>
+          <span><strong>54</strong>countries</span>
+          <span><strong>32</strong>category lanes</span>
+        </div>
+        <div class="start-lanes" aria-label="AfroTools category breadth">
+          <p class="start-lanes-title">Common local lanes</p>
+          <div class="start-lane-grid">
+            <a class="start-lane" href="/tools/?goal=documents"><b>Documents</b><span>PDF, CV, writing</span></a>
+            <a class="start-lane" href="/tools/?goal=business"><b>Business</b><span>Invoices, trade, SME</span></a>
+            <a class="start-lane" href="/tools/?goal=money"><b>Money</b><span>Tax, salary, currency</span></a>
+            <a class="start-lane" href="/tools/?goal=life"><b>Life admin</b><span>Health, school, travel</span></a>
+            <a class="start-lane" href="/tools/?goal=operations"><b>Operations</b><span>Farm, power, transport</span></a>
+            <a class="start-lane" href="/tools/?goal=developer"><b>Developer</b><span>APIs, data, launch</span></a>
+          </div>
+        </div>
+        <p class="start-summary">Your choice saves locally, updates the navbar, and opens tools mapped to that country first. Africa-wide tools remain visible when they apply.</p>
+      </section>
+
+      <section class="start-panel" aria-label="Choose country and goal">
+        <h2 class="start-panel-title">Find the right local tools</h2>
+        <p class="start-panel-copy">Choose a country, then pick the kind of work you want to do first.</p>
+        <form class="start-form" id="startForm" action="/tools/" method="get">
+          <afro-country-selector id="startCountrySelector" variant="inline" redirect="none" sync-profile diaspora label="Country"></afro-country-selector>
+          <input type="hidden" id="startCountryInput" name="country" value="NG">
+          <div class="field">
+            <label for="startGoal">Starting lane</label>
+            <select id="startGoal" name="goal">
+              <option value="country">Open my country hub</option>
+              <option value="browse">Browse all local tools</option>
+              <option value="documents">Documents, PDF and office work</option>
+              <option value="business">Business, invoices and trade</option>
+              <option value="life">Health, education and daily life</option>
+              <option value="operations">Agriculture, energy and transport</option>
+              <option value="legal">Property, legal and government</option>
+              <option value="developer">Developer tools and API</option>
+              <option value="money">Salary, tax, currency and money</option>
+            </select>
+          </div>
+          <button class="start-submit" type="submit">Continue</button>
+        </form>
+        <div class="start-goals" aria-label="Quick goal choices">
+          <button class="start-goal-card is-active" type="button" data-start-goal="country" aria-pressed="true"><strong>Country hub</strong><span>Start with the local overview.</span></button>
+          <button class="start-goal-card" type="button" data-start-goal="browse" aria-pressed="false"><strong>All tools</strong><span>Search every matching tool.</span></button>
+          <button class="start-goal-card" type="button" data-start-goal="documents" aria-pressed="false"><strong>Documents</strong><span>PDF, CV, writing, files.</span></button>
+          <button class="start-goal-card" type="button" data-start-goal="money" aria-pressed="false"><strong>Money</strong><span>Salary, tax, currency.</span></button>
+          <button class="start-goal-card" type="button" data-start-goal="business" aria-pressed="false"><strong>Business</strong><span>Invoices, trade, SME math.</span></button>
+          <button class="start-goal-card" type="button" data-start-goal="life" aria-pressed="false"><strong>Life admin</strong><span>Health, school, travel, culture.</span></button>
+          <button class="start-goal-card" type="button" data-start-goal="operations" aria-pressed="false"><strong>Operations</strong><span>Farm, power, transport.</span></button>
+          <button class="start-goal-card" type="button" data-start-goal="legal" aria-pressed="false"><strong>Legal</strong><span>Property, civic, company.</span></button>
+          <button class="start-goal-card" type="button" data-start-goal="developer" aria-pressed="false"><strong>Developer</strong><span>APIs and builder utilities.</span></button>
+        </div>
+        <div class="start-preview" aria-label="Selected country suggestions">
+          <div class="start-preview-top">
+            <div>
+              <p class="start-preview-title">Ready for <span data-start-country-name>Nigeria</span></p>
+              <p class="start-preview-route" data-start-route-copy>Continue opens the Nigeria country hub.</p>
+            </div>
+            <a href="/nigeria/" data-start-link="country" data-country-home-href>Hub</a>
+          </div>
+          <div class="start-directs" data-start-directs>
+            <a href="/nigeria/" data-start-link="country" data-country-home-href><span>Open Nigeria hub</span><span>Open</span></a>
+            <a href="/tools/?country=NG" data-start-link="browse" data-country-tools-href><span>Browse all Nigeria tools</span><span>Browse</span></a>
+            <a href="/nigeria/ng-salary-tax"><span>Nigeria PAYE Calculator</span><span>Open</span></a>
+          </div>
+        </div>
+        <p class="start-note" data-start-context><strong>Country context:</strong> NGN currency, English, Hausa, Yoruba, Igbo.</p>
+        <noscript>
+          <form class="start-form" action="/tools/" method="get">
+            <div class="field">
+              <label for="country">Country code</label>
+              <select id="country" name="country">
+                <option value="NG">Nigeria</option>
+                <option value="KE">Kenya</option>
+                <option value="GH">Ghana</option>
+                <option value="ZA">South Africa</option>
+              </select>
+            </div>
+            <button class="start-submit" type="submit">Browse local tools</button>
+          </form>
+        </noscript>
+      </section>
+    </div>
+  </main>
+  <afro-footer></afro-footer>
+  <script>
+  (function(){
+    var form = document.getElementById('startForm');
+    var goal = document.getElementById('startGoal');
+    var countryInput = document.getElementById('startCountryInput');
+    var goalCards = Array.prototype.slice.call(document.querySelectorAll('[data-start-goal]'));
+    var startLinks = Array.prototype.slice.call(document.querySelectorAll('[data-start-link]'));
+    var directList = document.querySelector('[data-start-directs]');
+    var routeCopy = document.querySelector('[data-start-route-copy]');
+    var contextCopy = document.querySelector('[data-start-context]');
+    if (!form || !goal) return;
+
+    var GOAL_LABELS = {
+      country: 'country hub',
+      browse: 'all local tools',
+      documents: 'document tools',
+      business: 'business tools',
+      life: 'life admin tools',
+      operations: 'operations tools',
+      legal: 'legal and civic tools',
+      developer: 'developer tools',
+      money: 'money tools'
+    };
+
+    function selectedCountry() {
+      if (window.AfroCountry && typeof window.AfroCountry.getSelected === 'function') {
+        return window.AfroCountry.getSelected();
+      }
+      return { code: 'NG', name: 'Nigeria', slug: 'nigeria', currency: 'NGN' };
+    }
+
+    function countryUrl(country) {
+      if (window.AfroCountry && typeof window.AfroCountry.countryUrl === 'function') {
+        return window.AfroCountry.countryUrl(country);
+      }
+      return country && country.slug ? '/' + country.slug + '/' : '/countries/';
+    }
+
+    function toolsUrl(country) {
+      if (window.AfroCountry && typeof window.AfroCountry.toolsUrl === 'function') {
+        return window.AfroCountry.toolsUrl(country);
+      }
+      return country && country.code ? '/tools/?country=' + encodeURIComponent(country.code) : '/tools/';
+    }
+
+    function withGoal(url, lane) {
+      if (!lane || lane === 'country' || lane === 'browse') return url;
+      return url + (url.indexOf('?') === -1 ? '?' : '&') + 'goal=' + encodeURIComponent(lane);
+    }
+
+    function profileFor(country) {
+      if (window.AfroCountry && typeof window.AfroCountry.profileFor === 'function') {
+        return window.AfroCountry.profileFor(country);
+      }
+      var code = country && country.code ? country.code.toLowerCase() : 'ng';
+      var slug = country && country.slug ? country.slug : 'nigeria';
+      var name = country && country.name ? country.name : 'Nigeria';
+      return {
+        payeName: name + ' PAYE Calculator',
+        payeHref: '/' + slug + '/' + code + '-paye',
+        vatName: name + ' VAT Calculator',
+        vatHref: '/' + slug + '/' + code + '-vat',
+        currencyLabel: (country && country.currency ? country.currency : 'NGN') + ' currency',
+        languageHint: country && country.languages ? country.languages : 'English and local languages'
+      };
+    }
+
+    function esc(value) {
+      return String(value == null ? '' : value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function supports(country, codes) {
+      return country && codes.indexOf(country.code) !== -1;
+    }
+
+    function link(label, href, action) {
+      return { label: label, href: href, action: action || 'Open' };
+    }
+
+    function directRoutes(country, lane) {
+      var profile = profileFor(country);
+      var hub = countryUrl(country);
+      var tools = toolsUrl(country);
+      var routes = {
+        country: [
+          link('Open ' + country.name + ' hub', hub, 'Open'),
+          link('Browse all ' + country.name + ' tools', tools, 'Browse'),
+          link(profile.payeName, profile.payeHref, 'Open')
+        ],
+        browse: [
+          link('Browse all ' + country.name + ' tools', tools, 'Browse'),
+          link('Open ' + country.name + ' hub', hub, 'Hub'),
+          link('Search all AfroTools categories', '/tools/', 'Search')
+        ],
+        documents: [
+          link('PDF Workspace', '/tools/pdf-workspace/', 'Open'),
+          link('CV / Resume Builder', '/tools/cv-builder/', 'Open'),
+          link('Invoice Generator', '/tools/invoice-generator/', 'Open')
+        ],
+        money: [
+          link(profile.payeName, profile.payeHref, 'Open'),
+          link(profile.vatName, profile.vatHref, 'Open'),
+          link('AfroFX currency tools', '/tools/currency-converter/', 'Open')
+        ],
+        business: [
+          link('Invoice Generator', '/tools/invoice-generator/', 'Open'),
+          link('Business Registration Checklist', '/tools/business-registration/', 'Open'),
+          link('Payment Gateway Fee Compare', '/tools/payment-gateway/', 'Open')
+        ],
+        life: [
+          supports(country, ['NG', 'KE', 'ZA', 'GH', 'TZ', 'RW']) ? link('Childbirth Cost Calculator', '/tools/childbirth-cost/', 'Open') : link('Medical Report Interpreter', '/tools/medical-report/', 'Open'),
+          link('Education Hub', '/tools/education-hub/', 'Open'),
+          link('Passport Application Checklist', '/tools/passport-checklist/', 'Open')
+        ],
+        operations: [
+          link('Crop Yield Estimator', '/agriculture/crop-yield/', 'Open'),
+          link('Solar Panel Calculator', '/tools/solar-calculator/', 'Open'),
+          link(supports(country, ['NG', 'KE', 'ZA', 'GH', 'EG', 'ET', 'TZ', 'UG', 'RW', 'CI', 'CM', 'SN', 'MA', 'TN', 'AO']) ? 'Generator Fuel Cost Calculator' : 'Energy & Utilities tools', supports(country, ['NG', 'KE', 'ZA', 'GH', 'EG', 'ET', 'TZ', 'UG', 'RW', 'CI', 'CM', 'SN', 'MA', 'TN', 'AO']) ? '/tools/generator-fuel/' : '/energy/', 'Open')
+        ],
+        legal: [
+          link('Business Registration Checklist', '/tools/business-registration/', 'Open'),
+          link('Contract Generator', '/tools/contract-generator/', 'Open'),
+          link('National ID Registration Guide', '/tools/national-id-guide/', 'Open')
+        ],
+        developer: [
+          link('API Tester', '/tools/api-tester/', 'Open'),
+          link('African API Directory', '/tools/african-api-directory/', 'Open'),
+          link('Developer tools directory', '/developer-tools/', 'Browse')
+        ]
+      };
+      return routes[lane] || routes.browse;
+    }
+
+    function renderDirectRoutes(country) {
+      if (!directList || !country) return;
+      var lane = goal.value || 'country';
+      var routes = directRoutes(country, lane);
+      directList.innerHTML = routes.map(function(item) {
+        return '<a href="' + esc(item.href) + '"><span>' + esc(item.label) + '</span><span>' + esc(item.action) + '</span></a>';
+      }).join('');
+    }
+
+    function setGoal(value) {
+      goal.value = value || 'country';
+      goalCards.forEach(function(card) {
+        var active = card.getAttribute('data-start-goal') === goal.value;
+        card.classList.toggle('is-active', active);
+        card.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+      updateStartLinks(selectedCountry());
+    }
+
+    function updateStartLinks(country) {
+      country = country || selectedCountry();
+      if (countryInput && country && country.code) countryInput.value = country.code;
+      Array.prototype.forEach.call(document.querySelectorAll('[data-start-country-name]'), function(node) {
+        node.textContent = country && country.name ? country.name : 'your country';
+      });
+      startLinks.forEach(function(link) {
+        var lane = link.getAttribute('data-start-link') || 'browse';
+        link.setAttribute('href', lane === 'country' ? countryUrl(country) : withGoal(toolsUrl(country), lane));
+      });
+      if (routeCopy) {
+        var laneLabel = GOAL_LABELS[goal.value] || 'local tools';
+        routeCopy.textContent = goal.value === 'country'
+          ? 'Continue opens the ' + country.name + ' country hub.'
+          : 'Continue opens ' + country.name + ' ' + laneLabel + '.';
+      }
+      if (contextCopy) {
+        var profile = profileFor(country);
+        contextCopy.innerHTML = '<strong>Country context:</strong> ' + esc(profile.currencyLabel) + ', ' + esc(profile.languageHint) + '.';
+      }
+      renderDirectRoutes(country);
+    }
+
+    goalCards.forEach(function(card) {
+      card.addEventListener('click', function() {
+        setGoal(card.getAttribute('data-start-goal'));
+      });
+    });
+
+    goal.addEventListener('change', function() {
+      setGoal(goal.value || 'country');
+    });
+
+    window.addEventListener('afro-country-change', function(event) {
+      updateStartLinks(event.detail && event.detail.country);
+    });
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      var country = selectedCountry();
+      if (!country) {
+        window.location.href = '/tools/';
+        return;
+      }
+      var selectedGoal = goal.value || 'country';
+      if (selectedGoal === 'country') {
+        window.location.href = window.AfroCountry.countryUrl(country);
+        return;
+      }
+      window.location.href = withGoal(toolsUrl(country), selectedGoal);
+    });
+
+    try {
+      var requestedGoal = new URLSearchParams(window.location.search || '').get('goal');
+      if (requestedGoal && /^[a-z-]+$/.test(requestedGoal) && goal.querySelector('option[value="' + requestedGoal + '"]')) {
+        goal.value = requestedGoal;
+      }
+    } catch(e) {}
+    setGoal(goal.value || 'country');
+    setTimeout(function() { updateStartLinks(selectedCountry()); }, 0);
+  })();
+  </script>
+</body>
+</html>

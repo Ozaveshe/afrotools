@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FIRE Calculator — Financial Independence in Africa | AfroTools</title>
+<meta name="description" content="African-context FIRE calculator. Calculate your FIRE number, years to financial independence, monthly savings needed, and safe withdrawal rate.">
+<meta property="og:title" content="FIRE Calculator — Africa | AfroTools">
+<meta property="og:description" content="African-context FIRE calculator. Calculate your FIRE number, years to financial independence, monthly savings needed, and safe withdrawal rate.">
+<meta property="og:url" content="https://afrotools.com/tools/fire-calc/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="FIRE Calculator — Financial Independence in Africa | AfroTools">
+<meta name="twitter:description" content="African-context FIRE calculator. Calculate your FIRE number, years to financial independence, monthly savings needed, and safe withdrawal rate.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Financial Independence FIRE Calculator",
+  "url": "https://afrotools.com/tools/fire-calc/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools"
+  },
+  "image": "https://afrotools.com/assets/img/tools/fire-calc.webp"
+}
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Fintech & Banking","item":"https://afrotools.com/fintech/"},{"@type":"ListItem","position":3,"name":"FIRE Calculator","item":"https://afrotools.com/tools/fire-calc/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
+.tool-hero{background:linear-gradient(135deg,#0A1628 0%,#1a1035 50%,#2d1b69 100%);color:#fff;padding:2.5rem 1.5rem 3rem}
+.tool-hero .container{max-width:900px;margin:0 auto}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.78);margin-bottom:.75rem}
+.breadcrumb a{color:rgba(255,255,255,.78);text-decoration:none}
+.breadcrumb span{margin:0 .35rem;opacity:.4}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin:.25rem 0 .6rem;line-height:1.2}
+.tool-hero p{font-size:.95rem;color:rgba(255,255,255,.92);max-width:580px;line-height:1.65}
+.hero-badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.hero-badge{padding:4px 12px;border-radius:100px;font-size:.75rem;font-weight:600;background:rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1.25rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{display:flex;flex-direction:column;gap:4px}
+label{font-size:.82rem;font-weight:600;color:#374151}
+select,input[type="number"]{width:100%;padding:.65rem .85rem;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.9rem;background:#fff;transition:border-color .2s}
+select:focus,input:focus{outline:none;border-color:var(--color-primary)}
+.btn-calc{width:100%;padding:.85rem;border:none;border-radius:10px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:.5rem;transition:filter .2s}
+.btn-calc:hover{filter:brightness(1.1)}
+.results{display:none;margin-top:1.25rem}
+.results.on{display:block}
+.fire-hero{background:linear-gradient(135deg,#2e1065,#7c3aed);border-radius:14px;padding:2rem;text-align:center;color:#fff;margin-bottom:1.25rem}
+.fire-label{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.7)}
+.fire-val{font-size:clamp(2rem,5vw,3rem);font-weight:800;color:#fff;margin:.2rem 0}
+.fire-sub{font-size:.85rem;color:rgba(255,255,255,.65)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.25rem}
+.metric{background:#f8fafd;border:1.5px solid #e5e7eb;border-radius:12px;padding:1rem;text-align:center}
+.metric-val{font-size:1.3rem;font-weight:800;color:var(--color-primary)}
+.metric-label{font-size:.75rem;color:#6b7280;margin-top:3px}
+.swr-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:1rem}
+.swr-card{background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:1rem;text-align:center}
+.swr-rate{font-size:.82rem;font-weight:700;color:#6b7280;text-transform:uppercase}
+.swr-val{font-size:1.15rem;font-weight:800;color:#0f172a;margin-top:.25rem}
+.swr-desc{font-size:.75rem;color:#9ca3af;margin-top:.2rem}
+.info-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:1rem 1.25rem;font-size:.85rem;color:#1e40af;line-height:1.6;margin-top:1rem}
+details summary{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;list-style:none;background:#f9fafb;display:flex;justify-content:space-between}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
+details[open] summary::after{content:'\2212'}
+.faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
+.faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+@media(max-width:680px){.form-grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}.swr-grid{grid-template-columns:1fr 1fr}}
+</style>
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/fire-calc.webp">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/fire-calc.webp">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the FIRE Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The FIRE Calculator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the FIRE Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the FIRE Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"What is FIRE?","acceptedAnswer":{"@type":"Answer","text":"FIRE stands for Financial Independence, Retire Early. The core idea: save and invest enough that your investment returns can cover your living expenses indefinitely. The standard FIRE number is 25x your annual expenses (based on the 4% Safe Withdrawal Rate). FIRE is growing in Africa as awareness of personal finance increases."}},{"@type":"Question","name":"Is FIRE realistic in Africa?","acceptedAnswer":{"@type":"Answer","text":"Yes, but requires adjustments. African FIRE must account for: higher inflation (reducing real returns), family financial obligations (supporting relatives), healthcare costs without social safety nets, currency depreciation risk, and political/economic instability. Consider \"Fat FIRE\" (more savings than strictly needed) or keeping some income streams active post-FIRE."}},{"@type":"Question","name":"What is the 4% rule?","acceptedAnswer":{"@type":"Answer","text":"The 4% rule (from the Trinity Study) says you can withdraw 4% of your portfolio per year in retirement with very high probability of not running out of money over 30 years. Your FIRE number = Annual expenses / 0.04 = Annual expenses x 25. In high-inflation Africa, consider using 3-3.5% to be safer."}},{"@type":"Question","name":"How do I invest for FIRE in Africa?","acceptedAnswer":{"@type":"Answer","text":"Common African FIRE strategies: (1) Mix of stocks (NSE, JSE, ETFs), T-bills, and real estate. (2) Dollar-denominated assets to hedge currency risk. (3) Real estate generating rental income. (4) Business ownership/consulting income as a side income buffer. Diversification across currency, asset class, and geography is critical."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/fire-calc/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/fire-calc/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-fire/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/fire-calc/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar theme="dark" active="fintech"></afro-navbar>
+<div class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb"><a href="/">AfroTools</a><span>›</span><a href="/fintech/">Fintech &amp; Banking</a><span>›</span>FIRE Calculator</nav>
+    <h1>Financial Independence (FIRE) Calculator</h1>
+    <p>Calculate your African FIRE number — how much you need to retire early. See years to FIRE, monthly savings needed, and safe withdrawal rate analysis.</p>
+    <div class="hero-badges"><span class="hero-badge">Universal</span><span class="hero-badge">African Context</span><span class="hero-badge">Free</span></div>
+  </div>
+</div>
+<div class="container">
+  <div class="card">
+    <h2>FIRE — Financial Independence Calculator</h2>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="fire-age">Current Age</label>
+        <input type="number" id="fire-age" value="30" min="18" max="70">
+      </div>
+      <div class="form-group">
+        <label for="fire-retire-age">Target Retirement Age</label>
+        <input type="number" id="fire-retire-age" value="45" min="20" max="80">
+      </div>
+      <div class="form-group">
+        <label for="fire-expenses">Monthly Expenses (now)</label>
+        <input type="number" id="fire-expenses" value="200000" min="0">
+      </div>
+      <div class="form-group">
+        <label for="fire-retire-expenses">Expected Monthly Expenses in Retirement</label>
+        <input type="number" id="fire-retire-expenses" value="150000" min="0">
+      </div>
+      <div class="form-group">
+        <label for="fire-savings">Current Savings / Investments</label>
+        <input type="number" id="fire-savings" value="500000" min="0">
+      </div>
+      <div class="form-group">
+        <label for="fire-monthly-save">Monthly Savings Capacity</label>
+        <input type="number" id="fire-monthly-save" value="80000" min="0">
+      </div>
+      <div class="form-group">
+        <label for="fire-return">Expected Annual Investment Return (%)</label>
+        <input type="number" id="fire-return" value="14" step="0.5">
+      </div>
+      <div class="form-group">
+        <label for="fire-inflation">Expected Inflation (%)</label>
+        <input type="number" id="fire-inflation" value="8" step="0.5">
+      </div>
+    </div>
+    <button type="button" class="btn-calc" onclick="calcFIRE()">Calculate FIRE Number</button>
+    <div class="results" id="fire-results">
+      <div class="fire-hero">
+        <div class="fire-label">Your FIRE Number</div>
+        <div class="fire-val" id="fire-number"></div>
+        <div class="fire-sub" id="fire-sub"></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-val" id="fire-years"></div><div class="metric-label">Years to FIRE</div></div>
+        <div class="metric"><div class="metric-val" id="fire-retire-year"></div><div class="metric-label">Target Year</div></div>
+        <div class="metric"><div class="metric-val" id="fire-portfolio-at-retire"></div><div class="metric-label">Portfolio at Retirement</div></div>
+        <div class="metric"><div class="metric-val" id="fire-monthly-needed"></div><div class="metric-label">Monthly Savings Needed</div></div>
+        <div class="metric"><div class="metric-val" id="fire-savings-rate"></div><div class="metric-label">Required Savings Rate</div></div>
+      </div>
+      <h3 style="font-size:.95rem;font-weight:700;margin:.5rem 0 .75rem">Safe Withdrawal Rate Analysis</h3>
+      <div class="swr-grid">
+        <div class="swr-card"><div class="swr-rate">3% SWR (Conservative)</div><div class="swr-val" id="fire-swr3"></div><div class="swr-desc">Very safe for 40+ year retirement</div></div>
+        <div class="swr-card"><div class="swr-rate">4% SWR (Standard)</div><div class="swr-val" id="fire-swr4"></div><div class="swr-desc">Classic FIRE rule (Trinity Study)</div></div>
+        <div class="swr-card"><div class="swr-rate">5% SWR (Moderate)</div><div class="swr-val" id="fire-swr5"></div><div class="swr-desc">For shorter retirements (20yr)</div></div>
+        <div class="swr-card"><div class="swr-rate">6% SWR (Aggressive)</div><div class="swr-val" id="fire-swr6"></div><div class="swr-desc">High risk — only with side income</div></div>
+      </div>
+      <div class="info-box">In African high-inflation contexts, we recommend using a 3-4% SWR and maintaining some active income (consulting, rental, dividends) even after FIRE. Your FIRE number should account for family obligations, healthcare costs, and currency depreciation risk.</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Frequently Asked Questions</h2>
+
+<section class="df-upgrade" data-df-upgrade="fire-calc">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Payment comparison workflow</span>
+      <h2>FIRE Calculator: quick guide</h2>
+      <p>Not sure how to get the most from the FIRE Calculator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the FIRE Calculator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
+    </div>
+    <form class="df-form" data-df-form="fire-calc">
+      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
+      <label>Transaction value<input name="transaction" type="number" value="50000" min="0" step="any" aria-label="Transaction value"></label>
+      <label>Fee percent<input name="fee" type="number" value="1.5" min="0" step="any" aria-label="Fee percent"></label>
+      <label>Channel<select name="channel" aria-label="Channel"><option value="POS">POS</option><option value="bank transfer">bank transfer</option><option value="mobile money">mobile money</option><option value="card">card</option></select></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="fire-calc" data-df-base="FIRE Calculator — enter your details above to see your result." aria-live="polite">FIRE Calculator — enter your details above to see your result.</output>
+      <div class="df-actions"><button type="button" data-df-copy="fire-calc">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="fire-calc-faq-title">
+  <h2 id="fire-calc-faq-title">FIRE Calculator — Financial Independence in Africa FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the FIRE Calculator?</summary><p>Enter your amounts, rates and dates in the fields above. The FIRE Calculator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the FIRE Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the FIRE Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
+</section>
+    <div class="faq-item"><details><summary>What is FIRE?</summary><div class="faq-a">FIRE stands for Financial Independence, Retire Early. The core idea: save and invest enough that your investment returns can cover your living expenses indefinitely. The standard FIRE number is 25x your annual expenses (based on the 4% Safe Withdrawal Rate). FIRE is growing in Africa as awareness of personal finance increases.</div></details></div>
+    <div class="faq-item"><details><summary>Is FIRE realistic in Africa?</summary><div class="faq-a">Yes, but requires adjustments. African FIRE must account for: higher inflation (reducing real returns), family financial obligations (supporting relatives), healthcare costs without social safety nets, currency depreciation risk, and political/economic instability. Consider "Fat FIRE" (more savings than strictly needed) or keeping some income streams active post-FIRE.</div></details></div>
+    <div class="faq-item"><details><summary>What is the 4% rule?</summary><div class="faq-a">The 4% rule (from the Trinity Study) says you can withdraw 4% of your portfolio per year in retirement with very high probability of not running out of money over 30 years. Your FIRE number = Annual expenses / 0.04 = Annual expenses x 25. In high-inflation Africa, consider using 3-3.5% to be safer.</div></details></div>
+    <div class="faq-item"><details><summary>How do I invest for FIRE in Africa?</summary><div class="faq-a">Common African FIRE strategies: (1) Mix of stocks (NSE, JSE, ETFs), T-bills, and real estate. (2) Dollar-denominated assets to hedge currency risk. (3) Real estate generating rental income. (4) Business ownership/consulting income as a side income buffer. Diversification across currency, asset class, and geography is critical.</div></details></div>
+  </div>
+</div>
+<afro-related-tools data-ssr="1" category="fintech" current="fire-calc">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/loan-shark-compare/" data-related-tool data-id="loan-shark-compare" data-name="Loan Shark vs Bank Rate" data-category="fintech" data-icon="LS" data-desc="Compare informal moneylender rates vs bank loans vs fintech apps. True APR calculator showing hidden cost of predatory l">Loan Shark vs Bank Rate</a></li><li><a href="/tools/mobile-vs-bank/" data-related-tool data-id="mobile-vs-bank" data-name="Mobile Money vs Bank Transfer" data-category="fintech" data-icon="MM" data-desc="Compare M-Pesa, MTN MoMo, Airtel Money vs bank transfer fees for domestic and cross-border payments across Africa.">Mobile Money vs Bank Transfer</a></li><li><a href="/tools/digital-lending/" data-related-tool data-id="digital-lending" data-name="Digital Lending App Rates" data-category="fintech" data-icon="DL" data-desc="Compare digital lending apps (Fuliza, FairMoney, Carbon, PalmCredit) — true APR, fees, repayment periods.">Digital Lending App Rates</a></li><li><a href="/tools/fixed-deposit/" data-related-tool data-id="fixed-deposit" data-name="Fixed Deposit Rate Comparator" data-category="fintech" data-icon="FD" data-desc="Compare fixed deposit and savings account interest rates across African banks. 30/60/90/180/365-day tenors, 20+ banks.">Fixed Deposit Rate Comparator</a></li><li><a href="/tools/microfinance-loan/" data-related-tool data-id="microfinance-loan" data-name="Microfinance Loan Calculator" data-category="fintech" data-icon="ML" data-desc="Calculate microfinance loan repayments for African MFIs. Flat vs reducing balance, group vs individual loans.">Microfinance Loan Calculator</a></li><li><a href="/tools/payment-gateway/" data-related-tool data-id="payment-gateway" data-name="Payment Gateway Fee Compare" data-category="fintech" data-icon="PG" data-desc="Compare Paystack, Flutterwave, Stripe, DPO, Peach Payments transaction fees for African merchants.">Payment Gateway Fee Compare</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+<script>
+function calcFIRE(){
+  var age=parseInt(document.getElementById('fire-age').value)||30;
+  var retireAge=parseInt(document.getElementById('fire-retire-age').value)||45;
+  var monthlyExpenses=parseFloat(document.getElementById('fire-expenses').value)||0;
+  var retireExpenses=parseFloat(document.getElementById('fire-retire-expenses').value)||0;
+  var currentSavings=parseFloat(document.getElementById('fire-savings').value)||0;
+  var monthlySave=parseFloat(document.getElementById('fire-monthly-save').value)||0;
+  var returnRate=parseFloat(document.getElementById('fire-return').value)/100;
+  var inflation=parseFloat(document.getElementById('fire-inflation').value)/100;
+  var realReturn=((1+returnRate)/(1+inflation))-1;
+  // FIRE number = 25x annual retirement expenses
+  var annualRetireExp=retireExpenses*12;
+  var fireNumber=annualRetireExp*25;
+  var yearsToRetire=retireAge-age;
+  // Project portfolio growth with monthly contributions
+  var monthlyRate=returnRate/12;
+  var months=yearsToRetire*12;
+  var portfolioAtRetire=currentSavings*Math.pow(1+monthlyRate,months)+monthlySave*((Math.pow(1+monthlyRate,months)-1)/monthlyRate);
+  // Monthly savings needed to reach FIRE number
+  var needed=monthlyRate>0?(fireNumber-currentSavings*Math.pow(1+monthlyRate,months))*monthlyRate/(Math.pow(1+monthlyRate,months)-1):fireNumber/months;
+  var annualIncome=monthlyExpenses*12;
+  var savingsRate=annualIncome>0?(monthlySave*12/annualIncome)*100:0;
+  function fmt(n){return (Math.round(n)).toLocaleString();}
+  document.getElementById('fire-number').textContent=fmt(fireNumber);
+  document.getElementById('fire-sub').textContent='= '+retireExpenses.toLocaleString()+'/mo x 12 x 25 | Real return: '+(realReturn*100).toFixed(1)+'%';
+  document.getElementById('fire-years').textContent=yearsToRetire+' years';
+  document.getElementById('fire-retire-year').textContent=(2026+yearsToRetire);
+  document.getElementById('fire-portfolio-at-retire').textContent=fmt(portfolioAtRetire);
+  document.getElementById('fire-monthly-needed').textContent=fmt(Math.max(0,needed));
+  document.getElementById('fire-savings-rate').textContent=savingsRate.toFixed(0)+'%';
+  // SWR analysis for portfolio at retire
+  document.getElementById('fire-swr3').textContent=fmt(portfolioAtRetire*0.03/12)+'/mo';
+  document.getElementById('fire-swr4').textContent=fmt(portfolioAtRetire*0.04/12)+'/mo';
+  document.getElementById('fire-swr5').textContent=fmt(portfolioAtRetire*0.05/12)+'/mo';
+  document.getElementById('fire-swr6').textContent=fmt(portfolioAtRetire*0.06/12)+'/mo';
+  document.getElementById('fire-results').classList.add('on');
+}
+</script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

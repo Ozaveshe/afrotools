@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="view-transition" content="same-origin">
+<title>Générateur de meta tags | SEO Open Graph Twitter | AfroTools</title>
+<meta name="description" content="Créez des balises title, description, canonical, Open Graph, Twitter Card et robots avec aperçu, validation, copie et export HTML.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="Générateur de meta tags | AfroTools">
+<meta property="og:description" content="Créez des balises SEO, Open Graph, Twitter Card et robots avec aperçu et export HTML.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/meta-tag-generator.webp">
+<meta property="og:url" content="https://afrotools.com/fr/tools/generateur-meta-tags/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Générateur de meta tags | AfroTools">
+<meta name="twitter:description" content="Créez des balises SEO, Open Graph, Twitter Card et robots avec aperçu et export HTML.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/meta-tag-generator.webp">
+<meta name="robots" content="index, follow">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+  :root {
+    --meta-ink: #111827;
+    --meta-muted: #607089;
+    --meta-line: #d8e2ee;
+    --meta-soft: #f5f8fc;
+    --meta-card: #ffffff;
+    --meta-blue: #2857c5;
+    --meta-green: #10805a;
+    --meta-red: #b42318;
+  }
+  body { background: #f6f8fb; color: var(--meta-ink); }
+  .meta-wrap { max-width: 1180px; margin: 0 auto; padding: 32px 18px 58px; }
+  .meta-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(330px, .9fr);
+    gap: 24px;
+    align-items: start;
+    margin: 18px 0 24px;
+  }
+  .meta-panel, .meta-card {
+    background: var(--meta-card);
+    border: 1px solid var(--meta-line);
+    border-radius: 8px;
+    box-shadow: 0 18px 40px rgba(17, 24, 39, .06);
+  }
+  .meta-panel { padding: 30px; }
+  .meta-eyebrow {
+    color: var(--meta-blue);
+    font-size: .75rem;
+    font-weight: 900;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin: 0 0 12px;
+  }
+  h1 { font-size: clamp(2rem, 5vw, 3.8rem); line-height: 1; letter-spacing: 0; margin: 0 0 16px; }
+  .meta-lead { color: var(--meta-muted); line-height: 1.75; font-size: 1.05rem; max-width: 64ch; }
+  .meta-pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+  .meta-pill {
+    border: 1px solid var(--meta-line);
+    border-radius: 999px;
+    padding: 8px 12px;
+    background: var(--meta-soft);
+    color: #24405f;
+    font-weight: 850;
+    font-size: .86rem;
+  }
+  .meta-card { padding: 22px; }
+  .meta-form { display: grid; gap: 15px; }
+  .meta-grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .meta-field label {
+    display: block;
+    margin: 0 0 7px;
+    color: #23364e;
+    font-size: .84rem;
+    font-weight: 850;
+  }
+  .meta-field input, .meta-field select, .meta-field textarea {
+    width: 100%;
+    min-height: 46px;
+    border: 1px solid #c7d4e5;
+    border-radius: 8px;
+    background: #fff;
+    color: var(--meta-ink);
+    padding: 11px 12px;
+    font: inherit;
+  }
+  .meta-field textarea { min-height: 88px; resize: vertical; }
+  .meta-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+  .meta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    border: 1px solid #c7d4e5;
+    border-radius: 8px;
+    padding: 0 15px;
+    background: #fff;
+    color: #1d2d44;
+    font-weight: 850;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .meta-btn.primary { background: var(--meta-blue); border-color: var(--meta-blue); color: #fff; }
+  .meta-btn:focus-visible, .meta-field input:focus-visible, .meta-field select:focus-visible, .meta-field textarea:focus-visible {
+    outline: 3px solid rgba(40, 87, 197, .22);
+    outline-offset: 2px;
+  }
+  .meta-warning {
+    display: none;
+    border-left: 4px solid var(--meta-red);
+    border-radius: 8px;
+    background: #fff4f2;
+    color: #7a271a;
+    padding: 12px 14px;
+    font-weight: 750;
+    white-space: pre-line;
+  }
+  .meta-warning.show { display: block; }
+  .meta-results { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, .78fr); gap: 20px; margin-top: 20px; }
+  .meta-code {
+    width: 100%;
+    min-height: 370px;
+    border: 1px solid var(--meta-line);
+    border-radius: 8px;
+    padding: 16px;
+    background: #0d1726;
+    color: #e6edf7;
+    font: 0.9rem/1.55 Consolas, Monaco, monospace;
+    overflow: auto;
+    white-space: pre;
+  }
+  .meta-preview { display: grid; gap: 14px; }
+  .preview-box {
+    border: 1px solid var(--meta-line);
+    border-radius: 8px;
+    background: #fff;
+    padding: 16px;
+  }
+  .preview-url { color: #188038; font-size: .84rem; overflow-wrap: anywhere; }
+  .preview-title { color: #1a0dab; font-size: 1.12rem; line-height: 1.35; margin: 4px 0; overflow-wrap: anywhere; }
+  .preview-desc { color: #4d5156; font-size: .9rem; line-height: 1.5; overflow-wrap: anywhere; }
+  .social-card { overflow: hidden; padding: 0; }
+  .social-image {
+    min-height: 155px;
+    background: linear-gradient(135deg, #dbeafe, #f0f7ff);
+    display: grid;
+    place-items: center;
+    color: #315596;
+    font-weight: 900;
+    text-align: center;
+    padding: 20px;
+  }
+  .social-body { padding: 14px 16px 16px; }
+  .social-site { color: #637083; font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; }
+  .social-title { font-weight: 900; margin: 5px 0; overflow-wrap: anywhere; }
+  .social-desc { color: var(--meta-muted); line-height: 1.45; font-size: .9rem; overflow-wrap: anywhere; }
+  .meta-sections { display: grid; grid-template-columns: minmax(0, 1fr) minmax(290px, .46fr); gap: 20px; margin-top: 22px; }
+  .meta-section {
+    border: 1px solid var(--meta-line);
+    border-radius: 8px;
+    background: #fff;
+    padding: 22px;
+  }
+  .meta-section h2 { margin: 0 0 12px; font-size: 1.28rem; }
+  .meta-section p, .meta-section li { color: var(--meta-muted); line-height: 1.72; }
+  .meta-section ul, .meta-section ol { padding-left: 1.2rem; }
+  .meta-source-list { list-style: none; padding: 0; display: grid; gap: 10px; }
+  .meta-source-list a {
+    display: block;
+    border: 1px solid var(--meta-line);
+    border-radius: 8px;
+    padding: 12px;
+    background: #f8fbff;
+    color: #174ea6;
+    font-weight: 850;
+    text-decoration: none;
+  }
+  .meta-faq details { border-top: 1px solid var(--meta-line); padding: 14px 0; }
+  .meta-faq summary { cursor: pointer; font-weight: 850; color: #1f3048; }
+  @media (max-width: 920px) {
+    .meta-hero, .meta-results, .meta-sections { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 680px) {
+    .meta-wrap { padding-inline: 14px; }
+    .meta-panel, .meta-card, .meta-section { padding: 18px; }
+    .meta-grid-2 { grid-template-columns: 1fr; }
+    .meta-actions .meta-btn { flex: 1 1 150px; }
+  }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Générateur de meta tags","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://afrotools.com/fr/tools/generateur-meta-tags/","description":"Générateur local de balises title, description, canonical, Open Graph, Twitter Card et robots.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"image":"https://afrotools.com/assets/img/tools/meta-tag-generator.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"La meta description garantit-elle le snippet Google ?","acceptedAnswer":{"@type":"Answer","text":"Non. Google peut utiliser la balise description comme snippet, mais peut aussi choisir un autre extrait si cela semble plus utile a la requete."}},{"@type":"Question","name":"Open Graph remplace-t-il les balises SEO classiques ?","acceptedAnswer":{"@type":"Answer","text":"Non. Open Graph contrôle surtout les aperçus sociaux. Le titre, la description, canonical et robots restent importants pour la page elle-meme."}},{"@type":"Question","name":"Les données quittent-elles le navigateur ?","acceptedAnswer":{"@type":"Answer","text":"Non. La génération, la copie, le téléchargement et la sauvegarde locale se font dans le navigateur."}}]}</script>
+<link rel="canonical" href="https://afrotools.com/fr/tools/generateur-meta-tags/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-meta-tags/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/fr/tools/generateur-meta-tags/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="tools"></afro-navbar>
+<main class="meta-wrap">
+  <section class="meta-hero">
+    <div class="meta-panel">
+      <p class="meta-eyebrow">SEO technique</p>
+      <h1>Générateur de meta tags</h1>
+      <p class="meta-lead">Créez un bloc `<head>` propre pour une page web: title, meta description, canonical, robots, Open Graph et Twitter Card. L'outil montre les longueurs utiles, un aperçu de résultat de recherche et une carte sociale.</p>
+      <div class="meta-pills" aria-label="Fonctions">
+        <span class="meta-pill">Aperçu SERP</span>
+        <span class="meta-pill">Open Graph</span>
+        <span class="meta-pill">Copie HTML</span>
+      </div>
+    </div>
+
+    <section class="meta-card" aria-labelledby="tool-title">
+      <h2 id="tool-title">Paramètres de page</h2>
+      <form class="meta-form" id="meta-form">
+        <div class="meta-field">
+          <label for="page-title">Titre de page</label>
+          <input id="page-title" value="AfroTools Invoice Generator for African Businesses" maxlength="120" required>
+        </div>
+        <div class="meta-field">
+          <label for="description">Meta description</label>
+          <textarea id="description" maxlength="240" required>Create VAT-aware invoices, download PDF files, and keep clean local records for African customers and currencies.</textarea>
+        </div>
+        <div class="meta-grid-2">
+          <div class="meta-field">
+            <label for="url">URL canonique</label>
+            <input id="url" value="https://afrotools.com/tools/invoice-generator/">
+          </div>
+          <div class="meta-field">
+            <label for="site-name">Nom du site</label>
+            <input id="site-name" value="AfroTools">
+          </div>
+        </div>
+        <div class="meta-grid-2">
+          <div class="meta-field">
+            <label for="image">Image sociale</label>
+            <input id="image" value="https://afrotools.com/assets/img/tools/invoice-generator.webp">
+          </div>
+          <div class="meta-field">
+            <label for="locale">Locale</label>
+            <select id="locale">
+              <option value="en_US">en_US</option>
+              <option value="fr_FR" selected>fr_FR</option>
+              <option value="sw_KE">sw_KE</option>
+              <option value="ha_NG">ha_NG</option>
+              <option value="yo_NG">yo_NG</option>
+            </select>
+          </div>
+        </div>
+        <div class="meta-grid-2">
+          <div class="meta-field">
+            <label for="type">Type Open Graph</label>
+            <select id="type">
+              <option value="website">website</option>
+              <option value="article">article</option>
+              <option value="product">product</option>
+            </select>
+          </div>
+          <div class="meta-field">
+            <label for="robots">Robots</label>
+            <select id="robots">
+              <option value="index, follow">index, follow</option>
+              <option value="noindex, follow">noindex, follow</option>
+              <option value="noindex, nofollow">noindex, nofollow</option>
+            </select>
+          </div>
+        </div>
+        <div class="meta-grid-2">
+          <div class="meta-field">
+            <label for="twitter-card">Twitter Card</label>
+            <select id="twitter-card">
+              <option value="summary_large_image">summary_large_image</option>
+              <option value="summary">summary</option>
+            </select>
+          </div>
+          <div class="meta-field">
+            <label for="twitter-site">Compte facultatif</label>
+            <input id="twitter-site" placeholder="@afrotools">
+          </div>
+        </div>
+        <div class="meta-actions">
+          <button class="meta-btn primary" type="submit">Générer</button>
+          <button class="meta-btn" type="button" id="copy-code">Copier</button>
+          <button class="meta-btn" type="button" id="download-code">Télécharger HTML</button>
+          <button class="meta-btn" type="button" id="save-code">Sauvegarder localement</button>
+        </div>
+        <div class="meta-warning" id="warnings" role="alert"></div>
+        <p class="meta-lead" id="status" aria-live="polite" style="font-size:.92rem;margin:0"></p>
+      </form>
+    </section>
+  </section>
+
+  <section class="meta-card" aria-labelledby="result-title">
+    <h2 id="result-title">Code et aperçus</h2>
+    <div class="meta-results">
+      <textarea id="meta-code" class="meta-code" readonly aria-label="Code HTML genere"></textarea>
+      <div class="meta-preview">
+        <div class="preview-box" aria-label="Aperçu résultat de recherche">
+          <div class="preview-url" id="preview-url"></div>
+          <div class="preview-title" id="preview-title"></div>
+          <div class="preview-desc" id="preview-desc"></div>
+        </div>
+        <div class="preview-box social-card" aria-label="Aperçu carte sociale">
+          <div class="social-image" id="preview-image">Social image</div>
+          <div class="social-body">
+            <div class="social-site" id="preview-site"></div>
+            <div class="social-title" id="social-title"></div>
+            <div class="social-desc" id="social-desc"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="meta-sections">
+    <section class="meta-section">
+      <h2>Méthodologie et vérification</h2>
+      <p><strong>Méthodologie.</strong> L'outil echappe les caractères HTML, construit les balises essentielles, puis signale les risques de longueur, URL manquante, image non HTTPS ou robots noindex. Le bloc genere est un point de départ à tester dans votre CMS et vos outils webmaster.</p>
+      <ul>
+        <li>Les titres courts et descriptifs sont plus faciles a lire dans les résultats.</li>
+        <li>La description doit informer et donner envie de cliquer, sans promettre un snippet garanti.</li>
+        <li>Open Graph et Twitter Card aident les aperçus sociaux, mais chaque plateforme peut retraiter le rendu.</li>
+        <li>Avertissement: ce générateur ne remplace pas un audit SEO, rechercher Console ou une validation de production.</li>
+      </ul>
+    </section>
+    <aside class="meta-section" aria-labelledby="sources-title" data-tool-verification-panel>
+      <h2 id="sources-title">Sources &amp; vérification</h2>
+      <ul class="meta-source-list">
+        <li><a href="https://developers.google.com/search/docs/appearance/title-link" target="_blank" rel="noopener">Source officielle Google rechercher Central: title links</a></li>
+        <li><a href="https://developers.google.com/search/docs/appearance/snippet" target="_blank" rel="noopener">Source officielle Google rechercher Central: snippets and descriptions</a></li>
+        <li><a href="https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag" target="_blank" rel="noopener">Source officielle Google rechercher Central: robots meta tag</a></li>
+        <li><a href="https://ogp.me/" target="_blank" rel="noopener">Open Graph protocol</a></li>
+        <li><a href="https://developers.facebook.com/docs/sharing/webmasters/" target="_blank" rel="noopener">Source officielle Meta for Developers: sharing webmasters</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta" target="_blank" rel="noopener">MDN Web Docs: HTML meta element</a></li>
+      </ul>
+    </aside>
+  </div>
+
+  <section class="meta-section meta-faq" aria-labelledby="faq-title">
+    <h2 id="faq-title">Questions fréquentes</h2>
+    <details>
+      <summary>La meta description garantit-elle le snippet Google ?</summary>
+      <p>Non. Google peut utiliser la balise description, mais peut aussi choisir un autre extrait selon la requete et le contenu de la page.</p>
+    </details>
+    <details>
+      <summary>Faut-il Open Graph et Twitter Card ensemble ?</summary>
+      <p>Oui pour un meilleur contrôle des partages. Plusieurs plateformes lisent Open Graph, tandis que les balises Twitter Card gardent une intention explicite pour X/Twitter.</p>
+    </details>
+    <details>
+      <summary>Les données quittent-elles le navigateur ?</summary>
+      <p>Non. La génération, la copie, le téléchargement et la sauvegarde locale restent dans votre navigateur.</p>
+    </details>
+  </section>
+
+  <section class="meta-section" aria-labelledby="related-title">
+    <h2 id="related-title">Outils lies</h2>
+    <div class="meta-actions">
+      <a class="meta-btn" href="/fr/tools/json-formatter/">Formateur JSON</a>
+      <a class="meta-btn" href="/fr/tools/dev-tools/">Minificateur HTML</a>
+      <a class="meta-btn" href="/fr/tools/qr-generator/">QR Code</a>
+      <a class="meta-btn" href="/custom-calculators/">Outil SEO sur mesure</a>
+    </div>
+  </section>
+</main>
+<afro-footer></afro-footer>
+<script>
+(function () {
+  'use strict';
+
+  const STORAGE_KEY = 'afrotools_generateur_meta_tags_fr_v1';
+  const fields = {
+    title: document.getElementById('page-title'),
+    description: document.getElementById('description'),
+    url: document.getElementById('url'),
+    site: document.getElementById('site-name'),
+    image: document.getElementById('image'),
+    locale: document.getElementById('locale'),
+    type: document.getElementById('type'),
+    robots: document.getElementById('robots'),
+    twitterCard: document.getElementById('twitter-card'),
+    twitterSite: document.getElementById('twitter-site')
+  };
+  const code = document.getElementById('meta-code');
+  const warnings = document.getElementById('warnings');
+  const status = document.getElementById('status');
+  const previewUrl = document.getElementById('preview-url');
+  const previewTitle = document.getElementById('preview-title');
+  const previewDesc = document.getElementById('preview-desc');
+  const previewImage = document.getElementById('preview-image');
+  const previewSite = document.getElementById('preview-site');
+  const socialTitle = document.getElementById('social-title');
+  const socialDesc = document.getElementById('social-desc');
+
+  function clean(value) {
+    return String(value || '').trim();
+  }
+
+  function escapeHtml(value) {
+    return clean(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function tag(name, content) {
+    return '<meta name="' + name + '" content="' + escapeHtml(content) + '">';
+  }
+
+  function prop(property, content) {
+    return '<meta property="' + property + '" content="' + escapeHtml(content) + '">';
+  }
+
+  function validate(values) {
+    const list = [];
+    if (!values.title) list.push('Ajoutez un titre.');
+    if (values.title.length > 65) list.push('Titre long: prevoyez un risque de troncature.');
+    if (!values.description) list.push('Ajoutez une meta description.');
+    if (values.description.length < 70) list.push('Description courte: donnez plus de contexte utile.');
+    if (values.description.length > 160) list.push('Description longue: Google peut la tronquer ou la reecrire.');
+    if (!/^https?:\/\//i.test(values.url)) list.push('URL canonique: utilisez une URL absolue.');
+    if (values.image && !/^https:\/\//i.test(values.image)) list.push('Image sociale: HTTPS est recommande.');
+    if (/noindex/i.test(values.robots)) list.push('Robots noindex: la page peut etre retiree de la recherche.');
+    return list;
+  }
+
+  function build() {
+    const values = {
+      title: clean(fields.title.value),
+      description: clean(fields.description.value),
+      url: clean(fields.url.value),
+      site: clean(fields.site.value),
+      image: clean(fields.image.value),
+      locale: fields.locale.value,
+      type: fields.type.value,
+      robots: fields.robots.value,
+      twitterCard: fields.twitterCard.value,
+      twitterSite: clean(fields.twitterSite.value)
+    };
+
+    const lines = [
+      '<title>' + escapeHtml(values.title) + '</title>',
+      tag('description', values.description),
+      '',
+      tag('robots', values.robots),
+      prop('og:type', values.type),
+      prop('og:site_name', values.site),
+      prop('og:locale', values.locale),
+      prop('og:title', values.title),
+      prop('og:description', values.description),
+      prop('og:url', values.url),
+      prop('og:image', values.image),
+      tag('twitter:card', values.twitterCard),
+      tag('twitter:title', values.title),
+      tag('twitter:description', values.description),
+      tag('twitter:image', values.image)
+    ];
+    if (values.twitterSite) lines.push(tag('twitter:site', values.twitterSite));
+
+    const validation = validate(values);
+    warnings.textContent = validation.join('\n');
+    warnings.classList.toggle('show', validation.length > 0);
+    code.value = lines.join('\n');
+    previewUrl.textContent = values.url || 'https://example.com/page/';
+    previewTitle.textContent = values.title || 'Titre de page';
+    previewDesc.textContent = values.description || 'Description de page.';
+    previewImage.textContent = values.image ? values.image.replace(/^https?:\/\//i, '') : 'Image sociale';
+    previewSite.textContent = values.site || 'Site';
+    socialTitle.textContent = values.title || 'Titre social';
+    socialDesc.textContent = values.description || 'Description sociale.';
+    status.textContent = validation.length ? 'Code genere avec avertissements.' : 'Code genere sans avertissement majeur.';
+    return { values, html: code.value, warnings: validation };
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
+    code.focus();
+    code.select();
+    document.execCommand('copy');
+    return Promise.resolve();
+  }
+
+  document.getElementById('meta-form').addEventListener('submit', function (event) {
+    event.preventDefault();
+    build();
+  });
+
+  document.getElementById('copy-code').addEventListener('click', function () {
+    const result = build();
+    copyText(result.html).then(function () {
+      status.textContent = 'Code copie.';
+    });
+  });
+
+  document.getElementById('download-code').addEventListener('click', function () {
+    const result = build();
+    const blob = new Blob([result.html + '\n'], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'meta-tags.html';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    status.textContent = 'Fichier HTML prepare.';
+  });
+
+  document.getElementById('save-code').addEventListener('click', function () {
+    const result = build();
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ savedAt: new Date().toISOString(), values: result.values, html: result.html, warnings: result.warnings }));
+      status.textContent = 'Instantane sauvegarde dans ce navigateur.';
+    } catch (error) {
+      status.textContent = 'Sauvegarde locale indisponible dans ce navigateur.';
+    }
+  });
+
+  Object.values(fields).forEach(function (field) {
+    field.addEventListener('input', build);
+    field.addEventListener('change', build);
+  });
+
+  build();
+})();
+</script>
+</body>
+</html>

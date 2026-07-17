@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Watermark to PDF Online | Text, Logo, Batch | AfroTools</title>
+<meta name="description" content="Add text or image watermarks to PDFs locally with live preview, presets, opacity, rotation, page ranges, tiling, layer controls, and batch ZIP output.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Add Watermark to PDF Online | AfroTools">
+<meta property="og:description" content="Add text or image watermarks to PDFs with live preview, presets, page ranges, opacity, rotation, tiling, placement, and batch export.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/pdf-watermark/">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/pdf-watermark.webp">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Add Watermark to PDF Online | AfroTools">
+<meta name="twitter:description" content="Watermark PDFs locally with text, image, presets, page range, opacity, rotation, preview, and batch ZIP controls.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-watermark.webp">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="article:modified_time" content="2026-04-27">
+<style>
+  :root {
+    --wm-blue: var(--color-primary);
+    --wm-dark: #0f1419;
+    --wm-soft: #EFF6FF;
+  }
+
+  .tool-hero {
+    background: #f7fbff;
+    border-bottom: 1px solid #dbeafe;
+    padding: 34px 0 22px;
+    overflow: hidden;
+  }
+
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #64748b;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: #64748b;
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--wm-blue);
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: 0;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    color: var(--wm-blue);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: #334155;
+    line-height: 1.6;
+    max-width: 660px;
+    margin-bottom: 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 11px;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    background: #fff;
+    color: #075985;
+    border: 1px solid #bae6fd;
+  }
+
+  .tool-main {
+    padding: 24px 0 56px;
+  }
+
+  .workflow-strip {
+    max-width: 1220px;
+    margin: 0 auto 14px;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .workflow-step {
+    background: #fff;
+    border: 1px solid #dbeafe;
+    border-radius: 8px;
+    padding: 12px 14px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .step-num {
+    flex: 0 0 28px;
+    min-height: 28px;
+    border-radius: 6px;
+    background: #e0f2fe;
+    color: #075985;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 800;
+  }
+
+  .step-title {
+    display: block;
+    font-size: 0.82rem;
+    color: #0f172a;
+    font-weight: 800;
+    margin-bottom: 2px;
+  }
+
+  .step-copy {
+    display: block;
+    font-size: 0.74rem;
+    color: #64748b;
+    line-height: 1.45;
+  }
+
+  .tool-main-inner {
+    max-width: 1220px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 390px;
+    gap: 22px;
+    align-items: start;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+  }
+
+  .card + .card {
+    margin-top: 18px;
+  }
+
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f9fafb;
+  }
+
+  .card-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #374151;
+  }
+
+  .card-body {
+    padding: 22px;
+  }
+
+  .drop-zone {
+    border: 2px dashed #dbeafe;
+    border-radius: 8px;
+    padding: 28px 18px;
+    text-align: center;
+    cursor: pointer;
+    background: var(--wm-soft);
+    transition: border-color 0.18s, background 0.18s, box-shadow 0.18s;
+    min-height: 120px;
+    touch-action: manipulation;
+  }
+
+  .drop-zone:hover,
+  .drop-zone.dragover {
+    border-color: var(--wm-blue);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+  }
+
+  .drop-title {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 4px;
+  }
+
+  .drop-hint {
+    font-size: 0.72rem;
+    color: #6B8CAE;
+  }
+
+  .hidden-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+  }
+
+  .file-list {
+    margin-top: 12px;
+    display: grid;
+    gap: 8px;
+  }
+
+  .file-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 12px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+  }
+
+  .file-name {
+    min-width: 0;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #1e293b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .file-meta {
+    font-size: 0.68rem;
+    color: #64748b;
+    margin-top: 2px;
+  }
+
+  .mini-btn {
+    background: #EFF6FF;
+    border: 1px solid #dbeafe;
+    color: #1e40af;
+    min-height: 40px;
+    padding: 8px 11px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.68rem;
+    font-weight: 800;
+    font-family: 'DM Sans', sans-serif;
+    touch-action: manipulation;
+  }
+
+  .mini-btn:hover {
+    background: #dbeafe;
+  }
+
+  .grid-2,
+  .grid-3 {
+    display: grid;
+    gap: 12px;
+  }
+
+  .grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .field {
+    margin-bottom: 16px;
+  }
+
+  .field:last-child {
+    margin-bottom: 0;
+  }
+
+  .label-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  .label-text {
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: #1e293b;
+  }
+
+  .label-value,
+  .field-hint {
+    font-size: 0.68rem;
+    color: #64748b;
+  }
+
+  .input,
+  .select,
+  .textarea {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    background: #fff;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 7px;
+    color: #1e293b;
+    font-size: 0.86rem;
+    font-weight: 650;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+  }
+
+  .textarea {
+    min-height: 72px;
+    resize: vertical;
+    line-height: 1.4;
+  }
+
+  .input:focus,
+  .select:focus,
+  .textarea:focus {
+    border-color: var(--wm-blue);
+    box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+  }
+
+  .segmented,
+  .preset-row,
+  .position-grid {
+    display: grid;
+    gap: 8px;
+  }
+
+  .segmented {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .preset-row {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .position-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .choice-btn {
+    min-height: 44px;
+    padding: 11px 10px;
+    background: #EFF6FF;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+    user-select: none;
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: #334155;
+    font-family: 'DM Sans', sans-serif;
+    touch-action: manipulation;
+  }
+
+  .preset-btn {
+    min-height: 44px;
+    padding: 11px 10px;
+    border: 1.5px solid #dbeafe;
+    border-radius: 7px;
+    background: #fff;
+    color: #1e40af;
+    cursor: pointer;
+    font-size: 0.72rem;
+    font-weight: 800;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.15s, border-color 0.15s;
+    touch-action: manipulation;
+  }
+
+  .preset-btn:hover {
+    background: #EFF6FF;
+    border-color: var(--wm-blue);
+  }
+
+  .drop-zone:focus-visible,
+  .choice-btn:focus-visible,
+  .preset-btn:focus-visible,
+  .mini-btn:focus-visible,
+  .calc-btn:focus-visible,
+  .act-btn:focus-visible {
+    outline: 3px solid rgba(0,113,227,0.25);
+    outline-offset: 2px;
+  }
+
+  .choice-btn:hover {
+    border-color: var(--wm-blue);
+  }
+
+  .choice-btn.on {
+    border-color: var(--wm-blue);
+    background: var(--color-primary);
+    color: #fff;
+  }
+
+  .slider {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: #e5e7eb;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--wm-blue);
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 6px rgba(0,113,227,0.3);
+  }
+
+  .slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--wm-blue);
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 6px rgba(0,113,227,0.3);
+  }
+
+  .color-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .color-input {
+    width: 52px;
+    height: 38px;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 7px;
+    cursor: pointer;
+    background: #fff;
+  }
+
+  .result-card {
+    display: none;
+  }
+
+  .result-card.on {
+    display: block;
+  }
+
+  .result-text {
+    font-size: 0.84rem;
+    color: #1e293b;
+    line-height: 1.55;
+  }
+
+  .result-rows {
+    margin-top: 12px;
+    display: grid;
+    gap: 8px;
+  }
+
+  .result-row {
+    padding: 9px 10px;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    color: #475569;
+  }
+
+  .result-note {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border: 1px solid #dbeafe;
+    background: #EFF6FF;
+    color: #334155;
+    border-radius: 6px;
+    font-size: 0.76rem;
+    line-height: 1.55;
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 12px;
+    display: none;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--color-primary), #60a5fa);
+    transition: width 0.25s;
+  }
+
+  .action-row {
+    display: none;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .action-row.on {
+    display: grid;
+  }
+
+  .calc-btn,
+  .act-btn {
+    width: 100%;
+    min-height: 46px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 800;
+    touch-action: manipulation;
+  }
+
+  .calc-btn {
+    padding: 14px;
+    background: var(--color-primary);
+    color: #fff;
+    font-size: 0.9rem;
+    letter-spacing: 0.03em;
+    transition: background 0.18s, box-shadow 0.18s;
+  }
+
+  .calc-btn:hover:not(:disabled) {
+    background: #0059B3;
+    box-shadow: 0 6px 20px rgba(0,113,227,0.22);
+  }
+
+  .calc-btn:disabled {
+    background: #93c5fd;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .act-btn {
+    padding: 11px;
+    font-size: 0.74rem;
+    background: rgba(0,113,227,0.1);
+    border: 1.5px solid rgba(0,113,227,0.35);
+    color: #1e40af;
+  }
+
+  .preview-card {
+    position: sticky;
+    top: 16px;
+  }
+
+  .preview-wrap {
+    background: #111827;
+    border-radius: 8px;
+    padding: 12px;
+    min-height: 330px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #previewCanvas {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    background: #fff;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.28);
+  }
+
+  .preview-status {
+    font-size: 0.74rem;
+    color: #64748b;
+    line-height: 1.5;
+    margin-top: 10px;
+  }
+
+  .info-card {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px;
+  }
+
+  .info-title {
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #374151;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .info-text {
+    font-size: 0.8rem;
+    color: #334155;
+    line-height: 1.65;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  @media (max-width: 920px) {
+    .tool-main-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .preview-card {
+      position: static;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .grid-2,
+    .grid-3,
+    .segmented,
+    .workflow-strip,
+    .preset-row {
+      grid-template-columns: 1fr;
+    }
+
+    .position-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .tool-main-inner,
+    .tool-hero-inner,
+    .workflow-strip {
+      padding-left: 18px;
+      padding-right: 18px;
+    }
+  }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Add Watermark to PDF","description":"Add text or image watermarks to PDF files with presets, opacity, rotation, page ranges, tiling, position, layer, live preview, and batch ZIP export. Processing runs in the browser.","url":"https://afrotools.com/tools/pdf-watermark/","inLanguage":"en","applicationCategory":"DocumentApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","featureList":["Text PDF watermarks","Image and logo PDF watermarks","Watermark presets","Live PDF preview","Page range, position, opacity, rotation, layer, and tile controls","Batch ZIP export"],"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/pdf-watermark.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Add Watermark to PDF","url":"https://afrotools.com/tools/pdf-watermark/","description":"Local browser-first PDF watermark tool for adding text or image watermarks with presets, preview, page range, placement, rotation, opacity, layer, and batch output controls.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/pdf-watermark.webp"}</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "AfroTools", "item": "https://afrotools.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://afrotools.com/tools/" },
+    { "@type": "ListItem", "position": 3, "name": "PDF Watermark", "item": "https://afrotools.com/tools/pdf-watermark/" }
+  ]
+}
+</script>
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<style>
+  body.top-level-page-ui-refresh .tool-hero h1 { color: #0f172a; }
+  body.top-level-page-ui-refresh .tool-hero h1 em,
+  body.top-level-page-ui-refresh .breadcrumb span { color: var(--color-primary); }
+</style>
+<link rel="canonical" href="https://afrotools.com/tools/pdf-watermark/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-watermark/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/filigrane-pdf/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/watermark-pdf/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-watermark/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/tools/">Tools</a> / <span>PDF Watermark</span></div>
+    <h1>Add a watermark to PDF</h1>
+    <p class="hero-sub">Mark one PDF or a batch with text, a logo, page ranges, opacity, rotation, and live preview. Source files stay in this browser while the output is created.</p>
+    <div class="hero-badges">
+      <span class="badge">Text presets</span>
+      <span class="badge">Logo/image</span>
+      <span class="badge">Live preview</span>
+    </div>
+  </div>
+</div>
+
+<main class="tool-main">
+  <div class="workflow-strip" aria-label="Watermark steps">
+    <div class="workflow-step"><span class="step-num">1</span><span><span class="step-title">Upload PDF</span><span class="step-copy">Add one file or a batch.</span></span></div>
+    <div class="workflow-step"><span class="step-num">2</span><span><span class="step-title">Set mark</span><span class="step-copy">Use text presets, a logo, or custom settings.</span></span></div>
+    <div class="workflow-step"><span class="step-num">3</span><span><span class="step-title">Preview and save</span><span class="step-copy">Check placement, then download PDF or ZIP.</span></span></div>
+  </div>
+  <div class="tool-main-inner">
+    <section>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Upload PDFs</span></div>
+        <div class="card-body">
+          <div class="drop-zone" id="pdfDropZone" role="button" tabindex="0" aria-label="Choose PDF files to watermark">
+            <div class="drop-title">Choose PDFs or drag them here</div>
+            <div class="drop-hint">Supports one file or batch watermarking. Files stay in your browser.</div>
+            <input aria-label="PDF files" class="hidden-input" type="file" id="pdfFileInput" accept=".pdf,application/pdf" multiple>
+          </div>
+          <div class="file-list" id="fileList"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-title">Watermark Content</span></div>
+        <div class="card-body">
+          <div class="field">
+            <div class="label-row"><span class="label-text">Watermark Type</span></div>
+            <div class="segmented">
+              <button class="choice-btn on" type="button" data-type="text">Text</button>
+              <button class="choice-btn" type="button" data-type="image">Image</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="label-row"><span class="label-text">Quick Preset</span><span class="field-hint">Sets text, opacity, rotation, and pattern.</span></div>
+            <div class="preset-row" aria-label="Watermark presets">
+              <button class="preset-btn" type="button" data-wm-preset="confidential">Confidential</button>
+              <button class="preset-btn" type="button" data-wm-preset="draft">Draft</button>
+              <button class="preset-btn" type="button" data-wm-preset="sample">Sample</button>
+              <button class="preset-btn" type="button" data-wm-preset="approved">Approved</button>
+            </div>
+          </div>
+
+          <div id="textPanel">
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="watermarkText">Text</label><span class="field-hint">Line breaks are supported.</span></div>
+              <textarea class="textarea" id="watermarkText" placeholder="CONFIDENTIAL">CONFIDENTIAL</textarea>
+            </div>
+            <div class="grid-3">
+              <div class="field">
+                <div class="label-row"><label class="label-text" for="fontSelect">Font</label></div>
+                <select class="select" id="fontSelect">
+                  <option value="HelveticaBold">Helvetica Bold</option>
+                  <option value="Helvetica">Helvetica</option>
+                  <option value="TimesRoman">Times</option>
+                  <option value="CourierBold">Courier Bold</option>
+                </select>
+              </div>
+              <div class="field">
+                <div class="label-row"><label class="label-text" for="textColor">Color</label><span class="label-value" id="textColorHex">#000000</span></div>
+                <div class="color-row">
+                  <input class="color-input" id="textColor" type="color" value="#000000" aria-label="Watermark color picker">
+                  <input aria-label="Watermark color hex" class="input" id="customColor" type="text" value="#000000" maxlength="7">
+                </div>
+              </div>
+              <div class="field">
+                <div class="label-row"><label class="label-text" for="fontSize">Size</label><span class="label-value" id="fontSizeValue">60 pt</span></div>
+                <input class="slider" id="fontSize" type="range" min="10" max="160" step="1" value="60">
+              </div>
+            </div>
+          </div>
+
+          <div id="imagePanel" class="hidden">
+            <div class="field">
+              <div class="label-row"><span class="label-text">Watermark Image</span><span class="field-hint">PNG, JPG, JPEG, or WebP</span></div>
+              <div class="drop-zone" id="imageDropZone" role="button" tabindex="0" aria-label="Choose an image watermark">
+                <div class="drop-title">Choose logo or image watermark</div>
+                <div class="drop-hint" id="imageFileName">Transparent PNG works best.</div>
+                <input aria-label="Image watermark file" class="hidden-input" type="file" id="imageFileInput" accept="image/png,image/jpeg,image/webp">
+              </div>
+            </div>
+            <div class="grid-2">
+              <div class="field">
+                <div class="label-row"><label class="label-text" for="imageScale">Image Width</label><span class="label-value" id="imageScaleValue">30%</span></div>
+                <input class="slider" id="imageScale" type="range" min="5" max="95" step="1" value="30">
+              </div>
+              <div class="field">
+                <div class="label-row"><label class="label-text" for="imageOpacity">Image Opacity</label><span class="label-value" id="imageOpacityValue">30%</span></div>
+                <input class="slider" id="imageOpacity" type="range" min="5" max="100" step="1" value="30">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-title">Placement and Pages</span></div>
+        <div class="card-body">
+          <div class="grid-3">
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="pageRange">Pages</label></div>
+              <input class="input" id="pageRange" type="text" inputmode="text" placeholder="All or 1-3, 5">
+              <div class="field-hint">Leave blank for every page.</div>
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="layerSelect">Layer</label></div>
+              <select class="select" id="layerSelect">
+                <option value="over">Over content</option>
+                <option value="under">Behind content</option>
+              </select>
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="patternSelect">Pattern</label></div>
+              <select class="select" id="patternSelect">
+                <option value="single">Single mark</option>
+                <option value="tile">Tiled marks</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="label-row"><span class="label-text">Position</span><span class="field-hint">Used for single mark mode.</span></div>
+            <div class="position-grid" id="positionGrid">
+              <button class="choice-btn" type="button" data-position="top-left">Top left</button>
+              <button class="choice-btn" type="button" data-position="top-center">Top</button>
+              <button class="choice-btn" type="button" data-position="top-right">Top right</button>
+              <button class="choice-btn" type="button" data-position="middle-left">Left</button>
+              <button class="choice-btn on" type="button" data-position="center">Center</button>
+              <button class="choice-btn" type="button" data-position="middle-right">Right</button>
+              <button class="choice-btn" type="button" data-position="bottom-left">Bottom left</button>
+              <button class="choice-btn" type="button" data-position="bottom-center">Bottom</button>
+              <button class="choice-btn" type="button" data-position="bottom-right">Bottom right</button>
+            </div>
+          </div>
+
+          <div class="grid-3">
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="textOpacity">Opacity</label><span class="label-value" id="textOpacityValue">30%</span></div>
+              <input class="slider" id="textOpacity" type="range" min="1" max="100" step="1" value="30">
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="rotation">Rotation</label><span class="label-value" id="rotationValue">-45 deg</span></div>
+              <input class="slider" id="rotation" type="range" min="-90" max="90" step="1" value="-45">
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="tileGap">Tile Gap</label><span class="label-value" id="tileGapValue">110 pt</span></div>
+              <input class="slider" id="tileGap" type="range" min="20" max="260" step="5" value="110">
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="offsetX">Horizontal Offset</label><span class="label-value" id="offsetXValue">0 mm</span></div>
+              <input class="slider" id="offsetX" type="range" min="-100" max="100" step="1" value="0">
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="offsetY">Vertical Offset</label><span class="label-value" id="offsetYValue">0 mm</span></div>
+              <input class="slider" id="offsetY" type="range" min="-100" max="100" step="1" value="0">
+            </div>
+          </div>
+
+          <button class="calc-btn" id="watermarkBtn" type="button" disabled>Apply Watermark</button>
+        </div>
+      </div>
+    </section>
+
+    <aside>
+      <div class="card preview-card">
+        <div class="card-head"><span class="card-title">Live Preview</span></div>
+        <div class="card-body">
+          <div class="preview-wrap">
+            <canvas id="previewCanvas" width="320" height="420"></canvas>
+          </div>
+          <div class="preview-status" id="previewStatus" role="status" aria-live="polite">Upload a PDF to preview the first selected page.</div>
+        </div>
+      </div>
+
+      <div class="card result-card" id="resultCard">
+        <div class="card-head"><span class="card-title">Result</span></div>
+        <div class="card-body">
+          <div class="result-text" id="resultText" role="status" aria-live="polite"></div>
+          <div class="progress-bar" id="progressBar" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+          <div class="result-rows" id="resultRows"></div>
+          <div class="result-note" id="resultNote" role="status" aria-live="polite"></div>
+          <div class="action-row" id="actionRow">
+            <button class="act-btn" id="downloadBtn" type="button">Download</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Watermark Tips</div>
+        <div class="info-text">
+          Use 10-25% opacity for readable documents, 30-50% for draft or confidential marks, and tiled mode when you need a repeated security pattern across each page.
+        </div>
+      </div>
+    </aside>
+  </div>
+
+</main>
+
+<section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="pdf-watermark-verification-title">
+  <div class="tool-verification-card">
+    <div class="tool-verification-head">
+      <div>
+        <span class="tool-verification-kicker">Watermark limits</span>
+        <h2 class="tool-verification-title" id="pdf-watermark-verification-title">Review watermark visibility before sending the file</h2>
+        <p class="tool-verification-lead">Watermarking runs locally and creates a browser-generated PDF copy. Watermarks are visual deterrents, not access control, copyright enforcement, or redaction.</p>
+      </div>
+      <div class="tool-verification-status">
+        <span class="tool-verification-badge">Local-first PDF workflow</span>
+        <p class="tool-verification-note">Reviewed 2026. Disclaimer: verify with the recipient before relying on watermarked output. The shared PDF account gate does not upload your files.</p>
+      </div>
+    </div>
+    <div class="tool-verification-grid">
+      <div class="tool-verification-block">
+        <h3>Methodology</h3>
+        <ul class="tool-verification-list">
+          <li>Applies text or image overlays to selected pages using local PDF generation routines.</li>
+          <li>Opacity, rotation, placement, and repeat settings affect readability and file size.</li>
+          <li>Image watermarks work best with transparent PNG files prepared before upload.</li>
+        </ul>
+      </div>
+      <div class="tool-verification-block">
+        <h3>Before sharing</h3>
+        <ul class="tool-verification-list">
+          <li>Open the output in another reader and confirm page coverage, contrast, placement, file size, and print appearance.</li>
+          <li>Do not rely on watermarks for confidential redaction or document access control.</li>
+          <li>For signatures, page order, or visual covers, continue in <a href="/tools/pdf-workspace/">PDF Workspace</a>.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<afro-related-tools category="document-pdf" current="pdf-watermark" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/cv-builder/" data-related-tool data-id="cv-builder" data-name="CV / Resume Builder" data-category="document-pdf" data-icon="CR" data-desc="Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.">CV / Resume Builder</a></li><li><a href="/tools/invoice-generator/" data-related-tool data-id="invoice-generator" data-name="Invoice Generator" data-category="document-pdf" data-icon="IG" data-desc="Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.">Invoice Generator</a></li><li><a href="/tools/pdf-editor/" data-related-tool data-id="pdf-editor" data-name="PDF Editor" data-category="document-pdf" data-icon="PE" data-desc="Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt">PDF Editor</a></li><li><a href="/tools/pdf-merge-split/" data-related-tool data-id="pdf-merge-split" data-name="PDF Merge &amp; Split" data-category="document-pdf" data-icon="PM" data-desc="Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only">PDF Merge &amp; Split</a></li><li><a href="/tools/pdf-workspace/" data-related-tool data-id="pdf-workspace" data-name="PDF Workspace" data-category="document-pdf" data-icon="PW" data-desc="Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.">PDF Workspace</a></li><li><a href="/tools/pdf-compress/" data-related-tool data-id="pdf-compress" data-name="PDF Compressor" data-category="document-pdf" data-icon="PC" data-desc="Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.">PDF Compressor</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script src="/assets/vendor/pdf-lib/pdf-lib.min.js?v=dec481b1"></script>
+<script src="/assets/vendor/pdfjs/pdf.min.js?v=96de3233"></script>
+<script src="/tools/pdf-watermark/app.js?v=a079d992"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var presets = {
+      confidential: { text: 'CONFIDENTIAL', color: '#B91C1C', opacity: '32', rotation: '-45', pattern: 'tile' },
+      draft: { text: 'DRAFT', color: '#1D4ED8', opacity: '24', rotation: '-35', pattern: 'single' },
+      sample: { text: 'SAMPLE', color: '#6D28D9', opacity: '28', rotation: '-45', pattern: 'tile' },
+      approved: { text: 'APPROVED', color: '#047857', opacity: '30', rotation: '0', pattern: 'single' }
+    };
+    function setValue(id, value) {
+      var field = document.getElementById(id);
+      if (!field) return;
+      field.value = value;
+      field.dispatchEvent(new Event('input', { bubbles: true }));
+      field.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+    document.querySelectorAll('[data-wm-preset]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        var preset = presets[button.dataset.wmPreset];
+        if (!preset) return;
+        setValue('watermarkText', preset.text);
+        setValue('textColor', preset.color);
+        setValue('customColor', preset.color);
+        setValue('textOpacity', preset.opacity);
+        setValue('rotation', preset.rotation);
+        setValue('patternSelect', preset.pattern);
+      });
+    });
+    [
+      ['pdfDropZone', 'pdfFileInput'],
+      ['imageDropZone', 'imageFileInput']
+    ].forEach(function (pair) {
+      var zone = document.getElementById(pair[0]);
+      var input = document.getElementById(pair[1]);
+      if (!zone || !input) return;
+      zone.addEventListener('keydown', function (event) {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        input.click();
+      });
+    });
+  });
+</script>
+<script src="/assets/js/components/related-tools.js?v=4123e336" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
+<script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
+<script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
+<email-gate-modal></email-gate-modal>
+<script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
+<script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+</body>
+</html>

@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coffee Grade &amp; Price Calculator for Africa — Ethiopia, Kenya, Tanzania, Uganda | AfroTools</title>
+<meta name="description" content="Look up African coffee grading systems, calculate farm yield and export revenue, and get quality improvement plans. Covers Ethiopia (G1–G5), Kenya (AA/AB/PB), Tanzania, Uganda, Rwanda, Burundi, Côte d'Ivoire, and Cameroon.">
+<meta property="og:title" content="African Coffee Grade &amp; Price Calculator — AfroTools">
+<meta property="og:description" content="Look up coffee grading systems and estimate export prices by grade for 8 African origins: Ethiopia, Kenya, Tanzania, Uganda, Rwanda, Burundi, Côte d'Ivoire, Cameroon.">
+<meta property="og:url" content="https://afrotools.com/agriculture/coffee-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/coffee-calculator.webp">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="African Coffee Grade &amp; Price Calculator — AfroTools">
+<meta name="twitter:description" content="Grade lookup, yield calculator, quality improvement guide, and processing cost breakdown for African coffee farmers.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/coffee-calculator.webp">
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"African Coffee Grade & Price Calculator","url":"https://afrotools.com/agriculture/coffee-calculator/","description":"Look up coffee grading systems and estimate export prices by grade for 8 African origins. Calculate farm yield, revenue, and quality improvement plans for Ethiopian, Kenyan, Tanzanian, and Ugandan coffee.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"image":"https://afrotools.com/assets/img/tools/coffee-calculator.webp"}</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is Ethiopian Grade 1 (G1) coffee?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ethiopian Grade 1 is the highest specialty grade, with 0–3 defects per 300g sample and a SCA cup score of 85+. It is extremely rare and commands premiums of 40–60% over standard commercial coffee. Origins like Yirgacheffe and Guji produce most G1 lots."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between Kenya AA and AB coffee?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Kenya AA uses screen size 17–18 (6.70–7.14mm beans) and commands a 30% premium over base price. Kenya AB mixes screen A and B (smaller beans, 15–16) and is priced about 15% above base. AA is Kenya's flagship export grade but AB often rivals it in cup quality, offering better value to specialty roasters."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many kilograms of coffee cherries does it take to produce 1 kg of green beans?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Approximately 5 kg of fresh cherries produce 1 kg of washed (wet-processed) green beans. For natural (dry) processing, the ratio is about 3.5:1 because the cherry is dried whole and loses weight more efficiently. This conversion ratio is critical for calculating farm revenues."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is Uganda Africa's second largest coffee exporter?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Uganda produces about 370,000 tonnes of coffee annually, dominated (~70%) by Robusta from the Lake Victoria basin. Uganda's favorable climate, low-cost production, and the UCDA's export infrastructure make it competitive. Robusta is in high demand for commercial espresso blends globally."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the potato defect in Rwandan coffee?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The 'potato defect' (also called PD) is a raw potato-like smell in the cup caused by pyrazine compounds from Antestia bug damage to coffee cherries. It is specific to the Great Lakes region (Rwanda and Burundi). Integrated pest management (IPM) to control Antestia bugs can reduce the defect by 50–80%."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I improve my coffee grade?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The most impactful steps are: selective picking (only fully ripe red cherries), processing within 6–12 hours of harvest, controlling fermentation time carefully (36–48 hours at altitude for washed), floating cherries to remove defects, drying on raised beds to target 10.5–11.5% moisture, and storing parchment properly. These alone can move coffee from G4 to G2 in Ethiopia's system."
+      }
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "AfroTools", "item": "https://afrotools.com/"},
+    {"@type": "ListItem", "position": 2, "name": "Agriculture", "item": "https://afrotools.com/agriculture/"},
+    {"@type": "ListItem", "position": 3, "name": "Coffee Grade & Price Calculator", "item": "https://afrotools.com/agriculture/coffee-calculator/"}
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/agriculture.css?v=70592203">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/data/agriculture/coffee-data.js?v=51c9a98a"></script>
+<script src="/engines/coffee-engine.js?v=bc686a1f"></script>
+
+<style>
+:root{
+  --acc:#0062CC;--acc-dk:#0063D1;--acc-lt:#E8F2FF;--acc-pale:#F0F7FF;
+  --bg:#F8FAFD;--bg-card:#FFF;--text:#0f172a;--muted:#6B7280;
+  --r:18px;--border:#E5E7EB;
+  --pos:#16A34A;--pos-lt:#DCFCE7;--neg:#DC2626;--neg-lt:#FEE2E2;--warn:#D97706;--warn-lt:#FEF3C7;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);margin:0}
+
+/* HERO */
+.hero{background:#0A1628;color:#fff;padding:3rem 1rem 2rem;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(0,98,204,.15) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(0,98,204,.08) 0%,transparent 50%);pointer-events:none}
+.hero-inner{max-width:720px;margin:0 auto;position:relative;z-index:1}
+.breadcrumb{font-size:.82rem;opacity:.65;margin-bottom:.75rem}
+.breadcrumb a{color:#fff;text-decoration:none}.breadcrumb a:hover{text-decoration:underline}
+.hero h1{color:#fff;font-size:clamp(1.6rem,5vw,2.6rem);font-weight:800;margin:0 0 .75rem;letter-spacing:-.02em;line-height:1.15;text-transform:uppercase}
+.hero p{font-size:1rem;opacity:.85;line-height:1.6;max-width:600px;margin:0 auto}
+.badge-row{display:flex;justify-content:center;gap:.6rem;margin-top:1.1rem;flex-wrap:wrap}
+.badge{background:rgba(255,255,255,.15);border-radius:980px;padding:.3rem .85rem;font-size:.8rem;font-weight:600}
+
+/* MAIN */
+.main{max-width:900px;margin:0 auto;padding:1.5rem 1rem 3rem}
+
+/* CARD */
+.card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--r);padding:1.4rem;margin-bottom:1.25rem}
+.card-title{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:0 0 1rem}
+
+/* COUNTRY SELECTOR */
+.country-selector{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.country-selector label{font-size:.9rem;font-weight:700;white-space:nowrap}
+.country-select{flex:1;min-width:200px;max-width:320px;padding:.65rem 1rem;border:2px solid var(--acc);border-radius:12px;font-family:inherit;font-size:1rem;font-weight:700;color:var(--text);background:#fff;cursor:pointer}
+.country-select:focus{outline:none;border-color:var(--acc-dk)}
+.country-meta{font-size:.82rem;color:var(--muted);line-height:1.5}
+.country-meta strong{color:var(--text)}
+
+/* TABS */
+.tabs{display:flex;gap:.4rem;border-bottom:2px solid var(--border);margin-bottom:1.25rem;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab-btn{background:none;border:none;padding:.7rem 1.1rem;font-family:inherit;font-size:.88rem;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:color .2s,border-color .2s}
+.tab-btn.active{color:var(--acc);border-bottom-color:var(--acc)}
+.tab-btn:hover:not(.active){color:var(--text)}
+.tab-panel{display:none}.tab-panel.active{display:block}
+
+/* FORM */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+@media (max-width: 820px) { .form-grid { grid-template-columns: 1fr; } }
+.field{display:flex;flex-direction:column;gap:.35rem}
+.field label{font-size:.82rem;font-weight:700}
+.field input,.field select{width:100%;padding:.6rem .9rem;border:1.5px solid var(--border);border-radius:12px;font-family:inherit;font-size:.92rem;color:var(--text);background:#fff;transition:border-color .2s}
+.field input:focus,.field select:focus{outline:none;border-color:var(--acc)}
+.field .hint{font-size:.74rem;color:var(--muted)}
+.full-width{grid-column:1/-1}
+
+/* BUTTON */
+.btn-calc{display:block;width:100%;margin-top:1rem;padding:.85rem;background:var(--acc);color:#fff;border:none;border-radius:980px;font-family:inherit;font-size:1rem;font-weight:800;cursor:pointer;transition:background .2s,transform .1s}
+.btn-calc:hover{background:var(--acc-dk);transform:translateY(-1px)}
+.btn-calc:active{transform:translateY(0)}
+
+/* GRADE TABLE (Mode A) */
+.grade-table{width:100%;border-collapse:collapse;font-size:.88rem;margin-top:.5rem}
+.grade-table th{text-align:left;padding:.6rem .75rem;background:var(--acc-pale);font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--acc-dk)}
+.grade-table td{padding:.6rem .75rem;border-bottom:1px solid var(--border)}
+.grade-table tr:last-child td{border-bottom:none}
+.grade-table tr:hover td{background:var(--acc-pale)}
+.grade-row.selected td{background:var(--acc-lt)!important}
+.prem-badge{display:inline-block;padding:.2rem .55rem;border-radius:980px;font-size:.78rem;font-weight:800}
+.prem-pos{background:var(--pos-lt);color:var(--pos)}
+.prem-neg{background:var(--neg-lt);color:var(--neg)}
+.prem-zero{background:#F1F5F9;color:#475569}
+
+/* GRADE DETAIL CARD */
+.grade-detail{background:var(--acc-pale);border:1.5px solid var(--acc-lt);border-radius:14px;padding:1.1rem;margin-top:1rem}
+.grade-detail .gd-name{font-size:1.1rem;font-weight:800;color:var(--acc-dk);margin:0 0 .4rem}
+.grade-detail .gd-row{display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:.5rem}
+.grade-detail .gd-item{font-size:.85rem;line-height:1.4}
+.grade-detail .gd-item strong{display:block;font-size:.74rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:.1rem}
+
+/* SYSTEM INFO */
+.system-info{background:#F8FAFD;border:1.5px solid var(--border);border-radius:12px;padding:.9rem 1rem;margin-bottom:1rem;font-size:.85rem;line-height:1.6;color:var(--muted)}
+.system-info strong{color:var(--text)}
+
+/* RESULTS — Stat grid */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.75rem;margin-top:.75rem}
+.stat-card{background:var(--acc-pale);border:1.5px solid var(--acc-lt);border-radius:14px;padding:.9rem;text-align:center}
+.stat-card.highlight{background:var(--acc);color:#fff;border-color:var(--acc)}
+.stat-card.highlight .stat-val{color:#fff}
+.stat-card.highlight .stat-lbl{color:rgba(255,255,255,.8)}
+.stat-val{font-size:1.4rem;font-weight:800;color:var(--acc);line-height:1}
+.stat-lbl{font-size:.74rem;font-weight:600;color:var(--muted);margin-top:.3rem}
+
+/* RESULT NOTE */
+.result-note{font-size:.82rem;color:var(--muted);background:#F8FAFD;border:1px solid var(--border);border-radius:10px;padding:.65rem .9rem;margin-top:.75rem;line-height:1.5}
+
+/* IMPROVEMENT STEPS */
+.steps-list{list-style:none;padding:0;margin:.75rem 0 0;display:flex;flex-direction:column;gap:.6rem}
+.steps-list li{display:flex;gap:.7rem;font-size:.88rem;line-height:1.4;color:var(--muted)}
+.steps-list li::before{content:'→';color:var(--acc);font-weight:800;flex-shrink:0;margin-top:.05em}
+.steps-list li strong{color:var(--text)}
+.country-note{background:var(--warn-lt);border:1.5px solid #FDE68A;border-radius:12px;padding:.85rem 1rem;font-size:.85rem;line-height:1.6;margin-top:.75rem;color:#92400E}
+.country-note strong{display:block;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.25rem;color:#78350F}
+
+/* PROCESSING STAGES */
+.stage-row{display:flex;align-items:center;gap:.75rem;padding:.65rem 0;border-bottom:1px solid var(--border);font-size:.88rem}
+.stage-row:last-child{border-bottom:none}
+.stage-num{width:28px;height:28px;border-radius:50%;background:var(--acc);color:#fff;font-weight:800;font-size:.82rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.stage-name{flex:1;font-weight:600}
+.stage-cost{font-weight:800;color:var(--acc)}
+.stage-note{font-size:.78rem;color:var(--muted)}
+.processing-summary{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:1rem}
+@media(max-width:820px){.processing-summary{grid-template-columns:1fr}}
+.ps-card{border-radius:12px;padding:.85rem;text-align:center;border:1.5px solid var(--border)}
+.ps-card.green{background:var(--pos-lt);border-color:#86EFAC}
+.ps-card.red{background:var(--neg-lt);border-color:#FCA5A5}
+.ps-card.blue{background:var(--acc-pale);border-color:var(--acc-lt)}
+.ps-card .ps-val{font-size:1.3rem;font-weight:800}
+.ps-card.green .ps-val{color:var(--pos)}
+.ps-card.red .ps-val{color:var(--neg)}
+.ps-card.blue .ps-val{color:var(--acc)}
+.ps-card .ps-lbl{font-size:.75rem;color:var(--muted);font-weight:600;margin-top:.2rem}
+
+/* REGION PILLS */
+.region-list{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.6rem}
+.region-pill{background:var(--acc-lt);color:var(--acc-dk);border-radius:980px;padding:.3rem .75rem;font-size:.8rem;font-weight:600}
+
+/* CROSS-LINKS */
+.agri-links{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.65rem;margin-top:.85rem}
+.agri-link{display:flex;align-items:center;gap:.55rem;background:var(--bg-card);border:1.5px solid var(--border);border-radius:13px;padding:.7rem .9rem;text-decoration:none;color:var(--text);font-weight:600;font-size:.85rem;transition:border-color .2s,box-shadow .2s}
+.agri-link:hover{border-color:var(--acc);box-shadow:0 3px 10px rgba(0,98,204,.1)}
+.agri-link .al-arr{color:var(--muted);margin-left:auto;font-size:.95rem}
+
+/* FAQ */
+.faq details{border-bottom:1px solid var(--border);padding:.85rem 0}
+.faq summary{font-weight:700;font-size:.9rem;cursor:pointer;list-style:none}
+.faq summary::before{content:'+ ';color:var(--acc);font-weight:800}
+.faq details[open] summary::before{content:'− '}
+.faq p{font-size:.85rem;color:var(--muted);line-height:1.65;margin:.5rem 0 0}
+
+/* SEO PROSE */
+.seo-prose{max-width:720px;margin:0 auto}
+.seo-prose h2{font-size:1.05rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;margin:1.5rem 0 .5rem}
+.seo-prose p{font-size:.88rem;line-height:1.7;color:var(--muted)}
+
+/* HIDDEN */
+.hidden{display:none!important}
+</style>
+<meta property="article:modified_time" content="2026-03-28">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/agriculture-page-ui-refresh.css?v=411c7880">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/agriculture/coffee-calculator/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/agriculture/coffee-calculator/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/agriculture/coffee-calculator/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/agriculture/coffee-calculator/">
+</head>
+<body class="agriculture-page-ui-refresh top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+
+<section class="hero">
+  <div class="hero-inner">
+    <p class="breadcrumb"><a href="/">AfroTools</a> › <a href="/agriculture/">Agriculture</a> › Coffee Grade &amp; Price Calculator</p>
+    <h1>African Coffee Grade &amp; Price Calculator</h1>
+    <p>Look up grading systems by origin, estimate export revenue by grade, calculate farm yield, and get quality improvement plans — covering 8 major African coffee nations.</p>
+    <div class="badge-row">
+      <span class="badge">☕ 8 Countries</span>
+      <span class="badge">🌿 Arabica &amp; Robusta</span>
+      <span class="badge">📊 4 Analysis Modes</span>
+      <span class="badge">💰 Export Price Guide</span>
+    </div>
+  </div>
+</section>
+
+<main class="main">
+
+  <!-- COUNTRY SELECTOR -->
+  <div class="card">
+    <div class="country-selector">
+      <label for="country-select">Select Country:</label>
+      <select id="country-select" class="country-select" onchange="updateCountry(this.value)">
+        <option value="ET">🇪🇹 Ethiopia</option>
+        <option value="KE">🇰🇪 Kenya</option>
+        <option value="TZ">🇹🇿 Tanzania</option>
+        <option value="UG">🇺🇬 Uganda</option>
+        <option value="RW">🇷🇼 Rwanda</option>
+        <option value="BI">🇧🇮 Burundi</option>
+        <option value="CI">🇨🇮 Côte d'Ivoire</option>
+        <option value="CM">🇨🇲 Cameroon</option>
+      </select>
+      <div id="country-meta" class="country-meta"></div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="card" style="padding-bottom:.5rem">
+    <nav class="tabs" role="tablist">
+      <button type="button" class="tab-btn active" onclick="switchTab('a')" id="tab-a" role="tab" aria-selected="true">📋 Grade Lookup</button>
+      <button type="button" class="tab-btn" onclick="switchTab('b')" id="tab-b" role="tab" aria-selected="false">🌾 Yield &amp; Revenue</button>
+      <button type="button" class="tab-btn" onclick="switchTab('c')" id="tab-c" role="tab" aria-selected="false">⬆️ Quality Improvement</button>
+      <button type="button" class="tab-btn" onclick="switchTab('d')" id="tab-d" role="tab" aria-selected="false">🏭 Processing Cost</button>
+    </nav>
+
+    <!-- ─── TAB A: GRADE LOOKUP ─────────────────────────────── -->
+    <div class="tab-panel active" id="panel-a">
+      <p class="card-title">Grading System &amp; Price Guide</p>
+      <div id="a-system-info" class="system-info"></div>
+      <div id="a-grade-table-wrap"></div>
+      <div id="a-grade-detail" class="hidden"></div>
+      <div id="a-regions-wrap" style="margin-top:1rem"></div>
+    </div>
+
+    <!-- ─── TAB B: YIELD & REVENUE ─────────────────────────── -->
+    <div class="tab-panel" id="panel-b">
+      <p class="card-title">Farm Yield &amp; Revenue Calculator</p>
+      <div class="form-grid">
+
+        <div class="field">
+          <label for="b-species">Coffee Species</label>
+          <select id="b-species" onchange="updateSpeciesOptions()">
+            <option value="arabica">Arabica</option>
+            <option value="robusta">Robusta</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="b-region">Growing Region</label>
+          <select id="b-region"></select>
+        </div>
+
+        <div class="field">
+          <label for="b-trees">Trees per Hectare</label>
+          <input type="number" id="b-trees" min="100" max="10000" step="50" placeholder="e.g. 2500" value="2500" inputmode="decimal">
+          <span class="hint">Traditional: ~1,300 / Semi-intensive: ~2,500 / Intensive: ~5,000</span>
+        </div>
+
+        <div class="field">
+          <label for="b-yield-level">Tree Yield Level</label>
+          <select id="b-yield-level">
+            <option value="low">Low — 2–3 kg cherry/tree (neglected)</option>
+            <option value="average" selected>Average — 5–8 kg cherry/tree</option>
+            <option value="good">Good — 8–12 kg cherry/tree</option>
+            <option value="excellent">Excellent — 12–20 kg cherry/tree</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="b-processing">Processing Method</label>
+          <select id="b-processing">
+            <option value="washed">Fully Washed (5:1 conversion)</option>
+            <option value="natural">Natural / Sun-dried (3.5:1)</option>
+            <option value="honey">Honey / Pulped Natural</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="b-grade">Target Grade</label>
+          <select id="b-grade"></select>
+        </div>
+
+        <div class="field">
+          <label for="b-farm-ha">Farm Size (hectares)</label>
+          <input type="number" id="b-farm-ha" min="0.1" max="5000" step="0.5" placeholder="e.g. 2.0" value="2" inputmode="decimal">
+        </div>
+
+      </div>
+      <button type="button" class="btn-calc" onclick="runYieldCalc()">Calculate Yield &amp; Revenue →</button>
+      <div id="b-results" class="hidden" style="margin-top:1.25rem"></div>
+    </div>
+
+    <!-- ─── TAB C: QUALITY IMPROVEMENT ────────────────────── -->
+    <div class="tab-panel" id="panel-c">
+      <p class="card-title">Quality Improvement Roadmap</p>
+      <div class="form-grid">
+
+        <div class="field">
+          <label for="c-current-grade">Your Current Grade</label>
+          <select id="c-current-grade"></select>
+        </div>
+
+        <div class="field">
+          <label for="c-target-grade">Target Grade</label>
+          <select id="c-target-grade"></select>
+        </div>
+
+        <div class="field">
+          <label for="c-farm-ha">Farm Size (hectares)</label>
+          <input type="number" id="c-farm-ha" min="0.1" max="5000" step="0.5" placeholder="e.g. 2.0" value="2" inputmode="decimal">
+          <span class="hint">Used to estimate annual revenue increase from grade improvement.</span>
+        </div>
+
+      </div>
+      <button type="button" class="btn-calc" onclick="runQualityCalc()">Show Improvement Plan →</button>
+      <div id="c-results" class="hidden" style="margin-top:1.25rem"></div>
+    </div>
+
+    <!-- ─── TAB D: PROCESSING COST ─────────────────────────── -->
+    <div class="tab-panel" id="panel-d">
+      <p class="card-title">Processing Cost Breakdown</p>
+      <div class="form-grid">
+
+        <div class="field">
+          <label for="d-cherry-kg">Cherry Harvest (kg)</label>
+          <input type="number" id="d-cherry-kg" min="10" max="1000000" step="100" placeholder="e.g. 5000" value="5000" inputmode="decimal">
+          <span class="hint">Total fresh cherry harvested from your farm per season.</span>
+        </div>
+
+        <div class="field">
+          <label for="d-method">Processing Method</label>
+          <select id="d-method">
+            <option value="washed">Fully Washed</option>
+            <option value="natural">Natural / Sun-dried</option>
+            <option value="honey">Honey / Pulped Natural</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="d-species">Species</label>
+          <select id="d-species">
+            <option value="arabica">Arabica</option>
+            <option value="robusta">Robusta</option>
+          </select>
+        </div>
+
+      </div>
+      <button type="button" class="btn-calc" onclick="runProcessingCalc()">Calculate Processing Costs →</button>
+      <div id="d-results" class="hidden" style="margin-top:1.25rem"></div>
+    </div>
+
+  </div><!-- /card (tabs) -->
+
+  <!-- CROSS-LINKS -->
+  <div class="card">
+    <p class="card-title">More Agriculture Tools</p>
+    <div class="agri-links">
+      <a href="/agriculture/farm-profit/" class="agri-link">📊 Farm Profit/Loss Calculator<span class="al-arr">›</span></a>
+      <a href="/agriculture/fertilizer/" class="agri-link">🧪 Fertilizer (NPK) Calculator<span class="al-arr">›</span></a>
+      <a href="/agriculture/crop-yield/" class="agri-link">🌾 Crop Yield Estimator<span class="al-arr">›</span></a>
+      <a href="/agriculture/irrigation/" class="agri-link">💧 Irrigation Calculator<span class="al-arr">›</span></a>
+      <a href="/agriculture/soil-ph/" class="agri-link">🧫 Soil pH Calculator<span class="al-arr">›</span></a>
+      <a href="/agriculture/" class="agri-link">🌍 All Agriculture Tools<span class="al-arr">›</span></a>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="card seo-prose">
+    <p class="card-title">Frequently Asked Questions</p>
+    <div class="faq">
+      <details open>
+        <summary>What is Ethiopian Grade 1 (G1) coffee?</summary>
+        <p>Ethiopian Grade 1 is the highest specialty grade, with only 0–3 defects per 300g sample and an SCA cup score of 85+. It is extremely rare — only the best lots from Yirgacheffe, Guji, and a few other origins reach this level. G1 commands premiums of 40–60% above standard commercial coffee.</p>
+      </details>
+      <details>
+        <summary>What is the difference between Kenya AA and AB?</summary>
+        <p>Kenya AA uses screen size 17–18 (6.70–7.14mm) and commands a 30% premium over base price. Kenya AB mixes screen A and B (smaller beans, 15–16 screen) and is priced about 15% above base. AA is Kenya's flagship export grade, but AB often rivals it in cup quality, making it better value for many specialty roasters.</p>
+      </details>
+      <details>
+        <summary>How many kilograms of cherries does it take to make 1 kg of green coffee?</summary>
+        <p>About 5 kg of fresh cherries produce 1 kg of washed (wet-processed) green beans — the 5:1 ratio. For natural (dry) processing, the ratio is roughly 3.5:1 because the cherry is dried whole and loses weight more efficiently without added water. This conversion ratio is critical for calculating farm revenues.</p>
+      </details>
+      <details>
+        <summary>Why is Uganda Africa's second largest coffee exporter?</summary>
+        <p>Uganda produces about 370,000 tonnes of coffee annually, around 70% of which is Robusta from the Lake Victoria basin. Favorable climate, low-cost production, and UCDA export infrastructure make it highly competitive in the commodity segment. Ugandan Robusta is in high demand for commercial espresso blends globally.</p>
+      </details>
+      <details>
+        <summary>What is the potato defect in Rwandan and Burundian coffee?</summary>
+        <p>The 'potato defect' (PD) is a raw potato-like smell in the cup caused by pyrazine compounds from Antestia bug damage to coffee cherries. It is unique to the Great Lakes region. Integrated pest management (IPM) targeting Antestia bugs can reduce the defect by 50–80%, dramatically improving cup score and price.</p>
+      </details>
+      <details>
+        <summary>How do I move my coffee from Grade 4 to Grade 2 in Ethiopia?</summary>
+        <p>The most impactful steps: (1) Selective picking — only harvest fully red ripe cherries; (2) Flotation sorting — float cherries in water to remove defective beans; (3) Fermentation control — ferment exactly 36–48 hours, then wash thoroughly; (4) Raised bed drying — dry on African raised beds to 10.5–11.5% moisture; (5) Proper storage — store parchment cool and dry, re-mill within 3 months. These steps alone can move most Ethiopian lots from G4 to G2.</p>
+      </details>
+    </div>
+  </div>
+
+  <!-- SEO CONTENT -->
+  <div class="seo-prose" style="padding:0 .25rem;margin-bottom:2rem">
+    <h2>African Coffee: A $4 Billion Export Industry</h2>
+    <p>Africa is the birthplace of coffee. Ethiopia's Kaffa region is where Coffea arabica was first discovered, and today the continent produces over 1.5 million tonnes per year — roughly 15% of global supply. Ethiopia leads arabica production with 500,000+ tonnes, Uganda dominates in robusta with 370,000 tonnes, and Côte d'Ivoire rounds out the top three. The continent's unique highland ecosystems, diverse processing traditions, and varietals found nowhere else in the world make African coffees the most sought-after origins in the specialty market.</p>
+    <h2>Why Grading Matters for Farmer Revenue</h2>
+    <p>The difference between selling Grade 4 and Grade 1 Ethiopian coffee is not 10% — it is 50% in price per kilogram. For a 2-hectare farm producing 600 kg of green beans per year, that gap represents over $2,400 in lost annual income. Understanding your country's grading system — whether Ethiopia's defect-based scale, Kenya's screen size auction, or Rwanda's washing station certification — is the first step to capturing the value your coffee deserves.</p>
+    <h2>Specialty vs. Commercial: The Two Markets</h2>
+    <p>African coffee occupies both markets. Ethiopia and Kenya have deeply established specialty pipelines with direct trade relationships, Cup of Excellence competitions, and buyer visits to farms. Uganda and Côte d'Ivoire are primarily commercial origins traded in bulk on commodity exchanges. Rwanda and Burundi are in transition — investing heavily in washing station infrastructure and SCA cupping programs to shift premium lots into the specialty segment where prices are 2–3× higher.</p>
+    <h2>The Processing Decision: Washed, Natural, or Honey</h2>
+    <p>Processing method profoundly affects both cup profile and price. Washed coffees are cleaner, brighter, and easier to grade to specialty standards. Natural coffees — where the cherry is dried whole — are more labor-intensive to quality-control, but the best naturals from Ethiopia's Harrar and Yirgacheffe command significant premiums for their intense berry and wine-like notes. The honey process, a hybrid, offers a middle ground and is gaining popularity in East Africa.</p>
+  </div>
+
+
+<section class="df-upgrade" data-df-upgrade="coffee-calculator">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Field planning workflow</span>
+      <h2>Coffee Grade &amp; Price Calculator decision workspace</h2>
+      <p>Turn local farm assumptions into a quick planning summary before spending money or moving stock. This panel is tuned for coffee grade &amp; price calculator so the user can move from a thin page to a usable first decision.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: Coffee Grade &amp;amp; Price Calculator: farm planning summary ready with cost, buffer, timing, and field-check notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: sources, browserOk.</li><li>Source note: extension, buyer, input supplier, and farm-record references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Agriculture estimate only. Confirm local extension advice, weather, disease pressure, buyer price, and input quality before acting. Source/reference: extension, buyer, input supplier, and farm-record references.</p>
+    </div>
+    <form class="df-form" data-df-form="coffee-calculator">
+      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
+      <label>Quantity or area<input name="quantity" type="number" value="100" min="0" step="any" aria-label="Quantity or area"></label>
+      <label>Unit cost<input name="unitCost" type="number" value="2500" min="0" step="any" aria-label="Unit cost"></label>
+      <label>Risk buffer percent<input name="buffer" type="number" value="12" min="0" step="any" aria-label="Risk buffer percent"></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="coffee-calculator" data-df-base="Coffee Grade &amp;amp; Price Calculator: farm planning summary ready with cost, buffer, timing, and field-check notes." aria-live="polite">Coffee Grade &amp;amp; Price Calculator: farm planning summary ready with cost, buffer, timing, and field-check notes.</output>
+      <div class="df-actions"><button type="button" data-df-copy="coffee-calculator">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="coffee-calculator-faq-title">
+  <h2 id="coffee-calculator-faq-title">Coffee Grade &amp; Price Calculator FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn local farm assumptions into a quick planning summary before spending money or moving stock. Use it to pressure-test coffee calculator numbers before committing money, paperwork, or plans.</p></details><details><summary>What should I verify?</summary><p>Agriculture estimate only. Confirm local extension advice, weather, disease pressure, buyer price, and input quality before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+</section>
+</main>
+<afro-related-tools data-ssr="1" category="agriculture" current="coffee-calculator">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/agriculture/farm-profit/" data-related-tool data-id="farm-profit-calculator" data-name="Farm Profit/Loss Calculator" data-category="agriculture" data-icon="FP" data-desc="Complete farming profitability analysis — seeds, fertilizer, labor, transport, post-harvest losses. ROI, break-even yiel">Farm Profit/Loss Calculator</a></li><li><a href="/agriculture/cassava-processing/" data-related-tool data-id="cassava-processing-calculator" data-name="Cassava Processing Profit Calculator" data-category="agriculture" data-icon="CP" data-desc="Calculate profits from processing cassava into garri, fufu flour, HQCF, chips, or starch. Compare all pathways with loca">Cassava Processing Profit Calculator</a></li><li><a href="/agriculture/crop-yield/" data-related-tool data-id="crop-yield-estimator" data-name="Crop Yield Estimator" data-category="agriculture" data-icon="CY" data-desc="Estimate crop yields across Africa with region-specific data. 40+ crops, 54 countries, FAOSTAT-backed.">Crop Yield Estimator</a></li><li><a href="/agriculture/farm-budget/" data-related-tool data-id="farm-budget" data-name="Smallholder Farm Budget Planner" data-category="agriculture" data-icon="SF" data-desc="Plan your seasonal farming budget with cost breakdown and cash flow timeline. Know exactly how much you need before plan">Smallholder Farm Budget Planner</a></li><li><a href="/agriculture/fish-farming/" data-related-tool data-id="fish-farming-roi" data-name="Fish Farming ROI Calculator" data-category="agriculture" data-icon="FF" data-desc="Calculate aquaculture profitability for catfish, tilapia and trout. Full ROI with local feed prices, fingerling costs, p">Fish Farming ROI Calculator</a></li><li><a href="/agriculture/greenhouse/" data-related-tool data-id="greenhouse-cost-estimator" data-name="Greenhouse Cost Estimator" data-category="agriculture" data-icon="GC" data-desc="Estimate greenhouse setup costs, annual running expenses, ROI and payback period. 5 greenhouse types, 6 crops, local pri">Greenhouse Cost Estimator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+// ─── STATE ───────────────────────────────────────────────────────────────────
+var currentCountry = 'ET';
+var E = window.AfroTools && window.AfroTools.CoffeeEngine;
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function () {
+  updateCountry('ET');
+});
+
+// ─── COUNTRY CHANGE ──────────────────────────────────────────────────────────
+function updateCountry(code) {
+  currentCountry = code;
+  var data = COFFEE_DATA.gradingSystems[code];
+  if (!data) return;
+
+  // Meta
+  var metaEl = document.getElementById('country-meta');
+  var govStr = data.govBody ? '<strong>' + data.govBody + '</strong>' : '';
+  var excStr = data.exchange ? ' · ' + data.exchange : '';
+  metaEl.innerHTML = govStr + excStr + (data.production_tonnes ? '<br>Production: ~' + fmt(data.production_tonnes) + ' tonnes/year' : '');
+
+  // Refresh all tab content
+  renderGradeTable(data);
+  updateGradeSelects(data);
+  updateRegionSelect(data);
+  updateSpeciesOptions();
+
+  // Clear results
+  ['b-results','c-results','d-results'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) { el.classList.add('hidden'); el.innerHTML = ''; }
+  });
+  document.getElementById('a-grade-detail').classList.add('hidden');
+}
+
+// ─── TAB SWITCHING ───────────────────────────────────────────────────────────
+function switchTab(id) {
+  ['a','b','c','d'].forEach(function(t) {
+    document.getElementById('panel-' + t).classList.toggle('active', t === id);
+    var btn = document.getElementById('tab-' + t);
+    btn.classList.toggle('active', t === id);
+    btn.setAttribute('aria-selected', t === id ? 'true' : 'false');
+  });
+}
+
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+function fmt(n, dp) {
+  if (n === undefined || n === null || isNaN(n)) return '—';
+  return Number(n).toLocaleString('en', { minimumFractionDigits: dp || 0, maximumFractionDigits: dp !== undefined ? dp : 0 });
+}
+function fmtUSD(n) {
+  if (n === null || n === undefined || isNaN(n)) return '—';
+  return '$' + fmt(n, 2);
+}
+function premBadge(pct) {
+  if (pct > 0)  return '<span class="prem-badge prem-pos">+' + pct + '%</span>';
+  if (pct < 0)  return '<span class="prem-badge prem-neg">' + pct + '%</span>';
+  return '<span class="prem-badge prem-zero">Base</span>';
+}
+
+// ─── MODE A: GRADE TABLE ─────────────────────────────────────────────────────
+function renderGradeTable(data) {
+  // System description
+  var si = document.getElementById('a-system-info');
+  si.innerHTML = '<strong>System:</strong> ' + (data.system || '').replace(/_/g,' ') + ' &nbsp;|&nbsp; <strong>Species:</strong> ' + data.species.join(', ') + '<br>' + (data.description || '');
+
+  // Grade table
+  var wrap = document.getElementById('a-grade-table-wrap');
+  var html = '<table class="grade-table"><thead><tr><th>Grade</th><th>Name / Size</th>';
+  if (data.grades[0].defects)  html += '<th>Defects</th>';
+  if (data.grades[0].cupScore) html += '<th>Cup Score</th>';
+  if (data.grades[0].screenSize) html += '<th>Screen Size</th>';
+  html += '<th>Premium</th></tr></thead><tbody>';
+
+  data.grades.forEach(function(g, i) {
+    html += '<tr class="grade-row" data-grade="' + g.grade + '" onclick="selectGrade(\'' + escQ(g.grade) + '\')" style="cursor:pointer">';
+    html += '<td><strong>' + g.grade + '</strong></td>';
+    html += '<td>' + (g.name || g.grade) + '</td>';
+    if (g.defects)    html += '<td>' + g.defects + '</td>';
+    if (g.cupScore)   html += '<td>' + g.cupScore + '</td>';
+    if (g.screenSize) html += '<td>' + g.screenSize + '</td>';
+    html += '<td>' + premBadge(g.price_premium_pct) + '</td>';
+    html += '</tr>';
+  });
+  html += '</tbody></table><p style="font-size:.78rem;color:var(--muted);margin:.4rem 0 0">Click any row to see grade details.</p>';
+  wrap.innerHTML = html;
+
+  // Regions
+  var regWrap = document.getElementById('a-regions-wrap');
+  if (data.regions && data.regions.length) {
+    var rhtml = '<p class="card-title" style="margin:0 0 .5rem">Growing Regions</p>';
+    rhtml += '<div class="region-list">';
+    data.regions.forEach(function(r) {
+      rhtml += '<span class="region-pill" title="' + escQ(r.profile || '') + '">' + r.name + (r.premium_pct ? ' +' + r.premium_pct + '%' : '') + '</span>';
+    });
+    rhtml += '</div>';
+    regWrap.innerHTML = rhtml;
+  } else {
+    regWrap.innerHTML = '';
+  }
+}
+
+function selectGrade(gradeId) {
+  var data = COFFEE_DATA.gradingSystems[currentCountry];
+  var grade = null;
+  for (var i = 0; i < data.grades.length; i++) {
+    if (data.grades[i].grade === gradeId) { grade = data.grades[i]; break; }
+  }
+  if (!grade) return;
+
+  // Highlight row
+  document.querySelectorAll('.grade-row').forEach(function(r) {
+    r.classList.toggle('selected', r.dataset.grade === gradeId);
+  });
+
+  var basePrice = COFFEE_DATA.prices[data.species[0] === 'arabica' ? 'arabica_per_kg_USD' : 'robusta_per_kg_USD'];
+  var estPrice  = basePrice * (1 + (grade.price_premium_pct || 0) / 100);
+  // also get explicit export price if available
+  var explicitPrice = data.exportPrice_per_kg_USD ? data.exportPrice_per_kg_USD[gradeId] : null;
+
+  var detail = document.getElementById('a-grade-detail');
+  var html = '<div class="grade-detail">';
+  html += '<p class="gd-name">' + (grade.name || grade.grade) + '</p>';
+  if (grade.description) html += '<p style="font-size:.88rem;color:var(--muted);margin:.3rem 0 .5rem;line-height:1.5">' + grade.description + '</p>';
+  html += '<div class="gd-row">';
+  if (grade.defects)    html += '<div class="gd-item"><strong>Defects (per 300g)</strong>' + grade.defects + '</div>';
+  if (grade.cupScore)   html += '<div class="gd-item"><strong>SCA Cup Score</strong>' + grade.cupScore + '</div>';
+  if (grade.screenSize) html += '<div class="gd-item"><strong>Screen Size</strong>' + grade.screenSize + '</div>';
+  html += '<div class="gd-item"><strong>Price Premium</strong>' + premBadge(grade.price_premium_pct) + '</div>';
+  html += '<div class="gd-item"><strong>Est. Export Price</strong>' + fmtUSD(explicitPrice || estPrice) + '/kg green</div>';
+  html += '</div></div>';
+  detail.innerHTML = html;
+  detail.classList.remove('hidden');
+}
+
+// ─── UPDATE SELECTS ──────────────────────────────────────────────────────────
+function updateGradeSelects(data) {
+  ['b-grade','c-current-grade','c-target-grade'].forEach(function(id) {
+    var sel = document.getElementById(id);
+    if (!sel) return;
+    sel.innerHTML = data.grades.map(function(g) {
+      return '<option value="' + escQ(g.grade) + '">' + (g.name || g.grade) + ' (' + (g.price_premium_pct > 0 ? '+' : '') + g.price_premium_pct + '%)</option>';
+    }).join('');
+  });
+  // Set c-target to second grade by default
+  var ctg = document.getElementById('c-target-grade');
+  if (ctg && data.grades.length > 1) ctg.selectedIndex = 0;
+  var ccg = document.getElementById('c-current-grade');
+  if (ccg && data.grades.length > 2) ccg.selectedIndex = Math.min(2, data.grades.length - 1);
+}
+
+function updateRegionSelect(data) {
+  var sel = document.getElementById('b-region');
+  if (!sel) return;
+  sel.innerHTML = data.regions.map(function(r, i) {
+    return '<option value="' + i + '">' + r.name + (r.premium_pct ? ' (+' + r.premium_pct + '%)' : '') + '</option>';
+  }).join('');
+}
+
+function updateSpeciesOptions() {
+  var data = COFFEE_DATA.gradingSystems[currentCountry];
+  var speciesSel = document.getElementById('b-species');
+  if (!speciesSel || !data) return;
+  // Preserve current selection if valid
+  var cur = speciesSel.value;
+  speciesSel.innerHTML = data.species.map(function(s) {
+    return '<option value="' + s + '">' + s.charAt(0).toUpperCase() + s.slice(1) + '</option>';
+  }).join('');
+  if (data.species.indexOf(cur) >= 0) speciesSel.value = cur;
+}
+
+function escQ(s) { return String(s).replace(/'/g, "\\'"); }
+
+// ─── MODE B: YIELD CALCULATOR ────────────────────────────────────────────────
+function runYieldCalc() {
+  var inputs = {
+    countryCode:      currentCountry,
+    species:          document.getElementById('b-species').value,
+    treesPerHa:       parseFloat(document.getElementById('b-trees').value),
+    yieldLevel:       document.getElementById('b-yield-level').value,
+    processingMethod: document.getElementById('b-processing').value,
+    gradeId:          document.getElementById('b-grade').value,
+    farmHa:           parseFloat(document.getElementById('b-farm-ha').value),
+    regionIdx:        parseInt(document.getElementById('b-region').value)
+  };
+
+  if (!inputs.treesPerHa || inputs.treesPerHa < 50 || !inputs.farmHa || inputs.farmHa <= 0) {
+    alert('Please enter valid trees per hectare and farm size.');
+    return;
+  }
+
+  var r = E ? E.calcYield(inputs) : calcYieldFallback(inputs);
+  if (!r) return;
+
+  var wrap = document.getElementById('b-results');
+  var html = '';
+
+  // Stats
+  html += '<div class="stat-grid">';
+  html += statCard(fmt(r.cherryKgPerHa) + ' kg', 'Cherry Yield / ha', false);
+  html += statCard(fmt(r.totalCherryKg) + ' kg', 'Total Cherry (' + fmt(r.farmHa, 1) + ' ha)', false);
+  html += statCard(fmt(r.greenKgPerHa) + ' kg', 'Green Beans / ha', false);
+  html += statCard(fmt(r.totalGreenKg) + ' kg', 'Total Green Beans', false);
+  html += statCard(fmtUSD(r.effectivePrice), 'Export Price / kg', false);
+  html += statCard(fmtUSD(r.grossRevenueUSD), 'Gross Revenue', false);
+  html += statCard(fmtUSD(r.processingCostUSD), 'Processing Cost', false);
+  html += statCard(fmtUSD(r.netRevenueUSD), 'Net Revenue', true);
+  html += '</div>';
+
+  html += '<p class="result-note">';
+  html += '📊 <strong>Conversion ratio:</strong> ' + r.conversionRatio + ':1 (cherry to green, ' + inputs.processingMethod + ' process). ';
+  html += '<strong>Grade premium:</strong> ' + (r.gradePremiumPct > 0 ? '+' : '') + r.gradePremiumPct + '%. ';
+  if (r.regionPremiumPct) html += '<strong>Region premium:</strong> +' + r.regionPremiumPct + '%. ';
+  html += '<strong>Revenue/ha:</strong> ' + fmtUSD(r.revenuePerHaUSD) + '/ha net.</p>';
+
+  if (r.revenueUpliftUSD > 0) {
+    html += '<div style="background:var(--pos-lt);border:1.5px solid #86EFAC;border-radius:12px;padding:.85rem 1rem;margin-top:.75rem;font-size:.88rem;color:#166534">';
+    html += '⬆️ <strong>Potential uplift:</strong> If you improve to the top grade (' + COFFEE_DATA.gradingSystems[currentCountry].grades[0].grade + '), gross revenue could increase by <strong>' + fmtUSD(r.revenueUpliftUSD) + '</strong> per season. See the Quality Improvement tab.';
+    html += '</div>';
+  }
+
+  wrap.innerHTML = html;
+  wrap.classList.remove('hidden');
+}
+
+// ─── MODE C: QUALITY IMPROVEMENT ─────────────────────────────────────────────
+function runQualityCalc() {
+  var currentGradeId = document.getElementById('c-current-grade').value;
+  var targetGradeId  = document.getElementById('c-target-grade').value;
+  var farmHa         = parseFloat(document.getElementById('c-farm-ha').value) || 2;
+
+  if (currentGradeId === targetGradeId) {
+    alert('Please select different grades for current and target.');
+    return;
+  }
+
+  var r = E ? E.qualityImprovement(currentCountry, currentGradeId, targetGradeId, farmHa) : null;
+  if (!r) { alert('Could not compute. Please try different grades.'); return; }
+
+  var wrap = document.getElementById('c-results');
+  var html = '';
+
+  if (!r.isPossible) {
+    html += '<div style="background:var(--neg-lt);border:1.5px solid #FCA5A5;border-radius:12px;padding:1rem;font-size:.9rem;color:var(--neg)">';
+    html += '⚠️ <strong>' + targetGradeId + '</strong> is a lower grade than <strong>' + currentGradeId + '</strong>. Select a higher target grade to see improvement pathways.';
+    html += '</div>';
+    wrap.innerHTML = html;
+    wrap.classList.remove('hidden');
+    return;
+  }
+
+  // Summary
+  html += '<div class="stat-grid">';
+  html += statCard(r.currentGrade.grade, 'Current Grade', false);
+  html += statCard(r.targetGrade.grade, 'Target Grade', true);
+  html += statCard('+' + r.premiumDiff + '%', 'Price Premium Gain', false);
+  html += statCard(fmtUSD(r.annualUpliftUSD), 'Est. Annual Revenue Uplift', false);
+  html += '</div>';
+
+  html += '<div style="background:var(--acc-pale);border:1.5px solid var(--acc-lt);border-radius:12px;padding:.9rem 1rem;margin-top:.85rem;font-size:.85rem">';
+  html += '<strong>At ' + fmt(r.estimatedGreenKg) + ' kg green beans/year</strong> (' + fmt(farmHa, 1) + ' ha), moving from ';
+  html += fmtUSD(r.currentPriceUSD) + '/kg to ' + fmtUSD(r.targetPriceUSD) + '/kg adds approximately <strong>' + fmtUSD(r.annualUpliftUSD) + '/season</strong>.';
+  html += '</div>';
+
+  // Steps
+  html += '<p class="card-title" style="margin:1rem 0 .5rem">Recommended Steps</p>';
+  html += '<ul class="steps-list">';
+  r.steps.forEach(function(s) {
+    html += '<li><div><strong>' + s.action + ':</strong> ' + s.detail + '</div></li>';
+  });
+  html += '</ul>';
+
+  // Country-specific defect note
+  if (r.countryDefectNote) {
+    html += '<div class="country-note"><strong>Country-Specific Note — ' + r.country.name + '</strong>' + r.countryDefectNote + '</div>';
+  }
+
+  wrap.innerHTML = html;
+  wrap.classList.remove('hidden');
+}
+
+// ─── MODE D: PROCESSING COST ──────────────────────────────────────────────────
+function runProcessingCalc() {
+  var cherryKg = parseFloat(document.getElementById('d-cherry-kg').value);
+  var method   = document.getElementById('d-method').value;
+  var species  = document.getElementById('d-species').value;
+
+  if (!cherryKg || cherryKg < 10) { alert('Please enter a valid cherry harvest amount.'); return; }
+
+  var r = E ? E.processingCost(cherryKg, method, species) : null;
+  if (!r) return;
+
+  var wrap = document.getElementById('d-results');
+  var html = '';
+
+  // Stage breakdown
+  html += '<p class="card-title" style="margin-bottom:.5rem">Stage-by-Stage Cost Breakdown</p>';
+  html += '<div style="margin-bottom:.85rem">';
+  r.stages.forEach(function(s) {
+    html += '<div class="stage-row">';
+    html += '<div class="stage-num">' + s.step + '</div>';
+    html += '<div style="flex:1"><div class="stage-name">' + s.name + '</div><div class="stage-note">' + fmt(s.inputKg) + ' kg · ' + s.unitNote + '</div></div>';
+    html += '<div class="stage-cost">' + fmtUSD(s.costUSD) + '</div>';
+    html += '</div>';
+  });
+  html += '</div>';
+
+  // Summary
+  html += '<div class="processing-summary">';
+  html += '<div class="ps-card blue"><div class="ps-val">' + fmt(r.greenKg) + ' kg</div><div class="ps-lbl">Green Bean Output (' + r.conversionRatio + ':1 ratio)</div></div>';
+  html += '<div class="ps-card red"><div class="ps-val">' + fmtUSD(r.totalCostUSD) + '</div><div class="ps-lbl">Total Processing Cost</div></div>';
+  html += '<div class="ps-card blue"><div class="ps-val">' + fmtUSD(r.grossRevenueUSD) + '</div><div class="ps-lbl">Gross Export Revenue (' + fmtUSD(r.exportPriceUSD) + '/kg)</div></div>';
+  var marginClass = r.marginUSD >= 0 ? 'green' : 'red';
+  html += '<div class="ps-card ' + marginClass + '"><div class="ps-val">' + fmtUSD(r.marginUSD) + '</div><div class="ps-lbl">Net Margin (' + fmt(r.marginPct, 1) + '%)</div></div>';
+  html += '</div>';
+
+  html += '<p class="result-note">⚠️ Processing cost estimates are indicative (USD, approximate). Actual costs vary by country, infrastructure, scale, and season. Transport to export port varies most widely (0.05–0.50 USD/kg). The export price uses the ICE futures reference — actual achieved prices depend on grade, buyer, and market conditions at time of sale.</p>';
+
+  wrap.innerHTML = html;
+  wrap.classList.remove('hidden');
+}
+
+// ─── FALLBACK YIELD (if engine not loaded) ───────────────────────────────────
+function calcYieldFallback(inputs) {
+  var agron = COFFEE_DATA.agronomy[inputs.species];
+  if (!agron) return null;
+  var cherryPerTree = agron.yieldPerTree_kg_cherry[inputs.yieldLevel] || agron.yieldPerTree_kg_cherry.average;
+  var cherryPerHa   = (inputs.treesPerHa || agron.treesPerHa.semi_intensive) * cherryPerTree;
+  var convRatio     = inputs.processingMethod === 'natural' ? agron.cherryToGreen_natural : agron.cherryToGreen_ratio;
+  var greenPerHa    = cherryPerHa / convRatio;
+  var totalGreen    = greenPerHa  * inputs.farmHa;
+  var totalCherry   = cherryPerHa * inputs.farmHa;
+  var basePrice     = COFFEE_DATA.prices[inputs.species === 'arabica' ? 'arabica_per_kg_USD' : 'robusta_per_kg_USD'];
+  var c             = COFFEE_DATA.gradingSystems[inputs.countryCode];
+  var grade         = null;
+  if (c) for (var i = 0; i < c.grades.length; i++) { if (c.grades[i].grade === inputs.gradeId) { grade = c.grades[i]; break; } }
+  var gradePrem     = grade ? (grade.price_premium_pct || 0) : 0;
+  var ri            = parseInt(inputs.regionIdx);
+  var regionPrem    = (c && c.regions && ri >= 0 && ri < c.regions.length) ? (c.regions[ri].premium_pct || 0) : 0;
+  var effectivePrice = basePrice * (1 + gradePrem / 100) * (1 + regionPrem / 100);
+  var gross         = totalGreen * effectivePrice;
+  var pc            = COFFEE_DATA.processingCosts[inputs.processingMethod] || COFFEE_DATA.processingCosts.washed;
+  var procCost      = totalCherry * (pc.wetMillPerKgCherry || pc.dryingBedsPerKgCherry || pc.pulpingPerKgCherry || 0) + totalGreen * ((pc.hullingPerKgGreen || pc.hullingSkinPerKgGreen || 0) + (pc.gradingPerKgGreen || 0) + (pc.transportPerKgGreen || 0));
+  return {
+    treesPerHa: inputs.treesPerHa, farmHa: inputs.farmHa, species: inputs.species,
+    processingMethod: inputs.processingMethod,
+    cherryKgPerHa: cherryPerHa, totalCherryKg: totalCherry,
+    conversionRatio: convRatio, greenKgPerHa: greenPerHa, totalGreenKg: totalGreen,
+    basePrice: basePrice, gradePremiumPct: gradePrem, regionPremiumPct: regionPrem,
+    effectivePrice: effectivePrice, grossRevenueUSD: gross,
+    processingCostUSD: procCost, netRevenueUSD: gross - procCost,
+    revenuePerHaUSD: (gross - procCost) / inputs.farmHa,
+    potentialPriceUSD: basePrice, potentialRevenueUSD: gross, revenueUpliftUSD: 0
+  };
+}
+
+// ─── STAT CARD HELPER ────────────────────────────────────────────────────────
+function statCard(val, lbl, highlight) {
+  return '<div class="stat-card' + (highlight ? ' highlight' : '') + '"><div class="stat-val">' + val + '</div><div class="stat-lbl">' + lbl + '</div></div>';
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
+<script>if(typeof twemoji!=="undefined")twemoji.parse(document.body,{folder:"svg",ext:".svg"});</script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

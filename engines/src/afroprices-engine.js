@@ -1,0 +1,1179 @@
+var AfroPricesEngine = function() {
+  "use strict";
+  var e = null;
+  function a() {
+    return e || (window.AfroAuth && "function" == typeof AfroAuth.getSupabase ? e = AfroAuth.getSupabase() : window.supabase && window.supabase.createClient && (e = window.supabase.createClient("https://zpclagtgczsygrgztlts.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpwY2xhZ3RnY3pzeWdyZ3p0bHRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0NTg4MzIsImV4cCI6MjA4OTAzNDgzMn0._G-677vi2UTAhcU3t0aquvmd8lnQUBil53ok_Z623F0")),
+    e);
+  }
+  var r = {};
+  function i(e) {
+    var a = r[e];
+    return a && Date.now() - a.ts < 216e5 ? a.data : null;
+  }
+  function t(e, a) {
+    r[e] = {
+      data: a,
+      ts: Date.now()
+    };
+  }
+  var n = {
+    NG: {
+      name: "Nigeria",
+      flag: "🇳🇬",
+      currency: {
+        code: "NGN",
+        symbol: "₦"
+      },
+      platforms: [ {
+        name: "Jumia Nigeria",
+        url: "https://www.jumia.com.ng",
+        type: "affiliate",
+        hasApi: !0,
+        affiliate: "jumia",
+        logo: "jumia"
+      }, {
+        name: "Konga",
+        url: "https://www.konga.com",
+        type: "affiliate",
+        hasApi: !0,
+        affiliate: "konga",
+        logo: "konga"
+      }, {
+        name: "Slot Systems",
+        url: "https://www.slot.ng",
+        type: "retail",
+        hasApi: !1,
+        logo: "slot"
+      }, {
+        name: "Pointek",
+        url: "https://www.pointekonline.com",
+        type: "retail",
+        hasApi: !1,
+        logo: "pointek"
+      }, {
+        name: "3CHub",
+        url: "https://www.3chub.com",
+        type: "retail",
+        hasApi: !1,
+        logo: "3chub"
+      } ],
+      physicalMarkets: [ {
+        name: "Computer Village, Ikeja",
+        city: "Lagos",
+        speciality: "electronics",
+        tip: "Africa's largest electronics market. Prices 10-30% below retail. Bargain hard. Check warranty carefully.",
+        lat: 6.6018,
+        lng: 3.3515
+      }, {
+        name: "Alaba International Market",
+        city: "Lagos",
+        speciality: "electronics",
+        tip: "Wholesale electronics. Best for bulk. Beware of refurbished items sold as new.",
+        lat: 6.4631,
+        lng: 3.3108
+      }, {
+        name: "Onitsha Main Market",
+        city: "Onitsha",
+        speciality: "general",
+        tip: "West Africa's largest market by volume. Everything available.",
+        lat: 6.1441,
+        lng: 6.7886
+      }, {
+        name: "Wuse Market",
+        city: "Abuja",
+        speciality: "general",
+        tip: "Abuja's main commercial market. Good variety.",
+        lat: 9.0765,
+        lng: 7.4898
+      }, {
+        name: "Ariaria International Market",
+        city: "Aba",
+        speciality: "fashion, shoes",
+        tip: "Shoe capital of Nigeria. Great for leather goods and fashion.",
+        lat: 5.1067,
+        lng: 7.3667
+      } ]
+    },
+    KE: {
+      name: "Kenya",
+      flag: "🇰🇪",
+      currency: {
+        code: "KES",
+        symbol: "KSh"
+      },
+      platforms: [ {
+        name: "Jumia Kenya",
+        url: "https://www.jumia.co.ke",
+        type: "affiliate",
+        hasApi: !0,
+        affiliate: "jumia",
+        logo: "jumia"
+      }, {
+        name: "Kilimall",
+        url: "https://www.kilimall.co.ke",
+        type: "affiliate",
+        hasApi: !0,
+        affiliate: "kilimall",
+        logo: "kilimall"
+      }, {
+        name: "Masoko (Safaricom)",
+        url: "https://www.masoko.com",
+        type: "retail",
+        hasApi: !1,
+        logo: "masoko"
+      }, {
+        name: "Phoneplace Kenya",
+        url: "https://phoneplace.co.ke",
+        type: "retail",
+        hasApi: !1,
+        logo: "phoneplace"
+      } ],
+      physicalMarkets: [ {
+        name: "Luthuli Avenue",
+        city: "Nairobi",
+        speciality: "electronics",
+        tip: "Nairobi's electronics hub. Many shops side by side — compare at least 3 before buying."
+      }, {
+        name: "Gikomba Market",
+        city: "Nairobi",
+        speciality: "fashion, second-hand",
+        tip: "Biggest second-hand market in East Africa. Amazing deals on clothes."
+      }, {
+        name: "Nyamakima",
+        city: "Nairobi",
+        speciality: "general wholesale",
+        tip: "Wholesale electronics and general goods. Cash preferred."
+      } ]
+    },
+    GH: {
+      name: "Ghana",
+      flag: "🇬🇭",
+      currency: {
+        code: "GHS",
+        symbol: "GH₵"
+      },
+      platforms: [ {
+        name: "Jumia Ghana",
+        url: "https://www.jumia.com.gh",
+        type: "affiliate",
+        hasApi: !0,
+        affiliate: "jumia",
+        logo: "jumia"
+      }, {
+        name: "Tonaton",
+        url: "https://tonaton.com",
+        type: "classifieds",
+        hasApi: !1,
+        logo: "tonaton"
+      }, {
+        name: "Jiji Ghana",
+        url: "https://jiji.com.gh",
+        type: "classifieds",
+        hasApi: !1,
+        logo: "jiji"
+      } ],
+      physicalMarkets: [ {
+        name: "Makola Market",
+        city: "Accra",
+        speciality: "general",
+        tip: "Accra's iconic central market. Everything from electronics to food."
+      }, {
+        name: "Kwame Nkrumah Circle",
+        city: "Accra",
+        speciality: "electronics",
+        tip: "Hub for electronics and phone accessories."
+      }, {
+        name: "Kejetia Market",
+        city: "Kumasi",
+        speciality: "general",
+        tip: "Largest open-air market in West Africa."
+      } ]
+    },
+    ZA: {
+      name: "South Africa",
+      flag: "🇿🇦",
+      currency: {
+        code: "ZAR",
+        symbol: "R"
+      },
+      platforms: [ {
+        name: "Takealot",
+        url: "https://www.takealot.com",
+        type: "affiliate",
+        hasApi: !0,
+        affiliate: "takealot",
+        logo: "takealot"
+      }, {
+        name: "Bob Shop",
+        url: "https://www.bobshop.co.za",
+        type: "retail",
+        hasApi: !1,
+        logo: "bobshop"
+      }, {
+        name: "Makro",
+        url: "https://www.makro.co.za",
+        type: "retail",
+        hasApi: !1,
+        logo: "makro"
+      }, {
+        name: "Game",
+        url: "https://www.game.co.za",
+        type: "retail",
+        hasApi: !1,
+        logo: "game"
+      }, {
+        name: "PriceCheck",
+        url: "https://www.pricecheck.co.za",
+        type: "aggregator",
+        hasApi: !1,
+        logo: "pricecheck"
+      } ],
+      physicalMarkets: [ {
+        name: "China Mall",
+        city: "Johannesburg",
+        speciality: "electronics, general",
+        tip: "Budget electronics and general goods. Quality varies."
+      }, {
+        name: "Oriental Plaza",
+        city: "Johannesburg",
+        speciality: "general",
+        tip: "Historic market with a wide variety of goods."
+      } ]
+    },
+    EG: {
+      name: "Egypt",
+      flag: "🇪🇬",
+      currency: {
+        code: "EGP",
+        symbol: "E£"
+      },
+      platforms: [ {
+        name: "Jumia Egypt",
+        url: "https://www.jumia.com.eg",
+        type: "affiliate",
+        hasApi: !0,
+        affiliate: "jumia",
+        logo: "jumia"
+      }, {
+        name: "Amazon Egypt",
+        url: "https://www.amazon.eg",
+        type: "retail",
+        hasApi: !1,
+        logo: "amazon"
+      }, {
+        name: "Noon Egypt",
+        url: "https://www.noon.com/egypt-en",
+        type: "retail",
+        hasApi: !1,
+        logo: "noon"
+      }, {
+        name: "B.Tech",
+        url: "https://btech.com",
+        type: "retail",
+        hasApi: !1,
+        logo: "btech"
+      } ],
+      physicalMarkets: [ {
+        name: "Khan el-Khalili",
+        city: "Cairo",
+        speciality: "general, souvenirs",
+        tip: "Historic bazaar. Great for souvenirs and traditional goods."
+      }, {
+        name: "Ataba Market",
+        city: "Cairo",
+        speciality: "electronics",
+        tip: "Cairo's electronics hub. Compare prices carefully."
+      } ]
+    },
+    TZ: {
+      name: "Tanzania",
+      flag: "🇹🇿",
+      currency: {
+        code: "TZS",
+        symbol: "TSh"
+      },
+      platforms: [ {
+        name: "Jumia Tanzania",
+        url: "https://www.jumia.co.tz",
+        type: "affiliate",
+        hasApi: !0,
+        affiliate: "jumia",
+        logo: "jumia"
+      }, {
+        name: "Kupatana",
+        url: "https://kupatana.com",
+        type: "classifieds",
+        hasApi: !1,
+        logo: "kupatana"
+      } ],
+      physicalMarkets: [ {
+        name: "Kariakoo Market",
+        city: "Dar es Salaam",
+        speciality: "general, electronics",
+        tip: "Dar's largest market. Very crowded but amazing variety."
+      } ]
+    },
+    MA: {
+      name: "Morocco",
+      flag: "🇲🇦",
+      currency: {
+        code: "MAD",
+        symbol: "MAD"
+      },
+      platforms: [ {
+        name: "Jumia Maroc",
+        url: "https://www.jumia.ma",
+        type: "affiliate",
+        hasApi: !0,
+        affiliate: "jumia",
+        logo: "jumia"
+      }, {
+        name: "Avito",
+        url: "https://www.avito.ma",
+        type: "classifieds",
+        hasApi: !1,
+        logo: "avito"
+      }, {
+        name: "Electroplanet",
+        url: "https://www.electroplanet.ma",
+        type: "retail",
+        hasApi: !1,
+        logo: "electroplanet"
+      } ],
+      physicalMarkets: [ {
+        name: "Derb Ghallef",
+        city: "Casablanca",
+        speciality: "electronics, general",
+        tip: "Casablanca's electronics souk. Cash only, bargain expected."
+      } ]
+    },
+    UG: {
+      name: "Uganda",
+      flag: "🇺🇬",
+      currency: {
+        code: "UGX",
+        symbol: "USh"
+      },
+      platforms: [ {
+        name: "Jumia Uganda",
+        url: "https://www.jumia.ug",
+        type: "affiliate",
+        hasApi: !0,
+        affiliate: "jumia",
+        logo: "jumia"
+      }, {
+        name: "Jiji Uganda",
+        url: "https://jiji.ug",
+        type: "classifieds",
+        hasApi: !1,
+        logo: "jiji"
+      } ],
+      physicalMarkets: [ {
+        name: "Kikuubo",
+        city: "Kampala",
+        speciality: "general wholesale",
+        tip: "Kampala's main trading hub. Wholesale prices available."
+      }, {
+        name: "Wandegeya",
+        city: "Kampala",
+        speciality: "electronics",
+        tip: "Good for phones and electronics near Makerere University."
+      } ]
+    },
+    RW: {
+      name: "Rwanda",
+      flag: "🇷🇼",
+      currency: {
+        code: "RWF",
+        symbol: "FRw"
+      },
+      platforms: [ {
+        name: "HeHe",
+        url: "https://hfrw.com",
+        type: "retail",
+        hasApi: !1,
+        logo: "hehe"
+      }, {
+        name: "Murukali",
+        url: "https://murukali.com",
+        type: "retail",
+        hasApi: !1,
+        logo: "murukali"
+      } ],
+      physicalMarkets: [ {
+        name: "Kimironko Market",
+        city: "Kigali",
+        speciality: "general",
+        tip: "Kigali's main market. Clean and well-organised."
+      } ]
+    },
+    CI: {
+      name: "Côte d'Ivoire",
+      flag: "🇨🇮",
+      currency: {
+        code: "XOF",
+        symbol: "FCFA"
+      },
+      platforms: [ {
+        name: "Jumia Côte d'Ivoire",
+        url: "https://www.jumia.ci",
+        type: "affiliate",
+        hasApi: !0,
+        affiliate: "jumia",
+        logo: "jumia"
+      } ],
+      physicalMarkets: [ {
+        name: "Marché de Treichville",
+        city: "Abidjan",
+        speciality: "general",
+        tip: "Abidjan's central market district."
+      }, {
+        name: "Marché d'Adjamé",
+        city: "Abidjan",
+        speciality: "electronics, general",
+        tip: "Electronics and general goods. Very busy."
+      } ]
+    }
+  }, o = [ {
+    id: "phones",
+    name: "Phones & Tablets",
+    icon: "📱",
+    subcategories: [ "Smartphones", "Feature Phones", "Tablets", "Phone Accessories", "Screen Protectors & Cases" ]
+  }, {
+    id: "electronics",
+    name: "Electronics",
+    icon: "💻",
+    subcategories: [ "Laptops", "TVs", "Speakers & Audio", "Gaming", "Cameras", "Computer Accessories" ]
+  }, {
+    id: "appliances",
+    name: "Home Appliances",
+    icon: "🏠",
+    subcategories: [ "Generators", "Solar Panels & Inverters", "Refrigerators", "Air Conditioners", "Washing Machines", "Kitchen Appliances", "Fans" ]
+  }, {
+    id: "fashion",
+    name: "Fashion",
+    icon: "👗",
+    subcategories: [ "Men's Clothing", "Women's Clothing", "Shoes", "Bags", "Watches", "Jewelry", "African Fashion / Ankara" ]
+  }, {
+    id: "groceries",
+    name: "Groceries & Food",
+    icon: "🛒",
+    subcategories: [ "Staples (Rice, Garri, Maize)", "Cooking Oil", "Beverages", "Baby Food", "Snacks" ]
+  }, {
+    id: "health",
+    name: "Health & Beauty",
+    icon: "💊",
+    subcategories: [ "Skincare", "Hair Care", "Supplements", "Pharmaceuticals", "Personal Care" ]
+  }, {
+    id: "building",
+    name: "Building Materials",
+    icon: "🧱",
+    subcategories: [ "Cement", "Roofing Sheets", "Iron Rods", "Paint", "Plumbing", "Electrical Fittings", "Tiles" ]
+  }, {
+    id: "automotive",
+    name: "Automotive",
+    icon: "🚗",
+    subcategories: [ "Car Parts", "Tyres", "Car Electronics", "Lubricants" ]
+  } ], c = {
+    NG: [ {
+      name: "Samsung Galaxy A15 (128GB)",
+      brand: "Samsung",
+      category: "phones",
+      image: "",
+      listings: [ {
+        source: "Jumia Nigeria",
+        type: "affiliate",
+        price: 142e3,
+        currency: "NGN",
+        inStock: !0,
+        url: "https://www.jumia.com.ng/samsung-galaxy-a15",
+        delivery: "2-5 days",
+        rating: 4.2
+      }, {
+        source: "Konga",
+        type: "affiliate",
+        price: 138500,
+        currency: "NGN",
+        inStock: !0,
+        url: "https://www.konga.com/samsung-galaxy-a15",
+        delivery: "3-7 days",
+        rating: 4
+      }, {
+        source: "Slot Systems",
+        type: "retail",
+        price: 145e3,
+        currency: "NGN",
+        inStock: !0,
+        url: "https://www.slot.ng"
+      }, {
+        source: "Computer Village, Ikeja",
+        type: "market",
+        priceMin: 125e3,
+        priceMax: 135e3,
+        currency: "NGN",
+        tip: "Bargain expected. Cash only."
+      } ]
+    }, {
+      name: "iPhone 15 (128GB)",
+      brand: "Apple",
+      category: "phones",
+      image: "",
+      listings: [ {
+        source: "Jumia Nigeria",
+        type: "affiliate",
+        price: 85e4,
+        currency: "NGN",
+        inStock: !0,
+        url: "https://www.jumia.com.ng/iphone-15"
+      }, {
+        source: "Slot Systems",
+        type: "retail",
+        price: 83e4,
+        currency: "NGN",
+        inStock: !0,
+        url: "https://www.slot.ng"
+      }, {
+        source: "Computer Village, Ikeja",
+        type: "market",
+        priceMin: 75e4,
+        priceMax: 8e5,
+        currency: "NGN",
+        tip: "Ensure box is sealed. Check IMEI."
+      } ]
+    }, {
+      name: "Tecno Spark 20 Pro+",
+      brand: "Tecno",
+      category: "phones",
+      image: "",
+      listings: [ {
+        source: "Jumia Nigeria",
+        type: "affiliate",
+        price: 165e3,
+        currency: "NGN",
+        inStock: !0,
+        url: "https://www.jumia.com.ng/tecno-spark-20-pro"
+      }, {
+        source: "Konga",
+        type: "affiliate",
+        price: 162e3,
+        currency: "NGN",
+        inStock: !0,
+        url: "https://www.konga.com/tecno-spark-20-pro"
+      }, {
+        source: "Computer Village, Ikeja",
+        type: "market",
+        priceMin: 145e3,
+        priceMax: 155e3,
+        currency: "NGN"
+      } ]
+    }, {
+      name: "HP Laptop 15 (Intel i5, 8GB RAM)",
+      brand: "HP",
+      category: "electronics",
+      image: "",
+      listings: [ {
+        source: "Jumia Nigeria",
+        type: "affiliate",
+        price: 45e4,
+        currency: "NGN",
+        inStock: !0,
+        url: "https://www.jumia.com.ng/hp-laptop-15"
+      }, {
+        source: "Slot Systems",
+        type: "retail",
+        price: 465e3,
+        currency: "NGN",
+        inStock: !0
+      }, {
+        source: "Computer Village, Ikeja",
+        type: "market",
+        priceMin: 38e4,
+        priceMax: 42e4,
+        currency: "NGN",
+        tip: "Check for warranty card."
+      } ]
+    }, {
+      name: 'Hisense 43" Smart TV',
+      brand: "Hisense",
+      category: "electronics",
+      image: "",
+      listings: [ {
+        source: "Jumia Nigeria",
+        type: "affiliate",
+        price: 225e3,
+        currency: "NGN",
+        inStock: !0,
+        url: "https://www.jumia.com.ng/hisense-43-smart-tv"
+      }, {
+        source: "Konga",
+        type: "affiliate",
+        price: 218e3,
+        currency: "NGN",
+        inStock: !0
+      } ]
+    }, {
+      name: "Dangote Cement (50kg bag)",
+      brand: "Dangote",
+      category: "building",
+      image: "",
+      listings: [ {
+        source: "Retail",
+        type: "retail",
+        price: 7500,
+        currency: "NGN",
+        inStock: !0
+      }, {
+        source: "Onitsha Main Market",
+        type: "market",
+        priceMin: 6800,
+        priceMax: 7200,
+        currency: "NGN",
+        tip: "Wholesale prices for 100+ bags."
+      } ]
+    }, {
+      name: "Elepaq 3.5KVA Generator",
+      brand: "Elepaq",
+      category: "appliances",
+      image: "",
+      listings: [ {
+        source: "Jumia Nigeria",
+        type: "affiliate",
+        price: 285e3,
+        currency: "NGN",
+        inStock: !0
+      }, {
+        source: "Computer Village, Ikeja",
+        type: "market",
+        priceMin: 25e4,
+        priceMax: 27e4,
+        currency: "NGN"
+      } ]
+    }, {
+      name: "50kg Bag of Rice (Foreign)",
+      brand: "Various",
+      category: "groceries",
+      image: "",
+      listings: [ {
+        source: "Retail",
+        type: "retail",
+        price: 82e3,
+        currency: "NGN",
+        inStock: !0
+      }, {
+        source: "Onitsha Main Market",
+        type: "market",
+        priceMin: 75e3,
+        priceMax: 8e4,
+        currency: "NGN",
+        tip: "Buy in bulk for better prices."
+      } ]
+    } ],
+    KE: [ {
+      name: "Samsung Galaxy A15 (128GB)",
+      brand: "Samsung",
+      category: "phones",
+      image: "",
+      listings: [ {
+        source: "Jumia Kenya",
+        type: "affiliate",
+        price: 21500,
+        currency: "KES",
+        inStock: !0,
+        url: "https://www.jumia.co.ke/samsung-galaxy-a15"
+      }, {
+        source: "Kilimall",
+        type: "affiliate",
+        price: 20800,
+        currency: "KES",
+        inStock: !0
+      }, {
+        source: "Luthuli Avenue",
+        type: "market",
+        priceMin: 18e3,
+        priceMax: 2e4,
+        currency: "KES",
+        tip: "Compare at least 3 shops."
+      } ]
+    }, {
+      name: "iPhone 15 (128GB)",
+      brand: "Apple",
+      category: "phones",
+      image: "",
+      listings: [ {
+        source: "Jumia Kenya",
+        type: "affiliate",
+        price: 129e3,
+        currency: "KES",
+        inStock: !0
+      }, {
+        source: "Luthuli Avenue",
+        type: "market",
+        priceMin: 115e3,
+        priceMax: 125e3,
+        currency: "KES"
+      } ]
+    } ],
+    ZA: [ {
+      name: "Samsung Galaxy A15 (128GB)",
+      brand: "Samsung",
+      category: "phones",
+      image: "",
+      listings: [ {
+        source: "Takealot",
+        type: "affiliate",
+        price: 3999,
+        currency: "ZAR",
+        inStock: !0,
+        url: "https://www.takealot.com/samsung-galaxy-a15"
+      }, {
+        source: "Game",
+        type: "retail",
+        price: 4199,
+        currency: "ZAR",
+        inStock: !0
+      }, {
+        source: "Makro",
+        type: "retail",
+        price: 3899,
+        currency: "ZAR",
+        inStock: !0
+      } ]
+    }, {
+      name: "iPhone 15 (128GB)",
+      brand: "Apple",
+      category: "phones",
+      image: "",
+      listings: [ {
+        source: "Takealot",
+        type: "affiliate",
+        price: 19999,
+        currency: "ZAR",
+        inStock: !0
+      }, {
+        source: "Game",
+        type: "retail",
+        price: 20499,
+        currency: "ZAR",
+        inStock: !0
+      } ]
+    } ],
+    GH: [ {
+      name: "Samsung Galaxy A15 (128GB)",
+      brand: "Samsung",
+      category: "phones",
+      image: "",
+      listings: [ {
+        source: "Jumia Ghana",
+        type: "affiliate",
+        price: 2150,
+        currency: "GHS",
+        inStock: !0
+      }, {
+        source: "Makola Market",
+        type: "market",
+        priceMin: 1800,
+        priceMax: 2e3,
+        currency: "GHS"
+      } ]
+    } ],
+    EG: [ {
+      name: "Samsung Galaxy A15 (128GB)",
+      brand: "Samsung",
+      category: "phones",
+      image: "",
+      listings: [ {
+        source: "Jumia Egypt",
+        type: "affiliate",
+        price: 6500,
+        currency: "EGP",
+        inStock: !0
+      }, {
+        source: "Amazon Egypt",
+        type: "retail",
+        price: 6200,
+        currency: "EGP",
+        inStock: !0
+      }, {
+        source: "Noon Egypt",
+        type: "retail",
+        price: 6350,
+        currency: "EGP",
+        inStock: !0
+      } ]
+    } ]
+  }, s = {
+    "Samsung Galaxy A15 (128GB)__NG": [ {
+      date: "2025-12-01",
+      price: 155e3
+    }, {
+      date: "2025-12-15",
+      price: 152e3
+    }, {
+      date: "2026-01-01",
+      price: 15e4
+    }, {
+      date: "2026-01-15",
+      price: 148e3
+    }, {
+      date: "2026-02-01",
+      price: 145e3
+    }, {
+      date: "2026-02-15",
+      price: 143e3
+    }, {
+      date: "2026-03-01",
+      price: 142e3
+    }, {
+      date: "2026-03-15",
+      price: 141e3
+    } ],
+    "iPhone 15 (128GB)__NG": [ {
+      date: "2025-12-01",
+      price: 92e4
+    }, {
+      date: "2025-12-15",
+      price: 9e5
+    }, {
+      date: "2026-01-01",
+      price: 88e4
+    }, {
+      date: "2026-01-15",
+      price: 87e4
+    }, {
+      date: "2026-02-01",
+      price: 86e4
+    }, {
+      date: "2026-02-15",
+      price: 85e4
+    }, {
+      date: "2026-03-01",
+      price: 845e3
+    }, {
+      date: "2026-03-15",
+      price: 84e4
+    } ]
+  }, l = {
+    NG: [ "iPhone 15 price", "Samsung A15", "Generator prices", "Cement price today", "Ankara fabric", "Laptop under 300k", "Used iPhone 13", "Solar panel price" ],
+    KE: [ "Samsung A15 price", "iPhone 15 Kenya", "Laptop deals Nairobi", "TV prices Kenya", "Second-hand phones" ],
+    ZA: [ "iPhone 15 Takealot", "Samsung Galaxy", "Best laptop deals", "PS5 price South Africa", "TV specials" ],
+    GH: [ "iPhone 15 Ghana", "Samsung phones", "Laptop prices Accra", "Generator price" ],
+    EG: [ "iPhone 15 Egypt", "Samsung Galaxy", "Laptop deals Cairo", "Noon offers" ],
+    TZ: [ "Samsung phones Tanzania", "iPhone price Dar", "Generator price" ],
+    MA: [ "iPhone 15 Maroc", "Samsung Galaxy", "Electroplanet offres" ],
+    UG: [ "Samsung phones Uganda", "iPhone 15 Kampala", "Laptop deals" ],
+    RW: [ "Samsung phones Rwanda", "iPhone 15 Kigali" ],
+    CI: [ "iPhone 15 Abidjan", "Samsung Galaxy", "Ordinateur portable" ]
+  };
+  function u(e, a, r) {
+    var i = n[a];
+    if (!i) {
+      return "";
+    }
+    var t = i.platforms.map(function(e) {
+      return e.name;
+    }).join(", "), o = i.physicalMarkets.map(function(e) {
+      return e.name;
+    }).join(", "), c = "";
+    return r && r.length > 0 && (c = r.map(function(e) {
+      var a = e.listings.map(function(e) {
+        return e.priceMin && e.priceMax ? e.source + ": " + i.currency.symbol + e.priceMin.toLocaleString() + "-" + i.currency.symbol + e.priceMax.toLocaleString() : e.source + ": " + i.currency.symbol + (e.price || 0).toLocaleString() + ("community" === e.type ? " (community)" : "");
+      }).join(", ");
+      return e.name + " — " + a;
+    }).join("\n")), "The user in " + i.name + ' is searching for "' + e + '".\n\nSEARCH RESULTS:\n' + (c || "No results found yet.") + "\n\nAvailable platforms: " + t + "\nPhysical markets: " + o + "\n\nProvide: 1) Best value option (not just lowest price — consider warranty, delivery, trust) 2) Price range in " + i.currency.code + " 3) Buying tips for this product in " + i.name + " 4) Whether now is good to buy or prices may drop. Keep under 100 words. Use " + i.currency.symbol + " for prices.";
+  }
+  return {
+    getCountries: function() {
+      return Object.entries(n).map(function(e) {
+        var a = e[0], r = e[1];
+        return {
+          code: a,
+          name: r.name,
+          flag: r.flag,
+          currency: r.currency,
+          platformCount: r.platforms.length,
+          marketCount: r.physicalMarkets.length
+        };
+      });
+    },
+    getCountry: function(e) {
+      return n[e] || null;
+    },
+    getCategories: function() {
+      return o;
+    },
+    getCategory: function(e) {
+      return o.find(function(a) {
+        return a.id === e;
+      }) || null;
+    },
+    getMarkets: function(e) {
+      return n[e] ? n[e].physicalMarkets : [];
+    },
+    getPlatforms: function(e) {
+      return n[e] ? n[e].platforms : [];
+    },
+    getTrending: function(e) {
+      return l[e] || l.NG;
+    },
+    searchProducts: async function(e, r, o) {
+      if (!e || !r || !n[r]) {
+        return {
+          query: e,
+          country: null,
+          results: [],
+          physicalMarkets: [],
+          error: "Invalid query or country"
+        };
+      }
+      var s = n[r], u = (e + "__" + r + "__" + (o || "")).toLowerCase(), p = i(u);
+      if (p) {
+        return p;
+      }
+      var m = [];
+      try {
+        var y = await async function(e, r, i) {
+          var t = a();
+          if (!t) {
+            return [];
+          }
+          try {
+            var n = t.from("products").select("id, name, brand, category, subcategory, description, image_url, specs, global_avg_price_usd").or("name.ilike.%" + e + "%,brand.ilike.%" + e + "%,description.ilike.%" + e + "%").limit(20);
+            i && (n = n.eq("category", i));
+            var {data: o, error: c} = await n;
+            if (c || !o || 0 === o.length) {
+              return [];
+            }
+            var s = o.map(function(e) {
+              return e.id;
+            }), {data: l} = await t.from("price_listings").select("*").in("product_id", s).eq("country_code", r).order("price", {
+              ascending: !0
+            }), {data: u} = await t.from("community_prices").select("*").in("product_id", s).eq("country_code", r).eq("status", "verified").order("created_at", {
+              ascending: !1
+            }).limit(10);
+            return o.map(function(e) {
+              var a = (l || []).filter(function(a) {
+                return a.product_id === e.id;
+              }), r = (u || []).filter(function(a) {
+                return a.product_id === e.id;
+              }), i = a.map(function(e) {
+                return {
+                  source: e.source_name,
+                  type: e.source_type,
+                  price: e.price,
+                  currency: e.currency_code,
+                  inStock: e.in_stock,
+                  url: e.source_url,
+                  lastVerified: e.last_verified,
+                  verifiedBy: e.verified_by
+                };
+              });
+              return r.forEach(function(e) {
+                i.push({
+                  source: e.market_name || "Community",
+                  type: "community",
+                  price: e.price,
+                  currency: e.currency_code,
+                  city: e.city,
+                  submittedAt: e.created_at,
+                  upvotes: e.upvotes,
+                  downvotes: e.downvotes,
+                  photoUrl: e.photo_url
+                });
+              }), {
+                id: e.id,
+                name: e.name,
+                brand: e.brand,
+                category: e.category,
+                image: e.image_url,
+                specs: e.specs,
+                listings: i
+              };
+            }).filter(function(e) {
+              return e.listings.length > 0;
+            });
+          } catch (e) {
+            return console.warn("AfroPrices: Supabase query error", e), [];
+          }
+        }(e, r, o);
+        y && y.length > 0 && (m = m.concat(y));
+      } catch (e) {
+        console.warn("AfroPrices: Supabase search failed, using mock data", e);
+      }
+      if (0 === m.length) {
+        var g = function(e, a, r) {
+          var i = c[a] || [], t = e.toLowerCase();
+          return i.filter(function(e) {
+            var a = -1 !== e.name.toLowerCase().indexOf(t), i = e.brand && -1 !== e.brand.toLowerCase().indexOf(t), n = !r || e.category === r;
+            return (a || i) && n;
+          });
+        }(e, r, o);
+        m = m.concat(g);
+      }
+      for (var h = {}, d = [], f = 0; f < m.length; f++) {
+        var k = m[f].name.toLowerCase();
+        h[k] || (h[k] = !0, d.push(m[f]));
+      }
+      var w = {
+        query: e,
+        country: s,
+        countryCode: r,
+        results: d,
+        physicalMarkets: s.physicalMarkets || [],
+        trending: l[r] || [],
+        timestamp: Date.now()
+      };
+      return t(u, w), w;
+    },
+    getPriceHistory: async function(e, r) {
+      var n = "history__" + e + "__" + r, o = i(n);
+      if (o) {
+        return o;
+      }
+      var c = a();
+      if (c) {
+        try {
+          var {data: l} = await c.from("price_history").select("price, currency_code, source_name, recorded_at").eq("country_code", r).order("recorded_at", {
+            ascending: !0
+          }).limit(90);
+          if (l && l.length > 0) {
+            return t(n, l), l;
+          }
+        } catch (e) {}
+      }
+      var u = s[e + "__" + r] || [];
+      return t(n, u), u;
+    },
+    submitCommunityPrice: async function(e) {
+      if (!(e.productName && e.price && e.countryCode && e.currencyCode)) {
+        return {
+          success: !1,
+          error: "Missing required fields"
+        };
+      }
+      if (isNaN(e.price) || e.price <= 0) {
+        return {
+          success: !1,
+          error: "Invalid price"
+        };
+      }
+      try {
+        var a = await fetch("/.netlify/functions/afroprices-submit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            product_name: e.productName,
+            product_id: e.productId || null,
+            country_code: e.countryCode,
+            city: e.city || "",
+            market_name: e.marketName || "",
+            price: e.price,
+            currency_code: e.currencyCode,
+            photo_url: e.photoUrl || null
+          })
+        });
+        return await a.json();
+      } catch (e) {
+        return console.error("AfroPrices: Submit failed", e), {
+          success: !1,
+          error: "Network error. Please try again."
+        };
+      }
+    },
+    setPriceAlert: async function(e) {
+      if (!(e.productId && e.targetPrice && e.email && e.countryCode)) {
+        return {
+          success: !1,
+          error: "Missing required fields"
+        };
+      }
+      var r = a();
+      if (!r) {
+        return {
+          success: !1,
+          error: "Database not available"
+        };
+      }
+      try {
+        var i = n[e.countryCode], {error: t} = await r.from("price_alerts").insert({
+          product_id: e.productId,
+          country_code: e.countryCode,
+          target_price: e.targetPrice,
+          currency_code: i.currency.code,
+          email: e.email,
+          is_active: !0
+        });
+        return t ? {
+          success: !1,
+          error: t.message
+        } : {
+          success: !0,
+          message: "Price alert set! We'll notify you when the price drops."
+        };
+      } catch (e) {
+        return {
+          success: !1,
+          error: "Failed to set alert"
+        };
+      }
+    },
+    getAIInsight: async function(e, a, r) {
+      var i = u(e, a, r);
+      if (!i) {
+        return null;
+      }
+      try {
+        var t = await fetch("/.netlify/functions/ai-advisor", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            tool: "afroprices",
+            message: i
+          })
+        });
+        return (await t.json()).reply || null;
+      } catch (e) {
+        return console.warn("AfroPrices: AI insight failed", e), null;
+      }
+    },
+    buildAffiliateLink: function(e, a, r) {
+      if (!a) {
+        return "#";
+      }
+      switch (e) {
+       case "jumia":
+        return a + (a.indexOf("?") > -1 ? "&" : "?") + "tag=" + (r || "afrotools");
+
+       case "konga":
+        return a + (a.indexOf("?") > -1 ? "&" : "?") + "ref=" + (r || "afrotools");
+
+       case "takealot":
+        return a + (a.indexOf("?") > -1 ? "&" : "?") + "via=" + (r || "afrotools");
+
+       case "kilimall":
+        return a + (a.indexOf("?") > -1 ? "&" : "?") + "aff=" + (r || "afrotools");
+
+       default:
+        return a;
+      }
+    },
+    buildAIPrompt: u,
+    formatPrice: function(e, a) {
+      return "number" != typeof e ? "—" : a + e.toLocaleString("en", {
+        maximumFractionDigits: 0
+      });
+    },
+    formatPriceRange: function(e, a, r) {
+      return r + e.toLocaleString("en", {
+        maximumFractionDigits: 0
+      }) + " – " + r + a.toLocaleString("en", {
+        maximumFractionDigits: 0
+      });
+    }
+  };
+}();
+
+"undefined" != typeof module && module.exports && (module.exports = AfroPricesEngine);

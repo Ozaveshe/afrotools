@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CreatorMind Workspace | AfroTools</title>
+  <meta name="robots" content="noindex, follow">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <link rel="stylesheet" href="style.css?v=82766a6e">
+  <script src="/assets/js/supabase-auth.js?v=0c644f2e" defer></script>
+  <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
+<meta property="og:url" content="https://afrotools.com/tools/creator-mind/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c4853917">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/lib/dark-mode.js?v=5cb64ba3" defer></script>
+<link rel="canonical" href="https://afrotools.com/tools/creator-mind/app">
+</head>
+<body class="cmn-app top-level-page-ui-refresh">
+
+  <!-- TOPBAR -->
+  <div class="cmn-topbar">
+    <a href="index.html" class="cmn-topbar-back">&larr; Back</a>
+    <a href="index.html" class="cmn-topbar-brand">&#10024; CreatorMind</a>
+    <div class="cmn-topbar-actions">
+      <button type="button" class="cmn-topbar-btn" onclick="location.href='voice.html'">Voice</button>
+      <button type="button" class="cmn-topbar-btn" onclick="location.href='history.html'">History</button>
+    </div>
+  </div>
+
+  <!-- MODE TABS -->
+  <div class="cmn-mode-tabs">
+    <button type="button" class="cmn-mode-tab active" data-mode="quick">Quick Actions</button>
+    <button type="button" class="cmn-mode-tab" data-mode="chat">Chat Mode</button>
+  </div>
+
+  <!-- QUICK ACTIONS VIEW -->
+  <div id="quickView">
+    <!-- Quick Action Grid -->
+    <div class="cmn-quick-actions">
+      <div class="cmn-qa-row" id="qaRow1"></div>
+      <div class="cmn-qa-row" id="qaRow2"></div>
+    </div>
+
+    <!-- Generation Form Container -->
+    <div class="cmn-workspace">
+      <div id="genFormArea"></div>
+      <div id="outputArea"></div>
+    </div>
+  </div>
+
+  <!-- CHAT VIEW -->
+  <div id="chatView" style="display:none;">
+    <div class="cmn-chat">
+      <div class="cmn-chat-messages" id="chatMessages">
+        <div class="cmn-chat-msg ai">Hey! I'm your creative co-pilot. Tell me what you need — a caption, script, hook, pitch, or anything else. I'll write it in your voice. &#10024;</div>
+      </div>
+    </div>
+    <div class="cmn-chat-input-bar">
+      <textarea class="cmn-chat-input" id="chatInput" placeholder="Write a caption about..." rows="1" aria-label="Write a caption about..."></textarea>
+      <button type="button" class="cmn-chat-send" id="chatSend">&#10148;</button>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="cmn-bottom-nav" id="bottomNav">
+    <a href="app.html" class="active"><span class="cmn-bnav-icon">&#10024;</span>Create</a>
+    <a href="voice.html"><span class="cmn-bnav-icon">&#127908;</span>Voice</a>
+    <a href="history.html"><span class="cmn-bnav-icon">&#128214;</span>History</a>
+  </nav>
+
+  <!-- TOAST -->
+  <div class="cmn-toast" id="toast"></div>
+
+<!-- Loading Status -->
+<div class="cmn-loading-status" id="cmnLoadingStatus">
+  <span class="cmn-loading-verb" id="cmnLoadingVerb"></span>
+  <span class="cmn-loading-dots"><span>.</span><span>.</span><span>.</span></span>
+</div>
+
+<style>
+  .cmn-loading-status{display:none;text-align:center;padding:18px 12px 8px;font-size:.97rem;color:var(--brand,#0062CC);font-weight:600;letter-spacing:.01em}
+  .cmn-loading-status.active{display:block}
+  .cmn-loading-dots span{opacity:0;animation:cmnDotPulse 1.4s infinite}
+  .cmn-loading-dots span:nth-child(2){animation-delay:.2s}
+  .cmn-loading-dots span:nth-child(3){animation-delay:.4s}
+  @keyframes cmnDotPulse{0%,80%,100%{opacity:0}40%{opacity:1}}
+</style>
+
+<script src="/engines/creator-mind-engine.js?v=55430705"></script>
+<script>
+!function() {
+  "use strict";
+
+  var E = window.AfroTools && window.AfroTools.CreatorMindEngine;
+  if (!E) { console.error('CreatorMind engine not loaded'); return; }
+
+  var API = '/.netlify/functions/creator-mind';
+  var activeType = null;
+  var voiceProfile = null;
+
+  // ── VERB SPINNER ──
+  var ACTION_VERBS = [
+    "Brainstorming ideas",
+    "Exploring creative angles",
+    "Mining trending topics",
+    "Generating content pillars",
+    "Mapping audience interests",
+    "Discovering fresh perspectives",
+    "Connecting the dots",
+    "Unlocking creative flow",
+    "Curating inspiration",
+    "Synthesizing concepts",
+    "Building idea frameworks",
+    "Sparking new directions",
+    "Analyzing what's working",
+    "Crafting unique angles",
+    "Engineering virality",
+    "Refining your content vision"
+  ];
+  var _verbTimer = null;
+  var _verbIndex = 0;
+
+  function startVerbCycling() {
+    var statusEl = document.getElementById('cmnLoadingStatus');
+    var verbEl = document.getElementById('cmnLoadingVerb');
+    _verbIndex = Math.floor(Math.random() * ACTION_VERBS.length);
+    verbEl.textContent = ACTION_VERBS[_verbIndex];
+    statusEl.classList.add('active');
+    _verbTimer = setInterval(function() {
+      _verbIndex = (_verbIndex + 1) % ACTION_VERBS.length;
+      verbEl.textContent = ACTION_VERBS[_verbIndex];
+    }, 2400);
+  }
+
+  function stopVerbCycling() {
+    if (_verbTimer) { clearInterval(_verbTimer); _verbTimer = null; }
+    var statusEl = document.getElementById('cmnLoadingStatus');
+    statusEl.classList.remove('active');
+  }
+
+  // ── AUTH ──
+  function getToken() {
+    try {
+      var raw = localStorage.getItem('sb-zpclagtgczsygrgztlts-auth-token');
+      if (raw) { var d = JSON.parse(raw); return d.access_token || ''; }
+    } catch(e) {}
+    return '';
+  }
+
+  function authHeaders() {
+    var t = getToken();
+    return { 'Content-Type': 'application/json', 'Authorization': t ? 'Bearer ' + t : '' };
+  }
+
+  // ── TOAST ──
+  function toast(msg) {
+    var el = document.getElementById('toast');
+    el.textContent = msg; el.classList.add('show');
+    setTimeout(function() { el.classList.remove('show'); }, 2500);
+  }
+
+  // ── QUICK ACTIONS ──
+  function renderQuickActions() {
+    var types = E.GENERATION_TYPES;
+    var row1 = document.getElementById('qaRow1');
+    var row2 = document.getElementById('qaRow2');
+    row1.innerHTML = ''; row2.innerHTML = '';
+
+    Object.keys(types).forEach(function(key) {
+      var t = types[key];
+      var card = document.createElement('div');
+      card.className = 'cmn-qa-card';
+      card.setAttribute('data-type', key);
+      card.innerHTML = '<span class="cmn-qa-icon">' + t.icon + '</span><span class="cmn-qa-label">' + t.label + '</span>';
+      card.onclick = function() { selectType(key); };
+      if (t.row === 1) row1.appendChild(card);
+      else row2.appendChild(card);
+    });
+  }
+
+  function selectType(type) {
+    activeType = type;
+    document.querySelectorAll('.cmn-qa-card').forEach(function(c) {
+      c.classList.toggle('active', c.getAttribute('data-type') === type);
+    });
+    renderForm(type);
+  }
+
+  // ── FORM RENDERING ──
+  function renderForm(type) {
+    var area = document.getElementById('genFormArea');
+    var t = E.GENERATION_TYPES[type];
+    var html = '<div class="cmn-gen-form"><div class="cmn-form-title">' + t.icon + ' ' + t.label + '</div>';
+
+    // Platform pills (if applicable)
+    if (t.platforms && t.platforms.length) {
+      html += '<div class="cmn-form-group"><label class="cmn-form-label">Platform</label><div class="cmn-pills" data-field="platform">';
+      t.platforms.forEach(function(p) {
+        html += '<span class="cmn-pill" data-val="' + p + '">' + p.charAt(0).toUpperCase() + p.slice(1) + '</span>';
+      });
+      html += '</div></div>';
+    }
+
+    switch (type) {
+      case 'caption':
+        html += textareaField('topic', "What's the post about?", 'Launching my new preset pack, celebrating 10k followers...', 3);
+        html += pillGroup('postType', 'Post Type', E.POST_TYPES);
+        html += pillGroup('tone', 'Tone', E.CAPTION_TONES);
+        html += toggleField('includeCta', 'Include CTA?');
+        html += '<div id="ctaGroup" style="display:none">' + pillGroup('ctaType', 'CTA Type', E.CTA_TYPES) + '</div>';
+        html += genButton('Generate 3 Options');
+        break;
+      case 'script':
+        html += inputField('title', 'Topic / Title', 'Why natural hair products in Nigeria are overpriced');
+        html += pillGroup('length', 'Video Length', E.VIDEO_LENGTHS);
+        html += pillGroup('style', 'Style', E.SCRIPT_STYLES);
+        html += textareaField('keyPoints', 'Key Points (optional)', 'Price comparison, ingredient quality, local alternatives...', 3);
+        html += genButton('Generate Script');
+        break;
+      case 'hook':
+        html += inputField('topic', 'Content Topic', 'Photography tips for beginners');
+        html += pillGroup('style', 'Hook Style', E.HOOK_STYLES);
+        html += genButton('Generate 10 Hooks');
+        break;
+      case 'thread':
+        html += inputField('topic', 'Topic', 'The state of Nollywood in 2026');
+        html += pillGroup('length', 'Thread Length', E.THREAD_LENGTHS.map(function(n) { return n + ' tweets'; }));
+        html += pillGroup('angle', 'Angle', E.THREAD_ANGLES);
+        html += genButton('Generate Thread');
+        break;
+      case 'pitch':
+        html += inputField('brand', 'Who are you pitching?', 'Pepsi Nigeria, MTN, Jumia...');
+        html += inputField('pitchType', 'What are you pitching?', 'Content collaboration, sponsorship, feature...');
+        html += textareaField('valueProp', 'Your unique value proposition', 'I reach 50K+ young professionals in Lagos with 8% engagement rate', 2);
+        html += toggleField('includeBudget', 'Include rate/budget?');
+        html += genButton('Generate Pitch');
+        break;
+      case 'brief_decode':
+        html += textareaField('brief', 'Paste the brand brief', 'Paste the full brand brief here...', 8);
+        html += genButton('Decode Brief');
+        break;
+      case 'repurpose':
+        html += textareaField('original', 'Original content', 'Paste the content or describe it...', 5);
+        html += pillGroup('originalFormat', 'Original Format', ['YouTube video','Blog post','Podcast','Tweet','Newsletter']);
+        html += '<div class="cmn-form-group"><label class="cmn-form-label">Repurpose Into (select multiple)</label><div class="cmn-pills multi" data-field="targetFormats">';
+        E.REPURPOSE_FORMATS.forEach(function(f) {
+          html += '<span class="cmn-pill" data-val="' + f + '">' + f + '</span>';
+        });
+        html += '</div></div>';
+        html += genButton('Repurpose');
+        break;
+      case 'hashtag':
+        html += inputField('topic', 'Content About', 'Natural hair care, Lagos street food...');
+        html += genButton('Generate Hashtags');
+        break;
+      case 'bio':
+        html += inputField('platform', 'For', 'Instagram, TikTok, LinkedIn, website...');
+        html += textareaField('about', 'About You', 'Photographer based in Lagos, specializing in brand storytelling...', 3);
+        html += genButton('Generate 3 Bios');
+        break;
+      case 'response':
+        html += textareaField('context', 'Context', 'Client is asking for a discount / wants revisions outside scope / late payment...', 4);
+        html += pillGroup('tone', 'Tone', ['Professional','Firm','Friendly','Apologetic']);
+        html += genButton('Draft Response');
+        break;
+      case 'product_desc':
+        html += inputField('product', 'Product Name', 'Lightroom Presets Pack, Photography Course...');
+        html += textareaField('audience', 'Target Audience', 'Young creatives in West Africa who want professional-looking content', 2);
+        html += genButton('Generate Description');
+        break;
+      case 'campaign':
+        html += inputField('objective', 'Campaign Objective', 'Launch new photography course, grow to 50K followers...');
+        html += textareaField('audience', 'Target Audience', 'Young creatives aged 18-30 in Nigeria and Ghana', 2);
+        html += pillGroup('budget', 'Budget Level', ['Zero budget','Under $100','$100-500','$500+']);
+        html += genButton('Generate Ideas');
+        break;
+    }
+
+    html += '</div>';
+    area.innerHTML = html;
+
+    // Wire pill clicks
+    area.querySelectorAll('.cmn-pills:not(.multi)').forEach(function(group) {
+      group.querySelectorAll('.cmn-pill').forEach(function(pill) {
+        pill.onclick = function() {
+          group.querySelectorAll('.cmn-pill').forEach(function(p) { p.classList.remove('active'); });
+          pill.classList.add('active');
+        };
+      });
+    });
+
+    // Multi-select pills
+    area.querySelectorAll('.cmn-pills.multi').forEach(function(group) {
+      group.querySelectorAll('.cmn-pill').forEach(function(pill) {
+        pill.onclick = function() { pill.classList.toggle('active'); };
+      });
+    });
+
+    // Toggle wiring
+    area.querySelectorAll('.cmn-toggle').forEach(function(tog) {
+      tog.onclick = function() {
+        tog.classList.toggle('on');
+        if (tog.getAttribute('data-field') === 'includeCta') {
+          var ctaGroup = document.getElementById('ctaGroup');
+          if (ctaGroup) ctaGroup.style.display = tog.classList.contains('on') ? 'block' : 'none';
+        }
+      };
+    });
+  }
+
+  function inputField(name, label, placeholder) {
+    return '<div class="cmn-form-group"><label class="cmn-form-label">' + label + '</label>' +
+      '<input aria-label="' + placeholder + '" class="cmn-form-input" data-field="' + name + '" placeholder="' + placeholder + '"></div>';
+  }
+
+  function textareaField(name, label, placeholder, rows) {
+    return '<div class="cmn-form-group"><label class="cmn-form-label">' + label + '</label>' +
+      '<textarea class="cmn-form-textarea" data-field="' + name + '" placeholder="' + placeholder + '" rows="' + (rows || 3) + '" aria-label="Text entry"></textarea></div>';
+  }
+
+  function pillGroup(name, label, options) {
+    var html = '<div class="cmn-form-group"><label class="cmn-form-label">' + label + '</label><div class="cmn-pills" data-field="' + name + '">';
+    options.forEach(function(o) {
+      var val = typeof o === 'object' ? o.id : o;
+      var lbl = typeof o === 'object' ? o.label : o;
+      html += '<span class="cmn-pill" data-val="' + val + '">' + lbl + '</span>';
+    });
+    return html + '</div></div>';
+  }
+
+  function toggleField(name, label) {
+    return '<div class="cmn-form-group"><div class="cmn-toggle-row"><label class="cmn-form-label" style="margin-bottom:0">' + label + '</label>' +
+      '<button type="button" class="cmn-toggle" data-field="' + name + '"></button></div></div>';
+  }
+
+  function genButton(label) {
+    return '<button type="button" class="cmn-generate-btn" onclick="window._cmnGenerate()"><span class="cmn-spinner"></span>' + label + '</button>';
+  }
+
+  // ── COLLECT FORM DATA ──
+  function collectFormData() {
+    var data = {};
+    document.querySelectorAll('#genFormArea [data-field]').forEach(function(el) {
+      var field = el.getAttribute('data-field');
+      if (el.classList.contains('cmn-pills')) {
+        // Multi-select
+        if (el.classList.contains('multi')) {
+          data[field] = [];
+          el.querySelectorAll('.cmn-pill.active').forEach(function(p) { data[field].push(p.getAttribute('data-val')); });
+        } else {
+          var active = el.querySelector('.cmn-pill.active');
+          data[field] = active ? active.getAttribute('data-val') : '';
+        }
+      } else if (el.classList.contains('cmn-toggle')) {
+        data[field] = el.classList.contains('on');
+      } else {
+        data[field] = el.value || '';
+      }
+    });
+    return data;
+  }
+
+  // ── GENERATE ──
+  window._cmnGenerate = function() {
+    if (!activeType) return;
+    var formData = collectFormData();
+    var prompt = E.buildPrompt(activeType, formData, voiceProfile);
+
+    var btn = document.querySelector('.cmn-generate-btn');
+    btn.classList.add('loading'); btn.disabled = true;
+    startVerbCycling();
+
+    // Show shimmer
+    var outputArea = document.getElementById('outputArea');
+    outputArea.innerHTML = '<div class="cmn-shimmer-card"><div class="cmn-shimmer-line" style="width:80%"></div><div class="cmn-shimmer-line" style="width:60%"></div><div class="cmn-shimmer-line" style="width:90%"></div><div class="cmn-shimmer-line" style="width:45%"></div></div>';
+
+    fetch(API + '/generate', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ type: activeType, prompt: prompt, platform: formData.platform || '' })
+    })
+    .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
+    .then(function(res) {
+      btn.classList.remove('loading'); btn.disabled = false;
+      stopVerbCycling();
+      if (!res.ok) {
+        outputArea.innerHTML = '<div class="cmn-output-card"><div class="cmn-output-text" style="color:#ef4444;">' + (res.data.error || 'Generation failed') + '</div></div>';
+        return;
+      }
+      renderOutput(res.data.output, activeType, formData);
+      if (res.data.remaining !== undefined) {
+        toast(res.data.remaining + ' generations remaining today');
+      }
+      // Save to local history
+      saveLocalHistory(activeType, formData, res.data.output);
+    })
+    .catch(function(err) {
+      btn.classList.remove('loading'); btn.disabled = false;
+      stopVerbCycling();
+      outputArea.innerHTML = '<div class="cmn-output-card"><div class="cmn-output-text" style="color:#ef4444;">Connection error. Please try again.</div></div>';
+    });
+  };
+
+  // ── RENDER OUTPUT ──
+  function renderOutput(text, type, formData) {
+    var outputArea = document.getElementById('outputArea');
+    var html = '<div class="cmn-outputs">';
+    html += '<div class="cmn-output-card">';
+    html += '<div class="cmn-output-label">&#10024; ' + (E.GENERATION_TYPES[type] ? E.GENERATION_TYPES[type].label : 'Output') + '</div>';
+    html += '<div class="cmn-output-text">' + escapeHtml(text) + '</div>';
+    html += '<div class="cmn-output-actions">';
+    html += '<button type="button" class="cmn-output-btn" onclick="window._cmnCopy(this)">&#128203; Copy</button>';
+    html += '<button type="button" class="cmn-output-btn" onclick="window._cmnWhatsApp(this)">&#128172; WhatsApp</button>';
+    html += '<button type="button" class="cmn-output-btn" onclick="window._cmnRegenerate()">&#128260; Regenerate</button>';
+    html += '</div>';
+    html += '<div class="cmn-refine"><input aria-label="Not quite right? Tell me what to change" placeholder="Not quite right? Tell me what to change..." id="refineInput"><button type="button" onclick="window._cmnRefine()">Refine</button></div>';
+    html += '</div></div>';
+    outputArea.innerHTML = html;
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+  }
+
+  // ── OUTPUT ACTIONS ──
+  window._cmnCopy = function(btn) {
+    var text = btn.closest('.cmn-output-card').querySelector('.cmn-output-text').innerText;
+    navigator.clipboard.writeText(text).then(function() { toast('Copied to clipboard!'); });
+  };
+
+  window._cmnWhatsApp = function(btn) {
+    var text = btn.closest('.cmn-output-card').querySelector('.cmn-output-text').innerText;
+    window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+  };
+
+  window._cmnRegenerate = function() {
+    window._cmnGenerate();
+  };
+
+  window._cmnRefine = function() {
+    var refineText = document.getElementById('refineInput').value.trim();
+    if (!refineText || !activeType) return;
+    var formData = collectFormData();
+    var currentOutput = document.querySelector('.cmn-output-text');
+    var currentText = currentOutput ? currentOutput.innerText : '';
+
+    var prompt = 'Here is what you previously generated:\n\n' + currentText +
+      '\n\nThe creator wants this change: ' + refineText +
+      '\n\nGenerate an improved version incorporating their feedback.';
+
+    var btn = document.querySelector('.cmn-generate-btn');
+    if (btn) { btn.classList.add('loading'); btn.disabled = true; }
+    startVerbCycling();
+
+    var outputArea = document.getElementById('outputArea');
+    outputArea.innerHTML = '<div class="cmn-shimmer-card"><div class="cmn-shimmer-line" style="width:80%"></div><div class="cmn-shimmer-line" style="width:60%"></div><div class="cmn-shimmer-line" style="width:90%"></div></div>';
+
+    fetch(API + '/generate', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ type: activeType, prompt: prompt, platform: formData.platform || '' })
+    })
+    .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
+    .then(function(res) {
+      if (btn) { btn.classList.remove('loading'); btn.disabled = false; }
+      stopVerbCycling();
+      if (!res.ok) {
+        outputArea.innerHTML = '<div class="cmn-output-card"><div class="cmn-output-text" style="color:#ef4444;">' + (res.data.error || 'Refinement failed') + '</div></div>';
+        return;
+      }
+      renderOutput(res.data.output, activeType, formData);
+      saveLocalHistory(activeType, formData, res.data.output);
+    })
+    .catch(function() {
+      if (btn) { btn.classList.remove('loading'); btn.disabled = false; }
+      stopVerbCycling();
+      outputArea.innerHTML = '<div class="cmn-output-card"><div class="cmn-output-text" style="color:#ef4444;">Connection error.</div></div>';
+    });
+  };
+
+  // ── CHAT MODE ──
+  var chatHistory = [];
+
+  function initChat() {
+    var input = document.getElementById('chatInput');
+    var sendBtn = document.getElementById('chatSend');
+
+    sendBtn.onclick = sendChat;
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
+    });
+
+    // Auto-resize
+    input.addEventListener('input', function() {
+      this.style.height = 'auto';
+      this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+    });
+  }
+
+  function sendChat() {
+    var input = document.getElementById('chatInput');
+    var msg = input.value.trim();
+    if (!msg) return;
+
+    addChatMessage('user', msg);
+    input.value = ''; input.style.height = 'auto';
+    chatHistory.push({ role: 'user', content: msg });
+
+    var sendBtn = document.getElementById('chatSend');
+    sendBtn.disabled = true;
+
+    // Add thinking indicator
+    var thinkId = addChatMessage('ai', '&#8226;&#8226;&#8226;');
+
+    fetch(API + '/generate', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ type: 'freeform', prompt: msg })
+    })
+    .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
+    .then(function(res) {
+      sendBtn.disabled = false;
+      var thinkEl = document.getElementById(thinkId);
+      if (thinkEl) thinkEl.remove();
+
+      if (!res.ok) {
+        addChatMessage('ai', res.data.error || 'Something went wrong. Try again.');
+        return;
+      }
+      addChatMessage('ai', res.data.output, true);
+      chatHistory.push({ role: 'assistant', content: res.data.output });
+      saveLocalHistory('freeform', { message: msg }, res.data.output);
+    })
+    .catch(function() {
+      sendBtn.disabled = false;
+      var thinkEl = document.getElementById(thinkId);
+      if (thinkEl) thinkEl.remove();
+      addChatMessage('ai', 'Connection error. Please try again.');
+    });
+  }
+
+  function addChatMessage(role, text, withActions) {
+    var container = document.getElementById('chatMessages');
+    var div = document.createElement('div');
+    var id = 'msg-' + Date.now();
+    div.id = id;
+    div.className = 'cmn-chat-msg ' + role;
+
+    if (role === 'ai' && withActions) {
+      div.innerHTML = escapeHtml(text) +
+        '<div class="cmn-output-actions" style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06)">' +
+        '<button type="button" class="cmn-output-btn" onclick="window._cmnCopy(this)">&#128203; Copy</button>' +
+        '<button type="button" class="cmn-output-btn" onclick="window._cmnWhatsApp(this)">&#128172; WhatsApp</button>' +
+        '</div>';
+    } else {
+      div.innerHTML = role === 'ai' ? text : escapeHtml(text);
+    }
+
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+    return id;
+  }
+
+  // ── MODE SWITCHING ──
+  document.querySelectorAll('.cmn-mode-tab').forEach(function(tab) {
+    tab.onclick = function() {
+      document.querySelectorAll('.cmn-mode-tab').forEach(function(t) { t.classList.remove('active'); });
+      tab.classList.add('active');
+      var mode = tab.getAttribute('data-mode');
+      document.getElementById('quickView').style.display = mode === 'quick' ? '' : 'none';
+      document.getElementById('chatView').style.display = mode === 'chat' ? '' : 'none';
+      document.getElementById('bottomNav').style.display = mode === 'chat' ? 'none' : '';
+    };
+  });
+
+  // ── LOCAL HISTORY ──
+  function saveLocalHistory(type, formData, output) {
+    var history = JSON.parse(localStorage.getItem('cmn-history') || '[]');
+    history.unshift(E.createHistoryEntry(type, formData, [{ text: output, label: type }]));
+    if (history.length > 100) history = history.slice(0, 100);
+    localStorage.setItem('cmn-history', JSON.stringify(history));
+  }
+
+  // ── LOAD VOICE PROFILE ──
+  function loadVoiceProfile() {
+    var local = localStorage.getItem('cmn-voice-profile');
+    if (local) { try { voiceProfile = JSON.parse(local); } catch(e) {} }
+  }
+
+  // ── INIT ──
+  renderQuickActions();
+  initChat();
+  loadVoiceProfile();
+
+}();
+</script>
+</body>
+</html>

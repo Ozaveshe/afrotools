@@ -1,0 +1,476 @@
+{
+  "version": 1,
+  "reviewed_at": "2026-04-28",
+  "notes": "Chef review wave 10. Backstage source notes only; public pages should remain recipe-first.",
+  "recipes": [
+    {
+      "slug": "akara-sl",
+      "confidence": "high",
+      "review_summary": "The old Sierra Leone Akara page used the broader black-eyed-pea fritter. This pass corrects it to Sierra Leonean banana akara made with ripe banana, rice flour, sugar, and frying oil.",
+      "recommended_changes": ["Use ripe bananas and rice flour instead of black-eyed peas.", "Keep the batter thick enough to drop from a spoon.", "Serve hot as breakfast or snack."],
+      "official_source_status": "Sierra Leone specific sources consistently describe banana akara as rice-flour and mashed-banana fritters, distinct from bean akara elsewhere in West Africa.",
+      "sources": [
+        { "title": "Slow Food - Banana Akara", "url": "https://www.slowfood.com/blog-and-news/banana-akara/", "source_type": "recipe", "supports": ["Sierra Leone", "ripe bananas", "rice flour", "sugar", "frying"] },
+        { "title": "Roads & Kingdoms - Rice Akara in Freetown", "url": "https://roadsandkingdoms.com/2018/rice-akara-in-freetown/", "source_type": "food_article", "supports": ["rice flour", "mashed bananas", "nutmeg", "sugar", "Freetown"] },
+        { "title": "Wikipedia - Akara", "url": "https://en.wikipedia.org/wiki/Akara", "source_type": "encyclopedia", "supports": ["Sierra Leone", "rice flour", "mashed banana", "baking powder", "sugar"] }
+      ],
+      "static_recipe_patch": {
+        "recipe": {
+          "name": "Banana Akara",
+          "description": "Sierra Leonean banana akara, sweet rice-flour fritters made with ripe banana, sugar, nutmeg, and hot oil.",
+          "story": "This is Salone akara, not the bean fritter from elsewhere. The banana should be ripe enough to perfume the batter before it hits the oil.",
+          "best_served_with": "Ginger beer, tea, onion gravy, bread, or a dusting of sugar",
+          "prep_time_minutes": 20,
+          "cook_time_minutes": 15,
+          "diet_tags": ["vegan", "gluten-free", "dairy-free", "nut-free"],
+          "tags": ["banana-akara", "rice-flour", "sierra-leone", "fritter", "breakfast"]
+        },
+        "replace_ingredients": [
+          { "sort_order": 10, "group_name": "Batter", "amount": 4, "unit": "whole", "name": "very ripe bananas", "prep_note": "mashed smooth" },
+          { "sort_order": 20, "group_name": "Batter", "amount": 1, "unit": "cup", "name": "rice flour" },
+          { "sort_order": 30, "group_name": "Batter", "amount": 0.33, "unit": "cup", "name": "sugar", "prep_note": "to taste" },
+          { "sort_order": 40, "group_name": "Batter", "amount": 0.5, "unit": "tsp", "name": "ground nutmeg" },
+          { "sort_order": 50, "group_name": "Batter", "amount": 0.5, "unit": "tsp", "name": "baking powder", "is_optional": true },
+          { "sort_order": 60, "group_name": "Batter", "amount": 0.25, "unit": "cup", "name": "warm water", "prep_note": "only as needed" },
+          { "sort_order": 70, "group_name": "Frying", "amount": 3, "unit": "cups", "name": "vegetable oil", "prep_note": "for deep frying" }
+        ],
+        "replace_steps": [
+          { "step_number": 1, "title": "Mash bananas", "instruction": "Mash ripe bananas with sugar and nutmeg until mostly smooth.", "timer_seconds": 0 },
+          { "step_number": 2, "title": "Make batter", "instruction": "Stir in rice flour and baking powder if using. Add warm water only if needed to make a thick spoonable batter.", "timer_seconds": 0 },
+          { "step_number": 3, "title": "Rest batter", "instruction": "Let the batter rest so the rice flour hydrates and the mixture firms slightly.", "timer_seconds": 900, "timer_label": "Rest batter" },
+          { "step_number": 4, "title": "Fry akara", "instruction": "Drop spoonfuls into hot oil and fry until golden on both sides.", "timer_seconds": 480, "timer_label": "Fry fritters" },
+          { "step_number": 5, "title": "Drain and serve", "instruction": "Drain well and serve hot with tea, ginger beer, bread, or onion gravy.", "timer_seconds": 0 }
+        ]
+      }
+    },
+    {
+      "slug": "cassava-leaf-stew-sl",
+      "confidence": "high",
+      "review_summary": "Cassava leaf stew was accurate but needed a longer cook time and garlic or ogiri context. This pass keeps meat, smoked fish, palm oil, and groundnut while making the simmer more patient.",
+      "recommended_changes": ["Use finely pounded cassava leaves.", "Cook meat separately and use the stock.", "Simmer with palm oil, smoked fish, groundnut, onion, garlic, and chile until thick."],
+      "official_source_status": "Sierra Leone references consistently describe cassava leaf stew as pounded cassava leaves cooked with palm oil, meat, smoked fish, groundnut or peanut butter, onions, and chile.",
+      "sources": [
+        { "title": "Flavor365 - Sierra Leone Cassava Leaf Stew", "url": "https://flavor365.com/authentic-sierra-leone-cassava-leaf-stew/", "source_type": "recipe", "supports": ["cassava leaves", "palm oil", "smoked fish", "meat", "peanut butter", "stock"] },
+        { "title": "Sierra Leonean Cuisine", "url": "https://en.wikipedia.org/wiki/Sierra_Leonean_cuisine", "source_type": "encyclopedia", "supports": ["cassava leaf stew", "palm oil", "peanuts", "rice"] },
+        { "title": "Sierra Leone Recipe Collection", "url": "https://cdnc.heyzine.com/files/uploaded/v2/90f88a820e8e35578c1328b73d0887e0c7459a1b.pdf", "source_type": "recipe_pdf", "supports": ["cassava leaf stew", "rice", "palm oil", "Sierra Leone"] }
+      ],
+      "static_recipe_patch": {
+        "recipe": {
+          "description": "Sierra Leonean cassava leaf stew with palm oil, beef or chicken, smoked fish, groundnut, onion, garlic, and chile.",
+          "story": "Cassava leaves need time. The stew is ready when the greens are tender, the fish has seasoned the pot, and red oil rises gently at the edges.",
+          "best_served_with": "White rice, plantain, fufu, or gari",
+          "prep_time_minutes": 35,
+          "cook_time_minutes": 90,
+          "diet_tags": ["gluten-free", "dairy-free"],
+          "tags": ["cassava-leaf", "sierra-leone", "palm-oil", "smoked-fish", "stew"]
+        },
+        "replace_ingredients": [
+          { "sort_order": 10, "group_name": "Leaves", "amount": 700, "unit": "g", "name": "cassava leaves", "prep_note": "finely pounded or blended" },
+          { "sort_order": 20, "group_name": "Protein", "amount": 400, "unit": "g", "name": "beef, chicken, or smoked turkey", "prep_note": "cut in pieces" },
+          { "sort_order": 30, "group_name": "Protein", "amount": 250, "unit": "g", "name": "smoked fish", "prep_note": "deboned and flaked" },
+          { "sort_order": 40, "group_name": "Base", "amount": 0.5, "unit": "cup", "name": "red palm oil" },
+          { "sort_order": 50, "group_name": "Base", "amount": 2, "unit": "medium", "name": "onions", "prep_note": "chopped" },
+          { "sort_order": 60, "group_name": "Base", "amount": 4, "unit": "cloves", "name": "garlic", "prep_note": "minced" },
+          { "sort_order": 70, "group_name": "Base", "amount": 2, "unit": "whole", "name": "scotch bonnet peppers" },
+          { "sort_order": 80, "group_name": "Thickener", "amount": 0.5, "unit": "cup", "name": "ground peanuts or peanut butter" },
+          { "sort_order": 90, "group_name": "Umami", "amount": 1, "unit": "tbsp", "name": "ogiri or fermented seasoning", "is_optional": true },
+          { "sort_order": 100, "group_name": "Liquid", "amount": 3, "unit": "cups", "name": "meat stock" },
+          { "sort_order": 110, "group_name": "Seasoning", "amount": 0, "unit": "", "name": "salt and black pepper", "prep_note": "to taste" }
+        ],
+        "replace_steps": [
+          { "step_number": 1, "title": "Cook meat", "instruction": "Season meat with onion, salt, and pepper. Simmer until tender and reserve the stock.", "timer_seconds": 2400, "timer_label": "Cook meat" },
+          { "step_number": 2, "title": "Start leaves", "instruction": "Simmer cassava leaves in a little water until they soften and lose their raw edge.", "timer_seconds": 1800, "timer_label": "Soften leaves" },
+          { "step_number": 3, "title": "Build stew", "instruction": "Heat palm oil and cook onion, garlic, chile, and ogiri if using. Add leaves, meat, smoked fish, and stock.", "timer_seconds": 600, "timer_label": "Build stew" },
+          { "step_number": 4, "title": "Add groundnut", "instruction": "Stir in ground peanuts or peanut butter and simmer until the stew thickens and oil rises.", "timer_seconds": 1800, "timer_label": "Simmer stew" },
+          { "step_number": 5, "title": "Serve", "instruction": "Adjust salt and serve over white rice.", "timer_seconds": 0 }
+        ]
+      }
+    },
+    {
+      "slug": "groundnut-stew-sl",
+      "confidence": "high",
+      "review_summary": "Groundnut stew needed missing garlic, ginger, tomato paste, stock, and vegetable options. This pass keeps chicken and peanut as the center.",
+      "recommended_changes": ["Brown or boil chicken and keep the stock.", "Cook onion, garlic, ginger, tomato, tomato paste, and chile before adding peanut.", "Simmer until the oil separates and the sauce thickens."],
+      "official_source_status": "Sierra Leone and West African references consistently describe groundnut stew as peanut paste or peanut butter cooked with chicken, tomato, onion, garlic, ginger, chile, and stock.",
+      "sources": [
+        { "title": "Festival Medical Services - Sierra Leone Groundnut Soup", "url": "https://festival-medical.org/groundnut-peanut-soup-with-chicken-from-sierra-leone/", "source_type": "recipe", "supports": ["chicken", "tomatoes", "tomato puree", "stock", "peanut butter", "ginger"] },
+        { "title": "Sierra Leonean Cuisine", "url": "https://en.wikipedia.org/wiki/Sierra_Leonean_cuisine", "source_type": "encyclopedia", "supports": ["groundnut stew", "peanut stew", "chicken", "vegetables"] },
+        { "title": "Peanut Stew", "url": "https://en.wikipedia.org/wiki/Peanut_stew", "source_type": "encyclopedia", "supports": ["peanut sauce", "tomato", "onion", "garlic", "vegetables", "West Africa"] }
+      ],
+      "static_recipe_patch": {
+        "recipe": {
+          "description": "Sierra Leonean groundnut stew with chicken, peanut butter, tomato, onion, garlic, ginger, chile, and rich stock.",
+          "story": "The peanut needs heat and patience. Simmer until the sauce turns glossy and thick enough to coat rice.",
+          "best_served_with": "White rice, plantain, fufu, cassava, or gari",
+          "prep_time_minutes": 20,
+          "cook_time_minutes": 60,
+          "diet_tags": ["gluten-free", "dairy-free"],
+          "tags": ["groundnut-stew", "peanut", "chicken", "sierra-leone", "comfort-food"]
+        },
+        "replace_ingredients": [
+          { "sort_order": 10, "group_name": "Protein", "amount": 1, "unit": "kg", "name": "chicken pieces", "prep_note": "bone-in" },
+          { "sort_order": 20, "group_name": "Sauce", "amount": 1, "unit": "cup", "name": "smooth peanut butter or groundnut paste" },
+          { "sort_order": 30, "group_name": "Base", "amount": 3, "unit": "tbsp", "name": "vegetable oil" },
+          { "sort_order": 40, "group_name": "Base", "amount": 2, "unit": "large", "name": "onions", "prep_note": "chopped" },
+          { "sort_order": 50, "group_name": "Base", "amount": 3, "unit": "cloves", "name": "garlic", "prep_note": "minced" },
+          { "sort_order": 60, "group_name": "Base", "amount": 1, "unit": "inch", "name": "ginger", "prep_note": "grated" },
+          { "sort_order": 70, "group_name": "Base", "amount": 4, "unit": "medium", "name": "tomatoes", "prep_note": "blended" },
+          { "sort_order": 80, "group_name": "Base", "amount": 2, "unit": "tbsp", "name": "tomato paste" },
+          { "sort_order": 90, "group_name": "Base", "amount": 2, "unit": "whole", "name": "scotch bonnet peppers", "prep_note": "left whole or minced" },
+          { "sort_order": 100, "group_name": "Vegetables", "amount": 2, "unit": "cups", "name": "sweet potato, carrot, cabbage, or okra", "prep_note": "chunked", "is_optional": true },
+          { "sort_order": 110, "group_name": "Liquid", "amount": 4, "unit": "cups", "name": "chicken stock" },
+          { "sort_order": 120, "group_name": "Seasoning", "amount": 0, "unit": "", "name": "salt and black pepper", "prep_note": "to taste" }
+        ]
+      }
+    },
+    {
+      "slug": "bariis-iskukaris",
+      "confidence": "high",
+      "review_summary": "Bariis Iskukaris was solid, but the spice list should reflect xawaash more fully. This pass adds coriander, cloves, turmeric, and optional saffron or food color, and removes halal as a sourcing guarantee.",
+      "recommended_changes": ["Cook meat first and use its broth for the rice.", "Use xawaash with cumin, coriander, cardamom, cinnamon, cloves, pepper, turmeric, and ginger.", "Serve with banana and salad."],
+      "official_source_status": "Somali references consistently describe bariis iskukaris as one-pot spiced rice with meat, xawaash, raisins, aromatics, and banana on the side.",
+      "sources": [
+        { "title": "Wikipedia - Bariis Iskukaris", "url": "https://en.wikipedia.org/wiki/Bariis_iskukaris", "source_type": "encyclopedia", "supports": ["Somali rice", "xawaash", "meat", "banana", "raisins"] },
+        { "title": "Somali Spices - Xawaash Bariis", "url": "https://somalispices.com/product/xawaash-bariis-rice-seasoning-mixture-somali-rice-spices", "source_type": "ingredient_reference", "supports": ["cumin", "cardamom", "turmeric", "coriander", "clove", "cinnamon"] },
+        { "title": "My Somali Food - Bariis Iskukaris", "url": "https://www.mysomalifood.com/bariis-iskukaris-spiced-somali-rice/", "source_type": "recipe", "supports": ["basmati rice", "meat", "spices", "raisins", "banana"] }
+      ],
+      "static_recipe_patch": {
+        "recipe": {
+          "description": "Somali bariis iskukaris, spiced basmati rice cooked with goat or lamb broth, xawaash, caramelized onion, raisins, and warm spices.",
+          "story": "The rice should taste like the meat broth and the spice pot together. Cook the meat first, then let the rice finish in that broth.",
+          "best_served_with": "Banana, salad, basbaas, roasted meat, or yogurt",
+          "prep_time_minutes": 30,
+          "cook_time_minutes": 70,
+          "diet_tags": ["gluten-free", "dairy-free", "nut-free"],
+          "tags": ["bariis-iskukaris", "somali-rice", "xawaash", "somalia", "one-pot"]
+        },
+        "replace_ingredients": [
+          { "sort_order": 10, "group_name": "Rice", "amount": 3, "unit": "cups", "name": "basmati rice", "prep_note": "rinsed and soaked 30 minutes" },
+          { "sort_order": 20, "group_name": "Meat", "amount": 600, "unit": "g", "name": "goat, lamb, beef, or chicken", "prep_note": "cubed" },
+          { "sort_order": 30, "group_name": "Base", "amount": 3, "unit": "tbsp", "name": "vegetable oil or ghee" },
+          { "sort_order": 40, "group_name": "Base", "amount": 2, "unit": "whole", "name": "onions", "prep_note": "diced" },
+          { "sort_order": 50, "group_name": "Base", "amount": 4, "unit": "cloves", "name": "garlic", "prep_note": "minced" },
+          { "sort_order": 60, "group_name": "Spices", "amount": 2, "unit": "tbsp", "name": "xawaash spice mix" },
+          { "sort_order": 70, "group_name": "Spices", "amount": 1, "unit": "tsp", "name": "ground cumin" },
+          { "sort_order": 80, "group_name": "Spices", "amount": 1, "unit": "tsp", "name": "ground coriander" },
+          { "sort_order": 90, "group_name": "Spices", "amount": 4, "unit": "whole", "name": "cardamom pods" },
+          { "sort_order": 100, "group_name": "Spices", "amount": 4, "unit": "whole", "name": "cloves" },
+          { "sort_order": 110, "group_name": "Spices", "amount": 1, "unit": "stick", "name": "cinnamon" },
+          { "sort_order": 120, "group_name": "Finish", "amount": 0.25, "unit": "cup", "name": "raisins", "is_optional": true },
+          { "sort_order": 130, "group_name": "Finish", "amount": 1, "unit": "pinch", "name": "saffron or orange food color", "is_optional": true },
+          { "sort_order": 140, "group_name": "Liquid", "amount": 4, "unit": "cups", "name": "meat broth or water" },
+          { "sort_order": 150, "group_name": "Seasoning", "amount": 0, "unit": "", "name": "salt and black pepper", "prep_note": "to taste" }
+        ]
+      }
+    },
+    {
+      "slug": "canjeero",
+      "confidence": "high",
+      "review_summary": "Canjeero was ingredient-close but the total time ignored fermentation and the optional butter conflicted with vegan tagging. This pass removes butter from the core recipe and makes fermentation honest.",
+      "recommended_changes": ["Ferment the batter for several hours or overnight.", "Use flour with sorghum, cornmeal, or starter depending on household style.", "Cook one side only so holes form on top."],
+      "official_source_status": "Somali sources consistently describe canjeero or lahoh as a fermented, spongy pancake cooked on one side and eaten with sweet or savory toppings.",
+      "sources": [
+        { "title": "Wikipedia - Lahoh", "url": "https://en.wikipedia.org/wiki/Lahoh", "source_type": "encyclopedia", "supports": ["Somali pancake", "fermented", "spongy", "one side"] },
+        { "title": "My Somali Food - Canjeero", "url": "https://www.mysomalifood.com/canjeero-sourdough-pancakes/", "source_type": "recipe", "supports": ["fermented batter", "pancake", "Somali breakfast"] },
+        { "title": "Cook's Hideout - Canjeero", "url": "https://www.cookshideout.com/canjeero-somali-sourdough-pancakes-recipe", "source_type": "recipe", "supports": ["sourdough pancakes", "fermentation", "Somali"] }
+      ],
+      "static_recipe_patch": {
+        "recipe": {
+          "description": "Somali canjeero, a lightly fermented one-sided pancake with a soft, spongy surface and gentle tang.",
+          "story": "The bubbles are the sign. Give the batter time to ferment, then cook it thin and only on one side.",
+          "best_served_with": "Sugar, honey, sesame oil, stew, suqaar, tea, or banana",
+          "prep_time_minutes": 490,
+          "cook_time_minutes": 20,
+          "diet_tags": ["vegan", "dairy-free", "nut-free"],
+          "tags": ["canjeero", "somali", "fermented", "pancake", "breakfast"]
+        },
+        "replace_ingredients": [
+          { "sort_order": 10, "group_name": "Batter", "amount": 2, "unit": "cups", "name": "all-purpose flour" },
+          { "sort_order": 20, "group_name": "Batter", "amount": 0.5, "unit": "cup", "name": "fine cornmeal, sorghum flour, or whole wheat flour" },
+          { "sort_order": 30, "group_name": "Batter", "amount": 2.5, "unit": "cups", "name": "warm water", "prep_note": "plus more if needed" },
+          { "sort_order": 40, "group_name": "Batter", "amount": 1, "unit": "tsp", "name": "instant yeast or sourdough starter" },
+          { "sort_order": 50, "group_name": "Batter", "amount": 1, "unit": "tbsp", "name": "sugar" },
+          { "sort_order": 60, "group_name": "Batter", "amount": 0.5, "unit": "tsp", "name": "salt" },
+          { "sort_order": 70, "group_name": "Cooking", "amount": 1, "unit": "tbsp", "name": "neutral oil", "prep_note": "for the pan" }
+        ],
+        "replace_steps": [
+          { "step_number": 1, "title": "Mix batter", "instruction": "Whisk flours, sugar, yeast or starter, salt, and warm water into a thin smooth batter.", "timer_seconds": 0 },
+          { "step_number": 2, "title": "Ferment", "instruction": "Cover loosely and let the batter ferment until bubbly and lightly sour, several hours or overnight.", "timer_seconds": 28800, "timer_label": "Ferment batter" },
+          { "step_number": 3, "title": "Adjust texture", "instruction": "Stir gently and add water if needed. The batter should pour more thinly than pancake batter.", "timer_seconds": 0 },
+          { "step_number": 4, "title": "Cook one side", "instruction": "Pour a thin layer into a lightly oiled pan. Cook without flipping until holes form and the surface sets.", "timer_seconds": 120, "timer_label": "Cook canjeero" },
+          { "step_number": 5, "title": "Serve", "instruction": "Fold and serve warm with sweet toppings or with stew and suqaar.", "timer_seconds": 0 }
+        ]
+      }
+    },
+    {
+      "slug": "suqaar",
+      "confidence": "high",
+      "review_summary": "Suqaar was close. This pass adds xawaash as the core spice cue, keeps peppers and tomatoes, and removes halal as a sourcing guarantee.",
+      "recommended_changes": ["Use small cubes of beef, goat, lamb, or chicken.", "Season with xawaash, garlic, onion, peppers, tomato, and chile.", "Cook quickly so the meat stays tender."],
+      "official_source_status": "Somali recipe references consistently describe suqaar as small-cut meat sauteed with onion, garlic, peppers, tomato, and Somali spices, served with canjeero, rice, pasta, or bread.",
+      "sources": [
+        { "title": "My Somali Food - Suqaar", "url": "https://www.mysomalifood.com/suqaar/", "source_type": "recipe", "supports": ["Somali suqaar", "meat", "vegetables", "spices"] },
+        { "title": "Somali Kitchen - Suqaar", "url": "https://www.somalikitchen.com/suqaar.html", "source_type": "recipe", "supports": ["beef", "onion", "pepper", "tomato", "Somali"] },
+        { "title": "International Cooking - Food from Somalia", "url": "https://www.theflavorvortex.com/international-cooking-food-from-somalia/", "source_type": "food_blog", "supports": ["suqaar", "xawaash", "Somali cooking"] }
+      ],
+      "static_recipe_patch": {
+        "recipe": {
+          "description": "Somali suqaar, small-cut meat sauteed with onion, garlic, peppers, tomato, chile, and xawaash.",
+          "story": "Suqaar is quick food, so cut the meat small and keep the pan hot. The vegetables should soften into a light sauce around the meat.",
+          "best_served_with": "Canjeero, rice, pasta, sabaayad, banana, or basbaas",
+          "prep_time_minutes": 15,
+          "cook_time_minutes": 25,
+          "diet_tags": ["gluten-free", "dairy-free", "nut-free"],
+          "tags": ["suqaar", "somali", "xawaash", "quick", "meat"]
+        },
+        "replace_ingredients": [
+          { "sort_order": 10, "group_name": "Meat", "amount": 600, "unit": "g", "name": "beef, goat, lamb, or chicken", "prep_note": "small dice" },
+          { "sort_order": 20, "group_name": "Base", "amount": 2, "unit": "tbsp", "name": "vegetable oil" },
+          { "sort_order": 30, "group_name": "Base", "amount": 1, "unit": "whole", "name": "onion", "prep_note": "diced" },
+          { "sort_order": 40, "group_name": "Base", "amount": 3, "unit": "cloves", "name": "garlic", "prep_note": "minced" },
+          { "sort_order": 50, "group_name": "Vegetables", "amount": 1, "unit": "whole", "name": "green pepper", "prep_note": "diced" },
+          { "sort_order": 60, "group_name": "Vegetables", "amount": 1, "unit": "whole", "name": "red pepper", "prep_note": "diced" },
+          { "sort_order": 70, "group_name": "Vegetables", "amount": 2, "unit": "whole", "name": "tomatoes", "prep_note": "diced" },
+          { "sort_order": 80, "group_name": "Vegetables", "amount": 1, "unit": "whole", "name": "jalapeno or green chile", "prep_note": "diced", "is_optional": true },
+          { "sort_order": 90, "group_name": "Spices", "amount": 2, "unit": "tsp", "name": "xawaash spice mix" },
+          { "sort_order": 100, "group_name": "Spices", "amount": 0.5, "unit": "tsp", "name": "turmeric", "is_optional": true },
+          { "sort_order": 110, "group_name": "Seasoning", "amount": 0, "unit": "", "name": "salt and black pepper", "prep_note": "to taste" }
+        ]
+      }
+    },
+    {
+      "slug": "bobotie-za",
+      "confidence": "high",
+      "review_summary": "Bobotie was strong. This pass adds vinegar or lemon for balance, keeps bread-in-milk and egg custard, and names yellow rice and sambals as the proper table.",
+      "recommended_changes": ["Use curried mince with soaked bread, chutney, raisins or sultanas, and bay leaves.", "Bake under egg and milk custard.", "Serve with yellow rice and sambals."],
+      "official_source_status": "South African references consistently describe bobotie as curried minced meat mixed with soaked bread and chutney, baked with an egg-milk topping and bay leaves.",
+      "sources": [
+        { "title": "Wikipedia - Bobotie", "url": "https://en.wikipedia.org/wiki/Bobotie", "source_type": "encyclopedia", "supports": ["minced meat", "egg topping", "curry", "South Africa"] },
+        { "title": "BBC Good Food - Bobotie", "url": "https://www.bbcgoodfood.com/recipes/bobotie", "source_type": "recipe", "supports": ["beef mince", "bread", "milk", "curry powder", "chutney", "egg topping"] },
+        { "title": "Traditional Bobotie PDF", "url": "https://www.ilae.org/files/dmfile/Recipe-SA-Bobotie.pdf", "source_type": "recipe_pdf", "supports": ["South African bobotie", "mince", "milk", "egg", "curry"] }
+      ],
+      "static_recipe_patch": {
+        "recipe": {
+          "description": "South African bobotie, curried mince with soaked bread, chutney, sultanas, bay leaves, and a golden egg custard topping.",
+          "story": "Bobotie is all balance: curry warmth, fruit sweetness, a little acidity, and a custard top that sets softly over the mince.",
+          "best_served_with": "Yellow rice, sambals, chutney, banana slices, or salad",
+          "prep_time_minutes": 30,
+          "cook_time_minutes": 50,
+          "diet_tags": ["nut-free"],
+          "tags": ["bobotie", "south-africa", "cape-malay", "mince", "baked"]
+        },
+        "replace_ingredients": [
+          { "sort_order": 10, "group_name": "Filling", "amount": 1, "unit": "kg", "name": "beef or lamb mince" },
+          { "sort_order": 20, "group_name": "Filling", "amount": 2, "unit": "whole", "name": "onions", "prep_note": "finely diced" },
+          { "sort_order": 30, "group_name": "Filling", "amount": 2, "unit": "slices", "name": "white bread", "prep_note": "soaked in milk" },
+          { "sort_order": 40, "group_name": "Filling", "amount": 2, "unit": "tbsp", "name": "curry powder" },
+          { "sort_order": 50, "group_name": "Filling", "amount": 1, "unit": "tsp", "name": "turmeric" },
+          { "sort_order": 60, "group_name": "Filling", "amount": 3, "unit": "tbsp", "name": "fruit chutney" },
+          { "sort_order": 70, "group_name": "Filling", "amount": 1, "unit": "tbsp", "name": "vinegar or lemon juice" },
+          { "sort_order": 80, "group_name": "Filling", "amount": 60, "unit": "g", "name": "sultanas or raisins" },
+          { "sort_order": 90, "group_name": "Filling", "amount": 4, "unit": "whole", "name": "bay leaves" },
+          { "sort_order": 100, "group_name": "Custard", "amount": 3, "unit": "whole", "name": "eggs", "prep_note": "beaten" },
+          { "sort_order": 110, "group_name": "Custard", "amount": 250, "unit": "ml", "name": "milk" },
+          { "sort_order": 120, "group_name": "Seasoning", "amount": 0, "unit": "", "name": "salt and black pepper", "prep_note": "to taste" }
+        ]
+      }
+    },
+    {
+      "slug": "bunny-chow-za",
+      "confidence": "high",
+      "review_summary": "Bunny chow was accurate but should not carry a halal guarantee. This pass keeps Durban curry in a hollowed loaf and adds beans as a common vegetarian option.",
+      "recommended_changes": ["Use a quarter or half loaf of white bread.", "Fill with Durban-style lamb, chicken, bean, or vegetable curry.", "Keep the scooped bread lid for dipping."],
+      "official_source_status": "South African references consistently describe bunny chow as a Durban curry served inside a hollowed quarter or half loaf of bread.",
+      "sources": [
+        { "title": "Wikipedia - Bunny Chow", "url": "https://en.wikipedia.org/wiki/Bunny_chow", "source_type": "encyclopedia", "supports": ["Durban", "hollowed bread", "curry", "quarter loaf"] },
+        { "title": "Farmison - South African Bunny Chow", "url": "https://www.farmison.com/recipes/bunny-chow", "source_type": "recipe", "supports": ["South African curry powder", "lamb", "bread loaf"] },
+        { "title": "Penguin Random House South Africa - Bunny Chow PDF", "url": "https://www.penguinrandomhouse.co.za/sites/penguinbooks.co.za/files/Food%20Trail%20SA_Recipe_Bunny%20Chow.pdf", "source_type": "recipe_pdf", "supports": ["bunny chow", "Durban", "bread", "curry"] }
+      ],
+      "static_recipe_patch": {
+        "recipe": {
+          "description": "Durban bunny chow, a hollowed loaf filled with lamb, chicken, bean, or vegetable curry and served with the bread lid for scooping.",
+          "story": "The bread is the bowl and the utensil. The curry should be thick enough to soak the walls without collapsing the loaf.",
+          "best_served_with": "Carrot sambal, chopped onion, cucumber salad, achar, or extra gravy",
+          "prep_time_minutes": 25,
+          "cook_time_minutes": 70,
+          "diet_tags": ["dairy-free", "nut-free"],
+          "tags": ["bunny-chow", "durban", "curry", "bread", "south-africa"]
+        },
+        "replace_ingredients": [
+          { "sort_order": 10, "group_name": "Curry", "amount": 800, "unit": "g", "name": "lamb, chicken, beef, beans, or vegetables", "prep_note": "chunked" },
+          { "sort_order": 20, "group_name": "Curry", "amount": 3, "unit": "tbsp", "name": "vegetable oil" },
+          { "sort_order": 30, "group_name": "Curry", "amount": 2, "unit": "whole", "name": "onions", "prep_note": "finely chopped" },
+          { "sort_order": 40, "group_name": "Curry", "amount": 3, "unit": "tbsp", "name": "Durban curry powder" },
+          { "sort_order": 50, "group_name": "Curry", "amount": 1, "unit": "tsp", "name": "garam masala" },
+          { "sort_order": 60, "group_name": "Curry", "amount": 10, "unit": "whole", "name": "curry leaves" },
+          { "sort_order": 70, "group_name": "Curry", "amount": 400, "unit": "g", "name": "crushed tomatoes" },
+          { "sort_order": 80, "group_name": "Curry", "amount": 3, "unit": "whole", "name": "potatoes", "prep_note": "quartered" },
+          { "sort_order": 90, "group_name": "Curry", "amount": 2, "unit": "cups", "name": "water or stock" },
+          { "sort_order": 100, "group_name": "Bread", "amount": 1, "unit": "loaf", "name": "unsliced white bread", "prep_note": "cut into quarters or halves and hollowed" },
+          { "sort_order": 110, "group_name": "Seasoning", "amount": 0, "unit": "", "name": "salt and black pepper", "prep_note": "to taste" }
+        ]
+      }
+    },
+    {
+      "slug": "chakalaka-za",
+      "confidence": "high",
+      "review_summary": "Chakalaka was good. This pass removes halal as irrelevant and adds cabbage as an optional common vegetable while keeping baked beans, carrots, peppers, curry, and tomato.",
+      "recommended_changes": ["Cook onion, garlic, curry powder, carrots, peppers, tomato, and beans.", "Add cabbage if desired.", "Serve warm or room temperature with pap and braai."],
+      "official_source_status": "South African references consistently describe chakalaka as a spicy vegetable relish with onion, tomato, carrot, peppers, beans, curry spice, and sometimes cabbage.",
+      "sources": [
+        { "title": "Wikipedia - Chakalaka", "url": "https://en.wikipedia.org/wiki/Chakalaka", "source_type": "encyclopedia", "supports": ["South African relish", "spicy", "vegetables", "beans", "pap"] },
+        { "title": "BBC Good Food - Chakalaka", "url": "https://www.bbcgoodfood.com/recipes/chakalaka", "source_type": "recipe", "supports": ["beans", "carrots", "peppers", "curry powder", "tomatoes"] },
+        { "title": "SBS Food - South African Recipes", "url": "https://www.sbs.com.au/food/article/south-african-recipes/dl1oo7bnl", "source_type": "food_guide", "supports": ["chakalaka", "vegetable relish", "pap", "braai"] }
+      ],
+      "static_recipe_patch": {
+        "recipe": {
+          "description": "South African chakalaka, a spicy vegetable relish with carrots, peppers, tomato, baked beans, curry powder, onion, garlic, and chile.",
+          "story": "Chakalaka should be bright, spicy, and spoonable. Cook the vegetables until tender but not tired, then let the relish settle before serving.",
+          "best_served_with": "Pap, braai meat, boerewors, bread, rice, or samp",
+          "prep_time_minutes": 15,
+          "cook_time_minutes": 35,
+          "diet_tags": ["vegan", "gluten-free", "dairy-free", "nut-free"],
+          "tags": ["chakalaka", "south-africa", "relish", "braai", "vegetable"]
+        },
+        "replace_ingredients": [
+          { "sort_order": 10, "group_name": "Base", "amount": 2, "unit": "tbsp", "name": "vegetable oil" },
+          { "sort_order": 20, "group_name": "Base", "amount": 2, "unit": "whole", "name": "onions", "prep_note": "diced" },
+          { "sort_order": 30, "group_name": "Base", "amount": 3, "unit": "cloves", "name": "garlic", "prep_note": "minced" },
+          { "sort_order": 40, "group_name": "Spices", "amount": 2, "unit": "tbsp", "name": "curry powder" },
+          { "sort_order": 50, "group_name": "Vegetables", "amount": 3, "unit": "whole", "name": "carrots", "prep_note": "grated" },
+          { "sort_order": 60, "group_name": "Vegetables", "amount": 1, "unit": "whole", "name": "green pepper", "prep_note": "diced" },
+          { "sort_order": 70, "group_name": "Vegetables", "amount": 1, "unit": "whole", "name": "red pepper", "prep_note": "diced" },
+          { "sort_order": 80, "group_name": "Vegetables", "amount": 2, "unit": "cups", "name": "shredded cabbage", "is_optional": true },
+          { "sort_order": 90, "group_name": "Sauce", "amount": 400, "unit": "g", "name": "chopped tomatoes" },
+          { "sort_order": 100, "group_name": "Sauce", "amount": 400, "unit": "g", "name": "baked beans" },
+          { "sort_order": 110, "group_name": "Heat", "amount": 2, "unit": "whole", "name": "chile peppers", "prep_note": "finely chopped" },
+          { "sort_order": 120, "group_name": "Seasoning", "amount": 0, "unit": "", "name": "salt and black pepper", "prep_note": "to taste" }
+        ]
+      }
+    },
+    {
+      "slug": "asida",
+      "confidence": "high",
+      "review_summary": "South Sudanese asida was incorrectly centered on wheat. This pass changes the base to sorghum, millet, or maize flour and removes halal and ghee from the core side-dish recipe.",
+      "recommended_changes": ["Use sorghum, millet, or maize flour.", "Stir into boiling water until smooth and thick.", "Shape into a dome with a well for stew."],
+      "official_source_status": "South Sudan sources describe asida as a cooked staple made from grains such as sorghum, millet, or corn and served with stew.",
+      "sources": [
+        { "title": "Taste of South Sudan - Asida", "url": "https://tasteofsouthsudan.com/recipes/asida/", "source_type": "recipe", "supports": ["sorghum", "millet", "corn", "staple", "stew"] },
+        { "title": "FoodieAtlas - South Sudan Asida", "url": "https://foodieatlas.com/south-sudan/asida/", "source_type": "recipe", "supports": ["sorghum flour", "millet", "wheat", "South Sudan"] },
+        { "title": "Asida", "url": "https://en.wikipedia.org/wiki/Asida", "source_type": "encyclopedia", "supports": ["flour", "water", "dough", "Sudan"] }
+      ],
+      "static_recipe_patch": {
+        "recipe": {
+          "description": "South Sudanese asida, a smooth dome of sorghum, millet, or maize flour served with stew in the center.",
+          "story": "Asida is about texture. Stir hard until it turns smooth and heavy, then shape it while hot so the stew has a place to pool.",
+          "best_served_with": "Bamia, mulah, meat stew, okra sauce, or vegetable stew",
+          "prep_time_minutes": 5,
+          "cook_time_minutes": 20,
+          "diet_tags": ["vegan", "gluten-free", "dairy-free", "nut-free"],
+          "tags": ["asida", "south-sudan", "sorghum", "staple", "side"]
+        },
+        "replace_ingredients": [
+          { "sort_order": 10, "group_name": "Asida", "amount": 2, "unit": "cups", "name": "sorghum, millet, or maize flour" },
+          { "sort_order": 20, "group_name": "Asida", "amount": 3.5, "unit": "cups", "name": "water", "prep_note": "plus more if needed" },
+          { "sort_order": 30, "group_name": "Asida", "amount": 0.5, "unit": "tsp", "name": "salt" },
+          { "sort_order": 40, "group_name": "Asida", "amount": 1, "unit": "tbsp", "name": "neutral oil", "is_optional": true }
+        ],
+        "replace_steps": [
+          { "step_number": 1, "title": "Boil water", "instruction": "Bring water to a boil with salt and oil if using.", "timer_seconds": 300, "timer_label": "Boil water" },
+          { "step_number": 2, "title": "Stir flour", "instruction": "Lower heat and add flour gradually while stirring hard to prevent lumps.", "timer_seconds": 600, "timer_label": "Stir asida" },
+          { "step_number": 3, "title": "Cook thick", "instruction": "Keep stirring until the asida is smooth, thick, and pulls from the pot.", "timer_seconds": 600, "timer_label": "Cook through" },
+          { "step_number": 4, "title": "Shape", "instruction": "Wet a bowl or spoon, shape into a dome, and make a well for stew.", "timer_seconds": 0 },
+          { "step_number": 5, "title": "Serve", "instruction": "Spoon bamia, mulah, or another stew into the well and around the base.", "timer_seconds": 0 }
+        ]
+      }
+    },
+    {
+      "slug": "bamia",
+      "confidence": "high",
+      "review_summary": "Bamia was directionally correct but needed a longer lamb simmer and lemon or lime finish. This pass removes halal as a guarantee.",
+      "recommended_changes": ["Cook lamb until nearly tender before adding okra.", "Use tomato, tomato paste, onion, garlic, coriander or cumin, and lemon or lime.", "Serve with asida, kisra, or rice."],
+      "official_source_status": "South Sudan and Sudan references consistently describe bamia as okra cooked with lamb or meat in tomato, onion, and garlic sauce, served with asida or kisra.",
+      "sources": [
+        { "title": "Taste of South Sudan - Bamia", "url": "https://tasteofsouthsudan.com/recipes/everyday-meals/okra-meat-stew-bamia/", "source_type": "recipe", "supports": ["okra", "meat", "onion", "tomato", "asida", "kisra"] },
+        { "title": "Bamia", "url": "https://en.wikipedia.org/wiki/Bamia", "source_type": "encyclopedia", "supports": ["okra", "lamb", "tomatoes", "South Sudan"] },
+        { "title": "Sudanese Kitchen - Bamya", "url": "https://www.sudanese.kitchen/recipe/okra-stew", "source_type": "recipe", "supports": ["okra", "tomatoes", "tomato paste", "garlic", "coriander"] }
+      ],
+      "static_recipe_patch": {
+        "recipe": {
+          "description": "South Sudanese bamia, lamb and okra stew with tomato, onion, garlic, coriander, and a bright lemon finish.",
+          "story": "Give the meat its time before the okra joins the pot. That keeps the lamb tender and the okra from disappearing.",
+          "best_served_with": "Asida, kisra, rice, or flatbread",
+          "prep_time_minutes": 20,
+          "cook_time_minutes": 90,
+          "diet_tags": ["gluten-free", "dairy-free", "nut-free"],
+          "tags": ["bamia", "okra", "lamb", "south-sudan", "stew"]
+        },
+        "replace_ingredients": [
+          { "sort_order": 10, "group_name": "Meat", "amount": 700, "unit": "g", "name": "lamb, beef, or goat", "prep_note": "cubed" },
+          { "sort_order": 20, "group_name": "Vegetables", "amount": 500, "unit": "g", "name": "okra", "prep_note": "trimmed, left whole if small or sliced if large" },
+          { "sort_order": 30, "group_name": "Base", "amount": 2, "unit": "tbsp", "name": "vegetable oil" },
+          { "sort_order": 40, "group_name": "Base", "amount": 2, "unit": "whole", "name": "onions", "prep_note": "diced" },
+          { "sort_order": 50, "group_name": "Base", "amount": 4, "unit": "cloves", "name": "garlic", "prep_note": "minced" },
+          { "sort_order": 60, "group_name": "Base", "amount": 3, "unit": "whole", "name": "tomatoes", "prep_note": "chopped" },
+          { "sort_order": 70, "group_name": "Base", "amount": 2, "unit": "tbsp", "name": "tomato paste" },
+          { "sort_order": 80, "group_name": "Spices", "amount": 1, "unit": "tsp", "name": "ground coriander" },
+          { "sort_order": 90, "group_name": "Spices", "amount": 0.5, "unit": "tsp", "name": "ground cumin", "is_optional": true },
+          { "sort_order": 100, "group_name": "Liquid", "amount": 3, "unit": "cups", "name": "water or meat stock" },
+          { "sort_order": 110, "group_name": "Finish", "amount": 1, "unit": "whole", "name": "lemon or lime", "prep_note": "juiced" },
+          { "sort_order": 120, "group_name": "Seasoning", "amount": 0, "unit": "", "name": "salt and black pepper", "prep_note": "to taste" }
+        ],
+        "replace_steps": [
+          { "step_number": 1, "title": "Brown meat", "instruction": "Season and brown the meat in oil until the edges color.", "timer_seconds": 600, "timer_label": "Brown meat" },
+          { "step_number": 2, "title": "Build tomato base", "instruction": "Add onion, garlic, tomatoes, tomato paste, coriander, and cumin if using. Cook until the tomatoes soften.", "timer_seconds": 600, "timer_label": "Cook base" },
+          { "step_number": 3, "title": "Simmer meat", "instruction": "Add water or stock and simmer until the meat is nearly tender.", "timer_seconds": 3000, "timer_label": "Simmer meat" },
+          { "step_number": 4, "title": "Add okra", "instruction": "Add okra and cook until tender and the stew thickens.", "timer_seconds": 1500, "timer_label": "Cook okra" },
+          { "step_number": 5, "title": "Finish", "instruction": "Stir in lemon or lime juice and adjust salt before serving.", "timer_seconds": 0 }
+        ]
+      }
+    },
+    {
+      "slug": "kisra-mulah",
+      "confidence": "high",
+      "review_summary": "Kisra with Mulah was missing the real fermentation time and incorrectly carried nut-free while peanut butter was optional. This pass makes the sorghum fermentation and stew timing honest.",
+      "recommended_changes": ["Ferment sorghum batter for at least eight hours.", "Cook kisra thin and one-sided.", "Serve with mulah, commonly okra or meat stew."],
+      "official_source_status": "Sudan and South Sudan references consistently describe kisra as fermented sorghum flatbread served with mullah or stew.",
+      "sources": [
+        { "title": "Wikipedia - Kisra", "url": "https://en.wikipedia.org/wiki/Kisra", "source_type": "encyclopedia", "supports": ["fermented sorghum bread", "South Sudan", "mullah"] },
+        { "title": "South Sudan's Changing Tastes", "url": "https://docs.southsudanngoforum.org/sites/default/files/2020-09/South%20Sudan%27s%20Changing%20Tastes%20-%20RVI%20X-Border%20Project%20%282020%29.pdf", "source_type": "research_pdf", "supports": ["kisra", "sorghum flour", "asida", "South Sudan"] },
+        { "title": "South Sudanese Cuisine", "url": "https://en.wikipedia.org/wiki/South_Sudanese_cuisine", "source_type": "encyclopedia", "supports": ["kisra", "flatbread", "sorghum", "stews"] }
+      ],
+      "static_recipe_patch": {
+        "recipe": {
+          "description": "South Sudanese kisra with mulah, fermented sorghum flatbread served with a rich okra and meat stew.",
+          "story": "Kisra needs fermentation for its tang and texture. Cook it thin, then use it like edible cloth for scooping the mulah.",
+          "best_served_with": "Bamia, meat mulah, okra sauce, lentil stew, or vegetable stew",
+          "prep_time_minutes": 500,
+          "cook_time_minutes": 80,
+          "diet_tags": ["gluten-free", "dairy-free"],
+          "tags": ["kisra", "mulah", "sorghum", "fermented", "south-sudan"]
+        },
+        "replace_ingredients": [
+          { "sort_order": 10, "group_name": "Kisra", "amount": 2, "unit": "cups", "name": "sorghum flour" },
+          { "sort_order": 20, "group_name": "Kisra", "amount": 2.5, "unit": "cups", "name": "warm water", "prep_note": "plus more to thin batter" },
+          { "sort_order": 30, "group_name": "Kisra", "amount": 0.5, "unit": "tsp", "name": "salt" },
+          { "sort_order": 40, "group_name": "Mulah", "amount": 600, "unit": "g", "name": "beef, lamb, or goat", "prep_note": "cubed" },
+          { "sort_order": 50, "group_name": "Mulah", "amount": 2, "unit": "cups", "name": "okra", "prep_note": "sliced" },
+          { "sort_order": 60, "group_name": "Mulah", "amount": 2, "unit": "whole", "name": "onions", "prep_note": "diced" },
+          { "sort_order": 70, "group_name": "Mulah", "amount": 3, "unit": "whole", "name": "tomatoes", "prep_note": "chopped" },
+          { "sort_order": 80, "group_name": "Mulah", "amount": 3, "unit": "cloves", "name": "garlic", "prep_note": "minced" },
+          { "sort_order": 90, "group_name": "Mulah", "amount": 2, "unit": "tbsp", "name": "peanut butter", "is_optional": true },
+          { "sort_order": 100, "group_name": "Mulah", "amount": 2, "unit": "tbsp", "name": "vegetable oil" },
+          { "sort_order": 110, "group_name": "Liquid", "amount": 3, "unit": "cups", "name": "water or stock" },
+          { "sort_order": 120, "group_name": "Seasoning", "amount": 0, "unit": "", "name": "salt and black pepper", "prep_note": "to taste" }
+        ],
+        "replace_steps": [
+          { "step_number": 1, "title": "Ferment kisra", "instruction": "Mix sorghum flour and warm water into a thin batter. Cover and ferment until lightly sour and bubbly.", "timer_seconds": 28800, "timer_label": "Ferment batter" },
+          { "step_number": 2, "title": "Cook mulah base", "instruction": "Brown meat in oil, then add onions, garlic, tomatoes, and water or stock. Simmer until the meat is tender.", "timer_seconds": 3600, "timer_label": "Cook meat" },
+          { "step_number": 3, "title": "Finish mulah", "instruction": "Add okra and peanut butter if using. Simmer until the stew thickens.", "timer_seconds": 1200, "timer_label": "Cook okra" },
+          { "step_number": 4, "title": "Cook kisra", "instruction": "Salt the fermented batter, thin if needed, and pour a very thin layer on a hot pan. Cook one side until set.", "timer_seconds": 120, "timer_label": "Cook kisra" },
+          { "step_number": 5, "title": "Serve", "instruction": "Fold or roll kisra and serve with mulah for scooping.", "timer_seconds": 0 }
+        ]
+      }
+    }
+  ]
+}

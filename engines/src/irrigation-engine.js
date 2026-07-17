@@ -1,0 +1,244 @@
+!function() {
+  "use strict";
+  window.AfroTools = window.AfroTools || {};
+  var r = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ], e = {
+    flood: .4,
+    furrow: .55,
+    bucket: .6,
+    sprinkler: .75,
+    drip: .9
+  }, t = {
+    flood: "Flood Irrigation",
+    furrow: "Furrow Irrigation",
+    bucket: "Bucket / Manual",
+    sprinkler: "Sprinkler",
+    drip: "Drip Irrigation"
+  }, o = {
+    flood: {
+      min: 7,
+      max: 14,
+      typical: 10
+    },
+    furrow: {
+      min: 5,
+      max: 7,
+      typical: 6
+    },
+    bucket: {
+      min: 1,
+      max: 2,
+      typical: 1
+    },
+    sprinkler: {
+      min: 3,
+      max: 5,
+      typical: 4
+    },
+    drip: {
+      min: 1,
+      max: 2,
+      typical: 1
+    }
+  };
+  function a(r) {
+    return Math.round(100 * r) / 100;
+  }
+  function i(r) {
+    return Math.round(10 * r) / 10;
+  }
+  function n(r) {
+    return Math.round(r);
+  }
+  function m(r) {
+    return r <= 0 ? 0 : r <= 250 ? r * (125 - .2 * r) / 125 : 125 + .1 * r;
+  }
+  function f(r, e) {
+    return r && r[e] || 1;
+  }
+  function l(r, e) {
+    var t = (r + .5) / e;
+    return t < .15 ? "germination" : t < .45 ? "vegetative" : t < .75 ? "flowering" : "maturity";
+  }
+  function c(r, o, a, i, m) {
+    for (var f = [ "flood", "furrow", "sprinkler", "drip" ], l = [], c = 0; c < f.length; c++) {
+      var g = f[c], u = e[g], h = n(r / u * a / 1e3 * o * 1e4), d = n(r * a / 1e3 * o * 1e4), p = Math.max(0, h - d), y = s(h, m);
+      l.push({
+        method: g,
+        label: t[g],
+        efficiency: u,
+        efficiencyPercent: n(100 * u),
+        waterUsed_m3: h,
+        waterWasted_m3: p,
+        cost: y,
+        isCurrent: g === i
+      });
+    }
+    return l;
+  }
+  function s(r, e) {
+    var t = e.waterTariff || {};
+    return t.hasIrrigationTariff && t.ratePerM3 ? {
+      hasEstimate: !0,
+      type: "tariff",
+      ratePerM3: t.ratePerM3,
+      currency: e.currencySymbol || "",
+      total: n(r * t.ratePerM3),
+      notes: t.notes || ""
+    } : {
+      hasEstimate: !0,
+      type: "pump",
+      ratePerM3: .05,
+      currency: "$",
+      total: n(.05 * r),
+      notes: t.notes || "Estimated diesel pumping cost. Most smallholders use river/borehole water without formal tariffs."
+    };
+  }
+  window.AfroTools.IrrigationEngine = {
+    calculate: function(g, u, h) {
+      for (var d = null, p = 0; p < u.regions.length; p++) {
+        if (u.regions[p].id === g.regionId) {
+          d = u.regions[p];
+          break;
+        }
+      }
+      if (!d) {
+        return {
+          error: !0,
+          message: "Region not found."
+        };
+      }
+      for (var y = null, w = 0; w < u.crops.length; w++) {
+        if (u.crops[w].id === g.cropId) {
+          y = u.crops[w];
+          break;
+        }
+      }
+      if (!y) {
+        return {
+          error: !0,
+          message: "Crop not found."
+        };
+      }
+      var M = h && h[g.cropId] ? h[g.cropId] : null, v = g.farmSizeHa || 1, _ = g.irrigationMethod || "furrow", E = e[_] || .55, S = o[_] || {
+        min: 5,
+        max: 7,
+        typical: 6
+      }, D = y.cropCoefficients || M && M.cropCoefficients || null, I = y.growingPeriodDays || 120, P = y.plantingMonths && y.plantingMonths[0] || 1, H = d.monthlyETo || [], b = d.monthlyRainfall || [];
+      if (!g.month || 0 === g.month) {
+        return function(e) {
+          for (var g = function(r, e) {
+            for (var t = Math.max(1, Math.ceil(e / 30)), o = [], a = 0; a < t; a++) {
+              o.push((r - 1 + a) % 12 + 1);
+            }
+            return o;
+          }(e.plantingMonth, e.growingPeriodDays), u = g.length, h = [], d = 0, p = 0, y = 0, w = 0, M = 0, v = 0; v < u; v++) {
+            var _ = g[v], E = _ - 1, S = l(v, u), D = f(e.cropCoeff, S), I = e.monthlyETo[E] || 4, P = e.monthlyRainfall[E] || 0, H = m(P), b = H / 30, N = I * D, R = Math.max(0, N - b), T = R / e.efficiency, k = 30;
+            if (v === u - 1) {
+              var x = e.growingPeriodDays - 30 * (u - 1);
+              x > 0 && x < 30 && (k = x);
+            }
+            var C = R * k, z = T * k;
+            d += N * k, p += P, y += H, w += C, M += z, h.push({
+              month: _,
+              monthName: r[E],
+              stage: S,
+              daysInMonth: k,
+              eto: a(I),
+              kc: a(D),
+              etc: a(N),
+              rainfall_mm: n(P),
+              effectiveRainfall_mm: i(H),
+              nir_mm_day: a(R),
+              gir_mm_day: a(T),
+              nir_mm_month: n(C),
+              gir_mm_month: n(z)
+            });
+          }
+          var A, L = n(M / 1e3 * e.farmSizeHa * 1e4), F = n(y / 1e3 * e.farmSizeHa * 1e4), O = n(w / 1e3 * e.farmSizeHa * 1e4), V = i(M / e.growingPeriodDays / 1e3 * e.farmSizeHa * 1e4), J = s(L, e.countryData), W = c(w / e.growingPeriodDays, e.farmSizeHa, e.growingPeriodDays, e.method, e.countryData), B = L - O, G = L - n(w / .9 / 1e3 * e.farmSizeHa * 1e4), U = "";
+          if ("drip" !== e.method && G > 0) {
+            var Y = n(G / L * 100);
+            U = "Switching from " + t[e.method] + " to drip irrigation would save " + ("number" != typeof (A = G) || isNaN(A) ? "0" : A.toLocaleString("en", {
+              maximumFractionDigits: 0
+            })) + " m³ (" + Y + "%) of water per season.";
+          }
+          return {
+            error: !1,
+            mode: "season",
+            cropName: e.crop.name,
+            regionName: e.region.name,
+            farmSizeHa: e.farmSizeHa,
+            irrigationMethod: e.method,
+            methodLabel: t[e.method],
+            efficiency: e.efficiency,
+            efficiencyPercent: n(100 * e.efficiency),
+            growingPeriodDays: e.growingPeriodDays,
+            plantingMonth: e.plantingMonth,
+            monthlyData: h,
+            totalETc_mm: n(d),
+            totalRainfall_mm: n(p),
+            totalEffectiveRainfall_mm: n(y),
+            totalNIR_mm: n(w),
+            totalGIR_mm: n(M),
+            totalWater_m3: L,
+            totalRainfallContrib_m3: F,
+            totalNIR_m3: O,
+            waterWasted_m3: Math.max(0, B),
+            dailyAvgVolume_m3: V,
+            irrigationInterval: o[e.method],
+            costEstimate: J,
+            methodComparison: W,
+            savingMessage: U
+          };
+        }({
+          crop: y,
+          globalCrop: M,
+          cropCoeff: D,
+          region: d,
+          farmSizeHa: v,
+          method: _,
+          efficiency: E,
+          interval: S,
+          growingPeriodDays: I,
+          plantingMonth: P,
+          monthlyETo: H,
+          monthlyRainfall: b,
+          countryData: u
+        });
+      }
+      var N = g.month - 1, R = g.growthStage || "flowering", T = f(D, R), k = H[N] || 4, x = b[N] || 0, C = m(x), z = C / 30, A = a(k * T), L = a(Math.max(0, A - z)), F = a(L / E), O = i(F / 1e3 * v * 1e4), V = i(O * S.typical), J = n(30 * O), W = n(J - L / 1e3 * v * 1e4 * 30), B = s(J, u);
+      return {
+        error: !1,
+        mode: "single",
+        cropName: y.name,
+        regionName: d.name,
+        farmSizeHa: v,
+        month: g.month,
+        monthName: r[N],
+        growthStage: R,
+        irrigationMethod: _,
+        methodLabel: t[_],
+        eto: k,
+        kc: a(T),
+        etc: A,
+        rainfall_mm: x,
+        effectiveRainfall_mm: i(C),
+        dailyEffectiveRainfall: a(z),
+        nir: L,
+        gir: F,
+        efficiency: E,
+        efficiencyPercent: n(100 * E),
+        dailyVolume_m3: O,
+        perEvent_m3: V,
+        monthVolume_m3: J,
+        waterLost_m3: Math.max(0, W),
+        irrigationInterval: S,
+        costEstimate: B,
+        methodComparison: c(L, v, 30, _, u)
+      };
+    },
+    METHOD_EFFICIENCY: e,
+    METHOD_LABELS: t,
+    METHOD_INTERVAL: o,
+    MONTHS: r
+  };
+}();

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion AfroTools | Compte et tableau de bord</title>
+  <meta name="description" content="Connectez-vous ou créez un compte AfroTools en français pour retrouver votre tableau de bord, vos favoris et les surfaces Pro disponibles.">
+  <meta name="robots" content="noindex, follow">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Connexion AfroTools">
+  <meta property="og:description" content="Route française de connexion et de création de compte AfroTools.">
+  <meta property="og:url" content="https://afrotools.com/fr/auth/">
+  <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <style>
+    :root{--auth-ink:#111827;--auth-muted:#526173;--auth-line:#d8e0ea;--auth-accent:#0062cc;--auth-bg:#f6f8fb}
+    body.auth-fr{margin:0;background:var(--auth-bg);color:var(--auth-ink);font-family:"DM Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    .auth-main{min-height:calc(100vh - 120px);padding:96px 20px 64px}
+    .auth-shell{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:minmax(0,.92fr) minmax(340px,1fr);gap:34px;align-items:start}
+    .kicker{display:inline-flex;margin:0 0 14px;padding:7px 11px;border:1px solid #c7ddf8;border-radius:8px;background:#fff;color:#074f9f;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+    h1{margin:0 0 14px;font-size:clamp(32px,5.4vw,56px);line-height:1.05;letter-spacing:0}
+    h2{margin:0 0 8px;font-size:24px;line-height:1.2;letter-spacing:0}
+    p{margin:0;color:var(--auth-muted);line-height:1.65}
+    .auth-proof{display:grid;gap:10px;margin-top:22px}
+    .auth-proof div{display:flex;gap:10px;align-items:flex-start;color:#334155;font-size:15px;line-height:1.45}
+    .auth-proof span{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#dff3e8;color:#117a42;font-size:12px;font-weight:900;flex:0 0 auto}
+    .auth-panel{background:#fff;border:1px solid var(--auth-line);border-radius:8px;box-shadow:0 18px 45px rgba(15,23,42,.08);overflow:hidden}
+    .auth-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-bottom:1px solid var(--auth-line);background:#fbfdff}
+    .auth-tab{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 10px;color:#445266;text-decoration:none;font-weight:800;font-size:14px;border-bottom:3px solid transparent}
+    .auth-tab[aria-selected="true"]{color:var(--auth-accent);border-bottom-color:var(--auth-accent);background:#fff}
+    .auth-body{padding:28px}
+    .auth-form{display:grid;gap:14px}
+    .auth-form[hidden]{display:none!important}
+    .field{display:grid;gap:7px}
+    .field label{font-size:13px;font-weight:800;color:#233247}
+    .field input,.field select{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;padding:12px 13px;font:inherit;color:var(--auth-ink);background:#fff}
+    .field input:focus,.field select:focus{outline:3px solid rgba(0,98,204,.16);border-color:var(--auth-accent)}
+    .auth-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .auth-submit,.oauth-btn{border-radius:8px;padding:13px 16px;font:inherit;font-weight:800;cursor:pointer}
+    .auth-submit{border:0;background:var(--auth-accent);color:#fff}
+    .auth-submit:hover{background:#074f9f}
+    .oauth-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+    .oauth-btn{background:#fff;border:1px solid #cbd5e1;color:#1f2937}
+    .oauth-btn:hover{border-color:var(--auth-accent);color:var(--auth-accent)}
+    .auth-divider{display:flex;align-items:center;gap:12px;margin:18px 0;color:#728197;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+    .auth-divider:before,.auth-divider:after{content:"";height:1px;background:#e2e8f0;flex:1}
+    .auth-status{min-height:22px;margin:0 0 16px;color:#475569;font-weight:700;font-size:14px}
+    .auth-status.error{color:#b42318}
+    .auth-status.success{color:#067647}
+    .auth-note{margin-top:18px;padding:14px;border-left:4px solid #f59e0b;background:#fffbeb;color:#78350f;border-radius:6px;font-size:14px;line-height:1.55}
+    .auth-footnote{margin-top:18px;color:#64748b;font-size:13px;line-height:1.6}
+    .auth-footnote a{color:var(--auth-accent);font-weight:800}
+    .skip-link{position:absolute;left:-999px;top:auto;width:1px;height:1px;overflow:hidden}
+    .skip-link:focus{left:16px;top:16px;width:auto;height:auto;padding:10px 12px;background:#fff;border:2px solid var(--auth-accent);border-radius:8px;z-index:20}
+    @media(max-width:820px){.auth-main{padding:78px 16px 48px}.auth-shell{grid-template-columns:1fr;gap:26px}}
+    @media(max-width:540px){.auth-body{padding:22px}.auth-row,.oauth-grid{grid-template-columns:1fr}.auth-tabs{grid-template-columns:1fr}.auth-tab{justify-content:flex-start;padding-left:22px}}
+  </style>
+  <script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/fr/auth/">
+</head>
+<body class="auth-fr top-level-page-ui-refresh">
+  <a class="skip-link" href="#auth-panel">Aller au formulaire</a>
+  <afro-navbar></afro-navbar>
+  <main class="auth-main">
+    <div class="auth-shell">
+      <section aria-labelledby="auth-title">
+        <p class="kicker">Compte AfroTools</p>
+        <h1 id="auth-title">Connexion, compte et retour vers votre tableau de bord.</h1>
+        <p>Cette route française garde les mêmes points d'authentification que la version anglaise. Elle vous ramène ensuite vers les surfaces françaises quand elles existent.</p>
+        <div class="auth-proof" aria-label="Ce que le compte permet">
+          <div><span>1</span><strong>Ouvrir le tableau de bord et les routes Pro avec la même session.</strong></div>
+          <div><span>2</span><strong>Retrouver les favoris, l'historique et les espaces qui prennent en charge le compte.</strong></div>
+          <div><span>3</span><strong>Voir clairement quand une surface avancée reste encore en anglais.</strong></div>
+        </div>
+        <p class="auth-note">AfroTools ne promet pas une synchronisation cloud partout. Certains outils gardent encore des brouillons ou états sur cet appareil.</p>
+      </section>
+
+      <section class="auth-panel" id="auth-panel" aria-label="Formulaire de compte AfroTools">
+        <nav class="auth-tabs" aria-label="Modes de connexion">
+          <a class="auth-tab" href="/fr/auth/?mode=login" data-mode-link="login" aria-selected="true">Connexion</a>
+          <a class="auth-tab" href="/fr/auth/?mode=signup" data-mode-link="signup" aria-selected="false">Créer un compte</a>
+          <a class="auth-tab" href="/fr/auth/?mode=reset" data-mode-link="reset" aria-selected="false">Mot de passe</a>
+        </nav>
+
+        <div class="auth-body">
+          <div class="auth-status" id="authStatus" aria-live="polite"></div>
+
+          <form class="auth-form" id="loginForm" action="/api/auth/login" method="post" data-mode-panel="login">
+            <input type="hidden" name="next" id="loginNext" value="/fr/dashboard/">
+            <h2>Se connecter</h2>
+            <p>Continuez vers le tableau de bord, Pro ou la page demandée.</p>
+            <div class="field">
+              <label for="loginEmail">Adresse e-mail</label>
+              <input id="loginEmail" name="email" type="email" autocomplete="email" required>
+            </div>
+            <div class="field">
+              <label for="loginPassword">Mot de passe</label>
+              <input id="loginPassword" name="password" type="password" autocomplete="current-password" required>
+            </div>
+            <button class="auth-submit" type="submit">Se connecter</button>
+          </form>
+
+          <form class="auth-form" id="signupForm" action="/api/auth/signup" method="post" data-mode-panel="signup" hidden>
+            <input type="hidden" name="next" id="signupNext" value="/fr/dashboard/">
+            <h2>Créer un compte gratuit</h2>
+            <p>Aucune carte n'est requise pour commencer avec un compte AfroTools.</p>
+            <div class="auth-row">
+              <div class="field">
+                <label for="signupName">Nom complet</label>
+                <input id="signupName" name="name" type="text" autocomplete="name" required>
+              </div>
+              <div class="field">
+                <label for="signupCountry">Pays principal</label>
+                <select id="signupCountry" name="country" autocomplete="country-name">
+                  <option value="">Choisir un pays</option>
+                  <option>Côte d'Ivoire</option>
+                  <option>Sénégal</option>
+                  <option>Cameroun</option>
+                  <option>Maroc</option>
+                  <option>Algérie</option>
+                  <option>Tunisie</option>
+                  <option>RDC</option>
+                  <option>Bénin</option>
+                  <option>Burkina Faso</option>
+                  <option>Mali</option>
+                  <option>Niger</option>
+                  <option>Guinée</option>
+                  <option>Togo</option>
+                  <option>Gabon</option>
+                  <option>Congo</option>
+                  <option>Autre pays africain</option>
+                  <option>Hors Afrique</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label for="signupEmail">Adresse e-mail</label>
+              <input id="signupEmail" name="email" type="email" autocomplete="email" required>
+            </div>
+            <div class="field">
+              <label for="signupPassword">Mot de passe</label>
+              <input id="signupPassword" name="password" type="password" autocomplete="new-password" minlength="6" required>
+            </div>
+            <button class="auth-submit" type="submit">Créer le compte</button>
+          </form>
+
+          <form class="auth-form" id="resetForm" action="/fr/auth/" method="get" data-mode-panel="reset" hidden>
+            <input type="hidden" name="mode" value="réinitialiser">
+            <h2>Réinitialiser le mot de passe</h2>
+            <p>Entrez l'e-mail du compte. AfroTools enverra un lien de réinitialisation.</p>
+            <div class="field">
+              <label for="resetEmail">Adresse e-mail</label>
+              <input id="resetEmail" name="email" type="email" autocomplete="email" required>
+            </div>
+            <button class="auth-submit" type="submit">Envoyer le lien</button>
+          </form>
+
+          <div class="auth-divider">ou continuer avec</div>
+          <div class="oauth-grid" aria-label="Connexion OAuth">
+            <button class="oauth-btn" type="button" data-oauth="google">Google</button>
+            <button class="oauth-btn" type="button" data-oauth="github">GitHub</button>
+          </div>
+
+          <p class="auth-footnote">En continuant, vous acceptez les <a href="/terms/">conditions</a> et la <a href="/privacy/">politique de confidentialité</a>.</p>
+          <noscript><p class="auth-footnote">JavaScript est désactivé. Les formulaires utilisent quand même les points d'authentification sécurisés.</p></noscript>
+        </div>
+      </section>
+    </div>
+  </main>
+  <afro-footer></afro-footer>
+  <script src="/assets/js/afro-auth.js?v=4250956b"></script>
+  <script src="/assets/js/auth-cookie-upgrade.js?v=14c038dc"></script>
+  <script>
+  (function(){
+    'use strict';
+    var SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
+    var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpwY2xhZ3RnY3pzeWdyZ3p0bHRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0NTg4MzIsImV4cCI6MjA4OTAzNDgzMn0._G-677vi2UTAhcU3t0aquvmd8lnQUBil53ok_Z623F0';
+    var params = new URLSearchParams(window.location.search);
+    var status = document.getElementById('authStatus');
+    var panels = Array.prototype.slice.call(document.querySelectorAll('[data-mode-panel]'));
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('[data-mode-link]'));
+    var next = safeNext(params.get('next') || '/fr/dashboard/');
+
+    document.getElementById('loginNext').value = next;
+    document.getElementById('signupNext').value = next;
+    showMode(params.get('mode') || 'login');
+
+    tabs.forEach(function(tab){
+      tab.addEventListener('click', function(evt){
+        evt.preventDefault();
+        var mode = tab.getAttribute('data-mode-link') || 'login';
+        showMode(mode);
+        var url = new URL(window.location.href);
+        url.searchParams.set('mode', mode);
+        url.searchParams.set('next', next);
+        window.history.replaceState({}, '', url.toString());
+      });
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', async function(evt){
+      if (!window.AfroAuth || typeof AfroAuth.login !== 'function') return;
+      evt.preventDefault();
+      var email = document.getElementById('loginEmail').value.trim();
+      var password = document.getElementById('loginPassword').value;
+      setStatus('Connexion en cours...');
+      try {
+        var result = await AfroAuth.login(email, password);
+        if (result && result.ok !== false) {
+          window.location.href = next;
+          return;
+        }
+        throw new Error((result && result.error) || 'Connexion impossible.');
+      } catch (err) {
+        setStatus(err && err.message ? err.message : 'Connexion impossible.', true);
+      }
+    });
+
+    document.getElementById('signupForm').addEventListener('submit', async function(evt){
+      if (!window.AfroAuth || typeof AfroAuth.signup !== 'function') return;
+      evt.preventDefault();
+      var name = document.getElementById('signupName').value.trim();
+      var email = document.getElementById('signupEmail').value.trim();
+      var password = document.getElementById('signupPassword').value;
+      var country = document.getElementById('signupCountry').value;
+      setStatus('Création du compte...');
+      try {
+        var result = await AfroAuth.signup(email, name, password, country);
+        if (result && result.ok !== false) {
+          window.location.href = next;
+          return;
+        }
+        throw new Error((result && result.error) || 'Création du compte impossible.');
+      } catch (err) {
+        setStatus(err && err.message ? err.message : 'Création du compte impossible.', true);
+      }
+    });
+
+    document.getElementById('resetForm').addEventListener('submit', async function(evt){
+      evt.preventDefault();
+      var email = document.getElementById('resetEmail').value.trim();
+      if (!email) return;
+      setStatus('Envoi du lien de réinitialisation...');
+      try {
+        var supa = await getSupabaseClient();
+        var resetRedirect = window.location.origin + '/fr/auth/?mode=login&next=' + encodeURIComponent(next);
+        var result = await supa.auth.resetPasswordForEmail(email, { redirectTo: resetRedirect });
+        if (result.error) throw result.error;
+        setStatus('Lien envoyé. Vérifiez votre boîte de réception.', false, true);
+      } catch (err) {
+        setStatus(err && err.message ? err.message : "Impossible d'envoyer le lien.", true);
+      }
+    });
+
+    document.querySelectorAll('[data-oauth]').forEach(function(button){
+      button.addEventListener('click', async function(){
+        var provider = button.getAttribute('data-oauth');
+        setStatus('Connexion avec ' + button.textContent.trim() + '...');
+        try {
+          var supa = await getSupabaseClient();
+          var redirectTo = window.location.origin + '/dashboard/?auth=callback&next=' + encodeURIComponent(next);
+          var result = await supa.auth.signInWithOAuth({ provider: provider, options: { redirectTo: redirectTo } });
+          if (result.error) throw result.error;
+        } catch (err) {
+          setStatus(err && err.message ? err.message : 'Connexion externe indisponible.', true);
+        }
+      });
+    });
+
+    function showMode(mode) {
+      mode = ['login', 'signup', 'reset'].indexOf(mode) === -1 ? 'login' : mode;
+      panels.forEach(function(panel){ panel.hidden = panel.getAttribute('data-mode-panel') !== mode; });
+      tabs.forEach(function(tab){ tab.setAttribute('aria-selected', tab.getAttribute('data-mode-link') === mode ? 'true' : 'false'); });
+      setStatus('');
+    }
+
+    function setStatus(message, isError, isSuccess) {
+      status.textContent = message || '';
+      status.className = 'auth-status' + (isError ? ' error' : isSuccess ? ' success' : '');
+    }
+
+    function safeNext(value) {
+      if (!value || typeof value !== 'string') return '/fr/dashboard/';
+      if (/^https?:\/\//i.test(value) || value.indexOf('//') === 0) return '/fr/dashboard/';
+      return value.charAt(0) === '/' ? value : '/fr/dashboard/';
+    }
+
+    function loadSupabaseSdk(){
+      if (window.supabase && window.supabase.createClient) return Promise.resolve();
+      if (window.__afroAuthSupabaseSdkPromise) return window.__afroAuthSupabaseSdkPromise;
+      window.__afroAuthSupabaseSdkPromise = new Promise(function(resolve, reject){
+        var script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+        script.onload = resolve;
+        script.onerror = function(){ reject(new Error('Le module de connexion n’a pas pu charger.')); };
+        document.head.appendChild(script);
+      });
+      return window.__afroAuthSupabaseSdkPromise;
+    }
+
+    async function getSupabaseClient(){
+      if (window.supabase && window.supabase.createClient) return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      if (window.AfroAuth && typeof AfroAuth.onReady === 'function') {
+        await new Promise(function(resolve){ AfroAuth.onReady(resolve); });
+        if (window.supabase && window.supabase.createClient) return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      }
+      await loadSupabaseSdk();
+      if (window.supabase && window.supabase.createClient) return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      throw new Error('La connexion est encore en chargement.');
+    }
+  })();
+  </script>
+</body>
+</html>

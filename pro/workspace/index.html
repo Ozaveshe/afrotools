@@ -1,0 +1,1361 @@
+<!doctype html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pro Workspace | AfroTools</title>
+  <meta name="description" content="Your AfroTools Pro workspace: what needs attention today across payroll, sales, finance, events, and compliance, plus every Pro app in one place.">
+  <meta name="robots" content="noindex, follow">
+  <meta name="tool-id" content="pro-workspace">
+  <meta name="tool-category" content="pro">
+  <meta name="pro-required" content="afrotools-pro">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <script src="/assets/js/afro-auth.js?v=4250956b"></script>
+  <script src="/assets/js/pro-gate.js?v=e4aca7ef"></script>
+  <script src="/assets/js/lib/analytics.js?v=776bf234"></script>
+  <script src="/assets/js/lib/pro-app-registry.js?v=2e71c13d"></script>
+  <script src="/assets/js/lib/pro-daily-os-registry.js?v=b25cffa7"></script>
+  <script src="/assets/js/lib/pro-architecture.js?v=921b3113"></script>
+  <script src="/assets/js/lib/pro-home-insights.js?v=dc3dbf48"></script>
+  <script src="/assets/js/components/pro-switcher.js?v=17095027" defer></script>
+  <style>
+    :root{
+      --pc-bg:var(--color-bg,#F8FAFD);
+      --pc-rail:#ffffff;
+      --pc-surface:#ffffff;
+      --pc-surface-soft:#F8FAFC;
+      --pc-ink:var(--color-text,#0f172a);
+      --pc-muted:var(--color-text-muted,#64748b);
+      --pc-subtle:var(--color-text-subtle,#94a3b8);
+      --pc-line:var(--color-border,#e2e8f0);
+      --pc-line-strong:var(--color-border-strong,#cbd5e1);
+      --pc-blue:var(--color-primary,#0062CC);
+      --pc-blue-soft:var(--color-primary-pale,rgba(0,98,204,.08));
+      --pc-gold:var(--color-gold,#F5A623);
+      --pc-gold-soft:var(--color-gold-pale,#fff3cd);
+      --pc-green:#047857;
+      --pc-green-soft:#ECFDF5;
+      --pc-amber:#A16207;
+      --pc-amber-soft:#FFFBEB;
+      --pc-red:#B91C1C;
+      --pc-red-soft:#FEF2F2;
+      --pc-purple:#6D28D9;
+      --pc-purple-soft:#F5F3FF;
+      --pc-radius:var(--radius-sm,6px);
+      --pc-shadow:0 10px 28px rgba(15,23,42,.07);
+    }
+    *{box-sizing:border-box}
+    html{background:var(--pc-bg)}
+    body{margin:0;background:var(--pc-bg);color:var(--pc-ink);font-family:var(--font-body,"DM Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif);font-size:14px;line-height:1.45;overflow-x:hidden}
+    button,a,input,select{font:inherit}
+    button{cursor:pointer}
+    a{color:inherit}
+    .pc-shell h1,.pc-shell h2,.pc-shell h3,.pc-shell h4{font-family:var(--font-body,"DM Sans",system-ui,sans-serif);letter-spacing:0}
+    .pc-shell{min-height:100vh;display:grid;grid-template-columns:248px minmax(0,1fr);background:var(--pc-bg)}
+    .pc-sidebar{position:sticky;top:0;height:100vh;padding:16px 12px;background:var(--pc-rail);border-right:1px solid var(--pc-line);display:flex;flex-direction:column;gap:16px;z-index:20}
+    .pc-brand{display:flex;align-items:center;gap:10px;padding:8px 8px 10px;border-bottom:1px solid var(--pc-line)}
+    .pc-brand-mark{width:34px;height:34px;border-radius:var(--pc-radius);background:var(--pc-blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900}
+    .pc-brand-title{font-size:13px;font-weight:900;line-height:1.15}
+    .pc-brand-meta{font-size:11px;color:var(--pc-muted);margin-top:2px}
+    .pc-nav{display:grid;gap:4px}
+    .pc-nav a{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:36px;padding:8px 9px;border-radius:var(--pc-radius);text-decoration:none;color:#334155;font-size:13px;font-weight:800}
+    .pc-nav a:hover,.pc-nav a:focus-visible{background:var(--pc-blue-soft);color:var(--pc-blue)}
+    .pc-nav-small{font-size:11px;color:var(--pc-subtle);font-weight:800}
+    .pc-side-section{display:grid;gap:8px}
+    .pc-side-label{font-size:11px;font-weight:900;color:var(--pc-muted)}
+    .pc-side-apps{display:grid;gap:5px;max-height:260px;overflow:auto;padding-right:2px}
+    .pc-side-app{display:grid;grid-template-columns:28px minmax(0,1fr);gap:8px;align-items:center;padding:6px;border-radius:var(--pc-radius);text-decoration:none}
+    .pc-side-app:hover{background:var(--pc-surface-soft)}
+    .pc-side-mark{width:28px;height:28px;border-radius:var(--pc-radius);display:flex;align-items:center;justify-content:center;background:var(--pc-surface-soft);border:1px solid var(--pc-line);font-size:10px;font-weight:900;color:var(--pc-blue)}
+    .pc-side-name{display:block;font-size:12px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .pc-side-state{display:block;font-size:10px;color:var(--pc-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .pc-sidebar-foot{margin-top:auto;display:grid;gap:8px;padding-top:12px;border-top:1px solid var(--pc-line)}
+    .pc-btn,.pc-icon-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:36px;border:1px solid var(--pc-line-strong);border-radius:var(--pc-radius);background:#fff;color:var(--pc-ink);padding:8px 11px;text-decoration:none;font-size:12px;font-weight:900;line-height:1.1}
+    .pc-btn:hover,.pc-icon-btn:hover{border-color:var(--pc-blue);color:var(--pc-blue);background:var(--pc-blue-soft)}
+    .pc-btn.primary{background:var(--pc-blue);border-color:var(--pc-blue);color:#fff}
+    .pc-btn.primary:hover{background:#004BA0;color:#fff}
+    .pc-btn.ghost{border-color:var(--pc-line);background:transparent}
+    .pc-btn:disabled{opacity:.58;cursor:not-allowed}
+    .pc-main{min-width:0}
+    .pc-topbar{position:sticky;top:0;z-index:15;min-height:64px;border-bottom:1px solid var(--pc-line);background:rgba(248,250,253,.94);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 18px}
+    .pc-context{display:flex;align-items:center;gap:10px;min-width:0}
+    .pc-context-group{display:grid;gap:3px;min-width:260px}
+    .pc-field-label{font-size:11px;font-weight:900;color:var(--pc-muted)}
+    .pc-select{width:100%;height:36px;border:1px solid var(--pc-line-strong);border-radius:var(--pc-radius);background:#fff;color:var(--pc-ink);padding:0 10px;font-size:13px;font-weight:800}
+    .pc-account-mini{display:flex;align-items:center;gap:8px;min-width:0}
+    .pc-avatar{width:32px;height:32px;border-radius:var(--pc-radius);background:var(--pc-gold-soft);border:1px solid #FDE68A;color:#78350F;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;flex:0 0 auto}
+    .pc-account-text{min-width:0}
+    .pc-account-name{font-size:13px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:280px}
+    .pc-account-note{font-size:11px;color:var(--pc-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:300px}
+    .pc-top-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+    .pc-content{padding:18px;max-width:1480px;margin:0 auto}
+    .pc-command-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(280px,.75fr);gap:12px;align-items:stretch;margin-bottom:12px}
+    .pc-command,.pc-status-card,.pc-panel,.pc-metric,.pc-app,.pc-activity,.pc-queue-item,.pc-vault-row,.pc-build-row{background:var(--pc-surface);border:1px solid var(--pc-line);border-radius:var(--pc-radius);box-shadow:0 1px 0 rgba(15,23,42,.03)}
+    .pc-command{padding:16px;display:grid;gap:12px}
+    .pc-kicker{font-size:11px;font-weight:900;color:var(--pc-blue);margin-bottom:4px}
+    .pc-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .pc-title{font-size:28px;line-height:1.1;margin:0 0 6px;font-weight:900;color:var(--pc-ink)}
+    .pc-subtitle{font-size:13px;line-height:1.55;color:var(--pc-muted);max-width:820px;margin:0}
+    .pc-command-actions{display:flex;flex-wrap:wrap;gap:8px}
+    .pc-attention-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+    .pc-attention-tile{border:1px solid var(--pc-line);border-radius:var(--pc-radius);padding:10px;background:var(--pc-surface-soft);min-height:78px}
+    .pc-attention-tile strong{display:block;font-size:18px;line-height:1;font-weight:900}
+    .pc-attention-tile span{display:block;margin-top:5px;font-size:11px;color:var(--pc-muted);font-weight:800}
+    .pc-status-card{padding:14px;display:grid;gap:12px}
+    .pc-status-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+    .pc-status-title{font-size:12px;font-weight:900;color:var(--pc-muted)}
+    .pc-status-main{font-size:19px;line-height:1.2;font-weight:900;margin:2px 0 0}
+    .pc-status-note{font-size:12px;color:var(--pc-muted);line-height:1.45;margin:3px 0 0}
+    .pc-status-lines{display:grid;gap:7px}
+    .pc-status-line{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12px;color:#334155}
+    .pc-status-line strong{font-size:12px;color:var(--pc-ink)}
+    .pc-pill{display:inline-flex;align-items:center;justify-content:center;min-height:22px;border-radius:999px;padding:4px 8px;border:1px solid var(--pc-line);background:var(--pc-surface-soft);color:#475569;font-size:10px;font-weight:900;white-space:nowrap}
+    .pc-pill.ready,.pc-pill.pro,.pc-pill.real{background:var(--pc-green-soft);border-color:#A7F3D0;color:#065F46}
+    .pc-pill.schema,.pc-pill.warn{background:var(--pc-amber-soft);border-color:#FDE68A;color:#92400E}
+    .pc-pill.setup,.pc-pill.lock,.pc-pill.blocked{background:var(--pc-red-soft);border-color:#FECACA;color:#991B1B}
+    .pc-pill.online{background:var(--pc-blue-soft);border-color:#BFDBFE;color:#1E40AF}
+    .pc-pill.local,.pc-pill.shell{background:var(--pc-purple-soft);border-color:#DDD6FE;color:#5B21B6}
+    .pc-pill.planned{background:var(--pc-amber-soft);border-color:#FDE68A;color:#92400E}
+    .pc-metrics{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:16px}
+    .pc-metric{padding:12px;min-height:86px;display:flex;flex-direction:column;justify-content:space-between}
+    .pc-metric strong{display:block;font-size:23px;line-height:1;font-weight:900}
+    .pc-metric span{display:block;font-size:11px;color:var(--pc-muted);font-weight:900;margin-top:7px}
+    .pc-metric small{display:block;font-size:11px;color:var(--pc-subtle);line-height:1.35;margin-top:4px}
+    .pc-section{margin-bottom:16px}
+    .pc-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:9px}
+    .pc-h2{font-size:17px;font-weight:900;line-height:1.2;margin:0}
+    .pc-section-note{font-size:12px;line-height:1.45;color:var(--pc-muted);margin:3px 0 0;max-width:820px}
+    .pc-app-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+    .pc-app{padding:12px;min-height:246px;display:flex;flex-direction:column;gap:10px}
+    .pc-app-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+    .pc-app-mark{width:34px;height:34px;border-radius:var(--pc-radius);display:flex;align-items:center;justify-content:center;background:var(--pc-blue-soft);border:1px solid #BFDBFE;color:var(--pc-blue);font-size:11px;font-weight:900;flex:0 0 auto}
+    .pc-app h3{font-size:15px;line-height:1.2;margin:0;font-weight:900}
+    .pc-app-domain{font-size:11px;color:var(--pc-muted);font-weight:800;margin-top:2px}
+    .pc-app p{font-size:12px;line-height:1.45;color:var(--pc-muted);margin:0}
+    .pc-app-tags{display:flex;flex-wrap:wrap;gap:5px}
+    .pc-route{display:block;font-family:var(--font-mono,"JetBrains Mono",monospace);font-size:10px;line-height:1.35;color:#475569;background:var(--pc-surface-soft);border:1px solid var(--pc-line);border-radius:var(--pc-radius);padding:6px;word-break:break-all}
+    .pc-progress{height:7px;background:#E2E8F0;border-radius:999px;overflow:hidden}
+    .pc-progress span{display:block;height:100%;background:var(--pc-blue);border-radius:999px}
+    .pc-app-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:auto}
+    .pc-layout{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:12px;align-items:start}
+    .pc-layout > *,.pc-command-grid > *{min-width:0}
+    .pc-panel{overflow:hidden;margin-bottom:12px}
+    .pc-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:12px 13px;border-bottom:1px solid var(--pc-line);background:#fff}
+    .pc-panel-body{padding:12px 13px;min-width:0}
+    .pc-activity-list,.pc-queue-list,.pc-vault-list{display:grid;gap:8px}
+    .pc-activity,.pc-queue-item,.pc-vault-row{padding:10px 11px}
+    .pc-activity{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center}
+    .pc-row-title{font-size:13px;font-weight:900;line-height:1.25;margin:0}
+    .pc-row-meta{font-size:11px;color:var(--pc-muted);line-height:1.42;margin-top:3px}
+    .pc-row-actions{display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap}
+    .pc-queue-item{display:grid;gap:7px}
+    .pc-queue-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+    .pc-queue-copy{font-size:12px;line-height:1.45;color:var(--pc-muted);margin:0}
+    .pc-table-wrap{display:block;width:100%;max-width:100%;overflow:auto;border:1px solid var(--pc-line);border-radius:var(--pc-radius);background:#fff}
+    .pc-table{display:table;width:100%;border-collapse:collapse;min-width:780px}
+    .pc-table th,.pc-table td{padding:9px 10px;border-bottom:1px solid var(--pc-line);text-align:left;vertical-align:top;font-size:12px}
+    .pc-table th{background:var(--pc-surface-soft);color:#475569;font-size:11px;font-weight:900}
+    .pc-table tr:last-child td{border-bottom:0}
+    .pc-table strong{font-weight:900}
+    .pc-vault-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center}
+    .pc-vault-count{font-family:var(--font-mono,"JetBrains Mono",monospace);font-size:13px;font-weight:900;color:var(--pc-ink)}
+    .pc-usage-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .pc-usage-cell{border:1px solid var(--pc-line);border-radius:var(--pc-radius);padding:10px;background:var(--pc-surface-soft)}
+    .pc-usage-cell strong{display:block;font-size:18px;line-height:1;font-weight:900}
+    .pc-usage-cell span{display:block;font-size:11px;color:var(--pc-muted);font-weight:800;margin-top:6px}
+    .pc-empty{border:1px dashed var(--pc-line-strong);border-radius:var(--pc-radius);padding:14px;background:#fff;color:var(--pc-muted);font-size:12px;line-height:1.5;text-align:center}
+    .pc-danger-note{border:1px solid #FDE68A;background:var(--pc-amber-soft);color:#78350F;border-radius:var(--pc-radius);padding:10px 11px;font-size:12px;line-height:1.48}
+    .pc-note-spaced{margin-top:10px}
+    .pc-last-updated{font-size:11px;color:var(--pc-muted);padding:4px 0 12px}
+    .pc-biz-row{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+    .pc-biz-label{font-size:11px;font-weight:900;color:var(--pc-muted);margin-right:2px}
+    .pc-biz-chip{display:inline-flex;align-items:center;justify-content:center;min-height:32px;border:1px solid var(--pc-line-strong);border-radius:999px;background:#fff;color:#334155;padding:6px 12px;font-size:12px;font-weight:800;cursor:pointer}
+    .pc-biz-chip:hover{border-color:var(--pc-blue);color:var(--pc-blue);background:var(--pc-blue-soft)}
+    .pc-biz-chip.active{background:var(--pc-blue);border-color:var(--pc-blue);color:#fff}
+    .pc-today-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+    .pc-today-card{background:var(--pc-surface);border:1px solid var(--pc-line);border-radius:var(--pc-radius);box-shadow:0 1px 0 rgba(15,23,42,.03);padding:12px;display:flex;flex-direction:column;gap:8px;min-height:132px}
+    .pc-today-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+    .pc-today-title{font-size:12px;font-weight:900;color:var(--pc-muted);margin:0;line-height:1.3}
+    .pc-today-value{font-size:21px;line-height:1.1;font-weight:900;margin:0}
+    .pc-today-meta{font-size:12px;line-height:1.45;color:var(--pc-muted);margin:0}
+    .pc-today-card a{margin-top:auto;align-self:flex-start}
+    @media(max-width:1280px){.pc-today-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:760px){.pc-today-grid{grid-template-columns:1fr}}
+    @media(max-width:1280px){
+      .pc-app-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .pc-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}
+    }
+    @media(max-width:1040px){
+      .pc-shell{grid-template-columns:1fr}
+      .pc-sidebar{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--pc-line)}
+      .pc-nav{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .pc-side-apps{grid-template-columns:repeat(5,minmax(0,1fr));max-height:none;overflow:visible}
+      .pc-side-app{grid-template-columns:1fr;text-align:center}
+      .pc-side-mark{margin:0 auto}
+      .pc-layout,.pc-command-grid{grid-template-columns:1fr}
+      .pc-topbar{position:relative;align-items:flex-start;flex-direction:column}
+      .pc-top-actions{justify-content:flex-start}
+      .pc-context{width:100%;align-items:flex-start;flex-wrap:wrap}
+    }
+    @media(max-width:760px){
+      .pc-content{padding:12px}
+      .pc-title{font-size:24px}
+      .pc-nav,.pc-side-apps,.pc-app-grid,.pc-metrics,.pc-attention-grid,.pc-usage-grid{grid-template-columns:1fr}
+      .pc-account-mini{width:100%}
+      .pc-context-group{min-width:0;width:100%}
+      .pc-activity,.pc-vault-row{grid-template-columns:1fr}
+      .pc-row-actions{justify-content:flex-start}
+    }
+  </style>
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c4853917">
+<script src="/assets/js/lib/dark-mode.js?v=5cb64ba3" defer></script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/pro/workspace/">
+</head>
+<body class="top-level-page-ui-refresh">
+  <main class="pc-shell pro-gated-content">
+    <aside class="pc-sidebar" aria-label="Pro dashboard navigation">
+      <div class="pc-brand">
+        <div class="pc-brand-mark" aria-hidden="true">AT</div>
+        <div>
+          <div class="pc-brand-title">AfroTools Pro</div>
+          <div class="pc-brand-meta">Control dashboard</div>
+        </div>
+      </div>
+
+      <nav class="pc-nav" aria-label="Workspace sections">
+        <a href="#overview">Overview <span class="pc-nav-small">00</span></a>
+        <a href="#apps">Apps <span class="pc-nav-small">10</span></a>
+        <a href="#daily-os">Daily OS <span class="pc-nav-small">10</span></a>
+        <a href="/pro/apps/">App directory <span class="pc-nav-small">Index</span></a>
+        <a href="#work-queue">Work queue <span class="pc-nav-small" id="sideQueueCount">0</span></a>
+        <a href="#data-vault">Data vault <span class="pc-nav-small">Device</span></a>
+        <a href="#build-status">Availability <span class="pc-nav-small" id="sideBuildCount">0</span></a>
+        <a href="/pro/">Pro home <span class="pc-nav-small">Plan</span></a>
+      </nav>
+
+      <div class="pc-side-section">
+        <div class="pc-side-label">App suite</div>
+        <div class="pc-side-apps" id="sideAppList"></div>
+      </div>
+
+      <div class="pc-sidebar-foot">
+        <a class="pc-btn primary" href="/pro/apps/">Browse Pro Apps</a>
+        <a class="pc-btn" href="/tools/afropayroll-os/workspace">Open AfroPayroll</a>
+        <a class="pc-btn" href="/tools/afropayroll-os/support">Payroll pack support</a>
+        <a class="pc-btn ghost" href="/pro/vault/">Pro Vault</a>
+        <a class="pc-btn ghost" href="/pro/team/">Team</a>
+        <a class="pc-btn ghost" href="/pro/settings/">Settings</a>
+        <a class="pc-btn ghost" href="/dashboard/">Account dashboard</a>
+      </div>
+    </aside>
+
+    <section class="pc-main" aria-label="AfroTools Pro control dashboard">
+      <header class="pc-topbar">
+        <div class="pc-context">
+          <div class="pc-context-group">
+            <label class="pc-field-label" for="workspaceSelect">Current workspace or client</label>
+            <select class="pc-select" id="workspaceSelect">
+              <option>Loading workspace context...</option>
+            </select>
+          </div>
+          <div class="pc-account-mini" id="topAccount">
+            <div class="pc-avatar" aria-hidden="true">PRO</div>
+            <div class="pc-account-text">
+              <div class="pc-account-name">Checking Pro account...</div>
+              <div class="pc-account-note">Checking account access and payroll workspace state.</div>
+            </div>
+          </div>
+        </div>
+        <div class="pc-top-actions">
+          <button class="pc-btn" type="button" id="refreshBtn">Refresh</button>
+          <a class="pc-btn" href="/dashboard/">Account</a>
+          <a class="pc-btn" href="/pro/vault/">Vault</a>
+          <a class="pc-btn" href="/pro/team/">Team</a>
+          <a class="pc-btn" href="/pro/settings/">Settings</a>
+          <a class="pc-btn primary" href="/tools/afropayroll-os/workspace">Payroll workspace</a>
+        </div>
+      </header>
+
+      <div class="pc-content">
+        <section class="pc-command-grid" id="overview" aria-label="Command center">
+          <article class="pc-command">
+            <div class="pc-title-row">
+              <div>
+                <div class="pc-kicker">Your workspace</div>
+                <h1 class="pc-title">Your Pro workspace</h1>
+                <p class="pc-subtitle">Everything you run with AfroTools Pro, in one place. Payroll is fully connected to your account today. Other apps save your work on this device and always say so — no surprises about where your data lives.</p>
+              </div>
+              <span class="pc-pill online" id="systemModePill">Loading</span>
+            </div>
+            <div class="pc-biz-row" id="bizTypeRow" aria-label="What kind of business do you run?"></div>
+            <div class="pc-attention-grid">
+              <div class="pc-attention-tile">
+                <strong id="attentionCount">0</strong>
+                <span>Items needing review</span>
+              </div>
+              <div class="pc-attention-tile">
+                <strong id="activeWorkspaceCount">0</strong>
+                <span>Businesses and clients</span>
+              </div>
+              <div class="pc-attention-tile">
+                <strong id="liveAppCount">0/20</strong>
+                <span>Apps you can open</span>
+              </div>
+            </div>
+            <div class="pc-command-actions">
+              <a class="pc-btn primary" href="/tools/afropayroll-os/workspace">Resolve payroll work</a>
+              <a class="pc-btn" href="/pro/apps/">Browse Pro Apps</a>
+              <a class="pc-btn" href="/tools/afropayroll-os/support">Payroll support console</a>
+              <button class="pc-btn" type="button" id="focusQueueBtn">Open work queue</button>
+              <button class="pc-btn" type="button" id="focusVaultBtn">Open data vault</button>
+            </div>
+          </article>
+
+          <article class="pc-status-card" id="proStatusCard">
+            <div class="pc-status-head">
+              <div>
+                <div class="pc-status-title">Pro status</div>
+                <div class="pc-status-main">Checking access...</div>
+                <p class="pc-status-note">Checking your plan against your account.</p>
+              </div>
+              <span class="pc-pill warn">Checking</span>
+            </div>
+            <div class="pc-status-lines">
+              <div class="pc-status-line"><span>Plan</span><strong>Unknown</strong></div>
+              <div class="pc-status-line"><span>Profile source</span><strong>Pending</strong></div>
+              <div class="pc-status-line"><span>Last check</span><strong>Not yet</strong></div>
+            </div>
+          </article>
+        </section>
+
+        <section class="pc-section" id="today" aria-labelledby="today-title">
+          <div class="pc-section-head">
+            <div>
+              <div class="pc-kicker">Today</div>
+              <h2 class="pc-h2" id="today-title">What needs your attention</h2>
+              <p class="pc-section-note" id="todayNote">Live from the work you have saved across your Pro apps.</p>
+            </div>
+          </div>
+          <div class="pc-today-grid" id="todayGrid"></div>
+        </section>
+
+        <section class="pc-metrics" aria-label="Dashboard metrics">
+          <div class="pc-metric"><strong id="metricApps">20</strong><span>Pro apps</span><small>Workspace suite</small></div>
+          <div class="pc-metric"><strong id="metricClients">0</strong><span>Clients</span><small>Account-backed payroll if signed in</small></div>
+          <div class="pc-metric"><strong id="metricRuns">0</strong><span>Payroll runs</span><small>Account and device saves</small></div>
+          <div class="pc-metric"><strong id="metricQueue">0</strong><span>Work queue</span><small>Open tasks</small></div>
+          <div class="pc-metric"><strong id="metricVault">0</strong><span>Vault entries</span><small>Device and account</small></div>
+        </section>
+
+        <section class="pc-panel" aria-labelledby="whats-new-title">
+          <div class="pc-panel-head">
+            <div>
+              <div class="pc-kicker">What's new</div>
+              <h2 class="pc-h2" id="whats-new-title">Pro change line</h2>
+              <p class="pc-section-note" id="whatsNewLine">Loading from docs/CHANGELOG-PRO.md.</p>
+            </div>
+            <a class="pc-btn" href="/docs/CHANGELOG-PRO.md">Open changelog</a>
+          </div>
+        </section>
+
+        <section class="pc-section" id="apps" aria-labelledby="apps-title">
+          <div class="pc-section-head">
+            <div>
+              <div class="pc-kicker">App launcher</div>
+              <h2 class="pc-h2" id="apps-title">Your Pro apps</h2>
+              <p class="pc-section-note">Open any app from here. Payroll is connected to your account; apps marked "Early preview" keep your work on this device and say so inside the app.</p>
+            </div>
+            <span class="pc-pill online" id="registrySummary">Loading apps</span>
+          </div>
+          <div class="pc-app-grid" id="appGrid"></div>
+        </section>
+
+        <section class="pc-section" id="daily-os" aria-labelledby="daily-os-title">
+          <div class="pc-section-head">
+            <div>
+              <div class="pc-kicker">Daily operating systems</div>
+              <h2 class="pc-h2" id="daily-os-title">More apps for daily operations</h2>
+              <p class="pc-section-note">Workspaces for sellers, events, beauty, food, field service, schools, clinics, faith groups, farms, and family administration. Early previews are open to explore now.</p>
+            </div>
+            <a class="pc-btn" href="/pro/apps/daily-os/">Open Daily OS Hub</a>
+          </div>
+          <div class="pc-app-grid" id="dailyAppGrid"></div>
+        </section>
+
+        <div class="pc-layout">
+          <div>
+            <section class="pc-panel" id="activity" aria-labelledby="activity-title">
+              <div class="pc-panel-head">
+                <div>
+                  <div class="pc-kicker">Recent activity</div>
+                  <h2 class="pc-h2" id="activity-title">Payroll and workspace activity</h2>
+                  <p class="pc-section-note">Activity is sourced from AfroPayroll account saves and device saves. Workspace entries appear only as availability notes.</p>
+                </div>
+                <button class="pc-btn" type="button" id="reloadPayrollBtn">Reload payroll</button>
+              </div>
+              <div class="pc-panel-body">
+                <div class="pc-activity-list" id="activityList">
+                  <div class="pc-empty">Loading activity...</div>
+                </div>
+              </div>
+            </section>
+
+            <section class="pc-panel" id="build-status" aria-labelledby="build-title">
+              <div class="pc-panel-head">
+                <div>
+              <div class="pc-kicker">The full picture</div>
+              <h2 class="pc-h2" id="build-title">Every Pro app, honestly labelled</h2>
+              <p class="pc-section-note">What each app can do today and where your data lives — connected to your account, saved on this device, or coming later.</p>
+                </div>
+              </div>
+              <div class="pc-panel-body">
+                <div class="pc-table-wrap">
+                  <table class="pc-table" aria-label="Pro app availability">
+                    <thead>
+                      <tr>
+                        <th>App</th>
+                        <th>Open</th>
+                        <th>Status</th>
+                        <th>What it does today</th>
+                        <th>Where your data lives</th>
+                      </tr>
+                    </thead>
+                    <tbody id="buildTableBody">
+                      <tr><td colspan="5">Loading workspaces...</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <aside>
+            <section class="pc-panel" id="work-queue" aria-labelledby="queue-title">
+              <div class="pc-panel-head">
+                <div>
+                  <div class="pc-kicker">Notifications</div>
+                  <h2 class="pc-h2" id="queue-title">Work queue</h2>
+                  <p class="pc-section-note">Payroll warnings are listed first. Setup tasks stay clearly labelled until account sync is available.</p>
+                </div>
+                <span class="pc-pill warn" id="queuePill">0 open</span>
+              </div>
+              <div class="pc-panel-body">
+                <div class="pc-queue-list" id="queueList">
+                  <div class="pc-empty">Loading queue...</div>
+                </div>
+              </div>
+            </section>
+
+            <section class="pc-panel" id="plan-usage" aria-labelledby="usage-title">
+              <div class="pc-panel-head">
+                <div>
+                  <div class="pc-kicker">Plan and usage</div>
+                  <h2 class="pc-h2" id="usage-title">Current account footprint</h2>
+                  <p class="pc-section-note">Usage here is a control-surface snapshot, not billing metering.</p>
+                </div>
+              </div>
+              <div class="pc-panel-body">
+                <div class="pc-usage-grid">
+                  <div class="pc-usage-cell"><strong id="usageRoutes">20</strong><span>Linked app routes</span></div>
+                  <div class="pc-usage-cell"><strong id="usageLive">1</strong><span>Live-backed app</span></div>
+                  <div class="pc-usage-cell"><strong id="usageLocal">0</strong><span>Device payroll saves</span></div>
+                  <div class="pc-usage-cell"><strong id="usageCloud">0</strong><span>Account payroll runs</span></div>
+                </div>
+                <div class="pc-danger-note pc-note-spaced">Payroll salary data remains saved on this device until a signed-in user deliberately syncs it through the AfroPayroll API.</div>
+              </div>
+            </section>
+
+            <section class="pc-panel" id="data-vault" aria-labelledby="vault-title">
+              <div class="pc-panel-head">
+                <div>
+                  <div class="pc-kicker">Data vault</div>
+                  <h2 class="pc-h2" id="vault-title">Data entry points</h2>
+                  <p class="pc-section-note">Vault, Team, and Settings are shared across all Pro apps. Only payroll saves to your account today.</p>
+                </div>
+              </div>
+              <div class="pc-panel-body">
+                <div class="pc-vault-list" id="vaultList">
+                  <div class="pc-empty">Loading vault state...</div>
+                </div>
+                <div class="pc-command-actions pc-note-spaced">
+                  <a class="pc-btn primary" href="/tools/afropayroll-os/workspace">Open payroll data</a>
+                  <a class="pc-btn" href="/tools/afropayroll-os/support">Payroll pack support</a>
+                  <a class="pc-btn" href="/pro/vault/">Open Pro Vault</a>
+                  <a class="pc-btn" href="/pro/team/">Team and clients</a>
+                  <a class="pc-btn" href="/pro/settings/">Settings</a>
+                  <button class="pc-btn" type="button" disabled>Shared vault sync pending</button>
+                </div>
+              </div>
+            </section>
+          </aside>
+        </div>
+
+        <div class="pc-last-updated" id="lastUpdated">Waiting for first refresh.</div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+  (function () {
+    "use strict";
+
+    var API = "/api/afropayroll";
+    var SAVED_RUNS_KEY = "afropayroll_pro_saved_runs";
+    var DRAFT_KEY = "afropayroll_pro_workspace_preview";
+    var EMPLOYEE_KEY = "afropayroll_pro_employee_master";
+
+    var state = {
+      proStatus: null,
+      cloud: { runs: [], clients: [], companies: [], dashboard: {}, error: "", source: "not-loaded" },
+      history: [],
+      local: { savedRuns: [], employees: [], employeeCount: 0, hasDraft: false, draft: null, reviewCount: 0, rowCount: 0 },
+      queue: []
+    };
+
+    var els = {};
+    var appNavOverrides = {
+      payroll: { routeStatus: "active", shellState: "Active", statusTone: "ready", routeExists: true },
+      "tax-compliance": { routeStatus: "shell", shellState: "Review packet only", statusTone: "shell", routeExists: true },
+      books: { routeStatus: "shell", shellState: "Local preview only", statusTone: "shell", routeExists: true },
+      hr: { routeStatus: "shell", shellState: "Local preview only", statusTone: "shell", routeExists: true },
+      "trade-desk": { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true },
+      "legal-desk": {
+        route: "/pro/apps/legal-desk/",
+        fallbackRoute: "/pro/apps/legal/",
+        routeStatus: "shell",
+        shellState: "Workspace preview",
+        statusTone: "shell",
+        routeExists: true,
+        buildStatus: "Legal workspace opens the current document and review workspace.",
+        dataModel: "Saved legal workspace data on this device while account save is planned."
+      },
+      "grants-tenders": { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true },
+      "creator-studio": { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true },
+      "stream-intelligence": {
+        routeStatus: "limited preview",
+        shellState: "Limited preview",
+        statusTone: "schema",
+        routeExists: true,
+        buildStatus: "Verified source controls and privacy boundaries are being finalized before broader Pro use.",
+        dataModel: "Limited preview built around public source checks and review notes.",
+        needsAttention: "Account-saved review queues and private intelligence controls are still being finalized."
+      },
+      "property-projects": { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true }
+    };
+
+    function byId(id) {
+      return document.getElementById(id);
+    }
+
+    function text(value, fallback) {
+      value = value === undefined || value === null ? "" : String(value);
+      value = value.trim();
+      return value || fallback || "";
+    }
+
+    function number(value) {
+      var parsed = Number(value);
+      return Number.isFinite(parsed) ? parsed : 0;
+    }
+
+    function readJson(key, fallback) {
+      try {
+        var raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+      } catch (err) {
+        return fallback;
+      }
+    }
+
+    function asArray(value) {
+      return Array.isArray(value) ? value : [];
+    }
+
+    function dateLabel(value) {
+      if (!value) return "-";
+      var date = new Date(value);
+      if (Number.isNaN(date.getTime())) return String(value).slice(0, 10);
+      return date.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "2-digit" });
+    }
+
+    function timeLabel(value) {
+      if (!value) return "No timestamp";
+      var date = new Date(value);
+      if (Number.isNaN(date.getTime())) return String(value).slice(0, 19);
+      return date.toLocaleString(undefined, { month: "short", day: "2-digit", hour: "2-digit", minute: "2-digit" });
+    }
+
+    function create(tag, className, content) {
+      var node = document.createElement(tag);
+      if (className) node.className = className;
+      if (content !== undefined && content !== null) node.textContent = String(content);
+      return node;
+    }
+
+    function clear(node) {
+      if (!node) return;
+      while (node.firstChild) node.removeChild(node.firstChild);
+    }
+
+    function pill(label, tone) {
+      var node = create("span", "pc-pill " + (tone || ""), label);
+      return node;
+    }
+
+    function linkButton(label, route, primary) {
+      var node = create("a", "pc-btn" + (primary ? " primary" : ""), label);
+      node.setAttribute("href", route);
+      return node;
+    }
+
+    function trackAppOpen(appId, source) {
+      try {
+        if (window.AfroTools && window.AfroTools.analytics && window.AfroTools.analytics.trackProAppOpen) {
+          window.AfroTools.analytics.trackProAppOpen(appId, source || "pro-workspace");
+        }
+      } catch (err) {}
+    }
+
+    function registry() {
+      return window.AfroProAppRegistry || (window.AfroTools && window.AfroTools.proAppRegistry) || null;
+    }
+
+    function insights() {
+      return window.AfroProHomeInsights || (window.AfroTools && window.AfroTools.proHomeInsights) || null;
+    }
+
+    function humanePill(routeStatus, shellState) {
+      var api = insights();
+      if (api && api.humaneStatus) return api.humaneStatus(routeStatus, shellState);
+      return { label: shellState || "Early preview", tone: "local" };
+    }
+
+    function currentBusinessType() {
+      var api = insights();
+      return api && api.getBusinessType ? api.getBusinessType(localStorage) : "";
+    }
+
+    function orderForBusiness(apps) {
+      var api = insights();
+      var type = currentBusinessType();
+      if (!api || !type || !api.orderAppsForBusiness) return apps;
+      return api.orderAppsForBusiness(apps, type);
+    }
+
+    function getApps() {
+      var api = registry();
+      var apps = (api && api.getApps ? api.getApps() : []).map(function (app) {
+        return Object.assign({}, app, appNavOverrides[app.id] || {});
+      });
+      return orderForBusiness(apps);
+    }
+
+    function dailyRegistry() {
+      return window.AfroProDailyOsRegistry || (window.AfroTools && window.AfroTools.proDailyOsRegistry) || null;
+    }
+
+    function architecture() {
+      return window.AfroProArchitecture || (window.AfroTools && window.AfroTools.proArchitecture) || null;
+    }
+
+    function getDailyApps() {
+      var api = dailyRegistry();
+      return orderForBusiness(api && api.getApps ? api.getApps() : []);
+    }
+
+    function safeDailyRoute(app) {
+      var api = dailyRegistry();
+      if (api && api.safeRoute) return api.safeRoute(app);
+      return app && app.route || "/pro/apps/daily-os/";
+    }
+
+    function getBuildSummary() {
+      return getApps().reduce(function (summary, app) {
+        summary.total += 1;
+        if (app.routeStatus === "active") summary.live += 1;
+        if (app.routeStatus === "shell") summary.localShell += 1;
+        if (app.routeStatus === "planned") summary.comingOnline += 1;
+        if (app.routeStatus === "blocked") summary.setupNeeded += 1;
+        if (app.shellState === "Account setup pending") summary.needsSchema += 1;
+        return summary;
+      }, { total: 0, live: 0, setupNeeded: 0, comingOnline: 0, localShell: 0, needsSchema: 0 });
+    }
+
+    function appTone(app) {
+      return app && app.statusTone ? app.statusTone : "";
+    }
+
+    function safeAppRoute(app) {
+      var api = registry();
+      if (api && api.safeRoute) return api.safeRoute(app);
+      if (app && app.routeExists === false) return app.fallbackRoute || "/pro/apps/";
+      return app && app.route || "/pro/apps/";
+    }
+
+    function appActionLabel(app) {
+      return app && app.routeExists === false ? "View directory" : app && app.primaryAction || "Open workspace";
+    }
+
+    function initials(profile) {
+      var email = text(profile && profile.email, "");
+      var name = text(profile && (profile.name || profile.full_name), "");
+      var source = name || email || "PRO";
+      var parts = source.split(/[^\w]+/).filter(Boolean);
+      if (parts.length >= 2) return (parts[0].charAt(0) + parts[1].charAt(0)).toUpperCase();
+      return source.slice(0, 3).toUpperCase();
+    }
+
+    function authToken() {
+      try {
+        return window.AfroAuth && window.AfroAuth.getSessionToken ? window.AfroAuth.getSessionToken() : "";
+      } catch (err) {
+        return "";
+      }
+    }
+
+    function countEmployees(value) {
+      if (Array.isArray(value)) return value.length;
+      if (value && typeof value === "object") {
+        if (Array.isArray(value.employees)) return value.employees.length;
+        if (Array.isArray(value.records)) return value.records.length;
+        return Object.keys(value).length;
+      }
+      return 0;
+    }
+
+    function localReviewRows(savedRuns) {
+      var count = 0;
+      savedRuns.forEach(function (run) {
+        var summary = run && run.summary || {};
+        count += number(summary.reviewRows || summary.needsReviewRows || summary.estimateRows);
+        asArray(run && run.rows).forEach(function (row) {
+          var rowStatus = text(row && (row.status || row.rowStatus || row.countryPackStatus), "").toLowerCase();
+          var warning = text(row && (row.warning || row.warningText), "");
+          if (rowStatus.indexOf("review") >= 0 || rowStatus.indexOf("estimate") >= 0 || warning) count += 1;
+        });
+      });
+      return count;
+    }
+
+    function readLocalPayroll() {
+      var savedRuns = asArray(readJson(SAVED_RUNS_KEY, []));
+      var employeeStore = readJson(EMPLOYEE_KEY, []);
+      var draft = readJson(DRAFT_KEY, null);
+      var rowCount = 0;
+      savedRuns.forEach(function (run) {
+        rowCount += asArray(run && run.rows).length;
+      });
+      return {
+        savedRuns: savedRuns,
+        employees: Array.isArray(employeeStore) ? employeeStore : [],
+        employeeCount: countEmployees(employeeStore),
+        hasDraft: !!(draft && (draft.companyName || draft.payPeriod || asArray(draft.rows).length)),
+        draft: draft,
+        reviewCount: localReviewRows(savedRuns),
+        rowCount: rowCount
+      };
+    }
+
+    async function readProStatus() {
+      if (!window.AfroProGate || !window.AfroProGate.getStatus) {
+        return { isPro: false, reason: "gate-unavailable", user: null, profile: null };
+      }
+      return window.AfroProGate.getStatus({ fresh: true });
+    }
+
+    async function loadPayrollDashboard() {
+      var token = authToken();
+      if (!token) {
+        return { runs: [], clients: [], companies: [], dashboard: {}, error: "", source: "signed-out" };
+      }
+
+      var res = await fetch(API + "?action=dashboard&limit=100&client_run_limit=1000", {
+        headers: { Authorization: "Bearer " + token, Accept: "application/json" },
+        credentials: "same-origin"
+      });
+      var data = await res.json();
+      if (!res.ok) throw new Error(data && data.error ? data.error : "Payroll dashboard failed");
+      return {
+        runs: asArray(data.runs),
+        clients: asArray(data.clients),
+        companies: asArray(data.companies),
+        dashboard: data.dashboard || {},
+        error: "",
+        source: "api"
+      };
+    }
+
+    async function loadAccountHistory() {
+      var token = authToken();
+      if (!token) return [];
+      var res = await fetch("/api/history?limit=8", {
+        headers: { Authorization: "Bearer " + token, Accept: "application/json" },
+        credentials: "same-origin"
+      });
+      var data = await res.json();
+      if (!res.ok) throw new Error(data && data.error ? data.error : "History failed");
+      return asArray(data.data);
+    }
+
+    async function renderWhatsNew() {
+      if (!els.whatsNewLine) return;
+      try {
+        var res = await fetch("/docs/CHANGELOG-PRO.md", { cache: "no-cache" });
+        if (!res.ok) throw new Error("Changelog not available");
+        var textBody = await res.text();
+        var line = textBody.split("\n").find(function (line) { return line.indexOf("- ") === 0; });
+        els.whatsNewLine.textContent = line ? line.replace(/^- /, "") : "No Pro changelog entries yet.";
+      } catch (err) {
+        els.whatsNewLine.textContent = "See docs/CHANGELOG-PRO.md for the current Pro change log.";
+      }
+    }
+
+    function renderSidebar(apps) {
+      clear(els.sideAppList);
+      apps.forEach(function (app) {
+        var item = create("a", "pc-side-app");
+        item.setAttribute("href", safeAppRoute(app));
+        item.setAttribute("title", app.routeExists === false ? app.route + " is not created yet" : app.route);
+        var mark = create("span", "pc-side-mark", app.mark);
+        var copy = create("span", "");
+        copy.appendChild(create("span", "pc-side-name", app.shortName || app.name));
+        copy.appendChild(create("span", "pc-side-state", humanePill(app.routeStatus, app.shellState).label));
+        item.appendChild(mark);
+        item.appendChild(copy);
+        els.sideAppList.appendChild(item);
+      });
+      if (els.sideBuildCount) els.sideBuildCount.textContent = String(apps.length);
+    }
+
+    function renderProStatus() {
+      var status = state.proStatus || {};
+      var profile = status.profile || status.user || {};
+      var profileEmail = text(profile.email, "Not signed in");
+      var tier = text(profile.subscription_tier || profile.tier || profile.plan, status.isPro ? "pro" : "free");
+      var expires = profile.subscription_expires_at || profile.pro_expires_at || profile.expires_at || "";
+      var source = status.reason || "unknown";
+      var isPro = !!status.isPro;
+
+      clear(els.proStatusCard);
+      var head = create("div", "pc-status-head");
+      var copy = create("div", "");
+      copy.appendChild(create("div", "pc-status-title", "Pro status"));
+      copy.appendChild(create("div", "pc-status-main", isPro ? "Pro access active" : "Pro access not active"));
+      copy.appendChild(create("p", "pc-status-note", isPro ? profileEmail : "Sign in with a Pro-enabled account to unlock this control surface."));
+      head.appendChild(copy);
+      head.appendChild(pill(isPro ? "Pro active" : "Locked", isPro ? "pro" : "lock"));
+      els.proStatusCard.appendChild(head);
+
+      var reasonLabel = insights() && insights().humaneReason ? insights().humaneReason(source) : source;
+      var lines = create("div", "pc-status-lines");
+      [
+        ["Plan", tier],
+        ["Checked against", reasonLabel],
+        ["Renews or expires", expires ? dateLabel(expires) : "No end date on file"]
+      ].forEach(function (row) {
+        var line = create("div", "pc-status-line");
+        line.appendChild(create("span", "", row[0]));
+        line.appendChild(create("strong", "", row[1]));
+        lines.appendChild(line);
+      });
+      els.proStatusCard.appendChild(lines);
+
+      clear(els.topAccount);
+      els.topAccount.appendChild(create("div", "pc-avatar", initials(profile)));
+      var accountText = create("div", "pc-account-text");
+      accountText.appendChild(create("div", "pc-account-name", profileEmail));
+      accountText.appendChild(create("div", "pc-account-note", isPro ? "Pro active - " + tier : "Profile is not reading as Pro"));
+      els.topAccount.appendChild(accountText);
+    }
+
+    function dashboardReviewCount() {
+      var dashboard = state.cloud.dashboard || {};
+      return number(dashboard.needs_review_runs) + number(dashboard.warning_rows) + number(dashboard.approval_runs) + state.local.reviewCount;
+    }
+
+    function knownWorkspaceCount() {
+      var cloudClients = asArray(state.cloud.clients).length;
+      var localNamed = {};
+      state.local.savedRuns.forEach(function (run) {
+        var name = text(run && (run.companyName || run.clientName || run.title), "");
+        if (name) localNamed[name] = true;
+      });
+      if (state.local.draft && (state.local.draft.companyName || state.local.draft.client)) {
+        localNamed[text(state.local.draft.companyName || state.local.draft.client && state.local.draft.client.name, "Local draft")] = true;
+      }
+      return cloudClients + Object.keys(localNamed).length;
+    }
+
+    function vaultCount() {
+      return state.local.savedRuns.length + state.local.employeeCount + asArray(state.cloud.runs).length + asArray(state.cloud.clients).length + getApps().length + getDailyApps().length;
+    }
+
+    function renderMetrics() {
+      var apps = getApps();
+      var dailyApps = getDailyApps();
+      var summary = getBuildSummary();
+      var arch = architecture();
+      var archSummary = arch && arch.getSummary ? arch.getSummary() : null;
+      var totalApps = archSummary ? archSummary.totalApps : apps.length + dailyApps.length;
+      var readyAppRoutes = archSummary ? archSummary.appRoutesReady : apps.filter(function (app) { return app.routeExists !== false; }).length + dailyApps.filter(function (app) { return app.routeExists !== false; }).length;
+      var cloudRuns = asArray(state.cloud.runs).length;
+      var localRuns = state.local.savedRuns.length;
+      var queueCount = state.queue.length;
+      els.metricApps.textContent = String(totalApps);
+      els.metricClients.textContent = String(asArray(state.cloud.clients).length);
+      els.metricRuns.textContent = String(cloudRuns + localRuns);
+      els.metricQueue.textContent = String(queueCount);
+      els.metricVault.textContent = String(vaultCount());
+      els.attentionCount.textContent = String(dashboardReviewCount());
+      els.activeWorkspaceCount.textContent = String(knownWorkspaceCount());
+      els.liveAppCount.textContent = String(readyAppRoutes) + "/" + String(totalApps);
+      els.usageRoutes.textContent = String(totalApps);
+      els.usageLive.textContent = String(summary.live || 0);
+      els.usageLocal.textContent = String(localRuns);
+      els.usageCloud.textContent = String(cloudRuns);
+      els.registrySummary.textContent = String(totalApps) + " apps";
+      els.systemModePill.textContent = state.cloud.source === "api" ? "Account connected" : "Working on this device";
+      els.systemModePill.className = "pc-pill " + (state.cloud.source === "api" ? "real" : "online");
+    }
+
+    function renderWorkspaceSelect() {
+      clear(els.workspaceSelect);
+      var clients = asArray(state.cloud.clients);
+      if (clients.length) {
+        clients.forEach(function (client) {
+          var option = create("option", "", text(client.name || client.companyName, "Payroll client"));
+          option.value = client.id || client.clientId || "";
+          els.workspaceSelect.appendChild(option);
+        });
+        return;
+      }
+
+      var localNames = {};
+      state.local.savedRuns.forEach(function (run) {
+        var name = text(run && (run.companyName || run.clientName || run.title), "");
+        if (name) localNames[name] = true;
+      });
+      Object.keys(localNames).forEach(function (name) {
+        var option = create("option", "", name + " - saved on this device");
+        option.value = name;
+        els.workspaceSelect.appendChild(option);
+      });
+      if (!els.workspaceSelect.options.length) {
+        var placeholder = create("option", "", "No account client selected yet");
+        placeholder.value = "";
+        els.workspaceSelect.appendChild(placeholder);
+      }
+    }
+
+    function payrollCardText() {
+      var dashboard = state.cloud.dashboard || {};
+      var cloudRuns = asArray(state.cloud.runs).length;
+      var localRuns = state.local.savedRuns.length;
+      var review = dashboardReviewCount();
+      if (cloudRuns) {
+        return "Real dashboard: " + cloudRuns + " account-saved runs, " + number(dashboard.total_rows) + " rows, " + review + " review signals.";
+      }
+      if (localRuns) {
+        return "Device payroll state: " + localRuns + " browser saves, " + state.local.rowCount + " saved rows, " + review + " review signals.";
+      }
+      return "Ready to read real AfroPayroll dashboard data after a Pro user syncs payroll runs.";
+    }
+
+    function renderApps() {
+      var apps = getApps();
+      clear(els.appGrid);
+      apps.forEach(function (app) {
+        var isPayroll = app.id === "payroll";
+        var card = create("article", "pc-app");
+        var top = create("div", "pc-app-top");
+        top.appendChild(create("div", "pc-app-mark", app.mark));
+        var hasPayrollData = isPayroll && (asArray(state.cloud.runs).length || state.local.savedRuns.length);
+        var appStatus = humanePill(app.routeStatus, app.shellState);
+        top.appendChild(pill(hasPayrollData ? "Your data is in" : appStatus.label, hasPayrollData ? "real" : appStatus.tone));
+        card.appendChild(top);
+
+        var titleWrap = create("div", "");
+        titleWrap.appendChild(create("h3", "", app.name));
+        titleWrap.appendChild(create("div", "pc-app-domain", app.domain));
+        card.appendChild(titleWrap);
+        card.appendChild(create("p", "", isPayroll ? payrollCardText() : app.summary));
+
+        var tags = create("div", "pc-app-tags");
+        asArray(app.tags).forEach(function (tag) {
+          tags.appendChild(pill(tag, ""));
+        });
+        card.appendChild(tags);
+
+        var actions = create("div", "pc-app-actions");
+        var openAction = linkButton(appActionLabel(app), safeAppRoute(app), isPayroll && app.routeExists !== false);
+        openAction.addEventListener("click", function () { trackAppOpen(app.id, "pro-workspace-control"); });
+        actions.appendChild(openAction);
+        if (app.fallbackRoute && app.routeExists !== false) {
+          var fallbackAction = linkButton(app.secondaryAction || "Open workspace", app.fallbackRoute, false);
+          fallbackAction.addEventListener("click", function () { trackAppOpen(app.id, "pro-workspace-fallback"); });
+          actions.appendChild(fallbackAction);
+        }
+        card.appendChild(actions);
+
+        els.appGrid.appendChild(card);
+      });
+    }
+
+    function renderDailyApps() {
+      var apps = getDailyApps();
+      clear(els.dailyAppGrid);
+      if (!els.dailyAppGrid) return;
+      apps.forEach(function (app) {
+        var card = create("article", "pc-app");
+        var top = create("div", "pc-app-top");
+        top.appendChild(create("div", "pc-app-mark", app.mark));
+        var dailyStatus = humanePill("", app.shellState);
+        top.appendChild(pill(dailyStatus.label, dailyStatus.tone));
+        card.appendChild(top);
+
+        var titleWrap = create("div", "");
+        titleWrap.appendChild(create("h3", "", app.name));
+        titleWrap.appendChild(create("div", "pc-app-domain", app.category));
+        card.appendChild(titleWrap);
+        card.appendChild(create("p", "", app.oneLine));
+
+        var tags = create("div", "pc-app-tags");
+        asArray(app.firstBuild).slice(0, 3).forEach(function (tag) {
+          tags.appendChild(pill(tag, ""));
+        });
+        card.appendChild(tags);
+
+        var actions = create("div", "pc-app-actions");
+        var openDaily = linkButton("Open workspace", safeDailyRoute(app), app.priority <= 3);
+        openDaily.addEventListener("click", function () { trackAppOpen(app.id, "pro-workspace-daily"); });
+        var launchPlan = linkButton("Launch plan", safeDailyRoute(app) + "#setup-brief", false);
+        launchPlan.addEventListener("click", function () { trackAppOpen(app.id, "pro-workspace-launch-plan"); });
+        actions.appendChild(openDaily);
+        actions.appendChild(launchPlan);
+        card.appendChild(actions);
+
+        els.dailyAppGrid.appendChild(card);
+      });
+    }
+
+    function buildActivityItems() {
+      var items = [];
+      asArray(state.cloud.runs).slice(0, 5).forEach(function (run) {
+        items.push({
+          title: text(run.company_name || run.title, "Payroll run"),
+          meta: "Account payroll - " + text(run.status, "draft") + " - pay " + dateLabel(run.pay_date),
+          time: run.updated_at || run.created_at || "",
+          tone: number(run.warning_count) || number(run.needs_review_count) ? "warn" : "real",
+          label: "Account"
+        });
+      });
+      state.local.savedRuns.slice(0, 5).forEach(function (run) {
+        items.push({
+          title: text(run.companyName || run.title, "Device payroll save"),
+          meta: "Saved on this device - " + text(run.payPeriod, "No period") + " - " + asArray(run.rows).length + " rows",
+          time: run.savedAt || run.updatedAt || run.lastCalculatedAt || "",
+          tone: "local",
+          label: "Device"
+        });
+      });
+      asArray(state.history).slice(0, 5).forEach(function (entry) {
+        items.push({
+          title: text(entry.tool_name || entry.tool_slug, "Saved calculation"),
+          meta: "Account history - " + text(entry.country_code || entry.currency, "general") + " - /api/history",
+          time: entry.created_at || entry.updated_at || "",
+          tone: "real",
+          label: "History"
+        });
+      });
+      items.sort(function (a, b) {
+        return Date.parse(b.time || 0) - Date.parse(a.time || 0);
+      });
+      if (!items.length) {
+        items.push({
+          title: "Pro app launcher loaded",
+          meta: "Workspace availability for the Pro suite is available. Payroll data appears after account sync or device saves.",
+          time: new Date().toISOString(),
+          tone: "online",
+          label: "Workspace preview"
+        });
+      }
+      return items.slice(0, 8);
+    }
+
+    function renderActivity() {
+      clear(els.activityList);
+      buildActivityItems().forEach(function (item) {
+        var row = create("article", "pc-activity");
+        var copy = create("div", "");
+        copy.appendChild(create("h3", "pc-row-title", item.title));
+        copy.appendChild(create("div", "pc-row-meta", item.meta + " - " + timeLabel(item.time)));
+        row.appendChild(copy);
+        var actions = create("div", "pc-row-actions");
+        actions.appendChild(pill(item.label, item.tone));
+        row.appendChild(actions);
+        els.activityList.appendChild(row);
+      });
+    }
+
+    function buildQueue() {
+      var queue = [];
+      var dashboard = state.cloud.dashboard || {};
+      var cloudRuns = asArray(state.cloud.runs);
+      var clients = asArray(state.cloud.clients);
+      var review = number(dashboard.needs_review_runs) + number(dashboard.warning_rows) + number(dashboard.approval_runs);
+
+      if (state.cloud.error) {
+        queue.push({ title: "Payroll dashboard did not load", copy: state.cloud.error, label: "Real", tone: "warn" });
+      }
+      if (!state.proStatus || !state.proStatus.isPro) {
+        queue.push({ title: "Pro access is locked", copy: "This dashboard needs an active Pro profile before save-to-account work opens.", label: "Access", tone: "lock" });
+      }
+      if (review > 0) {
+        queue.push({ title: "Payroll items need review", copy: review + " account-saved payroll review or approval signals need attention.", label: "Payroll", tone: "warn" });
+      }
+      if (state.local.reviewCount > 0) {
+        queue.push({ title: "Device payroll saves have warnings", copy: state.local.reviewCount + " review signals exist on this device and are not account-synced records.", label: "Device", tone: "local" });
+      }
+      if (state.local.savedRuns.length && !cloudRuns.length) {
+        queue.push({ title: "Device payroll runs are not synced", copy: "Saved runs exist on this device, but no account-saved payroll run was returned by the API.", label: "Device", tone: "local" });
+      }
+      if (!clients.length) {
+        queue.push({ title: "No payroll client selected", copy: "The workspace selector will show payroll clients after they are available from the account dashboard.", label: "Workspace", tone: "online" });
+      }
+
+      getApps().forEach(function (app) {
+        if (app.id === "payroll") return;
+        if (app.routeStatus === "blocked" || app.shellState === "Account setup pending" || app.shellState === "Setup needed") {
+          queue.push({ title: app.name + " needs account setup", copy: app.needsAttention, label: app.shellState, tone: appTone(app) });
+        }
+      });
+
+      state.queue = queue;
+    }
+
+    function renderQueue() {
+      clear(els.queueList);
+      buildQueue();
+      if (!state.queue.length) {
+        els.queueList.appendChild(create("div", "pc-empty", "No open work queue items from the current payroll dashboard or app launcher."));
+      } else {
+        state.queue.slice(0, 8).forEach(function (item) {
+          var row = create("article", "pc-queue-item");
+          var top = create("div", "pc-queue-top");
+          top.appendChild(create("h3", "pc-row-title", item.title));
+          top.appendChild(pill(item.label, item.tone));
+          row.appendChild(top);
+          row.appendChild(create("p", "pc-queue-copy", item.copy));
+          els.queueList.appendChild(row);
+        });
+      }
+      els.queuePill.textContent = String(state.queue.length) + " open";
+      els.sideQueueCount.textContent = String(state.queue.length);
+    }
+
+    function renderVault() {
+      clear(els.vaultList);
+      var rows = [
+        ["Payroll saved in this browser", state.local.savedRuns.length, "Payroll runs you saved on this device.", "local"],
+        ["Employee records", state.local.employeeCount, "Employee records saved on this device from the payroll workspace.", "local"],
+        ["Payroll runs on your account", asArray(state.cloud.runs).length, "Runs saved to your signed-in account.", "real"],
+        ["Payroll clients on your account", asArray(state.cloud.clients).length, "Client records saved to your signed-in account.", "real"],
+        ["Shared vault across apps", "Coming later", "One vault for every app's documents is not connected yet.", "warn"]
+      ];
+      rows.forEach(function (row) {
+        var item = create("article", "pc-vault-row");
+        var copy = create("div", "");
+        copy.appendChild(create("h3", "pc-row-title", row[0]));
+        copy.appendChild(create("div", "pc-row-meta", row[2]));
+        item.appendChild(copy);
+        var right = create("div", "pc-row-actions");
+        right.appendChild(create("span", "pc-vault-count", row[1]));
+        right.appendChild(pill(row[3] === "real" ? "Account" : row[3] === "local" ? "Device" : "Workspace preview", row[3]));
+        item.appendChild(right);
+        els.vaultList.appendChild(item);
+      });
+    }
+
+    function renderBuildStatus() {
+      var apps = getApps();
+      clear(els.buildTableBody);
+      apps.forEach(function (app) {
+        var tr = document.createElement("tr");
+        var name = document.createElement("td");
+        name.appendChild(create("strong", "", app.name));
+        name.appendChild(create("div", "pc-row-meta", app.domain + " - " + app.owner));
+        var route = document.createElement("td");
+        var routeLink = create("a", "", "Open " + (app.shortName || app.name));
+        routeLink.setAttribute("href", safeAppRoute(app));
+        route.appendChild(routeLink);
+        if (app.routeExists === false) route.appendChild(create("div", "pc-row-meta", "Not available yet."));
+        var stateCell = document.createElement("td");
+        var rowStatus = humanePill(app.routeStatus, app.shellState);
+        stateCell.appendChild(pill(rowStatus.label, rowStatus.tone));
+        var build = document.createElement("td");
+        build.textContent = app.buildStatus;
+        var data = document.createElement("td");
+        data.textContent = app.dataModel;
+        [name, route, stateCell, build, data].forEach(function (cell) {
+          tr.appendChild(cell);
+        });
+        els.buildTableBody.appendChild(tr);
+      });
+    }
+
+    function renderBizPicker() {
+      var api = insights();
+      if (!els.bizTypeRow || !api || !api.BUSINESS_TYPES) return;
+      clear(els.bizTypeRow);
+      var current = currentBusinessType();
+      els.bizTypeRow.appendChild(create("span", "pc-biz-label", current ? "Your business:" : "What do you run? Pick one to arrange your apps:"));
+      api.BUSINESS_TYPES.forEach(function (type) {
+        var chip = create("button", "pc-biz-chip" + (type.id === current ? " active" : ""), type.label);
+        chip.type = "button";
+        chip.addEventListener("click", function () {
+          api.setBusinessType(localStorage, type.id);
+          renderBizPicker();
+          renderSidebar(getApps());
+          renderApps();
+          renderDailyApps();
+          renderToday();
+        });
+        els.bizTypeRow.appendChild(chip);
+      });
+    }
+
+    function renderToday() {
+      var api = insights();
+      if (!els.todayGrid) return;
+      clear(els.todayGrid);
+      var cards = api && api.getTodayCards ? api.getTodayCards(localStorage) : [];
+      if (state.cloud.source === "api" && asArray(state.cloud.runs).length) {
+        var dashboard = state.cloud.dashboard || {};
+        var review = number(dashboard.needs_review_runs) + number(dashboard.warning_rows) + number(dashboard.approval_runs);
+        cards.unshift({
+          id: "payroll-account",
+          title: "Payroll on your account",
+          value: asArray(state.cloud.runs).length + " runs",
+          meta: review > 0 ? review + " review or approval signals need attention." : "No open review flags on account-saved runs.",
+          tone: review > 0 ? "warn" : "real",
+          href: "/tools/afropayroll-os/workspace",
+          cta: "Open payroll"
+        });
+      }
+      if (!cards.length) {
+        var type = currentBusinessType();
+        var api2 = insights();
+        var suggestion = create("div", "pc-empty");
+        suggestion.style.gridColumn = "1 / -1";
+        var typeEntry = api2 && api2.BUSINESS_TYPES ? api2.BUSINESS_TYPES.filter(function (entry) { return entry.id === type; })[0] : null;
+        suggestion.textContent = typeEntry
+          ? "Nothing needs attention yet. Start with " + typeEntry.label + " basics: open an app below and save your first records — they will show up here."
+          : "Nothing here yet. Pick your business type above, then open an app below — the work you save shows up here.";
+        els.todayGrid.appendChild(suggestion);
+        if (els.todayNote) els.todayNote.textContent = "This board fills up as you save work in your Pro apps.";
+        return;
+      }
+      cards.slice(0, 8).forEach(function (card) {
+        var node = create("article", "pc-today-card");
+        var head = create("div", "pc-today-head");
+        head.appendChild(create("h3", "pc-today-title", card.title));
+        head.appendChild(pill(card.tone === "warn" ? "Action" : card.tone === "real" ? "Account" : "On this device", card.tone === "real" ? "real" : card.tone));
+        node.appendChild(head);
+        node.appendChild(create("div", "pc-today-value", card.value));
+        node.appendChild(create("p", "pc-today-meta", card.meta));
+        node.appendChild(linkButton(card.cta || "Open", card.href, card.tone === "warn"));
+        els.todayGrid.appendChild(node);
+      });
+      if (els.todayNote) els.todayNote.textContent = "Live from the work you have saved across your Pro apps.";
+    }
+
+    function refreshLastUpdated() {
+      els.lastUpdated.textContent = "Last refreshed " + timeLabel(new Date().toISOString()) + ". Payroll account data source: " + state.cloud.source + ".";
+    }
+
+    async function refreshAll() {
+      state.local = readLocalPayroll();
+      try {
+        state.proStatus = await readProStatus();
+      } catch (err) {
+        state.proStatus = { isPro: false, reason: "gate-error", user: null, profile: null, error: err.message || String(err) };
+      }
+      try {
+        state.cloud = await loadPayrollDashboard();
+      } catch (err) {
+        state.cloud = { runs: [], clients: [], companies: [], dashboard: {}, error: err.message || String(err), source: "api-error" };
+      }
+      try {
+        state.history = await loadAccountHistory();
+      } catch (err) {
+        state.history = [];
+      }
+
+      renderProStatus();
+      renderWorkspaceSelect();
+      renderBizPicker();
+      renderToday();
+      renderApps();
+      renderDailyApps();
+      renderActivity();
+      renderQueue();
+      renderVault();
+      renderBuildStatus();
+      renderMetrics();
+      refreshLastUpdated();
+    }
+
+    function bindElements() {
+      [
+        "sideAppList", "sideQueueCount", "sideBuildCount", "workspaceSelect", "topAccount", "refreshBtn",
+        "proStatusCard", "systemModePill", "attentionCount", "activeWorkspaceCount", "liveAppCount",
+        "metricApps", "metricClients", "metricRuns", "metricQueue", "metricVault", "registrySummary",
+        "appGrid", "dailyAppGrid", "activityList", "reloadPayrollBtn", "buildTableBody", "queuePill", "queueList",
+        "usageRoutes", "usageLive", "usageLocal", "usageCloud", "vaultList", "lastUpdated", "whatsNewLine",
+        "todayGrid", "todayNote", "bizTypeRow"
+      ].forEach(function (id) {
+        els[id] = byId(id);
+      });
+    }
+
+    function scrollToId(id) {
+      var target = byId(id);
+      if (target && target.scrollIntoView) target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function boot() {
+      bindElements();
+      var apps = getApps();
+      renderSidebar(apps);
+      renderBizPicker();
+      renderToday();
+      renderBuildStatus();
+      renderApps();
+      renderDailyApps();
+      renderMetrics();
+      renderWhatsNew();
+      els.refreshBtn.addEventListener("click", refreshAll);
+      els.reloadPayrollBtn.addEventListener("click", refreshAll);
+      byId("focusQueueBtn").addEventListener("click", function () { scrollToId("work-queue"); });
+      byId("focusVaultBtn").addEventListener("click", function () { scrollToId("data-vault"); });
+      window.addEventListener("afro-auth-change", refreshAll);
+      refreshAll();
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", boot);
+    } else {
+      boot();
+    }
+  })();
+  </script>
+</body>
+</html>

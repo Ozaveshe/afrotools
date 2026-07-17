@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+    <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>API Keys | Developer Dashboard | AfroTools</title>
+    <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+    <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+    <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+    <link rel="stylesheet" href="/assets/css/dashboard.css?v=21111c0e">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap"></noscript>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: #F8FAFD;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            text-transform: none;
+            letter-spacing: -0.02em;
+        }
+        body { min-height: 100vh; display: flex; flex-direction: column; }
+        main { flex: 1; padding: 2rem 1rem; max-width: 1200px; margin: 0 auto; width: 100%; }
+
+        .breadcrumb { font-size: 0.875rem; color: #64748b; margin-bottom: 2rem; }
+        .breadcrumb a { color: #0062CC; text-decoration: none; }
+        .breadcrumb a:hover { text-decoration: underline; }
+
+        /* Auth gate */
+        .auth-container {
+            max-width: 480px; margin: 2rem auto; background: white;
+            border-radius: 0.875rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 2rem;
+        }
+
+        /* Dashboard content */
+        #dashboardSection { display: none; }
+        #dashboardSection.active { display: block; }
+
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+        .page-header h1 { font-size: 1.75rem; font-weight: 700; color: #0A1628; }
+
+        .btn-primary {
+            background: #0062CC; color: white; border: none; padding: 0.75rem 1.5rem;
+            border-radius: 10px; font-family: 'DM Sans', sans-serif; font-weight: 600;
+            font-size: 0.95rem; cursor: pointer; transition: background 0.2s;
+        }
+        .btn-primary:hover { background: #0062cc; }
+
+        .btn-secondary {
+            background: #f1f5f9; color: #334155; border: 1px solid #e2e8f0; padding: 0.5rem 1rem;
+            border-radius: 8px; font-family: 'DM Sans', sans-serif; font-weight: 500;
+            font-size: 0.85rem; cursor: pointer; transition: background 0.2s;
+        }
+        .btn-secondary:hover { background: #e2e8f0; }
+
+        .btn-danger {
+            background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; padding: 0.5rem 1rem;
+            border-radius: 8px; font-family: 'DM Sans', sans-serif; font-weight: 500;
+            font-size: 0.85rem; cursor: pointer; transition: background 0.2s;
+        }
+        .btn-danger:hover { background: #fecaca; }
+
+        /* Plan card */
+        .plan-card {
+            background: white; border-radius: 0.875rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 1.5rem; margin-bottom: 2rem; display: flex; justify-content: space-between;
+            align-items: center; flex-wrap: wrap; gap: 1rem;
+        }
+        .plan-info h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.25rem; }
+        .plan-info p { color: #64748b; font-size: 0.9rem; }
+        .plan-badge {
+            display: inline-block; padding: 0.25rem 0.75rem; border-radius: 999px;
+            font-size: 0.8rem; font-weight: 600; margin-left: 0.5rem;
+        }
+        .plan-badge.free { background: #f0f9ff; color: #0369a1; }
+        .plan-badge.growth,
+        .plan-badge.starter { background: #ecfdf5; color: #047857; }
+        .plan-badge.pro { background: #fef3c7; color: #92400e; }
+        .plan-badge.enterprise { background: #f5f3ff; color: #6d28d9; }
+
+        .usage-meter { width: 100%; max-width: 400px; }
+        .usage-bar-bg {
+            height: 8px; background: #e2e8f0; border-radius: 999px; overflow: hidden; margin-top: 0.5rem;
+        }
+        .usage-bar-fill {
+            height: 100%; background: #0062CC; border-radius: 999px; transition: width 0.5s;
+        }
+        .usage-bar-fill.warning { background: #f59e0b; }
+        .usage-bar-fill.danger { background: #dc2626; }
+        .usage-text { font-size: 0.8rem; color: #64748b; margin-top: 0.25rem; }
+
+        /* Keys table */
+        .keys-card {
+            background: white; border-radius: 0.875rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 1.5rem; margin-bottom: 2rem; overflow-x: auto;
+        }
+        .keys-card h2 { font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; }
+
+        .keys-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        .keys-table th {
+            text-align: left; padding: 0.75rem 1rem; color: #64748b; font-weight: 500;
+            border-bottom: 1px solid #e2e8f0; font-size: 0.8rem; text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .keys-table td { padding: 0.75rem 1rem; border-bottom: 1px solid #f1f5f9; }
+        .keys-table tr:last-child td { border-bottom: none; }
+        .keys-table tr:hover td { background: #f8fafc; }
+
+        .key-prefix { font-family: 'SF Mono', 'Consolas', monospace; font-size: 0.85rem; color: #334155; }
+        .key-name { font-weight: 500; }
+        .key-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+        .empty-state {
+            text-align: center; padding: 3rem 1rem; color: #94a3b8;
+        }
+        .empty-state .icon { font-size: 2.5rem; margin-bottom: 1rem; }
+        .empty-state p { margin-bottom: 1rem; }
+
+        /* Chart card */
+        .chart-card {
+            background: white; border-radius: 0.875rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 1.5rem; margin-bottom: 2rem;
+        }
+        .chart-card h2 { font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; }
+        .chart-wrapper { position: relative; height: 300px; }
+
+        /* Modal */
+        .modal-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+            z-index: 9999; justify-content: center; align-items: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-content {
+            background: white; border-radius: 1rem; padding: 2rem; width: 90%;
+            max-width: 480px; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+        .modal-content h2 { font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; }
+
+        .form-group { margin-bottom: 1.25rem; }
+        .form-group label { display: block; font-weight: 500; margin-bottom: 0.5rem; font-size: 0.9rem; }
+        .form-group input {
+            width: 100%; padding: 0.75rem 1rem; border: 1px solid #e2e8f0; border-radius: 10px;
+            font-family: 'DM Sans', sans-serif; font-size: 0.95rem; outline: none;
+        }
+        .form-group input:focus { border-color: #0062CC; box-shadow: 0 0 0 3px rgba(0,98,204,0.1); }
+
+        .new-key-display {
+            background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 1rem;
+            margin: 1rem 0; word-break: break-all; font-family: 'SF Mono', 'Consolas', monospace;
+            font-size: 0.9rem; display: none;
+        }
+        .new-key-warning {
+            background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 0.75rem 1rem;
+            font-size: 0.85rem; color: #92400e; margin-top: 0.75rem; display: none;
+        }
+
+        .modal-actions { display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem; }
+
+        .toast {
+            position: fixed; bottom: 2rem; right: 2rem; background: #0A1628; color: white;
+            padding: 0.875rem 1.5rem; border-radius: 10px; font-size: 0.9rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15); z-index: 10000;
+            transform: translateY(100px); opacity: 0; transition: all 0.3s;
+        }
+        .toast.visible { transform: translateY(0); opacity: 1; }
+
+        @media (max-width: 768px) {
+            .keys-table th:nth-child(5), .keys-table td:nth-child(5),
+            .keys-table th:nth-child(6), .keys-table td:nth-child(6) { display: none; }
+            .plan-card { flex-direction: column; align-items: flex-start; }
+            .page-header { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="API Keys | Developer Dashboard | AfroTools">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+
+
+<meta name="description" content="Manage your AfroTools API keys - generate, rotate, and monitor API access for AfroTools developer integrations.">
+<meta property="og:title" content="API Keys | Developer Dashboard | AfroTools">
+<meta property="og:description" content="Manage your AfroTools API keys - generate, rotate, and monitor API access for AfroTools developer integrations.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="article:modified_time" content="2026-03-28">
+<meta property="og:url" content="https://afrotools.com/dashboard/api/">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/dashboard/api/">
+</head>
+<body class="top-level-page-ui-refresh">
+    <afro-navbar></afro-navbar>
+
+    <main>
+        <div class="breadcrumb">
+            <a href="/">Home</a> / <a href="/dashboard/">Dashboard</a> / API Keys
+        </div>
+
+        <!-- Auth gate -->
+        <div id="authSection" class="auth-container" style="text-align:center;">
+            <div style="font-size:3rem;margin-bottom:1rem;">🔑</div>
+            <h1 style="font-size:1.75rem;font-weight:700;margin-bottom:0.5rem;color:#0A1628;">Developer Dashboard</h1>
+            <p style="color:#64748b;margin-bottom:2rem;font-size:0.95rem;">Sign in to manage your API keys, view usage, and access the AfroTools API.</p>
+            <a href="/auth/?mode=login&amp;intent=api-key&amp;next=/dashboard/api/" style="max-width:300px;margin:0 auto;display:block;font-size:1rem;padding:0.875rem 2rem;border-radius:12px;background:#0062CC;color:#fff;border:none;font-family:'DM Sans',system-ui,sans-serif;font-weight:600;cursor:pointer;text-decoration:none;">
+                Sign in to get started
+            </a>
+            <p style="margin-top:1.5rem;font-size:0.85rem;color:#94a3b8;">Free tier: 100 requests/day and 3,000/month. Paid API Growth and API Pro are manually activated pilots.</p>
+        </div>
+
+        <!-- Dashboard content -->
+        <div id="dashboardSection" hidden>
+            <div class="page-header">
+                <h2>API Keys</h2>
+                <button type="button" class="btn-primary" onclick="openCreateKeyModal()">+ Create New Key</button>
+            </div>
+
+            <!-- Plan & Usage -->
+            <div class="plan-card">
+                <div class="plan-info">
+                    <h3>Current Plan <span id="planBadge" class="plan-badge free">Free</span></h3>
+                    <p id="planDescription">100 requests/day and 3,000/month</p>
+                </div>
+                <div class="usage-meter">
+                    <div style="display:flex;justify-content:space-between;align-items:baseline;">
+                        <span style="font-weight:600;font-size:0.95rem;" id="usageCount">0 / 100</span>
+                    <span class="usage-text" id="usagePeriod">requests today</span>
+                    </div>
+                    <div class="usage-bar-bg">
+                        <div class="usage-bar-fill" id="usageBar" style="width:0%"></div>
+                    </div>
+                    <div class="usage-text" id="monthlyUsage">0 calls this month</div>
+                </div>
+                <a href="/api/pricing" class="btn-secondary" id="upgradeCta">View API Growth options</a>
+            </div>
+
+            <!-- API Keys Table -->
+            <div class="keys-card">
+                <h2>Your API Keys</h2>
+                <div id="keysLoading" style="text-align:center;padding:2rem;color:#94a3b8;">Loading keys...</div>
+                <div id="keysEmpty" class="empty-state" style="display:none;">
+                    <div class="icon">🔑</div>
+                    <p>You have not created any API keys yet.</p>
+                    <button type="button" class="btn-primary" onclick="openCreateKeyModal()">Create Your First Key</button>
+                </div>
+                <table class="keys-table" id="keysTable" style="display:none;">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Key</th>
+                            <th>Plan</th>
+                            <th>Today / Month</th>
+                            <th>Created</th>
+                            <th>Last Used</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="keysTableBody"></tbody>
+                </table>
+            </div>
+
+            <!-- Usage Chart -->
+            <div class="chart-card">
+                <h2>API Usage (Last 30 Days)</h2>
+                <div class="chart-wrapper">
+                    <canvas id="usageChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Create Key Modal -->
+    <div class="modal-overlay" id="createKeyModal">
+        <div class="modal-content">
+            <h2>Create New API Key</h2>
+            <div id="createKeyForm">
+                <div class="form-group">
+                    <label for="keyNameInput">Key Name</label>
+                    <input type="text" id="keyNameInput" placeholder="e.g. Production, Development, Mobile App" maxlength="50">
+                </div>
+                <div class="new-key-display" id="newKeyDisplay"></div>
+                <div class="new-key-warning" id="newKeyWarning">
+                    Save this key now. You will not be able to see it again.
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" onclick="closeCreateKeyModal()">Cancel</button>
+                    <button type="button" class="btn-primary" id="createKeyBtn" onclick="createKey()">Generate Key</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rename Key Modal -->
+    <div class="modal-overlay" id="renameKeyModal">
+        <div class="modal-content">
+            <h2>Rename API Key</h2>
+            <div class="form-group">
+                <label for="renameKeyInput">New Name</label>
+                <input type="text" id="renameKeyInput" placeholder="Enter new name" maxlength="50">
+            </div>
+            <input type="hidden" id="renameKeyId">
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary" onclick="closeRenameModal()">Cancel</button>
+                <button type="button" class="btn-primary" onclick="renameKey()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Revoke Confirm Modal -->
+    <div class="modal-overlay" id="revokeKeyModal">
+        <div class="modal-content">
+            <h2>Revoke API Key</h2>
+            <p style="color:#64748b;margin-bottom:1rem;">Are you sure you want to revoke this key? Any applications using it will immediately lose access. This cannot be undone.</p>
+            <p style="font-weight:600;" id="revokeKeyName"></p>
+            <input type="hidden" id="revokeKeyId">
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary" onclick="closeRevokeModal()">Cancel</button>
+                <button type="button" class="btn-danger" onclick="revokeKey()">Revoke Key</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <afro-footer></afro-footer>
+
+    <script src="/assets/js/afro-auth.js?v=4250956b"></script>
+    <script src="/assets/js/auth-cookie-upgrade.js?v=14c038dc"></script>
+    <script src="/assets/js/components/navbar.min.js?v=ecde82fa"></script>
+    <script src="/assets/js/components/footer.min.js?v=dfb30911"></script>
+
+    <script>
+        const API_BASE = '/.netlify/functions/api-keys';
+        let currentUser = null;
+        let isLoggedIn = false;
+        let usageChart = null;
+        let apiKeys = [];
+        const PLAN_LABELS = {
+            free: 'Free API',
+            starter: 'API Growth',
+            growth: 'API Growth',
+            pro: 'API Pro',
+            enterprise: 'Enterprise'
+        };
+
+        function normalizeTier(tier) {
+            var value = String(tier || 'free').toLowerCase();
+            return value === 'starter' ? 'growth' : value;
+        }
+
+        function formatTierName(tier) {
+            var normalized = normalizeTier(tier);
+            return PLAN_LABELS[normalized] || 'Free API';
+        }
+
+        function formatLimit(value) {
+            var number = Number(value);
+            if (!Number.isFinite(number) || number < 0) return 'custom';
+            return number.toLocaleString();
+        }
+
+        // ── Auth ──────────────────────────────────────────────
+        function waitForAuth() {
+            if (window.AfroAuth) {
+                AfroAuth.onReady(function() { init(); });
+            } else {
+                var attempts = 0;
+                var poll = setInterval(function() {
+                    attempts++;
+                    if (window.AfroAuth) {
+                        clearInterval(poll);
+                        AfroAuth.onReady(function() { init(); });
+                    } else if (attempts > 50) {
+                        clearInterval(poll);
+                        console.warn('[API Dashboard] AfroAuth never loaded');
+                    }
+                }, 100);
+            }
+        }
+
+        function init() {
+            isLoggedIn = AfroAuth.isLoggedIn();
+            if (isLoggedIn) {
+                currentUser = AfroAuth.getUser();
+                showDashboard();
+            } else {
+                showAuth();
+            }
+            setupAuthListeners();
+        }
+
+        function showAuth() {
+            var authSection = document.getElementById('authSection');
+            var dashboardSection = document.getElementById('dashboardSection');
+            if (authSection) {
+                authSection.style.display = 'block';
+                authSection.hidden = false;
+            }
+            if (dashboardSection) {
+                dashboardSection.classList.remove('active');
+                dashboardSection.hidden = true;
+            }
+        }
+
+        function showDashboard() {
+            var authSection = document.getElementById('authSection');
+            var dashboardSection = document.getElementById('dashboardSection');
+            if (authSection) {
+                authSection.style.display = 'none';
+                authSection.hidden = true;
+            }
+            if (dashboardSection) {
+                dashboardSection.hidden = false;
+                dashboardSection.classList.add('active');
+            }
+            loadKeys();
+            loadUsage();
+        }
+
+        function setupAuthListeners() {
+            function handleAuthChange() {
+                var wasLoggedIn = isLoggedIn;
+                isLoggedIn = AfroAuth.isLoggedIn();
+                if (isLoggedIn && !wasLoggedIn) {
+                    currentUser = AfroAuth.getUser();
+                    showDashboard();
+                } else if (!isLoggedIn && wasLoggedIn) {
+                    showAuth();
+                }
+            }
+            window.addEventListener('afro-auth-change', handleAuthChange);
+            document.addEventListener('afro-auth-change', handleAuthChange);
+        }
+
+        // ── API helpers ───────────────────────────────────────
+        async function apiCall(action, body = {}) {
+            const sb = AfroAuth.getSupabase();
+            const { data: { session } } = await sb.auth.getSession();
+            if (!session) { showAuth(); throw new Error('Not authenticated'); }
+
+            const res = await fetch(API_BASE, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + session.access_token
+                },
+                body: JSON.stringify({ action, ...body })
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || 'Request failed');
+            return data;
+        }
+
+        // ── Load keys ────────────────────────────────────────
+        async function loadKeys() {
+            try {
+                const data = await apiCall('list');
+                apiKeys = data.keys || [];
+                renderKeys();
+                updatePlan(data.plan || {});
+            } catch (err) {
+                console.error('Failed to load keys:', err);
+                document.getElementById('keysLoading').textContent = 'Failed to load keys. Please try again.';
+            }
+        }
+
+        function renderKeys() {
+            var loading = document.getElementById('keysLoading');
+            var empty = document.getElementById('keysEmpty');
+            var table = document.getElementById('keysTable');
+            var tbody = document.getElementById('keysTableBody');
+
+            loading.style.display = 'none';
+
+            if (apiKeys.length === 0) {
+                empty.style.display = 'block';
+                table.style.display = 'none';
+                return;
+            }
+
+            empty.style.display = 'none';
+            table.style.display = 'table';
+            tbody.innerHTML = apiKeys.map(function(key) {
+                var created = new Date(key.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                var lastUsed = key.last_used_at ? new Date(key.last_used_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'Never';
+                var prefix = key.key_prefix || 'afro_****';
+                var keyIdArg = escapeInlineJsString(key.id);
+                var keyNameArg = escapeInlineJsString(key.name);
+                var prefixArg = escapeInlineJsString(prefix);
+                return '<tr>' +
+                    '<td class="key-name">' + escapeHtml(key.name) + '</td>' +
+                    '<td class="key-prefix">' + escapeHtml(prefix) + '...</td>' +
+                    '<td>' + escapeHtml(formatTierName(key.tier || key.plan || 'free')) + '</td>' +
+                    '<td>' + (key.calls_today || 0) + ' / ' + (key.calls_month || 0) + '</td>' +
+                    '<td>' + created + '</td>' +
+                    '<td>' + lastUsed + '</td>' +
+                    '<td class="key-actions">' +
+                        '<button type="button" class="btn-secondary" onclick="copyKeyPrefix(\'' + prefixArg + '\')">Copy</button>' +
+                        '<button type="button" class="btn-secondary" onclick="openRenameModal(\'' + keyIdArg + '\',\'' + keyNameArg + '\')">Rename</button>' +
+                        '<button type="button" class="btn-danger" onclick="openRevokeModal(\'' + keyIdArg + '\',\'' + keyNameArg + '\')">Revoke</button>' +
+                    '</td>' +
+                    '</tr>';
+            }).join('');
+        }
+
+        function updatePlan(plan) {
+            var badge = document.getElementById('planBadge');
+            var desc = document.getElementById('planDescription');
+            var count = document.getElementById('usageCount');
+            var bar = document.getElementById('usageBar');
+            var monthly = document.getElementById('monthlyUsage');
+            var cta = document.getElementById('upgradeCta');
+
+            var tier = normalizeTier(plan.tier || 'free');
+            var limit = Number(plan.daily_limit);
+            var monthlyLimit = Number(plan.monthly_limit);
+            var today = plan.calls_today || 0;
+            var month = plan.calls_month || 0;
+            var hasCustomLimit = !Number.isFinite(limit) || limit < 0;
+            var pct = hasCustomLimit || limit === 0 ? 0 : Math.min(100, Math.round((today / limit) * 100));
+
+            badge.textContent = formatTierName(tier);
+            badge.className = 'plan-badge ' + tier;
+            desc.textContent = formatLimit(limit) + ' requests/day and ' + formatLimit(monthlyLimit) + '/month';
+            count.textContent = today.toLocaleString() + ' / ' + formatLimit(limit);
+            monthly.textContent = month.toLocaleString() + ' calls this month';
+            bar.style.width = pct + '%';
+            bar.className = 'usage-bar-fill' + (pct > 90 ? ' danger' : pct > 70 ? ' warning' : '');
+
+            if (tier === 'enterprise') {
+                cta.style.display = 'none';
+            } else {
+                cta.style.display = '';
+                cta.href = '/api/pricing';
+                cta.textContent = tier === 'free' ? 'View API Growth options' : 'Discuss a higher API tier';
+            }
+        }
+
+        // ── Usage chart ──────────────────────────────────────
+        async function loadUsage() {
+            try {
+                var data = await apiCall('usage');
+                renderChart(data.daily || []);
+            } catch (err) {
+                console.error('Failed to load usage:', err);
+            }
+        }
+
+        function renderChart(daily) {
+            var ctx = document.getElementById('usageChart').getContext('2d');
+            if (usageChart) usageChart.destroy();
+
+            // Fill in last 30 days
+            var labels = [];
+            var values = [];
+            var lookup = {};
+            daily.forEach(function(d) { lookup[d.date] = d.count; });
+
+            for (var i = 29; i >= 0; i--) {
+                var d = new Date();
+                d.setDate(d.getDate() - i);
+                var key = d.toISOString().slice(0, 10);
+                labels.push(d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+                values.push(lookup[key] || 0);
+            }
+
+            usageChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'API Calls',
+                        data: values,
+                        borderColor: '#0062CC',
+                        backgroundColor: 'rgba(0, 98, 204, 0.08)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 2,
+                        pointHoverRadius: 6,
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#0A1628',
+                            titleFont: { family: 'DM Sans' },
+                            bodyFont: { family: 'DM Sans' },
+                            padding: 12,
+                            cornerRadius: 8
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            ticks: { maxTicksLimit: 10, font: { family: 'DM Sans', size: 11 }, color: '#94a3b8' }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#f1f5f9' },
+                            ticks: { font: { family: 'DM Sans', size: 11 }, color: '#94a3b8' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // ── Create key ───────────────────────────────────────
+        function openCreateKeyModal() {
+            document.getElementById('keyNameInput').value = '';
+            document.getElementById('newKeyDisplay').style.display = 'none';
+            document.getElementById('newKeyWarning').style.display = 'none';
+            document.getElementById('createKeyBtn').style.display = '';
+            document.getElementById('createKeyBtn').disabled = false;
+            document.getElementById('createKeyModal').classList.add('active');
+            document.getElementById('keyNameInput').focus();
+        }
+
+        function closeCreateKeyModal() {
+            document.getElementById('createKeyModal').classList.remove('active');
+        }
+
+        async function createKey() {
+            var name = document.getElementById('keyNameInput').value.trim();
+            if (!name) { showToast('Please enter a key name'); return; }
+
+            var btn = document.getElementById('createKeyBtn');
+            btn.disabled = true;
+            btn.textContent = 'Generating...';
+
+            try {
+                var data = await apiCall('create', { name: name });
+                document.getElementById('newKeyDisplay').textContent = data.key;
+                document.getElementById('newKeyDisplay').style.display = 'block';
+                document.getElementById('newKeyWarning').style.display = 'block';
+                btn.style.display = 'none';
+                showToast('API key created successfully');
+                loadKeys();
+            } catch (err) {
+                showToast('Failed to create key: ' + err.message);
+                btn.disabled = false;
+                btn.textContent = 'Generate Key';
+            }
+        }
+
+        // ── Copy ─────────────────────────────────────────────
+        function copyKeyPrefix(prefix) {
+            navigator.clipboard.writeText(prefix).then(function() {
+                showToast('Key prefix copied');
+            }).catch(function() {
+                showToast('Copy failed');
+            });
+        }
+
+        // ── Rename key ───────────────────────────────────────
+        function openRenameModal(id, name) {
+            document.getElementById('renameKeyId').value = id;
+            document.getElementById('renameKeyInput').value = name;
+            document.getElementById('renameKeyModal').classList.add('active');
+            document.getElementById('renameKeyInput').focus();
+        }
+
+        function closeRenameModal() {
+            document.getElementById('renameKeyModal').classList.remove('active');
+        }
+
+        async function renameKey() {
+            var id = document.getElementById('renameKeyId').value;
+            var name = document.getElementById('renameKeyInput').value.trim();
+            if (!name) { showToast('Please enter a name'); return; }
+
+            try {
+                await apiCall('rename', { key_id: id, name: name });
+                showToast('Key renamed');
+                closeRenameModal();
+                loadKeys();
+            } catch (err) {
+                showToast('Rename failed: ' + err.message);
+            }
+        }
+
+        // ── Revoke key ───────────────────────────────────────
+        function openRevokeModal(id, name) {
+            document.getElementById('revokeKeyId').value = id;
+            document.getElementById('revokeKeyName').textContent = name;
+            document.getElementById('revokeKeyModal').classList.add('active');
+        }
+
+        function closeRevokeModal() {
+            document.getElementById('revokeKeyModal').classList.remove('active');
+        }
+
+        async function revokeKey() {
+            var id = document.getElementById('revokeKeyId').value;
+            try {
+                await apiCall('revoke', { key_id: id });
+                showToast('Key revoked');
+                closeRevokeModal();
+                loadKeys();
+            } catch (err) {
+                showToast('Revoke failed: ' + err.message);
+            }
+        }
+
+        // ── Utilities ────────────────────────────────────────
+        function escapeHtml(str) {
+            var div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function escapeInlineJsString(str) {
+            return String(str == null ? '' : str)
+                .replace(/\\/g, '\\\\')
+                .replace(/'/g, '\\\'')
+                .replace(/"/g, '\\x22')
+                .replace(/&/g, '\\x26')
+                .replace(/</g, '\\x3C')
+                .replace(/>/g, '\\x3E')
+                .replace(/\r/g, '\\r')
+                .replace(/\n/g, '\\n')
+                .replace(/\u2028/g, '\\u2028')
+                .replace(/\u2029/g, '\\u2029');
+        }
+
+        function showToast(msg) {
+            var toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('visible');
+            setTimeout(function() { toast.classList.remove('visible'); }, 3000);
+        }
+
+        // Close modals on overlay click
+        document.querySelectorAll('.modal-overlay').forEach(function(modal) {
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) modal.classList.remove('active');
+            });
+        });
+
+        // Close modals on Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay.active').forEach(function(m) {
+                    m.classList.remove('active');
+                });
+            }
+        });
+
+        // Boot
+        waitForAuth();
+    </script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+</body>
+</html>

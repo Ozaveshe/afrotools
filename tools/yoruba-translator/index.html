@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Yoruba Translator & Phrasebook — Learn Yoruba | AfroTools</title>
+<meta name="description" content="Translate English to Yoruba with 200+ phrases covering greetings, market bargaining, health, travel, numbers, and daily life in Nigeria, Benin, and Togo.">
+<meta name="keywords" content="Yoruba translator, learn Yoruba, English to Yoruba, Yoruba phrases, Nigerian language, Yoruba greetings">
+<meta property="og:title" content="Yoruba Translator & Phrasebook"><meta property="og:description" content="400+ English-Yoruba phrases with pronunciation guides for Nigeria and West Africa.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/yoruba-translator.webp">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/yoruba-translator/">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<style>
+:root{--purple:#7c3aed;--purple-light:#f5f3ff;--purple-dark:#6d28d9}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}
+.hero{background:linear-gradient(135deg,#4c1d95 0%,#6d28d9 50%,#a78bfa 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}
+.hero h1{color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
+.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}
+.container{max-width:1000px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#4c1d95}
+.search-box{display:flex;gap:.75rem;margin-bottom:1rem}
+.search-box input{flex:1;padding:.65rem 1rem;border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;background:#f8fafc;font-family:inherit}
+.search-box input:focus{outline:none;border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,58,237,.15)}
+.cats{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.25rem}
+.cat-btn{padding:.4rem .85rem;border:1.5px solid #e2e8f0;border-radius:20px;background:#fff;font-size:.82rem;font-weight:600;cursor:pointer;color:#64748b;transition:all .2s}
+.cat-btn:hover,.cat-btn.active{background:var(--purple);color:#fff;border-color:var(--purple)}
+.phrase-list{display:grid;gap:.5rem}
+.phrase{display:grid;grid-template-columns:1fr 1fr auto;gap:1rem;padding:.75rem 1rem;border:1px solid #f1f5f9;border-radius:8px;align-items:center;transition:all .15s}
+.phrase:hover{background:var(--purple-light);border-color:#c4b5fd}
+.phrase .en{font-size:.92rem;color:#475569}
+.phrase .lang{font-size:.95rem;font-weight:700;color:#4c1d95}
+.phrase .pron{font-size:.78rem;color:#94a3b8;font-style:italic}
+.speak-btn{background:none;border:none;font-size:1.1rem;cursor:pointer;padding:.25rem;border-radius:4px;opacity:.5;transition:opacity .2s}
+.speak-btn:hover{opacity:1}
+.count-badge{background:var(--purple-light);color:var(--purple);padding:.2rem .6rem;border-radius:12px;font-size:.78rem;font-weight:600}
+.tone-guide{background:var(--purple-light);border:1px solid #c4b5fd;border-radius:8px;padding:1rem;margin-bottom:1rem;font-size:.88rem;color:#4c1d95}
+.tone-guide strong{display:block;margin-bottom:.3rem}
+@media(max-width:600px){.phrase{grid-template-columns:1fr;gap:.3rem}}
+.seo-section{max-width:800px;margin:2rem auto;padding:0 1.5rem}
+.seo-section h2{font-size:1.4rem;font-weight:800;color:#4c1d95;margin-bottom:1rem}
+.seo-section h3{font-size:1.1rem;font-weight:700;color:#334155;margin:1.5rem 0 .5rem}
+.seo-section p{color:#475569;margin-bottom:1rem}
+.faq{max-width:800px;margin:2rem auto;padding:0 1.5rem}
+.faq h2{font-size:1.4rem;font-weight:800;color:#4c1d95;margin-bottom:1rem}
+.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff}
+.faq summary{padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.faq summary::after{content:'+';font-size:1.3rem;color:#94a3b8;font-weight:300}
+.faq details[open] summary::after{content:'-'}
+.faq details p{padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem}
+
+.skip-link{position:absolute;left:-9999px}
+.wotd{background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:2px solid #c4b5fd;border-radius:12px;padding:1.15rem 1.5rem;margin-bottom:1.5rem}
+.wotd-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#7c3aed;margin-bottom:.4rem}
+.wotd-en{font-size:.85rem;color:#475569;margin-bottom:.2rem}
+.wotd-lang{font-size:1.3rem;font-weight:800;color:#4c1d95}
+.wotd-pron{font-size:.82rem;color:#7c3aed;font-style:italic;margin-top:.2rem}
+.wotd-note{font-size:.75rem;color:#94a3b8;font-style:italic;margin-top:.2rem}
+.quiz-card{background:#fff;border:2px solid #c4b5fd;border-radius:12px;padding:1.5rem;margin-bottom:1.5rem}
+.quiz-card h3{font-size:1rem;font-weight:700;color:#4c1d95;margin-bottom:.75rem}
+.quiz-q{font-size:1.05rem;color:#334155;font-weight:600;margin-bottom:1rem}
+.quiz-opts{display:grid;gap:.5rem;margin-bottom:.75rem}
+.quiz-opt{padding:.7rem 1rem;border:2px solid #e2e8f0;border-radius:8px;background:#fff;font-size:.9rem;cursor:pointer;text-align:left;font-family:inherit;font-weight:600;color:#334155;transition:all .15s}
+.quiz-opt:hover{border-color:#c4b5fd;background:#f5f3ff}
+.quiz-opt.correct{border-color:#16a34a;background:#dcfce7;color:#166534}
+.quiz-opt.wrong{border-color:#dc2626;background:#fef2f2;color:#991b1b}
+.quiz-opt.dimmed{opacity:.5;pointer-events:none}
+.quiz-score{font-size:.78rem;color:#7c3aed;font-weight:600}
+.quiz-next{padding:.5rem 1.25rem;background:var(--purple);color:#fff;border:none;border-radius:6px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:.5rem}
+.quiz-next:hover{background:var(--purple-dark)}
+.p-btn{background:none;border:none;font-size:.95rem;cursor:pointer;padding:.25rem;border-radius:4px;opacity:.4;transition:opacity .15s;line-height:1}
+.p-btn:hover{opacity:1}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1e293b;color:#fff;padding:.55rem 1.15rem;border-radius:8px;font-size:.8rem;font-weight:600;opacity:0;transition:all .3s;z-index:999;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+</style>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Yoruba Translator & Phrasebook">
+<meta name="twitter:description" content="400+ English-Yoruba phrases with pronunciation guides for Nigeria and West Africa.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/yoruba-translator.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Yoruba Translator & Phrasebook",
+      "item": "https://afrotools.com/tools/yoruba-translator/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-31">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/language-focus.css?v=05ea1d6d">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Yoruba Translator & Phrasebook?","acceptedAnswer":{"@type":"Answer","text":"Enter your text or word in the fields above. The Yoruba Translator & Phrasebook then gives you a clear result with local context you can use straight away."}},{"@type":"Question","name":"How accurate is the Yoruba Translator & Phrasebook?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm a native speaker for important or public use before you rely on it."}},{"@type":"Question","name":"Is the Yoruba Translator & Phrasebook free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for Nigeria."}},{"@type":"Question","name":"How many people speak Yoruba?","acceptedAnswer":{"@type":"Answer","text":"Yoruba has approximately 45-50 million speakers worldwide, making it one of Africa's most spoken languages. It is the native language of the Yoruba people of southwestern Nigeria, Benin, and Togo. Significant diaspora communities speaking Yoruba or Yoruba-influenced languages exist in Brazil, Cuba, Trinidad, and the United States."}},{"@type":"Question","name":"Is Yoruba hard to learn?","acceptedAnswer":{"@type":"Answer","text":"The tonal nature of Yoruba is the biggest challenge for English speakers. However, the grammar is relatively straightforward with SVO (Subject-Verb-Object) word order similar to English. Yoruba has no grammatical gender, and verb conjugation is simpler than most European languages. The Latin-based writing system makes reading accessible."}},{"@type":"Question","name":"What are the Yoruba tones?","acceptedAnswer":{"@type":"Answer","text":"Yoruba has three tones: High (acute accent), Mid (unmarked), and Low (grave accent). Tones are essential because they distinguish meaning. For example: \"igba\" (high-high) means \"two hundred,\" \"igba\" (low-mid) means \"garden egg,\" and \"igba\" (mid-low) means \"calabash.\" Practice listening to native speakers to develop tonal awareness."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Yoruba Translator & Phrasebook — Learn Yoruba",
+  "description": "Translate English to Yoruba with 200+ phrases covering greetings, market bargaining, health, travel, numbers, and daily life in Nigeria, Benin, and Togo.",
+  "url": "https://afrotools.com/tools/yoruba-translator/",
+  "inLanguage": "en",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/yoruba-translator.webp"
+}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/yoruba-translator/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/yoruba-translator/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/mtafsiri-wa-kiyoruba/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/yoruba-translator/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<main id="main">
+<section class="hero"><h1>Yoruba Translator & Phrasebook</h1><p>200+ essential English-Yoruba phrases with tonal guides — greetings, market bargaining, health, travel, money, and social slang for Nigeria and West Africa.</p></section>
+<div class="container">
+<div class="wotd" id="wotd"></div>
+<div class="card">
+<div class="tone-guide"><strong>Yoruba Tone Guide:</strong> Yoruba is a tonal language with 3 tones: High (marked with acute accent: a), Mid (unmarked: a), and Low (marked with grave accent: a). The tone changes the meaning of words completely.</div>
+<h2>Search Phrases <span class="count-badge" id="countBadge">0</span></h2>
+<div class="search-box"><input aria-label="Search in English or Yoruba" type="text" id="search" placeholder="Search in English or Yoruba..." oninput="filter()"></div>
+<div class="cats" id="cats"></div>
+</div>
+<div class="card"><div class="phrase-list" id="phrases"></div></div>
+</div>
+<div class="quiz-card"><h3>Quick Quiz</h3><div id="quizArea"></div></div>
+</div>
+<div class="toast" id="toast"></div>
+<section class="seo-section">
+<h2>Learn Yoruba — A Major Nigerian Language</h2>
+<p>Yoruba is one of Africa's most spoken languages, with over 45 million speakers primarily in southwestern Nigeria, Benin, and Togo. It is one of Nigeria's three major languages (alongside Hausa and Igbo) and has a rich literary tradition dating back centuries. Yoruba is also spoken in diaspora communities across the Americas, particularly in Brazil (where it influenced Candomble), Cuba (Santeria/Lucumi), and Trinidad.</p>
+<h3>Tonal Language</h3>
+<p>Yoruba is a tonal language with three distinct tones: high, mid, and low. The same syllables spoken with different tones carry completely different meanings. For example, "owo" with different tones can mean money, broom, or hand. Mastering tones is essential for being understood in Yoruba, though context often helps listeners disambiguate meaning.</p>
+<h3>Yoruba Writing System</h3>
+<p>Modern Yoruba uses a Latin-based alphabet with 25 letters plus special characters with diacritical marks for tones and certain sounds. The "dot-below" letters (s with dot below for "sh" sound, e and o with dots below for open vowels) are distinctive features of Yoruba orthography. Written Yoruba was standardized by Bishop Samuel Ajayi Crowther in the 19th century.</p>
+<h3>Cultural Significance</h3>
+<p>The Yoruba language carries one of the richest cultural traditions in Africa. Yoruba proverbs (owe) are central to communication, and the language has an extensive oral literature including the Ifa divination corpus (recognized by UNESCO). Understanding Yoruba phrases provides insight into a worldview that has influenced cultures across the Atlantic world.</p>
+</section>
+
+
+<section class="df-upgrade" data-df-upgrade="yoruba-translator">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Practical workflow</span>
+      <h2>Yoruba Translator &amp; Phrasebook: quick guide</h2>
+      <p>Not sure how to get the most from the Yoruba Translator &amp; Phrasebook? Enter your text or word and it returns a clear result with local context — built for Nigeria.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear result with local context, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Yoruba Translator &amp; Phrasebook takes your text or word and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm a native speaker for important or public use before you rely on the result.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm a native speaker for important or public use before acting.</p>
+    </div>
+    <form class="df-form" data-df-form="yoruba-translator">
+      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
+      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
+      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
+      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="yoruba-translator" data-df-base="Yoruba Translator &amp; Phrasebook — enter your details above to see your result." aria-live="polite">Yoruba Translator &amp; Phrasebook — enter your details above to see your result.</output>
+      <div class="df-actions"><button type="button" data-df-copy="yoruba-translator">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="yoruba-translator-faq-title">
+  <h2 id="yoruba-translator-faq-title">Yoruba Translator &amp; Phrasebook FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the Yoruba Translator &amp; Phrasebook?</summary><p>Enter your text or word in the fields above. The Yoruba Translator &amp; Phrasebook then gives you a clear result with local context you can use straight away.</p></details><details><summary>How accurate is the Yoruba Translator &amp; Phrasebook?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm a native speaker for important or public use before you rely on it.</p></details><details><summary>Is the Yoruba Translator &amp; Phrasebook free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for Nigeria.</p></details></div>
+</section>
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+<section class="faq">
+<h2>Frequently Asked Questions</h2>
+<details><summary>How many people speak Yoruba?</summary><p>Yoruba has approximately 45-50 million speakers worldwide, making it one of Africa's most spoken languages. It is the native language of the Yoruba people of southwestern Nigeria, Benin, and Togo. Significant diaspora communities speaking Yoruba or Yoruba-influenced languages exist in Brazil, Cuba, Trinidad, and the United States.</p></details>
+<details><summary>Is Yoruba hard to learn?</summary><p>The tonal nature of Yoruba is the biggest challenge for English speakers. However, the grammar is relatively straightforward with SVO (Subject-Verb-Object) word order similar to English. Yoruba has no grammatical gender, and verb conjugation is simpler than most European languages. The Latin-based writing system makes reading accessible.</p></details>
+<details><summary>What are the Yoruba tones?</summary><p>Yoruba has three tones: High (acute accent), Mid (unmarked), and Low (grave accent). Tones are essential because they distinguish meaning. For example: "igba" (high-high) means "two hundred," "igba" (low-mid) means "garden egg," and "igba" (mid-low) means "calabash." Practice listening to native speakers to develop tonal awareness.</p></details>
+</section>
+</main>
+<afro-related-tools data-ssr="1" category="language" current="yoruba-translator">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/pidgin-translator/" data-related-tool data-id="pidgin-translator" data-name="Nigerian Pidgin Translator" data-category="language" data-icon="NP" data-desc="English ↔ Nigerian Pidgin translation with common phrases and slang dictionary.">Nigerian Pidgin Translator</a></li><li><a href="/tools/african-name-meaning/" data-related-tool data-id="african-name-meaning" data-name="African Name Meaning Finder" data-category="language" data-icon="AN" data-desc="Find meaning, origin, and pronunciation of 5,000+ African names across 50 cultures.">African Name Meaning Finder</a></li><li><a href="/tools/swahili-translator/" data-related-tool data-id="swahili-translator" data-name="Swahili Translator" data-category="language" data-icon="ST" data-desc="English ↔ Swahili. 50,000+ word pairs including business terms.">Swahili Translator</a></li><li><a href="/tools/french-african/" data-related-tool data-id="french-african" data-name="Francophone Africa Translator" data-category="language" data-icon="FA" data-desc="French ↔ English with West &amp; Central African French business terminology.">Francophone Africa Translator</a></li><li><a href="/tools/hausa-translator/" data-related-tool data-id="hausa-translator" data-name="Hausa Translator &amp; Phrasebook" data-category="language" data-icon="HT" data-desc="English ↔ Hausa. Business, market, greetings, legal phrases.">Hausa Translator &amp; Phrasebook</a></li><li><a href="/tools/amharic-translator/" data-related-tool data-id="amharic-translator" data-name="Amharic Translator" data-category="language" data-icon="AT" data-desc="English ↔ Amharic with Ge&#39;ez script support.">Amharic Translator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools><afro-newsletter-cta></afro-newsletter-cta><afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script><script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script><script src="/assets/js/components/related-tools.js?v=4123e336" defer></script><script src="/assets/js/components/newsletter-cta.js?v=73bdfbf4" defer></script>
+<script>
+const PHRASES=[
+{en:'Hello',lang:'Bawo ni',pron:'BAH-woh nee',cat:'Greetings'},
+{en:'Good morning',lang:'E kaaro',pron:'EH kah-ROH',cat:'Greetings'},
+{en:'Good afternoon',lang:'E kaasan',pron:'EH kah-SAHN',cat:'Greetings'},
+{en:'Good evening',lang:'E kale',pron:'EH kah-LEH',cat:'Greetings'},
+{en:'How are you?',lang:'Bawo ni o se wa?',pron:'BAH-woh nee oh sheh wah',cat:'Greetings'},
+{en:'I am fine',lang:'Mo wa daadaa',pron:'moh wah DAH-dah',cat:'Greetings'},
+{en:'Thank God',lang:'A dupe',pron:'ah doo-PEH',cat:'Greetings'},
+{en:'Welcome',lang:'E kaabo',pron:'EH kah-BOH',cat:'Greetings'},
+{en:'What is your name?',lang:'Kini oruko re?',pron:'KEE-nee oh-ROO-koh reh',cat:'Greetings'},
+{en:'My name is...',lang:'Oruko mi ni...',pron:'oh-ROO-koh mee nee',cat:'Greetings'},
+{en:'Nice to meet you',lang:'Inu mi dun lati pade re',pron:'ee-NOO mee doon LAH-tee PAH-deh reh',cat:'Greetings'},
+{en:'Goodbye',lang:'O dabo',pron:'oh DAH-boh',cat:'Greetings'},
+{en:'See you tomorrow',lang:'A o ri ola',pron:'ah oh ree OH-lah',cat:'Greetings'},
+{en:'Good night',lang:'O daro',pron:'oh DAH-roh',cat:'Greetings'},
+{en:'How is the family?',lang:'Bawo ni ebi?',pron:'BAH-woh nee EH-bee',cat:'Greetings'},
+{en:'Long time no see',lang:'O ti pe',pron:'oh tee PEH',cat:'Greetings'},
+{en:'Yes',lang:'Beeni',pron:'BEH-nee',cat:'Basics'},
+{en:'No',lang:'Beeko / Rara',pron:'BEH-koh / RAH-rah',cat:'Basics'},
+{en:'Please',lang:'Ejoo / Jo',pron:'EH-joh / joh',cat:'Basics'},
+{en:'Thank you',lang:'E seun',pron:'EH sheh-OON',cat:'Basics'},
+{en:'Thank you very much',lang:'E seun pupo',pron:'EH sheh-OON POO-poh',cat:'Basics'},
+{en:'Sorry',lang:'E pele',pron:'EH PEH-leh',cat:'Basics'},
+{en:'Excuse me',lang:'E joo, e ma binu',pron:'EH joh, EH mah BEE-noo',cat:'Basics'},
+{en:'I don\'t understand',lang:'Mi o gbo',pron:'mee oh GBOH',cat:'Basics'},
+{en:'I understand',lang:'Mo gbo',pron:'moh GBOH',cat:'Basics'},
+{en:'Do you speak English?',lang:'Se o n so Geesi?',pron:'sheh oh n soh GEH-see',cat:'Basics'},
+{en:'Help!',lang:'E gba mi!',pron:'EH gbah mee',cat:'Basics'},
+{en:'Where is...?',lang:'Nibo ni...wa?',pron:'NEE-boh nee...wah',cat:'Basics'},
+{en:'How much?',lang:'Elo ni?',pron:'EH-loh nee',cat:'Basics'},
+{en:'OK / It\'s fine',lang:'O dara',pron:'oh DAH-rah',cat:'Basics'},
+{en:'One',lang:'Ookan',pron:'OH-kahn',cat:'Numbers'},
+{en:'Two',lang:'Eeji',pron:'EH-jee',cat:'Numbers'},
+{en:'Three',lang:'Eeta',pron:'EH-tah',cat:'Numbers'},
+{en:'Four',lang:'Eerin',pron:'EH-reen',cat:'Numbers'},
+{en:'Five',lang:'Aarun',pron:'AH-roon',cat:'Numbers'},
+{en:'Six',lang:'Eefa',pron:'EH-fah',cat:'Numbers'},
+{en:'Seven',lang:'Eeje',pron:'EH-jeh',cat:'Numbers'},
+{en:'Eight',lang:'Eejo',pron:'EH-joh',cat:'Numbers'},
+{en:'Nine',lang:'Eesan',pron:'EH-sahn',cat:'Numbers'},
+{en:'Ten',lang:'Eewa',pron:'EH-wah',cat:'Numbers'},
+{en:'Twenty',lang:'Ogun',pron:'oh-GOON',cat:'Numbers'},
+{en:'Hundred',lang:'Ogorun',pron:'oh-GOH-roon',cat:'Numbers'},
+{en:'Thousand',lang:'Egberun',pron:'eg-BEH-roon',cat:'Numbers'},
+{en:'Water',lang:'Omi',pron:'OH-mee',cat:'Food & Drink'},
+{en:'Food',lang:'Ounje',pron:'OH-oon-jeh',cat:'Food & Drink'},
+{en:'I am hungry',lang:'Ebi n pa mi',pron:'EH-bee n pah mee',cat:'Food & Drink'},
+{en:'Rice',lang:'Iresi',pron:'ee-REH-see',cat:'Food & Drink'},
+{en:'Meat',lang:'Eran',pron:'EH-rahn',cat:'Food & Drink'},
+{en:'Chicken',lang:'Adie',pron:'ah-DEE-eh',cat:'Food & Drink'},
+{en:'Fish',lang:'Eja',pron:'EH-jah',cat:'Food & Drink'},
+{en:'Pounded yam',lang:'Iyan',pron:'ee-YAHN',cat:'Food & Drink'},
+{en:'Pepper soup',lang:'Obe ata',pron:'oh-BEH AH-tah',cat:'Food & Drink'},
+{en:'Palm wine',lang:'Emu',pron:'EH-moo',cat:'Food & Drink'},
+{en:'Beans',lang:'Ewa',pron:'EH-wah',cat:'Food & Drink'},
+{en:'Bread',lang:'Buredi',pron:'boo-REH-dee',cat:'Food & Drink'},
+{en:'Yam',lang:'Isu',pron:'ee-SHOO',cat:'Food & Drink'},
+{en:'Jollof rice',lang:'Iresi Jollof',pron:'ee-REH-see JOL-lof',cat:'Food & Drink'},
+{en:'It is delicious',lang:'O dun',pron:'oh DOON',cat:'Food & Drink'},
+{en:'Money',lang:'Owo',pron:'OH-woh',cat:'Business'},
+{en:'Market',lang:'Oja',pron:'oh-JAH',cat:'Business'},
+{en:'Too expensive',lang:'O won ju',pron:'oh WOHN joo',cat:'Business'},
+{en:'Reduce the price',lang:'E din owo re',pron:'EH deen OH-woh reh',cat:'Business'},
+{en:'I want to buy',lang:'Mo fe ra',pron:'moh feh RAH',cat:'Business'},
+{en:'Shop',lang:'Ile itaja',pron:'ee-LEH ee-TAH-jah',cat:'Business'},
+{en:'Work',lang:'Ise',pron:'ee-SHEH',cat:'Business'},
+{en:'Give me',lang:'Fun mi',pron:'foon mee',cat:'Business'},
+{en:'How much is this?',lang:'Elo ni eleyi?',pron:'EH-loh nee eh-LEH-yee',cat:'Business'},
+{en:'Today',lang:'Oni',pron:'OH-nee',cat:'Time'},
+{en:'Tomorrow',lang:'Ola',pron:'OH-lah',cat:'Time'},
+{en:'Yesterday',lang:'Ana',pron:'AH-nah',cat:'Time'},
+{en:'Now',lang:'Bayi',pron:'BAH-yee',cat:'Time'},
+{en:'Morning',lang:'Owuro',pron:'oh-WOO-roh',cat:'Time'},
+{en:'Afternoon',lang:'Osan',pron:'oh-SAHN',cat:'Time'},
+{en:'Night',lang:'Oru',pron:'OH-roo',cat:'Time'},
+{en:'Monday',lang:'Ojo Aje',pron:'oh-JOH AH-jeh',cat:'Time'},
+{en:'Sunday',lang:'Ojo Aiku',pron:'oh-JOH AH-ee-koo',cat:'Time'},
+{en:'Where is the hospital?',lang:'Nibo ni ile iwosan wa?',pron:'NEE-boh nee ee-LEH ee-WOH-sahn wah',cat:'Emergency'},
+{en:'I am sick',lang:'Ara mi ko ya',pron:'AH-rah mee koh yah',cat:'Emergency'},
+{en:'Call the doctor',lang:'E pe dokita',pron:'EH peh DOH-kee-tah',cat:'Emergency'},
+{en:'Help me!',lang:'E gba mi o!',pron:'EH gbah mee oh',cat:'Emergency'},
+{en:'Thief!',lang:'Ole!',pron:'oh-LEH',cat:'Emergency'},
+{en:'Fire!',lang:'Ina!',pron:'ee-NAH',cat:'Emergency'},
+{en:'Police',lang:'Olopa',pron:'oh-LOH-pah',cat:'Emergency'},
+{en:'Father',lang:'Baba',pron:'BAH-bah',cat:'Family & Culture'},
+{en:'Mother',lang:'Mama / Iya',pron:'MAH-mah / ee-YAH',cat:'Family & Culture'},
+{en:'Child',lang:'Omo',pron:'OH-moh',cat:'Family & Culture'},
+{en:'Family',lang:'Ebi',pron:'EH-bee',cat:'Family & Culture'},
+{en:'Friend',lang:'Ore',pron:'oh-REH',cat:'Family & Culture'},
+{en:'Love',lang:'Ife',pron:'ee-FEH',cat:'Family & Culture'},
+{en:'God',lang:'Olodumare / Olorun',pron:'oh-LOH-doo-mah-reh / oh-LOH-roon',cat:'Family & Culture'},
+{en:'Respect your elders',lang:'Bowo fun agba',pron:'BOH-woh foon AG-bah',cat:'Family & Culture'},
+{en:'Wedding',lang:'Igbeyawo',pron:'ig-BEH-yah-woh',cat:'Family & Culture'},
+{en:'Proverb',lang:'Owe',pron:'OH-weh',cat:'Family & Culture'},
+{en:'House',lang:'Ile',pron:'ee-LEH',cat:'Travel'},
+{en:'Road',lang:'Ona',pron:'OH-nah',cat:'Travel'},
+{en:'Car',lang:'Oko',pron:'oh-KOH',cat:'Travel'},
+{en:'I want to go to...',lang:'Mo fe lo si...',pron:'moh feh loh see',cat:'Travel'},
+{en:'Left',lang:'Osi',pron:'OH-see',cat:'Travel'},
+{en:'Right',lang:'Otun',pron:'oh-TOON',cat:'Travel'},
+{en:'Stop here',lang:'Duro nibi',pron:'DOO-roh NEE-bee',cat:'Travel'},
+{en:'Church',lang:'Ile ijsin',pron:'ee-LEH ee-JSEEN',cat:'Travel'},
+{en:'School',lang:'Ile iwe',pron:'ee-LEH EE-weh',cat:'Travel'},
+{en:'Where is the toilet?',lang:'Nibo ni ile igbonse?',pron:'NEE-boh nee ee-LEH ee-GBON-seh',cat:'Travel'},
+/* Market & Shopping */
+{en:'I am looking for...',lang:'Mo n wa...',pron:'moh n wah',cat:'Market & Shopping'},
+{en:'Do you have it?',lang:'Se o ni i?',pron:'sheh oh nee ee',cat:'Market & Shopping'},
+{en:'Give me a discount',lang:'E din owo die fun mi',pron:'EH deen OH-woh dee-EH foon mee',cat:'Market & Shopping'},
+{en:'I will come back',lang:'Mo o pada wa',pron:'moh oh PAH-dah wah',cat:'Market & Shopping'},
+{en:'Final price',lang:'Owo abo',pron:'OH-woh AH-boh',cat:'Market & Shopping'},
+{en:'I am buying for cash',label:'',lang:'Mo n san owo lowo',pron:'moh n sahn OH-woh loh-WOH',cat:'Market & Shopping'},
+{en:'Wrap it for me',lang:'We si fun mi',pron:'weh see foon mee',cat:'Market & Shopping'},
+{en:'I need change',lang:'Mo nilo iyoku owo',pron:'moh nee-LOH ee-YOH-koo OH-woh',cat:'Market & Shopping'},
+{en:'Is this fresh?',lang:'Se tuntun ni e?',pron:'sheh TOON-toon nee EH',cat:'Market & Shopping'},
+{en:'Do you sell...?',lang:'Se o n ta...?',pron:'sheh oh n tah',cat:'Market & Shopping'},
+{en:'I want two of these',lang:'Mo fe meji ninu eyi',pron:'moh feh MEH-jee nee-NOO EH-yee',cat:'Market & Shopping'},
+{en:'It is not good quality',lang:'Ko dara rara',pron:'koh DAH-rah RAH-rah',cat:'Market & Shopping'},
+{en:'Pay with mobile money',lang:'San pelu owo foonu',pron:'sahn PEH-loo OH-woh FOH-noo',cat:'Market & Shopping'},
+{en:'Receipt please',lang:'Fi resiti fun mi',pron:'fee reh-SEE-tee foon mee',cat:'Market & Shopping'},
+/* Health & Body */
+{en:'I have a headache',lang:'Ori mi n fo',pron:'OH-ree mee n foh',cat:'Health & Body'},
+{en:'I have malaria',lang:'Iba n pa mi',pron:'EE-bah n pah mee',cat:'Health & Body'},
+{en:'I need medicine',lang:'Mo nilo oogun',pron:'moh NEE-loh OH-goon',cat:'Health & Body'},
+{en:'Stomach pain',lang:'Inu mi n run',pron:'ee-NOO mee n ROON',cat:'Health & Body'},
+{en:'I am pregnant',lang:'Mo loyun',pron:'moh loh-YOON',cat:'Health & Body'},
+{en:'High blood pressure',lang:'Eje arin',pron:'EH-jeh AH-reen',cat:'Health & Body'},
+{en:'Diabetes',lang:'Arun suga',pron:'AH-roon SOO-gah',cat:'Health & Body'},
+{en:'Blood test',lang:'Idanwo eje',pron:'ee-DAHN-woh EH-jeh',cat:'Health & Body'},
+{en:'Pharmacy',lang:'Ile oogun',pron:'ee-LEH OH-goon',cat:'Health & Body'},
+{en:'Take this twice daily',lang:'Mu i ni igba meji lojo kan',pron:'moo ee nee EE-gbah MEH-jee loh-JOH kahn',cat:'Health & Body'},
+{en:'I am allergic to...',lang:'Ara mi ko gba...',pron:'AH-rah mee koh gbah',cat:'Health & Body'},
+{en:'Fever',lang:'Iba',pron:'EE-bah',cat:'Health & Body'},
+{en:'Cough',lang:'Ikọ',pron:'ee-KOH',cat:'Health & Body'},
+{en:'Get well soon',lang:'E san yara',pron:'EH sahn YAH-rah',cat:'Health & Body'},
+/* Social & Slang */
+{en:'No problem / It\'s fine',lang:'Kosi wahala',pron:'koh-SEE wah-HAH-lah',cat:'Social & Slang'},
+{en:'It is not easy (tough situation)',lang:'O daju, ko rọrun',pron:'oh DAH-joo, koh ROH-roon',cat:'Social & Slang'},
+{en:'Let\'s go!',lang:'Ejo, a lo!',pron:'EH-joh, ah LOH',cat:'Social & Slang'},
+{en:'I am busy',lang:'Mo n se ise',pron:'moh n sheh EE-sheh',cat:'Social & Slang'},
+{en:'Congratulations',lang:'E ku iṣẹ',pron:'EH koo ee-SHEH',cat:'Social & Slang'},
+{en:'Happy birthday',lang:'E ku ibi',pron:'EH koo EE-bee',cat:'Social & Slang'},
+{en:'I miss you',lang:'Mo n ronu re',pron:'moh n ROH-noo reh',cat:'Social & Slang'},
+{en:'What is happening?',lang:'Kini n sele?',pron:'KEE-nee n sheh-LEH',cat:'Social & Slang'},
+{en:'My guy / My man',lang:'Ore mi',pron:'OH-reh mee',cat:'Social & Slang'},
+{en:'No stress',lang:'Ma se wahala',pron:'mah sheh wah-HAH-lah',cat:'Social & Slang'},
+{en:'Stay strong',lang:'Se aropo',pron:'sheh AH-roh-poh',cat:'Social & Slang'},
+{en:'Send me the money',lang:'Ran owo si mi',pron:'rahn OH-woh see mee',cat:'Social & Slang'},
+{en:'WhatsApp me',lang:'Fi WhatsApp si mi',pron:'fee WhatsApp see mee',cat:'Social & Slang'},
+{en:'It is finished / Over',lang:'Tan tan',pron:'TAHN tahn',cat:'Social & Slang'},
+/* Religion & Spirituality */
+{en:'God bless you',lang:'Oluwa fi ore-ofe re han o',pron:'oh-LOO-wah fee oh-REH-oh-FEH reh hahn oh',cat:'Religion'},
+{en:'In God\'s name',lang:'Ni oruko Olorun',pron:'nee oh-ROO-koh oh-LOH-roon',cat:'Religion'},
+{en:'Praise God',lang:'Iyin fun Olorun',pron:'ee-YEEN foon oh-LOH-roon',cat:'Religion'},
+{en:'Church service',lang:'Isin ile ijọsin',pron:'ee-SEEN ee-LEH ee-JOH-seen',cat:'Religion'},
+{en:'Mosque',lang:'Ile Imale',pron:'ee-LEH ee-MAH-leh',cat:'Religion'},
+{en:'Let us pray',lang:'Jeki a gadura',pron:'JEH-kee ah gah-DOO-rah',cat:'Religion'},
+{en:'God willing',lang:'Ti Olorun ba wu',pron:'tee oh-LOH-roon bah WOO',cat:'Religion'},
+/* Money & Finance */
+{en:'I want to transfer money',lang:'Mo fe fi owo ran',pron:'moh feh fee OH-woh rahn',cat:'Money & Finance'},
+{en:'ATM machine',lang:'Ero owo ATM',pron:'EH-roh OH-woh ATM',cat:'Money & Finance'},
+{en:'Bank',lang:'Ile-iṣowo',pron:'ee-LEH-ee-SHOH-woh',cat:'Money & Finance'},
+{en:'Mobile money',lang:'Owo foonu',pron:'OH-woh FOH-noo',cat:'Money & Finance'},
+{en:'What is the exchange rate?',lang:'Kini iye paarọ owo?',pron:'KEE-nee EE-yeh PAH-roh OH-woh',cat:'Money & Finance'},
+{en:'I want to save',lang:'Mo fe fi owo sinu banki',pron:'moh feh fee OH-woh see-NOO bahn-KEE',cat:'Money & Finance'},
+{en:'Loan / Borrow',lang:'Gbese / Yaro',pron:'GBEH-sheh / YAH-roh',cat:'Money & Finance'},
+{en:'Interest rate',lang:'Ere lori owo',pron:'EH-reh loh-REE OH-woh',cat:'Money & Finance'},
+/* Agriculture & Food */
+{en:'Cassava',lang:'Paki / Ege',pron:'PAH-kee / EH-geh',cat:'Agriculture'},
+{en:'Maize / Corn',lang:'Agbado',pron:'ag-BAH-doh',cat:'Agriculture'},
+{en:'Palm oil',lang:'Epo pupa',pron:'EH-poh POO-pah',cat:'Agriculture'},
+{en:'Groundnut',lang:'Epa',pron:'EH-pah',cat:'Agriculture'},
+{en:'Tomato',lang:'Tomati',pron:'TOH-mah-tee',cat:'Agriculture'},
+{en:'Farm / Farmland',lang:'Oko',pron:'oh-KOH',cat:'Agriculture'},
+{en:'Harvest time',lang:'Akoko ikore',pron:'ah-KOH-koh ee-KOH-reh',cat:'Agriculture'},
+{en:'Fertiliser',lang:'Ajile',pron:'ah-JEE-leh',cat:'Agriculture'},
+/* Numbers (extended) */
+{en:'Fifty',lang:'Aadota',pron:'AH-doh-tah',cat:'Numbers'},
+{en:'Two hundred',lang:'Igba',pron:'EE-gbah',cat:'Numbers'},
+{en:'Five hundred',lang:'Aarun ookan',pron:'AH-roon OH-kahn',cat:'Numbers'},
+{en:'One million',lang:'Miliọnu kan',pron:'mee-LEE-oh-noo kahn',cat:'Numbers'},
+{en:'First',lang:'Akọkọ',pron:'ah-KOH-koh',cat:'Numbers'},
+{en:'Last',lang:'Ikẹhin',pron:'ee-KEH-heen',cat:'Numbers'},
+{en:'Half',lang:'Idaji',pron:'ee-DAH-jee',cat:'Numbers'}
+];
+
+let activeCat='All';
+function init(){
+  const cats=[...new Set(PHRASES.map(p=>p.cat))];
+  document.getElementById('cats').innerHTML='<button type="button" class="cat-btn active" onclick="setCat(\'All\')">All</button>'+cats.map(c=>`<button type="button" class="cat-btn" onclick="setCat('${c}')">${c}</button>`).join('');
+  filter();
+}
+function setCat(c){activeCat=c;document.querySelectorAll('.cat-btn').forEach(b=>b.classList.toggle('active',b.textContent===c));filter();}
+function filter(){
+  const q=document.getElementById('search').value.toLowerCase();
+  const list=PHRASES.filter(p=>{
+    if(activeCat!=='All'&&p.cat!==activeCat)return false;
+    if(!q)return true;
+    return p.en.toLowerCase().includes(q)||p.lang.toLowerCase().includes(q);
+  });
+  document.getElementById('countBadge').textContent=list.length+' phrases';
+  document.getElementById('phrases').innerHTML=list.map(p=>`<div class="phrase"><span class="en">${p.en}</span><span><span class="lang">${p.lang}</span><br><span class="pron">${p.pron}</span></span><button type="button" class="speak-btn" onclick="speak('${p.lang.replace(/'/g,"\\'")}')" title="Listen">&#128266;</button></div>`).join('');
+}
+function speak(t){const u=new SpeechSynthesisUtterance(t);u.lang='yo';u.rate=0.8;speechSynthesis.speak(u);}
+init();
+</script>
+<script>
+/* ── Word of the Day ── */
+function initWOTD(){
+  var day=new Date();var seed=day.getFullYear()*1000+day.getMonth()*32+day.getDate();
+  var p=PHRASES[seed%PHRASES.length];
+  var el=document.getElementById('wotd');
+  if(!el)return;
+  var langField=p.lang||p.sw||'';
+  var pronField=p.pron||p.roman||'';
+  var noteField=p.note||'';
+  el.innerHTML='<div class="wotd-label">Phrase of the Day</div>'+
+    '<div class="wotd-en">'+p.en+'</div>'+
+    '<div class="wotd-lang">'+langField+'</div>'+
+    (pronField?'<div class="wotd-pron">'+pronField+'</div>':'')+
+    (noteField?'<div class="wotd-note">'+noteField+'</div>':'');
+}
+
+/* ── Quick Quiz ── */
+var quizScore=0,quizTotal=0,quizAnswered=false;
+function initQuiz(){loadQuizQ();}
+function loadQuizQ(){
+  quizAnswered=false;
+  var pool=PHRASES.filter(function(p){return(p.lang||p.sw)&&(p.lang||p.sw).length>1;});
+  if(pool.length<4)return;
+  var idx=Math.floor(Math.random()*pool.length);
+  var correct=pool[idx];
+  var wrongs=[];
+  while(wrongs.length<3){
+    var r=pool[Math.floor(Math.random()*pool.length)];
+    if(r!==correct&&wrongs.indexOf(r)===-1)wrongs.push(r);
+  }
+  var opts=[correct].concat(wrongs);
+  for(var i=opts.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=opts[i];opts[i]=opts[j];opts[j]=t;}
+  var correctLang=correct.lang||correct.sw||'';
+  var qEl=document.getElementById('quizArea');
+  if(!qEl)return;
+  qEl.innerHTML='<div class="quiz-q">How do you say: "'+correct.en+'"?</div>'+
+    '<div class="quiz-opts">'+opts.map(function(o,i){
+      var oLang=o.lang||o.sw||'';
+      return '<button type="button" class="quiz-opt" onclick="checkQuiz(this,'+String(o===correct)+')">'+oLang+'</button>';
+    }).join('')+'</div>'+
+    '<div class="quiz-score" id="quizScoreEl">Score: '+quizScore+'/'+quizTotal+'</div>';
+}
+function checkQuiz(el,isCorrect){
+  if(quizAnswered)return;
+  quizAnswered=true;quizTotal++;
+  if(isCorrect){quizScore++;el.classList.add('correct');}
+  else{
+    el.classList.add('wrong');
+    var btns=el.parentNode.querySelectorAll('.quiz-opt');
+    btns.forEach(function(b){if(!b.classList.contains('wrong'))b.classList.add('dimmed');});
+    // find correct
+    var correctLang=(PHRASES.find(function(p){return p.en===document.querySelector('.quiz-q').textContent.replace('How do you say: "','').replace('"?','');})||{});
+    var cLang=correctLang.lang||correctLang.sw||'';
+    btns.forEach(function(b){if(b.textContent===cLang){b.classList.remove('dimmed');b.classList.add('correct');}});
+  }
+  document.getElementById('quizScoreEl').textContent='Score: '+quizScore+'/'+quizTotal;
+  var nextBtn=document.createElement('button');
+  nextBtn.className='quiz-next';
+  nextBtn.textContent='Next Question \u2192';
+  nextBtn.onclick=loadQuizQ;
+  el.parentNode.parentNode.appendChild(nextBtn);
+}
+
+/* ── Copy & Toast ── */
+function copyText(text){navigator.clipboard.writeText(text).then(function(){showToast('Copied!');});}
+function showToast(msg){var t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},1800);}
+
+initWOTD();
+initQuiz();
+
+</script>
+<script>window.TRANSLATOR_CONFIG={source:"en",target:"yo",langName:"Yoruba",langCode:"yo"};</script>
+<script src="/assets/js/lib/live-translate.js?v=4a785cc5" defer></script>
+
+<script>
+// Save/Share buttons — manual placement needed
+(function(){
+  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
+  div.innerHTML = '<share-result-button tool-name="Yoruba Translator" tool-slug="yoruba-translator"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/pages/language-tool-focus.js?v=86ea7c32" defer></script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+</body>
+</html>

@@ -1,0 +1,446 @@
+<!doctype html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pro App Directory | AfroTools</title>
+  <meta name="description" content="Dense AfroTools Pro app directory showing app routes, workspace status, real data surfaces, and setup gaps.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="tool-id" content="pro-app-directory">
+  <meta name="tool-category" content="pro">
+  <meta name="pro-required" content="afrotools-pro">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+  <script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script>
+  <script src="/assets/js/afro-auth.js?v=4250956b"></script>
+  <script src="/assets/js/pro-gate.js?v=e4aca7ef"></script>
+  <script src="/assets/js/lib/pro-app-registry.js?v=2e71c13d"></script>
+  <script src="/assets/js/lib/pro-daily-os-registry.js?v=b25cffa7"></script>
+  <script src="/assets/js/lib/pro-architecture.js?v=921b3113"></script>
+  <script src="/assets/js/lib/pro-home-insights.js?v=dc3dbf48"></script>
+  <script src="/assets/js/components/pro-switcher.js?v=17095027" defer></script>
+  <style>
+    :root{
+      --pad-bg:var(--color-bg,#f8fafd);
+      --pad-surface:#fff;
+      --pad-soft:#f8fafc;
+      --pad-ink:var(--color-text,#0f172a);
+      --pad-muted:var(--color-text-muted,#64748b);
+      --pad-line:var(--color-border,#e2e8f0);
+      --pad-line-strong:var(--color-border-strong,#cbd5e1);
+      --pad-blue:var(--color-primary,#0062cc);
+      --pad-blue-soft:var(--color-primary-pale,rgba(0,98,204,.08));
+      --pad-green:#047857;
+      --pad-green-soft:#ecfdf5;
+      --pad-amber:#92400e;
+      --pad-amber-soft:#fffbeb;
+      --pad-red:#991b1b;
+      --pad-red-soft:#fef2f2;
+      --pad-purple:#5b21b6;
+      --pad-purple-soft:#f5f3ff;
+      --pad-radius:var(--radius-sm,6px);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--pad-bg);color:var(--pad-ink);font-family:var(--font-body,"DM Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif);font-size:14px;line-height:1.45}
+    a,button{font:inherit}
+    a{color:inherit}
+    .pad-shell{min-height:100vh;padding:18px}
+    .pad-wrap{max-width:1420px;margin:0 auto}
+    .pad-topbar{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px}
+    .pad-crumb{font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--pad-muted);margin-bottom:6px}
+    .pad-crumb a{color:var(--pad-muted);text-decoration:none}
+    .pad-crumb a:hover{color:var(--pad-blue)}
+    .pad-title{font-size:28px;line-height:1.1;font-weight:900;margin:0 0 7px}
+    .pad-subtitle{max-width:840px;margin:0;color:var(--pad-muted);font-size:13px;line-height:1.55}
+    .pad-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    .pad-btn{display:inline-flex;align-items:center;justify-content:center;min-height:36px;border:1px solid var(--pad-line-strong);border-radius:var(--pad-radius);background:#fff;color:var(--pad-ink);padding:8px 11px;text-decoration:none;font-size:12px;font-weight:900}
+    .pad-btn:hover{border-color:var(--pad-blue);background:var(--pad-blue-soft);color:var(--pad-blue)}
+    .pad-btn.primary{background:var(--pad-blue);border-color:var(--pad-blue);color:#fff}
+    .pad-metrics{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:14px}
+    .pad-metric{background:#fff;border:1px solid var(--pad-line);border-radius:var(--pad-radius);padding:12px;min-height:82px}
+    .pad-metric strong{display:block;font-size:24px;line-height:1;font-weight:900}
+    .pad-metric span{display:block;margin-top:8px;color:var(--pad-muted);font-size:11px;font-weight:900}
+    .pad-panel{background:#fff;border:1px solid var(--pad-line);border-radius:var(--pad-radius);overflow:hidden;margin-bottom:14px}
+    .pad-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:12px 13px;border-bottom:1px solid var(--pad-line)}
+    .pad-kicker{font-size:11px;font-weight:900;color:var(--pad-blue);margin-bottom:4px}
+    .pad-h2{font-size:17px;line-height:1.2;font-weight:900;margin:0}
+    .pad-note{font-size:12px;line-height:1.45;color:var(--pad-muted);margin:3px 0 0;max-width:820px}
+    .pad-table-wrap{overflow:auto}
+    .pad-table{width:100%;border-collapse:collapse;min-width:1080px}
+    .pad-table th,.pad-table td{padding:10px;border-bottom:1px solid var(--pad-line);text-align:left;vertical-align:top;font-size:12px}
+    .pad-table th{background:var(--pad-soft);color:#475569;font-size:11px;font-weight:900}
+    .pad-table tr:last-child td{border-bottom:0}
+    .pad-app-name{font-weight:900;color:var(--pad-ink)}
+    .pad-meta{font-size:11px;color:var(--pad-muted);line-height:1.38;margin-top:3px}
+    .pad-route{display:block;font-family:var(--font-mono,"JetBrains Mono",monospace);font-size:11px;line-height:1.35;word-break:break-all;color:#475569}
+    .pad-pill{display:inline-flex;align-items:center;justify-content:center;min-height:22px;border-radius:999px;padding:4px 8px;border:1px solid var(--pad-line);background:var(--pad-soft);color:#475569;font-size:10px;font-weight:900;white-space:nowrap;text-transform:uppercase;letter-spacing:.04em}
+    .pad-pill.active,.pad-pill.real{background:var(--pad-green-soft);border-color:#a7f3d0;color:#065f46}
+    .pad-pill.shell,.pad-pill.local{background:var(--pad-purple-soft);border-color:#ddd6fe;color:var(--pad-purple)}
+    .pad-pill.setup,.pad-pill.missing,.pad-pill.blocked{background:var(--pad-red-soft);border-color:#fecaca;color:var(--pad-red)}
+    .pad-pill.schema,.pad-pill.online{background:var(--pad-amber-soft);border-color:#fde68a;color:var(--pad-amber)}
+    .pad-pill.exists,.pad-pill.planned{background:var(--pad-blue-soft);border-color:#bfdbfe;color:#1e40af}
+    .pad-row-actions{display:flex;gap:7px;flex-wrap:wrap}
+    .pad-warning{border:1px solid #fde68a;background:var(--pad-amber-soft);color:#78350f;border-radius:var(--pad-radius);padding:10px 11px;font-size:12px;line-height:1.48;margin-bottom:14px}
+    @media(max-width:960px){
+      .pad-topbar{display:block}
+      .pad-actions{justify-content:flex-start;margin-top:12px}
+      .pad-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+    @media(max-width:640px){
+      .pad-shell{padding:12px}
+      .pad-metrics{grid-template-columns:1fr}
+    }
+  </style>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/pro/apps/">
+</head>
+<body class="top-level-page-ui-refresh">
+  <afro-navbar></afro-navbar>
+  <main class="pad-shell pro-gated-content">
+    <div class="pad-wrap">
+      <div class="pad-topbar">
+        <div>
+          <div class="pad-crumb"><a href="/pro/workspace/">Pro Workspace</a> / Apps</div>
+          <h1 class="pad-title">All Pro Apps</h1>
+          <p class="pad-subtitle">Every AfroTools Pro app in one place. Payroll is connected to your account today; apps marked "Early preview" keep your work on this device and say so clearly inside the app.</p>
+        </div>
+        <div class="pad-actions">
+          <a class="pad-btn primary" href="/pro/workspace/">Back to Pro Workspace</a>
+          <a class="pad-btn" href="/pro/vault/">Vault</a>
+          <a class="pad-btn" href="/pro/team/">Team</a>
+          <a class="pad-btn" href="/pro/settings/">Settings</a>
+          <a class="pad-btn" href="/pro/apps/daily-os/">Daily OS Hub</a>
+          <a class="pad-btn" href="/tools/afropayroll-os/support">Payroll support console</a>
+          <a class="pad-btn" href="/dashboard/">Account</a>
+        </div>
+      </div>
+
+      <div class="pad-warning">
+        Apps that are still waiting on account sync or deeper setup are clearly labelled — nothing here pretends to file, pay, or sync before it really can.
+      </div>
+
+      <section class="pad-metrics" aria-label="Pro app summary">
+        <div class="pad-metric"><strong id="metricTotal">0</strong><span>Pro apps</span></div>
+        <div class="pad-metric"><strong id="metricActive">0</strong><span>Apps you can open</span></div>
+        <div class="pad-metric"><strong id="metricShell">0</strong><span>Early previews</span></div>
+        <div class="pad-metric"><strong id="metricPlanned">0</strong><span>Coming soon</span></div>
+        <div class="pad-metric"><strong id="metricBlocked">0</strong><span>Limited previews</span></div>
+      </section>
+
+      <section class="pad-panel">
+        <div class="pad-panel-head">
+          <div>
+            <div class="pad-kicker">App Launcher</div>
+            <h2 class="pad-h2">Business apps</h2>
+            <p class="pad-note">Open any workspace from one place and see what is ready, in early preview, or still limited.</p>
+          </div>
+        </div>
+        <div class="pad-table-wrap">
+          <table class="pad-table" aria-label="Pro app routes">
+            <thead>
+              <tr>
+                <th>App</th>
+                <th>Route</th>
+                <th>Status</th>
+                <th>What it does today</th>
+                <th>Where your data lives</th>
+                <th>Coming next</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="appRows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="pad-panel">
+        <div class="pad-panel-head">
+          <div>
+            <div class="pad-kicker">Daily Operations</div>
+            <h2 class="pad-h2">Apps for daily operations</h2>
+            <p class="pad-note">Workspaces for sellers, planners, salons, schools, clinics, farms, and more. Early previews are open to explore now.</p>
+          </div>
+        </div>
+        <div class="pad-table-wrap">
+          <table class="pad-table" aria-label="Daily Pro app routes">
+            <thead>
+              <tr>
+                <th>App</th>
+                <th>Route</th>
+                <th>Priority</th>
+                <th>Customers</th>
+                <th>Paid reason</th>
+                <th>Benchmarks</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="dailyRows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="pad-panel">
+        <div class="pad-panel-head">
+          <div>
+            <div class="pad-kicker">Shared Routes</div>
+            <h2 class="pad-h2">Support And Account Routes</h2>
+            <p class="pad-note">Vault, Team, and Settings are shared Pro account routes. Payroll country-pack support remains a gated read-only support page.</p>
+          </div>
+        </div>
+        <div class="pad-table-wrap">
+          <table class="pad-table" aria-label="Pro backbone routes">
+            <thead>
+              <tr>
+                <th>Route</th>
+                <th>Intended path</th>
+                <th>Status</th>
+                <th>Current safe entry</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody id="supportRows"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+  <afro-footer></afro-footer>
+
+  <script>
+  (function () {
+    "use strict";
+
+    function registry() {
+      return window.AfroProAppRegistry || window.AfroTools && window.AfroTools.proAppRegistry || null;
+    }
+
+    function apps() {
+      var api = registry();
+      return api && api.getApps ? api.getApps() : [];
+    }
+
+    function dailyRegistry() {
+      return window.AfroProDailyOsRegistry || window.AfroTools && window.AfroTools.proDailyOsRegistry || null;
+    }
+
+    function architecture() {
+      return window.AfroProArchitecture || window.AfroTools && window.AfroTools.proArchitecture || null;
+    }
+
+    function dailyApps() {
+      var api = dailyRegistry();
+      return api && api.getApps ? api.getApps() : [];
+    }
+
+    var appNavOverrides = {
+      payroll: { routeStatus: "active", shellState: "Active", statusTone: "active", routeExists: true },
+      "tax-compliance": { routeStatus: "shell", shellState: "Review packet only", statusTone: "shell", routeExists: true },
+      books: { routeStatus: "shell", shellState: "Local preview only", statusTone: "shell", routeExists: true },
+      hr: { routeStatus: "shell", shellState: "Local preview only", statusTone: "shell", routeExists: true },
+      "trade-desk": { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true },
+      "legal-desk": {
+        route: "/pro/apps/legal-desk/",
+        fallbackRoute: "/pro/apps/legal/",
+        routeStatus: "shell",
+        shellState: "Workspace preview",
+        statusTone: "shell",
+        routeExists: true,
+        buildStatus: "Legal workspace opens the current document and review workspace.",
+        dataSurface: "Saved legal workspace data on this device while account save is planned.",
+        needsAttention: "Keep the document storage boundary and legal disclaimer language honest."
+      },
+      "grants-tenders": { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true },
+      "creator-studio": { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true },
+      "stream-intelligence": {
+        routeStatus: "limited preview",
+        shellState: "Limited preview",
+        statusTone: "schema",
+        routeExists: true,
+        buildStatus: "Verified source controls and privacy boundaries are being finalized before broader Pro use.",
+        dataSurface: "Public source review, freshness notes, and account features marked as coming later.",
+        needsAttention: "Account-saved review queues and private intelligence controls are still being finalized."
+      },
+      "property-projects": { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true }
+    };
+
+    function controlApps() {
+      return apps().map(function (app) {
+        return Object.assign({}, app, appNavOverrides[app.id] || {});
+      });
+    }
+
+    function supportRoutes() {
+      return [
+        {
+          id: "vault",
+          name: "Pro Vault",
+          route: "/pro/vault/",
+          safeRoute: "/pro/vault/",
+          routeExists: true,
+          routeStatus: "active",
+          summary: "Shared route for export packets, documents, payslips, compliance packs, invoices, and device/account data labels."
+        },
+        {
+          id: "team",
+          name: "Team",
+          route: "/pro/team/",
+          safeRoute: "/pro/team/",
+          routeExists: true,
+          routeStatus: "active",
+          summary: "Shared route for roles, members, invites, clients, and permission model setups."
+        },
+        {
+          id: "settings",
+          name: "Settings",
+          route: "/pro/settings/",
+          safeRoute: "/pro/settings/",
+          routeExists: true,
+          routeStatus: "active",
+          summary: "Shared route for account profile display, Pro status, language lane, country, currency, and privacy preferences."
+        },
+        {
+          id: "payroll-pack-support",
+          name: "Payroll country-pack support",
+          route: "/tools/afropayroll-os/support.html",
+          safeRoute: "/tools/afropayroll-os/support.html",
+          routeExists: true,
+          routeStatus: "active",
+          summary: "Read-only country-pack support view for source review, confidence, engine coverage, and statutory calendar metadata."
+        }
+      ];
+    }
+
+    function safeRoute(item) {
+      var api = registry();
+      if (api && api.safeRoute) return api.safeRoute(item);
+      return item && item.routeExists === false ? item.fallbackRoute || item.safeRoute || "/pro/apps/" : item.route || "/pro/workspace/";
+    }
+
+    function escapeHtml(value) {
+      return String(value == null ? "" : value).replace(/[&<>"']/g, function (ch) {
+        return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch];
+      });
+    }
+
+    function statusClass(status) {
+      status = String(status || "").toLowerCase();
+      if (status === "active") return "active";
+      if (status === "shell") return "shell";
+      if (status === "setup needed") return "setup";
+      if (status === "needs cloud setup" || status === "needs account setup") return "schema";
+      if (status === "coming online") return "online";
+      if (status === "planned") return "planned";
+      if (status === "blocked") return "blocked";
+      return "";
+    }
+
+    function statusLabel(status, fallback) {
+      var insights = window.AfroProHomeInsights || window.AfroTools && window.AfroTools.proHomeInsights;
+      if (insights && insights.humaneStatus) return insights.humaneStatus(status, fallback).label;
+      status = String(status || "").toLowerCase();
+      if (status === "active") return "Ready";
+      if (status === "planned") return "Coming soon";
+      if (status === "blocked") return "Not available yet";
+      return fallback || "Early preview";
+    }
+
+    function setText(id, value) {
+      var node = document.getElementById(id);
+      if (node) node.textContent = String(value);
+    }
+
+    function renderMetrics(items, dailyItems) {
+      var allItems = items.concat(dailyItems || []);
+      var arch = architecture();
+      var summary = arch && arch.getSummary ? arch.getSummary() : null;
+      setText("metricTotal", summary ? summary.totalApps : allItems.length);
+      setText("metricActive", summary ? summary.appRoutesReady : allItems.filter(function (app) { return app.routeExists !== false; }).length);
+      setText("metricShell", summary ? summary.shellApps : allItems.filter(function (app) { return app.routeStatus === "shell" || app.statusTone === "local" || /shell/i.test(app.shellState || ""); }).length);
+      setText("metricPlanned", allItems.filter(function (app) { return app.routeStatus === "planned"; }).length);
+      setText("metricBlocked", summary ? summary.blockedApps : allItems.filter(function (app) { return app.routeStatus === "blocked" || app.routeExists === false; }).length);
+    }
+
+    function renderApps() {
+      var items = controlApps();
+      var body = document.getElementById("appRows");
+      renderMetrics(items, dailyApps());
+      if (!body) return;
+      body.innerHTML = items.map(function (app) {
+        var exists = app.routeExists !== false;
+        var actionRoute = safeRoute(app);
+        var actionLabel = exists ? "Open workspace" : "Not available";
+        return [
+          "<tr>",
+          "<td><div class=\"pad-app-name\">", escapeHtml(app.name), "</div><div class=\"pad-meta\">", escapeHtml(app.domain || ""), " / ", escapeHtml(app.owner || ""), "</div></td>",
+          "<td><code class=\"pad-route\">", escapeHtml(app.route), "</code></td>",
+          "<td><span class=\"pad-pill ", statusClass(app.routeStatus), "\">", escapeHtml(statusLabel(app.routeStatus, app.shellState)), "</span></td>",
+          "<td><span class=\"pad-pill ", escapeHtml(app.statusTone || ""), "\">", escapeHtml(app.shellState || "Workspace preview"), "</span><div class=\"pad-meta\">", escapeHtml(app.buildStatus || ""), "</div></td>",
+          "<td>", escapeHtml(app.dataSurface || app.dataModel || "Not connected"), "</td>",
+          "<td>", escapeHtml(app.needsAttention || ""), "</td>",
+          "<td><div class=\"pad-row-actions\"><a class=\"pad-btn", app.id === "payroll" ? " primary" : "", "\" href=\"", escapeHtml(actionRoute), "\">", escapeHtml(actionLabel), "</a><a class=\"pad-btn\" href=\"/pro/workspace/\">Workspace</a></div></td>",
+          "</tr>"
+        ].join("");
+      }).join("");
+    }
+
+    function renderDailyApps() {
+      var api = dailyRegistry();
+      var items = dailyApps();
+      var body = document.getElementById("dailyRows");
+      if (!body) return;
+      body.innerHTML = items.map(function (app) {
+        var actionRoute = api && api.safeRoute ? api.safeRoute(app) : app.route || "/pro/apps/daily-os/";
+        return [
+          "<tr>",
+          "<td><div class=\"pad-app-name\">", escapeHtml(app.name), "</div><div class=\"pad-meta\">", escapeHtml(app.category || ""), " / ", escapeHtml(app.shellState || "Workspace preview"), "</div></td>",
+          "<td><code class=\"pad-route\">", escapeHtml(app.route), "</code></td>",
+          "<td><span class=\"pad-pill ", app.priority <= 3 ? "active" : "local", "\">P", escapeHtml(app.priority), "</span></td>",
+          "<td>", escapeHtml((app.customers || []).slice(0, 4).join(", ")), "</td>",
+          "<td>", escapeHtml(app.paidReason || ""), "</td>",
+          "<td>", escapeHtml((app.competitors || []).join(", ")), "</td>",
+          "<td><div class=\"pad-row-actions\"><a class=\"pad-btn", app.priority <= 3 ? " primary" : "", "\" href=\"", escapeHtml(actionRoute), "\">Open workspace</a></div></td>",
+          "</tr>"
+        ].join("");
+      }).join("");
+    }
+
+    function renderSupport() {
+      var body = document.getElementById("supportRows");
+      if (!body) return;
+      body.innerHTML = supportRoutes().map(function (route) {
+        var exists = route.routeExists !== false;
+        var actionRoute = route.safeRoute || safeRoute(route);
+        return [
+          "<tr>",
+          "<td><div class=\"pad-app-name\">", escapeHtml(route.name), "</div></td>",
+          "<td><code class=\"pad-route\">", escapeHtml(route.route), "</code></td>",
+          "<td><span class=\"pad-pill ", exists ? "exists" : "missing", "\">", escapeHtml(exists ? route.routeStatus || "active" : "not available"), "</span></td>",
+          "<td><a class=\"pad-btn\" href=\"", escapeHtml(actionRoute), "\">Open</a></td>",
+          "<td>", escapeHtml(route.summary || ""), "</td>",
+          "</tr>"
+        ].join("");
+      }).join("");
+    }
+
+    function boot() {
+      renderApps();
+      renderDailyApps();
+      renderSupport();
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", boot);
+    } else {
+      boot();
+    }
+  })();
+  </script>
+</body>
+</html>

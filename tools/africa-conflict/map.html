@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conflict Map — AfroConflict | AfroTools</title>
+<meta name="description" content="Full-screen interactive map of active conflicts across Africa — filter by risk level, type, and region.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Conflict Map - AfroConflict | AfroTools">
+<meta property="og:description" content="Full-screen interactive map of active conflicts across Africa - filter by risk level, type, and region.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/africa-conflict/map">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Conflict Map - AfroConflict | AfroTools">
+<meta name="twitter:description" content="Full-screen interactive map of active conflicts across Africa - filter by risk level, type, and region.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta name="robots" content="index, follow">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="style.css?v=efb99733">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="/tools/africa-conflict/local-api-guard.js?v=8f670098" defer></script>
+<script src="/engines/africa-conflict-engine.js?v=3f1cd07e" defer></script>
+<script src="/tools/africa-conflict/static-routes.js?v=eb9fb3ae" defer></script>
+<style>
+.acd-fullmap-wrap { position: relative; }
+#acd-fullmap { height: calc(100vh - 160px); min-height: 400px; }
+.acd-map-overlay-controls {
+  position: absolute; top: 12px; left: 12px; z-index: 1000;
+  background: rgba(10,15,30,0.92);
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  padding: 12px;
+  min-width: 200px;
+}
+.acd-map-overlay-controls h3 { font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#94a3b8;margin:0 0 8px; }
+.acd-map-filter-opt { display:flex;align-items:center;gap:6px;font-size:.78rem;color:#94a3b8;cursor:pointer;padding:2px 0; }
+.acd-map-filter-opt input { accent-color:#3b82f6; }
+</style>
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="canonical" href="https://afrotools.com/tools/africa-conflict/map">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/africa-conflict/map">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/africa-conflict/map">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/africa-conflict/map">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<main class="acd-page">
+  <div class="acd-hero" style="padding:16px 24px">
+    <div class="acd-hero-inner">
+      <div>
+        <div class="acd-hero-title"><span class="acd-live-dot"></span><h1>🗺️ Conflict Map</h1></div>
+        <p class="acd-hero-desc">Full-screen conflict intelligence map</p>
+      </div>
+      <nav class="acd-hero-nav">
+        <a href="/tools/africa-conflict/">Dashboard</a>
+        <a href="/tools/africa-conflict/conflicts/">All Conflicts</a>
+        <a href="/tools/africa-conflict/map" class="active">Map</a>
+      </nav>
+    </div>
+  </div>
+
+  <div class="acd-fullmap-wrap">
+    <div class="acd-map-overlay-controls">
+      <h3>Filter Conflicts</h3>
+      <label class="acd-map-filter-opt"><input aria-label="Mf critical" type="checkbox" id="mf-critical" checked> <span style="color:#dc2626">● Critical</span></label>
+      <label class="acd-map-filter-opt"><input aria-label="Mf high" type="checkbox" id="mf-high" checked> <span style="color:#ea580c">● High</span></label>
+      <label class="acd-map-filter-opt"><input aria-label="Mf medium" type="checkbox" id="mf-medium" checked> <span style="color:#ca8a04">● Medium</span></label>
+      <label class="acd-map-filter-opt"><input aria-label="Mf low" type="checkbox" id="mf-low" checked> <span style="color:#65a30d">● Low</span></label>
+      <label class="acd-map-filter-opt" style="margin-top:8px"><input aria-label="Mf african" type="checkbox" id="mf-african" checked> African Only</label>
+      <label class="acd-map-filter-opt"><input aria-label="Mf global" type="checkbox" id="mf-global"> Global Impact</label>
+      <div style="font-size:.68rem;color:#475569;margin-top:10px" id="mf-count">Loading...</div>
+    </div>
+    <div id="acd-fullmap"></div>
+  </div>
+
+  <div class="acd-map-legend" style="padding:12px 24px">
+    <div class="acd-legend-item"><div class="acd-legend-dot" style="background:#dc2626"></div>Critical Risk</div>
+    <div class="acd-legend-item"><div class="acd-legend-dot" style="background:#ea580c"></div>High Risk</div>
+    <div class="acd-legend-item"><div class="acd-legend-dot" style="background:#ca8a04"></div>Medium Risk</div>
+    <div class="acd-legend-item"><div class="acd-legend-dot" style="background:#65a30d"></div>Low Risk</div>
+    <div class="acd-legend-item"><div class="acd-legend-dot" style="background:#6b7280"></div>Frozen/Other</div>
+    <span class="acd-source-tag" style="margin-left:auto">Marker size = estimated fatalities · ACLED/Manual</span>
+  </div>
+</main>
+<afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script>
+(function(){
+  var map, allConflicts = [], markers = [];
+
+  function conflictUrl(slug) {
+    if (window.AfroConflictStaticRoutes && typeof window.AfroConflictStaticRoutes.conflict === 'function') {
+      return window.AfroConflictStaticRoutes.conflict(slug);
+    }
+    return '/tools/africa-conflict/detail.html?id=' + encodeURIComponent(slug || '');
+  }
+
+  function initMap(conflicts) {
+    allConflicts = conflicts;
+    map = L.map('acd-fullmap', { center:[2,20], zoom:3 });
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; OpenStreetMap contributors &copy; CARTO', subdomains:'abcd', maxZoom:19
+    }).addTo(map);
+    renderMarkers();
+  }
+
+  function renderMarkers() {
+    markers.forEach(function(m){ map.removeLayer(m); });
+    markers = [];
+    var riskFilter = [];
+    if (document.getElementById('mf-critical').checked) riskFilter.push('critical');
+    if (document.getElementById('mf-high').checked) riskFilter.push('high');
+    if (document.getElementById('mf-medium').checked) riskFilter.push('medium');
+    if (document.getElementById('mf-low').checked) riskFilter.push('low');
+    var africanOnly = document.getElementById('mf-african').checked;
+    var globalToo = document.getElementById('mf-global').checked;
+
+    var filtered = allConflicts.filter(function(c) {
+      if (!c.lat || !c.lng) return false;
+      if (!riskFilter.includes(c.escalation_risk) && !['minimal','frozen'].includes(c.escalation_risk)) return false;
+      if (africanOnly && !globalToo && !c.is_african) return false;
+      if (!africanOnly && globalToo && c.is_african) return false;
+      return true;
+    });
+
+    document.getElementById('mf-count').textContent = filtered.length + ' conflicts shown';
+
+    filtered.forEach(function(c) {
+      var color = AfroConflict.CONFIG.riskColors[c.escalation_risk] || '#6b7280';
+      var size = Math.min(40, Math.max(8, Math.sqrt((c.fatalities_max||500)/500)*12));
+      var m = L.circleMarker([c.lat,c.lng], {
+        radius:size, fillColor:color, color:color, weight:2, opacity:.9, fillOpacity:.5
+      }).addTo(map);
+      m.bindPopup(AfroConflict.CONFIG && ('<div class="acd-map-popup"><div class="acd-mp-header"><span class="acd-mp-flag">' + AfroConflict.flagEmoji(c.primary_country) + '</span><strong>' + (c.short_name||c.name) + '</strong></div><div class="acd-mp-badges">' + AfroConflict.statusBadge(c.status) + AfroConflict.riskBadge(c.escalation_risk,'Risk') + '</div><div class="acd-mp-stats"><div>☠️ ' + AfroConflict.formatRange(c.fatalities_min,c.fatalities_max) + '</div><div>🏕️ ' + AfroConflict.formatNumber((c.idps_count||0)+(c.refugees_count||0)) + ' displaced</div></div><a href="' + conflictUrl(c.slug) + '" class="acd-mp-link">View Intelligence →</a></div>'));
+      markers.push(m);
+    });
+  }
+
+  async function load() {
+    var res = await fetch('/api/conflicts');
+    var json = await res.json();
+    initMap(json.data || []);
+    ['mf-critical','mf-high','mf-medium','mf-low','mf-african','mf-global'].forEach(function(id){
+      document.getElementById(id).addEventListener('change', renderMarkers);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    AfroConflict.init();
+    load();
+  });
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+</body>
+</html>

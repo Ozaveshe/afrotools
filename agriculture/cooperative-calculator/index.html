@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cooperative Dividend Calculator — SACCO &amp; Farmer Coop Returns | AfroTools</title>
+<meta name="description" content="Calculate how surplus from agricultural cooperatives and SACCOs is divided among members. Patronage refund, share-based, or hybrid dividend distribution — for all African cooperative types.">
+<meta property="og:title" content="Cooperative &amp; SACCO Dividend Calculator | AfroTools">
+<meta property="og:description" content="Calculate surplus allocation and member dividends for agricultural cooperatives and SACCOs across Africa. Supports patronage refund, per-share, and hybrid distribution methods.">
+<meta property="og:url" content="https://afrotools.com/agriculture/cooperative-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/cooperative-calculator.webp">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cooperative &amp; SACCO Dividend Calculator | AfroTools">
+<meta name="twitter:description" content="Calculate cooperative surplus allocation and member dividends. Agricultural coops, SACCOs, multi-purpose cooperatives.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/cooperative-calculator.webp">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Cooperative & SACCO Dividend Calculator",
+  "url": "https://afrotools.com/agriculture/cooperative-calculator/",
+  "description": "Calculate how surplus from agricultural cooperatives and SACCOs is distributed among members. Patronage refund, share-based, and hybrid distribution methods.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "image": "https://afrotools.com/assets/img/tools/cooperative-calculator.webp"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "AfroTools", "item": "https://afrotools.com/"},
+    {"@type": "ListItem", "position": 2, "name": "Agriculture", "item": "https://afrotools.com/agriculture/"},
+    {"@type": "ListItem", "position": 3, "name": "Cooperative Dividend Calculator", "item": "https://afrotools.com/agriculture/cooperative-calculator/"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is a cooperative surplus dividend?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "After a cooperative pays all operating costs, the remaining profit (surplus) is distributed among members. A portion goes to a mandatory reserve fund (required by law in most African countries), and the remainder is split among members based on their shares or volume of produce delivered."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a patronage refund?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A patronage refund distributes dividends based on how much produce each member delivered to the cooperative. If you delivered 20% of total produce, you receive 20% of the patronage dividend pool. This is the most common method in African agricultural cooperatives because it rewards loyal, high-volume members."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the statutory reserve fund?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most African cooperative laws (e.g., Nigeria's Cooperative Societies Act, Kenya's Cooperative Societies Act, Ghana's Cooperative Societies Decree) require cooperatives to set aside 20–30% of surplus into an indivisible reserve fund before distributing dividends. This fund protects the cooperative against losses."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is a SACCO dividend calculated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "SACCOs (Savings and Credit Cooperatives) typically distribute dividends on share capital — members with more shares receive proportionally more. The dividend rate is declared as a percentage of share value. Some SACCOs also offer interest rebates on loans taken during the year."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why should I join a cooperative instead of selling independently?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Cooperatives aggregate produce, negotiate better prices, reduce transport costs, and distribute the collective surplus back to members. A farmer selling through a cooperative often earns 15–40% more than selling independently at local market prices, once the cooperative dividend is included."
+      }
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/agriculture.css?v=70592203">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+
+<style>
+:root {
+  --acc: #0062CC;
+  --acc-dk: #0063D1;
+  --acc-lt: #E8F2FF;
+  --acc-pale: #F0F7FF;
+  --bg: #F8FAFD;
+  --bg-card: #FFF;
+  --text: #0f172a;
+  --muted: #6B7280;
+  --r: 18px;
+  --border: #E5E7EB;
+  --green: #16A34A;
+  --green-bg: #DCFCE7;
+  --red: #DC2626;
+  --red-bg: #FEE2E2;
+  --amber: #D97706;
+  --amber-bg: #FEF3C7;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; }
+
+/* HERO */
+.hero { background: #0A1628; color: #fff; padding: 3rem 1rem 2rem; text-align: center; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, rgba(0,98,204,.15) 0%, transparent 60%); pointer-events: none; }
+.hero-inner { max-width: 700px; margin: 0 auto; position: relative; }
+.breadcrumb { font-size: .82rem; opacity: .65; margin-bottom: .75rem; }
+.breadcrumb a { color: #fff; text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.hero h1 { color: #fff; font-size: clamp(1.6rem, 5vw, 2.5rem); font-weight: 800; margin: 0 0 .75rem; letter-spacing: -.02em; line-height: 1.15; text-transform: uppercase; }
+.hero p { font-size: 1rem; opacity: .85; line-height: 1.6; max-width: 580px; margin: 0 auto; }
+.badge-row { display: flex; justify-content: center; gap: .6rem; margin-top: 1.1rem; flex-wrap: wrap; }
+.badge { background: rgba(255,255,255,.15); border-radius: 980px; padding: .3rem .85rem; font-size: .8rem; font-weight: 600; }
+
+/* LAYOUT */
+.main { max-width: 900px; margin: 0 auto; padding: 2rem 1rem 3rem; }
+
+/* CARD */
+.card { background: var(--bg-card); border: 1.5px solid var(--border); border-radius: var(--r); padding: 1.5rem; margin-bottom: 1.25rem; }
+.card-title { font-size: .8rem; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin: 0 0 1.1rem; }
+
+/* TABS */
+.coop-tabs { display: flex; gap: .5rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+.coop-tab { flex: 1; min-width: 140px; padding: .65rem 1rem; border: 1.5px solid var(--border); border-radius: 12px; background: #fff; font-family: inherit; font-size: .85rem; font-weight: 700; color: var(--muted); cursor: pointer; transition: all .2s; text-align: center; }
+.coop-tab.active { background: var(--acc-lt); border-color: var(--acc); color: var(--acc); }
+.coop-tab:hover:not(.active) { border-color: #c0d0e0; }
+
+/* FORM */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 820px) { .form-grid { grid-template-columns: 1fr; } }
+.field { display: flex; flex-direction: column; gap: .4rem; }
+.field label { font-size: .82rem; font-weight: 700; color: var(--text); }
+.field input, .field select { width: 100%; padding: .65rem .9rem; border: 1.5px solid var(--border); border-radius: 12px; font-family: inherit; font-size: .92rem; color: var(--text); background: #fff; transition: border-color .2s; }
+.field input:focus, .field select:focus { outline: none; border-color: var(--acc); }
+.field .hint { font-size: .75rem; color: var(--muted); line-height: 1.4; }
+.full-width { grid-column: 1 / -1; }
+
+/* ALLOCATION SECTION */
+.alloc-row { display: grid; grid-template-columns: 1fr auto; gap: .75rem; align-items: center; padding: .6rem 0; border-bottom: 1px solid var(--border); }
+.alloc-row:last-child { border-bottom: none; }
+.alloc-label { font-size: .88rem; font-weight: 600; }
+.alloc-sub { font-size: .75rem; color: var(--muted); }
+.alloc-input-wrap { display: flex; align-items: center; gap: .4rem; }
+.alloc-input { width: 72px; padding: .5rem .65rem; border: 1.5px solid var(--border); border-radius: 10px; font-family: inherit; font-size: .92rem; font-weight: 700; text-align: right; transition: border-color .2s; }
+.alloc-input:focus { outline: none; border-color: var(--acc); }
+.alloc-pct { font-size: .88rem; font-weight: 700; color: var(--muted); }
+@media (max-width: 820px) { .alloc-row { grid-template-columns: 1fr; align-items: stretch; } }
+.alloc-total-row { display: flex; justify-content: space-between; align-items: center; padding: .75rem 0 0; font-size: .88rem; font-weight: 700; }
+#alloc-total-val { font-size: 1rem; font-weight: 800; }
+#alloc-total-val.ok { color: var(--green); }
+#alloc-total-val.over { color: var(--red); }
+#alloc-total-val.under { color: var(--amber); }
+
+/* DISTRIBUTION METHOD */
+.method-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; }
+@media (max-width: 820px) { .method-grid { grid-template-columns: 1fr; } }
+.method-card { border: 1.5px solid var(--border); border-radius: 14px; padding: 1rem; cursor: pointer; transition: all .2s; text-align: center; }
+.method-card.active { border-color: var(--acc); background: var(--acc-lt); }
+.method-card:hover:not(.active) { border-color: #c0d0e0; }
+.method-card .mc-icon { font-size: 1.4rem; margin-bottom: .35rem; }
+.method-card .mc-name { font-size: .85rem; font-weight: 800; margin-bottom: .2rem; }
+.method-card .mc-desc { font-size: .75rem; color: var(--muted); line-height: 1.35; }
+.method-card.active .mc-desc { color: #0063D1; }
+
+.hybrid-split { margin-top: .75rem; padding: .85rem 1rem; background: var(--acc-pale); border-radius: 12px; display: none; }
+.hybrid-split.show { display: block; }
+.hybrid-split label { font-size: .82rem; font-weight: 700; margin-bottom: .4rem; display: block; }
+.hybrid-range { width: 100%; accent-color: var(--acc); }
+.hybrid-labels { display: flex; justify-content: space-between; font-size: .78rem; font-weight: 700; margin-top: .3rem; }
+.hybrid-labels span:last-child { color: var(--acc); }
+
+/* SACCO extras */
+.sacco-section { display: none; }
+.sacco-section.show { display: contents; }
+
+/* BUTTON */
+.btn-calc { display: block; width: 100%; margin-top: 1.25rem; padding: .85rem 1.5rem; background: var(--acc); color: #fff; border: none; border-radius: 980px; font-family: inherit; font-size: 1rem; font-weight: 800; cursor: pointer; letter-spacing: .01em; transition: background .2s, transform .1s; }
+.btn-calc:hover { background: var(--acc-dk); transform: translateY(-1px); }
+.btn-calc:active { transform: translateY(0); }
+
+/* RESULTS */
+#results { display: none; }
+
+/* STAT GRID */
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: .85rem; margin-top: .25rem; }
+.stat { background: var(--acc-pale); border: 1.5px solid var(--acc-lt); border-radius: 14px; padding: 1rem; text-align: center; }
+.stat .sv { font-size: 1.3rem; font-weight: 800; color: var(--acc); word-break: break-all; }
+.stat .sl { font-size: .75rem; color: var(--muted); font-weight: 600; margin-top: .2rem; line-height: 1.3; }
+.stat.green { background: var(--green-bg); border-color: #86EFAC; }
+.stat.green .sv { color: var(--green); }
+.stat.red { background: var(--red-bg); border-color: #FCA5A5; }
+.stat.red .sv { color: var(--red); }
+.stat.amber { background: var(--amber-bg); border-color: #FDE68A; }
+.stat.amber .sv { color: var(--amber); }
+.stat.big { background: linear-gradient(135deg, var(--acc) 0%, var(--acc-dk) 100%); border: none; }
+.stat.big .sv { color: #fff; font-size: 1.6rem; }
+.stat.big .sl { color: rgba(255,255,255,.8); }
+
+/* ALLOCATION BAR */
+.alloc-viz { margin-top: 1rem; }
+.alloc-bar-wrap { height: 28px; border-radius: 14px; overflow: hidden; display: flex; }
+.alloc-seg { height: 100%; transition: width .4s; display: flex; align-items: center; justify-content: center; font-size: .7rem; font-weight: 800; color: #fff; overflow: hidden; white-space: nowrap; }
+.alloc-legend { display: flex; flex-wrap: wrap; gap: .5rem .85rem; margin-top: .65rem; }
+.alloc-leg-item { display: flex; align-items: center; gap: .35rem; font-size: .78rem; font-weight: 600; }
+.alloc-leg-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+
+/* COMPARISON */
+.comparison-box { border-radius: 14px; padding: 1.25rem; margin-top: .25rem; }
+.comparison-box.positive { background: var(--green-bg); border: 1.5px solid #86EFAC; }
+.comparison-box.negative { background: var(--red-bg); border: 1.5px solid #FCA5A5; }
+.comparison-box .cb-label { font-size: .78rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; margin-bottom: .75rem; }
+.comparison-box.positive .cb-label { color: var(--green); }
+.comparison-box.negative .cb-label { color: var(--red); }
+.compare-rows { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: .65rem; }
+.cr { background: rgba(255,255,255,.7); border-radius: 10px; padding: .65rem .85rem; }
+.cr .crv { font-size: 1.1rem; font-weight: 800; }
+.cr .crl { font-size: .75rem; color: var(--muted); margin-top: .15rem; }
+.premium-tag { display: inline-block; padding: .3rem .85rem; border-radius: 980px; font-size: .82rem; font-weight: 800; margin-top: .65rem; }
+.premium-tag.positive { background: var(--green); color: #fff; }
+.premium-tag.negative { background: var(--red); color: #fff; }
+
+/* PER-UNIT BOX */
+.per-unit-box { background: var(--acc-pale); border: 1.5px solid var(--acc-lt); border-radius: 14px; padding: 1rem 1.1rem; font-size: .9rem; line-height: 1.6; }
+.per-unit-box strong { color: var(--acc); }
+
+/* BREAKDOWN TABLE */
+.breakdown-table { width: 100%; border-collapse: collapse; font-size: .88rem; margin-top: .5rem; }
+.breakdown-table th { text-align: left; font-size: .75rem; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding: .4rem .6rem; border-bottom: 2px solid var(--border); }
+.breakdown-table td { padding: .55rem .6rem; border-bottom: 1px solid var(--border); }
+.breakdown-table tr:last-child td { border-bottom: none; font-weight: 800; background: var(--acc-pale); border-radius: 8px; }
+.breakdown-table .td-label { font-weight: 600; }
+.breakdown-table .td-pct { color: var(--muted); font-size: .82rem; }
+.breakdown-table .td-amt { font-weight: 700; text-align: right; }
+
+/* RECALC BUTTON */
+.btn-recalc { display: inline-flex; align-items: center; gap: .4rem; padding: .55rem 1.2rem; background: transparent; border: 1.5px solid var(--acc); color: var(--acc); border-radius: 980px; font-family: inherit; font-size: .88rem; font-weight: 700; cursor: pointer; transition: all .2s; margin-top: 1rem; }
+.btn-recalc:hover { background: var(--acc-lt); }
+
+/* CROSS-LINKS */
+.agri-links { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: .75rem; margin-top: 1rem; }
+.agri-link { display: flex; align-items: center; gap: .6rem; background: var(--bg-card); border: 1.5px solid var(--border); border-radius: 14px; padding: .75rem 1rem; text-decoration: none; color: var(--text); font-weight: 600; font-size: .88rem; transition: border-color .2s, box-shadow .2s; }
+.agri-link:hover { border-color: var(--acc); box-shadow: 0 3px 10px rgba(0,98,204,.1); }
+.agri-link .al-arr { color: var(--muted); margin-left: auto; }
+
+/* FAQ */
+.faq details { border-bottom: 1px solid var(--border); padding: .85rem 0; }
+.faq summary { font-weight: 700; font-size: .9rem; cursor: pointer; list-style: none; }
+.faq summary::before { content: '+ '; color: var(--acc); font-weight: 800; }
+.faq details[open] summary::before { content: '− '; }
+.faq p { font-size: .85rem; color: var(--muted); line-height: 1.65; margin: .5rem 0 0; }
+
+/* SEO PROSE */
+.seo-prose { max-width: 720px; margin: 0 auto; }
+.seo-prose h2 { font-size: 1.05rem; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; margin: 1.75rem 0 .6rem; }
+.seo-prose p { font-size: .88rem; line-height: 1.7; color: var(--muted); }
+
+/* ERROR */
+.err-msg { background: var(--red-bg); border: 1.5px solid #FCA5A5; color: var(--red); border-radius: 12px; padding: .65rem 1rem; font-size: .85rem; font-weight: 600; margin-top: .75rem; display: none; }
+</style>
+<meta property="article:modified_time" content="2026-03-28">
+<link rel="stylesheet" href="/assets/css/agriculture-page-ui-refresh.css?v=411c7880">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/agriculture/cooperative-calculator/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/agriculture/cooperative-calculator/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/agriculture/cooperative-calculator/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/agriculture/cooperative-calculator/">
+</head>
+<body class="agriculture-page-ui-refresh top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+
+<section class="hero">
+  <div class="hero-inner">
+    <p class="breadcrumb"><a href="/">AfroTools</a> › <a href="/agriculture/">Agriculture</a> › Cooperative Dividend Calculator</p>
+    <h1>Cooperative &amp; SACCO Dividend Calculator</h1>
+    <p>Calculate how your cooperative's surplus is allocated and how much dividend you earn — agricultural coops, SACCOs, and multi-purpose cooperatives across Africa.</p>
+    <div class="badge-row">
+      <span class="badge">🤝 Agri Coops</span>
+      <span class="badge">🏦 SACCOs</span>
+      <span class="badge">🌍 Pan-African</span>
+      <span class="badge">📊 3 Distribution Methods</span>
+    </div>
+  </div>
+</section>
+
+<main class="main">
+
+  <!-- CALCULATOR CARD -->
+  <div class="card">
+    <p class="card-title">Cooperative Details</p>
+
+    <!-- COOP TYPE TABS -->
+    <div class="coop-tabs">
+      <button type="button" class="coop-tab active" onclick="setCoopType('agri', this)">🌾 Agricultural Marketing</button>
+      <button type="button" class="coop-tab" onclick="setCoopType('sacco', this)">🏦 SACCO / Savings</button>
+      <button type="button" class="coop-tab" onclick="setCoopType('multi', this)">🤝 Multi-Purpose</button>
+    </div>
+
+    <div class="form-grid">
+
+      <!-- Revenue -->
+      <div class="field">
+        <label for="inp-revenue">Total Cooperative Revenue</label>
+        <input type="number" id="inp-revenue" min="0" step="1" placeholder="e.g. 5000000" inputmode="decimal">
+        <span class="hint">Total proceeds from selling members' produce, or total loan portfolio income for SACCOs.</span>
+      </div>
+
+      <!-- Currency -->
+      <div class="field">
+        <label for="inp-currency">Currency</label>
+        <select id="inp-currency">
+          <option value="NGN">NGN — Nigerian Naira (₦)</option>
+          <option value="KES">KES — Kenyan Shilling (KSh)</option>
+          <option value="GHS">GHS — Ghanaian Cedi (GH₵)</option>
+          <option value="ZAR">ZAR — South African Rand (R)</option>
+          <option value="TZS">TZS — Tanzanian Shilling (TSh)</option>
+          <option value="UGX">UGX — Ugandan Shilling (USh)</option>
+          <option value="ETB">ETB — Ethiopian Birr (Br)</option>
+          <option value="EGP">EGP — Egyptian Pound (E£)</option>
+          <option value="MAD">MAD — Moroccan Dirham (DH)</option>
+          <option value="XOF">XOF — CFA Franc BCEAO (CFA)</option>
+          <option value="XAF">XAF — CFA Franc BEAC (CFA)</option>
+          <option value="ZMW">ZMW — Zambian Kwacha (K)</option>
+          <option value="RWF">RWF — Rwandan Franc (RF)</option>
+          <option value="MWK">MWK — Malawian Kwacha (MK)</option>
+          <option value="USD">USD — US Dollar ($)</option>
+        </select>
+      </div>
+
+      <!-- Expenses -->
+      <div class="field">
+        <label for="inp-expenses">Total Cooperative Expenses</label>
+        <input type="number" id="inp-expenses" min="0" step="1" placeholder="e.g. 2000000" inputmode="decimal">
+        <span class="hint">Operating costs + staff salaries + transport + storage + marketing + loan repayments + taxes.</span>
+      </div>
+
+      <!-- Members -->
+      <div class="field">
+        <label for="inp-members">Number of Members</label>
+        <input type="number" id="inp-members" min="1" step="1" placeholder="e.g. 120" inputmode="numeric">
+      </div>
+
+      <!-- Market price (agri/multi) -->
+      <div class="field agri-field">
+        <label for="inp-market-price">Independent Market Price per kg/tonne</label>
+        <input type="number" id="inp-market-price" min="0" step="0.01" placeholder="e.g. 450" inputmode="decimal">
+        <span class="hint">Price you would get selling directly at the local market. Used for cooperative vs. independent comparison.</span>
+      </div>
+
+      <!-- Member's produce -->
+      <div class="field agri-field">
+        <label for="inp-my-produce">Your Produce Delivered (kg/tonnes)</label>
+        <input type="number" id="inp-my-produce" min="0" step="0.01" placeholder="e.g. 1200" inputmode="decimal">
+        <span class="hint">How much produce you personally delivered to the cooperative this season.</span>
+      </div>
+
+      <!-- Total produce -->
+      <div class="field agri-field">
+        <label for="inp-total-produce">Total Produce Collected by Coop (same unit)</label>
+        <input type="number" id="inp-total-produce" min="0" step="0.01" placeholder="e.g. 85000" inputmode="decimal">
+      </div>
+
+      <!-- Member's shares -->
+      <div class="field">
+        <label for="inp-my-shares">Your Share Capital Held</label>
+        <input type="number" id="inp-my-shares" min="0" step="1" placeholder="e.g. 50000" inputmode="decimal">
+        <span class="hint">Value of shares or savings you hold in the cooperative.</span>
+      </div>
+
+      <!-- Total shares -->
+      <div class="field">
+        <label for="inp-total-shares">Total Cooperative Share Capital</label>
+        <input type="number" id="inp-total-shares" min="0" step="1" placeholder="e.g. 3500000" inputmode="decimal">
+      </div>
+
+      <!-- SACCO interest rate -->
+      <div class="field sacco-field" style="display:none">
+        <label for="inp-sacco-rate">SACCO Dividend Rate on Shares (%)</label>
+        <input type="number" id="inp-sacco-rate" min="0" max="100" step="0.1" placeholder="e.g. 12" inputmode="decimal">
+        <span class="hint">Annual dividend rate declared on share capital (e.g. 12% = members earn 12% of their savings as dividend).</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ALLOCATION CARD -->
+  <div class="card">
+    <p class="card-title">Surplus Allocation (adjust to match your cooperative's bylaws)</p>
+
+    <div class="alloc-row">
+      <div>
+        <div class="alloc-label">📦 Statutory Reserve Fund</div>
+        <div class="alloc-sub">Legally required in most African countries</div>
+      </div>
+      <div class="alloc-input-wrap">
+        <input aria-label="Alloc reserve" type="number" id="alloc-reserve" class="alloc-input" value="25" min="0" max="100" step="1" oninput="updateAllocTotal()">
+        <span class="alloc-pct">%</span>
+      </div>
+    </div>
+
+    <div class="alloc-row">
+      <div>
+        <div class="alloc-label">📚 Education &amp; Training Fund</div>
+        <div class="alloc-sub">Member capacity building</div>
+      </div>
+      <div class="alloc-input-wrap">
+        <input aria-label="Alloc edu" type="number" id="alloc-edu" class="alloc-input" value="5" min="0" max="100" step="1" oninput="updateAllocTotal()">
+        <span class="alloc-pct">%</span>
+      </div>
+    </div>
+
+    <div class="alloc-row">
+      <div>
+        <div class="alloc-label">💰 Dividend to Members</div>
+        <div class="alloc-sub">Distributed to all members</div>
+      </div>
+      <div class="alloc-input-wrap">
+        <input aria-label="Alloc dividend" type="number" id="alloc-dividend" class="alloc-input" value="50" min="0" max="100" step="1" oninput="updateAllocTotal()">
+        <span class="alloc-pct">%</span>
+      </div>
+    </div>
+
+    <div class="alloc-row">
+      <div>
+        <div class="alloc-label">🤝 Social &amp; Community Fund</div>
+        <div class="alloc-sub">Community development projects</div>
+      </div>
+      <div class="alloc-input-wrap">
+        <input aria-label="Alloc social" type="number" id="alloc-social" class="alloc-input" value="5" min="0" max="100" step="1" oninput="updateAllocTotal()">
+        <span class="alloc-pct">%</span>
+      </div>
+    </div>
+
+    <div class="alloc-row">
+      <div>
+        <div class="alloc-label">🔄 Retained Earnings</div>
+        <div class="alloc-sub">Reinvested for cooperative growth</div>
+      </div>
+      <div class="alloc-input-wrap">
+        <input aria-label="Alloc retained" type="number" id="alloc-retained" class="alloc-input" value="15" min="0" max="100" step="1" oninput="updateAllocTotal()">
+        <span class="alloc-pct">%</span>
+      </div>
+    </div>
+
+    <div class="alloc-total-row">
+      <span style="color:var(--muted);font-weight:700">Total Allocation</span>
+      <span id="alloc-total-val" class="ok">100%</span>
+    </div>
+    <div id="alloc-warn" class="err-msg"></div>
+  </div>
+
+  <!-- DISTRIBUTION METHOD CARD -->
+  <div class="card">
+    <p class="card-title">Dividend Distribution Method</p>
+
+    <div class="method-grid">
+      <div class="method-card" onclick="setMethod('shares', this)">
+        <div class="mc-icon">📊</div>
+        <div class="mc-name">Per Share</div>
+        <div class="mc-desc">Dividend proportional to share capital held. Common in SACCOs.</div>
+      </div>
+      <div class="method-card active" onclick="setMethod('patronage', this)">
+        <div class="mc-icon">🌾</div>
+        <div class="mc-name">Patronage Refund</div>
+        <div class="mc-desc">Based on volume of produce delivered. Most common in agri coops.</div>
+      </div>
+      <div class="method-card" onclick="setMethod('hybrid', this)">
+        <div class="mc-icon">⚖️</div>
+        <div class="mc-name">Hybrid</div>
+        <div class="mc-desc">Split between patronage and shares. Defined by cooperative bylaws.</div>
+      </div>
+    </div>
+
+    <div id="hybrid-split-box" class="hybrid-split">
+      <label for="hybrid-range">Patronage <span id="hybrid-pat-pct" style="color:var(--acc)">50%</span> &nbsp;|&nbsp; Per Share <span id="hybrid-share-pct" style="color:var(--muted)">50%</span></label>
+      <input type="range" id="hybrid-range" class="hybrid-range" min="0" max="100" value="50" oninput="updateHybridLabel()">
+      <div class="hybrid-labels">
+        <span>100% Patronage</span>
+        <span>100% Shares</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="calc-error" class="err-msg" style="display:none;margin-bottom:1rem"></div>
+
+  <button type="button" class="btn-calc" onclick="calcDividend()">Calculate My Dividend &#x2192;</button>
+
+  <!-- ═══════ RESULTS ═══════ -->
+  <div id="results">
+
+    <!-- Summary -->
+    <div class="card" style="margin-top:1.5rem">
+      <p class="card-title">Cooperative Financial Summary</p>
+      <div class="stat-grid" id="res-summary"></div>
+    </div>
+
+    <!-- Allocation Breakdown -->
+    <div class="card">
+      <p class="card-title">Surplus Allocation Breakdown</p>
+      <div class="alloc-viz">
+        <div class="alloc-bar-wrap" id="alloc-bar"></div>
+        <div class="alloc-legend" id="alloc-legend"></div>
+      </div>
+      <table class="breakdown-table" style="margin-top:1.1rem">
+        <thead>
+          <tr>
+            <th>Fund</th>
+            <th class="td-pct">Share</th>
+            <th class="td-amt">Amount</th>
+          </tr>
+        </thead>
+        <tbody id="alloc-table-body"></tbody>
+      </table>
+    </div>
+
+    <!-- Your Dividend -->
+    <div class="card">
+      <p class="card-title">Your Dividend</p>
+      <div class="stat-grid" id="res-your-dividend"></div>
+      <div class="per-unit-box" id="res-per-unit" style="margin-top:1rem"></div>
+    </div>
+
+    <!-- SACCO Interest Box (shown for SACCO type) -->
+    <div class="card" id="res-sacco-box" style="display:none">
+      <p class="card-title">SACCO Earnings Summary</p>
+      <div class="stat-grid" id="res-sacco-stats"></div>
+    </div>
+
+    <!-- Comparison -->
+    <div class="card" id="res-comparison-card">
+      <p class="card-title">Cooperative vs. Independent Selling</p>
+      <div id="res-comparison"></div>
+    </div>
+
+    <!-- Reset -->
+    <div style="text-align:center">
+      <button type="button" class="btn-recalc" onclick="resetCalc()">&#x21BA; Recalculate</button>
+    </div>
+
+  </div><!-- /results -->
+
+  <!-- CROSS LINKS -->
+  <div class="card" style="margin-top:1.75rem">
+    <p class="card-title">More Agriculture Tools</p>
+    <div class="agri-links">
+      <a href="/agriculture/farm-profit/" class="agri-link">📊 Farm Profit/Loss<span class="al-arr">›</span></a>
+      <a href="/agriculture/fertilizer/" class="agri-link">🧪 Fertilizer Calculator<span class="al-arr">›</span></a>
+      <a href="/agriculture/poultry-roi/" class="agri-link">🐔 Poultry ROI<span class="al-arr">›</span></a>
+      <a href="/agriculture/fish-farming/" class="agri-link">🐟 Fish Farming ROI<span class="al-arr">›</span></a>
+      <a href="/agriculture/irrigation/" class="agri-link">💧 Irrigation Calculator<span class="al-arr">›</span></a>
+      <a href="/agriculture/" class="agri-link">🌍 All Agriculture Tools<span class="al-arr">›</span></a>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="card">
+    <p class="card-title">Frequently Asked Questions</p>
+    <div class="faq">
+      <details>
+        <summary>What is a cooperative surplus dividend?</summary>
+        <p>After a cooperative pays all operating costs, the remaining profit (surplus) is distributed among members. A portion goes to a mandatory reserve fund (required by law in most African countries), and the remainder is split among members based on their shares or volume of produce delivered.</p>
+      </details>
+      <details>
+        <summary>What is a patronage refund?</summary>
+        <p>A patronage refund distributes dividends based on how much produce each member delivered to the cooperative. If you delivered 20% of total produce, you receive 20% of the patronage dividend pool. This is the most common method in African agricultural cooperatives because it rewards loyal, high-volume members.</p>
+      </details>
+      <details>
+        <summary>What is the statutory reserve fund?</summary>
+        <p>Most African cooperative laws require cooperatives to set aside 20–30% of surplus into an indivisible reserve fund before distributing dividends. Nigeria's Cooperative Societies Act, Kenya's Cooperative Societies Act, and Ghana's Cooperative Societies Decree all mandate this. The reserve fund protects the cooperative against future losses.</p>
+      </details>
+      <details>
+        <summary>How is a SACCO dividend calculated?</summary>
+        <p>SACCOs distribute dividends on share capital — members with more shares receive proportionally more. The dividend rate is declared as a percentage of share value. Some SACCOs also offer interest rebates on loans. The declared rate depends on surplus and board approval after the annual general meeting.</p>
+      </details>
+      <details>
+        <summary>Why join a cooperative instead of selling independently?</summary>
+        <p>Cooperatives aggregate produce, negotiate better farm-gate prices, reduce transport and storage costs, and distribute surplus back to members. A farmer selling through a cooperative often earns 15–40% more than selling independently at local market prices, once the cooperative dividend is factored in.</p>
+      </details>
+    </div>
+  </div>
+
+  <!-- SEO -->
+  <div class="seo-prose">
+    <h2>About This Calculator</h2>
+    <p>AfroTools' Cooperative &amp; SACCO Dividend Calculator helps farmers, SACCO members, and cooperative managers calculate how end-of-year surplus is allocated and distributed. Cooperatives are the backbone of African agriculture — over 150 million Africans are members of agricultural cooperatives, from Kenya's dairy cooperatives to Ethiopia's coffee unions and Nigeria's commodity boards.</p>
+
+    <h2>Three Distribution Methods</h2>
+    <p>African cooperatives use three main methods to distribute dividends: <strong>per share</strong> (common in SACCOs), <strong>patronage refund</strong> (most common in agricultural marketing cooperatives — rewards members who delivered the most produce), and <strong>hybrid</strong> (a customised split combining both). This calculator supports all three and lets you adjust the hybrid split to match your cooperative's bylaws.</p>
+
+    <h2>Legal Compliance Across Africa</h2>
+    <p>Most African countries mandate a statutory reserve fund deduction before dividends are paid — typically 20–30% of surplus. The ICA (International Cooperative Alliance) model and national cooperative laws in Nigeria, Kenya, Ghana, Tanzania, Ethiopia, and Rwanda all require this allocation. The calculator pre-fills the standard 25% but lets you adjust to match your country's regulations.</p>
+  </div>
+
+</main>
+<afro-related-tools data-ssr="1" category="agriculture" current="cooperative-calculator">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/agriculture/farm-profit/" data-related-tool data-id="farm-profit-calculator" data-name="Farm Profit/Loss Calculator" data-category="agriculture" data-icon="FP" data-desc="Complete farming profitability analysis — seeds, fertilizer, labor, transport, post-harvest losses. ROI, break-even yiel">Farm Profit/Loss Calculator</a></li><li><a href="/agriculture/cassava-processing/" data-related-tool data-id="cassava-processing-calculator" data-name="Cassava Processing Profit Calculator" data-category="agriculture" data-icon="CP" data-desc="Calculate profits from processing cassava into garri, fufu flour, HQCF, chips, or starch. Compare all pathways with loca">Cassava Processing Profit Calculator</a></li><li><a href="/agriculture/crop-yield/" data-related-tool data-id="crop-yield-estimator" data-name="Crop Yield Estimator" data-category="agriculture" data-icon="CY" data-desc="Estimate crop yields across Africa with region-specific data. 40+ crops, 54 countries, FAOSTAT-backed.">Crop Yield Estimator</a></li><li><a href="/agriculture/farm-budget/" data-related-tool data-id="farm-budget" data-name="Smallholder Farm Budget Planner" data-category="agriculture" data-icon="SF" data-desc="Plan your seasonal farming budget with cost breakdown and cash flow timeline. Know exactly how much you need before plan">Smallholder Farm Budget Planner</a></li><li><a href="/agriculture/fish-farming/" data-related-tool data-id="fish-farming-roi" data-name="Fish Farming ROI Calculator" data-category="agriculture" data-icon="FF" data-desc="Calculate aquaculture profitability for catfish, tilapia and trout. Full ROI with local feed prices, fingerling costs, p">Fish Farming ROI Calculator</a></li><li><a href="/agriculture/greenhouse/" data-related-tool data-id="greenhouse-cost-estimator" data-name="Greenhouse Cost Estimator" data-category="agriculture" data-icon="GC" data-desc="Estimate greenhouse setup costs, annual running expenses, ROI and payback period. 5 greenhouse types, 6 crops, local pri">Greenhouse Cost Estimator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+var coopType = 'agri';
+var method = 'patronage';
+
+var CURRENCY_SYMBOLS = {
+  NGN:'₦', KES:'KSh', GHS:'GH₵', ZAR:'R', TZS:'TSh', UGX:'USh',
+  ETB:'Br', EGP:'E£', MAD:'DH', XOF:'CFA', XAF:'CFA',
+  ZMW:'K', RWF:'RF', MWK:'MK', USD:'$'
+};
+
+function sym() {
+  var c = document.getElementById('inp-currency').value;
+  return CURRENCY_SYMBOLS[c] || c + ' ';
+}
+
+function fmt(n) {
+  if (isNaN(n) || n === null) return '—';
+  return sym() + Math.abs(n).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+}
+
+function fmtPct(n) {
+  return (n >= 0 ? '+' : '') + n.toFixed(1) + '%';
+}
+
+function setCoopType(type, btn) {
+  coopType = type;
+  document.querySelectorAll('.coop-tab').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+
+  var isSacco = type === 'sacco';
+  document.querySelectorAll('.agri-field').forEach(function(el) {
+    el.style.display = isSacco ? 'none' : '';
+  });
+  document.querySelectorAll('.sacco-field').forEach(function(el) {
+    el.style.display = isSacco ? '' : 'none';
+  });
+
+  if (isSacco) {
+    // SACCO defaults to per-share method
+    document.querySelectorAll('.method-card').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelectorAll('.method-card')[0].classList.add('active');
+    method = 'shares';
+    document.getElementById('hybrid-split-box').classList.remove('show');
+  }
+}
+
+function setMethod(m, card) {
+  method = m;
+  document.querySelectorAll('.method-card').forEach(function(c) { c.classList.remove('active'); });
+  card.classList.add('active');
+  document.getElementById('hybrid-split-box').classList.toggle('show', m === 'hybrid');
+}
+
+function updateHybridLabel() {
+  var v = parseInt(document.getElementById('hybrid-range').value);
+  document.getElementById('hybrid-pat-pct').textContent = v + '%';
+  document.getElementById('hybrid-share-pct').textContent = (100 - v) + '%';
+}
+
+function updateAllocTotal() {
+  var ids = ['alloc-reserve','alloc-edu','alloc-dividend','alloc-social','alloc-retained'];
+  var total = ids.reduce(function(s, id) {
+    return s + (parseFloat(document.getElementById(id).value) || 0);
+  }, 0);
+  var el = document.getElementById('alloc-total-val');
+  el.textContent = total.toFixed(0) + '%';
+  el.className = total === 100 ? 'ok' : (total > 100 ? 'over' : 'under');
+  var warn = document.getElementById('alloc-warn');
+  if (total !== 100) {
+    warn.style.display = 'block';
+    warn.textContent = total > 100
+      ? 'Total exceeds 100%. Please reduce one or more allocations.'
+      : 'Total is below 100%. Remaining ' + (100 - total).toFixed(0) + '% is unallocated.';
+  } else {
+    warn.style.display = 'none';
+  }
+}
+
+function getNum(id) { return parseFloat(document.getElementById(id).value) || 0; }
+
+function calcDividend() {
+  var errEl = document.getElementById('calc-error');
+  errEl.style.display = 'none';
+
+  var revenue  = getNum('inp-revenue');
+  var expenses = getNum('inp-expenses');
+  var members  = getNum('inp-members');
+  var myProduce    = getNum('inp-my-produce');
+  var totalProduce = getNum('inp-total-produce');
+  var myShares     = getNum('inp-my-shares');
+  var totalShares  = getNum('inp-total-shares');
+  var marketPrice  = getNum('inp-market-price');
+  var saccoRate    = getNum('inp-sacco-rate');
+
+  var rReserve  = getNum('alloc-reserve') / 100;
+  var rEdu      = getNum('alloc-edu') / 100;
+  var rDividend = getNum('alloc-dividend') / 100;
+  var rSocial   = getNum('alloc-social') / 100;
+  var rRetained = getNum('alloc-retained') / 100;
+  var totalAlloc = (rReserve + rEdu + rDividend + rSocial + rRetained) * 100;
+
+  if (!revenue) { showErr('Please enter total cooperative revenue.'); return; }
+  if (!expenses && expenses !== 0) { showErr('Please enter total expenses.'); return; }
+  if (!members) { showErr('Please enter number of members.'); return; }
+  if (Math.round(totalAlloc) !== 100) { showErr('Total surplus allocation must equal 100%.'); return; }
+
+  var surplus = revenue - expenses;
+  if (surplus < 0) { showErr('Expenses exceed revenue — no surplus to distribute. Review your inputs.'); return; }
+
+  var amtReserve  = surplus * rReserve;
+  var amtEdu      = surplus * rEdu;
+  var amtDividend = surplus * rDividend;
+  var amtSocial   = surplus * rSocial;
+  var amtRetained = surplus * rRetained;
+
+  // --- MEMBER DIVIDEND ---
+  var myDividend = 0;
+  var hybridPat = parseInt(document.getElementById('hybrid-range').value) / 100;
+  var hybridShare = 1 - hybridPat;
+
+  if (method === 'patronage') {
+    if (!totalProduce) { showErr('For patronage method, enter total produce collected by the cooperative.'); return; }
+    myDividend = myProduce / totalProduce * amtDividend;
+  } else if (method === 'shares') {
+    if (!totalShares) { showErr('For per-share method, enter total cooperative share capital.'); return; }
+    myDividend = myShares / totalShares * amtDividend;
+  } else {
+    // hybrid
+    if (!totalProduce && !totalShares) { showErr('For hybrid method, enter both total produce and total shares.'); return; }
+    var patPool   = amtDividend * hybridPat;
+    var sharePool = amtDividend * hybridShare;
+    var myPatDiv   = totalProduce ? (myProduce / totalProduce * patPool) : 0;
+    var myShareDiv = totalShares  ? (myShares / totalShares * sharePool) : 0;
+    myDividend = myPatDiv + myShareDiv;
+  }
+
+  var avgDividend = amtDividend / members;
+
+  // --- RENDER ---
+  document.getElementById('results').style.display = 'block';
+  document.querySelector('.btn-calc').style.display = 'none';
+
+  // Summary stats
+  var s = sym();
+  document.getElementById('res-summary').innerHTML =
+    statEl(fmt(revenue), 'Total Revenue', '') +
+    statEl(fmt(expenses), 'Total Expenses', 'red') +
+    statEl(fmt(surplus), 'Gross Surplus', surplus > 0 ? 'green' : 'red') +
+    statEl(((surplus / revenue) * 100).toFixed(1) + '%', 'Surplus Margin', surplus > 0 ? 'green' : 'red') +
+    statEl(members.toLocaleString(), 'Total Members', '') +
+    statEl(fmt(avgDividend), 'Average Dividend / Member', '');
+
+  // Allocation bar
+  var segments = [
+    { pct: rReserve * 100,  color: '#3B82F6', label: 'Reserve' },
+    { pct: rDividend * 100, color: '#16A34A', label: 'Dividend' },
+    { pct: rEdu * 100,      color: '#F59E0B', label: 'Education' },
+    { pct: rSocial * 100,   color: '#8B5CF6', label: 'Social' },
+    { pct: rRetained * 100, color: '#64748B', label: 'Retained' }
+  ];
+  var barHTML = '';
+  var legHTML = '';
+  segments.forEach(function(sg) {
+    if (sg.pct > 0) {
+      barHTML += '<div class="alloc-seg" style="width:' + sg.pct + '%;background:' + sg.color + '">'
+        + (sg.pct >= 8 ? sg.pct.toFixed(0) + '%' : '') + '</div>';
+      legHTML += '<div class="alloc-leg-item"><span class="alloc-leg-dot" style="background:' + sg.color + '"></span>'
+        + sg.label + ' (' + sg.pct.toFixed(0) + '%)</div>';
+    }
+  });
+  document.getElementById('alloc-bar').innerHTML = barHTML;
+  document.getElementById('alloc-legend').innerHTML = legHTML;
+
+  // Allocation table
+  var rows = [
+    { label: '📦 Statutory Reserve', pct: rReserve  * 100, amt: amtReserve },
+    { label: '📚 Education Fund',    pct: rEdu      * 100, amt: amtEdu },
+    { label: '💰 Dividend Pool',     pct: rDividend * 100, amt: amtDividend },
+    { label: '🤝 Social Fund',       pct: rSocial   * 100, amt: amtSocial },
+    { label: '🔄 Retained Earnings', pct: rRetained * 100, amt: amtRetained },
+    { label: 'TOTAL SURPLUS',        pct: 100,             amt: surplus }
+  ];
+  document.getElementById('alloc-table-body').innerHTML = rows.map(function(r) {
+    return '<tr><td class="td-label">' + r.label + '</td>'
+      + '<td class="td-pct">' + r.pct.toFixed(0) + '%</td>'
+      + '<td class="td-amt">' + fmt(r.amt) + '</td></tr>';
+  }).join('');
+
+  // Your dividend
+  document.getElementById('res-your-dividend').innerHTML =
+    '<div class="stat big">'
+    + '<div class="sv">' + fmt(myDividend) + '</div>'
+    + '<div class="sl">Your Dividend</div>'
+    + '</div>'
+    + statEl(fmt(amtDividend), 'Total Dividend Pool', 'green')
+    + statEl(fmt(avgDividend), 'Average per Member', '')
+    + (myDividend > avgDividend
+        ? statEl('+' + fmt(myDividend - avgDividend), 'Above Average', 'green')
+        : statEl(fmt(myDividend - avgDividend), 'Below Average', 'amber'));
+
+  // Per-unit breakdown
+  var puLines = '';
+  if (method === 'patronage' && myProduce && totalProduce) {
+    var perUnit = myProduce > 0 ? myDividend / myProduce : 0;
+    puLines = 'You delivered <strong>' + myProduce.toLocaleString() + '</strong> units — '
+      + '<strong>' + ((myProduce / totalProduce * 100).toFixed(1)) + '%</strong> of total produce. '
+      + 'Patronage dividend: <strong>' + fmt(perUnit) + ' per unit</strong>.';
+  } else if (method === 'shares' && myShares && totalShares) {
+    var perShare = myShares > 0 ? myDividend / myShares * 100 : 0;
+    puLines = 'You hold <strong>' + fmt(myShares) + '</strong> of total <strong>' + fmt(totalShares) + '</strong> share capital — '
+      + '<strong>' + ((myShares / totalShares * 100).toFixed(2)) + '%</strong> ownership. '
+      + 'Effective dividend rate: <strong>' + perShare.toFixed(2) + '% on your shares</strong>.';
+  } else if (method === 'hybrid') {
+    puLines = 'Hybrid split: <strong>' + (hybridPat * 100).toFixed(0) + '% patronage</strong> + '
+      + '<strong>' + (hybridShare * 100).toFixed(0) + '% shares</strong>. '
+      + 'Patronage pool: ' + fmt(amtDividend * hybridPat) + ' | Share pool: ' + fmt(amtDividend * hybridShare) + '.';
+  }
+  document.getElementById('res-per-unit').innerHTML = puLines || 'Enter your contribution details above to see per-unit breakdown.';
+
+  // SACCO box
+  var saccoBox = document.getElementById('res-sacco-box');
+  if (coopType === 'sacco' && saccoRate > 0 && myShares) {
+    saccoBox.style.display = 'block';
+    var saccoInterest = myShares * saccoRate / 100;
+    document.getElementById('res-sacco-stats').innerHTML =
+      statEl(fmt(myShares), 'Your Share Capital', '') +
+      statEl(saccoRate + '%', 'Declared Dividend Rate', 'green') +
+      statEl(fmt(saccoInterest), 'Interest on Shares', 'green') +
+      statEl(fmt(saccoInterest + myDividend), 'Total SACCO Earnings', 'big');
+  } else {
+    saccoBox.style.display = 'none';
+  }
+
+  // Comparison: coop vs independent
+  var compCard = document.getElementById('res-comparison-card');
+  if (coopType !== 'sacco' && marketPrice > 0 && myProduce > 0) {
+    compCard.style.display = 'block';
+    var indRevenue  = myProduce * marketPrice;
+    var coopRevenue = myProduce * (revenue / (totalProduce || myProduce));
+    var totalCoopEarnings = coopRevenue + myDividend;
+    var premium = indRevenue > 0 ? ((totalCoopEarnings - indRevenue) / indRevenue * 100) : 0;
+    var isPositive = totalCoopEarnings >= indRevenue;
+
+    document.getElementById('res-comparison').innerHTML =
+      '<div class="comparison-box ' + (isPositive ? 'positive' : 'negative') + '">'
+      + '<div class="cb-label">' + (isPositive ? '✅ Cooperative Advantage' : '⚠️ Independent Selling May Be Better') + '</div>'
+      + '<div class="compare-rows">'
+      + '<div class="cr"><div class="crv" style="color:var(--muted)">' + fmt(indRevenue) + '</div><div class="crl">Independent selling (' + fmt(marketPrice) + '/unit × ' + myProduce.toLocaleString() + ')</div></div>'
+      + '<div class="cr"><div class="crv" style="color:var(--acc)">' + fmt(coopRevenue) + '</div><div class="crl">Cooperative produce share</div></div>'
+      + '<div class="cr"><div class="crv" style="color:var(--green)">' + fmt(myDividend) + '</div><div class="crl">+ Your dividend</div></div>'
+      + '<div class="cr" style="border:1.5px solid ' + (isPositive ? 'var(--green)' : 'var(--red)') + '"><div class="crv" style="color:' + (isPositive ? 'var(--green)' : 'var(--red)') + '">' + fmt(totalCoopEarnings) + '</div><div class="crl">Total via cooperative</div></div>'
+      + '</div>'
+      + '<span class="premium-tag ' + (isPositive ? 'positive' : 'negative') + '">'
+      + 'Cooperative ' + (isPositive ? 'premium' : 'deficit') + ': ' + fmtPct(premium)
+      + '</span></div>';
+  } else {
+    compCard.style.display = coopType === 'sacco' ? 'none' : 'block';
+    if (compCard.style.display === 'block') {
+      document.getElementById('res-comparison').innerHTML =
+        '<p style="font-size:.88rem;color:var(--muted)">Enter your produce delivered, total produce, and independent market price to see the cooperative vs. independent comparison.</p>';
+    }
+  }
+
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function statEl(val, label, cls) {
+  return '<div class="stat ' + (cls || '') + '"><div class="sv">' + val + '</div><div class="sl">' + label + '</div></div>';
+}
+
+function showErr(msg) {
+  var el = document.getElementById('calc-error');
+  el.textContent = msg;
+  el.style.display = 'block';
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function resetCalc() {
+  document.getElementById('results').style.display = 'none';
+  document.querySelector('.btn-calc').style.display = 'block';
+  document.getElementById('calc-error').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Initialise
+updateAllocTotal();
+updateHybridLabel();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
+<script>if(typeof twemoji!=="undefined")twemoji.parse(document.body,{folder:"svg",ext:".svg"});</script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

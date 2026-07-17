@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Changelog — AfroTools API Docs</title>
+<meta name="description" content="AfroTools API changelog. Track new features, improvements, and breaking changes across all API versions.">
+<meta name="theme-color" content="#0062CC">
+<link rel="canonical" href="https://afrotools.com/docs/api/changelog">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/api-docs.css?v=ce57a995">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/api-sidebar.js?v=1e21db66" defer></script>
+<script src="/assets/js/components/api-code-tabs.js?v=d929cd13" defer></script>
+<meta property="article:modified_time" content="2026-05-02">
+<meta property="og:url" content="https://afrotools.com/docs/api/changelog">
+</head>
+<body class="api-docs-body top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<div class="api-docs-layout">
+  <api-sidebar active="/docs/api/changelog.html"></api-sidebar>
+  <main class="api-content">
+    <div class="api-two-panel api-two-panel--wide-left">
+      <div class="api-content__left">
+        <h1 class="mt-0">Changelog</h1>
+        <p class="api-subtitle">Track new features, improvements, and changes across all AfroTools API products.</p>
+
+        <div class="api-callout api-callout--info">
+          <strong>Versioning policy.</strong> The AfroTools API uses URL-based versioning. The current version is <code>v1</code>. Breaking changes will always be released under a new version number with at least 90 days of deprecation notice.
+        </div>
+
+        <hr style="border:0;border-top:1px solid #E5E7EB;margin:32px 0">
+
+        <h2 style="display:flex;align-items:center;gap:12px">
+          <span style="background:#0062CC;color:#fff;padding:4px 12px;border-radius:6px;font-size:.75rem;font-weight:700">v1.1</span>
+          May 2026
+        </h2>
+        <p style="color:#6B7280;font-size:.88rem;margin-bottom:16px">Account reliability release for dashboard sync, AfroPoints, alerts, and the shared AI helper. No breaking changes.</p>
+
+        <h3>Account Sync and Dashboard APIs</h3>
+        <ul style="margin:8px 0 20px 20px;font-size:.88rem;color:#4B5563;line-height:1.8">
+          <li>Added a signed-in AfroPoints account snapshot endpoint that returns profile, recent activity, recent contributions, and cashout history in one Supabase-backed response.</li>
+          <li>Updated the main dashboard AfroPoints lane to use the new account snapshot instead of duplicate profile/activity/cashout requests.</li>
+          <li>Improved profile and AfroPoints endpoints so bearer tokens and secure browser-session cookies follow the same auth path.</li>
+          <li>Marked account-bearing API responses as <code>private, no-store</code> and varied them by origin, authorization, and cookie to reduce stale cross-device account state.</li>
+        </ul>
+
+        <h3>AfroPoints</h3>
+        <ul style="margin:8px 0 20px 20px;font-size:.88rem;color:#4B5563;line-height:1.8">
+          <li>AfroPoints cockpit, cashout, submission, and contributor setup pages now clear stale account caches after profile, contribution, or payout actions.</li>
+          <li>Cashout views now prefer the Supabase account snapshot before falling back to narrower legacy calls.</li>
+          <li>Contributor payout details remain durable in Supabase and are reused by cashout flows when the saved method matches the request.</li>
+          <li>Dashboard and AfroPoints pages now dispatch and listen for account-change events so open tabs refresh faster after user actions.</li>
+        </ul>
+
+        <h3>AfroAlerts</h3>
+        <ul style="margin:8px 0 20px 20px;font-size:.88rem;color:#4B5563;line-height:1.8">
+          <li>Confirmed the live AfroAlerts flow: scheduled change detection writes significant price and rate changes to Supabase, sends high-severity email summaries when configured, and serves dashboard/admin alert views through <code>/api/alerts</code>.</li>
+          <li>Admin alert responses are now private and uncached, while the public active-alert feed keeps its short public cache for fast dashboard reads.</li>
+        </ul>
+
+        <h3>AI assist guardrails</h3>
+        <ul style="margin:8px 0 28px 20px;font-size:.88rem;color:#4B5563;line-height:1.8">
+          <li>Reduced the shared Anthropic input budget guard so AfroTools AI assist requests stay under the standard Claude 200K-token input ceiling.</li>
+          <li>No AfroTools AI helper request path uses the retired Anthropic 1M-context beta header.</li>
+        </ul>
+
+        <div class="api-callout api-callout--success">
+          <strong>Migration impact.</strong> No client migration is required. Existing dashboard, profile, alert, and AfroPoints routes continue to work under the same URLs.
+        </div>
+
+        <hr style="border:0;border-top:1px solid #E5E7EB;margin:32px 0">
+
+        <h2 style="display:flex;align-items:center;gap:12px">
+          <span style="background:#0062CC;color:#fff;padding:4px 12px;border-radius:6px;font-size:.75rem;font-weight:700">v1.0</span>
+          March 2026
+        </h2>
+        <p style="color:#6B7280;font-size:.88rem;margin-bottom:16px">Initial public release of the AfroTools API platform with five API products covering all 54 African countries.</p>
+
+        <h3>AfroTax API</h3>
+        <ul style="margin:8px 0 20px 20px;font-size:.88rem;color:#4B5563;line-height:1.8">
+          <li>Income tax (PAYE) calculations for supported African countries</li>
+          <li>Corporate tax and withholding tax support</li>
+          <li>Capital gains tax calculations</li>
+          <li>Gross-to-net and net-to-gross calculation modes</li>
+          <li>Pension and social security deductions</li>
+          <li>Monthly, annual, weekly, and biweekly pay periods</li>
+          <li>Country listing and detailed country info endpoints</li>
+        </ul>
+
+        <h3>AfroFX API</h3>
+        <ul style="margin:8px 0 20px 20px;font-size:.88rem;color:#4B5563;line-height:1.8">
+          <li>Latest available exchange rates for 42 African currencies</li>
+          <li>Bid/ask spreads from central bank sources</li>
+          <li>Currency conversion with custom amounts</li>
+          <li>24-hour change tracking with percentage and absolute values</li>
+          <li>Historical rates available on Pro plan and above</li>
+        </ul>
+
+        <h3>AfroFuel API</h3>
+        <ul style="margin:8px 0 20px 20px;font-size:.88rem;color:#4B5563;line-height:1.8">
+          <li>Fuel price data for supported African countries</li>
+          <li>Petrol (PMS), diesel (AGO), kerosene (DPK), and LPG coverage</li>
+          <li>Weekly updates from national petroleum regulators</li>
+          <li>Price change tracking since last update</li>
+          <li>Optional currency conversion for cross-country comparison</li>
+        </ul>
+
+        <h3>AfroRates API</h3>
+        <ul style="margin:8px 0 20px 20px;font-size:.88rem;color:#4B5563;line-height:1.8">
+          <li>Central bank policy rates for all 54 countries</li>
+          <li>Headline CPI inflation data</li>
+          <li>Treasury bill yields (91-day, 182-day, 364-day)</li>
+          <li>Prime lending and deposit rates</li>
+          <li>MPC meeting date tracking (last and next)</li>
+          <li>Historical data available on Pro plan and above</li>
+        </ul>
+
+        <h3>AfroVAT API</h3>
+        <ul style="margin:8px 0 20px 20px;font-size:.88rem;color:#4B5563;line-height:1.8">
+          <li>VAT/GST calculation for supported African countries</li>
+          <li>Add mode (add VAT to net amount) and extract mode (extract VAT from gross amount)</li>
+          <li>Standard, reduced, and zero rate support</li>
+          <li>Category-based rate lookup for food, medical, education, digital, and exports</li>
+        </ul>
+
+        <h3>Platform</h3>
+        <ul style="margin:8px 0 20px 20px;font-size:.88rem;color:#4B5563;line-height:1.8">
+          <li>API key authentication with <code>afro_test_</code> and <code>afro_live_</code> key modes</li>
+          <li>Four pricing tiers: Free ($0), Starter ($29/mo), Pro ($99/mo), Enterprise ($299/mo)</li>
+          <li>Rate limiting with daily and monthly quotas and informative response headers</li>
+          <li>Client examples for JavaScript/Node.js and Python</li>
+          <li>Two-panel API documentation with code examples in 5 languages</li>
+          <li>Interactive API Explorer for testing endpoints in the browser</li>
+        </ul>
+      </div>
+
+      <div class="api-content__right">
+        <div class="code-label">Current Version</div>
+        <div class="code-example">API Version: v1
+Release Date: May 2026
+Status: Stable</div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">Latest Platform Updates</div>
+        <div class="code-example" style="white-space:pre-wrap;font-size:.82rem">Dashboard account sync
+AfroPoints account snapshot
+Secure session cookie auth
+AfroAlerts cache hardening
+AI assist 200K-token guard</div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">API Products in v1.0</div>
+        <div class="code-example" style="white-space:pre-wrap;font-size:.82rem">AfroTax   - Income, corporate, withholding,
+            and capital gains tax (54 countries)
+AfroFX    - Live forex rates (42 currencies)
+AfroFuel  - Fuel prices: petrol, diesel,
+            kerosene, LPG (54 countries)
+AfroRates - Central bank policy rates,
+            inflation, T-bills (54 countries)
+AfroVAT   - VAT/GST calculations with
+            add and extract modes (54 countries)</div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">Versioning Policy</div>
+        <div class="code-example" style="white-space:pre-wrap;font-size:.82rem">Breaking changes are released under
+a new API version (e.g., v2).
+
+Deprecated versions receive at least
+90 days of continued support.
+
+Non-breaking additions (new fields,
+new endpoints) are added to the
+current version without notice.</div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">Stay Updated</div>
+        <div class="code-example" style="white-space:pre-wrap;font-size:.82rem">Bookmark this changelog page for the
+latest updates to the AfroTools API.
+
+Check your dashboard for deprecation
+notices and migration guides when
+new versions are released.</div>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,1 @@
+const{corsHeaders:corsHeaders,reply:reply}=require("./_shared/matchday-api");exports.handler=async function(e){const r=corsHeaders(e,"GET, POST, OPTIONS");return"OPTIONS"===e.httpMethod?{statusCode:204,headers:r,body:""}:reply(501,{error:"Admin anti-cheat review requires authenticated operator tooling.",action:"admin_review_pending"},r)};

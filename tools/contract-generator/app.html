@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contract Generator | AfroTools</title>
+<meta name="description" content="Create simple service and freelance contracts with editable clauses, party details, and printable output.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap"></noscript>
+<script src="/assets/js/lib/save-state.global.js?v=ff7c4414"></script>
+<style>
+:root{--color-primary:#0062CC;--blue-light:#EFF6FF}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#f1f5f9;color:#1e293b}
+.topbar{background:#fff;border-bottom:1px solid #e5e7eb;padding:0 20px;display:flex;align-items:center;height:52px;gap:12px}
+.topbar-back{font-size:12px;color:#6b7280;text-decoration:none;font-weight:600}
+.topbar-brand{font-size:14px;font-weight:800;color:#111;text-decoration:none}
+.topbar-title{font-size:12px;color:#6b7280;font-weight:600;flex:1}
+.btn{padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:.15s}
+.btn-p{background:linear-gradient(135deg,#0062CC,#0055D4);box-shadow:0 4px 14px rgba(0,98,204,.35);color:#fff}.btn-p:hover{background:#0059B3}
+.btn-g{background:#f3f4f6;color:#374151;border:1px solid #e5e7eb}.btn-g:hover{background:#e5e7eb}
+.main{max-width:900px;margin:0 auto;padding:24px 20px}
+
+/* Template picker */
+.picker{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:24px}
+.pick-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:.15s}
+.pick-card:hover,.pick-card.on{border-color:var(--color-primary);background:var(--blue-light)}
+.pick-card .icon{font-size:1.5rem;margin-bottom:8px}
+.pick-card .name{font-size:.82rem;font-weight:700;color:#111}
+.pick-card .desc{font-size:.68rem;color:#6b7280;margin-top:4px}
+
+/* Country select */
+.country-bar{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.country-btn{padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;border:1.5px solid #e5e7eb;background:#fff;color:#6b7280;cursor:pointer;transition:.15s}
+.country-btn:hover{border-color:#d1d5db}.country-btn.on{border-color:var(--color-primary);background:var(--blue-light);color:var(--color-primary)}
+
+/* Form */
+.form-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:24px;margin-bottom:16px;display:none}
+.form-card.on{display:block}
+.form-card h3{font-size:.95rem;font-weight:800;color:#111;margin-bottom:16px}
+.field{margin-bottom:14px}
+.field label{font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px}
+.field .tip{font-size:.68rem;color:#9ca3af;margin-bottom:4px}
+.field input,.field textarea,.field select{width:100%;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;font-family:inherit;color:#1e293b;outline:none;transition:border-color .15s}
+.field input:focus,.field textarea:focus{border-color:var(--color-primary)}
+.field textarea{min-height:80px;resize:vertical}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* Preview */
+.preview{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:32px;font-size:13px;line-height:1.8;color:#374151;display:none}
+.preview.on{display:block}
+.preview h2{text-align:center;font-size:1.1rem;font-weight:800;color:#111;text-transform:uppercase;margin-bottom:20px;letter-spacing:.05em}
+.preview .clause{margin-bottom:14px}
+.preview .clause-num{font-weight:800;color:#111}
+.preview .blank{color:var(--color-primary);font-weight:700;border-bottom:1px dashed var(--color-primary)}
+.disclaimer{background:#FEF3C7;border:1px solid #F59E0B;border-radius:10px;padding:14px;font-size:.75rem;color:#92400E;margin-top:20px;line-height:1.5}
+
+@media(max-width:640px){.picker{grid-template-columns:1fr 1fr}.row2{grid-template-columns:1fr}}
+</style>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Contract Generator | AfroTools">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="article:modified_time" content="2026-03-28">
+<meta name="robots" content="noindex, follow">
+<meta property="og:url" content="https://afrotools.com/tools/contract-generator/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c4853917">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/lib/dark-mode.js?v=5cb64ba3" defer></script>
+<link rel="canonical" href="https://afrotools.com/tools/contract-generator/app">
+</head>
+<body class="top-level-page-ui-refresh">
+
+<div class="topbar">
+  <a href="index.html" class="topbar-back">&larr; Back</a>
+  <span class="topbar-brand">Contract Generator</span>
+  <span class="topbar-title" id="contractTitle">Choose a template</span>
+  <button type="button" class="btn btn-g" onclick="saveContract()">Save</button>
+  <button type="button" class="btn btn-g" onclick="showPreview()">Preview</button>
+  <button type="button" class="btn btn-p" onclick="exportPDF()">Download PDF</button>
+</div>
+
+<div class="main">
+
+  <div class="disclaimer">
+    <strong>Disclaimer:</strong> This tool generates template documents and is not a substitute for professional legal advice. Always consult a qualified lawyer for important transactions.
+  </div>
+
+  <!-- Step 1: Choose Template -->
+  <h3 style="font-size:.85rem;font-weight:800;color:#111;margin:20px 0 12px;">1. Choose a Template</h3>
+  <div class="picker" id="tplPicker">
+    <div class="pick-card" onclick="pickTemplate('tenancy')"><div class="icon">🏠</div><div class="name">Tenancy Agreement</div><div class="desc">Landlord & tenant</div></div>
+    <div class="pick-card" onclick="pickTemplate('employment')"><div class="icon">💼</div><div class="name">Employment Contract</div><div class="desc">Employer & employee</div></div>
+    <div class="pick-card" onclick="pickTemplate('nda')"><div class="icon">🔒</div><div class="name">NDA</div><div class="desc">Non-disclosure</div></div>
+    <div class="pick-card" onclick="pickTemplate('freelance')"><div class="icon">💻</div><div class="name">Freelance Agreement</div><div class="desc">Client & contractor</div></div>
+    <div class="pick-card" onclick="pickTemplate('loan')"><div class="icon">💰</div><div class="name">Loan Agreement</div><div class="desc">Lender & borrower</div></div>
+  </div>
+
+  <!-- Step 2: Country -->
+  <h3 style="font-size:.85rem;font-weight:800;color:#111;margin:0 0 12px;">2. Select Country</h3>
+  <div class="country-bar">
+    <button type="button" class="country-btn on" onclick="pickCountry('nigeria',this)">Nigeria</button>
+    <button type="button" class="country-btn" onclick="pickCountry('kenya',this)">Kenya</button>
+    <button type="button" class="country-btn" onclick="pickCountry('south-africa',this)">South Africa</button>
+    <button type="button" class="country-btn" onclick="pickCountry('ghana',this)">Ghana</button>
+  </div>
+
+  <!-- Step 3: Fill Fields -->
+  <div id="formContainer"></div>
+
+  <!-- Preview -->
+  <div class="preview" id="previewContainer"></div>
+
+</div>
+
+<script>
+var TEMPLATES = {
+  tenancy: {
+    name: 'Tenancy Agreement',
+    fields: [
+      {id:'landlordName',label:'Landlord Full Name',tip:'Legal name as on ID'},
+      {id:'landlordAddress',label:'Landlord Address'},
+      {id:'tenantName',label:'Tenant Full Name'},
+      {id:'tenantAddress',label:'Tenant Address'},
+      {id:'propertyAddress',label:'Property Address',type:'textarea',tip:'Full address of the rented property'},
+      {id:'rentAmount',label:'Monthly Rent',tip:'Amount in local currency'},
+      {id:'rentCurrency',label:'Currency',type:'select',options:['NGN','KES','ZAR','GHS']},
+      {id:'depositAmount',label:'Security Deposit'},
+      {id:'startDate',label:'Start Date',type:'date'},
+      {id:'duration',label:'Duration (months)',tip:'e.g., 12 for one year'},
+      {id:'paymentDay',label:'Rent Due Day',tip:'e.g., 1st of each month'}
+    ]
+  },
+  employment: {
+    name: 'Employment Contract',
+    fields: [
+      {id:'employerName',label:'Employer / Company Name'},
+      {id:'employerAddress',label:'Employer Address'},
+      {id:'employeeName',label:'Employee Full Name'},
+      {id:'employeeAddress',label:'Employee Address'},
+      {id:'jobTitle',label:'Job Title / Position'},
+      {id:'department',label:'Department'},
+      {id:'salary',label:'Monthly Salary'},
+      {id:'salaryCurrency',label:'Currency',type:'select',options:['NGN','KES','ZAR','GHS']},
+      {id:'startDate',label:'Start Date',type:'date'},
+      {id:'probation',label:'Probation Period',tip:'e.g., 3 months'},
+      {id:'noticePeriod',label:'Notice Period',tip:'e.g., 1 month'},
+      {id:'workHours',label:'Working Hours',tip:'e.g., Monday-Friday 9am-5pm'},
+      {id:'annualLeave',label:'Annual Leave (days)',tip:'e.g., 21'}
+    ]
+  },
+  nda: {
+    name: 'Non-Disclosure Agreement',
+    fields: [
+      {id:'disclosingParty',label:'Disclosing Party Name'},
+      {id:'receivingParty',label:'Receiving Party Name'},
+      {id:'purpose',label:'Purpose of Disclosure',type:'textarea',tip:'Why is confidential information being shared?'},
+      {id:'duration',label:'Duration (months)',tip:'How long the NDA is in effect'},
+      {id:'effectiveDate',label:'Effective Date',type:'date'},
+      {id:'jurisdiction',label:'Governing Law',tip:'e.g., Laws of the Federal Republic of Nigeria'}
+    ]
+  },
+  freelance: {
+    name: 'Freelance Agreement',
+    fields: [
+      {id:'clientName',label:'Client Name'},
+      {id:'clientAddress',label:'Client Address'},
+      {id:'contractorName',label:'Contractor Name'},
+      {id:'contractorAddress',label:'Contractor Address'},
+      {id:'scope',label:'Scope of Work',type:'textarea',tip:'Describe the services to be provided'},
+      {id:'deliverables',label:'Deliverables',type:'textarea',tip:'List specific deliverables'},
+      {id:'totalFee',label:'Total Fee'},
+      {id:'feeCurrency',label:'Currency',type:'select',options:['NGN','KES','ZAR','GHS','USD']},
+      {id:'paymentSchedule',label:'Payment Schedule',tip:'e.g., 50% upfront, 50% on completion'},
+      {id:'deadline',label:'Project Deadline',type:'date'},
+      {id:'ipOwnership',label:'IP Ownership',type:'select',options:['Client owns all IP','Contractor retains IP, licenses to Client','Joint ownership']}
+    ]
+  },
+  loan: {
+    name: 'Loan Agreement',
+    fields: [
+      {id:'lenderName',label:'Lender Full Name'},
+      {id:'lenderAddress',label:'Lender Address'},
+      {id:'borrowerName',label:'Borrower Full Name'},
+      {id:'borrowerAddress',label:'Borrower Address'},
+      {id:'loanAmount',label:'Loan Amount'},
+      {id:'loanCurrency',label:'Currency',type:'select',options:['NGN','KES','ZAR','GHS']},
+      {id:'interestRate',label:'Interest Rate (%)',tip:'Annual interest rate'},
+      {id:'disbursementDate',label:'Disbursement Date',type:'date'},
+      {id:'repaymentPeriod',label:'Repayment Period (months)'},
+      {id:'repaymentSchedule',label:'Repayment Schedule',type:'select',options:['Monthly','Quarterly','Lump Sum at Maturity']},
+      {id:'collateral',label:'Collateral (if any)',type:'textarea',tip:'Describe any security for the loan'}
+    ]
+  }
+};
+
+var currentTemplate = null;
+var currentCountry = 'nigeria';
+var DATA = {};
+var ss = new SaveState('contract-generator');
+var _currentId = null;
+
+function pickTemplate(tpl) {
+  currentTemplate = tpl;
+  document.querySelectorAll('.pick-card').forEach(function(c){c.classList.remove('on');});
+  event.currentTarget.classList.add('on');
+  document.getElementById('contractTitle').textContent = TEMPLATES[tpl].name;
+  renderForm();
+}
+
+function pickCountry(country, btn) {
+  currentCountry = country;
+  document.querySelectorAll('.country-btn').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+}
+
+function renderForm() {
+  if (!currentTemplate) return;
+  var tpl = TEMPLATES[currentTemplate];
+  var html = '<div class="form-card on"><h3>3. Fill in Details — '+tpl.name+'</h3>';
+  tpl.fields.forEach(function(f) {
+    var val = DATA[f.id] || '';
+    html += '<div class="field"><label>'+f.label+'</label>';
+    if (f.tip) html += '<div class="tip">'+f.tip+'</div>';
+    if (f.type === 'textarea') {
+      html += '<textarea id="f_'+f.id+'" oninput="DATA[\''+f.id+'\']=this.value" aria-label="F">'+esc(val)+'</textarea>';
+    } else if (f.type === 'select') {
+      html += '<select id="f_'+f.id+'" onchange="DATA[\''+f.id+'\']=this.value" aria-label="F">';
+      (f.options||[]).forEach(function(o){html += '<option'+(val===o?' selected':'')+'>'+o+'</option>';});
+      html += '</select>';
+    } else if (f.type === 'date') {
+      html += '<input aria-label="F '+f.id+'" type="date" id="f_'+f.id+'" value="'+esc(val)+'" oninput="DATA[\''+f.id+'\']=this.value">';
+    } else {
+      html += '<input aria-label="F '+f.id+'" type="text" id="f_'+f.id+'" value="'+esc(val)+'" oninput="DATA[\''+f.id+'\']=this.value">';
+    }
+    html += '</div>';
+  });
+  html += '</div>';
+  document.getElementById('formContainer').innerHTML = html;
+}
+
+function showPreview() {
+  if (!currentTemplate) { alert('Please choose a template first.'); return; }
+  var preview = document.getElementById('previewContainer');
+  preview.classList.add('on');
+  preview.innerHTML = generateContractHTML();
+  preview.scrollIntoView({behavior:'smooth'});
+}
+
+function generateContractHTML() {
+  var v = function(id) { return DATA[id] ? '<span class="blank">'+esc(DATA[id])+'</span>' : '<span class="blank">[___________]</span>'; };
+  var title = TEMPLATES[currentTemplate].name.toUpperCase();
+  var html = '<h2>'+title+'</h2>';
+  html += '<p style="text-align:center;font-size:.8rem;color:#6b7280;margin-bottom:20px;">Governed by the laws of '+currentCountry.replace('-',' ').replace(/\b\w/g,function(c){return c.toUpperCase();})+'</p>';
+
+  if (currentTemplate === 'tenancy') {
+    html += '<div class="clause"><span class="clause-num">1.</span> This Tenancy Agreement is made on '+v('startDate')+' between '+v('landlordName')+' (the "Landlord") of '+v('landlordAddress')+' and '+v('tenantName')+' (the "Tenant") of '+v('tenantAddress')+'.</div>';
+    html += '<div class="clause"><span class="clause-num">2.</span> The Landlord agrees to let and the Tenant agrees to take the property at '+v('propertyAddress')+' for a period of '+v('duration')+' months commencing from '+v('startDate')+'.</div>';
+    html += '<div class="clause"><span class="clause-num">3.</span> The Tenant shall pay rent of '+v('rentCurrency')+' '+v('rentAmount')+' per month, due on the '+v('paymentDay')+' of each month.</div>';
+    html += '<div class="clause"><span class="clause-num">4.</span> The Tenant shall pay a security deposit of '+v('rentCurrency')+' '+v('depositAmount')+' upon execution of this agreement.</div>';
+    html += '<div class="clause"><span class="clause-num">5.</span> The Tenant shall use the property solely for residential purposes and shall not sublet without written consent.</div>';
+    html += '<div class="clause"><span class="clause-num">6.</span> The Landlord shall maintain the structural integrity of the property. The Tenant is responsible for day-to-day maintenance.</div>';
+  } else if (currentTemplate === 'employment') {
+    html += '<div class="clause"><span class="clause-num">1.</span> This Employment Contract is between '+v('employerName')+' (the "Employer") of '+v('employerAddress')+' and '+v('employeeName')+' (the "Employee") of '+v('employeeAddress')+'.</div>';
+    html += '<div class="clause"><span class="clause-num">2.</span> The Employee is appointed as '+v('jobTitle')+' in the '+v('department')+' department, commencing on '+v('startDate')+'.</div>';
+    html += '<div class="clause"><span class="clause-num">3.</span> The Employee shall receive a monthly salary of '+v('salaryCurrency')+' '+v('salary')+', payable on the last working day of each month.</div>';
+    html += '<div class="clause"><span class="clause-num">4.</span> The probation period shall be '+v('probation')+'. During probation, either party may terminate with one week\'s notice.</div>';
+    html += '<div class="clause"><span class="clause-num">5.</span> Working hours shall be '+v('workHours')+'.</div>';
+    html += '<div class="clause"><span class="clause-num">6.</span> The Employee is entitled to '+v('annualLeave')+' days of paid annual leave per year.</div>';
+    html += '<div class="clause"><span class="clause-num">7.</span> After probation, either party may terminate this contract by giving '+v('noticePeriod')+' written notice.</div>';
+  } else if (currentTemplate === 'nda') {
+    html += '<div class="clause"><span class="clause-num">1.</span> This Non-Disclosure Agreement is entered into on '+v('effectiveDate')+' between '+v('disclosingParty')+' (the "Disclosing Party") and '+v('receivingParty')+' (the "Receiving Party").</div>';
+    html += '<div class="clause"><span class="clause-num">2.</span> The purpose of this NDA is: '+v('purpose')+'</div>';
+    html += '<div class="clause"><span class="clause-num">3.</span> The Receiving Party agrees to keep all confidential information strictly confidential for a period of '+v('duration')+' months.</div>';
+    html += '<div class="clause"><span class="clause-num">4.</span> This agreement shall be governed by '+v('jurisdiction')+'.</div>';
+  } else if (currentTemplate === 'freelance') {
+    html += '<div class="clause"><span class="clause-num">1.</span> This Freelance Agreement is between '+v('clientName')+' (the "Client") of '+v('clientAddress')+' and '+v('contractorName')+' (the "Contractor") of '+v('contractorAddress')+'.</div>';
+    html += '<div class="clause"><span class="clause-num">2.</span> Scope of Work: '+v('scope')+'</div>';
+    html += '<div class="clause"><span class="clause-num">3.</span> Deliverables: '+v('deliverables')+'</div>';
+    html += '<div class="clause"><span class="clause-num">4.</span> The Client shall pay the Contractor a total fee of '+v('feeCurrency')+' '+v('totalFee')+'. Payment schedule: '+v('paymentSchedule')+'.</div>';
+    html += '<div class="clause"><span class="clause-num">5.</span> The project deadline is '+v('deadline')+'.</div>';
+    html += '<div class="clause"><span class="clause-num">6.</span> Intellectual Property: '+v('ipOwnership')+'.</div>';
+  } else if (currentTemplate === 'loan') {
+    html += '<div class="clause"><span class="clause-num">1.</span> This Loan Agreement is between '+v('lenderName')+' (the "Lender") of '+v('lenderAddress')+' and '+v('borrowerName')+' (the "Borrower") of '+v('borrowerAddress')+'.</div>';
+    html += '<div class="clause"><span class="clause-num">2.</span> The Lender agrees to lend '+v('loanCurrency')+' '+v('loanAmount')+' to the Borrower at an annual interest rate of '+v('interestRate')+'%.</div>';
+    html += '<div class="clause"><span class="clause-num">3.</span> The loan shall be disbursed on '+v('disbursementDate')+' and repaid over '+v('repaymentPeriod')+' months on a '+v('repaymentSchedule')+' basis.</div>';
+    html += '<div class="clause"><span class="clause-num">4.</span> Collateral: '+v('collateral')+'</div>';
+  }
+
+  html += '<div style="margin-top:40px;display:flex;gap:40px;"><div style="flex:1;border-top:1px solid #333;padding-top:8px;font-size:12px;"><strong>Party 1 Signature</strong><br>Name: _______________<br>Date: _______________</div><div style="flex:1;border-top:1px solid #333;padding-top:8px;font-size:12px;"><strong>Party 2 Signature</strong><br>Name: _______________<br>Date: _______________</div></div>';
+  return html;
+}
+
+function saveContract() {
+  if (!currentTemplate) { alert('Please choose a template first.'); return; }
+  var name = TEMPLATES[currentTemplate].name + (DATA.landlordName||DATA.employerName||DATA.clientName||DATA.lenderName||DATA.disclosingParty ? ' - '+(DATA.tenantName||DATA.employeeName||DATA.contractorName||DATA.borrowerName||DATA.receivingParty||'') : '');
+  var entry = ss.save({ id: _currentId, title: name, data: { template: currentTemplate, country: currentCountry, fields: JSON.parse(JSON.stringify(DATA)) } });
+  _currentId = entry.id;
+  alert('Contract saved!');
+}
+
+function exportPDF() {
+  if (!currentTemplate) { alert('Please choose a template first.'); return; }
+  if (window.afroEmailGate && !window.afroEmailGate.check()) return;
+  var w = window.open('','_blank');
+  var html = '<html><head><title>'+TEMPLATES[currentTemplate].name+'</title><style>body{font-family:Arial,sans-serif;max-width:700px;margin:40px auto;font-size:13px;line-height:1.8;color:#333}h2{text-align:center;font-size:18px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:20px}.clause{margin-bottom:12px}.clause-num{font-weight:700}.blank{font-weight:700;border-bottom:1px solid #333}@media print{body{margin:20px}}</style></head><body>';
+  html += generateContractHTML().replace(/class="blank"/g, 'class="blank" style="font-weight:700;border-bottom:1px solid #333"');
+  html += '</body></html>';
+  w.document.write(html); w.document.close();
+  setTimeout(function(){w.print();},500);
+}
+
+// Load from URL param
+(function(){
+  var params = new URLSearchParams(window.location.search);
+  var id = params.get('id');
+  if (id) {
+    var item = ss.load(id);
+    if (item && item.data) {
+      _currentId = item.id;
+      currentTemplate = item.data.template;
+      currentCountry = item.data.country || 'nigeria';
+      DATA = item.data.fields || {};
+      document.getElementById('contractTitle').textContent = TEMPLATES[currentTemplate].name;
+      document.querySelectorAll('.pick-card').forEach(function(c,i){
+        var tpls = Object.keys(TEMPLATES);
+        if (tpls[i] === currentTemplate) c.classList.add('on');
+      });
+      document.querySelectorAll('.country-btn').forEach(function(b){
+        if (b.textContent.toLowerCase().replace(' ','-') === currentCountry) { b.classList.add('on'); } else { b.classList.remove('on'); }
+      });
+      renderForm();
+    }
+  }
+})();
+
+function esc(s){return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):'';}
+</script>
+<script src="/assets/js/lib/auto-email-gate.js?v=fa3f2d98" defer></script>
+</body>
+</html>

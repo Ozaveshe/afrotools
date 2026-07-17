@@ -1,0 +1,818 @@
+<!doctype html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AfroLegal Desk Pro | AfroTools Pro</title>
+  <meta name="description" content="AfroLegal Desk Pro is a Pro document drafting workspace for contracts, templates, renewal reminders, client/entity records, review queues, and export packets.">
+  <meta name="robots" content="noindex, follow">
+  <meta name="tool-id" content="afrolegal-desk-pro">
+  <meta name="tool-category" content="pro">
+  <meta name="pro-required" content="afrotools-pro">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <script src="/assets/js/afro-auth.js?v=4250956b"></script>
+  <script src="/assets/js/pro-gate.js?v=e4aca7ef"></script>
+  <script src="/assets/js/lib/pro-app-registry.js?v=2e71c13d"></script>
+  <script src="/assets/js/lib/pro-daily-os-registry.js?v=b25cffa7"></script>
+  <script src="/assets/js/lib/pro-home-insights.js?v=dc3dbf48"></script>
+  <script src="/assets/js/components/pro-switcher.js?v=17095027" defer></script>
+  <style>
+    :root{
+      --lg-bg:var(--color-bg,#F8FAFD);
+      --lg-surface:#fff;
+      --lg-soft:#F8FAFC;
+      --lg-ink:var(--color-text,#0f172a);
+      --lg-muted:var(--color-text-muted,#64748b);
+      --lg-subtle:var(--color-text-subtle,#94a3af);
+      --lg-line:var(--color-border,#e2e8f0);
+      --lg-line-strong:var(--color-border-strong,#cbd5e1);
+      --lg-blue:var(--color-primary,#0062CC);
+      --lg-blue-soft:var(--color-primary-pale,rgba(0,98,204,.08));
+      --lg-gold:var(--color-gold,#F5A623);
+      --lg-gold-soft:var(--color-gold-pale,#fff3cd);
+      --lg-green:#047857;
+      --lg-green-soft:#ECFDF5;
+      --lg-amber:#A16207;
+      --lg-amber-soft:#FFFBEB;
+      --lg-red:#B91C1C;
+      --lg-red-soft:#FEF2F2;
+      --lg-purple:#6D28D9;
+      --lg-purple-soft:#F5F3FF;
+      --lg-radius:var(--radius-sm,6px);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--lg-bg);color:var(--lg-ink);font-family:var(--font-body,"DM Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif);font-size:14px;line-height:1.45;overflow-x:hidden}
+    button,a,input,select{font:inherit}
+    button{cursor:pointer}
+    a{color:inherit}
+    .legal-shell h1,.legal-shell h2,.legal-shell h3,.legal-shell h4{font-family:var(--font-body,"DM Sans",system-ui,sans-serif);letter-spacing:0}
+    .legal-shell{min-height:100vh;display:grid;grid-template-columns:242px minmax(0,1fr);background:var(--lg-bg)}
+    .legal-side{position:sticky;top:0;height:100vh;background:#fff;border-right:1px solid var(--lg-line);padding:16px 12px;display:flex;flex-direction:column;gap:16px;z-index:10}
+    .legal-brand{display:flex;align-items:center;gap:10px;padding:8px 8px 12px;border-bottom:1px solid var(--lg-line)}
+    .legal-brand-mark{width:34px;height:34px;border-radius:var(--lg-radius);display:flex;align-items:center;justify-content:center;background:var(--lg-blue);color:#fff;font-size:12px;font-weight:900}
+    .legal-brand-title{font-size:13px;font-weight:900;line-height:1.15}
+    .legal-brand-meta{font-size:11px;color:var(--lg-muted);margin-top:2px}
+    .legal-nav{display:grid;gap:4px}
+    .legal-nav a{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:36px;padding:8px 9px;border-radius:var(--lg-radius);text-decoration:none;color:#334155;font-size:13px;font-weight:800}
+    .legal-nav a:hover,.legal-nav a:focus-visible{background:var(--lg-blue-soft);color:var(--lg-blue)}
+    .legal-nav span{font-size:11px;color:var(--lg-subtle);font-weight:800}
+    .legal-side-box{border:1px solid var(--lg-line);border-radius:var(--lg-radius);background:var(--lg-soft);padding:10px;display:grid;gap:8px}
+    .legal-side-box strong{font-size:12px;font-weight:900}
+    .legal-side-box p{font-size:11px;line-height:1.45;color:var(--lg-muted);margin:0}
+    .legal-side-foot{margin-top:auto;display:grid;gap:8px;padding-top:12px;border-top:1px solid var(--lg-line)}
+    .legal-main{min-width:0}
+    .legal-topbar{position:sticky;top:0;z-index:9;min-height:64px;border-bottom:1px solid var(--lg-line);background:rgba(248,250,253,.94);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 18px}
+    .legal-context{display:flex;align-items:center;gap:10px;min-width:0;flex-wrap:wrap}
+    .legal-field{display:grid;gap:3px;min-width:210px}
+    .legal-label{font-size:11px;font-weight:900;color:var(--lg-muted)}
+    .legal-select{height:36px;border:1px solid var(--lg-line-strong);border-radius:var(--lg-radius);background:#fff;color:var(--lg-ink);padding:0 10px;font-size:13px;font-weight:800}
+    .legal-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+    .legal-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:36px;border:1px solid var(--lg-line-strong);border-radius:var(--lg-radius);background:#fff;color:var(--lg-ink);padding:8px 11px;text-decoration:none;font-size:12px;font-weight:900;line-height:1.1}
+    .legal-btn:hover{border-color:var(--lg-blue);color:var(--lg-blue);background:var(--lg-blue-soft)}
+    .legal-btn.primary{background:var(--lg-blue);border-color:var(--lg-blue);color:#fff}
+    .legal-btn.primary:hover{background:#004BA0;color:#fff}
+    .legal-btn.warn{border-color:#FDE68A;background:var(--lg-amber-soft);color:#78350F}
+    .legal-content{padding:18px;max-width:1480px;margin:0 auto}
+    .legal-command-grid{display:grid;grid-template-columns:minmax(0,1.55fr) 380px;gap:12px;margin-bottom:12px}
+    .legal-command,.legal-panel,.legal-metric,.legal-row,.legal-workflow,.legal-template,.legal-review,.legal-packet,.legal-reminder{background:var(--lg-surface);border:1px solid var(--lg-line);border-radius:var(--lg-radius);box-shadow:0 1px 0 rgba(15,23,42,.03)}
+    .legal-command{padding:16px;display:grid;gap:12px}
+    .legal-kicker{font-size:11px;font-weight:900;color:var(--lg-blue);margin-bottom:4px}
+    .legal-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .legal-title{font-size:28px;line-height:1.1;margin:0 0 6px;font-weight:900;color:var(--lg-ink)}
+    .legal-subtitle{font-size:13px;line-height:1.55;color:var(--lg-muted);max-width:860px;margin:0}
+    .legal-pill{display:inline-flex;align-items:center;justify-content:center;min-height:22px;border-radius:999px;padding:4px 8px;border:1px solid var(--lg-line);background:var(--lg-soft);color:#475569;font-size:10px;font-weight:900;white-space:nowrap}
+    .legal-pill.ready,.legal-pill.signed,.legal-pill.active{background:var(--lg-green-soft);border-color:#A7F3D0;color:#065F46}
+    .legal-pill.draft,.legal-pill.open{background:var(--lg-blue-soft);border-color:#BFDBFE;color:#1E40AF}
+    .legal-pill.review,.legal-pill.pending{background:var(--lg-amber-soft);border-color:#FDE68A;color:#92400E}
+    .legal-pill.blocked,.legal-pill.expiring{background:var(--lg-red-soft);border-color:#FECACA;color:#991B1B}
+    .legal-pill.shell{background:var(--lg-purple-soft);border-color:#DDD6FE;color:#5B21B6}
+    .legal-snapshot{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+    .legal-snap{border:1px solid var(--lg-line);border-radius:var(--lg-radius);background:var(--lg-soft);padding:10px;min-height:80px}
+    .legal-snap strong{display:block;font-size:20px;line-height:1;font-weight:900}
+    .legal-snap span{display:block;font-size:11px;font-weight:800;color:var(--lg-muted);margin-top:6px}
+    .legal-disclaimer{padding:14px;display:grid;gap:10px;background:var(--lg-amber-soft);border-color:#FDE68A;color:#78350F}
+    .legal-disclaimer h2{font-size:16px;margin:0;font-weight:900}
+    .legal-disclaimer p{font-size:12px;line-height:1.5;color:#78350F;margin:0}
+    .legal-metrics{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:16px}
+    .legal-metric{padding:12px;min-height:86px;display:flex;flex-direction:column;justify-content:space-between}
+    .legal-metric strong{display:block;font-size:23px;line-height:1;font-weight:900}
+    .legal-metric span{display:block;font-size:11px;color:var(--lg-muted);font-weight:900;margin-top:7px}
+    .legal-metric small{display:block;font-size:11px;color:var(--lg-subtle);line-height:1.35;margin-top:4px}
+    .legal-layout{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:12px;align-items:start}
+    .legal-panel{overflow:hidden;margin-bottom:12px}
+    .legal-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:12px 13px;border-bottom:1px solid var(--lg-line);background:#fff}
+    .legal-panel-body{padding:12px 13px}
+    .legal-h2{font-size:17px;font-weight:900;line-height:1.2;margin:0}
+    .legal-note{font-size:12px;line-height:1.45;color:var(--lg-muted);margin:3px 0 0;max-width:780px}
+    .legal-workflows{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+    .legal-workflow{padding:12px;display:grid;gap:8px;min-height:168px}
+    .legal-workflow h3{font-size:14px;line-height:1.2;margin:0;font-weight:900}
+    .legal-workflow p{font-size:11px;line-height:1.42;color:var(--lg-muted);margin:0}
+    .legal-list{display:grid;gap:8px}
+    .legal-row,.legal-review,.legal-packet,.legal-reminder{padding:10px 11px}
+    .legal-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center}
+    .legal-row-title{font-size:13px;font-weight:900;line-height:1.25;margin:0}
+    .legal-row-meta{font-size:11px;color:var(--lg-muted);line-height:1.42;margin-top:3px}
+    .legal-row-actions{display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap}
+    .legal-table-wrap{overflow:auto;border:1px solid var(--lg-line);border-radius:var(--lg-radius);background:#fff}
+    .legal-table{width:100%;border-collapse:collapse;min-width:780px}
+    .legal-table th,.legal-table td{padding:10px 11px;border-bottom:1px solid var(--lg-line);text-align:left;vertical-align:top}
+    .legal-table th{font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--lg-muted);background:var(--lg-soft);font-weight:900}
+    .legal-table td{font-size:12px;color:#334155}
+    .legal-table tr:last-child td{border-bottom:0}
+    .legal-strong{font-weight:900;color:var(--lg-ink)}
+    .legal-grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .legal-grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .legal-template{padding:12px;display:grid;gap:9px}
+    .legal-template h3{font-size:14px;margin:0;font-weight:900}
+    .legal-template p{font-size:11px;line-height:1.42;color:var(--lg-muted);margin:0}
+    .legal-check{display:flex;align-items:flex-start;gap:9px;padding:9px;border:1px solid var(--lg-line);border-radius:var(--lg-radius);background:#fff}
+    .legal-check input{margin-top:2px}
+    .legal-check strong{display:block;font-size:12px;font-weight:900}
+    .legal-check span{display:block;font-size:11px;color:var(--lg-muted);line-height:1.35;margin-top:2px}
+    .legal-entity{display:grid;grid-template-columns:38px minmax(0,1fr) auto;gap:9px;align-items:center;border:1px solid var(--lg-line);border-radius:var(--lg-radius);padding:9px;background:#fff}
+    .legal-avatar{width:38px;height:38px;border-radius:var(--lg-radius);display:flex;align-items:center;justify-content:center;background:var(--lg-blue-soft);color:var(--lg-blue);font-size:11px;font-weight:900}
+    .legal-entity strong{display:block;font-size:12px;font-weight:900}
+    .legal-entity span{display:block;font-size:11px;color:var(--lg-muted);margin-top:2px}
+    .legal-review{display:grid;gap:8px}
+    .legal-review-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .legal-review h3{font-size:13px;margin:0;font-weight:900}
+    .legal-review p{font-size:11px;color:var(--lg-muted);line-height:1.42;margin:0}
+    .legal-tool-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .legal-tool{display:grid;gap:5px;min-height:76px;border:1px solid var(--lg-line);border-radius:var(--lg-radius);background:#fff;padding:10px;text-decoration:none}
+    .legal-tool:hover,.legal-tool:focus-visible{border-color:var(--lg-blue);background:var(--lg-blue-soft)}
+    .legal-tool strong{font-size:12px;font-weight:900}
+    .legal-tool span{font-size:11px;color:var(--lg-muted);line-height:1.35}
+    .legal-empty{padding:16px;border:1px dashed var(--lg-line-strong);border-radius:var(--lg-radius);background:var(--lg-soft);color:var(--lg-muted);font-size:12px;line-height:1.5}
+    @media (max-width:1180px){
+      .legal-shell{grid-template-columns:1fr}
+      .legal-side{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--lg-line)}
+      .legal-nav{grid-template-columns:repeat(4,minmax(0,1fr))}
+      .legal-side-foot{margin-top:0}
+      .legal-command-grid,.legal-layout{grid-template-columns:1fr}
+      .legal-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .legal-workflows{grid-template-columns:repeat(3,minmax(0,1fr))}
+    }
+    @media (max-width:760px){
+      .legal-topbar{position:relative;align-items:stretch;flex-direction:column}
+      .legal-context,.legal-actions{width:100%;justify-content:stretch}
+      .legal-field,.legal-btn{width:100%}
+      .legal-content{padding:12px}
+      .legal-title{font-size:23px}
+      .legal-nav{grid-template-columns:1fr 1fr}
+      .legal-snapshot,.legal-metrics,.legal-workflows,.legal-grid-2,.legal-grid-3,.legal-tool-grid{grid-template-columns:1fr}
+      .legal-row,.legal-entity{grid-template-columns:1fr}
+      .legal-row-actions{justify-content:flex-start}
+    }
+  </style>
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c4853917">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/lib/dark-mode.js?v=5cb64ba3" defer></script>
+<link rel="canonical" href="https://afrotools.com/pro/apps/legal/">
+</head>
+<body class="top-level-page-ui-refresh">
+  <main class="legal-shell pro-gated-content">
+  <div data-pro-waitlist-host data-app-label="Legal" data-source-route="/pro/apps/legal/"></div>
+
+    <aside class="legal-side" aria-label="AfroLegal Desk navigation">
+      <div class="legal-brand">
+        <div class="legal-brand-mark">LD</div>
+        <div>
+          <div class="legal-brand-title">AfroLegal Desk Pro</div>
+          <div class="legal-brand-meta">Document drafting workspace</div>
+        </div>
+      </div>
+      <nav class="legal-nav">
+        <a href="/pro/workspace/">Pro Control <span>hub</span></a>
+        <a href="/pro/apps/">Browse Apps <span>index</span></a>
+        <a href="/dashboard/">Account <span>profile</span></a>
+        <a href="#contracts">Contracts <span id="navContractCount">0</span></a>
+        <a href="#templates">Templates <span id="navTemplateCount">0</span></a>
+        <a href="#reminders">Renewals <span id="navRenewalCount">0</span></a>
+        <a href="#records">Records <span id="navEntityCount">0</span></a>
+        <a href="#review">Review Queue <span id="navReviewCount">0</span></a>
+      </nav>
+      <div class="legal-side-box">
+        <strong>Legal boundary</strong>
+        <p>Document drafting support only. This workspace is not legal advice and does not replace a qualified lawyer in the relevant jurisdiction.</p>
+      </div>
+      <div class="legal-side-box">
+        <strong>Saved workspace state</strong>
+        <p>Drafts, entities, reminders, review notes, and packet history are saved on this device while account save is prepared.</p>
+      </div>
+      <div class="legal-side-foot">
+        <a class="legal-btn" href="/tools/contract-generator/">Contract generator</a>
+        <a class="legal-btn" href="/tools/legal-aid/">Legal aid</a>
+      </div>
+    </aside>
+
+    <section class="legal-main">
+      <header class="legal-topbar">
+        <div class="legal-context">
+          <label class="legal-field">
+            <span class="legal-label">Workspace / client</span>
+            <select class="legal-select" id="clientSelect">
+              <option value="sme-operator">SME operator desk</option>
+              <option value="landlord-desk">Landlord and property desk</option>
+              <option value="founder-desk">Founder and startup desk</option>
+              <option value="hr-docs">HR document desk</option>
+            </select>
+          </label>
+          <label class="legal-field">
+            <span class="legal-label">Primary jurisdiction</span>
+            <select class="legal-select" id="jurisdictionSelect">
+              <option value="Nigeria">Nigeria</option>
+              <option value="Kenya">Kenya</option>
+              <option value="Ghana">Ghana</option>
+              <option value="South Africa">South Africa</option>
+              <option value="Rwanda">Rwanda</option>
+              <option value="Pan-Africa">Pan-Africa draft</option>
+            </select>
+          </label>
+        </div>
+        <div class="legal-actions">
+          <button class="legal-btn" type="button" id="resetBtn">Reset starter data</button>
+          <button class="legal-btn primary" type="button" id="exportBtn">Export packet</button>
+        </div>
+      </header>
+
+      <div class="legal-content">
+        <section class="legal-command-grid" aria-label="Legal command center">
+          <div class="legal-command">
+            <div class="legal-title-row">
+              <div>
+                <div class="legal-kicker">AfroTools Pro workspace</div>
+                <h1 class="legal-title">AfroLegal Desk Pro</h1>
+                <p class="legal-subtitle">A control desk for contract drafts, reusable templates, renewal reminders, client and entity records, review queues, compliance checklist work, and export packets.</p>
+              </div>
+              <span class="legal-pill shell" id="modePill">Saved on this device</span>
+            </div>
+            <div class="legal-snapshot">
+              <div class="legal-snap"><strong id="snapshotContracts">0</strong><span>drafts in workspace</span></div>
+              <div class="legal-snap"><strong id="snapshotReview">0</strong><span>items needing review</span></div>
+              <div class="legal-snap"><strong id="snapshotRenewals">0</strong><span>renewals due soon</span></div>
+              <div class="legal-snap"><strong id="snapshotChecklist">0%</strong><span>checklist readiness</span></div>
+            </div>
+          </div>
+          <aside class="legal-disclaimer">
+            <h2>Document drafting support only</h2>
+            <p>AfroLegal Desk helps organize drafts, templates, reminders, and review packets. It is not legal advice, does not create lawyer-client privilege, and does not guarantee enforceability or compliance.</p>
+            <div class="legal-actions">
+              <a class="legal-btn warn" href="/tools/legal-aid/">Find legal aid</a>
+              <a class="legal-btn warn" href="/tools/compliance-calendar/">Compliance calendar</a>
+            </div>
+          </aside>
+        </section>
+
+        <section class="legal-metrics" aria-label="Legal desk status">
+          <div class="legal-metric"><strong id="metricActive">0</strong><span>active drafts</span><small>Local document workspace</small></div>
+          <div class="legal-metric"><strong id="metricEntities">0</strong><span>client/entity records</span><small>Saved on this device CRM rows</small></div>
+          <div class="legal-metric"><strong id="metricTemplates">0</strong><span>template lanes</span><small>Drafting workflows</small></div>
+          <div class="legal-metric"><strong id="metricSigned">0</strong><span>ready rows</span><small>E-signing is not included</small></div>
+          <div class="legal-metric"><strong id="metricPackets">0</strong><span>export packets</span><small>JSON handoff only</small></div>
+        </section>
+
+        <section class="legal-panel" aria-labelledby="workflowTitle">
+          <div class="legal-panel-head">
+            <div>
+              <h2 class="legal-h2" id="workflowTitle">Starter workflows</h2>
+              <p class="legal-note">Actions update this device workspace only. Use a qualified lawyer for legal advice and final review.</p>
+            </div>
+          </div>
+          <div class="legal-panel-body">
+            <div class="legal-workflows">
+              <article class="legal-workflow">
+                <span class="legal-pill draft">NDA</span>
+                <h3>Generate NDA</h3>
+                <p>Create a draft NDA row with parties, jurisdiction, confidentiality scope, and review queue item.</p>
+                <button class="legal-btn primary" type="button" data-action="generateNda">Generate NDA</button>
+              </article>
+              <article class="legal-workflow">
+                <span class="legal-pill draft">HR</span>
+                <h3>Employment letter</h3>
+                <p>Add an employment letter draft for role, start date, compensation note, and HR review.</p>
+                <button class="legal-btn" type="button" data-action="employmentLetter">Create letter</button>
+              </article>
+              <article class="legal-workflow">
+                <span class="legal-pill review">property</span>
+                <h3>Rental agreement</h3>
+                <p>Prepare a lease or tenancy draft with property, term, deposit, renewal, and sign-off notes.</p>
+                <button class="legal-btn" type="button" data-action="rentalAgreement">Create rental</button>
+              </article>
+              <article class="legal-workflow">
+                <span class="legal-pill pending">services</span>
+                <h3>Contractor agreement</h3>
+                <p>Draft a contractor agreement with deliverables, fees, IP, confidentiality, and termination notes.</p>
+                <button class="legal-btn" type="button" data-action="contractorAgreement">Create contractor</button>
+              </article>
+              <article class="legal-workflow">
+                <span class="legal-pill ready">checklist</span>
+                <h3>Compliance checklist</h3>
+                <p>Prepare a document checklist for IDs, company records, approvals, signatures, and renewal dates.</p>
+                <button class="legal-btn" type="button" data-action="complianceChecklist">Build checklist</button>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <div class="legal-layout">
+          <div>
+            <section class="legal-panel" id="contracts" aria-labelledby="contractTitle">
+              <div class="legal-panel-head">
+                <div>
+                  <h2 class="legal-h2" id="contractTitle">Contract workspace</h2>
+                  <p class="legal-note">Drafts and packets for review. Final legal advice and enforceability checks sit outside this workspace.</p>
+                </div>
+                <button class="legal-btn primary" type="button" data-action="generateNda">New draft</button>
+              </div>
+              <div class="legal-panel-body">
+                <div class="legal-table-wrap">
+                  <table class="legal-table">
+                    <thead>
+                      <tr>
+                        <th>Document</th>
+                        <th>Entity</th>
+                        <th>Jurisdiction</th>
+                        <th>Status</th>
+                        <th>Renewal</th>
+                        <th>Next action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="contractRows"></tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+
+            <section class="legal-panel" id="templates" aria-labelledby="templatesTitle">
+              <div class="legal-panel-head">
+                <div>
+                  <h2 class="legal-h2" id="templatesTitle">Document templates</h2>
+                  <p class="legal-note">Template lanes point to existing AfroTools legal and document tools where available.</p>
+                </div>
+              </div>
+              <div class="legal-panel-body">
+                <div class="legal-grid-3" id="templateCards"></div>
+              </div>
+            </section>
+
+            <section class="legal-panel" id="records" aria-labelledby="recordsTitle">
+              <div class="legal-panel-head">
+                <div>
+                  <h2 class="legal-h2" id="recordsTitle">Client/entity records</h2>
+                  <p class="legal-note">Track parties, counterparties, company records, property records, and review owner.</p>
+                </div>
+                <button class="legal-btn" type="button" data-action="addEntity">Add entity</button>
+              </div>
+              <div class="legal-panel-body">
+                <div class="legal-list" id="entityList"></div>
+              </div>
+            </section>
+
+            <section class="legal-panel" aria-labelledby="checklistTitle">
+              <div class="legal-panel-head">
+                <div>
+                  <h2 class="legal-h2" id="checklistTitle">Compliance document checklist</h2>
+                  <p class="legal-note">Local checklist for common document packets. It stores readiness state only, not files.</p>
+                </div>
+                <button class="legal-btn" type="button" data-action="complianceChecklist">Prepare checklist</button>
+              </div>
+              <div class="legal-panel-body">
+                <div class="legal-grid-2" id="checklistRows"></div>
+              </div>
+            </section>
+          </div>
+
+          <aside>
+            <section class="legal-panel" aria-labelledby="toolsTitle">
+              <div class="legal-panel-head">
+                <div>
+                  <h2 class="legal-h2" id="toolsTitle">Legal/document tools</h2>
+                  <p class="legal-note">Existing tools remain the detailed drafting surfaces.</p>
+                </div>
+              </div>
+              <div class="legal-panel-body">
+                <div class="legal-tool-grid">
+                  <a class="legal-tool" href="/tools/nda-generator/"><strong>NDA generator</strong><span>Confidentiality draft support.</span></a>
+                  <a class="legal-tool" href="/tools/employment-contract/"><strong>Employment contract</strong><span>HR contract drafting lane.</span></a>
+                  <a class="legal-tool" href="/tools/rental-agreement/"><strong>Rental agreement</strong><span>Lease and property document lane.</span></a>
+                  <a class="legal-tool" href="/tools/tenancy-agreement/"><strong>Tenancy agreement</strong><span>Tenant-landlord document support.</span></a>
+                  <a class="legal-tool" href="/tools/freelance-contract/"><strong>Freelance contract</strong><span>Contractor and services draft.</span></a>
+                  <a class="legal-tool" href="/tools/contract-generator/"><strong>Contract generator</strong><span>General contract drafting.</span></a>
+                  <a class="legal-tool" href="/tools/contractor-vs-employee/"><strong>Contractor vs employee</strong><span>Classification planning.</span></a>
+                  <a class="legal-tool" href="/tools/partnership-agreement/"><strong>Partnership agreement</strong><span>Founder and partner records.</span></a>
+                  <a class="legal-tool" href="/tools/shareholder-agreement/"><strong>Shareholder agreement</strong><span>Company governance draft support.</span></a>
+                  <a class="legal-tool" href="/tools/affidavit-generator/"><strong>Affidavit generator</strong><span>Sworn statement drafting support.</span></a>
+                  <a class="legal-tool" href="/tools/power-of-attorney/"><strong>Power of attorney</strong><span>Authority document draft.</span></a>
+                  <a class="legal-tool" href="/tools/will-generator/"><strong>Will generator</strong><span>Estate document draft support.</span></a>
+                  <a class="legal-tool" href="/tools/privacy-policy-gen/"><strong>Privacy policy</strong><span>Policy document drafting.</span></a>
+                  <a class="legal-tool" href="/tools/document-pdf/"><strong>Document PDF</strong><span>Prepare and manage document output.</span></a>
+                  <a class="legal-tool" href="/tools/pdf-sign/"><strong>PDF sign</strong><span>Signature preparation workflow.</span></a>
+                  <a class="legal-tool" href="/tools/pdf-redact/"><strong>PDF redact</strong><span>Prepare sensitive document copies.</span></a>
+                </div>
+              </div>
+            </section>
+
+            <section class="legal-panel" id="reminders" aria-labelledby="renewalsTitle">
+              <div class="legal-panel-head">
+                <div>
+                  <h2 class="legal-h2" id="renewalsTitle">Renewal reminders</h2>
+                  <p class="legal-note">Local reminders for expiries, renewals, review dates, and signature windows.</p>
+                </div>
+              </div>
+              <div class="legal-panel-body">
+                <div class="legal-list" id="renewalList"></div>
+              </div>
+            </section>
+
+            <section class="legal-panel" id="review" aria-labelledby="reviewTitle">
+              <div class="legal-panel-head">
+                <div>
+                  <h2 class="legal-h2" id="reviewTitle">Review queue</h2>
+                  <p class="legal-note">What needs attention before lawyer, manager, HR, landlord, or founder review.</p>
+                </div>
+              </div>
+              <div class="legal-panel-body">
+                <div class="legal-list" id="reviewQueue"></div>
+              </div>
+            </section>
+
+            <section class="legal-panel" aria-labelledby="packetTitle">
+              <div class="legal-panel-head">
+                <div>
+                  <h2 class="legal-h2" id="packetTitle">Export packet</h2>
+                  <p class="legal-note">Device-only handoff packet for review. Not legal filing, advice, or e-sign.</p>
+                </div>
+                <button class="legal-btn" type="button" data-action="exportPacket">Export</button>
+              </div>
+              <div class="legal-panel-body">
+                <div class="legal-list" id="packetList"></div>
+              </div>
+            </section>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function(){
+      "use strict";
+
+      var STORAGE_KEY = "afrolegal_desk_pro_demo_v1";
+      var now = new Date().toISOString();
+
+      function seedState(){
+        return {
+          client:"sme-operator",
+          jurisdiction:"Nigeria",
+          packets:0,
+          lastUpdated:now,
+          contracts:[
+            {id:"ALD-1001", title:"Supplier NDA", type:"NDA", entity:"Kano Agro Supplies", jurisdiction:"Nigeria", status:"review", renewal:"2026-06-15", next:"Confirm parties, term, governing law, and permitted disclosures."},
+            {id:"ALD-1002", title:"Clinic rental agreement", type:"Rental agreement", entity:"Accra Health Rooms", jurisdiction:"Ghana", status:"draft", renewal:"2026-05-28", next:"Add premises, deposit, term, utilities, and repair obligations."},
+            {id:"ALD-1003", title:"Developer contractor agreement", type:"Contractor agreement", entity:"Nairobi Studio Ops", jurisdiction:"Kenya", status:"ready", renewal:"2026-08-01", next:"Send to lawyer or manager for final review before signature."}
+          ],
+          templates:[
+            {title:"NDA", status:"draft", detail:"Confidentiality, permitted disclosures, term, remedies, and governing law.", href:"/tools/nda-generator/"},
+            {title:"Employment letter", status:"draft", detail:"Role, start date, salary, probation, benefits, and policy acknowledgements.", href:"/tools/employment-contract/"},
+            {title:"Rental agreement", status:"review", detail:"Premises, rent, deposit, term, renewal, repairs, and termination notes.", href:"/tools/rental-agreement/"},
+            {title:"Contractor agreement", status:"pending", detail:"Scope, deliverables, payment, IP, confidentiality, and termination.", href:"/tools/freelance-contract/"},
+            {title:"Compliance checklist", status:"open", detail:"IDs, company records, approvals, tax IDs, signatures, and renewal dates.", href:"/tools/compliance-calendar/"},
+            {title:"Privacy policy", status:"open", detail:"Data collection, use, consent, retention, and contact details.", href:"/tools/privacy-policy-gen/"}
+          ],
+          entities:[
+            {type:"Company", name:"Kano Agro Supplies", country:"Nigeria", owner:"Operations", status:"KYC pending"},
+            {type:"Property", name:"Accra Health Rooms", country:"Ghana", owner:"Operations lead", status:"renewal soon"},
+            {type:"Contractor", name:"Nairobi Studio Ops", country:"Kenya", owner:"Product", status:"ready for review"}
+          ],
+          checklist:[
+            {key:"partyIds", label:"Party IDs or registration records", note:"Names, registration numbers, signatory authority, and contact records.", ready:true},
+            {key:"scope", label:"Scope or property schedule", note:"Services, deliverables, premises, goods, or document subject matter.", ready:true},
+            {key:"commercialTerms", label:"Commercial terms", note:"Fees, rent, salary, deposit, due dates, renewal, and payment terms.", ready:false},
+            {key:"authority", label:"Authority and approvals", note:"Board approval, HR approval, landlord consent, or manager review.", ready:false},
+            {key:"signaturePack", label:"Signature pack", note:"Signature blocks, witness lines, dates, and PDF sign workflow.", ready:false},
+            {key:"lawyerReview", label:"Lawyer review note", note:"Qualified legal review before reliance or signature.", ready:false}
+          ],
+          renewals:[
+            {title:"Clinic lease renewal", status:"expiring", detail:"Renewal window opens 2026-05-28. Confirm notice period and rent review."},
+            {title:"Supplier NDA term review", status:"review", detail:"Term expires 2026-06-15. Check whether confidential data is still in use."},
+            {title:"Contractor SOW closeout", status:"pending", detail:"Deliverables review due before final invoice approval."}
+          ],
+          reviews:[
+            {title:"Not legal advice disclaimer", severity:"high", detail:"Keep disclaimer visible on every export and review packet."},
+            {title:"Governing law missing", severity:"medium", detail:"New drafts need jurisdiction and dispute resolution details confirmed."},
+            {title:"Signature authority unchecked", severity:"medium", detail:"Company signatory records should be attached before signature."},
+            {title:"PDF redaction needed", severity:"low", detail:"Prepare a redacted copy before sharing with external reviewers."}
+          ],
+          packetHistory:[
+            {title:"Initial document pack", status:"draft", detail:"Contracts, entities, checklist, reminders, and review queue are ready for local export."}
+          ]
+        };
+      }
+
+      function readState(){
+        try{
+          var raw = localStorage.getItem(STORAGE_KEY);
+          if(raw){
+            var parsed = JSON.parse(raw);
+            return Object.assign(seedState(), parsed);
+          }
+        }catch(error){}
+        return seedState();
+      }
+
+      var state = readState();
+
+      function save(){
+        state.lastUpdated = new Date().toISOString();
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      }
+
+      function esc(value){
+        return String(value == null ? "" : value).replace(/[&<>"']/g, function(char){
+          return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[char];
+        });
+      }
+
+      function byId(id){
+        return document.getElementById(id);
+      }
+
+      function pct(value, total){
+        if(!total){ return 0; }
+        return Math.round((value / total) * 100);
+      }
+
+      function pill(status){
+        var safe = String(status || "").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+        var tone = "open";
+        if(/ready|signed|active|complete/.test(safe)){ tone = "ready"; }
+        if(/review|pending|renewal/.test(safe)){ tone = "review"; }
+        if(/blocked|high|expiring|missing/.test(safe)){ tone = "blocked"; }
+        if(/draft|open/.test(safe)){ tone = "draft"; }
+        return '<span class="legal-pill '+tone+'">'+esc(status)+'</span>';
+      }
+
+      function render(){
+        var contracts = state.contracts || [];
+        var templates = state.templates || [];
+        var entities = state.entities || [];
+        var checklist = state.checklist || [];
+        var reviews = state.reviews || [];
+        var renewals = state.renewals || [];
+        var readyChecklist = checklist.filter(function(item){ return item.ready; }).length;
+        var readyRows = contracts.filter(function(item){ return /ready/i.test(item.status || ""); }).length;
+
+        byId("clientSelect").value = state.client || "sme-operator";
+        byId("jurisdictionSelect").value = state.jurisdiction || "Nigeria";
+        byId("snapshotContracts").textContent = contracts.length;
+        byId("snapshotReview").textContent = reviews.length;
+        byId("snapshotRenewals").textContent = renewals.length;
+        byId("snapshotChecklist").textContent = pct(readyChecklist, checklist.length) + "%";
+        byId("metricActive").textContent = contracts.length;
+        byId("metricEntities").textContent = entities.length;
+        byId("metricTemplates").textContent = templates.length;
+        byId("metricSigned").textContent = readyRows;
+        byId("metricPackets").textContent = state.packets || 0;
+        byId("navContractCount").textContent = contracts.length;
+        byId("navTemplateCount").textContent = templates.length;
+        byId("navRenewalCount").textContent = renewals.length;
+        byId("navEntityCount").textContent = entities.length;
+        byId("navReviewCount").textContent = reviews.length;
+
+        renderContracts(contracts);
+        renderTemplates(templates);
+        renderEntities(entities);
+        renderChecklist(checklist);
+        renderList("renewalList", renewals, "status");
+        renderReviews(reviews);
+        renderList("packetList", state.packetHistory || [], "status");
+      }
+
+      function renderContracts(contracts){
+        byId("contractRows").innerHTML = contracts.map(function(item){
+          return '<tr>'+
+            '<td><div class="legal-strong">'+esc(item.id)+'</div><div class="legal-row-meta">'+esc(item.title)+' · '+esc(item.type)+'</div></td>'+
+            '<td>'+esc(item.entity)+'</td>'+
+            '<td>'+esc(item.jurisdiction)+'</td>'+
+            '<td>'+pill(item.status)+'</td>'+
+            '<td>'+esc(item.renewal)+'</td>'+
+            '<td>'+esc(item.next)+'</td>'+
+          '</tr>';
+        }).join("") || '<tr><td colspan="6"><div class="legal-empty">No document drafts yet. Generate a starter draft to open the workspace.</div></td></tr>';
+      }
+
+      function renderTemplates(templates){
+        byId("templateCards").innerHTML = templates.map(function(item){
+          return '<article class="legal-template">'+
+            '<div class="legal-row-actions">'+pill(item.status)+'</div>'+
+            '<h3>'+esc(item.title)+'</h3>'+
+            '<p>'+esc(item.detail)+'</p>'+
+            '<a class="legal-btn" href="'+esc(item.href)+'">Open tool</a>'+
+          '</article>';
+        }).join("");
+      }
+
+      function renderEntities(entities){
+        byId("entityList").innerHTML = entities.map(function(item){
+          return '<article class="legal-entity">'+
+            '<div class="legal-avatar">'+esc(item.type).slice(0,2).toUpperCase()+'</div>'+
+            '<div><strong>'+esc(item.name)+'</strong><span>'+esc(item.type)+' · '+esc(item.country)+' · '+esc(item.owner)+'</span></div>'+
+            pill(item.status)+
+          '</article>';
+        }).join("") || '<div class="legal-empty">No client or entity records yet.</div>';
+      }
+
+      function renderChecklist(checklist){
+        byId("checklistRows").innerHTML = checklist.map(function(item){
+          return '<label class="legal-check">'+
+            '<input type="checkbox" data-check="'+esc(item.key)+'" '+(item.ready ? "checked" : "")+'>'+
+            '<span><strong>'+esc(item.label)+'</strong><span>'+esc(item.note)+'</span></span>'+
+          '</label>';
+        }).join("");
+      }
+
+      function renderList(target, items, statusKey){
+        byId(target).innerHTML = items.map(function(item){
+          return '<article class="legal-row">'+
+            '<div><div class="legal-row-title">'+esc(item.title)+'</div><div class="legal-row-meta">'+esc(item.detail)+'</div></div>'+
+            '<div class="legal-row-actions">'+pill(item[statusKey])+'</div>'+
+          '</article>';
+        }).join("") || '<div class="legal-empty">No rows yet.</div>';
+      }
+
+      function renderReviews(reviews){
+        byId("reviewQueue").innerHTML = reviews.map(function(item){
+          return '<article class="legal-review">'+
+            '<div class="legal-review-top"><h3>'+esc(item.title)+'</h3>'+pill(item.severity)+'</div>'+
+            '<p>'+esc(item.detail)+'</p>'+
+          '</article>';
+        }).join("") || '<div class="legal-empty">No review items open.</div>';
+      }
+
+      function addContract(type, title, entity, status, next){
+        var number = 1001 + (state.contracts || []).length;
+        var jurisdiction = byId("jurisdictionSelect").value || "Nigeria";
+        state.contracts.unshift({
+          id:"ALD-" + number,
+          title:title,
+          type:type,
+          entity:entity,
+          jurisdiction:jurisdiction,
+          status:status,
+          renewal:"2026-09-30",
+          next:next
+        });
+        state.reviews.unshift({title:type+" review needed", severity:"medium", detail:"Confirm facts, jurisdiction, authority, and legal review before relying on this draft."});
+        save();
+        render();
+      }
+
+      function generateNda(){
+        addContract("NDA", "New mutual NDA", "New counterparty", "draft", "Confirm confidential information, term, parties, and permitted disclosure.");
+      }
+
+      function employmentLetter(){
+        addContract("Employment letter", "New employment letter", "HR document desk", "draft", "Confirm role, compensation, start date, probation, and policy attachments.");
+      }
+
+      function rentalAgreement(){
+        addContract("Rental agreement", "New rental agreement", "Property record", "review", "Confirm premises, term, deposit, renewal, repairs, and termination notice.");
+      }
+
+      function contractorAgreement(){
+        addContract("Contractor agreement", "New contractor agreement", "Services counterparty", "pending", "Confirm scope, deliverables, fees, IP ownership, confidentiality, and termination.");
+      }
+
+      function complianceChecklist(){
+        state.checklist = (state.checklist || []).map(function(item){
+          if(["partyIds","scope","commercialTerms"].indexOf(item.key) !== -1){
+            return Object.assign({}, item, {ready:true});
+          }
+          return item;
+        });
+        state.packetHistory.unshift({title:"Compliance checklist prepared", status:"draft", detail:"Core checklist rows marked for local packet preparation. Lawyer review still required."});
+        save();
+        render();
+      }
+
+      function addEntity(){
+        state.entities.unshift({type:"Client", name:"New client/entity", country:state.jurisdiction || "Nigeria", owner:"Legal ops", status:"details needed"});
+        state.reviews.unshift({title:"Entity details incomplete", severity:"medium", detail:"Add registration details, signatory authority, address, and contact person."});
+        save();
+        render();
+      }
+
+      function exportPacket(){
+        state.packets = Number(state.packets || 0) + 1;
+        state.packetHistory.unshift({title:"Export packet "+state.packets, status:"draft", detail:"Local JSON packet created for document review handoff. Not legal advice."});
+        save();
+        var packet = {
+          product:"AfroLegal Desk Pro",
+          exportedAt:new Date().toISOString(),
+          disclaimer:"Document drafting support only. Not legal advice.",
+          storageBoundary:{
+            mode:"device-local-json",
+            accountBacked:false,
+            uploadedToSupabase:false,
+            legalTablesPresent:false,
+            note:"This export is generated in the browser and is not uploaded, synced, filed, or stored in a Legal Desk Supabase table."
+          },
+          reviewBoundary:{
+            legalAdvice:false,
+            lawyerReviewIncluded:false,
+            enforceabilityGuaranteed:false,
+            note:"The packet is a drafting and handoff aid. A qualified lawyer in the relevant jurisdiction must review before reliance or signature."
+          },
+          signatureBoundary:{
+            eSignatureIncluded:false,
+            signedStatusProof:false,
+            filingProof:false,
+            note:"The workspace can prepare signature checklists, but it does not execute e-signatures, prove signing, or submit filings."
+          },
+          reminderBoundary:{
+            deliveryBacked:false,
+            serverReminderJobs:false,
+            renewalNoticeSent:false,
+            note:"Renewal and review reminders are local checklist rows only. No email, SMS, court, registry, or lawyer notification is sent."
+          },
+          packetContents:{
+            contracts:(state.contracts || []).length,
+            templates:(state.templates || []).length,
+            entities:(state.entities || []).length,
+            checklistItems:(state.checklist || []).length,
+            renewals:(state.renewals || []).length,
+            reviews:(state.reviews || []).length,
+            packetHistory:(state.packetHistory || []).length
+          },
+          state:state
+        };
+        var blob = new Blob([JSON.stringify(packet, null, 2)], {type:"application/json"});
+        var url = URL.createObjectURL(blob);
+        var link = document.createElement("a");
+        link.href = url;
+        link.download = "afrolegal-desk-packet.json";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+        render();
+      }
+
+      document.addEventListener("change", function(event){
+        var target = event.target;
+        if(target.id === "clientSelect"){
+          state.client = target.value;
+          save();
+          render();
+        }
+        if(target.id === "jurisdictionSelect"){
+          state.jurisdiction = target.value;
+          save();
+          render();
+        }
+        if(target.matches("[data-check]")){
+          var key = target.getAttribute("data-check");
+          state.checklist = (state.checklist || []).map(function(item){
+            if(item.key === key){ return Object.assign({}, item, {ready:target.checked}); }
+            return item;
+          });
+          save();
+          render();
+        }
+      });
+
+      document.addEventListener("click", function(event){
+        var action = event.target.closest("[data-action]");
+        if(!action){ return; }
+        var name = action.getAttribute("data-action");
+        if(name === "generateNda"){ generateNda(); }
+        if(name === "employmentLetter"){ employmentLetter(); }
+        if(name === "rentalAgreement"){ rentalAgreement(); }
+        if(name === "contractorAgreement"){ contractorAgreement(); }
+        if(name === "complianceChecklist"){ complianceChecklist(); }
+        if(name === "addEntity"){ addEntity(); }
+        if(name === "exportPacket"){ exportPacket(); }
+      });
+
+      byId("exportBtn").addEventListener("click", exportPacket);
+      byId("resetBtn").addEventListener("click", function(){
+        localStorage.removeItem(STORAGE_KEY);
+        state = seedState();
+        save();
+        render();
+      });
+
+      render();
+    })();
+  </script>
+<script src="/assets/js/components/pro-waitlist.js?v=1be0fd08"></script>
+</body>
+</html>

@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finance Dashboard — CreatorMoney | AfroTools</title>
+  <meta name="description" content="Track your creative income and expenses. See your real profitability at a glance.">
+  <meta name="robots" content="noindex, follow">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <link rel="stylesheet" href="style.css?v=c677f6b2">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+  <script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+  <script src="/engines/creator-money-engine.js?v=a7ac9402"></script>
+  <script src="/assets/js/supabase-auth.js?v=0c644f2e" defer></script>
+  <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
+<meta property="og:url" content="https://afrotools.com/tools/creator-money/app">
+<link rel="canonical" href="https://afrotools.com/tools/creator-money/app">
+</head>
+<body class="top-level-page-ui-refresh">
+  <afro-navbar></afro-navbar>
+
+  <div class="cm-app">
+    <div class="cm-app-inner">
+      <!-- HEADER -->
+      <div class="cm-app-header">
+        <div class="cm-app-title">CreatorMoney</div>
+        <div class="cm-app-actions">
+          <a href="reports.html" style="font-size:.72rem;font-weight:700;color:rgba(255,255,255,.4);text-decoration:none">Reports</a>
+        </div>
+      </div>
+
+      <!-- MONTH NAV -->
+      <div class="cm-month-nav">
+        <button type="button" class="cm-month-btn" id="prev-month">‹</button>
+        <div class="cm-month-label" id="month-label">March 2026</div>
+        <button type="button" class="cm-month-btn" id="next-month">›</button>
+      </div>
+
+      <!-- OVERVIEW CARD -->
+      <div class="cm-overview" id="overview-card">
+        <div class="cm-overview-label">Net Profit / Loss</div>
+        <div class="cm-overview-amount positive" id="profit-amount">+₦0</div>
+        <div class="cm-overview-sub" id="profit-sub">this month</div>
+        <div class="cm-overview-row">
+          <div class="cm-overview-stat"><div class="cm-overview-stat-label">Income</div><div class="cm-overview-stat-val income" id="income-total">₦0</div></div>
+          <div class="cm-overview-stat"><div class="cm-overview-stat-label">Expenses</div><div class="cm-overview-stat-val expense" id="expense-total">₦0</div></div>
+          <div class="cm-overview-stat"><div class="cm-overview-stat-label">Margin</div><div class="cm-overview-stat-val margin" id="margin-pct">0%</div></div>
+        </div>
+        <div class="cm-sparkline" id="sparkline"></div>
+      </div>
+
+      <!-- INCOME STREAMS -->
+      <div class="cm-section">
+        <div class="cm-section-head">
+          <div class="cm-section-title">Income Streams</div>
+          <span class="cm-section-action" id="add-income-btn">+ Add</span>
+        </div>
+        <div class="cm-streams" id="income-streams"></div>
+      </div>
+
+      <!-- EXPENSE BREAKDOWN -->
+      <div class="cm-section">
+        <div class="cm-section-head">
+          <div class="cm-section-title">Expense Breakdown</div>
+          <span class="cm-section-action" id="add-expense-btn">+ Add</span>
+        </div>
+        <div class="cm-donut-wrap">
+          <div class="cm-donut" id="donut-chart"><div class="cm-donut-hole"><div class="cm-donut-total" id="donut-total">₦0</div><div class="cm-donut-label">Total</div></div></div>
+          <div class="cm-donut-legend" id="donut-legend"></div>
+        </div>
+      </div>
+
+      <!-- AI INSIGHT -->
+      <div class="cm-section cm-ai-card">
+        <div class="cm-section-title">AI Financial Insight</div>
+        <div class="cm-ai-narrative" id="ai-narrative">Loading your financial insight...</div>
+        <div class="cm-ai-presets">
+          <button type="button" class="cm-ai-preset" data-q="How am I doing this month? Give me the real talk.">How am I doing?</button>
+          <button type="button" class="cm-ai-preset" data-q="Where can I cut expenses without hurting my business?">Where can I save?</button>
+          <button type="button" class="cm-ai-preset" data-q="Based on my income, how much should I set aside for taxes?">Tax estimate</button>
+        </div>
+        <div class="cm-ai-chat" id="ai-chat"></div>
+        <div class="cm-ai-input-row" style="margin-top:10px">
+          <input aria-label="Ask about your finances" class="cm-ai-input" id="ai-input" placeholder="Ask about your finances...">
+          <button type="button" class="cm-ai-send" id="ai-send">Send</button>
+        </div>
+      </div>
+
+      <!-- RECENT TRANSACTIONS -->
+      <div class="cm-section">
+        <div class="cm-section-head">
+          <div class="cm-section-title">Recent Transactions</div>
+        </div>
+        <div class="cm-tx-list" id="tx-list"></div>
+      </div>
+
+      <!-- FINANCIAL GOALS -->
+      <div class="cm-section">
+        <div class="cm-section-head">
+          <div class="cm-section-title">Financial Goals</div>
+          <span class="cm-section-action" id="add-goal-btn">+ New Goal</span>
+        </div>
+        <div class="cm-goals" id="goals-list"></div>
+      </div>
+    </div>
+
+    <!-- FAB -->
+    <div class="cm-fab-menu" id="fab-menu">
+      <a href="#" class="cm-fab-option" id="fab-income">💰 Add Income</a>
+      <a href="#" class="cm-fab-option" id="fab-expense">📋 Add Expense</a>
+    </div>
+    <button type="button" class="cm-fab" id="fab-btn">+</button>
+
+    <!-- BOTTOM NAV -->
+    <div class="cm-bottom-nav">
+      <a href="app.html" class="cm-nav-item active"><span class="cm-nav-icon">📊</span>Dashboard</a>
+      <a href="reports.html" class="cm-nav-item"><span class="cm-nav-icon">📄</span>Reports</a>
+    </div>
+
+    <!-- ADD TRANSACTION MODAL -->
+    <div id="add-modal" style="display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.6);backdrop-filter:blur(4px)">
+      <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(135deg,#0A1628,#111827);border-radius:20px 20px 0 0;padding:24px 20px 40px;max-height:85vh;overflow-y:auto">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <div style="font-size:1rem;font-weight:900" id="modal-title">Add Transaction</div>
+          <button type="button" id="modal-close" style="background:none;border:none;color:rgba(255,255,255,.5);font-size:1.2rem;cursor:pointer">✕</button>
+        </div>
+
+        <!-- Mode toggle -->
+        <div class="cm-mode-toggle">
+          <button type="button" class="cm-mode-btn income-mode active" id="mode-income">Income</button>
+          <button type="button" class="cm-mode-btn expense-mode" id="mode-expense">Expense</button>
+        </div>
+
+        <!-- Amount -->
+        <div class="cm-amount-field">
+          <div class="cm-amount-currency" id="modal-currency">NGN</div>
+          <input aria-label="Modal amount" type="number" class="cm-amount-input" id="modal-amount" placeholder="0" inputmode="numeric">
+        </div>
+
+        <!-- Income sources (shown when income mode) -->
+        <div id="income-fields">
+          <div class="cm-field"><label class="cm-label">Source</label>
+          <div class="cm-source-chips" id="source-chips"></div></div>
+          <div class="cm-field"><label class="cm-label">Description</label><input aria-label="E.g., Wedding shoot — Adeyemi" class="cm-input" id="modal-desc-income" placeholder="e.g., Wedding shoot — Adeyemi"></div>
+        </div>
+
+        <!-- Expense categories (shown when expense mode) -->
+        <div id="expense-fields" style="display:none">
+          <div class="cm-field"><label class="cm-label">Category</label>
+          <div class="cm-cat-grid" id="cat-grid"></div></div>
+          <div class="cm-field"><label class="cm-label">Description</label><input aria-label="E.g., Bolt ride to shoot" class="cm-input" id="modal-desc-expense" placeholder="e.g., Bolt ride to shoot"></div>
+          <div class="cm-field"><label class="cm-label">Vendor</label><input aria-label="E.g., Bolt, MTN, Adobe" class="cm-input" id="modal-vendor" placeholder="e.g., Bolt, MTN, Adobe"></div>
+          <div class="cm-toggle-row"><span class="cm-toggle-label">Business expense?</span><div class="cm-toggle on" id="modal-business"></div></div>
+        </div>
+
+        <!-- Shared fields -->
+        <div class="cm-field"><label class="cm-label">Date</label><input aria-label="Modal date" type="date" class="cm-input" id="modal-date"></div>
+        <div class="cm-field"><label class="cm-label">Notes (optional)</label><input aria-label="Optional notes" class="cm-input" id="modal-notes" placeholder="Optional notes"></div>
+
+        <button type="button" class="cm-btn cm-btn-primary" id="modal-save" style="margin-top:8px">Save Transaction</button>
+      </div>
+    </div>
+
+    <!-- ADD GOAL MODAL -->
+    <div id="goal-modal" style="display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.6);backdrop-filter:blur(4px)">
+      <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(135deg,#0A1628,#111827);border-radius:20px 20px 0 0;padding:24px 20px 40px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <div style="font-size:1rem;font-weight:900">New Financial Goal</div>
+          <button type="button" id="goal-modal-close" style="background:none;border:none;color:rgba(255,255,255,.5);font-size:1.2rem;cursor:pointer">✕</button>
+        </div>
+        <div class="cm-field"><label class="cm-label">Goal Name</label><input aria-label="E.g., New camera body" class="cm-input" id="goal-name" placeholder="e.g., New camera body"></div>
+        <div class="cm-field"><label class="cm-label">Target Amount</label><input aria-label="Goal target" type="number" class="cm-input" id="goal-target" placeholder="500000" inputmode="numeric"></div>
+        <div class="cm-field"><label class="cm-label">Already Saved</label><input aria-label="Goal current" type="number" class="cm-input" id="goal-current" placeholder="0" inputmode="numeric"></div>
+        <div class="cm-field"><label class="cm-label">Deadline</label><input aria-label="Goal deadline" type="date" class="cm-input" id="goal-deadline"></div>
+        <button type="button" class="cm-btn cm-btn-primary" id="goal-save" style="margin-top:8px">Add Goal</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function() {
+    'use strict';
+    var CM = CreatorMoneyEngine;
+    var currency = 'NGN';
+    var currentMonth = new Date().toISOString().slice(0, 7);
+    var chatHistory = [];
+
+    // Load demo data on first visit
+    CM.loadDemoData(currency);
+
+    // ── MONTH NAVIGATION ──
+    var monthLabel = document.getElementById('month-label');
+    document.getElementById('prev-month').addEventListener('click', function() { shiftMonth(-1); });
+    document.getElementById('next-month').addEventListener('click', function() { shiftMonth(1); });
+
+    function shiftMonth(delta) {
+      var parts = currentMonth.split('-');
+      var d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1 + delta, 1);
+      currentMonth = d.toISOString().slice(0, 7);
+      render();
+    }
+
+    // ── RENDER DASHBOARD ──
+    function render() {
+      var summary = CM.getMonthSummary(currentMonth, currency);
+      monthLabel.textContent = CM.formatMonthLabel(currentMonth);
+
+      // Overview
+      var profitEl = document.getElementById('profit-amount');
+      profitEl.textContent = (summary.profit >= 0 ? '+' : '') + CM.formatMoney(summary.profit, currency);
+      profitEl.className = 'cm-overview-amount ' + (summary.profit >= 0 ? 'positive' : 'negative');
+      document.getElementById('income-total').textContent = CM.formatMoney(summary.income, currency);
+      document.getElementById('expense-total').textContent = CM.formatMoney(summary.expenses, currency);
+      document.getElementById('margin-pct').textContent = summary.margin + '%';
+
+      // Sparkline
+      var spark = document.getElementById('sparkline');
+      var last6 = CM.getLast6Months(currency);
+      var maxProfit = Math.max.apply(null, last6.map(function(m) { return Math.abs(m.profit); }).concat([1]));
+      spark.innerHTML = '';
+      last6.forEach(function(m, i) {
+        var bar = document.createElement('div');
+        var h = Math.max(3, Math.round((Math.abs(m.profit) / maxProfit) * 32));
+        bar.className = 'cm-spark-bar ' + (m.profit >= 0 ? 'pos' : 'neg') + (i === last6.length - 1 ? ' current' : '');
+        bar.style.height = h + 'px';
+        bar.title = m.label + ': ' + CM.formatMoney(m.profit, currency);
+        spark.appendChild(bar);
+      });
+
+      // Income streams
+      var streams = document.getElementById('income-streams');
+      streams.innerHTML = '';
+      var sources = CM.INCOME_SOURCES;
+      sources.forEach(function(src) {
+        var amt = summary.incomeBySource[src.id] || 0;
+        if (amt === 0 && summary.income > 0) return;
+        var pct = summary.income > 0 ? Math.round((amt / summary.income) * 100) : 0;
+        var card = document.createElement('div');
+        card.className = 'cm-stream-card';
+        card.innerHTML = '<div class="cm-stream-icon">' + src.icon + '</div>' +
+          '<div class="cm-stream-name">' + src.label + '</div>' +
+          '<div class="cm-stream-amount">' + CM.formatMoney(amt, currency) + '</div>' +
+          '<div class="cm-stream-pct">' + pct + '% of income</div>' +
+          '<div class="cm-stream-bar"><div class="cm-stream-bar-fill" style="width:' + pct + '%"></div></div>';
+        streams.appendChild(card);
+      });
+      if (streams.children.length === 0) {
+        streams.innerHTML = '<div style="font-size:.78rem;color:rgba(255,255,255,.35);padding:12px">No income recorded this month. Tap + to add.</div>';
+      }
+
+      // Expense donut
+      var cats = CM.EXPENSE_CATEGORIES;
+      var donutTotal = document.getElementById('donut-total');
+      var donutChart = document.getElementById('donut-chart');
+      var legend = document.getElementById('donut-legend');
+      donutTotal.textContent = CM.formatMoney(summary.expenses, currency);
+      legend.innerHTML = '';
+
+      if (summary.expenses > 0) {
+        var gradientParts = [];
+        var cumPct = 0;
+        cats.forEach(function(cat) {
+          var amt = summary.expenseByCategory[cat.id] || 0;
+          if (amt === 0) return;
+          var pct = (amt / summary.expenses) * 100;
+          gradientParts.push(cat.color + ' ' + cumPct + '% ' + (cumPct + pct) + '%');
+          cumPct += pct;
+          var item = document.createElement('div');
+          item.className = 'cm-legend-item';
+          item.innerHTML = '<div class="cm-legend-dot" style="background:' + cat.color + '"></div>' +
+            '<span class="cm-legend-name">' + cat.icon + ' ' + cat.label + '</span>' +
+            '<span class="cm-legend-val">' + CM.formatMoney(amt, currency) + '</span>';
+          legend.appendChild(item);
+        });
+        donutChart.style.background = 'conic-gradient(' + gradientParts.join(', ') + ')';
+      } else {
+        donutChart.style.background = 'rgba(255,255,255,.06)';
+        legend.innerHTML = '<div style="font-size:.78rem;color:rgba(255,255,255,.35)">No expenses this month.</div>';
+      }
+
+      // Recent transactions
+      var txList = document.getElementById('tx-list');
+      var allTx = CM.getTransactions({ month: currentMonth });
+      txList.innerHTML = '';
+      allTx.slice(0, 10).forEach(function(tx) {
+        var isIncome = tx.type === 'income';
+        var src = isIncome ? sources.find(function(s) { return s.id === tx.source; }) : null;
+        var cat = !isIncome ? cats.find(function(c) { return c.id === tx.category; }) : null;
+        var icon = isIncome ? (src ? src.icon : '💰') : (cat ? cat.icon : '📋');
+        var item = document.createElement('div');
+        item.className = 'cm-tx-item';
+        item.innerHTML = '<div class="cm-tx-icon ' + tx.type + '">' + icon + '</div>' +
+          '<div class="cm-tx-body"><div class="cm-tx-desc">' + (tx.description || tx.vendor || 'Transaction') + '</div>' +
+          '<div class="cm-tx-meta">' + tx.date + ' · ' + (isIncome ? (src ? src.label : tx.source) : (cat ? cat.label : tx.category)) + '</div></div>' +
+          '<div class="cm-tx-amount ' + tx.type + '">' + (isIncome ? '+' : '-') + CM.formatMoney(tx.amount, currency) + '</div>';
+        txList.appendChild(item);
+      });
+      if (allTx.length === 0) {
+        txList.innerHTML = '<div style="font-size:.78rem;color:rgba(255,255,255,.35);padding:12px;text-align:center">No transactions yet. Tap + to get started.</div>';
+      }
+
+      // Goals
+      renderGoals();
+
+      // AI narrative
+      renderAINarrative(summary);
+    }
+
+    // ── GOALS ──
+    function renderGoals() {
+      var goalsList = document.getElementById('goals-list');
+      var goals = CM.getGoals().filter(function(g) { return g.status === 'active'; });
+      goalsList.innerHTML = '';
+      goals.forEach(function(g) {
+        var pct = g.target_amount > 0 ? Math.min(100, Math.round((g.current_amount / g.target_amount) * 100)) : 0;
+        var div = document.createElement('div');
+        div.className = 'cm-goal';
+        div.innerHTML = '<div class="cm-goal-head"><span class="cm-goal-name">' + g.name + '</span><span class="cm-goal-pct">' + pct + '%</span></div>' +
+          '<div class="cm-goal-bar"><div class="cm-goal-bar-fill" style="width:' + pct + '%"></div></div>' +
+          '<div class="cm-goal-meta"><span>' + CM.formatMoney(g.current_amount, g.currency || currency) + ' / ' + CM.formatMoney(g.target_amount, g.currency || currency) + '</span>' +
+          (g.deadline ? '<span>by ' + g.deadline + '</span>' : '') + '</div>';
+        goalsList.appendChild(div);
+      });
+      if (goals.length === 0) {
+        goalsList.innerHTML = '<div style="font-size:.78rem;color:rgba(255,255,255,.35);text-align:center;padding:12px">No goals yet. Set one to start building.</div>';
+      }
+    }
+
+    // ── AI NARRATIVE ──
+    function renderAINarrative(summary) {
+      var el = document.getElementById('ai-narrative');
+      if (summary.txCount === 0) {
+        el.textContent = 'Add some income and expenses to get your personalized financial insight.';
+        return;
+      }
+      // Generate a simple client-side narrative
+      var profit = summary.profit;
+      var margin = summary.margin;
+      var topSource = '', topSourceAmt = 0;
+      for (var s in summary.incomeBySource) {
+        if (summary.incomeBySource[s] > topSourceAmt) { topSourceAmt = summary.incomeBySource[s]; topSource = s; }
+      }
+      var topCat = '', topCatAmt = 0;
+      for (var c in summary.expenseByCategory) {
+        if (summary.expenseByCategory[c] > topCatAmt) { topCatAmt = summary.expenseByCategory[c]; topCat = c; }
+      }
+
+      var srcLabel = (CM.INCOME_SOURCES.find(function(s) { return s.id === topSource; }) || {}).label || topSource;
+      var catLabel = (CM.EXPENSE_CATEGORIES.find(function(c) { return c.id === topCat; }) || {}).label || topCat;
+
+      var text = '';
+      if (profit >= 0) {
+        text = CM.formatMonthLabel(currentMonth) + ' looks good — you\'re in the green with ' + CM.formatMoney(profit, currency) + ' profit (' + margin + '% margin). ';
+      } else {
+        text = CM.formatMonthLabel(currentMonth) + ' was tough — you\'re ' + CM.formatMoney(Math.abs(profit), currency) + ' in the red. ';
+      }
+      if (topSource && summary.income > 0) {
+        var concentration = Math.round((topSourceAmt / summary.income) * 100);
+        text += 'Your biggest income source was ' + srcLabel + ' at ' + CM.formatMoney(topSourceAmt, currency) + ' (' + concentration + '% of income). ';
+        if (concentration > 60) text += 'That\'s high concentration — try to diversify. ';
+      }
+      if (topCat && summary.expenses > 0) {
+        text += 'Biggest expense: ' + catLabel + ' at ' + CM.formatMoney(topCatAmt, currency) + '. ';
+      }
+      text += 'Ask me for deeper analysis below.';
+      el.textContent = text;
+    }
+
+    // ── FAB ──
+    var fabBtn = document.getElementById('fab-btn');
+    var fabMenu = document.getElementById('fab-menu');
+    fabBtn.addEventListener('click', function() {
+      fabMenu.classList.toggle('open');
+      fabBtn.textContent = fabMenu.classList.contains('open') ? '✕' : '+';
+    });
+
+    // ── ADD TRANSACTION MODAL ──
+    var addModal = document.getElementById('add-modal');
+    var modalMode = 'income';
+
+    function openModal(mode) {
+      modalMode = mode || 'income';
+      fabMenu.classList.remove('open');
+      fabBtn.textContent = '+';
+      addModal.style.display = '';
+      document.getElementById('modal-date').value = new Date().toISOString().slice(0, 10);
+      document.getElementById('modal-amount').value = '';
+      document.getElementById('modal-desc-income').value = '';
+      document.getElementById('modal-desc-expense').value = '';
+      document.getElementById('modal-vendor').value = '';
+      document.getElementById('modal-notes').value = '';
+      setMode(modalMode);
+    }
+
+    function setMode(mode) {
+      modalMode = mode;
+      document.getElementById('mode-income').classList.toggle('active', mode === 'income');
+      document.getElementById('mode-expense').classList.toggle('active', mode === 'expense');
+      document.getElementById('income-fields').style.display = mode === 'income' ? '' : 'none';
+      document.getElementById('expense-fields').style.display = mode === 'expense' ? '' : 'none';
+    }
+
+    document.getElementById('fab-income').addEventListener('click', function(e) { e.preventDefault(); openModal('income'); });
+    document.getElementById('fab-expense').addEventListener('click', function(e) { e.preventDefault(); openModal('expense'); });
+    document.getElementById('add-income-btn').addEventListener('click', function() { openModal('income'); });
+    document.getElementById('add-expense-btn').addEventListener('click', function() { openModal('expense'); });
+    document.getElementById('modal-close').addEventListener('click', function() { addModal.style.display = 'none'; });
+    document.getElementById('mode-income').addEventListener('click', function() { setMode('income'); });
+    document.getElementById('mode-expense').addEventListener('click', function() { setMode('expense'); });
+    addModal.addEventListener('click', function(e) { if (e.target === addModal) addModal.style.display = 'none'; });
+
+    // Toggle
+    document.getElementById('modal-business').addEventListener('click', function() { this.classList.toggle('on'); });
+
+    // Populate source chips
+    var sourceChips = document.getElementById('source-chips');
+    var selectedSource = '';
+    CM.INCOME_SOURCES.forEach(function(s) {
+      var chip = document.createElement('button');
+      chip.className = 'cm-source-chip';
+      chip.textContent = s.icon + ' ' + s.label;
+      chip.addEventListener('click', function() {
+        sourceChips.querySelectorAll('.cm-source-chip').forEach(function(c) { c.classList.remove('selected'); });
+        chip.classList.add('selected');
+        selectedSource = s.id;
+      });
+      sourceChips.appendChild(chip);
+    });
+
+    // Populate category grid
+    var catGrid = document.getElementById('cat-grid');
+    var selectedCat = '';
+    CM.EXPENSE_CATEGORIES.forEach(function(c) {
+      var btn = document.createElement('button');
+      btn.className = 'cm-cat-btn';
+      btn.innerHTML = '<span class="cm-cat-icon">' + c.icon + '</span><span class="cm-cat-label">' + c.label + '</span>';
+      btn.addEventListener('click', function() {
+        catGrid.querySelectorAll('.cm-cat-btn').forEach(function(b) { b.classList.remove('selected'); });
+        btn.classList.add('selected');
+        selectedCat = c.id;
+      });
+      catGrid.appendChild(btn);
+    });
+
+    // Save transaction
+    document.getElementById('modal-save').addEventListener('click', function() {
+      var amount = parseInt(document.getElementById('modal-amount').value);
+      if (!amount || amount <= 0) return;
+
+      var tx = {
+        type: modalMode,
+        amount: amount,
+        currency: currency,
+        date: document.getElementById('modal-date').value || new Date().toISOString().slice(0, 10),
+        notes: document.getElementById('modal-notes').value
+      };
+
+      if (modalMode === 'income') {
+        tx.source = selectedSource || 'other';
+        tx.description = document.getElementById('modal-desc-income').value;
+      } else {
+        tx.category = selectedCat || 'custom';
+        tx.description = document.getElementById('modal-desc-expense').value;
+        tx.vendor = document.getElementById('modal-vendor').value;
+        tx.is_business = document.getElementById('modal-business').classList.contains('on');
+      }
+
+      CM.addTransaction(tx);
+      addModal.style.display = 'none';
+      render();
+
+      // Haptic feedback
+      if (navigator.vibrate) navigator.vibrate(50);
+    });
+
+    // ── GOAL MODAL ──
+    var goalModal = document.getElementById('goal-modal');
+    document.getElementById('add-goal-btn').addEventListener('click', function() { goalModal.style.display = ''; });
+    document.getElementById('goal-modal-close').addEventListener('click', function() { goalModal.style.display = 'none'; });
+    goalModal.addEventListener('click', function(e) { if (e.target === goalModal) goalModal.style.display = 'none'; });
+
+    document.getElementById('goal-save').addEventListener('click', function() {
+      var name = document.getElementById('goal-name').value.trim();
+      var target = parseInt(document.getElementById('goal-target').value);
+      if (!name || !target) return;
+      CM.addGoal({
+        name: name,
+        target_amount: target,
+        current_amount: parseInt(document.getElementById('goal-current').value) || 0,
+        currency: currency,
+        deadline: document.getElementById('goal-deadline').value || null
+      });
+      goalModal.style.display = 'none';
+      renderGoals();
+    });
+
+    // ── AI CHAT ──
+    var aiChat = document.getElementById('ai-chat');
+    var aiInput = document.getElementById('ai-input');
+    var aiSend = document.getElementById('ai-send');
+
+    var ACTION_VERBS = [
+      "Calculating revenue potential",
+      "Analyzing monetization paths",
+      "Estimating earnings",
+      "Mapping income streams",
+      "Evaluating sponsorship value",
+      "Crunching profit numbers",
+      "Optimizing revenue strategy",
+      "Benchmarking creator earnings",
+      "Projecting growth trajectory",
+      "Assessing brand deal rates",
+      "Building financial forecast",
+      "Discovering revenue opportunities",
+      "Structuring pricing strategy",
+      "Modeling income scenarios",
+      "Maximizing earning potential",
+      "Generating money insights"
+    ];
+    var verbInterval = null;
+
+    function startVerbCycle(el) {
+      var idx = Math.floor(Math.random() * ACTION_VERBS.length);
+      el.textContent = ACTION_VERBS[idx] + '...';
+      verbInterval = setInterval(function() {
+        idx = (idx + 1) % ACTION_VERBS.length;
+        el.textContent = ACTION_VERBS[idx] + '...';
+      }, 2200);
+    }
+
+    function stopVerbCycle() {
+      if (verbInterval) { clearInterval(verbInterval); verbInterval = null; }
+    }
+
+    function appendMsg(role, text) {
+      var div = document.createElement('div');
+      div.className = 'cm-ai-msg ' + role;
+      div.textContent = text;
+      aiChat.appendChild(div);
+      aiChat.scrollTop = aiChat.scrollHeight;
+    }
+
+    function sendAI(q) {
+      appendMsg('user', q);
+      chatHistory.push({ role: 'user', content: q });
+
+      var summary = CM.getMonthSummary(currentMonth, currency);
+      var systemCtx = 'Financial data for ' + CM.formatMonthLabel(currentMonth) + ': ' +
+        'Income: ' + CM.formatMoney(summary.income, currency) + ', ' +
+        'Expenses: ' + CM.formatMoney(summary.expenses, currency) + ', ' +
+        'Profit: ' + CM.formatMoney(summary.profit, currency) + ' (' + summary.margin + '% margin). ';
+
+      var srcDetails = [];
+      for (var s in summary.incomeBySource) {
+        var srcObj = CM.INCOME_SOURCES.find(function(x) { return x.id === s; });
+        srcDetails.push((srcObj ? srcObj.label : s) + ': ' + CM.formatMoney(summary.incomeBySource[s], currency));
+      }
+      if (srcDetails.length) systemCtx += 'Income by source: ' + srcDetails.join(', ') + '. ';
+
+      var catDetails = [];
+      for (var c in summary.expenseByCategory) {
+        var catObj = CM.EXPENSE_CATEGORIES.find(function(x) { return x.id === c; });
+        catDetails.push((catObj ? catObj.label : c) + ': ' + CM.formatMoney(summary.expenseByCategory[c], currency));
+      }
+      if (catDetails.length) systemCtx += 'Expenses by category: ' + catDetails.join(', ') + '.';
+
+      var loadDiv = document.createElement('div');
+      loadDiv.className = 'cm-ai-msg assistant'; loadDiv.id = 'ai-loading';
+      aiChat.appendChild(loadDiv); aiChat.scrollTop = aiChat.scrollHeight;
+      startVerbCycle(loadDiv);
+
+      fetch('/.netlify/functions/ai-advisor', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tool: 'creator-money', system: systemCtx, messages: chatHistory, maxTokens: 600 })
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        stopVerbCycle();
+        var el = document.getElementById('ai-loading'); if (el) el.remove();
+        var reply = data.reply || data.content || 'Sorry, could not process that. Try again.';
+        appendMsg('assistant', reply);
+        chatHistory.push({ role: 'assistant', content: reply });
+      })
+      .catch(function() {
+        stopVerbCycle();
+        var el = document.getElementById('ai-loading'); if (el) el.remove();
+        appendMsg('assistant', 'Could not reach the advisor. Check your connection.');
+      });
+    }
+
+    aiSend.addEventListener('click', function() { var q = aiInput.value.trim(); if (!q) return; aiInput.value = ''; sendAI(q); });
+    aiInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') aiSend.click(); });
+    document.querySelectorAll('.cm-ai-preset').forEach(function(btn) {
+      btn.addEventListener('click', function() { sendAI(btn.getAttribute('data-q')); });
+    });
+
+    // ── INIT ──
+    render();
+  })();
+  </script>
+</body>
+</html>

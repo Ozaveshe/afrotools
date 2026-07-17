@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="view-transition" content="same-origin">
+<title>Starlink vs Local ISP Comparator for Africa | AfroTools</title>
+<meta name="description" content="Compare Starlink satellite internet costs against local ISPs in Nigeria, Kenya and South Africa. Side-by-side pricing, speed, and total cost of ownership.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Starlink vs Local ISP Comparator for Africa | AfroTools">
+<meta property="og:description" content="Compare Starlink satellite internet costs against local ISPs in Africa. Side-by-side pricing, speed, and total cost of ownership.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/telecom-starlink.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/telecom/starlink-compare/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+.tool-hero{background:linear-gradient(135deg,#0A1628 0%,#0e2a4a 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}
+.tool-hero .badge{display:inline-block;background:rgba(6,182,212,.15);color:#06B6D4;font-size:.75rem;font-weight:700;padding:.25rem .75rem;border-radius:99px;margin-bottom:1rem;letter-spacing:.03em;text-transform:uppercase}
+.tool-hero h1{font-size:clamp(1.5rem,4vw,2.25rem);font-weight:800;margin:0 0 .75rem;line-height:1.2}
+.tool-hero h1 em{font-style:normal;color:#06B6D4}
+.tool-hero p{color:#94a3b8;max-width:540px;margin:0 auto;font-size:.95rem;line-height:1.5}
+.tool-main{max-width:960px;margin:0 auto;padding:2rem 1.5rem 3rem}
+.input-group{margin-bottom:1.5rem}
+.input-group label{display:block;font-weight:600;margin-bottom:.4rem;font-size:.9rem;color:#334155}
+.input-group select,.input-group input{width:100%;padding:.65rem .85rem;border:1px solid #d1d5db;border-radius:8px;font-size:.95rem;font-family:inherit;background:#fff}
+.input-group select:focus,.input-group input:focus{outline:none;border-color:#06B6D4;box-shadow:0 0 0 3px rgba(6,182,212,.15)}
+.not-available{background:#fef3c7;border:1px solid #f59e0b;border-radius:10px;padding:1.25rem;text-align:center;color:#92400e;font-weight:600;margin:1.5rem 0}
+.not-available span{display:block;font-size:.85rem;font-weight:400;margin-top:.35rem;color:#a16207}
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin:1.5rem 0}
+@media(max-width:600px){.compare-grid{grid-template-columns:1fr}}
+.isp-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1.25rem;position:relative;transition:box-shadow .2s}
+.isp-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.06)}
+.isp-card.starlink{border-color:#06B6D4;background:linear-gradient(180deg,#f0fdfa 0%,#fff 40%)}
+.isp-card .card-label{font-size:.7rem;text-transform:uppercase;font-weight:700;letter-spacing:.05em;color:#64748b;margin-bottom:.65rem}
+.isp-card.starlink .card-label{color:#06B6D4}
+.isp-card h3{font-size:1.1rem;font-weight:700;margin:0 0 .75rem;color:#0f172a}
+.metric{display:flex;justify-content:space-between;align-items:center;padding:.45rem 0;border-bottom:1px solid #f1f5f9;font-size:.88rem}
+.metric:last-child{border-bottom:none}
+.metric-label{color:#64748b}
+.metric-value{font-weight:700;color:#0f172a}
+.metric-value.good{color:#059669}
+.metric-value.warn{color:#d97706}
+.tco-section{margin:2rem 0}
+.tco-section h2{font-size:1.15rem;font-weight:700;margin:0 0 1rem;color:#0f172a}
+.tco-table{width:100%;border-collapse:collapse;font-size:.88rem}
+.tco-table th{background:#f8fafc;text-align:left;padding:.6rem .75rem;font-weight:600;color:#475569;border-bottom:2px solid #e2e8f0}
+.tco-table td{padding:.6rem .75rem;border-bottom:1px solid #f1f5f9;color:#334155}
+.tco-table tr.best td{background:#f0fdfa;font-weight:600;color:#059669}
+.summary-box{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:2rem 0}
+@media(max-width:600px){.summary-box{grid-template-columns:1fr}}
+.summary-col{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1rem}
+.summary-col h3{font-size:.85rem;font-weight:700;margin:0 0 .65rem;text-transform:uppercase;letter-spacing:.03em}
+.summary-col.starlink-wins h3{color:#06B6D4}
+.summary-col.local-wins h3{color:#0062CC}
+.summary-col ul{margin:0;padding:0 0 0 1.1rem;font-size:.85rem;color:#475569;line-height:1.7}
+.empty-state{text-align:center;padding:3rem 1rem;color:#94a3b8}
+.empty-state svg{width:48px;height:48px;margin-bottom:1rem;opacity:.5}
+.cost-gb{background:#f8fafc;border-radius:10px;padding:1rem 1.25rem;margin:1.5rem 0}
+.cost-gb h3{font-size:.95rem;font-weight:700;margin:0 0 .75rem;color:#0f172a}
+.bar-row{display:flex;align-items:center;gap:.75rem;margin-bottom:.5rem;font-size:.85rem}
+.bar-row .bar-label{width:110px;flex-shrink:0;color:#475569;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-row .bar-track{flex:1;height:22px;background:#e2e8f0;border-radius:4px;overflow:hidden;position:relative}
+.bar-row .bar-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding:0 .5rem;font-size:.72rem;font-weight:700;color:#fff;white-space:nowrap;min-width:fit-content}
+.bar-fill.cyan{background:#06B6D4}
+.bar-fill.blue{background:#0062CC}
+.bar-row .bar-val{width:80px;text-align:right;font-weight:600;color:#0f172a;font-size:.82rem}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Starlink vs Local ISP Comparator",
+  "description": "Compare Starlink satellite internet costs against local ISPs across African countries.",
+  "url": "https://afrotools.com/telecom/starlink-compare/",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://afrotools.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Telecom",
+        "item": "https://afrotools.com/telecom/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Starlink vs Local ISP",
+        "item": "https://afrotools.com/telecom/starlink-compare/"
+      }
+    ]
+  },
+  "image": "https://afrotools.com/assets/img/tools/telecom-starlink.webp"
+}
+</script>
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/telecom-starlink.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Starlink vs Local ISP Comparator for Africa | AfroTools">
+<meta name="twitter:description" content="Compare Starlink satellite internet costs against local ISPs in Africa. Side-by-side pricing, speed, and total cost of ownership for 12 African countries.">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Compare Starlink with local fiber, LTE, or 5G?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Model hardware cost, monthly price, backup need, and installation constraints before buying."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What should I verify?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "https://www.starlink.com/map"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this an official result?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. It is a planning workflow. Confirm prices, rules, terms, and source documents before acting."
+      }
+    }
+  ],
+  "url": "https://afrotools.com/telecom/starlink-compare/"
+}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/telecom/starlink-compare/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/telecom/starlink-compare/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/starlink-dhidi-ya-isp-za-ndani/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/telecom/starlink-compare/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="telecom"></afro-navbar>
+
+<div class="tool-hero">
+  <span class="badge">Telecom & Mobile</span>
+  <h1>Starlink vs Local <em>ISP</em> Comparator</h1>
+  <p>Compare Starlink satellite internet against local fiber and LTE providers across Africa. Full cost-of-ownership breakdown.</p>
+</div>
+
+<div class="tool-main">
+  <div class="input-group">
+    <label for="country-select">Select Country</label>
+    <select id="country-select"><option value="">-- Choose a country --</option></select>
+  </div>
+
+  <div id="results"></div>
+
+  <div class="empty-state" id="empty-state">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10A15.3 15.3 0 0 1 12 2z"/></svg>
+    <p>Select a country to compare Starlink with local ISPs</p>
+  </div>
+</div>
+
+
+<section class="df-upgrade" data-df-upgrade="telecom-starlink">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Satellite versus local ISP</span>
+      <h2>Compare Starlink with local fiber, LTE, or 5G</h2>
+      <p>Model hardware cost, monthly price, backup need, and installation constraints before buying.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: Result: Starlink/local ISP comparison ready with hardware payback, monthly cost, backup use, and installation checks.</li><li>Methodology: use the fields to create a local planning summary with clear assumptions.</li><li>Source note: confirm live prices, official rules, or platform terms before acting.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Telecom disclaimer: confirm availability, regulatory status, obstruction, power backup, and current Starlink price in your country. Sources/reference: <a href="https://www.starlink.com/map" target="_blank" rel="noopener">Starlink availability map</a></p>
+    </div>
+    <form class="df-form" data-df-form="telecom-starlink">
+      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
+      <label>Hardware cost<input name="hardware" type="number" value="600000" min="0" step="any" aria-label="Hardware cost"></label>
+      <label>Monthly price<input name="monthlyPrice" type="number" value="45000" min="0" step="any" aria-label="Monthly price"></label>
+      <label>Local ISP monthly price<input name="localIsp" type="number" value="30000" min="0" step="any" aria-label="Local ISP monthly price"></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="telecom-starlink" data-df-base="Result: Starlink/local ISP comparison ready with hardware payback, monthly cost, backup use, and installation checks." aria-live="polite">Result: Starlink/local ISP comparison ready with hardware payback, monthly cost, backup use, and installation checks.</output>
+      <div class="df-actions"><button type="button" data-df-copy="telecom-starlink">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="telecom-starlink-faq-title">
+  <h2 id="telecom-starlink-faq-title">Frequently Asked Questions</h2>
+  <div class="df-faq__grid"><details><summary>Compare Starlink with local fiber, LTE, or 5G?</summary><p>Model hardware cost, monthly price, backup need, and installation constraints before buying.</p></details><details><summary>What should I verify?</summary><p>Telecom disclaimer: confirm availability, regulatory status, obstruction, power backup, and current Starlink price in your country.</p></details><details><summary>Is this an official result?</summary><p>No. It is a planning workflow. Confirm prices, rules, terms, and source documents before acting.</p></details></div>
+</section>
+<afro-related-tools data-ssr="1" category="telecom" current="telecom-starlink">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/telecom/ussd-directory/" data-related-tool data-id="telecom-ussd" data-name="USSD Code Directory" data-category="telecom" data-icon="UC" data-desc="Complete USSD codes database for all major African telecom operators. Airtime, data, money transfer, balance check.">USSD Code Directory</a></li><li><a href="/telecom/data-plan-compare/" data-related-tool data-id="telecom-data-plan" data-name="Data Plan Comparator" data-category="telecom" data-icon="DP" data-desc="Compare mobile data plans from MTN, Airtel, Glo, Safaricom, Vodacom across 20 African countries. Best value bundles reve">Data Plan Comparator</a></li><li><a href="/telecom/data-usage-calc/" data-related-tool data-id="telecom-data-usage" data-name="Data Usage Calculator" data-category="telecom" data-icon="DU" data-desc="Estimate monthly mobile data consumption by usage habits. Streaming, social media, video calls — find the right plan siz">Data Usage Calculator</a></li><li><a href="/telecom/whatsapp-vs-sms/" data-related-tool data-id="telecom-whatsapp-vs-sms" data-name="WhatsApp Business vs SMS" data-category="telecom" data-icon="WB" data-desc="Compare WhatsApp Business API message categories against bulk SMS for marketing, utility, and service traffic.">WhatsApp Business vs SMS</a></li><li><a href="/telecom/bulk-sms-pricing/" data-related-tool data-id="telecom-bulk-sms" data-name="Bulk SMS Pricing Calculator" data-category="telecom" data-icon="BS" data-desc="Model domestic and international bulk SMS volume, discounts, providers, and campaign delivery costs.">Bulk SMS Pricing Calculator</a></li><li><a href="/telecom/roaming-cost/" data-related-tool data-id="telecom-roaming" data-name="Roaming Cost Calculator" data-category="telecom" data-icon="RC" data-desc="Calculate international roaming costs for African travellers. Voice, SMS, data rates by operator and destination.">Roaming Cost Calculator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+<script src="/data/telecom/country-telecom-index.js?v=3e55f4e3"></script>
+<script>
+(function(){
+  'use strict';
+  var select = document.getElementById('country-select');
+  var resultsEl = document.getElementById('results');
+  var emptyEl = document.getElementById('empty-state');
+
+  function init() {
+    if (typeof TELECOM_DATA === 'undefined') return;
+    var codes = Object.keys(TELECOM_DATA.countries).sort(function(a, b) {
+      return TELECOM_DATA.countries[a].name.localeCompare(TELECOM_DATA.countries[b].name);
+    });
+    for (var i = 0; i < codes.length; i++) {
+      var c = TELECOM_DATA.countries[codes[i]];
+      // Only offer countries we hold Starlink pricing for. Without a price the
+      // total-cost model has nothing to compare against.
+      if (!c.starlinkPrice) continue;
+      var opt = document.createElement('option');
+      opt.value = codes[i];
+      opt.textContent = c.name;
+      select.appendChild(opt);
+    }
+    select.addEventListener('change', onCountryChange);
+  }
+
+  function fmt(num, sym) {
+    if (!num && num !== 0) return 'N/A';
+    return sym + Number(num).toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+  }
+
+  function fmtUSD(num) {
+    return '$' + Number(num).toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+  }
+
+  function onCountryChange() {
+    var code = select.value;
+    if (!code) { resultsEl.innerHTML = ''; emptyEl.style.display = ''; return; }
+    emptyEl.style.display = 'none';
+    var country = TELECOM_DATA.countries[code];
+    var sym = country.symbol || '';
+    var cur = country.currency || '';
+    var isps = country.isp || [];
+    var sl = country.starlinkAvailable;
+    var slPrice = country.starlinkPrice || {};
+
+    if (!sl) {
+      resultsEl.innerHTML = '<div class="not-available">Starlink is not yet available in ' + country.name +
+        '<span>Starlink has not launched commercial service here. Check back for updates as coverage expands across Africa.</span></div>' +
+        buildLocalOnlySection(isps, sym, cur);
+      return;
+    }
+
+    var slMonthly = slPrice.monthly || 0;
+    var slHardware = slPrice.hardware || 0;
+    var slSpeed = slPrice.speed || '50-200';
+    var slLatency = slPrice.latency || '20-40ms';
+    var slDataCap = slPrice.dataCap || 'Unlimited';
+
+    var html = '<div class="compare-grid">';
+    html += buildStarlinkCard(slMonthly, slHardware, slSpeed, slLatency, slDataCap, sym);
+
+    if (isps.length > 0) {
+      html += buildISPCard(isps[0], sym);
+    }
+    html += '</div>';
+
+    html += buildCostPerGB(isps, slMonthly, sym, country.name);
+    html += buildTCO(isps, slMonthly, slHardware, sym, cur);
+    html += buildSummary(isps, slMonthly, slHardware, slSpeed);
+
+    resultsEl.innerHTML = html;
+  }
+
+  function buildStarlinkCard(monthly, hardware, speed, latency, dataCap, sym) {
+    return '<div class="isp-card starlink">' +
+      '<div class="card-label">Satellite Internet</div>' +
+      '<h3>Starlink</h3>' +
+      '<div class="metric"><span class="metric-label">Monthly</span><span class="metric-value">' + fmt(monthly, sym) + '</span></div>' +
+      '<div class="metric"><span class="metric-label">Hardware</span><span class="metric-value">' + fmt(hardware, sym) + '</span></div>' +
+      '<div class="metric"><span class="metric-label">Speed</span><span class="metric-value">' + speed + ' Mbps</span></div>' +
+      '<div class="metric"><span class="metric-label">Latency</span><span class="metric-value">' + latency + '</span></div>' +
+      '<div class="metric"><span class="metric-label">Data Cap</span><span class="metric-value">' + dataCap + '</span></div>' +
+      '</div>';
+  }
+
+  function buildISPCard(isp, sym) {
+    var name = isp.name || 'Local ISP';
+    var type = isp.type || 'Fiber';
+    var monthly = isp.monthly || (isp.prices && isp.prices[0]) || 0;
+    var setup = isp.setup || 0;
+    var speed = isp.speed || (isp.speeds && isp.speeds[0]) || 'Varies';
+    var dataCap = isp.dataCap || 'Varies';
+    var speedLabel = /mbps/i.test(String(speed)) ? speed : speed + ' Mbps';
+    return '<div class="isp-card">' +
+      '<div class="card-label">' + type + '</div>' +
+      '<h3>' + name + '</h3>' +
+      '<div class="metric"><span class="metric-label">Monthly</span><span class="metric-value">' + fmt(monthly, sym) + '</span></div>' +
+      '<div class="metric"><span class="metric-label">Setup/Install</span><span class="metric-value">' + fmt(setup, sym) + '</span></div>' +
+      '<div class="metric"><span class="metric-label">Speed</span><span class="metric-value">' + speedLabel + '</span></div>' +
+      '<div class="metric"><span class="metric-label">Data Cap</span><span class="metric-value">' + dataCap + '</span></div>' +
+      '</div>';
+  }
+
+  function buildLocalOnlySection(isps, sym, cur) {
+    if (isps.length === 0) return '<p style="text-align:center;color:#94a3b8;margin-top:1.5rem;">No local ISP data available for this country yet.</p>';
+    var html = '<h2 style="font-size:1.1rem;font-weight:700;margin:2rem 0 1rem;color:#0f172a;">Available Local ISPs</h2><div class="compare-grid">';
+    for (var i = 0; i < isps.length && i < 4; i++) {
+      html += buildISPCard(isps[i], sym);
+    }
+    html += '</div>';
+    return html;
+  }
+
+  function buildCostPerGB(isps, slMonthly, sym, countryName) {
+    var slCostGB = slMonthly > 0 ? (slMonthly / 1024) : 0;
+    var maxCost = slCostGB;
+    var items = [{name: 'Starlink', cost: slCostGB, cls: 'cyan'}];
+
+    for (var i = 0; i < isps.length && i < 5; i++) {
+      var isp = isps[i];
+      var ispMonthly = isp.monthly || (isp.prices && isp.prices[0]) || 0;
+      var capNum = parseInt(isp.dataCap) || 0;
+      var costGB = capNum > 0 ? (ispMonthly / capNum) : (ispMonthly / 500);
+      items.push({name: isp.name || 'ISP', cost: costGB, cls: 'blue'});
+      if (costGB > maxCost) maxCost = costGB;
+    }
+
+    if (maxCost === 0) maxCost = 1;
+    var html = '<div class="cost-gb"><h3>Cost per GB Comparison</h3>';
+    for (var j = 0; j < items.length; j++) {
+      var pct = Math.max(5, Math.round((items[j].cost / maxCost) * 100));
+      html += '<div class="bar-row">' +
+        '<span class="bar-label">' + items[j].name + '</span>' +
+        '<span class="bar-track"><span class="bar-fill ' + items[j].cls + '" style="width:' + pct + '%"></span></span>' +
+        '<span class="bar-val">' + fmt(Math.round(items[j].cost * 100) / 100, sym) + '/GB</span></div>';
+    }
+    html += '</div>';
+    return html;
+  }
+
+  function buildTCO(isps, slMonthly, slHardware, sym, cur) {
+    var sl1y = slHardware + (slMonthly * 12);
+    var sl3y = slHardware + (slMonthly * 36);
+
+    var html = '<div class="tco-section"><h2>Total Cost of Ownership (' + cur + ')</h2>' +
+      '<table class="tco-table"><thead><tr><th>Provider</th><th>1 Year</th><th>3 Years</th></tr></thead><tbody>';
+
+    var allRows = [{name: 'Starlink', y1: sl1y, y3: sl3y}];
+    for (var i = 0; i < isps.length && i < 5; i++) {
+      var isp = isps[i];
+      var setup = isp.setup || 0;
+      var monthly = isp.monthly || (isp.prices && isp.prices[0]) || 0;
+      allRows.push({name: isp.name || 'ISP', y1: setup + (monthly * 12), y3: setup + (monthly * 36)});
+    }
+
+    var minY3 = Infinity;
+    for (var k = 0; k < allRows.length; k++) {
+      if (allRows[k].y3 < minY3) minY3 = allRows[k].y3;
+    }
+
+    for (var j = 0; j < allRows.length; j++) {
+      var cls = allRows[j].y3 === minY3 ? ' class="best"' : '';
+      html += '<tr' + cls + '><td>' + allRows[j].name + '</td><td>' + fmt(allRows[j].y1, sym) + '</td><td>' + fmt(allRows[j].y3, sym) + '</td></tr>';
+    }
+    html += '</tbody></table></div>';
+    return html;
+  }
+
+  function buildSummary(isps, slMonthly, slHardware, slSpeed) {
+    var slWins = ['Unlimited data (no caps)', 'Works in rural/remote areas', 'No infrastructure needed', 'Consistent speeds'];
+    var localWins = ['Lower upfront cost', 'Lower latency for gaming/calls', 'Local customer support', 'No weather dependency'];
+
+    if (isps.length > 0) {
+      var cheapest = isps[0];
+      for (var i = 1; i < isps.length; i++) {
+        if ((isps[i].monthly || 0) < (cheapest.monthly || 0)) cheapest = isps[i];
+      }
+      if ((cheapest.monthly || 0) < slMonthly) {
+        localWins.unshift('Cheaper monthly cost');
+      } else {
+        slWins.unshift('Cheaper monthly cost');
+      }
+    }
+
+    var html = '<div class="summary-box">' +
+      '<div class="summary-col starlink-wins"><h3>Starlink Wins On</h3><ul>';
+    for (var a = 0; a < slWins.length; a++) html += '<li>' + slWins[a] + '</li>';
+    html += '</ul></div><div class="summary-col local-wins"><h3>Local ISP Wins On</h3><ul>';
+    for (var b = 0; b < localWins.length; b++) html += '<li>' + localWins[b] + '</li>';
+    html += '</ul></div></div>';
+    return html;
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script src="/assets/js/telecom-toolkit.js?v=4c2582bb" defer></script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

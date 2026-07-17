@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cocoa Yield &amp; Export Price Tracker for Africa — Côte d'Ivoire, Ghana, Nigeria, Cameroon | AfroTools</title>
+<meta name="description" content="Estimate cocoa farm yields, compare farm-gate vs export prices, and calculate quality premiums for Côte d'Ivoire, Ghana, Nigeria, and Cameroon.">
+<meta property="og:title" content="Cocoa Yield &amp; Export Price Tracker for Africa — AfroTools">
+<meta property="og:description" content="Estimate cocoa farm yields, compare farm-gate vs export prices, and calculate quality premiums across Africa's top cocoa nations.">
+<meta property="og:url" content="https://afrotools.com/agriculture/cocoa-tracker/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/cocoa-tracker.webp">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cocoa Yield &amp; Export Price Tracker for Africa — AfroTools">
+<meta name="twitter:description" content="Estimate cocoa farm yields, compare farm-gate vs export prices, and calculate quality premiums across Africa's top cocoa nations.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/cocoa-tracker.webp">
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"African Cocoa Yield & Export Price Tracker","url":"https://afrotools.com/agriculture/cocoa-tracker/","description":"Estimate cocoa farm yields, compare farm-gate vs export prices, and calculate quality premiums for Côte d'Ivoire, Ghana, Nigeria, and Cameroon.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"image":"https://afrotools.com/assets/img/tools/cocoa-tracker.webp"}</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why do African cocoa farmers earn so little compared to export prices?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "African cocoa farmers typically receive 30–50% of the FOB export price. The gap includes buyer margins, Licensed Buying Company (LBC) commissions, transport to port, processing, quality discounts, and government levies. Côte d'Ivoire and Ghana introduced a $400/tonne Living Income Differential (LID) in 2020 to close this gap, targeting 70% of FOB to the farmer."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why are African cocoa yields so low compared to potential?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Three main factors: (1) Aging tree stock — over 40% of trees in West Africa are more than 25 years old and yield under 50% of their potential; (2) Low input use — most smallholders apply little or no fertilizer due to cost; (3) Poor disease control — black pod (Phytophthora megakarya) and mirids cause 30–50% yield losses without management. National averages of 300–500 kg/ha compare poorly to the 1,500 kg/ha achievable with improved varieties and good agronomy."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much does cocoa quality affect farm income?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Significantly. Grade 1 well-fermented cocoa commands a 10% premium over Grade 2. Organic certification adds ~30% and Fairtrade adds $240/tonne above the minimum price. Achieving Grade 1 requires proper 5–7 day fermentation in wooden boxes and 7–14 days of sun drying — the primary cost is time and training, not cash inputs."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the Cocoa Living Income Differential (LID)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The LID is a $400/tonne surcharge introduced jointly by Côte d'Ivoire and Ghana in 2020, charged to chocolate companies on top of the market price. Revenue is intended to be passed to farmers to move them toward a living income. The Cocoa Barometer estimates a living income price of $2,900/tonne — compared to historical farm-gate prices that often translated to under $2,000/tonne equivalent for farmers."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are the main cocoa diseases in West Africa?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Black pod (caused by Phytophthora megakarya in West Africa — more aggressive than the global P. palmivora strain) is the most economically damaging, causing up to 80% pod loss in wet years without fungicide applications. Mirids/capsids (plant bugs) damage pods and stems, causing \"die-back.\" Cocoa Swollen Shoot Virus (CSSV) is most severe in Ghana and Côte d'Ivoire — infected trees must be removed and destroyed. A good IPM programme combining fungicide sprays and mirid control typically yields 5:1 returns on investment."
+      }
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/agriculture.css?v=70592203">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+
+<style>
+:root{
+  --acc:#0062CC;--acc-dk:#0063D1;--acc-lt:#E8F2FF;--acc-pale:#F0F7FF;
+  --bg:#F8FAFD;--bg-card:#FFF;--text:#0f172a;--muted:#6B7280;
+  --r:18px;--border:#E5E7EB;
+  --cocoa-brown:#6B3A2A;--cocoa-gold:#D4A017;--cocoa-bean:#3D1A0E;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);margin:0}
+
+/* HERO */
+.hero{background:#0A1628;color:#fff;padding:3rem 1rem 2rem;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(107,58,42,.3) 0%,rgba(0,98,204,.1) 60%,transparent 100%);pointer-events:none}
+.hero-inner{max-width:720px;margin:0 auto;position:relative}
+.breadcrumb{font-size:.82rem;opacity:.65;margin-bottom:.75rem}
+.breadcrumb a{color:#fff;text-decoration:none}.breadcrumb a:hover{text-decoration:underline}
+.hero h1{color:#fff;font-size:clamp(1.6rem,5vw,2.6rem);font-weight:800;margin:0 0 .75rem;letter-spacing:-.02em;line-height:1.15;text-transform:uppercase}
+.hero p{font-size:1rem;opacity:.85;line-height:1.6;max-width:600px;margin:0 auto}
+.badge-row{display:flex;justify-content:center;gap:.6rem;margin-top:1.1rem;flex-wrap:wrap}
+.badge{background:rgba(255,255,255,.15);border-radius:980px;padding:.3rem .85rem;font-size:.8rem;font-weight:600}
+
+/* WORLD PRICE TICKER */
+.world-ticker{background:var(--cocoa-bean);color:#fff;padding:.65rem 1rem;text-align:center;font-size:.82rem;font-weight:600;letter-spacing:.01em}
+.world-ticker span{opacity:.7;margin:0 .5rem}
+
+/* LAYOUT */
+.main{max-width:880px;margin:0 auto;padding:2rem 1rem 3rem}
+
+/* CARD */
+.card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--r);padding:1.5rem;margin-bottom:1.25rem}
+.card-title{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:0 0 1.1rem}
+
+/* FORM */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media (max-width: 820px) { .form-grid { grid-template-columns: 1fr; } }
+.field{display:flex;flex-direction:column;gap:.4rem}
+.field label{font-size:.82rem;font-weight:700;color:var(--text)}
+.field select,.field input{width:100%;padding:.65rem .9rem;border:1.5px solid var(--border);border-radius:12px;font-family:inherit;font-size:.92rem;color:var(--text);background:#fff;transition:border-color .2s}
+.field select:focus,.field input:focus{outline:none;border-color:var(--acc)}
+.field .hint{font-size:.75rem;color:var(--muted);line-height:1.4}
+.full-width{grid-column:1/-1}
+.field-divider{grid-column:1/-1;height:1px;background:var(--border);margin:.25rem 0}
+.section-label{grid-column:1/-1;font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--acc);margin:.35rem 0 0}
+
+/* BTN */
+.btn-calc{display:block;width:100%;margin-top:1.25rem;padding:.85rem 1.5rem;background:var(--acc);color:#fff;border:none;border-radius:980px;font-family:inherit;font-size:1rem;font-weight:800;cursor:pointer;transition:background .2s,transform .1s;letter-spacing:.01em}
+.btn-calc:hover{background:var(--acc-dk);transform:translateY(-1px)}
+.btn-calc:active{transform:translateY(0)}
+
+/* RESULTS */
+#results{display:none}
+
+/* STATS ROW */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.85rem;margin-bottom:1.25rem}
+.stat-box{background:var(--acc-pale);border:1.5px solid var(--acc-lt);border-radius:14px;padding:1rem;text-align:center}
+.stat-box .sv{font-size:1.5rem;font-weight:800;color:var(--acc);line-height:1.1}
+.stat-box .sl{font-size:.75rem;color:var(--muted);font-weight:600;margin-top:.25rem}
+.stat-box.warn{background:#FFF7ED;border-color:#FDE68A}
+.stat-box.warn .sv{color:#C2410C}
+.stat-box.good{background:#DCFCE7;border-color:#86EFAC}
+.stat-box.good .sv{color:#166534}
+.stat-box.neutral{background:#F8F9FA;border-color:#E5E7EB}
+.stat-box.neutral .sv{color:var(--text)}
+
+/* YIELD GAP BAR */
+.gap-wrap{margin-top:1rem}
+.gap-row{display:flex;align-items:center;gap:.75rem;margin-bottom:.6rem;font-size:.85rem}
+.gap-label{width:120px;flex-shrink:0;font-weight:600;text-align:right;color:var(--muted)}
+.gap-bar-outer{flex:1;background:#F1F5F9;border-radius:980px;height:20px;overflow:hidden;position:relative}
+.gap-bar-inner{height:100%;border-radius:980px;transition:width .5s ease}
+.gap-val{width:80px;flex-shrink:0;font-weight:700;font-size:.82rem}
+.bar-your{background:var(--acc)}
+.bar-national{background:#94A3B8}
+.bar-potential{background:#E5E7EB}
+
+/* EXPORT GAP */
+.export-visual{display:flex;align-items:stretch;gap:0;margin:1rem 0;border-radius:14px;overflow:hidden;border:1.5px solid var(--border)}
+.export-seg{flex:1;padding:1rem;text-align:center}
+.export-seg .ev{font-size:1.2rem;font-weight:800;line-height:1.1}
+.export-seg .el{font-size:.75rem;font-weight:600;color:rgba(255,255,255,.8);margin-top:.2rem}
+.seg-farmer{background:var(--acc)}
+.seg-farmer .ev,.seg-farmer .el{color:#fff}
+.seg-gap{background:#FEF3C7}
+.seg-gap .ev{color:#92400E}
+.seg-gap .el{color:#B45309}
+
+/* COST BREAKDOWN */
+.cost-bars{display:flex;flex-direction:column;gap:.5rem;margin-top:.85rem}
+.cost-bar-row{display:flex;align-items:center;gap:.65rem;font-size:.85rem}
+.cost-bar-label{width:100px;flex-shrink:0;font-weight:600;color:var(--muted)}
+.cost-bar-outer{flex:1;background:#F1F5F9;border-radius:980px;height:14px;overflow:hidden}
+.cost-bar-fill{height:100%;border-radius:980px;background:var(--acc)}
+.cost-bar-val{width:100px;text-align:right;font-weight:700;font-size:.8rem}
+
+/* QUALITY SCENARIOS TABLE */
+.scenarios-table{width:100%;border-collapse:collapse;margin-top:.75rem}
+.scenarios-table th{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:.5rem .75rem;border-bottom:2px solid var(--border);text-align:left}
+.scenarios-table td{padding:.5rem .75rem;border-bottom:1px solid var(--border);font-size:.88rem}
+.scenarios-table tr.current td{background:var(--acc-pale);font-weight:700}
+.scenarios-table tr:last-child td{border-bottom:none}
+.cert-badge{display:inline-block;background:var(--acc-lt);color:var(--acc-dk);border-radius:980px;padding:.2rem .65rem;font-size:.75rem;font-weight:700}
+
+/* RECOMMENDATIONS */
+.rec-list{display:flex;flex-direction:column;gap:.75rem;margin-top:.85rem}
+.rec-item{display:flex;gap:.75rem;align-items:flex-start;padding:.85rem 1rem;background:var(--acc-pale);border:1.5px solid var(--acc-lt);border-radius:14px}
+.rec-icon{font-size:1.4rem;flex-shrink:0;line-height:1}
+.rec-body .rt{font-weight:800;font-size:.9rem;margin:0 0 .2rem}
+.rec-body .rd{font-size:.82rem;color:var(--muted);line-height:1.5;margin:0}
+
+/* COUNTRY INFO CARD */
+.country-meta{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:.75rem}
+@media(max-width:820px){.country-meta{grid-template-columns:1fr}}
+.meta-pill{background:#F8FAFD;border:1.5px solid var(--border);border-radius:12px;padding:.65rem .9rem;font-size:.82rem}
+.meta-pill strong{display:block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:.25rem}
+
+/* PROFIT POSITIVE/NEGATIVE */
+.profit-positive{color:#166534}
+.profit-negative{color:#991B1B}
+
+/* CROSS-LINKS */
+.agri-links{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.75rem;margin-top:1rem}
+.agri-link{display:flex;align-items:center;gap:.6rem;background:var(--bg-card);border:1.5px solid var(--border);border-radius:14px;padding:.75rem 1rem;text-decoration:none;color:var(--text);font-weight:600;font-size:.88rem;transition:border-color .2s,box-shadow .2s}
+.agri-link:hover{border-color:var(--acc);box-shadow:0 3px 10px rgba(0,98,204,.1)}
+.agri-link .al-icon{font-size:1.2rem;flex-shrink:0}
+.agri-link .al-arr{color:var(--muted);margin-left:auto}
+
+/* FAQ */
+.faq details{border-bottom:1px solid var(--border);padding:.85rem 0}
+.faq summary{font-weight:700;font-size:.9rem;cursor:pointer;list-style:none}
+.faq summary::before{content:'+ ';color:var(--acc);font-weight:800}
+.faq details[open] summary::before{content:'− '}
+.faq p{font-size:.85rem;color:var(--muted);line-height:1.65;margin:.5rem 0 0}
+
+/* SEO PROSE */
+.seo-prose h2{font-size:1.05rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;margin:1.75rem 0 .6rem}
+.seo-prose p{font-size:.88rem;line-height:1.7;color:var(--muted)}
+
+/* ALERT */
+.info-box{background:#EFF6FF;border:1.5px solid #BFDBFE;border-radius:14px;padding:.85rem 1rem;font-size:.85rem;color:#1E40AF;margin-top:.75rem;line-height:1.5}
+</style>
+<meta property="article:modified_time" content="2026-03-28">
+<link rel="stylesheet" href="/assets/css/agriculture-page-ui-refresh.css?v=411c7880">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/agriculture/cocoa-tracker/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/agriculture/cocoa-tracker/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/agriculture/cocoa-tracker/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/agriculture/cocoa-tracker/">
+</head>
+<body class="agriculture-page-ui-refresh top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <p class="breadcrumb"><a href="/">AfroTools</a> › <a href="/agriculture/">Agriculture</a> › Cocoa Yield &amp; Price Tracker</p>
+    <h1>African Cocoa Yield &amp; Export Price Tracker</h1>
+    <p>Estimate farm yields, analyse profitability, calculate quality premiums, and see how much of the export price reaches your farm.</p>
+    <div class="badge-row">
+      <span class="badge">🍫 6 Cocoa Nations</span>
+      <span class="badge">📊 4 Analysis Modes</span>
+      <span class="badge">🌍 ICCO 2024/25 Data</span>
+      <span class="badge">💰 Farm-gate vs FOB</span>
+    </div>
+  </div>
+</section>
+
+<!-- WORLD PRICE TICKER -->
+<div class="world-ticker">
+  🌍 ICCO World Cocoa Price (indicative): <strong>~$8,500/tonne</strong><span>|</span>
+  Peak 2025: <strong>~$12,000/tonne</strong><span>|</span>
+  Living Income Reference: <strong>$2,900/tonne</strong> (Cocoa Barometer)
+</div>
+
+<main class="main">
+
+  <!-- CALCULATOR CARD -->
+  <div class="card">
+    <p class="card-title">Farm Details</p>
+    <div class="form-grid">
+
+      <div class="field">
+        <label for="sel-country">Country</label>
+        <select id="sel-country" onchange="onCountryChange()">
+          <option value="">— Select country —</option>
+          <option value="CI">🇨🇮 Côte d'Ivoire</option>
+          <option value="GH">🇬🇭 Ghana</option>
+          <option value="NG">🇳🇬 Nigeria</option>
+          <option value="CM">🇨🇲 Cameroon</option>
+          <option value="TG">🇹🇬 Togo</option>
+          <option value="SL">🇸🇱 Sierra Leone</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="sel-region">Region</label>
+        <select id="sel-region">
+          <option value="">— Select country first —</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="inp-size">Farm Size (hectares)</label>
+        <input type="number" id="inp-size" min="0.1" max="5000" step="0.5" value="2" inputmode="decimal">
+        <span class="hint">National average: Côte d'Ivoire 3 ha · Ghana 2.5 ha · Nigeria 2 ha</span>
+      </div>
+
+      <div class="field">
+        <label for="sel-age">Average Tree Age</label>
+        <select id="sel-age">
+          <option value="young_3_5">Young (3–5 years) — not yet full production</option>
+          <option value="prime_6_15" selected>Prime (6–15 years) — peak yield</option>
+          <option value="mature_16_25">Mature (16–25 years)</option>
+          <option value="old_26_35">Old (26–35 years) — yield declining</option>
+          <option value="very_old_35p">Very old (35+ years) — should be replaced</option>
+        </select>
+      </div>
+
+      <div class="field-divider"></div>
+      <p class="section-label">Agronomic Conditions</p>
+
+      <div class="field">
+        <label for="sel-variety">Tree Variety</label>
+        <select id="sel-variety">
+          <option value="local_forastero">Local / traditional (Forastero)</option>
+          <option value="improved_hybrid" selected>Improved hybrid (CNRA/CRIG/CRIN)</option>
+          <option value="high_yielding_clone">High-yielding clone (latest release)</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="sel-management">Farm Management</label>
+        <select id="sel-management">
+          <option value="no_inputs">No inputs — no fertilizer or spraying</option>
+          <option value="minimal_pruning">Minimal — pruning only</option>
+          <option value="moderate_fert_spray" selected>Moderate — some fertilizer + spraying</option>
+          <option value="full_recommended">Full recommended practice</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="sel-shade">Shade Level</label>
+        <select id="sel-shade">
+          <option value="heavy_shade">Heavy shade (&gt;60% canopy cover)</option>
+          <option value="moderate_shade" selected>Moderate shade (40–60%) — optimal</option>
+          <option value="no_shade">Full sun — no shade trees</option>
+          <option value="agroforestry_opt">Agroforestry-optimised system</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="sel-disease">Disease &amp; Pest Control</label>
+        <select id="sel-disease">
+          <option value="no_control">None — no control measures</option>
+          <option value="some_control">Some — occasional spraying</option>
+          <option value="good_ipm" selected>Good IPM — 2–3 targeted sprays/season</option>
+          <option value="full_chemical">Full chemical — intensive programme</option>
+        </select>
+      </div>
+
+      <div class="field-divider"></div>
+      <p class="section-label">Quality &amp; Certification</p>
+
+      <div class="field">
+        <label for="sel-grade">Cocoa Quality Grade</label>
+        <select id="sel-grade">
+          <option value="grade_1">Grade 1 / Superior (+10% premium)</option>
+          <option value="grade_2" selected>Grade 2 / Good Fermented (standard)</option>
+          <option value="grade_3">Grade 3 / Fair Fermented (−5%)</option>
+          <option value="substandard">Substandard / Reject (−20%)</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="sel-cert">Sustainability Certification</label>
+        <select id="sel-cert">
+          <option value="none" selected>None</option>
+          <option value="rainforest">Rainforest Alliance / UTZ (+5%)</option>
+          <option value="fairtrade">Fairtrade (+$240/tonne)</option>
+          <option value="organic">Organic (+30%)</option>
+        </select>
+      </div>
+
+    </div>
+    <button type="button" class="btn-calc" onclick="runCalc()">Calculate Cocoa Farm Performance →</button>
+  </div>
+
+  <!-- RESULTS SECTION -->
+  <div id="results">
+
+    <!-- MODE A: YIELD SUMMARY -->
+    <div class="card">
+      <p class="card-title">🌿 Yield Estimation</p>
+      <div class="stats-row" id="yield-stats"></div>
+      <!-- Yield Gap Bars -->
+      <p style="font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:1rem 0 .5rem">Yield comparison (kg/ha)</p>
+      <div class="gap-wrap" id="yield-gap-wrap"></div>
+    </div>
+
+    <!-- MODE B: PROFITABILITY -->
+    <div class="card">
+      <p class="card-title">📊 Profitability Analysis</p>
+      <div class="stats-row" id="profit-stats"></div>
+      <p style="font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:1rem 0 .5rem">Cost breakdown</p>
+      <div class="cost-bars" id="cost-bars"></div>
+      <div id="minwage-note" class="info-box" style="margin-top:.85rem"></div>
+    </div>
+
+    <!-- MODE C: QUALITY PREMIUMS -->
+    <div class="card">
+      <p class="card-title">✅ Quality &amp; Certification Premiums</p>
+      <div class="stats-row" id="quality-stats"></div>
+      <table class="scenarios-table" id="scenarios-table">
+        <thead><tr><th>Grade</th><th>Revenue</th><th>vs Grade 2</th></tr></thead>
+        <tbody id="scenarios-body"></tbody>
+      </table>
+      <div id="cert-note" class="info-box" style="display:none;margin-top:.85rem"></div>
+    </div>
+
+    <!-- MODE D: EXPORT PRICE GAP -->
+    <div class="card">
+      <p class="card-title">💰 Farm-Gate vs Export Price</p>
+      <div class="export-visual" id="export-visual"></div>
+      <div class="stats-row" id="export-stats"></div>
+      <div id="pricing-note" class="info-box"></div>
+    </div>
+
+    <!-- COUNTRY INFO -->
+    <div class="card">
+      <p class="card-title" id="country-info-title">Country Overview</p>
+      <div class="country-meta" id="country-meta"></div>
+    </div>
+
+    <!-- RECOMMENDATIONS -->
+    <div class="card">
+      <p class="card-title">💡 Top Recommendations to Improve Profitability</p>
+      <div class="rec-list" id="rec-list"></div>
+    </div>
+
+  </div><!-- /results -->
+
+  <!-- MORE AGRI TOOLS -->
+  <div class="card" style="margin-top:1.75rem">
+    <p class="card-title">More Agriculture Tools</p>
+    <div class="agri-links">
+      <a href="/agriculture/farm-profit/" class="agri-link"><span class="al-icon">📊</span> Farm Profit/Loss Calculator<span class="al-arr">›</span></a>
+      <a href="/agriculture/crop-yield/" class="agri-link"><span class="al-icon">🌾</span> Crop Yield Estimator<span class="al-arr">›</span></a>
+      <a href="/agriculture/fertilizer/" class="agri-link"><span class="al-icon">🧪</span> Fertilizer (NPK) Calculator<span class="al-arr">›</span></a>
+      <a href="/agriculture/soil-ph/" class="agri-link"><span class="al-icon">🧪</span> Soil pH Calculator<span class="al-arr">›</span></a>
+      <a href="/agriculture/pesticide-dosage/" class="agri-link"><span class="al-icon">🧴</span> Pesticide Dosage Calculator<span class="al-arr">›</span></a>
+      <a href="/agriculture/" class="agri-link"><span class="al-icon">🌍</span> All Agriculture Tools<span class="al-arr">›</span></a>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="card seo-prose" style="margin-top:1.25rem">
+    <p class="card-title">Frequently Asked Questions</p>
+    <div class="faq">
+      <details open>
+        <summary>Why do African cocoa farmers earn so little compared to export prices?</summary>
+        <p>African cocoa farmers typically receive 30–50% of the FOB export price. The gap includes buyer margins, Licensed Buying Company (LBC) commissions, transport to port, processing, quality discounts, and government levies. Côte d'Ivoire and Ghana introduced a $400/tonne Living Income Differential (LID) in 2020 to close this gap, targeting 70% of FOB to the farmer.</p>
+      </details>
+      <details>
+        <summary>Why are African cocoa yields so low compared to potential?</summary>
+        <p>Three main factors: (1) Aging tree stock — over 40% of trees in West Africa are more than 25 years old and yield under 50% of their potential; (2) Low input use — most smallholders apply little or no fertilizer due to cost; (3) Poor disease control — black pod (Phytophthora megakarya) and mirids cause 30–50% yield losses without management. National averages of 300–500 kg/ha compare poorly to the 1,500 kg/ha achievable with improved varieties and good agronomy.</p>
+      </details>
+      <details>
+        <summary>How much does cocoa quality affect farm income?</summary>
+        <p>Significantly. Grade 1 well-fermented cocoa commands a 10% premium over Grade 2. Organic certification adds ~30% and Fairtrade adds $240/tonne above the minimum price. Achieving Grade 1 requires proper 5–7 day fermentation in wooden boxes and 7–14 days of sun drying — the primary cost is time and training, not cash inputs.</p>
+      </details>
+      <details>
+        <summary>What is the Cocoa Living Income Differential (LID)?</summary>
+        <p>The LID is a $400/tonne surcharge introduced jointly by Côte d'Ivoire and Ghana in 2020, charged to chocolate companies on top of the market price. Revenue is intended to be passed to farmers to move them toward a living income. The Cocoa Barometer estimates a living income price of $2,900/tonne — compared to historical farm-gate prices that often translated to under $2,000/tonne equivalent for farmers.</p>
+      </details>
+      <details>
+        <summary>What are the main cocoa diseases in West Africa?</summary>
+        <p>Black pod (caused by Phytophthora megakarya in West Africa — more aggressive than the global P. palmivora strain) is the most economically damaging, causing up to 80% pod loss in wet years without fungicide applications. Mirids/capsids (plant bugs) damage pods and stems, causing "die-back." Cocoa Swollen Shoot Virus (CSSV) is most severe in Ghana and Côte d'Ivoire — infected trees must be removed and destroyed. A good IPM programme combining fungicide sprays and mirid control typically yields 5:1 returns on investment.</p>
+      </details>
+    </div>
+
+    <h2>Africa's Cocoa Sector at a Glance</h2>
+    <p>Africa produces approximately 75% of the world's cocoa, with Côte d'Ivoire and Ghana alone accounting for over 50% of global supply. Yet African smallholders typically earn less than $1.50/day from cocoa farming — below the international poverty line. The structural gap between farm-gate and export prices, combined with low yields from aging tree stock and minimal inputs, keeps millions of West African families in poverty despite growing global chocolate demand worth over $130 billion annually.</p>
+
+    <h2>Yield Gap: The Hidden Opportunity</h2>
+    <p>The "yield gap" — the difference between actual farmer yields (300–500 kg/ha) and achievable yields with improved varieties and management (1,200–1,500 kg/ha) — represents the single largest opportunity to increase farmer incomes without expanding farmland. CNRA (Côte d'Ivoire), CRIG (Ghana), and CRIN (Nigeria) all produce improved hybrid seedlings that can triple yields within 5–8 years of replanting.</p>
+
+    <h2>Quality: The Underutilised Premium</h2>
+    <p>West African cocoa has historically sold at a discount to Latin American "fine flavour" cocoa due to inconsistent fermentation and drying practices. Properly fermented and dried cocoa — using wooden fermentation boxes for 6 days followed by 10–14 days of raised-bed sun drying — commands Grade 1 premiums and opens access to premium and sustainability-certified markets where farmers can earn 30–50% more per tonne.</p>
+  </div>
+
+</main>
+<afro-related-tools data-ssr="1" category="agriculture" current="cocoa-tracker">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/agriculture/farm-profit/" data-related-tool data-id="farm-profit-calculator" data-name="Farm Profit/Loss Calculator" data-category="agriculture" data-icon="FP" data-desc="Complete farming profitability analysis — seeds, fertilizer, labor, transport, post-harvest losses. ROI, break-even yiel">Farm Profit/Loss Calculator</a></li><li><a href="/agriculture/cassava-processing/" data-related-tool data-id="cassava-processing-calculator" data-name="Cassava Processing Profit Calculator" data-category="agriculture" data-icon="CP" data-desc="Calculate profits from processing cassava into garri, fufu flour, HQCF, chips, or starch. Compare all pathways with loca">Cassava Processing Profit Calculator</a></li><li><a href="/agriculture/crop-yield/" data-related-tool data-id="crop-yield-estimator" data-name="Crop Yield Estimator" data-category="agriculture" data-icon="CY" data-desc="Estimate crop yields across Africa with region-specific data. 40+ crops, 54 countries, FAOSTAT-backed.">Crop Yield Estimator</a></li><li><a href="/agriculture/farm-budget/" data-related-tool data-id="farm-budget" data-name="Smallholder Farm Budget Planner" data-category="agriculture" data-icon="SF" data-desc="Plan your seasonal farming budget with cost breakdown and cash flow timeline. Know exactly how much you need before plan">Smallholder Farm Budget Planner</a></li><li><a href="/agriculture/fish-farming/" data-related-tool data-id="fish-farming-roi" data-name="Fish Farming ROI Calculator" data-category="agriculture" data-icon="FF" data-desc="Calculate aquaculture profitability for catfish, tilapia and trout. Full ROI with local feed prices, fingerling costs, p">Fish Farming ROI Calculator</a></li><li><a href="/agriculture/greenhouse/" data-related-tool data-id="greenhouse-cost-estimator" data-name="Greenhouse Cost Estimator" data-category="agriculture" data-icon="GC" data-desc="Estimate greenhouse setup costs, annual running expenses, ROI and payback period. 5 greenhouse types, 6 crops, local pri">Greenhouse Cost Estimator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<!-- DATA + ENGINE -->
+<script src="/data/agriculture/cocoa-data.js?v=507110a0"></script>
+<script src="/engines/cocoa-engine.js?v=c6d1ecb7"></script>
+
+<script>
+var _engine = null;
+
+// ─── Country / Region Population ───────────────────────────────────────────
+function onCountryChange() {
+  var cc = document.getElementById('sel-country').value;
+  var rSel = document.getElementById('sel-region');
+  rSel.innerHTML = '<option value="">— All regions / National average —</option>';
+  if (!cc || !COCOA_DATA || !COCOA_DATA.countries[cc]) return;
+  var regions = COCOA_DATA.countries[cc].regions || [];
+  regions.forEach(function(r) {
+    var opt = document.createElement('option');
+    opt.value = r.id;
+    opt.textContent = r.name + ' (~' + r.yield_kg_ha + ' kg/ha)';
+    rSel.appendChild(opt);
+  });
+}
+
+// ─── Main Calculate ────────────────────────────────────────────────────────
+function runCalc() {
+  var cc = document.getElementById('sel-country').value;
+  if (!cc) { alert('Please select a country first.'); return; }
+
+  var inputs = {
+    countryCode:   cc,
+    regionId:      document.getElementById('sel-region').value || null,
+    farmSizeHa:    parseFloat(document.getElementById('inp-size').value) || 2,
+    treeAge:       document.getElementById('sel-age').value,
+    variety:       document.getElementById('sel-variety').value,
+    management:    document.getElementById('sel-management').value,
+    shade:         document.getElementById('sel-shade').value,
+    disease:       document.getElementById('sel-disease').value,
+    qualityGrade:  document.getElementById('sel-grade').value,
+    certification: document.getElementById('sel-cert').value
+  };
+
+  var res = AfroTools.CocoaEngine.calculate(inputs);
+  if (!res.ok) { alert(res.error); return; }
+
+  renderResults(res);
+  document.getElementById('results').style.display = 'block';
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ─── Render Helpers ────────────────────────────────────────────────────────
+function statBox(val, label, cls) {
+  cls = cls || '';
+  return '<div class="stat-box ' + cls + '"><div class="sv">' + val + '</div><div class="sl">' + label + '</div></div>';
+}
+
+function fmt(n) { return n.toLocaleString('en-US', {maximumFractionDigits: 0}); }
+
+// ─── Render ───────────────────────────────────────────────────────────────
+function renderResults(res) {
+  var mA = res.modeA, mB = res.modeB, mC = res.modeC, mD = res.modeD;
+  var c  = mA.countryData;
+  var sym = c.currencySymbol;
+
+  // ── MODE A: Yield ──────────────────────────────────────────────────────
+  var yieldCls = mA.yieldPerHa >= mA.nationalAvg ? 'good' : (mA.yieldPerHa >= mA.nationalAvg * 0.7 ? '' : 'warn');
+  document.getElementById('yield-stats').innerHTML =
+    statBox(fmt(mA.yieldPerHa) + ' kg/ha', 'Your Estimated Yield', yieldCls) +
+    statBox(fmt(mA.totalYield) + ' kg', 'Total Farm Yield (' + res.inputs.farmSizeHa + ' ha)') +
+    statBox(mA.revenueFmt, 'Revenue at Farm-Gate Price', 'neutral') +
+    statBox(fmt(mA.nationalAvg) + ' kg/ha', 'National Average Yield', 'neutral');
+
+  // Yield gap bars
+  var maxBarVal = mA.potential;
+  function pct(v) { return Math.min(100, (v / maxBarVal * 100)).toFixed(1); }
+  document.getElementById('yield-gap-wrap').innerHTML =
+    '<div class="gap-row"><span class="gap-label">Your farm</span><div class="gap-bar-outer"><div class="gap-bar-inner bar-your" style="width:' + pct(mA.yieldPerHa) + '%"></div></div><span class="gap-val">' + fmt(mA.yieldPerHa) + ' kg/ha</span></div>' +
+    '<div class="gap-row"><span class="gap-label">National avg</span><div class="gap-bar-outer"><div class="gap-bar-inner bar-national" style="width:' + pct(mA.nationalAvg) + '%"></div></div><span class="gap-val">' + fmt(mA.nationalAvg) + ' kg/ha</span></div>' +
+    '<div class="gap-row"><span class="gap-label">Potential</span><div class="gap-bar-outer"><div class="gap-bar-inner bar-potential" style="width:100%;background:#CBD5E1"></div></div><span class="gap-val">' + fmt(mA.potential) + ' kg/ha</span></div>';
+
+  // ── MODE B: Profitability ──────────────────────────────────────────────
+  var profCls = mB.isProfitable ? 'good' : 'warn';
+  var roiCls  = parseFloat(mB.roi_pct) >= 30 ? 'good' : (parseFloat(mB.roi_pct) >= 0 ? '' : 'warn');
+  document.getElementById('profit-stats').innerHTML =
+    statBox(mB.revenueFmt, 'Gross Revenue', 'neutral') +
+    statBox(mB.totalCostsFmt, 'Production Costs', 'warn') +
+    statBox('<span class="' + (mB.isProfitable ? 'profit-positive' : 'profit-negative') + '">' + mB.netProfitFmt + '</span>', 'Net Profit', profCls) +
+    statBox(mB.netPerHaFmt + '/ha', 'Net Profit per Hectare', profCls) +
+    statBox(mB.roi_pct + '%', 'Return on Costs (ROI)', roiCls);
+
+  var cb = mB.costBreakdown;
+  document.getElementById('cost-bars').innerHTML =
+    costBar('Labor', sym + ' ' + fmt(cb.labor.amt), cb.labor.pct) +
+    costBar('Inputs', sym + ' ' + fmt(cb.inputs.amt), cb.inputs.pct) +
+    costBar('Tools', sym + ' ' + fmt(cb.tools.amt), cb.tools.pct) +
+    costBar('Transport', sym + ' ' + fmt(cb.transport.amt), cb.transport.pct);
+
+  var mwNote = '';
+  if (mB.minWageRatioFmt) {
+    mwNote = '<strong>Income Context:</strong> A ' + res.inputs.farmSizeHa + '-hectare cocoa farm generates <strong>' + mB.netProfitFmt + '/year</strong> net profit — equivalent to <strong>' + mB.minWageRatioFmt + '</strong> of ' + c.name + '\'s annual minimum wage. (' + c.minWageNote + ')';
+  }
+  document.getElementById('minwage-note').innerHTML = mwNote;
+
+  // ── MODE C: Quality Premiums ───────────────────────────────────────────
+  var grade2Rev = mC.totalYield * c.farmGatePrice_per_kg;
+  document.getElementById('quality-stats').innerHTML =
+    statBox(mC.baseRevenueFmt, 'Revenue at ' + mC.currentGrade) +
+    statBox(mC.grade1UpliftFmt, 'Gain by Upgrading to Grade 1', mC.grade1Uplift > 0 ? 'good' : 'neutral') +
+    statBox(mC.certPremiumFmt, mC.certLabel + ' Certification Premium', mC.certPremium > 0 ? 'good' : 'neutral') +
+    statBox(mC.totalRevenueFmt, 'Total Revenue (Grade + Cert)', 'good');
+
+  var tbody = '';
+  mC.scenarios.forEach(function(s) {
+    var diff = s.rev - grade2Rev;
+    var isCur = ('grade_2' === s.id && res.inputs.qualityGrade === 'grade_2') || (s.id === res.inputs.qualityGrade);
+    var diffStr = diff === 0 ? '—' : (diff > 0 ? '+' : '') + sym + ' ' + fmt(Math.abs(diff));
+    var diffCls = diff > 0 ? 'style="color:#166534;font-weight:700"' : (diff < 0 ? 'style="color:#991B1B;font-weight:700"' : '');
+    tbody += '<tr' + (isCur ? ' class="current"' : '') + '><td>' + s.name + (isCur ? ' <span class="cert-badge">Current</span>' : '') + '</td><td>' + s.revFmt + '</td><td ' + diffCls + '>' + diffStr + '</td></tr>';
+  });
+  document.getElementById('scenarios-body').innerHTML = tbody;
+
+  var certNoteEl = document.getElementById('cert-note');
+  if (mC.certNotes && res.inputs.certification !== 'none') {
+    certNoteEl.innerHTML = '<strong>' + mC.certLabel + ':</strong> ' + mC.certNotes + ' Your certification premium on this farm: <strong>' + mC.certPremiumFmt + '/year</strong>.';
+    certNoteEl.style.display = 'block';
+  } else {
+    certNoteEl.style.display = 'none';
+  }
+
+  // ── MODE D: Export Gap ─────────────────────────────────────────────────
+  var sharePct = parseFloat(mD.sharePct);
+  var gapPct   = 100 - sharePct;
+  document.getElementById('export-visual').innerHTML =
+    '<div class="export-seg seg-farmer" style="flex:' + sharePct + '">' +
+      '<div class="ev">' + mD.sharePct + '%</div>' +
+      '<div class="el">Farmer receives<br>' + mD.farmGateFmt + '</div>' +
+    '</div>' +
+    '<div class="export-seg seg-gap" style="flex:' + gapPct + '">' +
+      '<div class="ev">' + gapPct.toFixed(1) + '%</div>' +
+      '<div class="el" style="color:#92400E">Value chain gap<br>' + mD.gapPerKgFmt + '</div>' +
+    '</div>';
+
+  var gapCls = sharePct >= 70 ? 'good' : (sharePct >= 50 ? '' : 'warn');
+  document.getElementById('export-stats').innerHTML =
+    statBox(mD.farmGateFmt, 'Farm-Gate Price', 'neutral') +
+    statBox(mD.exportFOBFmt, 'Export (FOB) Price', 'neutral') +
+    statBox(mD.sharePct + '%', 'Farmer\'s Share of FOB', gapCls) +
+    statBox('70%', 'CI/Ghana Policy Target', 'neutral') +
+    (mD.farmGapRevFmt ? statBox(mD.farmGapRevFmt, 'Value Chain Gap (your farm)', 'warn') : '');
+
+  document.getElementById('pricing-note').innerHTML =
+    '<strong>Pricing System — ' + c.name + ':</strong> ' + mD.pricingSystem +
+    ' Governed by: ' + mD.govBody + '.';
+
+  // ── COUNTRY INFO ─────────────────────────────────────────────────────
+  document.getElementById('country-info-title').textContent = c.flag + ' ' + c.name + ' — Cocoa Sector';
+  document.getElementById('country-meta').innerHTML =
+    metaPill('Production (2024/25)', fmt(c.production_tonnes) + ' tonnes (' + c.worldShare_pct + '% of world)') +
+    metaPill('Cultivated Area', fmt(c.area_ha) + ' hectares') +
+    metaPill('Cocoa Farmers', fmt(c.farmersCount || 0)) +
+    metaPill('Avg Farm Size', c.avgFarmSize_ha + ' ha') +
+    metaPill('Main Diseases', (c.diseases || []).slice(0,2).join(', ')) +
+    metaPill('Key Varieties', (c.varieties || []).slice(0,2).join(', '));
+
+  // ── RECOMMENDATIONS ──────────────────────────────────────────────────
+  var recs = res.recommendations;
+  var recHtml = recs.map(function(r) {
+    return '<div class="rec-item"><span class="rec-icon">' + r.icon + '</span><div class="rec-body"><p class="rt">' + r.title + '</p><p class="rd">' + r.body + '</p></div></div>';
+  }).join('');
+  document.getElementById('rec-list').innerHTML = recHtml;
+}
+
+function costBar(label, valStr, pct) {
+  return '<div class="cost-bar-row"><span class="cost-bar-label">' + label + '</span><div class="cost-bar-outer"><div class="cost-bar-fill" style="width:' + pct + '%"></div></div><span class="cost-bar-val">' + valStr + ' (' + pct + '%)</span></div>';
+}
+
+function metaPill(key, val) {
+  return '<div class="meta-pill"><strong>' + key + '</strong>' + val + '</div>';
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
+<script>if(typeof twemoji!=="undefined")twemoji.parse(document.body,{folder:"svg",ext:".svg"});</script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

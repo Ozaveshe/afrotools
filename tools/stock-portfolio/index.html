@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Stock Portfolio Tracker — African Stock Exchanges | AfroTools</title>
+<meta name="description" content="Track your African stock portfolio across NSE Nigeria, JSE South Africa, GSE Ghana, NSE Kenya. Enter holdings to see total value, gain/loss, and allocation breakdown.">
+<meta property="og:title" content="African Stock Portfolio Tracker | AfroTools">
+<meta property="og:description" content="Track your African stock portfolio across NSE Nigeria, JSE South Africa, GSE Ghana, NSE Kenya. Enter holdings to see total value, gain/loss, and allocation breakdown.">
+<meta property="og:url" content="https://afrotools.com/tools/stock-portfolio/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Stock Portfolio Tracker — African Stock Exchanges | AfroTools">
+<meta name="twitter:description" content="Track your African stock portfolio across NSE Nigeria, JSE South Africa, GSE Ghana, NSE Kenya. Enter holdings to see total value, gain/loss, and allocation breakdown.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "African Stock Portfolio Tracker",
+  "url": "https://afrotools.com/tools/stock-portfolio/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools"
+  },
+  "image": "https://afrotools.com/assets/img/tools/stock-portfolio.webp"
+}
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Fintech & Banking","item":"https://afrotools.com/fintech/"},{"@type":"ListItem","position":3,"name":"Stock Portfolio Tracker","item":"https://afrotools.com/tools/stock-portfolio/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
+.tool-hero{background:linear-gradient(135deg,#0A1628 0%,#1a1035 50%,#2d1b69 100%);color:#fff;padding:2.5rem 1.5rem 3rem}
+.tool-hero .container{max-width:1000px;margin:0 auto}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.78);margin-bottom:.75rem}
+.breadcrumb a{color:rgba(255,255,255,.78);text-decoration:none}
+.breadcrumb span{margin:0 .35rem;opacity:.4}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin:.25rem 0 .6rem;line-height:1.2}
+.tool-hero p{font-size:.95rem;color:rgba(255,255,255,.92);max-width:580px;line-height:1.65}
+.hero-badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.hero-badge{padding:4px 12px;border-radius:100px;font-size:.75rem;font-weight:600;background:rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
+.container{max-width:1000px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1.25rem}
+.exchange-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
+.etab{padding:6px 16px;border:1.5px solid #e5e7eb;border-radius:100px;font-size:.82rem;font-weight:600;cursor:pointer;background:#fff;color:#374151;transition:all .2s}
+.etab.active{border-color:var(--color-primary);background:var(--color-primary);color:#fff}
+.holdings-table{width:100%;border-collapse:collapse;margin-bottom:1rem}
+.holdings-table th{background:#f1f5f9;padding:9px 8px;font-weight:700;font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;color:#374151;text-align:left}
+.holdings-table td{padding:7px 8px;border-bottom:1px solid #f1f5f9;font-size:.88rem}
+.holdings-table input{width:100%;padding:5px 8px;border:1px solid #e5e7eb;border-radius:6px;font-family:inherit;font-size:.85rem;background:#fff}
+.holdings-table input:focus{outline:none;border-color:var(--color-primary)}
+.btn-add{padding:.55rem 1rem;border:1.5px dashed #e5e7eb;border-radius:10px;font-size:.82rem;font-weight:600;cursor:pointer;background:#f9fafb;color:#374151;width:100%;margin-bottom:.75rem;transition:border-color .2s}
+.btn-add:hover{border-color:var(--color-primary);color:var(--color-primary)}
+.btn-del{background:none;border:none;cursor:pointer;color:#ef4444;font-size:1rem;padding:0 4px}
+.btn-calc{width:100%;padding:.85rem;border:none;border-radius:10px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;transition:filter .2s}
+.btn-calc:hover{filter:brightness(1.1)}
+.results{display:none;margin-top:1.25rem}
+.results.on{display:block}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.25rem}
+.metric{background:#f8fafd;border:1.5px solid #e5e7eb;border-radius:12px;padding:1rem;text-align:center}
+.metric-val{font-size:1.3rem;font-weight:800;color:var(--color-primary)}
+.metric-val.red{color:#dc2626}
+.metric-val.green{color:#7c3aed}
+.metric-label{font-size:.75rem;color:#6b7280;margin-top:3px}
+.portfolio-table{width:100%;border-collapse:collapse;font-size:.85rem}
+.portfolio-table th{background:#0f172a;color:#fff;padding:9px 10px;font-weight:700;font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;text-align:left}
+.portfolio-table td{padding:9px 10px;border-bottom:1px solid #f1f5f9}
+.portfolio-table tr:hover td{background:#f8fafd}
+.gain{color:#7c3aed;font-weight:700}
+.loss{color:#dc2626;font-weight:700}
+details summary{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;list-style:none;background:#f9fafb;display:flex;justify-content:space-between}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
+details[open] summary::after{content:'\2212'}
+.faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
+.faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+@media(max-width:680px){.metrics{grid-template-columns:1fr 1fr}}
+</style>
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/stock-portfolio.webp">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/stock-portfolio.webp">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Stock Portfolio Tracker?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Stock Portfolio Tracker then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Stock Portfolio Tracker?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Stock Portfolio Tracker free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"How do I read African stock prices?","acceptedAnswer":{"@type":"Answer","text":"NSE Nigeria quotes stocks in Naira (kobo for fractions). JSE quotes in South African cents (1 Rand = 100 cents). GSE Ghana and NSE Kenya quote in local currency units. Most African exchanges publish prices on their websites daily and many mobile apps (like Robinhood-equivalents) provide real-time NSE and JSE quotes."}},{"@type":"Question","name":"How can I buy stocks on NSE, JSE, or GSE?","acceptedAnswer":{"@type":"Answer","text":"You need a stockbroker or licensed investment platform. In Nigeria: Stanbic IBTC, Meristem, Chaka, Trove. In South Africa: Easy Equities, Investec, Standard Bank Online Share Trading. In Kenya: Dyer Blair, Standard Investment Bank. In Ghana: Databank Brokerage, IC Securities. Online platforms are making access much easier."}},{"@type":"Question","name":"Are African stocks a good investment?","acceptedAnswer":{"@type":"Answer","text":"African stock markets offer opportunities for growth but come with higher volatility and currency risk. The JSE (South Africa) is the most liquid and internationally accessible. The NSE Nigeria offers some of the highest potential returns but also more volatility. Diversification across sectors and countries is advisable."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/stock-portfolio/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/stock-portfolio/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/stock-portfolio/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar theme="dark" active="fintech"></afro-navbar>
+<div class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb"><a href="/">AfroTools</a><span>›</span><a href="/fintech/">Fintech &amp; Banking</a><span>›</span>Stock Portfolio Tracker</nav>
+    <h1>African Stock Portfolio Tracker</h1>
+    <p>Track your stocks across NSE Nigeria, JSE, GSE Ghana, and NSE Kenya. Enter your holdings to see portfolio value, gain/loss, and allocation.</p>
+    <div class="hero-badges"><span class="hero-badge">NSE | JSE | GSE | NSE Kenya</span><span class="hero-badge">Gain/Loss Tracking</span><span class="hero-badge">Free</span></div>
+  </div>
+</div>
+<div class="container">
+  <div class="card">
+    <h2>Add Your Holdings</h2>
+    <div class="exchange-tabs">
+      <button type="button" class="etab active" onclick="setExchange('NGN','&#x20A6;',this)">NSE Nigeria (NGN)</button>
+      <button type="button" class="etab" onclick="setExchange('ZAR','R',this)">JSE South Africa (ZAR)</button>
+      <button type="button" class="etab" onclick="setExchange('GHS','GH&#x20B5;',this)">GSE Ghana (GHS)</button>
+      <button type="button" class="etab" onclick="setExchange('KES','KSh',this)">NSE Kenya (KES)</button>
+      <button type="button" class="etab" onclick="setExchange('USD','$',this)">Other / USD</button>
+    </div>
+    <table class="holdings-table">
+      <thead><tr><th>Stock / Ticker</th><th>Shares</th><th>Buy Price</th><th>Current Price</th><th></th></tr></thead>
+      <tbody id="holdings-tbody">
+        <tr><td><input aria-label="E.g. DANGCEM" type="text" placeholder="e.g. DANGCEM"></td><td><input type="number" placeholder="100" min="0" aria-label="Input value"></td><td><input type="number" placeholder="250" min="0" aria-label="Input value"></td><td><input type="number" placeholder="310" min="0" aria-label="Input value"></td><td><button type="button" class="btn-del" onclick="delRow(this)">&#x2715;</button></td></tr>
+        <tr><td><input aria-label="E.g. GTCO" type="text" placeholder="e.g. GTCO"></td><td><input type="number" placeholder="500" min="0" aria-label="Input value"></td><td><input type="number" placeholder="28" min="0" aria-label="Input value"></td><td><input type="number" placeholder="35" min="0" aria-label="Input value"></td><td><button type="button" class="btn-del" onclick="delRow(this)">&#x2715;</button></td></tr>
+        <tr><td><input aria-label="E.g. AIRTELAFRI" type="text" placeholder="e.g. AIRTELAFRI"></td><td><input type="number" placeholder="200" min="0" aria-label="Input value"></td><td><input type="number" placeholder="1200" min="0" aria-label="Input value"></td><td><input type="number" placeholder="1450" min="0" aria-label="Input value"></td><td><button type="button" class="btn-del" onclick="delRow(this)">&#x2715;</button></td></tr>
+      </tbody>
+    </table>
+    <button type="button" class="btn-add" onclick="addRow()">+ Add Another Stock</button>
+    <button type="button" class="btn-calc" onclick="calcPortfolio()">Calculate Portfolio Value</button>
+    <div class="results" id="sp-results">
+      <div class="metrics">
+        <div class="metric"><div class="metric-val" id="sp-total-value"></div><div class="metric-label">Total Portfolio Value</div></div>
+        <div class="metric"><div class="metric-val" id="sp-total-cost"></div><div class="metric-label">Total Cost Basis</div></div>
+        <div class="metric"><div class="metric-val" id="sp-total-gain"></div><div class="metric-label">Total Gain / Loss</div></div>
+        <div class="metric"><div class="metric-val" id="sp-return-pct"></div><div class="metric-label">Portfolio Return %</div></div>
+      </div>
+      <div class="table-wrap" style="overflow-x:auto">
+        <table class="portfolio-table">
+          <thead><tr><th>Stock</th><th>Shares</th><th>Buy Price</th><th>Current Price</th><th>Current Value</th><th>Gain/Loss</th><th>Return %</th><th>Allocation</th></tr></thead>
+          <tbody id="sp-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Frequently Asked Questions</h2>
+
+<section class="df-upgrade" data-df-upgrade="stock-portfolio">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Portfolio risk snapshot</span>
+      <h2>Review concentration and cash exposure</h2>
+      <p>Not sure how to get the most from the Stock Portfolio Tracker? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Stock Portfolio Tracker takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
+    </div>
+    <form class="df-form" data-df-form="stock-portfolio">
+      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
+      <label>Portfolio value<input name="portfolio" type="number" value="3000000" min="0" step="any" aria-label="Portfolio value"></label>
+      <label>Largest holding value<input name="largest" type="number" value="900000" min="0" step="any" aria-label="Largest holding value"></label>
+      <label>Cash balance<input name="cash" type="number" value="300000" min="0" step="any" aria-label="Cash balance"></label>
+      <label>Markets held<input name="markets" type="number" value="2" min="0" step="any" aria-label="Markets held"></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="stock-portfolio" data-df-base="Stock Portfolio Tracker — enter your details above to see your result." aria-live="polite">Stock Portfolio Tracker — enter your details above to see your result.</output>
+      <div class="df-actions"><button type="button" data-df-copy="stock-portfolio">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="stock-portfolio-faq-title">
+  <h2 id="stock-portfolio-faq-title">Frequently Asked Questions</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the Stock Portfolio Tracker?</summary><p>Enter your amounts, rates and dates in the fields above. The Stock Portfolio Tracker then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Stock Portfolio Tracker?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Stock Portfolio Tracker free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
+</section>
+    <div class="faq-item"><details><summary>How do I read African stock prices?</summary><div class="faq-a">NSE Nigeria quotes stocks in Naira (kobo for fractions). JSE quotes in South African cents (1 Rand = 100 cents). GSE Ghana and NSE Kenya quote in local currency units. Most African exchanges publish prices on their websites daily and many mobile apps (like Robinhood-equivalents) provide real-time NSE and JSE quotes.</div></details></div>
+    <div class="faq-item"><details><summary>How can I buy stocks on NSE, JSE, or GSE?</summary><div class="faq-a">You need a stockbroker or licensed investment platform. In Nigeria: Stanbic IBTC, Meristem, Chaka, Trove. In South Africa: Easy Equities, Investec, Standard Bank Online Share Trading. In Kenya: Dyer Blair, Standard Investment Bank. In Ghana: Databank Brokerage, IC Securities. Online platforms are making access much easier.</div></details></div>
+    <div class="faq-item"><details><summary>Are African stocks a good investment?</summary><div class="faq-a">African stock markets offer opportunities for growth but come with higher volatility and currency risk. The JSE (South Africa) is the most liquid and internationally accessible. The NSE Nigeria offers some of the highest potential returns but also more volatility. Diversification across sectors and countries is advisable.</div></details></div>
+  </div>
+</div>
+<afro-related-tools data-ssr="1" category="fintech" current="stock-portfolio">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/loan-shark-compare/" data-related-tool data-id="loan-shark-compare" data-name="Loan Shark vs Bank Rate" data-category="fintech" data-icon="LS" data-desc="Compare informal moneylender rates vs bank loans vs fintech apps. True APR calculator showing hidden cost of predatory l">Loan Shark vs Bank Rate</a></li><li><a href="/tools/mobile-vs-bank/" data-related-tool data-id="mobile-vs-bank" data-name="Mobile Money vs Bank Transfer" data-category="fintech" data-icon="MM" data-desc="Compare M-Pesa, MTN MoMo, Airtel Money vs bank transfer fees for domestic and cross-border payments across Africa.">Mobile Money vs Bank Transfer</a></li><li><a href="/tools/digital-lending/" data-related-tool data-id="digital-lending" data-name="Digital Lending App Rates" data-category="fintech" data-icon="DL" data-desc="Compare digital lending apps (Fuliza, FairMoney, Carbon, PalmCredit) — true APR, fees, repayment periods.">Digital Lending App Rates</a></li><li><a href="/tools/fixed-deposit/" data-related-tool data-id="fixed-deposit" data-name="Fixed Deposit Rate Comparator" data-category="fintech" data-icon="FD" data-desc="Compare fixed deposit and savings account interest rates across African banks. 30/60/90/180/365-day tenors, 20+ banks.">Fixed Deposit Rate Comparator</a></li><li><a href="/tools/microfinance-loan/" data-related-tool data-id="microfinance-loan" data-name="Microfinance Loan Calculator" data-category="fintech" data-icon="ML" data-desc="Calculate microfinance loan repayments for African MFIs. Flat vs reducing balance, group vs individual loans.">Microfinance Loan Calculator</a></li><li><a href="/tools/payment-gateway/" data-related-tool data-id="payment-gateway" data-name="Payment Gateway Fee Compare" data-category="fintech" data-icon="PG" data-desc="Compare Paystack, Flutterwave, Stripe, DPO, Peach Payments transaction fees for African merchants.">Payment Gateway Fee Compare</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+<script>
+var currentSym='&#x20A6;';
+function setExchange(cur,sym,btn){
+  currentSym=sym;
+  document.querySelectorAll('.etab').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+}
+function addRow(){
+  var tbody=document.getElementById('holdings-tbody');
+  var tr=document.createElement('tr');
+  tr.innerHTML='<td><input aria-label="Ticker" type="text" placeholder="Ticker"></td><td><input type="number" placeholder="100" min="0" aria-label="Input value"></td><td><input aria-label="Line item amount" type="number" placeholder="0" min="0"></td><td><input aria-label="Line item amount" type="number" placeholder="0" min="0"></td><td><button type="button" class="btn-del" onclick="delRow(this)">&#x2715;</button></td>';
+  tbody.appendChild(tr);
+}
+function delRow(btn){btn.closest('tr').remove();}
+function calcPortfolio(){
+  var rows=document.querySelectorAll('#holdings-tbody tr');
+  var totalValue=0,totalCost=0;
+  var items=[];
+  rows.forEach(function(row){
+    var inputs=row.querySelectorAll('input');
+    var name=inputs[0].value||'Stock';
+    var shares=parseFloat(inputs[1].value)||0;
+    var buyPrice=parseFloat(inputs[2].value)||0;
+    var curPrice=parseFloat(inputs[3].value)||0;
+    if(shares>0&&(buyPrice>0||curPrice>0)){
+      var cost=shares*buyPrice;
+      var value=shares*curPrice;
+      var gain=value-cost;
+      var returnPct=cost>0?((gain/cost)*100):0;
+      totalValue+=value;
+      totalCost+=cost;
+      items.push({name,shares,buyPrice,curPrice,cost,value,gain,returnPct});
+    }
+  });
+  var totalGain=totalValue-totalCost;
+  var totalReturn=totalCost>0?((totalGain/totalCost)*100):0;
+  var sym=currentSym;
+  function fmt(n){return sym+(Math.round(n)).toLocaleString();}
+  document.getElementById('sp-total-value').textContent=fmt(totalValue);
+  document.getElementById('sp-total-cost').textContent=fmt(totalCost);
+  var gainEl=document.getElementById('sp-total-gain');
+  gainEl.textContent=(totalGain>=0?'+':'')+fmt(totalGain);
+  gainEl.className='metric-val '+(totalGain>=0?'green':'red');
+  var retEl=document.getElementById('sp-return-pct');
+  retEl.textContent=(totalReturn>=0?'+':'')+totalReturn.toFixed(1)+'%';
+  retEl.className='metric-val '+(totalReturn>=0?'green':'red');
+  var tbody=document.getElementById('sp-table-body');
+  tbody.innerHTML='';
+  items.forEach(function(item){
+    var alloc=totalValue>0?((item.value/totalValue)*100).toFixed(1):'0';
+    var tr='<tr><td style="font-weight:700">'+item.name+'</td><td>'+item.shares.toLocaleString()+'</td><td>'+sym+item.buyPrice.toLocaleString()+'</td><td>'+sym+item.curPrice.toLocaleString()+'</td><td>'+fmt(item.value)+'</td><td class="'+(item.gain>=0?'gain':'loss')+'">'+(item.gain>=0?'+':'')+fmt(item.gain)+'</td><td class="'+(item.returnPct>=0?'gain':'loss')+'">'+(item.returnPct>=0?'+':'')+item.returnPct.toFixed(1)+'%</td><td>'+alloc+'%</td></tr>';
+    tbody.innerHTML+=tr;
+  });
+  document.getElementById('sp-results').classList.add('on');
+}
+</script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="view-transition" content="same-origin">
+<title>Calculateur de jours ouvrables | AfroTools</title>
+<meta name="description" content="Calculez les jours ouvrables entre deux dates, ajoutez une échéance en jours de travail, excluez week-ends, jours fériés et dates personnalisées.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:title" content="Calculateur de jours ouvrables | AfroTools">
+<meta property="og:description" content="Comptez les jours de travail, week-ends et jours fériés; calculez aussi une date d'échéance en jours ouvrables.">
+<meta property="og:url" content="https://afrotools.com/fr/tools/jours-ouvrables/">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/working-days.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Calculateur de jours ouvrables | AfroTools">
+<meta name="twitter:description" content="Jours ouvrables entre deux dates, date d'échéance, week-ends, jours fériés et export local.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/working-days.webp">
+<meta property="article:modified_time" content="2026-06-17">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+:root{--wd-ink:#101828;--wd-muted:#667085;--wd-line:#d8e2ef;--wd-soft:#f6f9fc;--wd-blue:#175cd3;--wd-green:#087443;--wd-amber:#a15c07}
+body{background:#f7f9fc;color:var(--wd-ink)}
+.wd-hero{background:#0d1b2e;color:#fff}
+.wd-hero__inner{max-width:1180px;margin:0 auto;padding:46px 20px 42px;display:grid;grid-template-columns:minmax(0,1.12fr) minmax(280px,.88fr);gap:24px;align-items:center}
+.wd-kicker{display:inline-flex;margin-bottom:14px;padding:6px 12px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(255,255,255,.08);font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#c8dcff}
+.wd-hero h1{max-width:760px;margin:0;font-size:clamp(2rem,5vw,3.7rem);line-height:1;letter-spacing:-.03em;color:#fff}
+.wd-hero p{max-width:690px;margin:18px 0 0;color:rgba(255,255,255,.76);font-size:1rem;line-height:1.7}
+.wd-hero-card{background:#fff;color:#0f172a;border-radius:14px;padding:18px;box-shadow:0 22px 60px rgba(0,0,0,.28)}
+.wd-hero-card strong{display:block;font-size:2.8rem;line-height:1;color:#175cd3}
+.wd-hero-card span{display:block;margin-top:8px;color:#475467;font-weight:700}
+.wd-shell{max-width:1180px;margin:0 auto;padding:28px 20px 72px}
+.wd-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:22px;align-items:start}
+.wd-card{background:#fff;border:1px solid var(--wd-line);border-radius:12px;box-shadow:0 10px 32px rgba(16,24,40,.06)}
+.wd-card+.wd-card{margin-top:18px}
+.wd-head{padding:18px 20px;border-bottom:1px solid #edf1f7}
+.wd-head h2,.wd-head h3{margin:0;font-size:.98rem}
+.wd-body{padding:20px}
+.wd-form{display:grid;gap:16px}
+.wd-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.wd-field label,.wd-label{display:block;margin-bottom:7px;font-size:.76rem;font-weight:800;letter-spacing:.03em;color:#344054}
+.wd-field input,.wd-field select,.wd-field textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;background:#fbfdff;color:#0f172a;font:inherit;font-size:.92rem;padding:11px 12px}
+.wd-field textarea{min-height:104px;resize:vertical;font-family:Consolas,"Courier New",monospace}
+.wd-field input:focus,.wd-field select:focus,.wd-field textarea:focus{outline:3px solid rgba(23,92,211,.14);border-color:var(--wd-blue)}
+.wd-checks{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.wd-check{display:flex;align-items:center;gap:8px;border:1px solid #e4e9f2;border-radius:8px;padding:10px;background:#fbfdff;font-size:.85rem;color:#344054}
+.wd-check input{width:18px;height:18px}
+.wd-actions{display:flex;flex-wrap:wrap;gap:10px}
+.wd-btn{min-height:44px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#173f80;padding:10px 13px;font-weight:800;cursor:pointer}
+.wd-btn:hover,.wd-btn:focus-visible{border-color:var(--wd-blue);outline:3px solid rgba(23,92,211,.12)}
+.wd-primary{background:var(--wd-blue);border-color:var(--wd-blue);color:#fff}
+.wd-secondary{background:#eef5ff}
+.wd-result{display:grid;grid-template-columns:1.15fr .85fr;gap:14px}
+.wd-big{background:#101828;color:#fff;border-radius:12px;padding:22px}
+.wd-big span{display:block;color:#9fb9ee;font-size:.74rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
+.wd-big strong{display:block;margin-top:8px;font-size:clamp(2.4rem,6vw,4rem);line-height:1;color:#7dd3fc}
+.wd-metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.wd-metric{background:#f6f9fc;border:1px solid #e4e9f2;border-radius:10px;padding:12px}
+.wd-metric span{display:block;color:#667085;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.wd-metric strong{display:block;margin-top:4px;font-size:1.3rem}
+.wd-status{margin-top:12px;border:1px solid #d6eadf;background:#f1fbf5;color:#14613e;border-radius:10px;padding:12px;font-size:.86rem;line-height:1.55}
+.wd-status[data-tone="warn"]{border-color:#f5d6aa;background:#fff7ed;color:#8a4b05}
+.wd-list{display:grid;gap:10px}
+.wd-list a,.wd-list span{display:block;border:1px solid #e4e9f2;border-radius:8px;padding:11px 12px;color:#274060;text-decoration:none;font-size:.86rem;line-height:1.45}
+.wd-list a:hover{border-color:var(--wd-blue);background:#f7fbff}
+.wd-summary{white-space:pre-wrap;background:#f8fbff;border:1px solid #dbe7f7;border-radius:10px;padding:14px;color:#26364d;font-size:.88rem;line-height:1.65}
+.wd-seo{max-width:1180px;margin:0 auto;padding:0 20px 72px}
+.wd-seo-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.wd-seo h2{font-size:1.35rem;margin:0 0 12px}
+.wd-seo p,.wd-seo li{color:#475569;line-height:1.75;font-size:.94rem}
+.wd-seo ul{padding-left:18px;margin:0}
+.wd-faq details{border-top:1px solid #e4e9f2;padding:14px 0}
+.wd-faq summary{font-weight:800;cursor:pointer}
+@media(max-width:900px){.wd-hero__inner,.wd-grid,.wd-result,.wd-seo-grid{grid-template-columns:1fr}.wd-hero-card{display:none}}
+@media(max-width:620px){.wd-shell,.wd-seo{padding-left:14px;padding-right:14px}.wd-row,.wd-checks,.wd-metrics{grid-template-columns:1fr}.wd-actions .wd-btn{width:100%}.wd-body{padding:16px}.wd-hero__inner{padding:38px 14px}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Calculateur de jours ouvrables","url":"https://afrotools.com/fr/tools/jours-ouvrables/","inLanguage":"fr","applicationCategory":"BusinessApplication","operatingSystem":"Web","description":"Calculateur local de jours ouvrables entre deux dates, avec week-ends, jours fériés de départ, jours personnalises, échéance, copie, sauvegarde et téléchargement.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Jours ouvrables entre deux dates","Date d'echeance en jours de travail","Jours feries personnalisables","Copie","Telechargement TXT"],"image":"https://afrotools.com/assets/img/tools/working-days.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Comment les jours ouvrables sont-ils comptes ?","acceptedAnswer":{"@type":"Answer","text":"L'outil parcourt chaque date de la période, exclut les jours de week-end choisis, puis exclut les jours fériés du pays et les dates personnalisées que vous ajoutez."}},{"@type":"Question","name":"Les jours fériés sont-ils officiels ?","acceptedAnswer":{"@type":"Answer","text":"Les calendriers integres sont des points de départ. Les jours fériés mobiles ou annonces peuvent changer; vérifiez toujours avec l'autorite officielle avant un délai contractuel, paie ou dépôt."}},{"@type":"Question","name":"Puis-je calculer une échéance ?","acceptedAnswer":{"@type":"Answer","text":"Oui. Choisissez le mode échéance, indiquez une date de départ et le nombre de jours ouvrables à ajouter."}}]}</script>
+<link rel="canonical" href="https://afrotools.com/fr/tools/jours-ouvrables/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/working-days/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/jours-ouvrables/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/siku-za-kazi/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/working-days/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="tools"></afro-navbar>
+<main>
+<section class="wd-hero">
+  <div class="wd-hero__inner">
+    <div>
+      <span class="wd-kicker">Planning, paie et contrats</span>
+      <h1>Calculateur de jours ouvrables pour délais reels</h1>
+      <p>Comptez les jours de travail entre deux dates, calculez une échéance en jours ouvrables, ajoutez vos propres jours fériés et gardez une note exportable pour votre dossier.</p>
+    </div>
+    <div class="wd-hero-card" aria-hidden="true">
+      <strong id="heroDays">0</strong>
+      <span>jours ouvrables dans le scénario actuel</span>
+    </div>
+  </div>
+</section>
+
+<section class="wd-shell">
+  <div class="wd-grid">
+    <div>
+      <section class="wd-card" aria-labelledby="wd-form-title">
+        <div class="wd-head"><h2 id="wd-form-title">Configurer le calcul</h2></div>
+        <div class="wd-body">
+          <form id="wdForm" class="wd-form">
+            <div class="wd-row">
+              <div class="wd-field">
+                <label for="mode">Mode</label>
+                <select id="mode" name="mode">
+                  <option value="between">Compter entre deux dates</option>
+                  <option value="add">Ajouter des jours ouvrables</option>
+                </select>
+              </div>
+              <div class="wd-field">
+                <label for="country">Pays / calendrier de départ</label>
+                <select id="country" name="country">
+                  <option value="ng">Nigeria</option>
+                  <option value="ke">Kenya</option>
+                  <option value="za">Afrique du Sud</option>
+                  <option value="gh">Ghana</option>
+                  <option value="custom">Week-end seulement</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="wd-row">
+              <div class="wd-field">
+                <label for="startDate">Date de départ</label>
+                <input id="startDate" name="startDate" type="date" required>
+              </div>
+              <div class="wd-field" id="endDateWrap">
+                <label for="endDate">Date de fin</label>
+                <input id="endDate" name="endDate" type="date">
+              </div>
+              <div class="wd-field" id="daysToAddWrap" hidden>
+                <label for="daysToAdd">Jours ouvrables à ajouter</label>
+                <input id="daysToAdd" name="daysToAdd" type="number" min="1" step="1" value="10">
+              </div>
+            </div>
+
+            <div>
+              <span class="wd-label">Jours exclus chaque semaine</span>
+              <div class="wd-checks">
+                <label class="wd-check"><input type="checkbox" id="satOff" checked> Samedi</label>
+                <label class="wd-check"><input type="checkbox" id="sunOff" checked> Dimanche</label>
+                <label class="wd-check"><input type="checkbox" id="includeEnd" checked> Inclure la date de fin</label>
+              </div>
+            </div>
+
+            <div class="wd-field">
+              <label for="customHolidays">Jours fériés ou dates a exclure, une par ligne</label>
+              <textarea id="customHolidays" name="customHolidays" placeholder="2026-06-12 Democracy Day&#10;2026-12-24 Fermeture interne"></textarea>
+            </div>
+
+            <div class="wd-actions">
+              <button class="wd-btn wd-primary" type="submit">Calculer</button>
+              <button class="wd-btn wd-secondary" type="button" id="sampleBtn">Exemple projet</button>
+              <button class="wd-btn" type="reset">Reinitialiser</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section class="wd-card" aria-labelledby="wd-result-title">
+        <div class="wd-head"><h2 id="wd-result-title">Résultat</h2></div>
+        <div class="wd-body">
+          <div class="wd-result">
+            <div class="wd-big">
+              <span>Jours ouvrables</span>
+              <strong id="workDays">0</strong>
+            </div>
+            <div class="wd-metrics">
+              <div class="wd-metric"><span>Jours calendrier</span><strong id="calendarDays">0</strong></div>
+              <div class="wd-metric"><span>Week-ends exclus</span><strong id="weekendDays">0</strong></div>
+              <div class="wd-metric"><span>Jours fériés exclus</span><strong id="holidayDays">0</strong></div>
+              <div class="wd-metric"><span>Échéance</span><strong id="dueDate">-</strong></div>
+            </div>
+          </div>
+          <div id="statusBox" class="wd-status" role="status">Prêt à calculer.</div>
+          <pre id="summaryBox" class="wd-summary" aria-live="polite"></pre>
+          <div class="wd-actions" style="margin-top:12px">
+            <button class="wd-btn wd-primary" type="button" id="copyBtn">Copier le résumé</button>
+            <button class="wd-btn wd-secondary" type="button" id="downloadBtn">Télécharger TXT</button>
+            <button class="wd-btn" type="button" id="saveBtn">Sauvegarder localement</button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <aside>
+      <section class="wd-card" data-tool-verification-panel aria-label="Sources and vérification">
+        <div class="wd-head"><h3>Sources &amp; vérification</h3></div>
+        <div class="wd-body wd-list">
+          <span>Vérification panel: starter calendars reviewed on 17 June 2026. Confirm with the official authority before payroll, contract, court, filing or public-deadline use.</span>
+          <a href="https://interior.gov.ng/category/public-holiday/" target="_blank" rel="nofollow noopener">Nigeria Ministry of Interior official public holiday notices</a>
+          <a href="https://www.gov.za/about-sa/public-holidays" target="_blank" rel="nofollow noopener">South African Government official public holidays</a>
+          <a href="https://meacard.go.ke/public-holidays" target="_blank" rel="nofollow noopener">Kenya public holidays référence</a>
+          <a href="https://www.ilo.org/" target="_blank" rel="nofollow noopener">ILO référence for working-time context</a>
+        </div>
+      </section>
+
+      <section class="wd-card">
+        <div class="wd-head"><h3>Liens utiles</h3></div>
+        <div class="wd-body wd-list">
+          <a href="/fr/tools/public-holidays/">Calendrier jours fériés</a>
+          <a href="/fr/tools/leave-days/">Calculateur de congés</a>
+          <a href="/fr/tools/calculateur-heures-supplementaires/">Calculateur heures supplementaires</a>
+          <a href="/fr/tools/business-plan/">Planning projet</a>
+          <a href="/fr/tools/meeting-cost/">Coût de reunion</a>
+        </div>
+      </section>
+    </aside>
+  </div>
+</section>
+
+<section class="wd-seo">
+  <div class="wd-seo-grid">
+    <section class="wd-card">
+      <div class="wd-body">
+        <h2>Méthodologie</h2>
+        <p>Methodology: l'outil parcourt les dates du scénario, applique les jours de week-end choisis, compare les dates aux jours fériés de départ et aux dates personnalisées, puis calcule le nombre de jours ouvrables restants.</p>
+        <ul>
+          <li><strong>Règles appliquees:</strong> dates inclusives par défaut pour le mode entre deux dates; le mode échéance ajoute uniquement les jours qui ne sont pas exclus.</li>
+          <li><strong>Avertissement:</strong> ce résultat est une aide de planification non officielle. Il ne remplace pas une autorite publique, un contrat, un tribunal, un service RH ou un conseil professionnel.</li>
+          <li><strong>Fraîcheur:</strong> revu en 2026; les jours fériés mobiles et annonces speciales doivent être vérifiés avant action.</li>
+          <li><strong>Confidentialité:</strong> le calcul se fait dans le navigateur; la sauvegarde reste locale.</li>
+        </ul>
+      </div>
+    </section>
+    <section class="wd-card wd-faq">
+      <div class="wd-body">
+        <h2>Questions fréquentes</h2>
+        <details open><summary>Le samedi peut-il être ouvrable ?</summary><p>Oui. Decochez samedi dans les jours exclus si votre equipe, commerce ou contrat utilise une semaine de six jours.</p></details>
+        <details><summary>Pourquoi ajouter des dates personnalisées ?</summary><p>Certains jours fériés sont annonces tard, varient par région ou dependent d'une entreprise. Ajoutez-les pour garder le calcul proche de votre réalité.</p></details>
+        <details><summary>Le résultat est-il officiel ?</summary><p>Non. Pour la paie, un dépôt fiscal, un tribunal ou une obligation contractuelle, vérifiez la date finale avec l'autorite officielle ou le document applicable.</p></details>
+      </div>
+    </section>
+  </div>
+</section>
+
+<afro-related-tools category="data-productivity" current="jours-ouvrables-fr"></afro-related-tools>
+</main>
+<afro-footer></afro-footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var form = document.getElementById('wdForm');
+  var storageKey = 'afrotools:fr:working-days';
+  var holidaySets = {
+    ng: [
+      ['2026-01-01', 'New Year'], ['2026-03-20', 'Eid al-Fitr estimate'], ['2026-03-21', 'Eid al-Fitr estimate'],
+      ['2026-04-03', 'Good Friday'], ['2026-04-06', 'Easter Monday'], ['2026-05-01', 'Workers Day'],
+      ['2026-05-27', 'Eid al-Adha notice'], ['2026-05-28', 'Eid al-Adha notice'], ['2026-06-12', 'Democracy Day'],
+      ['2026-10-01', 'Independence Day'], ['2026-12-25', 'Christmas'], ['2026-12-26', 'Boxing Day']
+    ],
+    ke: [
+      ['2026-01-01', 'New Year'], ['2026-03-20', 'Idd ul-Fitr estimate'], ['2026-04-03', 'Good Friday'],
+      ['2026-04-06', 'Easter Monday'], ['2026-05-01', 'Labour Day'], ['2026-06-01', 'Madaraka Day'],
+      ['2026-10-10', 'Mazingira Day'], ['2026-10-20', 'Mashujaa Day'], ['2026-12-12', 'Jamhuri Day'],
+      ['2026-12-25', 'Christmas'], ['2026-12-26', 'Boxing Day']
+    ],
+    za: [
+      ['2026-01-01', 'New Year'], ['2026-03-21', 'Human Rights Day'], ['2026-04-03', 'Good Friday'],
+      ['2026-04-06', 'Family Day'], ['2026-04-27', 'Freedom Day'], ['2026-05-01', 'Workers Day'],
+      ['2026-06-16', 'Youth Day'], ['2026-08-10', 'National Women Day observed'], ['2026-09-24', 'Heritage Day'],
+      ['2026-12-16', 'Day of Reconciliation'], ['2026-12-25', 'Christmas'], ['2026-12-26', 'Day of Goodwill']
+    ],
+    gh: [
+      ['2026-01-01', 'New Year'], ['2026-01-07', 'Constitution Day'], ['2026-03-06', 'Independence Day'],
+      ['2026-04-03', 'Good Friday'], ['2026-04-06', 'Easter Monday'], ['2026-05-01', 'May Day'],
+      ['2026-05-25', 'Africa Unity Day'], ['2026-07-01', 'Republic Day'], ['2026-08-04', 'Founders Day'],
+      ['2026-09-21', 'Kwame Nkrumah Memorial Day'], ['2026-12-25', 'Christmas'], ['2026-12-26', 'Boxing Day']
+    ],
+    custom: []
+  };
+
+  function byId(id) { return document.getElementById(id); }
+  function toDate(value) {
+    if (!value) return null;
+    var parts = value.split('-').map(Number);
+    return new Date(parts[0], parts[1] - 1, parts[2]);
+  }
+  function ymd(date) {
+    return date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
+  }
+  function format(date) {
+    return date ? date.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' }) : '-';
+  }
+  function parseCustom() {
+    return byId('customHolidays').value.split(/\r?\n/).map(function (line) {
+      var match = line.trim().match(/^(\d{4}-\d{2}-\d{2})(?:\s+(.+))?$/);
+      return match ? [match[1], match[2] || 'Date personnalisee'] : null;
+    }).filter(Boolean);
+  }
+  function excludedWeekdays() {
+    var days = [];
+    if (byId('sunOff').checked) days.push(0);
+    if (byId('satOff').checked) days.push(6);
+    return days;
+  }
+  function holidayMap() {
+    var country = byId('country').value;
+    var map = {};
+    (holidaySets[country] || []).concat(parseCustom()).forEach(function (item) {
+      map[item[0]] = item[1];
+    });
+    return map;
+  }
+  function isWorkday(date, map, offDays) {
+    return offDays.indexOf(date.getDay()) === -1 && !map[ymd(date)];
+  }
+  function countBetween(start, end) {
+    var includeEnd = byId('includeEnd').checked;
+    var map = holidayMap();
+    var offDays = excludedWeekdays();
+    var d = new Date(start);
+    var final = new Date(end);
+    if (!includeEnd) final.setDate(final.getDate() - 1);
+    var calendar = 0;
+    var weekend = 0;
+    var holidays = 0;
+    var work = 0;
+    var named = [];
+    while (d <= final) {
+      calendar += 1;
+      var key = ymd(d);
+      if (offDays.indexOf(d.getDay()) !== -1) weekend += 1;
+      else if (map[key]) { holidays += 1; named.push(key + ' - ' + map[key]); }
+      else work += 1;
+      d.setDate(d.getDate() + 1);
+    }
+    return { work: work, calendar: calendar, weekend: weekend, holidays: holidays, due: end, named: named };
+  }
+  function addWorkingDays(start, amount) {
+    var map = holidayMap();
+    var offDays = excludedWeekdays();
+    var d = new Date(start);
+    var calendar = 0;
+    var weekend = 0;
+    var holidays = 0;
+    var work = 0;
+    var named = [];
+    while (work < amount) {
+      d.setDate(d.getDate() + 1);
+      calendar += 1;
+      var key = ymd(d);
+      if (offDays.indexOf(d.getDay()) !== -1) weekend += 1;
+      else if (map[key]) { holidays += 1; named.push(key + ' - ' + map[key]); }
+      else work += 1;
+    }
+    return { work: work, calendar: calendar, weekend: weekend, holidays: holidays, due: d, named: named };
+  }
+  function updateMode() {
+    var addMode = byId('mode').value === 'add';
+    byId('endDateWrap').hidden = addMode;
+    byId('daysToAddWrap').hidden = !addMode;
+  }
+  function render(result) {
+    byId('workDays').textContent = result.work;
+    byId('heroDays').textContent = result.work;
+    byId('calendarDays').textContent = result.calendar;
+    byId('weekendDays').textContent = result.weekend;
+    byId('holidayDays').textContent = result.holidays;
+    byId('dueDate').textContent = format(result.due);
+    var countryText = byId('country').options[byId('country').selectedIndex].text;
+    var summary = [
+      'Resume jours ouvrables - AfroTools',
+      'Pays/calendrier: ' + countryText,
+      'Mode: ' + (byId('mode').value === 'add' ? 'ajouter des jours ouvrables' : 'compter entre deux dates'),
+      'Jours ouvrables: ' + result.work,
+      'Jours calendrier parcourus: ' + result.calendar,
+      'Week-ends exclus: ' + result.weekend,
+      'Jours feries/dates exclues: ' + result.holidays,
+      'Date finale/echeance: ' + format(result.due),
+      result.named.length ? 'Dates exclues: ' + result.named.join('; ') : 'Dates exclues: aucune dans la periode',
+      'Avertissement: resultat non officiel; verifiez les jours feries mobiles ou annonces avec l autorite officielle.'
+    ].join('\n');
+    byId('summaryBox').textContent = summary;
+    byId('statusBox').dataset.tone = result.holidays ? 'ok' : 'warn';
+    byId('statusBox').textContent = result.holidays ? 'Calcul effectue avec exclusions de jours feries.' : 'Aucun jour ferie detecte dans cette periode; verifiez si une annonce locale doit etre ajoutee.';
+  }
+  function calculate() {
+    updateMode();
+    var start = toDate(byId('startDate').value);
+    if (!start) return;
+    var result;
+    if (byId('mode').value === 'add') {
+      result = addWorkingDays(start, Math.max(1, Number(byId('daysToAdd').value) || 1));
+    } else {
+      var end = toDate(byId('endDate').value);
+      if (!end || end < start) {
+        byId('statusBox').dataset.tone = 'warn';
+        byId('statusBox').textContent = 'Choisissez une date de fin apres la date de depart.';
+        return;
+      }
+      result = countBetween(start, end);
+    }
+    render(result);
+  }
+  function snapshot() {
+    return {
+      mode: byId('mode').value, country: byId('country').value, startDate: byId('startDate').value,
+      endDate: byId('endDate').value, daysToAdd: byId('daysToAdd').value, satOff: byId('satOff').checked,
+      sunOff: byId('sunOff').checked, includeEnd: byId('includeEnd').checked, customHolidays: byId('customHolidays').value
+    };
+  }
+  function restore(data) {
+    Object.keys(data).forEach(function (key) {
+      var field = byId(key);
+      if (!field) return;
+      if (field.type === 'checkbox') field.checked = Boolean(data[key]);
+      else field.value = data[key];
+    });
+    calculate();
+  }
+
+  form.addEventListener('submit', function (event) { event.preventDefault(); calculate(); });
+  form.addEventListener('input', function () { calculate(); });
+  form.addEventListener('change', function () { calculate(); });
+  form.addEventListener('reset', function () { window.setTimeout(seed, 0); });
+  byId('sampleBtn').addEventListener('click', function () {
+    byId('mode').value = 'add';
+    byId('country').value = 'ng';
+    byId('startDate').value = '2026-05-20';
+    byId('daysToAdd').value = '15';
+    byId('customHolidays').value = '2026-06-15 Internal approval day';
+    byId('satOff').checked = true;
+    byId('sunOff').checked = true;
+    byId('includeEnd').checked = true;
+    calculate();
+  });
+  byId('copyBtn').addEventListener('click', function () {
+    navigator.clipboard.writeText(byId('summaryBox').textContent).then(function () {
+      byId('statusBox').dataset.tone = 'ok';
+      byId('statusBox').textContent = 'Resume copie dans le presse-papiers.';
+    }).catch(function () {
+      byId('statusBox').dataset.tone = 'warn';
+      byId('statusBox').textContent = 'Copie automatique indisponible. Sélectionnez le resume et copiez-le manuellement.';
+    });
+  });
+  byId('downloadBtn').addEventListener('click', function () {
+    var blob = new Blob([byId('summaryBox').textContent], { type: 'text/plain;charset=utf-8' });
+    var link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'jours-ouvrables-afrotools.txt';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(function () { URL.revokeObjectURL(link.href); }, 250);
+  });
+  byId('saveBtn').addEventListener('click', function () {
+    localStorage.setItem(storageKey, JSON.stringify(snapshot()));
+    byId('statusBox').dataset.tone = 'ok';
+    byId('statusBox').textContent = 'Scenario sauvegarde localement dans ce navigateur.';
+  });
+  function seed() {
+    var today = new Date();
+    var future = new Date();
+    future.setDate(today.getDate() + 30);
+    byId('mode').value = 'between';
+    byId('country').value = 'ng';
+    byId('startDate').value = ymd(today);
+    byId('endDate').value = ymd(future);
+    byId('daysToAdd').value = '10';
+    byId('satOff').checked = true;
+    byId('sunOff').checked = true;
+    byId('includeEnd').checked = true;
+    byId('customHolidays').value = '';
+    calculate();
+  }
+  try {
+    var saved = localStorage.getItem(storageKey);
+    if (saved) restore(JSON.parse(saved));
+    else seed();
+  } catch (err) {
+    seed();
+  }
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+</body>
+</html>

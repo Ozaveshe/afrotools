@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bill Split Calculator — Africa | AfroTools</title>
+<meta name="description" content="Split bills fairly with friends, colleagues, or groups in any African currency. Equal split, percentage split, or custom amounts with tip calculator.">
+<meta property="og:title" content="Bill Split Calculator | AfroTools">
+<meta property="og:description" content="Split bills fairly with friends, colleagues, or groups in any African currency. Equal split, percentage split, or custom amounts with tip calculator.">
+<meta property="og:url" content="https://afrotools.com/tools/bill-split/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Bill Split Calculator — Africa | AfroTools">
+<meta name="twitter:description" content="Split bills fairly with friends, colleagues, or groups in any African currency. Equal split, percentage split, or custom amounts with tip calculator.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Bill Split Calculator",
+  "url": "https://afrotools.com/tools/bill-split/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools"
+  },
+  "image": "https://afrotools.com/assets/img/tools/bill-split.webp"
+}
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Fintech & Banking","item":"https://afrotools.com/fintech/"},{"@type":"ListItem","position":3,"name":"Bill Split Calculator","item":"https://afrotools.com/tools/bill-split/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
+.tool-hero{background:linear-gradient(135deg,#0A1628 0%,#1a1035 50%,#2d1b69 100%);color:#fff;padding:2.5rem 1.5rem 3rem}
+.tool-hero .container{max-width:900px;margin:0 auto}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.78);margin-bottom:.75rem}
+.breadcrumb a{color:rgba(255,255,255,.78);text-decoration:none}
+.breadcrumb span{margin:0 .35rem;opacity:.4}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin:.25rem 0 .6rem;line-height:1.2}
+.tool-hero p{font-size:.95rem;color:rgba(255,255,255,.92);max-width:580px;line-height:1.65}
+.hero-badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.hero-badge{padding:4px 12px;border-radius:100px;font-size:.75rem;font-weight:600;background:rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1.25rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{display:flex;flex-direction:column;gap:4px}
+label{font-size:.82rem;font-weight:600;color:#374151}
+select,input[type="number"],input[type="text"]{width:100%;padding:.65rem .85rem;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.9rem;background:#fff;transition:border-color .2s}
+select:focus,input:focus{outline:none;border-color:var(--color-primary)}
+.btn-calc{width:100%;padding:.85rem;border:none;border-radius:10px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:.5rem;transition:filter .2s}
+.btn-calc:hover{filter:brightness(1.1)}
+.btn-add{padding:.5rem 1rem;border:1.5px dashed #cbd5e1;border-radius:8px;background:transparent;color:#6b7280;font-size:.85rem;cursor:pointer;margin-top:.5rem}
+.btn-add:hover{background:#f8fafd}
+.results{display:none;margin-top:1.25rem}
+.results.on{display:block}
+.res-hero{background:linear-gradient(135deg,#0f172a,#1e3a5f);border-radius:14px;padding:1.75rem;text-align:center;color:#fff;margin-bottom:1.25rem}
+.res-label{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.7)}
+.res-val{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:800;color:#fff;margin:.2rem 0}
+.res-sub{font-size:.85rem;color:rgba(255,255,255,.65)}
+.person-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.75rem;margin-bottom:1.25rem}
+.person-card{background:#f8fafd;border:1.5px solid #e5e7eb;border-radius:12px;padding:1rem;text-align:center}
+.person-name{font-size:.8rem;font-weight:700;color:#374151;margin-bottom:.3rem}
+.person-amt{font-size:1.3rem;font-weight:800;color:var(--color-primary)}
+.person-pct{font-size:.72rem;color:#6b7280;margin-top:.2rem}
+.person-row{display:flex;gap:.75rem;align-items:center;margin-bottom:.5rem}
+.person-row input{flex:1}
+.person-row .pct-input{width:80px;flex:none}
+.btn-rm{padding:.3rem .6rem;background:#fee2e2;border:none;border-radius:6px;color:#991b1b;font-size:.8rem;cursor:pointer}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.25rem}
+.metric{background:#f8fafd;border:1.5px solid #e5e7eb;border-radius:12px;padding:1rem;text-align:center}
+.metric-val{font-size:1.3rem;font-weight:800;color:var(--color-primary)}
+.metric-label{font-size:.75rem;color:#6b7280;margin-top:3px}
+details summary{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;list-style:none;background:#f9fafb;display:flex;justify-content:space-between}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
+details[open] summary::after{content:'\2212'}
+.faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
+.faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+@media(max-width:680px){.form-grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}}
+</style>
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/bill-split.webp">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/bill-split.webp">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Bill Split Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Bill Split Calculator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Bill Split Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Bill Split Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"Is tipping customary in Africa?","acceptedAnswer":{"@type":"Answer","text":"Tipping customs vary widely: South Africa: 10-15% is standard at restaurants; not common for casual takeout. Nigeria: 5-10% at mid-range restaurants; not expected at fast food. Kenya: 10% at sit-down restaurants; \"service charge\" often already included. West Africa: Not traditionally common but growing in urban areas. Check your bill for service charge (usually 5-10%) before adding extra tip."}},{"@type":"Question","name":"Best apps to split bills in Africa?","acceptedAnswer":{"@type":"Answer","text":"Popular apps: SplitWise (global, widely used), Settle Up (Android/iOS), Nosh (Nigeria food delivery with split), M-Pesa Request Money (Kenya), Cowrywise (Nigeria). For quick informal splits, WhatsApp groups + mobile money (M-Pesa, MoMo, OPay) work well. Simply calculate each person's share, then request payment directly via mobile money — instant and traceable."}},{"@type":"Question","name":"How to handle unequal contributions in a group?","acceptedAnswer":{"@type":"Answer","text":"Use the Custom % method: assign each person their share percentage based on what they ordered or consumed. For accommodation splits, consider usage (who had the larger room?). For group travel, consider income levels and agree upfront on the fairness principle: strict equality, proportional to earnings, or weighted by consumption. Document the agreed amounts in WhatsApp to avoid disputes."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/bill-split/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/bill-split/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/partage-addition/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kigawanya-bili-na-bakshishi/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/bill-split/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar theme="dark" active="fintech"></afro-navbar>
+<div class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb"><a href="/">AfroTools</a><span>›</span><a href="/fintech/">Fintech &amp; Banking</a><span>›</span>Bill Split Calculator</nav>
+    <h1>Bill Split Calculator</h1>
+    <p>Split restaurant bills, rent, group travel, or shared expenses fairly. Equal split, custom percentage, or weighted by what each person ordered — in any African currency.</p>
+    <div class="hero-badges"><span class="hero-badge">Universal</span><span class="hero-badge">Tip Included</span><span class="hero-badge">Free</span></div>
+  </div>
+</div>
+<div class="container">
+  <div class="card">
+    <h2>Bill Split Calculator</h2>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="bs-currency">Currency</label>
+        <select id="bs-currency">
+          <option value="NGN">Nigerian Naira (NGN)</option>
+          <option value="KES">Kenyan Shilling (KES)</option>
+          <option value="GHS">Ghanaian Cedi (GHS)</option>
+          <option value="ZAR">South African Rand (ZAR)</option>
+          <option value="UGX">Ugandan Shilling (UGX)</option>
+          <option value="TZS">Tanzanian Shilling (TZS)</option>
+          <option value="ETB">Ethiopian Birr (ETB)</option>
+          <option value="EGP">Egyptian Pound (EGP)</option>
+          <option value="MAD">Moroccan Dirham (MAD)</option>
+          <option value="XOF">West African CFA (XOF)</option>
+          <option value="USD">US Dollar (USD)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="bs-total">Total Bill Amount</label>
+        <input type="number" id="bs-total" value="45000" min="0">
+      </div>
+      <div class="form-group">
+        <label for="bs-tip">Tip / Service Charge (%)</label>
+        <input type="number" id="bs-tip" value="10" min="0" max="50">
+      </div>
+      <div class="form-group">
+        <label for="bs-method">Split Method</label>
+        <select id="bs-method" onchange="toggleSplitMethod()">
+          <option value="equal">Equal Split</option>
+          <option value="custom">Custom % per Person</option>
+        </select>
+      </div>
+    </div>
+    <div id="bs-people-section" style="margin-top:1rem">
+      <label style="font-size:.82rem;font-weight:600;color:#374151;display:block;margin-bottom:.5rem">People</label>
+      <div id="bs-people">
+        <div class="person-row"><input aria-label="Person 1 name" type="text" placeholder="Person 1 name" value="Person 1"><input aria-label="Bs p0 pct" type="number" class="pct-input" placeholder="%" value="25" id="bs-p0-pct" style="display:none"><button type="button" class="btn-rm" onclick="removePerson(this)">✕</button></div>
+        <div class="person-row"><input aria-label="Person 2 name" type="text" placeholder="Person 2 name" value="Person 2"><input aria-label="Bs p1 pct" type="number" class="pct-input" placeholder="%" value="25" id="bs-p1-pct" style="display:none"><button type="button" class="btn-rm" onclick="removePerson(this)">✕</button></div>
+        <div class="person-row"><input aria-label="Person 3 name" type="text" placeholder="Person 3 name" value="Person 3"><input aria-label="Bs p2 pct" type="number" class="pct-input" placeholder="%" value="25" id="bs-p2-pct" style="display:none"><button type="button" class="btn-rm" onclick="removePerson(this)">✕</button></div>
+        <div class="person-row"><input aria-label="Person 4 name" type="text" placeholder="Person 4 name" value="Person 4"><input aria-label="Bs p3 pct" type="number" class="pct-input" placeholder="%" value="25" id="bs-p3-pct" style="display:none"><button type="button" class="btn-rm" onclick="removePerson(this)">✕</button></div>
+      </div>
+      <button type="button" class="btn-add" onclick="addPerson()">+ Add Person</button>
+    </div>
+    <button type="button" class="btn-calc" onclick="calcBillSplit()">Calculate Split</button>
+    <div class="results" id="bs-results">
+      <div class="res-hero">
+        <div class="res-label">Per Person (Equal Split)</div>
+        <div class="res-val" id="bs-per-person"></div>
+        <div class="res-sub" id="bs-sub"></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-val" id="bs-subtotal"></div><div class="metric-label">Subtotal</div></div>
+        <div class="metric"><div class="metric-val" id="bs-tip-amt"></div><div class="metric-label">Tip Amount</div></div>
+        <div class="metric"><div class="metric-val" id="bs-grand-total"></div><div class="metric-label">Grand Total</div></div>
+        <div class="metric"><div class="metric-val" id="bs-people-count"></div><div class="metric-label">People Splitting</div></div>
+      </div>
+      <h3 style="font-size:.95rem;font-weight:700;margin:.5rem 0 .75rem">Individual Amounts</h3>
+      <div class="person-cards" id="bs-person-cards"></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Frequently Asked Questions</h2>
+
+<section class="df-upgrade" data-df-upgrade="bill-split">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Payment comparison workflow</span>
+      <h2>Bill Split Calculator: quick guide</h2>
+      <p>Not sure how to get the most from the Bill Split Calculator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Bill Split Calculator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
+    </div>
+    <form class="df-form" data-df-form="bill-split">
+      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
+      <label>Transaction value<input name="transaction" type="number" value="50000" min="0" step="any" aria-label="Transaction value"></label>
+      <label>Fee percent<input name="fee" type="number" value="1.5" min="0" step="any" aria-label="Fee percent"></label>
+      <label>Channel<select name="channel" aria-label="Channel"><option value="POS">POS</option><option value="bank transfer">bank transfer</option><option value="mobile money">mobile money</option><option value="card">card</option></select></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="bill-split" data-df-base="Bill Split Calculator — enter your details above to see your result." aria-live="polite">Bill Split Calculator — enter your details above to see your result.</output>
+      <div class="df-actions"><button type="button" data-df-copy="bill-split">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="bill-split-faq-title">
+  <h2 id="bill-split-faq-title">Bill Split Calculator — Africa FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the Bill Split Calculator?</summary><p>Enter your amounts, rates and dates in the fields above. The Bill Split Calculator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Bill Split Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Bill Split Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
+</section>
+    <div class="faq-item"><details><summary>Is tipping customary in Africa?</summary><div class="faq-a">Tipping customs vary widely: South Africa: 10-15% is standard at restaurants; not common for casual takeout. Nigeria: 5-10% at mid-range restaurants; not expected at fast food. Kenya: 10% at sit-down restaurants; "service charge" often already included. West Africa: Not traditionally common but growing in urban areas. Check your bill for service charge (usually 5-10%) before adding extra tip.</div></details></div>
+    <div class="faq-item"><details><summary>Best apps to split bills in Africa?</summary><div class="faq-a">Popular apps: SplitWise (global, widely used), Settle Up (Android/iOS), Nosh (Nigeria food delivery with split), M-Pesa Request Money (Kenya), Cowrywise (Nigeria). For quick informal splits, WhatsApp groups + mobile money (M-Pesa, MoMo, OPay) work well. Simply calculate each person's share, then request payment directly via mobile money — instant and traceable.</div></details></div>
+    <div class="faq-item"><details><summary>How to handle unequal contributions in a group?</summary><div class="faq-a">Use the Custom % method: assign each person their share percentage based on what they ordered or consumed. For accommodation splits, consider usage (who had the larger room?). For group travel, consider income levels and agree upfront on the fairness principle: strict equality, proportional to earnings, or weighted by consumption. Document the agreed amounts in WhatsApp to avoid disputes.</div></details></div>
+  </div>
+</div>
+<afro-related-tools data-ssr="1" category="fintech" current="bill-split">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/loan-shark-compare/" data-related-tool data-id="loan-shark-compare" data-name="Loan Shark vs Bank Rate" data-category="fintech" data-icon="LS" data-desc="Compare informal moneylender rates vs bank loans vs fintech apps. True APR calculator showing hidden cost of predatory l">Loan Shark vs Bank Rate</a></li><li><a href="/tools/mobile-vs-bank/" data-related-tool data-id="mobile-vs-bank" data-name="Mobile Money vs Bank Transfer" data-category="fintech" data-icon="MM" data-desc="Compare M-Pesa, MTN MoMo, Airtel Money vs bank transfer fees for domestic and cross-border payments across Africa.">Mobile Money vs Bank Transfer</a></li><li><a href="/tools/digital-lending/" data-related-tool data-id="digital-lending" data-name="Digital Lending App Rates" data-category="fintech" data-icon="DL" data-desc="Compare digital lending apps (Fuliza, FairMoney, Carbon, PalmCredit) — true APR, fees, repayment periods.">Digital Lending App Rates</a></li><li><a href="/tools/fixed-deposit/" data-related-tool data-id="fixed-deposit" data-name="Fixed Deposit Rate Comparator" data-category="fintech" data-icon="FD" data-desc="Compare fixed deposit and savings account interest rates across African banks. 30/60/90/180/365-day tenors, 20+ banks.">Fixed Deposit Rate Comparator</a></li><li><a href="/tools/microfinance-loan/" data-related-tool data-id="microfinance-loan" data-name="Microfinance Loan Calculator" data-category="fintech" data-icon="ML" data-desc="Calculate microfinance loan repayments for African MFIs. Flat vs reducing balance, group vs individual loans.">Microfinance Loan Calculator</a></li><li><a href="/tools/payment-gateway/" data-related-tool data-id="payment-gateway" data-name="Payment Gateway Fee Compare" data-category="fintech" data-icon="PG" data-desc="Compare Paystack, Flutterwave, Stripe, DPO, Peach Payments transaction fees for African merchants.">Payment Gateway Fee Compare</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+<script>
+var personCount=4;
+function toggleSplitMethod(){
+  var method=document.getElementById('bs-method').value;
+  var pctInputs=document.querySelectorAll('#bs-people .pct-input');
+  for(var i=0;i<pctInputs.length;i++){
+    pctInputs[i].style.display=method==='custom'?'block':'none';
+  }
+}
+function addPerson(){
+  var div=document.createElement('div');
+  div.className='person-row';
+  var method=document.getElementById('bs-method').value;
+  div.innerHTML='<input aria-label="Person '+(personCount+1)+' name" type="text" placeholder="Person '+(personCount+1)+' name" value="Person '+(personCount+1)+'">'
+    +'<input aria-label="Pct input" type="number" class="pct-input" placeholder="%" value="0" style="display:'+(method==='custom'?'block':'none')+'">'
+    +'<button type="button" class="btn-rm" onclick="removePerson(this)">✕</button>';
+  document.getElementById('bs-people').appendChild(div);
+  personCount++;
+}
+function removePerson(btn){
+  var rows=document.querySelectorAll('#bs-people .person-row');
+  if(rows.length>2){btn.parentNode.remove();}
+}
+function calcBillSplit(){
+  var total=parseFloat(document.getElementById('bs-total').value)||0;
+  var tipPct=parseFloat(document.getElementById('bs-tip').value)/100;
+  var method=document.getElementById('bs-method').value;
+  var currency=document.getElementById('bs-currency').value;
+  var tipAmt=total*tipPct;
+  var grandTotal=total+tipAmt;
+  var rows=document.querySelectorAll('#bs-people .person-row');
+  var names=[],pcts=[];
+  for(var i=0;i<rows.length;i++){
+    var nameInput=rows[i].querySelector('input[type="text"]');
+    var pctInput=rows[i].querySelector('.pct-input');
+    names.push(nameInput?nameInput.value||('Person '+(i+1)):'Person '+(i+1));
+    pcts.push(pctInput&&method==='custom'?(parseFloat(pctInput.value)||0):0);
+  }
+  var n=names.length;
+  var amounts=[];
+  if(method==='equal'){
+    for(var j=0;j<n;j++) amounts.push(grandTotal/n);
+  } else {
+    var totalPct=pcts.reduce(function(a,b){return a+b;},0);
+    for(var k=0;k<n;k++) amounts.push(totalPct>0?grandTotal*(pcts[k]/totalPct):grandTotal/n);
+  }
+  function fmt(v){return v<100?v.toFixed(2):Math.round(v).toLocaleString();}
+  document.getElementById('bs-per-person').textContent=currency+' '+fmt(grandTotal/n);
+  document.getElementById('bs-sub').textContent='Total: '+currency+' '+fmt(grandTotal)+' | '+n+' people';
+  document.getElementById('bs-subtotal').textContent=currency+' '+fmt(total);
+  document.getElementById('bs-tip-amt').textContent=currency+' '+fmt(tipAmt);
+  document.getElementById('bs-grand-total').textContent=currency+' '+fmt(grandTotal);
+  document.getElementById('bs-people-count').textContent=n+' people';
+  var cards='';
+  for(var m=0;m<names.length;m++){
+    cards+='<div class="person-card"><div class="person-name">'+names[m]+'</div><div class="person-amt">'+fmt(amounts[m])+'</div><div class="person-pct">'+(amounts[m]/grandTotal*100).toFixed(0)+'% of total</div></div>';
+  }
+  document.getElementById('bs-person-cards').innerHTML=cards;
+  document.getElementById('bs-results').classList.add('on');
+}
+</script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

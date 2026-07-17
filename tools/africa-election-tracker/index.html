@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Africa Election Tracker - Presidential and Governorship Calendar | AfroTools</title>
+<meta name="description" content="Track upcoming African presidential, governorship, county, and local-government elections with candidate rosters, source links, and election news watches.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Africa Election Tracker | AfroTools">
+<meta property="og:description" content="Source-reviewed African election calendar with candidate rosters, source links, and election news watches.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/africa-election-tracker.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/africa-election-tracker/">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Africa Election Tracker | AfroTools">
+<meta name="twitter:description" content="Track African election dates with candidate rosters, source links, and election news watches.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/africa-election-tracker.webp">
+<meta property="article:modified_time" content="2026-06-11">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Africa Election Tracker",
+  "url": "https://afrotools.com/tools/africa-election-tracker/",
+  "description": "Source-reviewed African election calendar with candidate rosters, source links, and election news watches.",
+  "applicationCategory": "GovernmentApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "image": "https://afrotools.com/assets/img/tools/africa-election-tracker.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},
+    {"@type":"ListItem","position":2,"name":"Government & Civic","item":"https://afrotools.com/government/"},
+    {"@type":"ListItem","position":3,"name":"Africa Election Tracker","item":"https://afrotools.com/tools/africa-election-tracker/"}
+  ]
+}
+</script>
+<style>
+:root{
+  --et-ink:#0f172a;
+  --et-muted:#64748b;
+  --et-line:#dbe4ef;
+  --et-soft:#f6f9fc;
+  --et-blue:#1d4ed8;
+  --et-blue-soft:#eff6ff;
+  --et-green:#15803d;
+  --et-green-soft:#f0fdf4;
+  --et-amber:#b45309;
+  --et-amber-soft:#fffbeb;
+  --et-red:#b91c1c;
+  --et-red-soft:#fef2f2;
+}
+*{box-sizing:border-box}
+body{background:#f8fafc;color:var(--et-ink);font-family:"DM Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+a{color:inherit}
+.et-hero{background:#08111f;color:#fff;border-bottom:1px solid rgba(148,163,184,.18)}
+.et-hero-inner{max-width:1180px;margin:0 auto;padding:34px 24px 30px}
+.et-breadcrumb{display:flex;align-items:center;gap:7px;flex-wrap:wrap;font-size:.72rem;color:rgba(255,255,255,.58);margin-bottom:16px}
+.et-breadcrumb a{text-decoration:none;color:rgba(255,255,255,.72)}
+.et-breadcrumb a:hover{color:#fff}
+.et-heading-grid{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:28px;align-items:end}
+.et-heading-grid>*{min-width:0}
+.et-title{font-size:clamp(1.75rem,4vw,3rem);line-height:1.02;letter-spacing:0;margin:0 0 12px;font-weight:800}
+.et-title span{color:#93c5fd}
+.et-subtitle{max-width:710px;margin:0;color:rgba(255,255,255,.72);font-size:.96rem;line-height:1.7}
+.et-hero-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.et-badge{display:inline-flex;align-items:center;min-height:28px;border-radius:6px;padding:5px 10px;font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border:1px solid transparent}
+.et-badge-blue{background:rgba(37,99,235,.2);border-color:rgba(147,197,253,.28);color:#bfdbfe}
+.et-badge-green{background:rgba(22,101,52,.28);border-color:rgba(134,239,172,.26);color:#bbf7d0}
+.et-badge-amber{background:rgba(180,83,9,.2);border-color:rgba(251,191,36,.25);color:#fde68a}
+.et-hero-panel{border:1px solid rgba(148,163,184,.24);background:rgba(15,23,42,.72);border-radius:8px;padding:16px}
+.et-hero-panel-label{font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#93c5fd;margin-bottom:8px}
+.et-hero-next{font-size:1rem;font-weight:800;line-height:1.35;margin-bottom:8px}
+.et-hero-next-meta{font-size:.78rem;color:rgba(255,255,255,.68);line-height:1.55}
+.et-main{max-width:1180px;margin:0 auto;padding:24px}
+.et-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.et-metric{background:#fff;border:1px solid var(--et-line);border-radius:8px;padding:16px;min-height:92px}
+.et-metric span{display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--et-muted);font-weight:800;margin-bottom:6px}
+.et-metric strong{display:block;font-size:1.65rem;line-height:1;font-weight:800;color:var(--et-ink)}
+.et-layout{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:18px;align-items:start}
+.et-layout>*{min-width:0}
+.et-card{background:#fff;border:1px solid var(--et-line);border-radius:8px;box-shadow:0 1px 6px rgba(15,23,42,.04)}
+.et-card+.et-card{margin-top:16px}
+.et-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid #edf2f7;background:#fbfdff}
+.et-card-title{font-size:.74rem;text-transform:uppercase;letter-spacing:.08em;font-weight:800;color:#334155}
+.et-card-sub{font-size:.76rem;color:var(--et-muted);line-height:1.5;margin-top:3px}
+.et-card-body{padding:16px}
+.et-controls{display:grid;grid-template-columns:1fr 160px 170px 150px;gap:10px;align-items:end}
+.et-field label,.et-check span{display:block;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--et-muted);margin-bottom:5px}
+.et-input,.et-select{width:100%;min-height:42px;border:1.5px solid #cbd5e1;border-radius:7px;background:#f8fafc;color:var(--et-ink);font:inherit;font-size:.86rem;padding:9px 11px}
+.et-input:focus,.et-select:focus{outline:none;border-color:var(--et-blue);box-shadow:0 0 0 3px rgba(29,78,216,.14);background:#fff}
+.et-filter-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.et-check{display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:8px 10px;border:1px solid var(--et-line);border-radius:7px;background:#fff;cursor:pointer}
+.et-check span{margin:0}
+.et-check input{width:16px;height:16px;accent-color:var(--et-blue)}
+.et-list{display:grid;gap:12px}
+.et-election-card{border:1px solid var(--et-line);border-radius:8px;background:#fff;overflow:hidden}
+.et-election-top{display:grid;grid-template-columns:92px minmax(0,1fr);gap:14px;padding:14px 14px 12px}
+.et-date-box{border:1px solid #bfdbfe;background:var(--et-blue-soft);border-radius:8px;padding:10px 8px;text-align:center;align-self:start}
+.et-date-box strong{display:block;font-size:1.15rem;color:#1e40af;line-height:1.1}
+.et-date-box span{display:block;font-size:.7rem;color:#475569;font-weight:800;text-transform:uppercase;letter-spacing:.05em;margin-top:3px}
+.et-election-title-row{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-bottom:4px}
+.et-election-title{font-size:1.02rem;font-weight:800;color:var(--et-ink);line-height:1.35;margin:0}
+.et-election-meta{font-size:.78rem;color:var(--et-muted);line-height:1.55;margin:0 0 8px}
+.et-election-note{font-size:.84rem;color:#334155;line-height:1.65;margin:0}
+.et-election-bottom{border-top:1px solid #edf2f7;background:#fbfdff;padding:11px 14px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center}
+.et-source-links{display:flex;flex-wrap:wrap;gap:7px}
+.et-source-link{display:inline-flex;align-items:center;min-height:30px;padding:5px 9px;border-radius:6px;border:1px solid #dbeafe;background:#eff6ff;color:#1d4ed8;text-decoration:none;font-size:.72rem;font-weight:800}
+.et-source-link:hover{background:#dbeafe}
+.et-watch{font-size:.76rem;color:#475569;line-height:1.5}
+.et-pill{display:inline-flex;align-items:center;min-height:24px;border-radius:999px;padding:4px 8px;font-size:.66rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;border:1px solid transparent}
+.et-pill-official{background:var(--et-green-soft);color:var(--et-green);border-color:#bbf7d0}
+.et-pill-mixed{background:var(--et-amber-soft);color:var(--et-amber);border-color:#fde68a}
+.et-pill-review{background:var(--et-red-soft);color:var(--et-red);border-color:#fecaca}
+.et-pill-blue{background:var(--et-blue-soft);color:#1d4ed8;border-color:#bfdbfe}
+.et-side-list{display:grid;gap:10px}
+.et-side-item{border:1px solid var(--et-line);border-radius:8px;padding:12px;background:#fff}
+.et-side-item strong{display:block;font-size:.86rem;line-height:1.35;margin-bottom:4px}
+.et-side-item span{display:block;font-size:.75rem;color:var(--et-muted);line-height:1.5}
+.et-table-wrap{overflow:auto}
+.et-table{width:100%;border-collapse:collapse;min-width:640px}
+.et-table th,.et-table td{padding:10px 8px;border-bottom:1px solid #edf2f7;text-align:left;font-size:.8rem;vertical-align:top}
+.et-table th{font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;color:var(--et-muted)}
+.et-empty{border:1px dashed #cbd5e1;border-radius:8px;padding:28px 16px;text-align:center;color:var(--et-muted);font-size:.88rem}
+.et-error{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:8px;padding:14px;font-size:.84rem;line-height:1.6}
+.et-sr-status{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+@media(max-width:980px){
+  .et-heading-grid,.et-layout{grid-template-columns:1fr}
+  .et-hero-panel{max-width:520px}
+  .et-metrics{grid-template-columns:repeat(2,1fr)}
+  .et-controls{grid-template-columns:1fr 1fr}
+}
+@media(max-width:620px){
+  .et-hero-inner,.et-main{padding-inline:16px}
+  .et-metrics{grid-template-columns:1fr 1fr;gap:8px}
+  .et-metric{min-height:84px;padding:13px}
+  .et-metric strong{font-size:1.35rem}
+  .et-controls{grid-template-columns:1fr}
+  .et-election-top{grid-template-columns:1fr}
+  .et-date-box{display:flex;justify-content:center;gap:8px;align-items:baseline;text-align:left}
+  .et-election-bottom{grid-template-columns:1fr}
+  .et-source-link{width:100%;justify-content:center}
+}
+@media(prefers-color-scheme:dark){
+  body{background:#08111f;color:#e5e7eb}
+  .et-main{background:#08111f}
+  .et-card,.et-metric,.et-election-card,.et-side-item{background:#111827;border-color:#243145}
+  .et-card-head,.et-election-bottom{background:#0f172a;border-color:#243145}
+  .et-card-title,.et-election-title{color:#f8fafc}
+  .et-election-note,.et-watch,.et-table td{color:#cbd5e1}
+  .et-input,.et-select{background:#0f172a;border-color:#334155;color:#f8fafc}
+  .et-table th,.et-election-meta,.et-card-sub,.et-side-item span{color:#94a3b8}
+}
+</style>
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Africa Election Tracker?","acceptedAnswer":{"@type":"Answer","text":"Enter your situation and documents in the fields above. The Africa Election Tracker then gives you a checklist and estimate for the process you can use straight away."}},{"@type":"Question","name":"How accurate is the Africa Election Tracker?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm the official government or agency source before you rely on it. It is general information, not legal advice."}},{"@type":"Question","name":"Is the Africa Election Tracker free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/africa-election-tracker/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/africa-election-tracker/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/suivi-elections-afrique/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ufuatiliaji-uchaguzi-afrika/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/africa-election-tracker/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="tools"></afro-navbar>
+
+<main>
+  <section class="et-hero">
+    <div class="et-hero-inner">
+      <nav class="et-breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a><span>/</span>
+        <a href="/government/">Government &amp; Civic</a><span>/</span>
+        <span aria-current="page">Africa Election Tracker</span>
+      </nav>
+      <div class="et-heading-grid">
+        <div>
+          <h1 class="et-title">Africa <span>Election Tracker</span></h1>
+          <p class="et-subtitle">Online election calendar for presidential, governorship, county, and local-government cycles across African countries. Follow dates, official source links, candidate rosters, and election news watches in one place.</p>
+          <div class="et-hero-badges" aria-label="Tool status">
+            <span class="et-badge et-badge-green">Published data</span>
+            <span class="et-badge et-badge-blue">Candidate facts</span>
+            <span class="et-badge et-badge-amber">Source tagged</span>
+          </div>
+        </div>
+        <aside class="et-hero-panel" aria-live="polite">
+          <div class="et-hero-panel-label">Next tracked election</div>
+          <div class="et-hero-next" id="nextElectionTitle">Loading election tracker...</div>
+          <div class="et-hero-next-meta" id="nextElectionMeta">Checking election dates and source status.</div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="et-main" aria-labelledby="trackerTitle">
+    <h2 id="trackerTitle" class="et-sr-status">Election tracker workspace</h2>
+
+    <div class="et-metrics" aria-label="Tracker summary">
+      <div class="et-metric"><span>Records</span><strong id="metricRecords">0</strong></div>
+      <div class="et-metric"><span>Countries</span><strong id="metricCountries">0</strong></div>
+      <div class="et-metric"><span>Official</span><strong id="metricOfficial">0</strong></div>
+      <div class="et-metric"><span>Review</span><strong id="metricReview">0</strong></div>
+    </div>
+
+    <div class="et-layout">
+      <div>
+        <section class="et-card" aria-labelledby="filtersTitle">
+          <div class="et-card-head">
+            <div>
+              <div id="filtersTitle" class="et-card-title">Filters</div>
+              <div class="et-card-sub" id="ledgerMeta">Published source file</div>
+            </div>
+          </div>
+          <div class="et-card-body">
+            <div class="et-controls">
+              <div class="et-field">
+                <label for="searchInput">Search</label>
+                <input class="et-input" id="searchInput" type="search" placeholder="Country, office, state, source">
+              </div>
+              <div class="et-field">
+                <label for="regionFilter">Region</label>
+                <select class="et-select" id="regionFilter">
+                  <option value="all">All regions</option>
+                </select>
+              </div>
+              <div class="et-field">
+                <label for="typeFilter">Election type</label>
+                <select class="et-select" id="typeFilter">
+                  <option value="all">All types</option>
+                </select>
+              </div>
+              <div class="et-field">
+                <label for="sourceFilter">Source</label>
+                <select class="et-select" id="sourceFilter">
+                  <option value="all">All source states</option>
+                  <option value="official">Official only</option>
+                  <option value="mixed">Mixed</option>
+                  <option value="needs-review">Needs review</option>
+                </select>
+              </div>
+            </div>
+            <div class="et-filter-row">
+              <label class="et-check" for="executiveOnly">
+                <input id="executiveOnly" type="checkbox" checked>
+                <span>Executive focus</span>
+              </label>
+              <label class="et-check" for="upcomingOnly">
+                <input id="upcomingOnly" type="checkbox" checked>
+                <span>Upcoming only</span>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <section class="et-card" aria-labelledby="resultsTitle">
+          <div class="et-card-head">
+            <div>
+              <div id="resultsTitle" class="et-card-title">Election Calendar</div>
+              <div class="et-card-sub" id="resultCount">Loading records</div>
+            </div>
+          </div>
+          <div class="et-card-body">
+            <div id="errorBox"></div>
+            <div class="et-list" id="electionList" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <section class="et-card" aria-labelledby="countryTitle">
+          <div class="et-card-head">
+            <div>
+              <div id="countryTitle" class="et-card-title">Country Coverage</div>
+              <div class="et-card-sub">Published records, grouped by country</div>
+            </div>
+          </div>
+          <div class="et-card-body et-table-wrap">
+            <table class="et-table">
+              <thead>
+                <tr>
+                  <th>Country</th>
+                  <th>Region</th>
+                  <th>Tracked offices</th>
+                  <th>Next date</th>
+                  <th>Source state</th>
+                </tr>
+              </thead>
+              <tbody id="countryRows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="et-card" aria-labelledby="candidateTitle">
+          <div class="et-card-head">
+            <div>
+              <div id="candidateTitle" class="et-card-title">Candidate Facts</div>
+              <div class="et-card-sub">Official rosters first, with deeper public records added only when sourced</div>
+            </div>
+          </div>
+          <div class="et-card-body" id="candidateFacts"></div>
+        </section>
+      </div>
+
+      <aside>
+        <section class="et-card" aria-labelledby="reviewTitle">
+          <div class="et-card-head">
+            <div>
+              <div id="reviewTitle" class="et-card-title">Needs Review</div>
+              <div class="et-card-sub">Dates still waiting on stronger public confirmation</div>
+            </div>
+          </div>
+          <div class="et-card-body">
+            <div class="et-side-list" id="reviewQueue"></div>
+          </div>
+        </section>
+
+        <section class="et-card" aria-labelledby="newsTitle">
+          <div class="et-card-head">
+            <div>
+              <div id="newsTitle" class="et-card-title">News Watch</div>
+              <div class="et-card-sub">Election feeds and source pages being watched</div>
+            </div>
+          </div>
+          <div class="et-card-body">
+            <div class="et-side-list" id="newsWatch"></div>
+          </div>
+        </section>
+      </aside>
+    </div>
+  </section>
+
+<section class="df-upgrade" data-df-upgrade="africa-election-tracker">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Practical workflow</span>
+      <h2>Africa Election Tracker: quick guide</h2>
+      <p>Not sure how to get the most from the Africa Election Tracker? Enter your situation and documents and it returns a checklist and estimate for the process — built for all 54 African countries.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a checklist and estimate for the process, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Africa Election Tracker takes your situation and documents and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm the official government or agency source before you rely on the result. It is general information, not legal advice.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm the official government or agency source before acting. It is general information, not legal advice.</p>
+    </div>
+    <form class="df-form" data-df-form="africa-election-tracker">
+      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
+      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
+      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
+      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="africa-election-tracker" data-df-base="Africa Election Tracker — enter your details above to see your result." aria-live="polite">Africa Election Tracker — enter your details above to see your result.</output>
+      <div class="df-actions"><button type="button" data-df-copy="africa-election-tracker">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="africa-election-tracker-faq-title">
+  <h2 id="africa-election-tracker-faq-title">Africa Election Tracker FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the Africa Election Tracker?</summary><p>Enter your situation and documents in the fields above. The Africa Election Tracker then gives you a checklist and estimate for the process you can use straight away.</p></details><details><summary>How accurate is the Africa Election Tracker?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm the official government or agency source before you rely on it. It is general information, not legal advice.</p></details><details><summary>Is the Africa Election Tracker free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
+</section>
+</main>
+<afro-related-tools data-ssr="1" category="government" current="africa-election-tracker">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/visa-checker/" data-related-tool data-id="visa-checker" data-name="African Visa Requirement Checker" data-category="government" data-icon="AV" data-desc="Check visa requirements between any two African countries. Visa-free, visa on arrival, e-visa or visa required — with pr">African Visa Requirement Checker</a></li><li><a href="/tools/gov-scholarship/" data-related-tool data-id="gov-scholarship" data-name="Government Scholarship Finder" data-category="government" data-icon="GS" data-desc="Find government scholarships available in your country. Filter by level, field, local vs international. Includes NSFAS, ">Government Scholarship Finder</a></li><li><a href="/tools/land-registry-fees/" data-related-tool data-id="land-registry-fees" data-name="Land Registry Fee Calculator" data-category="government" data-icon="LR" data-desc="Estimate key fees to register or transfer land in Africa. Stamp duty, registration fees, conveyancing, and governor&#39;s co">Land Registry Fee Calculator</a></li><li><a href="/tools/passport-checklist/" data-related-tool data-id="passport-checklist" data-name="Passport Application Checklist" data-category="government" data-icon="PA" data-desc="Step-by-step passport application guide with fee breakdown for 9+ African countries. Documents checklist, processing tim">Passport Application Checklist</a></li><li><a href="/tools/national-pension/" data-related-tool data-id="national-pension" data-name="National Pension Estimator" data-category="government" data-icon="NP" data-desc="Project your government pension fund at retirement. Uses your country&#39;s official contribution rates (PenCom, NSSF, SSNIT">National Pension Estimator</a></li><li><a href="/tools/social-welfare/" data-related-tool data-id="social-welfare" data-name="Social Welfare Eligibility Checker" data-category="government" data-icon="SW" data-desc="Check which social protection programs you qualify for. Nigeria CCT/N-Power, Kenya Inua Jamii, South Africa SASSA grants">Social Welfare Eligibility Checker</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+(function () {
+  'use strict';
+
+  const DATA_URL = '/data/government/africa-election-tracker.json';
+  const MS_PER_DAY = 24 * 60 * 60 * 1000;
+  const state = {
+    data: null,
+    records: [],
+    filters: {
+      search: '',
+      region: 'all',
+      type: 'all',
+      source: 'all',
+      executiveOnly: true,
+      upcomingOnly: true
+    }
+  };
+
+  const els = {
+    searchInput: document.getElementById('searchInput'),
+    regionFilter: document.getElementById('regionFilter'),
+    typeFilter: document.getElementById('typeFilter'),
+    sourceFilter: document.getElementById('sourceFilter'),
+    executiveOnly: document.getElementById('executiveOnly'),
+    upcomingOnly: document.getElementById('upcomingOnly'),
+    electionList: document.getElementById('electionList'),
+    resultCount: document.getElementById('resultCount'),
+    errorBox: document.getElementById('errorBox'),
+    reviewQueue: document.getElementById('reviewQueue'),
+    newsWatch: document.getElementById('newsWatch'),
+    candidateFacts: document.getElementById('candidateFacts'),
+    countryRows: document.getElementById('countryRows'),
+    ledgerMeta: document.getElementById('ledgerMeta'),
+    nextElectionTitle: document.getElementById('nextElectionTitle'),
+    nextElectionMeta: document.getElementById('nextElectionMeta'),
+    metricRecords: document.getElementById('metricRecords'),
+    metricCountries: document.getElementById('metricCountries'),
+    metricOfficial: document.getElementById('metricOfficial'),
+    metricReview: document.getElementById('metricReview')
+  };
+
+  function todayUtc() {
+    const now = new Date();
+    return Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+  }
+
+  function dateUtc(value) {
+    const parts = String(value || '').split('-').map(Number);
+    return Date.UTC(parts[0], parts[1] - 1, parts[2]);
+  }
+
+  function formatDate(value) {
+    if (!value) return 'No date';
+    const date = new Date(dateUtc(value));
+    return new Intl.DateTimeFormat('en', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(date);
+  }
+
+  function monthDay(value) {
+    const date = new Date(dateUtc(value));
+    return {
+      day: new Intl.DateTimeFormat('en', { day: 'numeric', timeZone: 'UTC' }).format(date),
+      month: new Intl.DateTimeFormat('en', { month: 'short', timeZone: 'UTC' }).format(date),
+      year: new Intl.DateTimeFormat('en', { year: 'numeric', timeZone: 'UTC' }).format(date)
+    };
+  }
+
+  function daysUntil(record) {
+    return Math.ceil((dateUtc(record.electionDate) - todayUtc()) / MS_PER_DAY);
+  }
+
+  function recordEndUtc(record) {
+    return dateUtc(record.dateEnd || record.electionDate);
+  }
+
+  function humanDays(record) {
+    const days = daysUntil(record);
+    if (days === 0) return 'Today';
+    if (days === 1) return 'Tomorrow';
+    if (days > 1) return `${days.toLocaleString('en-US')} days`;
+    return `${Math.abs(days).toLocaleString('en-US')} days ago`;
+  }
+
+  function escapeHtml(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function sourceClass(status) {
+    if (status === 'official') return 'et-pill-official';
+    if (status === 'mixed') return 'et-pill-mixed';
+    return 'et-pill-review';
+  }
+
+  function sourceLabel(status) {
+    if (status === 'official') return 'Official source';
+    if (status === 'mixed') return 'Mixed source';
+    return 'Needs review';
+  }
+
+  function dateStatusLabel(status) {
+    const labels = state.data && state.data.dateStatusLabels;
+    return labels && labels[status] ? labels[status] : status;
+  }
+
+  function normalizedText(record) {
+    return [
+      record.country,
+      record.countryCode,
+      record.region,
+      record.jurisdiction,
+      record.office,
+      record.electionType,
+      record.authority,
+      record.notes,
+      record.nextWatch,
+      (record.sources || []).map((source) => source.label).join(' ')
+    ].join(' ').toLowerCase();
+  }
+
+  function filteredRecords() {
+    const query = state.filters.search.trim().toLowerCase();
+    return state.records
+      .filter((record) => {
+        if (state.filters.executiveOnly && !record.executiveFocus) return false;
+        if (state.filters.upcomingOnly && recordEndUtc(record) < todayUtc()) return false;
+        if (state.filters.region !== 'all' && record.region !== state.filters.region) return false;
+        if (state.filters.type !== 'all' && record.electionType !== state.filters.type) return false;
+        if (state.filters.source !== 'all' && record.sourceStatus !== state.filters.source) return false;
+        if (query && !normalizedText(record).includes(query)) return false;
+        return true;
+      })
+      .sort((a, b) => dateUtc(a.electionDate) - dateUtc(b.electionDate) || a.country.localeCompare(b.country));
+  }
+
+  function uniqueSorted(values) {
+    return Array.from(new Set(values.filter(Boolean))).sort((a, b) => a.localeCompare(b));
+  }
+
+  function populateFilters() {
+    const regions = uniqueSorted(state.records.map((record) => record.region));
+    const types = uniqueSorted(state.records.map((record) => record.electionType));
+
+    els.regionFilter.innerHTML = '<option value="all">All regions</option>' + regions
+      .map((region) => `<option value="${escapeHtml(region)}">${escapeHtml(region)}</option>`)
+      .join('');
+
+    els.typeFilter.innerHTML = '<option value="all">All types</option>' + types
+      .map((type) => `<option value="${escapeHtml(type)}">${escapeHtml(type.replace(/-/g, ' '))}</option>`)
+      .join('');
+  }
+
+  function renderMetrics() {
+    const countries = new Set(state.records.map((record) => record.countryCode));
+    const official = state.records.filter((record) => record.sourceStatus === 'official').length;
+    const review = state.records.filter((record) => record.sourceStatus !== 'official').length;
+    els.metricRecords.textContent = state.records.length.toLocaleString('en-US');
+    els.metricCountries.textContent = countries.size.toLocaleString('en-US');
+    els.metricOfficial.textContent = official.toLocaleString('en-US');
+    els.metricReview.textContent = review.toLocaleString('en-US');
+  }
+
+  function renderNextElection() {
+    const next = state.records
+      .filter((record) => record.executiveFocus && recordEndUtc(record) >= todayUtc())
+      .sort((a, b) => dateUtc(a.electionDate) - dateUtc(b.electionDate))[0];
+
+    if (!next) {
+      els.nextElectionTitle.textContent = 'No upcoming executive record';
+      els.nextElectionMeta.textContent = 'Add new source-reviewed records.';
+      return;
+    }
+
+    els.nextElectionTitle.textContent = `${next.country}: ${next.office}`;
+    els.nextElectionMeta.textContent = `${formatDate(next.electionDate)} - ${humanDays(next)} - ${sourceLabel(next.sourceStatus)}`;
+  }
+
+  function renderRecord(record) {
+    const dateParts = monthDay(record.electionDate);
+    const sourceLinks = (record.sources || []).map((source) => {
+      return `<a class="et-source-link" href="${escapeHtml(source.url)}" rel="noopener" target="_blank">${escapeHtml(source.label)}</a>`;
+    }).join('');
+    const dateText = record.dateEnd
+      ? `${formatDate(record.electionDate)} to ${formatDate(record.dateEnd)}`
+      : formatDate(record.electionDate);
+
+    return `
+      <article class="et-election-card">
+        <div class="et-election-top">
+          <div class="et-date-box" aria-label="${escapeHtml(dateText)}">
+            <strong>${escapeHtml(dateParts.day)}</strong>
+            <span>${escapeHtml(dateParts.month)} ${escapeHtml(dateParts.year)}</span>
+          </div>
+          <div>
+            <div class="et-election-title-row">
+              <h3 class="et-election-title">${escapeHtml(record.country)} - ${escapeHtml(record.office)}</h3>
+              <span class="et-pill ${sourceClass(record.sourceStatus)}">${escapeHtml(sourceLabel(record.sourceStatus))}</span>
+              <span class="et-pill et-pill-blue">${escapeHtml(dateStatusLabel(record.dateStatus))}</span>
+            </div>
+            <p class="et-election-meta">${escapeHtml(record.jurisdiction)} / ${escapeHtml(record.region)} / ${escapeHtml(record.electionType.replace(/-/g, ' '))} / ${escapeHtml(humanDays(record))}</p>
+            <p class="et-election-note">${escapeHtml(record.notes)}</p>
+          </div>
+        </div>
+        <div class="et-election-bottom">
+          <div class="et-source-links">${sourceLinks}</div>
+          <div class="et-watch"><strong>Watch:</strong> ${escapeHtml(record.nextWatch)}</div>
+        </div>
+      </article>
+    `;
+  }
+
+  function renderList() {
+    const records = filteredRecords();
+    els.resultCount.textContent = `${records.length.toLocaleString('en-US')} of ${state.records.length.toLocaleString('en-US')} records shown`;
+    if (!records.length) {
+      els.electionList.innerHTML = '<div class="et-empty">No records match the current filters.</div>';
+      return;
+    }
+    els.electionList.innerHTML = records.map(renderRecord).join('');
+  }
+
+  function renderReviewQueue() {
+    const queue = state.records
+      .filter((record) => record.sourceStatus !== 'official' || record.dateStatus === 'tentative' || record.dateStatus === 'projected')
+      .sort((a, b) => dateUtc(a.electionDate) - dateUtc(b.electionDate));
+
+    if (!queue.length) {
+      els.reviewQueue.innerHTML = '<div class="et-empty">No review records in the tracker.</div>';
+      return;
+    }
+
+    els.reviewQueue.innerHTML = queue.map((record) => `
+      <div class="et-side-item">
+        <strong>${escapeHtml(record.country)} - ${escapeHtml(record.office)}</strong>
+        <span>${escapeHtml(formatDate(record.electionDate))} / ${escapeHtml(dateStatusLabel(record.dateStatus))}</span>
+        <span>${escapeHtml(record.nextWatch)}</span>
+      </div>
+    `).join('');
+  }
+
+  function renderNewsWatch() {
+    const feeds = state.data && Array.isArray(state.data.newsFeeds)
+      ? state.data.newsFeeds
+      : [];
+
+    if (!feeds.length) {
+      els.newsWatch.innerHTML = '<div class="et-empty">No election news feeds are published yet.</div>';
+      return;
+    }
+
+    els.newsWatch.innerHTML = feeds.map((feed) => {
+      const latest = feed.latestItem
+        ? `<span>Latest: ${escapeHtml(feed.latestItem.title)} (${escapeHtml(formatDate(String(feed.latestItem.publishedAt || '').slice(0, 10)))})</span>`
+        : '<span>Latest item pending review.</span>';
+      const href = feed.feedUrl || feed.url;
+      return `
+        <div class="et-side-item">
+          <strong>${escapeHtml(feed.label)}</strong>
+          <span>${escapeHtml(feed.scope || feed.country || 'Election source')}</span>
+          ${latest}
+          <div class="et-source-links" style="margin-top:8px">
+            <a class="et-source-link" href="${escapeHtml(href)}" rel="noopener" target="_blank">${escapeHtml(feed.feedUrl ? 'RSS feed' : 'Source page')}</a>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function candidateFactSummary(contestant) {
+    const roleCount = Array.isArray(contestant.previousRoles) ? contestant.previousRoles.length : 0;
+    const promiseCount = Array.isArray(contestant.promises) ? contestant.promises.length : 0;
+    const deliveryCount = Array.isArray(contestant.promiseChecks) ? contestant.promiseChecks.length : 0;
+    const recordCount = Array.isArray(contestant.publicRecords) ? contestant.publicRecords.length : 0;
+    const parts = [];
+    if (roleCount) parts.push(`${roleCount} role${roleCount === 1 ? '' : 's'}`);
+    if (promiseCount) parts.push(`${promiseCount} promise${promiseCount === 1 ? '' : 's'}`);
+    if (deliveryCount) parts.push(`${deliveryCount} delivery check${deliveryCount === 1 ? '' : 's'}`);
+    if (recordCount) parts.push(`${recordCount} public record${recordCount === 1 ? '' : 's'}`);
+    if (parts.length) return parts.join(', ');
+    return contestant.rosterNote || 'Roster only';
+  }
+
+  function renderCandidateFacts() {
+    const entries = state.data
+      && state.data.candidateEvidence
+      && Array.isArray(state.data.candidateEvidence.elections)
+      ? state.data.candidateEvidence.elections
+      : [];
+
+    if (!entries.length) {
+      els.candidateFacts.innerHTML = '<div class="et-empty">Candidate fact files will appear after official rosters are reviewed.</div>';
+      return;
+    }
+
+    els.candidateFacts.innerHTML = entries.map((entry) => {
+      const contestants = Array.isArray(entry.contestants) ? entry.contestants : [];
+      const rows = contestants.map((contestant) => `
+        <tr>
+          <td><strong>${escapeHtml(contestant.party)}</strong></td>
+          <td>${escapeHtml(contestant.name)}</td>
+          <td>${escapeHtml(contestant.runningMate || 'Pending')}</td>
+          <td>${escapeHtml(candidateFactSummary(contestant))}</td>
+        </tr>
+      `).join('');
+      const source = entry.rosterSource || {};
+      return `
+        <div class="et-side-item" style="margin-bottom:12px">
+          <strong>${escapeHtml(entry.title)}</strong>
+          <span>${escapeHtml(contestants.length.toLocaleString('en-US'))} candidates / ${escapeHtml(String(entry.rosterStatus || 'roster').replace(/-/g, ' '))}</span>
+          <span>${escapeHtml(entry.publicNote || '')}</span>
+          <div class="et-source-links" style="margin-top:8px">
+            <a class="et-source-link" href="${escapeHtml(source.url || '#')}" rel="noopener" target="_blank">${escapeHtml(source.label || 'Official roster')}</a>
+          </div>
+        </div>
+        <div class="et-table-wrap">
+          <table class="et-table">
+            <thead>
+              <tr>
+                <th>Party</th>
+                <th>Candidate</th>
+                <th>Running mate</th>
+                <th>Verified facts</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderCountryRows() {
+    const grouped = new Map();
+    for (const record of state.records) {
+      if (!grouped.has(record.countryCode)) {
+        grouped.set(record.countryCode, {
+          country: record.country,
+          region: record.region,
+          records: []
+        });
+      }
+      grouped.get(record.countryCode).records.push(record);
+    }
+
+    const rows = Array.from(grouped.values())
+      .sort((a, b) => a.country.localeCompare(b.country))
+      .map((entry) => {
+        const sorted = entry.records.sort((a, b) => dateUtc(a.electionDate) - dateUtc(b.electionDate));
+        const next = sorted.find((record) => recordEndUtc(record) >= todayUtc()) || sorted[0];
+        const offices = uniqueSorted(sorted.map((record) => record.office)).join(', ');
+        const sourceStates = uniqueSorted(sorted.map((record) => sourceLabel(record.sourceStatus))).join(', ');
+        return `
+          <tr>
+            <td><strong>${escapeHtml(entry.country)}</strong></td>
+            <td>${escapeHtml(entry.region)}</td>
+            <td>${escapeHtml(offices)}</td>
+            <td>${escapeHtml(next ? formatDate(next.electionDate) : 'No date')}</td>
+            <td>${escapeHtml(sourceStates)}</td>
+          </tr>
+        `;
+      });
+
+    els.countryRows.innerHTML = rows.join('');
+  }
+
+  function renderAll() {
+    renderMetrics();
+    renderNextElection();
+    renderList();
+    renderReviewQueue();
+    renderNewsWatch();
+    renderCandidateFacts();
+    renderCountryRows();
+  }
+
+  function bindEvents() {
+    els.searchInput.addEventListener('input', () => {
+      state.filters.search = els.searchInput.value;
+      renderList();
+    });
+    els.regionFilter.addEventListener('change', () => {
+      state.filters.region = els.regionFilter.value;
+      renderList();
+    });
+    els.typeFilter.addEventListener('change', () => {
+      state.filters.type = els.typeFilter.value;
+      renderList();
+    });
+    els.sourceFilter.addEventListener('change', () => {
+      state.filters.source = els.sourceFilter.value;
+      renderList();
+    });
+    els.executiveOnly.addEventListener('change', () => {
+      state.filters.executiveOnly = els.executiveOnly.checked;
+      renderList();
+    });
+    els.upcomingOnly.addEventListener('change', () => {
+      state.filters.upcomingOnly = els.upcomingOnly.checked;
+      renderList();
+    });
+  }
+
+  async function loadData() {
+    const response = await fetch(DATA_URL, { cache: 'no-store' });
+    if (!response.ok) throw new Error(`Election data returned HTTP ${response.status}`);
+    return response.json();
+  }
+
+  loadData()
+    .then((data) => {
+      state.data = data;
+      state.records = Array.isArray(data.elections) ? data.elections : [];
+      els.ledgerMeta.textContent = `Generated ${formatDate(data.generatedAt)} / ${state.records.length} records / review every ${data.reviewCadenceDays || 7} days`;
+      populateFilters();
+      bindEvents();
+      renderAll();
+    })
+    .catch((error) => {
+      els.errorBox.innerHTML = `<div class="et-error">The published election data could not load: ${escapeHtml(error.message)}.</div>`;
+      els.nextElectionTitle.textContent = 'Tracker unavailable';
+      els.nextElectionMeta.textContent = 'Check the published election data file.';
+      els.resultCount.textContent = '0 records shown';
+      els.electionList.innerHTML = '';
+    });
+})();
+</script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/pages/government-focus.js?v=45251590" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

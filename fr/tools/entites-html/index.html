@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="view-transition" content="same-origin">
+<title>Encodeur et decodeur d'entités HTML | AfroTools</title>
+<meta name="description" content="Encodez et decodez les entités HTML: texte, code, accents, caractères speciaux, entités nommees, numériques et hex. Copie et export local.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="Encodeur et decodeur d'entités HTML | AfroTools">
+<meta property="og:description" content="Convertissez texte et code en entités HTML, puis decodez-les dans le navigateur.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/html-entities.webp">
+<meta property="og:url" content="https://afrotools.com/fr/tools/entites-html/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Encodeur et decodeur d'entités HTML | AfroTools">
+<meta name="twitter:description" content="Entités HTML nommees, numériques, hex, copie, export et exemples.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/html-entities.webp">
+<meta name="robots" content="index, follow">
+<meta property="article:modified_time" content="2026-06-17">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+:root{--he-ink:#101828;--he-muted:#667085;--he-line:#d8e2ef;--he-soft:#f6f9fc;--he-blue:#175cd3;--he-green:#087443;--he-warn:#a15c07}
+body{background:#f7f9fc;color:var(--he-ink)}
+.he-hero{background:linear-gradient(135deg,#09111f,#12305c 62%,#175cd3);color:#fff}
+.he-hero__inner{max-width:1180px;margin:0 auto;padding:46px 20px 42px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr);gap:24px;align-items:center}
+.he-kicker{display:inline-flex;margin-bottom:14px;padding:6px 12px;border:1px solid rgba(255,255,255,.2);border-radius:999px;background:rgba(255,255,255,.08);font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#c9dcff}
+.he-hero h1{max-width:780px;margin:0;color:#fff;font-size:clamp(2rem,5vw,3.7rem);line-height:1;letter-spacing:-.03em}
+.he-hero p{max-width:690px;margin:18px 0 0;color:rgba(255,255,255,.76);font-size:1rem;line-height:1.7}
+.he-code-card{background:#fff;color:#0f172a;border-radius:14px;padding:18px;box-shadow:0 22px 64px rgba(0,0,0,.28)}
+.he-code-card pre{margin:0;background:#0f172a;color:#a7f3d0;border-radius:10px;padding:16px;white-space:pre-wrap;font-size:.86rem;line-height:1.6}
+.he-shell{max-width:1180px;margin:0 auto;padding:28px 20px 72px}
+.he-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:22px;align-items:start}
+.he-grid>*{min-width:0}
+.he-card{min-width:0;box-sizing:border-box;background:#fff;border:1px solid var(--he-line);border-radius:12px;box-shadow:0 10px 32px rgba(16,24,40,.06)}
+.he-card+.he-card{margin-top:18px}
+.he-head{min-width:0;box-sizing:border-box;padding:18px 20px;border-bottom:1px solid #edf1f7}
+.he-head h2,.he-head h3{margin:0;font-size:.98rem}
+.he-body{min-width:0;box-sizing:border-box;padding:20px}
+.he-tabs{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
+.he-tab{min-height:44px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#173f80;font-weight:800;cursor:pointer}
+.he-tab[aria-pressed="true"]{background:#175cd3;color:#fff;border-color:#175cd3}
+.he-form{display:grid;gap:16px}
+.he-row{min-width:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.he-field label,.he-label{display:block;margin-bottom:7px;color:#344054;font-size:.76rem;font-weight:800;letter-spacing:.03em}
+.he-field textarea,.he-field select{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;background:#fbfdff;color:#0f172a;font:inherit;font-size:.92rem;padding:11px 12px}
+.he-field textarea{min-height:240px;resize:vertical;font-family:Consolas,"Courier New",monospace;line-height:1.55}
+.he-field textarea[readonly]{background:#101828;color:#d1fae5;border-color:#1f2937}
+.he-field textarea:focus,.he-field select:focus{outline:3px solid rgba(23,92,211,.14);border-color:var(--he-blue)}
+.he-actions{display:flex;flex-wrap:wrap;gap:10px}
+.he-btn{min-height:44px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#173f80;padding:10px 13px;font-weight:800;cursor:pointer}
+.he-btn:hover,.he-btn:focus-visible{border-color:var(--he-blue);outline:3px solid rgba(23,92,211,.12)}
+.he-primary{background:var(--he-blue);border-color:var(--he-blue);color:#fff}
+.he-secondary{background:#eef5ff}
+.he-status{border:1px solid #d6eadf;background:#f1fbf5;color:#14613e;border-radius:10px;padding:12px;font-size:.86rem;line-height:1.55}
+.he-list{display:grid;gap:10px}
+.he-list a,.he-list span{display:block;border:1px solid #e4e9f2;border-radius:8px;padding:11px 12px;color:#274060;text-decoration:none;font-size:.86rem;line-height:1.45}
+.he-list a:hover{border-color:var(--he-blue);background:#f7fbff}
+.he-table{width:100%;border-collapse:collapse;font-size:.84rem}
+.he-table th,.he-table td{padding:9px 10px;border-bottom:1px solid #edf1f7;text-align:left}
+.he-table th{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:#667085;background:#f8fbff}
+.he-table td:nth-child(2),.he-table td:nth-child(3){font-family:Consolas,"Courier New",monospace;color:#175cd3}
+.he-seo{max-width:1180px;margin:0 auto;padding:0 20px 72px}
+.he-seo-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.he-seo h2{font-size:1.35rem;margin:0 0 12px}
+.he-seo p,.he-seo li{color:#475569;line-height:1.75;font-size:.94rem}
+.he-seo ul{padding-left:18px;margin:0}
+.he-faq details{border-top:1px solid #e4e9f2;padding:14px 0}
+.he-faq summary{font-weight:800;cursor:pointer}
+@media(max-width:900px){.he-hero__inner,.he-grid,.he-seo-grid{grid-template-columns:1fr}.he-code-card{display:none}}
+@media(max-width:680px){.he-shell,.he-seo{padding-left:14px;padding-right:14px}.he-row,.he-tabs{grid-template-columns:1fr}.he-actions .he-btn{width:100%}.he-body{padding:16px}.he-hero__inner{padding:38px 14px}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Encodeur et decodeur d'entités HTML","url":"https://afrotools.com/fr/tools/entites-html/","inLanguage":"fr","applicationCategory":"DeveloperApplication","operatingSystem":"Web","description":"Encodeur et decodeur local d'entités HTML avec modes nomme, numérique et hexadecimal, exemples, copie, sauvegarde et téléchargement.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Encodage HTML","Decodage HTML","Entites nommees","Entites numeriques","Copie","Telechargement"],"image":"https://afrotools.com/assets/img/tools/html-entities.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Quand utiliser des entités HTML ?","acceptedAnswer":{"@type":"Answer","text":"Utilisez des entités pour afficher du code dans une page, representer des caractères reserves comme <, > et &, ou préparer du contenu qui sera place dans un contexte HTML."}},{"@type":"Question","name":"Est-ce une protection XSS complete ?","acceptedAnswer":{"@type":"Answer","text":"Non. L'encodage HTML aide dans un contexte HTML texte, mais la sécurité depend du contexte: attribut, URL, JavaScript, CSS, framework et politique de sanitisation."}},{"@type":"Question","name":"Les données quittent-elles le navigateur ?","acceptedAnswer":{"@type":"Answer","text":"Non. La conversion se fait localement dans le navigateur. La sauvegarde utilise le stockage local si vous cliquez sur sauvegarder."}}]}</script>
+<link rel="canonical" href="https://afrotools.com/fr/tools/entites-html/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/html-entities/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/entites-html/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/alama-za-html/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/html-entities/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="tools"></afro-navbar>
+<main>
+<section class="he-hero">
+  <div class="he-hero__inner">
+    <div>
+      <span class="he-kicker">Développeurs et editeurs web</span>
+      <h1>Encodeur et decodeur d'entités HTML</h1>
+      <p>Convertissez du texte, des accents, des symboles et des extraits de code en entités HTML, puis decodez-les proprement. Tout se fait dans le navigateur.</p>
+    </div>
+    <div class="he-code-card" aria-hidden="true">
+      <pre>&lt;span title=&quot;A&amp;B&quot;&gt;
+  Caf&eacute; &amp; contenu
+&lt;/span&gt;</pre>
+    </div>
+  </div>
+</section>
+
+<section class="he-shell">
+  <div class="he-grid">
+    <div>
+      <section class="he-card" aria-labelledby="he-tool-title">
+        <div class="he-head"><h2 id="he-tool-title">Convertir</h2></div>
+        <div class="he-body">
+          <div class="he-tabs" role="group" aria-label="Mode de conversion">
+            <button class="he-tab" type="button" data-mode="encode" aria-pressed="true">Encoder</button>
+            <button class="he-tab" type="button" data-mode="decode" aria-pressed="false">Decoder</button>
+          </div>
+          <form id="heForm" class="he-form">
+            <div class="he-row">
+              <div class="he-field">
+                <label for="entityStyle">Style de sortie</label>
+                <select id="entityStyle" name="entityStyle">
+                  <option value="named">Nomme si possible, sinon numérique</option>
+                  <option value="numeric">Numérique decimal</option>
+                  <option value="hex">Numérique hexadecimal</option>
+                  <option value="minimal">Minimal: &, <, >, guillemets</option>
+                </select>
+              </div>
+              <div class="he-field">
+                <label for="exampleSelect">Exemple rapide</label>
+                <select id="exampleSelect" name="exampleSelect">
+                  <option value="">Choisir un exemple</option>
+                  <option value="html">Snippet HTML</option>
+                  <option value="accent">Accents français</option>
+                  <option value="quote">Attribut avec guillemets</option>
+                </select>
+              </div>
+            </div>
+            <div class="he-row">
+              <div class="he-field">
+                <label for="inputText" id="inputLabel">Texte ou code source</label>
+                <textarea id="inputText" name="inputText" spellcheck="false">&lt;div class="note"&gt;Cafe &amp; marche &quot;local&quot;&lt;/div&gt;</textarea>
+              </div>
+              <div class="he-field">
+                <label for="outputText" id="outputLabel">Sortie encodee</label>
+                <textarea id="outputText" name="outputText" readonly spellcheck="false"></textarea>
+              </div>
+            </div>
+            <div class="he-actions">
+              <button class="he-btn he-primary" type="submit">Convertir</button>
+              <button class="he-btn he-secondary" type="button" id="copyBtn">Copier</button>
+              <button class="he-btn" type="button" id="downloadBtn">Télécharger TXT</button>
+              <button class="he-btn" type="button" id="swapBtn">Inverser</button>
+              <button class="he-btn" type="button" id="saveBtn">Sauvegarder</button>
+            </div>
+            <div id="statusBox" class="he-status" role="status">Prêt. La conversion est locale.</div>
+          </form>
+        </div>
+      </section>
+
+      <section class="he-card">
+        <div class="he-head"><h2>Références courantes</h2></div>
+        <div class="he-body" style="overflow-x:auto">
+          <table class="he-table">
+            <thead><tr><th>Caractère</th><th>Entité</th><th>Numérique</th><th>Usage</th></tr></thead>
+            <tbody>
+              <tr><td>&amp;</td><td>&amp;amp;</td><td>&amp;#38;</td><td>Esperluette</td></tr>
+              <tr><td>&lt;</td><td>&amp;lt;</td><td>&amp;#60;</td><td>Début de balise</td></tr>
+              <tr><td>&gt;</td><td>&amp;gt;</td><td>&amp;#62;</td><td>Fin de balise</td></tr>
+              <tr><td>"</td><td>&amp;quot;</td><td>&amp;#34;</td><td>Attribut HTML</td></tr>
+              <tr><td>'</td><td>&amp;apos;</td><td>&amp;#39;</td><td>Apostrophe</td></tr>
+              <tr><td>&copier;</td><td>&amp;copier;</td><td>&amp;#169;</td><td>Copyright</td></tr>
+              <tr><td>&euro;</td><td>&amp;euro;</td><td>&amp;#8364;</td><td>Euro</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <aside>
+      <section class="he-card" data-tool-verification-panel aria-label="Sources and vérification">
+        <div class="he-head"><h3>Sources &amp; vérification</h3></div>
+        <div class="he-body he-list">
+          <span>Vérification panel: official authority référence checked on 17 June 2026. The tool is for text conversion, not a complete security sanitizer.</span>
+          <a href="https://html.spec.whatwg.org/multipage/named-characters.html" target="_blank" rel="nofollow noopener">WHATWG HTML Living Standard official named character références</a>
+          <a href="https://developer.mozilla.org/en-US/docs/Glossary/Entity" target="_blank" rel="nofollow noopener">MDN référence: HTML entity</a>
+          <a href="https://owasp.org/www-community/attacks/xss/" target="_blank" rel="nofollow noopener">OWASP référence: XSS context and risk</a>
+        </div>
+      </section>
+      <section class="he-card">
+        <div class="he-head"><h3>Outils lies</h3></div>
+        <div class="he-body he-list">
+          <a href="/fr/tools/url-encoder/">Encodeur URL</a>
+          <a href="/fr/tools/base64/">Encodeur Base64</a>
+          <a href="/fr/tools/json-formatter/">Formateur JSON</a>
+          <a href="/fr/tools/regex-tester/">Testeur regex</a>
+          <a href="/fr/tools/html-to-pdf/">HTML vers PDF</a>
+        </div>
+      </section>
+    </aside>
+  </div>
+</section>
+
+<section class="he-seo">
+  <div class="he-seo-grid">
+    <section class="he-card">
+      <div class="he-body">
+        <h2>Méthodologie</h2>
+        <p>Methodology: le mode encoder remplace les caractères reserves HTML et, selon le style choisi, convertit aussi les caractères non ASCII en entités numériques ou hexadecimales. Le mode decoder laisse le moteur HTML du navigateur reconvertir les entités en texte.</p>
+        <ul>
+          <li><strong>Règles appliquees:</strong> <code>&amp;</code>, <code>&lt;</code>, <code>&gt;</code>, guillemets et apostrophes sont traites en mode minimal.</li>
+          <li><strong>Avertissement:</strong> l'encodage de texte ne remplace pas une stratégie XSS complete. Vérifiez le contexte HTML, attribut, URL, CSS ou JavaScript.</li>
+          <li><strong>Confidentialité:</strong> les saisies restent locales; aucune requete serveur n'est nécessaire pour convertir.</li>
+          <li><strong>Fraîcheur:</strong> références et schema de page revus en 2026.</li>
+        </ul>
+      </div>
+    </section>
+    <section class="he-card he-faq">
+      <div class="he-body">
+        <h2>Questions fréquentes</h2>
+        <details open><summary>Entités nommees ou numériques ?</summary><p>Les entités nommees sont plus lisibles quand elles existent. Les entités numériques couvrent davantage de caractères Unicode.</p></details>
+        <details><summary>Pourquoi &amp; doit-il être encode en premier ?</summary><p>Parce qu'une entité commence par &amp;. Si vous encodez &amp; après les autres caractères, vous pouvez double-encoder une sortie déjà transformee.</p></details>
+        <details><summary>Le résultat est-il sur pour tout contexte ?</summary><p>Non. Un texte encode pour du contenu HTML n'est pas automatiquement adapte a un attribut, une URL, du CSS ou du JavaScript.</p></details>
+      </div>
+    </section>
+  </div>
+</section>
+
+<afro-related-tools category="developer" current="entites-html-fr"></afro-related-tools>
+</main>
+<afro-footer></afro-footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var mode = 'encode';
+  var storageKey = 'afrotools:fr:html-entities';
+  var named = {
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+    '©': '&copy;', '®': '&reg;', '™': '&trade;', '€': '&euro;', '£': '&pound;',
+    '–': '&ndash;', '—': '&mdash;', ' ': ' '
+  };
+  var examples = {
+    html: '<section class="card">Cafe & marche</section>',
+    accent: 'Cote d Ivoire, Sao Tome, cafe, deja vu, 50 EUR',
+    quote: '<a title="A&B">Lire "maintenant"</a>'
+  };
+
+  function byId(id) { return document.getElementById(id); }
+  function encodeMinimal(text) {
+    return text.replace(/[&<>"']/g, function (ch) { return named[ch]; });
+  }
+  function encodeNumeric(text, base) {
+    var first = encodeMinimal(text);
+    return Array.from(first).map(function (ch) {
+      if (ch.charCodeAt(0) < 128) return ch;
+      var code = ch.codePointAt(0);
+      return base === 'hex' ? '&#x' + code.toString(16).toUpperCase() + ';' : '&#' + code + ';';
+    }).join('');
+  }
+  function encodeNamed(text) {
+    var output = '';
+    Array.from(text).forEach(function (ch) {
+      if (named[ch]) output += named[ch];
+      else if (ch.codePointAt(0) > 127) output += '&#' + ch.codePointAt(0) + ';';
+      else output += ch;
+    });
+    return output;
+  }
+  function decodeEntities(text) {
+    var area = document.createElement('textarea');
+    area.innerHTML = text;
+    return area.value;
+  }
+  function convert() {
+    var input = byId('inputText').value;
+    var style = byId('entityStyle').value;
+    var output = '';
+    if (mode === 'decode') output = decodeEntities(input);
+    else if (style === 'minimal') output = encodeMinimal(input);
+    else if (style === 'numeric') output = encodeNumeric(input, 'decimal');
+    else if (style === 'hex') output = encodeNumeric(input, 'hex');
+    else output = encodeNamed(input);
+    byId('outputText').value = output;
+    byId('statusBox').textContent = (mode === 'encode' ? 'Encodage' : 'Decodage') + ' termine: ' + output.length + ' caracteres en sortie.';
+    return output;
+  }
+  function setMode(next) {
+    mode = next;
+    document.querySelectorAll('.he-tab').forEach(function (tab) {
+      tab.setAttribute('aria-pressed', tab.dataset.mode === mode ? 'true' : 'false');
+    });
+    byId('inputLabel').textContent = mode === 'encode' ? 'Texte ou code source' : 'Entites HTML a decoder';
+    byId('outputLabel').textContent = mode === 'encode' ? 'Sortie encodee' : 'Texte decode';
+    convert();
+  }
+  document.querySelectorAll('.he-tab').forEach(function (tab) {
+    tab.addEventListener('click', function () { setMode(tab.dataset.mode); });
+  });
+  byId('heForm').addEventListener('submit', function (event) { event.preventDefault(); convert(); });
+  byId('inputText').addEventListener('input', convert);
+  byId('entityStyle').addEventListener('change', convert);
+  byId('exampleSelect').addEventListener('change', function () {
+    var key = byId('exampleSelect').value;
+    if (examples[key]) {
+      byId('inputText').value = examples[key];
+      setMode('encode');
+    }
+  });
+  byId('copyBtn').addEventListener('click', function () {
+    var text = byId('outputText').value || convert();
+    navigator.clipboard.writeText(text).then(function () {
+      byId('statusBox').textContent = 'Sortie copiee dans le presse-papiers.';
+    }).catch(function () {
+      byId('statusBox').textContent = 'Copie automatique indisponible. Sélectionnez la sortie et copiez-la manuellement.';
+    });
+  });
+  byId('downloadBtn').addEventListener('click', function () {
+    var blob = new Blob([byId('outputText').value || convert()], { type: 'text/plain;charset=utf-8' });
+    var link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = mode === 'encode' ? 'entites-html-encodees.txt' : 'entites-html-decodees.txt';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(function () { URL.revokeObjectURL(link.href); }, 250);
+  });
+  byId('swapBtn').addEventListener('click', function () {
+    byId('inputText').value = byId('outputText').value;
+    setMode(mode === 'encode' ? 'decode' : 'encode');
+  });
+  byId('saveBtn').addEventListener('click', function () {
+    localStorage.setItem(storageKey, JSON.stringify({ mode: mode, style: byId('entityStyle').value, input: byId('inputText').value }));
+    byId('statusBox').textContent = 'Scenario sauvegarde localement dans ce navigateur.';
+  });
+  try {
+    var saved = localStorage.getItem(storageKey);
+    if (saved) {
+      var data = JSON.parse(saved);
+      byId('entityStyle').value = data.style || 'named';
+      byId('inputText').value = data.input || byId('inputText').value;
+      setMode(data.mode || 'encode');
+    } else {
+      convert();
+    }
+  } catch (err) {
+    convert();
+  }
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+</body>
+</html>

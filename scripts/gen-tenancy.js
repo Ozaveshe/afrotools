@@ -1,0 +1,205 @@
+const fs=require('fs');
+const master=require('C:/Users/Oza/Downloads/afrotools-270-master-data.js');
+const pack2=require('C:/Users/Oza/Downloads/afrotools-data-pack-2.js');
+const C=master.COUNTRIES;
+
+// Merge tenancy data
+const hub={NG:{law:'Lagos State Tenancy Law 2011',maxDeposit:'Varies by state',noticeLandlord:'6 months yearly, 1 month monthly',noticeTenant:'1 month monthly',disputeBody:'Magistrate Court / Rent Tribunal'},KE:{law:'Rent Restriction Act Cap 296',maxDeposit:'1 month rent',noticeLandlord:'1 month monthly',noticeTenant:'1 month monthly',disputeBody:'Rent Restriction Tribunal'},GH:{law:'Rent Act 1963 (Act 220)',maxDeposit:'6 months advance max',noticeLandlord:'3 months yearly',noticeTenant:'1 month monthly',disputeBody:'Rent Control Department'},ZA:{law:'Rental Housing Act 50 of 1999',maxDeposit:'1-2 months (interest-bearing)',noticeLandlord:'1 month written',noticeTenant:'1 month written',disputeBody:'Rental Housing Tribunal'},TZ:{law:'Rent Restriction Act 1984',maxDeposit:'1-2 months',noticeLandlord:'1 month monthly',noticeTenant:'1 month monthly',disputeBody:'Rent Restriction Board'},UG:{law:'Landlord and Tenant Act 2022',maxDeposit:'1-2 months',noticeLandlord:'2 months yearly',noticeTenant:'1 month monthly',disputeBody:'Chief Magistrate Court'},RW:{law:'Law No 43/2013',maxDeposit:'1 month',noticeLandlord:'3 months written',noticeTenant:'3 months written',disputeBody:'Primary Court'},ET:{law:'Ethiopian Civil Code (Lease Provisions)',maxDeposit:'1-3 months',noticeLandlord:'1 month monthly',noticeTenant:'1 month monthly',disputeBody:'Federal First Instance Court'}};
+const T=Object.assign({},pack2.TENANCY_DATA,hub);
+let count=0;
+
+for(const cc in C){
+  const c=C[cc],t=T[cc];
+  if(!t)continue;
+  const lawShort=(t.law||'').split('&')[0].split(';')[0].trim();
+  const title=c.name+' Tenancy Agreement Generator \u2014 '+lawShort+' | AfroTools';
+  const desc='Generate a professional tenancy agreement compliant with '+c.name+' rental law. Landlord/tenant details, deposit, rent, utilities, and legal clauses.';
+  const url='https://afrotools.com/tools/tenancy-agreement/'+c.slug;
+
+  const schema1=JSON.stringify({'@context':'https://schema.org','@type':'WebApplication',name:c.name+' Tenancy Agreement Generator | AfroTools',description:desc,url:url,applicationCategory:'BusinessApplication',provider:{'@type':'Organization',name:'AfroTools',url:'https://afrotools.com'},offers:{'@type':'Offer',price:'0',priceCurrency:'USD'}});
+  const schema2=JSON.stringify({'@context':'https://schema.org','@type':'BreadcrumbList',itemListElement:[{'@type':'ListItem',position:1,name:'Home',item:'https://afrotools.com/'},{'@type':'ListItem',position:2,name:'Legal & Compliance',item:'https://afrotools.com/legal/'},{'@type':'ListItem',position:3,name:'Tenancy Agreement Generator',item:'https://afrotools.com/tools/tenancy-agreement/'},{'@type':'ListItem',position:4,name:c.name,item:url}]});
+
+  const seo1='Tenancy agreements in '+c.name+' are governed by '+t.law+'. The maximum security deposit is '+t.maxDeposit+'. '+'Landlord notice period: '+t.noticeLandlord+'. Tenant notice period: '+t.noticeTenant+'. Disputes are resolved through the '+t.disputeBody+'.';
+  const seo2=(t.tenantProtection?'Tenant protection: '+t.tenantProtection+'. ':'')+
+    (t.rentIncreaseCap?'Rent increases: '+t.rentIncreaseCap+'. ':'')+
+    (t.stampDuty?'Stamp duty: '+t.stampDuty+'.':'');
+
+  const html=`<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${title.replace(/"/g,'&quot;')}</title>
+<meta name="description" content="${desc.replace(/"/g,'&quot;')}">
+<link rel="canonical" href="${url}">
+<meta property="og:title" content="${(c.name+' Tenancy Agreement Generator | AfroTools').replace(/"/g,'&quot;')}">
+<meta property="og:description" content="${desc.replace(/"/g,'&quot;')}">
+<meta property="og:url" content="${url}">
+<meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">${schema1}<\/script>
+<script type="application/ld+json">${schema2}<\/script>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f"><link rel="stylesheet" href="/assets/css/multi-country.css?v=1">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
+<script src="/assets/js/components/navbar.min.js?v=43e4d9b2" defer><\/script><script src="/assets/js/components/footer.min.js?v=f68d6568" defer><\/script>
+<style>
+:root{--blue:#1d4ed8;--blue-light:#eff6ff;--blue-dark:#1e40af}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}
+.hero{background:linear-gradient(135deg,#1e3a5f 0%,#1d4ed8 50%,#3b82f6 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}
+.hero h1{color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
+.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}
+.hero .breadcrumb{margin-bottom:1rem;font-size:.85rem;opacity:.8}.hero .breadcrumb a{color:#fff;text-decoration:underline;opacity:.8}.hero .breadcrumb a:hover{opacity:1}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#1e3a5f}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:768px){.form-grid{grid-template-columns:1fr}.agreement-preview .signatures{grid-template-columns:1fr;gap:1.25rem}}
+.form-group{display:flex;flex-direction:column;gap:.3rem;margin-bottom:.25rem}
+.form-group label{font-weight:600;font-size:.85rem;color:#475569}
+.form-group input,.form-group select{padding:.55rem .75rem;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.95rem;background:#f8fafc;font-family:inherit}
+.form-group input:focus,.form-group select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(29,78,216,.15)}
+.btn{padding:.65rem 1.5rem;border:none;border-radius:7px;font-weight:600;font-size:.95rem;cursor:pointer;transition:all .2s;min-height:44px}
+.btn-primary{background:var(--blue);color:#fff}.btn-primary:hover{background:var(--blue-dark)}
+.btn-outline{background:#fff;color:var(--blue);border:1.5px solid var(--blue)}.btn-outline:hover{background:var(--blue-light)}
+.checkbox-group{display:flex;flex-wrap:wrap;gap:.75rem;margin:.5rem 0}
+.checkbox-group label{display:flex;align-items:center;gap:.4rem;font-size:.9rem;color:#475569;cursor:pointer;min-height:44px}
+.checkbox-group input[type="checkbox"]{width:18px;height:18px;accent-color:var(--blue)}
+.agreement-preview{background:#fff;border:2px solid #e2e8f0;border-radius:10px;padding:2.5rem;font-size:.95rem;line-height:1.8;counter-reset:clause}
+.agreement-preview h1{font-size:1.4rem;text-align:center;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid #1d4ed8;padding-bottom:.75rem}
+.agreement-preview h2{font-size:1.05rem;margin:1.5rem 0 .5rem;color:#1e3a5f;text-transform:uppercase}
+.agreement-preview p{margin-bottom:.75rem;text-align:justify}
+.agreement-preview .clause{padding-left:.5rem;margin-bottom:.5rem}
+.agreement-preview .signatures{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2rem;padding-top:1rem;border-top:1px solid #e2e8f0}
+.agreement-preview .sig-block{text-align:center}.agreement-preview .sig-line{border-bottom:1px solid #334155;margin-bottom:.5rem;height:40px}
+.actions{display:flex;gap:.75rem;justify-content:center;margin:1.5rem 0;flex-wrap:wrap}
+.info-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem;margin-bottom:1.5rem}
+.info-card{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:1rem;text-align:center}
+.info-card .val{font-size:.95rem;font-weight:800;color:var(--blue);margin-bottom:.2rem}
+.info-card .lbl{font-size:.72rem;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.03em}
+.seo-section{max-width:800px;margin:2rem auto;padding:0 1.5rem}
+.seo-section h2{font-size:1.3rem;font-weight:800;color:#1e3a5f;margin-bottom:1rem}
+.seo-section p{color:#475569;margin-bottom:1rem;font-size:.95rem}
+@media print{.hero,.card,.actions,.seo-section,afro-navbar,afro-footer,.info-cards{display:none!important}.agreement-preview{border:none;padding:1cm;font-size:12pt}}
+</style>
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<afro-navbar theme="dark" active="legal"></afro-navbar>
+<section class="hero">
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>\u203A</span> <a href="/legal/">Legal & Compliance</a> <span>\u203A</span> <a href="/tools/tenancy-agreement/">Tenancy Agreement</a> <span>\u203A</span> ${c.name}</nav>
+<h1>${c.flag} ${c.name} Tenancy Agreement Generator</h1>
+<p>Generate a rental agreement compliant with ${lawShort}. Pre-configured with ${c.name} tenancy law requirements.</p>
+</section>
+<div class="container" id="main-content" role="main">
+<div class="info-cards">
+<div class="info-card"><div class="val">${t.maxDeposit||'By agreement'}</div><div class="lbl">Max Deposit</div></div>
+<div class="info-card"><div class="val">${t.noticeLandlord||'Per law'}</div><div class="lbl">Landlord Notice</div></div>
+<div class="info-card"><div class="val">${t.noticeTenant||'Per law'}</div><div class="lbl">Tenant Notice</div></div>
+<div class="info-card"><div class="val">${t.disputeBody||'Civil Court'}</div><div class="lbl">Dispute Body</div></div>
+</div>
+
+<div class="card"><h2>Property Details</h2>
+<div class="form-grid">
+<div class="form-group"><label for="propAddr">Property Address</label><input type="text" id="propAddr" placeholder="Full property address"></div>
+<div class="form-group"><label for="propType">Property Type</label><select id="propType"><option value="apartment">Apartment</option><option value="house">House</option><option value="commercial">Commercial</option><option value="land">Land</option></select></div>
+<div class="form-group"><label for="bedrooms">Bedrooms</label><input type="number" id="bedrooms" placeholder="e.g. 3" inputmode="numeric"></div>
+<div class="form-group"><label for="furnished">Furnished?</label><select id="furnished"><option value="no">No</option><option value="yes">Yes</option></select></div>
+</div></div>
+
+<div class="card"><h2>Landlord Details</h2>
+<div class="form-grid">
+<div class="form-group"><label for="llName">Full Name</label><input type="text" id="llName" placeholder="Landlord's full name"></div>
+<div class="form-group"><label for="llAddr">Address</label><input type="text" id="llAddr" placeholder="Landlord's address"></div>
+<div class="form-group"><label for="llPhone">Phone</label><input type="tel" id="llPhone" placeholder="Phone number"></div>
+<div class="form-group"><label for="agentName">Agent Name (optional)</label><input type="text" id="agentName" placeholder="Property agent name"></div>
+</div></div>
+
+<div class="card"><h2>Tenant Details</h2>
+<div class="form-grid">
+<div class="form-group"><label for="tenName">Full Name</label><input type="text" id="tenName" placeholder="Tenant's full name"></div>
+<div class="form-group"><label for="tenAddr">Previous Address</label><input type="text" id="tenAddr" placeholder="Tenant's current address"></div>
+<div class="form-group"><label for="tenPhone">Phone</label><input type="tel" id="tenPhone" placeholder="Phone number"></div>
+<div class="form-group"><label for="tenOccupation">Occupation</label><input type="text" id="tenOccupation" placeholder="Tenant's occupation"></div>
+</div></div>
+
+<div class="card"><h2>Lease Terms</h2>
+<div class="form-grid">
+<div class="form-group"><label for="rent">Rent Amount (${c.currencySymbol})</label><input type="number" id="rent" placeholder="0" inputmode="numeric"></div>
+<div class="form-group"><label for="payFreq">Payment Frequency</label><select id="payFreq"><option value="month">Monthly</option><option value="quarter">Quarterly</option><option value="year">Annually</option></select></div>
+<div class="form-group"><label for="deposit">Security Deposit (${c.currencySymbol})</label><input type="number" id="deposit" placeholder="0" inputmode="numeric"></div>
+<div class="form-group"><label for="startDate">Lease Start Date</label><input type="date" id="startDate"></div>
+<div class="form-group"><label for="duration">Lease Duration</label><select id="duration"><option value="6 months">6 months</option><option value="12 months" selected>12 months</option><option value="24 months">2 years</option><option value="36 months">3 years</option></select></div>
+<div class="form-group"><label for="rentReview">Annual Rent Increase (%)</label><input type="number" id="rentReview" placeholder="e.g. 10" inputmode="numeric"></div>
+</div></div>
+
+<div class="card"><h2>Utilities (Tenant Pays)</h2>
+<div class="form-grid">
+<div class="form-group"><label for="utilElec">Electricity</label><select id="utilElec"><option value="tenant">Tenant</option><option value="landlord">Landlord</option></select></div>
+<div class="form-group"><label for="utilWater">Water</label><select id="utilWater"><option value="tenant">Tenant</option><option value="landlord">Landlord</option></select></div>
+<div class="form-group"><label for="utilWaste">Waste Disposal</label><select id="utilWaste"><option value="tenant">Tenant</option><option value="landlord">Landlord</option></select></div>
+<div class="form-group"><label for="utilInternet">Internet</label><select id="utilInternet"><option value="tenant">Tenant</option><option value="landlord">Landlord</option></select></div>
+</div></div>
+
+<div class="card"><h2>Optional Clauses</h2>
+<div class="checkbox-group">
+<label><input type="checkbox" id="clSublet"> Subletting allowed</label>
+<label><input type="checkbox" id="clPets"> Pets allowed</label>
+<label><input type="checkbox" id="clRenovation"> Renovation consent clause</label>
+<label><input type="checkbox" id="clFirstRefusal"> Right of first refusal</label>
+<label><input type="checkbox" id="clDiplomatic"> Diplomatic / break clause</label>
+</div></div>
+
+<div style="text-align:center;margin:1.5rem 0"><button class="btn btn-primary" id="generateBtn" style="font-size:1.05rem;padding:.75rem 2.5rem">Generate Agreement</button></div>
+<div id="output" style="display:none"><div class="agreement-preview" id="agreementContent"></div>
+<div class="actions"><button class="btn btn-primary" onclick="window.print()">Print Agreement</button><button class="btn btn-outline" id="downloadBtn">Download as Text</button></div></div>
+</div>
+
+<section class="seo-section">
+<h2>${c.name} Tenancy Agreement \u2014 Legal Requirements</h2>
+<p>${seo1}</p>
+<p>${seo2}</p>
+<p><strong>Disclaimer:</strong> This is a template. Tenancy laws vary and change. Consult a qualified property lawyer in ${c.name} before signing any lease agreement.</p>
+</section>
+<afro-footer></afro-footer>
+<script src="/data/legal/tenancy-data.js?v=1"><\/script>
+<script src="/engines/tenancy-agreement-engine.js?v=1"><\/script>
+<script>
+!function(){"use strict";
+var CC='${cc}';
+var E=window.AfroTools.TenancyAgreementEngine;
+if(!E)return;
+
+document.getElementById('generateBtn').addEventListener('click',function(){
+  var form={};
+  ['propAddr','propType','bedrooms','furnished','llName','llAddr','llPhone','agentName','tenName','tenAddr','tenPhone','tenOccupation','rent','payFreq','deposit','startDate','duration','rentReview','utilElec','utilWater','utilWaste','utilInternet'].forEach(function(id){
+    var el=document.getElementById(id);form[id]=el?el.value:'';
+  });
+  ['clSublet','clPets','clRenovation','clFirstRefusal','clDiplomatic'].forEach(function(id){
+    var el=document.getElementById(id);form[id]=el?el.checked:false;
+  });
+  var result=E.generate(form,CC);
+  if(result.error){alert(result.error);return;}
+  document.getElementById('agreementContent').innerHTML=result.html;
+  document.getElementById('output').style.display='block';
+  document.getElementById('output').scrollIntoView({behavior:'smooth',block:'start'});
+});
+
+document.getElementById('downloadBtn').addEventListener('click',function(){
+  var el=document.getElementById('agreementContent');if(!el)return;
+  var text=el.innerText||el.textContent;
+  var blob=new Blob([text],{type:'text/plain'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='tenancy-agreement-${c.slug}.txt';a.click();
+});
+}();
+<\/script>
+</body>
+</html>`;
+
+  fs.writeFileSync('tools/tenancy-agreement/'+c.slug+'.html', html);
+  count++;
+}
+console.log('Created '+count+' Tenancy Agreement country pages');

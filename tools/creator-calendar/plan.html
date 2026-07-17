@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="view-transition" content="same-origin">
+  <title>AI Content Planner — CreatorCalendar | AfroTools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <link rel="stylesheet" href="style.css?v=326a209e">
+<meta name="robots" content="noindex, follow">
+<meta property="og:url" content="https://afrotools.com/tools/creator-calendar/plan">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c4853917">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/lib/dark-mode.js?v=5cb64ba3" defer></script>
+<link rel="canonical" href="https://afrotools.com/tools/creator-calendar/plan">
+</head>
+<body class="top-level-page-ui-refresh">
+  <h1 style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0">
+    AI Content Planner — CreatorCalendar
+  </h1>
+
+  <div class="cc-plan">
+    <div class="cc-plan-inner">
+      <!-- HEADER -->
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
+        <a href="app.html" style="color:rgba(255,255,255,.5);font-size:.78rem;text-decoration:none">← Calendar</a>
+        <div style="font-weight:800;font-size:.92rem;flex:1;color:#fff">AI Content Planner</div>
+        <a href="index.html" style="color:rgba(255,255,255,.4);font-size:.72rem;text-decoration:none">CreatorCalendar</a>
+      </div>
+
+      <!-- PROGRESS -->
+      <div class="cc-plan-progress">
+        <div class="cc-plan-progress-step active" id="prog1"></div>
+        <div class="cc-plan-progress-step" id="prog2"></div>
+        <div class="cc-plan-progress-step" id="prog3"></div>
+      </div>
+
+      <!-- STEP 1: CONTEXT -->
+      <div class="cc-plan-step active" id="step1">
+        <div class="cc-plan-step-label">Step 1 of 3</div>
+        <div class="cc-plan-step-title">What Do You Create?</div>
+        <div class="cc-plan-step-sub">Tell us about your content so we can generate ideas that match your niche and audience.</div>
+
+        <div class="cc-plan-field">
+          <div class="cc-plan-label">Your Niche / Content Type</div>
+          <select class="cc-plan-select" id="planNiche" aria-label="Plan Niche">
+            <option value="">Select your niche...</option>
+            <option value="photography">Photography</option>
+            <option value="videography">Videography & Film</option>
+            <option value="music">Music & Production</option>
+            <option value="fashion">Fashion & Beauty</option>
+            <option value="food">Food & Cooking</option>
+            <option value="tech">Tech & Gadgets</option>
+            <option value="education">Education & How-to</option>
+            <option value="fitness">Fitness & Wellness</option>
+            <option value="business">Business & Finance</option>
+            <option value="comedy">Comedy & Entertainment</option>
+            <option value="lifestyle">Lifestyle & Travel</option>
+            <option value="art">Art & Design</option>
+            <option value="writing">Writing & Blogging</option>
+            <option value="podcast">Podcasting</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="cc-plan-field">
+          <div class="cc-plan-label">Which Platforms?</div>
+          <div class="cc-plan-chips" id="planPlatforms">
+            <div class="cc-plan-chip" data-val="instagram">Instagram</div>
+            <div class="cc-plan-chip" data-val="tiktok">TikTok</div>
+            <div class="cc-plan-chip" data-val="youtube">YouTube</div>
+            <div class="cc-plan-chip" data-val="twitter">X / Twitter</div>
+            <div class="cc-plan-chip" data-val="linkedin">LinkedIn</div>
+            <div class="cc-plan-chip" data-val="facebook">Facebook</div>
+            <div class="cc-plan-chip" data-val="newsletter">Newsletter</div>
+          </div>
+        </div>
+
+        <div class="cc-plan-field">
+          <div class="cc-plan-label">Content Pillars</div>
+          <div class="cc-plan-chips" id="planPillars">
+            <div class="cc-plan-chip selected" data-val="educational">Educational</div>
+            <div class="cc-plan-chip selected" data-val="entertaining">Entertaining</div>
+            <div class="cc-plan-chip selected" data-val="promotional">Promotional</div>
+            <div class="cc-plan-chip selected" data-val="personal">Personal</div>
+            <div class="cc-plan-chip selected" data-val="bts">Behind the Scenes</div>
+          </div>
+        </div>
+
+        <div class="cc-plan-field">
+          <div class="cc-plan-label">How Often Do You Post?</div>
+          <input aria-label="PlanFreq" type="range" class="cc-plan-slider" id="planFreq" min="1" max="14" value="5" oninput="updateFreqLabel()">
+          <div class="cc-plan-slider-val" id="planFreqLabel">5x per week</div>
+        </div>
+      </div>
+
+      <!-- STEP 2: CALENDAR CONTEXT -->
+      <div class="cc-plan-step" id="step2">
+        <div class="cc-plan-step-label">Step 2 of 3</div>
+        <div class="cc-plan-step-title">Calendar Context</div>
+        <div class="cc-plan-step-sub">Any special events or cultural moments coming up? We'll weave them into your content plan.</div>
+
+        <div class="cc-plan-field">
+          <div class="cc-plan-label">Your Country</div>
+          <select class="cc-plan-select" id="planCountry" aria-label="Plan Country">
+            <option value="NG">Nigeria</option>
+            <option value="KE">Kenya</option>
+            <option value="ZA">South Africa</option>
+            <option value="GH">Ghana</option>
+            <option value="TZ">Tanzania</option>
+            <option value="EG">Egypt</option>
+            <option value="UG">Uganda</option>
+            <option value="RW">Rwanda</option>
+            <option value="SN">Senegal</option>
+            <option value="other">Other African Country</option>
+          </select>
+        </div>
+
+        <div class="cc-plan-field">
+          <div class="cc-plan-label">Upcoming Events (auto-detected)</div>
+          <div id="planEvents" style="display:flex;flex-direction:column;gap:8px"></div>
+        </div>
+
+        <div class="cc-plan-field">
+          <div class="cc-plan-label">Custom Events (optional)</div>
+          <input aria-label="E.g., product launch April 15, collab drop, brand anniversary" class="cc-plan-input" id="planCustomEvents" placeholder="e.g., product launch April 15, collab drop, brand anniversary..." style="background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.12);color:#fff">
+        </div>
+      </div>
+
+      <!-- STEP 3: AI GENERATES -->
+      <div class="cc-plan-step" id="step3">
+        <div class="cc-plan-step-label">Step 3 of 3</div>
+        <div class="cc-plan-step-title">Your Content Plan</div>
+        <div class="cc-plan-step-sub">Review, edit, and approve your AI-generated content ideas. Accepted ideas go straight to your calendar.</div>
+
+        <div id="planLoading" style="display:none;text-align:center;padding:40px 0">
+          <div style="font-size:1.2rem;margin-bottom:8px">Generating your content plan...</div>
+          <div style="font-size:.78rem;color:rgba(255,255,255,.4)">This takes about 10–15 seconds</div>
+          <div style="margin-top:20px;width:60px;height:4px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden;margin-left:auto;margin-right:auto">
+            <div style="width:40%;height:100%;background:#8B5CF6;border-radius:4px;animation:ccShimmer 1s infinite"></div>
+          </div>
+        </div>
+
+        <div class="cc-plan-results" id="planResults"></div>
+
+        <div id="planActions" style="display:none;margin-top:20px;text-align:center">
+          <button type="button" onclick="acceptAllIdeas()" style="padding:12px 24px;background:#8B5CF6;color:#fff;border:none;border-radius:12px;font-size:.85rem;font-weight:800;cursor:pointer;font-family:inherit;margin-right:8px">Accept All & Add to Calendar</button>
+          <button type="button" onclick="regeneratePlan()" style="padding:12px 24px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.12);border-radius:12px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:inherit">Regenerate</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM BAR -->
+    <div class="cc-plan-bottom">
+      <button type="button" class="cc-plan-btn cc-plan-btn-secondary" id="planBack" onclick="planPrev()" style="display:none;max-width:120px">Back</button>
+      <button type="button" class="cc-plan-btn cc-plan-btn-primary" id="planNext" onclick="planNext()">Next →</button>
+    </div>
+  </div>
+
+  <script src="/engines/creator-calendar-engine.js?v=394e8f17"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    var E = window.CreatorCalendarEngine;
+    var currentStep = 1;
+    var generatedIdeas = [];
+
+    // ─── CHIP TOGGLES ───
+    document.querySelectorAll('.cc-plan-chip').forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        chip.classList.toggle('selected');
+      });
+    });
+
+    // ─── FREQUENCY LABEL ───
+    window.updateFreqLabel = function () {
+      var v = parseInt(document.getElementById('planFreq').value);
+      var label = v <= 7 ? v + 'x per week' : v + 'x per week (' + Math.round(v / 7 * 10) / 10 + '/day)';
+      document.getElementById('planFreqLabel').textContent = label;
+    };
+
+    // ─── STEP NAVIGATION ───
+    function showStep(n) {
+      currentStep = n;
+      for (var i = 1; i <= 3; i++) {
+        var step = document.getElementById('step' + i);
+        var prog = document.getElementById('prog' + i);
+        step.classList.toggle('active', i === n);
+        prog.classList.toggle('active', i === n);
+        prog.classList.toggle('done', i < n);
+      }
+      document.getElementById('planBack').style.display = n > 1 ? '' : 'none';
+      var nextBtn = document.getElementById('planNext');
+      if (n === 2) {
+        loadEvents();
+        nextBtn.textContent = 'Generate Plan →';
+      } else if (n === 3) {
+        nextBtn.style.display = 'none';
+      } else {
+        nextBtn.style.display = '';
+        nextBtn.textContent = 'Next →';
+      }
+    }
+
+    window.planNext = function () {
+      if (currentStep === 1) {
+        if (!document.getElementById('planNiche').value) {
+          document.getElementById('planNiche').focus();
+          return;
+        }
+        showStep(2);
+      } else if (currentStep === 2) {
+        showStep(3);
+        generatePlan();
+      }
+    };
+
+    window.planPrev = function () {
+      if (currentStep > 1) showStep(currentStep - 1);
+    };
+
+    // ─── LOAD EVENTS ───
+    function loadEvents() {
+      var country = document.getElementById('planCountry').value;
+      var now = new Date();
+      var events = E.getAfricanEvents(country, now.getMonth());
+      var panEvents = E.getAfricanEvents('PAN', now.getMonth());
+      var all = events.concat(panEvents);
+
+      var container = document.getElementById('planEvents');
+      if (all.length === 0) {
+        container.innerHTML = '<div style="font-size:.78rem;color:rgba(255,255,255,.4)">No major events detected for this month. Add custom events below.</div>';
+        return;
+      }
+
+      var html = '';
+      all.forEach(function (e) {
+        html += '<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px">' +
+          '<div style="font-size:.78rem;font-weight:700;color:#fff">' + e.name + '</div>' +
+          (e.day ? '<div style="font-size:.65rem;color:rgba(255,255,255,.4)">' + E.MONTH_NAMES[e.month - 1] + ' ' + e.day + '</div>' : '') +
+          '</div>';
+      });
+      container.innerHTML = html;
+    }
+
+    // ─── GENERATE PLAN ───
+    function generatePlan() {
+      var niche = document.getElementById('planNiche').value;
+      var platforms = [];
+      document.querySelectorAll('#planPlatforms .cc-plan-chip.selected').forEach(function (c) { platforms.push(c.dataset.val); });
+      var pillarsArr = [];
+      document.querySelectorAll('#planPillars .cc-plan-chip.selected').forEach(function (c) { pillarsArr.push(c.dataset.val); });
+      var freq = parseInt(document.getElementById('planFreq').value);
+      var country = document.getElementById('planCountry').value;
+      var custom = document.getElementById('planCustomEvents').value.trim();
+
+      if (!platforms.length) platforms = ['instagram'];
+      if (!pillarsArr.length) pillarsArr = ['educational', 'entertaining', 'promotional', 'personal', 'bts'];
+
+      document.getElementById('planLoading').style.display = '';
+      document.getElementById('planResults').innerHTML = '';
+      document.getElementById('planActions').style.display = 'none';
+
+      var prompt = 'Generate a 4-week content plan for a ' + niche + ' creator in ' + country + '.\n' +
+        'Platforms: ' + platforms.join(', ') + '\n' +
+        'Content pillars: ' + pillarsArr.join(', ') + '\n' +
+        'Posting frequency: ' + freq + 'x per week\n' +
+        (custom ? 'Special events: ' + custom + '\n' : '') +
+        '\nFor each post, provide:\n- Day (Mon/Tue/Wed/Thu/Fri/Sat/Sun) and week number\n- Platform\n- Post type (post/reel/carousel/story/thread/video/article/short)\n- Content pillar\n- Topic (2-5 words)\n- Hook (the first line / scroll-stopper)\n\nReturn ONLY a JSON array of objects with keys: week, day, platform, type, pillar, topic, hook. No markdown, no explanation. Return ' + (freq * 4) + ' posts total.';
+
+      fetch('/.netlify/functions/ai-advisor', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tool: 'creator-calendar', messages: [{ role: 'user', content: prompt }], maxTokens: 2000 })
+      }).then(function (r) { return r.json(); }).then(function (d) {
+        document.getElementById('planLoading').style.display = 'none';
+        var reply = d.reply || d.content || '[]';
+
+        // Extract JSON from reply
+        var match = reply.match(/\[[\s\S]*\]/);
+        if (match) {
+          try {
+            generatedIdeas = JSON.parse(match[0]);
+          } catch (e) {
+            generatedIdeas = [];
+          }
+        }
+
+        if (!generatedIdeas.length) {
+          // Fallback: generate locally
+          generatedIdeas = generateLocalPlan(niche, platforms, pillarsArr, freq);
+        }
+
+        renderIdeas();
+      }).catch(function () {
+        document.getElementById('planLoading').style.display = 'none';
+        generatedIdeas = generateLocalPlan(niche, platforms, pillarsArr, freq);
+        renderIdeas();
+      });
+    }
+
+    window.regeneratePlan = function () {
+      generatePlan();
+    };
+
+    // ─── LOCAL FALLBACK GENERATOR ───
+    function generateLocalPlan(niche, platforms, pillarsArr, freq) {
+      var topics = {
+        photography: ['Camera settings breakdown', 'Editing before/after', 'Client shoot BTS', 'Gear review', 'Lighting tips', 'Location scouting guide', 'Portfolio showcase', 'Common mistakes beginners make', 'How I got my first client', 'Pricing your work'],
+        videography: ['Cinematic transitions tutorial', 'Color grading workflow', 'Gear in my bag', 'Client project BTS', 'Sound design tips', 'Storytelling techniques', 'Editing timeline walkthrough', 'Drone footage tips', 'Working with talent', 'Budget filmmaking hacks'],
+        music: ['Studio session BTS', 'Beat-making process', 'Mixing tips for beginners', 'Gear tour', 'New release announcement', 'Collaboration story', 'Industry advice', 'Throwback to early work', 'Fan Q&A', 'Playlist curation'],
+        fashion: ['Outfit breakdown', 'Style tips for the season', 'Brand spotlight', 'GRWM for an event', 'Shopping haul', 'Fashion week content', 'Sustainability in fashion', 'Personal style evolution', 'Client styling session', 'Trend vs classic'],
+        food: ['Recipe tutorial', 'Street food exploration', 'Kitchen hack', 'Meal prep guide', 'Restaurant review', 'Cultural dish deep dive', 'Cooking challenge', 'Ingredient spotlight', 'Food photography tips', 'Family recipe story'],
+        tech: ['Product review', 'Unboxing video', 'Setup tour', 'App recommendation', 'Tech news commentary', 'Tutorial for beginners', 'Productivity hack', 'Comparison video', 'Problem-solving tip', 'Future tech prediction'],
+        default: ['Niche tip or tutorial', 'Personal story', 'Behind the scenes', 'Q&A with audience', 'Tool or resource recommendation', 'Hot take or opinion', 'Collaboration announcement', 'Milestone celebration', 'Day in my life', 'Industry trend commentary']
+      };
+
+      var nicheTopics = topics[niche] || topics['default'];
+      var days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+      var types = ['post', 'reel', 'carousel', 'thread', 'video', 'story'];
+      var ideas = [];
+
+      for (var week = 1; week <= 4; week++) {
+        for (var i = 0; i < freq; i++) {
+          ideas.push({
+            week: week,
+            day: days[i % 7],
+            platform: platforms[i % platforms.length],
+            type: types[Math.floor(Math.random() * types.length)],
+            pillar: pillarsArr[i % pillarsArr.length],
+            topic: nicheTopics[(week * freq + i) % nicheTopics.length],
+            hook: 'Here\'s what nobody tells you about ' + nicheTopics[(week * freq + i) % nicheTopics.length].toLowerCase() + '...'
+          });
+        }
+      }
+      return ideas;
+    }
+
+    // ─── RENDER IDEAS ───
+    function renderIdeas() {
+      var container = document.getElementById('planResults');
+      if (!generatedIdeas.length) {
+        container.innerHTML = '<div style="text-align:center;padding:40px;color:rgba(255,255,255,.4)">No ideas generated. Try again.</div>';
+        return;
+      }
+
+      var html = '';
+      var currentWeek = 0;
+
+      generatedIdeas.forEach(function (idea, idx) {
+        if (idea.week !== currentWeek) {
+          currentWeek = idea.week;
+          html += '<div style="font-size:.75rem;font-weight:800;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.1em;margin:20px 0 10px">Week ' + currentWeek + '</div>';
+        }
+
+        var platColor = (E.PLATFORMS[idea.platform] || {}).color || '#8B5CF6';
+
+        html += '<div class="cc-plan-idea" data-idx="' + idx + '">';
+        html += '<div class="cc-plan-idea-header">';
+        html += '<div class="cc-plan-idea-day">' + (idea.day || '') + '</div>';
+        html += '<div class="cc-plan-idea-plat" style="background:' + platColor + '">' + (idea.platform || '').toUpperCase() + '</div>';
+        html += '<div class="cc-plan-idea-type">' + (idea.type || 'post') + '</div>';
+        html += '<div style="margin-left:auto;font-size:.6rem;font-weight:700;color:rgba(255,255,255,.35)">' + (idea.pillar || '') + '</div>';
+        html += '</div>';
+        html += '<div class="cc-plan-idea-topic">' + (idea.topic || '') + '</div>';
+        html += '<div class="cc-plan-idea-hook">"' + (idea.hook || '') + '"</div>';
+        html += '<div class="cc-plan-idea-actions">';
+        html += '<button type="button" class="cc-plan-idea-btn accept" onclick="acceptIdea(' + idx + ')">Accept</button>';
+        html += '<button type="button" class="cc-plan-idea-btn" onclick="editIdea(' + idx + ')">Edit</button>';
+        html += '<button type="button" class="cc-plan-idea-btn" onclick="swapIdea(' + idx + ')">Swap</button>';
+        html += '</div>';
+        html += '</div>';
+      });
+
+      container.innerHTML = html;
+      document.getElementById('planActions').style.display = '';
+    }
+
+    // ─── IDEA ACTIONS ───
+    window.acceptIdea = function (idx) {
+      var idea = generatedIdeas[idx];
+      if (!idea) return;
+
+      // Calculate actual date from week + day
+      var now = new Date();
+      var weekStart = E.getWeekStart(now);
+      var dayMap = { Mon: 0, Tue: 1, Wed: 2, Thu: 3, Fri: 4, Sat: 5, Sun: 6 };
+      var dayOffset = dayMap[idea.day] || 0;
+      var postDate = new Date(weekStart);
+      postDate.setDate(postDate.getDate() + ((idea.week - 1) * 7) + dayOffset);
+
+      var pillars = E.getLocalPillars();
+      var matchPillar = pillars.find(function (p) { return p.name.toLowerCase().indexOf(idea.pillar) >= 0; });
+
+      E.addLocalPost({
+        title: idea.topic,
+        caption: idea.hook,
+        platforms: [idea.platform],
+        post_type: idea.type,
+        scheduled_date: E.formatDate(postDate),
+        pillar_id: matchPillar ? matchPillar.id : null,
+        pillar_name: matchPillar ? matchPillar.name : idea.pillar,
+        status: 'draft',
+        ai_generated: true
+      });
+
+      // Visual feedback
+      var el = document.querySelector('.cc-plan-idea[data-idx="' + idx + '"]');
+      if (el) {
+        el.style.opacity = '.4';
+        el.style.borderColor = 'rgba(16,185,129,.3)';
+        var btn = el.querySelector('.accept');
+        if (btn) { btn.textContent = 'Added'; btn.disabled = true; }
+      }
+    };
+
+    window.acceptAllIdeas = function () {
+      generatedIdeas.forEach(function (idea, idx) { acceptIdea(idx); });
+      setTimeout(function () { window.location.href = 'app.html'; }, 500);
+    };
+
+    window.editIdea = function (idx) {
+      var idea = generatedIdeas[idx];
+      if (!idea) return;
+      var newTopic = prompt('Edit topic:', idea.topic);
+      if (newTopic !== null) {
+        idea.topic = newTopic;
+        renderIdeas();
+      }
+    };
+
+    window.swapIdea = function (idx) {
+      var idea = generatedIdeas[idx];
+      if (!idea) return;
+      // Swap pillar to next one
+      var pillarsArr = [];
+      document.querySelectorAll('#planPillars .cc-plan-chip.selected').forEach(function (c) { pillarsArr.push(c.dataset.val); });
+      var currentIdx = pillarsArr.indexOf(idea.pillar);
+      idea.pillar = pillarsArr[(currentIdx + 1) % pillarsArr.length];
+      idea.topic = 'New ' + idea.pillar + ' idea (edit me)';
+      idea.hook = 'Write your hook here...';
+      renderIdeas();
+    };
+
+    // ─── INIT ───
+    updateFreqLabel();
+    document.getElementById('planCountry').addEventListener('change', loadEvents);
+  })();
+  </script>
+</body>
+</html>

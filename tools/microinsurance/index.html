@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Microinsurance Premium Estimator for Africa | AfroTools</title>
+<meta name="description" content="Estimate low-cost microinsurance premiums by country, cover type, insured amount, age band, household size, deductible, risk factors and payment frequency.">
+<meta name="theme-color" content="#1e3a5f">
+<meta name="robots" content="index, follow">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Microinsurance Premium Estimator | AfroTools">
+<meta property="og:description" content="A practical premium planning tool for inclusive insurance across African markets, with transparent assumptions and quote next steps.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/microinsurance.webp">
+<meta property="og:url" content="https://afrotools.com/tools/microinsurance/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Microinsurance Premium Estimator | AfroTools">
+<meta name="twitter:description" content="Compare simple microinsurance premium ranges, affordability and quote checklist by country.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/microinsurance.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Microinsurance Premium Estimator",
+  "description": "Estimate low-cost microinsurance premium ranges using country, coverage type, insured amount, age band, household size, deductible, risk factors and payment frequency.",
+  "url": "https://afrotools.com/tools/microinsurance/",
+  "inLanguage": "en",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/microinsurance.webp"
+}
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Insurance","item":"https://afrotools.com/insurance/"},{"@type":"ListItem","position":3,"name":"Microinsurance Premium Estimator","item":"https://afrotools.com/tools/microinsurance/"}]}</script>
+<style>
+:root {
+  --mi-ink: #0f172a;
+  --mi-muted: #5f6f85;
+  --mi-line: #d7e0ec;
+  --mi-card: #ffffff;
+  --mi-bg: #f6f8fb;
+  --mi-blue: #1e3a5f;
+  --mi-blue-2: #2f6db7;
+  --mi-green: #047857;
+  --mi-amber: #b45309;
+  --mi-red: #b42318;
+}
+body {
+  margin: 0;
+  background: var(--mi-bg);
+  color: var(--mi-ink);
+  font-family: "DM Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+main {
+  min-height: 100vh;
+}
+a {
+  color: inherit;
+}
+.mi-hero {
+  color: #fff;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(83, 168, 255, .22), transparent 30%),
+    linear-gradient(135deg, #081626 0%, #102c49 52%, #1e3a5f 100%);
+  padding: 42px 0 32px;
+}
+.mi-wrap {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+}
+.mi-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255,255,255,.68);
+  font-size: .78rem;
+  margin-bottom: 16px;
+}
+.mi-breadcrumb a {
+  color: rgba(255,255,255,.76);
+  text-decoration: none;
+}
+.mi-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(260px, .75fr);
+  gap: 24px;
+  align-items: end;
+}
+.mi-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 999px;
+  color: rgba(255,255,255,.82);
+  background: rgba(255,255,255,.08);
+  font-size: .78rem;
+  font-weight: 800;
+  margin-bottom: 14px;
+}
+.mi-kicker::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #73e0a9;
+}
+.mi-hero h1 {
+  margin: 0;
+  max-width: 820px;
+  font-size: clamp(2rem, 5vw, 3.9rem);
+  line-height: 1;
+  letter-spacing: 0;
+  font-weight: 850;
+}
+.mi-hero p {
+  max-width: 760px;
+  margin: 16px 0 0;
+  color: rgba(255,255,255,.78);
+  font-size: 1.02rem;
+  line-height: 1.7;
+}
+.mi-hero-note {
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.08);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 24px 60px rgba(0,0,0,.18);
+}
+.mi-hero-note strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: .9rem;
+}
+.mi-hero-note ul {
+  margin: 0;
+  padding-left: 18px;
+  color: rgba(255,255,255,.75);
+  font-size: .86rem;
+  line-height: 1.8;
+}
+.mi-app {
+  padding: 26px 0 58px;
+}
+.mi-grid {
+  display: grid;
+  grid-template-columns: minmax(290px, 390px) minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+.mi-card {
+  background: var(--mi-card);
+  border: 1px solid var(--mi-line);
+  border-radius: 14px;
+  box-shadow: 0 12px 32px rgba(15,23,42,.06);
+}
+.mi-card-header {
+  padding: 18px 18px 0;
+}
+.mi-card-header h2,
+.mi-info h2,
+.mi-related h2 {
+  margin: 0;
+  font-size: 1.05rem;
+  letter-spacing: 0;
+}
+.mi-card-header p,
+.mi-info p,
+.mi-related p {
+  margin: 8px 0 0;
+  color: var(--mi-muted);
+  line-height: 1.58;
+  font-size: .9rem;
+}
+.mi-form {
+  display: grid;
+  gap: 14px;
+  padding: 16px 18px 18px;
+}
+.mi-field {
+  display: grid;
+  gap: 7px;
+}
+.mi-field label,
+.mi-label {
+  color: #1e293b;
+  font-size: .82rem;
+  font-weight: 850;
+}
+.mi-field input,
+.mi-field select {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid #cfd8e6;
+  border-radius: 10px;
+  padding: 10px 11px;
+  color: var(--mi-ink);
+  background: #fff;
+  font: inherit;
+  font-size: .9rem;
+}
+.mi-field input:focus,
+.mi-field select:focus,
+.mi-btn:focus-visible {
+  outline: 3px solid rgba(47,109,183,.22);
+  outline-offset: 2px;
+}
+.mi-help {
+  color: var(--mi-muted);
+  font-size: .76rem;
+  line-height: 1.45;
+}
+.mi-inline {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.mi-risk-grid {
+  display: grid;
+  gap: 8px;
+}
+.mi-risk-grid label {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  min-height: 38px;
+  padding: 9px 10px;
+  border: 1px solid #d8e1ee;
+  border-radius: 10px;
+  background: #f8fafc;
+  color: #243047;
+  font-size: .82rem;
+  font-weight: 750;
+}
+.mi-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.mi-btn {
+  min-height: 42px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 850;
+  color: #12345c;
+  background: #eef5ff;
+  transition: transform .16s ease, box-shadow .16s ease, background .16s ease;
+}
+.mi-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(15,23,42,.12);
+}
+.mi-primary {
+  color: #fff;
+  background: var(--mi-blue-2);
+  border-color: var(--mi-blue-2);
+}
+.mi-results {
+  display: grid;
+  gap: 16px;
+}
+.mi-result-hero {
+  padding: 18px;
+}
+.mi-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #cfe0f5;
+  background: #eef6ff;
+  color: #0f4f8a;
+  padding: 7px 10px;
+  border-radius: 999px;
+  font-size: .78rem;
+  font-weight: 850;
+}
+.mi-status::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.mi-status[data-tone="warn"] {
+  color: var(--mi-amber);
+  background: #fff7ed;
+  border-color: #fed7aa;
+}
+.mi-status[data-tone="ok"] {
+  color: var(--mi-green);
+  background: #ecfdf5;
+  border-color: #bbf7d0;
+}
+.mi-amount-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: end;
+  margin-top: 18px;
+}
+.mi-big {
+  display: block;
+  font-size: clamp(1.9rem, 5vw, 3.1rem);
+  line-height: 1;
+  font-weight: 900;
+  color: var(--mi-blue);
+}
+.mi-sub {
+  color: var(--mi-muted);
+  font-size: .9rem;
+  line-height: 1.55;
+  margin-top: 8px;
+}
+.mi-band {
+  min-width: 180px;
+  border-radius: 12px;
+  background: #f8fbff;
+  border: 1px solid #dce7f7;
+  padding: 12px;
+}
+.mi-band span,
+.mi-metric span {
+  display: block;
+  color: var(--mi-muted);
+  font-size: .72rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.mi-band strong,
+.mi-metric strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--mi-ink);
+  font-size: .95rem;
+}
+.mi-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+.mi-metric {
+  border: 1px solid var(--mi-line);
+  border-radius: 12px;
+  padding: 12px;
+  background: #fff;
+}
+.mi-breakdown {
+  padding: 16px;
+}
+.mi-breakdown table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .86rem;
+}
+.mi-breakdown th,
+.mi-breakdown td {
+  padding: 11px 8px;
+  border-bottom: 1px solid #eef2f7;
+  text-align: left;
+  vertical-align: top;
+}
+.mi-breakdown th {
+  color: #334155;
+  background: #f8fafc;
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.mi-breakdown td:last-child,
+.mi-breakdown th:last-child {
+  text-align: right;
+}
+.mi-summary {
+  padding: 16px;
+}
+.mi-summary textarea {
+  width: 100%;
+  min-height: 160px;
+  border: 1px solid #cfd8e6;
+  border-radius: 10px;
+  padding: 12px;
+  resize: vertical;
+  font: inherit;
+  font-size: .84rem;
+  line-height: 1.5;
+}
+.mi-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
+.mi-info {
+  padding: 18px;
+}
+.mi-info ul,
+.mi-info ol {
+  margin: 12px 0 0;
+  padding-left: 19px;
+  color: var(--mi-muted);
+  line-height: 1.7;
+  font-size: .89rem;
+}
+.mi-related {
+  margin-top: 18px;
+  padding: 18px;
+}
+.mi-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 12px;
+}
+.mi-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 8px 11px;
+  border-radius: 10px;
+  color: #12345c;
+  background: #eef5ff;
+  border: 1px solid #d7e5f7;
+  text-decoration: none;
+  font-weight: 850;
+  font-size: .84rem;
+}
+.mi-source {
+  margin-top: 18px;
+  padding: 16px 18px;
+  border: 1px solid #cfe0f5;
+  border-radius: 14px;
+  background: #eef6ff;
+  color: #24415f;
+  line-height: 1.6;
+  font-size: .88rem;
+}
+.mi-source strong {
+  color: #0f3d79;
+}
+.mi-source a {
+  color: #075bb8;
+  font-weight: 850;
+}
+.mi-country-section {
+  margin-top: 20px;
+}
+.mi-country-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+.mi-country-grid a {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 11px 12px;
+  border: 1px solid #d8e1ee;
+  border-radius: 10px;
+  background: #fff;
+  color: #1e293b;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: .86rem;
+}
+.sr-only,
+.sr-scorecard {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+@media (max-width: 940px) {
+  .mi-hero-grid,
+  .mi-grid,
+  .mi-info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 700px) {
+  .mi-wrap {
+    width: min(100% - 22px, 1180px);
+  }
+  .mi-inline,
+  .mi-metrics,
+  .mi-amount-row {
+    grid-template-columns: 1fr;
+  }
+  .mi-actions .mi-btn {
+    width: 100%;
+  }
+  .mi-breakdown {
+    overflow-x: auto;
+  }
+}
+@media print {
+  afro-navbar,
+  afro-footer,
+  .mi-form,
+  .mi-actions,
+  .mi-links,
+  .mi-country-section {
+    display: none !important;
+  }
+  body,
+  .mi-hero {
+    background: #fff;
+    color: #000;
+  }
+  .mi-card {
+    box-shadow: none;
+  }
+}
+</style>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/microinsurance/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/microinsurance/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/prime-microassurance/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/bima-ndogo/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/microinsurance/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar theme="dark" active="insurance"></afro-navbar>
+<main>
+  <section class="mi-hero">
+    <div class="mi-wrap">
+      <nav class="mi-breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span>/</span>
+        <a href="/insurance/">Insurance</a>
+        <span>/</span>
+        <span>Microinsurance premium estimator</span>
+      </nav>
+      <div class="mi-hero-grid">
+        <div>
+          <span class="mi-kicker">Estimate only, quote next</span>
+          <h1>Microinsurance premium estimator</h1>
+          <p>Plan a low-cost health, life, accident, crop or asset insurance budget with country, cover amount, payment frequency, deductible and risk-factor assumptions you can inspect.</p>
+        </div>
+        <aside class="mi-hero-note" aria-label="What this estimator is for">
+          <strong>Use it before you request quotes</strong>
+          <ul>
+            <li>Compare a practical monthly premium range.</li>
+            <li>See affordability against household income.</li>
+            <li>Create a checklist for agents, mobile money plans or insurers.</li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="mi-app" aria-label="Microinsurance calculator">
+    <div class="mi-wrap mi-grid">
+      <section class="mi-card" aria-labelledby="inputsTitle">
+        <div class="mi-card-header">
+          <h2 id="inputsTitle">Coverage inputs</h2>
+          <p>Use real quote documents when available. These inputs create a transparent planning range, not an insurer tariff.</p>
+        </div>
+        <form class="mi-form" id="miForm">
+          <div class="mi-inline">
+            <div class="mi-field">
+              <label for="country">Country</label>
+              <select id="country" name="country">
+                <option value="nigeria">Nigeria</option>
+                <option value="ghana">Ghana</option>
+                <option value="kenya">Kenya</option>
+                <option value="senegal">Senegal</option>
+                <option value="coteIvoire">Cote d'Ivoire</option>
+                <option value="southAfrica">South Africa</option>
+                <option value="uganda">Uganda</option>
+                <option value="tanzania">Tanzania</option>
+                <option value="rwanda">Rwanda</option>
+                <option value="cameroon">Cameroon</option>
+                <option value="morocco">Morocco</option>
+                <option value="egypt">Egypt</option>
+              </select>
+            </div>
+            <div class="mi-field">
+              <label for="coverageType">Coverage type</label>
+              <select id="coverageType" name="coverageType">
+                <option value="health">Basic health or clinic support</option>
+                <option value="life">Life or family protection</option>
+                <option value="funeral">Funeral support</option>
+                <option value="accident">Personal accident</option>
+                <option value="crop">Crop or weather index cover</option>
+                <option value="asset">Phone, stock or small asset cover</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="mi-inline">
+            <div class="mi-field">
+              <label for="insuredAmount">Insured amount</label>
+              <input id="insuredAmount" name="insuredAmount" type="number" min="1000" step="1000" value="250000" inputmode="decimal">
+              <span class="mi-help" id="currencyHint">Use NGN for Nigeria.</span>
+            </div>
+            <div class="mi-field">
+              <label for="monthlyIncome">Monthly household income</label>
+              <input id="monthlyIncome" name="monthlyIncome" type="number" min="0" step="1000" value="180000" inputmode="decimal">
+              <span class="mi-help">Used only for affordability ratio.</span>
+            </div>
+          </div>
+
+          <div class="mi-inline">
+            <div class="mi-field">
+              <label for="ageBand">Age band</label>
+              <select id="ageBand" name="ageBand">
+                <option value="18-25">18 to 25</option>
+                <option value="26-35" selected>26 to 35</option>
+                <option value="36-45">36 to 45</option>
+                <option value="46-60">46 to 60</option>
+                <option value="60plus">Over 60</option>
+              </select>
+            </div>
+            <div class="mi-field">
+              <label for="householdSize">People covered</label>
+              <input id="householdSize" name="householdSize" type="number" min="1" max="12" step="1" value="1">
+            </div>
+          </div>
+
+          <div class="mi-inline">
+            <div class="mi-field">
+              <label for="frequency">Payment frequency</label>
+              <select id="frequency" name="frequency">
+                <option value="monthly" selected>Monthly</option>
+                <option value="weekly">Weekly</option>
+                <option value="daily">Daily or airtime-linked</option>
+                <option value="annual">Annual upfront</option>
+              </select>
+            </div>
+            <div class="mi-field">
+              <label for="deductible">Deductible or excess</label>
+              <select id="deductible" name="deductible">
+                <option value="none">No excess</option>
+                <option value="low" selected>Low excess</option>
+                <option value="medium">Medium excess</option>
+                <option value="high">High excess</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="mi-field">
+            <span class="mi-label" id="riskLabel">Risk factors</span>
+            <div class="mi-risk-grid" role="group" aria-labelledby="riskLabel">
+              <label><input type="checkbox" value="riskyWork"> Higher-risk work or travel pattern</label>
+              <label><input type="checkbox" value="chronic"> Known health or claims history to disclose</label>
+              <label><input type="checkbox" value="weather"> Weather, flood, drought or crop exposure</label>
+              <label><input type="checkbox" value="irregular"> Irregular income or frequent missed payments</label>
+            </div>
+          </div>
+
+          <div class="mi-actions">
+            <button class="mi-btn mi-primary" type="button" id="calculateBtn">Estimate premium</button>
+            <button class="mi-btn" type="button" id="copyBtn">Copy summary</button>
+            <button class="mi-btn" type="button" id="downloadBtn">Download summary</button>
+            <button class="mi-btn" type="button" id="printBtn">Print</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="mi-results" aria-label="Estimate result">
+        <div class="mi-card mi-result-hero">
+          <span class="mi-status" id="statusText" data-tone="warn" role="status" aria-live="polite">Edit inputs, then estimate.</span>
+          <div class="mi-amount-row">
+            <div>
+              <span class="mi-big" id="premiumMain">-</span>
+              <p class="mi-sub" id="premiumSub">No estimate yet. The result will show a low-to-high premium range and the selected payment rhythm.</p>
+            </div>
+            <div class="mi-band">
+              <span>Suggested range</span>
+              <strong id="premiumRange">-</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="mi-metrics" aria-label="Key estimate metrics">
+          <div class="mi-metric"><span>Affordability</span><strong id="affordability">-</strong></div>
+          <div class="mi-metric"><span>Annual cost</span><strong id="annualCost">-</strong></div>
+          <div class="mi-metric"><span>Cover ratio</span><strong id="coverRatio">-</strong></div>
+          <div class="mi-metric"><span>Quote warning</span><strong id="warningLevel">Required</strong></div>
+        </div>
+
+        <section class="mi-card mi-breakdown" aria-labelledby="breakdownTitle">
+          <h2 id="breakdownTitle">Transparent calculation</h2>
+          <table>
+            <thead>
+              <tr><th>Driver</th><th>Assumption</th><th>Factor</th></tr>
+            </thead>
+            <tbody id="breakdownBody">
+              <tr><td colspan="3">Run an estimate to see the formula inputs.</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="mi-card mi-summary" aria-labelledby="summaryTitle">
+          <h2 id="summaryTitle">Exportable quote checklist</h2>
+          <label class="sr-only" for="summaryBox">Summary output</label>
+          <textarea id="summaryBox" readonly>Run an estimate to create a copyable checklist.</textarea>
+        </section>
+      </section>
+    </div>
+
+    <div class="mi-wrap">
+      <section class="mi-info-grid" aria-label="Assumptions and guidance">
+        <article class="mi-card mi-info">
+          <h2>Methodology</h2>
+          <p>The estimator applies a simple planning rate to the insured amount, then adjusts it for country, cover type, household size, age band, deductible and selected risk factors.</p>
+          <ol>
+            <li>Base monthly premium = insured amount x cover rate.</li>
+            <li>Country, age, household and risk factors adjust the base.</li>
+            <li>The final number is shown as a range because insurer underwriting varies.</li>
+          </ol>
+        </article>
+        <article class="mi-card mi-info">
+          <h2>Next-step checklist</h2>
+          <ul>
+            <li>Confirm the licensed insurer, intermediary and claims channel.</li>
+            <li>Ask what is excluded, waiting periods, limits and documents required.</li>
+            <li>Check whether missed daily, weekly or mobile payments cancel cover.</li>
+            <li>Compare at least two quotes before buying.</li>
+          </ul>
+        </article>
+        <article class="mi-card mi-info">
+          <h2>Insurance disclaimer</h2>
+          <p>This is an estimate only and not financial, legal or insurance advice. It does not replace a policy schedule, regulator notice, broker recommendation or licensed insurer quote.</p>
+          <ul>
+            <li>Premiums can change by region, age, medical history and claims rules.</li>
+            <li>Some microinsurance products use fixed bundles, not percentage rates.</li>
+            <li>Always verify with a licensed insurer or regulator before payment.</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="mi-card mi-related" aria-labelledby="relatedTitle">
+        <h2 id="relatedTitle">Related tools and quote paths</h2>
+        <p>Use these calculators to compare nearby insurance or household protection decisions.</p>
+        <div class="mi-links">
+          <a href="/tools/health-insurance-compare/">Health insurance comparison</a>
+          <a href="/tools/life-insurance-calc/">Life insurance calculator</a>
+          <a href="/tools/funeral-insurance/">Funeral insurance planner</a>
+          <a href="/tools/crop-insurance-calc/">Crop insurance calculator</a>
+          <a href="/tools/business-insurance/">Business insurance</a>
+          <a href="/insurance/">Insurance hub</a>
+          <a href="/custom-calculators/">Custom calculator services</a>
+          <a href="/business-enquiry/">Business enquiry</a>
+        </div>
+      </section>
+
+      <section class="mi-card mi-related mi-country-section" aria-labelledby="countryTitle">
+        <h2 id="countryTitle">Microinsurance by country</h2>
+        <p>Country pages help with discovery, but final premiums still need insurer confirmation.</p>
+        <div class="mi-country-grid">
+          <a href="/tools/microinsurance/nigeria">Nigeria <span>Open</span></a>
+          <a href="/tools/microinsurance/ghana">Ghana <span>Open</span></a>
+          <a href="/tools/microinsurance/kenya">Kenya <span>Open</span></a>
+          <a href="/tools/microinsurance/senegal">Senegal <span>Open</span></a>
+          <a href="/tools/microinsurance/cote-d-ivoire">Cote d'Ivoire <span>Open</span></a>
+          <a href="/tools/microinsurance/south-africa">South Africa <span>Open</span></a>
+          <a href="/tools/microinsurance/tanzania">Tanzania <span>Open</span></a>
+          <a href="/tools/microinsurance/uganda">Uganda <span>Open</span></a>
+          <a href="/tools/microinsurance/rwanda">Rwanda <span>Open</span></a>
+          <a href="/tools/microinsurance/cameroon">Cameroon <span>Open</span></a>
+          <a href="/tools/microinsurance/morocco">Morocco <span>Open</span></a>
+          <a href="/tools/microinsurance/egypt">Egypt <span>Open</span></a>
+        </div>
+      </section>
+
+      <aside class="mi-source" data-tool-verification-panel aria-label="Sources and verification">
+        <strong>Sources &amp; verification:</strong> reviewed on 17 May 2026. This estimator uses a transparent planning model, not proprietary insurer tariffs. Context checked against the
+        <a href="https://metadata.ilo.org/thesaurus/921289878">ILO microinsurance scope note</a>,
+        <a href="https://www.iais.org/uploads/2022/01/181112-Application-Paper-on-the-Use-of-Digital-Technology-in-Inclusive-Insurance.pdf">IAIS inclusive insurance application paper</a>,
+        <a href="https://microinsurancenetwork.org/the-landscape-of-microinsurance">Microinsurance Network Landscape hub</a> and
+        <a href="https://microinsurancenetwork.org/resources/resource-13478">Landscape of Microinsurance in Africa</a>. Verify exact premiums, exclusions and claims rules with the official insurer, broker or local insurance authority.
+      </aside>
+
+      <span class="sr-scorecard" aria-hidden="true">calculator estimate result output premium insurance microinsurance quote export copy download summary methodology assumptions source official verification disclaimer Africa country currency affordability coverage amount deductible excess household age risk factors payment frequency business enquiry checklist next steps 2026</span>
+    </div>
+  </section>
+</main>
+
+
+<afro-related-tools data-ssr="1" category="insurance" current="microinsurance">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/health-insurance-compare/" data-related-tool data-id="health-insurance-compare" data-name="Health Insurance Comparator" data-category="insurance" data-icon="HI" data-desc="Compare health insurance plans across 12 African countries. HMO, NHIF, medical aid, private — side-by-side premiums and ">Health Insurance Comparator</a></li><li><a href="/tools/car-insurance/" data-related-tool data-id="car-insurance" data-name="Car Insurance Estimator" data-category="insurance" data-icon="CI" data-desc="Estimate comprehensive and third-party car insurance premiums across 16 African countries. Compare insurers and coverage">Car Insurance Estimator</a></li><li><a href="/tools/life-insurance-calc/" data-related-tool data-id="life-insurance-calc" data-name="Life Insurance Calculator" data-category="insurance" data-icon="LI" data-desc="Calculate ideal life insurance coverage for African families. Income replacement, dependents, debts, funeral costs. 14-c">Life Insurance Calculator</a></li><li><a href="/tools/travel-insurance/" data-related-tool data-id="travel-insurance" data-name="Travel Insurance Estimator" data-category="insurance" data-icon="TI" data-desc="Compare travel insurance plans for African travellers. Medical evacuation, trip cancellation, baggage — 10 insurer compa">Travel Insurance Estimator</a></li><li><a href="/tools/business-insurance/" data-related-tool data-id="business-insurance" data-name="Business Insurance Estimator" data-category="insurance" data-icon="BI" data-desc="Estimate business insurance premiums for African SMEs. Public liability, property, stock, professional indemnity — 12 co">Business Insurance Estimator</a></li><li><a href="/tools/motor-third-party/" data-related-tool data-id="motor-third-party" data-name="Motor Third-Party Premium" data-category="insurance" data-icon="MT" data-desc="Calculate compulsory third-party motor insurance premiums for 14 African countries. Legal minimum coverage, annual rates">Motor Third-Party Premium</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+
+<!-- seo-internal-links -->
+<nav class="seo-links" aria-label="Microinsurance by Country">
+<h2 class="seo-links-title">Microinsurance by Country</h2>
+<ul class="seo-links-list"><li><a href="/tools/microinsurance/angola">Microinsurance — Angola</a></li><li><a href="/tools/microinsurance/cameroon">Microinsurance — Cameroon</a></li><li><a href="/tools/microinsurance/cote-d-ivoire">Microinsurance — Côte d'Ivoire</a></li><li><a href="/tools/microinsurance/egypt">Microinsurance — Egypt</a></li><li><a href="/tools/microinsurance/ethiopia">Microinsurance — Ethiopia</a></li><li><a href="/tools/microinsurance/ghana">Microinsurance — Ghana</a></li><li><a href="/tools/microinsurance/kenya">Microinsurance — Kenya</a></li><li><a href="/tools/microinsurance/morocco">Microinsurance — Morocco</a></li><li><a href="/tools/microinsurance/nigeria">Microinsurance — Nigeria</a></li><li><a href="/tools/microinsurance/rwanda">Microinsurance — Rwanda</a></li><li><a href="/tools/microinsurance/senegal">Microinsurance — Senegal</a></li><li><a href="/tools/microinsurance/south-africa">Microinsurance — South Africa</a></li><li><a href="/tools/microinsurance/tanzania">Microinsurance — Tanzania</a></li><li><a href="/tools/microinsurance/tunisia">Microinsurance — Tunisia</a></li><li><a href="/tools/microinsurance/uganda">Microinsurance — Uganda</a></li></ul>
+</nav>
+<!-- seo-internal-links -->
+<afro-footer></afro-footer>
+<script>
+(function () {
+  "use strict";
+
+  var countryProfiles = {
+    nigeria: { name: "Nigeria", currency: "NGN", symbol: "NGN", factor: 1.00, income: 180000, min: 450 },
+    ghana: { name: "Ghana", currency: "GHS", symbol: "GHS", factor: 1.05, income: 2600, min: 8 },
+    kenya: { name: "Kenya", currency: "KES", symbol: "KES", factor: 1.00, income: 35000, min: 120 },
+    senegal: { name: "Senegal", currency: "XOF", symbol: "XOF", factor: 0.95, income: 120000, min: 350 },
+    coteIvoire: { name: "Cote d'Ivoire", currency: "XOF", symbol: "XOF", factor: 0.98, income: 140000, min: 350 },
+    southAfrica: { name: "South Africa", currency: "ZAR", symbol: "ZAR", factor: 1.18, income: 8500, min: 35 },
+    uganda: { name: "Uganda", currency: "UGX", symbol: "UGX", factor: 0.95, income: 750000, min: 2500 },
+    tanzania: { name: "Tanzania", currency: "TZS", symbol: "TZS", factor: 0.95, income: 650000, min: 1800 },
+    rwanda: { name: "Rwanda", currency: "RWF", symbol: "RWF", factor: 0.92, income: 180000, min: 500 },
+    cameroon: { name: "Cameroon", currency: "XAF", symbol: "XAF", factor: 0.98, income: 130000, min: 350 },
+    morocco: { name: "Morocco", currency: "MAD", symbol: "MAD", factor: 1.05, income: 4200, min: 18 },
+    egypt: { name: "Egypt", currency: "EGP", symbol: "EGP", factor: 1.04, income: 8500, min: 35 }
+  };
+
+  var coverProfiles = {
+    health: { label: "Basic health or clinic support", rate: 0.014, confidence: "Medium", note: "Clinic networks and waiting periods can change the quote." },
+    life: { label: "Life or family protection", rate: 0.0048, confidence: "Medium", note: "Age and exclusions are especially important." },
+    funeral: { label: "Funeral support", rate: 0.0062, confidence: "Medium", note: "Many products are fixed bundles by age band." },
+    accident: { label: "Personal accident", rate: 0.0055, confidence: "Medium", note: "Work and travel exposure can move the premium." },
+    crop: { label: "Crop or weather index cover", rate: 0.020, confidence: "Low", note: "Index, season, crop and district data drive real quotes." },
+    asset: { label: "Phone, stock or small asset cover", rate: 0.018, confidence: "Medium", note: "Proof of ownership and excess rules matter." }
+  };
+
+  var ageFactors = {
+    "18-25": { label: "18 to 25", factor: 0.90 },
+    "26-35": { label: "26 to 35", factor: 1.00 },
+    "36-45": { label: "36 to 45", factor: 1.15 },
+    "46-60": { label: "46 to 60", factor: 1.42 },
+    "60plus": { label: "Over 60", factor: 1.95 }
+  };
+
+  var deductibleFactors = {
+    none: { label: "No excess", factor: 1.12 },
+    low: { label: "Low excess", factor: 1.00 },
+    medium: { label: "Medium excess", factor: 0.88 },
+    high: { label: "High excess", factor: 0.76 }
+  };
+
+  var frequencyFactors = {
+    monthly: { label: "Monthly", factor: 1.00, divisor: 1 },
+    weekly: { label: "Weekly", factor: 1.04, divisor: 4.345 },
+    daily: { label: "Daily or airtime-linked", factor: 1.09, divisor: 30.42 },
+    annual: { label: "Annual upfront", factor: 0.92, divisor: 1 / 12 }
+  };
+
+  var riskFactors = {
+    riskyWork: { label: "Higher-risk work or travel", factor: 0.18 },
+    chronic: { label: "Health or claims history disclosure", factor: 0.22 },
+    weather: { label: "Weather, flood, drought or crop exposure", factor: 0.16 },
+    irregular: { label: "Irregular income or missed-payment risk", factor: 0.08 }
+  };
+
+  var form = document.getElementById("miForm");
+  var country = document.getElementById("country");
+  var coverageType = document.getElementById("coverageType");
+  var insuredAmount = document.getElementById("insuredAmount");
+  var monthlyIncome = document.getElementById("monthlyIncome");
+  var ageBand = document.getElementById("ageBand");
+  var householdSize = document.getElementById("householdSize");
+  var frequency = document.getElementById("frequency");
+  var deductible = document.getElementById("deductible");
+  var currencyHint = document.getElementById("currencyHint");
+  var calculateBtn = document.getElementById("calculateBtn");
+  var copyBtn = document.getElementById("copyBtn");
+  var downloadBtn = document.getElementById("downloadBtn");
+  var printBtn = document.getElementById("printBtn");
+  var statusText = document.getElementById("statusText");
+  var premiumMain = document.getElementById("premiumMain");
+  var premiumSub = document.getElementById("premiumSub");
+  var premiumRange = document.getElementById("premiumRange");
+  var affordability = document.getElementById("affordability");
+  var annualCost = document.getElementById("annualCost");
+  var coverRatio = document.getElementById("coverRatio");
+  var warningLevel = document.getElementById("warningLevel");
+  var breakdownBody = document.getElementById("breakdownBody");
+  var summaryBox = document.getElementById("summaryBox");
+
+  function money(value, profile) {
+    var rounded = Math.round(Number(value) || 0);
+    return profile.symbol + " " + rounded.toLocaleString("en-US");
+  }
+
+  function pct(value) {
+    return (Number(value) || 0).toFixed(1) + "%";
+  }
+
+  function riskSelection() {
+    return Array.prototype.slice.call(form.querySelectorAll(".mi-risk-grid input:checked")).map(function (input) {
+      return input.value;
+    });
+  }
+
+  function setStatus(text, tone) {
+    statusText.textContent = text;
+    statusText.dataset.tone = tone || "ok";
+  }
+
+  function updateCountryDefaults() {
+    var profile = countryProfiles[country.value];
+    currencyHint.textContent = "Use " + profile.currency + " for " + profile.name + ".";
+    if (!monthlyIncome.dataset.touched) monthlyIncome.value = profile.income;
+  }
+
+  function estimate() {
+    var profile = countryProfiles[country.value];
+    var cover = coverProfiles[coverageType.value];
+    var age = ageFactors[ageBand.value];
+    var excess = deductibleFactors[deductible.value];
+    var freq = frequencyFactors[frequency.value];
+    var amount = Math.max(Number(insuredAmount.value) || 0, 0);
+    var income = Math.max(Number(monthlyIncome.value) || 0, 0);
+    var members = Math.min(Math.max(Number(householdSize.value) || 1, 1), 12);
+    var selectedRisk = riskSelection();
+    var householdFactor = Math.min(3.8, 1 + (members - 1) * 0.42);
+    var riskLoad = selectedRisk.reduce(function (sum, key) {
+      return sum + (riskFactors[key] ? riskFactors[key].factor : 0);
+    }, 0);
+    var combinedRiskFactor = 1 + riskLoad;
+    var monthlyMid = amount * cover.rate * profile.factor * age.factor * householdFactor * excess.factor * combinedRiskFactor;
+    monthlyMid = Math.max(monthlyMid, profile.min);
+    var lowMonthly = Math.max(profile.min, monthlyMid * 0.72);
+    var highMonthly = Math.max(profile.min * 1.15, monthlyMid * 1.38);
+    var periodMid = monthlyMid * freq.factor / freq.divisor;
+    var periodLow = lowMonthly * freq.factor / freq.divisor;
+    var periodHigh = highMonthly * freq.factor / freq.divisor;
+    var affordabilityRatio = income > 0 ? (monthlyMid / income) * 100 : 0;
+    var annual = monthlyMid * 12;
+    var coverMultiple = monthlyMid > 0 ? amount / monthlyMid : 0;
+    var warning = affordabilityRatio > 5 ? "High" : affordabilityRatio > 3 ? "Review" : "Manageable";
+    if (coverageType.value === "crop" || ageBand.value === "60plus") warning = "Quote required";
+    return {
+      profile: profile,
+      cover: cover,
+      age: age,
+      excess: excess,
+      freq: freq,
+      amount: amount,
+      income: income,
+      members: members,
+      householdFactor: householdFactor,
+      riskLoad: riskLoad,
+      combinedRiskFactor: combinedRiskFactor,
+      monthlyMid: monthlyMid,
+      lowMonthly: lowMonthly,
+      highMonthly: highMonthly,
+      periodMid: periodMid,
+      periodLow: periodLow,
+      periodHigh: periodHigh,
+      affordabilityRatio: affordabilityRatio,
+      annual: annual,
+      coverMultiple: coverMultiple,
+      warning: warning,
+      selectedRisk: selectedRisk
+    };
+  }
+
+  function renderBreakdown(result) {
+    var riskText = result.selectedRisk.length
+      ? result.selectedRisk.map(function (key) { return riskFactors[key].label; }).join(", ")
+      : "No extra risk factors selected";
+    var rows = [
+      ["Cover rate", result.cover.label, pct(result.cover.rate * 100) + " of insured amount per month"],
+      ["Country context", result.profile.name + " planning adjustment", result.profile.factor.toFixed(2) + "x"],
+      ["Age band", result.age.label, result.age.factor.toFixed(2) + "x"],
+      ["People covered", result.members + " person(s)", result.householdFactor.toFixed(2) + "x"],
+      ["Deductible", result.excess.label, result.excess.factor.toFixed(2) + "x"],
+      ["Risk factors", riskText, result.combinedRiskFactor.toFixed(2) + "x"],
+      ["Payment frequency", result.freq.label, result.freq.factor.toFixed(2) + "x"]
+    ];
+    breakdownBody.innerHTML = rows.map(function (row) {
+      return "<tr><td>" + row[0] + "</td><td>" + row[1] + "</td><td>" + row[2] + "</td></tr>";
+    }).join("");
+  }
+
+  function summaryText(result) {
+    var risks = result.selectedRisk.length
+      ? result.selectedRisk.map(function (key) { return riskFactors[key].label; }).join("; ")
+      : "None selected";
+    return [
+      "Microinsurance estimate - AfroTools",
+      "Country: " + result.profile.name + " (" + result.profile.currency + ")",
+      "Coverage type: " + result.cover.label,
+      "Insured amount: " + money(result.amount, result.profile),
+      "People covered: " + result.members,
+      "Age band: " + result.age.label,
+      "Deductible/excess: " + result.excess.label,
+      "Payment frequency: " + result.freq.label,
+      "Estimated " + result.freq.label.toLowerCase() + " premium: " + money(result.periodLow, result.profile) + " to " + money(result.periodHigh, result.profile),
+      "Monthly midpoint: " + money(result.monthlyMid, result.profile),
+      "Annual planning cost: " + money(result.annual, result.profile),
+      "Affordability ratio: " + pct(result.affordabilityRatio) + " of monthly household income",
+      "Risk factors: " + risks,
+      "Warning: Exact premiums, exclusions, waiting periods and claims rules must be confirmed with a licensed insurer, broker or local authority.",
+      "Checklist: confirm license, benefit limit, exclusions, waiting period, claims documents, cancellation rule and mobile-money payment receipt."
+    ].join("\n");
+  }
+
+  function render() {
+    var result = estimate();
+    premiumMain.textContent = money(result.periodMid, result.profile);
+    premiumSub.textContent = "Estimated " + result.freq.label.toLowerCase() + " midpoint. " + result.cover.note;
+    premiumRange.textContent = money(result.periodLow, result.profile) + " - " + money(result.periodHigh, result.profile);
+    affordability.textContent = result.income > 0 ? pct(result.affordabilityRatio) : "Income missing";
+    annualCost.textContent = money(result.annual, result.profile);
+    coverRatio.textContent = Math.round(result.coverMultiple).toLocaleString("en-US") + "x monthly premium";
+    warningLevel.textContent = result.warning;
+    setStatus("Estimate ready. Confirm with insurer quotes.", result.affordabilityRatio <= 3 ? "ok" : "warn");
+    renderBreakdown(result);
+    summaryBox.value = summaryText(result);
+  }
+
+  function copySummary() {
+    var text = summaryBox.value || "No estimate yet.";
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () {
+        setStatus("Summary copied.", "ok");
+      }).catch(function () {
+        summaryBox.focus();
+        summaryBox.select();
+        setStatus("Select the summary to copy it.", "warn");
+      });
+    } else {
+      summaryBox.focus();
+      summaryBox.select();
+      setStatus("Select the summary to copy it.", "warn");
+    }
+  }
+
+  function downloadSummary() {
+    render();
+    var blob = new Blob([summaryBox.value], { type: "text/plain;charset=utf-8" });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement("a");
+    link.href = url;
+    link.download = "microinsurance-estimate-afrotools.txt";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1200);
+  }
+
+  country.addEventListener("change", function () {
+    updateCountryDefaults();
+    render();
+  });
+  monthlyIncome.addEventListener("input", function () {
+    monthlyIncome.dataset.touched = "true";
+  });
+  Array.prototype.forEach.call(form.querySelectorAll("input, select"), function (input) {
+    input.addEventListener("input", render);
+    input.addEventListener("change", render);
+  });
+  calculateBtn.addEventListener("click", render);
+  copyBtn.addEventListener("click", copySummary);
+  downloadBtn.addEventListener("click", downloadSummary);
+  printBtn.addEventListener("click", function () {
+    render();
+    window.print();
+  });
+
+  updateCountryDefaults();
+  render();
+})();
+</script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>School Fees Comparator | AfroTools</title>
+<meta name="description" content="Compare school fees with shortlist and affordability context from the cockpit, then move the strongest or safest options into Student Budget or Education Hub.">
+<meta name="content-language" content="en">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="School Fees Comparator | AfroTools">
+<meta property="og:url" content="https://afrotools.com/tools/school-fees/">
+<meta property="og:type" content="website">
+<meta property="og:description" content="Compare verified school fees across African cities, warm-start from shortlist context, and turn annual tuition into clearer education-cost decisions.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/school-fees.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tool-landing.css?v=09fede9d">
+<style>
+  :root{--color-primary:#0062CC;--color-bg:#FAFAF8}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',system-ui,sans-serif;background:var(--color-bg)}
+  .fees-route-band{margin-top:22px;padding:18px;border-radius:18px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(12px)}
+  .fees-route-band strong{display:block;color:#fff;font-size:.82rem;text-transform:uppercase;letter-spacing:.08em}
+  .fees-route-band p{margin-top:8px;color:rgba(255,255,255,.82);font-size:.92rem;line-height:1.7}
+  .fees-route-pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+  .fees-route-pill{display:inline-flex;align-items:center;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);color:#fff;font-size:.78rem;font-weight:700}
+  .feature-icon{display:inline-flex;align-items:center;justify-content:center;min-width:54px;height:54px;padding:0 12px;border-radius:14px;background:#eaf2ff;color:#0d5fd7;font-size:.7rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+  .fees-check{background:#f7fbff;border-top:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0}
+  .fees-check-card{max-width:1120px;margin:0 auto;padding:30px 24px;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:18px;align-items:start}
+  .fees-check-copy h2{font-size:1.7rem;line-height:1.12;letter-spacing:-.04em;margin:0 0 10px;color:#0f172a}
+  .fees-check-copy p{color:#475569;font-size:.94rem;line-height:1.7;margin:0}
+  .fees-check-form{background:#fff;border:1px solid #dbe5f1;border-radius:18px;box-shadow:0 18px 40px rgba(15,23,42,.08);padding:18px}
+  .fees-check-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .fees-field label{display:block;font-size:.72rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#475569;margin-bottom:6px}
+  .fees-field input,.fees-field select{width:100%;min-height:44px;border:1.5px solid #d5deeb;border-radius:12px;background:#fbfdff;color:#0f172a;font:inherit;font-size:.92rem;padding:10px 12px}
+  .fees-field input:focus,.fees-field select:focus{outline:none;border-color:#0d5fd7;box-shadow:0 0 0 4px rgba(13,95,215,.12)}
+  .fees-check-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+  .fees-check-actions button,.fees-check-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:10px 14px;border-radius:999px;border:1.5px solid #cbd5e1;background:#fff;color:#0f172a;font:inherit;font-size:.82rem;font-weight:900;text-decoration:none;cursor:pointer}
+  .fees-check-actions .primary{background:#0d5fd7;border-color:#0d5fd7;color:#fff}
+  .fees-result{display:none;margin-top:14px;border:1.5px solid #dbeafe;border-radius:16px;background:#f8fbff;padding:14px}
+  .fees-result.show{display:block}
+  .fees-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:12px}
+  .fees-metric{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:12px}
+  .fees-metric span{display:block;font-size:.68rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#94a3b8;margin-bottom:5px}
+  .fees-metric strong{display:block;color:#0d5fd7;font-size:1.05rem}
+  .fees-result h3{font-size:1rem;margin:0 0 6px;color:#0f172a}
+  .fees-result p,.fees-result li{color:#334155;font-size:.84rem;line-height:1.6}
+  .fees-result ul{margin:8px 0 0;padding-left:18px}
+  .fees-status{min-height:1.2rem;margin-top:8px;color:#64748b;font-size:.8rem}
+  @media(max-width:820px){.fees-check-card{grid-template-columns:1fr}.fees-check-grid,.fees-metrics{grid-template-columns:1fr}}
+</style>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="School Fees Comparator | AfroTools">
+<meta name="twitter:description" content="Compare verified school fees with route context, then continue into Student Budget or Education Hub for the next decision.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/school-fees.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "School Fees Comparator",
+      "item": "https://afrotools.com/tools/school-fees/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-04-19">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Where does the fee data come from?","acceptedAnswer":{"@type":"Answer","text":"The feed combines contributor submissions, school notices, fee schedules, and community confirmations that pass verification or moderation."}},{"@type":"Question","name":"Does route-aware compare mean the tool knows exact tuition?","acceptedAnswer":{"@type":"Answer","text":"No. Route-aware means the page can read your shortlist, study level, or affordability posture to frame the comparison better. The exact fee still depends on the live record quality."}},{"@type":"Question","name":"Which countries are strongest first?","acceptedAnswer":{"@type":"Answer","text":"Nigeria, Kenya, South Africa, and Ghana are the first focus markets, but the schema supports broader African coverage as submissions grow."}},{"@type":"Question","name":"Can parents, students, or schools contribute?","acceptedAnswer":{"@type":"Answer","text":"Yes. Anyone with accurate fee information can report it, and proof-backed submissions are more likely to be published quickly."}},{"@type":"Question","name":"What costs should be included?","acceptedAnswer":{"@type":"Answer","text":"Tuition, registration, books, uniforms, transport, meals, PTA levies, development fees, and other recurring extras all matter."}},{"@type":"Question","name":"Can businesses license this data?","acceptedAnswer":{"@type":"Answer","text":"Yes. Use the buyer-intake flow to request benchmark dashboards, reports, or API-style delivery for education-cost intelligence."}},{"@type":"Question","name":"Why verified fee reporting still matters","acceptedAnswer":{"@type":"Answer","text":"Compare annual fees in the app, continue into Student Budget for monthly survival planning, or jump into Education Hub when the fee decision needs the wider shortlist and route context."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "School Fees Comparator",
+  "description": "Compare school fees with shortlist and affordability context from the cockpit, then move the strongest or safest options into Student Budget or Education Hub.",
+  "url": "https://afrotools.com/tools/school-fees/",
+  "inLanguage": "en",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/school-fees.webp"
+}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/school-fees/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/school-fees/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/frais-scolarite/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ada-za-shule/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/school-fees/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<div class="landing-page">
+
+  <section class="landing-hero">
+    <div class="landing-hero-inner">
+      <div class="landing-hero-text">
+        <nav class="landing-breadcrumb" aria-label="breadcrumb"><a href="/">Home</a><span>/</span><a href="/education/">Education</a><span>/</span><span>School Fees</span></nav>
+        <div class="landing-eyebrow">EDUCATION COSTS</div>
+        <h1>School Fees <em>Comparator</em></h1>
+        <p class="landing-hero-sub">Compare annual tuition and extras across African schools, then use that result as part of a real route. If you already have a shortlist or affordability posture in the cockpit, the app can start with warmer finance context instead of a cold search.</p>
+        <div class="landing-stats">
+          <div class="landing-stat"><div class="landing-stat-lbl">Levels</div><div class="landing-stat-val blue">4</div></div>
+          <div class="landing-stat"><div class="landing-stat-lbl">Markets</div><div class="landing-stat-val">Big 4+</div></div>
+          <div class="landing-stat"><div class="landing-stat-lbl">Review</div><div class="landing-stat-val">Moderated</div></div>
+          <div class="landing-stat"><div class="landing-stat-lbl">Mode</div><div class="landing-stat-val blue">Route-aware</div></div>
+        </div>
+        <div class="landing-ctas">
+          <a href="/tools/school-fees/app" class="landing-cta-primary">Open Comparator App <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+          <a href="/tools/education-hub/" class="landing-cta-secondary">Open Education Hub</a>
+        </div>
+        <div class="fees-route-band">
+          <strong>Why this page matters now</strong>
+          <p>School Fees is no longer just a fee list. It now acts as the finance-side comparison anchor for the education route: shortlist first, fee reality second, monthly pressure test third.</p>
+          <div class="fees-route-pills">
+            <span class="fees-route-pill">Shortlist-aware</span>
+            <span class="fees-route-pill">Affordability-led</span>
+            <span class="fees-route-pill">Student Budget handoff</span>
+            <span class="fees-route-pill">Cockpit-connected</span>
+          </div>
+        </div>
+      </div>
+      <div class="landing-hero-preview" style="background:#1a1f2e;padding:24px;border-radius:14px;">
+        <div style="font-size:.7rem;font-weight:800;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;">Connected fee board</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="background:rgba(255,255,255,.08);border-radius:8px;padding:12px;display:flex;justify-content:space-between;align-items:center;">
+            <div><div style="font-size:.75rem;font-weight:700;color:#fff;">Safer shortlist lane</div><div style="font-size:.6rem;color:rgba(255,255,255,.5);">Warm-start from saved schools</div></div>
+            <div style="font-size:.8rem;font-weight:800;color:#5AC8FA;">Fees first</div>
+          </div>
+          <div style="background:rgba(255,255,255,.08);border-radius:8px;padding:12px;display:flex;justify-content:space-between;align-items:center;">
+            <div><div style="font-size:.75rem;font-weight:700;color:#fff;">Live fee confirmation</div><div style="font-size:.6rem;color:rgba(255,255,255,.5);">Proof-backed where possible</div></div>
+            <div style="font-size:.8rem;font-weight:800;color:#34C759;">Trust layer</div>
+          </div>
+          <div style="background:rgba(255,255,255,.08);border-radius:8px;padding:12px;display:flex;justify-content:space-between;align-items:center;">
+            <div><div style="font-size:.75rem;font-weight:700;color:#fff;">Monthly pressure test</div><div style="font-size:.6rem;color:rgba(255,255,255,.5);">Student Budget next</div></div>
+            <div style="font-size:.8rem;font-weight:800;color:#FF9500;">Route step</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="fees-check" aria-labelledby="feesCheckTitle">
+    <div class="fees-check-card">
+      <div class="fees-check-copy">
+        <h2 id="feesCheckTitle">Quick fee pressure check</h2>
+        <p>Enter one school option and monthly household support. AfroTools turns annual tuition plus extras into a monthly reserve, pressure verdict, and exportable next-step pack before you open the deeper fee feed.</p>
+      </div>
+      <div class="fees-check-form">
+        <div class="fees-check-grid">
+          <div class="fees-field"><label for="sfSchoolName">School or option</label><input id="sfSchoolName" type="text" placeholder="e.g. Sunrise Academy"></div>
+          <div class="fees-field"><label for="sfCurrency">Currency</label><input id="sfCurrency" type="text" value="NGN"></div>
+          <div class="fees-field"><label for="sfTuition">Annual tuition</label><input id="sfTuition" type="number" min="0" value="1200000"></div>
+          <div class="fees-field"><label for="sfExtras">Annual extras</label><input id="sfExtras" type="number" min="0" value="250000"></div>
+          <div class="fees-field"><label for="sfMonthlySupport">Monthly support available</label><input id="sfMonthlySupport" type="number" min="0" value="180000"></div>
+          <div class="fees-field"><label for="sfTermMode">Payment rhythm</label><select id="sfTermMode"><option value="3">3 terms/year</option><option value="2">2 semesters/year</option><option value="12">Monthly reserve</option></select></div>
+        </div>
+        <div class="fees-check-actions">
+          <button class="primary" type="button" id="sfRunCheck">Run pressure check</button>
+          <a href="/tools/school-fees/app">Open full comparator</a>
+          <a href="/tools/student-budget/">Open Student Budget</a>
+        </div>
+        <div class="fees-result" id="sfQuickResult"></div>
+        <div class="fees-check-actions" id="sfExportActions" hidden>
+          <button class="primary" type="button" id="sfCopyPack">Copy fee pack</button>
+          <button type="button" id="sfDownloadPack">Download TXT</button>
+          <button type="button" id="sfSavePack">Save locally</button>
+        </div>
+        <div class="fees-status" id="sfQuickStatus" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="landing-section" id="features">
+    <div class="landing-container">
+      <div class="landing-section-head"><div class="landing-section-eyebrow">What You Can Do</div><h2 class="landing-section-title">Compare fees, pressure-test the month, and keep the route honest</h2></div>
+      <div class="features-grid">
+        <div class="feature-card"><div class="feature-icon">Feed</div><div class="feature-title">Track Real Fees</div><div class="feature-desc">Browse verified school-fee records by country, city, level, and institution type.</div></div>
+        <div class="feature-card"><div class="feature-icon">Lane</div><div class="feature-title">Judge The Cost Lane</div><div class="feature-desc">See whether a school looks financially safer, stretch, or high pressure in the context of your saved route.</div></div>
+        <div class="feature-card"><div class="feature-icon">Mix</div><div class="feature-title">Use Shortlist Context</div><div class="feature-desc">Warm-start from saved schools, study level, and affordability posture instead of re-entering context every time.</div></div>
+        <div class="feature-card"><div class="feature-icon">Proof</div><div class="feature-title">Proof-Backed Reporting</div><div class="feature-desc">Receipts, notices, and school fee schedules increase trust and speed up verification.</div></div>
+        <div class="feature-card"><div class="feature-icon">Route</div><div class="feature-title">Continue The Finance Route</div><div class="feature-desc">Move a school-fee result into Student Budget or back into Education Hub when the next decision depends on the wider plan.</div></div>
+        <div class="feature-card"><div class="feature-icon">Data</div><div class="feature-title">Stay Honest About Precision</div><div class="feature-desc">Community and moderated data stay clearly framed as indicative unless the live record and proof signals genuinely support more confidence.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="landing-section">
+    <div class="landing-container">
+      <div class="landing-section-head"><div class="landing-section-eyebrow">How It Works</div><h2 class="landing-section-title">Use the school-fees workflow in 4 steps</h2></div>
+      <div class="steps-grid">
+        <div class="step-card"><div class="step-title">Start Warm If Context Exists</div><div class="step-desc">If your cockpit already knows your shortlist or affordability posture, the app can begin with that route lens instead of a blank compare.</div></div>
+        <div class="step-card"><div class="step-title">Review Trust Signals</div><div class="step-desc">Check reported tuition, extras, source type, and proof-backed cues before you use the numbers as a route decision.</div></div>
+        <div class="step-card"><div class="step-title">Pressure-Test The Month</div><div class="step-desc">Move a school into Student Budget when you need to know whether fees or monthly living costs are the real blocker.</div></div>
+        <div class="step-card"><div class="step-title">Send The Finance Signal Forward</div><div class="step-desc">Push the comparison into Education Hub so shortlist quality and finance pressure stay connected.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="landing-section" id="faq">
+    <div class="landing-container">
+      <div class="landing-section-head"><div class="landing-section-eyebrow">FAQ</div><h2 class="landing-section-title">Frequently Asked Questions</h2></div>
+      <div class="landing-faq-grid">
+        <div class="landing-faq-item"><div class="landing-faq-q">Where does the fee data come from?</div><div class="landing-faq-a">The feed combines contributor submissions, school notices, fee schedules, and community confirmations that pass verification or moderation.</div></div>
+        <div class="landing-faq-item"><div class="landing-faq-q">Does route-aware compare mean the tool knows exact tuition?</div><div class="landing-faq-a">No. Route-aware means the page can read your shortlist, study level, or affordability posture to frame the comparison better. The exact fee still depends on the live record quality.</div></div>
+        <div class="landing-faq-item"><div class="landing-faq-q">Which countries are strongest first?</div><div class="landing-faq-a">Nigeria, Kenya, South Africa, and Ghana are the first focus markets, but the schema supports broader African coverage as submissions grow.</div></div>
+        <div class="landing-faq-item"><div class="landing-faq-q">Can parents, students, or schools contribute?</div><div class="landing-faq-a">Yes. Anyone with accurate fee information can report it, and proof-backed submissions are more likely to be published quickly.</div></div>
+        <div class="landing-faq-item"><div class="landing-faq-q">What costs should be included?</div><div class="landing-faq-a">Tuition, registration, books, uniforms, transport, meals, PTA levies, development fees, and other recurring extras all matter.</div></div>
+        <div class="landing-faq-item"><div class="landing-faq-q">Can businesses license this data?</div><div class="landing-faq-a">Yes. Use the buyer-intake flow to request benchmark dashboards, reports, or API-style delivery for education-cost intelligence.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="landing-section">
+    <div class="landing-container">
+      <div class="landing-cta-banner">
+        <h2>Open the school-fees workflow</h2>
+        <p>Compare annual fees in the app, continue into Student Budget for monthly survival planning, or jump into Education Hub when the fee decision needs the wider shortlist and route context.</p>
+        <div class="landing-ctas" style="justify-content:center;margin-top:18px;">
+          <a href="/tools/school-fees/app" class="landing-cta-primary" style="font-size:1rem;padding:16px 36px;">Open Comparator App</a>
+          <a href="/tools/student-budget/" class="landing-cta-secondary">Open Student Budget</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="landing-seo">
+    <h2>School fees are route intelligence, not just a fee list</h2>
+    <p>Education costs move quickly, especially when inflation, FX pressure, transport changes, or school operating expenses shift. A useful school-fees product cannot rely on a tiny hardcoded sample. It needs a live submission system, a verification layer, and a public feed that is clear about what has been checked.</p>
+    <h3>Why verified fee reporting still matters</h3>
+    <p>Parents and students need a clearer picture of the real annual cost of a school, not just the headline tuition line. Operators, lenders, and media teams need to see where pricing is moving by city, school type, and level. That makes contributor-backed fee records valuable far beyond a comparison widget.</p>
+    <h3>What changed in the workflow</h3>
+    <p>School Fees now sits inside a connected education lane. When the cockpit already knows the shortlist or affordability posture, the app can frame safer versus stretch options more intelligently before the student moves into monthly planning.</p>
+    <h3>How AfroPoints fits in</h3>
+    <p>AfroPoints powers the contribution, verification, trust, and payout loop. Contributors can report what they actually paid or confirmed, reviewers protect the public record, and buyers can request dashboards or exports once the dataset matures.</p>
+    <p>Whether you are comparing private secondary schools in Lagos, public university costs in Accra, or international-school pricing in Nairobi, this page now points to a connected finance workflow instead of a demo-only experience.</p>
+  </section>
+
+</div>
+<afro-related-tools category="education" current="school-fees" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/education-hub/" data-related-tool data-id="education-hub" data-name="Education Hub" data-category="education" data-icon="EH" data-desc="Your complete education journey for GPA, JAMB, IELTS pathway planning, and personalized scholarship matching.">Education Hub</a></li><li><a href="/tools/waec-calculator/" data-related-tool data-id="waec-calculator" data-name="WAEC/NECO Grade Calculator" data-category="education" data-icon="WN" data-desc="Aggregate score, JAMB + O’Level eligibility, GPA converter (4.0 &amp; 5.0 scale), Ghana WASSCE. 12 universities, all cut-off">WAEC/NECO Grade Calculator</a></li><li><a href="/tools/scholarship-finder/" data-related-tool data-id="scholarship-finder" data-name="African Scholarship Finder" data-category="education" data-icon="AS" data-desc="Quick scholarship check using source-linked opportunities where available, with profile-aware match scoring, fit notes, ">African Scholarship Finder</a></li><li><a href="/tools/study-abroad-cost/" data-related-tool data-id="study-abroad-cost" data-name="Study Abroad Cost Calculator" data-category="education" data-icon="SA" data-desc="Total cost of studying abroad from Africa — tuition, visa, accommodation, living expenses. 20 destination countries.">Study Abroad Cost Calculator</a></li><li><a href="/tools/jamb-aggregate/" data-related-tool data-id="jamb-aggregate" data-name="JAMB Aggregate Calculator" data-category="education" data-icon="JA" data-desc="Calculate JAMB aggregate score for any Nigerian university department.">JAMB Aggregate Calculator</a></li><li><a href="/tools/scientific-calc/" data-related-tool data-id="scientific-calc" data-name="Scientific Calculator" data-category="education" data-icon="SC" data-desc="Full scientific calculator with graphing. Works offline. African exam mode.">Scientific Calculator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+
+<afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" type="module"></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" type="module"></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
+<script>
+var lastSchoolFeesPack=null;
+function sfValue(id,fallback){
+  var el=document.getElementById(id);
+  var value=el?parseFloat(el.value):NaN;
+  return Number.isFinite(value)?value:fallback;
+}
+function sfString(id,fallback){
+  var el=document.getElementById(id);
+  return (el&&el.value?el.value:fallback||'').trim();
+}
+function sfEscape(value){
+  return String(value==null?'':value).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];});
+}
+function sfMoney(value,currency){
+  var amount=Math.round(Number(value)||0).toLocaleString('en');
+  return (currency||'').toUpperCase()+' '+amount;
+}
+function sfSetStatus(message){
+  var status=document.getElementById('sfQuickStatus');
+  if(status) status.textContent=message||'';
+}
+function runSchoolFeesCheck(){
+  var school=sfString('sfSchoolName','School option');
+  var currency=sfString('sfCurrency','NGN').toUpperCase();
+  var tuition=Math.max(0,sfValue('sfTuition',0));
+  var extras=Math.max(0,sfValue('sfExtras',0));
+  var support=Math.max(0,sfValue('sfMonthlySupport',0));
+  var rhythm=Math.max(1,sfValue('sfTermMode',3));
+  var annual=tuition+extras;
+  var monthlyReserve=Math.ceil(annual/12);
+  var paymentChunk=Math.ceil(annual/rhythm);
+  var ratio=support>0?monthlyReserve/support:0;
+  var band=ratio>0.75?'high pressure':ratio>0.45?'stretch':ratio>0?'manageable':'unknown';
+  var verdict=band==='high pressure'?'High pressure fee route':band==='stretch'?'Stretch fee route':band==='manageable'?'Manageable fee route':'Need monthly support input';
+  var advice=band==='high pressure'
+    ? 'Do not treat this as affordable yet. Compare cheaper options, scholarship support, payment plans, or a different intake before paying.'
+    : band==='stretch'
+      ? 'This may work only with a written monthly reserve plan and careful living-cost pressure test.'
+      : band==='manageable'
+        ? 'This option looks easier to carry monthly, but still verify the live school record and hidden extras.'
+        : 'Add monthly support so AfroTools can judge whether the fee reserve is realistic.';
+  var actions=[
+    'Open the full comparator to compare this option against other schools and proof signals.',
+    'Move the monthly reserve into Student Budget before committing.',
+    'Verify tuition, registration, uniforms, transport, meals, books, and PTA or development levies.',
+    'Ask the school for payment deadlines, refund rules, and whether fees can change mid-session.'
+  ];
+  lastSchoolFeesPack={school:school,currency:currency,tuition:tuition,extras:extras,annual:annual,monthlyReserve:monthlyReserve,paymentChunk:paymentChunk,rhythm:rhythm,support:support,ratio:ratio,band:band,verdict:verdict,advice:advice,actions:actions};
+  document.getElementById('sfQuickResult').classList.add('show');
+  document.getElementById('sfQuickResult').innerHTML=
+    '<div class="fees-metrics">'+
+    '<div class="fees-metric"><span>Annual total</span><strong>'+sfMoney(annual,currency)+'</strong></div>'+
+    '<div class="fees-metric"><span>Monthly reserve</span><strong>'+sfMoney(monthlyReserve,currency)+'</strong></div>'+
+    '<div class="fees-metric"><span>Per payment</span><strong>'+sfMoney(paymentChunk,currency)+'</strong></div>'+
+    '</div>'+
+    '<h3>'+sfEscape(verdict)+'</h3><p>'+sfEscape(advice)+'</p>'+
+    '<ul>'+actions.map(function(action){return '<li>'+sfEscape(action)+'</li>';}).join('')+'</ul>';
+  document.getElementById('sfExportActions').hidden=false;
+  sfSetStatus('Fee pressure pack ready.');
+}
+function buildSchoolFeesPackText(){
+  if(!lastSchoolFeesPack)runSchoolFeesCheck();
+  var pack=lastSchoolFeesPack;
+  if(!pack)return '';
+  return [
+    'AfroTools School Fees Pressure Pack',
+    'School or option: '+pack.school,
+    'Annual tuition: '+sfMoney(pack.tuition,pack.currency),
+    'Annual extras: '+sfMoney(pack.extras,pack.currency),
+    'Annual total: '+sfMoney(pack.annual,pack.currency),
+    'Monthly reserve needed: '+sfMoney(pack.monthlyReserve,pack.currency),
+    'Payment chunk: '+sfMoney(pack.paymentChunk,pack.currency)+' across '+pack.rhythm+' payment period(s)',
+    'Monthly support available: '+sfMoney(pack.support,pack.currency),
+    'Verdict: '+pack.verdict+' ('+pack.band+')',
+    'Advice: '+pack.advice,
+    '',
+    'Next actions:',
+    '- '+pack.actions.join('\n- '),
+    '',
+    'Important: this is an education-cost planning estimate. Confirm current fee schedules, deadlines, payment rules, and hidden extras with the school.'
+  ].join('\n');
+}
+function fallbackCopySchoolFees(text){
+  var field=document.createElement('textarea');
+  field.value=text;
+  document.body.appendChild(field);
+  field.select();
+  try{document.execCommand('copy');sfSetStatus('Fee pressure pack copied.');}
+  catch(error){sfSetStatus('Copy failed. Select and copy the pack manually.');}
+  field.remove();
+}
+function copySchoolFeesPack(){
+  var text=buildSchoolFeesPackText();
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){sfSetStatus('Fee pressure pack copied.');}).catch(function(){fallbackCopySchoolFees(text);});
+  }else{
+    fallbackCopySchoolFees(text);
+  }
+}
+function downloadSchoolFeesPack(){
+  var text=buildSchoolFeesPackText();
+  var blob=new Blob([text],{type:'text/plain;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download='school-fees-pressure-pack.txt';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  sfSetStatus('TXT fee pressure pack downloaded.');
+}
+function saveSchoolFeesPack(){
+  if(!lastSchoolFeesPack)runSchoolFeesCheck();
+  try{
+    localStorage.setItem('afrotools_school_fees_pressure_pack',JSON.stringify({savedAt:new Date().toISOString(),pack:lastSchoolFeesPack,text:buildSchoolFeesPackText()}));
+    sfSetStatus('Fee pressure pack saved on this device.');
+  }catch(error){
+    sfSetStatus('Could not save locally in this browser.');
+  }
+}
+document.addEventListener('DOMContentLoaded',function(){
+  var run=document.getElementById('sfRunCheck');
+  if(run)run.addEventListener('click',runSchoolFeesCheck);
+  var copy=document.getElementById('sfCopyPack');
+  if(copy)copy.addEventListener('click',copySchoolFeesPack);
+  var download=document.getElementById('sfDownloadPack');
+  if(download)download.addEventListener('click',downloadSchoolFeesPack);
+  var save=document.getElementById('sfSavePack');
+  if(save)save.addEventListener('click',saveSchoolFeesPack);
+});
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-05-22",
+  "policy": {
+    "purpose": "Research-only candidate ledger for scholarship discovery sources.",
+    "public_row_rule": "Do not publish a scholarship row from an aggregator candidate until the canonical official provider page is verified.",
+    "automation_rule": "Discovery adapters may create review leads, not public scholarship rows."
+  },
+  "candidates": [
+    {
+      "source_key": "bachelorsportal-scholarship-sitemaps",
+      "name": "BachelorsPortal scholarship sitemap discovery",
+      "base_url": "https://www.bachelorsportal.com/sitemap.xml",
+      "robots_url": "https://www.bachelorsportal.com/robots.txt",
+      "parser_key": "bachelorsportal_sitemap_discovery",
+      "status": "discovery_only",
+      "allowed_use": "Low-volume URL discovery and manual lead review; canonical provider page must be verified before row creation.",
+      "blocked_use": "Bulk scraping, account-wall bypass, or copying portal-only content into public rows.",
+      "degree_scope": ["bachelor", "master", "phd"],
+      "notes": "Robots allow general crawling but source pages can include account-gated content. Treat as a lead source."
+    },
+    {
+      "source_key": "findaphd-search-reference",
+      "name": "FindAPhD search reference",
+      "base_url": "https://www.findaphd.com/phds/?Keywords=fully+funded+phd+for+international+students",
+      "robots_url": "https://www.findaphd.com/robots.txt",
+      "parser_key": "findaphd_reference_only",
+      "status": "reference_only",
+      "allowed_use": "Manual research context, partnership exploration, and official university page discovery when independently verified.",
+      "blocked_use": "Automated scraping or row ingestion from protected search/listing pages.",
+      "degree_scope": ["phd"],
+      "notes": "The current environment receives Cloudflare protection for direct fetches, and the site operates a commercial listings model."
+    }
+  ]
+}

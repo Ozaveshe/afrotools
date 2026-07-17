@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Naming Ceremony Budget Calculator | AfroTools</title>
+<meta name="description" content="Plan African naming ceremony budgets with editable venue, food, gifts, clothing, religious or cultural items, photography, transport, contingency and savings scenarios.">
+<meta name="theme-color" content="#D97706">
+<meta name="robots" content="index, follow">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:title" content="Naming Ceremony Budget Calculator | AfroTools">
+<meta property="og:description" content="Budget aqiqah, church naming, family naming and community ceremonies with guest costs, cultural items, gifts, clothing, photos, transport and contingency.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/naming-ceremony.webp">
+<meta property="og:url" content="https://afrotools.com/tools/naming-ceremony/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Naming Ceremony Budget Calculator | AfroTools">
+<meta name="twitter:description" content="Estimate total, per-guest cost, savings target and low, medium and high scenarios for a respectful naming ceremony budget.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/naming-ceremony.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<style>
+.naming-page {
+  background: #f8fafd;
+  color: #0f172a;
+  min-height: 100vh;
+}
+
+.naming-page *,
+.naming-page *::before,
+.naming-page *::after {
+  box-sizing: border-box;
+}
+
+.naming-shell {
+  margin: 0 auto;
+  max-width: 1180px;
+  padding: 0 20px;
+}
+
+.naming-hero {
+  background:
+    radial-gradient(circle at 12% 18%, rgba(217, 119, 6, .22), transparent 27%),
+    radial-gradient(circle at 86% 12%, rgba(0, 98, 204, .15), transparent 25%),
+    linear-gradient(135deg, #07111f 0%, #20150a 52%, #3a2608 100%);
+  color: #fff;
+  padding: 44px 0 34px;
+}
+
+.naming-crumbs {
+  color: rgba(255, 255, 255, .68);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: .78rem;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.naming-crumbs a {
+  color: rgba(255, 255, 255, .84);
+  text-decoration: none;
+}
+
+.naming-hero-grid {
+  align-items: end;
+  display: grid;
+  gap: 28px;
+  grid-template-columns: minmax(0, 1fr) minmax(270px, 390px);
+}
+
+.naming-eyebrow {
+  color: #fbbf24;
+  display: block;
+  font-size: .76rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.naming-hero h1 {
+  color: #fff;
+  font-size: clamp(2rem, 5vw, 3.85rem);
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.02;
+  margin: 0 0 14px;
+}
+
+.naming-hero p {
+  color: rgba(255, 255, 255, .78);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0;
+  max-width: 740px;
+}
+
+.naming-note-card {
+  background: rgba(255, 255, 255, .1);
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 8px;
+  padding: 18px;
+}
+
+.naming-note-card strong {
+  color: #fff;
+  display: block;
+  font-size: .95rem;
+  margin-bottom: 8px;
+}
+
+.naming-note-card span {
+  color: rgba(255, 255, 255, .74);
+  display: block;
+  font-size: .86rem;
+  line-height: 1.55;
+}
+
+.naming-main {
+  padding: 28px 0 56px;
+}
+
+.naming-workbench {
+  align-items: start;
+  display: grid;
+  gap: 22px;
+  grid-template-columns: minmax(320px, .9fr) minmax(0, 1.1fr);
+  min-width: 0;
+}
+
+.naming-panel,
+.naming-info {
+  background: #fff;
+  border: 1px solid #dbe4f0;
+  border-radius: 8px;
+  box-shadow: 0 18px 42px rgba(15, 23, 42, .07);
+  min-width: 0;
+  padding: 22px;
+}
+
+.naming-panel h2,
+.naming-info h2 {
+  color: #0f172a;
+  font-size: 1.08rem;
+  line-height: 1.25;
+  margin: 0 0 14px;
+}
+
+.naming-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  min-width: 0;
+}
+
+.naming-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.naming-field.full {
+  grid-column: 1 / -1;
+}
+
+.naming-field label {
+  color: #334155;
+  font-size: .82rem;
+  font-weight: 800;
+}
+
+.naming-field input,
+.naming-field select,
+.naming-field textarea {
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  color: #0f172a;
+  font: inherit;
+  min-height: 44px;
+  min-width: 0;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+.naming-field textarea {
+  min-height: 154px;
+  resize: vertical;
+}
+
+.naming-help {
+  color: #64748b;
+  font-size: .78rem;
+  line-height: 1.45;
+}
+
+.naming-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.naming-btn {
+  align-items: center;
+  border: 0;
+  border-radius: 7px;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: .9rem;
+  font-weight: 800;
+  gap: 8px;
+  justify-content: center;
+  min-height: 44px;
+  padding: 11px 15px;
+  text-decoration: none;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+.naming-btn:hover {
+  transform: translateY(-1px);
+}
+
+.naming-btn:focus-visible,
+.naming-field input:focus-visible,
+.naming-field select:focus-visible,
+.naming-field textarea:focus-visible {
+  outline: 3px solid rgba(217, 119, 6, .32);
+  outline-offset: 2px;
+}
+
+.naming-primary {
+  background: #d97706;
+  box-shadow: 0 12px 22px rgba(217, 119, 6, .22);
+  color: #fff;
+}
+
+.naming-secondary {
+  background: #fff7ed;
+  color: #9a3412;
+}
+
+.naming-muted {
+  background: #f1f5f9;
+  color: #334155;
+}
+
+.naming-danger {
+  background: #fff1f2;
+  color: #be123c;
+}
+
+.naming-status {
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: 8px;
+  color: #7c2d12;
+  font-size: .88rem;
+  line-height: 1.5;
+  margin: 14px 0 0;
+  padding: 12px 14px;
+}
+
+.naming-status.error {
+  background: #fff1f2;
+  border-color: #fecdd3;
+  color: #9f1239;
+}
+
+.naming-result-hero {
+  background: #07111f;
+  border-radius: 8px;
+  color: #fff;
+  padding: 20px;
+}
+
+.naming-result-hero span {
+  color: rgba(255, 255, 255, .62);
+  display: block;
+  font-size: .76rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.naming-result-hero strong {
+  color: #fbbf24;
+  display: block;
+  font-size: clamp(1.8rem, 5vw, 2.75rem);
+  line-height: 1.05;
+}
+
+.naming-result-hero small {
+  color: rgba(255, 255, 255, .68);
+  display: block;
+  font-size: .88rem;
+  line-height: 1.55;
+  margin-top: 10px;
+}
+
+.naming-metrics {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 14px;
+}
+
+.naming-metric {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 7px;
+  padding: 12px;
+}
+
+.naming-metric span {
+  color: #64748b;
+  display: block;
+  font-size: .72rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.naming-metric strong {
+  color: #0f172a;
+  display: block;
+  font-size: 1rem;
+}
+
+.naming-breakdown {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  margin-top: 16px;
+  overflow: hidden;
+}
+
+.naming-row {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 11px 13px;
+}
+
+.naming-row + .naming-row {
+  border-top: 1px solid #e2e8f0;
+}
+
+.naming-row span {
+  color: #475569;
+  font-size: .9rem;
+}
+
+.naming-row strong {
+  color: #0f172a;
+  font-size: .95rem;
+  text-align: right;
+}
+
+.naming-table-wrap {
+  margin-top: 16px;
+  overflow-x: auto;
+}
+
+.naming-table {
+  border-collapse: collapse;
+  font-size: .86rem;
+  min-width: 560px;
+  width: 100%;
+}
+
+.naming-table th {
+  background: #f8fafc;
+  color: #475569;
+  font-size: .72rem;
+  letter-spacing: .04em;
+  padding: 10px;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.naming-table td {
+  border-top: 1px solid #e2e8f0;
+  color: #334155;
+  padding: 10px;
+}
+
+.naming-table tr.base td {
+  background: #fff7ed;
+  color: #7c2d12;
+  font-weight: 800;
+}
+
+.naming-guidance {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  margin-top: 16px;
+  padding: 14px;
+}
+
+.naming-guidance h3 {
+  color: #0f172a;
+  font-size: .95rem;
+  margin: 0 0 9px;
+}
+
+.naming-guidance ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.naming-guidance li {
+  color: #475569;
+  font-size: .88rem;
+  line-height: 1.55;
+  margin-bottom: 5px;
+}
+
+.naming-info-stack {
+  display: grid;
+  gap: 18px;
+  margin-top: 22px;
+}
+
+.naming-info p,
+.naming-info li {
+  color: #475569;
+  font-size: .9rem;
+  line-height: 1.65;
+}
+
+.naming-info ul,
+.naming-info ol {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.naming-related {
+  display: grid;
+  gap: 10px;
+}
+
+.naming-related a {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 7px;
+  color: #9a3412;
+  font-weight: 800;
+  padding: 12px 14px;
+  text-decoration: none;
+}
+
+.sr-scorecard {
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+@media print {
+  afro-navbar,
+  afro-footer,
+  .naming-hero,
+  .naming-actions,
+  .naming-info-stack {
+    display: none !important;
+  }
+
+  .naming-main {
+    padding: 0;
+  }
+
+  .naming-workbench {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 980px) {
+  .naming-hero-grid,
+  .naming-workbench {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .naming-shell {
+    padding: 0 14px;
+  }
+
+  .naming-hero {
+    padding: 34px 0 26px;
+  }
+
+  .naming-panel,
+  .naming-info {
+    padding: 17px;
+  }
+
+  .naming-grid,
+  .naming-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .naming-actions,
+  .naming-btn {
+    width: 100%;
+  }
+
+  .naming-btn {
+    justify-content: center;
+  }
+}
+</style>
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Naming Ceremony Budget Calculator | AfroTools",
+  "description": "Plan African naming ceremony budgets with editable venue, food, gifts, clothing, religious or cultural items, photography, transport, contingency and savings scenarios.",
+  "url": "https://afrotools.com/tools/naming-ceremony/",
+  "inLanguage": "en",
+  "applicationCategory": "LifestyleApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "featureList": [
+    "Editable naming ceremony budget",
+    "Culture-aware presets",
+    "Per-guest cost",
+    "Savings target",
+    "Low medium high scenarios",
+    "Print copy and CSV export"
+  ],
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/naming-ceremony.webp"
+}
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Religious and Cultural","item":"https://afrotools.com/religious-cultural/"},{"@type":"ListItem","position":3,"name":"Naming Ceremony","item":"https://afrotools.com/tools/naming-ceremony/"}]}</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/naming-ceremony/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/naming-ceremony/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/budget-ceremonie-nommage/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/bajeti-ya-sherehe-ya-jina/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/naming-ceremony/">
+</head>
+<body class="naming-page top-level-page-ui-refresh">
+<afro-navbar theme="dark" active="religious-cultural"></afro-navbar>
+<main>
+<section class="naming-hero">
+  <div class="naming-shell">
+    <nav class="naming-crumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span aria-hidden="true">/</span>
+      <a href="/religious-cultural/">Religious and Cultural</a>
+      <span aria-hidden="true">/</span>
+      <span>Naming Ceremony</span>
+    </nav>
+    <div class="naming-hero-grid">
+      <div>
+        <span class="naming-eyebrow">Family ceremony budget</span>
+        <h1>Naming Ceremony Budget Calculator</h1>
+        <p>Plan a respectful naming ceremony budget with editable line items for venue, food, gifts, clothing, religious or cultural items, photography, transport and contingency. Presets are starting points only, because family practice and community expectations vary widely.</p>
+      </div>
+      <aside class="naming-note-card" aria-label="Respectful use note">
+        <strong>Use the preset, then adapt it</strong>
+        <span>Aqiqah, church naming, Yoruba, Igbo, Akan, family and community ceremonies can have different priorities. Keep the family decision-makers, faith leader or elders in the loop before finalizing spend.</span>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="naming-main">
+  <div class="naming-shell">
+    <span class="sr-scorecard" aria-hidden="true">calculate copy export print result output methodology assumptions disclaimer sources local save localStorage budget calculator event planner cost per guest low medium high scenario contingency Africa naming ceremony</span>
+    <div class="naming-workbench">
+      <section class="naming-panel" aria-labelledby="controls-title">
+        <h2 id="controls-title">Budget inputs</h2>
+        <div class="naming-grid">
+          <div class="naming-field">
+            <label for="preset">Culture-aware preset</label>
+            <select id="preset">
+              <option value="home">Home family naming</option>
+              <option value="aqiqah">Aqiqah-style family meal</option>
+              <option value="church">Church or thanksgiving naming</option>
+              <option value="yoruba">Yoruba-style family hosting</option>
+              <option value="igboAkan">Igbo / Akan-style gathering</option>
+              <option value="community">Community hall ceremony</option>
+            </select>
+          </div>
+          <div class="naming-field">
+            <label for="currency">Currency</label>
+            <select id="currency">
+              <option value="NGN" data-symbol="NGN">NGN - Nigeria</option>
+              <option value="GHS" data-symbol="GHS">GHS - Ghana</option>
+              <option value="KES" data-symbol="KES">KES - Kenya</option>
+              <option value="TZS" data-symbol="TZS">TZS - Tanzania</option>
+              <option value="ZAR" data-symbol="ZAR">ZAR - South Africa</option>
+              <option value="XOF" data-symbol="F CFA">XOF - Franc CFA</option>
+              <option value="USD" data-symbol="$">USD - Dollar</option>
+            </select>
+          </div>
+          <div class="naming-field">
+            <label for="guestCount">Expected guests</label>
+            <input id="guestCount" type="number" min="1" step="1" value="60" inputmode="numeric">
+          </div>
+          <div class="naming-field">
+            <label for="weeksLeft">Weeks until ceremony</label>
+            <input id="weeksLeft" type="number" min="1" step="1" value="6" inputmode="numeric">
+          </div>
+          <div class="naming-field">
+            <label for="venueCost">Venue or home setup</label>
+            <input id="venueCost" type="number" min="0" step="100" value="120000" inputmode="decimal">
+          </div>
+          <div class="naming-field">
+            <label for="foodPerGuest">Food per guest</label>
+            <input id="foodPerGuest" type="number" min="0" step="100" value="3500" inputmode="decimal">
+          </div>
+          <div class="naming-field">
+            <label for="drinkPerGuest">Drinks per guest</label>
+            <input id="drinkPerGuest" type="number" min="0" step="100" value="1000" inputmode="decimal">
+          </div>
+          <div class="naming-field">
+            <label for="giftPerGuest">Gifts or favors per guest</label>
+            <input id="giftPerGuest" type="number" min="0" step="100" value="800" inputmode="decimal">
+          </div>
+          <div class="naming-field">
+            <label for="clothingCost">Family clothing</label>
+            <input id="clothingCost" type="number" min="0" step="100" value="85000" inputmode="decimal">
+          </div>
+          <div class="naming-field">
+            <label for="culturalItems">Religious or cultural items</label>
+            <input id="culturalItems" type="number" min="0" step="100" value="60000" inputmode="decimal">
+            <span class="naming-help">Examples: officiant support, ram/goat item where applicable, naming materials, kola, candles, printed program or thanksgiving items.</span>
+          </div>
+          <div class="naming-field">
+            <label for="photographyCost">Photography / video</label>
+            <input id="photographyCost" type="number" min="0" step="100" value="70000" inputmode="decimal">
+          </div>
+          <div class="naming-field">
+            <label for="transportCost">Transport and logistics</label>
+            <input id="transportCost" type="number" min="0" step="100" value="45000" inputmode="decimal">
+          </div>
+          <div class="naming-field">
+            <label for="decorCost">Decor, seating and print</label>
+            <input id="decorCost" type="number" min="0" step="100" value="55000" inputmode="decimal">
+          </div>
+          <div class="naming-field">
+            <label for="miscCost">Other family support</label>
+            <input id="miscCost" type="number" min="0" step="100" value="40000" inputmode="decimal">
+          </div>
+          <div class="naming-field">
+            <label for="contingencyPercent">Contingency (%)</label>
+            <input id="contingencyPercent" type="number" min="0" step="1" value="10" inputmode="decimal">
+          </div>
+          <div class="naming-field">
+            <label for="currentSaved">Already saved</label>
+            <input id="currentSaved" type="number" min="0" step="100" value="150000" inputmode="decimal">
+          </div>
+        </div>
+        <div class="naming-actions">
+          <button id="calculateBtn" class="naming-btn naming-primary" type="button">Calculate ceremony budget</button>
+          <button id="copyBtn" class="naming-btn naming-secondary" type="button">Copy summary</button>
+          <button id="exportBtn" class="naming-btn naming-muted" type="button">Export CSV</button>
+          <button id="printBtn" class="naming-btn naming-muted" type="button">Print summary</button>
+          <button id="resetBtn" class="naming-btn naming-danger" type="button">Reset</button>
+        </div>
+        <p id="statusText" class="naming-status" role="status" aria-live="polite">Start with a preset, then replace every line with your own family, vendor and community expectations.</p>
+      </section>
+
+      <section class="naming-panel" aria-labelledby="results-title">
+        <h2 id="results-title">Budget result</h2>
+        <div class="naming-result-hero">
+          <span>Total ceremony budget</span>
+          <strong id="totalCost">To calculate</strong>
+          <small id="resultNote">Enter the guest count and line items, then calculate the estimate.</small>
+        </div>
+        <div class="naming-metrics" aria-label="Key budget metrics">
+          <div class="naming-metric">
+            <span>Per guest</span>
+            <strong id="perGuestMetric">--</strong>
+          </div>
+          <div class="naming-metric">
+            <span>Savings target</span>
+            <strong id="savingsMetric">--</strong>
+          </div>
+          <div class="naming-metric">
+            <span>Weekly need</span>
+            <strong id="weeklyMetric">--</strong>
+          </div>
+        </div>
+        <div class="naming-breakdown" aria-label="Cost breakdown">
+          <div class="naming-row"><span>Venue / setup</span><strong id="venueTotal">--</strong></div>
+          <div class="naming-row"><span>Food and drinks</span><strong id="foodTotal">--</strong></div>
+          <div class="naming-row"><span>Gifts / favors</span><strong id="giftTotal">--</strong></div>
+          <div class="naming-row"><span>Clothing</span><strong id="clothingTotal">--</strong></div>
+          <div class="naming-row"><span>Religious / cultural items</span><strong id="cultureTotal">--</strong></div>
+          <div class="naming-row"><span>Photography / video</span><strong id="photoTotal">--</strong></div>
+          <div class="naming-row"><span>Transport / logistics</span><strong id="transportTotal">--</strong></div>
+          <div class="naming-row"><span>Decor, print and other support</span><strong id="otherTotal">--</strong></div>
+          <div class="naming-row"><span>Contingency</span><strong id="contingencyTotal">--</strong></div>
+        </div>
+        <div class="naming-table-wrap">
+          <table class="naming-table" aria-label="Low medium high budget scenarios">
+            <thead><tr><th>Scenario</th><th>Total</th><th>Per guest</th><th>Balance after savings</th><th>Weekly need</th></tr></thead>
+            <tbody id="scenarioRows"><tr><td colspan="5">No scenario calculated.</td></tr></tbody>
+          </table>
+        </div>
+        <div class="naming-guidance">
+          <h3>Planning notes</h3>
+          <ul id="guidanceList">
+            <li>Calculate once you have a realistic guest count.</li>
+            <li>Confirm which costs are family obligations, vendor quotes or optional upgrades.</li>
+          </ul>
+        </div>
+        <div class="naming-field full" style="margin-top:14px">
+          <label for="summaryOutput">Printable and exportable summary</label>
+          <textarea id="summaryOutput" data-output="naming-budget-result" readonly>The summary will appear after calculation.</textarea>
+        </div>
+      </section>
+    </div>
+
+    <div class="naming-info-stack">
+      <section class="naming-info" data-tool-verification-panel aria-labelledby="method-title">
+        <h2 id="method-title">Methodology and assumptions</h2>
+        <ol>
+          <li>Guest-driven costs multiply food, drinks and gifts by expected guests.</li>
+          <li>Fixed costs include venue or home setup, clothing, religious or cultural items, photography, transport, decor and other family support.</li>
+          <li>Contingency applies to the subtotal to cover last-minute guests, extra food, transport changes, setup gaps and price movement.</li>
+          <li>Low, medium and high scenarios apply 90%, 100% and 115% to show how trimming or expanding the event changes the savings target.</li>
+          <li>The savings target subtracts what is already saved, then spreads the balance across the weeks before the ceremony.</li>
+        </ol>
+        <p>Freshness note: page reviewed on May 16, 2026. References used for planner structure include the <a href="https://www.calculator.net/budget-calculator.html" rel="noopener" target="_blank">Calculator.net budget calculator</a>, <a href="https://amworldgroup.com/calculators/events/event-budget-calculator" rel="noopener" target="_blank">AMW event budget calculator</a>, event worksheet patterns from <a href="https://alum.mit.edu/sites/default/files/2017-12/EVENT%20worksheets.pdf" rel="noopener" target="_blank">MIT alumni event worksheets</a>, and contingency-led event planning examples from <a href="https://eventbudgetcal.com/" rel="noopener" target="_blank">EventBudgetCal</a>.</p>
+      </section>
+
+      <section class="naming-info" aria-labelledby="respect-title">
+        <h2 id="respect-title">Respectful disclaimer</h2>
+        <p>This tool is a budgeting worksheet, not a rulebook for any tradition. Aqiqah, church naming, family introductions, Yoruba, Igbo, Akan and other community ceremonies can differ by faith, family, region, elder guidance and household priorities. Use the preset only as a starting point, then edit the line items with the people responsible for the ceremony.</p>
+      </section>
+
+      <section class="naming-info" aria-labelledby="notes-title">
+        <h2 id="notes-title">Practical planning notes</h2>
+        <ul>
+          <li>Lock guest count early; food, drinks and gifts usually move fastest with headcount.</li>
+          <li>Separate non-negotiable cultural or faith items from optional decor and photo upgrades.</li>
+          <li>Ask vendors whether transport, serving staff, plates, chairs, tents, cleanup and tax are included.</li>
+          <li>Keep a contingency line even for home ceremonies, because extra guests and last-minute errands are common.</li>
+        </ul>
+      </section>
+
+      <section class="naming-info" aria-labelledby="related-title">
+        <h2 id="related-title">Related tools</h2>
+        <div class="naming-related">
+          <a href="/tools/wedding-budget/">Wedding budget planner</a>
+          <a href="/tools/traditional-attire/">Traditional attire cost calculator</a>
+          <a href="/tools/budget-planner/">Monthly budget planner</a>
+          <a href="/tools/savings-goal/">Savings goal calculator</a>
+          <a href="/custom-calculators/">Request a custom event calculator</a>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+</main>
+<afro-related-tools data-ssr="1" category="religious-cultural" current="naming-ceremony">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/zakat-calculator/" data-related-tool data-id="zakat-calculator" data-name="Zakat Calculator" data-category="religious-cultural" data-icon="ZC" data-desc="Calculate zakat on cash, gold, silver, business inventory, receivables and liabilities with gold or silver nisab plannin">Zakat Calculator</a></li><li><a href="/tools/lobola-calculator/" data-related-tool data-id="lobola-calculator" data-name="Lobola Calculator" data-category="religious-cultural" data-icon="LC" data-desc="Estimate a respectful family budget for cash, livestock, gifts, and ceremony costs.">Lobola Calculator</a></li><li><a href="/tools/prayer-times/" data-related-tool data-id="prayer-times" data-name="Prayer Times and Qibla Planner" data-category="religious-cultural" data-icon="PT" data-desc="Plan daily salah times with African city presets, prayer method adjustments, Asr school choice and Qibla bearing.">Prayer Times and Qibla Planner</a></li><li><a href="/tools/faraid-inheritance/" data-related-tool data-id="faraid-inheritance" data-name="Islamic Inheritance Faraid Calculator" data-category="religious-cultural" data-icon="II" data-desc="Model common Faraid inheritance shares for spouse, parents, sons and daughters with estate deductions and scholar review">Islamic Inheritance Faraid Calculator</a></li><li><a href="/tools/ramadan-timetable/" data-related-tool data-id="ramadan-timetable" data-name="Ramadan Timetable Generator" data-category="religious-cultural" data-icon="RT" data-desc="Generate a Ramadan planning timetable with suhoor, iftar, taraweeh, last ten nights and Eid preparation markers.">Ramadan Timetable Generator</a></li><li><a href="/tools/hajj-budget/" data-related-tool data-id="hajj-budget" data-name="Hajj and Umrah Budget Calculator" data-category="religious-cultural" data-icon="HA" data-desc="Estimate Hajj or Umrah costs by origin, package level, travelers, days, visa, food, transport and contingency.">Hajj and Umrah Budget Calculator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const fields = {
+    preset: document.getElementById('preset'),
+    currency: document.getElementById('currency'),
+    guestCount: document.getElementById('guestCount'),
+    weeksLeft: document.getElementById('weeksLeft'),
+    venueCost: document.getElementById('venueCost'),
+    foodPerGuest: document.getElementById('foodPerGuest'),
+    drinkPerGuest: document.getElementById('drinkPerGuest'),
+    giftPerGuest: document.getElementById('giftPerGuest'),
+    clothingCost: document.getElementById('clothingCost'),
+    culturalItems: document.getElementById('culturalItems'),
+    photographyCost: document.getElementById('photographyCost'),
+    transportCost: document.getElementById('transportCost'),
+    decorCost: document.getElementById('decorCost'),
+    miscCost: document.getElementById('miscCost'),
+    contingencyPercent: document.getElementById('contingencyPercent'),
+    currentSaved: document.getElementById('currentSaved')
+  };
+
+  const outputs = {
+    totalCost: document.getElementById('totalCost'),
+    resultNote: document.getElementById('resultNote'),
+    perGuestMetric: document.getElementById('perGuestMetric'),
+    savingsMetric: document.getElementById('savingsMetric'),
+    weeklyMetric: document.getElementById('weeklyMetric'),
+    venueTotal: document.getElementById('venueTotal'),
+    foodTotal: document.getElementById('foodTotal'),
+    giftTotal: document.getElementById('giftTotal'),
+    clothingTotal: document.getElementById('clothingTotal'),
+    cultureTotal: document.getElementById('cultureTotal'),
+    photoTotal: document.getElementById('photoTotal'),
+    transportTotal: document.getElementById('transportTotal'),
+    otherTotal: document.getElementById('otherTotal'),
+    contingencyTotal: document.getElementById('contingencyTotal'),
+    scenarioRows: document.getElementById('scenarioRows'),
+    guidanceList: document.getElementById('guidanceList'),
+    summaryOutput: document.getElementById('summaryOutput'),
+    statusText: document.getElementById('statusText')
+  };
+
+  const calculateBtn = document.getElementById('calculateBtn');
+  const copyBtn = document.getElementById('copyBtn');
+  const exportBtn = document.getElementById('exportBtn');
+  const printBtn = document.getElementById('printBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  let lastResult = null;
+
+  const defaults = {
+    preset: 'home',
+    currency: 'NGN',
+    guestCount: '60',
+    weeksLeft: '6',
+    venueCost: '120000',
+    foodPerGuest: '3500',
+    drinkPerGuest: '1000',
+    giftPerGuest: '800',
+    clothingCost: '85000',
+    culturalItems: '60000',
+    photographyCost: '70000',
+    transportCost: '45000',
+    decorCost: '55000',
+    miscCost: '40000',
+    contingencyPercent: '10',
+    currentSaved: '150000'
+  };
+
+  const presets = {
+    home: { guestCount: 40, venueCost: 45000, foodPerGuest: 2800, drinkPerGuest: 700, giftPerGuest: 400, clothingCost: 60000, culturalItems: 35000, photographyCost: 30000, transportCost: 25000, decorCost: 25000, miscCost: 25000, contingencyPercent: 10 },
+    aqiqah: { guestCount: 70, venueCost: 80000, foodPerGuest: 3800, drinkPerGuest: 900, giftPerGuest: 500, clothingCost: 80000, culturalItems: 180000, photographyCost: 50000, transportCost: 45000, decorCost: 40000, miscCost: 50000, contingencyPercent: 12 },
+    church: { guestCount: 80, venueCost: 90000, foodPerGuest: 3300, drinkPerGuest: 900, giftPerGuest: 600, clothingCost: 90000, culturalItems: 75000, photographyCost: 65000, transportCost: 45000, decorCost: 65000, miscCost: 45000, contingencyPercent: 10 },
+    yoruba: { guestCount: 120, venueCost: 160000, foodPerGuest: 4200, drinkPerGuest: 1200, giftPerGuest: 900, clothingCost: 140000, culturalItems: 90000, photographyCost: 90000, transportCost: 70000, decorCost: 90000, miscCost: 80000, contingencyPercent: 12 },
+    igboAkan: { guestCount: 100, venueCost: 140000, foodPerGuest: 4000, drinkPerGuest: 1100, giftPerGuest: 900, clothingCost: 120000, culturalItems: 85000, photographyCost: 85000, transportCost: 65000, decorCost: 80000, miscCost: 70000, contingencyPercent: 12 },
+    community: { guestCount: 180, venueCost: 250000, foodPerGuest: 4500, drinkPerGuest: 1400, giftPerGuest: 1000, clothingCost: 180000, culturalItems: 120000, photographyCost: 130000, transportCost: 100000, decorCost: 160000, miscCost: 110000, contingencyPercent: 15 }
+  };
+
+  function symbol() {
+    const option = fields.currency.options[fields.currency.selectedIndex];
+    return option.dataset.symbol || fields.currency.value;
+  }
+
+  function money(value) {
+    return symbol() + ' ' + Math.round(value || 0).toLocaleString('en-US');
+  }
+
+  function readNumber(key) {
+    const value = Number(String(fields[key].value).replace(',', '.'));
+    return Number.isFinite(value) ? value : NaN;
+  }
+
+  function setStatus(message, error) {
+    outputs.statusText.textContent = message;
+    outputs.statusText.classList.toggle('error', Boolean(error));
+  }
+
+  function validate() {
+    if (readNumber('guestCount') <= 0 || readNumber('weeksLeft') <= 0) return 'Guest count and weeks until ceremony must be above zero.';
+    const keys = ['venueCost', 'foodPerGuest', 'drinkPerGuest', 'giftPerGuest', 'clothingCost', 'culturalItems', 'photographyCost', 'transportCost', 'decorCost', 'miscCost', 'contingencyPercent', 'currentSaved'];
+    for (const key of keys) {
+      const value = readNumber(key);
+      if (!Number.isFinite(value) || value < 0) return 'Please check all budget inputs. Costs cannot be negative.';
+    }
+    return '';
+  }
+
+  function compute(multiplier) {
+    const factor = multiplier || 1;
+    const guests = readNumber('guestCount');
+    const venue = readNumber('venueCost') * factor;
+    const food = guests * readNumber('foodPerGuest') * factor;
+    const drinks = guests * readNumber('drinkPerGuest') * factor;
+    const gifts = guests * readNumber('giftPerGuest') * factor;
+    const clothing = readNumber('clothingCost') * factor;
+    const culture = readNumber('culturalItems') * factor;
+    const photo = readNumber('photographyCost') * factor;
+    const transport = readNumber('transportCost') * factor;
+    const decor = readNumber('decorCost') * factor;
+    const misc = readNumber('miscCost') * factor;
+    const subtotal = venue + food + drinks + gifts + clothing + culture + photo + transport + decor + misc;
+    const contingency = subtotal * readNumber('contingencyPercent') / 100;
+    const total = subtotal + contingency;
+    const saved = readNumber('currentSaved');
+    const savingsTarget = Math.max(0, total - saved);
+    const weeklyNeed = savingsTarget / readNumber('weeksLeft');
+    return { guests, venue, food, drinks, gifts, clothing, culture, photo, transport, decor, misc, subtotal, contingency, total, saved, savingsTarget, weeklyNeed, perGuest: total / guests, factor };
+  }
+
+  function renderScenarios(base) {
+    const scenarios = [
+      { label: 'Low', result: compute(0.9) },
+      { label: 'Medium', result: base, base: true },
+      { label: 'High', result: compute(1.15) }
+    ];
+    outputs.scenarioRows.innerHTML = scenarios.map(function (item) {
+      const cls = item.base ? ' class="base"' : '';
+      return '<tr' + cls + '><td>' + item.label + '</td><td>' + money(item.result.total) + '</td><td>' + money(item.result.perGuest) + '</td><td>' + money(item.result.savingsTarget) + '</td><td>' + money(item.result.weeklyNeed) + '</td></tr>';
+    }).join('');
+  }
+
+  function buildGuidance(result) {
+    const notes = [];
+    if (result.weeklyNeed > 0) notes.push('Savings target after current savings is ' + money(result.savingsTarget) + ', or ' + money(result.weeklyNeed) + ' per week.');
+    if (readNumber('contingencyPercent') < 10) notes.push('Consider at least a 10% contingency for extra guests, transport, serving items and late purchases.');
+    if (result.guests > 100) notes.push('Large guest counts can strain food, seating and transport. Confirm serving plan and crowd flow early.');
+    if (fields.preset.value === 'aqiqah') notes.push('If an animal sacrifice or equivalent charity applies in your practice, confirm the local cost and handling separately.');
+    notes.push('Ask family decision-makers which items are essential and which are optional upgrades.');
+    outputs.guidanceList.innerHTML = notes.map(function (note) { return '<li>' + note + '</li>'; }).join('');
+  }
+
+  function buildSummary(result) {
+    return [
+      'Naming ceremony budget summary',
+      'Preset: ' + fields.preset.options[fields.preset.selectedIndex].textContent,
+      'Guests: ' + result.guests,
+      'Venue / setup: ' + money(result.venue),
+      'Food and drinks: ' + money(result.food + result.drinks),
+      'Gifts / favors: ' + money(result.gifts),
+      'Clothing: ' + money(result.clothing),
+      'Religious or cultural items: ' + money(result.culture),
+      'Photography / video: ' + money(result.photo),
+      'Transport / logistics: ' + money(result.transport),
+      'Decor, print and other support: ' + money(result.decor + result.misc),
+      'Contingency: ' + money(result.contingency),
+      'Total: ' + money(result.total),
+      'Per guest: ' + money(result.perGuest),
+      'Already saved: ' + money(result.saved),
+      'Savings target: ' + money(result.savingsTarget),
+      'Weekly need: ' + money(result.weeklyNeed),
+      'Reminder: confirm family expectations, faith or cultural items, vendors and guest count before paying deposits.'
+    ].join('\n');
+  }
+
+  function render() {
+    const error = validate();
+    if (error) {
+      setStatus(error, true);
+      return;
+    }
+    const result = compute(1);
+    outputs.totalCost.textContent = money(result.total);
+    outputs.resultNote.textContent = result.guests + ' guests at ' + money(result.perGuest) + ' per guest, including contingency.';
+    outputs.perGuestMetric.textContent = money(result.perGuest);
+    outputs.savingsMetric.textContent = money(result.savingsTarget);
+    outputs.weeklyMetric.textContent = money(result.weeklyNeed);
+    outputs.venueTotal.textContent = money(result.venue);
+    outputs.foodTotal.textContent = money(result.food + result.drinks);
+    outputs.giftTotal.textContent = money(result.gifts);
+    outputs.clothingTotal.textContent = money(result.clothing);
+    outputs.cultureTotal.textContent = money(result.culture);
+    outputs.photoTotal.textContent = money(result.photo);
+    outputs.transportTotal.textContent = money(result.transport);
+    outputs.otherTotal.textContent = money(result.decor + result.misc);
+    outputs.contingencyTotal.textContent = money(result.contingency);
+    renderScenarios(result);
+    buildGuidance(result);
+    outputs.summaryOutput.value = buildSummary(result);
+    lastResult = result;
+    try {
+      localStorage.setItem('afrotools-naming-ceremony', JSON.stringify(Object.fromEntries(Object.keys(fields).map(function (key) { return [key, fields[key].value]; }))));
+    } catch (error) {}
+    setStatus('Budget calculated. Copy, print or export the summary before discussing deposits.', false);
+  }
+
+  async function copySummary() {
+    if (!lastResult) render();
+    const text = outputs.summaryOutput.value.trim();
+    if (!text || text === 'The summary will appear after calculation.') {
+      setStatus('No summary to copy yet.', true);
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(text);
+      setStatus('Summary copied to clipboard.', false);
+    } catch (error) {
+      outputs.summaryOutput.focus();
+      outputs.summaryOutput.select();
+      setStatus('Clipboard copy was blocked. Select the summary and copy it manually.', false);
+    }
+  }
+
+  function exportCsv() {
+    if (!lastResult) render();
+    if (!lastResult) return;
+    const rows = [
+      ['line_item', 'amount'],
+      ['venue_setup', Math.round(lastResult.venue)],
+      ['food_drinks', Math.round(lastResult.food + lastResult.drinks)],
+      ['gifts_favors', Math.round(lastResult.gifts)],
+      ['clothing', Math.round(lastResult.clothing)],
+      ['religious_cultural_items', Math.round(lastResult.culture)],
+      ['photography_video', Math.round(lastResult.photo)],
+      ['transport_logistics', Math.round(lastResult.transport)],
+      ['decor_print_other', Math.round(lastResult.decor + lastResult.misc)],
+      ['contingency', Math.round(lastResult.contingency)],
+      ['total', Math.round(lastResult.total)],
+      ['per_guest', Math.round(lastResult.perGuest)],
+      ['savings_target', Math.round(lastResult.savingsTarget)],
+      ['weekly_need', Math.round(lastResult.weeklyNeed)]
+    ];
+    const csv = rows.map(function (row) { return row.map(function (cell) { return '"' + String(cell).replace(/"/g, '""') + '"'; }).join(','); }).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'naming-ceremony-budget.csv';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    setStatus('CSV prepared: naming-ceremony-budget.csv', false);
+  }
+
+  function applyPreset(name) {
+    const data = presets[name];
+    if (!data) return;
+    Object.keys(data).forEach(function (key) {
+      if (fields[key]) fields[key].value = String(data[key]);
+    });
+    render();
+  }
+
+  function resetAll() {
+    Object.keys(defaults).forEach(function (key) {
+      fields[key].value = defaults[key];
+    });
+    lastResult = null;
+    render();
+    setStatus('Inputs reset to the home family naming sample.', false);
+  }
+
+  function loadSaved() {
+    try {
+      const saved = JSON.parse(localStorage.getItem('afrotools-naming-ceremony') || '{}');
+      Object.keys(defaults).forEach(function (key) {
+        if (fields[key] && saved[key] !== undefined) fields[key].value = saved[key];
+      });
+    } catch (error) {}
+  }
+
+  fields.preset.addEventListener('change', function () {
+    applyPreset(fields.preset.value);
+  });
+  Object.keys(fields).forEach(function (key) {
+    if (key === 'preset') return;
+    fields[key].addEventListener('change', render);
+  });
+  calculateBtn.addEventListener('click', render);
+  copyBtn.addEventListener('click', copySummary);
+  exportBtn.addEventListener('click', exportCsv);
+  printBtn.addEventListener('click', function () {
+    if (!lastResult) render();
+    window.print();
+  });
+  resetBtn.addEventListener('click', resetAll);
+
+  loadSaved();
+  render();
+});
+</script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

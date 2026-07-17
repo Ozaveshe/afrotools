@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="fr" data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="view-transition" content="same-origin">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<title>Estimateur de coût de construction en Afrique | AfroTools</title>
+<meta name="description" content="Calculez un budget de construction par m² selon la ville, le type de bâtiment et la qualité de finition. Comparez les fondations, la structure, la toiture et les finitions.">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Estimateur de coût de construction en Afrique | AfroTools">
+<meta property="og:description" content="Calculez un budget de construction par m² selon la ville, le type de bâtiment et la qualité de finition. Comparez les fondations, la structure, la toiture et les finitions.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/fr/tools/plan-etage/">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/floor-plan.webp">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Estimateur de coût de construction en Afrique | AfroTools">
+<meta name="twitter:description" content="Calculez un budget de construction par m² selon la ville, le type de bâtiment et la qualité de finition.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/floor-plan.webp">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&display=swap">
+</noscript>
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+:root{--hero-bg:linear-gradient(135deg,#0b1320 0%,#111f38 48%,#0f6fd6 100%);--hero-accent:#7dd3fc;--ink:#0f172a;--muted:#64748b;--card:#ffffff;--line:#dbe4f0;--soft:#f8fbff}
+body{background:linear-gradient(180deg,#f8fbff 0%,#ffffff 44%,#f7fafc 100%)}
+.tool-hero{position:relative;overflow:hidden;background:var(--hero-bg);color:#fff}
+.tool-hero::before,.tool-hero::after{content:"";position:absolute;border-radius:999px;pointer-events:none;opacity:.18}
+.tool-hero::before{width:22rem;height:22rem;background:radial-gradient(circle,#7dd3fc 0%,rgba(125,211,252,0) 70%);right:-6rem;top:-7rem}
+.tool-hero::after{width:18rem;height:18rem;background:radial-gradient(circle,#38bdf8 0%,rgba(56,189,248,0) 70%);left:-4rem;bottom:-8rem}
+.tool-hero-inner{max-width:1180px;margin:0 auto;padding:3.75rem 1.5rem 2.75rem;position:relative;z-index:1}
+.breadcrumb{display:flex;flex-wrap:wrap;gap:.45rem;font-size:.76rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.58);margin-bottom:1rem}
+.breadcrumb a{color:rgba(255,255,255,.72);text-decoration:none}
+.breadcrumb span{color:rgba(255,255,255,.55)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,.95fr);gap:1.5rem;align-items:end}
+.hero-copy h1{font-family:"Bricolage Grotesque","DM Sans",system-ui,sans-serif;font-size:clamp(2.1rem,5vw,3.75rem);line-height:1.02;letter-spacing:-.04em;margin:0 0 .85rem}
+.hero-copy h1 em{font-style:normal;color:var(--hero-accent)}
+.hero-copy p{max-width:42rem;font-size:1.05rem;line-height:1.75;color:rgba(255,255,255,.84);margin:0 0 1.1rem}
+.hero-badges{display:flex;flex-wrap:wrap;gap:.55rem}
+.badge{display:inline-flex;align-items:center;padding:.45rem .78rem;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(255,255,255,.08);backdrop-filter:blur(10px);font-size:.8rem;font-weight:700;color:#fff}
+.hero-panel{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:1.25rem;padding:1.1rem 1.15rem;backdrop-filter:blur(12px);box-shadow:0 18px 40px rgba(15,23,42,.18)}
+.hero-panel strong{display:block;font-size:.9rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.75);margin-bottom:.55rem}
+.hero-panel p{margin:0;font-size:.95rem;line-height:1.7;color:rgba(255,255,255,.88)}
+#tool-mount{min-height:420px}
+.fr-content{max-width:1120px;margin:0 auto;padding:1.75rem 1.5rem 0}
+.fr-prose{max-width:840px}
+.fr-prose h2,.fr-faq h2,.fr-related h2{font-family:"Bricolage Grotesque","DM Sans",system-ui,sans-serif;color:var(--ink);letter-spacing:-.02em}
+.fr-prose h2{font-size:1.55rem;margin:0 0 .8rem}
+.fr-prose p{color:#475569;line-height:1.85;font-size:1rem;margin:0 0 1rem}
+.fr-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:1.5rem;margin-top:1.5rem}
+.fr-card{background:var(--card);border:1px solid rgba(148,163,184,.22);border-radius:1.1rem;padding:1.25rem 1.2rem;box-shadow:0 8px 28px rgba(15,23,42,.04)}
+.fr-card h3{margin:0 0 .65rem;font-size:1.05rem;color:var(--ink)}
+.fr-card p{margin:0;color:#475569;line-height:1.75}
+.fr-faq{padding:2.1rem 0 0}
+.fr-faq details{border:1px solid rgba(148,163,184,.2);border-radius:.95rem;background:#fff;margin-bottom:.8rem;overflow:hidden;box-shadow:0 6px 24px rgba(15,23,42,.03)}
+.fr-faq summary{list-style:none;cursor:pointer;padding:1rem 1.1rem;font-weight:700;color:var(--ink);display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.fr-faq summary::-webkit-details-marker{display:none}
+.fr-faq summary span{color:#94a3b8;font-size:1.2rem;font-weight:300}
+.fr-faq .answer{padding:0 1.1rem 1rem;color:#475569;line-height:1.75}
+.fr-related{padding:2rem 0 3.5rem}
+.related-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.95rem}
+.related-card{display:block;padding:1rem 1rem 1.05rem;border:1px solid rgba(148,163,184,.2);border-radius:1rem;background:#fff;text-decoration:none;color:inherit;transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease;box-shadow:0 8px 24px rgba(15,23,42,.03)}
+.related-card:hover{transform:translateY(-2px);border-color:#60a5fa;box-shadow:0 14px 30px rgba(15,23,42,.08)}
+.related-card .name{font-weight:800;color:var(--ink);margin-bottom:.35rem}
+.related-card .desc{font-size:.84rem;line-height:1.55;color:var(--muted)}
+.fr-note{display:flex;gap:.85rem;align-items:flex-start;margin-top:1rem;padding:1rem 1.1rem;border-radius:1rem;background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a}
+.fr-note strong{display:block;margin-bottom:.2rem}
+.fr-note a{color:#1d4ed8;font-weight:700}
+@media (max-width:900px){.hero-grid,.fr-grid,.related-grid{grid-template-columns:1fr}.tool-hero-inner{padding:3rem 1rem 2.2rem}.fr-content{padding:1.35rem 1rem 0}}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Estimateur de coût de construction en Afrique",
+  "description": "Calculez un budget de construction par m² selon la ville, le type de bâtiment et la qualité de finition.",
+  "url": "https://afrotools.com/fr/tools/plan-etage/",
+  "inLanguage": "https://afrotools.com/fr/",
+  "applicationCategory": "ConstructionBusinessApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/floor-plan.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Estimateur de coût de construction en Afrique",
+  "url": "https://afrotools.com/fr/tools/plan-etage/",
+  "description": "Calculez un budget de construction par m² selon la ville, le type de bâtiment et la qualité de finition.",
+  "inLanguage": "https://afrotools.com/fr/",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/floor-plan.webp"
+}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Outils","item":"https://afrotools.com/fr/tools/"},{"@type":"ListItem","position":3,"name":"Construction","item":"https://afrotools.com/fr/tools/budget-construction/"},{"@type":"ListItem","position":4,"name":"Estimateur de coût de construction","item":"https://afrotools.com/fr/tools/plan-etage/"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"À quel point cette estimation est-elle fiable ?","acceptedAnswer":{"@type":"Answer","text":"Cette page donne une estimation budgétaire à l'ordre de ±20 % selon la ville, la qualité de finition et le type de bâtiment. Pour un chiffrage précis, faites établir un bordereau quantitatif détaillé par un économiste de la construction."}},
+{"@type":"Question","name":"Qu'est-ce qui est inclus dans le budget ?","acceptedAnswer":{"@type":"Answer","text":"L'estimation couvre la préparation du site, les fondations, la structure, les murs, la toiture, les menuiseries, les finitions, les installations techniques, les aménagements extérieurs, les honoraires professionnels et une marge de sécurité."}},
+{"@type":"Question","name":"Le prix du terrain est-il inclus ?","acceptedAnswer":{"@type":"Answer","text":"Non. Cette page estime uniquement le coût de construction. Le terrain, les frais notariés et les taxes d'acquisition doivent être budgétés séparément."}},
+{"@type":"Question","name":"Pourquoi les coûts varient-ils autant d'une ville à l'autre ?","acceptedAnswer":{"@type":"Answer","text":"Les prix changent selon la logistique, la disponibilité des matériaux, le niveau des salaires locaux, la réglementation et la complexité du chantier. Les grandes villes côtières et les marchés très actifs coûtent souvent plus cher."}},
+{"@type":"Question","name":"Comment réduire le budget sans sacrifier la qualité ?","acceptedAnswer":{"@type":"Answer","text":"Choisissez un plan compact, limitez les changements de niveau, privilégiez des matériaux locaux de qualité, comparez plusieurs devis et verrouillez la liste des finitions avant de lancer le chantier."}}
+]}
+</script>
+<meta property="article:modified_time" content="2026-04-15">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/fr/tools/plan-etage/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/floor-plan/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/plan-etage/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-gharama-za-ujenzi/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/floor-plan/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+
+<section class="tool-hero">
+  <div class="tool-hero-inner">
+    <nav class="breadcrumb" aria-label="Fil d'Ariane">
+      <a href="/fr/">AfroTools</a>
+      <span>/</span>
+      <a href="/fr/all-tools/">Outils</a>
+      <span>/</span>
+      <span>Construction</span>
+    </nav>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <h1>Estimateur de <em>coût de construction</em></h1>
+        <p>Calculez rapidement un budget par m² selon la ville, le type de bâtiment et la qualité de finition. L'outil compare les postes clés du chantier pour vous aider à planifier un projet réaliste, clair et défendable.</p>
+        <div class="hero-badges">
+          <span class="badge">10 villes africaines</span>
+          <span class="badge">4 niveaux de finition</span>
+          <span class="badge">Ventilation complète</span>
+          <span class="badge">Rapport PDF</span>
+        </div>
+      </div>
+      <aside class="hero-panel">
+        <strong>À quoi sert cet outil ?</strong>
+        <p>Idéal pour préparer un budget de maison, de duplex ou de petit immeuble avant les plans détaillés, les devis ou le lancement du chantier.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<div id="tool-mount" style="min-height:420px"></div>
+
+<main class="fr-content">
+  <section class="fr-prose">
+    <h2>Un outil utile pour budgéter un projet de construction</h2>
+    <p>En Afrique, le coût de construction varie fortement d'une ville à l'autre et d'un niveau de finition à l'autre. Ce calculateur vous aide à poser un premier budget crédible en prenant en compte le type de bâtiment, la qualité des matériaux et la surface totale à construire.</p>
+    <p>Le résultat reste volontairement pédagogique: il donne une base solide pour comparer les scénarios, anticiper les postes coûteux et discuter plus sereinement avec un architecte, un entrepreneur ou un économiste de la construction.</p>
+
+    <div class="fr-grid">
+      <div class="fr-card">
+        <h3>Ce que couvre l'estimation</h3>
+        <p>Fondations, structure, maçonnerie, toiture, portes et fenêtres, revêtements, peinture, plomberie, électricité, aménagements extérieurs, honoraires professionnels et marge de sécurité.</p>
+      </div>
+      <div class="fr-card">
+        <h3>Quand l'utiliser</h3>
+        <p>Avant la demande de devis, avant les plans d'exécution, avant un achat de terrain ou pour comparer plusieurs options de conception sans repartir de zéro.</p>
+      </div>
+    </div>
+
+    <div class="fr-note">
+      <div><strong>Besoin d'un chiffrage plus fin ?</strong> Le <a href="/fr/tools/budget-construction/">budget de construction</a> et le <a href="/fr/tools/calcul-structure/">calcul structurel</a> complètent bien cet estimateur.</div>
+    </div>
+  </section>
+
+  <section class="fr-faq">
+    <h2>Questions fréquentes</h2>
+    <details>
+      <summary>À quel point cette estimation est-elle fiable ? <span>+</span></summary>
+      <div class="answer">Elle donne une base budgétaire solide, mais reste indicative. Pour un projet final, il faut un dossier technique, des métrés détaillés et des prix locaux mis à jour.</div>
+    </details>
+    <details>
+      <summary>Le prix du terrain est-il inclus ? <span>+</span></summary>
+      <div class="answer">Non. L'outil calcule seulement la construction. Le foncier, les frais administratifs et les taxes doivent être ajoutés séparément.</div>
+    </details>
+    <details>
+      <summary>Pourquoi les coûts changent-ils selon la ville ? <span>+</span></summary>
+      <div class="answer">La logistique, la main-d'œuvre, la disponibilité des matériaux et la pression du marché font varier le budget. Les grandes métropoles coûtent souvent plus cher.</div>
+    </details>
+    <details>
+      <summary>Comment réduire le budget sans perdre en qualité ? <span>+</span></summary>
+      <div class="answer">Choisissez un plan compact, standardisez les pièces humides, comparez plusieurs devis et validez les finitions avant de démarrer le chantier.</div>
+    </details>
+  </section>
+
+  <section class="fr-related">
+    <h2>Outils liés à la construction</h2>
+    <div class="related-grid">
+      <a class="related-card" href="/fr/tools/budget-construction/">
+        <div class="name">Budget de construction</div>
+        <div class="desc">Estimez un budget global avec une logique plus détaillée par poste de dépense.</div>
+      </a>
+      <a class="related-card" href="/fr/tools/calcul-structure/">
+        <div class="name">Calcul structurel</div>
+        <div class="desc">Travaillez la structure du bâtiment avant de figer les coûts de chantier.</div>
+      </a>
+      <a class="related-card" href="/fr/tools/calculateur-carrelage/">
+        <div class="name">Calculateur de carrelage</div>
+        <div class="desc">Chiffrez les revêtements de sol et de mur selon la surface réelle.</div>
+      </a>
+      <a class="related-card" href="/fr/tools/calculateur-armature/">
+        <div class="name">Calculateur d'armature</div>
+        <div class="desc">Calculez les barres, longueurs et besoins en acier pour le béton armé.</div>
+      </a>
+    </div>
+  </section>
+<section class="fr-decision-panel" data-fr-decision-planner style="max-width:1120px;margin:24px auto;padding:0 24px;">
+  <div style="background:#fff;border:1px solid #dbe4ef;border-radius:14px;padding:18px;box-shadow:0 8px 24px rgba(15,23,42,.06);">
+    <h2 style="margin:0 0 8px;color:#0f172a;font-size:1.15rem;">Préparation rapide</h2>
+    <p style="margin:0 0 14px;color:#475569;line-height:1.6;"><strong>Méthodologie:</strong> renseignez le pays, le montant et l'objectif; la page transforme ces entrées en résumé de vérification avant d'utiliser l'outil principal. Sources: calculateur de référence AfroTools, liens et hypothèses visibles sur cette page. Mise à jour 2026.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;">
+      <label style="display:grid;gap:5px;font-weight:800;color:#0f172a;">Pays ou devise<input data-fr-decision-country type="text" placeholder="Ex: Nigeria, NGN, XOF" style="width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px;font:inherit;"></label>
+      <label style="display:grid;gap:5px;font-weight:800;color:#0f172a;">Montant ou volume<input data-fr-decision-amount type="text" placeholder="Ex: 250000" style="width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px;font:inherit;"></label>
+      <label style="display:grid;gap:5px;font-weight:800;color:#0f172a;">Objectif<input data-fr-decision-goal type="text" placeholder="Ex: comparer deux scénarios" style="width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px;font:inherit;"></label>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;"><button type="button" data-fr-decision-button style="border:0;border-radius:999px;background:#0f766e;color:#fff;font-weight:900;padding:10px 15px;cursor:pointer;">Créer le résumé</button><span data-fr-decision-status aria-live="polite" style="color:#64748b;align-self:center;"></span></div>
+    <output data-fr-decision-output style="display:block;margin-top:12px;border-left:4px solid #0f766e;background:#f8fafc;border-radius:10px;padding:12px;color:#334155;line-height:1.55;">Ajoutez quelques informations pour préparer votre vérification.</output>
+    <p style="margin:12px 0 0;color:#475569;line-height:1.6;"><strong>Avertissement:</strong> cette estimation générale ne remplace pas un avis juridique, fiscal, médical, financier ou professionnel. Vérifiez les sources officielles, les dates, les frais et les seuils avant de payer, signer ou déclarer.</p>
+  </div>
+</section>
+</main>
+
+<afro-footer></afro-footer>
+
+<script>
+(function(){
+  var SOURCE_URL = '/tools/floor-plan/';
+  var MOUNT_ID = 'tool-mount';
+  var TEXT_MAP = [
+    ['Building Type & Location','Type de bâtiment et localisation'],
+    ['Building Type','Type de bâtiment'],
+    ['Finish Quality','Qualité de finition'],
+    ['City / Location','Ville / localisation'],
+    ['Rooms','Pièces'],
+    ['Building Cost Estimator','Estimateur de coût de construction'],
+    ['Building Cost Estimate','Estimation du coût de construction'],
+    ['Estimated Total Construction Cost','Coût total estimé de construction'],
+    ['Cost Breakdown','Ventilation des coûts'],
+    ['Timeline Estimate','Estimation du calendrier'],
+    ['Download PDF Report','Télécharger le rapport PDF'],
+    ['Share','Partager'],
+    ['Want a detailed line-by-line cost?','Besoin d\'un chiffrage détaillé poste par poste ?'],
+    ['Estimate Construction Cost','Estimer le coût de construction'],
+    ['Total Floor Area','Surface totale'],
+    ['Add rooms to calculate total floor area. Default sizes are suggestions — adjust as needed.','Ajoutez des pièces pour calculer la surface totale. Les dimensions proposées sont indicatives et peuvent être ajustées.'],
+    ['Foundation','Fondations'],
+    ['Structure','Structure'],
+    ['Roofing','Toiture'],
+    ['Finishes','Finitions'],
+    ['M&E + External','MEP + extérieurs'],
+    ['Total Duration','Durée totale'],
+    ['Category','Poste'],
+    ['Estimated Cost','Coût estimé'],
+    ['Remove','Supprimer'],
+    ['months','mois'],
+    ['per m²','par m²']
+  ];
+  var ROOM_TEXT = [
+    ['Living Room','Séjour'],
+    ['Master Bedroom','Chambre principale'],
+    ['Bedroom 4','Chambre 4'],
+    ['Bedroom 3','Chambre 3'],
+    ['Bedroom 2','Chambre 2'],
+    ['Bedroom','Chambre'],
+    ['Dining','Salle à manger'],
+    ['Kitchen','Cuisine'],
+    ['Bathroom','Salle de bain'],
+    ['Master Bath','Salle de bain principale'],
+    ['Bathroom 2','Salle de bain 2'],
+    ['Toilet (GF)','WC (RDC)'],
+    ['Toilet','WC'],
+    ['Corridor / Passage','Couloir / passage'],
+    ['Corridor','Couloir'],
+    ['Garage','Garage'],
+    ['Laundry','Buanderie'],
+    ['Study / Home Office','Bureau'],
+    ['Store','Débarras'],
+    ['Store Room','Débarras'],
+    ['Reception','Accueil'],
+    ['Open Office','Open space'],
+    ['Manager Office','Bureau du responsable'],
+    ['Meeting Room','Salle de réunion'],
+    ['Kitchenette','Coin cuisine'],
+    ['Server Room','Salle serveur'],
+    ['Toilet Block','Bloc sanitaires'],
+    ['Staircase','Escalier']
+  ];
+  var SCRIPT_REPLACEMENTS = [
+    ['Please add at least one room.','Veuillez ajouter au moins une pièce.'],
+    ['Location data not found.','Données de localisation introuvables.'],
+    ['Building Cost Estimate','Estimation du coût de construction'],
+    ['Estimated Total Construction Cost','Coût total estimé de construction'],
+    ['Cost Breakdown','Ventilation des coûts'],
+    ['Timeline Estimate','Estimation du calendrier'],
+    ['Download PDF Report','Télécharger le rapport PDF'],
+    ['Share','Partager'],
+    ['Want a detailed line-by-line cost?','Besoin d\'un chiffrage détaillé poste par poste ?'],
+    ['Building Type & Location','Type de bâtiment et localisation'],
+    ['Building Type','Type de bâtiment'],
+    ['Finish Quality','Qualité de finition'],
+    ['City / Location','Ville / localisation'],
+    ['Rooms','Pièces'],
+    ['Building Type','Type de bâtiment'],
+    ['Add rooms to calculate total floor area. Default sizes are suggestions — adjust as needed.','Ajoutez des pièces pour calculer la surface totale. Les dimensions proposées sont indicatives et peuvent être ajustées.'],
+    ['Estimate Construction Cost','Estimer le coût de construction'],
+    ['Total Floor Area','Surface totale'],
+    ['Category','Poste'],
+    ['Estimated Cost','Coût estimé'],
+    ['Foundation','Fondations'],
+    ['Structure','Structure'],
+    ['Roofing','Toiture'],
+    ['Finishes','Finitions'],
+    ['M&E + External','MEP + extérieurs'],
+    ['Total Duration','Durée totale'],
+    ['months','mois'],
+    ['Remove','Supprimer'],
+    ['Living Room','Séjour'],
+    ['Master Bedroom','Chambre principale'],
+    ['Bedroom 4','Chambre 4'],
+    ['Bedroom 3','Chambre 3'],
+    ['Bedroom 2','Chambre 2'],
+    ['Bedroom','Chambre'],
+    ['Dining','Salle à manger'],
+    ['Kitchen','Cuisine'],
+    ['Bathroom','Salle de bain'],
+    ['Master Bath','Salle de bain principale'],
+    ['Bathroom 2','Salle de bain 2'],
+    ['Toilet (GF)','WC (RDC)'],
+    ['Toilet','WC'],
+    ['Corridor / Passage','Couloir / passage'],
+    ['Corridor','Couloir'],
+    ['Reception','Accueil'],
+    ['Open Office','Open space'],
+    ['Manager Office','Bureau du responsable'],
+    ['Meeting Room','Salle de réunion'],
+    ['Kitchenette','Coin cuisine'],
+    ['Server Room','Salle serveur'],
+    ['Toilet Block','Bloc sanitaires'],
+    ['Staircase','Escalier'],
+    ['Estimated Total: ','Total estimé : '],
+    ['Cost Breakdown','Ventilation des coûts'],
+    ['Generated by AfroTools.com/tools/floor-plan/ on ','Généré par AfroTools.com/tools/floor-plan/ le '],
+    ['This is a budget estimate (±20%). For accurate costing, commission a professional Bill of Quantities.','Il s\'agit d\'une estimation budgétaire (±20 %). Pour un chiffrage précis, faites établir un bordereau quantitatif détaillé.'],
+    ['Building Cost Estimate: ','Estimation du coût de construction : '],
+    ['Estimated with AfroTools','Estimé avec AfroTools'],
+    ['Copied!','Copié !'],
+    ['Months','Mois'],
+    ['month','mois'],
+    ['months','mois']
+  ];
+
+  function replaceAll(text, pairs) {
+    var out = text;
+    pairs.forEach(function(pair) {
+      out = out.split(pair[0]).join(pair[1]);
+    });
+    return out;
+  }
+
+  function localizeStatic(root) {
+    var titles = root.querySelectorAll('.card-title');
+    if (titles[0]) titles[0].textContent = 'Type de bâtiment et localisation';
+    if (titles[1]) titles[1].textContent = 'Pièces';
+    if (titles[2]) titles[2].textContent = 'Ventilation des coûts';
+    if (titles[3]) titles[3].textContent = 'Estimation du calendrier';
+    var labels = root.querySelectorAll('label');
+    if (labels[0]) labels[0].textContent = 'Type de bâtiment';
+    if (labels[1]) labels[1].textContent = 'Qualité de finition';
+    if (labels[2]) labels[2].textContent = 'Ville / localisation';
+    var hints = root.querySelectorAll('.room-add + div, .card-body p');
+    var roomHint = root.querySelector('.room-add') ? root.querySelector('.room-add').parentElement.querySelector('p') : null;
+    if (roomHint) roomHint.textContent = 'Ajoutez des pièces pour calculer la surface totale. Les dimensions proposées sont indicatives et peuvent être ajustées.';
+    var totalArea = root.querySelector('#totalArea');
+    if (totalArea) totalArea.textContent = '0 m²';
+    var estimateBtn = root.querySelector('.calc-btn');
+    if (estimateBtn) estimateBtn.textContent = 'Estimer le coût de construction';
+    var resultLabel = root.querySelector('#results .total-label');
+    if (resultLabel) resultLabel.textContent = 'Coût total estimé de construction';
+    var timelineTitle = root.querySelector('#results .card-title:nth-of-type(2)');
+    if (timelineTitle) timelineTitle.textContent = 'Estimation du calendrier';
+    var breakdownTitle = root.querySelector('#results .card-title:first-of-type');
+    if (breakdownTitle) breakdownTitle.textContent = 'Ventilation des coûts';
+    var pdfBtn = root.querySelector('button[onclick="exportPDF()"]');
+    if (pdfBtn) pdfBtn.textContent = 'Télécharger le rapport PDF';
+    var shareBtn = root.querySelector('button[onclick="shareResult()"]');
+    if (shareBtn) shareBtn.textContent = 'Partager';
+    var note = root.querySelector('div[style*="ECFDF5"]');
+    if (note) {
+      note.innerHTML = '<strong>Besoin d\'un chiffrage détaillé poste par poste ?</strong> Utilisez notre <a href="/fr/tools/budget-construction/" style="color:#065F46;font-weight:700">budget de construction</a> pour créer un bordereau professionnel.';
+    }
+    var roomButtons = root.querySelectorAll('.room-card button');
+    roomButtons.forEach(function(btn) { btn.textContent = 'Supprimer'; });
+    var resultSub = root.querySelector('#costPerSqm');
+    if (resultSub) resultSub.textContent = '';
+    root.querySelectorAll('.timeline-card .tl-label').forEach(function(el, idx) {
+      var labels = ['Fondations','Structure','Toiture','Finitions','MEP + extérieurs','Durée totale'];
+      if (labels[idx]) el.textContent = labels[idx];
+    });
+    var breakdownHeads = root.querySelectorAll('#breakdownTable th');
+    if (breakdownHeads[0]) breakdownHeads[0].textContent = 'Poste';
+    if (breakdownHeads[1]) breakdownHeads[1].textContent = '%';
+    if (breakdownHeads[2]) breakdownHeads[2].textContent = 'Coût estimé (devise locale)';
+    var buildType = root.querySelector('#buildType');
+    if (buildType) {
+      var opts = buildType.querySelectorAll('option');
+      if (opts[0]) opts[0].textContent = 'Bungalow (plain-pied)';
+      if (opts[1]) opts[1].textContent = 'Duplex (2 niveaux)';
+      if (opts[2]) opts[2].textContent = 'Immeuble (2 étages ou plus)';
+      if (opts[3]) opts[3].textContent = 'Immeuble d\'appartements';
+      if (opts[4]) opts[4].textContent = 'Commercial / bureaux';
+    }
+    var finish = root.querySelector('#finishQuality');
+    if (finish) {
+      var f = finish.querySelectorAll('option');
+      if (f[0]) f[0].textContent = 'Économique — finitions basiques';
+      if (f[1]) f[1].textContent = 'Standard — bonne qualité';
+      if (f[2]) f[2].textContent = 'Premium — haut de gamme';
+      if (f[3]) f[3].textContent = 'Luxe — spécifications supérieures';
+    }
+    var location = root.querySelector('#location');
+    if (location) {
+      var groups = location.querySelectorAll('optgroup');
+      if (groups[0]) groups[0].label = 'Nigeria';
+      if (groups[1]) groups[1].label = 'Kenya';
+      if (groups[2]) groups[2].label = 'Afrique du Sud';
+      if (groups[3]) groups[3].label = 'Ghana';
+      if (groups[4]) groups[4].label = 'Tanzanie';
+      if (groups[5]) groups[5].label = 'Égypte';
+    }
+    var addRoom = root.querySelector('#addRoomType');
+    if (addRoom) {
+      var ropts = addRoom.querySelectorAll('option');
+      var roomTranslations = [
+        'Séjour (5×5 m)',
+        'Chambre principale (4×4 m)',
+        'Chambre (3,5×3,5 m)',
+        'Cuisine (3×3 m)',
+        'Salle de bain (2,5×2 m)',
+        'WC (1,5×1,5 m)',
+        'Salle à manger (4×3,5 m)',
+        'Débarras (2×2 m)',
+        'Garage (6×3,5 m)',
+        'Buanderie (2,5×2,5 m)',
+        'Bureau (3×3 m)',
+        'Couloir / passage (6×1,5 m)'
+      ];
+      roomTranslations.forEach(function(t, i) { if (ropts[i]) ropts[i].textContent = t; });
+    }
+    var addBtn = root.querySelector('.room-add button');
+    if (addBtn) addBtn.textContent = '+ Ajouter';
+    var roomW = root.querySelector('#addRoomW');
+    var roomL = root.querySelector('#addRoomL');
+    if (roomW) roomW.placeholder = 'Largeur';
+    if (roomL) roomL.placeholder = 'Longueur';
+  }
+
+  function localizeRoomCards(root) {
+    var roomCards = root.querySelectorAll('.room-card .room-name');
+    roomCards.forEach(function(el) {
+      ROOM_TEXT.some(function(pair) {
+        if (el.textContent === pair[0]) {
+          el.textContent = pair[1];
+          return true;
+        }
+        return false;
+      });
+    });
+    var removeButtons = root.querySelectorAll('.room-card button');
+    removeButtons.forEach(function(btn) { btn.textContent = 'Supprimer'; });
+  }
+
+  function localizeResults(root) {
+    var area = root.querySelector('#totalArea');
+    if (area && /m²$/.test(area.textContent)) {
+      area.textContent = area.textContent.replace(/\bm²\b/, 'm²');
+    }
+    var cost = root.querySelector('#costPerSqm');
+    if (cost && window.__frFloorPlanState) {
+      var state = window.__frFloorPlanState;
+      var qualityLabels = {
+        economy: 'économique',
+        standard: 'standard',
+        premium: 'premium',
+        luxury: 'luxe'
+      };
+      var typeLabels = {
+        bungalow: 'bungalow',
+        duplex: 'duplex',
+        storey: 'immeuble',
+        apartment: 'immeuble d\'appartements',
+        commercial: 'commercial / bureaux'
+      };
+      cost.textContent = state.symbol + state.costPerM2.toLocaleString() + ' par m² × ' + state.totalArea.toFixed(0) + ' m² (' + (qualityLabels[state.quality] || state.quality) + ', ' + (typeLabels[state.type] || state.type) + ')';
+    }
+  }
+
+  function localizeSourceScripts(doc) {
+    var scripts = doc.querySelectorAll('script:not([src])');
+    scripts.forEach(function(sc) {
+      if (sc.type === 'application/ld+json') return;
+      sc.textContent = replaceAll(sc.textContent, SCRIPT_REPLACEMENTS);
+      sc.textContent = sc.textContent.replace(/' months'/g, "' mois'");
+    });
+  }
+
+  function mountSource(html) {
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(html, 'text/html');
+    doc.querySelectorAll('.seo-content, .related-section').forEach(function(node) { node.remove(); });
+    doc.querySelectorAll('style').forEach(function(style) {
+      document.head.appendChild(style.cloneNode(true));
+    });
+    localizeSourceScripts(doc);
+    var container = doc.querySelector('.container') || doc.querySelector('.tool-main') || doc.querySelector('main') || doc.querySelector('.card');
+    var mount = document.getElementById(MOUNT_ID);
+    if (container) {
+      mount.innerHTML = container.outerHTML;
+      localizeStatic(mount);
+    }
+    doc.querySelectorAll('script:not([src])').forEach(function(sc) {
+      if (sc.type === 'application/ld+json') return;
+      if (sc.textContent.indexOf('gtag') !== -1 || sc.textContent.indexOf('schema.org') !== -1) return;
+      var ns = document.createElement('script');
+      ns.textContent = sc.textContent;
+      document.body.appendChild(ns);
+    });
+
+    var mount = document.getElementById(MOUNT_ID);
+    window.__frFloorPlanState = window.__frFloorPlanState || {};
+    if (typeof window.suggestRooms === 'function' && !window.__frFloorPlanSuggestWrapped) {
+      window.__frFloorPlanSuggestWrapped = true;
+      var originalSuggestRooms = window.suggestRooms;
+      window.suggestRooms = function() {
+        var result = originalSuggestRooms.apply(this, arguments);
+        localizeRoomCards(mount);
+        return result;
+      };
+    }
+    if (typeof window.calculate === 'function' && !window.__frFloorPlanCalcWrapped) {
+      window.__frFloorPlanCalcWrapped = true;
+      var originalCalculate = window.calculate;
+      window.calculate = function() {
+        var loc = document.getElementById('location').value;
+        var quality = document.getElementById('finishQuality').value;
+        var type = document.getElementById('buildType').value;
+        var rooms = Array.prototype.slice.call(document.querySelectorAll('#roomGrid .room-card')).reduce(function(sum, card) {
+          var dim = card.querySelector('.room-dim');
+          if (!dim) return sum;
+          var match = dim.textContent.match(/([\d.,]+)\s×\s([\d.,]+)/);
+          if (!match) return sum;
+          return sum + (parseFloat(match[1].replace(',', '.')) || 0) * (parseFloat(match[2].replace(',', '.')) || 0);
+        }, 0);
+        var c = {
+          sym: {
+            lagos: '₦',
+            abuja: '₦',
+            nairobi: 'KSh ',
+            mombasa: 'KSh ',
+            joburg: 'R',
+            capetown: 'R',
+            accra: 'GHS ',
+            kumasi: 'GHS ',
+            dar: 'TSh ',
+            cairo: 'E£'
+          }[loc] || ''
+        };
+        var costTables = {
+          lagos: {economy:180000,standard:280000,premium:420000,luxury:650000},
+          abuja: {economy:200000,standard:300000,premium:450000,luxury:700000},
+          nairobi: {economy:35000,standard:55000,premium:85000,luxury:130000},
+          mombasa: {economy:30000,standard:48000,premium:75000,luxury:115000},
+          joburg: {economy:8000,standard:12000,premium:18000,luxury:28000},
+          capetown: {economy:9000,standard:14000,premium:21000,luxury:32000},
+          accra: {economy:4000,standard:6500,premium:10000,luxury:15000},
+          kumasi: {economy:3500,standard:5500,premium:8500,luxury:13000},
+          dar: {economy:600000,standard:950000,premium:1400000,luxury:2200000},
+          cairo: {economy:12000,standard:18000,premium:28000,luxury:45000}
+        };
+        var typeMult = {bungalow:1,duplex:1.15,storey:1.2,apartment:1.1,commercial:1.25};
+        var costPerM2 = Math.round(((costTables[loc] && costTables[loc][quality]) || 0) * (typeMult[type] || 1));
+        window.__frFloorPlanState = {
+          symbol: c.sym,
+          costPerM2: costPerM2,
+          totalArea: rooms || 0,
+          quality: quality,
+          type: type
+        };
+        var result = originalCalculate.apply(this, arguments);
+        localizeRoomCards(mount);
+        localizeResults(mount);
+        return result;
+      };
+    }
+
+    localizeRoomCards(mount);
+    localizeResults(mount);
+  }
+
+  fetch(SOURCE_URL, { credentials: 'same-origin' })
+    .then(function(r){ return r.text(); })
+    .then(function(html){ mountSource(html); })
+    .catch(function() {
+      document.getElementById(MOUNT_ID).innerHTML = '<p style="text-align:center;padding:2rem;color:#64748b">Chargement de l’outil... <a href="/fr/tools/floor-plan/">Ouvrir la version anglaise</a></p>';
+    });
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script>
+window.dataLayer=window.dataLayer||[];
+function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());
+gtag('config','G-D859CGF391');
+</script>
+<script>
+(function(){
+  const root = document.querySelector('[data-fr-decision-planner]');
+  if (!root) return;
+  const country = root.querySelector('[data-fr-decision-country]');
+  const amount = root.querySelector('[data-fr-decision-amount]');
+  const goal = root.querySelector('[data-fr-decision-goal]');
+  const output = root.querySelector('[data-fr-decision-output]');
+  const status = root.querySelector('[data-fr-decision-status]');
+  function render(){
+    const title = (document.querySelector('h1') || {}).innerText || 'Outil AfroTools';
+    const parts = [];
+    if (country.value.trim()) parts.push('Pays/devise: ' + country.value.trim());
+    if (amount.value.trim()) parts.push('Montant/volume: ' + amount.value.trim());
+    if (goal.value.trim()) parts.push('Objectif: ' + goal.value.trim());
+    output.textContent = parts.length ? title + ' - ' + parts.join(' | ') + '. Verifiez les hypotheses et les sources avant decision.' : 'Ajoutez quelques informations pour preparer votre verification.';
+    if (status) status.textContent = parts.length ? 'Resume pret.' : '';
+  }
+  root.querySelector('[data-fr-decision-button]')?.addEventListener('click', render);
+  [country, amount, goal].forEach(function(input){ input && input.addEventListener('input', render); });
+})();
+</script>
+</body>
+</html>

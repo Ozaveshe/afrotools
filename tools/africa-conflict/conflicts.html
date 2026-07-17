@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All Conflicts — AfroConflict Intelligence | AfroTools</title>
+<meta name="description" content="Browse and filter all tracked conflicts across Africa and global conflicts with African impact — filterable by region, type, status, and risk level.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="All Conflicts - AfroConflict Intelligence | AfroTools">
+<meta property="og:description" content="Browse and filter all tracked conflicts across Africa and global conflicts with African impact - filterable by region, type, status, and risk level.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/africa-conflict/conflicts">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="All Conflicts - AfroConflict Intelligence | AfroTools">
+<meta name="twitter:description" content="Browse and filter all tracked conflicts across Africa and global conflicts with African impact - filterable by region, type, status, and risk level.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta name="robots" content="index, follow">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,700;0,9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,700;0,9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="style.css?v=efb99733">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/tools/africa-conflict/local-api-guard.js?v=8f670098" defer></script>
+<script src="/engines/africa-conflict-engine.js?v=3f1cd07e" defer></script>
+<script src="/tools/africa-conflict/static-routes.js?v=eb9fb3ae" defer></script>
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="canonical" href="https://afrotools.com/tools/africa-conflict/conflicts">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/africa-conflict/conflicts">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/africa-conflict/conflicts">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/africa-conflict/conflicts">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+
+<main class="acd-page">
+
+  <!-- Hero -->
+  <div class="acd-hero">
+    <div class="acd-hero-inner">
+      <div>
+        <div class="acd-hero-title">
+          <span class="acd-live-dot"></span>
+          <h1>⚔️ All Conflicts</h1>
+        </div>
+        <p class="acd-hero-desc">Browse and filter all tracked conflicts</p>
+      </div>
+      <nav class="acd-hero-nav">
+        <a href="/tools/africa-conflict/">Dashboard</a>
+        <a href="/tools/africa-conflict/map">Map</a>
+        <a href="/tools/africa-conflict/conflicts/" class="active">All Conflicts</a>
+        <a href="/tools/africa-conflict/economy">Economy</a>
+        <a href="/tools/africa-conflict/displacement">Displacement</a>
+        <a href="/tools/africa-conflict/actors">Actors</a>
+        <a href="/tools/africa-conflict/methodology">Methodology</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Filter + Cards layout -->
+  <div class="acd-list-layout">
+
+    <!-- Filter sidebar -->
+    <aside class="acd-filter-sidebar" id="acd-sidebar">
+      <div class="acd-filter-group">
+        <h3>Region</h3>
+        <div class="acd-filter-options" id="filter-region">
+          <label class="acd-filter-opt"><input type="checkbox" value="east-africa"> East Africa</label>
+          <label class="acd-filter-opt"><input type="checkbox" value="west-africa"> West Africa</label>
+          <label class="acd-filter-opt"><input type="checkbox" value="north-africa"> North Africa</label>
+          <label class="acd-filter-opt"><input type="checkbox" value="central-africa"> Central Africa</label>
+          <label class="acd-filter-opt"><input type="checkbox" value="southern-africa"> Southern Africa</label>
+          <label class="acd-filter-opt"><input type="checkbox" value="sahel"> Sahel</label>
+          <label class="acd-filter-opt"><input type="checkbox" value="horn-of-africa"> Horn of Africa</label>
+        </div>
+      </div>
+
+      <div class="acd-filter-group">
+        <h3>Status</h3>
+        <div class="acd-filter-options" id="filter-status">
+          <label class="acd-filter-opt"><input type="checkbox" value="escalating"> Escalating</label>
+          <label class="acd-filter-opt"><input type="checkbox" value="active"> Active</label>
+          <label class="acd-filter-opt"><input type="checkbox" value="stalemated"> Stalemated</label>
+          <label class="acd-filter-opt"><input type="checkbox" value="frozen"> Frozen</label>
+          <label class="acd-filter-opt"><input type="checkbox" value="de-escalating"> De-Escalating</label>
+          <label class="acd-filter-opt"><input type="checkbox" value="negotiation"> Negotiation</label>
+          <label class="acd-filter-opt"><input type="checkbox" value="emerging"> Emerging</label>
+        </div>
+      </div>
+
+      <div class="acd-filter-group">
+        <h3>Type</h3>
+        <div class="acd-filter-options" id="filter-type">
+          <label class="acd-filter-opt"><input type="checkbox" value="civil_war"> Civil War</label>
+          <label class="acd-filter-opt"><input type="checkbox" value="insurgency"> Insurgency</label>
+          <label class="acd-filter-opt"><input type="checkbox" value="interstate"> Interstate</label>
+          <label class="acd-filter-opt"><input type="checkbox" value="proxy_war"> Proxy War</label>
+          <label class="acd-filter-opt"><input type="checkbox" value="separatist"> Separatist</label>
+          <label class="acd-filter-opt"><input type="checkbox" value="coup"> Coup/Post-Coup</label>
+          <label class="acd-filter-opt"><input type="checkbox" value="communal"> Communal</label>
+          <label class="acd-filter-opt"><input type="checkbox" value="hybrid"> Hybrid</label>
+        </div>
+      </div>
+
+      <div class="acd-filter-group">
+        <h3>Escalation Risk</h3>
+        <div class="acd-filter-options" id="filter-risk">
+          <label class="acd-filter-opt"><input type="checkbox" value="critical"> <span style="color:#dc2626">● Critical</span></label>
+          <label class="acd-filter-opt"><input type="checkbox" value="high"> <span style="color:#ea580c">● High</span></label>
+          <label class="acd-filter-opt"><input type="checkbox" value="medium"> <span style="color:#ca8a04">● Medium</span></label>
+          <label class="acd-filter-opt"><input type="checkbox" value="low"> <span style="color:#65a30d">● Low</span></label>
+        </div>
+      </div>
+
+      <div class="acd-filter-group">
+        <h3>Filters</h3>
+        <div class="acd-filter-toggle" id="toggle-african">
+          <span>African Conflicts Only</span>
+          <div class="acd-toggle-switch on" id="sw-african"></div>
+        </div>
+        <div class="acd-filter-toggle" id="toggle-resource">
+          <span>Resource-Linked</span>
+          <div class="acd-toggle-switch" id="sw-resource"></div>
+        </div>
+        <div class="acd-filter-toggle" id="toggle-climate">
+          <span>Climate-Linked</span>
+          <div class="acd-toggle-switch" id="sw-climate"></div>
+        </div>
+        <div class="acd-filter-toggle" id="toggle-food">
+          <span>Food Insecurity Link</span>
+          <div class="acd-toggle-switch" id="sw-food"></div>
+        </div>
+      </div>
+
+      <div class="acd-filter-group">
+        <h3>Sort By</h3>
+        <div class="acd-filter-options">
+          <label class="acd-filter-opt"><input aria-label="Sort" type="radio" name="sort" value="risk" checked> Escalation Risk</label>
+          <label class="acd-filter-opt"><input aria-label="Sort" type="radio" name="sort" value="fatalities"> Fatalities</label>
+          <label class="acd-filter-opt"><input aria-label="Sort" type="radio" name="sort" value="displaced"> Displaced</label>
+          <label class="acd-filter-opt"><input aria-label="Sort" type="radio" name="sort" value="duration"> Duration</label>
+          <label class="acd-filter-opt"><input aria-label="Sort" type="radio" name="sort" value="name"> Name</label>
+        </div>
+      </div>
+
+      <button type="button" class="acd-btn acd-btn-outline" id="acd-reset-filters" style="width:100%;margin-top:8px">Reset Filters</button>
+    </aside>
+
+    <!-- Cards column -->
+    <div>
+      <button type="button" class="acd-mobile-filter-btn" id="acd-mobile-filter">
+        ⚙️ Filters
+      </button>
+      <div class="acd-results-count" id="acd-results-count">Loading...</div>
+      <div id="acd-cards-list">
+        <div class="acd-loading">Loading conflicts...</div>
+      </div>
+    </div>
+
+  </div>
+
+<!-- ac-static-dossiers:start -->
+<section class="acd-static-discovery" aria-labelledby="acd-static-conflict-routes-title">
+  <div class="acd-section-header">
+    <div>
+      <p class="acd-section-kicker">Static dossiers</p>
+      <h2 id="acd-static-conflict-routes-title">All generated Africa Conflict dossiers</h2>
+      <p class="acd-section-sub">Use these static dossier URLs for public discovery; excluded global-impact records continue through the safe query fallback.</p>
+    </div>
+  </div>
+  <div class="acd-static-discovery-grid">
+    <a class="acd-static-discovery-card" href="/tools/africa-conflict/conflicts/sudan-civil-war/">
+          <span>Escalating | Civil War</span>
+          <strong>Sudan Civil War (SAF vs RSF)</strong>
+          <small>The Sudan Civil War began on April 15, 2023 between the Sudanese Armed Forces (SAF) and the Rapid Support Forces (RSF...</small>
+        </a>
+<a class="acd-static-discovery-card" href="/tools/africa-conflict/conflicts/sahel-regional/">
+          <span>Escalating | Insurgency</span>
+          <strong>Sahel Regional Security Crisis</strong>
+          <small>The Sahel crisis is a regional phenomenon rather than a single conflict — a belt of intersecting jihadist insurgencie...</small>
+        </a>
+<a class="acd-static-discovery-card" href="/tools/africa-conflict/conflicts/mali-sahel/">
+          <span>Escalating | Insurgency</span>
+          <strong>Mali — Sahel Jihadist Insurgency</strong>
+          <small>The Mali conflict began with the 2012 Tuareg uprising and subsequent jihadist takeover of northern Mali. French Barkh...</small>
+        </a>
+<a class="acd-static-discovery-card" href="/tools/africa-conflict/conflicts/burkina-faso-insurgency/">
+          <span>Escalating | Insurgency</span>
+          <strong>Burkina Faso — Jihadist Insurgency</strong>
+          <small>Burkina Faso has experienced rapid conflict deterioration since 2015, accelerating after two coups in 2022. JNIM and...</small>
+        </a>
+<a class="acd-static-discovery-card" href="/tools/africa-conflict/conflicts/drc-eastern-conflict/">
+          <span>Escalating | Proxy War</span>
+          <strong>Eastern DRC — M23/FDLR Insurgency</strong>
+          <small>Eastern DRC has experienced near-continuous conflict since the 1990s. The latest cycle, driven by the M23 rebel group...</small>
+        </a>
+<a class="acd-static-discovery-card" href="/tools/africa-conflict/conflicts/somalia-al-shabaab/">
+          <span>Active | Insurgency</span>
+          <strong>Somalia — Al-Shabaab Insurgency</strong>
+          <small>Al-Shabaab has waged an insurgency against the Somali Federal Government and AMISOM/ATMIS peacekeeping forces since 2...</small>
+        </a>
+<a class="acd-static-discovery-card" href="/tools/africa-conflict/conflicts/south-sudan-conflict/">
+          <span>Active | Civil War</span>
+          <strong>South Sudan — Persistent Conflict</strong>
+          <small>South Sudan&#39;s civil war, beginning in 2013 between forces loyal to President Salva Kiir and Vice President Riek Macha...</small>
+        </a>
+<a class="acd-static-discovery-card" href="/tools/africa-conflict/conflicts/nigeria-boko-haram/">
+          <span>Active | Insurgency</span>
+          <strong>Nigeria — Boko Haram / ISWAP Insurgency</strong>
+          <small>The Boko Haram insurgency, now split between ISWAP (Islamic State West Africa Province) and Jamā&#39;at Ahl as-Sunnah lid...</small>
+        </a>
+<a class="acd-static-discovery-card" href="/tools/africa-conflict/conflicts/car-civil-war/">
+          <span>Stalemated | Civil War</span>
+          <strong>Central African Republic Civil War</strong>
+          <small>The CAR civil war pits the government (supported by Wagner Group mercenaries since 2018) against a coalition of rebel...</small>
+        </a>
+<a class="acd-static-discovery-card" href="/tools/africa-conflict/conflicts/ethiopia-amhara/">
+          <span>Active | Civil War</span>
+          <strong>Ethiopia — Amhara Conflict (Fano)</strong>
+          <small>Following the Tigray peace agreement of November 2022, a new conflict erupted in the Amhara region between government...</small>
+        </a>
+<a class="acd-static-discovery-card" href="/tools/africa-conflict/conflicts/mozambique-cabo-delgado/">
+          <span>Active | Insurgency</span>
+          <strong>Mozambique — Cabo Delgado Insurgency</strong>
+          <small>Ansar al-Sunna (locally known as Al-Shabaab, distinct from Somali group) has waged an insurgency in Mozambique&#39;s nort...</small>
+        </a>
+<a class="acd-static-discovery-card" href="/tools/africa-conflict/conflicts/niger-post-coup/">
+          <span>Active | Coup/Post-Coup</span>
+          <strong>Niger — Post-Coup Instability &amp; Jihadist Pressure</strong>
+          <small>The July 2023 coup by General Abdourahamane Tchiani toppled elected President Mohamed Bazoum, triggering an ECOWAS st...</small>
+        </a>
+<a class="acd-static-discovery-card" href="/tools/africa-conflict/conflicts/ethiopia-eritrea-tigray/">
+          <span>De Escalating | Hybrid</span>
+          <strong>Horn of Africa — Post-Tigray Instability</strong>
+          <small>The Tigray War (2020-2022) between Ethiopian federal forces (with Eritrean alliance) and TPLF was among the deadliest...</small>
+        </a>
+<a class="acd-static-discovery-card" href="/tools/africa-conflict/conflicts/libya-conflict/">
+          <span>Frozen | Civil War</span>
+          <strong>Libya — Ongoing Political-Military Fracture</strong>
+          <small>Libya fractured after the NATO-backed fall of Gaddafi in 2011 and has never reconsolidated. Two rival administrations...</small>
+        </a>
+<a class="acd-static-discovery-card" href="/tools/africa-conflict/conflicts/cameroon-anglophone/">
+          <span>Stalemated | Separatist</span>
+          <strong>Cameroon — Anglophone Crisis</strong>
+          <small>Cameroon&#39;s Anglophone crisis began as a lawyers&#39; and teachers&#39; strike against the imposition of French language in co...</small>
+        </a>
+<a class="acd-static-discovery-card" href="/tools/africa-conflict/conflicts/kenya-communal-violence/">
+          <span>Active | Communal Violence</span>
+          <strong>Kenya — Pastoral Communal Violence</strong>
+          <small>Recurrent cattle-raiding and communal clashes between Turkana, Pokot, Samburu, Borana and other pastoralist communiti...</small>
+        </a>
+<a class="acd-static-discovery-card" href="/tools/africa-conflict/conflicts/western-sahara/">
+          <span>Frozen | Separatist</span>
+          <strong>Western Sahara — Frozen Conflict</strong>
+          <small>Western Sahara has been a frozen conflict since the 1991 UN ceasefire between Morocco (which controls ~80% of the ter...</small>
+        </a>
+  </div>
+</section>
+<!-- ac-static-dossiers:end -->
+</main>
+
+<afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script>
+(function () {
+  'use strict';
+
+  var allConflicts = [];
+  var filters = {
+    regions: [],
+    statuses: [],
+    types: [],
+    risks: [],
+    african: true,
+    resource: false,
+    climate: false,
+    food: false,
+    sort: 'risk'
+  };
+
+  var riskOrder = { critical: 0, high: 1, medium: 2, low: 3, minimal: 4 };
+
+  function q(sel) { return document.querySelector(sel); }
+  function qa(sel) { return document.querySelectorAll(sel); }
+
+  function applyFilters() {
+    var filtered = allConflicts.filter(function (c) {
+      if (filters.african && !c.is_african) return false;
+      if (filters.resource && !(c.resource_links && c.resource_links.length > 0)) return false;
+      if (filters.climate && !c.climate_link) return false;
+      if (filters.food && !c.food_insecurity_link) return false;
+      if (filters.regions.length && !(c.regions || []).some(function(r){ return filters.regions.includes(r); })) return false;
+      if (filters.statuses.length && !filters.statuses.includes(c.status)) return false;
+      if (filters.types.length && !filters.types.includes(c.conflict_type)) return false;
+      if (filters.risks.length && !filters.risks.includes(c.escalation_risk)) return false;
+      return true;
+    });
+
+    filtered.sort(function (a, b) {
+      if (filters.sort === 'risk') {
+        var ra = riskOrder[a.escalation_risk] !== undefined ? riskOrder[a.escalation_risk] : 5;
+        var rb = riskOrder[b.escalation_risk] !== undefined ? riskOrder[b.escalation_risk] : 5;
+        return ra - rb;
+      }
+      if (filters.sort === 'fatalities') return (b.fatalities_max||0) - (a.fatalities_max||0);
+      if (filters.sort === 'displaced') return ((b.idps_count||0)+(b.refugees_count||0)) - ((a.idps_count||0)+(a.refugees_count||0));
+      if (filters.sort === 'duration') return (b.duration_days||0) - (a.duration_days||0);
+      if (filters.sort === 'name') return a.name.localeCompare(b.name);
+      return 0;
+    });
+
+    renderCards(filtered);
+    q('#acd-results-count').textContent = 'Showing ' + filtered.length + ' of ' + allConflicts.length + ' conflicts';
+  }
+
+  function renderCards(list) {
+    var el = q('#acd-cards-list');
+    if (!list.length) {
+      el.innerHTML = '<div class="acd-empty"><div class="acd-empty-icon">🔍</div><div class="acd-empty-title">No conflicts match these filters</div></div>';
+      return;
+    }
+    el.innerHTML = list.map(function (c) {
+      return AfroConflict.renderConflictCard(c);
+    }).join('');
+    if (window.AfroConflictStaticRoutes) window.AfroConflictStaticRoutes.rewriteLegacyDetailLinks(el);
+  }
+
+  function setupFilterListeners() {
+    // Checkbox filters
+    qa('#filter-region input').forEach(function (inp) {
+      inp.addEventListener('change', function () {
+        filters.regions = Array.from(qa('#filter-region input:checked')).map(function(i){return i.value;});
+        applyFilters();
+      });
+    });
+    qa('#filter-status input').forEach(function (inp) {
+      inp.addEventListener('change', function () {
+        filters.statuses = Array.from(qa('#filter-status input:checked')).map(function(i){return i.value;});
+        applyFilters();
+      });
+    });
+    qa('#filter-type input').forEach(function (inp) {
+      inp.addEventListener('change', function () {
+        filters.types = Array.from(qa('#filter-type input:checked')).map(function(i){return i.value;});
+        applyFilters();
+      });
+    });
+    qa('#filter-risk input').forEach(function (inp) {
+      inp.addEventListener('change', function () {
+        filters.risks = Array.from(qa('#filter-risk input:checked')).map(function(i){return i.value;});
+        applyFilters();
+      });
+    });
+
+    // Toggle switches
+    function setupToggle(toggleId, switchId, filterKey) {
+      var tog = q('#' + toggleId);
+      var sw = q('#' + switchId);
+      if (tog && sw) {
+        tog.addEventListener('click', function () {
+          filters[filterKey] = !filters[filterKey];
+          sw.classList.toggle('on', filters[filterKey]);
+          applyFilters();
+        });
+      }
+    }
+
+    setupToggle('toggle-african', 'sw-african', 'african');
+    setupToggle('toggle-resource', 'sw-resource', 'resource');
+    setupToggle('toggle-climate', 'sw-climate', 'climate');
+    setupToggle('toggle-food', 'sw-food', 'food');
+
+    // Sort
+    qa('[name="sort"]').forEach(function (inp) {
+      inp.addEventListener('change', function () {
+        filters.sort = this.value;
+        applyFilters();
+      });
+    });
+
+    // Reset
+    q('#acd-reset-filters').addEventListener('click', function () {
+      filters = { regions: [], statuses: [], types: [], risks: [], african: true, resource: false, climate: false, food: false, sort: 'risk' };
+      qa('.acd-filter-sidebar input[type="checkbox"]').forEach(function(i){ i.checked = false; });
+      qa('.acd-filter-sidebar input[type="radio"]')[0].checked = true;
+      qa('.acd-toggle-switch').forEach(function(s){ s.classList.remove('on'); });
+      q('#sw-african').classList.add('on');
+      applyFilters();
+    });
+
+    // Mobile filter toggle
+    q('#acd-mobile-filter').addEventListener('click', function () {
+      var sb = q('#acd-sidebar');
+      sb.classList.toggle('open');
+    });
+  }
+
+  async function loadConflicts() {
+    try {
+      var res = await fetch('/api/conflicts');
+      var json = await res.json();
+      allConflicts = json.data || [];
+      setupFilterListeners();
+      applyFilters();
+    } catch (err) {
+      q('#acd-cards-list').innerHTML = '<div class="acd-empty"><div class="acd-empty-icon">⚠️</div><div class="acd-empty-title">Failed to load conflicts. Please try again.</div></div>';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    AfroConflict.init();
+    loadConflicts();
+  });
+
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+</body>
+</html>

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Loan Repayment Calculator — NSFAS, HELB, TETFund</title>
+<meta name="description" content="Calculate student loan repayment for NSFAS (South Africa), HELB (Kenya), and private education loans. See monthly payments, total interest, and payoff timeline.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Student Loan Repayment Calculator | AfroTools">
+<meta property="og:description" content="Calculate your student loan repayment schedule for African education loans.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/student-loan.webp">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/student-loan/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419;--accent:#2563eb}
+.tool-hero{background:linear-gradient(135deg,#1e3a5f 0%,#2563eb 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#bfdbfe}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#bfdbfe;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-blue{background:rgba(191,219,254,.2);color:#bfdbfe;border:1px solid rgba(191,219,254,.4)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.tool-main-inner>*{min-width:0}
+.calculator,.sidebar,.card,.card-body,.row{min-width:0;max-width:100%}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc;display:flex;justify-content:space-between;align-items:center}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;transition:border .2s}
+input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px;transition:transform .1s}
+.btn-primary{background:linear-gradient(135deg,#1e40af,#2563eb);color:#fff}
+.btn-primary:hover{transform:translateY(-1px)}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:left}
+.result-box .num{font-size:1.4rem;font-weight:800;color:#2563eb}
+.result-box .lbl{font-size:.68rem;color:#64748b;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
+.schedule-wrap{overflow-x:auto;overflow-y:hidden;margin-top:14px;border:1px solid #e2e8f0;border-radius:10px;background:#fff;-webkit-overflow-scrolling:touch;max-width:100%;min-width:0;width:100%}
+.schedule{width:760px!important;min-width:760px!important;max-width:none!important;border-collapse:collapse;font-size:.75rem;display:table!important}
+.schedule th{position:sticky;top:0;background:#eff6ff;color:#1e40af;font-weight:700;padding:7px;text-align:right;font-size:.68rem;text-transform:uppercase;border-bottom:2px solid #bfdbfe}
+.schedule th:first-child{text-align:left}
+.schedule td{padding:6px 7px;border-bottom:1px solid #f1f5f9;text-align:right;color:#475569}
+.schedule td:first-child{text-align:left;font-weight:600}
+.result-note{margin:16px 0 0;padding:14px;border:1px solid #fde68a;border-radius:10px;background:#fffbeb;color:#78350f;font-size:.82rem;line-height:1.65}
+.result-actions{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+.result-actions .btn{width:auto;margin-top:0;padding:10px 14px}
+.action-status{min-height:20px;margin-top:10px;color:#1d4ed8;font-size:.78rem;font-weight:800}
+.sidebar .info-card{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#1e40af;margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:#1e40af;line-height:1.6}
+.info-card ul{padding-left:16px;margin:6px 0}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.result-grid{grid-template-columns:1fr}.result-actions .btn{width:100%}}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Student Loan Repayment Calculator",
+  "description": "Calculate student loan repayment for NSFAS, HELB, and private education loans in Africa.",
+  "url": "https://afrotools.com/tools/student-loan/",
+  "inLanguage": "en",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/student-loan.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Student Loan Repayment Calculator",
+  "url": "https://afrotools.com/tools/student-loan/",
+  "description": "Calculate student loan repayment for NSFAS, HELB, and private education loans in Africa.",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/student-loan.webp"
+}
+</script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Student Loan Repayment Calculator | AfroTools">
+<meta name="twitter:description" content="Calculate your student loan repayment schedule for African education loans.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/student-loan.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Student Loan Repayment Calculator",
+      "item": "https://afrotools.com/tools/student-loan/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How does NSFAS loan repayment work?","acceptedAnswer":{"@type":"Answer","text":"NSFAS loans are interest-free (0%) and repayment begins when you earn above a threshold (approximately R30,000/year). You repay through salary deductions, typically 3-8% of income depending on your earnings bracket."}},{"@type":"Question","name":"What happens if I don't repay HELB?","acceptedAnswer":{"@type":"Answer","text":"HELB can list defaulters with credit reference bureaus, making it difficult to get other loans. They can also seek court orders for salary deductions. It's best to negotiate a manageable repayment plan."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/student-loan/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/student-loan/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/pret-etudiant/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/student-loan/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Student Loan Calculator</span></div>
+<h1>Student Loan <em>Repayment Calculator</em></h1>
+<p class="hero-sub">Calculate your student loan monthly payment, total interest, and payoff date. Supports NSFAS (South Africa), HELB (Kenya), and private education loans.</p>
+<div class="hero-badges"><span class="badge b-blue">NSFAS</span><span class="badge b-blue">HELB</span><span class="badge b-blue">Private Loans</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calculator">
+<div class="card">
+<div class="card-head"><span class="card-title">Loan Details</span></div>
+<div class="card-body">
+<div class="row" style="margin-bottom:14px">
+<div><label for="loanType">Loan Type</label>
+<select id="loanType" onchange="updateDefaults()">
+<option value="nsfas">NSFAS (South Africa) — 0% interest</option>
+<option value="helb">HELB (Kenya) — 4% interest</option>
+<option value="private" selected>Private Education Loan</option>
+<option value="custom">Custom</option>
+</select></div>
+<div><label>Currency</label>
+<select id="currency" aria-label="Currency">
+<option value="NGN">NGN (Naira)</option>
+<option value="KES">KES (Shilling)</option>
+<option value="ZAR">ZAR (Rand)</option>
+<option value="GHS">GHS (Cedi)</option>
+</select></div>
+</div>
+<div class="row" style="margin-bottom:14px">
+<div><label>Loan Amount</label><input aria-label="LoanAmount" type="number" id="loanAmount" value="2000000" min="10000" step="50000"></div>
+<div><label>Annual Interest Rate %</label><input aria-label="Rate" type="number" id="rate" value="18" min="0" max="40" step="0.5"></div>
+</div>
+<div class="row" style="margin-bottom:14px">
+<div><label>Repayment Period (years)</label><input aria-label="Years" type="number" id="years" value="5" min="1" max="30"></div>
+<div><label>Grace Period (months)</label><input aria-label="Grace" type="number" id="grace" value="12" min="0" max="36"></div>
+</div>
+<div><label>Extra Monthly Payment (optional)</label><input aria-label="Extra" type="number" id="extra" value="0" min="0" step="1000"></div>
+<button type="button" class="btn btn-primary" onclick="calculate()">Calculate Repayment</button>
+</div></div>
+
+<div class="card" id="resultCard" style="display:none">
+<div class="card-head"><span class="card-title">Repayment Schedule</span></div>
+<div class="card-body">
+<div class="result-grid" id="resultGrid"></div>
+<div class="schedule-wrap"><table class="schedule" id="schedule"></table></div>
+<div class="result-note" id="studentLoanNote"></div>
+<div class="result-actions" aria-label="Student loan result actions">
+<button type="button" class="btn btn-primary" id="student-copy-summary">Copy repayment brief</button>
+<button type="button" class="btn" id="student-download-summary">Download TXT</button>
+<button type="button" class="btn" id="student-save-summary">Save in browser</button>
+<save-result-button tool-slug="student-loan" tool-name="Student Loan"></save-result-button>
+<share-result-button tool-name="Student Loan" tool-slug="student-loan"></share-result-button>
+</div>
+<div class="action-status" id="student-loan-action-status" aria-live="polite"></div>
+</div></div>
+</div>
+
+<div class="sidebar">
+<div class="card">
+<div class="card-head"><span class="card-title">African Student Loan Schemes</span></div>
+<div class="card-body" style="font-size:.75rem;color:#475569">
+<table style="width:100%;border-collapse:collapse;font-size:.72rem">
+<tr style="border-bottom:1px solid #f1f5f9"><th style="text-align:left;padding:5px">Scheme</th><th style="text-align:right;padding:5px">Rate</th><th style="text-align:right;padding:5px">Grace</th></tr>
+<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px">NSFAS (ZA)</td><td style="text-align:right">0%</td><td style="text-align:right">12 mo</td></tr>
+<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px">HELB (KE)</td><td style="text-align:right">4%</td><td style="text-align:right">12 mo</td></tr>
+<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px">SLF (GH)</td><td style="text-align:right">12%</td><td style="text-align:right">12 mo</td></tr>
+<tr><td style="padding:5px">Private (NG)</td><td style="text-align:right">15-25%</td><td style="text-align:right">0-6 mo</td></tr>
+</table>
+</div></div>
+<div class="info-card">
+<h4>Tips to Pay Off Faster</h4>
+<ul>
+<li>Pay during grace period to reduce principal</li>
+<li>Add even small extra amounts monthly</li>
+<li>Use bonuses/13th month for lump payments</li>
+<li>Refinance if better rates available</li>
+</ul>
+</div>
+</div>
+</div></section>
+
+<!-- Methodology, limitations & sources -->
+<section data-tool-verification-panel aria-labelledby="student-loan-method-title" style="max-width:900px;margin:32px auto;padding:0 20px;">
+  <h2 id="student-loan-method-title" style="font-size:1.15rem;font-weight:800;color:#111;margin-bottom:6px;font-family:'Inter',sans-serif">How it works — methodology &amp; sources</h2>
+  <p style="font-size:0.84rem;color:#64748b;line-height:1.6;margin:0 0 14px;font-family:'Inter',sans-serif">Updated for 2026. Here is exactly how the result is produced, the assumptions behind it, and what to verify before you rely on it.</p>
+  <details open style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+    <summary style="padding:14px 18px;font-size:.88rem;font-weight:700;color:#111;cursor:pointer;font-family:'Inter',sans-serif;list-style:none">Methodology &amp; assumptions</summary>
+    <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'Inter',sans-serif">The monthly repayment uses the standard amortisation formula M = P&middot;r&middot;(1+r)<sup>n</sup> / ((1+r)<sup>n</sup> &minus; 1), where P is the balance, r the monthly rate (annual rate &divide; 12), and n the term in months. First we grow the principal through the grace period by compounding interest monthly, so P is the balance <em>after</em> grace; that grace-period interest is shown separately. We then build the full schedule month by month — each payment covers the interest due first, and the remainder reduces the balance — and add any optional extra monthly payment on top, which shortens the payoff time. When the rate is 0% (e.g. NSFAS) the payment is simply the balance divided by the number of months. We assume a fixed interest rate and equal monthly payments; arrangement fees, insurance, and income-contingent salary-deduction rules are not modelled.</div>
+  </details>
+  <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+    <summary style="padding:14px 18px;font-size:.88rem;font-weight:700;color:#111;cursor:pointer;font-family:'Inter',sans-serif;list-style:none">Limitations &amp; what to verify</summary>
+    <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'Inter',sans-serif">This is a planning estimate only and not financial advice — it does not replace an official repayment statement from NSFAS, HELB, the Ghana SLTF, a university, or a private lender. Real schemes differ: NSFAS uses income-contingent repayment (a percentage of income above a threshold) rather than fixed instalments, and several schemes accrue interest or fees differently during study and grace. Before you rely on any figure, verify your exact statement balance, the interest rate and how it accrues, grace-period and deferment rules, salary-deduction thresholds, and any penalties with the lender or scheme.</div>
+  </details>
+  <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+    <summary style="padding:14px 18px;font-size:.88rem;font-weight:700;color:#111;cursor:pointer;font-family:'Inter',sans-serif;list-style:none">Sources &amp; references</summary>
+    <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'Inter',sans-serif">Default scheme rates and grace periods are based on the published terms of each provider: <a href="https://www.nsfas.org.za/" target="_blank" rel="noopener">NSFAS (South Africa) &#8599;</a>, <a href="https://www.helb.co.ke/" target="_blank" rel="noopener">HELB (Kenya) &#8599;</a>, and the <a href="https://www.sltf.gov.gh/" target="_blank" rel="noopener">Students Loan Trust Fund (Ghana) &#8599;</a>. Private-loan rates are indicative market ranges. Confirm current terms on the official scheme or lender site before acting. Last verified 2026.</div>
+  </details>
+</section>
+
+<section class="seo-section">
+<h2>Student Loan Repayment in Africa</h2>
+<p>Student loan debt is a growing concern across Africa as higher education costs rise. In South Africa, <strong>NSFAS</strong> provides interest-free loans to qualifying students, making repayment more manageable. Kenya's <strong>HELB</strong> charges 4% annual interest with a 12-month grace period after graduation. Private education loans in Nigeria can carry rates of 15-25%.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>How does NSFAS loan repayment work?</summary><p>NSFAS loans are interest-free (0%) and repayment begins when you earn above a threshold (approximately R30,000/year). You repay through salary deductions, typically 3-8% of income depending on your earnings bracket.</p></details>
+<details class="faq-item"><summary>What happens if I don't repay HELB?</summary><p>HELB can list defaulters with credit reference bureaus, making it difficult to get other loans. They can also seek court orders for salary deductions. It's best to negotiate a manageable repayment plan.</p></details>
+</section>
+
+<afro-related-tools category="financial" current="student-loan" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Tracker" data-category="financial" data-icon="AA" data-desc="Compare petrol, diesel, and LPG prices across 54 African countries, then estimate generator fuel costs in local currency">AfroFuel — African Fuel Price Tracker</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-business-cta tool-name="Student Loan Repayment Calculator" prospect-segment="education-finance" save-note="Calculate repayment locally, then save or share the scenario before confirming scheme or lender rules."></afro-business-cta>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+let currentStudentLoanPlan = null;
+function updateDefaults() {
+  const type = document.getElementById('loanType').value;
+  if (type === 'nsfas') { document.getElementById('rate').value = 0; document.getElementById('grace').value = 12; document.getElementById('currency').value = 'ZAR'; document.getElementById('loanAmount').value = 150000; }
+  else if (type === 'helb') { document.getElementById('rate').value = 4; document.getElementById('grace').value = 12; document.getElementById('currency').value = 'KES'; document.getElementById('loanAmount').value = 500000; }
+  else if (type === 'private') { document.getElementById('rate').value = 18; document.getElementById('grace').value = 6; }
+}
+
+function calculate() {
+  const currency = document.getElementById('currency').value;
+  const loanType = document.getElementById('loanType').value;
+  let principal = +document.getElementById('loanAmount').value;
+  const annualRate = +document.getElementById('rate').value / 100;
+  const monthlyRate = annualRate / 12;
+  const years = +document.getElementById('years').value;
+  const grace = +document.getElementById('grace').value;
+  const extra = +document.getElementById('extra').value;
+  const totalMonths = years * 12;
+
+  // Interest accrues during grace period
+  let balanceAfterGrace = principal;
+  for (let m = 0; m < grace; m++) balanceAfterGrace += balanceAfterGrace * monthlyRate;
+
+  // Monthly payment (amortisation formula)
+  let monthlyPayment;
+  if (monthlyRate === 0) {
+    monthlyPayment = balanceAfterGrace / totalMonths;
+  } else {
+    monthlyPayment = balanceAfterGrace * (monthlyRate * Math.pow(1 + monthlyRate, totalMonths)) / (Math.pow(1 + monthlyRate, totalMonths) - 1);
+  }
+
+  monthlyPayment += extra;
+  let balance = balanceAfterGrace;
+  let totalPaid = 0;
+  let totalInterest = 0;
+  const rows = [];
+  let month = 0;
+
+  while (balance > 0.5 && month < 600) {
+    month++;
+    const interest = balance * monthlyRate;
+    let payment = Math.min(monthlyPayment, balance + interest);
+    const principalPart = payment - interest;
+    balance -= principalPart;
+    if (balance < 0) balance = 0;
+    totalPaid += payment;
+    totalInterest += interest;
+
+    if (month <= 24 || month % 12 === 0 || balance <= 0) {
+      rows.push({ month, payment, interest, principal: principalPart, balance });
+    }
+  }
+
+  currentStudentLoanPlan = {
+    loanType,
+    currency,
+    originalPrincipal: +document.getElementById('loanAmount').value,
+    balanceAfterGrace,
+    annualRate: annualRate * 100,
+    years,
+    grace,
+    extra,
+    monthlyPayment,
+    baseMonthlyPayment: monthlyPayment - extra,
+    totalPaid,
+    totalInterest,
+    payoffMonths: month,
+    rows
+  };
+
+  const fmt = n => formatStudentLoanMoney(currency, n);
+
+  let html = '';
+  html += `<div class="result-box"><div class="num">${fmt(monthlyPayment - extra)}</div><div class="lbl">Monthly Payment</div></div>`;
+  html += `<div class="result-box"><div class="num">${fmt(totalPaid)}</div><div class="lbl">Total Repaid</div></div>`;
+  html += `<div class="result-box"><div class="num">${fmt(totalInterest)}</div><div class="lbl">Total Interest</div></div>`;
+  html += `<div class="result-box"><div class="num">${month} months</div><div class="lbl">Payoff Time</div></div>`;
+  if (grace > 0) html += `<div class="result-box"><div class="num">${fmt(balanceAfterGrace - principal)}</div><div class="lbl">Grace Period Interest</div></div>`;
+  html += `<div class="result-box"><div class="num">${fmt(balanceAfterGrace)}</div><div class="lbl">Balance After Grace</div></div>`;
+  document.getElementById('resultGrid').innerHTML = html;
+
+  let table = '<tr><th style="text-align:left">Month</th><th>Payment</th><th>Interest</th><th>Principal</th><th>Balance</th></tr>';
+  rows.forEach(r => {
+    table += `<tr><td>${r.month}</td><td style="text-align:right">${fmt(r.payment)}</td><td style="text-align:right">${fmt(r.interest)}</td><td style="text-align:right">${fmt(r.principal)}</td><td style="text-align:right;font-weight:700">${fmt(r.balance)}</td></tr>`;
+  });
+  document.getElementById('schedule').innerHTML = table;
+  document.getElementById('studentLoanNote').innerHTML = '<strong>Planning estimate only.</strong> This repayment model uses the balance, rate, grace period, repayment years, and optional extra payment above. Confirm scheme thresholds, statement balance, interest accrual, salary deductions, deferment options, penalties, and official lender or government guidance before paying.';
+  setStudentLoanStatus('');
+
+  document.getElementById('resultCard').style.display = 'block';
+  document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth' });
+}
+
+function formatStudentLoanMoney(currency, amount) {
+  return currency + ' ' + Math.round(amount).toLocaleString('en');
+}
+
+function setStudentLoanStatus(message) {
+  var el = document.getElementById('student-loan-action-status');
+  if (el) el.textContent = message || '';
+}
+
+function studentLoanSummary() {
+  if (!currentStudentLoanPlan) calculate();
+  var p = currentStudentLoanPlan;
+  return [
+    'Student loan repayment brief - AfroTools',
+    'Loan type: ' + p.loanType,
+    'Currency: ' + p.currency,
+    'Original balance: ' + formatStudentLoanMoney(p.currency, p.originalPrincipal),
+    'Balance after grace: ' + formatStudentLoanMoney(p.currency, p.balanceAfterGrace),
+    'Annual interest rate: ' + p.annualRate.toFixed(2).replace(/\.00$/, '') + '%',
+    'Repayment period: ' + p.years + ' year(s)',
+    'Grace period: ' + p.grace + ' month(s)',
+    'Extra monthly payment: ' + formatStudentLoanMoney(p.currency, p.extra),
+    '',
+    'Estimated result',
+    '- Base monthly payment: ' + formatStudentLoanMoney(p.currency, p.baseMonthlyPayment),
+    '- Total monthly payment with extra: ' + formatStudentLoanMoney(p.currency, p.monthlyPayment),
+    '- Total repaid: ' + formatStudentLoanMoney(p.currency, p.totalPaid),
+    '- Total interest: ' + formatStudentLoanMoney(p.currency, p.totalInterest),
+    '- Payoff time: ' + p.payoffMonths + ' month(s)',
+    '',
+    'Schedule sample',
+    p.rows.slice(0, 12).map(function (row) {
+      return '- Month ' + row.month + ': payment ' + formatStudentLoanMoney(p.currency, row.payment) + ', interest ' + formatStudentLoanMoney(p.currency, row.interest) + ', principal ' + formatStudentLoanMoney(p.currency, row.principal) + ', balance ' + formatStudentLoanMoney(p.currency, row.balance);
+    }).join('\n'),
+    '',
+    'Verify scheme thresholds, statement balance, interest accrual, grace period, salary deduction threshold, deferment options, penalties, and official lender or government guidance before acting. This is a planning estimate, not an official repayment statement.'
+  ].join('\n');
+}
+
+function fallbackStudentLoanCopy(text) {
+  var field = document.createElement('textarea');
+  field.value = text;
+  field.setAttribute('readonly', '');
+  field.style.position = 'fixed';
+  field.style.left = '-9999px';
+  document.body.appendChild(field);
+  field.select();
+  try {
+    document.execCommand('copy');
+    setStudentLoanStatus('Repayment brief copied.');
+  } catch (error) {
+    window.prompt('Copy repayment brief', text);
+    setStudentLoanStatus('Copy prompt opened.');
+  }
+  document.body.removeChild(field);
+}
+
+function copyStudentLoanSummary() {
+  var text = studentLoanSummary();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function () {
+      setStudentLoanStatus('Repayment brief copied.');
+    }).catch(function () {
+      fallbackStudentLoanCopy(text);
+    });
+  } else {
+    fallbackStudentLoanCopy(text);
+  }
+}
+
+function downloadStudentLoanSummary() {
+  var text = studentLoanSummary();
+  var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'student-loan-repayment-brief.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  setStudentLoanStatus('TXT repayment brief downloaded.');
+}
+
+function saveStudentLoanSummary() {
+  var text = studentLoanSummary();
+  try {
+    localStorage.setItem('afrotools-student-loan-summary', JSON.stringify({ savedAt: Date.now(), plan: currentStudentLoanPlan, report: text }));
+    setStudentLoanStatus('Repayment plan saved in this browser.');
+  } catch (error) {
+    setStudentLoanStatus('Browser storage is unavailable. Download the TXT brief instead.');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  var copyBtn = document.getElementById('student-copy-summary');
+  var downloadBtn = document.getElementById('student-download-summary');
+  var saveBtn = document.getElementById('student-save-summary');
+  if (copyBtn) copyBtn.addEventListener('click', copyStudentLoanSummary);
+  if (downloadBtn) downloadBtn.addEventListener('click', downloadStudentLoanSummary);
+  if (saveBtn) saveBtn.addEventListener('click', saveStudentLoanSummary);
+});
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+</body>
+</html>

@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="afrotools-currency" content="ETB">
+<meta name="afrotools-formula-jurisdiction" content="ET">
+<meta name="afrotools-source-jurisdiction" content="ET">
+<meta name="afrotools-country-id" content="ET">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Irrigation Water Calculator for Ethiopia &mdash; AfroTools</title>
+<meta name="description" content="Calculate crop irrigation water needs in Ethiopia. Monthly water budget for teff, coffee, maize, wheat, sorghum with rainfall data for 6 agricultural zones.">
+<!-- OG -->
+<meta property="og:title" content="Ethiopia Irrigation Water Calculator &mdash; AfroTools">
+<meta property="og:description" content="Calculate crop irrigation water needs in Ethiopia. Monthly water budget for teff, coffee, maize, wheat, sorghum with rainfall data for 6 agricultural zones.">
+<meta property="og:url" content="https://afrotools.com/agriculture/irrigation/ethiopia">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/irrigation-ethiopia.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:title" content="Ethiopia Irrigation Water Calculator &mdash; AfroTools">
+<meta name="twitter:description" content="Calculate crop irrigation water needs in Ethiopia. Monthly water budget for teff, coffee, maize, wheat, sorghum with rainfall data for 6 agricultural zones.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/irrigation-ethiopia.webp">
+
+<!-- Schema.org -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Ethiopia Irrigation Water Calculator",
+  "url": "https://afrotools.com/agriculture/irrigation/ethiopia",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "All",
+  "description": "Calculate crop irrigation water needs in Ethiopia. Monthly water budget for teff, coffee, maize, wheat, sorghum with rainfall data for 6 agricultural zones.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/irrigation-ethiopia.webp"
+}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Agriculture","item":"https://afrotools.com/agriculture/"},{"@type":"ListItem","position":3,"name":"Irrigation Calculator","item":"https://afrotools.com/agriculture/irrigation/"},{"@type":"ListItem","position":4,"name":"Nigeria","item":"https://afrotools.com/agriculture/irrigation/ethiopia"}]}
+</script>
+
+<!-- Fonts & CSS -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/agriculture.css?v=70592203">
+
+<!-- Components -->
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+
+<style>
+/* ── Irrigation Tool Styles ── */
+:root {
+  --ir-green: #0062CC;
+  --ir-green-dark: #0063D1;
+  --ir-green-light: #E8F2FF;
+  --ir-green-pale: #EBF4FF;
+  --ir-blue: #0EA5E9;
+  --ir-blue-light: #E0F2FE;
+  --ir-orange: #F59E0B;
+  --ir-orange-light: #FEF3C7;
+  --ir-bg: #F8F9FA;
+  --ir-card: #FFFFFF;
+  --ir-text: #1A1A2E;
+  --ir-muted: #6B7280;
+  --ir-radius: 18px;
+  --ir-btn-radius: 980px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; background: var(--ir-bg); color: var(--ir-text); margin: 0; }
+
+/* Hero */
+.ir-hero {
+  background: linear-gradient(135deg, #001836 0%, var(--ir-green-dark) 50%, var(--ir-green) 100%);
+  color: #fff;
+  padding: 2.5rem 1rem 2rem;
+}
+.ir-hero-inner { max-width: 960px; margin: 0 auto; }
+.ir-breadcrumb { font-size: 0.85rem; opacity: 0.85; margin-bottom: 0.75rem; }
+.ir-breadcrumb a { color: #fff; text-decoration: none; }
+.ir-breadcrumb a:hover { text-decoration: underline; }
+.ir-hero h1 {
+  color: #fff;
+  font-size: clamp(1.35rem, 5.5vw, 2.2rem);
+  font-weight: 800;
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.ir-hero h1 .flag { font-size: 1.1em; margin-right: 0.3em; }
+.ir-hero-sub { font-size: 1rem; opacity: 1; max-width: 600px; line-height: 1.5; }
+.ir-stats-bar { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; font-size: 0.85rem; }
+.ir-stat-pill {
+  background: rgba(255,255,255,0.22);
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--ir-btn-radius);
+  white-space: nowrap;
+}
+
+/* Main */
+.ir-main { max-width: 960px; margin: -1.5rem auto 3rem; padding: 0 1rem;  position: relative; z-index: 2;}
+
+/* Card */
+.ir-card {
+  background: var(--ir-card);
+  border-radius: var(--ir-radius);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.ir-card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Form */
+.ir-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 820px) { .ir-form-grid { grid-template-columns: 1fr; } }
+.ir-field { display: flex; flex-direction: column; gap: 0.3rem; }
+.ir-field.full { grid-column: 1 / -1; }
+.ir-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ir-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.ir-select, .ir-input {
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 0.65rem 0.85rem;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 10px;
+  background: #fff;
+  color: var(--ir-text);
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+.ir-select:focus, .ir-input:focus { border-color: var(--ir-green); }
+
+/* Button */
+.ir-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.85rem 2rem;
+  border: none;
+  border-radius: var(--ir-btn-radius);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.ir-btn-primary { background: var(--ir-green); color: #fff; width: 100%; margin-top: 0.5rem; }
+.ir-btn-primary:hover { background: var(--ir-green-dark); }
+.ir-btn-primary:active { transform: scale(0.98); }
+
+/* Results */
+.ir-results { display: none; }
+.ir-results.visible { display: block; animation: irFadeUp 0.4s ease; }
+@keyframes irFadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Result hero */
+.ir-result-hero { text-align: center; padding: 1.5rem 0; border-bottom: 1px solid #F0F0F0; margin-bottom: 1rem; }
+.ir-result-hero .big-num { font-size: clamp(2rem, 5vw, 2.8rem); font-weight: 800; color: var(--ir-blue); }
+.ir-result-hero .big-label { font-size: 0.85rem; color: var(--ir-muted); margin-top: 0.2rem; }
+
+/* Stats grid */
+.ir-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+.ir-stat-card { background: var(--ir-green-pale); border-radius: 12px; padding: 1rem; text-align: center; }
+.ir-stat-card.blue { background: var(--ir-blue-light); }
+.ir-stat-card.orange { background: var(--ir-orange-light); }
+.ir-stat-value { font-size: 1.2rem; font-weight: 800; color: var(--ir-green); }
+.ir-stat-card.blue .ir-stat-value { color: var(--ir-blue); }
+.ir-stat-card.orange .ir-stat-value { color: var(--ir-orange); }
+.ir-stat-label { font-size: 0.75rem; color: var(--ir-muted); margin-top: 0.2rem; }
+
+/* Schedule card */
+.ir-schedule {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--ir-green-pale);
+  border-radius: 12px;
+  border-left: 4px solid var(--ir-green);
+  margin: 1rem 0;
+}
+.ir-schedule-icon { font-size: 1.6rem; flex-shrink: 0; }
+.ir-schedule-body { flex: 1; font-size: 0.9rem; line-height: 1.5; }
+
+/* Water balance chart */
+.ir-chart { margin: 1rem 0; }
+.ir-chart-row { display: flex; align-items: flex-end; gap: 2px; margin-bottom: 0.25rem; }
+.ir-chart-label { width: 36px; font-size: 0.7rem; font-weight: 600; color: var(--ir-muted); text-align: center; flex-shrink: 0; }
+.ir-chart-bars { display: flex; flex-direction: column; flex: 1; align-items: stretch; gap: 2px; }
+.ir-bar-wrapper { display: flex; align-items: center; height: 16px; }
+.ir-bar {
+  height: 100%;
+  border-radius: 4px;
+  min-width: 2px;
+  transition: width 0.4s ease;
+}
+.ir-bar.rain { background: var(--ir-blue); }
+.ir-bar.irrig { background: var(--ir-orange); }
+.ir-bar-val { font-size: 0.65rem; color: var(--ir-muted); margin-left: 4px; white-space: nowrap; }
+
+/* Season table */
+.ir-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.ir-table th, .ir-table td { padding: 0.55rem 0.5rem; text-align: right; border-bottom: 1px solid #F0F0F0; }
+.ir-table th { font-weight: 600; color: var(--ir-muted); font-size: 0.72rem; text-transform: uppercase; text-align: right; }
+.ir-table th:first-child, .ir-table td:first-child { text-align: left; }
+.ir-table tr:last-child td { font-weight: 700; border-top: 2px solid var(--ir-green); }
+@media (max-width: 600px) {
+  .ir-table { font-size: 0.72rem; }
+  .ir-table th, .ir-table td { padding: 0.4rem 0.3rem; }
+  #seasonTableWrap::after { content: '← scroll →'; display: block; text-align: center; font-size: 0.65rem; color: #94a3b8; padding: 4px 0 0; letter-spacing: .04em; }
+}
+
+/* Method comparison */
+.ir-method-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.ir-method-table th, .ir-method-table td { padding: 0.6rem 0.5rem; text-align: right; border-bottom: 1px solid #F0F0F0; }
+.ir-method-table th { font-weight: 600; color: var(--ir-muted); font-size: 0.72rem; text-transform: uppercase; }
+.ir-method-table th:first-child, .ir-method-table td:first-child { text-align: left; }
+.ir-method-table tr.current { background: var(--ir-green-pale); }
+.ir-method-table td.best { color: var(--ir-green); font-weight: 700; }
+
+/* Saving banner */
+.ir-saving {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--ir-blue-light);
+  border-radius: 12px;
+  border-left: 4px solid var(--ir-blue);
+  margin: 1rem 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+.ir-saving-icon { font-size: 1.4rem; flex-shrink: 0; }
+
+/* Info table */
+.ir-info-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+.ir-info-table th, .ir-info-table td { padding: 0.6rem 0.75rem; text-align: left; border-bottom: 1px solid #F0F0F0; }
+.ir-info-table th { font-weight: 600; color: var(--ir-muted); font-size: 0.78rem; text-transform: uppercase; }
+
+/* Chart legend */
+.ir-legend { display: flex; gap: 1rem; margin-top: 0.5rem; font-size: 0.75rem; color: var(--ir-muted); flex-wrap: wrap; }
+.ir-legend-item { display: flex; align-items: center; gap: 0.3rem; }
+.ir-legend-dot { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+
+/* Sources */
+.ir-sources {
+  font-size: 0.78rem;
+  color: var(--ir-muted);
+  text-align: center;
+  padding: 1rem 0;
+  line-height: 1.6;
+}
+
+/* Print */
+@media print {
+  .ir-hero, afro-navbar, afro-footer, .ir-btn { display: none !important; }
+  .ir-results { display: block !important; }
+  .ir-card { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+}
+</style>
+<meta property="article:modified_time" content="2026-03-28">
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How should I use Ethiopia Irrigation Calculator?","acceptedAnswer":{"@type":"Answer","text":"Turn local farm assumptions into a quick planning summary before spending money or moving stock. Use the visible inputs to create a planning summary, then verify the assumptions before acting."}},{"@type":"Question","name":"What should I verify before acting on Ethiopia Irrigation Calculator?","acceptedAnswer":{"@type":"Answer","text":"Agriculture estimate only. Confirm local extension advice, weather, disease pressure, buyer price, and input quality before acting."}},{"@type":"Question","name":"Is Ethiopia Irrigation Calculator an official result?","acceptedAnswer":{"@type":"Answer","text":"No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."}}],"url":"https://afrotools.com/agriculture/irrigation/ethiopia"}</script>
+<link rel="canonical" href="https://afrotools.com/agriculture/irrigation/ethiopia">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/agriculture/irrigation/ethiopia">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/agriculture/irrigation/ethiopia">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/agriculture/irrigation/ethiopia">
+</head>
+
+<body class="top-level-page-ui-refresh">
+<afro-navbar theme="dark" active="tools"></afro-navbar>
+
+<!-- ─── HERO ─── -->
+<section class="ir-hero">
+  <div class="ir-hero-inner">
+    <nav class="ir-breadcrumb" aria-label="Breadcrumb">
+      <a href="/">AfroTools</a> &rsaquo;
+      <a href="/agriculture/irrigation/">Irrigation Calculators</a> &rsaquo;
+      Ethiopia
+    </nav>
+    <h1><span class="flag" aria-hidden="true">&#127466;&#127481;</span> Ethiopia Irrigation Water Calculator</h1>
+    <p class="ir-hero-sub">Calculate crop irrigation water needs for teff, coffee, maize, wheat, sorghum and more across Ethiopia’s 6 agricultural zones. Uses FAO Penman-Monteith method.</p>
+    <div class="ir-stats-bar" id="statsBar"></div>
+  </div>
+</section>
+
+<!-- ─── MAIN ─── -->
+<div class="ir-main">
+
+  <!-- Calculator Card -->
+  <div class="ir-card">
+    <h2 class="ir-card-title">&#128167; Calculate Irrigation Water Needs</h2>
+    <div class="ir-form-grid">
+
+      <div class="ir-field">
+        <label class="ir-label" for="selCrop">Crop</label>
+        <select class="ir-select" id="selCrop"></select>
+      </div>
+
+      <div class="ir-field">
+        <label class="ir-label" for="selRegion">Region / Zone</label>
+        <select class="ir-select" id="selRegion"></select>
+      </div>
+
+      <div class="ir-field">
+        <label class="ir-label" for="inpFarm">Farm Size (hectares)</label>
+        <input class="ir-input" id="inpFarm" type="number" min="0.1" step="0.1" value="1">
+      </div>
+
+      <div class="ir-field">
+        <label class="ir-label" for="selStage">Growth Stage</label>
+        <select class="ir-select" id="selStage">
+          <option value="germination">Germination / Initial</option>
+          <option value="vegetative">Vegetative / Development</option>
+          <option value="flowering" selected>Flowering / Mid-season (peak)</option>
+          <option value="maturity">Maturity / Late</option>
+        </select>
+      </div>
+
+      <div class="ir-field">
+        <label class="ir-label" for="selMonth">Month</label>
+        <select class="ir-select" id="selMonth">
+          <option value="0">&#128197; Show Full Season</option>
+          <option value="1">January</option>
+          <option value="2">February</option>
+          <option value="3">March</option>
+          <option value="4">April</option>
+          <option value="5">May</option>
+          <option value="6">June</option>
+          <option value="7">July</option>
+          <option value="8">August</option>
+          <option value="9">September</option>
+          <option value="10">October</option>
+          <option value="11">November</option>
+          <option value="12">December</option>
+        </select>
+      </div>
+
+      <div class="ir-field">
+        <label class="ir-label" for="selMethod">Irrigation Method</label>
+        <select class="ir-select" id="selMethod">
+          <option value="flood">Flood irrigation (40% efficient)</option>
+          <option value="furrow" selected>Furrow irrigation (55% efficient)</option>
+          <option value="bucket">Bucket / manual (60% efficient)</option>
+          <option value="sprinkler">Sprinkler (75% efficient)</option>
+          <option value="drip">Drip irrigation (90% efficient)</option>
+        </select>
+      </div>
+
+      <div class="ir-field full">
+        <button type="button" class="ir-btn ir-btn-primary" onclick="calculate()">&#128167; Calculate Water Needs</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── RESULTS ─── -->
+  <div class="ir-results" id="resultsPanel">
+
+    <!-- Single Month Results -->
+    <div id="singleResults" style="display:none;">
+
+      <!-- Hero number -->
+      <div class="ir-card">
+        <div class="ir-result-hero">
+          <div class="big-num" id="rDailyWater">--</div>
+          <div class="big-label">Daily water need (mm/day) for your farm</div>
+        </div>
+
+        <div class="ir-stats-grid">
+          <div class="ir-stat-card blue">
+            <div class="ir-stat-value" id="rEtc">--</div>
+            <div class="ir-stat-label">Crop Water Need (ETc mm/day)</div>
+          </div>
+          <div class="ir-stat-card">
+            <div class="ir-stat-value" id="rEffRain">--</div>
+            <div class="ir-stat-label">Effective Rainfall (mm/day)</div>
+          </div>
+          <div class="ir-stat-card orange">
+            <div class="ir-stat-value" id="rNIR">--</div>
+            <div class="ir-stat-label">Irrigation Deficit (mm/day)</div>
+          </div>
+          <div class="ir-stat-card">
+            <div class="ir-stat-value" id="rGIR">--</div>
+            <div class="ir-stat-label">Gross Requirement (mm/day)</div>
+          </div>
+        </div>
+
+        <!-- Irrigation schedule -->
+        <div class="ir-schedule" id="sSchedule">
+          <span class="ir-schedule-icon">&#128197;</span>
+          <div class="ir-schedule-body" id="sScheduleText"></div>
+        </div>
+
+        <!-- Method efficiency note -->
+        <div class="ir-schedule" id="sEfficiency" style="border-left-color:var(--ir-orange);">
+          <span class="ir-schedule-icon">&#9888;&#65039;</span>
+          <div class="ir-schedule-body" id="sEfficiencyText"></div>
+        </div>
+      </div>
+
+      <!-- Volume card -->
+      <div class="ir-card">
+        <h3 class="ir-card-title">&#128202; Volume Summary</h3>
+        <div class="ir-stats-grid">
+          <div class="ir-stat-card blue">
+            <div class="ir-stat-value" id="rDailyM3">--</div>
+            <div class="ir-stat-label">Daily volume (m&sup3;)</div>
+          </div>
+          <div class="ir-stat-card">
+            <div class="ir-stat-value" id="rPerEvent">--</div>
+            <div class="ir-stat-label">Per irrigation event (m&sup3;)</div>
+          </div>
+          <div class="ir-stat-card orange">
+            <div class="ir-stat-value" id="rMonthM3">--</div>
+            <div class="ir-stat-label">Monthly total (m&sup3;)</div>
+          </div>
+          <div class="ir-stat-card">
+            <div class="ir-stat-value" id="rMonthCost">--</div>
+            <div class="ir-stat-label">Est. monthly cost</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Full Season Results -->
+    <div id="seasonResults" style="display:none;">
+
+      <!-- Season summary card -->
+      <div class="ir-card">
+        <div class="ir-result-hero">
+          <div class="big-num" id="rSeasonTotal">--</div>
+          <div class="big-label">Total irrigation water needed for the season (m&sup3;)</div>
+        </div>
+
+        <div class="ir-stats-grid">
+          <div class="ir-stat-card blue">
+            <div class="ir-stat-value" id="rSeasonETc">--</div>
+            <div class="ir-stat-label">Crop water demand (mm)</div>
+          </div>
+          <div class="ir-stat-card">
+            <div class="ir-stat-value" id="rSeasonRain">--</div>
+            <div class="ir-stat-label">From rainfall (m&sup3;)</div>
+          </div>
+          <div class="ir-stat-card orange">
+            <div class="ir-stat-value" id="rSeasonIrrig">--</div>
+            <div class="ir-stat-label">Irrigation needed (m&sup3;)</div>
+          </div>
+          <div class="ir-stat-card">
+            <div class="ir-stat-value" id="rSeasonCost">--</div>
+            <div class="ir-stat-label">Est. season cost</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Monthly breakdown table -->
+      <div class="ir-card">
+        <h3 class="ir-card-title">&#128202; Season Water Budget</h3>
+        <div style="overflow-x:auto;" id="seasonTableWrap">
+          <table class="ir-table" id="seasonTable">
+            <thead>
+              <tr>
+                <th>Month</th>
+                <th>Stage</th>
+                <th>ETo</th>
+                <th>Kc</th>
+                <th>ETc</th>
+                <th>Rain</th>
+                <th>Eff. Rain</th>
+                <th>Net Irrig</th>
+                <th>Gross Irrig</th>
+              </tr>
+            </thead>
+            <tbody id="seasonTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Water balance chart -->
+      <div class="ir-card">
+        <h3 class="ir-card-title">&#127754; Monthly Water Balance</h3>
+        <div class="ir-chart" id="waterChart"></div>
+        <div class="ir-legend">
+          <span class="ir-legend-item"><span class="ir-legend-dot" style="background:var(--ir-blue);"></span> Effective Rainfall</span>
+          <span class="ir-legend-item"><span class="ir-legend-dot" style="background:var(--ir-orange);"></span> Irrigation Needed</span>
+        </div>
+      </div>
+
+      <!-- Saving message -->
+      <div class="ir-saving" id="savingBanner" style="display:none;">
+        <span class="ir-saving-icon">&#128161;</span>
+        <div id="savingText"></div>
+      </div>
+    </div>
+
+    <!-- Method Comparison (both modes) -->
+    <div class="ir-card" id="methodCard">
+      <h3 class="ir-card-title">&#9889; Irrigation Method Comparison</h3>
+      <div style="overflow-x:auto;">
+        <table class="ir-method-table" id="methodTable">
+          <thead>
+            <tr><th>Method</th><th>Efficiency</th><th>Water Used (m&sup3;)</th><th>Water Wasted (m&sup3;)</th><th>Est. Cost</th></tr>
+          </thead>
+          <tbody id="methodTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ─── INFO SECTION ─── -->
+  <div class="ir-card">
+    <h2 class="ir-card-title">&#127466;&#127481; Irrigation in Ethiopia</h2>
+    <p style="font-size:0.9rem;color:var(--ir-muted);line-height:1.6;" id="countryInfo"></p>
+
+    <h3 style="font-size:0.95rem;font-weight:700;margin:1.25rem 0 0.5rem;">Crop Water Requirements</h3>
+    <table class="ir-info-table" id="cropWaterTable">
+      <thead><tr><th>Crop</th><th>Water Need (mm/season)</th><th>Growing Period</th><th>Peak Kc</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="ir-card">
+    <h2 class="ir-card-title">&#128167; Understanding Irrigation Water Needs</h2>
+    <div style="font-size:0.9rem;color:var(--ir-muted);line-height:1.7;">
+      <p><strong>Reference Evapotranspiration (ETo)</strong> measures how much water evaporates from soil and transpires through plants under standard conditions. It varies by climate zone &mdash; arid regions like the Sahel have higher ETo than humid tropical zones.</p>
+      <p><strong>Crop Coefficient (Kc)</strong> adjusts ETo for each crop and growth stage. At flowering, most crops have their highest water demand (Kc = 1.0&ndash;1.2). During germination and maturity, demand is lower.</p>
+      <p><strong>Effective Rainfall</strong> is the portion of rain that actually reaches crop roots. Not all rainfall is usable &mdash; some runs off, some evaporates. The USDA SCS method estimates this from monthly totals.</p>
+      <p><strong>Irrigation Efficiency</strong> varies dramatically by method. Drip irrigation delivers 90% of water to crops, while flood irrigation loses 60% to evaporation and runoff. Upgrading your method can cut water use by half.</p>
+    </div>
+  </div>
+
+  <div class="ir-card" id="tipsCard">
+    <h2 class="ir-card-title">&#127793; Water-Saving Tips</h2>
+    <div style="font-size:0.9rem;color:var(--ir-muted);line-height:1.7;" id="tipsContent">
+      <ul style="padding-left:1.2rem;">
+        <li><strong>Mulching:</strong> Apply 5&ndash;10 cm of organic mulch to reduce soil evaporation by 25&ndash;50%.</li>
+        <li><strong>Deficit Irrigation:</strong> Reducing water by 20% during vegetative stage has minimal yield impact for many crops.</li>
+        <li><strong>Schedule by Need:</strong> Water early morning or evening to reduce evaporation losses.</li>
+        <li><strong>Soil Improvement:</strong> Adding organic matter increases water-holding capacity, reducing irrigation frequency.</li>
+        <li><strong>Rainwater Harvesting:</strong> Collect rooftop and surface runoff for supplemental irrigation during dry spells.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Sources -->
+  <div class="ir-sources">
+    Data Sources: FAO Irrigation &amp; Drainage Paper 56, FAO CLIMWAT 2.0, Central Statistical Agency of Ethiopia, World Bank Climate Portal.<br>
+    Irrigation estimates are indicative &mdash; actual needs vary by soil, weather, and management. Last updated: 2026.
+  </div>
+</div>
+
+
+<section class="df-upgrade" data-df-upgrade="irrigation-ethiopia">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Field planning workflow</span>
+      <h2>Ethiopia Irrigation Calculator decision workspace</h2>
+      <p>Turn local farm assumptions into a quick planning summary before spending money or moving stock. This panel is tuned for ethiopia irrigation calculator so the user can move from a thin page to a usable first decision.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: Ethiopia Irrigation Calculator: farm planning summary ready with cost, buffer, timing, and field-check notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, saveExport, browserOk.</li><li>Source note: extension, buyer, input supplier, and farm-record references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Agriculture estimate only. Confirm local extension advice, weather, disease pressure, buyer price, and input quality before acting. Source/reference: extension, buyer, input supplier, and farm-record references.</p>
+    </div>
+    <form class="df-form" data-df-form="irrigation-ethiopia">
+      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
+      <label>Quantity or area<input name="quantity" type="number" value="100" min="0" step="any" aria-label="Quantity or area"></label>
+      <label>Unit cost<input name="unitCost" type="number" value="2500" min="0" step="any" aria-label="Unit cost"></label>
+      <label>Risk buffer percent<input name="buffer" type="number" value="12" min="0" step="any" aria-label="Risk buffer percent"></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="irrigation-ethiopia" data-df-base="Ethiopia Irrigation Calculator: farm planning summary ready with cost, buffer, timing, and field-check notes." aria-live="polite">Ethiopia Irrigation Calculator: farm planning summary ready with cost, buffer, timing, and field-check notes.</output>
+      <div class="df-actions"><button type="button" data-df-copy="irrigation-ethiopia">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="irrigation-ethiopia-faq-title">
+  <h2 id="irrigation-ethiopia-faq-title">Ethiopia Irrigation Calculator FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn local farm assumptions into a quick planning summary before spending money or moving stock. Use it to sanity-check irrigation assumptions for Ethiopia before committing money with suppliers, buyers, lenders, or workers.</p></details><details><summary>What should I verify?</summary><p>Agriculture estimate only. Confirm local extension advice, weather, disease pressure, buyer price, and input quality before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+</section>
+
+<section class="seo-content agri-country-facts" style="max-width:800px;margin:2rem auto;padding:0 1rem;">
+<h2 style="font-size:1.15rem;font-weight:700;color:#1e293b;margin:1.5rem 0 0.5rem;">Farming context: Ethiopia</h2>
+<p>Ethiopia&#39;s main rainy season runs February to September, with a dry season from October to January — timing plantings and water budgets around these windows matters more than any single input price.</p>
+<table style="width:100%;border-collapse:collapse;font-size:.85rem;"><tbody><tr><th scope="row" style="text-align:left;padding:6px 8px;border-bottom:1px solid #eef2f7;font-weight:600;">Agriculture share of GDP</th><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">~35%</td></tr>
+<tr><th scope="row" style="text-align:left;padding:6px 8px;border-bottom:1px solid #eef2f7;font-weight:600;">Arable land</th><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">16,500,000 ha</td></tr>
+<tr><th scope="row" style="text-align:left;padding:6px 8px;border-bottom:1px solid #eef2f7;font-weight:600;">Irrigated share</th><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">~3%</td></tr>
+<tr><th scope="row" style="text-align:left;padding:6px 8px;border-bottom:1px solid #eef2f7;font-weight:600;">Main rainy season</th><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">February to September</td></tr>
+<tr><th scope="row" style="text-align:left;padding:6px 8px;border-bottom:1px solid #eef2f7;font-weight:600;">Main food crops</th><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">teff, maize, wheat, sorghum, barley, enset</td></tr>
+<tr><th scope="row" style="text-align:left;padding:6px 8px;border-bottom:1px solid #eef2f7;font-weight:600;">Main export crops</th><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">coffee arabica, sesame, chickpea, oilseeds</td></tr></tbody></table>
+<h3 style="font-size:.95rem;font-weight:700;margin:1.2rem 0 .4rem;">Growing regions at a glance</h3>
+<table style="width:100%;border-collapse:collapse;font-size:.82rem;">
+<thead><tr><th style="text-align:left;padding:6px 8px;border-bottom:2px solid #e2e8f0;">Region</th><th style="text-align:left;padding:6px 8px;border-bottom:2px solid #e2e8f0;">Annual rainfall</th><th style="text-align:left;padding:6px 8px;border-bottom:2px solid #e2e8f0;">Major crops</th></tr></thead>
+<tbody><tr><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">Central Highlands (Shewa, Gojjam, Wollo)</td><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">1200 mm</td><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">teff, wheat, barley, chickpea</td></tr>
+<tr><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">Western Highlands (Wollega, Illubabor, Jimma, Kaffa)</td><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">1800 mm</td><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">coffee arabica, maize, teff, common bean</td></tr>
+<tr><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">Southern Highlands (Sidama, Gedeo, Gurage, Hadiya)</td><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">1400 mm</td><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">enset, coffee arabica, teff, maize</td></tr>
+<tr><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">Rift Valley (Oromia lowlands, SNNPR)</td><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">700 mm</td><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">maize, sorghum, common bean, teff</td></tr>
+<tr><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">North-East (Tigray, North Wollo, Afar)</td><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">500 mm</td><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">teff, sorghum, barley, wheat</td></tr>
+<tr><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">Eastern Lowlands (Somali, Harari, Dire Dawa)</td><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">300 mm</td><td style="padding:6px 8px;border-bottom:1px solid #eef2f7;">sorghum, maize, sesame</td></tr></tbody>
+</table>
+<p style="font-size:.78rem;color:#64748b;">Country context from the AfroTools agriculture dataset — planning reference, not agronomic advice. Confirm with local extension services.</p>
+</section>
+<afro-related-tools data-ssr="1" category="agriculture" current="irrigation-ethiopia">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/agriculture/farm-profit/" data-related-tool data-id="farm-profit-calculator" data-name="Farm Profit/Loss Calculator" data-category="agriculture" data-icon="FP" data-desc="Complete farming profitability analysis — seeds, fertilizer, labor, transport, post-harvest losses. ROI, break-even yiel">Farm Profit/Loss Calculator</a></li><li><a href="/agriculture/cassava-processing/" data-related-tool data-id="cassava-processing-calculator" data-name="Cassava Processing Profit Calculator" data-category="agriculture" data-icon="CP" data-desc="Calculate profits from processing cassava into garri, fufu flour, HQCF, chips, or starch. Compare all pathways with loca">Cassava Processing Profit Calculator</a></li><li><a href="/agriculture/crop-yield/" data-related-tool data-id="crop-yield-estimator" data-name="Crop Yield Estimator" data-category="agriculture" data-icon="CY" data-desc="Estimate crop yields across Africa with region-specific data. 40+ crops, 54 countries, FAOSTAT-backed.">Crop Yield Estimator</a></li><li><a href="/agriculture/farm-budget/" data-related-tool data-id="farm-budget" data-name="Smallholder Farm Budget Planner" data-category="agriculture" data-icon="SF" data-desc="Plan your seasonal farming budget with cost breakdown and cash flow timeline. Know exactly how much you need before plan">Smallholder Farm Budget Planner</a></li><li><a href="/agriculture/fish-farming/" data-related-tool data-id="fish-farming-roi" data-name="Fish Farming ROI Calculator" data-category="agriculture" data-icon="FF" data-desc="Calculate aquaculture profitability for catfish, tilapia and trout. Full ROI with local feed prices, fingerling costs, p">Fish Farming ROI Calculator</a></li><li><a href="/agriculture/greenhouse/" data-related-tool data-id="greenhouse-cost-estimator" data-name="Greenhouse Cost Estimator" data-category="agriculture" data-icon="GC" data-desc="Estimate greenhouse setup costs, annual running expenses, ROI and payback period. 5 greenhouse types, 6 crops, local pri">Greenhouse Cost Estimator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<!-- ─── DATA & ENGINE ─── -->
+<script src="/data/agriculture/crop-database.js?v=a4b4280f"></script>
+<script src="/data/agriculture/et-agri-data.js?v=0d68d100"></script>
+<script src="/engines/irrigation-engine.js?v=4591ba97"></script>
+
+<script>
+(function () {
+  'use strict';
+
+  var CD  = window.AfroTools.countryData;
+  var CDB = window.AfroTools.cropDatabase;
+  var ENG = window.AfroTools.IrrigationEngine;
+  var MONTHS = ENG.MONTHS;
+
+  /* ── Helpers ── */
+  function $(id) { return document.getElementById(id); }
+  function fmtN(n) {
+    if (typeof n !== 'number' || isNaN(n)) return '0';
+    return n.toLocaleString('en', { maximumFractionDigits: 2 });
+  }
+  function fmtInt(n) {
+    if (typeof n !== 'number' || isNaN(n)) return '0';
+    return n.toLocaleString('en', { maximumFractionDigits: 0 });
+  }
+  function fmtCost(cost) {
+    if (!cost || !cost.hasEstimate) return '\u2014';
+    return cost.currency + fmtInt(cost.total);
+  }
+  function stageLabel(s) {
+    var labels = { germination: 'Germination', vegetative: 'Vegetative', flowering: 'Flowering', maturity: 'Maturity' };
+    return labels[s] || s;
+  }
+
+  /* ── Stats Bar ── */
+  (function () {
+    var s = CD.agriStats;
+    var bar = $('statsBar');
+    var pills = [
+      s.irrigatedPercent + '% irrigated',
+      fmtN(s.arableLandHectares / 1e6) + 'M ha arable land',
+      CD.regions.length + ' agricultural zones',
+      CD.crops.length + ' crops'
+    ];
+    bar.innerHTML = pills.map(function (t) { return '<span class="ir-stat-pill">' + t + '</span>'; }).join('');
+  })();
+
+  /* ── Crop Dropdown ── */
+  (function () {
+    var sel = $('selCrop');
+    CD.crops.forEach(function (c) {
+      var label = c.name;
+      if (c.localNames && c.localNames.length) label += ' (' + c.localNames[0] + ')';
+      var opt = document.createElement('option');
+      opt.value = c.id;
+      opt.textContent = label;
+      sel.appendChild(opt);
+    });
+  })();
+
+  /* ── Region Dropdown ── */
+  (function () {
+    var sel = $('selRegion');
+    CD.regions.forEach(function (r) {
+      var opt = document.createElement('option');
+      opt.value = r.id;
+      opt.textContent = r.name;
+      sel.appendChild(opt);
+    });
+  })();
+
+  /* ── Crop Water Table ── */
+  (function () {
+    var tbody = document.querySelector('#cropWaterTable tbody');
+    CD.crops.forEach(function (c) {
+      var kc = c.cropCoefficients ? Math.max(c.cropCoefficients.germination || 0, c.cropCoefficients.vegetative || 0, c.cropCoefficients.flowering || 0, c.cropCoefficients.maturity || 0) : '\u2014';
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td>' + c.name + '</td><td>' + (c.waterRequirement_mm_season || '\u2014') + '</td><td>' + (c.growingPeriodDays || '\u2014') + ' days</td><td>' + (typeof kc === 'number' ? kc.toFixed(2) : kc) + '</td>';
+      tbody.appendChild(tr);
+    });
+  })();
+
+  /* ── Country Info ── */
+  (function () {
+    var s = CD.agriStats;
+    var tariff = CD.waterTariff || {};
+    var text = 'Agriculture contributes ' + s.gdpSharePercent + "% to Ethiopia's GDP. " +
+      'Only ' + s.irrigatedPercent + '% of ' + fmtN(s.arableLandHectares / 1e6) + ' million hectares of arable land is irrigated. ' +
+      'The rainy season runs ' + MONTHS[(s.rainySeasonMonths[0] || 1) - 1] + ' to ' + MONTHS[(s.rainySeasonMonths[s.rainySeasonMonths.length - 1] || 12) - 1] + '. ' +
+      (tariff.notes || '');
+    $('countryInfo').textContent = text;
+  })();
+
+  /* ── Default farm size ── */
+  $('inpFarm').value = CD.agriStats.avgFarmSizeHa || 1;
+
+  /* ═══════════════════════════════════════════
+   * CALCULATE
+   * ═══════════════════════════════════════════ */
+  window.calculate = function () {
+    var inputs = {
+      cropId:           $('selCrop').value,
+      regionId:         $('selRegion').value,
+      farmSizeHa:       parseFloat($('inpFarm').value) || 1,
+      growthStage:      $('selStage').value,
+      month:            parseInt($('selMonth').value, 10),
+      irrigationMethod: $('selMethod').value
+    };
+
+    var r = ENG.calculate(inputs, CD, CDB);
+    if (r.error) { alert(r.message); return; }
+
+    var panel = $('resultsPanel');
+    panel.classList.add('visible');
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    if (r.mode === 'single') {
+      renderSingle(r);
+    } else {
+      renderSeason(r);
+    }
+
+    renderMethodComparison(r.methodComparison);
+  };
+
+  /* ── Render Single Month ── */
+  function renderSingle(r) {
+    $('singleResults').style.display = 'block';
+    $('seasonResults').style.display = 'none';
+
+    $('rDailyWater').textContent = r.gir + ' mm/day';
+    $('rEtc').textContent = r.etc + ' mm/day';
+    $('rEffRain').textContent = r.dailyEffectiveRainfall + ' mm/day';
+    $('rNIR').textContent = r.nir + ' mm/day';
+    $('rGIR').textContent = r.gir + ' mm/day';
+
+    // Schedule
+    $('sScheduleText').innerHTML =
+      '<strong>Irrigation Schedule:</strong> Every ' + r.irrigationInterval.typical + ' days, apply <strong>' + fmtN(r.perEvent_m3) + ' m&sup3;</strong> per irrigation event (' + r.methodLabel + ').';
+
+    // Efficiency
+    $('sEfficiencyText').innerHTML =
+      '<strong>Method Efficiency:</strong> ' + r.methodLabel + ' is ' + r.efficiencyPercent + '% efficient. Of every ' + fmtN(r.dailyVolume_m3) + ' m&sup3; applied, <strong>' + fmtN(r.waterLost_m3) + ' m&sup3;</strong> is lost to evaporation/runoff per month.';
+
+    // Volume
+    $('rDailyM3').textContent = fmtN(r.dailyVolume_m3) + ' m\u00B3';
+    $('rPerEvent').textContent = fmtN(r.perEvent_m3) + ' m\u00B3';
+    $('rMonthM3').textContent = fmtInt(r.monthVolume_m3) + ' m\u00B3';
+    $('rMonthCost').textContent = fmtCost(r.costEstimate);
+  }
+
+  /* ── Render Full Season ── */
+  function renderSeason(r) {
+    $('singleResults').style.display = 'none';
+    $('seasonResults').style.display = 'block';
+
+    // Summary
+    $('rSeasonTotal').textContent = fmtInt(r.totalWater_m3) + ' m\u00B3';
+    $('rSeasonETc').textContent = fmtInt(r.totalETc_mm) + ' mm';
+    $('rSeasonRain').textContent = fmtInt(r.totalRainfallContrib_m3) + ' m\u00B3';
+    $('rSeasonIrrig').textContent = fmtInt(r.totalNIR_m3) + ' m\u00B3';
+    $('rSeasonCost').textContent = fmtCost(r.costEstimate);
+
+    // Season table
+    var tbody = $('seasonTableBody');
+    tbody.innerHTML = '';
+    var md = r.monthlyData;
+    for (var i = 0; i < md.length; i++) {
+      var m = md[i];
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td>' + m.monthName + '</td>' +
+        '<td>' + stageLabel(m.stage) + '</td>' +
+        '<td>' + m.eto + '</td>' +
+        '<td>' + m.kc + '</td>' +
+        '<td>' + m.etc + '</td>' +
+        '<td>' + m.rainfall_mm + '</td>' +
+        '<td>' + m.effectiveRainfall_mm + '</td>' +
+        '<td>' + m.nir_mm_month + '</td>' +
+        '<td>' + m.gir_mm_month + '</td>';
+      tbody.appendChild(tr);
+    }
+    // Total row
+    var totalTr = document.createElement('tr');
+    totalTr.innerHTML =
+      '<td>Total</td><td></td><td></td><td></td>' +
+      '<td>' + fmtInt(r.totalETc_mm) + '</td>' +
+      '<td>' + fmtInt(r.totalRainfall_mm) + '</td>' +
+      '<td>' + fmtInt(r.totalEffectiveRainfall_mm) + '</td>' +
+      '<td>' + fmtInt(r.totalNIR_mm) + '</td>' +
+      '<td>' + fmtInt(r.totalGIR_mm) + '</td>';
+    tbody.appendChild(totalTr);
+
+    // Water balance chart
+    renderWaterChart(r.monthlyData);
+
+    // Saving message
+    var sb = $('savingBanner');
+    if (r.savingMessage) {
+      sb.style.display = 'flex';
+      $('savingText').textContent = r.savingMessage;
+    } else {
+      sb.style.display = 'none';
+    }
+  }
+
+  /* ── Water Balance Chart (CSS bars) ── */
+  function renderWaterChart(monthlyData) {
+    var chart = $('waterChart');
+    chart.innerHTML = '';
+
+    // Find max value for scaling
+    var maxVal = 0;
+    for (var i = 0; i < monthlyData.length; i++) {
+      var val = Math.max(monthlyData[i].effectiveRainfall_mm, monthlyData[i].gir_mm_month);
+      if (val > maxVal) maxVal = val;
+    }
+    if (maxVal === 0) maxVal = 1;
+
+    for (var j = 0; j < monthlyData.length; j++) {
+      var m = monthlyData[j];
+      var rainPct = (m.effectiveRainfall_mm / maxVal) * 100;
+      var irrigPct = (m.gir_mm_month / maxVal) * 100;
+
+      var row = document.createElement('div');
+      row.style.cssText = 'display:flex;align-items:center;gap:8px;margin-bottom:6px;';
+
+      row.innerHTML =
+        '<span class="ir-chart-label">' + m.monthName + '</span>' +
+        '<div style="flex:1;">' +
+          '<div class="ir-bar-wrapper"><div class="ir-bar rain" style="width:' + rainPct + '%;"></div><span class="ir-bar-val">' + m.effectiveRainfall_mm + ' mm</span></div>' +
+          '<div class="ir-bar-wrapper" style="margin-top:2px;"><div class="ir-bar irrig" style="width:' + irrigPct + '%;"></div><span class="ir-bar-val">' + m.gir_mm_month + ' mm</span></div>' +
+        '</div>';
+
+      chart.appendChild(row);
+    }
+  }
+
+  /* ── Method Comparison Table ── */
+  function renderMethodComparison(comparison) {
+    var tbody = $('methodTableBody');
+    tbody.innerHTML = '';
+    for (var i = 0; i < comparison.length; i++) {
+      var m = comparison[i];
+      var tr = document.createElement('tr');
+      if (m.isCurrent) tr.className = 'current';
+      var costStr = fmtCost(m.cost);
+      tr.innerHTML =
+        '<td>' + m.label + (m.isCurrent ? ' &#10004;' : '') + '</td>' +
+        '<td>' + m.efficiencyPercent + '%</td>' +
+        '<td>' + fmtInt(m.waterUsed_m3) + '</td>' +
+        '<td>' + fmtInt(m.waterWasted_m3) + '</td>' +
+        '<td>' + costStr + '</td>';
+
+      // Highlight most efficient row
+      if (m.method === 'drip') {
+        tr.querySelectorAll('td')[2].className = 'best';
+      }
+      tbody.appendChild(tr);
+    }
+  }
+
+})();
+</script>
+
+<script src="/assets/js/lib/cross-tool-nav.js?v=27275fef" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
+<script>if(typeof twemoji!=='undefined')twemoji.parse(document.body,{folder:'svg',ext:'.svg'});</script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

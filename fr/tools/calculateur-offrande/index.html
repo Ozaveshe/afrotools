@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Calculateur de dîme et offrande | AfroTools</title>
+<meta name="description" content="Planifiez une dîme, une offrande et des dons de projet avec revenu, fréquence, devise, marge familiale, export texte et notes de vérification 2026.">
+<meta name="robots" content="index, follow">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:title" content="Calculateur de dîme et offrande | AfroTools">
+<meta property="og:description" content="Planifiez une dîme, une offrande et des dons de projet sans envoyer vos montants a un serveur.">
+<meta property="og:url" content="https://afrotools.com/fr/tools/calculateur-offrande/">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/tithe-offering-calculator.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Calculateur de dîme et offrande | AfroTools">
+<meta name="twitter:description" content="Calculez une dîme, une offrande et un plan de don mensuel avec export local.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/tithe-offering-calculator.webp">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+<style>
+:root{--offer-ink:#111827;--offer-muted:#526079;--offer-line:#d9e2ef;--offer-soft:#f7fafc;--offer-blue:#2857c5;--offer-green:#13795b;--offer-amber:#b7791f}
+body{background:#f5f7fb;color:var(--offer-ink)}
+.offering-shell{max-width:1180px;margin:0 auto;padding:32px 20px 64px}
+.offering-hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(320px,.95fr);gap:24px;align-items:stretch;margin-bottom:22px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid #bfd1ff;background:#eff5ff;color:#1d4fb8;border-radius:999px;padding:7px 12px;font-size:.76rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.offering-hero h1{font-size:clamp(2rem,4.8vw,4rem);line-height:.98;letter-spacing:0;margin:18px 0 14px;color:#0f172a}
+.offering-hero p{font-size:1rem;line-height:1.75;color:var(--offer-muted);max-width:700px}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.btn{border:0;border-radius:8px;padding:12px 16px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px}
+.btn-primary{background:var(--offer-blue);color:#fff}
+.btn-secondary{background:#fff;color:#173e91;border:1px solid #c8d5f3}
+.btn-ghost{background:transparent;color:#173e91;border:1px solid #d7e0ee}
+.hero-panel,.tool-card,.source-card{background:#fff;border:1px solid var(--offer-line);border-radius:14px;box-shadow:0 16px 42px rgba(15,23,42,.06)}
+.hero-panel{padding:22px;display:grid;gap:14px}
+.panel-stat{border-bottom:1px solid #edf2f7;padding-bottom:13px}
+.panel-stat:last-child{border-bottom:0;padding-bottom:0}
+.panel-stat strong{display:block;font-size:1.15rem;color:#0f172a;margin-bottom:4px}
+.panel-stat span{display:block;color:var(--offer-muted);font-size:.9rem;line-height:1.55}
+.tool-grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:18px;align-items:start}
+.tool-card{padding:20px}
+.tool-card h2,.source-card h2{font-size:1.15rem;margin:0 0 12px}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.field{display:grid;gap:6px}
+.field label{font-weight:800;font-size:.85rem;color:#1f2937}
+.field input,.field select{width:100%;border:1px solid #cfd9e8;border-radius:8px;padding:11px 12px;background:#fff;color:#111827;font:inherit;min-height:44px}
+.field input:focus,.field select:focus{outline:3px solid rgba(40,87,197,.18);border-color:var(--offer-blue)}
+.help{font-size:.78rem;color:#667085;line-height:1.4}
+.wide{grid-column:1/-1}
+.result-panel{display:grid;gap:12px;margin-top:16px}
+.result-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.metric{border:1px solid #dfe7f2;background:#f8fbff;border-radius:12px;padding:14px}
+.metric span{display:block;font-size:.72rem;font-weight:900;letter-spacing:.07em;text-transform:uppercase;color:#587095;margin-bottom:7px}
+.metric strong{font-size:1.35rem;color:#0f172a}
+.status{border-radius:12px;padding:14px;border:1px solid #dfe7f2;background:#fff}
+.status strong{display:block;margin-bottom:6px}
+.status[data-tone="ok"]{border-color:#b7e2d4;background:#f1fbf7;color:#0f513f}
+.status[data-tone="warn"]{border-color:#f3d49b;background:#fff8e8;color:#784b04}
+.status[data-tone="risk"]{border-color:#f5b7b1;background:#fff4f2;color:#8f2219}
+.breakdown{border:1px solid #dfe7f2;border-radius:12px;overflow:hidden;background:#fff}
+.row{display:flex;justify-content:space-between;gap:14px;padding:12px 14px;border-bottom:1px solid #edf2f7}
+.row:last-child{border-bottom:0}
+.row span:first-child{color:#526079}
+.row strong{white-space:nowrap}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.note-box{border-left:4px solid var(--offer-blue);background:#f7faff;border-radius:10px;padding:12px 14px;color:#334155;line-height:1.65;font-size:.92rem}
+.source-stack{display:grid;gap:14px}
+.source-card{padding:18px}
+.source-card p,.source-card li{color:#53627a;line-height:1.65;font-size:.91rem}
+.source-card ul{padding-left:19px;margin:8px 0 0}
+.badge-list{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.badge{border-radius:999px;background:#edf5ff;color:#1d4fb8;padding:6px 10px;font-size:.75rem;font-weight:900}
+.related-list{display:grid;gap:8px}
+.related-list a{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;border:1px solid #dfe7f2;border-radius:10px;text-decoration:none;color:#173e91;background:#fff}
+.faq{margin-top:22px}
+.faq details{background:#fff;border:1px solid var(--offer-line);border-radius:12px;padding:14px 16px;margin-bottom:10px}
+.faq summary{cursor:pointer;font-weight:900}
+.faq p{color:#526079;line-height:1.65}
+.privacy-line{font-size:.84rem;color:#526079;margin-top:12px}
+@media(max-width:880px){.offering-hero,.tool-grid{grid-template-columns:1fr}.hero-panel{order:-1}.form-grid,.result-grid{grid-template-columns:1fr}.offering-shell{padding:22px 14px 52px}.offering-hero h1{font-size:clamp(2rem,11vw,3rem)}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Calculateur de dîme et offrande AfroTools","url":"https://afrotools.com/fr/tools/calculateur-offrande/","applicationCategory":"FinanceApplication","operatingSystem":"Web","inLanguage":"fr","description":"Calculateur local pour planifier une dîme, une offrande et des dons de projet avec notes de vérification 2026.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/tithe-offering-calculator.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ce calculateur donne-t-il une obligation religieuse ?","acceptedAnswer":{"@type":"Answer","text":"Non. Il aide seulement à planifier un budget de don. Les pratiques de dîme et d'offrande varient selon l'église, la confession, le pays et la situation familiale."}},{"@type":"Question","name":"Les dons sont-ils deductibles des impôts ?","acceptedAnswer":{"@type":"Answer","text":"Ce site ne donne pas de conseil fiscal. La deductibilite depend du pays, du statut de l'organisation et des justificatifs. Vérifiez toujours la source officielle de l'administration fiscale locale."}},{"@type":"Question","name":"Mes montants sont-ils envoyes a AfroTools ?","acceptedAnswer":{"@type":"Answer","text":"Non. Le calcul se fait dans le navigateur. La sauvegarde locale utilise seulement ce navigateur si vous choisissez le bouton de sauvegarde."}}]}</script>
+<link rel="canonical" href="https://afrotools.com/fr/tools/calculateur-offrande/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/tithe-offering-calculator/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-offrande/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/tithe-offering-calculator/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<main class="offering-shell">
+  <section class="offering-hero">
+    <div>
+      <span class="eyebrow">Planification locale 2026</span>
+      <h1>Calculateur de dîme et offrande</h1>
+      <p>Préparez un plan de don mensuel sans transformer une conviction personnelle en promesse automatique. Entrez votre revenu, votre fréquence, une offrande libre, un don de projet et vos charges essentielles pour voir la marge restante avant de vous engager.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#calculateur">Commencer le calcul</a>
+        <button class="btn btn-secondary" type="button" id="loadSample">Charger un exemple</button>
+      </div>
+      <p class="privacy-line">Local-first: les montants saisis restent dans ce navigateur. Aucune donnée personnelle n'est placee dans l'URL.</p>
+    </div>
+    <aside class="hero-panel" aria-label="Ce que calcule l'outil">
+      <div class="panel-stat"><strong>Dîme, offrande et projet</strong><span>Separateur clair entre pourcentage de dîme, offrande fixe et don de construction, mission ou aide sociale.</span></div>
+      <div class="panel-stat"><strong>Marge familiale</strong><span>Compare le don mensuel aux charges essentielles entrées afin d'eviter un engagement impossible.</span></div>
+      <div class="panel-stat"><strong>Export partageable</strong><span>Copiez ou téléchargez un résumé texte pour discussion familiale, suivi personnel ou conseil pastoral.</span></div>
+    </aside>
+  </section>
+
+  <section class="tool-grid" id="calculateur">
+    <div class="tool-card">
+      <h2>Vos données</h2>
+      <form id="offeringForm" class="form-grid">
+        <div class="field">
+          <label for="currency">Devise</label>
+          <select id="currency">
+            <option value="XOF">XOF</option>
+            <option value="NGN" selected>NGN</option>
+            <option value="KES">KES</option>
+            <option value="GHS">GHS</option>
+            <option value="ZAR">ZAR</option>
+            <option value="MAD">MAD</option>
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="frequency">Fréquence du revenu</label>
+          <select id="frequency">
+            <option value="weekly">Hebdomadaire</option>
+            <option value="mensuel" selected>Mensuelle</option>
+            <option value="annuel">Annuelle</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="income">Revenu de base</label>
+          <input id="income" type="number" min="0" step="any" value="500000" inputmode="decimal">
+          <span class="help">Salaire, revenu d'activité ou revenu familial selon votre choix.</span>
+        </div>
+        <div class="field">
+          <label for="basis">Base de calcul</label>
+          <select id="basis">
+            <option value="net" selected>Net reçu</option>
+            <option value="gross">Brut avant déductions</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="tithePct">Pourcentage de dîme</label>
+          <input id="tithePct" type="number" min="0" max="100" step="0.1" value="10" inputmode="decimal">
+        </div>
+        <div class="field">
+          <label for="offeringAmount">Offrande libre par période</label>
+          <input id="offeringAmount" type="number" min="0" step="any" value="10000" inputmode="decimal">
+        </div>
+        <div class="field">
+          <label for="projectAmount">Don de projet total</label>
+          <input id="projectAmount" type="number" min="0" step="any" value="60000" inputmode="decimal">
+          <span class="help">Construction, mission, entraide, fond social ou engagement special.</span>
+        </div>
+        <div class="field">
+          <label for="projectMonths">Mois pour le projet</label>
+          <input id="projectMonths" type="number" min="1" max="60" step="1" value="6" inputmode="numeric">
+        </div>
+        <div class="field">
+          <label for="essentials">Charges essentielles mensuelles</label>
+          <input id="essentials" type="number" min="0" step="any" value="300000" inputmode="decimal">
+        </div>
+        <div class="field">
+          <label for="bufferPct">Marge de sécurité souhaitee</label>
+          <input id="bufferPct" type="number" min="0" max="100" step="0.5" value="10" inputmode="decimal">
+        </div>
+        <div class="field wide">
+          <label for="note">Note interne</label>
+          <input id="note" type="text" maxlength="120" value="Plan mensuel a revoir en famille avant engagement">
+        </div>
+        <div class="wide actions">
+          <button class="btn btn-primary" type="submit">Calculer le plan</button>
+          <button class="btn btn-secondary" type="button" id="copySummary">Copier</button>
+          <button class="btn btn-ghost" type="button" id="downloadSummary">Télécharger TXT</button>
+          <button class="btn btn-ghost" type="button" id="saveLocal">Sauvegarder localement</button>
+        </div>
+      </form>
+
+      <div class="result-panel" id="resultPanel" aria-live="polite">
+        <div class="note-box">Entrez vos montants puis calculez. Le résultat montrera le don mensuel, le total annuel, la part du revenu et la marge restante après charges essentielles.</div>
+      </div>
+    </div>
+
+    <aside class="source-stack">
+      <section class="source-card" data-tool-verification-panel="calculateur-offrande-fr">
+        <h2>Sources et vérification</h2>
+        <p><strong>Dernière vérification: 2026.</strong> Cet outil est un calculateur de planification, pas une regle religieuse, un conseil fiscal ou une garantie de benediction.</p>
+        <ul>
+          <li><strong>Référence biblique:</strong> 2 Corinthiens 9:7 et Malachie 3:10 sont cites comme textes de référence souvent utilises dans les églises chretiennes.</li>
+          <li><strong>Source officielle fiscale:</strong> pour toute déduction, vérifiez l'administration fiscale de votre pays et le statut legal de l'organisation bénéficiaire.</li>
+          <li><strong>Méthode:</strong> revenu converti en montant mensuel, pourcentage applique, offrandes fixes normalisees, don de projet reparti sur les mois choisis.</li>
+        </ul>
+        <div class="badge-list">
+          <span class="badge">Calcul local</span>
+          <span class="badge">Export texte</span>
+          <span class="badge">Avertissement clair</span>
+        </div>
+      </section>
+
+      <section class="source-card">
+        <h2>Liens utiles</h2>
+        <div class="related-list">
+          <a href="/fr/tools/calculateur-dime/">Calculateur de dîme <span>Ouvrir</span></a>
+          <a href="/fr/tools/tithe-offering-calculator/">Version anglaise complete <span>Ouvrir</span></a>
+          <a href="/fr/tools/budget-planner/">Budget personnel <span>Ouvrir</span></a>
+          <a href="/business-enquiry/">Widget pour église ou ONG <span>Demander</span></a>
+        </div>
+      </section>
+    </aside>
+  </section>
+
+  <section class="faq" aria-labelledby="faq-title">
+    <h2 id="faq-title">Questions fréquentes</h2>
+    <details open>
+      <summary>Dois-je calculer sur le brut ou le net ?</summary>
+      <p>C'est une décision personnelle ou communautaire. Beaucoup de personnes utilisent le net reçu pour proteger le budget familial; d'autres utilisent le brut par conviction. L'outil montre la base choisie pour que le résumé reste clair.</p>
+    </details>
+    <details>
+      <summary>Une offrande est-elle la même chose qu'une dîme ?</summary>
+      <p>Dans beaucoup d'églises, la dîme designe un pourcentage régulier, souvent 10%, tandis que l'offrande est un don libre. Les pratiques varient selon l'église, la confession et le pays.</p>
+    </details>
+    <details>
+      <summary>Ce calculateur peut-il remplacer un conseil pastoral ou fiscal ?</summary>
+      <p>Non. Il aide à poser les chiffres. Pour une question doctrinale, demandez conseil a votre responsable religieux. Pour les impôts, utilisez la source officielle de votre administration fiscale.</p>
+    </details>
+  </section>
+
+  <afro-business-cta
+    tool-name="Calculateur de dime et offrande"
+    save-note="Les eglises, ONG et medias peuvent demander un widget de don ou de budget adapte a leur audience."></afro-business-cta>
+</main>
+<afro-footer></afro-footer>
+<script>
+(function(){
+  'use strict';
+  var STORAGE_KEY = 'afrotools:fr:calculateur-offrande:last';
+  var lastSummary = '';
+  var form = document.getElementById('offeringForm');
+  var panel = document.getElementById('resultPanel');
+
+  function number(id){
+    var value = parseFloat(document.getElementById(id).value);
+    return Number.isFinite(value) ? value : 0;
+  }
+
+  function monthlyFactor(){
+    var frequency = document.getElementById('frequency').value;
+    if (frequency === 'weekly') return 52 / 12;
+    if (frequency === 'annual') return 1 / 12;
+    return 1;
+  }
+
+  function format(amount){
+    var currency = document.getElementById('currency').value;
+    return currency + ' ' + Math.round(amount).toLocaleString('fr-FR');
+  }
+
+  function calculate(){
+    var factor = monthlyFactor();
+    var incomeMonthly = number('income') * factor;
+    var tithePct = number('tithePct');
+    var offeringMonthly = number('offeringAmount') * factor;
+    var projectMonths = Math.max(1, Math.round(number('projectMonths') || 1));
+    var projectMonthly = number('projectAmount') / projectMonths;
+    var essentials = number('essentials');
+    var bufferPct = number('bufferPct');
+    var titheMonthly = incomeMonthly * tithePct / 100;
+    var givingMonthly = titheMonthly + offeringMonthly + projectMonthly;
+    var givingAnnual = givingMonthly * 12;
+    var margin = incomeMonthly - essentials - givingMonthly;
+    var bufferNeed = incomeMonthly * bufferPct / 100;
+    var givingShare = incomeMonthly > 0 ? givingMonthly / incomeMonthly * 100 : 0;
+    var tone = 'ok';
+    var status = 'Plan soutenable avec les donnees entrees';
+    if (margin < 0) {
+      tone = 'risk';
+      status = 'Plan a revoir: la marge devient negative';
+    } else if (margin < bufferNeed || givingShare > 20) {
+      tone = 'warn';
+      status = 'Plan prudent: gardez une marge plus forte avant engagement';
+    }
+    var basis = document.getElementById('basis').value === 'gross' ? 'brut avant deductions' : 'net recu';
+    var note = document.getElementById('note').value.trim();
+
+    lastSummary = [
+      'Calculateur de dime et offrande - AfroTools',
+      'Verification: 2026 | Usage: planification personnelle',
+      'Base: ' + basis + ' | Revenu mensuel normalise: ' + format(incomeMonthly),
+      'Dime: ' + tithePct.toFixed(1).replace('.0','') + '% = ' + format(titheMonthly) + ' par mois',
+      'Offrande: ' + format(offeringMonthly) + ' par mois',
+      'Projet: ' + format(projectMonthly) + ' par mois pendant ' + projectMonths + ' mois',
+      'Total don mensuel: ' + format(givingMonthly) + ' | Total annuel: ' + format(givingAnnual),
+      'Part du revenu: ' + givingShare.toFixed(1) + '% | Marge apres charges: ' + format(margin),
+      'Note: ' + (note || 'Aucune'),
+      'Avertissement: planning uniquement; verifiez conseil pastoral, politique de votre eglise et source fiscale officielle.'
+    ].join('\n');
+
+    panel.innerHTML =
+      '<div class="result-grid">' +
+        metric('Dime mensuelle', format(titheMonthly)) +
+        metric('Total don mensuel', format(givingMonthly)) +
+        metric('Total annuel', format(givingAnnual)) +
+        metric('Marge restante', format(margin)) +
+      '</div>' +
+      '<div class="status" data-tone="' + tone + '"><strong>' + status + '</strong><span>Le plan represente ' + givingShare.toFixed(1) + '% du revenu mensuel normalise. Marge de securite souhaitee: ' + format(bufferNeed) + '.</span></div>' +
+      '<div class="breakdown">' +
+        row('Base de revenu', basis + ' - ' + format(incomeMonthly)) +
+        row('Dime', tithePct.toFixed(1).replace('.0','') + '% - ' + format(titheMonthly)) +
+        row('Offrande libre', format(offeringMonthly)) +
+        row('Don de projet reparti', format(projectMonthly) + ' x ' + projectMonths + ' mois') +
+        row('Charges essentielles', format(essentials)) +
+      '</div>' +
+      '<div class="note-box"><strong>Prochaine etape:</strong> ' + nextStep(tone) + '</div>';
+    return {
+      incomeMonthly: incomeMonthly,
+      givingMonthly: givingMonthly,
+      givingAnnual: givingAnnual,
+      margin: margin,
+      tone: tone
+    };
+  }
+
+  function metric(label,value){
+    return '<div class="metric"><span>' + label + '</span><strong>' + value + '</strong></div>';
+  }
+
+  function row(label,value){
+    return '<div class="row"><span>' + label + '</span><strong>' + value + '</strong></div>';
+  }
+
+  function nextStep(tone){
+    if (tone === 'risk') return 'reduisez le don de projet, allongez la duree ou revoyez le plan avec votre foyer avant de promettre un montant.';
+    if (tone === 'warn') return 'gardez une marge, confirmez les charges du mois et separez dime, offrande et don de projet dans votre suivi.';
+    return 'copiez le resume, gardez une trace de paiement et revoyez le plan quand votre revenu ou vos charges changent.';
+  }
+
+  function copyText(text, button){
+    if (!text) calculate();
+    var value = text || lastSummary;
+    function done(){
+      if (!button) return;
+      var old = button.textContent;
+      button.textContent = 'Copie';
+      setTimeout(function(){ button.textContent = old; }, 1200);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(value).then(done).catch(function(){ fallbackCopy(value, done); });
+    } else {
+      fallbackCopy(value, done);
+    }
+  }
+
+  function fallbackCopy(value, done){
+    var area = document.createElement('textarea');
+    area.value = value;
+    area.setAttribute('readonly','');
+    area.style.position = 'fixed';
+    area.style.left = '-9999px';
+    document.body.appendChild(area);
+    area.select();
+    try { document.execCommand('copy'); done(); } catch (error) {}
+    document.body.removeChild(area);
+  }
+
+  function downloadTxt(){
+    if (!lastSummary) calculate();
+    var blob = new Blob([lastSummary], {type:'text/plain;charset=utf-8'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'plan-dime-offrande-afrotools.txt';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  function saveLocal(){
+    var result = calculate();
+    var payload = {
+      savedAt: new Date().toISOString(),
+      summary: lastSummary,
+      result: result
+    };
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      panel.insertAdjacentHTML('beforeend','<div class="note-box">Plan sauvegarde localement dans ce navigateur.</div>');
+    } catch (error) {
+      panel.insertAdjacentHTML('beforeend','<div class="note-box">Sauvegarde locale indisponible dans ce navigateur.</div>');
+    }
+  }
+
+  form.addEventListener('submit', function(event){
+    event.preventDefault();
+    calculate();
+  });
+  document.getElementById('copySummary').addEventListener('click', function(){ copyText(lastSummary, this); });
+  document.getElementById('downloadSummary').addEventListener('click', downloadTxt);
+  document.getElementById('saveLocal').addEventListener('click', saveLocal);
+  document.getElementById('loadSample').addEventListener('click', function(){
+    document.getElementById('currency').value = 'XOF';
+    document.getElementById('frequency').value = 'monthly';
+    document.getElementById('income').value = '650000';
+    document.getElementById('basis').value = 'net';
+    document.getElementById('tithePct').value = '10';
+    document.getElementById('offeringAmount').value = '15000';
+    document.getElementById('projectAmount').value = '120000';
+    document.getElementById('projectMonths').value = '12';
+    document.getElementById('essentials').value = '420000';
+    document.getElementById('bufferPct').value = '12';
+    document.getElementById('note').value = 'Exemple: plan familial a verifier avant promesse';
+    calculate();
+    document.getElementById('calculateur').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+  calculate();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+{
+  "countryCode": "NG",
+  "countryName": "Nigeria",
+  "slug": "nigeria",
+  "flagLabel": "NG",
+  "currency": "NGN",
+  "effectiveFrom": "2025-02-10",
+  "effectiveTo": null,
+  "status": "estimate-pack",
+  "confidence": "estimate",
+  "valuationMethod": "CIF with configurable vehicle duty and levy pack; user FOB, CIF, purchase price, and valuation seeds are supported.",
+  "ageRules": {
+    "basis": "manufactureYear",
+    "maxYears": 12,
+    "message": "Nigeria prohibits used passenger vehicle imports above 12 years. Treat an older vehicle as compliance-ineligible until a licensed clearing agent confirms otherwise."
+  },
+  "steeringRules": {
+    "required": null,
+    "message": "No steering-side gate is modelled in this pack."
+  },
+  "inspectionRules": {
+    "required": true,
+    "label": "Customs and standards inspection",
+    "message": "Budget for customs examination, terminal checks, and local compliance processing."
+  },
+  "customsBasisRules": {
+    "basis": "CIF",
+    "adminChargeBase": "FOB",
+    "insuranceRate": 0.012,
+    "freightFallbackUsd": 1500,
+    "valuationPackRequired": false
+  },
+  "ports": [
+    { "code": "NGAPP", "label": "Apapa Port, Lagos", "city": "Lagos", "terminalHandlingUsd": 260, "shippingLineChargesUsd": 180, "freeStorageDays": 5, "dailyStorageUsd": 35, "dailyDemurrageUsd": 55 },
+    { "code": "NGTCN", "label": "Tin Can Island, Lagos", "city": "Lagos", "terminalHandlingUsd": 240, "shippingLineChargesUsd": 170, "freeStorageDays": 5, "dailyStorageUsd": 32, "dailyDemurrageUsd": 52 }
+  ],
+  "cities": [
+    { "id": "lagos", "label": "Lagos", "inlandUsd": 90 },
+    { "id": "abuja", "label": "Abuja", "inlandUsd": 420 },
+    { "id": "port-harcourt", "label": "Port Harcourt", "inlandUsd": 520 },
+    { "id": "kano", "label": "Kano", "inlandUsd": 760 }
+  ],
+  "practicalCostPresets": {
+    "terminalHandlingUsd": 260,
+    "shippingLineChargesUsd": 180,
+    "inspectionUsd": 120,
+    "clearingAgentUsd": 420,
+    "diyClearingUsd": 180,
+    "registrationUsd": 280,
+    "tradePlateUsd": 90,
+    "bufferRate": 0.08
+  },
+  "taxComponents": [
+    { "id": "ng-import-duty", "label": "Passenger vehicle import duty", "type": "percentage", "base": "customsValue", "rateOrFormula": 0.35, "displayOrder": 10, "official": true, "group": "officialTaxes", "notes": "Seeded as configurable car-duty pack, not a permanent hardcoded assumption." },
+    { "id": "ng-vehicle-levy", "label": "Configurable vehicle levy", "type": "percentage", "base": "customsValue", "rateOrFormula": 0.35, "displayOrder": 20, "official": true, "group": "officialTaxes", "notes": "Keep this component editable because vehicle levy treatment can change by policy pack." },
+    { "id": "ng-admin-charge", "label": "Administrative charge on FOB", "type": "percentage", "base": "FOB", "rateOrFormula": 0.01, "displayOrder": 30, "official": true, "group": "officialFees" },
+    { "id": "ng-fob-implementation-2025", "label": "Configurable 4% FOB implementation component", "type": "percentage", "base": "FOB", "rateOrFormula": 0.04, "enabled": false, "displayOrder": 31, "official": true, "group": "officialFees", "notes": "Disabled by default so the applicable Nigerian rate pack can be published without a code change." },
+    { "id": "ng-port-surcharge", "label": "Port and documentation estimate", "type": "fixed", "amountUsd": 90, "displayOrder": 40, "official": false, "group": "officialFees" }
+  ],
+  "registrationComponents": [
+    { "id": "ng-registration-plates", "label": "Registration, plate, and roadworthiness estimate", "type": "fixed", "amountUsd": 280, "displayOrder": 10, "official": false, "group": "registration" }
+  ],
+  "optionalComponents": [
+    { "id": "ng-extra-agent-buffer", "label": "Extra clearing buffer", "type": "percentage", "base": "customsValue", "rateOrFormula": 0.03, "official": false }
+  ],
+  "documents": [
+    "Commercial invoice",
+    "Bill of lading",
+    "Form M / PAAR documents where applicable",
+    "TIN / importer identification",
+    "Insurance certificate",
+    "Terminal delivery order",
+    "Vehicle title or export certificate"
+  ],
+  "sourceNotes": [
+    { "name": "Nigeria Customs Service - vehicle imports", "url": "https://customs.gov.ng/?page_id=3161", "lastVerified": "2026-04-10", "confidence": "official", "note": "Used for customs-import workflow metadata." },
+    { "name": "Nigeria Customs Service - import guidelines", "url": "https://customs.gov.ng/?page_id=3075", "lastVerified": "2026-04-10", "confidence": "official", "note": "Used for documentation and compliance framing." },
+    { "name": "Nigeria Customs Service FOB implementation press release", "url": "https://customs.gov.ng/wp-content/uploads/2025/02/PRESS-RELEASE-FOB-IMPLEMENTATION-PDF.pdf", "lastVerified": "2026-04-10", "confidence": "official", "note": "Tracks 2025 FOB charge discussions so the rule pack remains versionable." }
+  ],
+  "disclaimers": [
+    "This is an estimate, not an official customs assessment.",
+    "Vehicle duty and levy components are intentionally stored in editable rule data because Nigeria vehicle policy packs can change.",
+    "Older-than-12-year passenger vehicles should be treated as compliance-ineligible until confirmed by a licensed agent."
+  ],
+  "faqs": [
+    { "question": "Can I calculate Nigeria if I only know the car price?", "answer": "Yes. The calculator treats purchase price as a FOB-style estimate, adds freight and marine insurance, then calculates on CIF. You can switch to FOB or CIF mode when you have cleaner shipping documents." },
+    { "question": "Why is there a Nigeria rule-pack warning?", "answer": "Nigeria has had policy movement around FOB-based charges and vehicle levies. The calculator keeps those layers editable and source-dated so a new pack can be published without changing code." }
+  ],
+  "copy": {
+    "intro": "Estimate the real cost to land a used or new vehicle in Nigeria through Lagos ports, including customs taxes, practical clearing costs, registration, storage risk, and inland movement.",
+    "hiddenCosts": "Users often miss terminal delivery orders, scanning or examination fees, local registration, demurrage after free days, and FX spread between the quote date and clearing date."
+  }
+}

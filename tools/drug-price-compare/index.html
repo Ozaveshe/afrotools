@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drug & Medicine Price Comparator Africa — Generic vs Brand | AfroTools</title>
+<meta name="description" content="Compare medicine prices across Nigeria, Kenya, South Africa and Ghana. See generic vs brand-name drug savings. Check NHIS/NHIF essential medicines list. Free African drug price tool.">
+<meta name="content-language" content="en">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Drug Price Comparator Africa — Generic vs Brand | AfroTools">
+<meta property="og:description" content="Compare medicine prices across African countries. Generic vs brand-name savings calculator. NHIS/NHIF essential medicines list checker.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/drug-price-compare.webp">
+<meta property="og:url" content="https://afrotools.com/tools/drug-price-compare/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Drug &amp; Medicine Price Comparator Africa — Generic vs Brand | AfroTools">
+<meta name="twitter:description" content="Compare medicine prices across Nigeria, Kenya, South Africa and Ghana. See generic vs brand-name drug savings. Check NHIS/NHIF essential medicines list. Free African drug price tool.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;margin:0;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+.tool-hero{background:linear-gradient(135deg,#7f1d1d 0%,#dc2626 50%,#b91c1c 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3)}
+.breadcrumb span{color:#fca5a5}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#fca5a5;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.7);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(252,165,165,.2);color:#fca5a5;border:1px solid rgba(252,165,165,.3)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0f172a}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.85rem;background:#f8fafc;font-family:inherit;box-sizing:border-box;color:#0f172a}
+select:focus{outline:none;border-color:#dc2626;box-shadow:0 0 0 3px rgba(220,38,38,.1)}
+.field{margin-bottom:14px}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.85rem;font-weight:700;cursor:pointer;margin-top:18px;font-family:inherit}
+.btn-primary{background:linear-gradient(135deg,#7f1d1d,#dc2626);color:#fff;transition:transform .15s,box-shadow .15s}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(220,38,38,.35)}
+.price-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:.82rem}
+.price-table th{background:#f8fafc;border-bottom:2px solid #e2e8f0;padding:10px 12px;text-align:left;font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#64748b}
+.price-table td{padding:10px 12px;border-bottom:1px solid #f1f5f9;color:#0f172a}
+.price-table tr:last-child td{border-bottom:none}
+.price-table tr:hover td{background:#fafbfc}
+.savings-badge{display:inline-flex;align-items:center;padding:3px 8px;border-radius:12px;font-size:.7rem;font-weight:700;background:#dcfce7;color:#16a34a;border:1px solid #bbf7d0}
+.free-badge{display:inline-flex;align-items:center;padding:3px 8px;border-radius:12px;font-size:.7rem;font-weight:700;background:#fef9c3;color:#a16207;border:1px solid #fde047}
+.nhis-badge{display:inline-flex;align-items:center;padding:3px 8px;border-radius:12px;font-size:.7rem;font-weight:700;background:#dbeafe;color:#1d4ed8;border:1px solid #bfdbfe}
+.res-hero{background:linear-gradient(135deg,#fef2f2,#fee2e2);border:1px solid #fca5a5;border-radius:10px;padding:20px;text-align:center;margin-bottom:14px}
+.res-hero .big{font-size:2rem;font-weight:800;color:#16a34a}
+.res-hero .lbl{font-size:.75rem;color:#7f1d1d;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-top:4px}
+.info-card{background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#7f1d1d;margin:0 0 8px}
+.info-card p,.info-card li{font-size:.78rem;color:#991b1b;line-height:1.6;margin:0}
+.info-card ul{padding-left:16px;margin:6px 0}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:#0f172a;list-style:none}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7;margin-bottom:0}
+.disclaimer{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:14px;font-size:.74rem;color:#78350f;line-height:1.6;margin-top:14px}
+.section-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#dc2626;margin:14px 0 8px}
+.cat-filter{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+.cat-btn{padding:5px 12px;border:1.5px solid #e2e8f0;border-radius:20px;font-size:.72rem;font-weight:700;cursor:pointer;background:#fff;color:#64748b;font-family:inherit;transition:all .15s}
+.cat-btn.active{background:#dc2626;color:#fff;border-color:#dc2626}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.2rem;font-weight:800;margin-bottom:12px;color:#0f172a}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.price-table{font-size:.75rem}}
+</style>
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/drug-price-compare.webp">
+<link rel="stylesheet" href="/assets/css/health-enhancements.css?v=e7e3e3a6">
+<meta name="tool-id" content="drug-price-compare">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Drug & Medicine Price Comparator Africa — Generic vs Brand",
+  "description": "Compare medicine prices across Nigeria, Kenya, South Africa and Ghana. See generic vs brand-name drug savings. Check NHIS/NHIF essential medicines list. Free African drug price tool.",
+  "url": "https://afrotools.com/tools/drug-price-compare/",
+  "inLanguage": "en",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/drug-price-compare.webp"
+}
+</script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Are generic medicines as effective as brand-name drugs?","acceptedAnswer":{"@type":"Answer","text":"Yes. Generic medicines contain the same active ingredient, in the same dose and form, as the brand-name original. They must meet the same safety and quality standards set by drug regulatory authorities (NAFDAC in Nigeria, KEBS/PPB in Kenya, SAHPRA in South Africa). Generic medicines cost less because manufacturers don't have to repeat original research — they're making the same product after the patent expires. WHO and all major health organisations support generic substitution."}},{"@type":"Question","name":"What does NHIS/NHIF coverage mean for drug prices?","acceptedAnswer":{"@type":"Answer","text":"Nigeria's National Health Insurance Scheme (NHIS) and Kenya's National Hospital Insurance Fund (NHIF) maintain essential medicines lists. Drugs on these lists are dispensed at reduced or zero cost to enrolled members at accredited facilities. Common medicines like antimalarials, antibiotics, and ARVs are typically covered. However, coverage levels, facility availability, and drug stock-outs vary significantly. Always verify current coverage with your NHIS/NHIF provider."}},{"@type":"Question","name":"Why are ARV (HIV) drugs listed as free?","acceptedAnswer":{"@type":"Answer","text":"Antiretroviral drugs for HIV treatment are provided free of charge at government-designated facilities in most African countries through programmes funded by PEPFAR (US President's Emergency Plan for AIDS Relief), the Global Fund, and national health budgets. This policy has transformed HIV from a near-certain death sentence to a manageable chronic condition. To access free ARVs, register at a government ART (Antiretroviral Treatment) clinic."}},{"@type":"Question","name":"How can I find the cheapest pharmacy near me?","acceptedAnswer":{"@type":"Answer","text":"In Nigeria, check Healthplus, Medplus, and government hospital pharmacies — public hospitals typically have the lowest prices. In Kenya, Haltons, Goodlife, and government dispensaries offer competitive prices. In South Africa, Dis-Chem and Clicks have price matching on generics, and government clinics dispense most medicines free to citizens. Always ask your pharmacist about generic substitution options."}}]}
+</script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Drug & Medicine Price Comparator Africa — Generic vs Brand","item":"https://afrotools.com/tools/drug-price-compare/"}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/drug-price-compare/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/drug-price-compare/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/comparateur-prix-medicaments/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kilinganisha-bei-za-dawa/">
+<link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/kwatanta-farashin-magani/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/drug-price-compare/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="/">Home</a> › <a href="/health/">Health</a> › <span>Drug Price Comparator</span></div>
+    <h1>Drug &amp; Medicine<br><em>Price Comparator</em></h1>
+    <p class="hero-sub">Compare brand vs generic medicine prices across Nigeria, Kenya, South Africa and Ghana. Find out how much you can save by switching to generics.</p>
+    <div class="hero-badges">
+      <span class="badge">Always Free</span>
+      <span class="badge">4 Countries</span>
+      <span class="badge">Generic vs Brand</span>
+      <span class="badge">NHIS / NHIF Listed</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <div class="card">
+        <div class="card-head"><div class="card-title">Find Medicine Prices</div></div>
+        <div class="card-body">
+          <div class="section-title">Filter by Category</div>
+          <div class="cat-filter" id="cat-filter"></div>
+          <div class="field">
+            <label for="drug-select">Select Medicine</label>
+            <select id="drug-select"></select>
+          </div>
+          <div class="field">
+            <label>Country</label>
+            <select id="country" aria-label="Country">
+              <option value="ALL">All Countries (Compare)</option>
+              <option value="NG">Nigeria (NGN)</option>
+              <option value="KE">Kenya (KES)</option>
+              <option value="ZA">South Africa (ZAR)</option>
+              <option value="GH">Ghana (GHS)</option>
+            </select>
+          </div>
+          <button type="button" class="btn btn-primary" onclick="lookupDrug()">Get Prices</button>
+        </div>
+      </div>
+
+      <div id="results" style="display:none;margin-top:18px"></div>
+
+      <!-- All Drugs Table -->
+      <div class="card" style="margin-top:18px">
+        <div class="card-head"><div class="card-title">All Medicines — Nigeria Reference Prices</div></div>
+        <div class="card-body">
+          <p style="font-size:.78rem;color:#64748b;margin-bottom:14px">Reference prices from Lagos-area pharmacies. Prices vary by location and supplier.</p>
+          <table class="price-table" id="all-drugs-table">
+            <thead><tr><th>Medicine</th><th>Category</th><th>Brand (NGN)</th><th>Generic (NGN)</th><th>Savings</th></tr></thead>
+            <tbody id="all-drugs-tbody"></tbody>
+          </table>
+          <div style="margin-top:16px;padding:14px;border-radius:12px;background:#eff6ff;border:1.5px solid #bfdbfe;">
+            <div style="font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#1d4ed8;margin-bottom:8px;">Verified Pharmacy Feed</div>
+            <p style="margin:0 0 10px;font-size:.8rem;color:#1e3a8a;line-height:1.7;">For live city-by-city medicine checks, use the AfroPoints pharmacy-price feed and contribute your own retail observations.</p>
+            <a href="/tools/pharmacy-prices/" style="display:inline-flex;align-items:center;justify-content:center;padding:10px 16px;border-radius:999px;background:#0f62fe;color:#fff;text-decoration:none;font-size:13px;font-weight:700;">Open Pharmacy Prices</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="card" style="margin-top:18px">
+        <div class="card-head"><div class="card-title">Frequently Asked Questions</div></div>
+        <div class="card-body">
+          <details class="faq-item">
+            <summary>Are generic medicines as effective as brand-name drugs?</summary>
+            <p>Yes. Generic medicines contain the same active ingredient, in the same dose and form, as the brand-name original. They must meet the same safety and quality standards set by drug regulatory authorities (NAFDAC in Nigeria, KEBS/PPB in Kenya, SAHPRA in South Africa). Generic medicines cost less because manufacturers don't have to repeat original research — they're making the same product after the patent expires. WHO and all major health organisations support generic substitution.</p>
+          </details>
+          <details class="faq-item">
+            <summary>What does NHIS/NHIF coverage mean for drug prices?</summary>
+            <p>Nigeria's National Health Insurance Scheme (NHIS) and Kenya's National Hospital Insurance Fund (NHIF) maintain essential medicines lists. Drugs on these lists are dispensed at reduced or zero cost to enrolled members at accredited facilities. Common medicines like antimalarials, antibiotics, and ARVs are typically covered. However, coverage levels, facility availability, and drug stock-outs vary significantly. Always verify current coverage with your NHIS/NHIF provider.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Why are ARV (HIV) drugs listed as free?</summary>
+            <p>Antiretroviral drugs for HIV treatment are provided free of charge at government-designated facilities in most African countries through programmes funded by PEPFAR (US President's Emergency Plan for AIDS Relief), the Global Fund, and national health budgets. This policy has transformed HIV from a near-certain death sentence to a manageable chronic condition. To access free ARVs, register at a government ART (Antiretroviral Treatment) clinic.</p>
+          </details>
+          <details class="faq-item">
+            <summary>How can I find the cheapest pharmacy near me?</summary>
+            <p>In Nigeria, check Healthplus, Medplus, and government hospital pharmacies — public hospitals typically have the lowest prices. In Kenya, Haltons, Goodlife, and government dispensaries offer competitive prices. In South Africa, Dis-Chem and Clicks have price matching on generics, and government clinics dispense most medicines free to citizens. Always ask your pharmacist about generic substitution options.</p>
+          </details>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="card-head"><div class="card-title">Generic Savings Guide</div></div>
+        <div class="card-body">
+          <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:14px">
+            <h4 style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#166534;margin:0 0 8px">Generic = Same Drug, Less Cost</h4>
+            <p style="font-size:.78rem;color:#166534;margin:0;line-height:1.6">Generic medicines contain the identical active ingredient as brand-name drugs. They cost 40-80% less because the patent has expired. WHO and all African drug agencies recommend generics.</p>
+          </div>
+          <div class="info-card" style="margin-top:12px">
+            <h4>Avg. Savings by Category</h4>
+            <ul>
+              <li>Antimalarials: 45-55% savings</li>
+              <li>Antibiotics: 55-75% savings</li>
+              <li>Diabetes drugs: 60-70% savings</li>
+              <li>Hypertension: 55-65% savings</li>
+              <li>Pain/fever: 70-80% savings</li>
+            </ul>
+          </div>
+          <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:14px;margin-top:12px">
+            <h4 style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#c2410c;margin:0 0 8px">Free Medicines in Africa</h4>
+            <ul style="font-size:.78rem;color:#9a3412;padding-left:16px;margin:0">
+              <li>ARVs (HIV): Free at gov. centres</li>
+              <li>Malaria (children): Free in most countries</li>
+              <li>TB treatment: Free nationally</li>
+              <li>Vaccines: Free via EPI programme</li>
+            </ul>
+          </div>
+          <div class="disclaimer">
+            ⚠️ <strong>Medical Disclaimer:</strong> Medicine prices shown are approximate reference prices. Actual prices vary by pharmacy, city, and supplier. Do not change medications without consulting your doctor or pharmacist. Always consult a qualified healthcare provider.
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:18px">
+        <div class="card-head"><div class="card-title">Currency Reference</div></div>
+        <div class="card-body">
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:.82rem">
+            <div style="display:flex;justify-content:space-between;padding:8px;background:#f8fafc;border-radius:7px"><span>🇳🇬 NGN</span><span style="color:#64748b">Nigerian Naira</span></div>
+            <div style="display:flex;justify-content:space-between;padding:8px;background:#f8fafc;border-radius:7px"><span>🇰🇪 KES</span><span style="color:#64748b">Kenyan Shilling</span></div>
+            <div style="display:flex;justify-content:space-between;padding:8px;background:#f8fafc;border-radius:7px"><span>🇿🇦 ZAR</span><span style="color:#64748b">South African Rand</span></div>
+            <div style="display:flex;justify-content:space-between;padding:8px;background:#f8fafc;border-radius:7px"><span>🇬🇭 GHS</span><span style="color:#64748b">Ghanaian Cedi</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="seo-section">
+  <h2>Medicine Prices in Africa: The Generic Drug Revolution</h2>
+  <p>Access to affordable medicines remains one of Africa's biggest public health challenges. In Nigeria, an estimated 65% of the population pays for medicines out-of-pocket, making drug costs a major barrier to healthcare access. The switch from brand-name to generic medicines is one of the most impactful steps patients can take to reduce their health expenses.</p>
+  <p>Generic medicines contain the same active pharmaceutical ingredient as branded equivalents but cost 40-80% less. In Nigeria, generic artemether-lumefantrine (the WHO first-line malaria treatment) costs as little as NGN 2,200 compared to NGN 4,500+ for branded Coartem. Over a lifetime of malaria episodes (common in West Africa), this can save hundreds of thousands of naira.</p>
+  <p>Africa's largest drug regulatory bodies — NAFDAC (Nigeria), KEBS and PPB (Kenya), SAHPRA (South Africa), and FDA Ghana — all ensure that approved generic medicines meet the same quality, safety, and efficacy standards as originator products. The common perception that generics are inferior is a myth perpetuated primarily by brand manufacturers.</p>
+  <p>Several life-saving medicines are available free of charge in Africa. Antiretroviral drugs (ARVs) for HIV are provided free at government-designated ART clinics in most countries, funded through PEPFAR and the Global Fund. TB treatment is free nationally. Many countries provide free antimalarials to children under five. Understanding what is free vs. what requires payment can significantly reduce healthcare costs.</p>
+</div>
+
+<!-- HEALTH-DEEP-IMPROVEMENT:START -->
+<section class="health-deep" aria-labelledby="health-deep-title">
+<span class="health-deep-kicker">Deep Review - 27 April 2026</span>
+<h2 id="health-deep-title">Use Drug/Medicine Price Comparator in a safer care workflow</h2>
+<p class="health-deep-lead">Cost tools are most useful when they separate medical urgency from financial planning. They should help compare quotes and coverage without delaying needed care.</p>
+<div class="health-deep-grid">
+<div class="health-deep-block"><h3>Use It To Decide</h3><ul><li>Which care quote, pharmacy price, or coverage option needs verification</li><li>What out-of-pocket cost may remain after insurance or public coverage</li><li>Which documents, invoices, or proof should be saved</li></ul></div>
+<div class="health-deep-block"><h3>Better Workflow</h3><ul><li>Replace defaults with current local quotes before deciding</li><li>Check what is included, excluded, and refundable</li><li>Save facility name, date, currency, and proof source</li></ul></div>
+<div class="health-deep-block warning"><h3>Do Not Ignore</h3><ul><li>Delaying emergency care because a cost estimate is incomplete</li><li>Buying medicines from unverifiable sources</li><li>Choosing treatment abroad without follow-up and complication plans</li></ul></div>
+</div>
+<div class="health-source-row">
+<div><span>Official Context</span><div class="health-source-links"><a href="https://www.who.int/groups/expert-committee-on-selection-and-use-of-essential-medicines/essential-medicines-lists">WHO essential medicines</a><a href="https://wwwnc.cdc.gov/travel/page/medical-tourism">CDC medical tourism</a><a href="https://www.who.int/news-room/fact-sheets/detail/mental-health-strengthening-our-response">WHO mental health response</a></div></div>
+<div><span>Related AfroTools</span><div class="health-source-links internal"><a href="/tools/hospital-cost/">African Hospital Cost Estimator</a><a href="/tools/clinic-costs/">Clinic Costs</a><a href="/tools/pharmacy-prices/">Pharmacy Prices</a><a href="/tools/drug-price-compare/">Drug/Medicine Price Comparator</a></div></div>
+</div>
+</section>
+<!-- HEALTH-DEEP-IMPROVEMENT:END -->
+<!-- HEALTH-COMPLETE-PACKAGE:START -->
+<section class="health-action-kit" data-health-tool-id="drug-price-compare" data-health-tool-name="Drug/Medicine Price Comparator" data-health-href="/tools/drug-price-compare/" data-health-bucket="costs" data-health-journey="costs" data-health-source-name="GoodRx prescription price comparison" data-health-source-url="https://www.goodrx.com/" data-health-competitor="GoodRx" data-health-feature="Drug-price tools need generic substitution and pharmacy verification warnings." aria-labelledby="health-action-title-drug-price-compare">
+<span class="health-action-kicker">Complete package upgrade</span>
+<h2 id="health-action-title-drug-price-compare">Drug/Medicine Price Comparator: save, export, and continue the workflow</h2>
+<p>This app now has its own benchmarked improvement layer, dashboard handoff, email-gated PDF plan, and a route into the Care cost planner workflow.</p>
+<div class="health-action-grid">
+<div class="health-action-card">
+<h3>Competitor feature checked</h3>
+<p><strong>GoodRx</strong>: Drug-price tools need generic substitution and pharmacy verification warnings.</p>
+<p><strong>Implemented here:</strong> Added medicine-price benchmark block plus dashboard/PDF handoff.</p>
+<p><a href="https://www.goodrx.com/" rel="noopener" target="_blank">GoodRx prescription price comparison</a></p>
+</div>
+<div class="health-action-card">
+<h3>Dashboard and PDF actions</h3>
+<ul>
+<li>Save this health plan to the dashboard workspace on this device.</li>
+<li>Unlock a PDF version through the Health email gate for follow-up and visit prep.</li>
+<li>Signed-in sessions attempt account workspace sync when the shared workspace API is available.</li>
+</ul>
+<div class="health-action-buttons">
+<button type="button" class="health-workflow-btn" data-health-action="save" data-health-tool-id="drug-price-compare">Save to dashboard</button>
+<button type="button" class="health-workflow-btn secondary" data-health-action="pdf" data-health-tool-id="drug-price-compare">Get PDF plan</button>
+</div>
+</div>
+</div>
+<div class="health-action-card" style="margin-top:1rem">
+<h3>Continue in Care cost planner</h3>
+<div class="health-action-links">
+<a href="/health/costs/">Open workflow hub</a>
+<a href="/tools/hospital-cost/">African Hospital Cost Estimator</a><a href="/tools/clinic-costs/">Clinic Costs</a><a href="/tools/pharmacy-prices/">Pharmacy Prices</a><a href="/tools/dental-cost/">Dental Procedure Cost Estimator</a>
+</div>
+</div>
+</section>
+<!-- HEALTH-COMPLETE-PACKAGE:END -->
+<afro-related-tools data-ssr="1" category="health" current="drug-price-compare">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/medical-report/" data-related-tool data-id="medical-report" data-name="Medical Report Interpreter" data-category="health" data-icon="MR" data-desc="Upload or paste lab results and get plain-English explanations for CBC, lipid, liver, kidney, thyroid, and diabetes mark">Medical Report Interpreter</a></li><li><a href="/tools/genotype-checker/" data-related-tool data-id="genotype-checker" data-name="Genotype Compatibility Checker" data-category="health" data-icon="GC" data-desc="Full pre-marriage genotype and blood group compatibility check. Sickle cell Punnett square, Rh factor incompatibility, b">Genotype Compatibility Checker</a></li><li><a href="/tools/childbirth-cost/" data-related-tool data-id="childbirth-cost" data-name="Childbirth Cost Calculator" data-category="health" data-icon="CC" data-desc="Compare delivery costs across public hospitals, private clinics, and premium facilities in Nigeria, Kenya, South Africa,">Childbirth Cost Calculator</a></li><li><a href="/tools/blood-group/" data-related-tool data-id="blood-group" data-name="Blood Group Compatibility Checker" data-category="health" data-icon="BG" data-desc="Check blood transfusion compatibility (donor/recipient) and pregnancy Rh incompatibility. Includes African blood group f">Blood Group Compatibility Checker</a></li><li><a href="/tools/african-meal-plan/" data-related-tool data-id="african-meal-plan" data-name="African Meal Plan Generator" data-category="health" data-icon="AM" data-desc="Generate a personalized 7-day meal plan using African foods. Choose region (West/East/Southern/North Africa), health goa">African Meal Plan Generator</a></li><li><a href="/tools/csection-vs-natural/" data-related-tool data-id="csection-vs-natural" data-name="C-Section vs Natural Birth Cost" data-category="health" data-icon="CS" data-desc="Side-by-side cost and recovery comparison between C-section and natural birth across 4 African countries. Includes WHO r">C-Section vs Natural Birth Cost</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+var DRUGS = [
+  { name: "Artemether-Lumefantrine (Coartem)", cat: "Antimalarial",
+    NG: { brand: 4500, generic: 2200, pack: "24 tablets", nhis: true },
+    KE: { brand: 1200, generic: 600, pack: "24 tablets", nhif: true },
+    GH: { brand: 45, generic: 22, pack: "24 tablets", nhis: true },
+    ZA: { brand: 180, generic: 85, pack: "24 tablets" } },
+  { name: "Amoxicillin 500mg", cat: "Antibiotic",
+    NG: { brand: 2500, generic: 800, pack: "21 capsules" },
+    KE: { brand: 350, generic: 120, pack: "21 capsules" },
+    GH: { brand: 25, generic: 8, pack: "21 capsules" },
+    ZA: { brand: 85, generic: 35, pack: "21 capsules" } },
+  { name: "Metformin 500mg", cat: "Diabetes",
+    NG: { brand: 1800, generic: 600, pack: "100 tablets" },
+    KE: { brand: 450, generic: 150, pack: "100 tablets" },
+    ZA: { brand: 120, generic: 45, pack: "100 tablets" } },
+  { name: "Lisinopril 10mg", cat: "Hypertension",
+    NG: { brand: 5000, generic: 1500, pack: "30 tablets" },
+    KE: { brand: 800, generic: 280, pack: "30 tablets" },
+    ZA: { brand: 220, generic: 85, pack: "30 tablets" } },
+  { name: "Amlodipine 5mg", cat: "Hypertension",
+    NG: { brand: 4500, generic: 1200, pack: "30 tablets" },
+    KE: { brand: 700, generic: 250, pack: "30 tablets" },
+    ZA: { brand: 200, generic: 70, pack: "30 tablets" } },
+  { name: "Paracetamol 500mg", cat: "Pain/Fever",
+    NG: { brand: 500, generic: 100, pack: "24 tablets" },
+    KE: { brand: 80, generic: 30, pack: "24 tablets" },
+    GH: { brand: 4, generic: 1.5, pack: "24 tablets" },
+    ZA: { brand: 25, generic: 8, pack: "24 tablets" } },
+  { name: "Ibuprofen 400mg", cat: "Pain/Fever",
+    NG: { brand: 800, generic: 200, pack: "24 tablets" },
+    KE: { brand: 120, generic: 45, pack: "24 tablets" },
+    ZA: { brand: 35, generic: 12, pack: "24 tablets" } },
+  { name: "ORS (Oral Rehydration Salts)", cat: "Diarrhea",
+    NG: { brand: 300, generic: 150, pack: "10 sachets" },
+    KE: { brand: 50, generic: 25, pack: "10 sachets" },
+    GH: { brand: 5, generic: 2, pack: "10 sachets" },
+    ZA: { brand: 35, generic: 15, pack: "10 sachets" } },
+  { name: "Ferrous Sulphate 200mg", cat: "Anemia/Iron",
+    NG: { brand: 1200, generic: 400, pack: "100 tablets", notes: "Essential for pregnancy" },
+    KE: { brand: 200, generic: 80, pack: "100 tablets" },
+    GH: { brand: 12, generic: 5, pack: "100 tablets" } },
+  { name: "Folic Acid 5mg", cat: "Anemia/Iron",
+    NG: { brand: 600, generic: 150, pack: "30 tablets" },
+    KE: { brand: 100, generic: 40, pack: "30 tablets" },
+    GH: { brand: 5, generic: 2, pack: "30 tablets" } },
+  { name: "Ciprofloxacin 500mg", cat: "Antibiotic",
+    NG: { brand: 3500, generic: 1000, pack: "10 tablets" },
+    KE: { brand: 500, generic: 180, pack: "10 tablets" },
+    ZA: { brand: 150, generic: 60, pack: "10 tablets" } },
+  { name: "Metronidazole 400mg", cat: "Antibiotic",
+    NG: { brand: 800, generic: 300, pack: "21 tablets" },
+    KE: { brand: 120, generic: 50, pack: "21 tablets" },
+    ZA: { brand: 45, generic: 18, pack: "21 tablets" } },
+  { name: "ARV (TLD — Tenofovir/Lamivudine/Dolutegravir)", cat: "HIV/AIDS",
+    NG: { brand: 0, generic: 0, pack: "30 tablets", notes: "Free via PEPFAR/govt ART programme", free: true },
+    KE: { brand: 0, generic: 0, pack: "30 tablets", notes: "Free via govt ARV programme", free: true },
+    ZA: { brand: 0, generic: 0, pack: "30 tablets", notes: "Free at public ART clinics (UHC)", free: true },
+    GH: { brand: 0, generic: 0, pack: "30 tablets", notes: "Free via NACP programme", free: true } },
+  { name: "Cotrimoxazole (Septrin) 480mg", cat: "Antibiotic",
+    NG: { brand: 1200, generic: 400, pack: "20 tablets" },
+    KE: { brand: 150, generic: 60, pack: "20 tablets" },
+    ZA: { brand: 60, generic: 22, pack: "20 tablets" } }
+];
+
+var CATS = ["All", "Antimalarial", "Antibiotic", "Diabetes", "Hypertension", "Pain/Fever", "Diarrhea", "Anemia/Iron", "HIV/AIDS"];
+var COUNTRY_LABELS = { NG: "Nigeria (NGN)", KE: "Kenya (KES)", ZA: "S. Africa (ZAR)", GH: "Ghana (GHS)" };
+
+function buildCatFilter() {
+  var html = "";
+  CATS.forEach(function(c, i) {
+    html += '<button type="button" class="cat-btn' + (i===0?" active":"") + '" onclick="filterCat(\'' + c + '\',this)">' + c + '</button>';
+  });
+  document.getElementById("cat-filter").innerHTML = html;
+}
+
+function filterCat(cat, btn) {
+  document.querySelectorAll(".cat-btn").forEach(function(b) { b.classList.remove("active"); });
+  btn.classList.add("active");
+  populateDrugSelect(cat);
+  buildAllDrugsTable(cat);
+}
+
+function populateDrugSelect(cat) {
+  var sel = document.getElementById("drug-select");
+  sel.innerHTML = "";
+  DRUGS.filter(function(d) { return cat === "All" || d.cat === cat; }).forEach(function(d) {
+    sel.innerHTML += '<option value="' + d.name + '">' + d.name + ' (' + d.cat + ')</option>';
+  });
+}
+
+function buildAllDrugsTable(cat) {
+  var filtered = cat === "All" ? DRUGS : DRUGS.filter(function(d) { return d.cat === cat; });
+  var html = "";
+  filtered.forEach(function(d) {
+    var ng = d.NG;
+    if (!ng) return;
+    var brand = ng.brand;
+    var gen = ng.generic;
+    var savings = (ng.free || brand === 0) ? '<span class="free-badge">FREE</span>' : '<span class="savings-badge">Save ' + Math.round((1-gen/brand)*100) + '%</span>';
+    var nhis = ng.nhis ? ' <span class="nhis-badge">NHIS</span>' : '';
+    html += '<tr><td><strong>' + d.name + '</strong>' + nhis + (ng.notes ? '<br><small style="color:#94a3b8">' + ng.notes + '</small>' : '') + '</td>';
+    html += '<td style="color:#64748b">' + d.cat + '</td>';
+    html += '<td>' + (ng.free ? 'Free' : 'NGN ' + brand.toLocaleString()) + '</td>';
+    html += '<td>' + (ng.free ? 'Free' : 'NGN ' + gen.toLocaleString()) + '</td>';
+    html += '<td>' + savings + '</td></tr>';
+  });
+  document.getElementById("all-drugs-tbody").innerHTML = html;
+}
+
+function lookupDrug() {
+  var drugName = document.getElementById("drug-select").value;
+  var country = document.getElementById("country").value;
+  var drug = DRUGS.find(function(d) { return d.name === drugName; });
+  if (!drug) return;
+
+  var html = '<div class="card"><div class="card-head"><div class="card-title">Price Results: ' + drug.name + '</div></div><div class="card-body">';
+
+  if (country !== "ALL") {
+    var d = drug[country];
+    if (!d) {
+      html += '<p style="font-size:.84rem;color:#64748b">No pricing data available for ' + COUNTRY_LABELS[country] + ' for this medicine.</p>';
+    } else if (d.free) {
+      html += '<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:20px;text-align:center;margin-bottom:14px"><div style="font-size:2rem;font-weight:800;color:#16a34a">FREE</div><div style="font-size:.75rem;color:#166534;font-weight:600;margin-top:4px">' + (d.notes || "Available free at government facilities") + '</div></div>';
+    } else {
+      var savings = Math.round((1 - d.generic/d.brand)*100);
+      html += '<div class="res-hero"><div class="big" style="color:#16a34a">Save ' + savings + '%</div><div class="lbl">By choosing generic over brand</div></div>';
+      html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">';
+      var cur = country === "NG" ? "NGN" : country === "KE" ? "KES" : country === "ZA" ? "ZAR" : "GHS";
+      html += '<div style="background:#fee2e2;border:1px solid #fca5a5;border-radius:8px;padding:14px;text-align:center"><div style="font-size:1.3rem;font-weight:800;color:#dc2626">' + cur + ' ' + d.brand.toLocaleString() + '</div><div style="font-size:.68rem;color:#64748b;margin-top:3px;text-transform:uppercase;font-weight:700">Brand Name</div></div>';
+      html += '<div style="background:#dcfce7;border:1px solid #bbf7d0;border-radius:8px;padding:14px;text-align:center"><div style="font-size:1.3rem;font-weight:800;color:#16a34a">' + cur + ' ' + d.generic.toLocaleString() + '</div><div style="font-size:.68rem;color:#64748b;margin-top:3px;text-transform:uppercase;font-weight:700">Generic Equivalent</div></div>';
+      html += '</div>';
+      if (d.pack) html += '<p style="font-size:.78rem;color:#64748b;margin-bottom:10px">Pack size: ' + d.pack + '</p>';
+      if (d.nhis) html += '<div style="background:#dbeafe;border:1px solid #bfdbfe;border-radius:7px;padding:10px;font-size:.78rem;color:#1d4ed8;margin-bottom:10px"><strong>NHIS Listed:</strong> This medicine is on the NHIS essential medicines list — may be available at reduced cost at accredited facilities.</div>';
+      if (d.nhif) html += '<div style="background:#dbeafe;border:1px solid #bfdbfe;border-radius:7px;padding:10px;font-size:.78rem;color:#1d4ed8;margin-bottom:10px"><strong>NHIF Listed:</strong> This medicine may be dispensed at reduced cost at NHIF-accredited facilities.</div>';
+      if (d.notes) html += '<p style="font-size:.78rem;color:#64748b;margin-bottom:10px">' + d.notes + '</p>';
+    }
+  } else {
+    // All countries
+    html += '<p style="font-size:.84rem;color:#475569;margin-bottom:14px;font-weight:600">' + drug.name + ' — ' + drug.cat + '</p>';
+    html += '<table class="price-table"><thead><tr><th>Country</th><th>Brand</th><th>Generic</th><th>Savings</th></tr></thead><tbody>';
+    ["NG","KE","ZA","GH"].forEach(function(c) {
+      var d = drug[c];
+      if (!d) { html += '<tr><td>' + COUNTRY_LABELS[c] + '</td><td colspan="3" style="color:#9ca3af">Not available</td></tr>'; return; }
+      var cur = c === "NG" ? "NGN" : c === "KE" ? "KES" : c === "ZA" ? "ZAR" : "GHS";
+      if (d.free) {
+        html += '<tr><td>' + COUNTRY_LABELS[c] + '</td><td colspan="2"><span class="free-badge">FREE via govt programme</span></td><td>—</td></tr>';
+      } else {
+        var sav = Math.round((1 - d.generic/d.brand)*100);
+        html += '<tr><td>' + COUNTRY_LABELS[c] + '</td><td>' + cur + ' ' + d.brand.toLocaleString() + '</td><td>' + cur + ' ' + d.generic.toLocaleString() + '</td><td><span class="savings-badge">-' + sav + '%</span></td></tr>';
+      }
+    });
+    html += '</tbody></table>';
+  }
+  html += '</div></div>';
+  var r = document.getElementById("results");
+  r.innerHTML = html;
+  r.style.display = "block";
+  r.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+buildCatFilter();
+populateDrugSelect("All");
+buildAllDrugsTable("All");
+</script>
+<script src="/assets/js/health-workflow.js?v=e8ad8f1d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

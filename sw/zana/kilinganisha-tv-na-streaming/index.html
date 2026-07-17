@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kilinganisha TV na Streaming | AfroTools</title>
+<meta name="description" content="Linganishia vifurushi vya TV, DStv, GOtv, Showmax na streaming kwa bei, channels na thamani ya entertainment ya nyumbani.">
+<meta property="og:title" content="Kilinganisha TV na Streaming | AfroTools">
+<meta property="og:description" content="Linganishia vifurushi vya TV, DStv, GOtv, Showmax na streaming kwa bei, channels na thamani ya entertainment ya nyumbani.">
+<meta property="og:url" content="https://afrotools.com/sw/zana/kilinganisha-tv-na-streaming/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kilinganisha TV na Streaming | AfroTools">
+<meta name="twitter:description" content="Linganishia vifurushi vya TV, DStv, GOtv, Showmax na streaming kwa bei, channels na thamani ya entertainment ya nyumbani.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta name="view-transition" content="same-origin">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+.tool-hero{background:linear-gradient(135deg,#0A1628 0%,#0e2a4a 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin:0 0 .5rem}
+.tool-hero p{color:#94a3b8;font-size:1.05rem;max-width:620px;margin:0 auto}
+.tool-hero .accent{color:#06B6D4}
+.tool-main{max-width:1100px;margin:0 auto;padding:1.5rem}
+.ctrl-bar{display:flex;flex-wrap:wrap;gap:1rem;align-items:end;margin-bottom:1.5rem}
+.ctrl-group{display:flex;flex-direction:column;gap:.3rem}
+.ctrl-group label{font-size:.82rem;font-weight:600;color:#64748b}
+.ctrl-group select,.ctrl-group input{padding:.55rem .8rem;border:1px solid #cbd5e1;border-radius:8px;font-size:.95rem;background:#fff}
+.ctrl-group select:focus,.ctrl-group input:focus{outline:none;border-color:#06B6D4;box-shadow:0 0 0 3px rgba(6,182,212,.15)}
+.ctrl-group select{min-width:180px}
+.ctrl-group input[type=range]{min-width:160px;padding:.3rem 0}
+
+.filter-chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem}
+.f-chip{padding:.35rem .75rem;border:1px solid #cbd5e1;border-radius:20px;font-size:.82rem;cursor:pointer;background:#fff;font-weight:500;transition:all .15s}
+.f-chip:hover{border-color:#06B6D4}
+.f-chip.active{background:#06B6D4;color:#fff;border-color:#06B6D4}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:1.5rem}
+table{width:100%;border-collapse:collapse;min-width:min(600px,100%)}
+thead th{background:#f1f5f9;padding:.65rem .75rem;text-align:left;font-size:.82rem;font-weight:700;color:#475569;border-bottom:2px solid #e2e8f0;cursor:pointer;white-space:nowrap;user-select:none}
+thead th:hover{background:#e2e8f0}
+thead th.sorted-asc::after{content:' \\2191'}
+thead th.sorted-desc::after{content:' \\2193'}
+tbody td{padding:.6rem .75rem;border-bottom:1px solid #f1f5f9;font-size:.9rem;color:#334155}
+tbody tr:hover{background:#f8fafc}
+tbody tr.best-row{background:#ecfdf5}
+tbody tr.best-row td{font-weight:600}
+.provider-badge{display:inline-block;padding:.15rem .5rem;border-radius:12px;font-size:.75rem;font-weight:600}
+.provider-badge.dstv{background:#1a237e;color:#fff}
+.provider-badge.gotv{background:#f57c00;color:#fff}
+.provider-badge.showmax{background:#e91e63;color:#fff}
+.provider-badge.startimes{background:#f44336;color:#fff}
+.provider-badge.other{background:#607d8b;color:#fff}
+.best-tag{display:inline-block;background:#06B6D4;color:#fff;font-size:.68rem;font-weight:700;padding:.1rem .45rem;border-radius:10px;margin-left:.3rem;vertical-align:middle}
+.streaming-note{font-size:.78rem;color:#64748b;font-style:italic}
+.price-range-display{font-size:.85rem;color:#334155;margin-bottom:1rem;font-weight:500}
+
+.summary-bar{margin-top:1rem;padding:1.25rem;background:#f0fdfa;border:1px solid #99f6e4;border-radius:12px}
+.summary-bar h3{font-size:1rem;font-weight:700;color:#0f766e;margin:0 0 .5rem}
+.summary-bar p{font-size:.9rem;color:#134e4a;margin:0;line-height:1.5}
+
+.empty-state{text-align:center;padding:3rem 1rem;color:#94a3b8}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Kilinganisha TV na Streaming","url":"https://afrotools.com/sw/zana/kilinganisha-tv-na-streaming/","description":"Linganishia vifurushi vya TV, DStv, GOtv, Showmax na streaming kwa bei, channels na thamani ya entertainment ya nyumbani.","inLanguage":"sw","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Mawasiliano na Mtandao","item":"https://afrotools.com/sw/mawasiliano-na-mtandao/"},{"@type":"ListItem","position":4,"name":"Kilinganisha TV na Streaming","item":"https://afrotools.com/sw/zana/kilinganisha-tv-na-streaming/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Kilinganisha TV na Streaming ni taarifa rasmi ya provider au regulator?","acceptedAnswer":{"@type":"Answer","text":"Hapana. Ni zana ya makadirio na planning. Hakiki bei, coverage, SIM rules, tariffs, packages na terms na operator, ISP, regulator au mtaalamu husika."}},{"@type":"Question","name":"Kwa nini baadhi ya terms zimebaki kwa Kiingereza?","acceptedAnswer":{"@type":"Answer","text":"Terms kama SIM, USSD, ISP, LTE, 5G, Starlink, Mbps, roaming, bulk SMS na WhatsApp Business hutumika kwenye forms, provider apps na search. AfroTools huzihifadhi pale zinasaidia clarity."}}]}</script>
+<link rel="canonical" href="https://afrotools.com/sw/zana/kilinganisha-tv-na-streaming/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/telecom/tv-compare/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kilinganisha-tv-na-streaming/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/telecom/tv-compare/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="telecom"></afro-navbar>
+
+<div class="tool-hero">
+  <h1>Kilinganisha TV na Streaming</h1>
+  <p>Linganishia TV na streaming upande kwa upande kupata thamani inayofaa kwa nyumba yako.</p>
+</div>
+
+<div class="tool-main">
+  <div class="ctrl-bar">
+    <div class="ctrl-group">
+      <label for="country-sel">Nchi</label>
+      <select id="country-sel"><option value="">Chagua nchi...</option></select>
+    </div>
+    <div class="ctrl-group">
+      <label for="sort-sel">Panga kwa</label>
+      <select id="sort-sel">
+        <option value="price-asc">Bei: chini kwenda juu</option>
+        <option value="price-desc">Bei: juu kwenda chini</option>
+        <option value="channels-desc">Njias nyingi</option>
+        <option value="value">Thamani bora (bei/channel)</option>
+      </select>
+    </div>
+    <div class="ctrl-group">
+      <label for="price-max">Bei ya juu: <span id="price-max-label">Yoyote</span></label>
+      <input type="range" id="price-max" min="0" max="100000" step="100" value="100000">
+    </div>
+  </div>
+
+  <div id="filter-area" class="filter-chips" style="display:none"></div>
+  <div id="price-display" class="price-range-display" style="display:none"></div>
+
+  <div id="table-area">
+    <div class="empty-state"><p>Chagua nchi kulinganisha packages za TV</p></div>
+  </div>
+
+  <div id="summary" class="summary-bar" style="display:none">
+    <h3 id="sum-title"></h3>
+    <p id="sum-text"></p>
+  </div>
+</div>
+
+
+<section class="sw-quality-action-panel" data-tool-verification-panel style="max-width:1120px;margin:24px auto;padding:0 20px">
+  <!-- sw-score76-action-panel:start -->
+  <div style="border:1px solid #bfdbfe;background:#eff6ff;color:#1e3a8a;border-radius:12px;padding:16px 18px;line-height:1.65;">
+    <strong>Kilinganisha TV na Streaming: hatua ya haraka ya kupanga.</strong>
+    <p style="margin:.35rem 0;color:#1e3a8a;"><strong>Mbinu:</strong> andika nchi, kiasi au faili, linganisha matokeo na chanzo, kisha tumia hatua inayofuata inayofaa. </p>
+    <p style="margin:.35rem 0;color:#1e3a8a;"><strong>Chanzo cha kuhakiki:</strong> tumia mamlaka, provider, receipt, portal au data ya kazi yako kulingana na zana hii.</p>
+    <p style="margin:.35rem 0;color:#1e3a8a;"><strong>Kanusho:</strong> si taarifa rasmi, si ushauri wa kodi, kisheria, kifedha, afya au uhamiaji. Hakiki na mtaalamu au mamlaka kabla ya kutumia kwenye faili rasmi.</p>
+    <form aria-label="Kilinganisha TV na Streaming quick planning" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px;">
+      <label style="display:block;font-weight:850;margin:10px 0 6px;color:#334155">Nchi, mada au mteja<input style="width:100%;min-height:42px;border:1px solid #cbd5e1;border-radius:8px;padding:9px 10px;font:inherit;background:#fff" placeholder="Mfano: Kenya, invoice, data bundle"></label>
+      <label style="display:block;font-weight:850;margin:10px 0 6px;color:#334155">Lengo la hatua inayofuata<input style="width:100%;min-height:42px;border:1px solid #cbd5e1;border-radius:8px;padding:9px 10px;font:inherit;background:#fff" placeholder="Mfano: hakiki, pakua, linganisha"></label>
+
+      <button type="button" style="display:inline-flex;align-items:center;justify-content:center;min-height:42px;margin-top:12px;padding:10px 14px;border:0;border-radius:8px;background:#0f766e;color:#fff;font-weight:900;text-decoration:none;cursor:pointer">nakili / Nakili muhtasari</button>
+
+    </form>
+
+
+  </div>
+  <!-- sw-score76-action-panel:end -->
+</section>
+<afro-footer></afro-footer>
+
+<script src="/data/telecom/country-telecom-index.js?v=3e55f4e3"></script>
+<script>
+(function(){
+  'use strict';
+
+  var countrySel = document.getElementById('country-sel');
+  var sortSel = document.getElementById('sort-sel');
+  var priceMax = document.getElementById('price-max');
+  var priceMaxLabel = document.getElementById('price-max-label');
+  var filterArea = document.getElementById('filter-area');
+  var priceDisplay = document.getElementById('price-display');
+  var tableArea = document.getElementById('table-area');
+  var summaryEl = document.getElementById('summary');
+  var sumTitle = document.getElementById('sum-title');
+  var sumText = document.getElementById('sum-text');
+
+  var activeProviders = {};
+  var currentSort = 'price-asc';
+  var allPackages = [];
+  var maxPriceVal = 100000;
+
+  function formatNum(n) {
+    return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  function init() {
+    if (typeof TELECOM_DATA === 'undefined') return;
+    var codes = Object.keys(TELECOM_DATA.countries);
+    codes.sort(function(a, b) {
+      return TELECOM_DATA.countries[a].name.localeCompare(TELECOM_DATA.countries[b].name);
+    });
+    for (var i = 0; i < codes.length; i++) {
+      var c = TELECOM_DATA.countries[codes[i]];
+      if (c.tvProviders && c.tvProviders.length > 0) {
+        var opt = document.createElement('option');
+        opt.value = codes[i];
+        opt.textContent = c.name;
+        countrySel.appendChild(opt);
+      }
+    }
+    countrySel.addEventListener('change', onCountryChange);
+    sortSel.addEventListener('change', function() { currentSort = sortSel.value; renderTable(); });
+    priceMax.addEventListener('input', function() {
+      maxPriceVal = parseInt(priceMax.value);
+      priceMaxLabel.textContent = maxPriceVal >= parseInt(priceMax.max) ? 'Any' : formatNum(maxPriceVal);
+      renderTable();
+    });
+  }
+
+  function getProviderClass(name) {
+    var n = name.toLowerCase();
+    if (n.indexOf('dstv') !== -1) return 'dstv';
+    if (n.indexOf('gotv') !== -1) return 'gotv';
+    if (n.indexOf('showmax') !== -1) return 'showmax';
+    if (n.indexOf('startimes') !== -1) return 'startimes';
+    return 'other';
+  }
+
+  function onCountryChange() {
+    var code = countrySel.value;
+    if (!code) {
+      tableArea.innerHTML = '<div class="empty-state"><p>Select a country to compare TV packages</p></div>';
+      filterArea.style.display = 'none';
+      priceDisplay.style.display = 'none';
+      summaryEl.style.display = 'none';
+      return;
+    }
+    var country = TELECOM_DATA.countries[code];
+    var sym = country.symbol;
+    allPackages = [];
+    activeProviders = {};
+
+    var providers = country.tvProviders || [];
+    var highestPrice = 0;
+    for (var i = 0; i < providers.length; i++) {
+      var prov = providers[i];
+      activeProviders[prov.name] = true;
+      for (var j = 0; j < prov.packages.length; j++) {
+        var pkg = prov.packages[j];
+        var channels = pkg.channels || 0;
+        var ppc = channels > 0 ? (pkg.price / channels) : 0;
+        allPackages.push({
+          provider: prov.name,
+          name: pkg.name,
+          price: pkg.price,
+          channels: channels,
+          ppc: ppc,
+          notes: pkg.notes || '',
+          isStreaming: channels === 0
+        });
+        if (pkg.price > highestPrice) highestPrice = pkg.price;
+      }
+    }
+
+    priceMax.max = Math.ceil(highestPrice * 1.1);
+    priceMax.value = priceMax.max;
+    maxPriceVal = parseInt(priceMax.max);
+    priceMaxLabel.textContent = 'Any';
+
+    buildFilterChips(providers);
+    renderTable();
+  }
+
+  function buildFilterChips(providers) {
+    var html = '';
+    for (var i = 0; i < providers.length; i++) {
+      var cls = getProviderClass(providers[i].name);
+      html += '<span class="f-chip active" data-prov="' + providers[i].name + '">' + providers[i].name + '</span>';
+    }
+    filterArea.innerHTML = html;
+    filterArea.style.display = 'flex';
+
+    var chips = filterArea.querySelectorAll('.f-chip');
+    for (var i = 0; i < chips.length; i++) {
+      chips[i].addEventListener('click', function() {
+        var prov = this.getAttribute('data-prov');
+        this.classList.toggle('active');
+        activeProviders[prov] = this.classList.contains('active');
+        renderTable();
+      });
+    }
+  }
+
+  function renderTable() {
+    var code = countrySel.value;
+    if (!code) return;
+    var country = TELECOM_DATA.countries[code];
+    var sym = country.symbol;
+
+    var filtered = [];
+    for (var i = 0; i < allPackages.length; i++) {
+      var p = allPackages[i];
+      if (!activeProviders[p.provider]) continue;
+      if (p.price > maxPriceVal) continue;
+      filtered.push(p);
+    }
+
+    filtered.sort(function(a, b) {
+      if (currentSort === 'price-asc') return a.price - b.price;
+      if (currentSort === 'price-desc') return b.price - a.price;
+      if (currentSort === 'channels-desc') return b.channels - a.channels;
+      if (currentSort === 'value') {
+        var aV = a.ppc || 999999;
+        var bV = b.ppc || 999999;
+        return aV - bV;
+      }
+      return 0;
+    });
+
+    var bestValueIdx = -1;
+    var bestPpc = Infinity;
+    for (var i = 0; i < filtered.length; i++) {
+      if (filtered[i].ppc > 0 && filtered[i].ppc < bestPpc) {
+        bestPpc = filtered[i].ppc;
+        bestValueIdx = i;
+      }
+    }
+
+    if (filtered.length === 0) {
+      tableArea.innerHTML = '<div class="empty-state"><p>No packages match your filters</p></div>';
+      summaryEl.style.display = 'none';
+      priceDisplay.style.display = 'none';
+      return;
+    }
+
+    priceDisplay.textContent = 'Showing ' + filtered.length + ' package' + (filtered.length !== 1 ? 's' : '') + ' in ' + country.name;
+    priceDisplay.style.display = 'block';
+
+    var html = '<div class="table-wrap"><table>';
+    html += '<thead><tr>';
+    html += '<th>Provider</th><th>Package</th><th>Price/mo</th><th>Channels</th><th>Price/Channel</th>';
+    html += '</tr></thead><tbody>';
+
+    for (var i = 0; i < filtered.length; i++) {
+      var p = filtered[i];
+      var isBest = (i === bestValueIdx);
+      var cls = getProviderClass(p.provider);
+      html += '<tr class="' + (isBest ? 'best-row' : '') + '">';
+      html += '<td><span class="provider-badge ' + cls + '">' + p.provider + '</span></td>';
+      html += '<td>' + p.name + (isBest ? '<span class="best-tag">Best Value</span>' : '') + '</td>';
+      html += '<td>' + sym + formatNum(p.price) + '</td>';
+      if (p.isStreaming) {
+        html += '<td><span class="streaming-note">Streaming</span></td>';
+        html += '<td><span class="streaming-note">' + (p.notes || 'On-demand') + '</span></td>';
+      } else {
+        html += '<td>' + p.channels + '</td>';
+        html += '<td>' + sym + p.ppc.toFixed(1) + '</td>';
+      }
+      html += '</tr>';
+    }
+
+    html += '</tbody></table></div>';
+    tableArea.innerHTML = html;
+
+    if (bestValueIdx >= 0) {
+      var best = filtered[bestValueIdx];
+      sumTitle.textContent = 'Best Value: ' + best.provider + ' ' + best.name;
+      sumText.textContent = best.channels + ' channels at ' + sym + formatNum(best.price) + '/mo = ' + sym + best.ppc.toFixed(1) + ' per channel. This is the lowest cost per channel across all packages in ' + country.name + '.';
+      summaryEl.style.display = 'block';
+    } else {
+      summaryEl.style.display = 'none';
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script src="/assets/js/telecom-toolkit.js?v=4c2582bb" defer></script>
+<section class="sw-telecom-faq" style="max-width:1100px;margin:28px auto;padding:0 1.5rem;"><details open><summary>Kilinganisha TV na Streaming ni ya nini?</summary><div class="faq-body">Zana hii husaidia kupanga mawasiliano, data, SIM, intaneti au messaging kwa kutumia model ya source page. Matokeo ni makadirio, si bei rasmi wala uamuzi wa regulator.</div></details><details><summary>Nihakiki nini kabla ya kutumia matokeo?</summary><div class="faq-body">Hakiki bei, coverage, speed, fair-use policy, KYC, taxes, bundle validity, package names na provider terms kwenye programu, USSD, contract au tovuti rasmi.</div></details></section>
+<section class="sw-telecom-note" style="max-width:1120px;margin:28px auto;padding:18px 20px;border:1px solid #bae6fd;background:#f0f9ff;border-radius:12px;color:#075985;line-height:1.65;"><strong>Kumbuka:</strong> Kilinganisha TV na Streaming ni zana ya makadirio na planning. Bei za data, roaming, ISP, SIM, TV, SMS, WhatsApp Business na Starlink hubadilika. Hakiki programu ya provider, USSD, regulator au contract kabla ya kulipa, kusafiri, kuhamisha namba au kutuma campaign.<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;"><a href="/sw/mawasiliano-na-mtandao/">Mawasiliano na Mtandao</a><a href="/sw/fintech/">Fintech</a><a href="/sw/zana-za-developer/">msanidi programu na USSD</a><a href="/sw/serikali-na-nyaraka/">Serikali na KYC</a><a href="/sw/biashara-ndogo/">Biashara ndogo</a><a href="/sw/data-na-tija/">Data na tija</a></div></section>
+<script id="sw-telecom-runtime-localizer">(function(){var pairs={"Telecom & Mobile":"Mawasiliano na Mtandao","Mobile Data Plan Comparator":"Kilinganisha Vifurushi vya Data","USSD Code Directory":"Saraka ya Misimbo USSD","Roaming Cost Calculator":"Kikokotoo Gharama za Roaming","Starlink vs Local ISP Comparator":"Starlink dhidi ya ISP za Ndani","DStv / GOtv / Showmax Comparator":"Kilinganisha TV na Streaming","Data Usage Calculator":"Kikokotoo Matumizi ya Data","Airtime to Cash Value Calculator":"Thamani ya Vocha ya Simu","Number Portability Guide":"Mwongozo Kuhamisha Namba","SIM Registration Status Checker":"Ukaguzi Usajili wa SIM","Internet Speed vs Cost Comparator":"Kilinganisha Intaneti","Fiber vs LTE vs 5G Comparator":"Fiber dhidi ya LTE na 5G","Business Internet Cost Calculator":"Kikokotoo Intaneti ya Biashara","Bulk SMS Pricing Calculator":"Kikokotoo Bei ya SMS Nyingi","WhatsApp Business vs SMS Cost Comparator":"WhatsApp Business dhidi ya SMS","Compare data bundles from every major operator. Find the cheapest price per GB in your country.":"Linganishia vifurushi vya data kutoka operator wakuu. Tafuta bei kwa GB na uhakiki kabla ya kununua.","Every mobile operator code in one place. Check balance, buy data, transfer airtime, borrow credit and more.":"Misimbo ya operator wa simu sehemu moja. Kagua salio, nunua data, hamisha airtime, kopa credit na huduma nyingine.","Estimate roaming charges before you travel. Compare with buying a local SIM to see which saves you more.":"Kadiria gharama za roaming kabla ya kusafiri. Linganisha na SIM ya ndani kuona njia yenye gharama nafuu.","Compare Starlink satellite internet against local fiber and LTE providers across Africa. Full cost-of-ownership breakdown.":"Linganishia Starlink satellite internet na fiber au LTE za ndani Afrika kwa total cost of ownership.","Compare TV and streaming packages side by side. Find the best entertainment value in your country.":"Linganishia TV na streaming upande kwa upande kupata thamani inayofaa kwa nyumba yako.","Estimate how much data you actually need each month and find the best plan to match.":"Kadiria kiasi cha data unachohitaji kwa mwezi na plan inayolingana na matumizi yako.","Find out how much cash your airtime is worth. Compare resale rates across operators and platforms.":"Kadiria airtime yako ina thamani gani ikiwa inageuzwa kuwa pesa. Linganisha rates kwa operator na platform.","Keep your number, switch your network. Check availability and get step-by-step porting instructions for your country.":"Baki na namba yako huku ukibadilisha mtandao. Angalia availability na hatua za porting kwa nchi yako.","Check SIM registration requirements, deadlines, and what you need to stay connected in any African country.":"Kagua mahitaji ya usajili wa SIM, deadlines na vitu vinavyohitajika ili SIM ibaki hewani.","Compare ISPs across Africa. Find the best broadband value by speed, price, and cost-per-Mbps.":"Linganishia ISPs Afrika kwa speed, bei na cost per Mbps kupata thamani bora ya broadband.","Which internet technology is right for you? Compare speed, cost, latency, and coverage across Africa.":"Ni teknolojia gani ya intaneti inakufaa? Linganisha speed, gharama, latency na coverage Afrika.","Find the right internet plan for your African business. Compare fiber, LTE, and mobile data by employee count, speed, and usage.":"Tafuta plan ya intaneti inayofaa biashara yako. Linganisha fiber, LTE na mobile data kwa wafanyakazi, speed na matumizi.","Calculate bulk SMS costs with volume discounts across Africa. Compare providers and see per-SMS breakdowns.":"Kadiria gharama za bulk SMS kwa volume discounts Afrika. Linganisha providers na breakdown kwa kila SMS.","Compare WhatsApp Business API pricing against bulk SMS for your African business. Find the breakeven point and the best channel for each message type.":"Linganishia bei ya WhatsApp Business API na bulk SMS kwa biashara. Tafuta breakeven na channel inayofaa kwa kila aina ya ujumbe.","Country":"Nchi","-- Select country --":"-- Chagua nchi --","-- Your home country --":"-- Nchi yako ya nyumbani --","-- Destination --":"-- Unakoenda --","-- Choose a country --":"-- Chagua nchi --","Select country...":"Chagua nchi...","Select Country":"Chagua Nchi","Operator":"Mtandao","All operators":"Mitandao yote","Validity":"Muda wa kifurushi","All durations":"Muda wote","Daily":"Kila siku","Weekly":"Kila wiki","Monthly":"Kila mwezi","Select a country above to compare data plans":"Chagua nchi hapo juu ili kulinganisha vifurushi vya data","Search codes":"Tafuta misimbo","Select a country to view USSD codes for all operators":"Chagua nchi kuona misimbo ya USSD kwa operators wote","Your Travel Details":"Taarifa za Safari","Home Country":"Nchi ya Nyumbani","Destination Country":"Nchi Unakoenda","Trip Duration (days)":"Muda wa Safari (siku)","Expected Daily Usage":"Matumizi Yanayotarajiwa kwa Siku","Calls (minutes/day)":"Simu (dakika/siku)","SMS (messages/day)":"SMS (ujumbe/siku)","Data (MB/day)":"Data (MB/siku)","Calculate Roaming Cost":"Hesabu Gharama za Roaming","Roaming (home SIM)":"Roaming (SIM ya nyumbani)","Estimated total roaming charges":"Makadirio ya jumla ya roaming","Local SIM":"SIM ya ndani","Buy a local SIM + data bundle":"Nunua SIM ya ndani + kifurushi cha data","Item":"Kipengele","Sort by":"Panga kwa","Price: Low to High":"Bei: chini kwenda juu","Price: High to Low":"Bei: juu kwenda chini","Most Channels":"Channels nyingi","Best Value (Price/Channel)":"Thamani bora (bei/channel)","Max price:":"Bei ya juu:","Any":"Yoyote","Select a country to compare TV packages":"Chagua nchi kulinganisha packages za TV","Country (for plan recommendations)":"Nchi (kwa mapendekezo ya plan)","Your Daily Usage":"Matumizi Yako ya Kila Siku","Monthly Estimate":"Makadirio ya Mwezi","estimated per month":"makadirio kwa mwezi","Recommended Plans":"Plans Zinazopendekezwa","Adjust sliders to see recommendations":"Badilisha sliders kuona mapendekezo","Calculate Airtime Value":"Hesabu Thamani ya Airtime","-- Select operator --":"-- Chagua operator --","Airtime Amount":"Kiasi cha Airtime","Calculate Cash Value":"Hesabu Thamani ya Pesa","airtime is worth":"airtime ina thamani ya","Depending on the platform and buyer":"Kutegemea platform na mnunuzi","Channel":"Njia","Rate":"Rate","You Get":"Unapata","Select a country to see number portability details":"Chagua nchi kuona maelezo ya kuhamisha namba","Select a country to check SIM registration requirements":"Chagua nchi kukagua mahitaji ya usajili wa SIM","Best value (cost/Mbps)":"Thamani bora (gharama/Mbps)","Lowest price":"Bei ya chini","Fastest speed":"Speed kubwa zaidi","Select a country to compare internet providers":"Chagua nchi kulinganisha providers wa intaneti","Select a country to see technology comparison":"Chagua nchi kuona ulinganisho wa teknolojia","Which is right for me?":"Nini kinanifaa?","What matters most?":"Kipi ni muhimu zaidi?","Lowest cost":"Gharama ya chini","Reliability":"Kutegemewa","Usage type?":"Aina ya matumizi?","Remote Work":"Kazi ya mbali","Location?":"Eneo?","Urban / City":"Mjini / City","Rural":"Kijijini","Number of Employees":"Idadi ya Wafanyakazi","Required Speed (Mbps)":"Speed Inayohitajika (Mbps)","10 Mbps (Basic)":"10 Mbps (Msingi)","25 Mbps (Small Office)":"25 Mbps (Ofisi ndogo)","50 Mbps (Medium Office)":"50 Mbps (Ofisi ya kati)","100 Mbps (Large Office)":"100 Mbps (Ofisi kubwa)","Usage Type":"Aina ya Matumizi","Basic (Email, browsing)":"Msingi (email, browsing)","Moderate (Video calls, cloud apps)":"Wastani (video calls, cloud apps)","Heavy (Streaming, large transfers)":"Mzito (streaming, large transfers)","Calculate Internet Costs":"Hesabu Gharama za Intaneti","Configure your business needs and click Calculate to see options":"Weka mahitaji ya biashara na bofya Hesabu kuona options","SMS Type":"Aina ya SMS","Domestic SMS":"SMS za ndani","International SMS (1.5x rate)":"SMS za kimataifa (rate 1.5x)","Monthly SMS Volume":"Idadi ya SMS kwa Mwezi","Select a country and adjust the volume to see pricing":"Chagua nchi na badilisha volume kuona bei","Monthly Messages":"Ujumbe kwa Mwezi","Message Type Split":"Mgawanyo wa Aina ya Ujumbe","Compare Costs":"Linganisha Gharama","Select a country, set your message volume and type split, then click Compare":"Chagua nchi, weka idadi na mgawanyo wa ujumbe, kisha bofya Linganisha","Guide":"Mwongozo","Status Checker":"Ukaguzi wa Hali","Calculator":"Kikokotoo","Comparator":"Kilinganisha","Cost":"Gharama","Pricing":"Bei","Tool upgrade layer":"Safu ya msaada wa zana","Use it for":"Inafaa kwa","Check first":"Kagua kwanza","Competitor gap":"Pengo la kulinganisha","Workflow":"Mtiririko","Dashboard":"Dashboard","Name":"Jina","Email for PDF":"Barua pepe kwa PDF","Optional":"Si lazima","Send useful telecom updates":"Tuma updates muhimu za mawasiliano","Save to dashboard":"Hifadhi kwenye dashboard","Unlock PDF brief":"Fungua muhtasari wa PDF","Goal":"Lengo","Budget":"Bajeti","Build workflow":"Jenga mtiririko","Recommended workflow":"Mtiririko unaopendekezwa","Data plans":"Vifurushi vya data","Data usage":"Matumizi ya data","USSD codes":"Misimbo ya USSD","Roaming cost":"Gharama za roaming","Speed vs cost":"Speed dhidi ya gharama","Starlink compare":"Linganisha Starlink","WhatsApp vs SMS":"WhatsApp dhidi ya SMS","Mobile money fees":"Ada za pesa za simu","TV packages":"Vifurushi vya TV","Airtime value":"Thamani ya airtime","Loading...":"Inapakia...","Processing...":"Inachakata...","Please select a country.":"Tafadhali chagua nchi."},routes={"/telecom/":"/sw/mawasiliano-na-mtandao/","/telecom/data-plan-compare/":"/sw/zana/kilinganisha-vifurushi-vya-data/","/telecom/ussd-directory/":"/sw/zana/saraka-ya-misimbo-ussd/","/telecom/roaming-cost/":"/sw/zana/kikokotoo-gharama-za-roaming/","/telecom/starlink-compare/":"/sw/zana/starlink-dhidi-ya-isp-za-ndani/","/telecom/tv-compare/":"/sw/zana/kilinganisha-tv-na-streaming/","/telecom/data-usage-calc/":"/sw/zana/kikokotoo-matumizi-ya-data/","/telecom/airtime-value/":"/sw/zana/thamani-ya-vocha-ya-simu/","/telecom/number-portability/":"/sw/zana/mwongozo-kuhamisha-namba/","/telecom/sim-registration/":"/sw/zana/ukaguzi-usajili-wa-sim/","/telecom/internet-compare/":"/sw/zana/kilinganisha-intaneti/","/telecom/fiber-lte-5g/":"/sw/zana/fiber-dhidi-ya-lte-na-5g/","/telecom/business-internet/":"/sw/zana/kikokotoo-intaneti-ya-biashara/","/telecom/bulk-sms-pricing/":"/sw/zana/kikokotoo-bei-ya-sms-nyingi/","/telecom/whatsapp-vs-sms/":"/sw/zana/whatsapp-business-dhidi-ya-sms/","/tools/mobile-money-fees/":"/sw/zana/ada-pesa-simu/","/tools/ussd-simulator/":"/sw/zana/kiigaji-ussd/","/tools/ussd-flow-builder/":"/sw/zana/mjenzi-mtiririko-ussd/"};function mh(h){if(!h)return h;var c=h.split('?')[0].split('#')[0];return routes[c]?routes[c]+h.slice(c.length):h}function tx(n){var r=n.textContent||'',t=r.trim();if(t&&pairs[t])n.textContent=r.replace(t,pairs[t])}function attrs(e){['placeholder','aria-label','title','value'].forEach(function(a){var v=e.getAttribute&&e.getAttribute(a);if(v&&pairs[v])e.setAttribute(a,pairs[v])});if(e.tagName==='A'){var h=e.getAttribute('href'),m=mh(h);if(m!==h)e.setAttribute('href',m)}}function walk(root){if(!root)return;if(root.nodeType===1)attrs(root);var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement;if(!p||/^(SCRIPT|STYLE|NOSCRIPT|TEXTAREA|CODE|PRE)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT;return n.textContent&&n.textContent.trim()?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT}}),a=[];while(w.nextNode())a.push(w.currentNode);a.forEach(tx);root.querySelectorAll&&root.querySelectorAll('[placeholder],[aria-label],[title],a[href]').forEach(attrs)}function run(){walk(document.body)}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes&&m.addedNodes.forEach(function(n){if(n.nodeType===1)walk(n);else if(n.nodeType===3)tx(n)})})}).observe(document.documentElement,{childList:true,subtree:true})})();</script>
+  <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
+</body>
+</html>

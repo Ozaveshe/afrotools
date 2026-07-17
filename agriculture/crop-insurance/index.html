@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crop Insurance Premium Calculator — 15 African Countries | AfroTools</title>
+<meta name="description" content="Calculate crop and livestock insurance premiums for 15 African countries. See government subsidies, payout scenarios, and available programs like NAIC, ACRE Africa, MAMDA, GAIP, and more.">
+<meta property="og:title" content="Crop Insurance Premium Calculator for Africa — AfroTools">
+<meta property="og:description" content="Calculate crop and livestock insurance premiums across 15 African countries. Government subsidies included.">
+<meta property="og:url" content="https://afrotools.com/agriculture/crop-insurance/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/crop-insurance.webp">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Crop Insurance Premium Calculator for Africa — AfroTools">
+<meta name="twitter:description" content="Calculate agricultural insurance premiums across 15 African countries. See subsidies and payout scenarios.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/crop-insurance.webp">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Crop Insurance Premium Calculator for Africa",
+  "url": "https://afrotools.com/agriculture/crop-insurance/",
+  "description": "Crop and livestock insurance premium calculators for 15 African countries with government subsidy data.",
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/crop-insurance.webp"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "AfroTools", "item": "https://afrotools.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Agriculture", "item": "https://afrotools.com/agriculture/" },
+    { "@type": "ListItem", "position": 3, "name": "Crop Insurance Premium Calculator", "item": "https://afrotools.com/agriculture/crop-insurance/" }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is agricultural insurance penetration in Africa?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Agricultural insurance penetration in Africa is less than 3% of farmers — one of the lowest in the world. However, it is growing fast, driven by index-based and parametric insurance products that use satellite data to trigger payouts without farm visits." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between multi-peril and weather index insurance?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Multi-peril crop insurance (MPCI) requires a field assessor to visit your farm and verify the damage. Payouts take 4–8 weeks. Weather index insurance (WII) uses satellite or weather station data — if rainfall falls below a threshold, you get paid automatically via mobile money within 2 weeks. No farm visit needed. WII is cheaper and faster but has 'basis risk' — the weather at the station may differ from your farm." }
+    },
+    {
+      "@type": "Question",
+      "name": "Which countries have the best government subsidies for crop insurance?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Morocco (MAMDA) has the strongest government support — the government subsidizes 80% of premiums, so farmers pay only 20%. Tunisia (CTAMA) subsidizes 65%. Egypt (PBDAC) subsidizes 70%. Nigeria (NAIC), Ghana (GAIP), Kenya (KAIP), Uganda, and Senegal all subsidize 40–50% of premiums." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is 'basis risk' in index insurance?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Basis risk is the mismatch between the index (e.g. satellite rainfall) and your actual farm loss. Your farm might suffer crop failure, but if the satellite shows sufficient rainfall in your area, you won't get a payout. Conversely, you might get paid even if your crops are fine. Basis risk is the main weakness of weather index insurance." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I enroll in ACRE Africa / Pula insurance?",
+      "acceptedAnswer": { "@type": "Answer", "text": "ACRE Africa (now Pula) insurance is often bundled with certified seed purchases from agro-dealers. When you buy certified maize or soybean seed from a registered dealer, part of the price includes an insurance premium. You may receive an SMS confirmation. In Kenya, you can also enroll via M-Pesa Insurance menu." }
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/agriculture.css?v=70592203">
+
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+
+<style>
+:root {
+  --calc-accent: #0062CC;
+  --calc-accent-dark: #0063D1;
+  --calc-accent-light: #E8F2FF;
+  --color-bg: #F8F9FA;
+  --color-bg-card: #FFFFFF;
+  --color-text: #1A1A2E;
+  --color-text-muted: #6B7280;
+  --radius-md: 18px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; background: var(--color-bg); color: var(--color-text); margin: 0; }
+
+.hub-hero {
+  background: #0A1628;
+  color: #fff;
+  padding: 3rem 1rem 2.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hub-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(0,98,204,0.12) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 20%, rgba(0,98,204,0.07) 0%, transparent 50%);
+  pointer-events: none;
+}
+.hub-hero-inner { max-width: 720px; margin: 0 auto; position: relative; z-index: 1; }
+.hub-hero .breadcrumb { font-size: 0.85rem; opacity: 0.85; margin-bottom: 0.75rem; }
+.hub-hero .breadcrumb a { color: #fff; text-decoration: none; }
+.hub-hero .breadcrumb a:hover { text-decoration: underline; }
+.hub-hero h1 { color: #fff; font-size: clamp(1.5rem, 5.5vw, 2.6rem); font-weight: 800; margin: 0 0 0.75rem; letter-spacing: -0.02em; line-height: 1.15; }
+.hub-hero p { font-size: 1.05rem; opacity: 1; line-height: 1.6; max-width: 620px; margin: 0 auto; }
+.hub-hero .badge-row { display: flex; justify-content: center; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap; }
+.hub-badge { background: rgba(255,255,255,0.22); border-radius: 980px; padding: 0.35rem 0.9rem; font-size: 0.82rem; font-weight: 600; }
+
+.hub-main { max-width: 1100px; margin: -1.5rem auto 3rem; padding: 0 1rem;  position: relative; z-index: 2;}
+
+/* Stat cards row */
+.stat-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.stat-card {
+  background: #fff;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  text-align: center;
+}
+.stat-card-val { font-size: 1.5rem; font-weight: 800; color: var(--calc-accent); }
+.stat-card-label { font-size: 0.8rem; color: var(--color-text-muted); margin-top: 2px; }
+
+/* Region sections */
+.region-section { margin-bottom: 2rem; }
+.region-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--calc-accent-light);
+}
+.country-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+.country-card {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #fff;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 14px;
+  padding: 0.85rem 1rem;
+  text-decoration: none;
+  color: var(--color-text);
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+.country-card:hover { border-color: var(--calc-accent); box-shadow: 0 4px 12px rgba(0,98,204,0.12); transform: translateY(-2px); }
+.country-card .flag { font-size: 1.5rem; flex-shrink: 0; }
+.country-card .name { flex: 1; }
+.country-card .programs-count { font-size: 0.72rem; color: var(--color-text-muted); background: var(--calc-accent-light); border-radius: 980px; padding: 0.15rem 0.5rem; font-weight: 600; white-space: nowrap; }
+.country-card .arrow { color: var(--color-text-muted); font-size: 1.1rem; }
+
+/* SEO content */
+.seo-content { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+.seo-content h2 { font-size: 1.2rem; font-weight: 800; text-transform: uppercase; margin: 2rem 0 0.75rem; }
+.seo-content p { font-size: 0.92rem; line-height: 1.7; color: var(--color-text-muted); }
+.seo-content ul { font-size: 0.92rem; line-height: 1.8; color: var(--color-text-muted); padding-left: 1.5rem; }
+
+/* FAQ */
+.faq details { border-bottom: 1px solid #E5E7EB; padding: 0.85rem 0; }
+.faq summary { font-weight: 600; font-size: 0.92rem; cursor: pointer; list-style: none; }
+.faq summary::before { content: '+ '; color: var(--calc-accent); font-weight: 800; }
+.faq details[open] summary::before { content: '- '; }
+.faq p { font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.6; margin: 0.5rem 0 0; }
+</style>
+<meta property="article:modified_time" content="2026-03-28">
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/agriculture-page-ui-refresh.css?v=411c7880">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/agriculture/crop-insurance/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/agriculture/crop-insurance/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/agriculture/crop-insurance/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/agriculture/crop-insurance/">
+</head>
+
+<body class="agriculture-page-ui-refresh top-level-page-ui-refresh">
+<afro-navbar active="tools"></afro-navbar>
+
+<section class="hub-hero">
+  <div class="hub-hero-inner">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">AfroTools</a> &rsaquo; <a href="/agriculture/">Agriculture</a> &rsaquo; Crop Insurance Premium Calculator
+    </nav>
+    <h1>&#128737;&#65039; Crop Insurance Premium Calculator</h1>
+    <p>Calculate agricultural insurance premiums for 15 African countries. See government subsidies, available programs, and what you'd receive if your crops fail.</p>
+    <div class="badge-row">
+      <span class="hub-badge">&#127759; 15 Countries</span>
+      <span class="hub-badge">&#127807; Crops &amp; Livestock</span>
+      <span class="hub-badge">&#129681; Subsidy Calculator</span>
+      <span class="hub-badge">&#127760; 100% Free</span>
+    </div>
+  </div>
+</section>
+
+<div class="hub-main">
+
+  <div class="stat-cards">
+    <div class="stat-card">
+      <div class="stat-card-val">&lt;3%</div>
+      <div class="stat-card-label">of African farmers insured</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-val">80%</div>
+      <div class="stat-card-label">subsidy in Morocco (MAMDA)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-val">2M+</div>
+      <div class="stat-card-label">farmers covered by ACRE Africa (Kenya)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-val">2 wks</div>
+      <div class="stat-card-label">payout speed (weather index, M-Pesa)</div>
+    </div>
+  </div>
+
+  <div id="hubMain"></div>
+
+</div>
+
+<section class="seo-content">
+  <h2>About Crop Insurance in Africa</h2>
+  <p>Agricultural insurance penetration in Africa is below 3% — one of the lowest globally. Yet climate shocks, pest outbreaks, and price volatility make it one of the highest-risk farming environments. This calculator helps African farmers understand what insurance costs, how much governments subsidize, and what they'd receive in a loss event.</p>
+
+  <h2>Types of Agricultural Insurance Available</h2>
+  <ul>
+    <li><strong>Multi-Peril Crop Insurance (MPCI):</strong> Traditional farm-level indemnity. Requires field assessment — payouts in 4–8 weeks. Best coverage but highest premiums. Used in South Africa, Morocco, Egypt.</li>
+    <li><strong>Weather Index Insurance (WII):</strong> Satellite or station rainfall triggers automatic payouts via mobile money in 2 weeks. No farm visit. Affordable. Main weakness: basis risk. Used by ACRE Africa (Kenya, Tanzania, Uganda, Rwanda).</li>
+    <li><strong>Area Yield Index Insurance:</strong> Pays when the average area yield falls below a trigger. No individual assessment. Used by NAIC (Nigeria), GAIP (Ghana), UAIS (Uganda).</li>
+    <li><strong>Index-Based Livestock Insurance (IBLI):</strong> Satellite vegetation (NDVI) triggers payouts for pastoralist livestock. Global model from Kenya's ILRI program.</li>
+  </ul>
+
+  <h2>Which Countries Have Government Subsidies?</h2>
+  <p>Morocco leads Africa with an 80% government subsidy through MAMDA. Tunisia offers 65% through CTAMA. Egypt's PBDAC program subsidizes ~70%. Nigeria (NAIC), Ghana (GAIP), Kenya (KAIP), Uganda, and Senegal offer 40–50% subsidies. South Africa has no subsidy — insurance is fully commercial, but also has the highest market penetration.</p>
+
+  <h2>Frequently Asked Questions</h2>
+  <div class="faq">
+    <details>
+      <summary>What is agricultural insurance penetration in Africa?</summary>
+      <p>Less than 3% of African farmers have crop insurance — one of the lowest rates globally. The main barriers are cost, lack of awareness, and the expense of field assessments. Index-based insurance (satellite/weather) is rapidly changing this by cutting costs and enabling mobile money payouts.</p>
+    </details>
+    <details>
+      <summary>What's the difference between multi-peril and weather index insurance?</summary>
+      <p>Multi-peril crop insurance (MPCI) requires a field assessor to visit your farm and verify damage. Payouts take 4–8 weeks. Weather index insurance uses satellite or weather station data — if rainfall falls below a threshold, you're paid automatically via mobile money within 2 weeks. WII is cheaper and faster, but has 'basis risk' — the satellite may not match your specific farm conditions.</p>
+    </details>
+    <details>
+      <summary>Which countries have the best government subsidies?</summary>
+      <p>Morocco (MAMDA) subsidizes 80% — you pay only 20% of the gross premium. Tunisia (CTAMA) 65%, Egypt (PBDAC) ~70%, Nigeria (NAIC) 50%, Ghana (GAIP) 50%, Kenya (KAIP) 50%, Uganda (UAIS) 50%, Senegal 40%. South Africa has no subsidy but is the most developed market.</p>
+    </details>
+    <details>
+      <summary>What is 'basis risk' in index insurance?</summary>
+      <p>Basis risk is the mismatch between the index (e.g. satellite rainfall at a weather station 20km from your farm) and your actual farm conditions. Your farm might fail, but if the satellite shows adequate rainfall in your zone, you won't get paid. This is the main limitation of weather index insurance — though satellite resolution is improving rapidly.</p>
+    </details>
+    <details>
+      <summary>How do I enroll in ACRE Africa / Pula insurance?</summary>
+      <p>ACRE Africa (now Pula) insurance is often bundled with certified seed purchases at agro-dealers. When you buy certified maize, soybean, or rice seed from a registered dealer, part of the price includes the insurance premium. You receive an SMS confirmation. In Kenya you can also enroll via M-Pesa under Financial Services → Insurance.</p>
+    </details>
+  </div>
+</section>
+
+
+
+<section class="df-upgrade" data-df-upgrade="crop-insurance">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Farm risk cover check</span>
+      <h2>Estimate crop cover and claim readiness</h2>
+      <p>Model farm value, premium rate, and excess, then verify covered perils and claim evidence for the local scheme or insurer.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: crop premium and excess note.</li><li>Methodology: insured farm value x premium rate.</li><li>Source note: crop, district, weather trigger, subsidy, and insurer wording can change both premium and payout.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Agriculture disclaimer: verify perils, trigger data, waiting period, exclusions, claim evidence, and subsidy rules before enrollment. Sources/reference: <a href="https://www.worldbank.org/en/topic/financialsector/brief/agricultural-insurance" target="_blank" rel="noopener">World Bank agricultural insurance overview</a></p>
+    </div>
+    <form class="df-form" data-df-form="crop-insurance">
+      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
+      <label>Insured farm value<input name="farmValue" type="number" value="750000" min="0" step="any" aria-label="Insured farm value"></label>
+      <label>Premium rate percent<input name="premiumRate" type="number" value="5" min="0" step="any" aria-label="Premium rate percent"></label>
+      <label>Policy excess percent<input name="excess" type="number" value="10" min="0" step="any" aria-label="Policy excess percent"></label>
+      <button type="submit">Estimate cover</button>
+      <output class="df-result" data-df-result="crop-insurance" aria-live="polite">Estimate: enter farm value and rate to calculate crop premium.</output>
+      <div class="df-actions"><button type="button" data-df-copy="crop-insurance">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="crop-insurance-faq-title">
+  <h2 id="crop-insurance-faq-title">Frequently Asked Questions</h2>
+  <div class="df-faq__grid"><details><summary>What is weather-index insurance?</summary><p>It can pay based on rainfall or weather data triggers rather than a farm visit, depending on product design.</p></details><details><summary>What evidence should farmers keep?</summary><p>Planting date, farm photos, input receipts, GPS/location, loss photos, and extension officer notes where required.</p></details><details><summary>Is crop insurance worth it?</summary><p>It depends on premium, covered perils, payout trigger, subsidy, farm risk, and whether the household can absorb a bad season.</p></details></div>
+</section>
+
+
+<afro-related-tools data-ssr="1" category="agriculture" current="crop-insurance">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/agriculture/farm-profit/" data-related-tool data-id="farm-profit-calculator" data-name="Farm Profit/Loss Calculator" data-category="agriculture" data-icon="FP" data-desc="Complete farming profitability analysis — seeds, fertilizer, labor, transport, post-harvest losses. ROI, break-even yiel">Farm Profit/Loss Calculator</a></li><li><a href="/agriculture/cassava-processing/" data-related-tool data-id="cassava-processing-calculator" data-name="Cassava Processing Profit Calculator" data-category="agriculture" data-icon="CP" data-desc="Calculate profits from processing cassava into garri, fufu flour, HQCF, chips, or starch. Compare all pathways with loca">Cassava Processing Profit Calculator</a></li><li><a href="/agriculture/crop-yield/" data-related-tool data-id="crop-yield-estimator" data-name="Crop Yield Estimator" data-category="agriculture" data-icon="CY" data-desc="Estimate crop yields across Africa with region-specific data. 40+ crops, 54 countries, FAOSTAT-backed.">Crop Yield Estimator</a></li><li><a href="/agriculture/farm-budget/" data-related-tool data-id="farm-budget" data-name="Smallholder Farm Budget Planner" data-category="agriculture" data-icon="SF" data-desc="Plan your seasonal farming budget with cost breakdown and cash flow timeline. Know exactly how much you need before plan">Smallholder Farm Budget Planner</a></li><li><a href="/agriculture/fish-farming/" data-related-tool data-id="fish-farming-roi" data-name="Fish Farming ROI Calculator" data-category="agriculture" data-icon="FF" data-desc="Calculate aquaculture profitability for catfish, tilapia and trout. Full ROI with local feed prices, fingerling costs, p">Fish Farming ROI Calculator</a></li><li><a href="/agriculture/greenhouse/" data-related-tool data-id="greenhouse-cost-estimator" data-name="Greenhouse Cost Estimator" data-category="agriculture" data-icon="GC" data-desc="Estimate greenhouse setup costs, annual running expenses, ROI and payback period. 5 greenhouse types, 6 crops, local pri">Greenhouse Cost Estimator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+
+<!-- seo-internal-links -->
+<nav class="seo-links" aria-label="Crop Insurance — Available Countries">
+<h2 class="seo-links-title">Crop Insurance — Available Countries</h2>
+<ul class="seo-links-list"><li><a href="/agriculture/crop-insurance/angola">Crop Insurance in Angola</a></li><li><a href="/agriculture/crop-insurance/cameroon">Crop Insurance in Cameroon</a></li><li><a href="/agriculture/crop-insurance/cote-d-ivoire">Crop Insurance in Côte d'Ivoire</a></li><li><a href="/agriculture/crop-insurance/egypt">Crop Insurance in Egypt</a></li><li><a href="/agriculture/crop-insurance/ethiopia">Crop Insurance in Ethiopia</a></li><li><a href="/agriculture/crop-insurance/ghana">Crop Insurance in Ghana</a></li><li><a href="/agriculture/crop-insurance/kenya">Crop Insurance in Kenya</a></li><li><a href="/agriculture/crop-insurance/morocco">Crop Insurance in Morocco</a></li><li><a href="/agriculture/crop-insurance/nigeria">Crop Insurance in Nigeria</a></li><li><a href="/agriculture/crop-insurance/rwanda">Crop Insurance in Rwanda</a></li><li><a href="/agriculture/crop-insurance/senegal">Crop Insurance in Senegal</a></li><li><a href="/agriculture/crop-insurance/south-africa">Crop Insurance in South Africa</a></li><li><a href="/agriculture/crop-insurance/tanzania">Crop Insurance in Tanzania</a></li><li><a href="/agriculture/crop-insurance/tunisia">Crop Insurance in Tunisia</a></li><li><a href="/agriculture/crop-insurance/uganda">Crop Insurance in Uganda</a></li></ul>
+</nav>
+<!-- seo-internal-links -->
+<afro-footer></afro-footer>
+
+<script src="/data/agriculture/crop-insurance-data.js?v=c03ac1e5"></script>
+<script>
+(function () {
+  'use strict';
+
+  // Only show the 15 countries covered by this tool
+  var COVERED = ['NG','KE','ZA','GH','EG','ET','TZ','UG','RW','CI','CM','SN','MA','TN','AO'];
+
+  var CID = window.AfroTools.cropInsuranceData;
+  var hub = document.getElementById('hubMain');
+
+  // Build region groups from our covered countries
+  var regionOrder = ['west_africa', 'east_africa', 'central_africa', 'southern_africa', 'north_africa'];
+  var regionLabels = {
+    west_africa: 'West Africa',
+    east_africa: 'East Africa',
+    central_africa: 'Central Africa',
+    southern_africa: 'Southern Africa',
+    north_africa: 'North Africa'
+  };
+
+  // Country metadata for the 15 countries
+  var META = {
+    'NG': { flag: '🇳🇬', slug: 'nigeria',       region: 'west_africa' },
+    'GH': { flag: '🇬🇭', slug: 'ghana',         region: 'west_africa' },
+    'CI': { flag: '🇨🇮', slug: 'cote-d-ivoire', region: 'west_africa' },
+    'SN': { flag: '🇸🇳', slug: 'senegal',       region: 'west_africa' },
+    'KE': { flag: '🇰🇪', slug: 'kenya',         region: 'east_africa' },
+    'ET': { flag: '🇪🇹', slug: 'ethiopia',      region: 'east_africa' },
+    'TZ': { flag: '🇹🇿', slug: 'tanzania',      region: 'east_africa' },
+    'UG': { flag: '🇺🇬', slug: 'uganda',        region: 'east_africa' },
+    'RW': { flag: '🇷🇼', slug: 'rwanda',        region: 'east_africa' },
+    'CM': { flag: '🇨🇲', slug: 'cameroon',      region: 'central_africa' },
+    'ZA': { flag: '🇿🇦', slug: 'south-africa',  region: 'southern_africa' },
+    'AO': { flag: '🇦🇴', slug: 'angola',        region: 'southern_africa' },
+    'EG': { flag: '🇪🇬', slug: 'egypt',         region: 'north_africa' },
+    'MA': { flag: '🇲🇦', slug: 'morocco',       region: 'north_africa' },
+    'TN': { flag: '🇹🇳', slug: 'tunisia',       region: 'north_africa' }
+  };
+
+  regionOrder.forEach(function (regionKey) {
+    var group = COVERED.filter(function (cc) { return META[cc] && META[cc].region === regionKey; });
+    if (!group.length) return;
+
+    var section = document.createElement('div');
+    section.className = 'region-section';
+
+    var label = document.createElement('div');
+    label.className = 'region-label';
+    label.textContent = regionLabels[regionKey] + ' (' + group.length + ')';
+    section.appendChild(label);
+
+    var grid = document.createElement('div');
+    grid.className = 'country-grid';
+
+    group.forEach(function (cc) {
+      var m = META[cc];
+      var cd = CID.countries[cc];
+      if (!m || !cd) return;
+      var numPrograms = cd.programs ? cd.programs.length : 1;
+      var a = document.createElement('a');
+      a.className = 'country-card';
+      a.href = '/agriculture/crop-insurance/' + m.slug;
+      a.innerHTML =
+        '<span class="flag">' + m.flag + '</span>' +
+        '<span class="name">' + cd.name + '</span>' +
+        '<span class="programs-count">' + numPrograms + ' program' + (numPrograms > 1 ? 's' : '') + '</span>' +
+        '<span class="arrow">&rsaquo;</span>';
+      grid.appendChild(a);
+    });
+
+    section.appendChild(grid);
+    hub.appendChild(section);
+  });
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
+<script>if(typeof twemoji!=='undefined')twemoji.parse(document.body,{folder:'svg',ext:'.svg'});</script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

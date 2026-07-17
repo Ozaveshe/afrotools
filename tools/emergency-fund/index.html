@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Emergency Fund Calculator — Africa | AfroTools</title>
+<meta name="description" content="Calculate how much emergency fund you need in Africa. Based on monthly expenses, job security, and country inflation. Plus where to keep it.">
+<meta property="og:title" content="Emergency Fund Calculator | AfroTools">
+<meta property="og:description" content="Calculate how much emergency fund you need in Africa. Based on monthly expenses, job security, and country inflation. Plus where to keep it.">
+<meta property="og:url" content="https://afrotools.com/tools/emergency-fund/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Emergency Fund Calculator — Africa | AfroTools">
+<meta name="twitter:description" content="Calculate how much emergency fund you need in Africa. Based on monthly expenses, job security, and country inflation. Plus where to keep it.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Emergency Fund Calculator",
+  "url": "https://afrotools.com/tools/emergency-fund/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools"
+  },
+  "image": "https://afrotools.com/assets/img/tools/emergency-fund.webp"
+}
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Fintech & Banking","item":"https://afrotools.com/fintech/"},{"@type":"ListItem","position":3,"name":"Emergency Fund Calculator","item":"https://afrotools.com/tools/emergency-fund/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
+.tool-hero{background:linear-gradient(135deg,#0A1628 0%,#1a1035 50%,#2d1b69 100%);color:#fff;padding:2.5rem 1.5rem 3rem}
+.tool-hero .container{max-width:900px;margin:0 auto}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.78);margin-bottom:.75rem}
+.breadcrumb a{color:rgba(255,255,255,.78);text-decoration:none}
+.breadcrumb span{margin:0 .35rem;opacity:.4}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin:.25rem 0 .6rem;line-height:1.2}
+.tool-hero p{font-size:.95rem;color:rgba(255,255,255,.92);max-width:580px;line-height:1.65}
+.hero-badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.hero-badge{padding:4px 12px;border-radius:100px;font-size:.75rem;font-weight:600;background:rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1.25rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{display:flex;flex-direction:column;gap:4px}
+label{font-size:.82rem;font-weight:600;color:#374151}
+select,input[type="number"]{width:100%;padding:.65rem .85rem;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.9rem;background:#fff;transition:border-color .2s}
+select:focus,input:focus{outline:none;border-color:var(--color-primary)}
+.btn-calc{width:100%;padding:.85rem;border:none;border-radius:10px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:.5rem;transition:filter .2s}
+.btn-calc:hover{filter:brightness(1.1)}
+.results{display:none;margin-top:1.25rem}
+.results.on{display:block}
+.res-hero{background:linear-gradient(135deg,#0f172a,#1e3a5f);border-radius:14px;padding:1.75rem;text-align:center;color:#fff;margin-bottom:1.25rem}
+.res-label{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.7)}
+.res-val{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:800;color:#fff;margin:.2rem 0}
+.res-sub{font-size:.85rem;color:rgba(255,255,255,.65)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.25rem}
+.metric{background:#f8fafd;border:1.5px solid #e5e7eb;border-radius:12px;padding:1rem;text-align:center}
+.metric-val{font-size:1.3rem;font-weight:800;color:var(--color-primary)}
+.metric-label{font-size:.75rem;color:#6b7280;margin-top:3px}
+.where-to-keep{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:1rem}
+.where-card{border:1.5px solid #e5e7eb;border-radius:12px;padding:1rem}
+.where-title{font-size:.82rem;font-weight:700;color:#0f172a;margin-bottom:.35rem}
+.where-tag{display:inline-block;padding:2px 8px;border-radius:100px;font-size:.68rem;font-weight:700;margin-bottom:.35rem}
+.tag-green{background:#dcfce7;color:#15803d}
+.tag-blue{background:#dbeafe;color:#1d4ed8}
+.tag-yellow{background:#fef9c3;color:#854d0e}
+.where-desc{font-size:.8rem;color:#6b7280;line-height:1.5}
+.progress-wrap{margin:1.25rem 0}
+.progress-label{display:flex;justify-content:space-between;font-size:.82rem;font-weight:600;margin-bottom:.35rem}
+.progress-bar{height:14px;border-radius:8px;background:#e5e7eb;overflow:hidden}
+.progress-fill{height:100%;border-radius:8px;background:var(--color-primary);transition:width .6s}
+details summary{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;list-style:none;background:#f9fafb;display:flex;justify-content:space-between}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
+details[open] summary::after{content:'\2212'}
+.faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
+.faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+@media(max-width:680px){.form-grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}}
+</style>
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/emergency-fund.webp">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/emergency-fund.webp">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Emergency Fund Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Emergency Fund Calculator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Emergency Fund Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Emergency Fund Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"How many months of expenses should I save?","acceptedAnswer":{"@type":"Answer","text":"The standard advice is 3-6 months of essential expenses. In Africa, given higher economic volatility, informal employment, and family financial obligations, 6-9 months is more appropriate. If you are self-employed, run a business, or have many dependents, target 9-12 months."}},{"@type":"Question","name":"Why keep emergency fund in MMF instead of savings?","acceptedAnswer":{"@type":"Answer","text":"African savings accounts typically pay 2-5% interest, while Money Market Funds pay 7-15%. On a 6-month emergency fund of KSh 900,000, the difference is KSh 54,000-90,000 per year in interest. MMFs offer similar or better liquidity (same-day withdrawal) while significantly outperforming savings accounts."}},{"@type":"Question","name":"Should I invest or build emergency fund first?","acceptedAnswer":{"@type":"Answer","text":"Always build your emergency fund first (at least 3 months). Without it, you will be forced to sell investments at the worst time (emergencies), often at a loss. Once you have 3-6 months saved, split additional savings between emergency fund and long-term investments."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/emergency-fund/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/emergency-fund/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/fonds-urgence/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/mfuko-wa-dharura/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/emergency-fund/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar theme="dark" active="fintech"></afro-navbar>
+<div class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb"><a href="/">AfroTools</a><span>›</span><a href="/fintech/">Fintech &amp; Banking</a><span>›</span>Emergency Fund Calculator</nav>
+    <h1>Emergency Fund Calculator</h1>
+    <p>Calculate how much emergency fund you need based on your expenses, job security, and country inflation. Plus the best places to keep it in Africa.</p>
+    <div class="hero-badges"><span class="hero-badge">Universal</span><span class="hero-badge">Africa-Specific Advice</span><span class="hero-badge">Free</span></div>
+  </div>
+</div>
+<div class="container">
+  <div class="card">
+    <h2>Emergency Fund Calculator</h2>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="ef-monthly">Monthly Essential Expenses</label>
+        <input type="number" id="ef-monthly" value="150000" min="0">
+      </div>
+      <div class="form-group">
+        <label for="ef-job">Job Security</label>
+        <select id="ef-job">
+          <option value="3">High (Government/Civil Service) — 3 months</option>
+          <option value="6" selected>Medium (Private sector) — 6 months</option>
+          <option value="9">Low (Self-employed/Informal) — 9 months</option>
+          <option value="12">Very Low (Multiple dependents) — 12 months</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="ef-current">Current Emergency Savings</label>
+        <input type="number" id="ef-current" value="0" min="0">
+      </div>
+      <div class="form-group">
+        <label for="ef-monthly-save">Monthly Savings Capacity</label>
+        <input type="number" id="ef-monthly-save" value="30000" min="0">
+      </div>
+      <div class="form-group">
+        <label for="ef-inflation">Your Country's Inflation Rate (%)</label>
+        <input type="number" id="ef-inflation" value="10" step="0.5">
+      </div>
+    </div>
+    <button type="button" class="btn-calc" onclick="calcEF()">Calculate Emergency Fund</button>
+    <div class="results" id="ef-results">
+      <div class="res-hero">
+        <div class="res-label">Emergency Fund Target</div>
+        <div class="res-val" id="ef-target"></div>
+        <div class="res-sub" id="ef-sub"></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-val" id="ef-gap"></div><div class="metric-label">Current Gap</div></div>
+        <div class="metric"><div class="metric-val" id="ef-months-to-goal"></div><div class="metric-label">Months to Reach Goal</div></div>
+        <div class="metric"><div class="metric-val" id="ef-monthly-need"></div><div class="metric-label">Monthly Savings Needed</div></div>
+        <div class="metric"><div class="metric-val" id="ef-inflation-adj"></div><div class="metric-label">Inflation-Adjusted Target (3 yrs)</div></div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-label"><span>Progress to Goal</span><span id="ef-progress-pct">0%</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="ef-progress-fill" style="width:0%"></div></div>
+      </div>
+      <h3 style="font-size:.95rem;font-weight:700;margin:.75rem 0 .5rem">Where to Keep Your Emergency Fund in Africa</h3>
+      <div class="where-to-keep">
+        <div class="where-card"><div class="where-tag tag-green">Best for Immediacy</div><div class="where-title">Money Market Fund</div><div class="where-desc">Same-day withdrawals, higher yield than savings (7-15%), compounds daily. CIC MMF (Kenya), ARM MMF (Nigeria), Databank (Ghana).</div></div>
+        <div class="where-card"><div class="where-tag tag-blue">Best for Safety</div><div class="where-title">Short-Term T-Bills (91-day)</div><div class="where-desc">Government-guaranteed, high yields. Less liquid — need to sell on secondary market. Best for 50% of emergency fund.</div></div>
+        <div class="where-card"><div class="where-tag tag-yellow">Accessible Instantly</div><div class="where-title">High-Interest Savings Account</div><div class="where-desc">Lower yield but instant ATM access. Keep 1-2 months here for true emergencies. Use bank with mobile access.</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Frequently Asked Questions</h2>
+
+<section class="df-upgrade" data-df-upgrade="emergency-fund">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Payment comparison workflow</span>
+      <h2>Emergency Fund Calculator: quick guide</h2>
+      <p>Not sure how to get the most from the Emergency Fund Calculator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Emergency Fund Calculator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
+    </div>
+    <form class="df-form" data-df-form="emergency-fund">
+      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
+      <label>Transaction value<input name="transaction" type="number" value="50000" min="0" step="any" aria-label="Transaction value"></label>
+      <label>Fee percent<input name="fee" type="number" value="1.5" min="0" step="any" aria-label="Fee percent"></label>
+      <label>Channel<select name="channel" aria-label="Channel"><option value="POS">POS</option><option value="bank transfer">bank transfer</option><option value="mobile money">mobile money</option><option value="card">card</option></select></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="emergency-fund" data-df-base="Emergency Fund Calculator — enter your details above to see your result." aria-live="polite">Emergency Fund Calculator — enter your details above to see your result.</output>
+      <div class="df-actions"><button type="button" data-df-copy="emergency-fund">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="emergency-fund-faq-title">
+  <h2 id="emergency-fund-faq-title">Emergency Fund Calculator FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the Emergency Fund Calculator?</summary><p>Enter your amounts, rates and dates in the fields above. The Emergency Fund Calculator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Emergency Fund Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Emergency Fund Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
+</section>
+    <div class="faq-item"><details><summary>How many months of expenses should I save?</summary><div class="faq-a">The standard advice is 3-6 months of essential expenses. In Africa, given higher economic volatility, informal employment, and family financial obligations, 6-9 months is more appropriate. If you are self-employed, run a business, or have many dependents, target 9-12 months.</div></details></div>
+    <div class="faq-item"><details><summary>Why keep emergency fund in MMF instead of savings?</summary><div class="faq-a">African savings accounts typically pay 2-5% interest, while Money Market Funds pay 7-15%. On a 6-month emergency fund of KSh 900,000, the difference is KSh 54,000-90,000 per year in interest. MMFs offer similar or better liquidity (same-day withdrawal) while significantly outperforming savings accounts.</div></details></div>
+    <div class="faq-item"><details><summary>Should I invest or build emergency fund first?</summary><div class="faq-a">Always build your emergency fund first (at least 3 months). Without it, you will be forced to sell investments at the worst time (emergencies), often at a loss. Once you have 3-6 months saved, split additional savings between emergency fund and long-term investments.</div></details></div>
+  </div>
+</div>
+<afro-related-tools data-ssr="1" category="fintech" current="emergency-fund">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/loan-shark-compare/" data-related-tool data-id="loan-shark-compare" data-name="Loan Shark vs Bank Rate" data-category="fintech" data-icon="LS" data-desc="Compare informal moneylender rates vs bank loans vs fintech apps. True APR calculator showing hidden cost of predatory l">Loan Shark vs Bank Rate</a></li><li><a href="/tools/mobile-vs-bank/" data-related-tool data-id="mobile-vs-bank" data-name="Mobile Money vs Bank Transfer" data-category="fintech" data-icon="MM" data-desc="Compare M-Pesa, MTN MoMo, Airtel Money vs bank transfer fees for domestic and cross-border payments across Africa.">Mobile Money vs Bank Transfer</a></li><li><a href="/tools/digital-lending/" data-related-tool data-id="digital-lending" data-name="Digital Lending App Rates" data-category="fintech" data-icon="DL" data-desc="Compare digital lending apps (Fuliza, FairMoney, Carbon, PalmCredit) — true APR, fees, repayment periods.">Digital Lending App Rates</a></li><li><a href="/tools/fixed-deposit/" data-related-tool data-id="fixed-deposit" data-name="Fixed Deposit Rate Comparator" data-category="fintech" data-icon="FD" data-desc="Compare fixed deposit and savings account interest rates across African banks. 30/60/90/180/365-day tenors, 20+ banks.">Fixed Deposit Rate Comparator</a></li><li><a href="/tools/microfinance-loan/" data-related-tool data-id="microfinance-loan" data-name="Microfinance Loan Calculator" data-category="fintech" data-icon="ML" data-desc="Calculate microfinance loan repayments for African MFIs. Flat vs reducing balance, group vs individual loans.">Microfinance Loan Calculator</a></li><li><a href="/tools/payment-gateway/" data-related-tool data-id="payment-gateway" data-name="Payment Gateway Fee Compare" data-category="fintech" data-icon="PG" data-desc="Compare Paystack, Flutterwave, Stripe, DPO, Peach Payments transaction fees for African merchants.">Payment Gateway Fee Compare</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+<script>
+function calcEF(){
+  var monthly=parseFloat(document.getElementById('ef-monthly').value)||0;
+  var months=parseInt(document.getElementById('ef-job').value);
+  var current=parseFloat(document.getElementById('ef-current').value)||0;
+  var monthlySave=parseFloat(document.getElementById('ef-monthly-save').value)||1;
+  var inflation=parseFloat(document.getElementById('ef-inflation').value)/100;
+  var target=monthly*months;
+  var gap=Math.max(0,target-current);
+  var monthsToGoal=gap>0?Math.ceil(gap/monthlySave):0;
+  var monthlyNeeded=gap>0?Math.ceil(gap/12):0;
+  var inflAdj=target*Math.pow(1+inflation,3);
+  var progress=target>0?Math.min(100,(current/target)*100):0;
+  function fmt(n){return (Math.round(n)).toLocaleString();}
+  document.getElementById('ef-target').textContent=fmt(target);
+  document.getElementById('ef-sub').textContent=months+' months of expenses | Monthly: '+fmt(monthly);
+  document.getElementById('ef-gap').textContent=fmt(gap);
+  document.getElementById('ef-months-to-goal').textContent=monthsToGoal+' months';
+  document.getElementById('ef-monthly-need').textContent=fmt(monthlyNeeded)+'/mo';
+  document.getElementById('ef-inflation-adj').textContent=fmt(inflAdj);
+  document.getElementById('ef-progress-pct').textContent=progress.toFixed(0)+'%';
+  document.getElementById('ef-progress-fill').style.width=progress+'%';
+  document.getElementById('ef-results').classList.add('on');
+}
+</script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

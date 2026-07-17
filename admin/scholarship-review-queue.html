@@ -1,0 +1,71 @@
+<!doctype html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Scholarship Review Queue | AfroTools</title>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,sans-serif;margin:0;background:#f8fafc;color:#0f172a}
+    main{max-width:1180px;margin:0 auto;padding:28px 18px}
+    h1{font-size:1.45rem;margin:0 0 6px}
+    p{color:#475569;margin:0 0 18px}
+    table{width:100%;border-collapse:collapse;background:#fff;border:1px solid #dbe3ef}
+    th,td{padding:10px 12px;border-bottom:1px solid #e2e8f0;text-align:left;vertical-align:top;font-size:.86rem}
+    th{background:#eef2f7;font-size:.72rem;text-transform:uppercase;letter-spacing:0;color:#475569}
+    a{color:#2563eb}
+    .muted{color:#64748b}
+    .status{display:inline-block;padding:3px 7px;border-radius:999px;background:#fef3c7;color:#92400e;font-weight:700;font-size:.72rem}
+  </style>
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+</head>
+<body class="top-level-page-ui-refresh">
+<main>
+  <h1>Scholarship Review Queue</h1>
+  <p id="queueSummary">Loading pending low-confidence or stale scholarship records.</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Provider</th>
+        <th>Amount</th>
+        <th>Deadline</th>
+        <th>Confidence</th>
+        <th>Source</th>
+        <th>Official</th>
+        <th>Reason</th>
+      </tr>
+    </thead>
+    <tbody id="queueBody">
+      <tr><td colspan="8" class="muted">Loading queue...</td></tr>
+    </tbody>
+  </table>
+</main>
+<script>
+!function(){
+  function esc(value){return String(value==null?'':value).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];});}
+  function link(value){return value?'<a href="'+esc(value)+'" target="_blank" rel="noopener">open</a>':'<span class="muted">missing</span>';}
+  fetch('/api/scholarship-review-queue?status=pending&limit=100',{credentials:'same-origin'})
+    .then(function(res){if(!res.ok)throw new Error('Queue returned '+res.status);return res.json();})
+    .then(function(payload){
+      document.getElementById('queueSummary').textContent = payload.count + ' pending scholarship record' + (payload.count===1?'':'s') + ' need review before promotion.';
+      document.getElementById('queueBody').innerHTML = payload.items.length ? payload.items.map(function(item){
+        return '<tr>'+
+          '<td><strong>'+esc(item.title)+'</strong><br><span class="status">'+esc(item.review_status)+'</span></td>'+
+          '<td>'+esc(item.provider)+'</td>'+
+          '<td>'+esc(item.extracted_amount||'')+'</td>'+
+          '<td>'+esc(item.extracted_deadline||'')+'</td>'+
+          '<td>'+esc(item.confidence)+'</td>'+
+          '<td>'+link(item.source_url)+'</td>'+
+          '<td>'+link(item.official_url)+'</td>'+
+          '<td>'+esc(item.review_reason)+'</td>'+
+        '</tr>';
+      }).join('') : '<tr><td colspan="8" class="muted">No pending review records.</td></tr>';
+    })
+    .catch(function(error){
+      document.getElementById('queueBody').innerHTML = '<tr><td colspan="8">'+esc(error.message)+'</td></tr>';
+    });
+}();
+</script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Route API - AfroTools API Docs</title>
+<meta name="description" content="Route a partner user task to a validated AfroTools tool or workflow link with deterministic sandbox examples, privacy-safe responses, and API key rate limits.">
+<meta name="theme-color" content="#0062CC">
+<link rel="canonical" href="https://afrotools.com/docs/api/ai-route">
+<meta property="og:title" content="AI Route API - AfroTools API Docs">
+<meta property="og:description" content="Partner-safe routing from user tasks to AfroTools tools and workflows.">
+<meta property="og:url" content="https://afrotools.com/docs/api/ai-route">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/api-docs.css?v=ce57a995">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/api-sidebar.js?v=1e21db66" defer></script>
+<script src="/assets/js/components/api-code-tabs.js?v=d929cd13" defer></script>
+<meta property="article:modified_time" content="2026-06-16">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+</head>
+<body class="api-docs-body top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<div class="api-docs-layout">
+  <api-sidebar active="/docs/api/ai-route.html"></api-sidebar>
+  <main class="api-content">
+    <section class="api-hero">
+      <div class="badge"><span></span> POST /v1/ai/route</div>
+      <h1>AI Route API</h1>
+      <p>Send a short user task and receive a validated AfroTools tool or workflow link. The endpoint is designed for partner sites, widgets, schools, job boards, publishers, and internal portals that need safe routing without exposing internal prompts or unrestricted model behavior.</p>
+    </section>
+
+    <section class="api-full-width">
+      <h2 class="pt-0">Request</h2>
+      <p>Base URL: <code>https://afrotools.com/api/v1</code>. Use an API key in the <code>x-api-key</code> header. Test keys (<code>afro_test_*</code>) return deterministic sandbox data with separate sandbox limits.</p>
+      <table class="param-table">
+        <thead>
+          <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>query</code></td><td>string</td><td>Yes</td><td>User task to route, up to 1,200 characters.</td></tr>
+          <tr><td><code>country</code></td><td>string</td><td>No</td><td>Country hint used for route prefill only. Do not send private user data.</td></tr>
+          <tr><td><code>locale</code></td><td>string</td><td>No</td><td>UI language hint such as <code>en</code>, <code>fr</code>, <code>pt</code>, <code>ar</code>, or <code>sw</code>.</td></tr>
+          <tr><td><code>allowedCategories</code></td><td>array or comma string</td><td>No</td><td>Restrict recommendations to categories such as <code>career</code>, <code>education</code>, <code>business</code>, <code>trade</code>, <code>energy</code>, <code>documents</code>, <code>local-life</code>, <code>construction</code>, or <code>country-intelligence</code>.</td></tr>
+          <tr><td><code>partnerContext</code></td><td>object</td><td>No</td><td>Small non-sensitive context, for example <code>{"surface":"jobs-board"}</code>. Credential, CV, document, payment, contact, or identity fields are rejected.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="code-example">
+curl -X POST https://afrotools.com/api/v1/ai/route \
+  -H "x-api-key: afro_test_partner_demo" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "Write me a CV for an electrical engineer in Ghana",
+    "country": "Ghana",
+    "allowedCategories": ["career", "business"],
+    "partnerContext": { "surface": "jobs-board" }
+  }'</div>
+    </section>
+
+    <section class="api-full-width" style="background:#fff;border-top:1px solid #E5E7EB;border-bottom:1px solid #E5E7EB">
+      <h2 class="pt-0">Response</h2>
+      <p>The endpoint returns a compact routing decision. It does not return internal prompts, chain-of-thought, raw provider payloads, raw query text, or unvalidated external URLs.</p>
+      <div class="code-example">
+{
+  "status": "success",
+  "selectedTool": {
+    "id": "cv-builder",
+    "name": "CV Builder",
+    "href": "/tools/cv-builder/"
+  },
+  "selectedRoute": "/tools/cv-builder/?source=api_ai_route&amp;country=Ghana",
+  "category": "cv-jobs",
+  "confidence": 0.74,
+  "missingInputs": [],
+  "suggestedDisplayText": "Open CV Builder for this AfroTools workflow.",
+  "privacyMode": "browser_local",
+  "safetyDomain": "employment"
+}</div>
+      <table class="param-table">
+        <thead>
+          <tr><th>Field</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>status</code></td><td><code>success</code>, <code>no_match</code>, or <code>error</code>.</td></tr>
+          <tr><td><code>selectedTool</code></td><td>Validated AfroTools tool id, display name, and public route base.</td></tr>
+          <tr><td><code>selectedRoute</code></td><td>Root-relative AfroTools route. External URLs and model-suggested routes are not returned.</td></tr>
+          <tr><td><code>category</code></td><td>Matched workflow category or <code>search</code> for safe fallback.</td></tr>
+          <tr><td><code>confidence</code></td><td>Deterministic route confidence from 0 to 1.</td></tr>
+          <tr><td><code>missingInputs</code></td><td>Field names your UI can ask before opening a calculator or workflow.</td></tr>
+          <tr><td><code>suggestedDisplayText</code></td><td>Short partner-safe copy for a button or card.</td></tr>
+          <tr><td><code>privacyMode</code></td><td>How the underlying workflow treats user data, such as <code>browser_local</code> or <code>ai_optional</code>.</td></tr>
+          <tr><td><code>safetyDomain</code></td><td>High-stakes domain label such as <code>tax</code>, <code>finance</code>, <code>employment</code>, <code>education</code>, <code>energy</code>, or <code>none</code>.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="api-full-width">
+      <h2 class="pt-0">Sandbox Examples</h2>
+      <div class="use-cases-grid">
+        <div class="use-case-card">
+          <h4>Education</h4>
+          <p><code>I want to study in Canada from Nigeria with a budget of $8,000</code> routes to the study abroad workflow and usually asks for study level.</p>
+        </div>
+        <div class="use-case-card">
+          <h4>Trade</h4>
+          <p><code>How much duty will I pay to import a 2016 Toyota Axio into Nigeria?</code> routes to import duty and asks for item value.</p>
+        </div>
+        <div class="use-case-card">
+          <h4>Energy</h4>
+          <p><code>Should I install solar for my shop in Lagos?</code> routes to solar ROI and asks for monthly power or fuel spend.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="api-full-width" style="background:#fff;border-top:1px solid #E5E7EB;border-bottom:1px solid #E5E7EB">
+      <h2 class="pt-0">Safety Rules</h2>
+      <ul>
+        <li>API keys are required and rate limited. See <a href="/docs/api/rate-limits">Rate Limits</a>.</li>
+        <li>The endpoint uses deterministic routing first and validates every returned tool id and route against the AfroTools manifest.</li>
+        <li>Partner context must be non-sensitive. Do not send raw CVs, documents, customer contact data, credentials, payment data, or identity numbers.</li>
+        <li>High-stakes domains are labeled so partner UIs can show the right warnings before users rely on tax, customs, immigration, finance, energy, or employment guidance.</li>
+      </ul>
+    </section>
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Retirement Readiness Score | AfroTools</title>
+<meta name="description" content="Calculate your retirement readiness score. Project savings, check pension adequacy, find your monthly shortfall across 15 African countries.">
+<meta property="og:title" content="Retirement Readiness Score | AfroTools">
+<meta property="og:description" content="Are you on track to retire comfortably? Get your personalised retirement score for Africa.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/retirement-readiness.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/retirement-readiness/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Retirement Readiness Score | AfroTools">
+<meta name="twitter:description" content="Calculate your retirement readiness score. Project savings, check pension adequacy, find your monthly shortfall across 15 African countries.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/energy.css?v=d1d794d4">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+:root {
+  --en-accent: #6366F1;
+  --en-accent-dark: #4F46E5;
+  --en-accent-light: #818CF8;
+  --en-accent-pale: #EEF2FF;
+}
+.en-tool-hero { background: linear-gradient(135deg, #4F46E5 0%, #6366F1 50%, #818CF8 100%) !important; }
+.score-ring {
+  width: 140px; height: 140px;
+  border-radius: 50%;
+  background: conic-gradient(var(--en-accent) calc(var(--pct) * 1%), #e2e8f0 0);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 1rem;
+  position: relative;
+}
+.score-ring::after {
+  content: attr(data-score);
+  position: absolute;
+  width: 108px; height: 108px;
+  background: white;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem; font-weight: 700; color: var(--en-accent);
+}
+.grade-A { background: #dcfce7; color: #166534; }
+.grade-B { background: #dbeafe; color: #1e40af; }
+.grade-C { background: #fef9c3; color: #854d0e; }
+.grade-D { background: #fee2e2; color: #991b1b; }
+.grade-F { background: #fce7f3; color: #9d174d; }
+.scenario-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin-top: 1rem; }
+@media(max-width:600px){ .scenario-cards { grid-template-columns: 1fr; } }
+.sc-card { border-radius: 10px; padding: 1rem; border: 1.5px solid #e2e8f0; }
+.sc-card h4 { margin: 0 0 .5rem; font-size: .85rem; text-transform: uppercase; letter-spacing: .05em; }
+.sc-card .sc-amount { font-size: 1.4rem; font-weight: 700; color: var(--en-accent); margin: .25rem 0; }
+.sc-pessimistic h4 { color: #dc2626; }
+.sc-base h4 { color: #2563eb; }
+.sc-optimistic h4 { color: #16a34a; }
+.shortfall-bar { background: #e2e8f0; border-radius: 6px; height: 12px; margin: .5rem 0; overflow: hidden; }
+.shortfall-fill { height: 100%; border-radius: 6px; background: var(--en-accent); transition: width .5s; }
+.rr-method-card{margin-top:1.5rem;padding:1.25rem;border:1.5px solid #e2e8f0;border-radius:14px;background:#f8fafc}
+.rr-method-card h3{margin:0 0 .6rem;font-size:1rem;color:#111827}
+.rr-method-card p{margin:0 0 .65rem;color:#475569;font-size:.88rem;line-height:1.7}
+.rr-method-card ul{margin:0;padding-left:1.1rem;color:#475569;font-size:.84rem;line-height:1.7}
+.rr-result-actions{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:1rem}
+.rr-secondary-btn{display:inline-flex;align-items:center;justify-content:center;padding:.65rem 1rem;border:1.5px solid #c7d2fe;border-radius:10px;background:#fff;color:#4f46e5;font-family:inherit;font-size:.84rem;font-weight:800;cursor:pointer}
+.rr-secondary-btn:hover,.rr-secondary-btn:focus-visible{background:#eef2ff;border-color:#4f46e5;outline:none}
+.rr-action-status{min-height:20px;margin-top:.7rem;color:#4f46e5;font-size:.8rem;font-weight:800}
+@media(max-width:600px){.rr-result-actions .rr-secondary-btn{width:100%}}
+</style>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},
+    {"@type":"ListItem","position":2,"name":"Career","item":"https://afrotools.com/career/"},
+    {"@type":"ListItem","position":3,"name":"Retirement Readiness Score","item":"https://afrotools.com/tools/retirement-readiness/"}
+  ]
+}
+</script>
+<!-- Google tag (gtag.js) -->
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/retirement-readiness.webp">
+<link rel="stylesheet" href="/assets/css/career-tool-focus.css?v=98967bec">
+
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Retirement Readiness Score",
+  "description": "Calculate your retirement readiness score. Project savings, check pension adequacy, find your monthly shortfall across 15 African countries.",
+  "url": "https://afrotools.com/tools/retirement-readiness/",
+  "inLanguage": "en",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/retirement-readiness.webp"
+}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/retirement-readiness/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/retirement-readiness/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/preparation-retraite/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/utayari-wa-kustaafu/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/retirement-readiness/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar theme="dark" active="career"></afro-navbar>
+
+<nav class="en-breadcrumb" aria-label="Breadcrumb">
+  <div class="en-container">
+    <ol>
+      <li><a href="/">Home</a></li>
+      <li><a href="/career/">Career</a></li>
+      <li aria-current="page">Retirement Readiness</li>
+    </ol>
+  </div>
+</nav>
+
+<section class="en-tool-hero">
+  <div class="en-container">
+    <div class="en-hero-badge">Personal Finance</div>
+    <h1>Retirement Readiness Score</h1>
+    <p>Are you on track to retire comfortably? Calculate your personalised score, project your pension, and close any savings gap — across 15 African countries.</p>
+  </div>
+</section>
+
+<main class="en-main">
+  <div class="en-container">
+    <div class="en-card">
+      <h2 class="en-section-title">Your Details</h2>
+
+      <div class="en-form-grid">
+        <div class="en-field">
+          <label class="en-label" for="rr-country">Country</label>
+          <select class="en-select" id="rr-country">
+            <option value="NG">Nigeria (₦)</option>
+            <option value="KE">Kenya (KES)</option>
+            <option value="ZA">South Africa (ZAR)</option>
+            <option value="GH">Ghana (GHS)</option>
+            <option value="EG">Egypt (EGP)</option>
+            <option value="ET">Ethiopia (ETB)</option>
+            <option value="TZ">Tanzania (TZS)</option>
+            <option value="UG">Uganda (UGX)</option>
+            <option value="RW">Rwanda (RWF)</option>
+            <option value="CI">Côte d'Ivoire (XOF)</option>
+            <option value="CM">Cameroon (XAF)</option>
+            <option value="SN">Senegal (XOF)</option>
+            <option value="MA">Morocco (MAD)</option>
+            <option value="TN">Tunisia (TND)</option>
+            <option value="AO">Angola (AOA)</option>
+          </select>
+        </div>
+
+        <div class="en-field">
+          <label class="en-label">Current Age</label>
+          <input aria-label="Rr age" type="number" class="en-input" id="rr-age" value="35" min="18" max="65">
+        </div>
+
+        <div class="en-field">
+          <label class="en-label">Target Retirement Age</label>
+          <input aria-label="Rr retire age" type="number" class="en-input" id="rr-retire-age" value="60" min="40" max="75">
+        </div>
+
+        <div class="en-field">
+          <label class="en-label">Current Savings / Pension Balance</label>
+          <input aria-label="Rr savings" type="number" class="en-input" id="rr-savings" value="0" min="0">
+        </div>
+
+        <div class="en-field">
+          <label class="en-label">Monthly Contribution (to pension/savings)</label>
+          <input aria-label="Rr contrib" type="number" class="en-input" id="rr-contrib" value="0" min="0">
+        </div>
+
+        <div class="en-field">
+          <label class="en-label">Current Monthly Gross Salary</label>
+          <input aria-label="Rr salary" type="number" class="en-input" id="rr-salary" value="0" min="0">
+        </div>
+
+        <div class="en-field">
+          <label class="en-label">Expected Monthly Pension Payout (if known)</label>
+          <input aria-label="Rr pension payout" type="number" class="en-input" id="rr-pension-payout" value="0" min="0">
+          <span class="en-hint">Leave 0 if unknown — we'll estimate it</span>
+        </div>
+
+        <div class="en-field">
+          <label class="en-label">Monthly Living Expenses Today</label>
+          <input aria-label="Rr expenses" type="number" class="en-input" id="rr-expenses" value="0" min="0">
+        </div>
+
+        <div class="en-field">
+          <label class="en-label">Dependants at Retirement</label>
+          <select class="en-select" id="rr-dependants" aria-label="Rr Dependants">
+            <option value="0">None</option>
+            <option value="1">1 person</option>
+            <option value="2">2 people</option>
+            <option value="3">3+ people</option>
+          </select>
+        </div>
+
+        <div class="en-field">
+          <label class="en-label">Housing Status at Retirement</label>
+          <select class="en-select" id="rr-housing" aria-label="Rr Housing">
+            <option value="owned">Own home (paid off)</option>
+            <option value="mortgage">Still paying mortgage</option>
+            <option value="renting">Renting</option>
+          </select>
+        </div>
+
+        <div class="en-field">
+          <label class="en-label">Post-Retirement Health Insurance Plan</label>
+          <select class="en-select" id="rr-health" aria-label="Rr Health">
+            <option value="employer">Employer-sponsored (continued)</option>
+            <option value="private">Private health insurance</option>
+            <option value="nhis">National scheme only (NHIS/NHIF etc.)</option>
+            <option value="none">None planned</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="button" class="en-btn" onclick="calcRetirement()">Calculate Retirement Score</button>
+    </div>
+
+    <section class="rr-method-card" aria-labelledby="rr-method-title">
+      <h3 id="rr-method-title">How the readiness estimate works</h3>
+      <p>The calculator projects your current balance and monthly contributions to retirement, compares the result with an estimated nest egg target, then turns the gap into a score and action plan.</p>
+      <ul>
+        <li><strong>Target:</strong> estimated monthly retirement expenses multiplied by 12 and then by 25.</li>
+        <li><strong>Projection:</strong> current savings plus monthly contributions compounded to retirement at 4%, 7%, and 10% scenarios.</li>
+        <li><strong>Income test:</strong> 4% annual withdrawal from the base projection plus any known or estimated pension payout.</li>
+        <li><strong>Verify:</strong> pension rules, tax treatment, fund fees, inflation, healthcare, housing, and licensed financial advice.</li>
+      </ul>
+    </section>
+
+    <div class="en-results" id="rr-results">
+      <div class="en-results-hero">
+        <div class="score-ring" id="rr-ring" style="--pct:0" data-score="—"></div>
+        <div class="en-results-title" id="rr-headline">Your Retirement Score</div>
+        <div id="rr-grade-badge" class="en-badge" style="font-size:1rem;padding:.5rem 1.5rem;margin:.5rem auto"></div>
+      </div>
+
+      <div class="en-results-grid">
+        <div class="en-stat-card">
+          <div class="en-stat-label">Projected Savings at Retirement</div>
+          <div class="en-stat-value" id="rr-projected">—</div>
+        </div>
+        <div class="en-stat-card">
+          <div class="en-stat-label">Retirement Nest Egg Target (25× rule)</div>
+          <div class="en-stat-value" id="rr-target">—</div>
+        </div>
+        <div class="en-stat-card">
+          <div class="en-stat-label">Monthly Income Needed</div>
+          <div class="en-stat-value" id="rr-monthly-need">—</div>
+        </div>
+        <div class="en-stat-card">
+          <div class="en-stat-label">Monthly Shortfall / Surplus</div>
+          <div class="en-stat-value" id="rr-shortfall">—</div>
+        </div>
+      </div>
+
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.75rem">Savings Adequacy</h3>
+        <div class="shortfall-bar"><div class="shortfall-fill" id="rr-bar" style="width:0%"></div></div>
+        <div id="rr-bar-label" style="font-size:.85rem;color:#64748b;text-align:center"></div>
+      </div>
+
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.75rem">3 Scenarios</h3>
+        <div class="scenario-cards">
+          <div class="sc-card sc-pessimistic">
+            <h4>Pessimistic (4% return)</h4>
+            <div class="sc-amount" id="sc-pess">—</div>
+            <div id="sc-pess-label" style="font-size:.82rem;color:#64748b"></div>
+          </div>
+          <div class="sc-card sc-base">
+            <h4>Base Case (7% return)</h4>
+            <div class="sc-amount" id="sc-base">—</div>
+            <div id="sc-base-label" style="font-size:.82rem;color:#64748b"></div>
+          </div>
+          <div class="sc-card sc-optimistic">
+            <h4>Optimistic (10% return)</h4>
+            <div class="sc-amount" id="sc-opt">—</div>
+            <div id="sc-opt-label" style="font-size:.82rem;color:#64748b"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.75rem">To Close the Gap — Contribution Needed</h3>
+        <div class="en-results-grid">
+          <div class="en-stat-card">
+            <div class="en-stat-label">Extra Monthly Contribution Needed</div>
+            <div class="en-stat-value" id="rr-extra-contrib">—</div>
+          </div>
+          <div class="en-stat-card">
+            <div class="en-stat-label">Pension Scheme Info</div>
+            <div class="en-stat-value" id="rr-pension-info" style="font-size:.9rem">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.75rem">Risk Flags</h3>
+        <ul id="rr-flags" style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:.5rem"></ul>
+      </div>
+
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.75rem">Action Plan</h3>
+        <ol id="rr-actions" style="padding-left:1.25rem;margin:0;display:flex;flex-direction:column;gap:.5rem"></ol>
+        <div class="rr-result-actions" aria-label="Retirement readiness result actions">
+          <button type="button" class="rr-secondary-btn" onclick="copyRetirementReport()">Copy report</button>
+          <button type="button" class="rr-secondary-btn" onclick="downloadRetirementReport()">Download TXT</button>
+          <button type="button" class="rr-secondary-btn" onclick="saveRetirementReport()">Save in browser</button>
+        </div>
+        <div class="rr-action-status" id="rr-action-status" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+</main>
+<afro-related-tools data-ssr="1" category="career" current="retirement-readiness">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/career-growth/" data-related-tool data-id="career-growth" data-name="Career Growth Trajectory Calculator" data-category="career" data-icon="CG" data-desc="Plot your career growth trajectory. Predict salary milestones, time to promotion, and lifetime earnings across 15 Africa">Career Growth Trajectory Calculator</a></li><li><a href="/tools/career-switch/" data-related-tool data-id="career-switch" data-name="Career Switch Financial Impact Calculator Africa" data-category="career" data-icon="CS" data-desc="Calculate the true financial cost of switching careers in Africa. Foregone income during retraining, break-even timeline">Career Switch Financial Impact Calculator Africa</a></li><li><a href="/tools/salary-negotiation/" data-related-tool data-id="salary-negotiation" data-name="Salary Negotiation Calculator Africa — Market Rates &amp; Counter-Offer" data-category="career" data-icon="SN" data-desc="African salary negotiation calculator. Market rates by country, role, and industry. 25th/50th/75th percentile. Counter-o">Salary Negotiation Calculator Africa — Market Rates &amp; Counter-Offer</a></li><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+var COUNTRY_DATA = {
+  NG:{ sym:'₦', name:'Nigeria', rate:0.000006, avgExpenses:150000, pensionEmployee:0.08, pensionEmployer:0.10, scheme:'Contributory Pension Scheme (CPS) — 8% employee + 10% employer mandatory. Managed by licensed PFAs. Retirement age 50+ or 35 years in service.' },
+  KE:{ sym:'KES', name:'Kenya', rate:0.0077, avgExpenses:35000, pensionEmployee:0.06, pensionEmployer:0.06, scheme:'NSSF — mandatory KES 200/month (flat) for formal sector. Many employers offer occupational schemes on top. Jubilee Life & ICEA Lion popular.' },
+  ZA:{ sym:'ZAR', name:'South Africa', rate:0.054, avgExpenses:12000, pensionEmployee:0.075, pensionEmployer:0.075, scheme:'No mandatory private pension — voluntary retirement annuities (RA) tax-deductible up to 27.5% of income. GEPF for government employees.' },
+  GH:{ sym:'GHS', name:'Ghana', rate:0.069, avgExpenses:2500, pensionEmployee:0.055, pensionEmployer:0.13, scheme:'3-Tier Pension System — Tier 1 SSNIT (13.5% employer mandatory), Tier 2 occupational (5% employee + 5% employer), Tier 3 voluntary.' },
+  EG:{ sym:'EGP', name:'Egypt', rate:0.032, avgExpenses:6000, pensionEmployee:0.14, pensionEmployer:0.26, scheme:'Social Insurance — 14% employee + 26% employer on basic salary. Retirement at 60 for most professions.' },
+  ET:{ sym:'ETB', name:'Ethiopia', rate:0.019, avgExpenses:5000, pensionEmployee:0.07, pensionEmployer:0.11, scheme:'Private Organisation Employees Social Security Agency — 7% employee + 11% employer. Retirement at 60.' },
+  TZ:{ sym:'TZS', name:'Tanzania', rate:0.00039, avgExpenses:1200000, pensionEmployee:0.10, pensionEmployer:0.10, scheme:'NSSF — 10% employee + 10% employer. Retirement at 55–60. Additional PSPF for public servants.' },
+  UG:{ sym:'UGX', name:'Uganda', rate:0.00027, avgExpenses:1500000, pensionEmployee:0.05, pensionEmployer:0.10, scheme:'NSSF — 5% employee + 10% employer. Voluntary save-to-retire products available via NSSF.' },
+  RW:{ sym:'RWF', name:'Rwanda', rate:0.00078, avgExpenses:300000, pensionEmployee:0.03, pensionEmployer:0.05, scheme:'CSR / RSSB — 3% employee + 5% employer. Retirement at 60. Rwanda has one of Africa\'s fastest growing pension assets.' },
+  CI:{ sym:'XOF', name:'Côte d\'Ivoire', rate:0.0016, avgExpenses:200000, pensionEmployee:0.064, pensionEmployer:0.016, scheme:'CNPS — 6.4% employee + 1.6% employer. Retirement at 60. UEMOA zone pension portability possible.' },
+  CM:{ sym:'XAF', name:'Cameroon', rate:0.0016, avgExpenses:200000, pensionEmployee:0.042, pensionEmployer:0.084, scheme:'CNPS — 4.2% employee + 8.4% employer. Retirement at 60 (55 for arduous work).' },
+  SN:{ sym:'XOF', name:'Senegal', rate:0.0016, avgExpenses:250000, pensionEmployee:0.056, pensionEmployer:0.088, scheme:'IPRES — 5.6% employee + 8.8% employer. Retirement at 60. French-influenced system.' },
+  MA:{ sym:'MAD', name:'Morocco', rate:0.099, avgExpenses:4500, pensionEmployee:0.044, pensionEmployer:0.079, scheme:'CNSS — 4.4% employee + 7.9% employer. CIMR for private sector supplementary. Retirement at 60.' },
+  TN:{ sym:'TND', name:'Tunisia', rate:0.31, avgExpenses:1800, pensionEmployee:0.0918, pensionEmployer:0.1641, scheme:'CNSS — 9.18% employee + 16.41% employer. Retirement at 60 (men), 55 (women). CNRPS for public.' },
+  AO:{ sym:'AOA', name:'Angola', rate:0.0012, avgExpenses:400000, pensionEmployee:0.03, pensionEmployer:0.08, scheme:'INSS — 3% employee + 8% employer. Retirement at 60 (men), 55 (women). Formal sector only.' }
+};
+
+var currentRetirementPlan = null;
+function fmtCur(sym, n) {
+  if (n >= 1000000000) return sym + (n/1000000000).toFixed(1) + 'B';
+  if (n >= 1000000) return sym + (n/1000000).toFixed(1) + 'M';
+  if (n >= 1000) return sym + (n/1000).toFixed(0) + 'K';
+  return sym + Math.round(n).toLocaleString();
+}
+
+function projectSavings(current, monthly, years, rate) {
+  var r = rate / 12;
+  var n = years * 12;
+  var fv = current * Math.pow(1 + r, n);
+  if (r > 0) fv += monthly * (Math.pow(1 + r, n) - 1) / r;
+  else fv += monthly * n;
+  return fv;
+}
+
+function calcRetirement() {
+  var country = document.getElementById('rr-country').value;
+  var age = +document.getElementById('rr-age').value;
+  var retireAge = +document.getElementById('rr-retire-age').value;
+  var savings = +document.getElementById('rr-savings').value;
+  var contrib = +document.getElementById('rr-contrib').value;
+  var salary = +document.getElementById('rr-salary').value;
+  var pensionPayout = +document.getElementById('rr-pension-payout').value;
+  var expenses = +document.getElementById('rr-expenses').value;
+  var dependants = +document.getElementById('rr-dependants').value;
+  var housing = document.getElementById('rr-housing').value;
+  var health = document.getElementById('rr-health').value;
+
+  var cd = COUNTRY_DATA[country];
+  var sym = cd.sym;
+  var yearsLeft = Math.max(retireAge - age, 1);
+
+  // Adjust expenses at retirement
+  var retireExpenses = expenses > 0 ? expenses : cd.avgExpenses;
+  // Reduce expenses in retirement (typically 70–80%)
+  var retireExpFactor = 0.75;
+  if (housing === 'renting') retireExpFactor = 0.85;
+  if (housing === 'mortgage') retireExpFactor = 0.80;
+  // Dependants add cost
+  retireExpenses = retireExpenses * retireExpFactor + (dependants * retireExpenses * 0.15);
+  // Health insurance premium
+  var healthAdj = { employer: 0, private: retireExpenses * 0.10, nhis: retireExpenses * 0.02, none: retireExpenses * 0.05 };
+  retireExpenses += healthAdj[health];
+
+  // 25x rule: nest egg needed = annual expenses * 25
+  var annualExpenses = retireExpenses * 12;
+  var targetNestEgg = annualExpenses * 25;
+
+  // Project savings under 3 scenarios
+  var projPess = projectSavings(savings, contrib, yearsLeft, 0.04);
+  var projBase = projectSavings(savings, contrib, yearsLeft, 0.07);
+  var projOpt = projectSavings(savings, contrib, yearsLeft, 0.10);
+
+  // Pension payout: estimate if 0
+  var estimatedPayout = pensionPayout;
+  if (estimatedPayout === 0 && salary > 0) {
+    var totalPensionRate = cd.pensionEmployee + cd.pensionEmployer;
+    var monthlyPensionContrib = salary * totalPensionRate;
+    var pensionAccumulated = projectSavings(savings * 0.5, monthlyPensionContrib, yearsLeft, 0.06);
+    estimatedPayout = pensionAccumulated / (240); // 20-year payout period
+  }
+
+  // Score calculation
+  var adequacyRatio = projBase / targetNestEgg;
+  var score = Math.min(Math.round(adequacyRatio * 100), 100);
+
+  // Contribution needed to fully fund
+  var gap = targetNestEgg - projBase;
+  var extraContrib = 0;
+  if (gap > 0) {
+    var r = 0.07 / 12;
+    var n = yearsLeft * 12;
+    if (r > 0) extraContrib = gap / ((Math.pow(1 + r, n) - 1) / r);
+    else extraContrib = gap / n;
+  }
+
+  // Monthly income at retirement from savings (4% safe withdrawal / 12)
+  var monthlyFromSavings = projBase * 0.04 / 12;
+  var totalMonthlyIncome = monthlyFromSavings + estimatedPayout;
+  var shortfall = totalMonthlyIncome - retireExpenses;
+
+  // Grade
+  var grade, gradeClass;
+  if (score >= 80) { grade = 'A — Excellent'; gradeClass = 'grade-A'; }
+  else if (score >= 60) { grade = 'B — On Track'; gradeClass = 'grade-B'; }
+  else if (score >= 40) { grade = 'C — Needs Work'; gradeClass = 'grade-C'; }
+  else if (score >= 20) { grade = 'D — At Risk'; gradeClass = 'grade-D'; }
+  else { grade = 'F — Critical'; gradeClass = 'grade-F'; }
+
+  // Update UI
+  var ring = document.getElementById('rr-ring');
+  ring.style.setProperty('--pct', score);
+  ring.setAttribute('data-score', score + '%');
+
+  document.getElementById('rr-headline').textContent = score >= 60 ? 'You\'re on track for retirement!' : 'Action needed to secure your retirement';
+  var gradeBadge = document.getElementById('rr-grade-badge');
+  gradeBadge.textContent = grade;
+  gradeBadge.className = 'en-badge ' + gradeClass;
+
+  document.getElementById('rr-projected').textContent = fmtCur(sym, projBase);
+  document.getElementById('rr-target').textContent = fmtCur(sym, targetNestEgg);
+  document.getElementById('rr-monthly-need').textContent = fmtCur(sym, retireExpenses) + '/mo';
+  var sfEl = document.getElementById('rr-shortfall');
+  sfEl.textContent = (shortfall >= 0 ? '+' : '') + fmtCur(sym, shortfall) + '/mo';
+  sfEl.style.color = shortfall >= 0 ? '#16a34a' : '#dc2626';
+
+  document.getElementById('rr-bar').style.width = Math.min(score, 100) + '%';
+  document.getElementById('rr-bar-label').textContent = score + '% funded — need 100% for full retirement security';
+
+  document.getElementById('sc-pess').textContent = fmtCur(sym, projPess);
+  document.getElementById('sc-pess-label').textContent = (projPess >= targetNestEgg ? 'Fully funded' : fmtCur(sym, targetNestEgg - projPess) + ' short');
+  document.getElementById('sc-base').textContent = fmtCur(sym, projBase);
+  document.getElementById('sc-base-label').textContent = (projBase >= targetNestEgg ? 'Fully funded' : fmtCur(sym, targetNestEgg - projBase) + ' short');
+  document.getElementById('sc-opt').textContent = fmtCur(sym, projOpt);
+  document.getElementById('sc-opt-label').textContent = (projOpt >= targetNestEgg ? 'Fully funded' : fmtCur(sym, targetNestEgg - projOpt) + ' short');
+
+  document.getElementById('rr-extra-contrib').textContent = gap <= 0 ? 'None needed — you\'re funded!' : fmtCur(sym, extraContrib) + '/mo additional';
+  document.getElementById('rr-pension-info').textContent = cd.scheme;
+
+  // Flags
+  var flags = [];
+  if (health === 'none') flags.push({ icon: '⚠️', text: 'No post-retirement health insurance — healthcare is typically the #1 unexpected cost in retirement.' });
+  if (housing === 'renting') flags.push({ icon: '🏠', text: 'Renting at retirement increases monthly costs significantly. Consider homeownership as part of your retirement plan.' });
+  if (dependants >= 2) flags.push({ icon: '👨‍👩‍👧', text: 'Supporting 2+ dependants at retirement — factor in school fees, weddings, and ongoing support costs.' });
+  if (contrib < salary * 0.10 && salary > 0) flags.push({ icon: '💰', text: 'Contributing less than 10% of salary. Financial planners recommend 15–20% including employer contributions.' });
+  if (yearsLeft < 10) flags.push({ icon: '⏰', text: 'Less than 10 years to retirement — compound interest has less time to work. Maximise contributions now.' });
+  if (score < 40) flags.push({ icon: '🔴', text: 'Critical gap: At current trajectory you will outlive your savings. Seek a financial advisor urgently.' });
+
+  var flagsEl = document.getElementById('rr-flags');
+  flagsEl.innerHTML = flags.length ? flags.map(function(f){ return '<li style="padding:.5rem .75rem;background:#fef9c3;border-radius:8px;border-left:3px solid #f59e0b">' + f.icon + ' ' + f.text + '</li>'; }).join('') : '<li style="padding:.5rem .75rem;background:#dcfce7;border-radius:8px;border-left:3px solid #16a34a">✅ No critical risk flags identified. Keep up the good work!</li>';
+
+  // Actions
+  var actions = [];
+  if (score < 80) actions.push('Increase monthly pension contributions by at least ' + fmtCur(sym, Math.max(extraContrib * 0.5, salary * 0.02)) + ' immediately.');
+  actions.push('Open or max out a tax-advantaged retirement account (' + (country === 'ZA' ? 'Retirement Annuity (RA)' : country === 'GH' ? 'Tier 3 voluntary pension' : country === 'KE' ? 'Occupational pension or SACCO savings' : 'available pension vehicle in ' + cd.name) + ').');
+  if (housing !== 'owned') actions.push('Prioritise homeownership before retirement — eliminates the largest monthly cost.');
+  if (health !== 'employer' && health !== 'private') actions.push('Budget for private health insurance — factor at least 10–15% of retirement income for healthcare.');
+  actions.push('Diversify savings: equities (index funds), government bonds, and real estate across ' + yearsLeft + '-year horizon.');
+  actions.push('Review and update this plan every 12 months as income, expenses, and goals change.');
+
+  document.getElementById('rr-actions').innerHTML = actions.map(function(a){ return '<li style="padding:.25rem 0">' + a + '</li>'; }).join('');
+  currentRetirementPlan = {
+    country: cd.name,
+    symbol: sym,
+    age: age,
+    retireAge: retireAge,
+    yearsLeft: yearsLeft,
+    savings: savings,
+    contribution: contrib,
+    salary: salary,
+    expenses: expenses,
+    retirementExpenses: retireExpenses,
+    projected: projBase,
+    target: targetNestEgg,
+    monthlyNeed: retireExpenses,
+    estimatedPayout: estimatedPayout,
+    monthlyFromSavings: monthlyFromSavings,
+    totalMonthlyIncome: totalMonthlyIncome,
+    shortfall: shortfall,
+    score: score,
+    grade: grade,
+    extraContrib: extraContrib,
+    pessimistic: projPess,
+    optimistic: projOpt,
+    pensionInfo: cd.scheme,
+    flags: flags.map(function(f){ return f.text; }),
+    actions: actions
+  };
+  setRetirementStatus('');
+
+  document.getElementById('rr-results').classList.add('on');
+  document.getElementById('rr-results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function buildRetirementReport(){
+  if(!currentRetirementPlan){calcRetirement();}
+  var p=currentRetirementPlan;
+  return [
+    'Retirement readiness report - AfroTools',
+    'Country: '+p.country,
+    'Current age: '+p.age,
+    'Target retirement age: '+p.retireAge,
+    'Years left: '+p.yearsLeft,
+    'Readiness score: '+p.score+'%',
+    'Grade: '+p.grade,
+    '',
+    'Financial snapshot',
+    '- Current savings: '+fmtCur(p.symbol,p.savings),
+    '- Monthly contribution: '+fmtCur(p.symbol,p.contribution),
+    '- Current monthly salary: '+fmtCur(p.symbol,p.salary),
+    '- Estimated monthly retirement need: '+fmtCur(p.symbol,p.monthlyNeed),
+    '- Projected savings at retirement: '+fmtCur(p.symbol,p.projected),
+    '- Nest egg target: '+fmtCur(p.symbol,p.target),
+    '- Monthly income from savings: '+fmtCur(p.symbol,p.monthlyFromSavings),
+    '- Pension payout used: '+fmtCur(p.symbol,p.estimatedPayout),
+    '- Monthly shortfall/surplus: '+(p.shortfall>=0?'+':'')+fmtCur(p.symbol,p.shortfall),
+    '- Extra monthly contribution needed: '+(p.extraContrib>0?fmtCur(p.symbol,p.extraContrib):'None'),
+    '',
+    'Scenarios',
+    '- Pessimistic 4%: '+fmtCur(p.symbol,p.pessimistic),
+    '- Base 7%: '+fmtCur(p.symbol,p.projected),
+    '- Optimistic 10%: '+fmtCur(p.symbol,p.optimistic),
+    '',
+    'Risk flags',
+    p.flags.length?p.flags.map(function(flag){return '- '+flag;}).join('\n'):'- No critical risk flags identified.',
+    '',
+    'Action plan',
+    p.actions.map(function(action){return '- '+action;}).join('\n'),
+    '',
+    'Method and caution: this is a planning estimate using compound-growth assumptions, a 25x target rule, and a 4% annual withdrawal rule. Verify pension rules, fund fees, tax treatment, inflation, healthcare, housing, and licensed financial advice before acting.'
+  ].join('\n');
+}
+function setRetirementStatus(message){
+  var el=document.getElementById('rr-action-status');
+  if(el){el.textContent=message||'';}
+}
+function copyRetirementReport(){
+  var text=buildRetirementReport();
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){setRetirementStatus('Retirement report copied.');}).catch(function(){fallbackRetirementCopy(text);});
+  }else{fallbackRetirementCopy(text);}
+}
+function fallbackRetirementCopy(text){
+  var field=document.createElement('textarea');
+  field.value=text;
+  field.setAttribute('readonly','');
+  field.style.position='fixed';
+  field.style.left='-9999px';
+  document.body.appendChild(field);
+  field.select();
+  try{document.execCommand('copy');setRetirementStatus('Retirement report copied.');}
+  catch(e){window.prompt('Copy retirement report',text);setRetirementStatus('Copy prompt opened.');}
+  document.body.removeChild(field);
+}
+function downloadRetirementReport(){
+  var text=buildRetirementReport();
+  var blob=new Blob([text],{type:'text/plain;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download='retirement-readiness-report.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  setRetirementStatus('TXT retirement report downloaded.');
+}
+function saveRetirementReport(){
+  buildRetirementReport();
+  try{
+    localStorage.setItem('afrotools-retirement-readiness',JSON.stringify({savedAt:Date.now(),plan:currentRetirementPlan,report:buildRetirementReport()}));
+    setRetirementStatus('Retirement plan saved in this browser.');
+  }catch(e){
+    setRetirementStatus('Browser storage is unavailable. Download the TXT report instead.');
+  }
+}
+</script>
+<script src="/assets/js/pages/career-tool-focus.js?v=42cb5afb" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

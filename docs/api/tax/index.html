@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AfroTax API Overview — AfroTools API Docs</title>
+<meta name="description" content="AfroTax API: income tax, corporate tax, and withholding tax calculations for all 54 African countries. Gross-to-net and net-to-gross modes.">
+<meta name="theme-color" content="#0062CC">
+<link rel="canonical" href="https://afrotools.com/docs/api/tax/">
+<meta property="og:title" content="AfroTax API Overview — AfroTools API Docs">
+<meta property="og:url" content="https://afrotools.com/docs/api/tax/">
+<meta property="og:type" content="website">
+<meta property="og:description" content="Tax calculation API for all 54 African countries with multiple tax types and calculation modes.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AfroTax API Overview — AfroTools API Docs">
+<meta name="twitter:description" content="Tax calculation API for all 54 African countries. Income tax, corporate tax, WHT — gross-to-net and net-to-gross modes.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/api-docs.css?v=ce57a995">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/api-sidebar.js?v=1e21db66" defer></script>
+<script src="/assets/js/components/api-code-tabs.js?v=d929cd13" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Docs",
+      "item": "https://afrotools.com/docs/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "API",
+      "item": "https://afrotools.com/docs/api/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "AfroTax API Overview",
+      "item": "https://afrotools.com/docs/api/tax/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+</head>
+<body class="api-docs-body top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<div class="api-docs-layout">
+  <api-sidebar active="/docs/api/tax/"></api-sidebar>
+  <main class="api-content">
+    <div class="api-two-panel api-two-panel--wide-left">
+      <div class="api-content__left">
+        <h1 class="mt-0">AfroTax API</h1>
+        <p class="api-subtitle">Calculate income tax, corporate tax, and withholding tax for all 54 African countries. Supports gross-to-net and net-to-gross calculation modes.</p>
+
+        <h2>Overview</h2>
+        <p>The AfroTax API provides accurate, up-to-date tax calculations based on each country's current tax legislation. It supports multiple tax types and automatically applies the correct brackets, thresholds, and deductions for each jurisdiction.</p>
+
+        <h3>Supported Tax Types</h3>
+        <ul style="margin:8px 0 20px 20px;font-size:.88rem;color:#4B5563;line-height:1.8">
+          <li><strong>Income Tax (PAYE)</strong> &mdash; Personal income tax with progressive brackets</li>
+          <li><strong>Corporate Tax</strong> &mdash; Company income tax rates</li>
+          <li><strong>Withholding Tax</strong> &mdash; Tax on dividends, interest, and royalties</li>
+          <li><strong>Capital Gains Tax</strong> &mdash; Tax on investment profits</li>
+        </ul>
+
+        <h3>Calculation Modes</h3>
+        <table class="param-table">
+          <thead><tr><th>Mode</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><span class="param-name">gross_to_net</span></td><td>Given a gross amount, calculate the tax and return net pay. Default mode.</td></tr>
+            <tr><td><span class="param-name">net_to_gross</span></td><td>Given a desired net amount, calculate the gross salary required to achieve it.</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Supported Countries</h3>
+        <p>The AfroTax API covers all 54 African countries. Tax rules are updated within 30 days of any legislative change. Use the <a href="/docs/api/tax/countries">List Countries</a> endpoint to get all supported countries and their current tax year.</p>
+
+        <h2>Endpoints</h2>
+        <div class="api-cards-grid">
+          <a href="/docs/api/tax/calculate" class="api-card">
+            <div class="api-card__title"><span class="endpoint-method endpoint-method--post" style="font-size:.6rem;vertical-align:middle;margin-right:6px">POST</span> Calculate Tax</div>
+            <div class="api-card__desc">Calculate income tax, corporate tax, or withholding tax for a given country and amount.</div>
+          </a>
+          <a href="/docs/api/tax/countries" class="api-card">
+            <div class="api-card__title"><span class="endpoint-method endpoint-method--get" style="font-size:.6rem;vertical-align:middle;margin-right:6px">GET</span> List Countries</div>
+            <div class="api-card__desc">Get all 54 supported countries with their tax types and current tax year.</div>
+          </a>
+          <a href="/docs/api/tax/country" class="api-card">
+            <div class="api-card__title"><span class="endpoint-method endpoint-method--get" style="font-size:.6rem;vertical-align:middle;margin-right:6px">GET</span> Country Info</div>
+            <div class="api-card__desc">Get detailed tax information for a specific country including brackets and rates.</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="api-content__right">
+        <div class="code-label">Base URL</div>
+        <div class="code-example">https://afrotools.com/api/v1/tax/paye</div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">Quick Example</div>
+        <div class="code-example"><span class="c"># Calculate Nigerian PAYE on 500,000 NGN monthly gross salary</span>
+curl -X POST https://afrotools.com/api/v1/tax/paye \
+  -H "x-api-key: afro_test_abc123" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "country": "NG",
+    "grossMonthly": 500000,
+    "pension": true
+  }'</div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">Example Response</div>
+        <div class="code-example">{
+  "status": "success",
+  "sandbox": true,
+  "input": {
+    "country": "NG",
+    "grossAnnual": 6000000
+  },
+  "deductions": {
+    "pension": 480000,
+    "totalDeductions": 480000
+  },
+  "tax": {
+    "taxableIncome": 5520000,
+    "netTax": 847800,
+    "bands": [
+      { "label": "Sandbox PAYE estimate", "rate": 0.1413, "amount": 847800 }
+    ]
+  },
+  "result": {
+    "netAnnual": 4672200,
+    "netMonthly": 389350,
+    "effectiveRate": "14.13%"
+  },
+  "_meta": {
+    "api": "AfroTax",
+    "version": "v1",
+    "timestamp": "2026-07-11T09:00:00.000Z",
+    "sandbox": true,
+    "dataPolicy": "deterministic sandbox data",
+    "docs": "https://afrotools.com/docs/api/tax"
+  }
+}</div>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

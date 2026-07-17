@@ -1,0 +1,316 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-10T07:48:06.248Z",
+  "task": "afrotools_ai_product_architecture",
+  "scope": "repo_artifacts_not_live_production",
+  "gate": {
+    "passed": true,
+    "failedCount": 0,
+    "failedChecks": []
+  },
+  "checks": [
+    {
+      "label": "architecture_contract_present",
+      "passed": true,
+      "detail": "C:\\Users\\Oza\\Documents\\afrotools\\data\\ai\\product-architecture.json"
+    },
+    {
+      "label": "static_first_framework_decision",
+      "passed": true,
+      "detail": "no heavy UI framework dependencies"
+    },
+    {
+      "label": "layer_files_exist",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "label": "orchestrator_contract_present",
+      "passed": true,
+      "detail": "assets/js/ai/orchestrator.js"
+    },
+    {
+      "label": "homepage_ai_bridge_present",
+      "passed": true,
+      "detail": "index.html"
+    },
+    {
+      "label": "ask_ai_bridge_present",
+      "passed": true,
+      "detail": "ask/index.html"
+    },
+    {
+      "label": "ask_refinement_chips_present",
+      "passed": true,
+      "detail": "ask/index.html"
+    },
+    {
+      "label": "ask_feedback_telemetry_present",
+      "passed": true,
+      "detail": "ask/index.html"
+    },
+    {
+      "label": "ask_funnel_telemetry_present",
+      "passed": true,
+      "detail": "ask/index.html"
+    },
+    {
+      "label": "ask_source_freshness_notice_present",
+      "passed": true,
+      "detail": "ask/index.html"
+    },
+    {
+      "label": "ask_consumer_surface_simplified",
+      "passed": true,
+      "detail": "ask/index.html"
+    },
+    {
+      "label": "ask_answer_engine_preview_present",
+      "passed": true,
+      "detail": "ask/index.html"
+    },
+    {
+      "label": "analytics_surface_dimension_present",
+      "passed": true,
+      "detail": "assets/js/ai/intent-analytics.js"
+    },
+    {
+      "label": "multi_surface_funnel_telemetry_present",
+      "passed": true,
+      "detail": "index.html | search/index.html | widgets/ai/mini-router.js"
+    },
+    {
+      "label": "ai_fallback_links_avoid_raw_prompt_urls",
+      "passed": true,
+      "detail": "ask/index.html | ai/index.html | search/index.html"
+    },
+    {
+      "label": "search_ai_bridge_present",
+      "passed": true,
+      "detail": "search/index.html"
+    },
+    {
+      "label": "widget_iframe_handoff_contract",
+      "passed": true,
+      "detail": "widgets/ai/mini-router.js"
+    },
+    {
+      "label": "existing_tool_catalog_large_enough",
+      "passed": true,
+      "detail": "1252 tools"
+    },
+    {
+      "label": "model_readiness_gate_passing",
+      "passed": true,
+      "detail": "11 readiness checks"
+    },
+    {
+      "label": "tool_catalog_pack_in_readiness",
+      "passed": true,
+      "detail": "1252/1252"
+    },
+    {
+      "label": "training_and_eval_gates_declared",
+      "passed": true,
+      "detail": "npm run ai:tool-catalog-pack | npm run ai:training-corpus | npm run ai:model-splits | npm run eval:ai-tool-calls | npm run ai:ops-report | npm run ai:architecture-report | npm run test:ai"
+    },
+    {
+      "label": "token_training_model_path_declared",
+      "passed": true,
+      "detail": "data/ai/product-architecture.json"
+    },
+    {
+      "label": "privacy_first_principle_declared",
+      "passed": true,
+      "detail": "browser-local sensitive content principle"
+    }
+  ],
+  "architecture": {
+    "name": "AfroTools AI Product Architecture",
+    "architectureStyle": "static_first_ai_orchestration",
+    "frameworkDecision": {
+      "decision": "Use vanilla browser JavaScript modules, static HTML, shared data artifacts, and Netlify functions instead of adding a SPA framework.",
+      "reason": "AfroTools already ships a large static-first catalog. The AI layer should route, prefill, explain, and export through existing tools without making every page depend on a heavy client runtime.",
+      "allowedRuntime": [
+        "static_html",
+        "vanilla_js",
+        "netlify_functions",
+        "generated_json_artifacts"
+      ],
+      "avoidByDefault": [
+        "react",
+        "next",
+        "vue",
+        "svelte",
+        "angular",
+        "client_side_app_shell"
+      ]
+    },
+    "layerCount": 6,
+    "layers": [
+      {
+        "id": "interfaces",
+        "label": "User and partner interfaces",
+        "fileCount": 7
+      },
+      {
+        "id": "routing",
+        "label": "Routing and retrieval",
+        "fileCount": 4
+      },
+      {
+        "id": "invocation",
+        "label": "Existing-tool invocation",
+        "fileCount": 3
+      },
+      {
+        "id": "model_ports",
+        "label": "Model provider ports",
+        "fileCount": 3
+      },
+      {
+        "id": "model_ops",
+        "label": "Model operations",
+        "fileCount": 6
+      },
+      {
+        "id": "safety",
+        "label": "Safety, privacy, and telemetry",
+        "fileCount": 4
+      }
+    ],
+    "answerEngine": {
+      "goal": "Turn Ask AfroTools AI from a generic tool finder into a search-style answer engine that extracts obvious entities, shows what it understood, and then launches the existing calculator or workflow.",
+      "runtimeOrder": [
+        "local entity extraction for country, amount, task, document type, route, and missing inputs",
+        "deterministic router and full-catalog retrieval",
+        "answer preview composer with source, confidence, and no unsupported calculation claims",
+        "sessionStorage prefill handoff into canonical tools",
+        "optional consented model explanation after the user chooses AI help"
+      ],
+      "currentPilot": "Angola salary-tax prompts extract Angola, typo variant Angoa, gross pay, pay period, AOA/Kz context, and route to /angola/ao-paye without placing salary values in the URL."
+    },
+    "tokenStrategy": {
+      "routerBudgetTokens": 1200,
+      "catalogChunkBudgetTokens": 7000,
+      "answerPreviewBudgetTokens": 500,
+      "explanationBudgetTokens": 1800,
+      "policy": "Send only the top catalog chunk, structured extracted inputs, source labels, and tool-call schema to a provider. Never send the full public catalog or raw sensitive user content by default.",
+      "compression": [
+        "compact tool records to id, route, title, category, sourcePolicy, safetyDomain, required inputs, and hints",
+        "bucket prompt length in analytics instead of storing raw prompts",
+        "summarize previous workflow state into sanitized structured inputs before any consented model call"
+      ]
+    },
+    "trainingDataStrategy": {
+      "sources": [
+        "generated synthetic tool-call corpus",
+        "held-out model-training splits",
+        "sanitized router feedback metadata",
+        "manually reviewed drift-intake examples",
+        "public router-safe tool catalog records"
+      ],
+      "forbiddenSources": [
+        "raw CV text",
+        "raw document/PDF contents",
+        "emails, phone numbers, account identifiers, or private profile data",
+        "salary, legal, health, financial, or education-profile details unless converted into sanitized non-identifying fixtures"
+      ],
+      "evaluation": "Promote routing, prompt, or fine-tune changes only after held-out tool-call evals, privacy guardrail tests, and browser workflow checks pass."
+    },
+    "modelPathStages": [
+      "stage_0_local_answer_engine",
+      "stage_1_consent_model_router",
+      "stage_2_router_fine_tune",
+      "stage_3_domain_small_model"
+    ],
+    "gates": [
+      "npm run ai:tool-catalog-pack",
+      "npm run ai:training-corpus",
+      "npm run ai:model-splits",
+      "npm run eval:ai-tool-calls",
+      "npm run ai:ops-report",
+      "npm run ai:architecture-report",
+      "npm run test:ai"
+    ],
+    "mermaid": "flowchart TD\n  U[Homepage / AI / Ask / Search / Widget / API] --> A[AI orchestrator]\n  A --> R[Deterministic router + full catalog retrieval]\n  R --> C[Generated tool catalog pack]\n  R --> T[Existing AfroTools tool call]\n  T --> X[Invocation runtime + prefill adapters]\n  X --> E[Canonical AfroTools tools]\n  A -->|consent + not obvious| P[Prompt registry + provider port]\n  P --> V[Schema + guardrail validation]\n  V --> T\n  O[Corpus + splits + evals + drift intake] --> L[Router Lab + readiness report]\n  L --> A"
+  },
+  "dependencyPolicy": {
+    "heavyUiFrameworksBlockedByDefault": [
+      "react",
+      "next",
+      "vue",
+      "svelte",
+      "angular",
+      "@angular/core",
+      "@vitejs/plugin-react"
+    ],
+    "installedHeavyUiFrameworks": [],
+    "packageDependencyCount": 9
+  },
+  "catalog": {
+    "toolCount": 1252,
+    "chunkCount": 57,
+    "categoryCount": 31,
+    "gate": {
+      "passed": true,
+      "minExpectedTools": 1000,
+      "toolCoverageComplete": true,
+      "duplicateIds": [],
+      "rawTextDetected": false
+    }
+  },
+  "readiness": {
+    "gate": {
+      "passed": true,
+      "failedCount": 0,
+      "failedChecks": []
+    },
+    "checks": [
+      {
+        "label": "prompt_registry_valid",
+        "passed": true
+      },
+      {
+        "label": "router_prompt_production",
+        "passed": true
+      },
+      {
+        "label": "manifest_large_enough",
+        "passed": true
+      },
+      {
+        "label": "tool_catalog_pack_complete",
+        "passed": true
+      },
+      {
+        "label": "corpus_large_enough",
+        "passed": true
+      },
+      {
+        "label": "category_coverage",
+        "passed": true
+      },
+      {
+        "label": "model_splits_present",
+        "passed": true
+      },
+      {
+        "label": "held_out_category_coverage",
+        "passed": true
+      },
+      {
+        "label": "tool_call_eval_gate",
+        "passed": true
+      },
+      {
+        "label": "synthetic_privacy_contract",
+        "passed": true
+      },
+      {
+        "label": "router_lab_available",
+        "passed": true
+      }
+    ]
+  }
+}

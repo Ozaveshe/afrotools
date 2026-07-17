@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blood Pressure Checker & Tracker | AfroTools</title>
+<meta name="description" content="Check your blood pressure reading against AHA guidelines, see your category, and track readings over time. Educational tool only, not medical advice.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Blood Pressure Checker | AfroTools">
+<meta property="og:description" content="Check and track your blood pressure readings with health advice.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/blood-pressure.webp">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/blood-pressure/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+:root{--afro-dark:#0f1419;--accent:#dc2626}
+.tool-hero{background:linear-gradient(135deg,#7f1d1d 0%,#dc2626 50%,#b91c1c 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#fecaca}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#fecaca;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-em{background:rgba(254,202,202,.2);color:#fecaca;border:1px solid rgba(254,202,202,.4)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
+input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(220,38,38,.15)}
+.row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px}
+.btn-primary{background:linear-gradient(135deg,#b91c1c,#dc2626);color:#fff}
+.bp-result{text-align:center;padding:28px;border-radius:10px;margin-top:14px}
+.bp-result .reading{font-size:2.4rem;font-weight:900;line-height:1}
+.bp-result .category{font-size:1rem;font-weight:700;margin-top:8px}
+.bp-result .advice{font-size:.82rem;margin-top:10px;line-height:1.6;opacity:.8}
+.bp-normal{background:#dcfce7;color:#166534}
+.bp-elevated{background:#fef9c3;color:#854d0e}
+.bp-high1{background:#fed7aa;color:#9a3412}
+.bp-high2{background:#fecaca;color:#991b1b}
+.bp-crisis{background:#fca5a5;color:#7f1d1d}
+.chart-ref{width:100%;border-collapse:collapse;margin-top:14px}
+.chart-ref th,.chart-ref td{padding:8px 10px;font-size:.78rem;border-bottom:1px solid #f1f5f9;text-align:left}
+.chart-ref th{background:#f8fafc;font-weight:700;color:#64748b;font-size:.68rem;text-transform:uppercase}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+.history-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f1f5f9;font-size:.82rem}
+.history-row .val{font-weight:700}
+.clear-btn{background:none;border:1px solid #e2e8f0;padding:4px 10px;font-size:.68rem;border-radius:4px;cursor:pointer;color:#64748b;margin-top:8px}
+.sidebar .info-card{background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#991b1b;margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:#991b1b;line-height:1.6}
+.info-card ul{padding-left:16px;margin:6px 0}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+.bp-disclaimer{background:#fef2f2border:1px solid #fecaca;border-radius:8px;padding:12px 16px;margin-bottom:18px;font-size:.8rem;line-height:1.6;color:#991b1b}
+.bp-disclaimer strong{color:#7f1d1d}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.row{grid-template-columns:1fr 1fr}}
+</style>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Blood Pressure Checker | AfroTools">
+<meta name="twitter:description" content="Check and track your blood pressure readings with health advice.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/blood-pressure.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Blood Pressure Checker",
+      "item": "https://afrotools.com/tools/blood-pressure/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Blood Pressure Checker & Tracker",
+  "url": "https://afrotools.com/tools/blood-pressure/",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "Web",
+  "description": "Check a blood pressure reading against AHA categories (Normal, Elevated, Stage 1, Stage 2, Crisis), track readings over time, and see health guidance. Educational tool only, not medical advice.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "isAccessibleForFree": true,
+  "publisher": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/blood-pressure.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What should I do if my blood pressure is high?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "If your reading is consistently above 130/80, see a healthcare provider. Immediate lifestyle changes that help: reduce salt intake, exercise regularly (30 minutes/day), maintain healthy weight, limit alcohol, stop smoking, manage stress, and eat more fruits and vegetables. Your doctor may prescribe medication if lifestyle changes aren't enough."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can blood pressure be too low?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Low blood pressure (hypotension) is generally below 90/60 mmHg. While some people naturally have low BP without problems, sudden drops can cause dizziness, fainting, or shock. If you experience symptoms like lightheadedness, blurred vision, or fatigue with low readings, consult a doctor."
+      }
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="stylesheet" href="/assets/css/health-enhancements.css?v=e7e3e3a6">
+<meta name="tool-id" content="blood-pressure">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/blood-pressure/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/blood-pressure/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/tension-arterielle/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/shinikizo-la-damu/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/blood-pressure/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Blood Pressure</span></div>
+<h1>Blood Pressure <em>Checker & Tracker</em></h1>
+<p class="hero-sub">Enter your blood pressure reading to understand what it means. Track readings over time and get health advice based on medical guidelines.</p>
+<div class="hero-badges"><span class="badge b-em">AHA Guidelines</span><span class="badge b-em">Track History</span><span class="badge b-em">Health Advice</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calculator">
+<div class="bp-disclaimer" role="note"><strong>Educational tool only, not medical advice.</strong> These categories follow American Heart Association guidelines to help you understand a reading. They do not diagnose any condition. Always consult a doctor about your blood pressure. If a reading is above 180/120 mmHg or you have severe symptoms, seek urgent medical care immediately.</div>
+<div class="card">
+<div class="card-head"><span class="card-title">Enter Your Reading</span></div>
+<div class="card-body">
+<div class="row">
+<div><label>Systolic (top number) mmHg</label><input aria-label="Systolic" type="number" id="systolic" value="120" min="60" max="260"></div>
+<div><label>Diastolic (bottom number) mmHg</label><input aria-label="Diastolic" type="number" id="diastolic" value="80" min="40" max="160"></div>
+<div><label>Pulse (bpm, optional)</label><input aria-label="E.g. 72" type="number" id="pulse" placeholder="e.g. 72" min="30" max="200"></div>
+</div>
+<button type="button" class="btn btn-primary" onclick="check()">Check & Save</button>
+</div></div>
+
+<div class="card" id="resultCard" style="display:none">
+<div class="card-head"><span class="card-title">Your Result</span></div>
+<div class="card-body">
+<div id="bpResult"></div>
+<table class="chart-ref">
+<thead><tr><th>Category</th><th>Systolic</th><th>Diastolic</th></tr></thead>
+<tbody>
+<tr><td><span class="dot" style="background:#22c55e"></span>Normal</td><td>&lt; 120</td><td>&lt; 80</td></tr>
+<tr><td><span class="dot" style="background:#eab308"></span>Elevated</td><td>120-129</td><td>&lt; 80</td></tr>
+<tr><td><span class="dot" style="background:#f97316"></span>High BP Stage 1</td><td>130-139</td><td>80-89</td></tr>
+<tr><td><span class="dot" style="background:#ef4444"></span>High BP Stage 2</td><td>140+</td><td>90+</td></tr>
+<tr><td><span class="dot" style="background:#991b1b"></span>Crisis</td><td>&gt; 180</td><td>&gt; 120</td></tr>
+</tbody>
+</table>
+</div></div>
+
+<div class="card">
+<div class="card-head"><span class="card-title">Reading History</span></div>
+<div class="card-body">
+<div id="history"><p style="font-size:.82rem;color:#94a3b8">No readings saved yet.</p></div>
+<button type="button" class="clear-btn" onclick="clearHistory()">Clear History</button>
+</div></div>
+</div>
+
+<div class="sidebar">
+<div class="card">
+<div class="card-head"><span class="card-title">How to Measure</span></div>
+<div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
+<p><strong>1.</strong> Sit quietly for 5 minutes before measuring</p>
+<p><strong>2.</strong> Sit with back supported, feet flat on floor</p>
+<p><strong>3.</strong> Place cuff on bare upper arm at heart level</p>
+<p><strong>4.</strong> Don't talk during measurement</p>
+<p><strong>5.</strong> Take 2-3 readings, 1 minute apart</p>
+<p><strong>6.</strong> Record the average</p>
+</div></div>
+<div class="info-card">
+<h4>Hypertension in Africa</h4>
+<p>Hypertension affects an estimated <strong>46% of adults</strong> in Africa — the highest prevalence globally (WHO). Many cases are undiagnosed. Regular monitoring is crucial.</p>
+<ul>
+<li>Nigeria: ~30% prevalence</li>
+<li>South Africa: ~35% prevalence</li>
+<li>Kenya: ~25% prevalence</li>
+<li>Ghana: ~28% prevalence</li>
+</ul>
+</div>
+<div class="info-card" style="margin-top:10px">
+<h4>Risk Factors</h4>
+<ul>
+<li>High salt intake</li>
+<li>Obesity / overweight</li>
+<li>Physical inactivity</li>
+<li>Excessive alcohol</li>
+<li>Smoking</li>
+<li>Family history</li>
+<li>Stress</li>
+<li>Age (risk increases with age)</li>
+</ul>
+</div>
+</div>
+</div></section>
+
+<section class="seo-section">
+<h2>Understanding Blood Pressure</h2>
+<p>Blood pressure is measured in millimetres of mercury (mmHg) and written as two numbers: systolic (top) over diastolic (bottom). Systolic pressure measures the force when your heart beats, while diastolic measures the force when your heart rests between beats. For example, a reading of 120/80 mmHg means systolic is 120 and diastolic is 80.</p>
+<p>According to the American Heart Association (AHA) guidelines, normal blood pressure is below 120/80 mmHg. Elevated blood pressure (120-129 systolic with diastolic below 80) is a warning sign. High blood pressure Stage 1 (130-139/80-89) and Stage 2 (140+/90+) require lifestyle changes and possibly medication. A hypertensive crisis (above 180/120) requires immediate medical attention.</p>
+<p>Hypertension (high blood pressure) is Africa's leading risk factor for death and disability. The WHO African region has the highest prevalence of hypertension globally, affecting nearly half of all adults. Yet awareness rates are shockingly low — in many African countries, over 50% of people with hypertension don't know they have it. This "silent killer" often has no symptoms until it causes heart attack, stroke, or kidney failure.</p>
+<p>Regular home monitoring is one of the most effective ways to manage blood pressure. Digital blood pressure monitors are increasingly affordable and available across Africa. Take readings at the same time each day, record them, and share with your healthcare provider. This tool helps you understand your readings and track trends over time.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>What should I do if my blood pressure is high?</summary><p>If your reading is consistently above 130/80, see a healthcare provider. Immediate lifestyle changes that help: reduce salt intake, exercise regularly (30 minutes/day), maintain healthy weight, limit alcohol, stop smoking, manage stress, and eat more fruits and vegetables. Your doctor may prescribe medication if lifestyle changes aren't enough.</p></details>
+<details class="faq-item"><summary>Can blood pressure be too low?</summary><p>Yes. Low blood pressure (hypotension) is generally below 90/60 mmHg. While some people naturally have low BP without problems, sudden drops can cause dizziness, fainting, or shock. If you experience symptoms like lightheadedness, blurred vision, or fatigue with low readings, consult a doctor.</p></details>
+</section>
+
+
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+<afro-related-tools category="health" current="blood-pressure" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/medical-report/" data-related-tool data-id="medical-report" data-name="Medical Report Interpreter" data-category="health" data-icon="MR" data-desc="Upload or paste lab results and get plain-English explanations for CBC, lipid, liver, kidney, thyroid, and diabetes mark">Medical Report Interpreter</a></li><li><a href="/tools/genotype-checker/" data-related-tool data-id="genotype-checker" data-name="Genotype Compatibility Checker" data-category="health" data-icon="GC" data-desc="Full pre-marriage genotype and blood group compatibility check. Sickle cell Punnett square, Rh factor incompatibility, b">Genotype Compatibility Checker</a></li><li><a href="/tools/childbirth-cost/" data-related-tool data-id="childbirth-cost" data-name="Childbirth Cost Calculator" data-category="health" data-icon="CC" data-desc="Compare delivery costs across public hospitals, private clinics, and premium facilities in Nigeria, Kenya, South Africa,">Childbirth Cost Calculator</a></li><li><a href="/tools/drug-price-compare/" data-related-tool data-id="drug-price-compare" data-name="Drug/Medicine Price Comparator" data-category="health" data-icon="DM" data-desc="Compare brand vs generic medicine prices across African countries. See savings on antimalarials, antibiotics, diabetes, ">Drug/Medicine Price Comparator</a></li><li><a href="/tools/blood-group/" data-related-tool data-id="blood-group" data-name="Blood Group Compatibility Checker" data-category="health" data-icon="BG" data-desc="Check blood transfusion compatibility (donor/recipient) and pregnancy Rh incompatibility. Includes African blood group f">Blood Group Compatibility Checker</a></li><li><a href="/tools/african-meal-plan/" data-related-tool data-id="african-meal-plan" data-name="African Meal Plan Generator" data-category="health" data-icon="AM" data-desc="Generate a personalized 7-day meal plan using African foods. Choose region (West/East/Southern/North Africa), health goa">African Meal Plan Generator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<!-- HEALTH-DEEP-IMPROVEMENT:START -->
+<section class="health-deep" aria-labelledby="health-deep-title">
+<span class="health-deep-kicker">Deep Review - 27 April 2026</span>
+<h2 id="health-deep-title">Use Blood Pressure Tracker in a safer care workflow</h2>
+<p class="health-deep-lead">Use this as a screening and trend tool, not a diagnosis. The useful output is a number, a context band, and a clear next step for a clinic conversation.</p>
+<div class="health-deep-grid">
+<div class="health-deep-block"><h3>Use It To Decide</h3><ul><li>Whether the reading is worth tracking over time</li><li>Which lifestyle or follow-up question to raise with a clinician</li><li>Whether another health tool should be opened next</li></ul></div>
+<div class="health-deep-block"><h3>Better Workflow</h3><ul><li>Enter recent measurements and repeat them under similar conditions</li><li>Save the result with date, units, and context such as activity or illness</li><li>Use the result to prepare better questions for a health worker</li></ul></div>
+<div class="health-deep-block warning"><h3>Do Not Ignore</h3><ul><li>Severe symptoms with an abnormal reading</li><li>Repeated high or low readings without follow-up</li><li>Using one calculator result to start, stop, or change treatment</li></ul></div>
+</div>
+<div class="health-source-row">
+<div><span>Official Context</span><div class="health-source-links"><a href="https://www.cdc.gov/bmi/adult-calculator/bmi-categories.html">CDC BMI categories</a><a href="https://www.who.int/news-room/fact-sheets/detail/hypertension">WHO hypertension</a><a href="https://www.who.int/news-room/fact-sheets/detail/diabetes">WHO diabetes</a><a href="https://www.who.int/news-room/fact-sheets/detail/physical-activity">WHO physical activity</a></div></div>
+<div><span>Related AfroTools</span><div class="health-source-links internal"><a href="/health/bmi-calculator/">BMI Calculator for Africans</a><a href="/tools/blood-pressure/">Blood Pressure Tracker</a><a href="/tools/diabetes-risk/">Diabetes Risk Calculator</a><a href="/tools/waist-hip-ratio/">Waist-Hip Ratio Calculator</a></div></div>
+</div>
+</section>
+<!-- HEALTH-DEEP-IMPROVEMENT:END -->
+<!-- HEALTH-COMPLETE-PACKAGE:START -->
+<section class="health-action-kit" data-health-tool-id="blood-pressure" data-health-tool-name="Blood Pressure Tracker" data-health-href="/tools/blood-pressure/" data-health-bucket="vitals" data-health-journey="vitals" data-health-source-name="WHO hypertension" data-health-source-url="https://www.who.int/news-room/fact-sheets/detail/hypertension" data-health-competitor="American Heart Association BP trackers" data-health-feature="Blood-pressure trackers need repeat readings, reminders, and a shareable clinician report." aria-labelledby="health-action-title-blood-pressure">
+<span class="health-action-kicker">Complete package upgrade</span>
+<h2 id="health-action-title-blood-pressure">Blood Pressure Tracker: save, export, and continue the workflow</h2>
+<p>This app now has its own benchmarked improvement layer, dashboard handoff, email-gated PDF plan, and a route into the Vitals checkup workflow.</p>
+<div class="health-action-grid">
+<div class="health-action-card">
+<h3>Competitor feature checked</h3>
+<p><strong>American Heart Association BP trackers</strong>: Blood-pressure trackers need repeat readings, reminders, and a shareable clinician report.</p>
+<p><strong>Implemented here:</strong> Added dashboard/PDF report actions and vitals workflow continuity.</p>
+<p><a href="https://www.who.int/news-room/fact-sheets/detail/hypertension" rel="noopener" target="_blank">WHO hypertension</a></p>
+</div>
+<div class="health-action-card">
+<h3>Dashboard and PDF actions</h3>
+<ul>
+<li>Save this health plan to the dashboard workspace on this device.</li>
+<li>Unlock a PDF version through the Health email gate for follow-up and visit prep.</li>
+<li>Signed-in sessions attempt account workspace sync when the shared workspace API is available.</li>
+</ul>
+<div class="health-action-buttons">
+<button type="button" class="health-workflow-btn" data-health-action="save" data-health-tool-id="blood-pressure">Save to dashboard</button>
+<button type="button" class="health-workflow-btn secondary" data-health-action="pdf" data-health-tool-id="blood-pressure">Get PDF plan</button>
+</div>
+</div>
+</div>
+<div class="health-action-card" style="margin-top:1rem">
+<h3>Continue in Vitals checkup</h3>
+<div class="health-action-links">
+<a href="/health/bmi-calculator/">Open workflow hub</a>
+<a href="/health/bmi-calculator/">BMI Calculator for Africans</a><a href="/tools/waist-hip-ratio/">Waist-Hip Ratio Calculator</a><a href="/tools/diabetes-risk/">Diabetes Risk Calculator</a><a href="/tools/water-intake/">Water Intake Calculator</a>
+</div>
+</div>
+</section>
+<!-- HEALTH-COMPLETE-PACKAGE:END -->
+<afro-footer></afro-footer>
+
+<script>
+function classify(sys, dia) {
+  if (sys > 180 || dia > 120) return { cat: 'Hypertensive Crisis', cls: 'bp-crisis', advice: 'SEEK IMMEDIATE MEDICAL ATTENTION. This is a medical emergency. Call your doctor or go to the nearest emergency room immediately.' };
+  if (sys >= 140 || dia >= 90) return { cat: 'High Blood Pressure (Stage 2)', cls: 'bp-high2', advice: 'See your doctor promptly. You likely need medication in addition to lifestyle changes. Monitor regularly and follow up within 1 month.' };
+  if (sys >= 130 || dia >= 80) return { cat: 'High Blood Pressure (Stage 1)', cls: 'bp-high1', advice: 'Lifestyle changes recommended: reduce salt, exercise, manage weight. See your doctor within 1-3 months. Medication may be needed.' };
+  if (sys >= 120 && dia < 80) return { cat: 'Elevated', cls: 'bp-elevated', advice: 'Your blood pressure is higher than ideal. Lifestyle changes can help prevent it from becoming hypertension. Reduce salt, increase exercise, manage stress.' };
+  if (sys < 90 || dia < 60) return { cat: 'Low (Hypotension)', cls: 'bp-elevated', advice: 'Your blood pressure is below normal. If you experience dizziness, lightheadedness, or fainting, consult a doctor. Some people naturally have low BP.' };
+  return { cat: 'Normal', cls: 'bp-normal', advice: 'Great! Your blood pressure is in the healthy range. Maintain your healthy lifestyle with regular exercise, balanced diet, and moderate salt intake.' };
+}
+
+function check() {
+  const sys = +document.getElementById('systolic').value;
+  const dia = +document.getElementById('diastolic').value;
+  const pulse = document.getElementById('pulse').value;
+
+  if (!(sys >= 60 && sys <= 260) || !(dia >= 40 && dia <= 160)) {
+    document.getElementById('bpResult').innerHTML = '<div class="bp-result bp-high2" role="alert">Please enter a systolic value between 60 and 260 and a diastolic value between 40 and 160 mmHg.</div>';
+    document.getElementById('resultCard').style.display = 'block';
+    return;
+  }
+  if (sys <= dia) {
+    document.getElementById('bpResult').innerHTML = '<div class="bp-result bp-high2" role="alert">Systolic (top number) should be higher than diastolic (bottom number). Please re-check your reading.</div>';
+    document.getElementById('resultCard').style.display = 'block';
+    return;
+  }
+
+  const result = classify(sys, dia);
+  const pulseNum = parseInt(pulse);
+  let pulseInfo = '';
+  if (pulseNum >= 30 && pulseNum <= 200) {
+    let pulseClass, pulseLabel, pulseAdv;
+    if (pulseNum < 60) { pulseClass='#f59e0b'; pulseLabel='Low (Bradycardia)'; pulseAdv='Resting HR below 60 — normal in athletes, but see a doctor if you feel dizzy or faint.'; }
+    else if (pulseNum <= 100) { pulseClass='#22c55e'; pulseLabel='Normal'; pulseAdv='Healthy resting heart rate.'; }
+    else if (pulseNum <= 120) { pulseClass='#f97316'; pulseLabel='Slightly Elevated'; pulseAdv='Could be due to stress, caffeine, or anxiety. If persistent, consult a doctor.'; }
+    else { pulseClass='#ef4444'; pulseLabel='High (Tachycardia)'; pulseAdv='Resting HR above 120 needs medical evaluation. Avoid stimulants and rest.'; }
+    pulseInfo = `<div style="background:#f8fafc;border-radius:8px;padding:10px 14px;margin-top:10px;border-left:4px solid ${pulseClass};font-size:.82rem"><strong>Pulse: ${pulseNum} bpm — ${pulseLabel}</strong><br><span style="color:#64748b">${pulseAdv}</span></div>`;
+  }
+  document.getElementById('bpResult').innerHTML = `
+    <div class="bp-result ${result.cls}">
+      <div class="reading">${sys}/${dia} <span style="font-size:.8rem;font-weight:400">mmHg</span></div>
+      <div class="category">${result.cat}</div>
+      <div class="advice">${result.advice}</div>
+    </div>${pulseInfo}`;
+  document.getElementById('resultCard').style.display = 'block';
+
+  // Save to history
+  const history = JSON.parse(localStorage.getItem('bp_history') || '[]');
+  history.unshift({ sys, dia, pulse: pulse || null, date: new Date().toISOString(), cat: result.cat });
+  if (history.length > 30) history.length = 30;
+  localStorage.setItem('bp_history', JSON.stringify(history));
+  renderHistory();
+
+  if (window.AfroHealthWorkflow && typeof window.AfroHealthWorkflow.recordSnapshot === 'function') {
+    const fields = [
+      { label: 'Systolic', value: sys + ' mmHg' },
+      { label: 'Diastolic', value: dia + ' mmHg' }
+    ];
+    if (pulseNum >= 30 && pulseNum <= 200) fields.push({ label: 'Pulse', value: pulseNum + ' bpm' });
+    window.AfroHealthWorkflow.recordSnapshot({
+      toolId: 'blood-pressure',
+      headline: result.cat + ' - ' + sys + '/' + dia + ' mmHg',
+      resultText: result.advice,
+      fields: fields,
+      markers: [
+        { label: 'Blood pressure category', value: result.cat, unit: 'screening band', status: result.cls.replace('bp-', '') }
+      ],
+      clinicianQuestions: [
+        'Should I repeat this reading at home and share an average?',
+        'When should I book a blood-pressure review based on repeated readings?'
+      ],
+      nextSteps: [
+        'Repeat readings under similar resting conditions before making decisions.',
+        'Seek urgent care for crisis-range readings or severe symptoms.'
+      ],
+      sourceNotes: ['AHA-style blood-pressure categories for screening and visit preparation only.']
+    });
+  }
+}
+
+function renderHistory() {
+  const history = JSON.parse(localStorage.getItem('bp_history') || '[]');
+  if (!history.length) {
+    document.getElementById('history').innerHTML = '<p style="font-size:.82rem;color:#94a3b8">No readings saved yet.</p>';
+    return;
+  }
+  let html = '';
+  // Trend analysis (if 3+ readings)
+  if (history.length >= 3) {
+    const recent3 = history.slice(0, 3);
+    const avgSys = recent3.reduce((s,h) => s + h.sys, 0) / 3;
+    const older3 = history.slice(-Math.min(3, history.length));
+    const oldAvgSys = older3.reduce((s,h) => s + h.sys, 0) / older3.length;
+    const diff = avgSys - oldAvgSys;
+    let trendIcon, trendTxt, trendColor;
+    if (Math.abs(diff) < 3) { trendIcon = '→'; trendTxt = 'Stable'; trendColor = '#64748b'; }
+    else if (diff < 0) { trendIcon = '↓'; trendTxt = 'Improving'; trendColor = '#22c55e'; }
+    else { trendIcon = '↑'; trendTxt = 'Worsening'; trendColor = '#ef4444'; }
+    html += `<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:10px 14px;margin-bottom:10px;font-size:.82rem"><strong style="color:${trendColor}">${trendIcon} Trend: ${trendTxt}</strong> — Recent avg systolic: ${Math.round(avgSys)} mmHg (last ${history.length} reading${history.length>1?'s':''})</div>`;
+  }
+  history.forEach(h => {
+    const d = new Date(h.date);
+    const dateStr = d.toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'}) + ' ' + d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+    const r = classify(h.sys, h.dia);
+    html += `<div class="history-row"><span>${dateStr}</span><span class="val" style="color:${r.cls === 'bp-normal' ? '#22c55e' : r.cls === 'bp-elevated' ? '#eab308' : '#ef4444'}">${h.sys}/${h.dia}${h.pulse ? ' ('+h.pulse+' bpm)' : ''}</span></div>`;
+  });
+  document.getElementById('history').innerHTML = html;
+}
+
+function clearHistory() {
+  localStorage.removeItem('bp_history');
+  renderHistory();
+}
+
+renderHistory();
+</script>
+
+<script>
+(function(){
+  var target = document.getElementById('resultCard');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
+  div.innerHTML = '<save-result-button tool-slug="blood-pressure" tool-name="Blood Pressure"></save-result-button><share-result-button tool-name="Blood Pressure" tool-slug="blood-pressure"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
+<script src="/assets/js/health-workflow.js?v=e8ad8f1d" defer></script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+
+
+ProcessId       : 27828
+ParentProcessId : 87532
+Name            : powershell.exe
+CommandLine     : "C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe" -Command
+                  "[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
+                  $env:AFROTOOLS_SAFE_WRITE_ATTEMPTS='240'
+                  $env:AFROTOOLS_SAFE_WRITE_DELAY_MS='500'
+                  $out = Join-Path (Get-Location) 'audit-results/npm-build-study-abroad-ux-monitored.out.log'
+                  $err = Join-Path (Get-Location) 'audit-results/npm-build-study-abroad-ux-monitored.err.log'
+                  Remove-Item -LiteralPath $out,$err -ErrorAction SilentlyContinue
+                  $p = Start-Process -FilePath 'cmd.exe' -ArgumentList '/c npm run build' -WorkingDirectory
+                  (Get-Location) -RedirectStandardOutput $out -RedirectStandardError $err -PassThru -WindowStyle Hidden
+                  while (-not $p.HasExited) {
+                    Start-Sleep -Seconds 30
+                    $p.Refresh()
+                    $last = if (Test-Path $out) { Get-Content $out -Tail 1 -ErrorAction SilentlyContinue } else { '' }
+                    Write-Output (\"build still running pid={0} last='{1}'\" -f $p.Id, $last)
+                  }
+                  $p.Refresh()
+                  Write-Output (\"BUILD_EXIT_CODE={0}\" -f $p.ExitCode)
+                  Write-Output '--- STDOUT TAIL ---'
+                  Get-Content $out -Tail 80 -ErrorAction SilentlyContinue
+                  Write-Output '--- STDERR TAIL ---'
+                  Get-Content $err -Tail 80 -ErrorAction SilentlyContinue"
+
+ProcessId       : 39604
+ParentProcessId : 27828
+Name            : cmd.exe
+CommandLine     : "C:\WINDOWS\system32\cmd.exe" /c npm run build
+
+ProcessId       : 17652
+ParentProcessId : 39604
+Name            : node.exe
+CommandLine     : "C:\Program Files\nodejs\\node.exe"
+                  "C:\Users\Oza\AppData\Roaming\npm\node_modules\npm\bin\npm-cli.js" run build
+
+ProcessId       : 39972
+ParentProcessId : 17652
+Name            : cmd.exe
+CommandLine     : C:\WINDOWS\system32\cmd.exe /d /s /c node scripts/build-tool-directory.js && node
+                  scripts/build-search-index.js && node scripts/build-salary-tax-index.js && node
+                  scripts/update-counts.js --write && node scripts/minify.js && node scripts/bundle.js && node
+                  scripts/update-html-bundles.js && node scripts/build-related-tools-data.js && node
+                  scripts/prune-unused-registry.js && node scripts/build-seo-system.js && node
+                  scripts/apply-og-fallbacks.js && node scripts/cachebust.js && node scripts/inject-internal-links.js
+                  && node scripts/fix-canonical-alias-links.js && node scripts/update-html-canonical-redirects.js &&
+                  node scripts/generate-blog-feed.js && node scripts/generate-sitemaps.js && node
+                  scripts/seo-daily-fix.js && node scripts/audit-scholarship-truth.js && node
+                  scripts/audit-public-claims.js && node scripts/audit-automation-registry.js && node
+                  scripts/stamp-sw.js && node tests/tool-verification.test.js
+
+ProcessId       : 26648
+ParentProcessId : 87532
+Name            : powershell.exe
+CommandLine     : "C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe" -Command
+                  "[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;
+                  $mutatingPattern='npm.*run build|npm run build|scripts[\\/]cachebust|scripts[\\/]inject-internal-link
+                  s|scripts[\\/]seo-daily-fix|build:deploy|build-dist|git(\.exe)?\s+.*\b(add|restore|reset|clean|checko
+                  ut|commit|merge|rebase|pull|push)\b'; $mutators=Get-CimInstance Win32_Process | Where-Object {
+                  $_.CommandLine -match $mutatingPattern } | Select-Object ProcessId,ParentProcessId,Name,CommandLine;
+                  $mutators | Format-List | Out-File -FilePath
+                  audit-results\v8-mutating-process-check-after-stability-fail.txt -Encoding utf8; $mutators |
+                  Format-List; Write-Output \"MUTATOR_COUNT=$(@($mutators).Count)\""
+
+ProcessId       : 94756
+ParentProcessId : 39972
+Name            : node.exe
+CommandLine     : node  scripts/cachebust.js

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Error Codes Reference — AfroTools API Docs</title>
+<meta name="description" content="Complete reference of HTTP status codes and error codes returned by the AfroTools API, with example error responses.">
+<meta name="theme-color" content="#0062CC">
+<link rel="canonical" href="https://afrotools.com/docs/api/errors">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/api-docs.css?v=ce57a995">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/api-sidebar.js?v=1e21db66" defer></script>
+<script src="/assets/js/components/api-code-tabs.js?v=d929cd13" defer></script>
+<meta property="article:modified_time" content="2026-03-28">
+<meta property="og:url" content="https://afrotools.com/docs/api/errors">
+</head>
+<body class="api-docs-body top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<div class="api-docs-layout">
+  <api-sidebar active="/docs/api/errors.html"></api-sidebar>
+  <main class="api-content">
+    <div class="api-two-panel api-two-panel--wide-left">
+      <div class="api-content__left">
+        <h1 class="mt-0">Error Codes</h1>
+        <p class="api-subtitle">Complete reference of HTTP status codes and application error codes returned by the AfroTools API.</p>
+
+        <h2>Error Response Format</h2>
+        <p>All errors return a consistent JSON structure. The <code>success</code> field is always <code>false</code>, and the <code>error</code> object contains a machine-readable <code>code</code>, a human-readable <code>message</code>, and a link to relevant documentation.</p>
+
+        <h2>HTTP Status Codes</h2>
+        <table class="param-table">
+          <thead><tr><th>Status</th><th>Meaning</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><span class="param-name">200</span></td><td>OK</td><td>Request succeeded. Response contains the requested data.</td></tr>
+            <tr><td><span class="param-name">400</span></td><td>Bad Request</td><td>The request was malformed or contains invalid parameters.</td></tr>
+            <tr><td><span class="param-name">401</span></td><td>Unauthorized</td><td>No API key was provided, or the key is invalid or expired.</td></tr>
+            <tr><td><span class="param-name">403</span></td><td>Forbidden</td><td>The API key is valid but lacks permission for this resource (e.g., plan restriction).</td></tr>
+            <tr><td><span class="param-name">404</span></td><td>Not Found</td><td>The requested endpoint or resource does not exist.</td></tr>
+            <tr><td><span class="param-name">429</span></td><td>Too Many Requests</td><td>Rate limit exceeded. Check response headers for reset time.</td></tr>
+            <tr><td><span class="param-name">500</span></td><td>Internal Server Error</td><td>An unexpected error occurred on the server. Contact support if persistent.</td></tr>
+          </tbody>
+        </table>
+
+        <h2>Application Error Codes</h2>
+        <table class="param-table">
+          <thead><tr><th>Error Code</th><th>HTTP Status</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="param-name">INVALID_API_KEY</span></td>
+              <td>401</td>
+              <td>The API key provided is not valid. Check for typos or generate a new key from your dashboard.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">EXPIRED_API_KEY</span></td>
+              <td>401</td>
+              <td>The API key has expired. Renew your subscription or generate a new key.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">RATE_LIMIT_EXCEEDED</span></td>
+              <td>429</td>
+              <td>You have exceeded your plan's rate limit. Wait for the reset window or upgrade your plan.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">INVALID_COUNTRY</span></td>
+              <td>400</td>
+              <td>The country code is not a valid ISO 3166-1 alpha-2 code or is not supported.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">MISSING_REQUIRED_FIELD</span></td>
+              <td>400</td>
+              <td>A required field is missing from the request body or query parameters.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">INVALID_SALARY</span></td>
+              <td>400</td>
+              <td>The salary or amount value is invalid. Must be a positive number.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">UNSUPPORTED_REGIME</span></td>
+              <td>400</td>
+              <td>The tax type or regime is not available for the specified country.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">ENGINE_ERROR</span></td>
+              <td>500</td>
+              <td>An internal calculation engine error occurred. Contact support with the request ID.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">INVALID_JSON</span></td>
+              <td>400</td>
+              <td>The request body is not valid JSON. Check your <code>Content-Type</code> header and body format.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">METHOD_NOT_ALLOWED</span></td>
+              <td>405</td>
+              <td>The HTTP method is not supported for this endpoint (e.g., GET on a POST-only endpoint).</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Handling Errors</h2>
+        <p>We recommend the following best practices when handling API errors:</p>
+        <ul style="margin:8px 0 20px 20px;font-size:.88rem;color:#4B5563;line-height:1.8">
+          <li>Always check the <code>success</code> field before processing the response.</li>
+          <li>Use the <code>error.code</code> field for programmatic error handling (switch/case).</li>
+          <li>Display the <code>error.message</code> to end users when appropriate.</li>
+          <li>For <code>429</code> errors, implement exponential backoff and check the <code>X-RateLimit-Reset</code> header.</li>
+          <li>For <code>500</code> errors, retry with exponential backoff (max 3 retries).</li>
+          <li>Log the full error response including the <code>request_id</code> for debugging.</li>
+        </ul>
+
+        <h2>Troubleshooting</h2>
+        <h3>401 Unauthorized</h3>
+        <p>Ensure your API key is included in the <code>x-api-key</code> header. Keys start with <code>afro_live_</code> or <code>afro_test_</code>. Check that your key has not expired.</p>
+
+        <h3>429 Rate Limited</h3>
+        <p>Check the <code>X-RateLimit-Remaining</code> and <code>X-RateLimit-Reset</code> response headers. Upgrade your plan or implement caching to reduce calls. See <a href="/docs/api/rate-limits">Rate Limits</a>.</p>
+
+        <h3>400 Bad Request</h3>
+        <p>Read the <code>error.code</code> field for specifics. Ensure all required parameters are present, country codes are 2-letter ISO codes, and amounts are positive numbers.</p>
+
+        <h3>500 Internal Error</h3>
+        <p>These are rare and automatically reported. If the issue persists, contact support with the <code>request_id</code> from the error response.</p>
+      </div>
+
+      <div class="api-content__right">
+        <div class="code-label">Error Response Format</div>
+        <div class="code-example">{
+  "success": false,
+  "error": {
+    "code": "ERROR_CODE",
+    "message": "Human-readable description.",
+    "docs": "https://afrotools.com/docs/api/errors.html"
+  }
+}</div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">401 &mdash; Invalid API Key</div>
+        <div class="code-example">{
+  "success": false,
+  "error": {
+    "code": "INVALID_API_KEY",
+    "message": "The API key provided is not valid.",
+    "docs": "https://afrotools.com/docs/api/authentication.html"
+  }
+}</div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">400 &mdash; Missing Required Field</div>
+        <div class="code-example">{
+  "success": false,
+  "error": {
+    "code": "MISSING_REQUIRED_FIELD",
+    "message": "The 'country' field is required.",
+    "docs": "https://afrotools.com/docs/api/tax/calculate.html"
+  }
+}</div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">400 &mdash; Invalid Country</div>
+        <div class="code-example">{
+  "success": false,
+  "error": {
+    "code": "INVALID_COUNTRY",
+    "message": "Country code 'XX' is not supported.",
+    "docs": "https://afrotools.com/docs/api/tax/countries.html"
+  }
+}</div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">400 &mdash; Invalid JSON</div>
+        <div class="code-example">{
+  "success": false,
+  "error": {
+    "code": "INVALID_JSON",
+    "message": "Request body is not valid JSON. Check Content-Type header.",
+    "docs": "https://afrotools.com/docs/api/errors.html"
+  }
+}</div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">429 &mdash; Rate Limit Exceeded</div>
+        <div class="code-example">{
+  "success": false,
+  "error": {
+    "code": "RATE_LIMIT_EXCEEDED",
+    "message": "Rate limit exceeded. Upgrade your plan or wait until the reset window.",
+    "docs": "https://afrotools.com/docs/api/rate-limits.html"
+  }
+}</div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">500 &mdash; Engine Error</div>
+        <div class="code-example">{
+  "success": false,
+  "error": {
+    "code": "ENGINE_ERROR",
+    "message": "An internal error occurred. Please try again or contact support.",
+    "request_id": "req_7f3a9b2c",
+    "docs": "https://afrotools.com/docs/api/errors.html"
+  }
+}</div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">Handling Errors (JavaScript)</div>
+        <div class="code-example">try {
+  const res = await fetch(url, {
+    headers: { "x-api-key": apiKey }
+  });
+  const data = await res.json();
+
+  if (!data.success) {
+    switch (data.error.code) {
+      case "RATE_LIMIT_EXCEEDED":
+        const retry = res.headers.get("Retry-After");
+        // Wait and retry...
+        break;
+      case "INVALID_API_KEY":
+      case "EXPIRED_API_KEY":
+        // Re-authenticate...
+        break;
+      default:
+        console.error(data.error.message);
+    }
+    return;
+  }
+  // Use data.data
+} catch (err) {
+  console.error("Network error:", err);
+}</div>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI JAMB Tutor — Free Step-by-Step Help | AfroJAMB</title>
+<meta name="description" content="Ask the AfroJAMB AI tutor any JAMB question. Step-by-step explanations for Math, Physics, Chemistry, Biology, English and 6 more subjects. Free, no sign-up.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="AI JAMB Tutor — Free Step-by-Step Help">
+<meta property="og:description" content="Ask any JAMB question. Get instant explanations from a tutor trained on the syllabus. Free, no sign-up.">
+<meta property="og:url" content="https://afrotools.com/jamb/tutor/">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/jamb.css?v=dc55e15e">
+
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<!-- afro-edu-bridge -->
+<script src="/assets/js/afro-auth.js?v=4250956b" defer></script>
+<script src="/assets/js/edu-profile-sync.js?v=8febee3d" defer></script>
+<script src="/assets/js/afro-edu-bridge.js?v=ab646560" defer></script>
+<script src="/assets/js/lib/cross-tool-nav.js?v=27275fef" defer></script>
+<!-- /afro-edu-bridge --><meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1443999710469672');
+fbq('track', 'PageView');
+</script>
+<script>
+if (typeof window.fbq === "function") {
+  window.fbq("track", "ViewContent", {
+    content_name: "AfroJAMB AI Tutor",
+    content_category: "jamb_tutor"
+  });
+}
+</script>
+<!-- End Meta Pixel Code -->
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/jamb/tutor/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/jamb/tutor/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/jamb/tutor/">
+</head>
+<body class="jamb-page top-level-page-ui-refresh">
+<noscript><img aria-hidden="true" alt="" height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
+/></noscript>
+<a href="#main" class="jb-skip">Skip to main content</a>
+
+
+<afro-navbar active="education"></afro-navbar>
+
+<div class="jb-wrap">
+  <nav class="jb-bc" aria-label="Breadcrumb">
+    <a href="/">Home</a><span class="sep">/</span>
+    <a href="/education/">Education</a><span class="sep">/</span>
+    <a href="/jamb/">AfroJAMB</a><span class="sep">/</span>
+    <span class="cur">AI Tutor</span>
+  </nav>
+</div>
+
+<main id="main">
+<section class="jb-hero" style="padding:48px 0 56px;">
+  <div class="jb-wrap jb-hero-z">
+    <span class="jb-hero-tag"><span class="pulse"></span>AI · Optional AI · provider required</span>
+    <h1>Your free <b>JAMB tutor</b>, available 24/7.</h1>
+    <p class="sub">Ask any question. Get step-by-step explanations. Pick a subject below and start. No sign-up needed.</p>
+  </div>
+</section>
+
+<section class="jb-sec" style="padding-top:32px;">
+  <div class="jb-wrap" style="max-width:880px;">
+
+    <!-- Subject picker -->
+    <div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:14px;padding:20px;margin-bottom:18px;">
+      <h3 style="margin:0 0 12px;font-size:.85rem;font-weight:800;color:#0f172a;">Pick a subject</h3>
+      <div id="subj-picker" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+    </div>
+
+    <!-- Chat shell -->
+    <div class="jb-tutor" style="height:500px;">
+      <div class="jb-msg-list" id="msg-list">
+        <div class="jb-msg bot">
+          👋 Hi! I'm your JAMB tutor. Pick a subject above and ask me anything — a question from a past paper, a concept you don't understand, or "quiz me on photosynthesis". Let's go.
+        </div>
+      </div>
+      <div class="jb-input-bar">
+        <input aria-label="Ask anything e.g. 'Explain Newton's first law'" id="msg-input" type="text" placeholder="Ask anything... e.g. 'Explain Newton's first law'" autocomplete="off">
+        <button type="button" id="send-btn">Send</button>
+      </div>
+    </div>
+
+    <!-- Quick prompts -->
+    <div style="margin-top:18px;">
+      <div style="font-size:.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">Try one of these</div>
+      <div id="quick-prompts" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+    </div>
+
+    <!-- Disclaimer -->
+    <p style="font-size:.72rem;color:#94a3b8;margin-top:24px;text-align:center;">
+      AI tutor is for studying, not for taking the actual exam. Replies are limited to 10/day for fair usage.
+      Optional AI · provider required (Anthropic). Cached when possible to save costs and respond instantly.
+    </p>
+
+  </div>
+</section>
+
+</main>
+
+<afro-footer></afro-footer>
+
+<style>
+.subj-chip {
+  padding: 8px 14px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 100px;
+  font-size: .8rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: #fafbfc;
+  transition: all .15s;
+  user-select: none;
+}
+.subj-chip:hover { border-color: #4DA3FF; }
+.subj-chip.active { background: #0062CC; color: #fff; border-color: #0062CC; }
+
+.qp {
+  padding: 8px 14px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 100px;
+  font-size: .78rem;
+  cursor: pointer;
+  transition: all .15s;
+}
+.qp:hover { background: #E8F2FF; border-color: #4DA3FF; color: #0063D1; }
+</style>
+
+<script>
+var SUBJECTS = [
+  ["english","📝 Use of English"],
+  ["mathematics","➗ Mathematics"],
+  ["physics","⚛️ Physics"],
+  ["chemistry","🧪 Chemistry"],
+  ["biology","🌱 Biology"],
+  ["government","🏛️ Government"],
+  ["economics","💹 Economics"],
+  ["literature","📖 Literature"],
+  ["crk","✝️ CRK"],
+  ["commerce","🛒 Commerce"],
+  ["accounts","📒 Accounts"],
+];
+
+var QUICK_PROMPTS = {
+  english: [
+    "What's the difference between 'affect' and 'effect'?",
+    "Give me 5 common JAMB synonym questions",
+    "Explain the structure of a comprehension passage",
+  ],
+  mathematics: [
+    "How do I solve quadratic equations?",
+    "Explain the difference between AP and GP",
+    "Quiz me on percentages",
+  ],
+  physics: [
+    "Explain Newton's three laws with examples",
+    "How does a transformer work?",
+    "Give me a worked example on projectile motion",
+  ],
+  chemistry: [
+    "Explain the mole concept",
+    "What's the difference between alkanes and alkenes?",
+    "Walk me through balancing redox reactions",
+  ],
+  biology: [
+    "Explain photosynthesis step by step",
+    "What's the difference between mitosis and meiosis?",
+    "How does the human heart work?",
+  ],
+  government: [
+    "What is separation of powers?",
+    "Compare federalism and unitarism",
+    "Tell me about the 1979 Nigerian constitution",
+  ],
+  economics: [
+    "What is opportunity cost? Give Nigerian examples",
+    "Explain the law of demand",
+    "How does inflation affect the economy?",
+  ],
+  literature: [
+    "What are the main literary devices in poetry?",
+    "Explain dramatic irony with an example",
+    "What's the difference between theme and motif?",
+  ],
+  crk: [
+    "Tell me about the call of Abraham",
+    "Explain the Beatitudes",
+    "What's the significance of Pentecost?",
+  ],
+  commerce: [
+    "What are the types of business units?",
+    "Explain the functions of a wholesaler",
+    "How does insurance work?",
+  ],
+  accounts: [
+    "Explain double-entry bookkeeping",
+    "How do I prepare a trial balance?",
+    "What is depreciation? Show me a method",
+  ],
+};
+
+var currentSubject = "mathematics";
+var conversationHistory = [];
+var sending = false;
+var hasTrackedTutorContact = false;
+
+function renderSubjects() {
+  var box = document.getElementById("subj-picker");
+  box.innerHTML = "";
+  SUBJECTS.forEach(function(s){
+    var d = document.createElement("div");
+    d.className = "subj-chip" + (s[0] === currentSubject ? " active" : "");
+    d.textContent = s[1];
+    d.addEventListener("click", function(){
+      currentSubject = s[0];
+      renderSubjects();
+      renderQuickPrompts();
+    });
+    box.appendChild(d);
+  });
+}
+
+function renderQuickPrompts() {
+  var box = document.getElementById("quick-prompts");
+  box.innerHTML = "";
+  (QUICK_PROMPTS[currentSubject] || []).forEach(function(p){
+    var d = document.createElement("div");
+    d.className = "qp";
+    d.textContent = p;
+    d.addEventListener("click", function(){
+      document.getElementById("msg-input").value = p;
+      sendMessage();
+    });
+    box.appendChild(d);
+  });
+}
+
+function appendMessage(role, text, isTyping) {
+  var list = document.getElementById("msg-list");
+  var div = document.createElement("div");
+  div.className = "jb-msg " + role + (isTyping ? " typing" : "");
+  div.textContent = text;
+  list.appendChild(div);
+  list.scrollTop = list.scrollHeight;
+  return div;
+}
+
+async function buildAiHeaders() {
+  var headers = {"Content-Type": "application/json"};
+  try {
+    if (window.AfroAuth && typeof AfroAuth.isLoggedIn === "function" && AfroAuth.isLoggedIn()) {
+      var token = null;
+      if (typeof AfroAuth.getSessionTokenAsync === "function") token = await AfroAuth.getSessionTokenAsync();
+      else if (typeof AfroAuth.getSessionToken === "function") token = AfroAuth.getSessionToken();
+      if (token) headers.Authorization = "Bearer " + token;
+    }
+  } catch (e) {}
+  return headers;
+}
+
+async function sendMessage() {
+  if (sending) return;
+  var input = document.getElementById("msg-input");
+  var text = input.value.trim();
+  if (!text) return;
+
+  if (!hasTrackedTutorContact && typeof window.fbq === "function") {
+    window.fbq("track", "Contact", {
+      content_name: "AfroJAMB AI Tutor",
+      content_category: "jamb_tutor",
+      subject: currentSubject
+    });
+    hasTrackedTutorContact = true;
+  }
+
+  sending = true;
+  input.value = "";
+  appendMessage("user", text);
+  conversationHistory.push({role: "user", content: text});
+
+  var typingEl = appendMessage("bot", "Thinking…", true);
+
+  try {
+    var res = await fetch("/.netlify/functions/ai-advisor", {
+      method: "POST",
+      headers: await buildAiHeaders(),
+      body: JSON.stringify({
+        tool: "jamb-tutor-" + currentSubject,
+        message: text,
+        history: conversationHistory.slice(-10),
+      }),
+    });
+    var data = await res.json();
+    var reply = data.reply || data.message || data.response || "Sorry, I couldn't generate a response. Try rephrasing.";
+    typingEl.classList.remove("typing");
+    typingEl.textContent = reply;
+    conversationHistory.push({role: "assistant", content: reply});
+  } catch(e) {
+    typingEl.classList.remove("typing");
+    typingEl.textContent = "Hmm, I had trouble connecting. Check your internet and try again.";
+  } finally {
+    sending = false;
+  }
+}
+
+document.getElementById("send-btn").addEventListener("click", sendMessage);
+document.getElementById("msg-input").addEventListener("keydown", function(e){
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+});
+
+renderSubjects();
+renderQuickPrompts();
+
+// Pre-fill from URL: ?subject=physics&q=Explain+something
+(function(){
+  var p = new URLSearchParams(location.search);
+  if (p.get("subject")) {
+    currentSubject = p.get("subject");
+    renderSubjects();
+    renderQuickPrompts();
+  }
+  if (p.get("q")) {
+    document.getElementById("msg-input").value = p.get("q");
+  }
+  if (typeof window.fbq === "function") {
+    window.fbq("trackCustom", "TutorOpened", {
+      content_name: "AfroJAMB AI Tutor",
+      subject: currentSubject
+    });
+  }
+})();
+</script>
+
+</body>
+</html>

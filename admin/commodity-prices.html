@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Commodity Prices — AfroTools Admin</title>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', -apple-system, sans-serif; background: #F5F9FF; color: #1a2e22; line-height: 1.6; }
+  .dash { max-width: 1300px; margin: 0 auto; padding: 32px 24px; }
+  .dash-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+  .dash-header h1 { font-size: 1.4rem; font-weight: 800; }
+  .dash-header .badge { background: #fef3cd; color: #92400e; font-size: .65rem; font-weight: 700; padding: 3px 10px; border-radius: 12px; text-transform: uppercase; }
+  .back-link { font-size: .82rem; color: #0062CC; text-decoration: none; margin-bottom: 16px; display: inline-block; }
+  .back-link:hover { text-decoration: underline; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .stat-card { background: #fff; border: 1px solid #E8F0FE; border-radius: 12px; padding: 16px; text-align: center; }
+  .stat-value { font-size: 1.5rem; font-weight: 800; color: #0062CC; }
+  .stat-value.warn { color: #d97706; }
+  .stat-label { font-size: .72rem; color: #6B7F99; margin-top: 2px; }
+  /* Commodity tabs */
+  .commodity-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+  .tab-btn { padding: 6px 14px; border: 1.5px solid #E5E7EB; border-radius: 20px; background: #fff;
+    font-family: inherit; font-size: .78rem; font-weight: 600; cursor: pointer; color: #374151; transition: all .15s; }
+  .tab-btn:hover { border-color: #0062CC; color: #0062CC; }
+  .tab-btn.active { background: #0062CC; border-color: #0062CC; color: #fff; }
+  /* Benchmark bar */
+  .benchmark-bar { background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 8px;
+    padding: 10px 16px; margin-bottom: 16px; font-size: .8rem; display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+  .benchmark-bar strong { color: #1d4ed8; }
+  .bm-field { display: flex; gap: 8px; align-items: center; }
+  .bm-field label { font-size: .75rem; color: #6B7F99; white-space: nowrap; }
+  .bm-field input { width: 90px; padding: 4px 6px; border: 1.5px solid #E5E7EB; border-radius: 6px; font-size: .8rem; }
+  /* Table */
+  .section { background: #fff; border: 1px solid #E8F0FE; border-radius: 12px; padding: 24px; margin-bottom: 20px; overflow-x: auto; }
+  .section h2 { font-size: 1rem; font-weight: 700; margin-bottom: 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: .79rem; min-width: 900px; }
+  th { text-align: left; font-weight: 600; color: #6B7F99; padding: 8px; border-bottom: 2px solid #E8F0FE; white-space: nowrap; }
+  td { padding: 5px 8px; border-bottom: 1px solid #EFF6FF; }
+  tr:hover td { background: #F5F9FF; }
+  td input[type="number"] { width: 100px; padding: 4px 6px; border: 1.5px solid #E5E7EB; border-radius: 6px; font-size: .8rem; text-align: right; }
+  td input[type="text"] { width: 130px; padding: 4px 6px; border: 1.5px solid #E5E7EB; border-radius: 6px; font-size: .78rem; }
+  td input.wide { width: 190px; }
+  td input:focus, .bm-field input:focus { border-color: #0062CC; outline: none; }
+  td select { padding: 4px 6px; border: 1.5px solid #E5E7EB; border-radius: 6px; font-family: inherit; font-size: .78rem; }
+  .btn { padding: 5px 13px; border: none; border-radius: 6px; font-family: inherit; font-size: .78rem; font-weight: 600; cursor: pointer; }
+  .btn-save { background: #059669; color: #fff; }
+  .btn-save:hover { background: #047857; }
+  .btn-sm { padding: 3px 9px; font-size: .72rem; }
+  .btn-primary { background: #0062CC; color: #fff; }
+  .btn-primary:hover { background: #0063D1; }
+  .stale { background: #FEF2F2; }
+  .stale-badge { font-size: .6rem; font-weight: 700; background: #FEE2E2; color: #991B1B; padding: 2px 6px; border-radius: 4px; }
+  .fresh-badge { font-size: .6rem; font-weight: 700; background: #ECFDF5; color: #059669; padding: 2px 6px; border-radius: 4px; }
+  .trend-rising   { color: #dc2626; }
+  .trend-declining { color: #059669; }
+  .trend-elevated { color: #d97706; }
+  .source-note { font-size: .72rem; color: #94a3b8; margin-top: 12px; }
+  .toast { position: fixed; top: 20px; right: 20px; padding: 12px 20px; border-radius: 8px; color: #fff;
+    font-size: .85rem; font-weight: 500; z-index: 999; transform: translateY(-20px); opacity: 0; transition: all .3s; }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { background: #059669; }
+  .toast.error { background: #dc2626; }
+</style>
+<meta property="article:modified_time" content="2026-03-28">
+<link rel="canonical" href="https://afrotools.com/admin/commodity-prices">
+<meta property="og:url" content="https://afrotools.com/admin/commodity-prices">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c4853917">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/lib/dark-mode.js?v=5cb64ba3" defer></script>
+</head>
+<body class="top-level-page-ui-refresh">
+<div class="dash">
+  <a href="/admin/dashboard" class="back-link">&larr; Admin Dashboard</a>
+  <div class="dash-header">
+    <h1>Commodity Prices</h1>
+    <span class="badge">Admin</span>
+  </div>
+
+  <div class="stats" id="cpStats"></div>
+
+  <!-- Commodity selector tabs -->
+  <div class="commodity-tabs" id="commodityTabs"></div>
+
+  <!-- Global benchmark editor -->
+  <div class="benchmark-bar" id="benchmarkBar" style="display:none">
+    <strong id="benchmarkTitle">Global Benchmark</strong>
+    <div class="bm-field"><label>Exchange</label><input aria-label="E.g. SAFEX (JSE)" type="text" id="bm-exchange" placeholder="e.g. SAFEX (JSE)"></div>
+    <div class="bm-field"><label>Price (USD)</label><input aria-label="Bm price" type="number" id="bm-price" step="0.01" placeholder="0.00"></div>
+    <div class="bm-field"><label>Notes</label><input aria-label="Reference notes" type="text" id="bm-notes" placeholder="Reference notes" style="width:200px"></div>
+    <button type="button" class="btn btn-primary btn-sm" onclick="saveBenchmark()">Save Benchmark</button>
+  </div>
+
+  <div class="section">
+    <h2 id="tableTitle">Select a commodity above</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Country</th>
+          <th>Market</th>
+          <th>Currency</th>
+          <th>Current Price</th>
+          <th>Month Ago</th>
+          <th>Year Ago</th>
+          <th>Trend</th>
+          <th>Notes</th>
+          <th>Updated</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="cpTable">
+        <tr><td colspan="11" style="text-align:center;color:#94a3b8;padding:24px">Choose a commodity above to load data</td></tr>
+      </tbody>
+    </table>
+    <div class="source-note">Sources: FEWS NET, FAO FPMA, WFP VAM, national market information systems. Update monthly.</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var adminKey = sessionStorage.getItem('admin_key');
+if (!adminKey) { adminKey = prompt('Enter admin password:'); if (adminKey) sessionStorage.setItem('admin_key', adminKey); }
+
+var SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
+var currentCommodity = null;
+var tableData = [];
+var benchmarkData = {};
+
+var COMMODITIES = [
+  { id: 'maize',      label: '🌽 Maize',      unit: 'per tonne' },
+  { id: 'rice',       label: '🍚 Rice',        unit: 'per tonne' },
+  { id: 'sorghum',    label: '🌾 Sorghum',     unit: 'per tonne' },
+  { id: 'millet',     label: '🌿 Millet',      unit: 'per tonne' },
+  { id: 'cowpea',     label: '🫘 Cowpea',      unit: 'per tonne' },
+  { id: 'cassava',    label: '🥔 Cassava',     unit: 'per tonne' },
+  { id: 'cocoa',      label: '🍫 Cocoa',       unit: 'per tonne' },
+  { id: 'coffee',     label: '☕ Coffee',      unit: 'per tonne' },
+  { id: 'sesame',     label: '🌱 Sesame',      unit: 'per tonne' },
+  { id: 'groundnut',  label: '🥜 Groundnut',   unit: 'per tonne' },
+  { id: 'wheat',      label: '🌾 Wheat',       unit: 'per tonne' },
+];
+
+var COUNTRIES = [
+  ['NG','Nigeria'],['KE','Kenya'],['ET','Ethiopia'],['GH','Ghana'],['ZA','South Africa'],
+  ['TZ','Tanzania'],['MW','Malawi'],['ZM','Zambia'],['UG','Uganda'],['MZ','Mozambique'],
+  ['SN','Senegal'],['MG','Madagascar'],['EG','Egypt'],['ML','Mali'],['SD','Sudan'],
+  ['BF','Burkina Faso'],['NE','Niger'],['CI',"Côte d'Ivoire"],['CM','Cameroon'],['RW','Rwanda']
+];
+
+var CURRENCIES = { NG:'NGN', KE:'KES', ET:'ETB', GH:'GHS', ZA:'ZAR', TZ:'TZS', MW:'MWK',
+  ZM:'ZMW', UG:'UGX', MZ:'MZN', SN:'XOF', MG:'MGA', EG:'EGP', ML:'XOF', SD:'SDG',
+  BF:'XOF', NE:'XOF', CI:'XOF', CM:'XAF', RW:'RWF' };
+
+function showToast(msg, type) {
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast ' + (type || 'success'); t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 3000);
+}
+function timeAgo(dateStr) {
+  if (!dateStr) return 'Never';
+  var days = Math.floor((Date.now() - new Date(dateStr).getTime()) / 86400000);
+  if (days === 0) return 'Today'; if (days === 1) return 'Yesterday';
+  if (days < 30) return days + 'd ago'; return Math.floor(days / 30) + 'mo ago';
+}
+function isStale(dateStr) {
+  return !dateStr || (Date.now() - new Date(dateStr).getTime()) > 30 * 86400000;
+}
+
+// Build tabs
+(function buildTabs() {
+  var tabs = document.getElementById('commodityTabs');
+  COMMODITIES.forEach(function(c) {
+    var btn = document.createElement('button');
+    btn.className = 'tab-btn';
+    btn.textContent = c.label;
+    btn.onclick = function() { selectCommodity(c.id, c.label); };
+    tabs.appendChild(btn);
+  });
+})();
+
+function selectCommodity(id, label) {
+  currentCommodity = id;
+  document.querySelectorAll('.tab-btn').forEach(function(b) {
+    b.classList.toggle('active', b.textContent === label);
+  });
+  document.getElementById('tableTitle').textContent = label + ' — All Countries';
+  loadCommodityData(id);
+}
+
+async function loadCommodityData(commodity) {
+  document.getElementById('cpTable').innerHTML =
+    '<tr><td colspan="11" style="text-align:center;color:#94a3b8;padding:24px">Loading ' + commodity + ' data...</td></tr>';
+
+  try {
+    var [pricesRes, benchRes] = await Promise.all([
+      fetch(SUPABASE_URL + '/rest/v1/commodity_prices?commodity=eq.' + commodity + '&select=*&order=country_name.asc', {
+        headers: { apikey: adminKey, Authorization: 'Bearer ' + adminKey }
+      }),
+      fetch(SUPABASE_URL + '/rest/v1/commodity_benchmarks?commodity=eq.' + commodity + '&select=*', {
+        headers: { apikey: adminKey, Authorization: 'Bearer ' + adminKey }
+      })
+    ]);
+
+    var dbRows = pricesRes.ok ? await pricesRes.json() : [];
+    var benchRows = benchRes.ok ? await benchRes.json() : [];
+    benchmarkData[commodity] = benchRows[0] || { commodity: commodity, exchange: '', price_usd: null, notes: '' };
+
+    // Merge DB rows with country list (fill missing countries with empty rows)
+    var dbMap = {};
+    dbRows.forEach(function(r) { dbMap[r.country_code] = r; });
+
+    tableData = COUNTRIES.map(function(c) {
+      return dbMap[c[0]] || {
+        country_code: c[0], country_name: c[1], commodity: commodity,
+        currency: CURRENCIES[c[0]] || '', market: '', price: null,
+        month_ago: null, year_ago: null, trend: 'stable', notes: '', updated_at: null
+      };
+    });
+
+    renderTable(); renderStats(); renderBenchmark(commodity);
+  } catch(e) {
+    showToast('Load error: ' + e.message, 'error');
+  }
+}
+
+function renderBenchmark(commodity) {
+  var bm = benchmarkData[commodity] || {};
+  document.getElementById('benchmarkBar').style.display = 'flex';
+  document.getElementById('benchmarkTitle').textContent = '🌍 Global Benchmark — ' +
+    COMMODITIES.find(function(c){ return c.id === commodity; }).label;
+  document.getElementById('bm-exchange').value = bm.exchange || '';
+  document.getElementById('bm-price').value = bm.price_usd || '';
+  document.getElementById('bm-notes').value = bm.notes || '';
+}
+
+function renderStats() {
+  var total = tableData.length;
+  var staleCount = tableData.filter(function(r) { return isStale(r.updated_at); }).length;
+  var freshCount = total - staleCount;
+  document.getElementById('cpStats').innerHTML =
+    '<div class="stat-card"><div class="stat-value">' + total + '</div><div class="stat-label">Countries</div></div>' +
+    '<div class="stat-card"><div class="stat-value">' + freshCount + '</div><div class="stat-label">Up to Date</div></div>' +
+    '<div class="stat-card"><div class="stat-value' + (staleCount > 0 ? ' warn' : '') + '">' + staleCount + '</div><div class="stat-label">Stale (>30d)</div></div>' +
+    '<div class="stat-card"><div class="stat-value">' + COMMODITIES.length + '</div><div class="stat-label">Commodities</div></div>';
+}
+
+function renderTable() {
+  var tbody = document.getElementById('cpTable');
+  if (!tableData.length) {
+    tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;color:#94a3b8;padding:24px">No data — select a commodity</td></tr>';
+    return;
+  }
+  tbody.innerHTML = tableData.map(function(r, i) {
+    var stale = isStale(r.updated_at);
+    return '<tr class="' + (stale ? 'stale' : '') + '" data-idx="' + i + '">' +
+      '<td><strong>' + r.country_code + '</strong> ' + r.country_name + '</td>' +
+      '<td><input aria-label="Market name" type="text" value="' + (r.market || '') + '" data-field="market" placeholder="Market name"></td>' +
+      '<td><input aria-label="Currency" type="text" value="' + (r.currency || '') + '" data-field="currency" style="width:60px"></td>' +
+      '<td><input aria-label="Price" type="number" step="1" value="' + (r.price || '') + '" data-field="price"></td>' +
+      '<td><input aria-label="Month ago" type="number" step="1" value="' + (r.month_ago || '') + '" data-field="month_ago"></td>' +
+      '<td><input aria-label="Year ago" type="number" step="1" value="' + (r.year_ago || '') + '" data-field="year_ago"></td>' +
+      '<td><select data-field="trend" aria-label="Select option">' +
+        ['stable','rising','declining','elevated'].map(function(t) {
+          return '<option value="' + t + '"' + (r.trend === t ? ' selected' : '') + '>' +
+            t.charAt(0).toUpperCase() + t.slice(1) + '</option>';
+        }).join('') +
+      '</select></td>' +
+      '<td><input aria-label="Seasonal notes" type="text" class="wide" value="' + (r.notes || '').replace(/"/g,'&quot;') + '" data-field="notes" placeholder="Seasonal notes…"></td>' +
+      '<td style="white-space:nowrap;font-size:.72rem;color:#94a3b8">' + timeAgo(r.updated_at) + '</td>' +
+      '<td>' + (stale ? '<span class="stale-badge">STALE</span>' : '<span class="fresh-badge">OK</span>') + '</td>' +
+      '<td><button type="button" class="btn btn-save" onclick="saveRow(' + i + ')">Save</button></td>' +
+    '</tr>';
+  }).join('');
+}
+
+async function saveRow(idx) {
+  var r = tableData[idx];
+  var row = document.querySelector('tr[data-idx="' + idx + '"]');
+  var payload = {
+    country_code: r.country_code,
+    country_name: r.country_name,
+    commodity: currentCommodity,
+    currency:   row.querySelector('[data-field="currency"]').value,
+    market:     row.querySelector('[data-field="market"]').value,
+    price:      parseFloat(row.querySelector('[data-field="price"]').value) || null,
+    month_ago:  parseFloat(row.querySelector('[data-field="month_ago"]').value) || null,
+    year_ago:   parseFloat(row.querySelector('[data-field="year_ago"]').value) || null,
+    trend:      row.querySelector('[data-field="trend"]').value,
+    notes:      row.querySelector('[data-field="notes"]').value,
+    updated_at: new Date().toISOString(),
+    updated_by: 'admin'
+  };
+
+  try {
+    var res = await fetch(SUPABASE_URL + '/rest/v1/commodity_prices', {
+      method: 'POST',
+      headers: { apikey: adminKey, Authorization: 'Bearer ' + adminKey,
+        'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates,return=representation' },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) {
+      tableData[idx] = Object.assign(r, payload);
+      showToast(r.country_name + ' ' + currentCommodity + ' updated');
+      renderTable(); renderStats();
+    } else {
+      showToast('Save failed: ' + await res.text(), 'error');
+    }
+  } catch(e) { showToast('Network error: ' + e.message, 'error'); }
+}
+
+async function saveBenchmark() {
+  var payload = {
+    commodity: currentCommodity,
+    exchange:  document.getElementById('bm-exchange').value,
+    price_usd: parseFloat(document.getElementById('bm-price').value) || null,
+    notes:     document.getElementById('bm-notes').value,
+    updated_at: new Date().toISOString()
+  };
+  try {
+    var res = await fetch(SUPABASE_URL + '/rest/v1/commodity_benchmarks', {
+      method: 'POST',
+      headers: { apikey: adminKey, Authorization: 'Bearer ' + adminKey,
+        'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates,return=representation' },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) { benchmarkData[currentCommodity] = payload; showToast('Benchmark saved'); }
+    else showToast('Benchmark save failed', 'error');
+  } catch(e) { showToast('Network error', 'error'); }
+}
+
+// Auto-load maize on page open
+selectCommodity('maize', '🌽 Maize');
+</script>
+</body>
+</html>

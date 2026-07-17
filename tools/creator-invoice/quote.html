@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quote Builder — CreatorInvoice | AfroTools</title>
+<meta name="description" content="Create professional quotes and estimates. Convert accepted quotes to invoices instantly.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta name="robots" content="noindex, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="style.css?v=a40ada5e">
+<style>
+.ci-app,.ci-app-header,.ci-app-inner,.ci-section,.ci-ai-assist{box-sizing:border-box;max-width:100%}
+.ci-ai-input-row{min-width:0}
+.ci-ai-input{min-width:0}
+@media (max-width:520px){.ci-ai-input-row{display:grid;grid-template-columns:1fr}.ci-ai-send{width:100%}}
+</style>
+<meta property="og:url" content="https://afrotools.com/tools/creator-invoice/quote">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c4853917">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/lib/dark-mode.js?v=5cb64ba3" defer></script>
+<link rel="canonical" href="https://afrotools.com/tools/creator-invoice/quote">
+</head>
+<body class="top-level-page-ui-refresh">
+<div class="ci-app">
+
+  <!-- HEADER -->
+  <header class="ci-app-header">
+    <a href="/tools/creator-invoice/" class="ci-app-logo">
+      <span>CI</span> CreatorInvoice
+    </a>
+    <nav class="ci-app-nav">
+      <a href="app.html">Invoices</a>
+      <a href="quote.html" class="active">Quotes</a>
+    </nav>
+  </header>
+
+  <div class="ci-app-inner">
+
+    <!-- QUOTE LIST (default) -->
+    <div id="quote-list-view">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+        <div class="ci-step-title" style="margin:0">Your Quotes</div>
+        <button type="button" class="ci-btn ci-btn-primary ci-btn-sm" onclick="showCreateQuote()">+ New Quote</button>
+      </div>
+
+      <div class="ci-filter-tabs" id="quote-filter-tabs">
+        <button type="button" class="ci-filter-tab active" data-filter="all">All</button>
+        <button type="button" class="ci-filter-tab" data-filter="draft">Draft</button>
+        <button type="button" class="ci-filter-tab" data-filter="sent">Sent</button>
+        <button type="button" class="ci-filter-tab" data-filter="accepted">Accepted</button>
+        <button type="button" class="ci-filter-tab" data-filter="declined">Declined</button>
+      </div>
+
+      <div class="ci-invoice-list" id="quotes-list"></div>
+
+      <div class="ci-empty" id="quotes-empty">
+        <div class="ci-empty-icon">📋</div>
+        <h3>No quotes yet</h3>
+        <p>Create your first quote — win more projects with professional estimates</p>
+        <button type="button" class="ci-btn ci-btn-primary ci-btn-sm" onclick="showCreateQuote()">+ Create Quote</button>
+      </div>
+    </div>
+
+    <!-- CREATE QUOTE -->
+    <div id="quote-create-view" style="display:none">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:28px">
+        <button type="button" class="ci-btn ci-btn-secondary ci-btn-sm" onclick="showQuoteList()">← Back</button>
+        <div class="ci-step-title" style="margin:0">New Quote</div>
+      </div>
+
+      <!-- Client -->
+      <div class="ci-section">
+        <div class="ci-section-title">CLIENT</div>
+        <div class="ci-field">
+          <label class="ci-label">Client Name *</label>
+          <input aria-label="Client name" type="text" class="ci-input" id="q-client-name" placeholder="Client name">
+        </div>
+        <div class="ci-field-row">
+          <div class="ci-field">
+            <label class="ci-label">Company</label>
+            <input aria-label="Optional" type="text" class="ci-input" id="q-client-company" placeholder="Optional">
+          </div>
+          <div class="ci-field">
+            <label class="ci-label">Email</label>
+            <input aria-label="Client@email.com" type="email" class="ci-input" id="q-client-email" placeholder="client@email.com">
+          </div>
+        </div>
+      </div>
+
+      <!-- Quote Details -->
+      <div class="ci-section">
+        <div class="ci-section-title">QUOTE DETAILS</div>
+        <div class="ci-field-row-3">
+          <div class="ci-field">
+            <label class="ci-label">Quote Number</label>
+            <input aria-label="QTE 001" type="text" class="ci-input" id="q-number" placeholder="QTE-001">
+          </div>
+          <div class="ci-field">
+            <label class="ci-label">Currency</label>
+            <select class="ci-select" id="q-currency" aria-label="Q Currency">
+              <option value="NGN">NGN</option>
+              <option value="KES">KES</option>
+              <option value="ZAR">ZAR</option>
+              <option value="GHS">GHS</option>
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+              <option value="GBP">GBP</option>
+            </select>
+          </div>
+          <div class="ci-field">
+            <label class="ci-label">Valid For</label>
+            <select class="ci-select" id="q-validity" aria-label="Q Validity">
+              <option value="7">7 days</option>
+              <option value="14" selected>14 days</option>
+              <option value="30">30 days</option>
+              <option value="60">60 days</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Line Items -->
+      <div class="ci-section">
+        <div class="ci-section-title">LINE ITEMS</div>
+        <div class="ci-ai-assist">
+          <div class="ci-ai-assist-title">Local Quote Helper</div>
+          <div class="ci-ai-input-row">
+            <input aria-label="Describe the project for a quick quote" type="text" class="ci-ai-input" id="q-ai-describe" placeholder="Describe the project for a quick quote...">
+            <button type="button" class="ci-ai-send" onclick="localGenerateQuoteItems()">Add Suggestions</button>
+          </div>
+        </div>
+
+        <div class="ci-line-items" id="q-line-items"></div>
+        <button type="button" class="ci-add-line" onclick="addQuoteLineItem()">+ Add Line Item</button>
+
+        <div class="ci-subtotal-row">
+          <span class="ci-subtotal-label">Quote Total</span>
+          <span class="ci-subtotal-value" id="q-total">0</span>
+        </div>
+      </div>
+
+      <!-- Cover Letter -->
+      <div class="ci-section">
+        <div class="ci-section-title">COVER LETTER (OPTIONAL)</div>
+        <div class="ci-field">
+          <textarea class="ci-textarea" id="q-cover-letter" rows="5" placeholder="A brief message to the client about this quote..." aria-label="A brief message to the client about this quote..."></textarea>
+        </div>
+        <button type="button" class="ci-btn ci-btn-outline ci-btn-sm" onclick="localGenerateCoverLetter()">Create Local Cover Note</button>
+      </div>
+
+      <!-- Actions -->
+      <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap">
+        <button type="button" class="ci-btn ci-btn-secondary" onclick="saveQuote('draft')">Save Draft</button>
+        <button type="button" class="ci-btn ci-btn-whatsapp" onclick="shareQuoteWhatsApp()">📱 Share via WhatsApp</button>
+        <button type="button" class="ci-btn ci-btn-primary" onclick="saveQuote('sent')">Send Quote →</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="ci-toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/assets/js/afro-auth.js?v=4250956b"></script>
+<script src="/engines/creator-invoice-engine.js?v=843edc40"></script>
+<script>
+(function() {
+  'use strict';
+
+  var engine = window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.creatorInvoice;
+  var quotes = [];
+  var quoteLineItems = [];
+  var quoteFilter = 'all';
+  var editingQuoteId = null;
+
+  document.addEventListener('DOMContentLoaded', init);
+
+  function init() {
+    addQuoteLineItem();
+
+    var params = new URLSearchParams(location.search);
+    if (params.get('new') === '1') showCreateQuote();
+
+    document.getElementById('quote-filter-tabs').addEventListener('click', function(e) {
+      var tab = e.target.closest('.ci-filter-tab');
+      if (!tab) return;
+      document.querySelectorAll('#quote-filter-tabs .ci-filter-tab').forEach(function(t) { t.classList.remove('active'); });
+      tab.classList.add('active');
+      quoteFilter = tab.dataset.filter;
+      renderQuotes();
+    });
+
+    if (typeof AfroAuth !== 'undefined') {
+      AfroAuth.onReady(function() {
+        if (AfroAuth.isLoggedIn()) {
+          loadQuotes();
+          loadProfileDefaults();
+        }
+      });
+    }
+  }
+
+  function loadProfileDefaults() {
+    var profile = AfroAuth.getCachedProfile && AfroAuth.getCachedProfile();
+    if (profile && profile.currency) {
+      var sel = document.getElementById('q-currency');
+      for (var i = 0; i < sel.options.length; i++) {
+        if (sel.options[i].value === profile.currency) { sel.selectedIndex = i; break; }
+      }
+    }
+  }
+
+  async function loadQuotes() {
+    try {
+      var sb = AfroAuth.getSupabase();
+      var user = AfroAuth.getUser();
+      var res = await sb.from('creator_quotes').select('*').eq('user_id', user.id).order('created_at', { ascending: false });
+      quotes = res.data || [];
+      renderQuotes();
+    } catch(e) { /* silent */ }
+  }
+
+  function renderQuotes() {
+    var list = document.getElementById('quotes-list');
+    var empty = document.getElementById('quotes-empty');
+
+    var filtered = quoteFilter === 'all' ? quotes : quotes.filter(function(q) { return q.status === quoteFilter; });
+
+    if (!filtered.length) {
+      list.innerHTML = '';
+      empty.style.display = '';
+      return;
+    }
+    empty.style.display = 'none';
+
+    var currency = 'NGN';
+    try { var p = AfroAuth.getCachedProfile(); if (p && p.currency) currency = p.currency; } catch(e) {}
+    var fmt = engine ? engine.formatCurrency.bind(engine) : function(a, c) { return (c||currency) + ' ' + (a/100).toLocaleString(); };
+
+    list.innerHTML = filtered.map(function(q) {
+      var badgeClass = 'ci-badge-' + (q.status || 'draft');
+      return '<div class="ci-invoice-card" onclick="openQuote(\'' + q.id + '\')">' +
+        '<div class="ci-invoice-info">' +
+          '<div class="ci-invoice-client">' + esc(q.client_name || 'Unknown') + '</div>' +
+          '<div class="ci-invoice-meta">' +
+            '<span class="ci-badge ' + badgeClass + '">' + (q.status || 'draft').toUpperCase() + '</span>' +
+            '<span>' + (q.quote_number || '') + '</span>' +
+            (q.valid_until ? '<span>Valid until ' + new Date(q.valid_until).toLocaleDateString('en-GB', {day:'numeric',month:'short'}) + '</span>' : '') +
+          '</div>' +
+        '</div>' +
+        '<div class="ci-invoice-amount">' + fmt(q.total || 0, q.currency || currency) + '</div>' +
+        (q.status === 'accepted' ? '<button type="button" class="ci-btn ci-btn-primary ci-btn-sm" onclick="event.stopPropagation();convertToInvoice(\'' + q.id + '\')">→ Invoice</button>' : '') +
+      '</div>';
+    }).join('');
+  }
+
+  window.showCreateQuote = function() {
+    document.getElementById('quote-list-view').style.display = 'none';
+    document.getElementById('quote-create-view').style.display = '';
+    loadNextQuoteNumber();
+  };
+
+  window.showQuoteList = function() {
+    document.getElementById('quote-list-view').style.display = '';
+    document.getElementById('quote-create-view').style.display = 'none';
+  };
+
+  async function loadNextQuoteNumber() {
+    try {
+      var sb = AfroAuth.getSupabase();
+      var user = AfroAuth.getUser();
+      var res = await sb.from('creator_quotes').select('quote_number').eq('user_id', user.id).order('created_at', {ascending: false}).limit(10);
+      var existing = (res.data || []).map(function(r) { return r.quote_number; });
+      var maxNum = 0;
+      existing.forEach(function(n) {
+        var m = (n || '').match(/(\d+)$/);
+        if (m) maxNum = Math.max(maxNum, parseInt(m[1]));
+      });
+      document.getElementById('q-number').value = 'QTE-' + String(maxNum + 1).padStart(3, '0');
+    } catch(e) {
+      document.getElementById('q-number').value = 'QTE-001';
+    }
+  }
+
+  // Line items
+  window.addQuoteLineItem = function(desc, qty, price) {
+    var idx = quoteLineItems.length;
+    quoteLineItems.push({ description: desc || '', quantity: qty || 1, unitPrice: price || 0 });
+    var container = document.getElementById('q-line-items');
+    var div = document.createElement('div');
+    div.className = 'ci-line-item';
+    div.dataset.idx = idx;
+    div.innerHTML =
+      '<input aria-label="Description" type="text" class="ci-input" placeholder="Description" value="' + escAttr(desc || '') + '" oninput="updateQuoteItem(' + idx + ',\'description\',this.value)">' +
+      '<input aria-label="Ci input" type="number" class="ci-input" placeholder="1" value="' + (qty || 1) + '" min="0" step="0.5" oninput="updateQuoteItem(' + idx + ',\'quantity\',this.value)">' +
+      '<input aria-label="Ci input" type="number" class="ci-input" placeholder="0" value="' + (price || '') + '" min="0" oninput="updateQuoteItem(' + idx + ',\'unitPrice\',this.value)">' +
+      '<div class="ci-line-total-cell" id="q-line-total-' + idx + '">0</div>' +
+      '<button type="button" class="ci-line-delete" onclick="removeQuoteItem(' + idx + ')">×</button>';
+    container.appendChild(div);
+    updateQuoteTotal();
+  };
+
+  window.updateQuoteItem = function(idx, field, value) {
+    if (!quoteLineItems[idx]) return;
+    quoteLineItems[idx][field] = field === 'description' ? value : parseFloat(value) || 0;
+    var total = (quoteLineItems[idx].quantity || 0) * (quoteLineItems[idx].unitPrice || 0);
+    var el = document.getElementById('q-line-total-' + idx);
+    if (el) el.textContent = total.toLocaleString();
+    updateQuoteTotal();
+  };
+
+  window.removeQuoteItem = function(idx) {
+    quoteLineItems[idx] = null;
+    var el = document.querySelector('#q-line-items .ci-line-item[data-idx="' + idx + '"]');
+    if (el) el.remove();
+    updateQuoteTotal();
+  };
+
+  function updateQuoteTotal() {
+    var total = 0;
+    quoteLineItems.forEach(function(item) {
+      if (item) total += (item.quantity || 0) * (item.unitPrice || 0);
+    });
+    var currency = document.getElementById('q-currency').value || 'NGN';
+    document.getElementById('q-total').textContent = engine ? engine.formatCurrency(Math.round(total * 100), currency) : total.toLocaleString();
+  }
+
+  // Local quote suggestions; project details stay in this browser.
+  window.localGenerateQuoteItems = function() {
+    var desc = document.getElementById('q-ai-describe').value.trim();
+    if (!desc) return;
+    try {
+      var parts = desc.split(/,|\band\b|\+|;/i).map(function(part) {
+        return part.trim().replace(/\s+/g, ' ');
+      }).filter(Boolean);
+      if (!parts.length) parts = [desc];
+      parts.slice(0, 6).forEach(function(part) {
+        addQuoteLineItem(part, 1, 0);
+      });
+      showToast('Local quote suggestions added', 'success');
+    } catch(e) { showToast('Could not add suggestions', 'error'); }
+  };
+
+  window.localGenerateCoverLetter = function() {
+    var clientName = document.getElementById('q-client-name').value.trim();
+    var items = quoteLineItems.filter(function(i) { return i && i.description; });
+    var desc = items.map(function(i) { return i.description; }).join(', ');
+    if (!desc) { showToast('Add line items first', 'error'); return; }
+
+    try {
+      var greeting = clientName ? 'Hello ' + clientName + ',' : 'Hello,';
+      document.getElementById('q-cover-letter').value = greeting + '\n\nPlease find my quote for ' + desc + '. The line items, validity period, and total are included below for your review. I can adjust the scope or payment terms before approval if needed.\n\nThank you.';
+      showToast('Local cover note created', 'success');
+    } catch(e) { showToast('Could not create cover note', 'error'); }
+  };
+
+  // Save
+  window.saveQuote = async function(status) {
+    if (!AfroAuth.isLoggedIn()) { showToast('Please sign in', 'error'); return; }
+
+    var clientName = document.getElementById('q-client-name').value.trim();
+    if (!clientName) { showToast('Enter a client name', 'error'); return; }
+
+    var items = quoteLineItems.filter(function(i) { return i && i.description; });
+    if (!items.length) { showToast('Add at least one line item', 'error'); return; }
+
+    var subtotal = 0;
+    items.forEach(function(i) { subtotal += Math.round((i.quantity || 0) * (i.unitPrice || 0) * 100); });
+
+    var validity = parseInt(document.getElementById('q-validity').value) || 14;
+    var validUntil = new Date();
+    validUntil.setDate(validUntil.getDate() + validity);
+
+    var sb = AfroAuth.getSupabase();
+    var user = AfroAuth.getUser();
+
+    try {
+      var payload = {
+        user_id: user.id,
+        quote_number: document.getElementById('q-number').value.trim(),
+        status: status,
+        currency: document.getElementById('q-currency').value,
+        subtotal: subtotal,
+        total: subtotal,
+        valid_until: validUntil.toISOString().split('T')[0],
+        cover_letter: document.getElementById('q-cover-letter').value.trim() || null,
+        client_name: clientName
+      };
+
+      // Save client if new
+      var clientEmail = document.getElementById('q-client-email').value.trim();
+      if (clientName) {
+        var existingClient = await sb.from('creator_clients').select('id').eq('user_id', user.id).eq('name', clientName).single();
+        if (!existingClient.data) {
+          var clientRes = await sb.from('creator_clients').insert({
+            user_id: user.id,
+            name: clientName,
+            company: document.getElementById('q-client-company').value.trim() || null,
+            email: clientEmail || null
+          }).select().single();
+          if (clientRes.data) payload.client_id = clientRes.data.id;
+        } else {
+          payload.client_id = existingClient.data.id;
+        }
+      }
+
+      if (editingQuoteId) {
+        await sb.from('creator_quotes').update(payload).eq('id', editingQuoteId);
+      } else {
+        await sb.from('creator_quotes').insert(payload);
+      }
+
+      showToast('Quote saved!', 'success');
+      setTimeout(function() { showQuoteList(); loadQuotes(); }, 1000);
+    } catch(e) { showToast('Error saving quote', 'error'); }
+  };
+
+  // Convert to invoice
+  window.convertToInvoice = async function(id) {
+    var q = quotes.find(function(qu) { return qu.id === id; });
+    if (!q) return;
+    sessionStorage.setItem('ci-duplicate', JSON.stringify({
+      client_name: q.client_name,
+      client_id: q.client_id,
+      currency: q.currency,
+      total: q.total,
+      subtotal: q.subtotal,
+      notes: q.cover_letter || ''
+    }));
+    // Mark as converted
+    try {
+      var sb = AfroAuth.getSupabase();
+      await sb.from('creator_quotes').update({ status: 'converted' }).eq('id', id);
+    } catch(e) { /* silent */ }
+    location.href = 'create.html?duplicate=1';
+  };
+
+  window.openQuote = function(id) {
+    // For now, show details in an alert — future: full edit view
+    var q = quotes.find(function(qu) { return qu.id === id; });
+    if (!q) return;
+    var currency = q.currency || 'NGN';
+    var fmt = engine ? function(a) { return engine.formatCurrency(a, currency); } : function(a) { return currency + ' ' + (a/100).toLocaleString(); };
+    alert(q.quote_number + '\nClient: ' + (q.client_name || '') + '\nTotal: ' + fmt(q.total || 0) + '\nStatus: ' + (q.status || 'draft') + '\nValid until: ' + (q.valid_until || 'N/A'));
+  };
+
+  window.shareQuoteWhatsApp = function() {
+    var clientName = document.getElementById('q-client-name').value.trim();
+    var quoteNum = document.getElementById('q-number').value.trim();
+    var total = 0;
+    quoteLineItems.forEach(function(i) { if (i) total += (i.quantity||0) * (i.unitPrice||0); });
+    var currency = document.getElementById('q-currency').value;
+    var msg = 'Hi ' + clientName + ', here\'s your quote ' + quoteNum + ' for ' + currency + ' ' + total.toLocaleString() + '. This quote is valid for ' + document.getElementById('q-validity').value + ' days. Let me know if you\'d like to proceed!';
+    window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+  };
+
+  function showToast(msg, type) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'ci-toast show ' + (type || '');
+    setTimeout(function() { t.className = 'ci-toast'; }, 3000);
+  }
+
+  function esc(s) { var d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
+  function escAttr(s) { return (s || '').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GET /api/v1/rates/central-bank — Central Bank Rates — AfroTools API Docs</title>
+<meta name="description" content="Get central bank policy rates, inflation, T-bill yields, and MPC meeting dates for any African country.">
+<meta name="theme-color" content="#0062CC">
+<link rel="canonical" href="https://afrotools.com/docs/api/rates/central-bank">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/api-docs.css?v=ce57a995">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/api-sidebar.js?v=1e21db66" defer></script>
+<script src="/assets/js/components/api-code-tabs.js?v=d929cd13" defer></script>
+<meta property="article:modified_time" content="2026-03-28">
+<meta property="og:url" content="https://afrotools.com/docs/api/rates/central-bank">
+</head>
+<body class="api-docs-body top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<div class="api-docs-layout">
+  <api-sidebar active="/docs/api/rates/central-bank.html"></api-sidebar>
+  <main class="api-content">
+    <div class="api-two-panel api-two-panel--wide-left">
+      <div class="api-content__left">
+        <h1 class="mt-0">Central Bank Rates</h1>
+        <p class="api-subtitle">Get policy rate, inflation figures, T-bill yields, and the next MPC meeting date for any African country.</p>
+
+        <div class="endpoint-header">
+          <span class="endpoint-method endpoint-method--get">GET</span>
+          <span class="endpoint-url">https://afrotools.com/api/v1/rates/central-bank</span>
+        </div>
+
+        <div class="api-callout api-callout--info">
+          <strong>Authentication required.</strong> Pass your API key via <code>x-api-key</code> header. <a href="/docs/api/authentication">Learn more</a>
+        </div>
+
+        <h2>Request Parameters</h2>
+        <table class="param-table">
+          <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="param-name">country</span> <span class="param-optional">optional</span></td>
+              <td><span class="param-type">string</span></td>
+              <td>ISO country code. Omit to get all countries.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">indicator</span> <span class="param-optional">optional</span></td>
+              <td><span class="param-type">string</span></td>
+              <td>Filter by indicator: <code>policy_rate</code>, <code>inflation</code>, <code>tbills</code>, <code>gdp</code>, or <code>mpc</code>.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">date</span> <span class="param-optional">optional</span></td>
+              <td><span class="param-type">string</span></td>
+              <td>Historical date (<code>YYYY-MM-DD</code>). Pro plan required.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Response Fields</h2>
+        <table class="param-table">
+          <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><span class="param-name">country</span></td><td><span class="param-type">string</span></td><td>ISO country code.</td></tr>
+            <tr><td><span class="param-name">country_name</span></td><td><span class="param-type">string</span></td><td>Full country name.</td></tr>
+            <tr><td><span class="param-name">central_bank</span></td><td><span class="param-type">string</span></td><td>Central bank full name.</td></tr>
+            <tr><td><span class="param-name">central_bank_abbr</span></td><td><span class="param-type">string</span></td><td>Central bank abbreviation.</td></tr>
+            <tr><td><span class="param-name">policy_rate</span></td><td><span class="param-type">number</span></td><td>Monetary policy rate (%).</td></tr>
+            <tr><td><span class="param-name">inflation.headline</span></td><td><span class="param-type">number</span></td><td>Headline CPI inflation (%).</td></tr>
+            <tr><td><span class="param-name">inflation.core</span></td><td><span class="param-type">number</span></td><td>Core inflation excl. food &amp; energy (%).</td></tr>
+            <tr><td><span class="param-name">inflation.food</span></td><td><span class="param-type">number</span></td><td>Food inflation (%).</td></tr>
+            <tr><td><span class="param-name">tbills</span></td><td><span class="param-type">object</span></td><td>Treasury bill yields by tenor.</td></tr>
+            <tr><td><span class="param-name">gdp_growth</span></td><td><span class="param-type">number</span></td><td>Latest quarterly GDP growth (%).</td></tr>
+            <tr><td><span class="param-name">next_mpc</span></td><td><span class="param-type">string</span></td><td>Next MPC meeting date (YYYY-MM-DD).</td></tr>
+            <tr><td><span class="param-name">updated</span></td><td><span class="param-type">string</span></td><td>Date data was last updated.</td></tr>
+          </tbody>
+        </table>
+
+        <h2>Error Responses</h2>
+        <table class="param-table">
+          <thead><tr><th>Status</th><th>Code</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>400</td><td><span class="param-name">invalid_country</span></td><td>Country code not supported.</td></tr>
+            <tr><td>400</td><td><span class="param-name">invalid_indicator</span></td><td>Indicator type not recognized.</td></tr>
+            <tr><td>401</td><td><span class="param-name">missing_api_key</span></td><td>No API key was provided.</td></tr>
+            <tr><td>429</td><td><span class="param-name">rate_limit_exceeded</span></td><td>Rate limit exceeded.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="api-content__right">
+        <div class="code-label">Request Examples</div>
+        <div class="code-block-wrapper">
+          <div class="code-tabs">
+            <button type="button" class="code-tab code-tab--active" data-lang="curl">cURL</button>
+            <button type="button" class="code-tab" data-lang="js">JavaScript</button>
+            <button type="button" class="code-tab" data-lang="python">Python</button>
+            <button type="button" class="code-tab" data-lang="node">Node.js</button>
+            <button type="button" class="code-tab" data-lang="php">PHP</button>
+          </div>
+          <div class="code-panel code-panel--active" data-lang="curl">curl "https://afrotools.com/api/v1/rates/central-bank?country=NG" \
+  -H "x-api-key: afro_live_your_key_here"</div>
+          <div class="code-panel" data-lang="js">const res = await fetch(
+  "https://afrotools.com/api/v1/rates/central-bank?country=NG",
+  { headers: { "x-api-key": "afro_live_your_key_here" } }
+);
+const data = await res.json();
+console.log(`Policy Rate: ${data.data.policy_rate}%`);</div>
+          <div class="code-panel" data-lang="python">import requests
+
+resp = requests.get(
+    "https://afrotools.com/api/v1/rates/central-bank",
+    params={"country": "NG"},
+    headers={"x-api-key": "afro_live_your_key_here"}
+)
+data = resp.json()
+print(f"Policy Rate: {data['data']['policy_rate']}%")</div>
+          <div class="code-panel" data-lang="node">const axios = require("axios");
+
+const { data } = await axios.get(
+  "https://afrotools.com/api/v1/rates/central-bank",
+  {
+    params: { country: "NG" },
+    headers: { "x-api-key": "afro_live_your_key_here" }
+  }
+);
+console.log(`Policy Rate: ${data.data.policy_rate}%`);</div>
+          <div class="code-panel" data-lang="php">$ch = curl_init("https://afrotools.com/api/v1/rates/central-bank?country=NG");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "x-api-key: afro_live_your_key_here"
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+$data = json_decode($response, true);
+echo "Policy Rate: " . $data["data"]["policy_rate"] . "%";</div>
+        </div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">Response (200 OK)</div>
+        <div class="code-example">{
+  "success": true,
+  "data": {
+    "country": "NG",
+    "country_name": "Nigeria",
+    "central_bank": "Central Bank of Nigeria",
+    "central_bank_abbr": "CBN",
+    "policy_rate": 27.50,
+    "inflation": {
+      "headline": 31.7,
+      "core": 25.1,
+      "food": 37.9
+    },
+    "tbills": {
+      "91_day": 18.5,
+      "182_day": 20.1,
+      "364_day": 22.3
+    },
+    "gdp_growth": 3.46,
+    "next_mpc": "2026-05-20",
+    "updated": "2026-03-01"
+  }
+}</div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">Filter by Indicator</div>
+        <div class="code-example"><span class="c"># Get only inflation data</span>
+curl "https://afrotools.com/api/v1/rates/central-bank?country=KE&indicator=inflation" \
+  -H "x-api-key: afro_test_abc123"</div>
+        <div class="code-example">{
+  "success": true,
+  "data": {
+    "country": "KE",
+    "country_name": "Kenya",
+    "inflation": {
+      "headline": 6.3,
+      "core": 3.8,
+      "food": 8.1
+    },
+    "updated": "2026-02-28"
+  }
+}</div>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

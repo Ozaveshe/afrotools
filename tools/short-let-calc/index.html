@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Airbnb Income Calculator for Africa 2026 — Short-Let Rental Returns | AfroTools</title>
+  <meta name="description" content="Calculate short-let rental income in 10 African cities. Airbnb/Booking.com yield vs long-term rental for Lagos, Nairobi, Cape Town, Kigali, Accra, Cairo. Occupancy, fees, management costs compared.">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <meta name="robots" content="index, follow">
+  <!-- OG:START -->
+  <meta property="og:title" content="Airbnb & Short-Let Income Calculator for Africa — AfroTools">
+  <meta property="og:description" content="Calculate short-let vs long-term rental income for 10 African cities. Lagos, Nairobi, Cape Town, Kigali, Accra & more. Real nightly rates, fees, occupancy.">
+  <meta property="og:url" content="https://afrotools.com/tools/short-let-calc/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/short-let-calc.webp">
+  <meta property="og:site_name" content="AfroTools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Airbnb & Short-Let Income Calculator for Africa — AfroTools">
+  <meta name="twitter:description" content="Calculate short-let vs long-term rental income for 10 African cities. Lagos, Nairobi, Cape Town, Kigali, Accra & more. Real nightly rates, fees, occupancy.">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/short-let-calc.webp">
+  <!-- OG:END -->
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <link rel="stylesheet" href="/assets/css/tool-landing.css?v=09fede9d">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+  <script src="/assets/js/components/related-tools.js?v=4123e336" defer></script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Airbnb Income Calculator for Africa",
+      "url": "https://afrotools.com/tools/short-let-calc/",
+      "description": "Calculate short-let rental income vs long-term rental across African cities.",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "image": "https://afrotools.com/assets/img/tools/short-let-calc.webp"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "AfroTools",
+          "item": "https://afrotools.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Mortgage & Property",
+          "item": "https://afrotools.com/mortgage-property/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Short-Let Income Calculator",
+          "item": "https://afrotools.com/tools/short-let-calc/"
+        }
+      ]
+    }
+  ]
+}
+</script>
+  <style>
+    .income-hero { display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0; }
+    .ih-card { border-radius:16px;padding:22px;text-align:center; }
+    .ih-card.shortlet { background:linear-gradient(135deg,#e8f2ff,#f0f7ff);border:1px solid var(--primary); }
+    .ih-card.longterm { background:linear-gradient(135deg,#f0fdf4,#ecfdf5);border:1px solid #16a34a; }
+    .ih-card .label { font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px; }
+    .ih-card.shortlet .label { color:var(--primary); }
+    .ih-card.longterm .label { color:#16a34a; }
+    .ih-card .value { font-size:1.8rem;font-weight:800; }
+    .ih-card.shortlet .value { color:var(--primary-dark,#0063D1); }
+    .ih-card.longterm .value { color:#15803d; }
+    .ih-card .sub { font-size:.8rem;margin-top:3px;color:var(--text-muted); }
+    .multiplier-badge { display:inline-block;background:#0a1628;color:#fff;border-radius:100px;padding:4px 14px;font-size:.85rem;font-weight:800;margin:8px 0; }
+    .multiplier-badge.better { background:var(--primary); }
+    .multiplier-badge.worse { background:#e11d48; }
+    .expense-row { display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:.88rem; }
+    .expense-row:last-child{border-bottom:none;}
+    .expense-row .er-cost{font-weight:700;color:#e11d48;}
+    .expense-row.net .er-cost{color:var(--primary);}
+    .expense-row.total{font-weight:800;}
+    .occ-slider { width:100%;margin:8px 0; }
+    .peak-chips { display:flex;flex-wrap:wrap;gap:6px;margin:8px 0; }
+    .peak-chip { background:var(--pale,#e8f2ff);color:var(--primary);border-radius:100px;padding:3px 10px;font-size:.75rem;font-weight:700; }
+    .peak-chip.peak { background:#fef3c7;color:#d97706; }
+    .compare-bar { height:12px;border-radius:100px;background:#e5e7eb;overflow:hidden;margin:4px 0; }
+    .compare-bar-fill { height:100%;border-radius:100px; }
+    .cb-shortlet { background:linear-gradient(90deg,var(--primary),#4DA3FF); }
+    .cb-longterm { background:linear-gradient(90deg,#16a34a,#22c55e); }
+    @media(max-width:600px){ .income-hero{grid-template-columns:1fr;} }
+    @media(max-width:480px){
+      .ih-card .value { font-size:1.4rem; }
+      .multiplier-badge { font-size:.78rem; }
+      .expense-row { font-size:.82rem; }
+    }
+  </style>
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="stylesheet" href="/assets/css/legal-enhancements.css?v=faefe7bf">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/short-let-calc/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/short-let-calc/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-location-courte/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/mapato-ya-kupangisha-kwa-muda-mfupi/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/short-let-calc/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+
+<div class="tl-hero">
+  <div class="tl-hero-inner">
+    <nav class="tl-breadcrumb" aria-label="Breadcrumb">
+      <a href="/">AfroTools</a> › <a href="/mortgage-property/">Mortgage &amp; Property</a> › Short-Let Income Calculator
+    </nav>
+    <div class="tl-category-label">🏠 MORTGAGE &amp; PROPERTY</div>
+    <h1 class="tl-title">Airbnb &amp; Short-Let <span class="tl-accent">Income</span> Calculator</h1>
+    <p class="tl-desc">Should you Airbnb or rent long-term? In Victoria Island Lagos, short-lets can earn 2–3× long-term rent — but factor in platform fees, cleaning, utilities, and the hands-on management. 10 African cities, real nightly rates.</p>
+    <div class="tl-badges">
+      <span>🇳🇬 VI Lagos ₦80K/night</span><span>🇰🇪 Nairobi KES 12K/night</span><span>🇿🇦 Cape Town R5K/night</span><span>🇬🇭 Accra GHS 1.5K/night</span><span>+ 5 more</span>
+    </div>
+  </div>
+</div>
+
+<div class="tl-body">
+  <div class="tl-main">
+    <div class="tl-card">
+      <div class="tl-card-header">
+        <span class="tl-card-icon">🏠</span>
+        <div>
+          <div class="tl-card-title">Short-Let Income Calculator</div>
+          <div class="tl-card-sub">Select city, unit size, and occupancy to compare returns</div>
+        </div>
+      </div>
+
+      <div class="tl-form-grid">
+        <div class="tl-field">
+          <label class="tl-label" for="city">CITY / AREA</label>
+          <select id="city" onchange="onCityChange()">
+            <option value="">— Select a city —</option>
+            <optgroup label="Nigeria">
+              <option value="NG_VI">🇳🇬 Victoria Island / Ikoyi, Lagos</option>
+              <option value="NG_Lekki">🇳🇬 Lekki Phase 1, Lagos</option>
+              <option value="NG_Abuja">🇳🇬 Maitama / Asokoro, Abuja</option>
+            </optgroup>
+            <optgroup label="East Africa">
+              <option value="KE_Westlands">🇰🇪 Westlands / Kilimani, Nairobi</option>
+              <option value="KE_Karen">🇰🇪 Karen / Runda, Nairobi</option>
+              <option value="RW_Kigali">🇷🇼 Nyarutarama / Kimihurura, Kigali</option>
+              <option value="TZ_Dar">🇹🇿 Masaki / Oyster Bay, Dar es Salaam</option>
+            </optgroup>
+            <optgroup label="Southern Africa">
+              <option value="ZA_CapeTown">🇿🇦 City Bowl / Sea Point, Cape Town</option>
+            </optgroup>
+            <optgroup label="West &amp; North Africa">
+              <option value="GH_EastLegon">🇬🇭 East Legon / Airport, Accra</option>
+              <option value="EG_Zamalek">🇪🇬 Zamalek / New Cairo, Cairo</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <div class="tl-field">
+          <label class="tl-label" for="unit-type">UNIT TYPE</label>
+          <select id="unit-type" onchange="onCityChange()">
+            <option value="studio">Studio / 1-Bedroom</option>
+            <option value="twoBed" selected>2-Bedroom</option>
+            <option value="threeBed">3-Bedroom</option>
+          </select>
+        </div>
+
+        <div class="tl-field" style="grid-column:1/-1">
+          <label class="tl-label">OCCUPANCY RATE: <span id="occ-val" style="color:var(--primary);font-weight:800">60%</span></label>
+          <input aria-label="Occupancy" type="range" id="occupancy" min="20" max="90" value="60" step="5" class="occ-slider" oninput="document.getElementById('occ-val').textContent=this.value+'%';calculate()">
+          <div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--text-muted)"><span>20% (very low)</span><span>55% (typical)</span><span>90% (peak)</span></div>
+        </div>
+
+        <div class="tl-field">
+          <label class="tl-label">NIGHTLY RATE <span id="curr-label" style="font-weight:400;text-transform:none;color:var(--text-muted)"></span></label>
+          <input aria-label="Nightly rate" type="number" id="nightly-rate" value="0" min="0" oninput="calculate()">
+        </div>
+
+        <div class="tl-field">
+          <label class="tl-label">PLATFORM</label>
+          <select id="platform" onchange="calculate()" aria-label="Platform">
+            <option value="3">Airbnb (3% host fee)</option>
+            <option value="15">Booking.com (15% commission)</option>
+            <option value="0">Direct bookings (0%)</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="empty-state" style="text-align:center;padding:40px 20px;color:var(--text-muted)">
+        <div style="font-size:2.5rem;margin-bottom:12px">🏠</div>
+        <div style="font-size:.95rem">Select a city and unit type to compare short-let vs long-term rental income</div>
+      </div>
+
+      <div id="results" style="display:none">
+        <div class="income-hero">
+          <div class="ih-card shortlet">
+            <div class="label">Short-Let Monthly Income (Net)</div>
+            <div class="value" id="r-sl-net">—</div>
+            <div class="sub" id="r-sl-gross">—</div>
+          </div>
+          <div class="ih-card longterm">
+            <div class="label">Long-Term Monthly Rent</div>
+            <div class="value" id="r-lt-rent">—</div>
+            <div class="sub">Equivalent market rate</div>
+          </div>
+        </div>
+
+        <div style="text-align:center;margin:6px 0 16px">
+          <div id="r-multiplier-label" style="font-size:.8rem;color:var(--text-muted);margin-bottom:4px">Short-let vs long-term comparison</div>
+          <span class="multiplier-badge" id="r-multiplier">—</span>
+        </div>
+
+        <div style="margin:14px 0">
+          <div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:4px"><span>Short-let income</span><span id="r-sl-bar-label">—</span></div>
+          <div class="compare-bar"><div class="compare-bar-fill cb-shortlet" id="r-sl-bar" style="width:0%"></div></div>
+          <div style="display:flex;justify-content:space-between;font-size:.82rem;margin:8px 0 4px"><span>Long-term rent</span><span id="r-lt-bar-label">—</span></div>
+          <div class="compare-bar"><div class="compare-bar-fill cb-longterm" id="r-lt-bar" style="width:80%"></div></div>
+        </div>
+
+        <div class="tl-section-title" style="margin-top:20px">Monthly Income &amp; Expense Breakdown</div>
+        <div id="expense-breakdown"></div>
+
+        <div class="tl-section-title" style="margin-top:16px">Peak Seasons &amp; Market Notes</div>
+        <div id="peak-section"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-sidebar">
+    <div class="tl-ai-panel">
+      <div class="tl-ai-badge">AI OBSERVATIONS</div>
+      <div class="tl-ai-title">Smart Insights</div>
+      <div class="tl-ai-body" id="ai-obs">Select a city and unit type to get AI-powered insights on short-let vs long-term rental strategy.</div>
+    </div>
+
+    <div class="tl-info-card">
+      <div class="tl-info-title">⚠️ SHORT-LET HIDDEN COSTS</div>
+      <ul class="tl-info-list">
+        <li>Furniture depreciation — budget 5–10% of value per year</li>
+        <li>Higher utility bills — guests often leave AC, TVs running 24/7</li>
+        <li>Cleaning costs rise with turnover — 3 stays/week = 12 cleans/month</li>
+        <li>Professional photography: ₦50K–₦150K one-off cost</li>
+        <li>Platform dispute risk — Airbnb can hold payouts for 30+ days</li>
+        <li>Vacancy gaps — high-occupancy months subsidise low-season dips</li>
+      </ul>
+    </div>
+
+    <div class="tl-info-card">
+      <div class="tl-info-title">🔗 RELATED TOOLS</div>
+      <ul class="tl-info-list">
+        <li><a href="/tools/rental-yield/">🏠 Rental Yield Calculator</a> — Long-term yield analysis</li>
+        <li><a href="/tools/property-roi/">📊 Property ROI</a> — Full investment return</li>
+        <li><a href="/tools/property-mgmt-fees/">🏢 Management Fees</a> — Cost of outsourcing management</li>
+        <li><a href="/tools/rent-affordability/">💰 Rent Affordability</a> — Tenant-side view</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- LEGAL-WORKFLOW-COPILOT:START -->
+<section class="leg-workflow-copilot" aria-labelledby="legal-workflow-heading">
+  <script type="application/json" class="leg-workflow-data">{"slug":"short-let-calc","title":"Short-Let Income Calculator","workflowTitle":"Short-let return and licensing check","coverage":"Short-let return model","decision":"Whether short-let use is allowed by lease, estate rules, municipality or building body","evidence":["Compare short-let, long-let and vacant-month scenarios","Check building, estate and local rules before listing","Budget furnishing replacement, cleaning supervision, utilities and platform commissions"],"redFlags":["Return model assumes high occupancy all year","No permission from landlord, body corporate or estate manager","Tax and platform fees ignored because income is paid digitally"],"related":[{"label":"Rental Yield","href":"/tools/rental-yield/"},{"label":"Service Charge","href":"/tools/service-charge/"},{"label":"Property Management Fees","href":"/tools/property-mgmt-fees/"}],"competitor":{"group":"property","label":"Rentometer, AirDNA, Zillow Rental Manager and BuildZoom","patterns":["Property tools improve trust by showing comparable evidence, market assumptions, inspection or permit data and a dated report trail.","Rental platforms connect screening, lease, payments, deposit evidence and renewal steps instead of stopping at a calculator result.","Investment tools separate gross numbers from operating cost, vacancy, tax, permit and title risk so the user can defend the decision."],"implemented":["This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.","The app-specific checklist is not generic: it starts with \"Compare short-let, long-let and vacant-month scenarios\".","Saved workflows can be resumed from the dashboard and handed off to Rental Yield when the matter naturally continues.","The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report."]}}</script>
+  <div class="leg-workflow-head">
+    <span class="leg-action-kicker">Case workspace</span>
+    <h2 id="legal-workflow-heading">Build, save and export this legal workflow</h2>
+    <p>This workspace turns the short-let return and licensing check result into a reusable matter note, dashboard item and gated PDF checklist. Use the app first, then save the evidence trail.</p>
+  </div>
+  <div class="leg-workflow-grid">
+    <label class="leg-field"><span class="leg-f-label">Matter or project</span><input aria-label="E.g. Supplier DPA review" class="leg-f-input" data-workflow-field="matter" type="text" placeholder="e.g. Supplier DPA review"></label>
+    <label class="leg-field"><span class="leg-f-label">Country or regime</span><input aria-label="E.g. Kenya, NDPA, Lagos" class="leg-f-input" data-workflow-field="country" type="text" placeholder="e.g. Kenya, NDPA, Lagos"></label>
+    <label class="leg-field"><span class="leg-f-label">Target date</span><input aria-label="Leg f input" class="leg-f-input" data-workflow-field="date" type="date"></label>
+    <label class="leg-field"><span class="leg-f-label">Status</span><select class="leg-f-select" data-workflow-field="status"><option>Checking evidence</option><option>Ready to verify</option><option>Waiting on official source</option><option>Escalate before action</option></select></label>
+  </div>
+  <div class="leg-workflow-columns">
+    <div>
+      <h3 class="leg-mini-heading">Evidence checked</h3>
+      <div class="leg-workflow-checklist" data-workflow-evidence-list></div>
+    </div>
+    <div>
+      <h3 class="leg-mini-heading">Risk flags</h3>
+      <div class="leg-workflow-checklist warning" data-workflow-risk-list></div>
+    </div>
+  </div>
+  <label class="leg-field full"><span class="leg-f-label">Private notes</span><textarea class="leg-f-textarea" data-workflow-field="note" placeholder="Add facts, missing documents, portal references, lawyer comments, or next actions."></textarea></label>
+  <div class="leg-workflow-summary" data-workflow-summary></div>
+  <div class="leg-workflow-actions">
+    <button type="button" class="leg-copy-btn" data-workflow-build>Build handoff note</button>
+    <button type="button" class="leg-secondary-btn" data-workflow-save>Save to dashboard</button>
+    <button type="button" class="leg-secondary-btn" data-workflow-load>Load saved</button>
+    <a class="leg-secondary-btn" href="/dashboard/">Open dashboard</a>
+  </div>
+  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly aria-label="Text entry"></textarea>
+  <form class="leg-pdf-gate" data-workflow-gate novalidate>
+    <div>
+      <span class="leg-action-kicker">PDF gate</span>
+      <h3>Email the checklist and unlock print/PDF</h3>
+      <p>The core tool stays free. The deeper PDF pack captures email only when the user wants a portable report, checklist and dashboard reminder.</p>
+    </div>
+    <label class="leg-field"><span class="leg-f-label">Email</span><input aria-label="You@example.com" class="leg-f-input" data-workflow-field="email" data-workflow-email type="email" autocomplete="email" placeholder="you@example.com"></label>
+    <label class="leg-workflow-optin"><input type="checkbox" data-workflow-optin checked><span>Send me occasional AfroTools legal checklist updates.</span></label>
+    <div class="leg-workflow-actions compact">
+      <button type="submit" class="leg-copy-btn" data-workflow-pdf-gate>Email checklist + unlock PDF</button>
+      <button type="button" class="leg-secondary-btn" data-workflow-print>Print or save PDF</button>
+      <button type="button" class="leg-secondary-btn" data-workflow-copy>Copy handoff note</button>
+    </div>
+    <div class="leg-gate-status" data-workflow-gate-status></div>
+  </form>
+  <div class="leg-workflow-next">
+    <span>Continue workflow</span>
+    <div><a href="/tools/rental-yield/">Rental Yield</a><a href="/tools/service-charge/">Service Charge</a><a href="/tools/property-mgmt-fees/">Property Management Fees</a></div>
+  </div>
+</section>
+<!-- LEGAL-WORKFLOW-COPILOT:END -->
+<!-- LEGAL-COMPETITOR-CHECK:START -->
+<section class="leg-competitor" aria-labelledby="legal-competitor-heading">
+  <div class="leg-action-kicker">Competitor check - 28 April 2026</div>
+  <div class="leg-competitor-head">
+    <h2 id="legal-competitor-heading">What stronger tools teach this app</h2>
+    <p>Benchmarked against Rentometer, AirDNA, Zillow Rental Manager and BuildZoom. The goal is not to copy them; it is to bring the useful workflow pattern into an Africa-first tool with official-source caution and local evidence capture.</p>
+  </div>
+  <div class="leg-competitor-grid">
+    <div>
+      <h3>Observed feature pattern</h3>
+      <ul><li>Property tools improve trust by showing comparable evidence, market assumptions, inspection or permit data and a dated report trail.</li><li>Rental platforms connect screening, lease, payments, deposit evidence and renewal steps instead of stopping at a calculator result.</li><li>Investment tools separate gross numbers from operating cost, vacancy, tax, permit and title risk so the user can defend the decision.</li></ul>
+    </div>
+    <div>
+      <h3>Implemented on this app</h3>
+      <ul><li>This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.</li><li>The app-specific checklist is not generic: it starts with &quot;Compare short-let, long-let and vacant-month scenarios&quot;.</li><li>Saved workflows can be resumed from the dashboard and handed off to Rental Yield when the matter naturally continues.</li><li>The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report.</li></ul>
+    </div>
+    <div>
+      <h3>Best next move</h3>
+      <ul><li>Whether short-let use is allowed by lease, estate rules, municipality or building body</li><li>Compare short-let, long-let and vacant-month scenarios</li><li>Return model assumes high occupancy all year</li></ul>
+    </div>
+  </div>
+</section>
+<!-- LEGAL-COMPETITOR-CHECK:END -->
+<!-- LEGAL-DEEP-IMPROVEMENT:START -->
+<section class="leg-upgrade" aria-labelledby="legal-upgrade-heading">
+  <div class="leg-upgrade-kicker">Reviewed 28 April 2026 · Short-let return model</div>
+  <h2 id="legal-upgrade-heading">Short-let return and licensing check</h2>
+  <p>Short-let income needs occupancy, platform fees, cleaning, furnishing, utilities, management, tax, damage, seasonality and local permission checks before it beats long-let rent.</p>
+  <div class="leg-upgrade-grid">
+    <div class="leg-upgrade-block">
+      <h3>Decisions this clarifies</h3>
+      <ul><li>Whether short-let use is allowed by lease, estate rules, municipality or building body</li><li>Which nightly rate and occupancy are realistic by season</li><li>How cleaning, utilities, furnishing, platform fees and management affect net return</li></ul>
+    </div>
+    <div class="leg-upgrade-block">
+      <h3>Before you rely on it</h3>
+      <ul><li>Compare short-let, long-let and vacant-month scenarios</li><li>Check building, estate and local rules before listing</li><li>Budget furnishing replacement, cleaning supervision, utilities and platform commissions</li></ul>
+    </div>
+    <div class="leg-upgrade-block warning">
+      <h3>Red flags</h3>
+      <ul><li>Return model assumes high occupancy all year</li><li>No permission from landlord, body corporate or estate manager</li><li>Tax and platform fees ignored because income is paid digitally</li></ul>
+    </div>
+  </div>
+  <div class="leg-source-row">
+    <div>
+      <span>Primary checks</span>
+      <div class="leg-source-links"><a href="https://www.gov.za/services/services-residents/place-live/get-deeds-registry-information" target="_blank" rel="noopener">South Africa deeds registry information</a><a href="https://www.lc.gov.gh/services/registration-title/" target="_blank" rel="noopener">Ghana Lands Commission title registration</a><a href="https://ardhisasa.lands.go.ke/" target="_blank" rel="noopener">Kenya Ardhisasa land portal</a></div>
+    </div>
+    <div>
+      <span>Next best tools</span>
+      <div class="leg-source-links internal"><a href="/tools/rental-yield/">Rental Yield</a><a href="/tools/service-charge/">Service Charge</a><a href="/tools/property-mgmt-fees/">Property Management Fees</a></div>
+    </div>
+  </div>
+</section>
+<!-- LEGAL-DEEP-IMPROVEMENT:END -->
+<!-- LEGAL-ACTION-PACK:START -->
+<section class="leg-action-pack" aria-labelledby="legal-action-pack-heading">
+  <div class="leg-action-head">
+    <span class="leg-action-kicker">Review pack</span>
+    <h2 id="legal-action-pack-heading">Save the short-let return and licensing check trail</h2>
+    <p>Before filing, signing, publishing, or sending anything, keep a short record that links the app result to evidence and official-source checks.</p>
+  </div>
+  <div class="leg-action-grid">
+    <div>
+      <h3>Capture</h3>
+      <p>Save the country or regime, parties, dates, amounts, selected options, and final output. Add why this matters: Whether short-let use is allowed by lease, estate rules, municipality or building body.</p>
+    </div>
+    <div>
+      <h3>Attach</h3>
+      <p>Compare short-let, long-let and vacant-month scenarios. Also keep the strongest supporting document, receipt, portal reference, ID, contract, policy, or court file beside the generated result.</p>
+    </div>
+    <div>
+      <h3>Escalate</h3>
+      <p>If you see this risk, pause and get qualified help: Return model assumes high occupancy all year.</p>
+    </div>
+  </div>
+  <label class="leg-action-copy-label">Copyable review note</label>
+  <textarea class="leg-action-copy-text" readonly aria-label="Text entry">Short-let return and licensing check action pack
+Tool: short-let-calc
+Coverage: Short-let return model
+
+Result to save:
+- Country or regime selected, parties involved, dates, amounts, and the generated output from the app.
+- The reason this output was prepared: Whether short-let use is allowed by lease, estate rules, municipality or building body.
+
+Evidence to attach:
+- Compare short-let, long-let and vacant-month scenarios
+- Check building, estate and local rules before listing
+- Budget furnishing replacement, cleaning supervision, utilities and platform commissions
+
+Escalate before filing or signing if:
+- Return model assumes high occupancy all year
+- No permission from landlord, body corporate or estate manager
+- Tax and platform fees ignored because income is paid digitally
+
+Primary checks:
+- South Africa deeds registry information: https://www.gov.za/services/services-residents/place-live/get-deeds-registry-information
+- Ghana Lands Commission title registration: https://www.lc.gov.gh/services/registration-title/
+- Kenya Ardhisasa land portal: https://ardhisasa.lands.go.ke/
+
+Reviewed by AfroTools workflow on 28 April 2026. Informational only, not legal advice.</textarea>
+  <div class="leg-action-copy-row">
+    <button type="button" class="leg-action-copy-btn" data-legal-copy-action>Copy review pack</button>
+    <span>Paste this into your matter file, compliance folder, board pack, or lawyer handoff.</span>
+  </div>
+</section>
+<!-- LEGAL-ACTION-PACK:END -->
+<afro-related-tools category="legal" current="short-let-calc" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/business-registration/" data-related-tool data-id="business-registration" data-name="Business Registration Checklist" data-category="legal" data-icon="BR" data-desc="Step-by-step business registration checklist for 16 African countries. Documents, fees, timelines, regulatory bodies.">Business Registration Checklist</a></li><li><a href="/tools/nda-generator/" data-related-tool data-id="nda-generator" data-name="NDA Generator" data-category="legal" data-icon="NG" data-desc="Generate Non-Disclosure Agreements for African jurisdictions. Mutual and unilateral NDAs compliant with local contract l">NDA Generator</a></li><li><a href="/tools/rent-intelligence/" data-related-tool data-id="rent-intelligence" data-name="Rent Intelligence" data-category="legal" data-icon="RI" data-desc="Track rent asks, lease terms, deposits, and vacancy signals by neighborhood with moderated contributor data.">Rent Intelligence</a></li><li><a href="/tools/company-type-selector/" data-related-tool data-id="company-type-selector" data-name="Company Type Selector" data-category="legal" data-icon="CT" data-desc="Choose the right business structure for Africa — Sole Trader, LLC, PLC, Partnership. Tax, liability, compliance comparis">Company Type Selector</a></li><li><a href="/tools/land-title-check/" data-related-tool data-id="land-title-check" data-name="Land Title Verification Checklist" data-category="legal" data-icon="LT" data-desc="Verify land titles before buying property in Africa. Country-specific checklists for Nigeria (C of O), Kenya (Title Deed">Land Title Verification Checklist</a></li><li><a href="/tools/lease-risk-check/" data-related-tool data-id="lease-risk-check" data-name="Lease Risk Check" data-category="legal" data-icon="LR" data-desc="Nigeria-first lease scam and risky listing checker powered by contributor reports and reviewer approval.">Lease Risk Check</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+var SHORT_LET_DATA = {
+  NG_VI: { name:'Victoria Island / Ikoyi', country:'Lagos, Nigeria', currency:'NGN', symbol:'₦',
+    studio:{nightly:50000,ltRent:700000}, twoBed:{nightly:90000,ltRent:1400000}, threeBed:{nightly:160000,ltRent:2500000},
+    occupancy:{typical:60,high:80,low:35},
+    peakMonths:['December','January','March','April (Easter)','August'],
+    cleaning:8000, utilities:40000, wifi:15000, consumables:12000, managementPct:12,
+    note:'VI and Ikoyi are Lagos\'s most sought-after short-let locations. Business travellers, expats, and visiting Nigerians drive demand. Lagos Fashion Week, AfricaCom, and corporate relocations spike occupancy.' },
+  NG_Lekki: { name:'Lekki Phase 1', country:'Lagos, Nigeria', currency:'NGN', symbol:'₦',
+    studio:{nightly:30000,ltRent:450000}, twoBed:{nightly:55000,ltRent:900000}, threeBed:{nightly:95000,ltRent:1600000},
+    occupancy:{typical:55,high:75,low:30},
+    peakMonths:['December','January','Easter','August'],
+    cleaning:6000, utilities:30000, wifi:12000, consumables:8000, managementPct:12,
+    note:'Lekki Phase 1 has a strong short-let market, especially near the Lekki-Expressway. Slightly lower rates than VI but growing demand from mid-market business travellers.' },
+  NG_Abuja: { name:'Maitama / Asokoro', country:'Abuja, Nigeria', currency:'NGN', symbol:'₦',
+    studio:{nightly:35000,ltRent:500000}, twoBed:{nightly:65000,ltRent:1000000}, threeBed:{nightly:110000,ltRent:1800000},
+    occupancy:{typical:55,high:75,low:30},
+    peakMonths:['February (budget season)','June','September','November'],
+    cleaning:7000, utilities:30000, wifi:12000, consumables:8000, managementPct:10,
+    note:'Abuja short-let demand is driven by government business, diplomatic events, and NASS sessions. February (budget debate) and Q3 (party conferences) are peak periods.' },
+  KE_Westlands: { name:'Westlands / Kilimani', country:'Nairobi, Kenya', currency:'KES', symbol:'KES ',
+    studio:{nightly:8000,ltRent:70000}, twoBed:{nightly:14000,ltRent:120000}, threeBed:{nightly:22000,ltRent:200000},
+    occupancy:{typical:60,high:80,low:35},
+    peakMonths:['July','August (safari)','December','January','March (conferences)'],
+    cleaning:1500, utilities:8000, wifi:2000, consumables:2000, managementPct:15,
+    note:'Nairobi has a strong short-let market driven by safari tourists, NGO travellers, and corporate stays. Westlands and Kilimani are most popular for furnished apartments.' },
+  KE_Karen: { name:'Karen / Runda', country:'Nairobi, Kenya', currency:'KES', symbol:'KES ',
+    studio:{nightly:10000,ltRent:90000}, twoBed:{nightly:18000,ltRent:160000}, threeBed:{nightly:30000,ltRent:280000},
+    occupancy:{typical:50,high:70,low:25},
+    peakMonths:['July','August','December','January'],
+    cleaning:2000, utilities:10000, wifi:2000, consumables:2500, managementPct:15,
+    note:'Karen and Runda are premium residential areas popular with expats and safari visitors wanting a bush-adjacent feel. Occupancy can be lower but nightly rates are higher.' },
+  RW_Kigali: { name:'Nyarutarama / Kimihurura', country:'Kigali, Rwanda', currency:'RWF', symbol:'RWF ',
+    studio:{nightly:80000,ltRent:700000}, twoBed:{nightly:140000,ltRent:1200000}, threeBed:{nightly:220000,ltRent:2000000},
+    occupancy:{typical:65,high:85,low:40},
+    peakMonths:['January (AU Summit)','March','June','September','December'],
+    cleaning:15000, utilities:60000, wifi:20000, consumables:15000, managementPct:12,
+    note:'Kigali is Africa\'s fastest-growing MICE destination. AfDB meetings, AU Summits, and international conferences drive Nyarutarama short-let occupancy above 80% during major events.' },
+  TZ_Dar: { name:'Masaki / Oyster Bay', country:'Dar es Salaam, Tanzania', currency:'TZS', symbol:'TZS ',
+    studio:{nightly:150000,ltRent:1200000}, twoBed:{nightly:280000,ltRent:2200000}, threeBed:{nightly:450000,ltRent:3500000},
+    occupancy:{typical:55,high:75,low:30},
+    peakMonths:['June','July','August','December'],
+    cleaning:30000, utilities:150000, wifi:50000, consumables:30000, managementPct:12,
+    note:'Masaki and Oyster Bay are Dar\'s premium short-let areas, favoured by expats and NGO workers. USD-denominated rentals are common, with rates often quoted in USD.' },
+  ZA_CapeTown: { name:'City Bowl / Sea Point', country:'Cape Town, South Africa', currency:'ZAR', symbol:'R',
+    studio:{nightly:1500,ltRent:15000}, twoBed:{nightly:3000,ltRent:28000}, threeBed:{nightly:5500,ltRent:45000},
+    occupancy:{typical:60,high:85,low:30},
+    peakMonths:['December','January','February (summer)','Easter'],
+    cleaning:400, utilities:2500, wifi:500, consumables:500, managementPct:15,
+    note:'Cape Town has one of Africa\'s most mature short-let markets. December-February is peak (Southern hemisphere summer). City Bowl and Waterfront command premium rates. Watch for City of Cape Town short-let regulations.' },
+  GH_EastLegon: { name:'East Legon / Airport Area', country:'Accra, Ghana', currency:'GHS', symbol:'GHS ',
+    studio:{nightly:600,ltRent:6000}, twoBed:{nightly:1200,ltRent:12000}, threeBed:{nightly:2000,ltRent:20000},
+    occupancy:{typical:55,high:75,low:30},
+    peakMonths:['December (Year of Return)','January','March','August'],
+    cleaning:120, utilities:600, wifi:200, consumables:150, managementPct:12,
+    note:'Accra\'s short-let market benefits from the diaspora "Year of Return" legacy. December is peak season for diaspora returnees. Airport proximity makes Airport Hills particularly strong.' },
+  EG_Zamalek: { name:'Zamalek / New Cairo', country:'Cairo, Egypt', currency:'EGP', symbol:'EGP ',
+    studio:{nightly:1200,ltRent:12000}, twoBed:{nightly:2200,ltRent:22000}, threeBed:{nightly:3800,ltRent:38000},
+    occupancy:{typical:50,high:70,low:25},
+    peakMonths:['October','November','December','March','April'],
+    cleaning:300, utilities:1500, wifi:400, consumables:300, managementPct:15,
+    note:'Cairo short-lets are gaining traction post-devaluation as USD-paid tourists provide FX income. Zamalek (island luxury) and Maadi attract expats; New Cairo compounds suit business travellers.' }
+};
+
+function fmt(n, sym) {
+  if(n>=1e6)return sym+(n/1e6).toFixed(2)+'M';
+  if(n>=1000)return sym+Math.round(n).toLocaleString();
+  return sym+Math.round(n);
+}
+function fmtM(n, sym) { return fmt(n, sym) + '/mo'; }
+
+function onCityChange() {
+  var city = document.getElementById('city').value;
+  if (!city) return;
+  var d = SHORT_LET_DATA[city];
+  var ut = document.getElementById('unit-type').value;
+  var unitData = d[ut];
+  document.getElementById('nightly-rate').value = unitData.nightly;
+  document.getElementById('curr-label').textContent = '(' + d.currency + ')';
+  document.getElementById('occupancy').value = d.occupancy.typical;
+  document.getElementById('occ-val').textContent = d.occupancy.typical + '%';
+  calculate();
+}
+
+function calculate() {
+  var city = document.getElementById('city').value;
+  if (!city) return;
+  var d = SHORT_LET_DATA[city];
+  var ut = document.getElementById('unit-type').value;
+  var sym = d.symbol;
+  var nightly = parseFloat(document.getElementById('nightly-rate').value) || d[ut].nightly;
+  var occ = parseFloat(document.getElementById('occupancy').value) || 60;
+  var platformPct = parseFloat(document.getElementById('platform').value) || 3;
+
+  var nightsPerMonth = 30 * occ / 100;
+  var grossIncome = nightly * nightsPerMonth;
+  var platformFee = grossIncome * platformPct / 100;
+  var managementFee = grossIncome * d.managementPct / 100;
+  var cleaningCost = d.cleaning * (nightsPerMonth / 3); // avg 3 nights per stay
+  var utilities = d.utilities;
+  var wifi = d.wifi;
+  var consumables = d.consumables;
+  var totalExpenses = platformFee + managementFee + cleaningCost + utilities + wifi + consumables;
+  var netIncome = grossIncome - totalExpenses;
+  var ltRent = d[ut].ltRent;
+  var multiplier = ltRent > 0 ? netIncome / ltRent : 0;
+
+  document.getElementById('empty-state').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+
+  document.getElementById('r-sl-net').textContent = fmtM(netIncome, sym);
+  document.getElementById('r-sl-gross').textContent = 'Gross: ' + fmtM(grossIncome, sym) + ' at ' + occ + '% occupancy';
+  document.getElementById('r-lt-rent').textContent = fmtM(ltRent, sym);
+
+  var badge = document.getElementById('r-multiplier');
+  var badgeLabel = document.getElementById('r-multiplier-label');
+  if (multiplier > 1) {
+    badge.className = 'multiplier-badge better';
+    badge.textContent = multiplier.toFixed(1) + '× more than long-term rent';
+    badgeLabel.textContent = 'Short-let advantage:';
+  } else {
+    badge.className = 'multiplier-badge worse';
+    badge.textContent = 'Long-term rent is better at ' + occ + '% occupancy';
+    badgeLabel.textContent = 'Long-term rent advantage:';
+  }
+
+  var maxBar = Math.max(netIncome, ltRent);
+  document.getElementById('r-sl-bar').style.width = (netIncome/maxBar*100) + '%';
+  document.getElementById('r-lt-bar').style.width = (ltRent/maxBar*100) + '%';
+  document.getElementById('r-sl-bar-label').textContent = fmtM(netIncome, sym);
+  document.getElementById('r-lt-bar-label').textContent = fmtM(ltRent, sym);
+
+  var rows = [
+    { label:'Gross short-let income ('+Math.round(nightsPerMonth)+' nights)', value:'+'+fmt(grossIncome,sym), color:'inherit' },
+    { label:'Platform fee ('+platformPct+'%)', value:'-'+fmt(platformFee,sym), color:'#e11d48' },
+    { label:'Management/co-host fee ('+d.managementPct+'%)', value:'-'+fmt(managementFee,sym), color:'#e11d48' },
+    { label:'Cleaning (per turnover)', value:'-'+fmt(cleaningCost,sym), color:'#e11d48' },
+    { label:'Utilities (electricity, water)', value:'-'+fmt(utilities,sym), color:'#e11d48' },
+    { label:'WiFi & streaming services', value:'-'+fmt(wifi,sym), color:'#e11d48' },
+    { label:'Consumables (toiletries, supplies)', value:'-'+fmt(consumables,sym), color:'#e11d48' },
+  ];
+  var breakHtml = rows.map(function(r){return '<div class="expense-row"><span>'+r.label+'</span><span class="er-cost" style="color:'+r.color+'">'+r.value+'</span></div>';}).join('');
+  breakHtml += '<div class="expense-row net total"><span><strong>Net Monthly Short-Let Income</strong></span><span class="er-cost">'+fmt(netIncome,sym)+'/mo</span></div>';
+  breakHtml += '<div class="expense-row"><span style="color:var(--text-muted)">Long-term rental equivalent</span><span style="color:#16a34a;font-weight:700">'+fmt(ltRent,sym)+'/mo</span></div>';
+  document.getElementById('expense-breakdown').innerHTML = breakHtml;
+
+  var peakHtml = '<div class="peak-chips">' +
+    d.peakMonths.map(function(m){return '<span class="peak-chip peak">🔥 '+m+'</span>';}).join('') +
+    '</div><p style="font-size:.85rem;color:var(--text-muted);margin:8px 0 0">' + d.note + '</p>';
+  document.getElementById('peak-section').innerHTML = peakHtml;
+
+  // AI Observations
+  var aiLines = [];
+  aiLines.push('At '+occ+'% occupancy ('+Math.round(nightsPerMonth)+' nights/month), your '+d.name+' '+ut.replace('twoBed','2-bed').replace('threeBed','3-bed').replace('studio','studio')+' earns '+fmt(netIncome,sym)+' net vs '+fmt(ltRent,sym)+' on a long-term lease — a '+multiplier.toFixed(1)+'× '+(multiplier>1?'premium':'shortfall')+'.');
+  if (multiplier > 2) aiLines.push('Exceptional short-let returns. But factor in: furniture depreciation (budget 8% of furnishing cost/year), occasional damage (set aside 3% of gross income), and the significant time investment even with a co-host.');
+  if (multiplier < 1.2) aiLines.push('⚠️ At '+occ+'% occupancy, short-let barely outperforms long-term rent. Consider: either increasing your nightly rate by 15–20%, targeting peak-season-only letting (December/January), or switching to long-term for stability.');
+  aiLines.push('Peak months in '+d.country+': '+d.peakMonths.slice(0,3).join(', ')+'. During peak, push rates up 30–50% from base. Many VI hosts earn 70% of their annual income in just Dec–Jan.');
+  if (city.startsWith('NG')) aiLines.push('Nigeria regulatory note: Short-let income is taxable. Declare it to FIRS as rental/self-employment income. Keep records of platform payouts. Some Lagos estates have begun restricting short-lets — check your lease/estate rules first.');
+  if (city === 'ZA_CapeTown') aiLines.push('Cape Town has proposed new short-let regulations. Monitor City of Cape Town policy changes — some suburbs may require short-let permits. Check that your Body Corporate rules allow short-letting before listing.');
+  document.getElementById('ai-obs').innerHTML = aiLines.map(function(l){return '<p>'+l+'</p>';}).join('');
+}
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script id="legal-action-copy-script">
+(function(){
+  document.addEventListener('click', function(event) {
+    var button = event.target.closest('[data-legal-copy-action]');
+    if (!button) return;
+    var section = button.closest('.leg-action-pack');
+    var area = section && section.querySelector('.leg-action-copy-text');
+    if (!area) return;
+    var original = button.textContent;
+    var done = function(){ button.textContent = "Copied"; setTimeout(function(){ button.textContent = original; }, 1800); };
+    var fallback = function(){ area.focus(); area.select(); try { document.execCommand("copy"); done(); } catch (err) { button.textContent = "Select text manually"; } };
+    if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(area.value).then(done).catch(fallback); } else { fallback(); }
+  });
+}());
+</script>
+<script src="/assets/js/legal-workflow-copilot.js?v=20da8404" defer></script>
+</body>
+</html>

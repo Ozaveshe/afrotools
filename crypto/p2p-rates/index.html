@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P2P Crypto Rate Comparator — Compare 8+ Platforms in Africa</title>
+<meta name="description" content="Compare live P2P crypto rates across Africa: Binance, Bybit, Yellow Card and more. Find the best USDT, BTC and ETH price in NGN, KES, ZAR before you trade.">
+<meta property="og:title" content="P2P Crypto Rate Comparator — Best Prices Across Africa">
+<meta property="og:description" content="Compare P2P crypto rates from 8+ platforms. Find the cheapest USDT, BTC, ETH in NGN, KES, ZAR, GHS and more African currencies.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/crypto-p2p.webp">
+<meta property="og:url" content="https://afrotools.com/crypto/p2p-rates/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "P2P Crypto Rate Comparator",
+  "description": "Compare buy and sell rates for major crypto assets across African P2P platforms and local currencies.",
+  "url": "https://afrotools.com/crypto/p2p-rates/",
+  "inLanguage": "en",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/crypto-p2p.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "P2P Crypto Rate Comparator",
+  "url": "https://afrotools.com/crypto/p2p-rates/",
+  "description": "Compare buy and sell rates for major crypto assets across African P2P platforms and local currencies.",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/crypto-p2p.webp"
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/crypto.css?v=7107dd8f">
+<script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script src="/assets/js/lib/chart-config.js?v=b81750bb"></script>
+<script src="/assets/js/lib/crypto-data.js?v=b7faee1b"></script>
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/lib/recent-tools.js?v=78dbe87f" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" defer></script>
+<style>
+/* ── P2P-specific styles ─────────────────────────────── */
+.p2p-results { display: flex; flex-direction: column; gap: 12px; }
+.platform-card .spread { font-size: var(--text-sm); color: var(--color-text-muted); }
+.platform-card .spread.good { color: #34C759; }
+.platform-card .spread.mid { color: #FF9500; }
+.platform-card .spread.bad { color: #FF3B30; }
+.platform-methods { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.method-tag {
+  display: inline-block;
+  background: var(--color-bg-subtle, #f1f5f9);
+  color: var(--color-text-muted);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border-subtle, rgba(0,0,0,0.06));
+}
+.trust-score {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+.trust-score .bar {
+  width: 40px;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--color-border);
+  overflow: hidden;
+}
+.trust-score .bar-fill { height: 100%; border-radius: 3px; }
+.trade-btn {
+  display: inline-block;
+  background: var(--color-primary, #0062CC);
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.trade-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.platform-card .right-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.amount-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.amount-input-wrap label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+.p2p-chart-section { margin-top: 48px; }
+.p2p-chart-container {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+}
+.p2p-chart-container h3 {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.alert-section {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-top: 32px;
+}
+.alert-section h3 {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.alert-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+.alert-form input {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  color: var(--color-text);
+  width: 160px;
+}
+.alert-form button {
+  background: #AF52DE;
+  color: #fff;
+  border: none;
+  padding: 8px 20px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.alert-form button:hover { opacity: 0.85; }
+.active-alerts { margin-top: 16px; }
+.active-alerts .alert-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: rgba(175, 82, 222, 0.06);
+  border: 1px solid rgba(175, 82, 222, 0.15);
+  border-radius: var(--radius-sm);
+  margin-top: 8px;
+  font-size: var(--text-sm);
+}
+.active-alerts .alert-item .remove-alert {
+  background: none;
+  border: none;
+  color: #FF3B30;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 16px;
+}
+.loading-skeleton {
+  background: linear-gradient(90deg, var(--color-bg-subtle) 25%, var(--color-bg-card) 50%, var(--color-bg-subtle) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-lg);
+  height: 80px;
+}
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.refresh-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.result-count {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+.alert-triggered {
+  background: rgba(52,199,89,0.1);
+  border: 1px solid rgba(52,199,89,0.3);
+  border-radius: var(--radius-md);
+  padding: 12px 20px;
+  margin-bottom: 16px;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: #34C759;
+  display: none;
+}
+@media (max-width: 768px) {
+  .platform-card { flex-direction: column; text-align: center; }
+  .platform-card .right-col { align-items: center; }
+  .alert-form { flex-direction: column; align-items: stretch; }
+  .alert-form input { width: 100%; }
+  .refresh-bar { flex-direction: column; gap: 8px; }
+}
+</style>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:title" content="P2P Crypto Rate Comparator — Best Prices Across Africa">
+<meta name="twitter:description" content="Compare P2P crypto rates from 8+ platforms. Find the cheapest USDT, BTC, ETH in NGN, KES, ZAR, GHS and more African currencies.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/crypto-p2p.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Crypto",
+      "item": "https://afrotools.com/crypto/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "P2P Crypto Rate Comparator",
+      "item": "https://afrotools.com/crypto/p2p-rates/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the P2P Rate Comparator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The P2P Rate Comparator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the P2P Rate Comparator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the P2P Rate Comparator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/crypto/p2p-rates/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/crypto/p2p-rates/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/crypto/p2p-rates/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/crypto/p2p-rates/">
+</head>
+<body class="top-level-page-ui-refresh">
+
+<!-- ── Navbar ──────────────────────────────────────────── -->
+<afro-navbar></afro-navbar>
+
+<!-- ── Hero ────────────────────────────────────────────── -->
+<section class="crypto-hero">
+  <span class="crypto-badge">P2P Rates</span>
+  <h1>P2P Crypto Rate Comparator</h1>
+  <p>Find the best price to buy or sell crypto in your currency. Compare 8+ platforms side by side.</p>
+</section>
+
+<!-- ── Scrolling Ticker ───────────────────────────────── -->
+<div class="crypto-ticker" id="cryptoTicker">
+  <div class="crypto-ticker__inner" id="tickerInner">
+    <!-- Populated by JS -->
+  </div>
+</div>
+
+<!-- ── Main Content ───────────────────────────────────── -->
+<div class="crypto-section">
+
+  <!-- Controls -->
+  <div class="crypto-controls">
+    <div class="toggle-group" id="sideToggle" role="group" aria-label="Trade side: buy or sell">
+      <button type="button" class="active" data-side="buy" aria-pressed="true">BUY</button>
+      <button type="button" data-side="sell" aria-pressed="false">SELL</button>
+    </div>
+
+    <div>
+      <label for="cryptoSelect">Crypto</label>
+      <select id="cryptoSelect">
+        <option value="tether" data-symbol="USDT">USDT</option>
+        <option value="bitcoin" data-symbol="BTC">BTC</option>
+        <option value="ethereum" data-symbol="ETH">ETH</option>
+        <option value="binancecoin" data-symbol="BNB">BNB</option>
+        <option value="usd-coin" data-symbol="USDC">USDC</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="currencySelect">Currency</label>
+      <select id="currencySelect">
+        <option value="ngn" data-country="NG">NGN</option>
+        <option value="kes" data-country="KE">KES</option>
+        <option value="zar" data-country="ZA">ZAR</option>
+        <option value="ghs" data-country="GH">GHS</option>
+        <option value="egp" data-country="EG">EGP</option>
+        <option value="tzs" data-country="TZ">TZS</option>
+        <option value="ugx" data-country="UG">UGX</option>
+        <option value="xof" data-country="SN">XOF</option>
+        <option value="etb" data-country="ET">ETB</option>
+        <option value="rwf" data-country="RW">RWF</option>
+      </select>
+    </div>
+
+    <div class="amount-input-wrap">
+      <label for="amountInput">Amount</label>
+      <input type="number" id="amountInput" value="100000" min="1" step="1000">
+    </div>
+
+    <div class="auto-refresh">
+      <span class="dot"></span>
+      Reference rates refresh in <strong id="countdown">60</strong>s
+    </div>
+  </div>
+
+  <!-- Alert triggered banner -->
+  <div class="alert-triggered" id="alertTriggered"></div>
+
+  <!-- Refresh bar -->
+  <div class="refresh-bar">
+    <span class="result-count" id="resultCount" aria-live="polite"></span>
+    <button type="button" onclick="fetchAndRender()" style="background:none;border:1px solid var(--color-border);padding:6px 14px;border-radius:var(--radius-sm);font-size:var(--text-sm);font-weight:600;cursor:pointer;color:var(--color-text);font-family:var(--font-body);">Refresh Now</button>
+  </div>
+
+  <!-- Results -->
+  <div class="p2p-results" id="p2pResults">
+    <div class="loading-skeleton"></div>
+    <div class="loading-skeleton"></div>
+    <div class="loading-skeleton"></div>
+  </div>
+
+  <!-- Source + freshness + disclaimer -->
+  <p class="p2p-source-note" style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:14px;line-height:1.6;">
+    <strong>Source:</strong> live Binance P2P and Bybit P2P order books, plus admin-reviewed reference rates (CoinGecko spot as fallback). <span id="p2pAsOf"></span>Rates are indicative and move fast — always confirm the final executable price, fees and merchant reputation on the platform before trading. This is not financial advice.
+  </p>
+
+  <!-- Spread Chart -->
+  <div class="p2p-chart-section">
+    <div class="p2p-chart-container">
+      <h3>Platform Spread Comparison</h3>
+      <div style="position:relative;height:320px;">
+        <canvas id="spreadChart"></canvas>
+      </div>
+      <p style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:12px;">Spread is the difference between the platform's P2P price and the mid-market rate. Lower spread = better deal for you.</p>
+    </div>
+  </div>
+
+  <!-- Price Alert -->
+  <div class="alert-section">
+    <h3>Price Alerts</h3>
+    <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:16px;">Get notified when prices hit your target. Alerts are checked every time this page loads.</p>
+    <div class="alert-form">
+      <span style="font-size:var(--text-sm);font-weight:600;">Notify me when</span>
+      <select id="alertCrypto" style="font-family:var(--font-body);font-size:var(--text-sm);padding:8px 12px;border:1px solid var(--color-border);border-radius:var(--radius-sm);background:var(--color-bg);color:var(--color-text);" aria-label="Alert Crypto">
+        <option value="tether">USDT</option>
+        <option value="bitcoin">BTC</option>
+        <option value="ethereum">ETH</option>
+      </select>
+      <span style="font-size:var(--text-sm);font-weight:600;">/</span>
+      <select id="alertCurrency" style="font-family:var(--font-body);font-size:var(--text-sm);padding:8px 12px;border:1px solid var(--color-border);border-radius:var(--radius-sm);background:var(--color-bg);color:var(--color-text);" aria-label="Alert Currency">
+        <option value="ngn">NGN</option>
+        <option value="kes">KES</option>
+        <option value="zar">ZAR</option>
+        <option value="ghs">GHS</option>
+      </select>
+      <span style="font-size:var(--text-sm);font-weight:600;">drops below</span>
+      <input aria-label="E.g. 1550" type="number" id="alertThreshold" placeholder="e.g. 1550">
+      <button type="button" onclick="addPriceAlert()">Set Alert</button>
+    </div>
+    <div class="active-alerts" id="activeAlerts"></div>
+  </div>
+
+</div>
+
+<!-- ── SEO Content ────────────────────────────────────── -->
+<section class="crypto-content">
+  <h2>The Complete Guide to P2P Crypto Trading in Africa</h2>
+
+  <p>Peer-to-peer (P2P) cryptocurrency trading has become the backbone of crypto adoption across Africa. Unlike traditional centralized exchanges that require international bank accounts or credit cards, P2P platforms allow Africans to buy and sell digital assets using local payment methods such as bank transfers, mobile money (M-Pesa, MTN MoMo, Airtel Money), and even gift cards. This accessibility has made Africa one of the fastest-growing crypto markets in the world.</p>
+
+  <p>Nigeria leads the continent in P2P trading volume, with the Nigerian Naira (NGN) consistently ranking among the top fiat currencies on platforms like Binance P2P and Bybit. Kenya follows closely, powered by M-Pesa integration that makes crypto-to-mobile-money swaps seamless. South Africa, Ghana, Tanzania, and Uganda round out the top African P2P markets, each with unique payment ecosystems that P2P platforms have learned to accommodate.</p>
+
+  <h2>Why P2P Rates Differ Across Platforms</h2>
+
+  <p>P2P rates are not uniform. Each platform operates its own order book where individual merchants set their own buy and sell prices. Several factors drive price differences: liquidity depth, merchant competition, platform fees, payment method speed, and regional demand. During periods of high demand, such as when the official Naira exchange rate diverges from the parallel market rate, P2P premiums can spike significantly. This comparator helps you compare reference estimates from major platforms before confirming the final executable price in the provider app.</p>
+
+  <p>Binance P2P and Bybit P2P typically offer the tightest spreads due to their massive global liquidity pools and zero-fee maker/taker structures. Local exchanges like Quidax and Roqqu may have slightly wider spreads but offer the convenience of direct NGN bank transfers with faster settlement times. Yellow Card stands out for its pan-African coverage, supporting currencies from Nigeria to Cameroon and Botswana.</p>
+
+  <h2>How to Get the Best P2P Price</h2>
+
+  <p>To consistently find the best rates, compare multiple platforms before trading. Use this tool to check live prices, then look at the spread percentage, which tells you how far the P2P price deviates from the mid-market rate. A lower spread means a better deal. Also consider payment method availability and settlement speed. Bank transfers are usually the cheapest method, while mobile money offers convenience in East Africa. Always verify the merchant's completion rate and trade history before initiating a transaction.</p>
+
+  <p>Setting price alerts is another powerful strategy. Crypto markets move 24/7, and the best rates often appear during off-peak hours. Our alert system saves your target price to your browser and checks it every time you visit, ensuring you never miss a favorable rate. Whether you are sending remittances, dollar-cost averaging into Bitcoin, or simply converting your salary to stablecoins as a hedge against local currency depreciation, P2P trading on the right platform at the right time can save you significant money.</p>
+
+  <h2>Safety Tips for P2P Trading</h2>
+
+  <p>While P2P platforms use escrow systems to protect both parties, you should follow basic security practices: only trade with verified merchants who have high completion rates, never release crypto before confirming payment in your bank or mobile money account, use the platform's built-in chat for all communication, and never share personal banking credentials. If a deal seems too good to be true, it probably is. Stick to reputable platforms with robust dispute resolution processes.</p>
+</section>
+
+<!-- ── Footer ─────────────────────────────────────────── -->
+
+<section class="df-upgrade" data-df-upgrade="crypto-p2p">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Practical workflow</span>
+      <h2>P2P Rate Comparator: quick guide</h2>
+      <p>Not sure how to get the most from the P2P Rate Comparator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the P2P Rate Comparator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
+    </div>
+    <form class="df-form" data-df-form="crypto-p2p">
+      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
+      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
+      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
+      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="crypto-p2p" data-df-base="P2P Rate Comparator — enter your details above to see your result." aria-live="polite">P2P Rate Comparator — enter your details above to see your result.</output>
+      <div class="df-actions"><button type="button" data-df-copy="crypto-p2p">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="crypto-p2p-faq-title">
+  <h2 id="crypto-p2p-faq-title">P2P Rate Comparator FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the P2P Rate Comparator?</summary><p>Enter your amounts, rates and dates in the fields above. The P2P Rate Comparator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the P2P Rate Comparator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the P2P Rate Comparator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
+</section>
+<section class="df-faq quality-verification-panel" data-tool-verification-panel aria-labelledby="crypto-p2p-verification-title">
+  <h2 id="crypto-p2p-verification-title">P2P rate verification notes</h2>
+  <div class="df-faq__grid">
+    <details open><summary>Methodology and freshness</summary><p>The comparator combines reference market data, stored platform assumptions, selected asset, local currency, trade side, and amount to show planning estimates. P2P offers, merchant limits, payment methods, escrow rules, and spreads can change minute by minute.</p></details>
+    <details><summary>Safety checks</summary><p>Confirm the executable price, fees, merchant reputation, completion rate, escrow status, payment method, dispute rules, and local crypto restrictions inside the provider app before trading. This is not financial, investment, tax, legal, or anti-fraud advice.</p></details>
+    <details><summary>Export and privacy</summary><p>Use the copyable planning summary for comparison notes only. Do not paste wallet seed phrases, account numbers, identity documents, bank records, transaction references, or private counterparty details into any tool or AI prompt.</p></details>
+  </div>
+</section>
+<div style="max-width:960px;margin:0 auto 24px;padding:0 20px">
+  <afro-business-cta
+    tool-name="P2P Rate Comparator"
+    save-note="Compare reference rates, copy the summary, then verify final price and merchant safety in the provider app."></afro-business-cta>
+</div>
+<afro-related-tools category="financial" current="crypto-p2p" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Tracker" data-category="financial" data-icon="AA" data-desc="Compare petrol, diesel, and LPG prices across 54 African countries, then estimate generator fuel costs in local currency">AfroFuel — African Fuel Price Tracker</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   P2P Rate Comparator — Core Logic (Real API + Supabase)
+   ═══════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  /* ── Coin ID → symbol map ───────────────────────────── */
+  var COIN_TO_ASSET = {
+    tether: 'USDT', bitcoin: 'BTC', ethereum: 'ETH',
+    binancecoin: 'BNB', 'usd-coin': 'USDC'
+  };
+
+  /* ── State ─────────────────────────────────────────── */
+  var state = {
+    side: 'buy',
+    crypto: 'tether',
+    currency: 'ngn',
+    amount: 100000,
+    apiData: null,
+    chartInstance: null,
+    countdownTimer: null,
+    countdownValue: 60
+  };
+
+  /* ── DOM references ────────────────────────────────── */
+  var $results = document.getElementById('p2pResults');
+  var $resultCount = document.getElementById('resultCount');
+  var $countdown = document.getElementById('countdown');
+  var $tickerInner = document.getElementById('tickerInner');
+
+  /* ── Init ───────────────────────────────────────────── */
+  document.addEventListener('DOMContentLoaded', function () {
+    bindControls();
+    fetchAndRender();
+    startCountdown();
+    populateTicker();
+    renderActiveAlerts();
+  });
+
+  /* ── Control bindings ──────────────────────────────── */
+  function bindControls() {
+    var toggleBtns = document.querySelectorAll('#sideToggle button');
+    toggleBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        toggleBtns.forEach(function (b) { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
+        btn.classList.add('active');
+        btn.setAttribute('aria-pressed', 'true');
+        state.side = btn.dataset.side;
+        renderResults();
+      });
+    });
+
+    document.getElementById('cryptoSelect').addEventListener('change', function () {
+      state.crypto = this.value;
+      fetchAndRender();
+    });
+
+    document.getElementById('currencySelect').addEventListener('change', function () {
+      state.currency = this.value;
+      fetchAndRender();
+    });
+
+    document.getElementById('amountInput').addEventListener('input', function () {
+      state.amount = parseFloat(this.value) || 0;
+      renderResults();
+    });
+  }
+
+  /* ── Fetch from real API ─────────────────────────────── */
+  window.fetchAndRender = function () {
+    state.countdownValue = 60;
+    showLoading();
+
+    var asset = COIN_TO_ASSET[state.crypto] || 'USDT';
+    var fiat = state.currency.toUpperCase();
+    var url = '/.netlify/functions/crypto-p2p?asset=' + asset + '&fiat=' + fiat;
+
+    fetch(url)
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (data.error) {
+          $results.innerHTML = '<p style="text-align:center;color:var(--color-text-muted);padding:40px 0;">' + (data.error || 'Unable to fetch P2P rates.') + '</p>';
+          return;
+        }
+        state.apiData = data;
+        renderResults();
+      })
+      .catch(function () {
+        $results.innerHTML = '<p style="text-align:center;color:var(--color-text-muted);padding:40px 0;">Network error. Please try again.</p>';
+      });
+  };
+
+  function showLoading() {
+    $results.innerHTML = '';
+    for (var i = 0; i < 4; i++) {
+      var skel = document.createElement('div');
+      skel.className = 'loading-skeleton';
+      $results.appendChild(skel);
+    }
+  }
+
+  /* ── Render results ────────────────────────────────── */
+  function renderResults() {
+    if (!state.apiData || !state.apiData.platforms) return;
+
+    var currencyUpper = state.currency.toUpperCase();
+    var coinSymbol = COIN_TO_ASSET[state.crypto] || state.crypto.toUpperCase();
+
+    // Map API platforms into display rows
+    var results = [];
+    state.apiData.platforms.forEach(function (p) {
+      var price = state.side === 'buy' ? p.buyPrice : p.sellPrice;
+      if (!price) return;
+
+      var spread = 0;
+      if (p.buyPrice && p.sellPrice) {
+        var mid = (p.buyPrice + p.sellPrice) / 2;
+        spread = Math.abs(price - mid) / mid * 100;
+      }
+
+      results.push({
+        id: p.id,
+        name: p.name,
+        source: p.source,
+        price: price,
+        buyPrice: p.buyPrice,
+        sellPrice: p.sellPrice,
+        spread: spread,
+        cryptoAmount: state.amount / price,
+        methods: p.methods || [],
+        trust: p.trust || 80,
+        fees: p.fees || { maker: 0, taker: 0 },
+        url: p.url || '#',
+        lastUpdated: p.lastUpdated
+      });
+    });
+
+    // Sort: buy = lowest price first, sell = highest price first
+    results.sort(function (a, b) {
+      return state.side === 'buy' ? a.price - b.price : b.price - a.price;
+    });
+
+    if (results.length === 0) {
+      $results.innerHTML = '<p style="text-align:center;color:var(--color-text-muted);padding:40px 0;">No P2P rates available for this pair. Try USDT/NGN.</p>';
+      $resultCount.textContent = '';
+      return;
+    }
+
+    // Build HTML
+    var html = '';
+    results.forEach(function (r, i) {
+      var isBest = i === 0;
+      var spreadClass = r.spread < 1 ? 'good' : r.spread < 2 ? 'mid' : 'bad';
+      var sourceLabel = r.source === 'live' ? 'LIVE' : r.source === 'manual' ? 'UPDATED' : 'SPOT';
+      var sourceColor = r.source === 'live' ? '#34C759' : r.source === 'manual' ? '#FF9500' : '#94A3B8';
+
+      html += '<div class="platform-card' + (isBest ? ' best-deal' : '') + '">';
+      html += '<img class="platform-logo" src="/assets/img/crypto/' + r.id + '.svg" alt="' + r.name + '" onerror="this.style.display=\'none\'">';
+      html += '<div class="platform-info">';
+      html += '<div class="platform-name">' + r.name;
+      if (isBest) html += ' <span class="best-deal-badge">Best Deal</span>';
+      html += ' <span style="font-size:10px;font-weight:700;color:' + sourceColor + ';background:' + sourceColor + '15;padding:2px 6px;border-radius:4px;margin-left:6px;vertical-align:middle;">' + sourceLabel + '</span>';
+      html += '</div>';
+      html += '<div class="platform-meta">';
+      html += '<span class="trust-score"><span class="bar"><span class="bar-fill" style="width:' + r.trust + '%;background:' + trustColor(r.trust) + '"></span></span> ' + r.trust + '/100</span>';
+      html += ' &middot; Fees: ' + (r.fees.taker || 0) + '%';
+      if (r.lastUpdated) {
+        var ago = timeSince(r.lastUpdated);
+        html += ' &middot; <span style="font-size:11px;color:var(--color-text-muted);">' + ago + '</span>';
+      }
+      html += '</div>';
+      html += '<div class="platform-methods">';
+      r.methods.forEach(function (m) {
+        html += '<span class="method-tag">' + m + '</span>';
+      });
+      html += '</div>';
+      html += '</div>';
+      html += '<div class="right-col">';
+      html += '<div class="platform-price">' + formatPrice(r.price, currencyUpper) + '</div>';
+      html += '<div class="spread ' + spreadClass + '">' + (state.side === 'buy' ? '+' : '-') + r.spread.toFixed(2) + '% spread</div>';
+      html += '<div style="font-size:12px;color:var(--color-text-muted);">You ' + (state.side === 'buy' ? 'get' : 'sell') + ': ' + r.cryptoAmount.toFixed(coinSymbol === 'BTC' ? 6 : 4) + ' ' + coinSymbol + '</div>';
+      html += '<a href="' + r.url + '" target="_blank" rel="noopener noreferrer" class="trade-btn">Trade</a>';
+      html += '</div>';
+      html += '</div>';
+    });
+
+    $results.innerHTML = html;
+
+    var liveCount = results.filter(function (r) { return r.source === 'live'; }).length;
+    var manualCount = results.filter(function (r) { return r.source === 'manual'; }).length;
+    var countText = results.length + ' platform' + (results.length !== 1 ? 's' : '') + ' for ' + coinSymbol + '/' + currencyUpper;
+    if (liveCount > 0) countText += ' (' + liveCount + ' live';
+    if (manualCount > 0) countText += (liveCount > 0 ? ', ' : '(') + manualCount + ' reference estimate';
+    if (liveCount > 0 || manualCount > 0) countText += ')';
+    $resultCount.textContent = countText;
+
+    var asOfEl = document.getElementById('p2pAsOf');
+    if (asOfEl) {
+      var ts = state.apiData.timestamp ? new Date(state.apiData.timestamp) : new Date();
+      asOfEl.textContent = 'Rates as of ' + ts.toLocaleString([], { hour: '2-digit', minute: '2-digit' }) + '. ';
+    }
+
+    renderSpreadChart(results, currencyUpper, coinSymbol);
+  }
+
+  /* ── Price formatting (standalone, no CryptoData dependency) ── */
+  function formatPrice(val, currency) {
+    var symbols = {
+      NGN:'\u20A6', KES:'KSh', ZAR:'R', GHS:'GH\u20B5', EGP:'E\u00A3',
+      TZS:'TSh', UGX:'USh', XOF:'CFA', ETB:'Br', RWF:'FRw', USD:'$'
+    };
+    var sym = symbols[currency] || currency + ' ';
+    if (val >= 1000000) return sym + (val / 1000000).toFixed(1) + 'M';
+    if (val >= 1000) return sym + Number(val).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    return sym + Number(val).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  /* ── Time since helper ─────────────────────────────── */
+  function timeSince(dateStr) {
+    var seconds = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
+    if (seconds < 60) return 'just now';
+    if (seconds < 3600) return Math.floor(seconds / 60) + 'm ago';
+    if (seconds < 86400) return Math.floor(seconds / 3600) + 'h ago';
+    return Math.floor(seconds / 86400) + 'd ago';
+  }
+
+  /* ── Spread chart ──────────────────────────────────── */
+  function renderSpreadChart(results, currency, coinSymbol) {
+    var ctx = document.getElementById('spreadChart');
+    if (!ctx) return;
+
+    if (state.chartInstance) {
+      state.chartInstance.destroy();
+    }
+
+    var labels = results.map(function (r) {
+      return r.name + (r.source === 'live' ? ' (Live)' : '');
+    });
+    var spreads = results.map(function (r) { return r.spread; });
+    var colors = results.map(function (r, i) {
+      if (r.source === 'live') return '#34C759';
+      return window.AfroChartColors ? AfroChartColors.series[i % AfroChartColors.series.length] : '#0062CC';
+    });
+
+    state.chartInstance = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Spread %',
+          data: spreads,
+          backgroundColor: colors,
+          borderRadius: 6,
+          borderSkipped: false,
+          barThickness: 28
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: window.AfroChartColors ? AfroChartColors.tooltipBg : '#1E293B',
+            titleColor: '#fff',
+            bodyColor: '#fff',
+            cornerRadius: 8,
+            padding: 12,
+            callbacks: {
+              label: function (c) {
+                return c.parsed.x.toFixed(2) + '% spread from mid-market';
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { color: window.AfroChartColors ? AfroChartColors.grid : 'rgba(0,0,0,0.04)', drawBorder: false },
+            ticks: {
+              color: window.AfroChartColors ? AfroChartColors.tickText : '#94A3B8',
+              font: { family: "'DM Sans', sans-serif", size: 11 },
+              callback: function (v) { return v.toFixed(1) + '%'; }
+            },
+            title: { display: true, text: 'Spread from Mid-Market Rate', font: { family: "'DM Sans', sans-serif", size: 12, weight: '600' }, color: '#94A3B8' }
+          },
+          y: {
+            grid: { display: false },
+            ticks: {
+              color: window.AfroChartColors ? AfroChartColors.tickText : '#94A3B8',
+              font: { family: "'DM Sans', sans-serif", size: 12 }
+            }
+          }
+        },
+        animation: { duration: 600, easing: 'easeOutQuart' }
+      }
+    });
+  }
+
+  /* ── Ticker ────────────────────────────────────────── */
+  function populateTicker() {
+    CryptoData.getPrices('usd').then(function (data) {
+      if (!data) return;
+      var coins = Object.keys(CryptoData.COIN_META);
+      var html = '';
+
+      coins.forEach(function (coinId) {
+        var meta = CryptoData.COIN_META[coinId];
+        var d = data[coinId];
+        if (!d) return;
+        var price = d.usd || 0;
+        var change = d.usd_24h_change || 0;
+        var changeColor = change >= 0 ? '#34C759' : '#FF3B30';
+        var changeSign = change >= 0 ? '+' : '';
+
+        html += '<span class="ticker-item">';
+        html += '<span class="coin-name">' + meta.symbol + '</span> ';
+        html += '$' + formatTickerPrice(price) + ' ';
+        html += '<span style="color:' + changeColor + ';font-weight:600">' + changeSign + change.toFixed(2) + '%</span>';
+        html += '</span>';
+      });
+
+      $tickerInner.innerHTML = html + html;
+    });
+  }
+
+  function formatTickerPrice(p) {
+    if (p >= 1000) return Number(p).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    if (p >= 1) return p.toFixed(2);
+    return p.toFixed(4);
+  }
+
+  /* ── Auto-refresh countdown ────────────────────────── */
+  function startCountdown() {
+    if (state.countdownTimer) clearInterval(state.countdownTimer);
+    state.countdownValue = 60;
+    state.countdownTimer = setInterval(function () {
+      state.countdownValue--;
+      if (state.countdownValue <= 0) {
+        state.countdownValue = 60;
+        fetchAndRender();
+      }
+      $countdown.textContent = state.countdownValue;
+    }, 1000);
+  }
+
+  /* ── Price Alerts ──────────────────────────────────── */
+  window.addPriceAlert = function () {
+    var crypto = document.getElementById('alertCrypto').value;
+    var currency = document.getElementById('alertCurrency').value;
+    var threshold = parseFloat(document.getElementById('alertThreshold').value);
+    if (!threshold || threshold <= 0) return;
+
+    var alerts = getAlerts();
+    alerts.push({
+      id: Date.now(),
+      crypto: crypto,
+      currency: currency,
+      threshold: threshold,
+      created: new Date().toISOString()
+    });
+    saveAlerts(alerts);
+    document.getElementById('alertThreshold').value = '';
+    renderActiveAlerts();
+  };
+
+  window.removeAlert = function (id) {
+    var alerts = getAlerts().filter(function (a) { return a.id !== id; });
+    saveAlerts(alerts);
+    renderActiveAlerts();
+  };
+
+  function getAlerts() {
+    try {
+      return JSON.parse(localStorage.getItem('p2p-price-alerts')) || [];
+    } catch (e) { return []; }
+  }
+
+  function saveAlerts(alerts) {
+    localStorage.setItem('p2p-price-alerts', JSON.stringify(alerts));
+  }
+
+  function renderActiveAlerts() {
+    var alerts = getAlerts();
+    var container = document.getElementById('activeAlerts');
+    if (alerts.length === 0) {
+      container.innerHTML = '<p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-top:12px;">No active alerts. Set one above.</p>';
+      return;
+    }
+
+    var html = '';
+    alerts.forEach(function (a) {
+      var coinMeta = CryptoData.COIN_META[a.crypto] || { symbol: a.crypto.toUpperCase() };
+      html += '<div class="alert-item">';
+      html += '<span>' + coinMeta.symbol + '/' + a.currency.toUpperCase() + ' drops below <strong>' + formatPrice(a.threshold, a.currency.toUpperCase()) + '</strong></span>';
+      html += '<button type="button" class="remove-alert" onclick="removeAlert(' + a.id + ')" title="Remove alert">&times;</button>';
+      html += '</div>';
+    });
+    container.innerHTML = html;
+  }
+
+  /* ── Helpers ───────────────────────────────────────── */
+  function trustColor(score) {
+    if (score >= 90) return '#34C759';
+    if (score >= 80) return '#FF9500';
+    return '#FF3B30';
+  }
+
+})();
+</script>
+
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+</body>
+</html>

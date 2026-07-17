@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Remittance Fees — AfroTools Admin</title>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', -apple-system, sans-serif; background: #F5F9FF; color: #1a2e22; line-height: 1.6; }
+  .dash { max-width: 1400px; margin: 0 auto; padding: 32px 24px; }
+  .dash-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+  .dash-header h1 { font-size: 1.4rem; font-weight: 800; }
+  .dash-header .badge { background: #fef3cd; color: #92400e; font-size: .65rem; font-weight: 700; padding: 3px 10px; border-radius: 12px; text-transform: uppercase; }
+  .back-link { font-size: .82rem; color: #0062CC; text-decoration: none; margin-bottom: 16px; display: inline-block; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .stat-card { background: #fff; border: 1px solid #E8F0FE; border-radius: 12px; padding: 14px; text-align: center; }
+  .stat-value { font-size: 1.4rem; font-weight: 800; color: #0062CC; }
+  .stat-value.warn { color: #d97706; }
+  .stat-label { font-size: .72rem; color: #6B7F99; margin-top: 2px; }
+  /* Provider tabs */
+  .provider-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+  .tab-btn { padding: 6px 14px; border: 1.5px solid #E5E7EB; border-radius: 20px; background: #fff;
+    font-family: inherit; font-size: .78rem; font-weight: 600; cursor: pointer; color: #374151; transition: all .15s; }
+  .tab-btn:hover { border-color: #0062CC; color: #0062CC; }
+  .tab-btn.active { background: #0062CC; border-color: #0062CC; color: #fff; }
+  .tab-btn.all-btn { border-color: #6B7280; }
+  .tab-btn.all-btn.active { background: #374151; border-color: #374151; }
+  /* Add row */
+  .add-row-bar { background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 8px;
+    padding: 10px 16px; margin-bottom: 16px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .add-row-bar label { font-size: .75rem; color: #374151; }
+  .add-row-bar input, .add-row-bar select {
+    padding: 4px 8px; border: 1.5px solid #BFDBFE; border-radius: 6px; font-size: .8rem; font-family: inherit; }
+  .add-row-bar input { width: 100px; }
+  .section { background: #fff; border: 1px solid #E8F0FE; border-radius: 12px; padding: 24px; margin-bottom: 20px; overflow-x: auto; }
+  .section h2 { font-size: 1rem; font-weight: 700; margin-bottom: 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: .78rem; min-width: 1100px; }
+  th { text-align: left; font-weight: 600; color: #6B7F99; padding: 7px 7px; border-bottom: 2px solid #E8F0FE; white-space: nowrap; font-size: .74rem; }
+  td { padding: 4px 7px; border-bottom: 1px solid #EFF6FF; }
+  tr:hover td { background: #F5F9FF; }
+  td input[type="number"] { width: 80px; padding: 3px 5px; border: 1.5px solid #E5E7EB; border-radius: 5px; font-size: .77rem; text-align: right; }
+  td input[type="text"]   { width: 90px; padding: 3px 5px; border: 1.5px solid #E5E7EB; border-radius: 5px; font-size: .77rem; }
+  td input.wide { width: 180px; }
+  td select { padding: 3px 5px; border: 1.5px solid #E5E7EB; border-radius: 5px; font-size: .77rem; font-family: inherit; }
+  td input:focus, .add-row-bar input:focus { border-color: #0062CC; outline: none; }
+  .btn { padding: 4px 11px; border: none; border-radius: 5px; font-family: inherit; font-size: .75rem; font-weight: 600; cursor: pointer; }
+  .btn-save { background: #059669; color: #fff; }
+  .btn-save:hover { background: #047857; }
+  .btn-primary { background: #0062CC; color: #fff; }
+  .btn-primary:hover { background: #0063D1; }
+  .btn-danger { background: #fca5a5; color: #991b1b; }
+  .stale { background: #FEF2F2; }
+  .stale-badge { font-size: .58rem; font-weight: 700; background: #FEE2E2; color: #991B1B; padding: 2px 5px; border-radius: 4px; }
+  .fresh-badge { font-size: .58rem; font-weight: 700; background: #ECFDF5; color: #059669; padding: 2px 5px; border-radius: 4px; }
+  .inactive-badge { font-size: .58rem; font-weight: 700; background: #F3F4F6; color: #6B7280; padding: 2px 5px; border-radius: 4px; }
+  .source-note { font-size: .72rem; color: #94a3b8; margin-top: 12px; }
+  .toast { position: fixed; top: 20px; right: 20px; padding: 12px 20px; border-radius: 8px; color: #fff;
+    font-size: .85rem; font-weight: 500; z-index: 999; transform: translateY(-20px); opacity: 0; transition: all .3s; }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { background: #059669; }
+  .toast.error { background: #dc2626; }
+</style>
+<meta property="article:modified_time" content="2026-03-28">
+<link rel="canonical" href="https://afrotools.com/admin/remittance">
+<meta property="og:url" content="https://afrotools.com/admin/remittance">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c4853917">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/lib/dark-mode.js?v=5cb64ba3" defer></script>
+</head>
+<body class="top-level-page-ui-refresh">
+<div class="dash">
+  <a href="/admin/dashboard" class="back-link">&larr; Admin Dashboard</a>
+  <div class="dash-header">
+    <h1>💸 Remittance Fees & Corridors</h1>
+    <span class="badge">Admin</span>
+  </div>
+  <div class="stats" id="remStats"></div>
+
+  <div class="provider-tabs" id="providerTabs">
+    <button type="button" class="tab-btn all-btn active" onclick="selectProvider('',this)">All Providers</button>
+  </div>
+
+  <!-- Add new corridor -->
+  <div class="add-row-bar">
+    <strong style="font-size:.8rem">+ Add Corridor:</strong>
+    <span><label for="new-provider">Provider</label>
+      <select id="new-provider" style="width:130px">
+        <option value="">Select…</option>
+      </select>
+    </span>
+    <span><label>Send</label>
+      <select id="new-send" style="width:75px" aria-label="New Send">
+        <option value="US">US</option><option value="UK">UK</option><option value="EU">EU</option>
+        <option value="CA">CA</option><option value="AU">AU</option><option value="AE">AE</option>
+      </select>
+    </span>
+    <span><label>Receive</label>
+      <select id="new-receive" style="width:75px" aria-label="New Receive">
+        <option value="NG">NG</option><option value="KE">KE</option><option value="GH">GH</option>
+        <option value="ZA">ZA</option><option value="TZ">TZ</option><option value="UG">UG</option>
+        <option value="SN">SN</option><option value="ET">ET</option><option value="CM">CM</option>
+        <option value="CI">CI</option><option value="EG">EG</option><option value="MA">MA</option>
+        <option value="RW">RW</option>
+      </select>
+    </span>
+    <span><label>Fee $</label><input aria-label="New fee fixed" type="number" id="new-fee-fixed" step="0.01" placeholder="0.00"></span>
+    <span><label>Fee %</label><input aria-label="New fee pct" type="number" id="new-fee-pct"   step="0.01" placeholder="0.00"></span>
+    <span><label>FX Margin %</label><input aria-label="New fx" type="number" id="new-fx" step="0.01" placeholder="0.00"></span>
+    <span><label>Time</label><input aria-label="Instant" type="text" id="new-time" placeholder="Instant" style="width:100px"></span>
+    <span><label>Delivery</label>
+      <select id="new-delivery" style="width:120px" aria-label="New Delivery">
+        <option>Bank</option><option>Mobile Money</option><option>Cash Pickup</option><option>Bank + Mobile</option>
+      </select>
+    </span>
+    <button type="button" class="btn btn-primary" onclick="addCorridor()">Add</button>
+  </div>
+
+  <div class="section">
+    <h2 id="remTitle">All Providers — All Corridors</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Provider</th>
+          <th>Send</th>
+          <th>Receive</th>
+          <th>Fee (USD fixed)</th>
+          <th>Fee (%)</th>
+          <th>FX Margin %</th>
+          <th>Transfer Time</th>
+          <th>Min Send</th>
+          <th>Max Send</th>
+          <th>Delivery</th>
+          <th>Notes</th>
+          <th>Updated</th>
+          <th>Status</th>
+          <th>Active</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="remTable">
+        <tr><td colspan="15" style="text-align:center;color:#94a3b8;padding:24px">Loading remittance data…</td></tr>
+      </tbody>
+    </table>
+    <div class="source-note">Sources: Provider published rates (verify on provider site monthly). FX margin = difference from mid-market rate.</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var adminKey = sessionStorage.getItem('admin_key');
+if (!adminKey) { adminKey = prompt('Enter admin password:'); if (adminKey) sessionStorage.setItem('admin_key', adminKey); }
+var SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
+var allData = [];
+var currentProvider = '';
+
+var PROVIDERS = ['Wise','WorldRemit','Remitly','Western Union','MoneyGram','LemFi','Sendwave','Paysend','Chipper'];
+
+function showToast(msg, type) {
+  var t = document.getElementById('toast'); t.textContent = msg;
+  t.className = 'toast ' + (type || 'success'); t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 3000);
+}
+function timeAgo(dateStr) {
+  if (!dateStr) return 'Never';
+  var days = Math.floor((Date.now() - new Date(dateStr).getTime()) / 86400000);
+  if (days === 0) return 'Today'; if (days === 1) return 'Yesterday';
+  if (days < 7) return days + 'd ago'; if (days < 30) return Math.ceil(days/7) + 'w ago';
+  return Math.floor(days / 30) + 'mo ago';
+}
+function isStale(d) { return !d || (Date.now() - new Date(d).getTime()) > 30 * 86400000; }
+
+// Build provider tabs + populate select
+(function() {
+  var tabs = document.getElementById('providerTabs');
+  var sel = document.getElementById('new-provider');
+  PROVIDERS.forEach(function(p) {
+    var btn = document.createElement('button');
+    btn.className = 'tab-btn'; btn.textContent = p;
+    btn.onclick = function() { selectProvider(p, btn); };
+    tabs.appendChild(btn);
+    var opt = document.createElement('option'); opt.value = p; opt.textContent = p;
+    sel.appendChild(opt);
+  });
+})();
+
+function selectProvider(prov, btn) {
+  currentProvider = prov;
+  document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  renderTable();
+  document.getElementById('remTitle').textContent = prov ? prov + ' — All Corridors' : 'All Providers — All Corridors';
+}
+
+async function loadData() {
+  try {
+    var res = await fetch(SUPABASE_URL + '/rest/v1/remittance_providers?select=*&order=provider.asc,send_country.asc,receive_country.asc', {
+      headers: { apikey: adminKey, Authorization: 'Bearer ' + adminKey }
+    });
+    allData = res.ok ? await res.json() : [];
+    renderTable(); renderStats();
+  } catch(e) { showToast('Load error: ' + e.message, 'error'); }
+}
+
+function renderStats() {
+  var stale = allData.filter(function(r) { return isStale(r.updated_at); }).length;
+  var active = allData.filter(function(r) { return r.active !== false; }).length;
+  var providers = [...new Set(allData.map(function(r) { return r.provider; }))].length;
+  document.getElementById('remStats').innerHTML =
+    '<div class="stat-card"><div class="stat-value">' + allData.length + '</div><div class="stat-label">Corridors</div></div>' +
+    '<div class="stat-card"><div class="stat-value">' + providers + '</div><div class="stat-label">Providers</div></div>' +
+    '<div class="stat-card"><div class="stat-value">' + active + '</div><div class="stat-label">Active</div></div>' +
+    '<div class="stat-card"><div class="stat-value' + (stale > 0 ? ' warn' : '') + '">' + stale + '</div><div class="stat-label">Stale (>30d)</div></div>';
+}
+
+function renderTable() {
+  var rows = currentProvider ? allData.filter(function(r) { return r.provider === currentProvider; }) : allData;
+  var n = function(v) { return v !== null && v !== undefined ? v : ''; };
+  document.getElementById('remTable').innerHTML = rows.map(function(r, i) {
+    var realIdx = allData.indexOf(r);
+    var stale = isStale(r.updated_at);
+    return '<tr class="' + (stale ? 'stale' : '') + '" data-idx="' + realIdx + '">' +
+      '<td><strong>' + r.provider + '</strong></td>' +
+      '<td><input aria-label="Send country" type="text" value="' + n(r.send_country) + '" data-field="send_country" style="width:50px"></td>' +
+      '<td><input aria-label="Receive country" type="text" value="' + n(r.receive_country) + '" data-field="receive_country" style="width:50px"></td>' +
+      '<td><input aria-label="Fee fixed usd" type="number" step="0.01" value="' + n(r.fee_fixed_usd) + '" data-field="fee_fixed_usd"></td>' +
+      '<td><input aria-label="Fee pct" type="number" step="0.01" value="' + n(r.fee_pct) + '" data-field="fee_pct"></td>' +
+      '<td><input aria-label="Fx margin pct" type="number" step="0.01" value="' + n(r.fx_margin_pct) + '" data-field="fx_margin_pct"></td>' +
+      '<td><input aria-label="Transfer time" type="text" value="' + n(r.transfer_time) + '" data-field="transfer_time" style="width:100px"></td>' +
+      '<td><input aria-label="Min send usd" type="number" step="1"    value="' + n(r.min_send_usd) + '" data-field="min_send_usd"></td>' +
+      '<td><input aria-label="Max send usd" type="number" step="1"    value="' + n(r.max_send_usd) + '" data-field="max_send_usd"></td>' +
+      '<td><select data-field="delivery_method" aria-label="Select option">' +
+        ['Bank','Mobile Money','Cash Pickup','Bank + Mobile'].map(function(d) {
+          return '<option value="' + d + '"' + (r.delivery_method === d ? ' selected' : '') + '>' + d + '</option>';
+        }).join('') +
+      '</select></td>' +
+      '<td><input aria-label="Notes" type="text" class="wide" value="' + (r.notes||'').replace(/"/g,'&quot;') + '" data-field="notes" placeholder="Notes…"></td>' +
+      '<td style="font-size:.7rem;color:#94a3b8;white-space:nowrap">' + timeAgo(r.updated_at) + '</td>' +
+      '<td>' + (r.active === false ? '<span class="inactive-badge">OFF</span>' : (stale ? '<span class="stale-badge">STALE</span>' : '<span class="fresh-badge">OK</span>')) + '</td>' +
+      '<td><input aria-label="Active" type="checkbox" data-field="active"' + (r.active !== false ? ' checked' : '') + '></td>' +
+      '<td><button type="button" class="btn btn-save" onclick="saveRow(' + realIdx + ')">Save</button></td>' +
+    '</tr>';
+  }).join('');
+  if (!rows.length) {
+    document.getElementById('remTable').innerHTML =
+      '<tr><td colspan="15" style="text-align:center;color:#94a3b8;padding:24px">No corridors — use Add Corridor above</td></tr>';
+  }
+}
+
+async function saveRow(idx) {
+  var r = allData[idx];
+  var row = document.querySelector('tr[data-idx="' + idx + '"]');
+  var f = function(field) { return parseFloat(row.querySelector('[data-field="' + field + '"]').value) || null; };
+  var payload = {
+    provider:         r.provider,
+    send_country:     row.querySelector('[data-field="send_country"]').value.toUpperCase(),
+    receive_country:  row.querySelector('[data-field="receive_country"]').value.toUpperCase(),
+    fee_fixed_usd:    f('fee_fixed_usd') || 0,
+    fee_pct:          f('fee_pct') || 0,
+    fx_margin_pct:    f('fx_margin_pct') || 0,
+    transfer_time:    row.querySelector('[data-field="transfer_time"]').value,
+    min_send_usd:     f('min_send_usd'),
+    max_send_usd:     f('max_send_usd'),
+    delivery_method:  row.querySelector('[data-field="delivery_method"]').value,
+    notes:            row.querySelector('[data-field="notes"]').value,
+    active:           row.querySelector('[data-field="active"]').checked,
+    updated_at: new Date().toISOString(), updated_by: 'admin'
+  };
+  try {
+    var res = await fetch(SUPABASE_URL + '/rest/v1/remittance_providers', {
+      method: 'POST',
+      headers: { apikey: adminKey, Authorization: 'Bearer ' + adminKey,
+        'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates,return=representation' },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) {
+      allData[idx] = Object.assign(r, payload);
+      showToast(r.provider + ' ' + payload.send_country + '→' + payload.receive_country + ' saved');
+      renderTable(); renderStats();
+    } else showToast('Save failed: ' + await res.text(), 'error');
+  } catch(e) { showToast('Network error', 'error'); }
+}
+
+function addCorridor() {
+  var prov = document.getElementById('new-provider').value;
+  if (!prov) { showToast('Select a provider', 'error'); return; }
+  var newRow = {
+    provider: prov,
+    send_country:    document.getElementById('new-send').value,
+    receive_country: document.getElementById('new-receive').value,
+    fee_fixed_usd:   parseFloat(document.getElementById('new-fee-fixed').value) || 0,
+    fee_pct:         parseFloat(document.getElementById('new-fee-pct').value) || 0,
+    fx_margin_pct:   parseFloat(document.getElementById('new-fx').value) || 0,
+    transfer_time:   document.getElementById('new-time').value,
+    delivery_method: document.getElementById('new-delivery').value,
+    notes: '', active: true, updated_at: null,
+    min_send_usd: null, max_send_usd: null
+  };
+  allData.push(newRow);
+  renderTable(); renderStats();
+  // Save immediately
+  saveRow(allData.length - 1);
+}
+
+loadData();
+</script>
+</body>
+</html>

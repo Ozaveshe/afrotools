@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Coffee Prices — AfroTools Admin</title>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', -apple-system, sans-serif; background: #F5F9FF; color: #1a2e22; line-height: 1.6; }
+  .dash { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+  .dash-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+  .dash-header h1 { font-size: 1.4rem; font-weight: 800; }
+  .dash-header .badge { background: #fef3cd; color: #92400e; font-size: .65rem; font-weight: 700; padding: 3px 10px; border-radius: 12px; text-transform: uppercase; }
+  .back-link { font-size: .82rem; color: #0062CC; text-decoration: none; margin-bottom: 16px; display: inline-block; }
+  .back-link:hover { text-decoration: underline; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .stat-card { background: #fff; border: 1px solid #E8F0FE; border-radius: 12px; padding: 14px; text-align: center; }
+  .stat-value { font-size: 1.4rem; font-weight: 800; color: #0062CC; }
+  .stat-value.warn { color: #d97706; }
+  .stat-label { font-size: .72rem; color: #6B7F99; margin-top: 2px; }
+  .country-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+  .tab-btn { padding: 6px 14px; border: 1.5px solid #E5E7EB; border-radius: 20px; background: #fff;
+    font-family: inherit; font-size: .78rem; font-weight: 600; cursor: pointer; color: #374151; transition: all .15s; }
+  .tab-btn:hover { border-color: #0062CC; color: #0062CC; }
+  .tab-btn.active { background: #0062CC; border-color: #0062CC; color: #fff; }
+  .add-row-bar { background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 8px;
+    padding: 10px 16px; margin-bottom: 16px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .add-row-bar label { font-size: .78rem; color: #374151; }
+  .add-row-bar input { padding: 4px 8px; border: 1.5px solid #BFDBFE; border-radius: 6px; font-size: .8rem; width: 130px; }
+  .section { background: #fff; border: 1px solid #E8F0FE; border-radius: 12px; padding: 24px; margin-bottom: 20px; overflow-x: auto; }
+  .section h2 { font-size: 1rem; font-weight: 700; margin-bottom: 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: .79rem; min-width: 750px; }
+  th { text-align: left; font-weight: 600; color: #6B7F99; padding: 8px; border-bottom: 2px solid #E8F0FE; white-space: nowrap; }
+  td { padding: 5px 8px; border-bottom: 1px solid #EFF6FF; }
+  tr:hover td { background: #F5F9FF; }
+  td input[type="number"] { width: 100px; padding: 4px 6px; border: 1.5px solid #E5E7EB; border-radius: 6px; font-size: .8rem; text-align: right; }
+  td input[type="text"] { width: 130px; padding: 4px 6px; border: 1.5px solid #E5E7EB; border-radius: 6px; font-size: .78rem; }
+  td input.wide { width: 200px; }
+  td input:focus, .add-row-bar input:focus { border-color: #0062CC; outline: none; }
+  .btn { padding: 5px 13px; border: none; border-radius: 6px; font-family: inherit; font-size: .78rem; font-weight: 600; cursor: pointer; }
+  .btn-save { background: #059669; color: #fff; }
+  .btn-save:hover { background: #047857; }
+  .btn-primary { background: #0062CC; color: #fff; }
+  .btn-primary:hover { background: #0063D1; }
+  .btn-danger { background: #dc2626; color: #fff; }
+  .stale { background: #FEF2F2; }
+  .stale-badge { font-size: .6rem; font-weight: 700; background: #FEE2E2; color: #991B1B; padding: 2px 6px; border-radius: 4px; }
+  .fresh-badge { font-size: .6rem; font-weight: 700; background: #ECFDF5; color: #059669; padding: 2px 6px; border-radius: 4px; }
+  .source-note { font-size: .72rem; color: #94a3b8; margin-top: 12px; }
+  .toast { position: fixed; top: 20px; right: 20px; padding: 12px 20px; border-radius: 8px; color: #fff;
+    font-size: .85rem; font-weight: 500; z-index: 999; transform: translateY(-20px); opacity: 0; transition: all .3s; }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { background: #059669; }
+  .toast.error { background: #dc2626; }
+  .grade-hint { font-size: .7rem; color: #94a3b8; margin-top: 8px; }
+</style>
+<meta property="article:modified_time" content="2026-03-28">
+<link rel="canonical" href="https://afrotools.com/admin/coffee-prices">
+<meta property="og:url" content="https://afrotools.com/admin/coffee-prices">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c4853917">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/lib/dark-mode.js?v=5cb64ba3" defer></script>
+</head>
+<body class="top-level-page-ui-refresh">
+<div class="dash">
+  <a href="/admin/dashboard" class="back-link">&larr; Admin Dashboard</a>
+  <div class="dash-header">
+    <h1>☕ Coffee Prices</h1>
+    <span class="badge">Admin</span>
+  </div>
+  <div class="stats" id="coffeeStats"></div>
+
+  <div class="country-tabs" id="countryTabs"></div>
+
+  <!-- Add new grade row -->
+  <div class="add-row-bar">
+    <strong style="font-size:.8rem">+ Add Grade:</strong>
+    <span><label>Grade name</label><input aria-label="E.g. Grade 1, AA" type="text" id="new-grade" placeholder="e.g. Grade 1, AA"></span>
+    <span><label>Export USD/kg</label><input aria-label="New export" type="number" id="new-export" step="0.01" placeholder="0.00" style="width:100px"></span>
+    <span><label>Farm-gate</label><input aria-label="New fg" type="number" id="new-fg" step="1" placeholder="0" style="width:100px"></span>
+    <span><label>Currency</label><input aria-label="ETB" type="text" id="new-fg-cur" placeholder="ETB" style="width:65px"></span>
+    <button type="button" class="btn btn-primary" onclick="addGrade()">Add Row</button>
+  </div>
+
+  <div class="section">
+    <h2 id="coffeeTitle">Select a country above</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Grade / Type</th>
+          <th>Export Price (USD/kg)</th>
+          <th>Farm-Gate Price</th>
+          <th>Farm-Gate Currency</th>
+          <th>Notes</th>
+          <th>Updated</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="coffeeTable">
+        <tr><td colspan="8" style="text-align:center;color:#94a3b8;padding:24px">Select a country above</td></tr>
+      </tbody>
+    </table>
+    <div class="grade-hint">Ethiopia: Grade 1–5 (defect-based) | Kenya: AA, AB, PB, C, E, TT | Tanzania/Uganda: FAQ, Grade A/B | Rwanda/Burundi: Fully Washed A/B, Natural</div>
+    <div class="source-note">Sources: ECX (Ethiopia), Nairobi Coffee Exchange, ICO, national coffee boards. Update monthly.</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var adminKey = sessionStorage.getItem('admin_key');
+if (!adminKey) { adminKey = prompt('Enter admin password:'); if (adminKey) sessionStorage.setItem('admin_key', adminKey); }
+var SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
+var currentCountry = null;
+var tableData = [];
+var allData = [];
+
+var COFFEE_COUNTRIES = [
+  { code: 'ET', name: 'Ethiopia',    flag: '🇪🇹', grades: ['Grade 1','Grade 2','Grade 3','Grade 4','Grade 5'] },
+  { code: 'KE', name: 'Kenya',       flag: '🇰🇪', grades: ['AA','AB','PB','C','E','TT','MH'] },
+  { code: 'TZ', name: 'Tanzania',    flag: '🇹🇿', grades: ['FAQ','Grade A','Grade B','Peaberry'] },
+  { code: 'UG', name: 'Uganda',      flag: '🇺🇬', grades: ['Robusta FAQ','Arabica A','Arabica B'] },
+  { code: 'RW', name: 'Rwanda',      flag: '🇷🇼', grades: ['Fully Washed A','Fully Washed B','Natural'] },
+  { code: 'BI', name: 'Burundi',     flag: '🇧🇮', grades: ['Fully Washed A','Fully Washed B','Natural'] },
+  { code: 'CD', name: 'DR Congo',    flag: '🇨🇩', grades: ['Grade 1','Grade 2','Kivu Specialty'] },
+  { code: 'CI', name: "Côte d'Ivoire", flag: '🇨🇮', grades: ['Robusta FAQ','Grade 1','Grade 2'] },
+];
+
+function showToast(msg, type) {
+  var t = document.getElementById('toast'); t.textContent = msg;
+  t.className = 'toast ' + (type || 'success'); t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 3000);
+}
+function timeAgo(dateStr) {
+  if (!dateStr) return 'Never';
+  var days = Math.floor((Date.now() - new Date(dateStr).getTime()) / 86400000);
+  if (days === 0) return 'Today'; if (days === 1) return 'Yesterday';
+  if (days < 30) return days + 'd ago'; return Math.floor(days / 30) + 'mo ago';
+}
+function isStale(d) { return !d || (Date.now() - new Date(d).getTime()) > 30 * 86400000; }
+
+// Build tabs
+(function() {
+  var tabs = document.getElementById('countryTabs');
+  COFFEE_COUNTRIES.forEach(function(c) {
+    var btn = document.createElement('button');
+    btn.className = 'tab-btn';
+    btn.innerHTML = c.flag + ' ' + c.name;
+    btn.onclick = function() { selectCountry(c.code, c.name, c.flag); };
+    tabs.appendChild(btn);
+  });
+})();
+
+async function loadAll() {
+  try {
+    var res = await fetch(SUPABASE_URL + '/rest/v1/coffee_prices?select=*&order=country_code.asc,grade.asc', {
+      headers: { apikey: adminKey, Authorization: 'Bearer ' + adminKey }
+    });
+    allData = res.ok ? await res.json() : [];
+    renderStats();
+    // Auto-select Ethiopia
+    selectCountry('ET', 'Ethiopia', '🇪🇹');
+  } catch(e) { showToast('Load error: ' + e.message, 'error'); }
+}
+
+function selectCountry(code, name, flag) {
+  currentCountry = { code: code, name: name };
+  document.querySelectorAll('.tab-btn').forEach(function(b) {
+    b.classList.toggle('active', b.textContent.trim().endsWith(name));
+  });
+  document.getElementById('coffeeTitle').textContent = flag + ' ' + name + ' — Coffee Grades';
+  var country = COFFEE_COUNTRIES.find(function(c) { return c.code === code; });
+  var dbRows = allData.filter(function(r) { return r.country_code === code; });
+  var dbMap = {};
+  dbRows.forEach(function(r) { dbMap[r.grade] = r; });
+  // Merge default grades with any DB rows, plus add any extra DB rows
+  var defaultGrades = (country && country.grades) || [];
+  var allGrades = defaultGrades.slice();
+  dbRows.forEach(function(r) { if (!allGrades.includes(r.grade)) allGrades.push(r.grade); });
+  tableData = allGrades.map(function(g) {
+    return dbMap[g] || { country_code: code, country_name: name, grade: g,
+      export_price_per_kg_usd: null, farm_gate_price: null, farm_gate_currency: '', notes: '', updated_at: null };
+  });
+  renderTable();
+}
+
+function renderStats() {
+  var countries = COFFEE_COUNTRIES.length;
+  var rows = allData.length;
+  var stale = allData.filter(function(r) { return isStale(r.updated_at); }).length;
+  document.getElementById('coffeeStats').innerHTML =
+    '<div class="stat-card"><div class="stat-value">' + countries + '</div><div class="stat-label">Countries</div></div>' +
+    '<div class="stat-card"><div class="stat-value">' + rows + '</div><div class="stat-label">Grade Rows</div></div>' +
+    '<div class="stat-card"><div class="stat-value' + (stale > 0 ? ' warn' : '') + '">' + stale + '</div><div class="stat-label">Stale (>30d)</div></div>';
+}
+
+function renderTable() {
+  var n = function(v) { return v !== null && v !== undefined ? v : ''; };
+  document.getElementById('coffeeTable').innerHTML = tableData.map(function(r, i) {
+    var stale = isStale(r.updated_at);
+    return '<tr class="' + (stale ? 'stale' : '') + '" data-idx="' + i + '">' +
+      '<td><strong>' + r.grade + '</strong></td>' +
+      '<td><input aria-label="Export price per kg usd" type="number" step="0.01" value="' + n(r.export_price_per_kg_usd) + '" data-field="export_price_per_kg_usd"></td>' +
+      '<td><input aria-label="Farm gate price" type="number" step="1"    value="' + n(r.farm_gate_price) + '" data-field="farm_gate_price"></td>' +
+      '<td><input aria-label="Farm gate currency" type="text"               value="' + n(r.farm_gate_currency) + '" data-field="farm_gate_currency" style="width:65px"></td>' +
+      '<td><input aria-label="E.g. Specialty premium, auction" type="text" class="wide" value="' + (r.notes||'').replace(/"/g,'&quot;') + '" data-field="notes" placeholder="e.g. Specialty premium, auction"></td>' +
+      '<td style="font-size:.72rem;color:#94a3b8;white-space:nowrap">' + timeAgo(r.updated_at) + '</td>' +
+      '<td>' + (stale ? '<span class="stale-badge">STALE</span>' : '<span class="fresh-badge">OK</span>') + '</td>' +
+      '<td><button type="button" class="btn btn-save" onclick="saveRow(' + i + ')">Save</button></td>' +
+    '</tr>';
+  }).join('');
+}
+
+async function saveRow(idx) {
+  var r = tableData[idx];
+  var row = document.querySelector('tr[data-idx="' + idx + '"]');
+  var payload = {
+    country_code: r.country_code, country_name: r.country_name, grade: r.grade,
+    export_price_per_kg_usd: parseFloat(row.querySelector('[data-field="export_price_per_kg_usd"]').value) || null,
+    farm_gate_price:         parseFloat(row.querySelector('[data-field="farm_gate_price"]').value) || null,
+    farm_gate_currency:      row.querySelector('[data-field="farm_gate_currency"]').value,
+    notes:                   row.querySelector('[data-field="notes"]').value,
+    updated_at: new Date().toISOString(), updated_by: 'admin'
+  };
+  try {
+    var res = await fetch(SUPABASE_URL + '/rest/v1/coffee_prices', {
+      method: 'POST',
+      headers: { apikey: adminKey, Authorization: 'Bearer ' + adminKey,
+        'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates,return=representation' },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) {
+      var saved = (await res.json())[0] || payload;
+      tableData[idx] = saved;
+      // Update allData
+      var ai = allData.findIndex(function(x) { return x.country_code === saved.country_code && x.grade === saved.grade; });
+      if (ai >= 0) allData[ai] = saved; else allData.push(saved);
+      showToast(r.country_name + ' ' + r.grade + ' saved'); renderTable(); renderStats();
+    } else showToast('Save failed: ' + await res.text(), 'error');
+  } catch(e) { showToast('Network error', 'error'); }
+}
+
+function addGrade() {
+  var grade = document.getElementById('new-grade').value.trim();
+  if (!grade || !currentCountry) { showToast('Enter a grade name and select a country', 'error'); return; }
+  if (tableData.find(function(r) { return r.grade === grade; })) { showToast('Grade already exists', 'error'); return; }
+  tableData.push({ country_code: currentCountry.code, country_name: currentCountry.name, grade: grade,
+    export_price_per_kg_usd: parseFloat(document.getElementById('new-export').value) || null,
+    farm_gate_price: parseFloat(document.getElementById('new-fg').value) || null,
+    farm_gate_currency: document.getElementById('new-fg-cur').value,
+    notes: '', updated_at: null });
+  document.getElementById('new-grade').value = '';
+  document.getElementById('new-export').value = '';
+  document.getElementById('new-fg').value = '';
+  renderTable();
+}
+
+loadAll();
+</script>
+</body>
+</html>

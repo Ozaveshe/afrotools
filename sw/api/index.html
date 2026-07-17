@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<title>API na data ya AfroTools kwa wasanidi programu | AfroTools</title>
+<meta name="description" content="API ya AfroTools kwa viwango vya sarafu, kodi, bei za mafuta, na data ya fedha ya Afrika. Ujumuishaji rahisi kwa programu yako ya fintech.">
+<meta property="og:title" content="API na data ya AfroTools kwa wasanidi programu">
+<meta property="og:description" content="Viwango vya kodi, forex, mafuta, na riba kwa nchi 54 za Afrika. API ya RESTful JSON; hakiki hali ya huduma na docs za Kiingereza kabla ya production.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://afrotools.com/sw/api/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:locale" content="sw_TZ">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="API na data ya AfroTools kwa wasanidi programu">
+<meta name="twitter:description" content="Viwango vya kodi, forex, mafuta, na riba kwa nchi 54 za Afrika.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},
+    {"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},
+    {"@type":"ListItem","position":3,"name":"API","item":"https://afrotools.com/sw/api/"}
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-29">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; font-family: 'DM Sans', -apple-system, sans-serif; color: #111827; background: #fff; }
+
+  .api-hero { background: linear-gradient(135deg, #0a0f1a 0%, #0d1b3e 50%, #1a3a6b 100%); padding: 100px 24px 80px; text-align: center; }
+  .api-hero .badge { display: inline-block; background: rgba(0,98,204,.15); color: var(--color-primary); font-size: 12px; font-weight: 800; padding: 6px 16px; border-radius: 100px; letter-spacing: .1em; margin-bottom: 20px; border: 1px solid rgba(0,98,204,.3); }
+  .api-hero h1 { font-size: clamp(32px,6vw,52px); font-weight: 800; color: #fff; margin: 0 0 16px; line-height: 1.1; letter-spacing: -.03em; }
+  .api-hero p { font-size: clamp(16px,2vw,19px); color: rgba(255,255,255,.65); max-width: 600px; margin: 0 auto 32px; line-height: 1.7; }
+  .hero-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary { display: inline-block; background: var(--color-primary); color: #fff; padding: 14px 32px; border-radius: 10px; font-weight: 700; font-size: 15px; text-decoration: none; transition: transform .15s; }
+  .btn-secondary { display: inline-block; background: rgba(255,255,255,.1); color: #fff; padding: 14px 32px; border-radius: 10px; font-weight: 700; font-size: 15px; text-decoration: none; border: 1px solid rgba(255,255,255,.2); transition: transform .15s; }
+  .btn-primary:hover, .btn-secondary:hover { transform: translateY(-2px); }
+
+  .features { max-width: 960px; margin: 0 auto; padding: 80px 24px; }
+  .features h2 { font-size: clamp(24px,4vw,36px); font-weight: 800; text-align: center; margin: 0 0 12px; }
+  .features .subtitle { text-align: center; font-size: 16px; color: #6B7280; margin: 0 0 48px; line-height: 1.6; }
+  .feature-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 24px; }
+  .feature-card { background: #F9FAFB; border-radius: 12px; padding: 28px 24px; border: 1px solid #E5E7EB; }
+  .feature-card .icon { font-size: 28px; margin-bottom: 12px; }
+  .feature-card h3 { font-size: 18px; font-weight: 700; margin: 0 0 8px; color: #111827; }
+  .feature-card p { font-size: 14px; color: #6B7280; line-height: 1.6; margin: 0; }
+  .feature-card code { background: #E5E7EB; padding: 2px 6px; border-radius: 4px; font-size: 12px; color: #374151; }
+
+  .code-section { background: #0a0f1a; padding: 80px 24px; }
+  .code-section h2 { font-size: clamp(24px,4vw,36px); font-weight: 800; text-align: center; margin: 0 0 12px; color: #fff; }
+  .code-section .subtitle { text-align: center; font-size: 16px; color: rgba(255,255,255,.5); margin: 0 0 48px; }
+  .code-tabs { display: flex; gap: 0; justify-content: center; margin-bottom: 24px; }
+  .code-tab { background: transparent; border: none; color: rgba(255,255,255,.5); padding: 10px 20px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; border-bottom: 2px solid transparent; transition: color .2s; }
+  .code-tab.active { color: #fff; border-bottom-color: var(--color-primary); }
+  .code-block { max-width: 700px; margin: 0 auto; background: #111827; border-radius: 12px; padding: 24px; overflow-x: auto; display: none; }
+  .code-block.active { display: block; }
+  .code-block pre { margin: 0; color: #E5E7EB; font-size: 13px; line-height: 1.7; font-family: 'Courier New', monospace; white-space: pre; }
+  .code-block .comment { color: #6B7280; }
+  .code-block .string { color: #34D399; }
+  .code-block .keyword { color: #60A5FA; }
+
+  .getting-started { max-width: 720px; margin: 0 auto; padding: 80px 24px; }
+  .getting-started h2 { font-size: clamp(24px,4vw,36px); font-weight: 800; text-align: center; margin: 0 0 48px; }
+  .step { display: flex; gap: 20px; margin-bottom: 32px; }
+  .step-num { flex-shrink: 0; width: 40px; height: 40px; background: var(--color-primary); color: #fff; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px; }
+  .step-content h3 { font-size: 16px; font-weight: 700; margin: 0 0 6px; color: #111827; }
+  .step-content p { font-size: 14px; color: #6B7280; line-height: 1.6; margin: 0; }
+
+  .api-cta { background: #F9FAFB; padding: 80px 24px; text-align: center; border-top: 1px solid #E5E7EB; }
+  .api-cta h2 { font-size: clamp(24px,4vw,36px); font-weight: 800; margin: 0 0 12px; color: #111827; }
+  .api-cta p { font-size: 16px; color: #6B7280; margin: 0 0 32px; line-height: 1.6; }
+  .api-cta a { display: inline-block; background: var(--color-primary); color: #fff; padding: 14px 36px; border-radius: 10px; font-weight: 700; font-size: 16px; text-decoration: none; transition: transform .15s; }
+  .api-cta a:hover { transform: translateY(-2px); }
+
+  @media(max-width:768px){ .feature-grid{grid-template-columns:1fr} .hero-buttons{flex-direction:column;align-items:center} }
+</style>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/sw/api/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/api/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/api/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/api/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/api/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+
+<!-- Shujaa -->
+<section class="api-hero">
+  <span class="badge">API</span>
+  <h1>API na data ya AfroTools kwa wasanidi programu</h1>
+  <p>Viwango vya kodi, forex, bei za mafuta, na riba kwa nchi 54 za Afrika. API ya RESTful JSON; hakiki hali ya huduma na docs za Kiingereza kabla ya production.</p>
+  <div class="hero-buttons">
+    <a href="/api/docs/" class="btn-primary">Tazama nyaraka za API (Kiingereza)</a>
+    <a href="/api/docs/#get-key" class="btn-secondary">Pata ufunguo wa API (docs za Kiingereza)</a>
+  </div>
+</section>
+
+
+<section class="sw-api-expectations" style="max-width:960px;margin:34px auto 0;padding:0 24px;">
+  <div style="border:1px solid #bfdbfe;background:#eff6ff;color:#1e3a8a;border-radius:14px;padding:20px;line-height:1.65;">
+    <strong>Unapobofya docs za Kiingereza:</strong> API ni njia ya programu kuomba data kupitia endpoint kama <code>/api/v1/tax/paye</code> na kupokea majibu ya JSON. Docs kuu bado ziko Kiingereza na ndizo zinaeleza token, authentication, rate limits, webhooks, SDK, pricing na masharti ya production. Kwa Kiswahili, tumia ukurasa huu kuelewa mwelekeo, kisha hakiki maelezo ya mwisho kwenye <a href="/api/docs/" style="font-weight:800;color:#1d4ed8;">API docs</a> au <a href="/api/pricing" style="font-weight:800;color:#1d4ed8;">pricing</a>.
+  </div>
+</section>
+
+<section class="sw-api-overview" style="max-width:960px;margin:24px auto 0;padding:0 24px;">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;">
+    <div style="border:1px solid #e5e7eb;background:#fff;border-radius:12px;padding:18px;line-height:1.6;">
+      <h2 style="font-size:1.05rem;margin:0 0 8px;color:#111827;">API ni nini?</h2>
+      <p style="margin:0;color:#4b5563;font-size:.92rem;">API ni njia ya programu yako kuomba data kutoka AfroTools. Unaomba endpoint, unatuma request yenye key au token, kisha unapokea response ya JSON inayoweza kusomwa na programu yako.</p>
+    </div>
+    <div style="border:1px solid #e5e7eb;background:#fff;border-radius:12px;padding:18px;line-height:1.6;">
+      <h2 style="font-size:1.05rem;margin:0 0 8px;color:#111827;">Kabla ya production</h2>
+      <p style="margin:0;color:#4b5563;font-size:.92rem;">Usitumie token ya production kwenye kivinjari ya umma. Hakiki rate limit, billing, privacy, errors na endpoint status kwenye docs za Kiingereza kabla ya kuunganisha wateja halisi.</p>
+    </div>
+    <div style="border:1px solid #e5e7eb;background:#fff;border-radius:12px;padding:18px;line-height:1.6;">
+      <h2 style="font-size:1.05rem;margin:0 0 8px;color:#111827;">Zana za local</h2>
+      <p style="margin:0;color:#4b5563;font-size:.92rem;">Kwa kazi za haraka, tumia <a href="/sw/zana-za-developer/" style="color:#1d4ed8;font-weight:800;">zana za msanidi programu</a> kama JSON, JWT, Base64, UUID, Regex na SQL. Nyingi hufanya kazi kwenye kivinjari bila kupakia data.</p>
+    </div>
+  </div>
+  <div style="border:1px solid #fed7aa;background:#fff7ed;color:#7c2d12;border-radius:12px;padding:18px 20px;line-height:1.65;margin-top:14px;">
+    <strong>Glossary fupi:</strong> endpoint ni URL ya huduma; request ni ombi kutoka programu yako; response ni jibu la API; JSON ni format ya data; token au API key ni siri ya kuruhusu access; rate limit ni kikomo cha maombi; webhook ni ujumbe unaorudi programu yako tukio likitokea; SDK ni maktaba ya lugha ya programu. Maelezo ya mwisho na pricing hubaki kwenye <a href="/api/docs/" style="font-weight:800;color:#9a3412;">API docs za Kiingereza</a> na <a href="/api/pricing" style="font-weight:800;color:#9a3412;">pricing ya Kiingereza</a>.
+  </div>
+</section>
+
+<!-- Vipengele Vikuu -->
+<section class="features">
+  <h2>API Nne, Jukwaa Moja</h2>
+  <p class="subtitle">Kila kitu unachohitaji kujenga programu za fintech za Afrika.</p>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="icon">&#128176;</div>
+      <h3>AfroTax — Kodi</h3>
+      <p>Mahesabu ya PAYE, VAT, na kodi ya shirika kwa nchi 54 za Afrika. Tumia kwa ujumuishaji na hakiki source/current docs kabla ya production.</p>
+      <code>/api/v1/tax/paye</code>
+    </div>
+    <div class="feature-card">
+      <div class="icon">&#128177;</div>
+      <h3>AfroFX — Sarafu</h3>
+      <p>Viwango vya kubadilishana kwa wakati halisi na historia kwa sarafu zote za Afrika. Fuata docs za Kiingereza kwa freshness, limits na authentication.</p>
+      <code>/api/v1/fx/rates</code>
+    </div>
+    <div class="feature-card">
+      <div class="icon">&#9981;</div>
+      <h3>AfroFuel — Mafuta</h3>
+      <p>Bei za mafuta na data ya historia kulingana na source ya API. Petroli, dizeli, na kerosini pamoja na data ya historia.</p>
+      <code>/api/v1/fuel/prices</code>
+    </div>
+    <div class="feature-card">
+      <div class="icon">&#127970;</div>
+      <h3>AfroRates — Riba</h3>
+      <p>Viwango vya riba vya benki kuu, data ya mfumuko wa bei, na viwango vya sera ya fedha barani Afrika.</p>
+      <code>/api/v1/rates/central-bank</code>
+    </div>
+  </div>
+</section>
+
+<!-- Mifano ya Msimbo -->
+<section class="code-section">
+  <h2>Rahisi Kujumuisha</h2>
+  <p class="subtitle">Anza kupiga simu za API ndani ya dakika moja.</p>
+  <div class="code-tabs">
+    <button type="button" class="code-tab active" data-lang="curl">cURL</button>
+    <button type="button" class="code-tab" data-lang="js">JavaScript</button>
+    <button type="button" class="code-tab" data-lang="python">Python</button>
+  </div>
+  <div class="code-block active" id="code-curl">
+<pre><span class="comment"># Pata muhtasari wa kodi ya PAYE ya Nigeria</span>
+curl -X GET <span class="string">"https://api.afrotools.com/v1/tax/paye?country=NG&salary=500000"</span> \
+  -H <span class="string">"Authorization: Bearer UFUNGUO_WAKO_WA_API"</span></pre>
+  </div>
+  <div class="code-block" id="code-js">
+<pre><span class="comment">// Pata muhtasari wa kodi ya PAYE ya Nigeria</span>
+<span class="keyword">const</span> response = <span class="keyword">await</span> fetch(
+  <span class="string">'https://api.afrotools.com/v1/tax/paye?country=NG&salary=500000'</span>,
+  {
+    headers: {
+      <span class="string">'Authorization'</span>: <span class="string">'Bearer UFUNGUO_WAKO_WA_API'</span>
+    }
+  }
+);
+<span class="keyword">const</span> data = <span class="keyword">await</span> response.json();
+console.log(data.tax_breakdown);</pre>
+  </div>
+  <div class="code-block" id="code-python">
+<pre><span class="comment"># Pata muhtasari wa kodi ya PAYE ya Nigeria</span>
+<span class="keyword">import</span> requests
+
+response = requests.get(
+    <span class="string">"https://api.afrotools.com/v1/tax/paye"</span>,
+    params={<span class="string">"country"</span>: <span class="string">"NG"</span>, <span class="string">"salary"</span>: <span class="string">"500000"</span>},
+    headers={<span class="string">"Authorization"</span>: <span class="string">"Bearer UFUNGUO_WAKO_WA_API"</span>}
+)
+data = response.json()
+print(data[<span class="string">"tax_breakdown"</span>])</pre>
+  </div>
+</section>
+
+<!-- Jinsi ya Kuanza -->
+<section class="getting-started">
+  <h2>Anza katika Hatua 3</h2>
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <h3>Unda akaunti</h3>
+      <p>Jisajili kwenye AfroTools na nenda sehemu ya API kwenye dashibodi yako.</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <h3>Pata ufunguo wako wa API</h3>
+      <p>Tengeneza ufunguo wa API kutoka dashibodi yako. Kiwango cha bure kinajumuisha simu 100 kwa siku.</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <h3>Anza kujenga</h3>
+      <p>Tumia mwisho wetu wa RESTful JSON kujumuisha data ya fedha ya Afrika kwenye programu yako.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Wito wa Kutenda -->
+<section class="api-cta">
+  <h2>Uko Tayari Kujenga?</h2>
+  <p>Anza na simu 100 bure za API kwa siku. Hakuna kadi ya mkopo inayohitajika.</p>
+  <a href="/api/pricing">Tazama bei na ufunguo wa API (Kiingereza)</a>
+</section>
+
+
+<section class="sw-api-bridge-note" style="max-width:960px;margin:28px auto;padding:0 24px;"><div style="border:1px solid #dbeafe;background:#eff6ff;color:#1e3a8a;border-radius:12px;padding:18px 20px;line-height:1.65;"><strong>Bridge ya API:</strong> Maelezo haya yanaelekeza wasanidi wa Kiswahili kwenye docs kuu za API ambazo bado ziko Kiingereza. Usitumie ufunguo wa production kwenye mifano bila kusoma docs, limits, auth, privacy na billing ya provider.</div></section>
+<afro-footer></afro-footer>
+
+<script>
+(function(){
+  document.querySelectorAll('.code-tab').forEach(function(tab){
+    tab.addEventListener('click', function(){
+      document.querySelectorAll('.code-tab').forEach(function(t){ t.classList.remove('active'); });
+      document.querySelectorAll('.code-block').forEach(function(b){ b.classList.remove('active'); });
+      tab.classList.add('active');
+      var block = document.getElementById('code-' + tab.getAttribute('data-lang'));
+      if(block) block.classList.add('active');
+    });
+  });
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+  <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
+</body>
+</html>

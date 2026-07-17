@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="view-transition" content="same-origin">
+  <title>CreatorPage Builder | AfroTools</title>
+  <meta name="description" content="Build a simple creator landing page with bio, links, offers, and contact details.">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <link rel="stylesheet" href="style.css?v=c4d698d2">
+  <script src="/assets/js/supabase-auth.js?v=0c644f2e" defer></script>
+  <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
+<meta name="robots" content="noindex, follow">
+<meta property="og:url" content="https://afrotools.com/tools/creator-page/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c4853917">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/lib/dark-mode.js?v=5cb64ba3" defer></script>
+<link rel="canonical" href="https://afrotools.com/tools/creator-page/app">
+</head>
+<body class="top-level-page-ui-refresh">
+  <h1 style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0">
+    CreatorPage — Link Page Builder
+  </h1>
+
+  <div class="cpg-app">
+    <!-- TOP BAR -->
+    <div class="cpg-topbar">
+      <div class="cpg-topbar-inner">
+        <a href="index.html" class="cpg-topbar-back">← CreatorPage</a>
+        <div class="cpg-topbar-title">Page Builder</div>
+        <div class="cpg-mode-toggle">
+          <button type="button" class="cpg-mode-btn active" data-mode="edit" onclick="setMode('edit')">Edit</button>
+          <button type="button" class="cpg-mode-btn" data-mode="preview" onclick="setMode('preview')">Preview</button>
+        </div>
+        <div class="cpg-topbar-actions">
+          <button type="button" class="cpg-btn" onclick="openPanel('analytics')">Analytics</button>
+          <button type="button" class="cpg-btn" onclick="openPanel('settings')">Settings</button>
+          <button type="button" class="cpg-btn cpg-btn-pri" onclick="sharePage()">Share</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BUILDER LAYOUT -->
+    <div class="cpg-builder-wrap">
+      <!-- CANVAS (center) -->
+      <div class="cpg-builder-canvas">
+        <div class="cpg-preview-frame editing" id="previewFrame">
+          <div id="pageContent"></div>
+          <div class="cpg-page-footer">Made with <a href="https://afrotools.com">AfroTools</a></div>
+        </div>
+      </div>
+
+      <!-- SIDEBAR (right) -->
+      <div class="cpg-builder-sidebar" id="sidebarPanel">
+        <div id="sidebarContent"></div>
+      </div>
+    </div>
+
+    <!-- FLOATING ADD BUTTON -->
+    <button type="button" class="cpg-fab" onclick="openAddBlockSheet()" title="Add Block">+</button>
+  </div>
+
+  <!-- OVERLAY + BOTTOM SHEET -->
+  <div class="cpg-overlay" id="sheetOverlay" onclick="closeSheet()"></div>
+  <div class="cpg-sheet" id="sheetPanel">
+    <div class="cpg-sheet-handle"></div>
+    <div class="cpg-sheet-header">
+      <div class="cpg-sheet-title" id="sheetTitle">Add Block</div>
+      <button type="button" class="cpg-sheet-close" onclick="closeSheet()">×</button>
+    </div>
+    <div class="cpg-sheet-body" id="sheetBody"></div>
+  </div>
+
+  <script src="/engines/creator-page-engine.js?v=73ca4c65"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    var E = window.CreatorPageEngine;
+    var page = E.getLocalPage();
+    var editMode = true;
+
+    // ─── INIT ───
+    function init() {
+      renderPage();
+    }
+
+    // ─── MODE ───
+    window.setMode = function (mode) {
+      editMode = mode === 'edit';
+      document.querySelectorAll('.cpg-mode-btn').forEach(function (b) { b.classList.toggle('active', b.dataset.mode === mode); });
+      document.getElementById('previewFrame').classList.toggle('editing', editMode);
+      document.querySelector('.cpg-fab').style.display = editMode ? '' : 'none';
+      renderPage();
+    };
+
+    // ─── RENDER PAGE ───
+    function renderPage() {
+      var frame = document.getElementById('previewFrame');
+      // Apply theme
+      frame.className = 'cpg-preview-frame cpg-theme-' + page.theme + (editMode ? ' editing' : '');
+      // Apply button style
+      frame.classList.add('cpg-btn-style-' + (page.button_style || 'pill'));
+      frame.classList.add('cpg-btn-fill-' + (page.button_fill || 'solid'));
+
+      var html = '';
+
+      // Profile header (always present)
+      html += renderProfileBlock();
+
+      // Blocks
+      page.blocks.sort(function (a, b) { return a.sort_order - b.sort_order; });
+      page.blocks.forEach(function (block) {
+        if (!block.is_visible && !editMode) return;
+        html += renderBlock(block);
+      });
+
+      document.getElementById('pageContent').innerHTML = html;
+      bindBlockActions();
+    }
+
+    // ─── PROFILE BLOCK ───
+    function renderProfileBlock() {
+      var h = '<div class="cpg-block cpg-profile" data-block="profile">';
+      if (editMode) {
+        h += '<div class="cpg-block-actions"><button type="button" class="cpg-block-action-btn" onclick="editProfile()">✎</button></div>';
+      }
+      if (page.avatar_url) {
+        h += '<img class="cpg-avatar" src="' + esc(page.avatar_url) + '" alt="">';
+      } else {
+        h += '<div class="cpg-avatar-placeholder" onclick="editProfile()">📷</div>';
+      }
+      h += '<div class="cpg-display-name">' + esc(page.display_name || 'Your Name') + '</div>';
+      h += '<div class="cpg-bio">' + esc(page.bio || '') + '</div>';
+      if (page.location) h += '<div class="cpg-location">📍 ' + esc(page.location) + '</div>';
+
+      // Social icons
+      var socials = page.social_links || {};
+      if (Object.keys(socials).length > 0) {
+        h += '<div class="cpg-social-row">';
+        if (socials.instagram) h += '<a href="' + esc(socials.instagram) + '" class="cpg-social-icon ig" target="_blank">IG</a>';
+        if (socials.tiktok) h += '<a href="' + esc(socials.tiktok) + '" class="cpg-social-icon tt" target="_blank">TT</a>';
+        if (socials.youtube) h += '<a href="' + esc(socials.youtube) + '" class="cpg-social-icon yt" target="_blank">YT</a>';
+        if (socials.twitter) h += '<a href="' + esc(socials.twitter) + '" class="cpg-social-icon x" target="_blank">X</a>';
+        if (socials.linkedin) h += '<a href="' + esc(socials.linkedin) + '" class="cpg-social-icon li" target="_blank">LI</a>';
+        if (socials.email) h += '<a href="mailto:' + esc(socials.email) + '" class="cpg-social-icon email">@</a>';
+        h += '</div>';
+      }
+      h += '</div>';
+      return h;
+    }
+
+    // ─── RENDER BLOCK ───
+    function renderBlock(block) {
+      var c = block.content || {};
+      var h = '<div class="cpg-block" data-block="' + block.id + '">';
+
+      if (editMode) {
+        h += '<div class="cpg-block-actions">' +
+          '<button type="button" class="cpg-block-action-btn" onclick="moveBlockUp(\'' + block.id + '\')">↑</button>' +
+          '<button type="button" class="cpg-block-action-btn" onclick="moveBlockDown(\'' + block.id + '\')">↓</button>' +
+          '<button type="button" class="cpg-block-action-btn" onclick="editBlock(\'' + block.id + '\')">✎</button>' +
+          '<button type="button" class="cpg-block-action-btn delete" onclick="removeBlock(\'' + block.id + '\')">×</button>' +
+          '</div>';
+      }
+
+      switch (block.block_type) {
+        case 'link':
+          var linkClass = 'cpg-link';
+          if (c.featured) linkClass += ' featured';
+          if (c.type === 'whatsapp') linkClass += ' whatsapp';
+          h += '<a href="' + esc(c.url || '#') + '" class="' + linkClass + '" target="_blank" onclick="trackClick(\'' + block.id + '\',\'' + esc(c.title) + '\')">';
+          if (c.icon) h += '<span class="cpg-link-icon">' + c.icon + '</span>';
+          h += esc(c.title || 'Link');
+          h += '</a>';
+          break;
+
+        case 'product':
+          h += '<div class="cpg-products-grid">';
+          var products = page.products && page.products.length ? page.products : [c];
+          products.forEach(function (p) {
+            h += '<div class="cpg-product-card">';
+            if (p.image_url) {
+              h += '<img class="cpg-product-img" src="' + esc(p.image_url) + '" alt="">';
+            } else {
+              h += '<div class="cpg-product-img-placeholder">🛍️</div>';
+            }
+            h += '<div class="cpg-product-body">';
+            h += '<div class="cpg-product-name">' + esc(p.name || 'Product') + '</div>';
+            h += '<div class="cpg-product-price">' + E.formatPrice(p.price || 0, p.currency) + '</div>';
+            h += '<button type="button" class="cpg-product-buy" onclick="buyProduct(\'' + (p.id || '') + '\')">Buy Now</button>';
+            h += '</div></div>';
+          });
+          h += '</div>';
+          break;
+
+        case 'tip_jar':
+          h += '<div class="cpg-tip-jar">';
+          h += '<div class="cpg-tip-title">' + esc(c.title || 'Support My Work') + '</div>';
+          h += '<div class="cpg-tip-amounts">';
+          (c.amounts || [1000, 2000, 5000]).forEach(function (amt) {
+            h += '<button type="button" class="cpg-tip-amount" onclick="this.classList.toggle(\'selected\')">' + E.formatPrice(amt, c.currency) + '</button>';
+          });
+          h += '<button type="button" class="cpg-tip-amount" onclick="this.classList.toggle(\'selected\')">Custom</button>';
+          h += '</div>';
+          h += '<button type="button" class="cpg-tip-send">Send Tip 💝</button>';
+          h += '</div>';
+          break;
+
+        case 'email_signup':
+          h += '<div class="cpg-email-block">';
+          h += '<div class="cpg-email-title">' + esc(c.title || 'Join My Newsletter') + '</div>';
+          if (c.subtitle) h += '<div class="cpg-email-sub">' + esc(c.subtitle) + '</div>';
+          h += '<div class="cpg-email-form">';
+          h += '<input aria-label="Your@email.com" class="cpg-email-input" type="email" placeholder="your@email.com">';
+          h += '<button type="button" class="cpg-email-submit">Subscribe</button>';
+          h += '</div></div>';
+          break;
+
+        case 'testimonial':
+          h += '<div class="cpg-testimonial">';
+          h += '<div class="cpg-testimonial-text">' + esc(c.quote || '') + '</div>';
+          h += '<div class="cpg-testimonial-author">— ' + esc(c.author || '') + '</div>';
+          h += '</div>';
+          break;
+
+        case 'text':
+          h += '<div class="cpg-text-block">';
+          if (c.heading) h += '<div class="cpg-text-heading">' + esc(c.heading) + '</div>';
+          if (c.body) h += '<div class="cpg-text-body">' + esc(c.body) + '</div>';
+          if (c.cta_text && c.cta_url) h += '<a href="' + esc(c.cta_url) + '" class="cpg-text-cta">' + esc(c.cta_text) + '</a>';
+          h += '</div>';
+          break;
+
+        case 'content':
+          h += '<div class="cpg-content-grid">';
+          (c.images || []).forEach(function (img) {
+            h += '<div class="cpg-content-thumb"><img src="' + esc(img) + '" alt=""></div>';
+          });
+          if (!(c.images && c.images.length)) {
+            for (var i = 0; i < 6; i++) h += '<div class="cpg-content-thumb" style="background:#e5e7eb"></div>';
+          }
+          h += '</div>';
+          break;
+
+        case 'booking':
+          h += '<div class="cpg-text-block">';
+          h += '<div class="cpg-text-heading">📅 ' + esc(c.service || 'Book a Session') + '</div>';
+          if (c.description) h += '<div class="cpg-text-body">' + esc(c.description) + '</div>';
+          h += '<div style="margin-top:6px;font-size:.78rem;font-weight:800;color:var(--cpg-primary)">' + E.formatPrice(c.price || 0, c.currency) + ' · ' + esc(c.duration || '1 hour') + '</div>';
+          h += '<a href="#" class="cpg-text-cta" onclick="openBookingSheet()">Book Now</a>';
+          h += '</div>';
+          break;
+
+        case 'spacer':
+          if (c.type === 'divider') h += '<div class="cpg-divider"></div>';
+          else h += '<div class="cpg-spacer" style="height:' + (c.height || 20) + 'px"></div>';
+          break;
+      }
+
+      h += '</div>';
+      return h;
+    }
+
+    // ─── BLOCK ACTIONS ───
+    function bindBlockActions() {
+      if (!editMode) return;
+      document.querySelectorAll('.cpg-block[data-block]').forEach(function (el) {
+        el.addEventListener('click', function (e) {
+          if (e.target.closest('.cpg-block-action-btn') || e.target.closest('a') || e.target.closest('button')) return;
+          var id = el.dataset.block;
+          if (id === 'profile') editProfile();
+          else editBlock(id);
+        });
+      });
+    }
+
+    window.moveBlockUp = function (id) { E.moveBlock(page, id, 'up'); renderPage(); };
+    window.moveBlockDown = function (id) { E.moveBlock(page, id, 'down'); renderPage(); };
+    window.removeBlock = function (id) {
+      if (!confirm('Remove this block?')) return;
+      E.deleteBlock(page, id);
+      renderPage();
+    };
+
+    // ─── EDIT PROFILE ───
+    window.editProfile = function () {
+      openSheet('Edit Profile', '<div class="cpg-field"><div class="cpg-field-label">Display Name</div><input aria-label="EdName" class="cpg-field-input" id="edName" value="' + esc(page.display_name) + '"></div>' +
+        '<div class="cpg-field"><div class="cpg-field-label">Bio</div><textarea class="cpg-field-textarea" id="edBio" aria-label="Ed Bio">' + esc(page.bio) + '</textarea></div>' +
+        '<div class="cpg-field"><div class="cpg-field-label">Location</div><input aria-label="Lagos, Nigeria" class="cpg-field-input" id="edLoc" value="' + esc(page.location || '') + '" placeholder="Lagos, Nigeria"></div>' +
+        '<div class="cpg-field"><div class="cpg-field-label">Avatar URL</div><input aria-label="Https://" class="cpg-field-input" id="edAvatar" value="' + esc(page.avatar_url || '') + '" placeholder="https://..."></div>' +
+        '<div style="font-size:.72rem;font-weight:800;color:var(--cpg-muted);margin:14px 0 8px;text-transform:uppercase;letter-spacing:.1em">Social Links</div>' +
+        '<div class="cpg-field-row"><div class="cpg-field"><div class="cpg-field-label">Instagram</div><input aria-label="EdIG" class="cpg-field-input" id="edIG" value="' + esc((page.social_links||{}).instagram || '') + '"></div>' +
+        '<div class="cpg-field"><div class="cpg-field-label">TikTok</div><input aria-label="EdTT" class="cpg-field-input" id="edTT" value="' + esc((page.social_links||{}).tiktok || '') + '"></div></div>' +
+        '<div class="cpg-field-row"><div class="cpg-field"><div class="cpg-field-label">YouTube</div><input aria-label="EdYT" class="cpg-field-input" id="edYT" value="' + esc((page.social_links||{}).youtube || '') + '"></div>' +
+        '<div class="cpg-field"><div class="cpg-field-label">X / Twitter</div><input aria-label="EdX" class="cpg-field-input" id="edX" value="' + esc((page.social_links||{}).twitter || '') + '"></div></div>' +
+        '<div class="cpg-field-row"><div class="cpg-field"><div class="cpg-field-label">LinkedIn</div><input aria-label="EdLI" class="cpg-field-input" id="edLI" value="' + esc((page.social_links||{}).linkedin || '') + '"></div>' +
+        '<div class="cpg-field"><div class="cpg-field-label">Email</div><input aria-label="EdEmail" class="cpg-field-input" id="edEmail" value="' + esc((page.social_links||{}).email || '') + '"></div></div>' +
+        '<button type="button" class="cpg-btn cpg-btn-pri" style="width:100%;margin-top:12px;padding:12px" onclick="saveProfile()">Save Profile</button>');
+    };
+
+    window.saveProfile = function () {
+      page.display_name = document.getElementById('edName').value.trim();
+      page.bio = document.getElementById('edBio').value.trim();
+      page.location = document.getElementById('edLoc').value.trim();
+      page.avatar_url = document.getElementById('edAvatar').value.trim();
+      page.social_links = {
+        instagram: document.getElementById('edIG').value.trim(),
+        tiktok: document.getElementById('edTT').value.trim(),
+        youtube: document.getElementById('edYT').value.trim(),
+        twitter: document.getElementById('edX').value.trim(),
+        linkedin: document.getElementById('edLI').value.trim(),
+        email: document.getElementById('edEmail').value.trim()
+      };
+      E.saveLocalPage(page);
+      closeSheet();
+      renderPage();
+    };
+
+    // ─── EDIT BLOCK ───
+    window.editBlock = function (id) {
+      var block = page.blocks.find(function (b) { return b.id === id; });
+      if (!block) return;
+      var c = block.content || {};
+      var type = block.block_type;
+      var html = '';
+
+      if (type === 'link') {
+        html = '<div class="cpg-field"><div class="cpg-field-label">Title</div><input aria-label="BlkTitle" class="cpg-field-input" id="blkTitle" value="' + esc(c.title || '') + '"></div>' +
+          '<div class="cpg-field"><div class="cpg-field-label">URL</div><input aria-label="BlkUrl" class="cpg-field-input" id="blkUrl" value="' + esc(c.url || '') + '"></div>' +
+          '<div class="cpg-field"><div class="cpg-field-label">Icon (emoji)</div><input aria-label="BlkIcon" class="cpg-field-input" id="blkIcon" value="' + esc(c.icon || '') + '"></div>' +
+          '<div class="cpg-field"><label style="display:flex;align-items:center;gap:8px;font-size:.82rem;font-weight:600"><input aria-label="BlkFeatured" type="checkbox" id="blkFeatured"' + (c.featured ? ' checked' : '') + '> Featured (highlighted)</label></div>';
+      } else if (type === 'testimonial') {
+        html = '<div class="cpg-field"><div class="cpg-field-label">Quote</div><textarea class="cpg-field-textarea" id="blkQuote" aria-label="Blk Quote">' + esc(c.quote || '') + '</textarea></div>' +
+          '<div class="cpg-field"><div class="cpg-field-label">Author</div><input aria-label="BlkAuthor" class="cpg-field-input" id="blkAuthor" value="' + esc(c.author || '') + '"></div>';
+      } else if (type === 'text') {
+        html = '<div class="cpg-field"><div class="cpg-field-label">Heading</div><input aria-label="BlkHeading" class="cpg-field-input" id="blkHeading" value="' + esc(c.heading || '') + '"></div>' +
+          '<div class="cpg-field"><div class="cpg-field-label">Body</div><textarea class="cpg-field-textarea" id="blkBody" aria-label="Blk Body">' + esc(c.body || '') + '</textarea></div>' +
+          '<div class="cpg-field-row"><div class="cpg-field"><div class="cpg-field-label">CTA Text</div><input aria-label="BlkCtaText" class="cpg-field-input" id="blkCtaText" value="' + esc(c.cta_text || '') + '"></div>' +
+          '<div class="cpg-field"><div class="cpg-field-label">CTA URL</div><input aria-label="BlkCtaUrl" class="cpg-field-input" id="blkCtaUrl" value="' + esc(c.cta_url || '') + '"></div></div>';
+      } else if (type === 'email_signup') {
+        html = '<div class="cpg-field"><div class="cpg-field-label">Title</div><input aria-label="BlkTitle" class="cpg-field-input" id="blkTitle" value="' + esc(c.title || '') + '"></div>' +
+          '<div class="cpg-field"><div class="cpg-field-label">Subtitle</div><input aria-label="BlkSub" class="cpg-field-input" id="blkSub" value="' + esc(c.subtitle || '') + '"></div>';
+      } else if (type === 'tip_jar') {
+        html = '<div class="cpg-field"><div class="cpg-field-label">Title</div><input aria-label="BlkTitle" class="cpg-field-input" id="blkTitle" value="' + esc(c.title || '') + '"></div>' +
+          '<div class="cpg-field"><div class="cpg-field-label">Currency</div><select class="cpg-field-select" id="blkCurrency" aria-label="Blk Currency">';
+        for (var cur in E.CURRENCIES) html += '<option value="' + cur + '"' + (c.currency === cur ? ' selected' : '') + '>' + cur + ' (' + E.CURRENCIES[cur].symbol + ')</option>';
+        html += '</select></div>';
+      } else if (type === 'booking') {
+        html = '<div class="cpg-field"><div class="cpg-field-label">Service Name</div><input aria-label="BlkService" class="cpg-field-input" id="blkService" value="' + esc(c.service || '') + '"></div>' +
+          '<div class="cpg-field"><div class="cpg-field-label">Description</div><textarea class="cpg-field-textarea" id="blkDesc" aria-label="Blk Desc">' + esc(c.description || '') + '</textarea></div>' +
+          '<div class="cpg-field-row"><div class="cpg-field"><div class="cpg-field-label">Price</div><input aria-label="BlkPrice" class="cpg-field-input" type="number" id="blkPrice" value="' + (c.price || 0) + '"></div>' +
+          '<div class="cpg-field"><div class="cpg-field-label">Duration</div><input aria-label="BlkDuration" class="cpg-field-input" id="blkDuration" value="' + esc(c.duration || '1 hour') + '"></div></div>';
+      }
+
+      html += '<button type="button" class="cpg-btn cpg-btn-pri" style="width:100%;margin-top:12px;padding:12px" onclick="saveBlock(\'' + id + '\',\'' + type + '\')">Save</button>';
+
+      var typeInfo = E.BLOCK_TYPES[type] || {};
+      openSheet('Edit ' + (typeInfo.label || 'Block'), html);
+    };
+
+    window.saveBlock = function (id, type) {
+      var block = page.blocks.find(function (b) { return b.id === id; });
+      if (!block) return;
+
+      if (type === 'link') {
+        var url = document.getElementById('blkUrl').value.trim();
+        block.content = {
+          title: document.getElementById('blkTitle').value.trim(),
+          url: url,
+          icon: document.getElementById('blkIcon').value.trim(),
+          featured: document.getElementById('blkFeatured').checked,
+          type: E.detectLinkType(url)
+        };
+      } else if (type === 'testimonial') {
+        block.content = { quote: document.getElementById('blkQuote').value.trim(), author: document.getElementById('blkAuthor').value.trim() };
+      } else if (type === 'text') {
+        block.content = { heading: document.getElementById('blkHeading').value.trim(), body: document.getElementById('blkBody').value.trim(), cta_text: document.getElementById('blkCtaText').value.trim(), cta_url: document.getElementById('blkCtaUrl').value.trim() };
+      } else if (type === 'email_signup') {
+        block.content = { title: document.getElementById('blkTitle').value.trim(), subtitle: document.getElementById('blkSub').value.trim() };
+      } else if (type === 'tip_jar') {
+        block.content.title = document.getElementById('blkTitle').value.trim();
+        block.content.currency = document.getElementById('blkCurrency').value;
+      } else if (type === 'booking') {
+        block.content = { service: document.getElementById('blkService').value.trim(), description: document.getElementById('blkDesc').value.trim(), price: parseInt(document.getElementById('blkPrice').value) || 0, duration: document.getElementById('blkDuration').value.trim(), currency: block.content.currency || 'NGN' };
+      }
+
+      E.saveLocalPage(page);
+      closeSheet();
+      renderPage();
+    };
+
+    // ─── ADD BLOCK ───
+    window.openAddBlockSheet = function () {
+      var html = '<div class="cpg-add-block-grid">';
+      for (var key in E.BLOCK_TYPES) {
+        var bt = E.BLOCK_TYPES[key];
+        html += '<button type="button" class="cpg-add-block-btn" onclick="addNewBlock(\'' + key + '\')">' +
+          '<div class="cpg-add-block-icon">' + bt.icon + '</div>' +
+          '<div class="cpg-add-block-label">' + bt.label + '</div>' +
+          '</button>';
+      }
+      html += '</div>';
+      openSheet('Add Block', html);
+    };
+
+    window.addNewBlock = function (type) {
+      E.addBlock(page, type);
+      closeSheet();
+      renderPage();
+    };
+
+    // ─── SETTINGS PANEL ───
+    window.openPanel = function (panel) {
+      var sidebar = document.getElementById('sidebarPanel');
+      var content = document.getElementById('sidebarContent');
+
+      if (panel === 'settings') {
+        var html = '<div class="cpg-sidebar-title">Theme & Style</div>';
+        html += '<div class="cpg-sidebar-section"><div class="cpg-sidebar-label">Theme</div><div class="cpg-theme-grid">';
+        for (var key in E.THEMES) {
+          var t = E.THEMES[key];
+          html += '<div class="cpg-theme-card' + (page.theme === key ? ' active' : '') + '" onclick="setTheme(\'' + key + '\')">';
+          html += '<div class="cpg-theme-preview" style="background:' + t.preview + '"></div>';
+          html += t.label + '</div>';
+        }
+        html += '</div></div>';
+
+        html += '<div class="cpg-sidebar-section"><div class="cpg-sidebar-label">Accent Color</div>';
+        html += '<div class="cpg-color-row"><div class="cpg-color-swatch" id="accentSwatch" style="background:' + page.accent_color + '"></div>';
+        html += '<input aria-label="AccentInput" class="cpg-color-input" id="accentInput" value="' + page.accent_color + '" onchange="setAccent(this.value)"></div></div>';
+
+        html += '<div class="cpg-sidebar-section"><div class="cpg-sidebar-label">Button Style</div>';
+        html += '<select class="cpg-sidebar-select" onchange="setBtnStyle(this.value)" aria-label="Select option">';
+        E.BUTTON_STYLES.forEach(function (s) { html += '<option value="' + s + '"' + (page.button_style === s ? ' selected' : '') + '>' + s.charAt(0).toUpperCase() + s.slice(1) + '</option>'; });
+        html += '</select></div>';
+
+        html += '<div class="cpg-sidebar-section"><div class="cpg-sidebar-label">Button Fill</div>';
+        html += '<select class="cpg-sidebar-select" onchange="setBtnFill(this.value)" aria-label="Select option">';
+        E.BUTTON_FILLS.forEach(function (f) { html += '<option value="' + f + '"' + (page.button_fill === f ? ' selected' : '') + '>' + f.charAt(0).toUpperCase() + f.slice(1) + '</option>'; });
+        html += '</select></div>';
+
+        html += '<div class="cpg-sidebar-section"><div class="cpg-sidebar-label">Font Pairing</div>';
+        html += '<select class="cpg-sidebar-select" onchange="setFont(this.value)" aria-label="Select option">';
+        for (var fp in E.FONT_PAIRINGS) { html += '<option value="' + fp + '"' + (page.font_pairing === fp ? ' selected' : '') + '>' + fp.charAt(0).toUpperCase() + fp.slice(1) + '</option>'; }
+        html += '</select></div>';
+
+        content.innerHTML = html;
+        sidebar.classList.add('open');
+
+        // On mobile, use bottom sheet instead
+        if (window.innerWidth < 769) {
+          sidebar.classList.remove('open');
+          openSheet('Theme & Style', html);
+        }
+      } else if (panel === 'analytics') {
+        var stats = E.getAnalyticsSummary(page.id);
+        var html = '<div class="cpg-analytics">';
+        html += '<div class="cpg-sidebar-title">Analytics</div>';
+        html += '<div class="cpg-analytics-stats">';
+        html += '<div class="cpg-analytics-card"><div class="cpg-analytics-val">' + stats.views + '</div><div class="cpg-analytics-lbl">Views</div></div>';
+        html += '<div class="cpg-analytics-card"><div class="cpg-analytics-val">' + stats.clicks + '</div><div class="cpg-analytics-lbl">Clicks</div></div>';
+        html += '<div class="cpg-analytics-card"><div class="cpg-analytics-val">' + stats.ctr + '%</div><div class="cpg-analytics-lbl">CTR</div></div>';
+        html += '<div class="cpg-analytics-card"><div class="cpg-analytics-val">' + stats.signups + '</div><div class="cpg-analytics-lbl">Signups</div></div>';
+        html += '</div>';
+
+        if (Object.keys(stats.clicksByBlock).length > 0) {
+          html += '<div class="cpg-analytics-section"><div class="cpg-analytics-section-title">Click Breakdown</div>';
+          var maxClicks = Math.max.apply(null, Object.values(stats.clicksByBlock));
+          for (var title in stats.clicksByBlock) {
+            var pct = maxClicks > 0 ? Math.round((stats.clicksByBlock[title] / maxClicks) * 100) : 0;
+            html += '<div class="cpg-click-row"><div class="cpg-click-label">' + esc(title) + '</div>';
+            html += '<div class="cpg-click-bar"><div class="cpg-click-bar-fill" style="width:' + pct + '%"></div></div>';
+            html += '<div class="cpg-click-count">' + stats.clicksByBlock[title] + '</div></div>';
+          }
+          html += '</div>';
+        }
+
+        html += '<div style="text-align:center;font-size:.72rem;color:var(--cpg-muted);padding:16px 0">Analytics data is stored locally. Sign in to sync across devices.</div>';
+        html += '</div>';
+
+        if (window.innerWidth < 769) {
+          openSheet('Analytics', html);
+        } else {
+          content.innerHTML = html;
+          sidebar.classList.add('open');
+        }
+      }
+    };
+
+    window.setTheme = function (theme) {
+      page.theme = theme;
+      E.saveLocalPage(page);
+      renderPage();
+      // Update active state
+      document.querySelectorAll('.cpg-theme-card').forEach(function (c) { c.classList.toggle('active', c.textContent.trim().toLowerCase() === theme); });
+    };
+
+    window.setAccent = function (color) {
+      page.accent_color = color;
+      document.documentElement.style.setProperty('--cpg-primary', color);
+      document.getElementById('accentSwatch').style.background = color;
+      E.saveLocalPage(page);
+    };
+
+    window.setBtnStyle = function (style) { page.button_style = style; E.saveLocalPage(page); renderPage(); };
+    window.setBtnFill = function (fill) { page.button_fill = fill; E.saveLocalPage(page); renderPage(); };
+    window.setFont = function (font) { page.font_pairing = font; E.saveLocalPage(page); renderPage(); };
+
+    // ─── SHARE ───
+    window.sharePage = function () {
+      var url = 'https://afrotools.com/p/' + (page.username || page.id);
+      if (navigator.share) {
+        navigator.share({ title: page.display_name, url: url });
+      } else {
+        navigator.clipboard.writeText(url).then(function () { alert('Link copied: ' + url); });
+      }
+    };
+
+    // ─── TRACKING ───
+    window.trackClick = function (blockId, title) {
+      E.trackEvent(page.id, 'link_click', { block_id: blockId, title: title });
+    };
+
+    window.buyProduct = function (productId) {
+      E.trackEvent(page.id, 'product_view', { product_id: productId });
+      openSheet('Payment', '<div style="text-align:center;padding:20px"><div style="font-size:1.2rem;margin-bottom:12px">💳</div><div style="font-size:.85rem;font-weight:700;margin-bottom:4px">Payment methods coming soon</div><div style="font-size:.75rem;color:var(--cpg-muted)">Bank transfer, M-Pesa, Paystack, and more.</div></div>');
+    };
+
+    // ─── SHEET HELPERS ───
+    function openSheet(title, bodyHtml) {
+      document.getElementById('sheetTitle').textContent = title;
+      document.getElementById('sheetBody').innerHTML = bodyHtml;
+      document.getElementById('sheetOverlay').classList.add('open');
+      document.getElementById('sheetPanel').classList.add('open');
+    }
+
+    window.closeSheet = function () {
+      document.getElementById('sheetOverlay').classList.remove('open');
+      document.getElementById('sheetPanel').classList.remove('open');
+    };
+
+    // ─── UTILS ───
+    function esc(str) {
+      if (!str) return '';
+      var div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    init();
+  })();
+  </script>
+</body>
+</html>

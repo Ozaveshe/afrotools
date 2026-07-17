@@ -1,0 +1,95 @@
+{
+  "checks": [
+    {
+      "name": "privacy and no-destroy note visible",
+      "privacy": "Private by default: pasted text is parsed in your browser first. File parsing only runs locally when a compatible parser is available. Your current CV will not change until you confirm the import.",
+      "pass": true
+    },
+    {
+      "name": "optional AI extraction control exists",
+      "hasAiButton": 1,
+      "pass": true
+    },
+    {
+      "name": "AI import fallback remains helpful",
+      "aiFallback": "AI extraction is unavailable right now. Use Extract sections to parse the pasted text in your browser.",
+      "pass": true
+    },
+    {
+      "name": "review sections with confidence and move controls",
+      "cards": 8,
+      "confidenceCount": 8,
+      "moveControls": 8,
+      "pass": true
+    },
+    {
+      "name": "existing CV requires replacement confirmation",
+      "applyDisabled": true,
+      "oldBeforeConfirm": "Existing|Existing summary should not disappear before confirm.",
+      "pass": true
+    },
+    {
+      "name": "confirmed import populates fields",
+      "state": {
+        "fn": "Amina",
+        "ln": "Okafor",
+        "email": "amina.okafor@example.com",
+        "exp": "Sales Associate",
+        "skills": "Customer service, sales reporting, Excel, POS systems, lead tracking",
+        "country": "ZA",
+        "template": "cape"
+      },
+      "pass": true
+    },
+    {
+      "name": "analytics events tracked",
+      "events": [
+        [
+          "event",
+          "cv_import_started",
+          {
+            "source": "modal"
+          }
+        ],
+        [
+          "event",
+          "cv_import_completed",
+          {
+            "source": "Pasted text",
+            "sections": 7
+          }
+        ]
+      ],
+      "pass": true
+    },
+    {
+      "name": "PDF fallback explains manual paste when parser unavailable",
+      "fallback": "PDF parsing is not loaded in this browser yet. Copy the text from your CV and paste it below.",
+      "pass": true
+    },
+    {
+      "name": "mobile import review avoids horizontal overflow",
+      "overflow": false,
+      "pass": true
+    }
+  ],
+  "consoleErrors": [],
+  "analytics": [
+    [
+      "event",
+      "cv_import_started",
+      {
+        "source": "modal"
+      }
+    ],
+    [
+      "event",
+      "cv_import_completed",
+      {
+        "source": "Pasted text",
+        "sections": 7
+      }
+    ]
+  ],
+  "pass": true
+}

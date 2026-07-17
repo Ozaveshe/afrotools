@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://afrotools.com/api/schemas/v1/fx-query.schema.json",
+  "title": "AfroTools FX query v1",
+  "type": "object",
+  "required": ["base", "target"],
+  "properties": {
+    "base": { "type": "string", "pattern": "^[A-Z]{3}$" },
+    "target": { "type": "string", "pattern": "^[A-Z]{3}$" },
+    "amount": { "type": "number", "exclusiveMinimum": 0 },
+    "days": { "type": "integer", "minimum": 1, "maximum": 90 }
+  }
+}

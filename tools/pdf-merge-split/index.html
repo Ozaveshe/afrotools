@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Merge PDF & Split PDF Online Free - Local Browser Tool | AfroTools</title>
+<meta name="description" content="Merge PDFs, reorder files, pick page ranges, split by cut points, extract pages, or export pages as a ZIP. Private browser-local PDF tool.">
+<meta name="content-language" content="en">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Merge PDF & Split PDF Online | AfroTools">
+<meta property="og:description" content="Combine PDFs, reorder files, choose page ranges, split at cut points, extract pages, and export ZIP files locally in your browser.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/pdf-merge-split/">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/pdf-merge-split.webp">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Merge PDF & Split PDF Online | AfroTools">
+<meta name="twitter:description" content="Merge, reorder, split ranges, extract pages, and ZIP page sets locally in your browser.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/document-pdf-tool-focus.css?v=29afdf58">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/vendor/pdf-lib/pdf-lib.min.js?v=dec481b1"></script>
+<script src="/assets/vendor/pdfjs/pdf.min.js?v=96de3233"></script>
+<style>
+  :root { --afro-green: var(--color-primary); --afro-dark: #0f172a; --afro-light: #f8fafc; }
+
+  .tool-hero { background: #f8fafc; border-bottom: 1px solid #e2e8f0; padding: 38px 0 28px; position: relative; overflow: hidden; }
+  .tool-hero-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; }
+  .breadcrumb { font-size: 0.72rem; font-weight: 800; color: #64748b; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+  .breadcrumb a { color: #64748b; text-decoration: none; }
+  .breadcrumb span { color: var(--afro-green); }
+  h1 { font-size: clamp(1.8rem, 4vw, 2.75rem); font-weight: 800; color: #0f172a; letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 10px; max-width: 760px; }
+  h1 em { color: var(--afro-green); font-style: normal; }
+  .hero-sub { font-size: 0.95rem; color: #475569; line-height: 1.65; max-width: 680px; margin-bottom: 16px; }
+  .hero-badges { display: flex; flex-wrap: wrap; gap: 7px; }
+  .badge { display: inline-flex; align-items: center; gap: 5px; min-height: 30px; padding: 0 11px; border-radius: 999px; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.02em; }
+  .b-green { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+  .job-strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 18px; max-width: 860px; }
+  .job-step { background: #fff; border: 1px solid #dbe4ef; border-radius: 10px; padding: 13px 14px; }
+  .job-step strong { display: block; color: #0f172a; font-size: 0.86rem; line-height: 1.25; margin-bottom: 4px; }
+  .job-step span { display: block; color: #64748b; font-size: 0.76rem; line-height: 1.45; }
+
+  .tool-main { max-width: 980px; margin: 0 auto; padding: 28px 24px 72px; }
+  .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 8px rgba(15,23,42,0.05); margin-bottom: 18px; }
+  .card-head { padding: 15px 22px; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; background: #f9fafb; }
+  .card-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #374151; }
+  .card-body { padding: 22px; }
+
+  .mode-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 18px; }
+  .mode-btn { min-height: 48px; padding: 12px 16px; background: #EFF6FF; border: 1.5px solid #e5e7eb; border-radius: 7px; cursor: pointer; transition: border-color 0.15s, background 0.15s, color 0.15s; font-size: 0.82rem; font-weight: 800; color: #334155; font-family: 'DM Sans', sans-serif; touch-action: manipulation; }
+  .mode-btn:hover { border-color: var(--afro-green); }
+  .mode-btn.on { border-color: var(--afro-green); background: var(--color-primary); color: #fff; }
+
+  .file-input-wrapper { position: relative; display: inline-block; width: 100%; }
+  .file-input-wrapper input[type="file"] { position:absolute;width:1px;height:1px;opacity:0;overflow:hidden; }
+  .file-input-label { display: block; min-height: 76px; padding: 20px; background: #EFF6FF; border: 2px dashed #dbe4ef; border-radius: 8px; cursor: pointer; text-align: center; transition: border-color 0.2s, background 0.2s; font-size: 0.95rem; color: #334155; font-weight: 800; touch-action: manipulation; }
+  .file-input-label:hover { border-color: var(--afro-green); background: #EFF6FF; }
+  .file-input-label.dragover { border-color: var(--afro-green); background: rgba(0,98,204,0.1); }
+
+  .file-list { margin-top: 16px; }
+  .file-item { display: grid; grid-template-columns: auto minmax(0,1fr) auto minmax(128px,160px) auto; align-items: center; gap: 10px; padding: 12px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 8px; cursor: move; }
+  .file-item.dragging { opacity: 0.5; }
+  .file-item-name { flex: 1; font-size: 0.85rem; color: #1e293b; font-weight: 600; }
+  .file-item-meta { font-size: 0.7rem; color: #64748b; white-space: nowrap; }
+  .file-item-status { font-size: 0.68rem; color: #64748b; font-weight: 700; }
+  .file-item-status.err { color: #b91c1c; }
+  .merge-pages-field { display:grid; gap:3px; min-width:128px; }
+  .merge-pages-field span { font-size:.64rem; color:#64748b; font-weight:800; text-transform:uppercase; letter-spacing:.04em; }
+  .merge-pages-field input { width:100%; border:1px solid #dbe3ef; border-radius:5px; padding:7px 8px; font:700 .72rem 'DM Sans',sans-serif; color:#0f172a; background:#fff; }
+  .merge-pages-field input:focus { outline:none; border-color:#60a5fa; box-shadow:0 0 0 3px rgba(96,165,250,.18); }
+  .file-item-controls { display: flex; gap: 8px; flex-wrap: wrap; }
+  .mini-btn { min-width: 44px; min-height: 44px; padding: 8px 10px; background: #fff; border: 1px solid #dbe3ef; color: #334155; border-radius: 7px; cursor: pointer; font-size: 0.74rem; font-weight: 800; touch-action: manipulation; }
+  .mini-btn:hover { border-color: #93c5fd; color: #1d4ed8; }
+  .file-item-remove { background: #EFF6FF; border: 1px solid #e5e7eb; color: #334155; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.7rem; font-weight: 700; transition: all 0.15s; }
+  .file-item-remove:hover { background: #EFF6FF; border-color: #BFDBFE; }
+  .tool-row { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-top:12px; }
+  .subtle-btn { min-height:44px; border:1px solid #dbe3ef; background:#fff; color:#334155; border-radius:6px; padding:9px 12px; font-size:.74rem; font-weight:800; cursor:pointer; font-family:'DM Sans',sans-serif; touch-action: manipulation; }
+  .subtle-btn:hover { border-color:#93c5fd; color:#1d4ed8; }
+
+  .calc-btn { width: 100%; min-height: 50px; padding: 14px; background: var(--color-primary); color: #fff; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 800; letter-spacing: 0.01em; cursor: pointer; transition: background 0.18s, box-shadow 0.18s; margin-top: 8px; font-family: 'DM Sans', sans-serif; touch-action: manipulation; }
+  .calc-btn:hover { background: #0059B3; box-shadow: 0 6px 20px rgba(0,98,204,0.22); }
+  .calc-btn:disabled { background: #93c5fd; cursor: not-allowed; box-shadow: none; }
+
+  .result-card { background: #f9fafb; border: 1.5px solid #e5e7eb; border-radius: 10px; padding: 20px; display: none; margin-bottom: 18px; }
+  .result-card.on { display: block; }
+  .result-text { font-size: 0.85rem; color: #1e293b; margin-bottom: 12px; font-weight: 600; }
+  .action-row { display: grid; grid-template-columns: 1fr; gap: 8px; }
+  .act-btn { padding: 12px; font-size: 0.78rem; font-weight: 700; border-radius: 6px; cursor: pointer; transition: all 0.15s; display: flex; align-items: center; justify-content: center; gap: 6px; font-family: 'DM Sans', sans-serif; border: none; }
+  .act-download { background: rgba(0,98,204,0.1); border: 1.5px solid rgba(0,98,204,0.35); color: #1e40af; }
+  .act-download:hover { background: rgba(0,98,204,0.2); }
+
+  .progress-bar { width: 100%; height: 4px; background: #e5e7eb; border-radius: 2px; overflow: hidden; margin-top: 12px; }
+  .progress-fill { height: 100%; background: var(--color-primary); width: 0%; transition: width 0.3s; }
+
+  /* Split page grid */
+  .split-mode-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 14px 0; }
+  .split-mode-btn { min-height:44px; padding: 10px 9px; border: 1.5px solid #e5e7eb; background: #fff; color: #334155; border-radius: 7px; cursor: pointer; font-size: .72rem; font-weight: 800; font-family: 'DM Sans', sans-serif; touch-action: manipulation; }
+  .split-mode-btn:hover { border-color: #93c5fd; }
+  .split-mode-btn.on { border-color: var(--color-primary); color: #fff; background: var(--color-primary); }
+  .split-panel { display:none; margin-top:10px; }
+  .split-panel.on { display:block; }
+  .range-field { display:flex; flex-direction:column; gap:7px; margin:10px 0; }
+  .range-field label { font-size:.72rem; font-weight:800; color:#334155; letter-spacing:.05em; text-transform:uppercase; }
+  .range-field input { width:100%; box-sizing:border-box; padding:11px 12px; border:1.5px solid #dbe3ef; border-radius:7px; font-family:'DM Sans',sans-serif; font-size:.86rem; color:#0f172a; outline:none; }
+  .range-field input:focus { border-color: var(--color-primary); box-shadow:0 0 0 3px rgba(0,98,204,.12); }
+  .range-help { color:#64748b; font-size:.76rem; line-height:1.55; }
+  .range-options { display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-top:8px; font-size:.78rem; color:#334155; font-weight:700; }
+  .sp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 6px; margin-top: 16px; }
+  .sp-cell { position: relative; }
+  .sp-cell-thumb { border-radius: 6px; overflow: hidden; border: 2px solid #e5e7eb; background: #fff; transition: 0.2s; }
+  .sp-cell.selectable { cursor:pointer; }
+  .sp-cell.selectable .sp-cell-thumb:hover { border-color:#93c5fd; }
+  .sp-cell.selected .sp-cell-thumb { border-color:var(--color-primary); box-shadow:0 0 0 3px rgba(0,98,204,.16); }
+  .sp-cell.selected .sp-cell-label { color:#1d4ed8; }
+  .sp-cell-thumb img { width: 100%; aspect-ratio: 8.5/11; display: block; object-fit: contain; background: #f9fafb; }
+  .sp-ph { width: 100%; aspect-ratio: 8.5/11; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #9ca3af; font-weight: 700; background: #f9fafb; }
+  .sp-cell-label { text-align: center; font-size: 11px; font-weight: 700; color: #4b5563; padding: 3px 0; }
+  .sp-cut { position: absolute; top: 0; right: -16px; bottom: 20px; width: 32px; min-height:44px; cursor: pointer; z-index: 5; display: flex; align-items: center; justify-content: center; border:0; background:transparent; padding:0; touch-action: manipulation; }
+  .sp-cut::before { content: ''; position: absolute; inset: 8px 14px; background: #e5e7eb; border-radius: 2px; transition: 0.2s; }
+  .sp-cut:hover::before { background: #fca5a5; }
+  .sp-cut.on::before { background: #dc2626; }
+  .sp-cut .sc-icon { width: 24px; height: 24px; border-radius: 50%; background: #f3f4f6; display: flex; align-items: center; justify-content: center; font-size: 13px; z-index: 2; transition: 0.2s; opacity: 0; }
+  .sp-cut:hover .sc-icon { opacity: 1; background: #fef2f2; color: #dc2626; }
+  .sp-cut.on .sc-icon { opacity: 1; background: #dc2626; color: #fff; }
+  .sp-info { font-size: 0.78rem; color: #4b5563; margin-top: 10px; padding: 10px 14px; background: #f9fafb; border-radius: 6px; border: 1px solid #e5e7eb; }
+
+  /* Tips section */
+  .tips-section { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 20px 24px; margin-top: 8px; }
+  .tips-title { font-size: 0.72rem; font-weight: 700; color: #374151; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+  .tips-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .tip-item { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #334155; font-weight: 700; padding: 10px 12px; background: #fff; border: 1px solid #e5e7eb; border-radius: 6px; }
+
+  @media (max-width: 768px) {
+    .tool-hero { padding: 28px 0 22px; }
+    .job-strip { grid-template-columns: 1fr; }
+    .mode-row { grid-template-columns: 1fr; }
+    .split-mode-row { grid-template-columns: 1fr 1fr; }
+    .tips-grid { grid-template-columns: 1fr; }
+    .sp-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
+    .file-item { grid-template-columns:auto minmax(0,1fr); }
+    .file-item-meta,.merge-pages-field,.file-item-controls { grid-column:2; }
+    .file-item-controls .mini-btn { flex: 1 1 88px; }
+  }
+</style>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Merge PDF & Split PDF","alternateName":"PDF Merge & Split","description":"Merge PDFs, reorder files, choose page ranges, split by cut points or custom ranges, extract selected pages, and export every page as a ZIP. Core processing runs locally in the browser.","url":"https://afrotools.com/tools/pdf-merge-split/","inLanguage":"en","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript and a modern browser with local file APIs","featureList":["Merge multiple PDF files","Drag or button reorder files before export","Include all pages or per-file page ranges","Split a PDF by visual cut points","Split by custom page ranges","Extract selected pages into one PDF","Export every page as a ZIP of single-page PDFs"],"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/pdf-merge-split.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Merge PDF & Split PDF Online Free","url":"https://afrotools.com/tools/pdf-merge-split/","description":"Private browser PDF merge and split tool with drag reorder, per-file page ranges, custom split ranges, page extraction, and ZIP export.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/pdf-merge-split.webp"}</script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-merge-split.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "PDF Merge & Split",
+      "item": "https://afrotools.com/tools/pdf-merge-split/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How many PDFs can I merge at once?","acceptedAnswer":{"@type":"Answer","text":"There is no fixed server limit because the work runs locally. Your device memory is the real limit, so large scanned PDFs or many-file packets usually work better on a laptop than on an older phone."}},{"@type":"Question","name":"Can I reorder PDFs or merge only certain pages?","acceptedAnswer":{"@type":"Answer","text":"Yes. After uploading your files, drag and drop them into any order you like, then leave each page box blank for all pages or enter ranges such as 1-2, 5. The merged PDF follows the exact sequence you arrange on screen."}},{"@type":"Question","name":"How does splitting work?","acceptedAnswer":{"@type":"Answer","text":"You can split at visual cut points, enter custom ranges such as 1-3, 6, 9-11, extract selected pages into one PDF, or export every page as separate PDFs in a ZIP."}},{"@type":"Question","name":"Are my PDFs uploaded to a server?","acceptedAnswer":{"@type":"Answer","text":"Core merge and split operations happen in your browser. AfroTools does not upload source PDFs for this workflow; the account gate controls download access and should not upload your files."}},{"@type":"Question","name":"Does merging reduce the quality of my PDFs?","acceptedAnswer":{"@type":"Answer","text":"The merge process copies the selected PDF pages into a new file without intentional recompression. Always open the output in another reader to confirm page order, forms, signatures, bookmarks, and file size before sending."}}]}
+</script>
+<meta property="article:modified_time" content="2026-07-05">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<style>
+  body.top-level-page-ui-refresh .tool-hero h1 { color: #0f172a; }
+  body.top-level-page-ui-refresh .tool-hero h1 em { color: var(--color-primary); }
+  body.top-level-page-ui-refresh .tool-hero h2,
+  body.top-level-page-ui-refresh .tool-hero h3 { color: #0f172a; }
+</style>
+<link rel="canonical" href="https://afrotools.com/tools/pdf-merge-split/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-merge-split/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/fusionner-diviser-pdf/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/unganisha-na-gawanya-pdf/">
+<link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/hada-da-raba-pdf/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-merge-split/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="/">AfroTools</a> / <span>Tools</span></div>
+    <h1>Merge PDFs or split pages <em>locally</em></h1>
+    <p class="hero-sub">Choose one job, add your files, check the page order or ranges, then download a PDF or ZIP. Core processing happens in this browser.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">No Upload</span>
+      <span class="badge b-green">Client-side</span>
+      <span class="badge b-green">PDF + ZIP outputs</span>
+    </div>
+    <div class="job-strip" aria-label="PDF merge and split workflow">
+      <div class="job-step"><strong>Merge a packet</strong><span>Add two or more PDFs, reorder them, and limit any file to specific pages.</span></div>
+      <div class="job-step"><strong>Split one PDF</strong><span>Use cut points, typed ranges, selected pages, or one-page ZIP export.</span></div>
+      <div class="job-step"><strong>Verify before sending</strong><span>Open the downloaded file and confirm page order, missing pages, forms, and signatures.</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <!-- Mode Selection -->
+  <div class="card">
+    <div class="card-head"><span class="card-title">Choose the job</span></div>
+    <div class="card-body">
+      <div class="mode-row">
+        <button type="button" class="mode-btn on" data-mode="merge">Merge PDFs</button>
+        <button type="button" class="mode-btn" data-mode="split">Split PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Merge Card -->
+  <div class="card" id="merge-card">
+    <div class="card-head"><span class="card-title">Merge PDFs</span></div>
+    <div class="card-body">
+      <div class="file-input-wrapper">
+        <input type="file" id="mergeFileInput" accept=".pdf" multiple>
+        <label for="mergeFileInput" class="file-input-label">
+          Add PDFs or drop them here
+          <div style="font-size:0.72rem;margin-top:4px;opacity:.65">Each click adds to your list. Use page ranges per file when needed.</div>
+        </label>
+      </div>
+      <div class="file-list" id="mergeFileList"></div>
+      <div class="tool-row">
+        <span id="mergeSummary" style="font-size:.76rem;color:#64748b;font-weight:700;">Add at least two PDFs to merge.</span>
+        <button class="subtle-btn" id="clearMergeBtn" type="button" disabled>Clear list</button>
+      </div>
+      <button type="button" class="calc-btn" id="mergeBtn" disabled>Merge PDFs</button>
+    </div>
+  </div>
+
+  <!-- Split Card -->
+  <div class="card" id="split-card" style="display:none;">
+    <div class="card-head"><span class="card-title">Split one PDF</span></div>
+    <div class="card-body">
+      <div class="file-input-wrapper">
+        <input type="file" id="splitFileInput" accept=".pdf">
+        <label for="splitFileInput" class="file-input-label">
+          Add one PDF or drop it here
+        </label>
+      </div>
+      <div id="splitInfo" style="display:none; margin-top:12px;">
+        <div style="font-size:0.82rem;font-weight:700;color:#1e293b;">File: <span id="splitFileName"></span> - <span id="splitPageCount">0</span> pages</div>
+        <div class="split-mode-row">
+          <button class="split-mode-btn on" type="button" data-split-mode="cuts">Split points</button>
+          <button class="split-mode-btn" type="button" data-split-mode="ranges">Custom ranges</button>
+          <button class="split-mode-btn" type="button" data-split-mode="extract">Extract pages</button>
+          <button class="split-mode-btn" type="button" data-split-mode="every">Every page</button>
+        </div>
+        <div class="split-panel on" id="cutsPanel">
+          <div class="sp-info">Click the <span style="color:#dc2626;font-weight:700">scissors</span> between pages to set split points. Pages between cuts become separate PDF files.</div>
+        </div>
+        <div class="split-panel" id="rangesPanel">
+          <div class="range-field">
+            <label for="rangeInput">Ranges to create</label>
+            <input id="rangeInput" type="text" placeholder="1-3, 4-6, 9">
+            <div class="range-help">Use commas for separate outputs. Example: <strong>1-2, 5, 8-10</strong>.</div>
+          </div>
+          <label class="range-options"><input aria-label="RangeCombine" type="checkbox" id="rangeCombine"> Combine ranges into one PDF instead of a ZIP</label>
+        </div>
+        <div class="split-panel" id="extractPanel">
+          <div class="range-field">
+            <label for="extractInput">Pages to keep</label>
+            <input id="extractInput" type="text" placeholder="2, 4-5, 9">
+            <div class="range-help">Click page thumbnails below or type page numbers. Extracted pages download as one PDF.</div>
+          </div>
+        </div>
+        <div class="split-panel" id="everyPanel">
+          <div class="sp-info">Export every page as its own one-page PDF inside a ZIP file.</div>
+        </div>
+        <div class="sp-grid" id="splitGrid"></div>
+        <div id="splitSummary" style="margin-top:10px;font-size:0.78rem;color:#4b5563;font-weight:600;"></div>
+      </div>
+      <button type="button" class="calc-btn" id="splitBtn" disabled>Select split points first</button>
+    </div>
+  </div>
+
+  <!-- Result Card -->
+  <div class="result-card" id="resultCard">
+    <div class="result-text" id="resultText"></div>
+    <div class="progress-bar" id="progressBar" style="display:none;">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="action-row" id="actionRow" style="display:none;"></div>
+  </div>
+
+  <!-- Tips -->
+  <div class="tips-section">
+    <div class="tips-title">How it works</div>
+    <div class="tips-grid">
+      <div class="tip-item">Reorder files with drag, Up, or Down</div>
+      <div class="tip-item">Leave page boxes blank to include all pages</div>
+      <div class="tip-item">Use ranges like 1-3, 5, 8-10</div>
+      <div class="tip-item">Download PDF or ZIP outputs after the gate</div>
+    </div>
+  </div>
+</div>
+
+
+<section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="pdf-merge-split-verification-title">
+  <div class="tool-verification-card">
+    <div class="tool-verification-head">
+      <div>
+        <span class="tool-verification-kicker">PDF workflow proof</span>
+        <h2 class="tool-verification-title" id="pdf-merge-split-verification-title">Check page order before downloading a combined or split PDF</h2>
+        <p class="tool-verification-lead">Merge, range selection, split points, extraction, and ZIP exports run in this browser. AfroTools does not upload source PDFs for this workflow.</p>
+      </div>
+      <div class="tool-verification-status">
+        <span class="tool-verification-badge">Local-first PDF tool</span>
+        <p class="tool-verification-note">Reviewed 2026. Disclaimer: verify with the recipient before relying on the output. The shared PDF account gate does not upload your files.</p>
+      </div>
+    </div>
+    <div class="tool-verification-grid">
+      <div class="tool-verification-block">
+        <h3>Methodology</h3>
+        <ul class="tool-verification-list">
+          <li>Uses local PDF libraries to read page counts, copy selected pages, preserve file order, and create PDF or ZIP outputs.</li>
+          <li>Page ranges and split points are interpreted from the visible controls before the export is built.</li>
+          <li>Share/save actions should record workflow metadata only, not source PDF contents.</li>
+        </ul>
+      </div>
+      <div class="tool-verification-block">
+        <h3>Before sharing</h3>
+        <ul class="tool-verification-list">
+          <li>Open the output in another PDF reader and confirm page order, missing pages, bookmarks, forms, signatures, and file size.</li>
+          <li>Work from duplicate files when documents include contracts, IDs, invoices, medical records, or confidential client material.</li>
+          <li>For richer editing, continue in <a href="/tools/pdf-workspace/">PDF Workspace</a>.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<afro-related-tools category="document-pdf" current="pdf-merge-split" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/cv-builder/" data-related-tool data-id="cv-builder" data-name="CV / Resume Builder" data-category="document-pdf" data-icon="CR" data-desc="Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.">CV / Resume Builder</a></li><li><a href="/tools/invoice-generator/" data-related-tool data-id="invoice-generator" data-name="Invoice Generator" data-category="document-pdf" data-icon="IG" data-desc="Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.">Invoice Generator</a></li><li><a href="/tools/pdf-editor/" data-related-tool data-id="pdf-editor" data-name="PDF Editor" data-category="document-pdf" data-icon="PE" data-desc="Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt">PDF Editor</a></li><li><a href="/tools/pdf-workspace/" data-related-tool data-id="pdf-workspace" data-name="PDF Workspace" data-category="document-pdf" data-icon="PW" data-desc="Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.">PDF Workspace</a></li><li><a href="/tools/pdf-compress/" data-related-tool data-id="pdf-compress" data-name="PDF Compressor" data-category="document-pdf" data-icon="PC" data-desc="Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.">PDF Compressor</a></li><li><a href="/tools/pdf-convert/" data-related-tool data-id="pdf-convert" data-name="PDF Format Converter" data-category="document-pdf" data-icon="PF" data-desc="Convert DOCX, XLSX, XLS, CSV, selectable PDF text, and PDF pages to PNG/JPG ZIP in the browser.">PDF Format Converter</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+
+<section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
+  <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Merge PDF and split PDF online</h2>
+  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
+    <p>Use AfroTools to combine multiple PDF files into one document, reorder files before export, include only the page ranges you need, split a document at visual cut points, extract custom ranges, or export every page as a ZIP. This is built for application packs, scanned document batches, contracts, reports, and classroom packets where page order matters. Core processing happens in your browser using local JavaScript libraries, so source PDFs are not uploaded by default.</p>
+  </div>
+  <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Frequently Asked Questions</h3>
+
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+  <div class="landing-faq" style="display:flex;flex-direction:column;gap:8px;">
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">How many PDFs can I merge at once?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">There is no fixed server limit because the work runs locally. Your device memory is the real limit, so large scanned PDFs or many-file packets usually work better on a laptop than on an older phone.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Can I reorder PDFs or merge only certain pages?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Yes. After uploading your files, drag and drop them into any order you like, then leave each page box blank for all pages or enter ranges such as 1-2, 5. The merged PDF follows the exact sequence you arrange on screen.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">How does splitting work?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">You can split at visual cut points, enter custom ranges such as 1-3, 6, 9-11, extract selected pages into one PDF, or export every page as separate PDFs in a ZIP.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Are my PDFs uploaded to a server?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Core merge and split operations happen in your browser. AfroTools does not upload source PDFs for this workflow; the account gate controls download access and should not upload your files.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Does merging reduce the quality of my PDFs?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">The merge process copies the selected PDF pages into a new file without intentional recompression. Always open the output in another reader to confirm page order, forms, signatures, bookmarks, and file size before sending.</p>
+    </details>
+  </div>
+</section>
+
+<afro-footer></afro-footer>
+<script src="/assets/js/components/related-tools.js?v=4123e336" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
+<script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
+<script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
+
+<script src="/tools/pdf-merge-split/app.js?v=7809c2e3"></script>
+<email-gate-modal></email-gate-modal>
+<script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
+<script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
+<script src="/assets/js/pages/document-pdf-tool-focus.js?v=1def0859" defer></script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+</body>
+</html>

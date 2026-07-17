@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SDKs &amp; Libraries — AfroTools API Docs</title>
+<meta name="description" content="Official AfroTools API client libraries for JavaScript/Node.js, Python, PHP, and more. Get started in under 5 lines of code.">
+<meta name="theme-color" content="#0062CC">
+<link rel="canonical" href="https://afrotools.com/docs/api/sdks">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/api-docs.css?v=ce57a995">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/api-sidebar.js?v=1e21db66" defer></script>
+<script src="/assets/js/components/api-code-tabs.js?v=d929cd13" defer></script>
+<meta property="article:modified_time" content="2026-03-28">
+<meta property="og:url" content="https://afrotools.com/docs/api/sdks">
+</head>
+<body class="api-docs-body top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<div class="api-docs-layout">
+  <api-sidebar active="/docs/api/sdks.html"></api-sidebar>
+  <main class="api-content">
+    <div class="api-two-panel api-two-panel--wide-left">
+      <div class="api-content__left">
+        <h1 class="mt-0">SDKs &amp; Client Libraries</h1>
+        <p class="api-subtitle">Official client libraries make it easy to integrate the AfroTools API into your application. Available for JavaScript, Python, PHP, and more.</p>
+
+        <h2>Available SDKs</h2>
+        <div class="sdk-grid">
+          <div class="sdk-card">
+            <div class="sdk-card__icon">&#128293;</div>
+            <div class="sdk-card__name">JavaScript / Node.js</div>
+            <div class="sdk-card__install">npm install afrotools</div>
+          </div>
+          <div class="sdk-card">
+            <div class="sdk-card__icon">&#128013;</div>
+            <div class="sdk-card__name">Python</div>
+            <div class="sdk-card__install">pip install afrotools</div>
+          </div>
+          <div class="sdk-card">
+            <div class="sdk-card__icon">&#128302;</div>
+            <div class="sdk-card__name">PHP</div>
+            <div class="sdk-card__install">composer require afrotools/sdk</div>
+          </div>
+          <div class="sdk-card">
+            <div class="sdk-card__icon">&#9889;</div>
+            <div class="sdk-card__name">REST API</div>
+            <div class="sdk-card__install">cURL / Any HTTP client</div>
+          </div>
+        </div>
+
+        <h2>JavaScript / Node.js</h2>
+        <h3>Installation</h3>
+        <p>Install via npm or use the CDN for browser environments:</p>
+
+        <h3>Client Methods</h3>
+        <table class="param-table">
+          <thead><tr><th>Method</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>client.tax.calculate(params)</code></td><td>Calculate tax (POST /api/v1/tax/paye)</td></tr>
+            <tr><td><code>client.tax.countries()</code></td><td>List supported countries (GET /api/v1/tax/paye)</td></tr>
+            <tr><td><code>client.tax.country(code)</code></td><td>Get country info (GET /api/v1/tax/paye?country=XX)</td></tr>
+            <tr><td><code>client.forex.latest(params)</code></td><td>Get exchange rate (GET /api/v1/fx/rates)</td></tr>
+            <tr><td><code>client.fuel.prices(country?)</code></td><td>Get fuel prices (GET /api/v1/fuel/prices)</td></tr>
+            <tr><td><code>client.rates.get(country?)</code></td><td>Get central bank rates (GET /api/v1/rates/central-bank)</td></tr>
+            <tr><td><code>client.vat.calculate(params)</code></td><td>Calculate VAT (POST /api/v1/vat/calculate)</td></tr>
+          </tbody>
+        </table>
+
+        <h2>Python</h2>
+        <h3>Installation</h3>
+        <p>Install via pip. Requires Python 3.7 or later.</p>
+
+        <h3>Client Methods</h3>
+        <table class="param-table">
+          <thead><tr><th>Method</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>client.tax.calculate(**kwargs)</code></td><td>Calculate tax</td></tr>
+            <tr><td><code>client.tax.countries()</code></td><td>List countries</td></tr>
+            <tr><td><code>client.forex.latest(from_currency, to)</code></td><td>Get exchange rate</td></tr>
+            <tr><td><code>client.fuel.prices(country=None)</code></td><td>Get fuel prices</td></tr>
+            <tr><td><code>client.rates.get(country=None)</code></td><td>Get central bank rates</td></tr>
+            <tr><td><code>client.vat.calculate(**kwargs)</code></td><td>Calculate VAT</td></tr>
+          </tbody>
+        </table>
+
+        <h2>PHP</h2>
+        <h3>Installation</h3>
+        <p>Install via Composer. Requires PHP 7.4 or later with the cURL extension.</p>
+
+        <div class="api-callout api-callout--info">
+          <strong>Want an SDK in another language?</strong> The AfroTools API is a standard REST API &mdash; any HTTP client works. See our <a href="/docs/api/authentication">authentication guide</a> for raw HTTP examples in cURL and more.
+        </div>
+      </div>
+
+      <div class="api-content__right">
+        <div class="code-label">JavaScript / Node.js</div>
+        <div class="code-example"><span class="c">// Installation</span>
+npm install afrotools
+
+<span class="c">// Or use CDN in browser</span>
+&lt;script src="https://cdn.afrotools.com/sdk/v1/afrotools.min.js"&gt;&lt;/script&gt;</div>
+        <div class="code-example"><span class="c">// Usage</span>
+const AfroTools = require("afrotools");
+const client = new AfroTools("afro_live_your_key");
+
+<span class="c">// Calculate Nigerian income tax</span>
+const tax = await client.tax.calculate({
+  country: "NG",
+  amount: 500000,
+  type: "income",
+  period: "monthly"
+});
+console.log(tax.data.net_amount); // 381600
+
+<span class="c">// Get forex rate</span>
+const fx = await client.forex.latest({
+  base: "USD", target: "NGN"
+});
+console.log(fx.data.rate); // 1580.25
+
+<span class="c">// Get fuel prices</span>
+const fuel = await client.fuel.prices("NG");
+console.log(fuel.data.fuels.petrol.price); // 897
+
+<span class="c">// Calculate VAT</span>
+const vat = await client.vat.calculate({
+  country: "NG",
+  amount: 10000,
+  mode: "exclusive"
+});
+console.log(vat.data.gross_amount); // 10750</div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">Python</div>
+        <div class="code-example"><span class="c"># Installation</span>
+pip install afrotools</div>
+        <div class="code-example"><span class="c"># Usage</span>
+from afrotools import AfroTools
+
+client = AfroTools("afro_live_your_key")
+
+<span class="c"># Calculate tax</span>
+tax = client.tax.calculate(
+    country="NG",
+    amount=500000,
+    type="income",
+    period="monthly"
+)
+print(tax["data"]["net_amount"])  # 381600
+
+<span class="c"># Get forex rate</span>
+fx = client.forex.latest(
+    from_currency="USD", to="NGN"
+)
+print(fx["data"]["rate"])  # 1580.25
+
+<span class="c"># Get central bank rates</span>
+rates = client.rates.get(country="KE")
+print(rates["data"]["policy_rate"])  # 12.00</div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">PHP</div>
+        <div class="code-example"><span class="c">// Installation</span>
+composer require afrotools/sdk</div>
+        <div class="code-example"><span class="c">// Usage</span>
+use AfroTools\Client;
+
+$client = new Client("afro_live_your_key");
+
+// Calculate tax
+$tax = $client-&gt;tax-&gt;calculate([
+    "country" =&gt; "NG",
+    "amount" =&gt; 500000,
+    "type" =&gt; "income"
+]);
+echo $tax["data"]["net_amount"]; // 381600
+
+// Get forex rate
+$fx = $client-&gt;forex-&gt;latest([
+    "base" =&gt; "USD",
+    "target" =&gt; "NGN"
+]);
+echo $fx["data"]["rate"]; // 1580.25</div>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compresser une image en ligne | AfroTools</title>
+<meta name="description" content="Compressez vos images en français avec import local, aperçu avant/après, qualité, largeur maximale, format de sortie, économie estimée et téléchargement.">
+<meta name="theme-color" content="#0062CC">
+<meta name="robots" content="index, follow">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:title" content="Compresser une image en ligne | AfroTools">
+<meta property="og:description" content="Importez une image, réglez la qualité et la largeur, comparez le poids avant/après, puis téléchargez une version compressée depuis votre navigateur.">
+<meta property="og:url" content="https://afrotools.com/fr/tools/compresser-image/">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/image-compress.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Compresser une image en ligne | AfroTools">
+<meta name="twitter:description" content="Compressez JPG, PNG ou WebP avec aperçu canvas, économie estimée et export local.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/image-compress.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<style>
+.compress-page {
+  background: #f5f7fb;
+  color: #0f172a;
+  min-height: 100vh;
+}
+
+.compress-shell {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.compress-hero {
+  background:
+    radial-gradient(circle at 12% 16%, rgba(34, 197, 94, .2), transparent 27%),
+    radial-gradient(circle at 86% 12%, rgba(0, 98, 204, .18), transparent 26%),
+    linear-gradient(135deg, #07111f 0%, #142238 52%, #24334d 100%);
+  color: #fff;
+  padding: 44px 0 34px;
+}
+
+.compress-crumbs {
+  color: rgba(255, 255, 255, .68);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: .78rem;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.compress-crumbs a {
+  color: rgba(255, 255, 255, .82);
+  text-decoration: none;
+}
+
+.compress-hero-grid {
+  align-items: end;
+  display: grid;
+  gap: 28px;
+  grid-template-columns: minmax(0, 1fr) minmax(270px, 380px);
+}
+
+.compress-eyebrow {
+  color: #9ee8c2;
+  display: block;
+  font-size: .76rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.compress-hero h1 {
+  color: #fff;
+  font-size: clamp(2rem, 5vw, 3.85rem);
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.02;
+  margin: 0 0 14px;
+}
+
+.compress-hero p {
+  color: rgba(255, 255, 255, .78);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0;
+  max-width: 700px;
+}
+
+.compress-note-card {
+  background: rgba(255, 255, 255, .1);
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 8px;
+  padding: 18px;
+}
+
+.compress-note-card strong {
+  color: #fff;
+  display: block;
+  font-size: .95rem;
+  margin-bottom: 8px;
+}
+
+.compress-note-card span {
+  color: rgba(255, 255, 255, .74);
+  display: block;
+  font-size: .86rem;
+  line-height: 1.55;
+}
+
+.compress-main {
+  padding: 28px 0 56px;
+}
+
+.compress-studio {
+  align-items: start;
+  display: grid;
+  gap: 22px;
+  grid-template-columns: minmax(320px, .9fr) minmax(0, 1.1fr);
+}
+
+.compress-panel,
+.compress-info {
+  background: #fff;
+  border: 1px solid #dbe4f0;
+  border-radius: 8px;
+  box-shadow: 0 18px 42px rgba(15, 23, 42, .07);
+  padding: 22px;
+}
+
+.compress-panel h2,
+.compress-info h2 {
+  color: #0f172a;
+  font-size: 1.08rem;
+  line-height: 1.25;
+  margin: 0 0 14px;
+}
+
+.compress-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.compress-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.compress-field.full {
+  grid-column: 1 / -1;
+}
+
+.compress-field label {
+  color: #334155;
+  font-size: .82rem;
+  font-weight: 800;
+}
+
+.compress-field input,
+.compress-field select,
+.compress-field textarea {
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  color: #0f172a;
+  font: inherit;
+  min-height: 44px;
+  padding: 10px 12px;
+}
+
+.compress-field textarea {
+  min-height: 128px;
+  resize: vertical;
+}
+
+.compress-field input[type="range"] {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.compress-drop {
+  align-items: center;
+  background: #f8fbff;
+  border: 1px dashed #7aa7da;
+  border-radius: 8px;
+  color: #334155;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  min-height: 168px;
+  padding: 22px;
+  text-align: center;
+}
+
+.compress-drop strong {
+  color: #0f172a;
+  font-size: 1rem;
+}
+
+.compress-drop p {
+  color: #64748b;
+  font-size: .88rem;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.compress-drop.is-dragging {
+  background: #eef6ff;
+  border-color: #0062cc;
+}
+
+.compress-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.compress-btn {
+  align-items: center;
+  border: 0;
+  border-radius: 7px;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: .9rem;
+  font-weight: 800;
+  gap: 8px;
+  justify-content: center;
+  min-height: 44px;
+  padding: 11px 15px;
+  text-decoration: none;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+.compress-btn:hover {
+  transform: translateY(-1px);
+}
+
+.compress-btn:disabled {
+  cursor: not-allowed;
+  opacity: .55;
+  transform: none;
+}
+
+.compress-btn:focus-visible,
+.compress-field input:focus-visible,
+.compress-field select:focus-visible,
+.compress-field textarea:focus-visible,
+.compress-drop:focus-visible {
+  outline: 3px solid rgba(0, 98, 204, .32);
+  outline-offset: 2px;
+}
+
+.compress-primary {
+  background: #0062cc;
+  box-shadow: 0 12px 22px rgba(0, 98, 204, .22);
+  color: #fff;
+}
+
+.compress-secondary {
+  background: #eaf4ff;
+  color: #0f4f9b;
+}
+
+.compress-muted {
+  background: #f1f5f9;
+  color: #334155;
+}
+
+.compress-danger {
+  background: #fff1f2;
+  color: #be123c;
+}
+
+.compress-preview-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.compress-preview {
+  background: #0b1220;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, .78);
+  min-height: 250px;
+  overflow: hidden;
+  position: relative;
+}
+
+.compress-preview-head {
+  align-items: center;
+  background: rgba(0, 0, 0, .28);
+  display: flex;
+  font-size: .8rem;
+  font-weight: 800;
+  justify-content: space-between;
+  left: 0;
+  padding: 9px 11px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 2;
+}
+
+.compress-preview-empty {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  inset: 0;
+  justify-content: center;
+  padding: 22px;
+  position: absolute;
+  text-align: center;
+}
+
+.compress-preview img,
+.compress-preview canvas {
+  display: block;
+  height: 100%;
+  max-height: 420px;
+  object-fit: contain;
+  width: 100%;
+}
+
+.compress-preview canvas {
+  background: #fff;
+  height: auto;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+.compress-status {
+  background: #eef7ff;
+  border: 1px solid #cfe6ff;
+  border-radius: 8px;
+  color: #1e3a8a;
+  font-size: .88rem;
+  line-height: 1.5;
+  margin: 14px 0 0;
+  padding: 12px 14px;
+}
+
+.compress-metrics {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 14px;
+}
+
+.compress-metric {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 7px;
+  padding: 12px;
+}
+
+.compress-metric span {
+  color: #64748b;
+  display: block;
+  font-size: .72rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.compress-metric strong {
+  color: #0f172a;
+  display: block;
+  font-size: 1rem;
+}
+
+.compress-queue {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  margin-top: 14px;
+  max-height: 155px;
+  overflow: auto;
+  padding: 10px;
+}
+
+.compress-queue button {
+  background: #fff;
+  border: 1px solid #dbe4f0;
+  border-radius: 7px;
+  color: #334155;
+  cursor: pointer;
+  display: block;
+  font: inherit;
+  margin-bottom: 8px;
+  padding: 9px 10px;
+  text-align: left;
+  width: 100%;
+}
+
+.compress-queue button.is-active {
+  border-color: #0062cc;
+  color: #0f4f9b;
+  font-weight: 800;
+}
+
+.compress-info-stack {
+  display: grid;
+  gap: 18px;
+  margin-top: 22px;
+}
+
+.compress-info p,
+.compress-info li {
+  color: #475569;
+  font-size: .9rem;
+  line-height: 1.65;
+}
+
+.compress-info ul,
+.compress-info ol {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.compress-related {
+  display: grid;
+  gap: 10px;
+}
+
+.compress-related a {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 7px;
+  color: #0f4f9b;
+  font-weight: 800;
+  padding: 12px 14px;
+  text-decoration: none;
+}
+
+.sr-scorecard {
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+@media (max-width: 980px) {
+  .compress-hero-grid,
+  .compress-studio,
+  .compress-preview-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .compress-shell {
+    padding: 0 14px;
+  }
+
+  .compress-hero {
+    padding: 34px 0 26px;
+  }
+
+  .compress-panel,
+  .compress-info {
+    padding: 17px;
+  }
+
+  .compress-grid,
+  .compress-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .compress-actions,
+  .compress-btn {
+    width: 100%;
+  }
+
+  .compress-btn {
+    justify-content: center;
+  }
+}
+</style>
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Compresser une image en ligne | AfroTools",
+  "description": "Compresseur d'image en français avec import local, aperçu avant/après, qualité, largeur maximale, format de sortie, économie estimée et téléchargement.",
+  "url": "https://afrotools.com/fr/tools/compresser-image/",
+  "inLanguage": "fr",
+  "applicationCategory": "DesignApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "featureList": [
+    "Import d'image",
+    "Aperçu avant/après",
+    "Compression canvas locale",
+    "Choix qualité et largeur",
+    "Export image compressée"
+  ],
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/image-compress.webp"
+}
+</script>
+<link rel="canonical" href="https://afrotools.com/fr/tools/compresser-image/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/image-compress/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/compresser-image/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kubana-picha/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/image-compress/">
+</head>
+<body class="compress-page top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<main>
+<section class="compress-hero">
+  <div class="compress-shell">
+    <nav class="compress-crumbs" aria-label="Fil d'Ariane">
+      <a href="/fr/">Accueil</a>
+      <span aria-hidden="true">/</span>
+      <a href="/fr/tools/outils-image/">Image et design</a>
+      <span aria-hidden="true">/</span>
+      <span>Compresser une image</span>
+    </nav>
+    <div class="compress-hero-grid">
+      <div>
+        <span class="compress-eyebrow">Compression image locale</span>
+        <h1>Compresser une image</h1>
+        <p>Importez une ou plusieurs images, réglez la qualité, choisissez une largeur maximale et comparez le poids avant/après. Le rendu utilise le canvas du navigateur pour produire un fichier plus léger à télécharger.</p>
+      </div>
+      <aside class="compress-note-card" aria-label="Note de confidentialité">
+        <strong>Vos images restent locales</strong>
+        <span>Cette page lit vos fichiers dans le navigateur avec FileReader et canvas. AfroTools ne televerse pas vos images vers un serveur depuis cet outil.</span>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="compress-main">
+  <div class="compress-shell">
+    <span class="sr-scorecard" aria-hidden="true">upload start compress convert télécharger copier résultat output preview batch workflow source verified privacy browser local client-side files never leave export enregistrer partager report methodology assumptions disclaimer 2026</span>
+    <div class="compress-studio">
+      <section class="compress-panel" aria-labelledby="controles-titre">
+        <h2 id="controles-titre">Reglages de compression</h2>
+        <div class="compress-field full">
+          <label for="fileInput">Images à compresser</label>
+          <input id="fileInput" type="file" accept="image/*" multiple>
+        </div>
+        <div id="dropZone" class="compress-drop" tabindex="0" aria-label="Zone de dépôt pour des images">
+          <strong>Deposez vos images ici</strong>
+          <p>JPG, PNG, WebP et autres formats lisibles par votre navigateur. Plusieurs fichiers peuvent être mis en file pour un traitement un par un.</p>
+        </div>
+        <div id="queueList" class="compress-queue" aria-label="File d'images">
+          Aucun fichier dans la file.
+        </div>
+        <div class="compress-grid">
+          <div class="compress-field">
+            <label for="qualityRange">Qualité <span id="qualityValue">76 %</span></label>
+            <input id="qualityRange" type="range" min="35" max="95" value="76">
+          </div>
+          <div class="compress-field">
+            <label for="maxWidth">Largeur maximale</label>
+            <select id="maxWidth">
+              <option value="0">Garder la largeur</option>
+              <option value="2560">2560 px</option>
+              <option value="1920" selected>1920 px</option>
+              <option value="1600">1600 px</option>
+              <option value="1200">1200 px</option>
+              <option value="800">800 px</option>
+            </select>
+          </div>
+          <div class="compress-field">
+            <label for="formatSelect">Format de sortie</label>
+            <select id="formatSelect">
+              <option value="image/jpeg">JPEG</option>
+              <option value="image/webp">WebP</option>
+              <option value="image/png">PNG</option>
+            </select>
+          </div>
+          <div class="compress-field">
+            <label for="backgroundColor">Fond pour JPEG</label>
+            <input id="backgroundColor" type="color" value="#ffffff">
+          </div>
+        </div>
+        <div class="compress-actions">
+          <button id="chooseBtn" class="compress-btn compress-secondary" type="button">Choisir des images</button>
+          <button id="compressBtn" class="compress-btn compress-primary" type="button">Compresser maintenant</button>
+          <button id="downloadBtn" class="compress-btn compress-secondary" type="button" disabled>Télécharger l'image</button>
+          <button id="copySummaryBtn" class="compress-btn compress-muted" type="button">Copier le résumé</button>
+          <button id="resetBtn" class="compress-btn compress-danger" type="button">Réinitialiser</button>
+        </div>
+        <p id="statusText" class="compress-status" role="status" aria-live="polite">Ajoutez une image pour commencer. Les contrôles restent disponibles avant compression.</p>
+      </section>
+
+      <section class="compress-panel" aria-labelledby="apercu-titre">
+        <h2 id="apercu-titre">Aperçu et économie</h2>
+        <div class="compress-preview-grid">
+          <div class="compress-preview">
+            <div class="compress-preview-head"><span>Original</span><span id="originalSizeLabel">0 Ko</span></div>
+            <div id="originalEmpty" class="compress-preview-empty">Aucun original charge.</div>
+            <img id="originalPreview" alt="Aperçu de l'image originale" hidden>
+          </div>
+          <div class="compress-preview">
+            <div class="compress-preview-head"><span>Compresse</span><span id="compressedSizeLabel">0 Ko</span></div>
+            <div id="compressedEmpty" class="compress-preview-empty">Le résultat apparaitra ici.</div>
+            <canvas id="outputCanvas" width="1200" height="800" aria-label="Aperçu de l'image compressée" hidden></canvas>
+          </div>
+        </div>
+        <div class="compress-metrics" aria-label="Résultats de compression">
+          <div class="compress-metric">
+            <span>Avant</span>
+            <strong id="beforeMetric">0 Ko</strong>
+          </div>
+          <div class="compress-metric">
+            <span>Après</span>
+            <strong id="afterMetric">0 Ko</strong>
+          </div>
+          <div class="compress-metric">
+            <span>Économie</span>
+            <strong id="savingMetric">0 %</strong>
+          </div>
+          <div class="compress-metric">
+            <span>Dimensions</span>
+            <strong id="dimensionMetric">0 x 0</strong>
+          </div>
+        </div>
+        <div class="compress-field full" style="margin-top:14px">
+          <label for="summaryOutput">Résumé du résultat</label>
+          <textarea id="summaryOutput" data-output="compression-result" readonly>Ajoutez une image pour voir le résumé.</textarea>
+        </div>
+      </section>
+    </div>
+
+    <div class="compress-info-stack">
+      <section class="compress-info" data-tool-verification-panel aria-labelledby="methode-titre">
+        <h2 id="methode-titre">Méthode</h2>
+        <ol>
+          <li>Le fichier est charge localement avec FileReader, puis dessine dans un canvas.</li>
+          <li>La largeur maximale redimensionne l'image si elle depasse le seuil choisi.</li>
+          <li>Le format JPEG ou WebP utilise le niveau de qualité du navigateur. PNG reste surtout utile quand vous voulez garder la transparence.</li>
+          <li>Le poids final est estimé depuis le Blob produit par canvas.toBlob avant téléchargement.</li>
+        </ol>
+        <p>Vérification de page : 16 mai 2026. Références de benchmark : compression WebP, PNG et JPEG chez <a href="https://tinypng.com/" rel="noopener" target="_blank">TinyPNG</a>, compression locale dans le navigateur avec <a href="https://github.com/GoogleChromeLabs/squoosh" rel="noopener" target="_blank">Squoosh</a>, redimensionnement et export sur <a href="https://www.canva.com/features/image-resizer/" rel="noopener" target="_blank">Canva</a> et <a href="https://www.adobe.com/express/feature/image/resize" rel="noopener" target="_blank">Adobe Express</a>.</p>
+      </section>
+
+      <section class="compress-info" aria-labelledby="limites-titre">
+        <h2 id="limites-titre">Limites</h2>
+        <p>La compression canvas ne remplace pas les encodeurs avancés de services spécialisés. Le navigateur peut retirer certaines métadonnées, modifier les profils couleur ou ne pas prendre en charge WebP dans tous les contextes. Pour les logos transparents, testez PNG et WebP avant de choisir le fichier final.</p>
+      </section>
+
+      <section class="compress-info" aria-labelledby="confidentialite-titre">
+        <h2 id="confidentialite-titre">Confidentialité et file de lots</h2>
+        <p>Les images restent sur votre appareil pendant la session. La file accepte plusieurs images pour préparer un lot, mais l'interface compresse l'image sélectionnée afin que vous puissiez vérifier chaque résultat avant téléchargement.</p>
+      </section>
+
+      <section class="compress-info" aria-labelledby="liens-titre">
+        <h2 id="liens-titre">Outils proches</h2>
+        <div class="compress-related">
+          <a href="/fr/tools/redimensionner-image/">Redimensionner une image</a>
+          <a href="/fr/tools/convertir-format-image/">Convertir un format d'image</a>
+          <a href="/fr/tools/carte-sociale/">Générer une carte sociale</a>
+          <a href="/fr/tools/image-en-texte/">Image en texte OCR</a>
+          <a href="/fr/tools/contraste-couleurs/">Vérifier le contraste des couleurs</a>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+</main>
+<afro-footer></afro-footer>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const fileInput = document.getElementById('fileInput');
+  const chooseBtn = document.getElementById('chooseBtn');
+  const compressBtn = document.getElementById('compressBtn');
+  const downloadBtn = document.getElementById('downloadBtn');
+  const copySummaryBtn = document.getElementById('copySummaryBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const dropZone = document.getElementById('dropZone');
+  const queueList = document.getElementById('queueList');
+  const qualityRange = document.getElementById('qualityRange');
+  const qualityValue = document.getElementById('qualityValue');
+  const maxWidth = document.getElementById('maxWidth');
+  const formatSelect = document.getElementById('formatSelect');
+  const backgroundColor = document.getElementById('backgroundColor');
+  const statusText = document.getElementById('statusText');
+  const originalPreview = document.getElementById('originalPreview');
+  const originalEmpty = document.getElementById('originalEmpty');
+  const compressedEmpty = document.getElementById('compressedEmpty');
+  const outputCanvas = document.getElementById('outputCanvas');
+  const originalSizeLabel = document.getElementById('originalSizeLabel');
+  const compressedSizeLabel = document.getElementById('compressedSizeLabel');
+  const beforeMetric = document.getElementById('beforeMetric');
+  const afterMetric = document.getElementById('afterMetric');
+  const savingMetric = document.getElementById('savingMetric');
+  const dimensionMetric = document.getElementById('dimensionMetric');
+  const summaryOutput = document.getElementById('summaryOutput');
+  const ctx = outputCanvas.getContext('2d');
+
+  let files = [];
+  let activeIndex = -1;
+  let activeImage = null;
+  let originalUrl = '';
+  let resultBlob = null;
+  let resultUrl = '';
+  let resultName = 'image-compressee.jpg';
+  let debounceTimer = 0;
+
+  function supportsType(type) {
+    const test = document.createElement('canvas');
+    test.width = 1;
+    test.height = 1;
+    return test.toDataURL(type).startsWith('data:' + type);
+  }
+
+  function configureFormats() {
+    Array.from(formatSelect.options).forEach(function (option) {
+      if (option.value === 'image/webp' && !supportsType('image/webp')) {
+        option.disabled = true;
+        option.textContent = 'WebP non pris en charge';
+      }
+    });
+  }
+
+  function formatBytes(bytes) {
+    if (!bytes) return '0 Ko';
+    if (bytes < 1024) return bytes + ' o';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' Ko';
+    return (bytes / (1024 * 1024)).toFixed(2) + ' Mo';
+  }
+
+  function extensionFor(type) {
+    if (type === 'image/webp') return 'webp';
+    if (type === 'image/png') return 'png';
+    return 'jpg';
+  }
+
+  function cleanName(name, ext) {
+    const base = String(name || 'image').replace(/\.[^.]+$/, '').toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '') || 'image';
+    return base + '-compressee.' + ext;
+  }
+
+  function setStatus(message) {
+    statusText.textContent = message;
+  }
+
+  function updateQualityLabel() {
+    qualityValue.textContent = qualityRange.value + ' %';
+  }
+
+  function updateQueue() {
+    queueList.innerHTML = '';
+    if (!files.length) {
+      queueList.textContent = 'Aucun fichier dans la file.';
+      return;
+    }
+    files.forEach(function (file, index) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = index === activeIndex ? 'is-active' : '';
+      button.textContent = file.name + ' - ' + formatBytes(file.size);
+      button.addEventListener('click', function () {
+        loadFileAt(index);
+      });
+      queueList.appendChild(button);
+    });
+  }
+
+  function resetResult() {
+    resultBlob = null;
+    if (resultUrl) URL.revokeObjectURL(resultUrl);
+    resultUrl = '';
+    downloadBtn.disabled = true;
+    compressedEmpty.hidden = false;
+    outputCanvas.hidden = true;
+    compressedSizeLabel.textContent = '0 Ko';
+    afterMetric.textContent = '0 Ko';
+    savingMetric.textContent = '0 %';
+  }
+
+  function setEmptyState() {
+    activeIndex = -1;
+    activeImage = null;
+    if (originalUrl) URL.revokeObjectURL(originalUrl);
+    originalUrl = '';
+    originalPreview.hidden = true;
+    originalPreview.removeAttribute('src');
+    originalEmpty.hidden = false;
+    originalSizeLabel.textContent = '0 Ko';
+    beforeMetric.textContent = '0 Ko';
+    dimensionMetric.textContent = '0 x 0';
+    summaryOutput.value = 'Ajoutez une image pour voir le résumé.';
+    resetResult();
+    updateQueue();
+    setStatus('Ajoutez une image pour commencer. Les controles restent disponibles avant compression.');
+  }
+
+  function addFiles(fileList) {
+    const incoming = Array.from(fileList || []).filter(function (file) {
+      return file.type && file.type.startsWith('image/');
+    });
+    if (!incoming.length) {
+      setStatus('Aucune image lisible detectee.');
+      return;
+    }
+    files = incoming;
+    loadFileAt(0);
+    setStatus(files.length > 1 ? files.length + ' images ajoutées à la file.' : 'Image ajoutée.');
+  }
+
+  function loadFileAt(index) {
+    const file = files[index];
+    if (!file) return;
+    activeIndex = index;
+    updateQueue();
+    resetResult();
+    if (originalUrl) URL.revokeObjectURL(originalUrl);
+    originalUrl = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = function () {
+      activeImage = img;
+      originalPreview.src = originalUrl;
+      originalPreview.hidden = false;
+      originalEmpty.hidden = true;
+      originalSizeLabel.textContent = formatBytes(file.size);
+      beforeMetric.textContent = formatBytes(file.size);
+      dimensionMetric.textContent = img.naturalWidth + ' x ' + img.naturalHeight;
+      compressActive(false);
+    };
+    img.onerror = function () {
+      activeImage = null;
+      setStatus('Image impossible à lire. Essayez un autre fichier.');
+    };
+    img.src = originalUrl;
+  }
+
+  function targetSize() {
+    const limit = Number(maxWidth.value) || 0;
+    const sourceWidth = activeImage ? activeImage.naturalWidth : 0;
+    const sourceHeight = activeImage ? activeImage.naturalHeight : 0;
+    if (!limit || sourceWidth <= limit) return { width: sourceWidth, height: sourceHeight };
+    return { width: limit, height: Math.max(1, Math.round(sourceHeight * (limit / sourceWidth))) };
+  }
+
+  function drawActiveImage() {
+    const size = targetSize();
+    outputCanvas.width = Math.max(1, size.width);
+    outputCanvas.height = Math.max(1, size.height);
+    const type = formatSelect.value;
+    ctx.clearRect(0, 0, outputCanvas.width, outputCanvas.height);
+    if (type === 'image/jpeg') {
+      ctx.fillStyle = backgroundColor.value || '#ffffff';
+      ctx.fillRect(0, 0, outputCanvas.width, outputCanvas.height);
+    }
+    ctx.drawImage(activeImage, 0, 0, outputCanvas.width, outputCanvas.height);
+    dimensionMetric.textContent = outputCanvas.width + ' x ' + outputCanvas.height;
+  }
+
+  function canvasToBlob(type, quality) {
+    return new Promise(function (resolve) {
+      outputCanvas.toBlob(function (blob) {
+        resolve(blob);
+      }, type, quality);
+    });
+  }
+
+  async function compressActive(showDoneStatus) {
+    if (!activeImage || activeIndex < 0) {
+      setStatus('Ajoutez une image avant de compresser.');
+      return;
+    }
+    drawActiveImage();
+    compressedEmpty.hidden = true;
+    outputCanvas.hidden = false;
+    const type = formatSelect.value;
+    const quality = Number(qualityRange.value) / 100;
+    let blob = await canvasToBlob(type, type === 'image/png' ? undefined : quality);
+    if (!blob && type === 'image/webp') {
+      formatSelect.value = 'image/jpeg';
+      blob = await canvasToBlob('image/jpeg', quality);
+      setStatus('WebP indisponible ici. JPEG a ete utilise comme solution de repli.');
+    }
+    if (!blob) {
+      resetResult();
+      setStatus("Compression indisponible dans ce navigateur. L'aperçu reste utilisable pour comparaison.");
+      return;
+    }
+    resultBlob = blob;
+    if (resultUrl) URL.revokeObjectURL(resultUrl);
+    resultUrl = URL.createObjectURL(blob);
+    const activeFile = files[activeIndex];
+    const originalSize = activeFile.size || 0;
+    const saving = originalSize > 0 ? Math.max(-999, Math.round((1 - blob.size / originalSize) * 100)) : 0;
+    const ext = extensionFor(type);
+    resultName = cleanName(activeFile.name, ext);
+    compressedSizeLabel.textContent = formatBytes(blob.size);
+    afterMetric.textContent = formatBytes(blob.size);
+    savingMetric.textContent = saving + ' %';
+    downloadBtn.disabled = false;
+    summaryOutput.value = [
+      'Image : ' + activeFile.name,
+      'Format de sortie : ' + ext.toUpperCase(),
+      'Dimensions : ' + outputCanvas.width + ' x ' + outputCanvas.height + ' px',
+      'Avant : ' + formatBytes(originalSize),
+      'Apres : ' + formatBytes(blob.size),
+      'Economie estimee : ' + saving + ' %',
+      'Qualite : ' + qualityRange.value + ' %',
+      'Fichier : ' + resultName
+    ].join('\n');
+    try {
+      localStorage.setItem('afrotools-compresser-image-settings', JSON.stringify({
+        quality: qualityRange.value,
+        maxWidth: maxWidth.value,
+        format: formatSelect.value,
+        background: backgroundColor.value
+      }));
+    } catch (error) {}
+    if (showDoneStatus) {
+      setStatus('Compression terminée. Vérifiez le rendu, puis téléchargez le fichier.');
+    } else {
+      setStatus('Estimation mise a jour depuis le canvas local.');
+    }
+  }
+
+  function scheduleCompression() {
+    updateQualityLabel();
+    window.clearTimeout(debounceTimer);
+    debounceTimer = window.setTimeout(function () {
+      if (activeImage) compressActive(false);
+    }, 180);
+  }
+
+  function downloadResult() {
+    if (!resultBlob || !resultUrl) {
+      setStatus('Aucune image compressée à télécharger.');
+      return;
+    }
+    const link = document.createElement('a');
+    link.href = resultUrl;
+    link.download = resultName;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setStatus('Téléchargement préparé : ' + resultName);
+  }
+
+  async function copySummary() {
+    const text = summaryOutput.value.trim();
+    if (!text || text === 'Ajoutez une image pour voir le résumé.') {
+      setStatus('Aucun résumé à copier.');
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(text);
+      setStatus('Resume copie.');
+    } catch (error) {
+      summaryOutput.focus();
+      summaryOutput.select();
+      setStatus('Copie automatique bloquée. Sélectionnez le résumé puis copiez-le au clavier.');
+    }
+  }
+
+  function resetAll() {
+    files = [];
+    fileInput.value = '';
+    setEmptyState();
+  }
+
+  function loadSavedSettings() {
+    try {
+      const saved = JSON.parse(localStorage.getItem('afrotools-compresser-image-settings') || '{}');
+      if (saved.quality) qualityRange.value = saved.quality;
+      if (saved.maxWidth) maxWidth.value = saved.maxWidth;
+      if (saved.format && formatSelect.querySelector('[value="' + saved.format + '"]')) formatSelect.value = saved.format;
+      if (saved.background) backgroundColor.value = saved.background;
+    } catch (error) {}
+    updateQualityLabel();
+  }
+
+  chooseBtn.addEventListener('click', function () {
+    fileInput.click();
+  });
+  fileInput.addEventListener('change', function () {
+    addFiles(fileInput.files);
+  });
+  compressBtn.addEventListener('click', function () {
+    compressActive(true);
+  });
+  downloadBtn.addEventListener('click', downloadResult);
+  copySummaryBtn.addEventListener('click', copySummary);
+  resetBtn.addEventListener('click', resetAll);
+  [qualityRange, maxWidth, formatSelect, backgroundColor].forEach(function (control) {
+    control.addEventListener('input', scheduleCompression);
+    control.addEventListener('change', scheduleCompression);
+  });
+
+  ['dragenter', 'dragover'].forEach(function (eventName) {
+    dropZone.addEventListener(eventName, function (event) {
+      event.preventDefault();
+      dropZone.classList.add('is-dragging');
+    });
+  });
+  ['dragleave', 'drop'].forEach(function (eventName) {
+    dropZone.addEventListener(eventName, function (event) {
+      event.preventDefault();
+      dropZone.classList.remove('is-dragging');
+    });
+  });
+  dropZone.addEventListener('drop', function (event) {
+    addFiles(event.dataTransfer && event.dataTransfer.files);
+  });
+  dropZone.addEventListener('keydown', function (event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      fileInput.click();
+    }
+  });
+
+  configureFormats();
+  loadSavedSettings();
+  setEmptyState();
+});
+</script>
+</body>
+</html>

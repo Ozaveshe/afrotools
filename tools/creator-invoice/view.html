@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invoice — CreatorInvoice | AfroTools</title>
+<meta name="robots" content="noindex, follow">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="style.css?v=a40ada5e">
+<meta property="og:url" content="https://afrotools.com/tools/creator-invoice/view">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c4853917">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/lib/dark-mode.js?v=5cb64ba3" defer></script>
+<link rel="canonical" href="https://afrotools.com/tools/creator-invoice/view">
+</head>
+<body class="top-level-page-ui-refresh">
+
+<div class="ci-public">
+  <div class="ci-public-card" id="invoice-card">
+    <div class="ci-preview" id="invoice-preview">
+      <div style="text-align:center;padding:60px 20px;color:#9ca3af">
+        <div style="font-size:2rem;margin-bottom:12px">🧾</div>
+        <div>Loading invoice...</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ci-public-actions" id="invoice-actions" style="display:none">
+    <button type="button" class="ci-public-btn ci-public-btn-dl" onclick="downloadPDF()">📄 Download PDF</button>
+  </div>
+
+  <div class="ci-public-footer">
+    Invoice created with <a href="https://afrotools.com/tools/creator-invoice/">AfroTools CreatorInvoice</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/engines/creator-invoice-engine.js?v=843edc40"></script>
+<script>
+(function() {
+  'use strict';
+
+  var engine = window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.creatorInvoice;
+  var SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
+  var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpwY2xhZ3RnY3pzeWdyZ3p0bHRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0NTg4MzIsImV4cCI6MjA4OTAzNDgzMn0._G-677vi2UTAhcU3t0aquvmd8lnQUBil53ok_Z623F0';
+
+  document.addEventListener('DOMContentLoaded', loadInvoice);
+
+  async function loadInvoice() {
+    var params = new URLSearchParams(location.search);
+    var token = params.get('token') || params.get('id');
+    if (!token) {
+      showError('Invalid invoice link');
+      return;
+    }
+
+    try {
+      var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+      // Try share_token first, then id
+      var invRes;
+      if (token.length === 32) {
+        invRes = await sb.from('creator_invoices').select('*').eq('share_token', token).single();
+      } else {
+        invRes = await sb.from('creator_invoices').select('*').eq('id', token).single();
+      }
+
+      if (!invRes.data) { showError('Invoice not found'); return; }
+      var inv = invRes.data;
+
+      // Fetch line items
+      var itemsRes = await sb.from('creator_invoice_items').select('*').eq('invoice_id', inv.id).order('sort_order');
+      var items = itemsRes.data || [];
+
+      // Track view
+      sb.from('creator_invoices').update({
+        view_count: (inv.view_count || 0) + 1,
+        last_viewed_at: new Date().toISOString(),
+        status: inv.status === 'sent' ? 'viewed' : inv.status
+      }).eq('id', inv.id).then(function() {});
+
+      // Fetch creator profile for display name
+      var creatorName = inv.client_name ? 'Invoice' : 'Invoice';
+      try {
+        var profileRes = await sb.from('profiles').select('display_name,full_name').eq('id', inv.user_id).single();
+        if (profileRes.data) creatorName = profileRes.data.display_name || profileRes.data.full_name || 'Invoice';
+      } catch(e) { /* silent */ }
+
+      renderInvoice(inv, items, creatorName);
+      document.getElementById('invoice-actions').style.display = '';
+      document.title = (inv.invoice_number || 'Invoice') + ' — ' + (inv.client_name || '') + ' | CreatorInvoice';
+
+    } catch(e) {
+      showError('Error loading invoice: ' + (e.message || ''));
+    }
+  }
+
+  function renderInvoice(inv, items, creatorName) {
+    var preview = document.getElementById('invoice-preview');
+    var currency = inv.currency || 'NGN';
+    var fmt = engine ? function(a) { return engine.formatCurrency(a, currency); } : function(a) { return currency + ' ' + (a/100).toLocaleString(); };
+
+    var itemsHtml = items.map(function(item) {
+      return '<tr><td>' + esc(item.description) + '</td><td>' + item.quantity + '</td><td>' + fmt(item.unit_price) + '</td><td>' + fmt(item.total) + '</td></tr>';
+    }).join('');
+
+    var totalsHtml = '<div class="ci-preview-total-row"><span class="ci-preview-total-label">Subtotal</span><span class="ci-preview-total-val">' + fmt(inv.subtotal) + '</span></div>';
+    if (inv.discount_value > 0) {
+      var discAmt = inv.discount_type === 'percentage' ? Math.round(inv.subtotal * inv.discount_value / 100) : Math.round(inv.discount_value * 100);
+      totalsHtml += '<div class="ci-preview-total-row"><span class="ci-preview-total-label">Discount</span><span class="ci-preview-total-val">-' + fmt(discAmt) + '</span></div>';
+    }
+    if (inv.tax_rate > 0) {
+      var taxAmt = Math.round((inv.subtotal - (inv.discount_value > 0 ? (inv.discount_type === 'percentage' ? inv.subtotal * inv.discount_value / 100 : inv.discount_value * 100) : 0)) * inv.tax_rate / 100);
+      totalsHtml += '<div class="ci-preview-total-row"><span class="ci-preview-total-label">VAT (' + inv.tax_rate + '%)</span><span class="ci-preview-total-val">' + fmt(taxAmt) + '</span></div>';
+    }
+    totalsHtml += '<div class="ci-preview-total-row grand"><span>Total</span><span>' + fmt(inv.total) + '</span></div>';
+    if (inv.amount_paid > 0) {
+      totalsHtml += '<div class="ci-preview-total-row"><span class="ci-preview-total-label">Paid</span><span class="ci-preview-total-val" style="color:#10B981">-' + fmt(inv.amount_paid) + '</span></div>';
+      totalsHtml += '<div class="ci-preview-total-row grand"><span>Balance Due</span><span>' + fmt(inv.total - inv.amount_paid) + '</span></div>';
+    }
+
+    preview.innerHTML =
+      '<div class="ci-preview-border"></div>' +
+      '<div class="ci-preview-header">' +
+        '<div class="ci-preview-from"><div class="ci-preview-logo">' + esc(creatorName) + '</div></div>' +
+        '<div class="ci-preview-title">INVOICE</div>' +
+      '</div>' +
+      '<div class="ci-preview-parties">' +
+        '<div><div class="ci-preview-party-label">Bill To</div><div class="ci-preview-party-name">' + esc(inv.client_name || '') + '</div><div class="ci-preview-party-detail">' + esc(inv.client_email || '') + '</div></div>' +
+        '<div><div class="ci-preview-party-label">Invoice Details</div><div class="ci-preview-party-name">' + esc(inv.invoice_number || '') + '</div><div class="ci-preview-party-detail">Issued: ' + fmtDate(inv.issued_date) + '</div><div class="ci-preview-party-detail">Due: ' + fmtDate(inv.due_date) + '</div>' +
+        (inv.status === 'paid' ? '<div style="margin-top:8px"><span class="ci-badge ci-badge-paid">PAID</span></div>' : '') +
+        '</div>' +
+      '</div>' +
+      '<table class="ci-preview-table"><thead><tr><th>Description</th><th>Qty</th><th>Rate</th><th>Total</th></tr></thead><tbody>' + itemsHtml + '</tbody></table>' +
+      '<div class="ci-preview-totals">' + totalsHtml + '</div>' +
+      (inv.notes ? '<div class="ci-preview-notes"><strong>Payment Details</strong><br>' + esc(inv.notes).replace(/\n/g, '<br>') + '</div>' : '') +
+      '<div class="ci-preview-footer">Created with AfroTools CreatorInvoice</div>';
+
+    window._invoiceData = inv;
+    window._invoiceItems = items;
+  }
+
+  window.downloadPDF = async function() {
+    if (engine && engine.generatePDF && window._invoiceData) {
+      try {
+        var blob = await engine.generatePDF(window._invoiceData, window._invoiceItems);
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = (window._invoiceData.invoice_number || 'invoice') + '.pdf';
+        a.click();
+        URL.revokeObjectURL(url);
+      } catch(e) { window.print(); }
+    } else {
+      window.print();
+    }
+  };
+
+  function showError(msg) {
+    document.getElementById('invoice-preview').innerHTML =
+      '<div style="text-align:center;padding:60px 20px;color:#ef4444"><div style="font-size:2rem;margin-bottom:12px">⚠️</div><div>' + esc(msg) + '</div></div>';
+  }
+
+  function fmtDate(d) {
+    if (!d) return '—';
+    return new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  function esc(s) { var d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
+})();
+</script>
+</body>
+</html>

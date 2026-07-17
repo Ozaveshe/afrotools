@@ -1,0 +1,46 @@
+!function() {
+  "use strict";
+  window.AfroTools = window.AfroTools || {}, window.AfroTools.SolarVsGeneratorEngine = {
+    calculate: function(r, e) {
+      var a = ENERGY_DATA.countries[e];
+      if (!a) {
+        return {
+          error: "Country data not available."
+        };
+      }
+      var o = parseFloat(r.dailyHours) || 0, t = parseFloat(r.genKVA) || 0, n = parseFloat(r.dailyKWh) || 0;
+      if (o <= 0) {
+        return {
+          error: "Please enter valid daily hours of backup needed."
+        };
+      }
+      if (t <= 0 && n <= 0) {
+        return {
+          error: "Please enter generator size or daily energy need."
+        };
+      }
+      var l = a.currencySymbol, s = a.usdRate || 1;
+      !n && t && (n = .8 * t * o);
+      var i = .8 * t * .28 * o, u = a.fuel.diesel, c = i * u, d = Math.round(30 * c), y = Math.round(365 * c * 5), g = t > 0 ? 150 * t : 180 * n, h = Math.round(g * s), S = h + y + Math.round(.15 * y), p = n / (.8 * a.solar.avgSunHours) || 1, f = 900 * (p = Math.max(.5, Math.round(2 * p) / 2)), v = Math.round(f * s), m = v + Math.round(.03 * v * 5), L = S - m, b = d > 0 ? (v / (12 * d)).toFixed(1) : ">10", M = L > 0 ? "Solar" : L < -5e4 ? "Generator" : "Similar cost — solar preferred for reliability", k = [];
+      return k.push(a.name + " fuel price: " + l + u.toFixed(2) + "/L — " + (u > 2 ? "high fuel cost makes solar very attractive" : "moderate fuel cost") + "."),
+      k.push("Solar system needed: " + p + "kW (with battery storage for " + o + "hr backup)."),
+      k.push("5-year generator total: " + l + S.toLocaleString() + " vs solar: " + l + m.toLocaleString() + "."),
+      L > 0 && k.push("Solar saves " + l + L.toLocaleString() + " over 5 years. Payback: ~" + b + " years."),
+      k.push(a.solar.avgSunHours + " peak sun hours/day in " + a.name + " — panels operate efficiently year-round."),
+      {
+        genCapexLocal: l + h.toLocaleString(),
+        gen5yrRunning: l + y.toLocaleString(),
+        gen5yrTotal: l + S.toLocaleString(),
+        solarCapexLocal: l + v.toLocaleString(),
+        solar5yrTotal: l + m.toLocaleString(),
+        savings5yr: L > 0 ? l + L.toLocaleString() : "Generator cheaper by " + l + Math.abs(L).toLocaleString(),
+        paybackYrs: b + " yrs",
+        recommendation: M,
+        solarSizeKW: p,
+        observations: k,
+        countryName: a.name,
+        currencySymbol: l
+      };
+    }
+  };
+}();

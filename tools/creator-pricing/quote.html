@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Quoter — CreatorPricing | AfroTools</title>
+  <meta name="description" content="Generate professional project quotes for your creative work. Itemized line items, suggested totals, and forgotten charges.">
+  <meta name="robots" content="noindex, follow">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <link rel="stylesheet" href="style.css?v=84db4066">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+  <script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+  <script src="/engines/creator-pricing-engine.js?v=3e547543"></script>
+<meta property="og:url" content="https://afrotools.com/tools/creator-pricing/quote">
+<link rel="canonical" href="https://afrotools.com/tools/creator-pricing/quote">
+</head>
+<body class="top-level-page-ui-refresh">
+  <afro-navbar></afro-navbar>
+
+  <div class="cp-app">
+    <div class="cp-app-inner" style="padding-top:32px">
+      <a href="app.html" style="font-size:.78rem;color:rgba(255,255,255,.4);text-decoration:none;display:inline-flex;align-items:center;gap:4px;margin-bottom:20px">← Back to Rate Calculator</a>
+      <h1 class="cp-step-title">Quote a Project</h1>
+      <p class="cp-step-sub">Describe the project or fill in details — we'll generate a professional quote with line items and hidden costs you might forget.</p>
+
+      <!-- AI DESCRIPTION -->
+      <div class="cp-field">
+        <label class="cp-label" for="q-desc">Describe the project (AI will analyze)</label>
+        <textarea class="cp-textarea" id="q-desc" placeholder="E.g., 'Client wants a 3-minute corporate video for their new product launch. 2 shooting days in Lagos, drone shots needed, 4 revision rounds, deadline in 2 weeks...'"></textarea>
+      </div>
+
+      <div class="cp-or-divider">OR</div>
+
+      <!-- STRUCTURED INPUT -->
+      <div class="cp-quote-struct">
+        <div class="cp-field">
+          <label class="cp-label" for="q-craft">Craft</label>
+          <select class="cp-select" id="q-craft"></select>
+        </div>
+        <div class="cp-field">
+          <label class="cp-label" for="q-type">Project Type</label>
+          <select class="cp-select" id="q-type"></select>
+        </div>
+        <div class="cp-field">
+          <label class="cp-label" for="q-country">Country</label>
+          <select class="cp-select" id="q-country"></select>
+        </div>
+        <div class="cp-field">
+          <label class="cp-label" for="q-city">City</label>
+          <select class="cp-select" id="q-city">
+            <option value="">Select city</option>
+          </select>
+        </div>
+        <div class="cp-field">
+          <label class="cp-label" for="q-duration">Duration (days)</label>
+          <input type="number" class="cp-input" id="q-duration" value="1" min="0.5" step="0.5">
+        </div>
+        <div class="cp-field">
+          <label class="cp-label" for="q-deliverables">Number of Deliverables</label>
+          <input type="number" class="cp-input" id="q-deliverables" value="1" min="1">
+        </div>
+        <div class="cp-toggle-row">
+          <span class="cp-toggle-label">Travel required?</span>
+          <div class="cp-toggle" id="q-travel"></div>
+        </div>
+        <div class="cp-toggle-row">
+          <span class="cp-toggle-label">Editing / post-production included?</span>
+          <div class="cp-toggle on" id="q-editing"></div>
+        </div>
+        <div class="cp-toggle-row">
+          <span class="cp-toggle-label">Rush job? (less than 1 week)</span>
+          <div class="cp-toggle" id="q-rush"></div>
+        </div>
+      </div>
+
+      <div style="margin-top:24px">
+        <button type="button" class="cp-btn cp-btn-primary" id="generate-quote" style="width:100%;max-width:100%">Generate Quote →</button>
+      </div>
+
+      <!-- QUOTE RESULT -->
+      <div id="quote-result" style="display:none"></div>
+    </div>
+  </div>
+
+  <script>
+  (function() {
+    'use strict';
+    var CP = CreatorPricingEngine;
+
+    // Toggles
+    document.querySelectorAll('.cp-toggle').forEach(function(t) {
+      t.addEventListener('click', function() { t.classList.toggle('on'); });
+    });
+
+    // Populate craft select
+    var craftSelect = document.getElementById('q-craft');
+    CP.getCrafts().forEach(function(c) {
+      var opt = document.createElement('option');
+      opt.value = c.id; opt.textContent = c.icon + ' ' + c.label;
+      craftSelect.appendChild(opt);
+    });
+
+    // Populate project types based on craft
+    var typeSelect = document.getElementById('q-type');
+    function loadTypes(craftId) {
+      typeSelect.innerHTML = '';
+      var types = CP.PROJECT_TYPES[craftId] || CP.PROJECT_TYPES.other;
+      types.forEach(function(t) {
+        var opt = document.createElement('option');
+        opt.value = t.name; opt.textContent = t.name;
+        typeSelect.appendChild(opt);
+      });
+    }
+    craftSelect.addEventListener('change', function() { loadTypes(craftSelect.value); });
+    loadTypes('photography');
+
+    // Populate countries
+    var countrySelect = document.getElementById('q-country');
+    var citySelect = document.getElementById('q-city');
+    var countries = CP.getCountries();
+    Object.keys(countries).sort(function(a, b) { return countries[a].name.localeCompare(countries[b].name); })
+      .forEach(function(code) {
+        var c = countries[code];
+        var opt = document.createElement('option');
+        opt.value = code; opt.textContent = c.flag + ' ' + c.name;
+        countrySelect.appendChild(opt);
+      });
+    countrySelect.value = 'NG';
+    countrySelect.addEventListener('change', function() {
+      citySelect.innerHTML = '<option value="">Select city</option>';
+      CP.getCities(countrySelect.value).forEach(function(city) {
+        var opt = document.createElement('option');
+        opt.value = city; opt.textContent = city;
+        citySelect.appendChild(opt);
+      });
+    });
+    countrySelect.dispatchEvent(new Event('change'));
+
+    // ── GENERATE QUOTE ──
+    document.getElementById('generate-quote').addEventListener('click', function() {
+      var desc = document.getElementById('q-desc').value.trim();
+      var resultDiv = document.getElementById('quote-result');
+
+      // If free-text description, use AI
+      if (desc.length > 20) {
+        generateAIQuote(desc);
+        return;
+      }
+
+      // Structured quote
+      var craft = craftSelect.value;
+      var country = countrySelect.value;
+      var city = citySelect.value;
+      var duration = parseFloat(document.getElementById('q-duration').value) || 1;
+      var deliverables = parseInt(document.getElementById('q-deliverables').value) || 1;
+      var travel = document.getElementById('q-travel').classList.contains('on');
+      var editing = document.getElementById('q-editing').classList.contains('on');
+      var rush = document.getElementById('q-rush').classList.contains('on');
+
+      var rate = CP.calculateRate({ craft: craft, specialty: 'General', country: country, city: city, experience: 'established', currency: countries[country].currency });
+      var dailyRate = rate.daily.median;
+      var sym = rate.symbol;
+      var cur = rate.currency;
+
+      // Build line items
+      var items = [];
+      items.push({ name: typeSelect.value + ' (' + duration + (duration === 1 ? ' day' : ' days') + ')', amount: Math.round(dailyRate * duration) });
+
+      if (deliverables > 1) {
+        var perUnit = Math.round(dailyRate * 0.04 * deliverables);
+        items.push({ name: 'Additional deliverables (×' + deliverables + ')', amount: perUnit });
+      }
+      if (editing) {
+        items.push({ name: 'Editing / post-production', amount: Math.round(dailyRate * duration * 0.4) });
+      }
+      if (travel) {
+        items.push({ name: 'Travel & logistics', amount: Math.round(dailyRate * 0.25) });
+      }
+      if (rush) {
+        items.push({ name: 'Rush fee (50% surcharge)', amount: Math.round(dailyRate * duration * 0.5) });
+      }
+
+      var subtotal = items.reduce(function(s, i) { return s + i.amount; }, 0);
+      var recommended = CP.calculateRate({ craft: craft, specialty: 'General', country: country, city: city, experience: 'expert', currency: cur }).daily.median * duration;
+      var premium = CP.calculateRate({ craft: craft, specialty: 'General', country: country, city: city, experience: 'master', currency: cur }).daily.median * duration;
+
+      var forgotten = [
+        'Pre-production planning & meetings',
+        'Travel time (not just transport cost)',
+        'Raw/source file delivery',
+        'Commercial usage rights',
+        'Revision rounds beyond 2',
+        'Equipment rental / insurance'
+      ];
+
+      var html = '<div class="cp-quote-result">' +
+        '<div class="cp-section-title">Your Quote</div>' +
+        '<div class="cp-line-items">';
+      items.forEach(function(i) {
+        html += '<div class="cp-line-item"><span>' + i.name + '</span><span>' + CP.formatRate(i.amount, cur) + '</span></div>';
+      });
+      html += '</div>' +
+        '<div class="cp-line-total"><span>Subtotal (Minimum)</span><span>' + CP.formatRate(subtotal, cur) + '</span></div>' +
+        '<div class="cp-line-total" style="border-color:rgba(255,255,255,.15)"><span>Recommended</span><span style="color:var(--cp-primary)">' + CP.formatRate(Math.round(recommended), cur) + '</span></div>' +
+        '<div class="cp-line-total" style="border-color:rgba(255,255,255,.1)"><span>Premium</span><span style="color:#FF9A6B">' + CP.formatRate(Math.round(premium), cur) + '</span></div>';
+
+      html += '<div class="cp-forgotten">' +
+        '<div class="cp-forgotten-title">Don\'t forget to charge for:</div>' +
+        '<ul class="cp-forgotten-list">';
+      forgotten.forEach(function(f) { html += '<li>' + f + '</li>'; });
+      html += '</ul></div>';
+
+      // Export buttons
+      html += '<div class="cp-share-btns" style="margin-top:16px">' +
+        '<button type="button" class="cp-share-btn cp-share-wa" id="quote-wa">Send via WhatsApp</button>' +
+        '<button type="button" class="cp-share-btn cp-share-copy" id="quote-copy">Copy as Text</button></div>';
+      html += '</div>';
+
+      resultDiv.innerHTML = html;
+      resultDiv.style.display = '';
+      resultDiv.scrollIntoView({ behavior: 'smooth' });
+
+      // WhatsApp share
+      document.getElementById('quote-wa').addEventListener('click', function() {
+        var text = 'PROJECT QUOTE\n' + typeSelect.value + '\n\n';
+        items.forEach(function(i) { text += i.name + ': ' + CP.formatRate(i.amount, cur) + '\n'; });
+        text += '\nSubtotal: ' + CP.formatRate(subtotal, cur) + '\nRecommended: ' + CP.formatRate(Math.round(recommended), cur) + '\n\nGenerated on AfroTools CreatorPricing';
+        window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+      });
+
+      document.getElementById('quote-copy').addEventListener('click', function() {
+        var text = 'PROJECT QUOTE\n' + typeSelect.value + '\n\n';
+        items.forEach(function(i) { text += i.name + ': ' + CP.formatRate(i.amount, cur) + '\n'; });
+        text += '\nSubtotal: ' + CP.formatRate(subtotal, cur) + '\nRecommended: ' + CP.formatRate(Math.round(recommended), cur);
+        navigator.clipboard.writeText(text).then(function() {
+          var btn = document.getElementById('quote-copy');
+          btn.textContent = 'Copied!';
+          setTimeout(function() { btn.textContent = 'Copy as Text'; }, 2000);
+        });
+      });
+    });
+
+    // ── AI QUOTE ──
+    function generateAIQuote(desc) {
+      var resultDiv = document.getElementById('quote-result');
+      resultDiv.style.display = '';
+      resultDiv.innerHTML = '<div class="cp-quote-result"><div class="cp-section-title">Generating Quote...</div><div class="cp-skeleton" style="height:200px;margin-top:12px"></div></div>';
+      resultDiv.scrollIntoView({ behavior: 'smooth' });
+
+      var country = countrySelect.value;
+      var city = citySelect.value || countries[country].name;
+      var craft = craftSelect.value;
+      var cur = countries[country].currency;
+
+      fetch('/.netlify/functions/ai-advisor', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          tool: 'creator-pricing',
+          system: 'You are a project pricing expert for African creatives. The user is a ' + craft + ' professional in ' + city + ', ' + country + '. Currency: ' + cur + '. Analyze the project description and provide: 1) Itemized line items with prices in ' + cur + ', 2) Suggested total (minimum, recommended, premium), 3) Things they should charge for but probably forgot, 4) Any red flags in the brief. Be specific with numbers.',
+          messages: [{ role: 'user', content: 'Quote this project:\n\n' + desc }],
+          maxTokens: 800
+        })
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var reply = data.reply || data.content || 'Could not generate quote. Please try the structured form instead.';
+        resultDiv.innerHTML = '<div class="cp-quote-result">' +
+          '<div class="cp-section-title">AI-Generated Quote</div>' +
+          '<div style="font-size:.85rem;line-height:1.8;color:rgba(255,255,255,.8);white-space:pre-wrap">' + reply.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</div>' +
+          '<div class="cp-share-btns" style="margin-top:16px">' +
+            '<button type="button" class="cp-share-btn cp-share-wa" onclick="window.open(\'https://wa.me/?text=\'+encodeURIComponent(document.querySelector(\'.cp-quote-result div:nth-child(2)\').textContent),\'_blank\')">Send via WhatsApp</button>' +
+            '<button type="button" class="cp-share-btn cp-share-copy" onclick="navigator.clipboard.writeText(document.querySelector(\'.cp-quote-result div:nth-child(2)\').textContent).then(function(){this.textContent=\'Copied!\'}.bind(this))">Copy as Text</button>' +
+          '</div></div>';
+      })
+      .catch(function() {
+        resultDiv.innerHTML = '<div class="cp-quote-result"><div style="color:var(--cp-primary);font-size:.85rem">Could not reach the AI advisor. Please try the structured form instead.</div></div>';
+      });
+    }
+  })();
+  </script>
+</body>
+</html>

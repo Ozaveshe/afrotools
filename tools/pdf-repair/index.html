@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF Repair - Rebuild Damaged PDF Files | AfroTools</title>
+<meta name="description" content="Repair damaged PDFs in your browser with qpdf rebuild, pdf-lib normalization, raster salvage fallback, diagnostics, batch ZIP export, and repair reports.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="PDF Repair Tool | AfroTools">
+<meta property="og:description" content="Repair damaged PDFs with local diagnostics, qpdf rebuild, fallback salvage, batch ZIP export, and downloadable reports.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/pdf-repair/">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/pdf-repair.webp">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PDF Repair Tool | AfroTools">
+<meta name="twitter:description" content="Repair damaged PDFs locally with diagnostics, fallback salvage, and ZIP/report export.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "PDF Repair",
+  "description": "Repair damaged PDFs in the browser with local diagnostics, qpdf structural rebuild, pdf-lib normalization, raster salvage fallback, batch ZIP export, and repair reports.",
+  "url": "https://afrotools.com/tools/pdf-repair/",
+  "inLanguage": "en",
+  "applicationCategory": "WebApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/pdf-repair.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "PDF Repair",
+  "url": "https://afrotools.com/tools/pdf-repair/",
+  "description": "Repair damaged PDFs in the browser with local diagnostics, qpdf structural rebuild, fallback salvage, ZIP export, and downloadable reports.",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/pdf-repair.webp"
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+  :root {
+    --afro-green: var(--color-primary);
+    --afro-dark: #0f1419;
+    --afro-light: #f5f7fa;
+  }
+
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.3);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--afro-green);
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    color: var(--afro-green);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 6px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+  }
+
+  .b-green {
+    background: rgba(0, 113, 227, 0.18);
+    color: var(--color-primary);
+    border: 1px solid rgba(0, 113, 227, 0.38);
+  }
+
+  .tool-main {
+    padding: 28px 0 72px;
+  }
+
+  .tool-main-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 22px;
+    align-items: start;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .card + .card {
+    margin-top: 18px;
+  }
+
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f9fafb;
+  }
+
+  .card-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #374151;
+  }
+
+  .card-body {
+    padding: 22px;
+  }
+
+  .file-input-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+  }
+
+  .file-input-wrapper input[type="file"] {
+    position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;
+  }
+
+  .file-input-label {
+    display: block;
+    padding: 28px 20px;
+    background: #EFF6FF;
+    border: 2px dashed #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+    color: #334155;
+    font-weight: 600;
+    min-height: 44px;
+  }
+
+  .file-input-label:hover {
+    border-color: var(--afro-green);
+    background: #EFF6FF;
+  }
+
+  .file-input-label.dragover {
+    border-color: var(--afro-green);
+    background: rgba(0, 113, 227, 0.1);
+  }
+
+  .file-info {
+    display: none;
+    margin-top: 14px;
+    padding: 12px 14px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 7px;
+  }
+
+  .file-info.on {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .file-info-name {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #1e293b;
+  }
+
+  .file-info-size {
+    font-size: 0.72rem;
+    color: #9ca3af;
+    font-weight: 600;
+  }
+
+  .queue-list {
+    margin-top: 14px;
+    display: grid;
+    gap: 8px;
+  }
+
+  .queue-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    align-items: center;
+    padding: 11px 12px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+  }
+
+  .queue-name {
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: #1e293b;
+    word-break: break-word;
+  }
+
+  .queue-meta {
+    margin-top: 3px;
+    font-size: 0.7rem;
+    color: #64748b;
+    font-weight: 700;
+  }
+
+  .queue-state {
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: #EFF6FF;
+    color: #1e40af;
+    font-size: 0.68rem;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+
+  .repair-options {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .field-row label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #64748b;
+  }
+
+  .field-row input,
+  .field-row select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border: 1.5px solid #dbeafe;
+    border-radius: 7px;
+    background: #EFF6FF;
+    color: #0f172a;
+    font: 700 0.82rem 'DM Sans', sans-serif;
+    outline: none;
+    min-height: 44px;
+  }
+
+  .field-row input:focus,
+  .field-row select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+  }
+
+  .field-note {
+    display: block;
+    margin-top: 5px;
+    color: #64748b;
+    font-size: 0.68rem;
+    line-height: 1.45;
+  }
+
+  .btn-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    align-items: center;
+    margin-top: 16px;
+  }
+
+  .calc-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    min-height: 44px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .ghost-btn {
+    padding: 13px 16px;
+    background: #fff;
+    color: #0f172a;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 8px;
+    min-height: 44px;
+    font-size: 0.82rem;
+    font-weight: 800;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .ghost-btn:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  .calc-btn:hover {
+    background: #0059B3;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 113, 227, 0.3);
+  }
+
+  .calc-btn:disabled {
+    background: #93c5fd;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 14px;
+    display: none;
+  }
+
+  .progress-bar.on {
+    display: block;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--color-primary);
+    width: 0%;
+    transition: width 0.3s;
+    border-radius: 3px;
+  }
+
+  .progress-text {
+    font-size: 0.72rem;
+    color: #6b7280;
+    margin-top: 6px;
+    text-align: center;
+    display: none;
+  }
+
+  .progress-text.on {
+    display: block;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .result-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+    display: none;
+  }
+
+  .result-card.on {
+    display: block;
+  }
+
+  .report-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 0.82rem;
+  }
+
+  .report-row:last-child {
+    border-bottom: none;
+  }
+
+  .report-label {
+    font-weight: 600;
+    color: #374151;
+  }
+
+  .report-value {
+    font-weight: 700;
+    color: #1e293b;
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  .status-success {
+    background: rgba(16, 185, 129, 0.15);
+    color: #065f46;
+  }
+
+  .status-partial {
+    background: rgba(245, 166, 35, 0.15);
+    color: #92400e;
+  }
+
+  .status-failed {
+    background: rgba(239, 68, 68, 0.15);
+    color: #991b1b;
+  }
+
+  .action-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .act-btn {
+    padding: 11px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 6px;
+    min-height: 44px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-family: 'DM Sans', sans-serif;
+    border: none;
+  }
+
+  .act-download {
+    background: rgba(0, 113, 227, 0.1);
+    border: 1.5px solid rgba(0, 113, 227, 0.35);
+    color: #1e40af;
+  }
+
+  .act-download:hover {
+    background: rgba(0, 113, 227, 0.2);
+  }
+
+  .act-secondary {
+    background: #fff;
+    border: 1.5px solid #cbd5e1;
+    color: #0f172a;
+  }
+
+  .act-secondary:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  .repair-log {
+    margin-top: 12px;
+    padding: 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #f8fafc;
+    color: #475569;
+    font-size: 0.74rem;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    max-height: 180px;
+    overflow: auto;
+  }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .summary-stat {
+    padding: 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #f8fafc;
+  }
+
+  .summary-stat strong {
+    display: block;
+    color: #0f172a;
+    font-size: 1rem;
+  }
+
+  .summary-stat span {
+    display: block;
+    margin-top: 2px;
+    color: #64748b;
+    font-size: 0.64rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .info-card {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px;
+  }
+
+  .info-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #374151;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .info-text {
+    font-size: 0.8rem;
+    color: #334155;
+    line-height: 1.6;
+  }
+
+  .info-text li {
+    margin-bottom: 8px;
+  }
+
+  /* FAQs */
+  .seo-section {
+    max-width: 1200px;
+    margin: 0 auto 60px;
+    padding: 0 24px;
+  }
+
+  .seo-section h2 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 24px;
+  }
+
+  .faq-item {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+
+  .faq-q {
+    width: 100%;
+    padding: 14px 18px;
+    background: #f9fafb;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #1e293b;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'DM Sans', sans-serif;
+    min-height: 44px;
+  }
+
+  .faq-q::after {
+    content: '+';
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    transition: transform 0.2s;
+  }
+
+  .faq-q.open::after {
+    content: '-';
+  }
+
+  .faq-a {
+    padding: 0 18px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s, padding 0.3s;
+    font-size: 0.82rem;
+    color: #374151;
+    line-height: 1.7;
+  }
+
+  .faq-a.open {
+    padding: 14px 18px;
+    max-height: 400px;
+  }
+
+  .file-input-label:focus-visible,
+  .field-row input:focus-visible,
+  .field-row select:focus-visible,
+  .calc-btn:focus-visible,
+  .ghost-btn:focus-visible,
+  .act-btn:focus-visible,
+  .faq-q:focus-visible {
+    outline: 3px solid rgba(0, 113, 227, 0.32);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .file-input-label,
+    .calc-btn,
+    .ghost-btn,
+    .act-btn,
+    .faq-q::after,
+    .faq-a,
+    .progress-fill {
+      transition: none !important;
+      animation: none !important;
+    }
+
+    .calc-btn:hover {
+      transform: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .tool-main-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .repair-options,
+    .btn-grid,
+    .summary-grid,
+    .queue-row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-repair.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "PDF Repair Tool",
+      "item": "https://afrotools.com/tools/pdf-repair/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-05-01">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What types of PDF corruption can this tool fix?","acceptedAnswer":{"@type":"Answer","text":"It can often recover PDFs with extra bytes before the PDF header, broken cross-reference tables, incomplete trailers, missing EOF markers, and fragile object streams. It works best when the page content still exists somewhere inside the file."}},{"@type":"Question","name":"Is my PDF uploaded to a server?","acceptedAnswer":{"@type":"Answer","text":"No. The entire repair process runs locally in your browser using JavaScript. Your file never leaves your device and no data is sent to any server. This ensures complete privacy for sensitive documents."}},{"@type":"Question","name":"What does raster salvage mean?","acceptedAnswer":{"@type":"Answer","text":"Raster salvage renders each readable page as an image and places those images into a new PDF. It can rescue a document that still displays, but the resulting file is image-based and may lose selectable text, links, forms, and tags."}},{"@type":"Question","name":"Why did the repair fail?","acceptedAnswer":{"@type":"Answer","text":"Repair can fail when the file is not a PDF, the page data is missing, the file is heavily truncated, or an encrypted document needs a password that was not provided. Try re-downloading the original file if possible."}},{"@type":"Question","name":"Will the repaired PDF look identical to the original?","acceptedAnswer":{"@type":"Answer","text":"Structural rebuilds should preserve recoverable content closely. Raster salvage prioritizes readability over editability, so the page appearance is preserved as images while selectable text and form behavior may not survive."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/pdf-repair/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-repair/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/reparer-pdf/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kurekebisha-pdf/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-repair/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">AfroTools</a> / <span>Tools</span>
+    </div>
+    <h1>PDF <em>Repair</em></h1>
+    <p class="hero-sub">Rebuild damaged PDFs locally with qpdf, normalize valid-but-fragile files, and fall back to image-based page salvage when structure repair cannot recover the document.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">No Upload</span>
+      <span class="badge b-green">Client-side</span>
+      <span class="badge b-green">Batch ZIP</span>
+      <span class="badge b-green">Diagnostics</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <!-- Upload Card -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Upload PDF</span>
+        </div>
+        <div class="card-body">
+          <div class="file-input-wrapper">
+            <input type="file" id="pdfFileInput" accept=".pdf,application/pdf" multiple>
+            <label for="pdfFileInput" class="file-input-label" id="dropLabel">
+              Drop damaged PDFs here or click to select
+              <div style="font-size:0.72rem;margin-top:4px;opacity:.65">Accepts one or many .pdf files</div>
+            </label>
+          </div>
+
+          <div class="file-info" id="fileInfo">
+            <span class="file-info-name" id="fileName"></span>
+            <span class="file-info-size" id="fileSize"></span>
+          </div>
+          <div class="queue-list" id="queueList"></div>
+
+          <div class="repair-options">
+            <div class="field-row">
+              <label for="repairMode">Repair strategy</label>
+              <select id="repairMode">
+                <option value="auto">Auto: qpdf, normalize, then salvage</option>
+                <option value="qpdf">Structural rebuild with qpdf</option>
+                <option value="normalize">Normalize with pdf-lib</option>
+                <option value="raster">Raster salvage pages</option>
+              </select>
+            </div>
+            <div class="field-row">
+              <label for="rasterScale">Salvage quality</label>
+              <select id="rasterScale">
+                <option value="1.25">Balanced</option>
+                <option value="1.6">High</option>
+                <option value="1">Small file</option>
+              </select>
+            </div>
+            <div class="field-row">
+              <label for="openPassword">Password</label>
+              <input id="openPassword" type="password" autocomplete="off" placeholder="Optional open password">
+              <span class="field-note">Used only inside your browser for encrypted PDFs.</span>
+            </div>
+            <div class="field-row">
+              <label for="reportFormat">Report</label>
+              <select id="reportFormat">
+                <option value="json">Detailed JSON</option>
+                <option value="csv">Spreadsheet CSV</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="btn-grid">
+            <button type="button" class="calc-btn" id="repairBtn" disabled>Repair PDF</button>
+            <button class="ghost-btn" id="clearBtn" type="button" disabled>Clear</button>
+          </div>
+
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <div class="progress-text" id="progressText" role="status" aria-live="polite">Analyzing file...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Result Card -->
+      <div class="result-card" id="resultCard">
+        <div class="card-head">
+          <span class="card-title">Repair Report</span>
+          <span class="status-badge" id="statusBadge"></span>
+        </div>
+        <div class="card-body">
+          <div id="reportRows"></div>
+          <div id="errorList" style="display:none; margin-top:12px;">
+            <div style="font-size:0.72rem;font-weight:700;color:#991b1b;text-transform:uppercase;margin-bottom:6px;">Errors Found</div>
+            <div id="errorListInner" style="font-size:0.78rem;color:#6b7280;line-height:1.6;"></div>
+          </div>
+          <div class="action-row" id="actionRow" style="display:none;">
+            <button type="button" class="act-btn act-download" id="downloadBtn">Download Repaired PDF</button>
+            <button type="button" class="act-btn act-download" id="downloadZipBtn" style="display:none">Download ZIP</button>
+            <button type="button" class="act-btn act-secondary" id="downloadReportBtn">Download Report</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Card -->
+      <div class="info-card">
+        <div class="info-title">How PDF Repair Works</div>
+        <div class="info-text">
+          This tool attempts repair in layers, starting with structural repair and ending with visual page salvage if the file is still readable.
+          <ul style="margin-top:10px;padding-left:16px;">
+            <li>Checks headers, xref, trailer, EOF marker, encryption, and object hints</li>
+            <li>Uses local qpdf/WASM to rebuild damaged structure</li>
+            <li>Normalizes valid PDFs with compatibility-friendly output</li>
+            <li>Can rasterize recoverable pages into a fresh PDF when structure repair fails</li>
+          </ul>
+          <div style="margin-top:12px;padding:10px;background:#fff;border:1px solid #e5e7eb;border-radius:6px;font-size:0.75rem;">
+            <strong>Works best on:</strong> damaged headers, broken cross-reference tables, incomplete downloads, extra bytes before the PDF header, and PDFs that open in browsers but fail in stricter readers.
+          </div>
+        </div>
+      </div>
+
+      <!-- Privacy Card -->
+      <div class="info-card">
+        <div class="info-title">Privacy</div>
+        <div class="info-text">
+          Your file never leaves your device. All processing happens locally in your browser using JavaScript. No data is uploaded to any server.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section style="max-width:900px;margin:32px auto;padding:0 20px;">
+  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
+    <p>PDF Repair attempts a local recovery path for files that fail in stricter readers. It checks the header, EOF marker, xref and trailer hints, encryption markers, and page recovery signals, then tries qpdf rebuild, pdf-lib normalization, and optional raster-page salvage.</p>
+  </div>
+</section>
+<!-- FAQs -->
+<div class="seo-section">
+  <h2>Frequently Asked Questions</h2>
+
+  <div class="faq-item">
+    <button type="button" class="faq-q">What types of PDF corruption can this tool fix?</button>
+    <div class="faq-a">It can often recover PDFs with extra bytes before the PDF header, broken cross-reference tables, incomplete trailers, missing EOF markers, and fragile object streams. It works best when the page content still exists somewhere inside the file.</div>
+  </div>
+
+  <div class="faq-item">
+    <button type="button" class="faq-q">Is my PDF uploaded to a server?</button>
+    <div class="faq-a">No. The entire repair process runs locally in your browser using JavaScript. Your file never leaves your device and no data is sent to any server. This ensures complete privacy for sensitive documents.</div>
+  </div>
+
+  <div class="faq-item">
+    <button type="button" class="faq-q">What does raster salvage mean?</button>
+    <div class="faq-a">Raster salvage renders each readable page as an image and places those images into a new PDF. It can rescue a document that still displays, but the resulting file is image-based and may lose selectable text, links, forms, and tags.</div>
+  </div>
+
+  <div class="faq-item">
+    <button type="button" class="faq-q">Why did the repair fail?</button>
+    <div class="faq-a">Repair can fail when the file is not a PDF, the page data is missing, the file is heavily truncated, or an encrypted document needs a password that was not provided. Try re-downloading the original file if possible.</div>
+  </div>
+
+  <div class="faq-item">
+    <button type="button" class="faq-q">Will the repaired PDF look identical to the original?</button>
+    <div class="faq-a">Structural rebuilds should preserve recoverable content closely. Raster salvage prioritizes readability over editability, so the page appearance is preserved as images while selectable text and form behavior may not survive.</div>
+  </div>
+</div>
+
+<afro-related-tools category="document-pdf" current="pdf-repair" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/cv-builder/" data-related-tool data-id="cv-builder" data-name="CV / Resume Builder" data-category="document-pdf" data-icon="CR" data-desc="Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.">CV / Resume Builder</a></li><li><a href="/tools/invoice-generator/" data-related-tool data-id="invoice-generator" data-name="Invoice Generator" data-category="document-pdf" data-icon="IG" data-desc="Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.">Invoice Generator</a></li><li><a href="/tools/pdf-editor/" data-related-tool data-id="pdf-editor" data-name="PDF Editor" data-category="document-pdf" data-icon="PE" data-desc="Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt">PDF Editor</a></li><li><a href="/tools/pdf-merge-split/" data-related-tool data-id="pdf-merge-split" data-name="PDF Merge &amp; Split" data-category="document-pdf" data-icon="PM" data-desc="Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only">PDF Merge &amp; Split</a></li><li><a href="/tools/pdf-workspace/" data-related-tool data-id="pdf-workspace" data-name="PDF Workspace" data-category="document-pdf" data-icon="PW" data-desc="Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.">PDF Workspace</a></li><li><a href="/tools/pdf-compress/" data-related-tool data-id="pdf-compress" data-name="PDF Compressor" data-category="document-pdf" data-icon="PC" data-desc="Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.">PDF Compressor</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+<script src="/assets/js/components/related-tools.js?v=4123e336" defer></script>
+<script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
+<script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
+<script src="/assets/js/lib/pdf-utils.js?v=dd2ba85f"></script>
+<script src="/assets/vendor/pdf-lib/pdf-lib.min.js?v=dec481b1"></script>
+<script src="/assets/vendor/qpdf/qpdf.js?v=5842eaa2"></script>
+<script src="/assets/vendor/jszip/jszip.min.js?v=b5d02b3f"></script>
+<script src="/assets/js/pages/pdf-repair.js?v=e716725e"></script>
+
+<script type="application/x-afrotools-legacy-disabled">
+(function() {
+  'use strict';
+
+  function getPDFDocument() {
+    if (!window.PDFLib) throw new Error('PDF library failed to load. Please refresh the page.');
+    return window.PDFLib.PDFDocument;
+  }
+
+  let currentFile = null;
+  let repairedBytes = null;
+
+  // DOM refs
+  const pdfFileInput = document.getElementById('pdfFileInput');
+  const dropLabel = document.getElementById('dropLabel');
+  const fileInfo = document.getElementById('fileInfo');
+  const fileName = document.getElementById('fileName');
+  const fileSize = document.getElementById('fileSize');
+  const repairBtn = document.getElementById('repairBtn');
+  const progressBar = document.getElementById('progressBar');
+  const progressFill = document.getElementById('progressFill');
+  const progressText = document.getElementById('progressText');
+  const resultCard = document.getElementById('resultCard');
+  const statusBadge = document.getElementById('statusBadge');
+  const reportRows = document.getElementById('reportRows');
+  const errorList = document.getElementById('errorList');
+  const errorListInner = document.getElementById('errorListInner');
+  const actionRow = document.getElementById('actionRow');
+  const downloadBtn = document.getElementById('downloadBtn');
+
+  function formatSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+  }
+
+  function setProgress(pct, text) {
+    progressBar.classList.add('on');
+    progressText.classList.add('on');
+    progressFill.style.width = pct + '%';
+    if (text) progressText.textContent = text;
+  }
+
+  function hideProgress() {
+    progressBar.classList.remove('on');
+    progressText.classList.remove('on');
+    progressFill.style.width = '0%';
+  }
+
+  function handleFile(file) {
+    if (!file || !file.name.toLowerCase().endsWith('.pdf')) return;
+    currentFile = file;
+    repairedBytes = null;
+    fileName.textContent = file.name;
+    fileSize.textContent = formatSize(file.size);
+    fileInfo.classList.add('on');
+    repairBtn.disabled = false;
+    resultCard.classList.remove('on');
+    hideProgress();
+  }
+
+  // File input
+  pdfFileInput.addEventListener('change', function(e) {
+    if (e.target.files.length > 0) handleFile(e.target.files[0]);
+  });
+
+  // Drag & drop
+  dropLabel.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    dropLabel.classList.add('dragover');
+  });
+
+  dropLabel.addEventListener('dragleave', function() {
+    dropLabel.classList.remove('dragover');
+  });
+
+  dropLabel.addEventListener('drop', function(e) {
+    e.preventDefault();
+    dropLabel.classList.remove('dragover');
+    const files = Array.from(e.dataTransfer.files).filter(function(f) {
+      return f.name.toLowerCase().endsWith('.pdf');
+    });
+    if (files.length > 0) handleFile(files[0]);
+  });
+
+  // Repair
+  repairBtn.addEventListener('click', async function() {
+    if (!currentFile) return;
+
+    repairBtn.disabled = true;
+    resultCard.classList.remove('on');
+    actionRow.style.display = 'none';
+    errorList.style.display = 'none';
+    repairedBytes = null;
+
+    const errors = [];
+    let status = 'failed';
+    let pageCount = 0;
+    let repairedSize = 0;
+    const originalSize = currentFile.size;
+
+    try {
+      setProgress(10, 'Reading file...');
+      const bytes = await currentFile.arrayBuffer();
+      const uint8 = new Uint8Array(bytes);
+
+      setProgress(30, 'Attempting to load PDF structure...');
+
+      let pdfDoc = null;
+
+      // Attempt 1: standard load with lenient options
+      try {
+        pdfDoc = await getPDFDocument().load(uint8, {
+          ignoreEncryption: true,
+          updateMetadata: false
+        });
+      } catch (err1) {
+        errors.push('Standard load failed: ' + err1.message);
+        setProgress(50, 'Trying alternative repair strategy...');
+
+        // Attempt 2: try with capNumbers + parseSpeed for lenient parsing
+        try {
+          pdfDoc = await getPDFDocument().load(uint8, {
+            ignoreEncryption: true,
+            updateMetadata: false,
+            capNumbers: true
+          });
+        } catch (err2) {
+          errors.push('Lenient load failed: ' + err2.message);
+
+          // Attempt 3: try to find a valid PDF header and trim garbage bytes
+          try {
+            var headerIdx = 0;
+            for (var bi = 0; bi < Math.min(uint8.length, 1024); bi++) {
+              if (uint8[bi] === 0x25 && uint8[bi+1] === 0x50 && uint8[bi+2] === 0x44 && uint8[bi+3] === 0x46) {
+                headerIdx = bi; break;
+              }
+            }
+            if (headerIdx > 0) {
+              var trimmed = uint8.slice(headerIdx);
+              pdfDoc = await getPDFDocument().load(trimmed, { ignoreEncryption: true, updateMetadata: false, capNumbers: true });
+              errors.push('Recovered by trimming ' + headerIdx + ' corrupt bytes from header');
+            }
+          } catch (err3) {
+            errors.push('Header recovery failed: ' + err3.message);
+          }
+        }
+      }
+
+      if (pdfDoc) {
+        setProgress(70, 'Rebuilding PDF...');
+
+        pageCount = pdfDoc.getPageCount();
+
+        // Re-save with clean structure (no object streams for maximum compatibility)
+        setProgress(85, 'Saving repaired copy...');
+        const savedBytes = await pdfDoc.save({ useObjectStreams: false });
+        repairedBytes = savedBytes;
+        repairedSize = savedBytes.length;
+
+        status = errors.length > 0 ? 'partial' : 'success';
+      } else {
+        status = 'failed';
+        errors.push('Could not parse any valid PDF structure from this file.');
+      }
+
+      setProgress(100, 'Done');
+    } catch (err) {
+      status = 'failed';
+      errors.push(err.message);
+      setProgress(100, 'Repair failed');
+    }
+
+    // Build report
+    setTimeout(function() {
+      hideProgress();
+      resultCard.classList.add('on');
+
+      // Status badge
+      statusBadge.textContent = status === 'success' ? 'Repaired' : status === 'partial' ? 'Partial Repair' : 'Failed';
+      statusBadge.className = 'status-badge ' + (status === 'success' ? 'status-success' : status === 'partial' ? 'status-partial' : 'status-failed');
+
+      // Report rows
+      let rows = '';
+      rows += buildRow('Original Size', formatSize(originalSize));
+      if (repairedBytes) {
+        rows += buildRow('Repaired Size', formatSize(repairedSize));
+        const diff = repairedSize - originalSize;
+        const diffLabel = diff > 0 ? '+' + formatSize(diff) : (diff < 0 ? '-' + formatSize(Math.abs(diff)) : 'No change');
+        rows += buildRow('Size Change', diffLabel);
+        rows += buildRow('Pages Recovered', pageCount);
+      }
+      rows += buildRow('Status', status.charAt(0).toUpperCase() + status.slice(1));
+      reportRows.innerHTML = rows;
+
+      // Errors
+      if (errors.length > 0) {
+        errorList.style.display = 'block';
+        errorListInner.innerHTML = errors.map(function(e) {
+          return '<div style="padding:4px 0;border-bottom:1px solid #f3f4f6;">' + escapeHtml(e) + '</div>';
+        }).join('');
+      }
+
+      // Download button
+      if (repairedBytes) {
+        actionRow.style.display = 'grid';
+      }
+
+      repairBtn.disabled = false;
+    }, 400);
+  });
+
+  function buildRow(label, value) {
+    return '<div class="report-row"><span class="report-label">' + escapeHtml(label) + '</span><span class="report-value">' + escapeHtml(String(value)) + '</span></div>';
+  }
+
+  function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  // Download
+  function doActualDownload() {
+    if (!repairedBytes) return;
+    var blob = new Blob([repairedBytes], { type: 'application/pdf' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = currentFile.name.replace(/\.pdf$/i, '_repaired.pdf');
+    a.click();
+    setTimeout(function() { URL.revokeObjectURL(url); }, 5000);
+  }
+
+  downloadBtn.addEventListener('click', function() {
+    var gate = document.querySelector('email-gate-modal');
+    if (gate) { gate.show(doActualDownload); } else { doActualDownload(); }
+  });
+
+  // FAQ toggles
+  document.querySelectorAll('.faq-q').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var answer = btn.nextElementSibling;
+      var isOpen = btn.classList.contains('open');
+      // Close all
+      document.querySelectorAll('.faq-q').forEach(function(b) { b.classList.remove('open'); });
+      document.querySelectorAll('.faq-a').forEach(function(a) { a.classList.remove('open'); });
+      // Toggle current
+      if (!isOpen) {
+        btn.classList.add('open');
+        answer.classList.add('open');
+      }
+    });
+  });
+
+})();
+</script>
+<email-gate-modal></email-gate-modal>
+<script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
+<script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+</body>
+</html>

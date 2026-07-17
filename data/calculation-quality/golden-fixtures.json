@@ -1,0 +1,4736 @@
+{
+  "$schema": "./calculation-quality.schema.json#/$defs/GoldenFixtureRegistry",
+  "fixtures": [
+    {
+      "caseClasses": [
+        "leap_year_date"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "SARS (sars.gov.za)",
+        "url": "https://www.sars.gov.za/"
+      },
+      "expected": {
+        "error": "UNSUPPORTED_DATE",
+        "ok": false
+      },
+      "formulaId": "paye-server-za",
+      "formulaVersion": "2026-03-01+sha256.90b15089d1f6",
+      "id": "formula-resolve-leap-day-date",
+      "input": {
+        "effectiveOn": "2024-02-29",
+        "formulaFamily": "paye-server",
+        "jurisdiction": "ZA"
+      },
+      "operation": "formula-resolve",
+      "tolerance": 0
+    },
+    {
+      "caseClasses": [
+        "unsupported_date",
+        "date_boundary"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "SARS (sars.gov.za)",
+        "url": "https://www.sars.gov.za/"
+      },
+      "expected": {
+        "error": "UNSUPPORTED_DATE",
+        "ok": false
+      },
+      "formulaId": "paye-server-za",
+      "formulaVersion": "2026-03-01+sha256.90b15089d1f6",
+      "id": "formula-resolve-unsupported-date",
+      "input": {
+        "effectiveOn": "2026-03-01",
+        "formulaFamily": "paye-server",
+        "jurisdiction": "ZA"
+      },
+      "operation": "formula-resolve",
+      "tolerance": 0
+    },
+    {
+      "caseClasses": [
+        "unsupported_jurisdiction"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "SARS (sars.gov.za)",
+        "url": "https://www.sars.gov.za/"
+      },
+      "expected": {
+        "error": "UNSUPPORTED_JURISDICTION",
+        "ok": false
+      },
+      "formulaId": "paye-server-za",
+      "formulaVersion": "2026-03-01+sha256.90b15089d1f6",
+      "id": "formula-resolve-unsupported-jurisdiction",
+      "input": {
+        "effectiveOn": "2026-01-01",
+        "formulaFamily": "paye-server",
+        "jurisdiction": "XX"
+      },
+      "operation": "formula-resolve",
+      "tolerance": 0
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "agt.minfin.gov.ao",
+        "url": "https://www.agt.minfin.gov.ao"
+      },
+      "expected": {
+        "deductions.totalDeductions": 43000,
+        "result.netAnnual": 957000,
+        "result.netMonthly": 79750,
+        "tax.netTax": 13000
+      },
+      "formulaId": "paye-server-ao",
+      "formulaVersion": "2026-03-01+sha256.c25e2e8661b8",
+      "id": "paye-ao-defaults",
+      "input": {
+        "country": "AO",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "agt.minfin.gov.ao",
+        "url": "https://www.agt.minfin.gov.ao"
+      },
+      "expected": {
+        "deductions.totalDeductions": 239626000,
+        "result.netAnnual": 760374001,
+        "result.netMonthly": 63364500,
+        "tax.netTax": 209626000
+      },
+      "formulaId": "paye-server-ao",
+      "formulaVersion": "2026-03-01+sha256.c25e2e8661b8",
+      "id": "paye-ao-large-decimal",
+      "input": {
+        "country": "AO",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "agt.minfin.gov.ao",
+        "url": "https://www.agt.minfin.gov.ao"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-ao",
+      "formulaVersion": "2026-03-01+sha256.c25e2e8661b8",
+      "id": "paye-ao-zero",
+      "input": {
+        "country": "AO",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Direction generale des impots - Burkina Faso",
+        "url": "https://dgi.bf/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 144400,
+        "result.netAnnual": 855600,
+        "result.netMonthly": 71300,
+        "tax.netTax": 89400
+      },
+      "formulaId": "paye-server-bf",
+      "formulaVersion": "2026-03-01+sha256.4eb8169c8243",
+      "id": "paye-bf-defaults",
+      "input": {
+        "country": "BF",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Direction generale des impots - Burkina Faso",
+        "url": "https://dgi.bf/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 291081400,
+        "result.netAnnual": 708918601,
+        "result.netMonthly": 59076550,
+        "tax.netTax": 236081400
+      },
+      "formulaId": "paye-server-bf",
+      "formulaVersion": "2026-03-01+sha256.4eb8169c8243",
+      "id": "paye-bf-large-decimal",
+      "input": {
+        "country": "BF",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Direction generale des impots - Burkina Faso",
+        "url": "https://dgi.bf/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-bf",
+      "formulaVersion": "2026-03-01+sha256.4eb8169c8243",
+      "id": "paye-bf-zero",
+      "input": {
+        "country": "BF",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "obr.gov.bi",
+        "url": "https://obr.gov.bi"
+      },
+      "expected": {
+        "deductions.totalDeductions": 268000,
+        "result.netAnnual": 732000,
+        "result.netMonthly": 61000,
+        "tax.netTax": 228000
+      },
+      "formulaId": "paye-server-bi",
+      "formulaVersion": "2026-03-01+sha256.794c21abd3b1",
+      "id": "paye-bi-defaults",
+      "input": {
+        "country": "BI",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "obr.gov.bi",
+        "url": "https://obr.gov.bi"
+      },
+      "expected": {
+        "deductions.totalDeductions": 375835000,
+        "result.netAnnual": 624165001,
+        "result.netMonthly": 52013750,
+        "tax.netTax": 335835000
+      },
+      "formulaId": "paye-server-bi",
+      "formulaVersion": "2026-03-01+sha256.794c21abd3b1",
+      "id": "paye-bi-large-decimal",
+      "input": {
+        "country": "BI",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "obr.gov.bi",
+        "url": "https://obr.gov.bi"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-bi",
+      "formulaVersion": "2026-03-01+sha256.794c21abd3b1",
+      "id": "paye-bi-zero",
+      "input": {
+        "country": "BI",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "impots.finances.gouv.bj",
+        "url": "https://impots.finances.gouv.bj"
+      },
+      "expected": {
+        "deductions.totalDeductions": 184700,
+        "result.netAnnual": 815300,
+        "result.netMonthly": 67942,
+        "tax.netTax": 148700
+      },
+      "formulaId": "paye-server-bj",
+      "formulaVersion": "2026-03-01+sha256.2a41a562b672",
+      "id": "paye-bj-defaults",
+      "input": {
+        "country": "BJ",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "impots.finances.gouv.bj",
+        "url": "https://impots.finances.gouv.bj"
+      },
+      "expected": {
+        "deductions.totalDeductions": 325059500,
+        "result.netAnnual": 674940501,
+        "result.netMonthly": 56245042,
+        "tax.netTax": 289059500
+      },
+      "formulaId": "paye-server-bj",
+      "formulaVersion": "2026-03-01+sha256.2a41a562b672",
+      "id": "paye-bj-large-decimal",
+      "input": {
+        "country": "BJ",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "impots.finances.gouv.bj",
+        "url": "https://impots.finances.gouv.bj"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-bj",
+      "formulaVersion": "2026-03-01+sha256.2a41a562b672",
+      "id": "paye-bj-zero",
+      "input": {
+        "country": "BJ",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "burs.org.bw",
+        "url": "https://www.burs.org.bw"
+      },
+      "expected": {
+        "deductions.totalDeductions": 224050,
+        "result.netAnnual": 775950,
+        "result.netMonthly": 64663,
+        "tax.netTax": 224050
+      },
+      "formulaId": "paye-server-bw",
+      "formulaVersion": "2026-03-01+sha256.29dcb6c3825c",
+      "id": "paye-bw-defaults",
+      "input": {
+        "country": "BW",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "burs.org.bw",
+        "url": "https://www.burs.org.bw"
+      },
+      "expected": {
+        "deductions.totalDeductions": 249974050,
+        "result.netAnnual": 750025951,
+        "result.netMonthly": 62502163,
+        "tax.netTax": 249974050
+      },
+      "formulaId": "paye-server-bw",
+      "formulaVersion": "2026-03-01+sha256.29dcb6c3825c",
+      "id": "paye-bw-large-decimal",
+      "input": {
+        "country": "BW",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "burs.org.bw",
+        "url": "https://www.burs.org.bw"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-bw",
+      "formulaVersion": "2026-03-01+sha256.29dcb6c3825c",
+      "id": "paye-bw-zero",
+      "input": {
+        "country": "BW",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "dgi.gouv.cd",
+        "url": "https://dgi.gouv.cd"
+      },
+      "expected": {
+        "deductions.totalDeductions": 87017,
+        "result.netAnnual": 912983,
+        "result.netMonthly": 76082,
+        "tax.netTax": 37017
+      },
+      "formulaId": "paye-server-cd",
+      "formulaVersion": "2026-03-01+sha256.95ef917ee4b2",
+      "id": "paye-cd-defaults",
+      "input": {
+        "country": "CD",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "dgi.gouv.cd",
+        "url": "https://dgi.gouv.cd"
+      },
+      "expected": {
+        "deductions.totalDeductions": 469880461,
+        "result.netAnnual": 530119540,
+        "result.netMonthly": 44176628,
+        "tax.netTax": 419880461
+      },
+      "formulaId": "paye-server-cd",
+      "formulaVersion": "2026-03-01+sha256.95ef917ee4b2",
+      "id": "paye-cd-large-decimal",
+      "input": {
+        "country": "CD",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "dgi.gouv.cd",
+        "url": "https://dgi.gouv.cd"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-cd",
+      "formulaVersion": "2026-03-01+sha256.95ef917ee4b2",
+      "id": "paye-cd-zero",
+      "input": {
+        "country": "CD",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Ministere des Finances et du Budget - Central African Republic",
+        "url": "https://www.finances.gouv.cf/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 83600,
+        "result.netAnnual": 916400,
+        "result.netMonthly": 76367,
+        "tax.netTax": 53600
+      },
+      "formulaId": "paye-server-cf",
+      "formulaVersion": "2026-03-01+sha256.cd8321633e3f",
+      "id": "paye-cf-defaults",
+      "input": {
+        "country": "CF",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Ministere des Finances et du Budget - Central African Republic",
+        "url": "https://www.finances.gouv.cf/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 510846000,
+        "result.netAnnual": 489154001,
+        "result.netMonthly": 40762833,
+        "tax.netTax": 480846000
+      },
+      "formulaId": "paye-server-cf",
+      "formulaVersion": "2026-03-01+sha256.cd8321633e3f",
+      "id": "paye-cf-large-decimal",
+      "input": {
+        "country": "CF",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Ministere des Finances et du Budget - Central African Republic",
+        "url": "https://www.finances.gouv.cf/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-cf",
+      "formulaVersion": "2026-03-01+sha256.cd8321633e3f",
+      "id": "paye-cf-zero",
+      "input": {
+        "country": "CF",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Portail fiscal officiel - Republique du Congo",
+        "url": "https://impots.gouv.cg/portail-client-web/public/accueil.xhtml"
+      },
+      "expected": {
+        "deductions.totalDeductions": 44960,
+        "result.netAnnual": 955040,
+        "result.netMonthly": 79587,
+        "tax.netTax": 4960
+      },
+      "formulaId": "paye-server-cg",
+      "formulaVersion": "2026-03-01+sha256.857e85a46784",
+      "id": "paye-cg-defaults",
+      "input": {
+        "country": "CG",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Portail fiscal officiel - Republique du Congo",
+        "url": "https://impots.gouv.cg/portail-client-web/public/accueil.xhtml"
+      },
+      "expected": {
+        "deductions.totalDeductions": 421324400,
+        "result.netAnnual": 578675601,
+        "result.netMonthly": 48222967,
+        "tax.netTax": 381324400
+      },
+      "formulaId": "paye-server-cg",
+      "formulaVersion": "2026-03-01+sha256.857e85a46784",
+      "id": "paye-cg-large-decimal",
+      "input": {
+        "country": "CG",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Portail fiscal officiel - Republique du Congo",
+        "url": "https://impots.gouv.cg/portail-client-web/public/accueil.xhtml"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-cg",
+      "formulaVersion": "2026-03-01+sha256.857e85a46784",
+      "id": "paye-cg-zero",
+      "input": {
+        "country": "CG",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "dgi.gouv.ci",
+        "url": "https://www.dgi.gouv.ci"
+      },
+      "expected": {
+        "deductions.totalDeductions": 126700,
+        "result.netAnnual": 873300,
+        "result.netMonthly": 72775,
+        "tax.netTax": 63700
+      },
+      "formulaId": "paye-server-ci",
+      "formulaVersion": "2026-03-01+sha256.2b45f5f05b45",
+      "id": "paye-ci-defaults",
+      "input": {
+        "country": "CI",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "dgi.gouv.ci",
+        "url": "https://www.dgi.gouv.ci"
+      },
+      "expected": {
+        "deductions.totalDeductions": 468468100,
+        "result.netAnnual": 531531901,
+        "result.netMonthly": 44294325,
+        "tax.netTax": 405468100
+      },
+      "formulaId": "paye-server-ci",
+      "formulaVersion": "2026-03-01+sha256.2b45f5f05b45",
+      "id": "paye-ci-large-decimal",
+      "input": {
+        "country": "CI",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "dgi.gouv.ci",
+        "url": "https://www.dgi.gouv.ci"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-ci",
+      "formulaVersion": "2026-03-01+sha256.2b45f5f05b45",
+      "id": "paye-ci-zero",
+      "input": {
+        "country": "CI",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "impots.cm",
+        "url": "https://www.impots.cm"
+      },
+      "expected": {
+        "deductions.totalDeductions": 137800,
+        "result.netAnnual": 862200,
+        "result.netMonthly": 71850,
+        "tax.netTax": 95800
+      },
+      "formulaId": "paye-server-cm",
+      "formulaVersion": "2026-03-01+sha256.efab0620b0e3",
+      "id": "paye-cm-defaults",
+      "input": {
+        "country": "CM",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "impots.cm",
+        "url": "https://www.impots.cm"
+      },
+      "expected": {
+        "deductions.totalDeductions": 375700000,
+        "result.netAnnual": 624300001,
+        "result.netMonthly": 52025000,
+        "tax.netTax": 333700000
+      },
+      "formulaId": "paye-server-cm",
+      "formulaVersion": "2026-03-01+sha256.efab0620b0e3",
+      "id": "paye-cm-large-decimal",
+      "input": {
+        "country": "CM",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "impots.cm",
+        "url": "https://www.impots.cm"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-cm",
+      "formulaVersion": "2026-03-01+sha256.efab0620b0e3",
+      "id": "paye-cm-zero",
+      "input": {
+        "country": "CM",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "dgci.gov.cv",
+        "url": "https://dgci.gov.cv"
+      },
+      "expected": {
+        "deductions.totalDeductions": 107275,
+        "result.netAnnual": 892725,
+        "result.netMonthly": 74394,
+        "tax.netTax": 22275
+      },
+      "formulaId": "paye-server-cv",
+      "formulaVersion": "2026-03-01+sha256.e7eb2b71c73e",
+      "id": "paye-cv-defaults",
+      "input": {
+        "country": "CV",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "dgci.gov.cv",
+        "url": "https://dgci.gov.cv"
+      },
+      "expected": {
+        "deductions.totalDeductions": 404916100,
+        "result.netAnnual": 595083901,
+        "result.netMonthly": 49590325,
+        "tax.netTax": 319916100
+      },
+      "formulaId": "paye-server-cv",
+      "formulaVersion": "2026-03-01+sha256.e7eb2b71c73e",
+      "id": "paye-cv-large-decimal",
+      "input": {
+        "country": "CV",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "dgci.gov.cv",
+        "url": "https://dgci.gov.cv"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-cv",
+      "formulaVersion": "2026-03-01+sha256.e7eb2b71c73e",
+      "id": "paye-cv-zero",
+      "input": {
+        "country": "CV",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Direction generale des impots - Djibouti",
+        "url": "https://budget.gouv.dj/dgi/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 148000,
+        "result.netAnnual": 852000,
+        "result.netMonthly": 71000,
+        "tax.netTax": 108000
+      },
+      "formulaId": "paye-server-dj",
+      "formulaVersion": "2026-03-01+sha256.45952e8ce695",
+      "id": "paye-dj-defaults",
+      "input": {
+        "country": "DJ",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Direction generale des impots - Djibouti",
+        "url": "https://budget.gouv.dj/dgi/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 327798400,
+        "result.netAnnual": 672201601,
+        "result.netMonthly": 56016800,
+        "tax.netTax": 287798400
+      },
+      "formulaId": "paye-server-dj",
+      "formulaVersion": "2026-03-01+sha256.45952e8ce695",
+      "id": "paye-dj-large-decimal",
+      "input": {
+        "country": "DJ",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Direction generale des impots - Djibouti",
+        "url": "https://budget.gouv.dj/dgi/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-dj",
+      "formulaVersion": "2026-03-01+sha256.45952e8ce695",
+      "id": "paye-dj-zero",
+      "input": {
+        "country": "DJ",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "mfdgi.gov.dz",
+        "url": "https://www.mfdgi.gov.dz"
+      },
+      "expected": {
+        "deductions.totalDeductions": 267000,
+        "result.netAnnual": 733000,
+        "result.netMonthly": 61083,
+        "tax.netTax": 177000
+      },
+      "formulaId": "paye-server-dz",
+      "formulaVersion": "2026-03-01+sha256.9b79b43bdcd2",
+      "id": "paye-dz-defaults",
+      "input": {
+        "country": "DZ",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "mfdgi.gov.dz",
+        "url": "https://www.mfdgi.gov.dz"
+      },
+      "expected": {
+        "deductions.totalDeductions": 408356000,
+        "result.netAnnual": 591644001,
+        "result.netMonthly": 49303667,
+        "tax.netTax": 318356000
+      },
+      "formulaId": "paye-server-dz",
+      "formulaVersion": "2026-03-01+sha256.9b79b43bdcd2",
+      "id": "paye-dz-large-decimal",
+      "input": {
+        "country": "DZ",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "mfdgi.gov.dz",
+        "url": "https://www.mfdgi.gov.dz"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-dz",
+      "formulaVersion": "2026-03-01+sha256.9b79b43bdcd2",
+      "id": "paye-dz-zero",
+      "input": {
+        "country": "DZ",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "eta.gov.eg",
+        "url": "https://eta.gov.eg"
+      },
+      "expected": {
+        "deductions.totalDeductions": 260105,
+        "result.netAnnual": 739895,
+        "result.netMonthly": 61657.92,
+        "tax.netTax": 240965
+      },
+      "formulaId": "paye-server-eg",
+      "formulaVersion": "2026-04-06+sha256.f50d013296a5",
+      "id": "paye-eg-defaults",
+      "input": {
+        "country": "EG",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "eta.gov.eg",
+        "url": "https://eta.gov.eg"
+      },
+      "expected": {
+        "deductions.totalDeductions": 275227876.65,
+        "result.netAnnual": 724772123.9,
+        "result.netMonthly": 60397676.99,
+        "tax.netTax": 275208736.65
+      },
+      "formulaId": "paye-server-eg",
+      "formulaVersion": "2026-04-06+sha256.f50d013296a5",
+      "id": "paye-eg-large-decimal",
+      "input": {
+        "country": "EG",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "eta.gov.eg",
+        "url": "https://eta.gov.eg"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-eg",
+      "formulaVersion": "2026-04-06+sha256.f50d013296a5",
+      "id": "paye-eg-zero",
+      "input": {
+        "country": "EG",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "financialministry.gov.sd",
+        "url": "https://financialministry.gov.sd"
+      },
+      "expected": {
+        "deductions.totalDeductions": 264864,
+        "result.netAnnual": 735136,
+        "result.netMonthly": 61261,
+        "tax.netTax": 264864
+      },
+      "formulaId": "paye-server-er",
+      "formulaVersion": "2026-03-01+sha256.ac8f51bf7c5c",
+      "id": "paye-er-defaults",
+      "input": {
+        "country": "ER",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "financialministry.gov.sd",
+        "url": "https://financialministry.gov.sd"
+      },
+      "expected": {
+        "deductions.totalDeductions": 299964864,
+        "result.netAnnual": 700035137,
+        "result.netMonthly": 58336261,
+        "tax.netTax": 299964864
+      },
+      "formulaId": "paye-server-er",
+      "formulaVersion": "2026-03-01+sha256.ac8f51bf7c5c",
+      "id": "paye-er-large-decimal",
+      "input": {
+        "country": "ER",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "financialministry.gov.sd",
+        "url": "https://financialministry.gov.sd"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-er",
+      "formulaVersion": "2026-03-01+sha256.ac8f51bf7c5c",
+      "id": "paye-er-zero",
+      "input": {
+        "country": "ER",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "erca.gov.et",
+        "url": "https://erca.gov.et"
+      },
+      "expected": {
+        "deductions.totalDeductions": 370900,
+        "result.netAnnual": 629100,
+        "result.netMonthly": 52425,
+        "tax.netTax": 300900
+      },
+      "formulaId": "paye-server-et",
+      "formulaVersion": "2026-03-01+sha256.cbcccb4c45c4",
+      "id": "paye-et-defaults",
+      "input": {
+        "country": "ET",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "erca.gov.et",
+        "url": "https://erca.gov.et"
+      },
+      "expected": {
+        "deductions.totalDeductions": 395475400,
+        "result.netAnnual": 604524601,
+        "result.netMonthly": 50377050,
+        "tax.netTax": 325475400
+      },
+      "formulaId": "paye-server-et",
+      "formulaVersion": "2026-03-01+sha256.cbcccb4c45c4",
+      "id": "paye-et-large-decimal",
+      "input": {
+        "country": "ET",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "erca.gov.et",
+        "url": "https://erca.gov.et"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-et",
+      "formulaVersion": "2026-03-01+sha256.cbcccb4c45c4",
+      "id": "paye-et-zero",
+      "input": {
+        "country": "ET",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Direction generale des impots - Gabon",
+        "url": "https://dgi.ga/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 25000,
+        "result.netAnnual": 975000,
+        "result.netMonthly": 81250,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-ga",
+      "formulaVersion": "2026-03-01+sha256.2584bc4385c8",
+      "id": "paye-ga-defaults",
+      "input": {
+        "country": "GA",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Direction generale des impots - Gabon",
+        "url": "https://dgi.ga/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 362649000,
+        "result.netAnnual": 637351001,
+        "result.netMonthly": 53112583,
+        "tax.netTax": 337649000
+      },
+      "formulaId": "paye-server-ga",
+      "formulaVersion": "2026-03-01+sha256.2584bc4385c8",
+      "id": "paye-ga-large-decimal",
+      "input": {
+        "country": "GA",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Direction generale des impots - Gabon",
+        "url": "https://dgi.ga/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-ga",
+      "formulaVersion": "2026-03-01+sha256.2584bc4385c8",
+      "id": "paye-ga-zero",
+      "input": {
+        "country": "GA",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "GRA (gra.gov.gh)",
+        "url": "https://gra.gov.gh/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 305174.75,
+        "result.netAnnual": 694825.25,
+        "result.netMonthly": 57902.1,
+        "tax.netTax": 301819.75
+      },
+      "formulaId": "paye-server-gh",
+      "formulaVersion": "2026-04-06+sha256.bfb51d38b060",
+      "id": "paye-gh-defaults",
+      "input": {
+        "country": "GH",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "GRA (gra.gov.gh)",
+        "url": "https://gra.gov.gh/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 349955174.94,
+        "result.netAnnual": 650044825.61,
+        "result.netMonthly": 54170402.13,
+        "tax.netTax": 349951819.94
+      },
+      "formulaId": "paye-server-gh",
+      "formulaVersion": "2026-04-06+sha256.bfb51d38b060",
+      "id": "paye-gh-large-decimal",
+      "input": {
+        "country": "GH",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "GRA (gra.gov.gh)",
+        "url": "https://gra.gov.gh/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-gh",
+      "formulaVersion": "2026-04-06+sha256.bfb51d38b060",
+      "id": "paye-gh-zero",
+      "input": {
+        "country": "GH",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "gra.gm",
+        "url": "https://www.gra.gm"
+      },
+      "expected": {
+        "deductions.totalDeductions": 233100,
+        "result.netAnnual": 766900,
+        "result.netMonthly": 63908,
+        "tax.netTax": 183100
+      },
+      "formulaId": "paye-server-gm",
+      "formulaVersion": "2026-03-01+sha256.b25d0aad0cd6",
+      "id": "paye-gm-defaults",
+      "input": {
+        "country": "GM",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "gra.gm",
+        "url": "https://www.gra.gm"
+      },
+      "expected": {
+        "deductions.totalDeductions": 239993100,
+        "result.netAnnual": 760006901,
+        "result.netMonthly": 63333908,
+        "tax.netTax": 189993100
+      },
+      "formulaId": "paye-server-gm",
+      "formulaVersion": "2026-03-01+sha256.b25d0aad0cd6",
+      "id": "paye-gm-large-decimal",
+      "input": {
+        "country": "GM",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "gra.gm",
+        "url": "https://www.gra.gm"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-gm",
+      "formulaVersion": "2026-03-01+sha256.b25d0aad0cd6",
+      "id": "paye-gm-zero",
+      "input": {
+        "country": "GM",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "mf.gov.gn",
+        "url": "https://mf.gov.gn"
+      },
+      "expected": {
+        "deductions.totalDeductions": 50000,
+        "result.netAnnual": 950000,
+        "result.netMonthly": 79167,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-gn",
+      "formulaVersion": "2026-03-01+sha256.64b0554bf1af",
+      "id": "paye-gn-defaults",
+      "input": {
+        "country": "GN",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "mf.gov.gn",
+        "url": "https://mf.gov.gn"
+      },
+      "expected": {
+        "deductions.totalDeductions": 263500000,
+        "result.netAnnual": 736500001,
+        "result.netMonthly": 61375000,
+        "tax.netTax": 213500000
+      },
+      "formulaId": "paye-server-gn",
+      "formulaVersion": "2026-03-01+sha256.64b0554bf1af",
+      "id": "paye-gn-large-decimal",
+      "input": {
+        "country": "GN",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "mf.gov.gn",
+        "url": "https://mf.gov.gn"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-gn",
+      "formulaVersion": "2026-03-01+sha256.64b0554bf1af",
+      "id": "paye-gn-zero",
+      "input": {
+        "country": "GN",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Ministerio de Hacienda y Presupuestos - Guinea Ecuatorial",
+        "url": "https://minhacienda-gob.com/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 45000,
+        "result.netAnnual": 955000,
+        "result.netMonthly": 79583,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-gq",
+      "formulaVersion": "2026-03-01+sha256.caf26eaa8b10",
+      "id": "paye-gq-defaults",
+      "input": {
+        "country": "GQ",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Ministerio de Hacienda y Presupuestos - Guinea Ecuatorial",
+        "url": "https://minhacienda-gob.com/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 370900000,
+        "result.netAnnual": 629100001,
+        "result.netMonthly": 52425000,
+        "tax.netTax": 325900000
+      },
+      "formulaId": "paye-server-gq",
+      "formulaVersion": "2026-03-01+sha256.caf26eaa8b10",
+      "id": "paye-gq-large-decimal",
+      "input": {
+        "country": "GQ",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Ministerio de Hacienda y Presupuestos - Guinea Ecuatorial",
+        "url": "https://minhacienda-gob.com/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-gq",
+      "formulaVersion": "2026-03-01+sha256.caf26eaa8b10",
+      "id": "paye-gq-zero",
+      "input": {
+        "country": "GQ",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "KRA",
+        "url": "https://www.kra.go.ke/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 269850,
+        "result.netAnnual": 730149.8,
+        "result.netMonthly": 60845.82,
+        "tax.netTax": 182350.2
+      },
+      "formulaId": "paye-server-ke",
+      "formulaVersion": "2026-04-06+sha256.f006ff0bb251",
+      "id": "paye-ke-defaults",
+      "input": {
+        "country": "KE",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "KRA",
+        "url": "https://www.kra.go.ke/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 367444144,
+        "result.netAnnual": 632555856.15,
+        "result.netMonthly": 52712988.01,
+        "tax.netTax": 339866384.39
+      },
+      "formulaId": "paye-server-ke",
+      "formulaVersion": "2026-04-06+sha256.f006ff0bb251",
+      "id": "paye-ke-large-decimal",
+      "input": {
+        "country": "KE",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "rounding_stage"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "KRA",
+        "url": "https://www.kra.go.ke/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 342100,
+        "result.netAnnual": 857899.8,
+        "result.netMonthly": 71491.65,
+        "tax.netTax": 237100.2
+      },
+      "formulaId": "paye-server-ke",
+      "formulaVersion": "2026-04-06+sha256.f006ff0bb251",
+      "id": "paye-ke-rounding-stage",
+      "input": {
+        "country": "KE",
+        "grossAnnual": 1200000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "KRA",
+        "url": "https://www.kra.go.ke/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-ke",
+      "formulaVersion": "2026-04-06+sha256.f006ff0bb251",
+      "id": "paye-ke-zero",
+      "input": {
+        "country": "KE",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Direction generale des impots - Comoros",
+        "url": "https://dgi.gouv.km/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 72500,
+        "result.netAnnual": 927500,
+        "result.netMonthly": 77292,
+        "tax.netTax": 47500
+      },
+      "formulaId": "paye-server-km",
+      "formulaVersion": "2026-03-01+sha256.7743febb2361",
+      "id": "paye-km-defaults",
+      "input": {
+        "country": "KM",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Direction generale des impots - Comoros",
+        "url": "https://dgi.gouv.km/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 317150000,
+        "result.netAnnual": 682850001,
+        "result.netMonthly": 56904167,
+        "tax.netTax": 292150000
+      },
+      "formulaId": "paye-server-km",
+      "formulaVersion": "2026-03-01+sha256.7743febb2361",
+      "id": "paye-km-large-decimal",
+      "input": {
+        "country": "KM",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Direction generale des impots - Comoros",
+        "url": "https://dgi.gouv.km/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-km",
+      "formulaVersion": "2026-03-01+sha256.7743febb2361",
+      "id": "paye-km-zero",
+      "input": {
+        "country": "KM",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "revenue.lra.gov.lr",
+        "url": "https://revenue.lra.gov.lr/domestic-tax/tax-education/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 251400,
+        "result.netAnnual": 748600,
+        "result.netMonthly": 62383,
+        "tax.netTax": 211400
+      },
+      "formulaId": "paye-server-lr",
+      "formulaVersion": "2026-03-01+sha256.b8bce6846da3",
+      "id": "paye-lr-defaults",
+      "input": {
+        "country": "LR",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "revenue.lra.gov.lr",
+        "url": "https://revenue.lra.gov.lr/domestic-tax/tax-education/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 279971400,
+        "result.netAnnual": 720028601,
+        "result.netMonthly": 60002383,
+        "tax.netTax": 239971400
+      },
+      "formulaId": "paye-server-lr",
+      "formulaVersion": "2026-03-01+sha256.b8bce6846da3",
+      "id": "paye-lr-large-decimal",
+      "input": {
+        "country": "LR",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "revenue.lra.gov.lr",
+        "url": "https://revenue.lra.gov.lr/domestic-tax/tax-education/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-lr",
+      "formulaVersion": "2026-03-01+sha256.b8bce6846da3",
+      "id": "paye-lr-zero",
+      "input": {
+        "country": "LR",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "lra.org.ls",
+        "url": "https://www.lra.org.ls"
+      },
+      "expected": {
+        "deductions.totalDeductions": 280956,
+        "result.netAnnual": 719044,
+        "result.netMonthly": 59920,
+        "tax.netTax": 280956
+      },
+      "formulaId": "paye-server-ls",
+      "formulaVersion": "2026-03-01+sha256.98c1f842e488",
+      "id": "paye-ls-defaults",
+      "input": {
+        "country": "LS",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "lra.org.ls",
+        "url": "https://www.lra.org.ls"
+      },
+      "expected": {
+        "deductions.totalDeductions": 299980956,
+        "result.netAnnual": 700019045,
+        "result.netMonthly": 58334920,
+        "tax.netTax": 299980956
+      },
+      "formulaId": "paye-server-ls",
+      "formulaVersion": "2026-03-01+sha256.98c1f842e488",
+      "id": "paye-ls-large-decimal",
+      "input": {
+        "country": "LS",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "lra.org.ls",
+        "url": "https://www.lra.org.ls"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-ls",
+      "formulaVersion": "2026-03-01+sha256.98c1f842e488",
+      "id": "paye-ls-zero",
+      "input": {
+        "country": "LS",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "financialministry.gov.sd",
+        "url": "https://financialministry.gov.sd"
+      },
+      "expected": {
+        "deductions.totalDeductions": 154525,
+        "result.netAnnual": 845475,
+        "result.netMonthly": 70456,
+        "tax.netTax": 93275
+      },
+      "formulaId": "paye-server-ly",
+      "formulaVersion": "2026-03-01+sha256.cea5ab74ffed",
+      "id": "paye-ly-defaults",
+      "input": {
+        "country": "LY",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "financialministry.gov.sd",
+        "url": "https://financialministry.gov.sd"
+      },
+      "expected": {
+        "deductions.totalDeductions": 155124400,
+        "result.netAnnual": 844875601,
+        "result.netMonthly": 70406300,
+        "tax.netTax": 93874400
+      },
+      "formulaId": "paye-server-ly",
+      "formulaVersion": "2026-03-01+sha256.cea5ab74ffed",
+      "id": "paye-ly-large-decimal",
+      "input": {
+        "country": "LY",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "financialministry.gov.sd",
+        "url": "https://financialministry.gov.sd"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-ly",
+      "formulaVersion": "2026-03-01+sha256.cea5ab74ffed",
+      "id": "paye-ly-zero",
+      "input": {
+        "country": "LY",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "dgi.gov.ma",
+        "url": "https://dgi.gov.ma"
+      },
+      "expected": {
+        "deductions.totalDeductions": 397988,
+        "result.netAnnual": 602012,
+        "result.netMonthly": 50168,
+        "tax.netTax": 330588
+      },
+      "formulaId": "paye-server-ma",
+      "formulaVersion": "2026-03-01+sha256.8ef32f5256c8",
+      "id": "paye-ma-defaults",
+      "input": {
+        "country": "MA",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "dgi.gov.ma",
+        "url": "https://dgi.gov.ma"
+      },
+      "expected": {
+        "deductions.totalDeductions": 394523880,
+        "result.netAnnual": 605476121,
+        "result.netMonthly": 50456343,
+        "tax.netTax": 371059880
+      },
+      "formulaId": "paye-server-ma",
+      "formulaVersion": "2026-03-01+sha256.8ef32f5256c8",
+      "id": "paye-ma-large-decimal",
+      "input": {
+        "country": "MA",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "dgi.gov.ma",
+        "url": "https://dgi.gov.ma"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-ma",
+      "formulaVersion": "2026-03-01+sha256.8ef32f5256c8",
+      "id": "paye-ma-zero",
+      "input": {
+        "country": "MA",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "mef.gov.mg",
+        "url": "https://mef.gov.mg"
+      },
+      "expected": {
+        "deductions.totalDeductions": 68500,
+        "result.netAnnual": 931500,
+        "result.netMonthly": 77625,
+        "tax.netTax": 58500
+      },
+      "formulaId": "paye-server-mg",
+      "formulaVersion": "2026-03-01+sha256.e35f8263b06e",
+      "id": "paye-mg-defaults",
+      "input": {
+        "country": "MG",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "mef.gov.mg",
+        "url": "https://mef.gov.mg"
+      },
+      "expected": {
+        "deductions.totalDeductions": 207510000,
+        "result.netAnnual": 792490001,
+        "result.netMonthly": 66040833,
+        "tax.netTax": 197510000
+      },
+      "formulaId": "paye-server-mg",
+      "formulaVersion": "2026-03-01+sha256.e35f8263b06e",
+      "id": "paye-mg-large-decimal",
+      "input": {
+        "country": "MG",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "mef.gov.mg",
+        "url": "https://mef.gov.mg"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-mg",
+      "formulaVersion": "2026-03-01+sha256.e35f8263b06e",
+      "id": "paye-mg-zero",
+      "input": {
+        "country": "MG",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "impots.gouv.ml",
+        "url": "https://impots.gouv.ml"
+      },
+      "expected": {
+        "deductions.totalDeductions": 74320,
+        "result.netAnnual": 925680,
+        "result.netMonthly": 77140,
+        "tax.netTax": 38320
+      },
+      "formulaId": "paye-server-ml",
+      "formulaVersion": "2026-03-01+sha256.8bd6d3fc9c5d",
+      "id": "paye-ml-defaults",
+      "input": {
+        "country": "ML",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "impots.gouv.ml",
+        "url": "https://impots.gouv.ml"
+      },
+      "expected": {
+        "deductions.totalDeductions": 420766000,
+        "result.netAnnual": 579234001,
+        "result.netMonthly": 48269500,
+        "tax.netTax": 384766000
+      },
+      "formulaId": "paye-server-ml",
+      "formulaVersion": "2026-03-01+sha256.8bd6d3fc9c5d",
+      "id": "paye-ml-large-decimal",
+      "input": {
+        "country": "ML",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "impots.gouv.ml",
+        "url": "https://impots.gouv.ml"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-ml",
+      "formulaVersion": "2026-03-01+sha256.8bd6d3fc9c5d",
+      "id": "paye-ml-zero",
+      "input": {
+        "country": "ML",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "dgi.gov.mr",
+        "url": "https://dgi.gov.mr"
+      },
+      "expected": {
+        "deductions.totalDeductions": 377500,
+        "result.netAnnual": 622500,
+        "result.netMonthly": 51875,
+        "tax.netTax": 367500
+      },
+      "formulaId": "paye-server-mr",
+      "formulaVersion": "2026-03-01+sha256.dda095c4b0a5",
+      "id": "paye-mr-defaults",
+      "input": {
+        "country": "MR",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "dgi.gov.mr",
+        "url": "https://dgi.gov.mr"
+      },
+      "expected": {
+        "deductions.totalDeductions": 405971500,
+        "result.netAnnual": 594028501,
+        "result.netMonthly": 49502375,
+        "tax.netTax": 395971500
+      },
+      "formulaId": "paye-server-mr",
+      "formulaVersion": "2026-03-01+sha256.dda095c4b0a5",
+      "id": "paye-mr-large-decimal",
+      "input": {
+        "country": "MR",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "dgi.gov.mr",
+        "url": "https://dgi.gov.mr"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-mr",
+      "formulaVersion": "2026-03-01+sha256.dda095c4b0a5",
+      "id": "paye-mr-zero",
+      "input": {
+        "country": "MR",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "mra.mu",
+        "url": "https://www.mra.mu"
+      },
+      "expected": {
+        "deductions.totalDeductions": 99500,
+        "result.netAnnual": 900500,
+        "result.netMonthly": 75042,
+        "tax.netTax": 44500
+      },
+      "formulaId": "paye-server-mu",
+      "formulaVersion": "2026-03-01+sha256.41a5460f3349",
+      "id": "paye-mu-defaults",
+      "input": {
+        "country": "MU",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "mra.mu",
+        "url": "https://www.mra.mu"
+      },
+      "expected": {
+        "deductions.totalDeductions": 243850000,
+        "result.netAnnual": 756150001,
+        "result.netMonthly": 63012500,
+        "tax.netTax": 188850000
+      },
+      "formulaId": "paye-server-mu",
+      "formulaVersion": "2026-03-01+sha256.41a5460f3349",
+      "id": "paye-mu-large-decimal",
+      "input": {
+        "country": "MU",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "mra.mu",
+        "url": "https://www.mra.mu"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-mu",
+      "formulaVersion": "2026-03-01+sha256.41a5460f3349",
+      "id": "paye-mu-zero",
+      "input": {
+        "country": "MU",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "mra.mw",
+        "url": "https://www.mra.mw"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 1000000,
+        "result.netMonthly": 83333,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-mw",
+      "formulaVersion": "2026-03-01+sha256.3fd58095dad0",
+      "id": "paye-mw-defaults",
+      "input": {
+        "country": "MW",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "mra.mw",
+        "url": "https://www.mra.mw"
+      },
+      "expected": {
+        "deductions.totalDeductions": 392446000,
+        "result.netAnnual": 607554001,
+        "result.netMonthly": 50629500,
+        "tax.netTax": 392446000
+      },
+      "formulaId": "paye-server-mw",
+      "formulaVersion": "2026-03-01+sha256.3fd58095dad0",
+      "id": "paye-mw-large-decimal",
+      "input": {
+        "country": "MW",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "mra.mw",
+        "url": "https://www.mra.mw"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-mw",
+      "formulaVersion": "2026-03-01+sha256.3fd58095dad0",
+      "id": "paye-mw-zero",
+      "input": {
+        "country": "MW",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "minfin.gov.mz",
+        "url": "https://minfin.gov.mz"
+      },
+      "expected": {
+        "deductions.totalDeductions": 236800,
+        "result.netAnnual": 763200,
+        "result.netMonthly": 63600,
+        "tax.netTax": 206800
+      },
+      "formulaId": "paye-server-mz",
+      "formulaVersion": "2026-03-01+sha256.d1b85c793475",
+      "id": "paye-mz-defaults",
+      "input": {
+        "country": "MZ",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "minfin.gov.mz",
+        "url": "https://minfin.gov.mz"
+      },
+      "expected": {
+        "deductions.totalDeductions": 340258460,
+        "result.netAnnual": 659741541,
+        "result.netMonthly": 54978462,
+        "tax.netTax": 310258460
+      },
+      "formulaId": "paye-server-mz",
+      "formulaVersion": "2026-03-01+sha256.d1b85c793475",
+      "id": "paye-mz-large-decimal",
+      "input": {
+        "country": "MZ",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "minfin.gov.mz",
+        "url": "https://minfin.gov.mz"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-mz",
+      "formulaVersion": "2026-03-01+sha256.d1b85c793475",
+      "id": "paye-mz-zero",
+      "input": {
+        "country": "MZ",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "namra.org.na",
+        "url": "https://www.namra.org.na"
+      },
+      "expected": {
+        "deductions.totalDeductions": 253808,
+        "result.netAnnual": 746192,
+        "result.netMonthly": 62183,
+        "tax.netTax": 252620
+      },
+      "formulaId": "paye-server-na",
+      "formulaVersion": "2026-03-01+sha256.098247aeed3f",
+      "id": "paye-na-defaults",
+      "input": {
+        "country": "NA",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "namra.org.na",
+        "url": "https://www.namra.org.na"
+      },
+      "expected": {
+        "deductions.totalDeductions": 369856249,
+        "result.netAnnual": 630143752,
+        "result.netMonthly": 52511979,
+        "tax.netTax": 369855061
+      },
+      "formulaId": "paye-server-na",
+      "formulaVersion": "2026-03-01+sha256.098247aeed3f",
+      "id": "paye-na-large-decimal",
+      "input": {
+        "country": "NA",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "namra.org.na",
+        "url": "https://www.namra.org.na"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-na",
+      "formulaVersion": "2026-03-01+sha256.098247aeed3f",
+      "id": "paye-na-zero",
+      "input": {
+        "country": "NA",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Direction generale des impots - Niger",
+        "url": "https://www.impots.gouv.ne/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 108225,
+        "result.netAnnual": 891775,
+        "result.netMonthly": 74315,
+        "tax.netTax": 55725
+      },
+      "formulaId": "paye-server-ne",
+      "formulaVersion": "2026-03-01+sha256.8f45055f7800",
+      "id": "paye-ne-defaults",
+      "input": {
+        "country": "NE",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Direction generale des impots - Niger",
+        "url": "https://www.impots.gouv.ne/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 383708600,
+        "result.netAnnual": 616291401,
+        "result.netMonthly": 51357617,
+        "tax.netTax": 331208600
+      },
+      "formulaId": "paye-server-ne",
+      "formulaVersion": "2026-03-01+sha256.8f45055f7800",
+      "id": "paye-ne-large-decimal",
+      "input": {
+        "country": "NE",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Direction generale des impots - Niger",
+        "url": "https://www.impots.gouv.ne/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-ne",
+      "formulaVersion": "2026-03-01+sha256.8f45055f7800",
+      "id": "paye-ne-zero",
+      "input": {
+        "country": "NE",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "negative_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "FIRS",
+        "url": "https://www.firs.gov.ng/"
+      },
+      "expected": {
+        "error": "grossAnnual must be greater than 0"
+      },
+      "formulaId": "paye-server-ng",
+      "formulaVersion": "2026-03-01+sha256.287ca7c278d8",
+      "id": "paye-negative-input-rejected",
+      "input": {
+        "grossAnnual": -1
+      },
+      "operation": "tax-input-rejection",
+      "tolerance": 0
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "FIRS",
+        "url": "https://www.firs.gov.ng/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 119250,
+        "result.netAnnual": 880750,
+        "result.netMonthly": 73396,
+        "tax.netTax": 14250
+      },
+      "formulaId": "paye-server-ng",
+      "formulaVersion": "2026-03-01+sha256.287ca7c278d8",
+      "id": "paye-ng-defaults",
+      "input": {
+        "country": "NG",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "FIRS",
+        "url": "https://www.firs.gov.ng/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 326680000,
+        "result.netAnnual": 673320000,
+        "result.netMonthly": 56110000,
+        "tax.netTax": 221680000
+      },
+      "formulaId": "paye-server-ng",
+      "formulaVersion": "2026-03-01+sha256.287ca7c278d8",
+      "id": "paye-ng-large-decimal",
+      "input": {
+        "country": "NG",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "changed_tax_year"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "FIRS",
+        "url": "https://www.firs.gov.ng/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 1018000,
+        "result.netAnnual": 3982000,
+        "result.netMonthly": 331833,
+        "tax.netTax": 618000
+      },
+      "formulaId": "paye-server-ng",
+      "formulaVersion": "2026-03-01+sha256.287ca7c278d8",
+      "id": "paye-ng-nta-2026",
+      "input": {
+        "country": "NG",
+        "grossAnnual": 5000000,
+        "nhf": false,
+        "pension": true,
+        "regime": "NTA_2026"
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "changed_tax_year"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "FIRS",
+        "url": "https://www.firs.gov.ng/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 1008000,
+        "result.netAnnual": 3992000,
+        "result.netMonthly": 332667,
+        "tax.netTax": 608000
+      },
+      "formulaId": "paye-server-ng",
+      "formulaVersion": "2026-03-01+sha256.287ca7c278d8",
+      "id": "paye-ng-pita-2025",
+      "input": {
+        "country": "NG",
+        "grossAnnual": 5000000,
+        "nhf": false,
+        "pension": true,
+        "regime": "PITA_2025"
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "FIRS",
+        "url": "https://www.firs.gov.ng/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-ng",
+      "formulaVersion": "2026-03-01+sha256.287ca7c278d8",
+      "id": "paye-ng-zero",
+      "input": {
+        "country": "NG",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "rra.gov.rw",
+        "url": "https://rra.gov.rw"
+      },
+      "expected": {
+        "deductions.totalDeductions": 84700,
+        "result.netAnnual": 915300,
+        "result.netMonthly": 76275,
+        "tax.netTax": 21700
+      },
+      "formulaId": "paye-server-rw",
+      "formulaVersion": "2026-03-01+sha256.dd9433a36b68",
+      "id": "paye-rw-defaults",
+      "input": {
+        "country": "RW",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "rra.gov.rw",
+        "url": "https://rra.gov.rw"
+      },
+      "expected": {
+        "deductions.totalDeductions": 343668000,
+        "result.netAnnual": 656332001,
+        "result.netMonthly": 54694333,
+        "tax.netTax": 280668000
+      },
+      "formulaId": "paye-server-rw",
+      "formulaVersion": "2026-03-01+sha256.dd9433a36b68",
+      "id": "paye-rw-large-decimal",
+      "input": {
+        "country": "RW",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "rra.gov.rw",
+        "url": "https://rra.gov.rw"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-rw",
+      "formulaVersion": "2026-03-01+sha256.dd9433a36b68",
+      "id": "paye-rw-zero",
+      "input": {
+        "country": "RW",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "src.gov.sc",
+        "url": "https://src.gov.sc"
+      },
+      "expected": {
+        "deductions.totalDeductions": 218600,
+        "result.netAnnual": 781400,
+        "result.netMonthly": 65117,
+        "tax.netTax": 168600
+      },
+      "formulaId": "paye-server-sc",
+      "formulaVersion": "2026-03-01+sha256.6bb14725c134",
+      "id": "paye-sc-defaults",
+      "input": {
+        "country": "SC",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "src.gov.sc",
+        "url": "https://src.gov.sc"
+      },
+      "expected": {
+        "deductions.totalDeductions": 334878601,
+        "result.netAnnual": 665121400,
+        "result.netMonthly": 55426783,
+        "tax.netTax": 284878601
+      },
+      "formulaId": "paye-server-sc",
+      "formulaVersion": "2026-03-01+sha256.6bb14725c134",
+      "id": "paye-sc-large-decimal",
+      "input": {
+        "country": "SC",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "src.gov.sc",
+        "url": "https://src.gov.sc"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-sc",
+      "formulaVersion": "2026-03-01+sha256.6bb14725c134",
+      "id": "paye-sc-zero",
+      "input": {
+        "country": "SC",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "financialministry.gov.sd",
+        "url": "https://financialministry.gov.sd"
+      },
+      "expected": {
+        "deductions.totalDeductions": 218000,
+        "result.netAnnual": 782000,
+        "result.netMonthly": 65167,
+        "tax.netTax": 138000
+      },
+      "formulaId": "paye-server-sd",
+      "formulaVersion": "2026-03-01+sha256.58cf8206e3b5",
+      "id": "paye-sd-defaults",
+      "input": {
+        "country": "SD",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "financialministry.gov.sd",
+        "url": "https://financialministry.gov.sd"
+      },
+      "expected": {
+        "deductions.totalDeductions": 218000000,
+        "result.netAnnual": 782000001,
+        "result.netMonthly": 65166667,
+        "tax.netTax": 138000000
+      },
+      "formulaId": "paye-server-sd",
+      "formulaVersion": "2026-03-01+sha256.58cf8206e3b5",
+      "id": "paye-sd-large-decimal",
+      "input": {
+        "country": "SD",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "financialministry.gov.sd",
+        "url": "https://financialministry.gov.sd"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-sd",
+      "formulaVersion": "2026-03-01+sha256.58cf8206e3b5",
+      "id": "paye-sd-zero",
+      "input": {
+        "country": "SD",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "nra.gov.sl",
+        "url": "https://nra.gov.sl"
+      },
+      "expected": {
+        "deductions.totalDeductions": 50000,
+        "result.netAnnual": 950000,
+        "result.netMonthly": 79167,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-sl",
+      "formulaVersion": "2026-03-01+sha256.7a53aa29bd05",
+      "id": "paye-sl-defaults",
+      "input": {
+        "country": "SL",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "nra.gov.sl",
+        "url": "https://nra.gov.sl"
+      },
+      "expected": {
+        "deductions.totalDeductions": 331040000,
+        "result.netAnnual": 668960001,
+        "result.netMonthly": 55746667,
+        "tax.netTax": 281040000
+      },
+      "formulaId": "paye-server-sl",
+      "formulaVersion": "2026-03-01+sha256.7a53aa29bd05",
+      "id": "paye-sl-large-decimal",
+      "input": {
+        "country": "SL",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "nra.gov.sl",
+        "url": "https://nra.gov.sl"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-sl",
+      "formulaVersion": "2026-03-01+sha256.7a53aa29bd05",
+      "id": "paye-sl-zero",
+      "input": {
+        "country": "SL",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "impotsetdomaines.gouv.sn",
+        "url": "https://impotsetdomaines.gouv.sn"
+      },
+      "expected": {
+        "deductions.totalDeductions": 118800,
+        "result.netAnnual": 881200,
+        "result.netMonthly": 73433,
+        "tax.netTax": 62800
+      },
+      "formulaId": "paye-server-sn",
+      "formulaVersion": "2026-03-01+sha256.68f7f0c2574b",
+      "id": "paye-sn-defaults",
+      "input": {
+        "country": "SN",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "impotsetdomaines.gouv.sn",
+        "url": "https://impotsetdomaines.gouv.sn"
+      },
+      "expected": {
+        "deductions.totalDeductions": 431843000,
+        "result.netAnnual": 568157001,
+        "result.netMonthly": 47346417,
+        "tax.netTax": 375843000
+      },
+      "formulaId": "paye-server-sn",
+      "formulaVersion": "2026-03-01+sha256.68f7f0c2574b",
+      "id": "paye-sn-large-decimal",
+      "input": {
+        "country": "SN",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "impotsetdomaines.gouv.sn",
+        "url": "https://impotsetdomaines.gouv.sn"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-sn",
+      "formulaVersion": "2026-03-01+sha256.68f7f0c2574b",
+      "id": "paye-sn-zero",
+      "input": {
+        "country": "SN",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "financialministry.gov.sd",
+        "url": "https://financialministry.gov.sd"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 1000000,
+        "result.netMonthly": 83333,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-so",
+      "formulaVersion": "2026-03-01+sha256.703db1d2c558",
+      "id": "paye-so-defaults",
+      "input": {
+        "country": "SO",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "financialministry.gov.sd",
+        "url": "https://financialministry.gov.sd"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 1000000001,
+        "result.netMonthly": 83333333,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-so",
+      "formulaVersion": "2026-03-01+sha256.703db1d2c558",
+      "id": "paye-so-large-decimal",
+      "input": {
+        "country": "SO",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "financialministry.gov.sd",
+        "url": "https://financialministry.gov.sd"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-so",
+      "formulaVersion": "2026-03-01+sha256.703db1d2c558",
+      "id": "paye-so-zero",
+      "input": {
+        "country": "SO",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "nra.gov.ss",
+        "url": "https://nra.gov.ss"
+      },
+      "expected": {
+        "deductions.totalDeductions": 181800,
+        "result.netAnnual": 818200,
+        "result.netMonthly": 68183,
+        "tax.netTax": 101800
+      },
+      "formulaId": "paye-server-ss",
+      "formulaVersion": "2026-03-01+sha256.77e7e63b5898",
+      "id": "paye-ss-defaults",
+      "input": {
+        "country": "SS",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "nra.gov.ss",
+        "url": "https://nra.gov.ss"
+      },
+      "expected": {
+        "deductions.totalDeductions": 263917800,
+        "result.netAnnual": 736082201,
+        "result.netMonthly": 61340183,
+        "tax.netTax": 183917800
+      },
+      "formulaId": "paye-server-ss",
+      "formulaVersion": "2026-03-01+sha256.77e7e63b5898",
+      "id": "paye-ss-large-decimal",
+      "input": {
+        "country": "SS",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "nra.gov.ss",
+        "url": "https://nra.gov.ss"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-ss",
+      "formulaVersion": "2026-03-01+sha256.77e7e63b5898",
+      "id": "paye-ss-zero",
+      "input": {
+        "country": "SS",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "mf.gov.st",
+        "url": "https://mf.gov.st"
+      },
+      "expected": {
+        "deductions.totalDeductions": 154000,
+        "result.netAnnual": 846000,
+        "result.netMonthly": 70500,
+        "tax.netTax": 94000
+      },
+      "formulaId": "paye-server-st",
+      "formulaVersion": "2026-03-01+sha256.b7c516ddb2f8",
+      "id": "paye-st-defaults",
+      "input": {
+        "country": "ST",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "mf.gov.st",
+        "url": "https://mf.gov.st"
+      },
+      "expected": {
+        "deductions.totalDeductions": 286300000,
+        "result.netAnnual": 713700001,
+        "result.netMonthly": 59475000,
+        "tax.netTax": 226300000
+      },
+      "formulaId": "paye-server-st",
+      "formulaVersion": "2026-03-01+sha256.b7c516ddb2f8",
+      "id": "paye-st-large-decimal",
+      "input": {
+        "country": "ST",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "mf.gov.st",
+        "url": "https://mf.gov.st"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-st",
+      "formulaVersion": "2026-03-01+sha256.b7c516ddb2f8",
+      "id": "paye-st-zero",
+      "input": {
+        "country": "ST",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "era.org.sz",
+        "url": "https://www.era.org.sz"
+      },
+      "expected": {
+        "deductions.totalDeductions": 313229,
+        "result.netAnnual": 686771,
+        "result.netMonthly": 57231,
+        "tax.netTax": 310649
+      },
+      "formulaId": "paye-server-sz",
+      "formulaVersion": "2026-03-01+sha256.f9544ce8f9a2",
+      "id": "paye-sz-defaults",
+      "input": {
+        "country": "SZ",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "era.org.sz",
+        "url": "https://www.era.org.sz"
+      },
+      "expected": {
+        "deductions.totalDeductions": 329983229,
+        "result.netAnnual": 670016772,
+        "result.netMonthly": 55834731,
+        "tax.netTax": 329980649
+      },
+      "formulaId": "paye-server-sz",
+      "formulaVersion": "2026-03-01+sha256.f9544ce8f9a2",
+      "id": "paye-sz-large-decimal",
+      "input": {
+        "country": "SZ",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "era.org.sz",
+        "url": "https://www.era.org.sz"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-sz",
+      "formulaVersion": "2026-03-01+sha256.f9544ce8f9a2",
+      "id": "paye-sz-zero",
+      "input": {
+        "country": "SZ",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Direction generale des impots - Chad",
+        "url": "https://www.dgi.td/docs/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 109750,
+        "result.netAnnual": 890250,
+        "result.netMonthly": 74188,
+        "tax.netTax": 74750
+      },
+      "formulaId": "paye-server-td",
+      "formulaVersion": "2026-03-01+sha256.087e0605893e",
+      "id": "paye-td-defaults",
+      "input": {
+        "country": "TD",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Direction generale des impots - Chad",
+        "url": "https://www.dgi.td/docs/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 371520000,
+        "result.netAnnual": 628480001,
+        "result.netMonthly": 52373333,
+        "tax.netTax": 336520000
+      },
+      "formulaId": "paye-server-td",
+      "formulaVersion": "2026-03-01+sha256.087e0605893e",
+      "id": "paye-td-large-decimal",
+      "input": {
+        "country": "TD",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Direction generale des impots - Chad",
+        "url": "https://www.dgi.td/docs/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-td",
+      "formulaVersion": "2026-03-01+sha256.087e0605893e",
+      "id": "paye-td-zero",
+      "input": {
+        "country": "TD",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Office togolais des recettes",
+        "url": "https://www.otr.tg/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 44200,
+        "result.netAnnual": 955800,
+        "result.netMonthly": 79650,
+        "tax.netTax": 4200
+      },
+      "formulaId": "paye-server-tg",
+      "formulaVersion": "2026-03-01+sha256.3b15cf82f6ee",
+      "id": "paye-tg-defaults",
+      "input": {
+        "country": "TG",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Office togolais des recettes",
+        "url": "https://www.otr.tg/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 374305000,
+        "result.netAnnual": 625695001,
+        "result.netMonthly": 52141250,
+        "tax.netTax": 334305000
+      },
+      "formulaId": "paye-server-tg",
+      "formulaVersion": "2026-03-01+sha256.3b15cf82f6ee",
+      "id": "paye-tg-large-decimal",
+      "input": {
+        "country": "TG",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "Office togolais des recettes",
+        "url": "https://www.otr.tg/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-tg",
+      "formulaVersion": "2026-03-01+sha256.3b15cf82f6ee",
+      "id": "paye-tg-zero",
+      "input": {
+        "country": "TG",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "finances.gov.tn",
+        "url": "https://www.finances.gov.tn"
+      },
+      "expected": {
+        "deductions.totalDeductions": 405070,
+        "result.netAnnual": 594930,
+        "result.netMonthly": 49578,
+        "tax.netTax": 313270
+      },
+      "formulaId": "paye-server-tn",
+      "formulaVersion": "2026-03-01+sha256.4dfce78edd45",
+      "id": "paye-tn-defaults",
+      "input": {
+        "country": "TN",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "finances.gov.tn",
+        "url": "https://www.finances.gov.tn"
+      },
+      "expected": {
+        "deductions.totalDeductions": 409665400,
+        "result.netAnnual": 590334600,
+        "result.netMonthly": 49194550,
+        "tax.netTax": 317865400
+      },
+      "formulaId": "paye-server-tn",
+      "formulaVersion": "2026-03-01+sha256.4dfce78edd45",
+      "id": "paye-tn-large-decimal",
+      "input": {
+        "country": "TN",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "finances.gov.tn",
+        "url": "https://www.finances.gov.tn"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-tn",
+      "formulaVersion": "2026-03-01+sha256.4dfce78edd45",
+      "id": "paye-tn-zero",
+      "input": {
+        "country": "TN",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "TRA PAYE calculator Official TRA calculator for monthly income tax payable.",
+        "url": "https://paymentregistration.tra.go.tz/payecalculator/paye.htm"
+      },
+      "expected": {
+        "deductions.totalDeductions": 100000,
+        "result.netAnnual": 900000,
+        "result.netMonthly": 75000,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-tz",
+      "formulaVersion": "2026-03-01+sha256.23880f54cf75",
+      "id": "paye-tz-defaults",
+      "input": {
+        "country": "TZ",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "TRA PAYE calculator Official TRA calculator for monthly income tax payable.",
+        "url": "https://paymentregistration.tra.go.tz/payecalculator/paye.htm"
+      },
+      "expected": {
+        "deductions.totalDeductions": 367936000,
+        "result.netAnnual": 632064000,
+        "result.netMonthly": 52672000,
+        "tax.netTax": 267936000
+      },
+      "formulaId": "paye-server-tz",
+      "formulaVersion": "2026-03-01+sha256.23880f54cf75",
+      "id": "paye-tz-large-decimal",
+      "input": {
+        "country": "TZ",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "TRA PAYE calculator Official TRA calculator for monthly income tax payable.",
+        "url": "https://paymentregistration.tra.go.tz/payecalculator/paye.htm"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-tz",
+      "formulaVersion": "2026-03-01+sha256.23880f54cf75",
+      "id": "paye-tz-zero",
+      "input": {
+        "country": "TZ",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "ura.go.ug",
+        "url": "https://ura.go.ug"
+      },
+      "expected": {
+        "deductions.totalDeductions": 50000,
+        "result.netAnnual": 950000,
+        "result.netMonthly": 79167,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-ug",
+      "formulaVersion": "2026-03-01+sha256.023bb81b9b4e",
+      "id": "paye-ug-defaults",
+      "input": {
+        "country": "UG",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "ura.go.ug",
+        "url": "https://ura.go.ug"
+      },
+      "expected": {
+        "deductions.totalDeductions": 416659000,
+        "result.netAnnual": 583341001,
+        "result.netMonthly": 48611750,
+        "tax.netTax": 366659000
+      },
+      "formulaId": "paye-server-ug",
+      "formulaVersion": "2026-03-01+sha256.023bb81b9b4e",
+      "id": "paye-ug-large-decimal",
+      "input": {
+        "country": "UG",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "ura.go.ug",
+        "url": "https://ura.go.ug"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-ug",
+      "formulaVersion": "2026-03-01+sha256.023bb81b9b4e",
+      "id": "paye-ug-zero",
+      "input": {
+        "country": "UG",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "SARS (sars.gov.za)",
+        "url": "https://www.sars.gov.za/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 294409,
+        "result.netAnnual": 705591,
+        "result.netMonthly": 58799,
+        "tax.netTax": 292284
+      },
+      "formulaId": "paye-server-za",
+      "formulaVersion": "2026-03-01+sha256.90b15089d1f6",
+      "id": "paye-za-defaults",
+      "input": {
+        "country": "ZA",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "exact_threshold",
+        "band_boundary"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "SARS (sars.gov.za)",
+        "url": "https://www.sars.gov.za/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 958,
+        "result.netAnnual": 94793,
+        "result.netMonthly": 7899,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-za",
+      "formulaVersion": "2026-03-01+sha256.90b15089d1f6",
+      "id": "paye-za-exact-threshold",
+      "input": {
+        "country": "ZA",
+        "grossAnnual": 95750
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "SARS (sars.gov.za)",
+        "url": "https://www.sars.gov.za/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 449811729,
+        "result.netAnnual": 550188271,
+        "result.netMonthly": 45849023,
+        "tax.netTax": 449809604
+      },
+      "formulaId": "paye-server-za",
+      "formulaVersion": "2026-03-01+sha256.90b15089d1f6",
+      "id": "paye-za-large-decimal",
+      "input": {
+        "country": "ZA",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "SARS (sars.gov.za)",
+        "url": "https://www.sars.gov.za/"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-za",
+      "formulaVersion": "2026-03-01+sha256.90b15089d1f6",
+      "id": "paye-za-zero",
+      "input": {
+        "country": "ZA",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "zra.org.zm",
+        "url": "https://www.zra.org.zm"
+      },
+      "expected": {
+        "deductions.totalDeductions": 360726,
+        "result.netAnnual": 639274,
+        "result.netMonthly": 53273,
+        "tax.netTax": 330228
+      },
+      "formulaId": "paye-server-zm",
+      "formulaVersion": "2026-03-01+sha256.657712ed22f6",
+      "id": "paye-zm-defaults",
+      "input": {
+        "country": "ZM",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "zra.org.zm",
+        "url": "https://www.zra.org.zm"
+      },
+      "expected": {
+        "deductions.totalDeductions": 376284426,
+        "result.netAnnual": 623715574,
+        "result.netMonthly": 51976298,
+        "tax.netTax": 366263928
+      },
+      "formulaId": "paye-server-zm",
+      "formulaVersion": "2026-03-01+sha256.657712ed22f6",
+      "id": "paye-zm-large-decimal",
+      "input": {
+        "country": "ZM",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "zra.org.zm",
+        "url": "https://www.zra.org.zm"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-zm",
+      "formulaVersion": "2026-03-01+sha256.657712ed22f6",
+      "id": "paye-zm-zero",
+      "input": {
+        "country": "ZM",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "missing_optional_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "zimra.co.zw",
+        "url": "https://www.zimra.co.zw"
+      },
+      "expected": {
+        "deductions.totalDeductions": 408400,
+        "result.netAnnual": 591600,
+        "result.netMonthly": 49300,
+        "tax.netTax": 373400
+      },
+      "formulaId": "paye-server-zw",
+      "formulaVersion": "2026-03-01+sha256.dcb7172cbfd9",
+      "id": "paye-zw-defaults",
+      "input": {
+        "country": "ZW",
+        "grossAnnual": 1000000
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "very_large_value",
+        "decimal_precision"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "zimra.co.zw",
+        "url": "https://www.zimra.co.zw"
+      },
+      "expected": {
+        "deductions.totalDeductions": 420987400,
+        "result.netAnnual": 579012601,
+        "result.netMonthly": 48251050,
+        "tax.netTax": 385987400
+      },
+      "formulaId": "paye-server-zw",
+      "formulaVersion": "2026-03-01+sha256.dcb7172cbfd9",
+      "id": "paye-zw-large-decimal",
+      "input": {
+        "country": "ZW",
+        "grossAnnual": 1000000000.55
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    },
+    {
+      "caseClasses": [
+        "zero_input"
+      ],
+      "changeNote": "baseline-no-change",
+      "evidence": {
+        "authorityStatus": "source-reviewed",
+        "kind": "authority-link",
+        "registryId": null,
+        "title": "zimra.co.zw",
+        "url": "https://www.zimra.co.zw"
+      },
+      "expected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "formulaId": "paye-server-zw",
+      "formulaVersion": "2026-03-01+sha256.dcb7172cbfd9",
+      "id": "paye-zw-zero",
+      "input": {
+        "country": "ZW",
+        "grossAnnual": 0
+      },
+      "operation": "paye-calculate",
+      "tolerance": 0.01
+    }
+  ],
+  "schemaVersion": 1
+}

@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profit Margin Calculator | Multi-Product, Import Costs</title>
+<meta name="description" content="Professional profit margin calculator for African businesses. Multi-product analysis, import duty calculations, FOREX margins, breakeven quantities.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Profit Margin Calculator | AfroTools">
+<meta property="og:description" content="Calculate profit margins, analyze multi-product profitability, import costs with duty & FOREX. Built for African entrepreneurs.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/profit-margin.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/profit-margin/">
+<meta property="og:site_name" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+  :root {
+    --afro-green: var(--color-primary);
+    --afro-red: #ef4444;
+    --afro-dark: #1e293b;
+    --afro-slate: #0f1419;
+    --amber: #f59e0b;
+  }
+
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #2d3748 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-hero::after {
+    content: '??';
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8rem;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--afro-green);
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    color: var(--afro-green);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.6;
+    max-width: 700px;
+    margin-bottom: 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .b-green {
+    background: rgba(0, 113, 227, 0.18);
+    color: var(--color-primary);
+    border: 1px solid rgba(0, 113, 227, 0.38);
+  }
+
+  .tool-main {
+    padding: 28px 0 72px;
+  }
+
+  .tool-main-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 22px;
+    align-items: start;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .card + .card {
+    margin-top: 18px;
+  }
+
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #f1f5f9;
+    background: #f8fafc;
+  }
+
+  .card-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--afro-dark);
+  }
+
+  .card-body {
+    padding: 22px;
+  }
+
+  .tabs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .tab-btn {
+    padding: 10px 12px;
+    background: #f1f5f9;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #475569;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .tab-btn:hover {
+    border-color: var(--afro-green);
+  }
+
+  .tab-btn.active {
+    background: var(--afro-green);
+    color: #fff;
+    border-color: var(--afro-green);
+  }
+
+  .tab-content {
+    display: none;
+  }
+
+  .tab-content.active {
+    display: block;
+  }
+
+  .field {
+    margin-bottom: 16px;
+  }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .f-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--afro-dark);
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .f-input, .f-select {
+    width: 100%;
+    padding: 10px 12px;
+    background: #f8fafc;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 7px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--afro-dark);
+    outline: none;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.18s;
+  }
+
+  .f-input:focus, .f-select:focus {
+    border-color: var(--afro-green);
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+  }
+
+  .calc-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--afro-green);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .calc-btn:hover {
+    background: #0059B3;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 113, 227, 0.3);
+  }
+
+  .result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .result-box {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+  }
+
+  .result-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+  }
+
+  .result-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--afro-green);
+  }
+
+  .result-value.negative {
+    color: var(--afro-red);
+  }
+
+  .slider-container {
+    margin-top: 16px;
+  }
+
+  .slider {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: #cbd5e1;
+    outline: none;
+    -webkit-appearance: none;
+  }
+
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--afro-green);
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 113, 227, 0.3);
+  }
+
+  .slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--afro-green);
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 6px rgba(0, 113, 227, 0.3);
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+    margin-top: 12px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+
+  th {
+    background: #f8fafc;
+    padding: 10px;
+    text-align: left;
+    font-weight: 700;
+    color: var(--afro-dark);
+    border-bottom: 2px solid #cbd5e1;
+  }
+
+  td {
+    padding: 10px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #475569;
+  }
+
+  td.currency {
+    font-weight: 700;
+    color: var(--afro-green);
+  }
+
+  tr.totals td {
+    background: #f8fafc;
+    font-weight: 700;
+    border-top: 2px solid #cbd5e1;
+    color: var(--afro-dark);
+  }
+
+  tr.highlight {
+    background: rgba(0, 113, 227, 0.08);
+  }
+
+  .add-row-btn {
+    padding: 8px 12px;
+    background: var(--afro-green);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: all 0.18s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .add-row-btn:hover {
+    background: #0059B3;
+  }
+
+  .remove-btn {
+    padding: 4px 8px;
+    background: #fee2e2;
+    color: #dc2626;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .remove-btn:hover {
+    background: #fecaca;
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .info-card {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .info-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--afro-dark);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .info-text {
+    font-size: 0.8rem;
+    color: #475569;
+    line-height: 1.6;
+  }
+
+  .info-text strong {
+    color: var(--afro-dark);
+  }
+
+  .benchmark-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .benchmark-item:last-child {
+    border-bottom: none;
+  }
+
+  .benchmark-label {
+    font-weight: 600;
+  }
+
+  .benchmark-value {
+    color: var(--afro-green);
+    font-weight: 700;
+  }
+
+  .save-section {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .save-btn, .load-btn {
+    flex: 1;
+    padding: 8px;
+    background: var(--afro-green);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .load-btn {
+    background: #0284c7;
+  }
+
+  .save-btn:hover {
+    background: #0059B3;
+  }
+
+  .load-btn:hover {
+    background: #0369a1;
+  }
+
+  .alert {
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    margin-bottom: 12px;
+  }
+
+  .alert-danger {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+  }
+
+  @media (max-width: 768px) {
+    .tool-main-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .tabs {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .field-row {
+      grid-template-columns: 1fr;
+    }
+
+    .result-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+/* AI Advisor sidebar */
+.ai-advisor-card{background:#fff;border-radius:16px;border:1px solid #DBEAFE;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05);margin-bottom:16px}
+.ai-advisor-head{padding:14px 18px;border-bottom:1px solid #EFF6FF;display:flex;align-items:center;gap:9px}
+.ai-dot{width:8px;height:8px;border-radius:50%;background:#0062CC;animation:aiPulse 2s infinite;flex-shrink:0}
+@keyframes aiPulse{0%,100%{opacity:1}50%{opacity:.3}}
+.ai-title{font-size:.72rem;font-weight:700;letter-spacing:.06em;color:#0f172a}
+.ai-by{font-size:.62rem;color:#6B8CAE;margin-left:auto}
+.ai-advisor-body{padding:14px 18px}
+.ai-status{font-size:.78rem;color:#0f172a;line-height:1.6;margin-bottom:10px}
+.ai-consent{display:grid;grid-template-columns:16px 1fr;gap:8px;align-items:start;margin:0 0 10px;padding:9px 10px;border:1px solid #DBEAFE;border-radius:8px;background:#F8FBFF;color:#334155;font-size:.72rem;line-height:1.45}
+.ai-consent input{margin-top:2px}
+.ai-local-note{font-size:.68rem;color:#64748b;margin:-3px 0 8px}
+.ai-msgs{max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.ai-msg-u{font-size:.76rem;padding:7px 10px;background:#0062CC;color:#fff;border-radius:6px;align-self:flex-end;max-width:90%;word-wrap:break-word}
+.ai-msg-a{font-size:.76rem;padding:7px 10px;background:#EFF6FF;color:#0f172a;border-radius:6px;align-self:flex-start;max-width:90%;line-height:1.55;word-wrap:break-word}
+.ai-thinking{font-size:.72rem;color:#9ca3af;font-style:italic;padding:4px 0}
+.ai-input-row{display:flex;gap:6px}
+.ai-input{flex:1;padding:9px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.8rem;outline:none;background:#fafafa}
+.ai-input:focus{border-color:#0062CC;background:#fff}
+.ai-send{padding:9px 14px;background:#0062CC;color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer}
+.ai-send:disabled{opacity:.5;cursor:not-allowed}
+</style>
+<link rel="stylesheet" href="/assets/css/vat-business-tax-focus.css?v=70162817">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "https://afrotools.com/",
+  "description": "https://afrotools.com/",
+  "url": "https://afrotools.com/",
+  "inLanguage": "en",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/profit-margin.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "https://afrotools.com/",
+  "url": "https://afrotools.com/",
+  "description": "https://afrotools.com/",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/profit-margin.webp"
+}
+</script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Profit Margin Calculator | AfroTools">
+<meta name="twitter:description" content="Calculate profit margins, analyze multi-product profitability, import costs with duty & FOREX. Built for African entrepreneurs.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/profit-margin.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Profit Margin Calculator",
+      "item": "https://afrotools.com/tools/profit-margin/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between profit margin and markup?","acceptedAnswer":{"@type":"Answer","text":"Profit margin is profit as a percentage of selling price (revenue-based). Markup is profit as a percentage of cost price (cost-based). For example, buying at 100 and selling at 150 gives a 33.3% margin but a 50% markup."}},{"@type":"Question","name":"How does the import cost calculator work?","acceptedAnswer":{"@type":"Answer","text":"Enter the product cost in the source currency, shipping fees, import duty percentage, and the FOREX rate. The tool calculates your total landed cost in local currency, giving you an accurate cost base for margin calculations."}},{"@type":"Question","name":"Can I analyse margins for multiple products?","acceptedAnswer":{"@type":"Answer","text":"Yes. The multi-product mode lets you add several products and compare their profit margins, markups, and breakeven quantities side by side. This helps identify your most and least profitable items."}},{"@type":"Question","name":"What is a good profit margin for African businesses?","acceptedAnswer":{"@type":"Answer","text":"It varies by industry. Retail typically sees 20-50% margins, services can achieve 40-70%, and manufacturing often ranges from 15-35%. The AI advisor can provide industry-specific guidance for your market."}},{"@type":"Question","name":"Can the assistant help with my pricing strategy?","acceptedAnswer":{"@type":"Answer","text":"Yes. It can explain the result locally in your browser and suggest what to check next. If you tick the network AI consent box, your question and recent chat messages can be sent for a more flexible response."}}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/profit-margin/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/profit-margin/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/marge-beneficiaire/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-margin-ya-faida/">
+<link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/tazarar-riba/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/profit-margin/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="/">AfroTools</a> / <span>Tools</span></div>
+    <h1>Profit Margin <em>Calculator</em></h1>
+    <p class="hero-sub">Professional profit margin analysis for African businesses. Single product margins, multi-product profitability analysis, import duty calculations with FOREX margins.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">Multi-Product</span>
+      <span class="badge b-green">Import Costs</span>
+      <span class="badge b-green">Save & Load</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <!-- Tabs -->
+      <div class="card">
+        <div class="card-body" style="padding: 16px;">
+          <div class="tabs">
+            <button type="button" class="tab-btn active" data-tab="single">Single Product</button>
+            <button type="button" class="tab-btn" data-tab="multi">Multi-Product</button>
+            <button type="button" class="tab-btn" data-tab="import">Import Costs</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 1: Single Product -->
+      <div class="tab-content active" id="single">
+        <div class="card">
+          <div class="card-head"><span class="card-title">Single Product Analysis</span></div>
+          <div class="card-body">
+            <div class="field-row">
+              <div class="field">
+                <label class="f-label">Cost Price</label>
+                <input aria-label="SingleCost" type="number" class="f-input" id="singleCost" value="100" step="0.01">
+              </div>
+              <div class="field">
+                <label class="f-label">Currency</label>
+                <select class="f-select" id="singleCurrency" aria-label="Single Currency">
+                  <option value="$">USD ($)</option>
+                  <option value="?">NGN (?)</option>
+                  <option value="KSh">KES (KSh)</option>
+                  <option value="R">ZAR (R)</option>
+                  <option value="GH?">GHS (GH?)</option>
+                  <option value="-">GBP (-)</option>
+                  <option value="-">EUR (-)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="f-label">Selling Price OR Target Margin %</label>
+              <div class="field-row">
+                <div class="field">
+                  <label class="f-label" style="font-size: 0.65rem;">Selling Price</label>
+                  <input aria-label="SingleSelling" type="number" class="f-input" id="singleSelling" value="150" step="0.01">
+                </div>
+                <div class="field">
+                  <label class="f-label" style="font-size: 0.65rem;">OR Target Margin %</label>
+                  <input aria-label="Leave blank to use selling price" type="number" class="f-input" id="singleTargetMargin" placeholder="Leave blank to use selling price" step="0.01">
+                </div>
+              </div>
+            </div>
+
+            <button type="button" class="calc-btn" id="calcSingle">Calculate</button>
+
+            <div class="result-grid" id="singleResults" style="display: none;">
+              <div class="result-box">
+                <div class="result-label">Profit</div>
+                <div class="result-value" id="singleProfit">0</div>
+              </div>
+              <div class="result-box">
+                <div class="result-label">Margin %</div>
+                <div class="result-value" id="singleMargin">0%</div>
+              </div>
+              <div class="result-box">
+                <div class="result-label">Markup %</div>
+                <div class="result-value" id="singleMarkup">0%</div>
+              </div>
+              <div class="result-box">
+                <div class="result-label">ROI %</div>
+                <div class="result-value" id="singleROI">0%</div>
+              </div>
+            </div>
+
+            <div class="slider-container" id="singleSliderContainer" style="display: none;">
+              <label class="f-label">Adjust Selling Price (What If?)</label>
+              <input aria-label="SinglePriceSlider" type="range" class="slider" id="singlePriceSlider" min="0" max="1000" step="1">
+              <div style="margin-top: 8px; font-size: 0.8rem; color: #475569;">
+                <strong>Selling Price:</strong> <span id="sliderValue">150</span>
+              </div>
+            </div>
+
+            <div class="result-actions" id="singleActions" style="display:none;gap:8px;margin-top:16px;flex-wrap:wrap;">
+              <save-result-button tool-slug="profit-margin" tool-name="Profit Margin"></save-result-button>
+              <share-result-button tool-name="Profit Margin" tool-slug="profit-margin"></share-result-button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><span class="card-title">Break-Even Analysis</span></div>
+          <div class="card-body">
+            <div class="field">
+              <label class="f-label">Fixed Monthly Costs (optional)</label>
+              <input aria-label="Rent, salaries, utilities" type="number" class="f-input" id="singleFixedCosts" placeholder="Rent, salaries, utilities..." step="0.01">
+            </div>
+            <button type="button" class="calc-btn" id="calcBreakeven">Calculate Break-Even Units</button>
+            <div id="breakEvenResults" style="display: none; margin-top: 14px;">
+              <div style="padding: 12px; background: #EFF6FF; border: 1px solid #93C5FD; border-radius: 6px;">
+                <div style="font-size: 0.8rem; color: #1E3A5F; margin-bottom: 4px;"><strong>Break-Even Point:</strong></div>
+                <div style="font-size: 1.3rem; font-weight: 700; color: var(--afro-green); margin-bottom: 8px;" id="breakEvenUnits">0</div>
+                <div style="font-size: 0.75rem; color: #1E3A5F;">units to cover monthly fixed costs</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Multi-Product -->
+      <div class="tab-content" id="multi">
+        <div class="card">
+          <div class="card-head"><span class="card-title">Multi-Product Profitability Analysis</span></div>
+          <div class="card-body">
+            <div class="field">
+              <label class="f-label" for="multiCurrency">Currency</label>
+              <select class="f-select" id="multiCurrency">
+                <option value="$">USD ($)</option>
+                <option value="?">NGN (?)</option>
+                <option value="KSh">KES (KSh)</option>
+                <option value="R">ZAR (R)</option>
+                <option value="GH?">GHS (GH?)</option>
+                <option value="-">GBP (-)</option>
+                <option value="-">EUR (-)</option>
+              </select>
+            </div>
+
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Cost</th>
+                    <th>Selling</th>
+                    <th>Qty/mo</th>
+                    <th>Margin %</th>
+                    <th>Profit</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="multiProductRows">
+                  <tr>
+                    <td><input aria-label="Product name" type="text" class="f-input" data-field="name" placeholder="Product name" value="Product 1" style="font-size: 0.8rem;"></td>
+                    <td><input aria-label="F input" type="number" class="f-input" data-field="cost" value="50" step="0.01" style="font-size: 0.8rem;"></td>
+                    <td><input aria-label="F input" type="number" class="f-input" data-field="selling" value="100" step="0.01" style="font-size: 0.8rem;"></td>
+                    <td><input aria-label="F input" type="number" class="f-input" data-field="qty" value="10" step="1" style="font-size: 0.8rem;"></td>
+                    <td class="currency" data-col="margin">50%</td>
+                    <td class="currency" data-col="profit">500</td>
+                    <td><button type="button" class="remove-btn" onclick="removeMultiRow(this)">Delete</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <button type="button" class="add-row-btn" onclick="addMultiRow()">+ Add Product</button>
+
+            <div id="multiTotals" style="display: none; margin-top: 14px;">
+              <div class="result-grid">
+                <div class="result-box">
+                  <div class="result-label">Total Revenue</div>
+                  <div class="result-value" id="multiRevenue">0</div>
+                </div>
+                <div class="result-box">
+                  <div class="result-label">Total Cost</div>
+                  <div class="result-value" id="multiTotalCost">0</div>
+                </div>
+                <div class="result-box">
+                  <div class="result-label">Total Profit</div>
+                  <div class="result-value" id="multiTotalProfit">0</div>
+                </div>
+                <div class="result-box">
+                  <div class="result-label">Avg Margin %</div>
+                  <div class="result-value" id="multiAvgMargin">0%</div>
+                </div>
+              </div>
+            </div>
+
+            <button type="button" class="calc-btn" style="margin-top: 12px;" onclick="calculateMulti()">Calculate All Products</button>
+
+            <div class="result-actions" id="multiActions" style="display:none;gap:8px;margin-top:16px;flex-wrap:wrap;">
+              <save-result-button tool-slug="profit-margin" tool-name="Profit Margin"></save-result-button>
+              <share-result-button tool-name="Profit Margin" tool-slug="profit-margin"></share-result-button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 3: Import Costs -->
+      <div class="tab-content" id="import">
+        <div class="card">
+          <div class="card-head"><span class="card-title">Import Cost Calculator (African Context)</span></div>
+          <div class="card-body">
+            <div class="alert alert-danger" id="importAlert" style="display: none;"></div>
+
+            <div class="field-row">
+              <div class="field">
+                <label class="f-label">Product Cost (Source Currency)</label>
+                <input aria-label="ImportCost" type="number" class="f-input" id="importCost" value="100" step="0.01">
+              </div>
+              <div class="field">
+                <label class="f-label">Source Currency</label>
+                <select class="f-select" id="importSourceCurrency" aria-label="Import Source Currency">
+                  <option value="CNY">CNY (Chinese Yuan)</option>
+                  <option value="USD">USD (US Dollar)</option>
+                  <option value="EUR">EUR (Euro)</option>
+                  <option value="INR">INR (Indian Rupee)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="f-label">Shipping & Freight Cost (in source currency)</label>
+              <input aria-label="ImportShipping" type="number" class="f-input" id="importShipping" value="20" step="0.01">
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label class="f-label">Import Duty %</label>
+                <input aria-label="ImportDuty" type="number" class="f-input" id="importDuty" value="20" step="0.1">
+              </div>
+              <div class="field">
+                <label class="f-label">Duty Preset (Nigeria)</label>
+                <select class="f-select" id="dutyPreset" aria-label="Duty Preset">
+                  <option value="">Custom %</option>
+                  <option value="25">Nigeria: 25%</option>
+                  <option value="35">Nigeria: 35% (High)</option>
+                  <option value="25">Kenya: 25%</option>
+                  <option value="20">South Africa: 20%</option>
+                  <option value="18">Ghana: 18%</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label class="f-label">Clearing Agent Fee %</label>
+                <input aria-label="ImportAgent" type="number" class="f-input" id="importAgent" value="2" step="0.1">
+              </div>
+              <div class="field">
+                <label class="f-label">Bank FOREX Rate</label>
+                <input aria-label="E.g., 430 for ?/USD" type="number" class="f-input" id="importRate" value="1.0" step="0.001" placeholder="e.g., 430 for ?/USD">
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="f-label">FOREX Spread % (on top of bank rate)</label>
+              <input aria-label="ImportSpread" type="number" class="f-input" id="importSpread" value="3" step="0.1">
+            </div>
+
+            <div class="field">
+              <label class="f-label">Destination Currency</label>
+              <select class="f-select" id="importDestCurrency" aria-label="Import Dest Currency">
+                <option value="?">NGN (?) - Nigeria</option>
+                <option value="KSh">KES (KSh) - Kenya</option>
+                <option value="R">ZAR (R) - South Africa</option>
+                <option value="GH?">GHS (GH?) - Ghana</option>
+                <option value="$">USD ($)</option>
+              </select>
+            </div>
+
+            <button type="button" class="calc-btn" id="calcImport">Calculate Landed Cost</button>
+
+            <div id="importResults" style="display: none; margin-top: 16px;">
+              <div class="result-grid">
+                <div class="result-box" style="grid-column: 1 / -1;">
+                  <div class="result-label">Total Landed Cost</div>
+                  <div class="result-value" id="importLandedCost">0</div>
+                </div>
+                <div class="result-box">
+                  <div class="result-label">Cost Before FOREX</div>
+                  <div class="result-value" id="importBeforeForex">0</div>
+                </div>
+                <div class="result-box">
+                  <div class="result-label">FOREX Impact</div>
+                  <div class="result-value" id="importForexMargin">0</div>
+                </div>
+              </div>
+
+              <div style="margin-top: 14px; padding: 12px; background: #EFF6FF; border: 1px solid #93C5FD; border-radius: 6px;">
+                <div style="font-size: 0.8rem; color: #1E3A5F; margin-bottom: 6px;"><strong>Suggested Selling Price:</strong></div>
+                <div style="font-size: 0.75rem; color: #1E3A5F; line-height: 1.6;">
+                  At 50% markup: <span id="suggestSelling50" style="font-weight: 700; color: var(--afro-green);"></span><br>
+                  At 100% markup: <span id="suggestSelling100" style="font-weight: 700; color: var(--afro-green);"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="result-actions" id="importActions" style="display:none;gap:8px;margin-top:16px;flex-wrap:wrap;">
+              <save-result-button tool-slug="profit-margin" tool-name="Profit Margin"></save-result-button>
+              <share-result-button tool-name="Profit Margin" tool-slug="profit-margin"></share-result-button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Save Feature -->
+      <div class="card">
+        <div class="card-head"><span class="card-title">Save & Load Calculations</span></div>
+        <div class="card-body">
+          <div class="save-section">
+            <button type="button" class="save-btn" onclick="saveCalculation()">?? Save</button>
+            <button type="button" class="load-btn" onclick="loadCalculation()">?? Load</button>
+          </div>
+          <div id="savedList" style="margin-top: 12px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+    <!-- AI Advisor -->
+    <div class="ai-advisor-card" id="aiCard">
+      <div class="ai-advisor-head">
+        <span class="ai-dot"></span>
+        <span class="ai-title">Margin Assistant</span>
+        <span class="ai-by">Local-first</span>
+      </div>
+      <div class="ai-advisor-body">
+        <div class="ai-status" id="aiStatus">Ask about margin, markup, breakeven, imports, or pricing. Local guidance runs in this browser. Network AI is optional.</div>
+        <label class="ai-consent" for="aiConsent"><input type="checkbox" id="aiConsent"> <span>Use network AI for this chat. This sends your question and recent assistant messages to AfroTools AI; keep private prices or client details out unless you choose to share them.</span></label>
+        <div class="ai-local-note">Unchecked: no AI network request is made.</div>
+        <div class="ai-chat" id="aiChat">
+          <div class="ai-msgs" id="aiMsgs"></div>
+          <div class="ai-input-row">
+            <input aria-label="Ask a question" type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" onkeydown="if(event.key==='Enter')sendAI()">
+            <button type="button" class="ai-send" id="aiSend" onclick="sendAI()">&#x2192;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<div class="info-card">
+        <div class="info-title">Margin vs Markup</div>
+        <div class="info-text">
+          <strong>Margin:</strong> Profit - Selling Price - 100<br>
+          <strong>Markup:</strong> Profit - Cost - 100<br><br>
+          <em>Most Nigerian traders use 100% markup = 50% margin</em>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Industry Benchmarks</div>
+        <div class="benchmark-item">
+          <span class="benchmark-label">Retail</span>
+          <span class="benchmark-value">20-50%</span>
+        </div>
+        <div class="benchmark-item">
+          <span class="benchmark-label">Wholesale</span>
+          <span class="benchmark-value">5-20%</span>
+        </div>
+        <div class="benchmark-item">
+          <span class="benchmark-label">Food/Foodstuff</span>
+          <span class="benchmark-value">30-60%</span>
+        </div>
+        <div class="benchmark-item">
+          <span class="benchmark-label">Tech/Electronics</span>
+          <span class="benchmark-value">50-80%</span>
+        </div>
+        <div class="benchmark-item">
+          <span class="benchmark-label">Fashion</span>
+          <span class="benchmark-value">40-100%</span>
+        </div>
+        <div class="benchmark-item">
+          <span class="benchmark-label">Building Materials</span>
+          <span class="benchmark-value">20-50%</span>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Pro Tips</div>
+        <div class="info-text">
+          <strong>? Market Knowledge:</strong> Most Lagos market traders price at 100% markup<br><br>
+          <strong>? Import Strategy:</strong> Factor FOREX spread into your pricing<br><br>
+          <strong>? Multi-Product:</strong> Track which products generate most profit<br><br>
+          <strong>? Break-Even:</strong> Know exactly how many units you need to sell
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<afro-related-tools category="ecommerce" current="profit-margin" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/vat-calculator/" data-related-tool data-id="vat-calc-pan-african" data-name="VAT Calculator (Pan-African)" data-category="ecommerce" data-icon="VC" data-desc="All 50+ African countries. Add VAT, extract VAT, compare countries side-by-side. 2025/26 rates.">VAT Calculator (Pan-African)</a></li><li><a href="/nigeria/ng-vat" data-related-tool data-id="ng-vat" data-name="Nigeria VAT Calculator" data-category="ecommerce" data-icon="NV" data-desc="NTA 2026 VAT: 7.5% standard, zero-rated, exempt categories. Reverse VAT included.">Nigeria VAT Calculator</a></li><li><a href="/south-africa/za-vat" data-related-tool data-id="za-vat" data-name="South Africa VAT Calculator" data-category="ecommerce" data-icon="SA" data-desc="SARS VAT 15%, zero-rated, exempt. Inclusive/exclusive. Vendor registration threshold.">South Africa VAT Calculator</a></li><li><a href="/kenya/ke-vat" data-related-tool data-id="ke-vat" data-name="Kenya VAT Calculator" data-category="ecommerce" data-icon="KV" data-desc="KRA VAT 16%, zero-rated, exempt. Reverse VAT and inclusive/exclusive toggle.">Kenya VAT Calculator</a></li><li><a href="/egypt/eg-vat" data-related-tool data-id="eg-vat" data-name="Egypt VAT Calculator" data-category="ecommerce" data-icon="EV" data-desc="ETA VAT 14%. Standard + reduced rates. Table tax.">Egypt VAT Calculator</a></li><li><a href="/ghana/gh-vat" data-related-tool data-id="gh-vat" data-name="Ghana VAT Calculator" data-category="ecommerce" data-icon="GV" data-desc="GRA VAT 15% + 2.5% NHIL + 2.5% GETFund. Standard effective charge and zero-rated supplies.">Ghana VAT Calculator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
+  <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Profit Margin Calculator: How It Works</h2>
+  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
+    <p>The AfroTools Profit Margin Calculator is a professional-grade tool built for African businesses to analyse profitability across products, services, and pricing scenarios. Enter your cost price and selling price to instantly see your gross profit, profit margin percentage, and markup percentage. The tool supports multi-product analysis, allowing you to compare margins across your entire product line in a single view. For businesses that import goods, the import cost module factors in duties, customs fees, shipping, and FOREX conversion rates - critical cost elements for African importers dealing with fluctuating exchange rates. The calculator also computes breakeven quantities so you know exactly how many units you need to sell to cover your fixed costs. The assistant explains margin, markup, breakeven, import-cost, and pricing next steps. It gives local browser guidance by default, and network AI is used only after explicit consent. Whether you run a retail shop, an e-commerce store, or a manufacturing operation, this calculator gives you the financial clarity to set profitable prices and grow your business.</p>
+  </div>
+  <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Frequently Asked Questions</h3>
+
+  <div class="landing-faq" style="display:flex;flex-direction:column;gap:8px;">
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">What is the difference between profit margin and markup?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Profit margin is profit as a percentage of selling price (revenue-based). Markup is profit as a percentage of cost price (cost-based). For example, buying at 100 and selling at 150 gives a 33.3% margin but a 50% markup.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">How does the import cost calculator work?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Enter the product cost in the source currency, shipping fees, import duty percentage, and the FOREX rate. The tool calculates your total landed cost in local currency, giving you an accurate cost base for margin calculations.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Can I analyse margins for multiple products?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Yes. The multi-product mode lets you add several products and compare their profit margins, markups, and breakeven quantities side by side. This helps identify your most and least profitable items.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">What is a good profit margin for African businesses?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">It varies by industry. Retail typically sees 20-50% margins, services can achieve 40-70%, and manufacturing often ranges from 15-35%. The AI advisor can provide industry-specific guidance for your market.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Can the assistant help with my pricing strategy?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Yes. It can explain the result locally in your browser and suggest what to check next. If you tick the network AI consent box, your question and recent chat messages can be sent for a more flexible response.</p>
+    </details>
+  </div>
+</section>
+
+<afro-footer></afro-footer>
+
+<!-- auth handled by navbar (supabase-auth.js) -->
+<script>
+  // Tab Management
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tabName = btn.dataset.tab;
+      tabButtons.forEach(b => b.classList.remove('active'));
+      tabContents.forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(tabName).classList.add('active');
+    });
+  });
+
+  // Single Product Calculation
+  function calculateSingle() {
+    const costRaw = parseFloat(document.getElementById('singleCost').value);
+    const cost = isNaN(costRaw) ? 0 : costRaw;
+    const currency = document.getElementById('singleCurrency').value;
+    const targetMargin = parseFloat(document.getElementById('singleTargetMargin').value);
+    const sellingRaw = parseFloat(document.getElementById('singleSelling').value);
+    let selling = isNaN(sellingRaw) ? 0 : sellingRaw;
+
+    if (targetMargin && !isNaN(targetMargin)) {
+      if (targetMargin >= 100) {
+        alert('Target margin must be less than 100%');
+        return;
+      }
+      selling = cost / (1 - (targetMargin / 100));
+      if (isNaN(selling) || !isFinite(selling)) {
+        alert('Invalid margin value');
+        return;
+      }
+      document.getElementById('singleSelling').value = selling.toFixed(2);
+    }
+
+    const profit = selling - cost;
+    const margin = selling > 0 ? ((profit / selling) * 100).toFixed(2) : 0;
+    const markup = cost > 0 ? ((profit / cost) * 100).toFixed(2) : 0;
+    const roi = cost > 0 ? ((profit / cost) * 100).toFixed(2) : 0;
+
+    document.getElementById('singleProfit').textContent = `${currency}${profit.toFixed(2)}`;
+    document.getElementById('singleMargin').textContent = margin + '%';
+    document.getElementById('singleMarkup').textContent = markup + '%';
+    document.getElementById('singleROI').textContent = roi + '%';
+    document.getElementById('singleResults').style.display = 'grid';
+
+    // Setup slider
+    setupPriceSlider(cost, selling);
+
+    // Save & Share wiring
+    document.getElementById('singleActions').style.display = 'flex';
+    var _saveBtn = document.querySelector('#single save-result-button');
+    if (_saveBtn && typeof _saveBtn.setData === 'function') _saveBtn.setData({
+      inputs: { costPrice: cost, sellingPrice: selling, currency: currency },
+      outputs: { profit: profit.toFixed(2), margin: margin + '%', markup: markup + '%', roi: roi + '%' }
+    });
+    var _shareBtn = document.querySelector('#single share-result-button');
+    if (_shareBtn && typeof _shareBtn.setResult === 'function') _shareBtn.setResult({
+      headline: 'Profit Margin Analysis',
+      mainValue: margin + '% margin',
+      subValues: [
+        { label: 'Profit', value: currency + profit.toFixed(2) },
+        { label: 'Markup', value: markup + '%' },
+        { label: 'ROI', value: roi + '%' }
+      ]
+    });
+  }
+
+  let _sliderHandler = null;
+  function setupPriceSlider(cost, selling) {
+    const slider = document.getElementById('singlePriceSlider');
+    slider.min = cost * 0.5;
+    slider.max = cost * 3;
+    slider.value = selling;
+    document.getElementById('singleSliderContainer').style.display = 'block';
+
+    // Remove old listener before adding new one to prevent memory leak
+    if (_sliderHandler) slider.removeEventListener('input', _sliderHandler);
+    _sliderHandler = () => {
+      const newPrice = parseFloat(slider.value);
+      if (isNaN(newPrice)) return;
+      document.getElementById('sliderValue').textContent = newPrice.toFixed(2);
+      const profit = newPrice - cost;
+      const margin = newPrice > 0 ? ((profit / newPrice) * 100).toFixed(2) : 0;
+      const markup = cost > 0 ? ((profit / cost) * 100).toFixed(2) : 0;
+      const roi = cost > 0 ? ((profit / cost) * 100).toFixed(2) : 0;
+
+      document.getElementById('singleProfit').textContent = `${document.getElementById('singleCurrency').value}${profit.toFixed(2)}`;
+      document.getElementById('singleMargin').textContent = margin + '%';
+      document.getElementById('singleMarkup').textContent = markup + '%';
+      document.getElementById('singleROI').textContent = roi + '%';
+    };
+    slider.addEventListener('input', _sliderHandler);
+  }
+
+  function calculateBreakeven() {
+    const sellingRaw = parseFloat(document.getElementById('singleSelling').value);
+    const selling = isNaN(sellingRaw) ? 0 : sellingRaw;
+    const costRaw = parseFloat(document.getElementById('singleCost').value);
+    const cost = isNaN(costRaw) ? 0 : costRaw;
+    const fixedRaw = parseFloat(document.getElementById('singleFixedCosts').value);
+    const fixed = isNaN(fixedRaw) ? 0 : fixedRaw;
+
+    if (selling <= cost || fixed === 0) {
+      alert('Please ensure selling price > cost and set fixed costs');
+      return;
+    }
+
+    const units = Math.ceil(fixed / (selling - cost));
+    document.getElementById('breakEvenUnits').textContent = units + ' units';
+    document.getElementById('breakEvenResults').style.display = 'block';
+  }
+
+  document.getElementById('calcSingle').addEventListener('click', calculateSingle);
+  document.getElementById('calcBreakeven').addEventListener('click', calculateBreakeven);
+
+  // Multi-Product
+  function addMultiRow() {
+    const tbody = document.getElementById('multiProductRows');
+    if (tbody.querySelectorAll('tr').length >= 20) {
+      alert('Maximum 20 products');
+      return;
+    }
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input aria-label="Product name" type="text" class="f-input" data-field="name" placeholder="Product name" style="font-size: 0.8rem;"></td>
+      <td><input aria-label="F input" type="number" class="f-input" data-field="cost" value="0" step="0.01" style="font-size: 0.8rem;"></td>
+      <td><input aria-label="F input" type="number" class="f-input" data-field="selling" value="0" step="0.01" style="font-size: 0.8rem;"></td>
+      <td><input aria-label="F input" type="number" class="f-input" data-field="qty" value="1" step="1" style="font-size: 0.8rem;"></td>
+      <td class="currency" data-col="margin">0%</td>
+      <td class="currency" data-col="profit">0</td>
+      <td><button type="button" class="remove-btn" onclick="removeMultiRow(this)">Delete</button></td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  function removeMultiRow(btn) {
+    btn.closest('tr').remove();
+  }
+
+  function calculateMulti() {
+    const tbody = document.getElementById('multiProductRows');
+    const currency = document.getElementById('multiCurrency').value;
+    let totalRevenue = 0, totalCost = 0, totalProfit = 0;
+    let bestMargin = -Infinity, worstMargin = Infinity;
+    let bestIdx = -1, worstIdx = -1;
+
+    const rows = tbody.querySelectorAll('tr');
+    let idx = 0;
+
+    rows.forEach((row, i) => {
+      const costRaw = parseFloat(row.querySelector('[data-field="cost"]').value);
+      const sellingRaw = parseFloat(row.querySelector('[data-field="selling"]').value);
+      const qtyRaw = parseFloat(row.querySelector('[data-field="qty"]').value);
+
+      const cost = isNaN(costRaw) ? 0 : costRaw;
+      const selling = isNaN(sellingRaw) ? 0 : sellingRaw;
+      const qty = isNaN(qtyRaw) ? 0 : qtyRaw;
+
+      const profit = (selling - cost) * qty;
+      const margin = selling > 0 ? ((selling - cost) / selling) * 100 : 0;
+
+      totalRevenue += selling * qty;
+      totalCost += cost * qty;
+      totalProfit += profit;
+
+      row.querySelector('[data-col="margin"]').textContent = margin.toFixed(1) + '%';
+      row.querySelector('[data-col="profit"]').textContent = profit.toFixed(0);
+
+      if (margin > bestMargin) {
+        bestMargin = margin;
+        bestIdx = i;
+      }
+      if (margin < worstMargin) {
+        worstMargin = margin;
+        worstIdx = i;
+      }
+    });
+
+    // Highlight best/worst
+    rows.forEach((row, i) => {
+      row.classList.remove('highlight');
+      if (i === bestIdx || i === worstIdx) {
+        row.classList.add('highlight');
+      }
+    });
+
+    const avgMargin = totalRevenue > 0 ? ((totalProfit / totalRevenue) * 100).toFixed(1) : 0;
+
+    document.getElementById('multiRevenue').textContent = `${currency}${totalRevenue.toLocaleString('en', {maximumFractionDigits: 0})}`;
+    document.getElementById('multiTotalCost').textContent = `${currency}${totalCost.toLocaleString('en', {maximumFractionDigits: 0})}`;
+    document.getElementById('multiTotalProfit').textContent = `${currency}${totalProfit.toLocaleString('en', {maximumFractionDigits: 0})}`;
+    document.getElementById('multiAvgMargin').textContent = avgMargin + '%';
+    document.getElementById('multiTotals').style.display = 'block';
+
+    // Save & Share wiring
+    document.getElementById('multiActions').style.display = 'flex';
+    var _saveBtnM = document.querySelector('#multi save-result-button');
+    if (_saveBtnM && typeof _saveBtnM.setData === 'function') _saveBtnM.setData({
+      inputs: { currency: currency, productCount: rows.length },
+      outputs: { totalRevenue: totalRevenue.toFixed(0), totalCost: totalCost.toFixed(0), totalProfit: totalProfit.toFixed(0), avgMargin: avgMargin + '%' }
+    });
+    var _shareBtnM = document.querySelector('#multi share-result-button');
+    if (_shareBtnM && typeof _shareBtnM.setResult === 'function') _shareBtnM.setResult({
+      headline: 'Multi-Product Profitability',
+      mainValue: currency + totalProfit.toLocaleString('en', {maximumFractionDigits: 0}) + ' profit',
+      subValues: [
+        { label: 'Revenue', value: currency + totalRevenue.toLocaleString('en', {maximumFractionDigits: 0}) },
+        { label: 'Avg Margin', value: avgMargin + '%' },
+        { label: 'Products', value: String(rows.length) }
+      ]
+    });
+  }
+
+  // Import Costs
+  document.getElementById('dutyPreset').addEventListener('change', function() {
+    if (this.value) {
+      document.getElementById('importDuty').value = this.value;
+    }
+  });
+
+  function calculateImport() {
+    const costRaw = parseFloat(document.getElementById('importCost').value);
+    const shippingRaw = parseFloat(document.getElementById('importShipping').value);
+    const dutyRaw = parseFloat(document.getElementById('importDuty').value);
+    const agentRaw = parseFloat(document.getElementById('importAgent').value);
+    const rateRaw = parseFloat(document.getElementById('importRate').value);
+    const spreadRaw = parseFloat(document.getElementById('importSpread').value);
+    const destCurrency = document.getElementById('importDestCurrency').value;
+
+    const cost = isNaN(costRaw) ? 0 : costRaw;
+    const shipping = isNaN(shippingRaw) ? 0 : shippingRaw;
+    const duty = isNaN(dutyRaw) ? 0 : dutyRaw;
+    const agent = isNaN(agentRaw) ? 0 : agentRaw;
+    const rate = isNaN(rateRaw) || rateRaw <= 0 ? 1 : rateRaw;
+    const spread = isNaN(spreadRaw) ? 0 : spreadRaw;
+
+    if (rate <= 0) {
+      document.getElementById('importAlert').textContent = 'Please enter a valid FOREX rate';
+      document.getElementById('importAlert').style.display = 'block';
+      return;
+    }
+    document.getElementById('importAlert').style.display = 'none';
+
+    // Calculate in source currency first
+    const subtotal = cost + shipping;
+    const dutyAmount = (subtotal * duty) / 100;
+    const agentFee = ((subtotal + dutyAmount) * agent) / 100;
+    const beforeForex = subtotal + dutyAmount + agentFee;
+
+    // Apply FOREX rate and spread
+    const forexRate = rate * (1 + spread / 100);
+    const landedCost = beforeForex * forexRate;
+    const forexMargin = beforeForex * (spread / 100) * forexRate;
+
+    document.getElementById('importLandedCost').textContent = `${destCurrency}${landedCost.toFixed(2)}`;
+    document.getElementById('importBeforeForex').textContent = `${destCurrency}${beforeForex.toFixed(2)}`;
+    document.getElementById('importForexMargin').textContent = `${destCurrency}${forexMargin.toFixed(2)}`;
+
+    const suggest50 = landedCost * 1.5;
+    const suggest100 = landedCost * 2;
+    document.getElementById('suggestSelling50').textContent = `${destCurrency}${suggest50.toFixed(2)}`;
+    document.getElementById('suggestSelling100').textContent = `${destCurrency}${suggest100.toFixed(2)}`;
+
+    document.getElementById('importResults').style.display = 'block';
+
+    // Save & Share wiring
+    document.getElementById('importActions').style.display = 'flex';
+    var _saveBtnI = document.querySelector('#import save-result-button');
+    if (_saveBtnI && typeof _saveBtnI.setData === 'function') _saveBtnI.setData({
+      inputs: { productCost: cost, shipping: shipping, dutyPct: duty, agentFeePct: agent, forexRate: rate, forexSpread: spread, destCurrency: destCurrency },
+      outputs: { landedCost: landedCost.toFixed(2), beforeForex: beforeForex.toFixed(2), forexImpact: forexMargin.toFixed(2), suggest50: suggest50.toFixed(2), suggest100: suggest100.toFixed(2) }
+    });
+    var _shareBtnI = document.querySelector('#import share-result-button');
+    if (_shareBtnI && typeof _shareBtnI.setResult === 'function') _shareBtnI.setResult({
+      headline: 'Import Landed Cost',
+      mainValue: destCurrency + landedCost.toFixed(2),
+      subValues: [
+        { label: 'Before FOREX', value: destCurrency + beforeForex.toFixed(2) },
+        { label: 'FOREX Impact', value: destCurrency + forexMargin.toFixed(2) },
+        { label: 'Sell at 50% markup', value: destCurrency + suggest50.toFixed(2) }
+      ]
+    });
+  }
+
+  document.getElementById('calcImport').addEventListener('click', calculateImport);
+
+  // Save & Load
+  function saveCalculation() {
+    const data = {
+      timestamp: new Date().toLocaleString(),
+      singleCost: document.getElementById('singleCost').value,
+      singleSelling: document.getElementById('singleSelling').value,
+      multiProducts: Array.from(document.querySelectorAll('#multiProductRows tr')).map(row => {
+        return {
+          name: (row.querySelector('[data-field="name"]') || {}).value || '',
+          cost: (row.querySelector('[data-field="cost"]') || {}).value || '0',
+          selling: (row.querySelector('[data-field="selling"]') || {}).value || '0',
+          qty: (row.querySelector('[data-field="qty"]') || {}).value || '0'
+        };
+      })
+    };
+    const saved = JSON.parse(localStorage.getItem('profitCalcSaved') || '[]');
+    saved.unshift(data);
+    saved.splice(5); // Keep last 5
+    localStorage.setItem('profitCalcSaved', JSON.stringify(saved));
+    alert('Calculation saved!');
+    displaySavedList();
+  }
+
+  function loadCalculation() {
+    const saved = JSON.parse(localStorage.getItem('profitCalcSaved') || '[]');
+    if (saved.length === 0) {
+      alert('No saved calculations');
+      return;
+    }
+    const data = saved[0];
+    document.getElementById('singleCost').value = data.singleCost;
+    document.getElementById('singleSelling').value = data.singleSelling;
+    calculateSingle();
+  }
+
+  function displaySavedList() {
+    const saved = JSON.parse(localStorage.getItem('profitCalcSaved') || '[]');
+    const list = document.getElementById('savedList');
+    list.innerHTML = saved.slice(0, 3).map((s, i) => `
+      <div style="font-size: 0.75rem; color: #475569; padding: 6px 0; border-bottom: 1px solid #e2e8f0;">
+        <strong>#${i + 1}:</strong> ${s.timestamp}
+      </div>
+    `).join('');
+  }
+
+  displaySavedList();
+
+  // Initial calculation
+  calculateSingle();
+</script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
+
+<script>
+var AI_MSGS=[];
+function aiEscape(text){return String(text||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function getText(id){var el=document.getElementById(id);return el?String(el.textContent||el.value||'').trim():'';}
+function localMarginAdvice(question){
+  var q=String(question||'').toLowerCase();
+  var margin=getText('profitMargin')||getText('marginResult')||getText('singleMargin');
+  var markup=getText('markupPercent')||getText('markupResult')||getText('singleMarkup');
+  var profit=getText('grossProfit')||getText('profitResult')||getText('singleProfit');
+  var context=[profit&&'profit '+profit,margin&&'margin '+margin,markup&&'markup '+markup].filter(Boolean).join(', ');
+  if(/import|forex|fx|duty|shipping|landed/.test(q)) return 'Local guidance: use the import-cost tab to include product cost, freight, duty, fees, and exchange-rate spread before setting the selling price. Compare margin after landed cost, not only supplier cost.';
+  if(/break|even|volume|units/.test(q)) return 'Local guidance: breakeven is fixed costs divided by profit per unit. If the answer looks too high, test a higher price, lower variable cost, smaller fixed cost, or a bundled offer.';
+  if(/markup/.test(q)) return 'Local guidance: markup is profit divided by cost. Margin is profit divided by selling price. A 100% markup is a 50% margin, so quote both carefully when discussing pricing.';
+  if(/discount|promo|sale/.test(q)) return 'Local guidance: discounts come out of profit first. Before discounting, check whether volume will rise enough to replace the lost margin and whether payment fees or delivery costs change.';
+  if(/price|pricing|charge|sell/.test(q)) return 'Local guidance: start from landed or delivery cost, choose a target margin, compare against market prices, then check breakeven volume. '+(context?'Current visible result: '+context+'.':'Run a calculation first for a sharper local answer.');
+  return 'Local guidance: run the margin, multi-product, import-cost, or breakeven tab, then ask about one decision: price, markup, discount, landed cost, or units needed. '+(context?'Current visible result: '+context+'.':'No network request was made.');
+}
+function appendAiMessage(kind,text){
+  var msgsEl=document.getElementById('aiMsgs');
+  msgsEl.innerHTML+='<div class="ai-msg-'+kind+'">'+aiEscape(text).replace(/\n/g,'<br>')+'</div>';
+  msgsEl.scrollTop=msgsEl.scrollHeight;
+}
+async function sendAI(){
+  var input=document.getElementById('aiInput');
+  var msgsEl=document.getElementById('aiMsgs');
+  var sendBtn=document.getElementById('aiSend');
+  var consent=document.getElementById('aiConsent');
+  var q=input.value.trim();
+  if(!q)return;
+  AI_MSGS.push({role:'user',content:q});
+  appendAiMessage('u',q);
+  input.value='';sendBtn.disabled=true;
+  var thinkEl=document.createElement('div');thinkEl.className='ai-thinking';thinkEl.textContent=consent&&consent.checked?'Checking optional AI...':'Preparing local guidance...';
+  msgsEl.appendChild(thinkEl);msgsEl.scrollTop=msgsEl.scrollHeight;
+  var reply='';
+  try{
+    if(consent&&consent.checked){
+      var canSend=window.AfroTools&&window.AfroTools.AIConsent&&typeof window.AfroTools.AIConsent.ensureConsent==='function'&&window.AfroTools.AIConsent.ensureConsent({mode:'ai_optional_prompt_only',toolId:'profit-margin',action:'profit-margin-ai-advisor'});
+      if(!canSend){
+        reply=localMarginAdvice(q)+' Network AI was not contacted because consent was not confirmed.';
+      }else{
+      var res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'profit-margin',messages:AI_MSGS.slice(-6),context:'User explicitly consented to network AI for this profit-margin chat.'})});
+      var data=await res.json();
+      reply=data.reply||data.error||localMarginAdvice(q);
+      }
+    }else{
+      reply=localMarginAdvice(q);
+    }
+  }catch(e){
+    reply=localMarginAdvice(q)+' Network AI was unavailable, so this stayed local.';
+  }
+  if(thinkEl.parentNode)thinkEl.remove();
+  AI_MSGS.push({role:'assistant',content:reply});
+  appendAiMessage('a',reply);
+  sendBtn.disabled=false;msgsEl.scrollTop=msgsEl.scrollHeight;input.focus();
+}
+</script>
+<script src="/assets/js/pages/vat-business-tax-focus.js?v=1a6b9ed2" defer></script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

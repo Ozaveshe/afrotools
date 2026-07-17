@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Base64 Encoder na Decoder | AfroTools</title>
+<meta name="description" content="Encode na decode Base64 kwa maandishi, faili na picha kwenye browser. Tumia URL-safe mode, MIME line breaks, preview na copy/download bila kudhani Base64 ni encryption.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Base64 Encoder na Decoder">
+<meta property="og:description" content="Encode na decode Base64 kwa maandishi, faili na picha kwenye browser. Tumia URL-safe mode, MIME line breaks, preview na copy/download bila kudhani Base64 ni encryption.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/sw/zana/base64/">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/base64.webp">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Base64 Encoder na Decoder">
+<meta name="twitter:description" content="Encode na decode Base64 kwa maandishi, faili na picha kwenye browser. Tumia URL-safe mode, MIME line breaks, preview na copy/download bila kudhani Base64 ni encryption.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+  :root {
+    --afro-green: var(--color-primary);
+    --afro-dark: #0f1419;
+    --afro-light: #f5f7fa;
+  }
+
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-hero::after {
+    content: '\1F510';
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8rem;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--afro-green);
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    color: var(--afro-green);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 6px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .b-green {
+    background: rgba(0, 113, 227, 0.18);
+    color: var(--color-primary);
+    border: 1px solid rgba(0, 113, 227, 0.38);
+  }
+
+  .tool-main {
+    padding: 28px 0 72px;
+  }
+
+  .tool-main-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 22px;
+    align-items: start;
+  }
+
+  .tool-main-inner > * {
+    min-width: 0;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #DBEAFE;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+    min-width: 0;
+  }
+
+  .card + .card {
+    margin-top: 18px;
+  }
+
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #EFF6FF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #F5F9FF;
+  }
+
+  .card-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #0a4018;
+  }
+
+  .card-body {
+    padding: 22px;
+  }
+
+  .field {
+    margin-bottom: 18px;
+  }
+
+  .field:last-child {
+    margin-bottom: 0;
+  }
+
+  .f-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .f-label-text {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #0d2813;
+  }
+
+  .f-input, .f-textarea, .f-select {
+    width: 100%;
+    padding: 11px 13px;
+    background: #EFF6FF;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 7px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #0d2813;
+    outline: none;
+    transition: border-color 0.18s, box-shadow 0.18s;
+    font-family: 'Courier New', monospace;
+  }
+
+  .f-textarea {
+    resize: vertical;
+    min-height: 160px;
+    line-height: 1.5;
+  }
+
+  .f-select {
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+  }
+
+  .f-input:focus, .f-textarea:focus, .f-select:focus {
+    border-color: var(--afro-green);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+  }
+
+  .calc-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--afro-green);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: all 0.18s;
+    margin-top: 8px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .calc-btn:hover {
+    background: #0059B3;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 113, 227, 0.3);
+  }
+
+  .calc-btn-sm {
+    width: auto;
+    padding: 8px 14px;
+    font-size: 0.72rem;
+    margin-top: 0;
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 18px;
+    border-bottom: 2px solid #DBEAFE;
+    overflow-x: auto;
+  }
+
+  .tab-btn {
+    padding: 10px 16px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #6B8CAE;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+    white-space: nowrap;
+    letter-spacing: 0.03em;
+  }
+
+  .tab-btn.active {
+    color: var(--afro-green);
+    border-bottom-color: var(--afro-green);
+  }
+
+  .tab-btn:hover {
+    color: var(--afro-green);
+  }
+
+  .tab-pane {
+    display: none;
+  }
+
+  .tab-pane.active {
+    display: block;
+  }
+
+  /* Stats bar */
+  .stats-bar {
+    display: flex;
+    gap: 16px;
+    padding: 10px 14px;
+    background: #EFF6FF;
+    border: 1px solid #DBEAFE;
+    border-radius: 6px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+
+  .stat-item {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #0d2813;
+  }
+
+  .stat-item span {
+    color: #6B8CAE;
+    font-weight: 500;
+  }
+
+  /* Toggle row */
+  .toggle-row {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 12px;
+  }
+
+  .toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #0d2813;
+    cursor: pointer;
+  }
+
+  .toggle-label input[type="checkbox"] {
+    cursor: pointer;
+    accent-color: var(--afro-green);
+  }
+
+  /* Direction buttons */
+  .dir-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .dir-btn {
+    flex: 1;
+    padding: 10px;
+    background: #EFF6FF;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 7px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #6B8CAE;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .dir-btn.active {
+    background: var(--afro-green);
+    border-color: var(--afro-green);
+    color: #fff;
+  }
+
+  .dir-btn:hover:not(.active) {
+    border-color: var(--afro-green);
+    color: var(--afro-green);
+  }
+
+  /* Copy button inline */
+  .copy-btn {
+    padding: 5px 10px;
+    background: rgba(0, 113, 227, 0.1);
+    border: 1px solid rgba(0, 113, 227, 0.35);
+    color: #1a5c3a;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.65rem;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .copy-btn:hover {
+    background: rgba(0, 113, 227, 0.2);
+  }
+
+  .btn-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+
+  /* Drop zone */
+  .drop-zone {
+    border: 2px dashed #BFDBFE;
+    border-radius: 8px;
+    padding: 36px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #EFF6FF;
+  }
+
+  .drop-zone:hover {
+    border-color: var(--afro-green);
+  }
+
+  .drop-zone.dragover {
+    background: #DBEAFE;
+    border-color: var(--afro-green);
+  }
+
+  .drop-zone-text {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #6B8CAE;
+  }
+
+  .drop-zone-sub {
+    font-size: 0.7rem;
+    color: #9ca3af;
+    margin-top: 4px;
+  }
+
+  .file-info-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: #EFF6FF;
+    border: 1px solid #DBEAFE;
+    border-radius: 6px;
+    margin-top: 12px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #0d2813;
+  }
+
+  .image-preview {
+    margin-top: 12px;
+    border-radius: 6px;
+    overflow: hidden;
+    max-width: 100%;
+  }
+
+  .image-preview img {
+    max-width: 100%;
+    max-height: 240px;
+    height: auto;
+    display: block;
+    border-radius: 6px;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
+  }
+
+  .info-card {
+    background: #F5F9FF;
+    border: 1px solid #DBEAFE;
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .info-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #0a4018;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .info-text {
+    font-size: 0.8rem;
+    color: #244d2c;
+    line-height: 1.6;
+  }
+
+  .info-text li {
+    margin-bottom: 8px;
+  }
+
+  /* AI Advisor */
+  .ai-toggle-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #1a1f2e, #0f1419);
+    color: #fff;
+    border: 1px solid rgba(0, 113, 227, 0.35);
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.18s;
+    letter-spacing: 0.02em;
+  }
+
+  .ai-toggle-btn:hover {
+    border-color: var(--afro-green);
+    box-shadow: 0 4px 16px rgba(0, 113, 227, 0.2);
+  }
+
+  .ai-panel {
+    display: none;
+    margin-top: 12px;
+  }
+
+  .ai-panel.open {
+    display: block;
+  }
+
+  .ai-suggestions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .ai-suggest-btn {
+    padding: 8px 12px;
+    background: #EFF6FF;
+    border: 1px solid #DBEAFE;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #0d2813;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .ai-suggest-btn:hover {
+    border-color: var(--afro-green);
+    background: #DBEAFE;
+  }
+
+  .ai-chat {
+    max-height: 260px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+  }
+
+  .ai-msg {
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+
+  .ai-msg.user {
+    background: #EFF6FF;
+    color: #0d2813;
+    font-weight: 600;
+  }
+
+  .ai-msg.assistant {
+    background: #f0fdf4;
+    color: #0d2813;
+    border: 1px solid #bbf7d0;
+  }
+
+  .ai-msg.error {
+    background: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+  }
+
+  .ai-input-row {
+    display: flex;
+    gap: 6px;
+  }
+
+  .ai-input {
+    flex: 1;
+    padding: 9px 12px;
+    background: #EFF6FF;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 7px;
+    font-size: 0.78rem;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+  }
+
+  .ai-input:focus {
+    border-color: var(--afro-green);
+  }
+
+  .ai-send-btn {
+    padding: 9px 14px;
+    background: var(--afro-green);
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .ai-send-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .ai-powered {
+    font-size: 0.62rem;
+    color: #9ca3af;
+    text-align: center;
+    margin-top: 6px;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #1e293b;
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    animation: toastIn 0.3s ease;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  @keyframes toastIn {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  /* FAQ */
+  details[open] summary svg { transform: rotate(180deg); }
+  details summary::-webkit-details-marker { display: none; }
+
+  @media (max-width: 768px) {
+    .tool-main-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .tabs {
+      gap: 0;
+    }
+
+    .tab-btn {
+      padding: 8px 10px;
+      font-size: 0.68rem;
+    }
+
+    .dir-row {
+      flex-direction: column;
+    }
+
+    .stats-bar {
+      flex-direction: column;
+      gap: 6px;
+    }
+  }
+</style>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+
+<meta property="og:locale" content="sw_KE">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/base64.webp">
+<meta property="article:modified_time" content="2026-03-28">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Base64",
+  "url": "https://afrotools.com/sw/zana/base64/",
+  "description": "Encode na decode Base64 kwa maandishi, faili na picha, ikiwa na URL-safe mode, drag-and-drop na preview.",
+  "inLanguage": "sw",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "image": "https://afrotools.com/assets/img/tools/base64.webp"
+}
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Zana za Developer","item":"https://afrotools.com/sw/zana-za-developer/"},{"@type":"ListItem","position":4,"name":"Base64","item":"https://afrotools.com/sw/zana/base64/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Base64 ni nini?","acceptedAnswer":{"@type":"Answer","text":"Base64 ni encoding inayobadilisha binary data kuwa maandishi ya ASCII kwa characters 64. Hufaa kwa data URIs, MIME email, JSON payloads na faili ndogo zinazohitaji kusafirishwa kama text."}},{"@type":"Question","name":"Base64 hutuma data kwenye server?","acceptedAnswer":{"@type":"Answer","text":"Encoding na decoding ya kawaida hufanyika kwenye browser yako. Usibandike passwords, tokens au data nyeti kwenye kipengele chochote cha hiari kinachotuma data nje ya browser."}},{"@type":"Question","name":"Base64 ni encryption?","acceptedAnswer":{"@type":"Answer","text":"Hapana. Base64 si encryption na haitoi ulinzi wa siri. Mtu yeyote mwenye string ya Base64 anaweza kuidecode, kwa hiyo tumia encryption halisi kwa data nyeti."}},{"@type":"Question","name":"URL-safe Base64 inatofautianaje na Base64 ya kawaida?","acceptedAnswer":{"@type":"Answer","text":"URL-safe mode hubadilisha + kuwa -, / kuwa _, na inaweza kuondoa padding = ili string itumike kwa usalama zaidi kwenye URLs, filenames na query parameters."}},{"@type":"Question","name":"Kikomo cha faili ni nini?","acceptedAnswer":{"@type":"Answer","text":"Ukurasa huu una kikomo cha takriban 10MB kwa faili. Base64 huongeza ukubwa wa output kwa karibu theluthi moja, hivyo tumia server tooling kwa faili kubwa sana."}}]}</script>
+<link rel="stylesheet" href="/assets/css/sw-zana-mobile.css?v=adecdf8a">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/sw/zana/base64/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/base64/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/encodeur-base64/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/base64/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/base64/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/sw/">AfroTools</a> / <a href="/sw/zana-za-developer/">Zana za msanidi programu</a> / <span>Base64</span>
+    </div>
+    <h1>Base64 Encoder na Decoder</h1>
+    <p class="hero-sub">Encode na decode Base64 kwa maandishi, faili na picha moja kwa moja kwenye kivinjari. Tumia URL-safe mode, MIME line breaks, drag-and-drop na mwonekano wa awali bila kudhani Base64 ni encryption.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">Maandishi &amp; Faili</span>
+      <span class="badge b-green">URL-safe</span>
+      <span class="badge b-green">mwonekano wa awali ya picha</span>
+      <span class="badge b-green">Ufafanuzi wa hiari</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <!-- Main Tool Card -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Base64 Tool</span>
+        </div>
+        <div class="card-body">
+          <div class="tabs">
+            <button type="button" class="tab-btn active" data-tab="text-tab">Maandishi</button>
+            <button type="button" class="tab-btn" data-tab="file-tab">Faili Pakia</button>
+            <button type="button" class="tab-btn" data-tab="image-tab">Image to Base64</button>
+            <button type="button" class="tab-btn" data-tab="decode-file-tab">Decode Faili</button>
+          </div>
+
+          <!-- TEXT TAB -->
+          <div id="text-tab" class="tab-pane active">
+            <div class="dir-row">
+              <button type="button" class="dir-btn active" id="encode-btn">Encode &rarr;</button>
+              <button type="button" class="dir-btn" id="decode-btn">&larr; Decode</button>
+            </div>
+
+            <div class="field">
+              <label class="f-label" for="text-input">
+                <span class="f-label-text">ingizo</span>
+                <button type="button" class="copy-btn" id="text-copy-input">Nakili</button>
+              </label>
+              <textarea class="f-textarea" id="text-input" placeholder="Enter text to encode or Base64 to decode..."></textarea>
+            </div>
+
+            <div class="field">
+              <label class="f-label">
+                <span class="f-label-text">matokeo</span>
+                <button type="button" class="copy-btn" id="text-copy-output">Nakili</button>
+              </label>
+              <textarea class="f-textarea" id="text-output" readonly placeholder="Output will appear here..." aria-label="Output will appear here..."></textarea>
+            </div>
+
+            <div class="toggle-row">
+              <label class="toggle-label">
+                <input aria-label="Url safe toggle" type="checkbox" id="url-safe-toggle">
+                URL-safe mode
+              </label>
+              <label class="toggle-label">
+                <input aria-label="Linebreak toggle" type="checkbox" id="linebreak-toggle">
+                MIME line breaks (76 chars)
+              </label>
+            </div>
+
+            <div class="btn-row">
+              <button type="button" class="copy-btn" id="text-swap">Swap ingizo/matokeo</button>
+              <button type="button" class="copy-btn" id="text-clear">Futa Zote</button>
+            </div>
+
+            <div class="stats-bar" id="text-stats">
+              <div class="stat-item">ingizo: <span id="stat-in-bytes">0 B</span></div>
+              <div class="stat-item">matokeo: <span id="stat-out-bytes">0 B</span></div>
+              <div class="stat-item">Ratio: <span id="stat-ratio">--</span></div>
+            </div>
+          </div>
+
+          <!-- FILE UPLOAD TAB -->
+          <div id="file-tab" class="tab-pane">
+            <div class="field">
+              <label class="f-label"><span class="f-label-text">chagua a file to encode (max 10 MB)</span></label>
+              <div class="drop-zone" id="file-drop-zone">
+                <div class="drop-zone-text">Dondosha a file here or click to upakiaji</div>
+                <div class="drop-zone-sub">Supports any file type up to 10 MB</div>
+              </div>
+              <input aria-label="File ingizo" type="file" id="file-input" style="display:none">
+              <div id="file-info" class="file-info-bar" style="display:none"></div>
+              <div id="file-image-preview" class="image-preview" style="display:none"></div>
+            </div>
+
+            <div class="toggle-row" style="margin-top:0;margin-bottom:12px">
+              <label class="toggle-label">
+                <input aria-label="File include prefix" type="checkbox" id="file-include-prefix">
+                Include data:mime;base64, prefix
+              </label>
+            </div>
+
+            <div class="field">
+              <label class="f-label">
+                <span class="f-label-text">Base64 matokeo</span>
+                <button type="button" class="copy-btn" id="file-copy-output">Nakili</button>
+              </label>
+              <textarea class="f-textarea" id="file-output" readonly placeholder="Base64 will appear here..." aria-label="Base64 will appear here..."></textarea>
+            </div>
+
+            <div class="btn-row">
+              <button type="button" class="copy-btn" id="file-download-txt">Pakua as .txt</button>
+            </div>
+          </div>
+
+          <!-- IMAGE TO BASE64 TAB -->
+          <div id="image-tab" class="tab-pane">
+            <div class="field">
+              <label class="f-label"><span class="f-label-text">Pakia an image</span></label>
+              <div class="drop-zone" id="img-drop-zone">
+                <div class="drop-zone-text">Dondosha an image here or click to upakiaji</div>
+                <div class="drop-zone-sub">PNG, JPG, GIF, SVG, WebP (max 10 MB)</div>
+              </div>
+              <input aria-label="Img ingizo" type="file" id="img-input" accept="image/*" style="display:none">
+              <div id="img-info" class="file-info-bar" style="display:none"></div>
+              <div id="img-preview" class="image-preview" style="display:none"></div>
+            </div>
+
+            <div class="toggle-row" style="margin-top:0;margin-bottom:12px">
+              <label class="toggle-label">
+                <input aria-label="Img include prefix" type="checkbox" id="img-include-prefix" checked>
+                Include data:image/...;base64, prefix
+              </label>
+            </div>
+
+            <div class="field">
+              <label class="f-label">
+                <span class="f-label-text">Base64 Data URI</span>
+                <button type="button" class="copy-btn" id="img-copy-output">Nakili</button>
+              </label>
+              <textarea class="f-textarea" id="img-output" readonly placeholder="Image Base64 data URI will appear here..." style="min-height:120px" aria-label="Image Base64 data URI will appear here..."></textarea>
+            </div>
+
+            <div class="stats-bar" id="img-stats" style="display:none">
+              <div class="stat-item">Original: <span id="img-stat-original">0 B</span></div>
+              <div class="stat-item">Base64: <span id="img-stat-b64">0 B</span></div>
+              <div class="stat-item">Expansion: <span id="img-stat-ratio">--</span></div>
+            </div>
+          </div>
+
+          <!-- DECODE FILE TAB -->
+          <div id="decode-file-tab" class="tab-pane">
+            <div class="field">
+              <label class="f-label" for="decode-input">
+                <span class="f-label-text">Paste Base64 string</span>
+              </label>
+              <textarea class="f-textarea" id="decode-input" placeholder="Paste Base64 encoded string here..."></textarea>
+            </div>
+
+            <div class="field">
+              <label class="f-label"><span class="f-label-text">Failiname</span></label>
+              <input aria-label="matokeo.txt" class="f-input" type="text" id="decode-filename" placeholder="matokeo.txt" style="font-family:'DM Sans',sans-serif">
+            </div>
+
+            <div class="field">
+              <label class="f-label"><span class="f-label-text">Faili Type</span></label>
+              <select class="f-select" id="decode-filetype" aria-label="Decode Filetype">
+                <option value="txt">Maandishi (.txt)</option>
+                <option value="json">JSON (.json)</option>
+                <option value="csv">CSV (.csv)</option>
+                <option value="png">PNG Image (.png)</option>
+                <option value="jpg">JPG Image (.jpg)</option>
+                <option value="pdf">PDF (.pdf)</option>
+                <option value="">Other</option>
+              </select>
+            </div>
+
+            <button type="button" class="calc-btn" id="decode-download-btn">Decode &amp; Pakua</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Advisor Card -->
+      <div class="card">
+        <div class="card-body">
+          <button type="button" class="ai-toggle-btn" id="ai-toggle">&#10022; Uliza kuhusu Base64 hii</button>
+          <div class="ai-panel" id="ai-panel">
+            <div class="ai-suggestions" id="ai-suggestions">
+              <button type="button" class="ai-suggest-btn" data-q="Data hii inaonekana kuwa aina gani baada ya ku-decode?">Data hii ni aina gani?</button>
+              <button type="button" class="ai-suggest-btn" data-q="Je, hii ni JWT halali? Decode na eleza sehemu zake.">Je, hii ni JWT?</button>
+              <button type="button" class="ai-suggest-btn" data-q="Decode Base64 hii na eleza content yake kwa ufupi.">Decode na eleza</button>
+            </div>
+            <div class="ai-chat" id="ai-chat"></div>
+            <div class="ai-input-row">
+              <input aria-label="Uliza kuhusu data yako ya Base64" class="ai-input" id="ai-input" type="text" placeholder="Uliza kuhusu data yako ya Base64...">
+              <button type="button" class="ai-send-btn" id="ai-send">Tuma</button>
+            </div>
+            <div class="ai-powered">Msaada wa AI wa hiari &middot; Usiweke secrets au data nyeti</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="info-card">
+        <div class="info-title">Base64 ni nini?</div>
+        <div class="info-text">
+          Base64 hubadilisha binary data kuwa ASCII text kwa kutumia characters 64 (A-Z, a-z, 0-9, +, /). matokeo huwa takriban 33% kubwa kuliko ingizo.
+          <div style="margin-top:10px;font-size:0.72rem;color:#6B8CAE">Matumizi ya kawaida:</div>
+          <div style="margin-top:4px;font-size:0.72rem">&#8226; Kuweka images ndani ya HTML/CSS</div>
+          <div style="margin-top:3px;font-size:0.72rem">&#8226; Email attachments (MIME)</div>
+          <div style="margin-top:3px;font-size:0.72rem">&#8226; Data URIs</div>
+          <div style="margin-top:3px;font-size:0.72rem">&#8226; JWT tokens</div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">URL-Safe Mode</div>
+        <div class="info-text" style="font-size:0.75rem">
+          Standard Base64 hutumia <code>+</code> na <code>/</code>, ambazo zina maana maalumu kwenye URLs. URL-safe mode huzibadilisha:
+          <div style="margin-top:8px;font-family:'Courier New',monospace;font-size:0.7rem;background:rgba(0,113,227,0.05);padding:8px;border-radius:4px">
+            + &rarr; -<br>/ &rarr; _<br>= (padding) removed
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Tahadhari ya usalama</div>
+        <div class="info-text" style="font-size:0.75rem">
+          Base64 ni <strong>encoding</strong>, si encryption. Mtu yeyote anaweza kuidecode. Usitumie Base64 kulinda passwords, tokens au data nyeti.
+          <div style="margin-top:8px;font-size:0.7rem;color:#6B8CAE">Uchakataji hufanyika kwenye kivinjari yako. Hakuna kinachotumwa seva.</div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Keyboard shortcut</div>
+        <div class="info-text" style="font-size:0.75rem">
+          <div><strong>Ctrl+ingiza</strong> &mdash; Badilisha encode/decode</div>
+          <div style="margin-top:4px"><strong>Ctrl+Shift+C</strong> &mdash; Nakili matokeo</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="sw-dev-product-note" style="max-width:1120px;margin:22px auto;padding:0 24px;"><div style="border:1px solid #bfdbfe;background:#eff6ff;color:#1e3a8a;border-radius:12px;padding:18px 20px;line-height:1.65;"><strong>Base64 kwa Kiswahili.</strong> Badilisha maandishi au faili kuwa Base64 na kurudisha Base64 kuwa data inayosomeka. Base64 si encryption na haitoshi kulinda siri. <span>Kwa security, API, hosting, SEO, PWA, USSD au domain decisions, hakiki source matokeo, provider docs na production environment kabla ya launch/uzinduzi.</span></div></section>
+<section data-tool-verification-panel style="max-width:1120px;margin:22px auto;padding:0 24px;">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+    <div style="border:1px solid #dbe4ef;background:#fff;border-radius:12px;padding:16px;line-height:1.6">
+      <strong style="color:#0f172a">Mbinu</strong>
+      <p style="margin:8px 0 0;color:#475569">Tunatumia kanuni za Base64 zilizoelezwa kwenye RFC 4648: bytes hubadilishwa kuwa alphabet ya characters 64, padding hutumia <code>=</code>, na URL-safe mode hubadilisha <code>+</code>/<code>/</code>.</p>
+    </div>
+    <div style="border:1px solid #dbe4ef;background:#fff;border-radius:12px;padding:16px;line-height:1.6">
+      <strong style="color:#0f172a">Kanusho</strong>
+      <p style="margin:8px 0 0;color:#475569">Base64 ni encoding, si taarifa rasmi ya usalama na si encryption. Tumia matokeo kama makadirio tu ya data iliyo encoded; thibitisha na security review kabla ya kuweka secrets kwenye mchakato wa kazi ya production.</p>
+    </div>
+    <div style="border:1px solid #dbe4ef;background:#fff;border-radius:12px;padding:16px;line-height:1.6">
+      <strong style="color:#0f172a">Chanzo</strong>
+      <p style="margin:8px 0 0;color:#475569">Marejeo: <a href="https://www.rfc-editor.org/info/rfc4648/" target="_blank" rel="noopener">RFC 4648 Base16, Base32, and Base64 Data Encodings</a>. Hakiki chanzo hiki unapohitaji interoperability kali.</p>
+    </div>
+  </div>
+</section>
+<section style="max-width:900px;margin:32px auto;padding:0 20px;">
+  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
+    <p>Encoder na decoder hii ya Base64 hukusaidia kubadilisha maandishi, faili na binary data kwenda au kutoka Base64 moja kwa moja kwenye kivinjari. Inafaa kwa HTML/CSS, data URIs, email, JSON APIs na kazi za msanidi programu zinazohitaji encoding ya haraka bila seva round-trip.</p>
+  </div>
+</section>
+<!-- FAQ Section -->
+
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+<section class="faq-section" style="max-width:1200px;margin:40px auto;padding:0 24px">
+  <h2 style="font-size:1.3rem;font-weight:800;color:#111;margin-bottom:20px;font-family:'DM Sans',sans-serif">Maswali ya mara kwa mara</h2>
+  <div class="faq-list">
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Naweza ku-encode faili kuwa Base64?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Ndiyo. Zana ya Base64 ina tabs za Faili Pakia na Image to Base64 ambapo unaweza kuburuta, kudondosha au kuchagua faili la ku-encode. Unaweza kuongeza data:mime;base64 prefix kwa matumizi ya HTML/CSS na kupakua matokeo ya Base64 kama faili la .txt.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Kuna kikomo cha ukubwa wa faili kwa Base64 encoding?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Ndiyo, kikomo cha kupakia faili ni 10MB. Kwa kuwa Base64 huongeza ukubwa wa data kwa takriban 33%, matokeo itakuwa kubwa kuliko faili asili. Encoding na decoding ya maandishi hutegemea zaidi memory ya kivinjari yako.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Data yangu iko salama nikitumia Base64 encoder?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Ndiyo. Encoding na decoding hufanyika kwenye kivinjari yako. Hakuna data inayotumwa seva isipokuwa ukitumia kipengele cha hiari cha msaada wa AI. Muhimu: Base64 ni encoding format, si encryption. Usiitumie kulinda data nyeti.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Je, zana inaunga mkono URL-safe Base64 encoding?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Ndiyo. Washa URL-safe mode ili kutumia Base64 inayofaa kwenye URLs: + hubadilishwa kuwa -, / kuwa _, na padding = inaweza kuondolewa. Hii husaidia ukiweka Base64 kwenye URLs au filenames.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Tofauti ya Base64 na encryption ni nini?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Base64 ni encoding inayobadilisha binary data kuwa ASCII text. Si encryption na haitoi ulinzi wa usalama. Mtu mwenye Base64 string anaweza kuidecode. Kwa usalama, tumia encryption sahihi kama AES au RSA.
+      </div>
+    </details>
+  </div>
+</section>
+
+<afro-related-tools category="developer" current="base64"></afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+(function() {
+  'use strict';
+
+  /* ── Helpers ─────────────────────────────────── */
+  function $(id) { return document.getElementById(id); }
+  function escapeHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  function showToast(msg) {
+    var t = document.createElement('div');
+    t.className = 'toast';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(function() { t.remove(); }, 2000);
+  }
+
+  function copyText(text) {
+    navigator.clipboard.writeText(text).then(function() {
+      showToast('Copied!');
+    });
+  }
+
+  function formatBytes(b) {
+    if (b === 0) return '0 B';
+    if (b < 1024) return b + ' B';
+    if (b < 1048576) return (b / 1024).toFixed(1) + ' KB';
+    return (b / 1048576).toFixed(2) + ' MB';
+  }
+
+  function addLineBreaks(str) {
+    return str.replace(/(.{76})/g, '$1\n');
+  }
+
+  /* ── Tabs ─────────────────────────────────────── */
+  document.querySelectorAll('.tab-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.tab-pane').forEach(function(p) { p.classList.remove('active'); });
+      document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+      $(btn.dataset.tab).classList.add('active');
+      btn.classList.add('active');
+    });
+  });
+
+  /* ── TEXT TAB ──────────────────────────────────── */
+  var encodeMode = true;
+  var textInput = $('text-input');
+  var textOutput = $('text-output');
+
+  function updateStats() {
+    var inLen = new Blob([textInput.value]).size;
+    var outLen = new Blob([textOutput.value]).size;
+    $('stat-in-bytes').textContent = formatBytes(inLen);
+    $('stat-out-bytes').textContent = formatBytes(outLen);
+    if (inLen > 0 && outLen > 0) {
+      var ratio = ((outLen / inLen) * 100).toFixed(1);
+      $('stat-ratio').textContent = ratio + '%';
+    } else {
+      $('stat-ratio').textContent = '--';
+    }
+  }
+
+  function convertText() {
+    var input = textInput.value;
+    if (!input) {
+      textOutput.value = '';
+      updateStats();
+      return;
+    }
+    try {
+      var urlSafe = $('url-safe-toggle').checked;
+      var lineBreaks = $('linebreak-toggle').checked;
+      if (encodeMode) {
+        // Encode: handle Unicode with UTF-8
+        var encoded = btoa(unescape(encodeURIComponent(input)));
+        if (urlSafe) {
+          encoded = encoded.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+        }
+        if (lineBreaks && !urlSafe) {
+          encoded = addLineBreaks(encoded);
+        }
+        textOutput.value = encoded;
+      } else {
+        var toDecodeStr = input.replace(/\s/g, ''); // strip whitespace/linebreaks
+        if (urlSafe) {
+          toDecodeStr = toDecodeStr.replace(/-/g, '+').replace(/_/g, '/');
+          var padding = 4 - (toDecodeStr.length % 4);
+          if (padding !== 4) toDecodeStr += '='.repeat(padding);
+        }
+        var decoded = decodeURIComponent(escape(atob(toDecodeStr)));
+        textOutput.value = decoded;
+      }
+    } catch (e) {
+      textOutput.value = 'Error: ' + e.message;
+    }
+    updateStats();
+  }
+
+  $('encode-btn').addEventListener('click', function() {
+    encodeMode = true;
+    $('encode-btn').classList.add('active');
+    $('decode-btn').classList.remove('active');
+    textInput.placeholder = 'Enter text to encode...';
+    textOutput.placeholder = 'Base64 output...';
+    convertText();
+  });
+
+  $('decode-btn').addEventListener('click', function() {
+    encodeMode = false;
+    $('decode-btn').classList.add('active');
+    $('encode-btn').classList.remove('active');
+    textInput.placeholder = 'Paste Base64 to decode...';
+    textOutput.placeholder = 'Decoded text output...';
+    convertText();
+  });
+
+  textInput.addEventListener('input', convertText);
+  $('url-safe-toggle').addEventListener('change', convertText);
+  $('linebreak-toggle').addEventListener('change', convertText);
+
+  $('text-copy-input').addEventListener('click', function() { copyText(textInput.value); });
+  $('text-copy-output').addEventListener('click', function() { copyText(textOutput.value); });
+
+  $('text-clear').addEventListener('click', function() {
+    textInput.value = '';
+    textOutput.value = '';
+    updateStats();
+  });
+
+  $('text-swap').addEventListener('click', function() {
+    var tmp = textInput.value;
+    textInput.value = textOutput.value;
+    textOutput.value = tmp;
+    updateStats();
+  });
+
+  /* ── Keyboard shortcuts ────────────────────────── */
+  document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey && e.key === 'Enter') {
+      e.preventDefault();
+      if (encodeMode) { $('decode-btn').click(); } else { $('encode-btn').click(); }
+    }
+    if (e.ctrlKey && e.shiftKey && (e.key === 'C' || e.key === 'c')) {
+      e.preventDefault();
+      copyText(textOutput.value);
+    }
+  });
+
+  /* ── FILE UPLOAD TAB ───────────────────────────── */
+  var fileDropZone = $('file-drop-zone');
+  var fileInputEl = $('file-input');
+  var currentFileData = null;
+  var currentFileType = '';
+
+  function setupDropZone(zone, input, handler) {
+    ['dragenter', 'dragover'].forEach(function(ev) {
+      zone.addEventListener(ev, function(e) { e.preventDefault(); zone.classList.add('dragover'); });
+    });
+    ['dragleave', 'drop'].forEach(function(ev) {
+      zone.addEventListener(ev, function(e) { e.preventDefault(); zone.classList.remove('dragover'); });
+    });
+    zone.addEventListener('drop', function(e) {
+      if (e.dataTransfer.files.length) {
+        input.files = e.dataTransfer.files;
+        handler(e.dataTransfer.files[0]);
+      }
+    });
+    zone.addEventListener('click', function() { input.click(); });
+    input.addEventListener('change', function(e) {
+      if (e.target.files.length) handler(e.target.files[0]);
+    });
+  }
+
+  function handleFileUpload(file) {
+    var maxSize = 10 * 1024 * 1024;
+    if (file.size > maxSize) { showToast('File too large (max 10 MB)'); return; }
+
+    var reader = new FileReader();
+    currentFileType = file.type;
+
+    $('file-info').innerHTML = '<strong>' + escapeHtml(file.name) + '</strong> (' + formatBytes(file.size) + ') | Type: ' + (file.type || 'unknown');
+    $('file-info').style.display = 'flex';
+
+    reader.onerror = function() { showToast('Error reading file'); };
+    reader.onload = function() {
+      var parts = reader.result ? reader.result.split(',') : [];
+      currentFileData = { full: reader.result, raw: parts[1] || '' };
+      var prefix = $('file-include-prefix').checked;
+      $('file-output').value = prefix ? currentFileData.full : currentFileData.raw;
+
+      if (file.type.startsWith('image/')) {
+        $('file-image-preview').innerHTML = '<img src="' + reader.result + '" alt="Preview">';
+        $('file-image-preview').style.display = 'block';
+      } else {
+        $('file-image-preview').style.display = 'none';
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+
+  setupDropZone(fileDropZone, fileInputEl, handleFileUpload);
+
+  $('file-include-prefix').addEventListener('change', function() {
+    if (!currentFileData) return;
+    $('file-output').value = this.checked ? currentFileData.full : currentFileData.raw;
+  });
+
+  $('file-copy-output').addEventListener('click', function() { copyText($('file-output').value); });
+
+  $('file-download-txt').addEventListener('click', function() {
+    var b64 = $('file-output').value;
+    if (!b64) { showToast('No data to download'); return; }
+    var blob = new Blob([b64], { type: 'text/plain' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = 'base64.txt'; a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  /* ── IMAGE TO BASE64 TAB ───────────────────────── */
+  var imgDropZone = $('img-drop-zone');
+  var imgInputEl = $('img-input');
+  var currentImgData = null;
+
+  function handleImageUpload(file) {
+    var maxSize = 10 * 1024 * 1024;
+    if (file.size > maxSize) { showToast('File too large (max 10 MB)'); return; }
+    if (!file.type.startsWith('image/')) { showToast('Please select an image file'); return; }
+
+    var reader = new FileReader();
+    $('img-info').innerHTML = '<strong>' + escapeHtml(file.name) + '</strong> (' + formatBytes(file.size) + ') | ' + file.type;
+    $('img-info').style.display = 'flex';
+
+    reader.onerror = function() { showToast('Error reading image'); };
+    reader.onload = function() {
+      var parts = reader.result ? reader.result.split(',') : [];
+      currentImgData = { full: reader.result, raw: parts[1] || '' };
+
+      $('img-preview').innerHTML = '<img src="' + reader.result + '" alt="Image preview">';
+      $('img-preview').style.display = 'block';
+
+      var includePrefix = $('img-include-prefix').checked;
+      $('img-output').value = includePrefix ? currentImgData.full : currentImgData.raw;
+
+      // Stats
+      var b64Len = (includePrefix ? currentImgData.full : currentImgData.raw).length;
+      $('img-stat-original').textContent = formatBytes(file.size);
+      $('img-stat-b64').textContent = formatBytes(b64Len);
+      $('img-stat-ratio').textContent = ((b64Len / file.size) * 100).toFixed(1) + '%';
+      $('img-stats').style.display = 'flex';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  setupDropZone(imgDropZone, imgInputEl, handleImageUpload);
+
+  $('img-include-prefix').addEventListener('change', function() {
+    if (!currentImgData) return;
+    $('img-output').value = this.checked ? currentImgData.full : currentImgData.raw;
+  });
+
+  $('img-copy-output').addEventListener('click', function() { copyText($('img-output').value); });
+
+  /* ── DECODE FILE TAB ───────────────────────────── */
+  $('decode-download-btn').addEventListener('click', function() {
+    var base64Str = $('decode-input').value.trim();
+    var filename = $('decode-filename').value || 'output.txt';
+    if (!base64Str) { showToast('Please enter Base64 string'); return; }
+
+    try {
+      var cleanBase64 = base64Str;
+      if (base64Str.startsWith('data:')) {
+        cleanBase64 = base64Str.split(',')[1];
+      }
+      var binaryString = atob(cleanBase64);
+      var bytes = new Uint8Array(binaryString.length);
+      for (var i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      var blob = new Blob([bytes], { type: 'application/octet-stream' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url; a.download = filename; a.click();
+      URL.revokeObjectURL(url);
+      showToast('File downloaded!');
+    } catch (e) {
+      showToast('Error: Invalid Base64 string');
+    }
+  });
+
+  /* ── AI ADVISOR ────────────────────────────────── */
+  var aiExchanges = 0;
+  var AI_MAX = 3;
+  var aiHistory = [];
+
+  $('ai-toggle').addEventListener('click', function() {
+    $('ai-panel').classList.toggle('open');
+  });
+
+  function getContextBase64() {
+    // Get whichever tab's output has data
+    var txt = textOutput.value || $('file-output').value || $('img-output').value || textInput.value || '';
+    // Truncate to 500 chars for API
+    return txt.substring(0, 500);
+  }
+
+  function sendAiMessage(question) {
+    if (aiExchanges >= AI_MAX) {
+      showToast('AI limit reached (3 per session)');
+      return;
+    }
+
+    var context = getContextBase64();
+    if (!context && !question) {
+      showToast('Enter some Base64 data first');
+      return;
+    }
+
+    aiExchanges++;
+    var chatEl = $('ai-chat');
+
+    // Show user message
+    var userMsg = document.createElement('div');
+    userMsg.className = 'ai-msg user';
+    userMsg.textContent = question;
+    chatEl.appendChild(userMsg);
+
+    // Show loading
+    var loadMsg = document.createElement('div');
+    loadMsg.className = 'ai-msg assistant';
+    loadMsg.textContent = 'Thinking...';
+    chatEl.appendChild(loadMsg);
+    chatEl.scrollTop = chatEl.scrollHeight;
+
+    $('ai-send').disabled = true;
+
+    aiHistory.push({ role: 'user', content: question });
+
+    var payload = {
+      tool: 'base64',
+      question: question,
+      context: context,
+      history: aiHistory.slice(-4),
+      maxTokens: 500
+    };
+
+    fetch('/.netlify/functions/ai-advisor', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      var answer = (data.answer || data.response || data.message || 'No response received.');
+      loadMsg.textContent = answer;
+      aiHistory.push({ role: 'assistant', content: answer });
+    })
+    .catch(function(err) {
+      loadMsg.className = 'ai-msg error';
+      loadMsg.textContent = 'Error: Could not reach AI advisor.';
+    })
+    .finally(function() {
+      $('ai-send').disabled = false;
+      chatEl.scrollTop = chatEl.scrollHeight;
+      if (aiExchanges >= AI_MAX) {
+        $('ai-send').disabled = true;
+        $('ai-input').disabled = true;
+        $('ai-input').placeholder = 'Limit reached (3/session)';
+      }
+    });
+  }
+
+  $('ai-send').addEventListener('click', function() {
+    var q = $('ai-input').value.trim();
+    if (!q) return;
+    $('ai-input').value = '';
+    sendAiMessage(q);
+  });
+
+  $('ai-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') { $('ai-send').click(); }
+  });
+
+  document.querySelectorAll('.ai-suggest-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      sendAiMessage(btn.dataset.q);
+      $('ai-suggestions').style.display = 'none';
+    });
+  });
+})();
+</script>
+
+<script>
+// Save/Share buttons — manual placement needed
+(function(){
+  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
+  div.innerHTML = '<share-result-button tool-name="Base64" tool-slug="base64"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script class="sw-dev-runtime-localizer">
+(function(){
+
+  const hrefMap = new Map([
+    ["/", "/sw/"],
+    ["/tools/", "/sw/zana-za-developer/"],
+    ["/sw/zana-za-developer/", "/sw/zana-za-developer/"],
+    ["/tools/dev-tools/", "/sw/zana/kituo-cha-developer/"],
+    ["/contact/", "/sw/wasiliana/"],
+    ["/tools/api-tester/", "/sw/zana/kijaribu-api/"],
+    ["/tools/african-api-directory/", "/sw/zana/saraka-ya-api-afrika/"],
+    ["/telecom/ussd-directory/", "/sw/zana/saraka-ya-misimbo-ussd/"],
+    ["/tools/regex-tester/", "/sw/zana/kijaribu-regex/"],
+    ["/tools/json-formatter/", "/sw/zana/kirekebisha-json/"],
+    ["/tools/sql-formatter/", "/sw/zana/kirekebisha-sql/"],
+    ["/tools/sql-playground/", "/sw/zana/uwanja-wa-sql/"],
+    ["/tools/base64/", "/sw/zana/base64/"],
+    ["/tools/jwt-decoder/", "/sw/zana/kisimbuzi-jwt/"],
+    ["/tools/docker-compose-gen/", "/sw/zana/kizalishaji-docker-compose/"],
+    ["/tools/htaccess-gen/", "/sw/zana/kizalishaji-htaccess/"],
+    ["/tools/pwa-manifest/", "/sw/zana/kizalishaji-pwa-manifest/"],
+    ["/tools/robots-txt/", "/sw/zana/kizalishaji-robots-txt/"],
+    ["/tools/sitemap-gen/", "/sw/zana/kizalishaji-sitemap/"]
+  ]);
+  function localizeHref(el){
+    const href = el.getAttribute && el.getAttribute('href');
+    if (!href) return;
+    const clean = href.split(/[?#]/)[0];
+    if (hrefMap.has(clean)) el.setAttribute('href', hrefMap.get(clean) + href.slice(clean.length));
+  }
+  const textMap = new Map([["Developer Tools for African Builders","Zana za Developer kwa Afrika"],["Developer Tools for Africa","Zana za Developer kwa Afrika"],["Developer Tools","Zana za Developer"],["Tools for builders who ship in","Zana kwa builders wanaoship"],["Africa","Afrika"],["Private, browser-based developer tools for African builders: API testing, USSD flows, JSON, JWT, regex, SQL, Docker, PWA, hosting, domains, SEO and launch utilities.","Zana za developer zinazofanya kazi kwenye browser kwa builders wa Afrika: API testing, USSD flows, JSON, JWT, Regex, SQL, Docker, PWA, hosting, domains, SEO na launch utilities."],["API testing, USSD flow design, data cleanup, SQL practice, Docker, PWA, hosting, domains and launch checks. Fast browser utilities with a practical bias toward African developer workflows.","API testing, design ya USSD flow, data cleanup, mazoezi ya SQL, Docker, PWA, hosting, domains na launch checks. Utilities za browser kwa workflows za developer Afrika."],["Open API Tester","Fungua Kijaribu API"],["Build a USSD flow","Jenga USSD flow"],["Live tools","Zana hai"],["Flagship apps","Apps kuu"],["Server uploads","Upakiaji wa server"],["No signup core","Core bila signup"],["Product thesis","Mwelekeo wa bidhaa"],["Not just another pile of formatters.","Si mkusanyiko wa formatters pekee."],["The small tools stay fast, but the section now points users toward the work that AfroTools can uniquely own: African APIs, USSD, local hosting decisions, offline-friendly data work, and web launch readiness.","Zana ndogo zinabaki haraka, lakini sehemu hii inaelekeza kwenye kazi ambazo AfroTools inaweza kumiliki vizuri: APIs za Afrika, USSD, maamuzi ya hosting ya ndani, data work inayofaa offline na maandalizi ya web launch."],["Africa API aware","Inajali APIs za Afrika"],["Presets and links for payment, telecom, identity and mobile money work.","Presets na links kwa payment, telecom, identity na mobile money work."],["Privacy first","Faragha kwanza"],["Formatting, encoding, hashing and editing happen in the browser where practical.","Formatting, encoding, hashing na editing hufanyika kwenye browser inapowezekana."],["Workflow based","Inaangalia workflow"],["Flagship apps should save requests, export code, validate output and teach next steps.","Apps kuu zinapaswa kuhifadhi requests, export code, validate output na kuelekeza hatua inayofuata."],["Low bandwidth","Bandwidth ndogo"],["Useful on older devices and unstable connections, with no account required for core use.","Inafaa kwenye vifaa vya zamani na connection zisizo thabiti, bila account kwa matumizi ya msingi."],["Search JSON, API, USSD, JWT, regex, Docker, PWA...","Tafuta JSON, API, USSD, JWT, Regex, Docker, PWA..."],["All","Zote"],["Flagship","Kuu"],["Data","Data"],["Launch","Launch"],["Utility","Utility"],["Developer Tools FAQ","Maswali ya Zana za Developer"],["Are these tools free?","Je, zana hizi ni bure?"],["Yes. The core developer utilities are free and do not require an account.","Ndiyo. Utilities za msingi ni bure na hazihitaji account."],["Is my data sent to AfroTools?","Je, data yangu hutumwa AfroTools?"],["Most utilities process data in your browser. API Tester sends the request directly from your browser to the URL you choose, so production secrets should still be handled carefully.","Utilities nyingi huchakata data kwenye browser. Kijaribu API hutuma request moja kwa moja kutoka browser yako kwenda URL unayochagua, hivyo secrets za production zinahitaji tahadhari."],["Why are African APIs and USSD highlighted?","Kwa nini APIs za Afrika na USSD zimepewa kipaumbele?"],["Those are the workflows where AfroTools can be more useful than generic global utilities: mobile money, telecom, identity, USSD menus, local payment constraints and deployment choices.","Hizo ndizo workflows ambazo AfroTools inaweza kuwa muhimu zaidi kuliko utilities za jumla: mobile money, telecom, identity, USSD menus, payment constraints za ndani na deployment choices."],["Free developer tools: JSON/CSV/XML converter, hash generator, Base64 encoder, regex tester, JWT decoder, UUID generator, diff checker, markdown editor, cron builder. All client-side.","Zana za developer: JSON/CSV/XML converter, hash generator, Base64 encoder, Regex tester, JWT decoder, UUID generator, diff checker, Markdown editor na Cron builder. Zote client-side."],["Core use without a paid subscription","matumizi ya msingi bila usajili wa kulipia"],["All Developer Tools","Zana zote za Developer"],["Live tools you can use now, plus what's coming next in this category.","Zana hai unazoweza kutumia sasa, pamoja na zinazokuja kwenye category hii."],["Search tools — e.g. JSON, regex, JWT, UUID…","Tafuta zana, mfano JSON, Regex, JWT, UUID..."],["Available Now","Zinapatikana sasa"],["Coming Soon","Zinakuja"],["Browse","Vinjari"],["All Categories","Categories zote"],["Explore other tool categories across AfroTools.","Vinjari categories nyingine za AfroTools."],["Can't find what you need?","Hujapata unachohitaji?"],["Tell us what tool to build next. We ship new tools every week.","Tuambie zana gani tujenge ijayo. Tunaongeza zana mpya mara kwa mara."],["Request a Tool →","Omba zana ->"],["Format","Format"],["Validate","Validate"],["Repair","Repair"],["Generate","Tengeneza"],["Encode","Encode"],["Decode","Decode"],["Copy","Nakili"],["Clear","Futa"],["Reset","Reset"],["Download","Pakua"],["Upload","Pakia"],["Export","Export"],["Import","Import"],["Save","Hifadhi"],["Load","Pakia"],["Run","Run"],["Test","Test"],["Send","Tuma"],["Search","Tafuta"],["Filter","Filter"],["Preview","Preview"],["Input","Input"],["Output","Output"],["Result","Matokeo"],["Results","Matokeo"],["Settings","Mipangilio"],["Options","Options"],["Example","Mfano"],["Examples","Mifano"],["Error","Hitilafu"],["Warning","Onyo"],["Valid","Valid"],["Invalid","Invalid"],["Line","Mstari"],["Lines","Mistari"],["Text","Maandishi"],["File","Faili"],["Files","Faili"],["Password","Nenosiri"],["Length","Urefu"],["Uppercase","Herufi kubwa"],["Lowercase","Herufi ndogo"],["Numbers","Namba"],["Symbols","Alama"],["Secret","Secret"],["Key","Key"],["Algorithm","Algorithm"],["Header","Header"],["Payload","Payload"],["Signature","Signature"],["Claims","Claims"],["Token","Token"],["Expired","Ime-expire"],["Method","Method"],["Headers","Headers"],["Body","Body"],["Response","Response"],["Authorization","Authorization"],["Environment","Environment"],["Query","Query"],["Parameters","Parameters"],["Country","Nchi"],["Provider","Provider"],["Price","Bei"],["Monthly","Kila mwezi"],["Annual","Kila mwaka"],["Notes","Notes"],["Checklist","Checklist"],["Frequently Asked Questions","Maswali ya mara kwa mara"],["How it works","Jinsi inavyofanya kazi"],["How It Works","Jinsi inavyofanya kazi"],["Privacy","Faragha"],["Local processing","Uchakataji wa ndani"],["No upload","Hakuna upload"],["No Upload","Hakuna upload"],["Client-side","Client-side"],["Browser-based","Browser-based"],["Free online tool","Zana ya bure mtandaoni"],["Click","Bofya"],["Drag","Buruta"],["Drop","Dondosha"],["Choose","Chagua"],["Submit","Wasilisha"],["Enter","Weka"],["Yes.","Ndiyo."],["No.","Hapana."],["Editor","Kihariri"],["Live Preview","Preview hai"],["Write markdown with live split-view preview. Formatting toolbar, word count, read-time estimate. Export to HTML or download .md/.html files. Auto-save locally, with signed-in draft sync across devices.","Andika Markdown ukiwa na preview ya moja kwa moja. Kuna toolbar ya formatting, hesabu ya maneno, makisio ya muda wa kusoma, export kwenda HTML au download ya .md/.html. Auto-save hufanyika kwenye kifaa, na draft sync hutegemea hali ya akaunti."],["This Markdown editor provides a split-pane writing environment with live preview, letting you write in Markdown syntax on the left and see the formatted output on the right in real time. It supports full GitHub-Flavoured Markdown including tables, task lists, code blocks with syntax highlighting, and embedded images. Export your document as HTML, copy the rendered output, or download the raw Markdown file. The editor is perfect for developers writing documentation, bloggers drafting posts, students taking notes, and anyone who prefers writing in plain text with lightweight formatting. Everything runs locally with no account required.","Kihariri hiki cha Markdown kinatoa sehemu mbili: upande wa kuandika na upande wa preview. Unaweza kuandika Markdown, kuona matokeo yaliyopangwa, kutumia tables, task lists, code blocks na picha zilizowekwa kwenye maandishi. Unaweza kupakua Markdown, ku-export HTML au kunakili output iliyopangwa. Ni msaada kwa docs, posts, notes na kazi za plain text, huku ukihakiki export kabla ya kuchapisha."],["Does the AfroTools Markdown Editor support GitHub Flavored Markdown?","Je, kihariri cha AfroTools kinaunga mkono GitHub Flavored Markdown?"],["Does the AfroTools Kihariri Markdown support GitHub Flavored Markdown?","Je, Kihariri Markdown cha AfroTools kinaunga mkono GitHub Flavored Markdown?"],["Yes. The editor uses the marked.js library with GFM mode enabled, supporting tables, fenced code blocks, strikethrough, task lists, and autolinks out of the box.","Ndiyo. Kihariri kinatumia marked.js na GFM mode kwa tables, fenced code blocks, strikethrough, task lists na autolinks."],["Can I export my markdown to HTML?","Naweza ku-export Markdown kwenda HTML?"],["Yes. AfroTools Markdown Editor offers three export options: download as a .md file, download as a styled .html file, or copy the raw HTML to your clipboard for pasting into other applications.","Ndiyo. Unaweza kupakua .md, kupakua .html yenye style, au kunakili HTML kwenda clipboard kwa matumizi kwenye apps nyingine."],["Yes. AfroTools Kihariri Markdown offers three export options: download as a .md file, download as a styled .html file, or copy the raw HTML to your clipboard for pasting into other applications.","Ndiyo. Unaweza kupakua .md, kupakua .html yenye style, au kunakili HTML kwenda clipboard kwa matumizi kwenye apps nyingine."],["Does the markdown editor work offline?","Je, kihariri cha Markdown hufanya kazi offline?"],["How do I create a markdown table quickly?","Nitatengeneza jedwali la Markdown haraka vipi?"],["Click the \"Table+\" button in the toolbar to open the table generator. Enter the number of rows and columns, and a properly formatted markdown table template will be inserted at your cursor position. You can also use the AI advisor to convert data into a markdown table.","Bofya kitufe cha \"Table+\" kwenye toolbar kufungua generator ya jedwali. Weka idadi ya rows na columns, kisha template ya Markdown itawekwa kwenye cursor. Unaweza pia kutumia mshauri wa AI kugeuza data kuwa jedwali la Markdown."],["Fix formatting","Rekebisha formatting"],["Convert to markdown","Geuza kuwa Markdown"],["Generate table","Tengeneza jedwali"],["Tengeneza table","Tengeneza jedwali"],["Improve readability","Boresha usomekaji"],["Generate Markdown Table","Tengeneza Jedwali la Markdown"],["Rows (excluding header)","Rows bila header"],["Columns","Columns"],["Ask about your markdown...","Uliza kuhusu Markdown yako..."],["Markdown file downloaded","Faili ya Markdown imepakuliwa"],["HTML copied to clipboard","HTML imenakiliwa kwenye clipboard"],["Generator","Kizalishaji"],["Generate strong, random, and secure passwords instantly. Customize length, character types, and generate in bulk. 100% client-side - nothing leaves your browser.","Tengeneza passwords random zenye nguvu haraka. Badilisha length, aina za characters na tengeneza nyingi kwa pamoja. Hufanyika upande wa browser kulingana na source page."],["Generate strong, random, and secure passwords instantly. Customize length, character types, and generate in bulk. 100% client-side — nothing leaves your browser.","Tengeneza passwords random zenye nguvu haraka. Badilisha length, aina za characters na tengeneza nyingi kwa pamoja. Hufanyika upande wa browser kulingana na source page."],["Cryptographically Secure","Randomness ya Web Crypto"],["Bulk passwords will appear here...","Passwords nyingi zitaonekana hapa..."],["How the Password Generator Works","Jinsi Kizalishaji Nenosiri kinavyofanya kazi"],["The AfroTools Password Generator creates cryptographically secure random passwords using your browser's built-in Web Crypto API (crypto.getRandomValues()). Unlike many online password generators that use Math.random(), our tool uses a true cryptographic random number generator, making the passwords virtually impossible to predict.","Kizalishaji Nenosiri cha AfroTools hutumia Web Crypto API ya browser yako (crypto.getRandomValues()) kutengeneza passwords random kwa matumizi ya kawaida. Hii ni bora kuliko Math.random(), lakini bado unapaswa kuhifadhi passwords kwa password manager na kufuata sera za usalama za mfumo wako."],["The AfroTools Kizalishaji Nenosiri creates cryptographically secure random passwords using your browser's built-in Web Crypto API (crypto.getRandomValues()). Unlike many online password generators that use Math.random(), our tool uses a true cryptographic random number generator, making the passwords virtually impossible to predict.","Kizalishaji Nenosiri cha AfroTools hutumia Web Crypto API ya browser yako (crypto.getRandomValues()) kutengeneza passwords random kwa matumizi ya kawaida. Hii ni bora kuliko Math.random(), lakini bado unapaswa kuhifadhi passwords kwa password manager na kufuata sera za usalama za mfumo wako."],["How to Use","Jinsi ya kutumia"],["Adjust the password length using the slider (recommended: 16+ characters)","Badilisha urefu wa password kwa slider; kwa akaunti muhimu, 16+ characters ni mwanzo mzuri"],["Toggle character types on/off - uppercase, lowercase, numbers, symbols","Washa au zima aina za characters: uppercase, lowercase, numbers na symbols"],["Toggle character types on/off — uppercase, lowercase, numbers, symbols","Washa au zima aina za characters: uppercase, lowercase, numbers na symbols"],["Click \"Generate Password\" to create a new password","Bofya \"Tengeneza Nenosiri\" kutengeneza password mpya"],["Click \"Copy\" to copy it to your clipboard","Bofya \"Nakili\" kuiweka kwenye clipboard"],["Use \"Bulk Generate\" to create multiple passwords at once","Tumia \"Tengeneza Bulk\" kutengeneza passwords nyingi kwa pamoja"],["Why Strong Passwords Matter","Kwa nini passwords zenye nguvu ni muhimu"],["Why Strong Nenosiris Matter","Kwa nini passwords zenye nguvu ni muhimu"],["In 2026, data breaches continue to affect millions of users across Africa and worldwide. A password like \"password123\" can be cracked in under a second using modern hardware. An 8-character password with mixed characters takes about 5 minutes. But a 16-character password with all character types would take billions of years to brute-force.","Mwaka 2026, data breaches bado zinaathiri watumiaji wengi Afrika na duniani. Password rahisi kama \"password123\" inaweza kubashiriwa haraka kwa vifaa vya kisasa. Password ndefu yenye mchanganyiko wa characters huongeza ugumu wa brute-force, lakini usiichukulie kama dhamana ya usalama wa mfumo mzima."],["The NIST Digital Identity Guidelines recommend passwords of at least 8 characters, but security experts now suggest 14-16 characters as a minimum for important accounts. Our generator defaults to 16 characters for optimal security.","Mwongozo wa NIST Digital Identity Guidelines unapendekeza password za angalau characters 8, na wataalamu wengi hupendekeza 14-16+ kwa akaunti muhimu. Default ya generator ni 16 kama hatua ya tahadhari."],["This password generator creates strong, random passwords using cryptographically secure randomness from the Web Crypto API. Customise length, and choose whether to include uppercase letters, lowercase letters, numbers, and special characters. The tool also calculates password entropy and estimates crack time so you can gauge the strength of each generated password. You can generate multiple passwords at once and copy them with a single click. Anyone creating accounts, managing credentials, or setting up secure systems will benefit from passwords that are truly random rather than based on predictable patterns that attackers can easily guess.","Kizalishaji hiki hutengeneza passwords random kwa Web Crypto API, huku kikikuruhusu kuchagua length, uppercase, lowercase, numbers na symbols. Pia kinaonyesha makadirio ya nguvu ya password ili uone kama inafaa kwa matumizi yako. Tumia matokeo kama msaada wa planning, kisha hifadhi passwords kwenye password manager na fuata sera za usalama za shirika lako."],["How does the password generator work?","Kizalishaji cha password hufanya kazi vipi?"],["Are the generated passwords stored anywhere?","Passwords zinazotengenezwa huhifadhiwa mahali popote?"],["No. Passwords are generated entirely in your browser. Nothing is sent to any server or stored anywhere. Once you close the page, the password exists only if you copied it.","Hapana. Passwords hutengenezwa kwenye browser kulingana na source behavior. Ukifunga ukurasa, password itabaki tu kama uliinakili au kuihifadhi wewe mwenyewe."],["Hapana. Nenosiris are generated entirely in your browser. Nothing is sent to any server or stored anywhere. Once you close the page, the password exists only if you copied it.","Hapana. Passwords hutengenezwa kwenye browser kulingana na source behavior. Ukifunga ukurasa, password itabaki tu kama uliinakili au kuihifadhi wewe mwenyewe."],["What makes a strong password?","Password yenye nguvu ina nini?"],["A strong password is at least 12 characters long and includes a mix of uppercase letters, lowercase letters, numbers, and special symbols. Avoid dictionary words, personal information, and reusing passwords across sites.","Password yenye nguvu huwa ndefu, random na ina mchanganyiko wa uppercase, lowercase, numbers na symbols. Epuka maneno ya kamusi, taarifa binafsi na kutumia password ileile kwenye sites nyingi."],["Can I generate multiple passwords at once?","Naweza kutengeneza passwords nyingi kwa pamoja?"],["Yes. Use the Bulk Generate feature to create up to 50 passwords at once with your chosen settings. You can copy all of them with one click.","Ndiyo. Tumia kipengele cha Bulk kutengeneza hadi passwords 50 kwa mipangilio uliyochagua, kisha uzinakili kwa pamoja."],["Ndiyo. Use the Bulk Tengeneza feature to create up to 50 passwords at once with your chosen settings. You can copy all of them with one click.","Ndiyo. Tumia kipengele cha Bulk kutengeneza hadi passwords 50 kwa mipangilio uliyochagua, kisha uzinakili kwa pamoja."],["Password Tips","Vidokezo vya Password"],["Use at least 16 characters for important accounts (banking, email)","Tumia angalau characters 16 kwa akaunti muhimu kama benki na email"],["Never reuse passwords across different websites","Usitumie password ileile kwenye websites tofauti"],["Use a password manager (Bitwarden, 1Password) to store them safely","Tumia password manager kama Bitwarden au 1Password kuhifadhi passwords kwa usalama"],["Use a password manager (Bitwarden, 1Nenosiri) to store them safely","Tumia password manager kama Bitwarden au 1Password kuhifadhi passwords kwa usalama"],["Enable two-factor authentication (2FA) wherever possible","Washa two-factor authentication (2FA) inapowezekana"],["Change passwords immediately if a service reports a data breach","Badilisha passwords mara moja kama service imetangaza data breach"],["6 chars (letters):","Characters 6 (herufi):"],["8 chars (mixed):","Characters 8 (mchanganyiko):"],["10 chars (mixed):","Characters 10 (mchanganyiko):"],["12 chars (mixed):","Characters 12 (mchanganyiko):"],["16 chars (all types):","Characters 16 (aina zote):"],["~5 seconds","~sekunde 5"],["~5 minutes","~dakika 5"],["~2 weeks","~wiki 2"],["~200 years","~miaka 200"],["~billions of years","~mabilioni ya miaka"],["Source: Hive Systems, 2025 estimates with modern GPUs","Chanzo: Hive Systems, makadirio ya 2025 kwa GPUs za kisasa"],["Free","Bure"],["Copy to Clipboard","Nakili kwenye clipboard"],["Copied!","Imenakiliwa!"],["Download File","Pakua faili"],["Choose file","Chagua faili"],["Drop file here","Buruta faili hapa"],["Drag and drop","Buruta na udondoshe"],["No file selected","Hakuna faili iliyochaguliwa"],["Processing...","Inachakata..."],["Loading...","Inapakia..."],["Ready","Tayari"],["Try sample","Jaribu sample"],["Use sample","Tumia sample"],["Copied to clipboard","Imenakiliwa kwenye clipboard"],["Request failed","Request imeshindikana"],["Invalid JSON","JSON si valid"],["Valid JSON","JSON iko valid"]]);
+  function localizeText(node){
+    const raw = node.textContent || '';
+    const trimmed = raw.trim();
+    if (!trimmed || !textMap.has(trimmed)) return;
+    node.textContent = raw.replace(trimmed, textMap.get(trimmed));
+  }
+  function walk(root){
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node){
+        const parent = node.parentElement;
+        if (!parent || /^(SCRIPT|STYLE|NOSCRIPT)$/i.test(parent.tagName)) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(localizeText);
+    if (root.nodeType === Node.ELEMENT_NODE && root.matches && root.matches('a[href]')) localizeHref(root);
+    if (root.querySelectorAll) {
+      root.querySelectorAll('[placeholder],[aria-label],[title],input[type="button"],input[type="submit"],a[href]').forEach(el => {
+        if (el.tagName === 'A') localizeHref(el);
+        ['placeholder','aria-label','title','value'].forEach(attr => {
+          const value = el.getAttribute(attr);
+          if (value && textMap.has(value.trim())) el.setAttribute(attr, textMap.get(value.trim()));
+        });
+      });
+    }
+  }
+  function run(){ if (document.body) walk(document.body); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
+  new MutationObserver(mutations => {
+    for (const mutation of mutations) {
+      mutation.addedNodes.forEach(node => {
+        if (node.nodeType === Node.TEXT_NODE) localizeText(node);
+        else if (node.nodeType === Node.ELEMENT_NODE) walk(node);
+      });
+    }
+  }).observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script>
+  <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
+</body>
+</html>

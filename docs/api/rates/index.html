@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AfroRates API Overview — AfroTools API Docs</title>
+<meta name="description" content="AfroRates API: central bank policy rates, inflation, T-bill yields, and MPC meeting calendars for all 54 African countries.">
+<meta name="theme-color" content="#0062CC">
+<link rel="canonical" href="https://afrotools.com/docs/api/rates/">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/api-docs.css?v=ce57a995">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/api-sidebar.js?v=1e21db66" defer></script>
+<script src="/assets/js/components/api-code-tabs.js?v=d929cd13" defer></script>
+
+
+<meta property="og:title" content="AfroRates API Overview - AfroTools API Docs">
+<meta property="og:description" content="AfroRates API: central bank policy rates, inflation, T-bill yields, and MPC meeting calendars for all 54 African countries.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="article:modified_time" content="2026-03-28">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:url" content="https://afrotools.com/docs/api/rates/">
+</head>
+<body class="api-docs-body top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<div class="api-docs-layout">
+  <api-sidebar active="/docs/api/rates/"></api-sidebar>
+  <main class="api-content">
+    <div class="api-two-panel api-two-panel--wide-left">
+      <div class="api-content__left">
+        <h1 class="mt-0">AfroRates API</h1>
+        <p class="api-subtitle">Central bank policy rates, inflation figures, T-bill yields, and MPC meeting calendars for all 54 African countries.</p>
+
+        <h2>Overview</h2>
+        <p>The AfroRates API provides macroeconomic indicators from African central banks. Data is updated within 24 hours of official announcements and includes historical series for trend analysis.</p>
+
+        <h3>Data Points Available</h3>
+        <ul style="margin:8px 0 20px 20px;font-size:.88rem;color:#4B5563;line-height:1.8">
+          <li><strong>Policy Rate (MPR)</strong> &mdash; Central bank benchmark interest rate</li>
+          <li><strong>Inflation Rate</strong> &mdash; Consumer price index (headline and core)</li>
+          <li><strong>T-Bill Yields</strong> &mdash; 91-day, 182-day, and 364-day treasury bill rates</li>
+          <li><strong>MPC Calendar</strong> &mdash; Next Monetary Policy Committee meeting dates</li>
+          <li><strong>GDP Growth</strong> &mdash; Latest quarterly GDP growth rate</li>
+        </ul>
+
+        <h2>Endpoints</h2>
+        <div class="api-cards-grid">
+          <a href="/docs/api/rates/central-bank" class="api-card">
+            <div class="api-card__title"><span class="endpoint-method endpoint-method--get" style="font-size:.6rem;vertical-align:middle;margin-right:6px">GET</span> Central Bank Rates</div>
+            <div class="api-card__desc">Get policy rate, inflation, T-bill yields, and MPC meeting date for a specific country.</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="api-content__right">
+        <div class="code-label">Base URL</div>
+        <div class="code-example">https://afrotools.com/api/v1/rates/central-bank</div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">Quick Example</div>
+        <div class="code-example"><span class="c"># Get Nigerian central bank data</span>
+curl "https://afrotools.com/api/v1/rates/central-bank?country=NG" \
+  -H "x-api-key: afro_test_abc123"</div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">Example Response</div>
+        <div class="code-example">{
+  "success": true,
+  "data": {
+    "country": "NG",
+    "country_name": "Nigeria",
+    "central_bank": "Central Bank of Nigeria",
+    "central_bank_abbr": "CBN",
+    "policy_rate": 27.50,
+    "inflation": {
+      "headline": 31.7,
+      "core": 25.1,
+      "food": 37.9
+    },
+    "tbills": {
+      "91_day": 18.5,
+      "182_day": 20.1,
+      "364_day": 22.3
+    },
+    "gdp_growth": 3.46,
+    "next_mpc": "2026-05-20",
+    "updated": "2026-03-01"
+  }
+}</div>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

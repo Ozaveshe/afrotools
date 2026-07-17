@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Traducteur amharique | AfroTools</title>
+  <meta name="description" content="Assistant francophone pour phrases amhariques courantes, translitteration simple, glossaire, copie et export local avec limites claires.">
+  <meta property="og:title" content="Traducteur amharique | AfroTools">
+  <meta property="og:description" content="Assistant francophone pour phrases amhariques courantes, translitteration simple, glossaire, copie et export local avec limites claires.">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/amharic-translator.webp">
+  <meta property="og:url" content="https://afrotools.com/fr/tools/traducteur-amharique/">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:site_name" content="AfroTools">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Traducteur amharique | AfroTools">
+  <meta name="twitter:description" content="Assistant francophone pour phrases amhariques courantes, translitteration simple, glossaire, copie et export local avec limites claires.">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/amharic-translator.webp">
+  <meta name="tool-id" content="traducteur-amharique-fr">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+  <script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Traducteur amharique AfroTools",
+  "url": "https://afrotools.com/fr/tools/traducteur-amharique/",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Web",
+  "description": "Assistant de phrases amhariques, translitteration simple et glossaire pour francophones.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/amharic-translator.webp"
+}
+</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Cet outil remplace-t-il un traducteur humain ?","acceptedAnswer":{"@type":"Answer","text":"Non. Il aide avec des phrases courantes, un glossaire et des notes de translitteration. Pour un document officiel, médical, juridique, financier ou commercial, faites relire par un locuteur amharique qualifie."}},{"@type":"Question","name":"Pourquoi l'outil affiche-t-il la translitteration ?","acceptedAnswer":{"@type":"Answer","text":"L'amharique utilise l'ecriture Ethiopique Fidel. La translitteration aide les francophones a lire une approximation, mais elle ne capture pas toujours la prononciation exacte."}},{"@type":"Question","name":"Le texte est-il envoyé a un serveur ?","acceptedAnswer":{"@type":"Answer","text":"Non. La phrase, la copie, le téléchargement et la sauvegarde de base restent dans le navigateur."}}]}</script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    body{margin:0;background:#f8fafc;color:#111827;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    button,textarea,select,input{font:inherit}
+    a{color:#1d4ed8}
+    .am-wrap{max-width:1140px;margin:0 auto;padding:0 22px}
+    .am-hero{background:#14111f;color:#fff;padding:42px 0 34px}
+    .am-crumb{font-size:.82rem;color:#cbd5e1;margin-bottom:16px}
+    .am-crumb a{color:#e5e7eb;text-decoration:none}
+    .am-grid-hero{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:28px;align-items:end}
+    .am-kicker{margin:0 0 10px;color:#fbbf24;font-size:.78rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+    .am-title{font-size:clamp(2rem,5vw,3.8rem);line-height:1;margin:0 0 12px;letter-spacing:-.05em}
+    .am-lede{margin:0;max-width:700px;color:#ede9fe;line-height:1.7}
+    .am-hero-card{background:#fff;color:#111827;border-radius:8px;padding:18px;box-shadow:0 22px 60px rgba(0,0,0,.22)}
+    .am-hero-card h2{margin:0 0 12px;color:#64748b;font-size:.86rem;text-transform:uppercase;letter-spacing:.1em}
+    .am-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .am-stat{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px}
+    .am-stat strong{display:block;font-size:1.3rem}
+    .am-stat span{display:block;margin-top:6px;color:#64748b;font-size:.75rem;font-weight:800}
+    .am-main{padding:28px 0 44px}
+    .am-tool-grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:18px;align-items:start}
+    .am-card{background:#fff;border:1px solid #dbe4ef;border-radius:8px;padding:20px;box-shadow:0 14px 34px rgba(15,23,42,.05)}
+    .am-card h2{margin:0 0 14px;color:#0f172a;font-size:1.16rem}
+    .am-form{display:grid;gap:14px}
+    .am-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .am-field label{display:block;margin-bottom:6px;color:#475569;font-size:.78rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+    .am-field select,.am-field textarea{width:100%;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#111827;padding:10px 12px}
+    .am-field select{min-height:44px}
+    .am-field textarea{min-height:180px;resize:vertical;line-height:1.55}
+    .am-field select:focus,.am-field textarea:focus,.am-btn:focus-visible{outline:3px solid rgba(37,99,235,.22);outline-offset:2px}
+    .am-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    .am-btn{border:1px solid transparent;border-radius:8px;background:#2563eb;color:#fff;min-height:44px;padding:0 16px;font-weight:900;cursor:pointer}
+    .am-btn.secondary{background:#fff;color:#1f2937;border-color:#cbd5e1}
+    .am-btn.gold{background:#f59e0b;color:#111827}
+    .am-output{display:grid;gap:12px}
+    .am-output-box{background:#0f172a;color:#fff;border-radius:8px;padding:18px;min-height:120px;line-height:1.75;font-size:1rem}
+    .am-confidence{display:inline-flex;align-items:center;min-height:28px;border-radius:999px;background:#ecfdf5;color:#166534;padding:0 10px;font-size:.78rem;font-weight:900}
+    .am-list{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+    .am-list li{border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;padding:10px 12px;color:#475569;line-height:1.55}
+    .am-list strong{color:#111827}
+    .am-warning{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:8px;padding:12px;font-size:.86rem;line-height:1.6}
+    .am-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+    .am-info-card{background:#fff;border:1px solid #dbe4ef;border-radius:8px;padding:18px}
+    .am-info-card h2{margin:0 0 10px;font-size:1.05rem;color:#0f172a}
+    .am-info-card p,.am-info-card li{color:#475569;font-size:.9rem;line-height:1.68}
+    .am-info-card ul{margin:10px 0 0;padding-left:18px}
+    .am-source-list{list-style:none!important;padding:0!important;display:grid;gap:9px}
+    .am-source-list a{font-weight:800;text-decoration:underline;text-underline-offset:3px}
+    .am-status{min-height:22px;color:#475569;font-size:.86rem;font-weight:800}
+    @media (max-width:900px){.am-grid-hero,.am-tool-grid,.am-info-grid{grid-template-columns:1fr}}
+    @media (max-width:640px){.am-wrap{padding:0 16px}.am-row{grid-template-columns:1fr}.am-actions .am-btn{width:100%}}
+  </style>
+<link rel="canonical" href="https://afrotools.com/fr/tools/traducteur-amharique/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/traducteur-amharique/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/fr/tools/traducteur-amharique/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="language"></afro-navbar>
+<main>
+  <section class="am-hero">
+    <div class="am-wrap">
+      <nav class="am-crumb" aria-label="Fil d'Ariane"><a href="/fr/">Accueil</a> / <a href="/fr/all-tools/">Outils</a> / Traducteur amharique</nav>
+      <div class="am-grid-hero">
+        <div>
+          <p class="am-kicker">Phrases, Fidel et translitteration</p>
+          <h1 class="am-title">Traducteur amharique</h1>
+          <p class="am-lede">Obtenez une aide pour phrases courtes en amharique, avec ecriture Ethiopique, translitteration simple, glossaire et notes de confiance.</p>
+        </div>
+        <aside class="am-hero-card" aria-label="Résumé de l'outil">
+          <h2>Sortie utile</h2>
+          <div class="am-stat-grid">
+            <div class="am-stat"><strong>ፊደል</strong><span>Ecriture amharique</span></div>
+            <div class="am-stat"><strong>Latin</strong><span>Translitteration</span></div>
+            <div class="am-stat"><strong>TXT</strong><span>Export local</span></div>
+            <div class="am-stat"><strong>2026</strong><span>Sources revues</span></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="am-main">
+    <div class="am-wrap am-tool-grid">
+      <section class="am-card" aria-labelledby="translator-title">
+        <h2 id="translator-title">1. Entrer une phrase</h2>
+        <div class="am-form">
+          <div class="am-row">
+            <div class="am-field">
+              <label for="direction">Direction</label>
+              <select id="direction">
+                <option value="fr-am">Français vers amharique</option>
+                <option value="am-fr">Amharique vers français</option>
+              </select>
+            </div>
+            <div class="am-field">
+              <label for="context">Contexte</label>
+              <select id="context">
+                <option value="polite">Poli / quotidien</option>
+                <option value="travel">Voyage</option>
+                <option value="market">Marche</option>
+                <option value="work">Travail</option>
+              </select>
+            </div>
+          </div>
+          <div class="am-field">
+            <label for="inputText">Texte à aider</label>
+            <textarea id="inputText">Bonjour, merci beaucoup. Combien coute le cafe aujourd'hui ?</textarea>
+          </div>
+        </div>
+        <div class="am-actions">
+          <button class="am-btn" id="translateBtn" type="button">Générer l'aide</button>
+          <button class="am-btn secondary" id="exampleBtn" type="button">Exemple voyage</button>
+          <button class="am-btn secondary" id="copyBtn" type="button">Copier</button>
+          <button class="am-btn gold" id="downloadBtn" type="button">Télécharger TXT</button>
+          <button class="am-btn secondary" id="saveBtn" type="button">Sauvegarder</button>
+        </div>
+        <p class="am-status" id="statusText" aria-live="polite">Prêt.</p>
+      </section>
+
+      <aside class="am-card" aria-labelledby="output-title">
+        <h2 id="output-title">2. Sortie</h2>
+        <div class="am-output">
+          <span class="am-confidence" id="confidenceText">Confiance: --</span>
+          <div class="am-output-box" id="outputText">La sortie apparait ici.</div>
+          <ul class="am-list" id="glossaryList"></ul>
+          <div class="am-warning">Avertissement: aide linguistique non officielle. Vérifiez avec un locuteur amharique qualifie pour un document sensible ou professionnel.</div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="am-wrap am-info-grid">
+      <section class="am-info-card" data-tool-verification-panel aria-label="Méthodologie, sources et vérification">
+        <h2>Méthodologie et limites</h2>
+        <p>La méthode utilise des phrases courantes et un glossaire court. Nous calculons un niveau de confiance selon les correspondances exactes, les mots reconnus et la longueur du texte. L'outil affiche l'ecriture amharique et une translitteration indicative.</p>
+        <ul>
+          <li>Dernière vérification des sources: 2026-06-17.</li>
+          <li>L'amharique s'écrit avec le système Ethiopique Fidel; la translitteration latine reste approximative.</li>
+          <li>Ce n'est pas un moteur de traduction automatique complet.</li>
+          <li>Le traitement, la copie, le téléchargement et la sauvegarde restent dans le navigateur.</li>
+        </ul>
+      </section>
+      <section class="am-info-card">
+        <h2>Sources &amp; vérification</h2>
+        <ul class="am-source-list">
+          <li><a href="https://www.ethnologue.com/country/ET/" target="_blank" rel="noopener">Ethnologue - Ethiopia languages</a></li>
+          <li><a href="https://aflang.humanities.ucla.edu/" target="_blank" rel="noopener">UCLA African Languages resources</a></li>
+          <li><a href="https://www.omniglot.com/writing/amharic.htm" target="_blank" rel="noopener">Omniglot - Amharic writing system</a></li>
+          <li><a href="https://www.bbc.com/amharic" target="_blank" rel="noopener">BBC Amharic</a></li>
+        </ul>
+        <p class="am-status">Non officiel: ces sources aident à vérifier le contexte general, pas chaque sortie de l'outil.</p>
+      </section>
+    </div>
+
+    <div class="am-wrap am-info-grid">
+      <section class="am-info-card">
+        <h2>Questions fréquentes</h2>
+        <details><summary>L'amharique utilise-t-il un alphabet différent ?</summary><p>Oui. L'amharique utilise l'ecriture Ethiopique Fidel, un abugida. La lecture latine n'est qu'une aide approximative.</p></details>
+        <details><summary>Pourquoi limiter les phrases longues ?</summary><p>Les phrases longues contiennent souvent des temps, niveaux de politesse et nuances culturelles qui demandent une vraie traduction humaine.</p></details>
+        <details><summary>Puis-je exporter la sortie ?</summary><p>Oui. Utilisez Copier ou Télécharger TXT pour garder une version locale.</p></details>
+      </section>
+      <section class="am-info-card">
+        <h2>Outils lies</h2>
+        <ul>
+          <li><a href="/fr/tools/traducteur-haoussa/">Traducteur haoussa</a></li>
+          <li><a href="/fr/tools/traducteur-igbo/">Traducteur igbo</a></li>
+          <li><a href="/fr/tools/traducteur-swahili/">Traducteur swahili</a></li>
+          <li><a href="/fr/tools/francais-africain/">Français africain</a></li>
+        </ul>
+      </section>
+    </div>
+  </section>
+</main>
+<afro-footer></afro-footer>
+<script>
+  (function(){
+    "use strict";
+    var STORAGE_KEY="afrotools_traducteur_amharique_fr_v1";
+    var result=null;
+    var phrases={
+      "bonjour":{am:"ሰላም",latin:"selam",fr:"Bonjour"},
+      "merci":{am:"አመሰግናለሁ",latin:"ameseginalehu",fr:"Merci"},
+      "merci beaucoup":{am:"በጣም አመሰግናለሁ",latin:"betam ameseginalehu",fr:"Merci beaucoup"},
+      "combien ca coute":{am:"ዋጋው ስንት ነው?",latin:"wagaw sint new?",fr:"Combien ca coute ?"},
+      "je veux acheter":{am:"መግዛት እፈልጋለሁ",latin:"megzat efeligalehu",fr:"Je veux acheter"},
+      "ou est le marche":{am:"ገበያው የት ነው?",latin:"gebeyaw yet new?",fr:"Ou est le marche ?"},
+      "au revoir":{am:"ደህና ሁን",latin:"dehna hun",fr:"Au revoir"},
+      "je ne comprends pas":{am:"አልገባኝም",latin:"algebagnim",fr:"Je ne comprends pas"}
+    };
+    var reverse={
+      "ሰላም":phrases["bonjour"],
+      "አመሰግናለሁ":phrases["merci"],
+      "በጣም አመሰግናለሁ":phrases["merci beaucoup"],
+      "ዋጋው ስንት ነው":phrases["combien ca coute"],
+      "መግዛት እፈልጋለሁ":phrases["je veux acheter"],
+      "ገበያው የት ነው":phrases["ou est le marche"],
+      "ደህና ሁን":phrases["au revoir"],
+      "አልገባኝም":phrases["je ne comprends pas"]
+    };
+    var glossary={
+      "marche":{am:"ገበያ",latin:"gebeya"},
+      "prix":{am:"ዋጋ",latin:"waga"},
+      "cafe":{am:"ቡና",latin:"buna"},
+      "eau":{am:"ውሃ",latin:"wuha"},
+      "maison":{am:"ቤት",latin:"bet"},
+      "travail":{am:"ስራ",latin:"sira"},
+      "argent":{am:"ገንዘብ",latin:"genzeb"},
+      "aujourd'hui":{am:"ዛሬ",latin:"zare"},
+      "demain":{am:"ነገ",latin:"nege"},
+      "route":{am:"መንገድ",latin:"menged"},
+      "hotel":{am:"ሆቴል",latin:"hotel"},
+      "telephone":{am:"ስልክ",latin:"silk"}
+    };
+    function $(id){return document.getElementById(id);}
+    function normalize(text){return String(text||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[?.,;:!]/g," ").replace(/\s+/g," ").trim();}
+    function escapeHtml(value){return String(value).replace(/[&<>"']/g,function(ch){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch];});}
+    function build(){
+      var direction=$("direction").value;
+      var input=$("inputText").value.trim();
+      var normalized=normalize(input);
+      var exact=null;
+      var hits=[];
+      if(direction==="fr-am"){
+        Object.keys(phrases).forEach(function(key){if(!exact&&normalized.indexOf(normalize(key))!==-1) exact=phrases[key];});
+        Object.keys(glossary).forEach(function(key){if(new RegExp("\\b"+key+"\\b","i").test(normalized)) hits.push({from:key,to:glossary[key].am,latin:glossary[key].latin});});
+      }else{
+        Object.keys(reverse).forEach(function(key){if(!exact&&input.indexOf(key)!==-1) exact=reverse[key];});
+        Object.keys(glossary).forEach(function(key){if(input.indexOf(glossary[key].am)!==-1) hits.push({from:glossary[key].am,to:key,latin:glossary[key].latin});});
+      }
+      var output;
+      if(exact){
+        output=direction==="fr-am"?exact.am+"\n"+exact.latin+"\n"+exact.fr:exact.fr+"\n"+exact.am+" / "+exact.latin;
+      }else if(hits.length){
+        output="Aide glossaire: "+hits.map(function(hit){return hit.from+" = "+hit.to+" ("+hit.latin+")";}).join(", ");
+      }else{
+        output="Aucune phrase connue trouvee. Essayez: bonjour, merci, combien ca coute, je veux acheter, ou est le marche.";
+      }
+      var confidence=exact&&hits.length?"elevee":(exact||hits.length>=2?"moyenne":"faible");
+      var notes=[
+        "Translitteration indicative, pas prononciation officielle.",
+        $("context").value==="travel"?"Contexte voyage: confirmez noms de lieux et politesse localement.":"Relisez les nuances avec un locuteur.",
+        "Non officiel; ne remplace pas un traducteur humain."
+      ];
+      result={input:input,output:output,hits:hits,confidence:confidence,direction:direction,context:$("context").value,notes:notes};
+      render(result);
+      $("statusText").textContent="Aide generee. Copie, telechargement et sauvegarde disponibles.";
+    }
+    function render(data){
+      $("confidenceText").textContent="Confiance: "+data.confidence;
+      $("outputText").innerHTML=escapeHtml(data.output).replace(/\n/g,"<br>");
+      var rows=data.hits.map(function(hit){return "<li><strong>"+escapeHtml(hit.from)+"</strong> = "+escapeHtml(hit.to)+" <span>("+escapeHtml(hit.latin)+")</span></li>";});
+      if(!rows.length) rows.push("<li>Aucun mot du glossaire reconnu. Essayez une phrase plus courte.</li>");
+      data.notes.forEach(function(note){rows.push("<li>"+escapeHtml(note)+"</li>");});
+      $("glossaryList").innerHTML=rows.join("");
+    }
+    function summary(){
+      var data=result; if(!data){build();data=result;}
+      return [
+        "AfroTools - Traducteur amharique",
+        "Direction: "+data.direction,
+        "Contexte: "+data.context,
+        "Confiance: "+data.confidence,
+        "",
+        "Entree:",
+        data.input,
+        "",
+        "Sortie:",
+        data.output,
+        "",
+        "Glossaire:",
+        data.hits.length?data.hits.map(function(hit){return "- "+hit.from+" = "+hit.to+" ("+hit.latin+")";}).join("\\n"):"- aucun mot reconnu",
+        "",
+        "Avertissement: aide linguistique non officielle. Verifiez avec un locuteur amharique qualifie pour tout usage sensible."
+      ].join("\\n");
+    }
+    function copy(){
+      var text=summary();
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(function(){$("statusText").textContent="Resume copie.";},function(){$("statusText").textContent=text;});
+      }else{$("statusText").textContent=text;}
+    }
+    function download(){
+      var blob=new Blob([summary()],{type:"text/plain;charset=utf-8"});
+      var url=URL.createObjectURL(blob);
+      var link=document.createElement("a");
+      link.href=url; link.download="afrotools-traducteur-amharique.txt";
+      document.body.appendChild(link); link.click(); link.remove(); URL.revokeObjectURL(url);
+      $("statusText").textContent="Resume telecharge.";
+    }
+    function save(){
+      try{localStorage.setItem(STORAGE_KEY,JSON.stringify(result||{}));$("statusText").textContent="Sauvegarde locale terminee.";}
+      catch(error){$("statusText").textContent="Sauvegarde locale indisponible.";}
+    }
+    function example(){
+      $("direction").value="fr-am"; $("context").value="travel";
+      $("inputText").value="Bonjour, merci beaucoup. Ou est le marche et combien coute le cafe ?";
+      build();
+    }
+    $("translateBtn").addEventListener("click",build);
+    $("exampleBtn").addEventListener("click",example);
+    $("copyBtn").addEventListener("click",copy);
+    $("downloadBtn").addEventListener("click",download);
+    $("saveBtn").addEventListener("click",save);
+    $("direction").addEventListener("change",build);
+    $("context").addEventListener("change",build);
+    build();
+  })();
+</script>
+</body>
+</html>

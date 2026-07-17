@@ -1,0 +1,304 @@
+!function(e) {
+  "use strict";
+  var n = "afrojamb-cbt-state", t = null, r = null, u = null;
+  function s() {
+    return ([ 1e7 ] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, function(e) {
+      return (e ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> e / 4).toString(16);
+    });
+  }
+  function o(e) {
+    for (var n = e.length - 1; n > 0; n--) {
+      var t = Math.floor(Math.random() * (n + 1)), r = e[n];
+      e[n] = e[t], e[t] = r;
+    }
+    return e;
+  }
+  function c(e, n) {
+    var t = {};
+    return e.forEach(function(e) {
+      var r = -1, u = -1;
+      n.forEach(function(n, t) {
+        n.subject === e && (-1 === r && (r = t), u = t + 1);
+      }), -1 !== r && (t[e] = [ r, u ]);
+    }), t;
+  }
+  function i() {
+    try {
+      var e = {
+        sessionId: t.sessionId,
+        mode: t.mode,
+        subjects: t.subjects,
+        subjectIndex: t.subjectIndex,
+        questionIds: t.questions.map(function(e) {
+          return e.id;
+        }),
+        answers: t.answers,
+        marked: t.marked,
+        currentIndex: t.currentIndex,
+        currentSubject: t.currentSubject,
+        startedAt: t.startedAt,
+        durationMs: t.durationMs
+      };
+      localStorage.setItem(n, JSON.stringify(e));
+    } catch (e) {}
+  }
+  function a() {
+    try {
+      localStorage.removeItem(n);
+    } catch (e) {}
+  }
+  function d(e, n) {
+    r && clearInterval(r), r = setInterval(function() {
+      var t = f();
+      "function" == typeof e && e(t), t <= 0 && (clearInterval(r), "function" == typeof n && n());
+    }, 1e3);
+  }
+  function l() {
+    u && clearInterval(u), u = setInterval(i, 15e3);
+  }
+  function f() {
+    if (!t) {
+      return 0;
+    }
+    var e = Date.now() - t.startedAt;
+    return Math.max(0, Math.floor((t.durationMs - e) / 1e3));
+  }
+  function b() {
+    var e = t.currentIndex;
+    for (var n in t.subjectIndex) {
+      var r = t.subjectIndex[n];
+      if (e >= r[0] && e < r[1]) {
+        return void (t.currentSubject = n);
+      }
+    }
+  }
+  function j() {
+    return t ? t.questions.map(function(e, n) {
+      return {
+        index: n,
+        num: n + 1,
+        subject: e.subject,
+        answered: !!t.answers[n],
+        marked: !!t.marked[n],
+        current: n === t.currentIndex
+      };
+    }) : [];
+  }
+  e.AfroJAMB = e.AfroJAMB || {}, e.AfroJAMB.CBT = {
+    init: function(e) {
+      if (e = e || {}, !Array.isArray(e.pool)) {
+        throw new Error("CBT.init requires config.pool (question array)");
+      }
+      var n = e.subjects && e.subjects.length ? e.subjects : [ "english", "mathematics", "physics", "biology" ], r = e.questionsPerSubject || ("quick" === e.mode ? 10 : 40), u = e.durationMinutes || ("quick" === e.mode ? 30 : 120), a = !0 === e.answeredOnly, f = [];
+      if (n.forEach(function(n) {
+        var t = e.pool.filter(function(t) {
+          return !(t.subject !== n || a && !t.answer || e.year && t.year !== e.year);
+        }), u = t.filter(function(e) {
+          return e.answer && (4 === e.format || 4 === Object.keys(e.options || {}).length);
+        }), s = t.filter(function(e) {
+          return e.answer && -1 === u.indexOf(e);
+        }), c = t.filter(function(e) {
+          return !e.answer;
+        });
+        o(u), o(s), o(c);
+        var i = u.concat(s).concat(c).slice(0, r);
+        f.push.apply(f, i);
+      }), 0 === f.length) {
+        throw new Error("CBT.init: no questions found for given config");
+      }
+      return t = {
+        sessionId: s(),
+        mode: e.mode || "cbt-full",
+        subjects: n,
+        subjectIndex: c(n, f),
+        questions: f,
+        answers: {},
+        marked: {},
+        currentIndex: 0,
+        currentSubject: n[0],
+        startedAt: Date.now(),
+        durationMs: 60 * u * 1e3,
+        submitted: !1,
+        score: null
+      }, i(), d(e.onTick, e.onTimeout), l(), t;
+    },
+    getCurrentQuestion: function() {
+      return t ? {
+        question: t.questions[t.currentIndex],
+        index: t.currentIndex,
+        total: t.questions.length,
+        currentSubject: t.currentSubject,
+        indexInSubject: t.currentIndex - t.subjectIndex[t.currentSubject][0] + 1,
+        subjectTotal: t.subjectIndex[t.currentSubject][1] - t.subjectIndex[t.currentSubject][0],
+        isAnswered: !!t.answers[t.currentIndex],
+        isMarked: !!t.marked[t.currentIndex],
+        selectedAnswer: t.answers[t.currentIndex] || null
+      } : null;
+    },
+    selectAnswer: function(e) {
+      t && !t.submitted && (t.answers[t.currentIndex] = e, i());
+    },
+    markForReview: function() {
+      t && (t.marked[t.currentIndex] = !t.marked[t.currentIndex], i());
+    },
+    next: function() {
+      t && t.currentIndex < t.questions.length - 1 && (t.currentIndex++, b(), i());
+    },
+    prev: function() {
+      t && t.currentIndex > 0 && (t.currentIndex--, b(), i());
+    },
+    goto: function(e) {
+      t && e >= 0 && e < t.questions.length && (t.currentIndex = e, b(), i());
+    },
+    switchSubject: function(e) {
+      t && t.subjectIndex[e] && (t.currentSubject = e, t.currentIndex = t.subjectIndex[e][0],
+      i());
+    },
+    submit: function() {
+      if (!t) {
+        return null;
+      }
+      t.submitted = !0, r && clearInterval(r), u && clearInterval(u);
+      var e = 0, n = 0, s = {}, o = {}, c = {}, i = {};
+      t.subjects.forEach(function(e) {
+        o[e] = 0, c[e] = 0, i[e] = 0;
+      }), t.questions.forEach(function(r, u) {
+        var s = r.subject;
+        if (i[s] = (i[s] || 0) + 1, r.answer) {
+          c[s]++, n++;
+          var a = t.answers[u];
+          a && a === r.answer && (e++, o[s] = (o[s] || 0) + 1);
+        }
+      }), t.subjects.forEach(function(e) {
+        var n = c[e];
+        s[e] = n > 0 ? Math.round(o[e] / n * 100) : null;
+      });
+      var d = t.subjects.filter(function(e) {
+        return c[e] > 0;
+      }), l = 0;
+      if (d.length > 0) {
+        var f = d.reduce(function(e, n) {
+          return e + (s[n] || 0);
+        }, 0);
+        l = Math.round(f / (100 * d.length) * 400);
+      }
+      var b = t.questions.map(function(e, n) {
+        var r = t.answers[n] || null, u = !!e.answer, s = u && r === e.answer;
+        return {
+          index: n,
+          subject: e.subject,
+          year: e.year,
+          num: e.num,
+          question: e.question,
+          options: e.options,
+          correctAnswer: e.answer,
+          pickedAnswer: r,
+          graded: u,
+          correct: s,
+          wrong: u && r && r !== e.answer,
+          skipped: !r
+        };
+      });
+      t.score = {
+        total: e,
+        outOf: n,
+        ungraded: t.questions.length - n,
+        pctCorrect: n > 0 ? Math.round(e / n * 100) : 0,
+        subjectScores: s,
+        subjectCorrect: o,
+        subjectGraded: c,
+        subjectTotal: i,
+        aggregate: l,
+        gradedSubjects: d,
+        durationSeconds: Math.floor((Date.now() - t.startedAt) / 1e3),
+        reviewItems: b,
+        wrongCount: b.filter(function(e) {
+          return e.wrong;
+        }).length,
+        skippedCount: b.filter(function(e) {
+          return e.skipped;
+        }).length
+      }, a();
+      try {
+        fetch("/.netlify/functions/jamb-attempt", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            session_id: t.sessionId,
+            mode: t.mode,
+            subjects: t.subjects,
+            score: t.score.aggregate,
+            subject_scores: s,
+            duration_seconds: t.score.durationSeconds,
+            answers: t.answers,
+            question_ids: t.questions.map(function(e) {
+              return e.id;
+            })
+          })
+        }).catch(function() {});
+      } catch (e) {}
+      return t.score;
+    },
+    timeRemainingSeconds: f,
+    getNavGrid: j,
+    getCurrentSubjectGrid: function() {
+      if (!t) {
+        return [];
+      }
+      var e = t.subjectIndex[t.currentSubject];
+      return j().slice(e[0], e[1]);
+    },
+    tryRestore: function() {
+      try {
+        var e = localStorage.getItem(n);
+        return e ? JSON.parse(e) : null;
+      } catch (e) {
+        return null;
+      }
+    },
+    restore: function(e, n) {
+      if (e = e || {}, !n || !Array.isArray(n.questionIds) || !n.questionIds.length) {
+        throw new Error("CBT.restore: invalid snapshot");
+      }
+      if (!Array.isArray(e.pool)) {
+        throw new Error("CBT.restore requires config.pool (question array)");
+      }
+      var r = {};
+      e.pool.forEach(function(e) {
+        e && e.id && (r[e.id] = e);
+      });
+      var u = n.questionIds.map(function(e) {
+        return r[e] || null;
+      }).filter(Boolean);
+      if (0 === u.length) {
+        throw new Error("CBT.restore: saved questions are no longer available");
+      }
+      var o = Array.isArray(n.subjects) && n.subjects.length ? n.subjects.slice() : u.reduce(function(e, n) {
+        return -1 === e.indexOf(n.subject) && e.push(n.subject), e;
+      }, []);
+      return t = {
+        sessionId: n.sessionId || s(),
+        mode: n.mode || e.mode || "cbt-full",
+        subjects: o,
+        subjectIndex: c(o, u),
+        questions: u,
+        answers: n.answers || {},
+        marked: n.marked || {},
+        currentIndex: Math.max(0, Math.min(n.currentIndex || 0, u.length - 1)),
+        currentSubject: n.currentSubject || o[0],
+        startedAt: n.startedAt || Date.now(),
+        durationMs: n.durationMs || 60 * (e.durationMinutes || 120) * 1e3,
+        submitted: !1,
+        score: null
+      }, b(), i(), d(e.onTick, e.onTimeout), l(), t;
+    },
+    clearSession: function() {
+      t = null, a();
+    },
+    getState: function() {
+      return t;
+    }
+  };
+}("undefined" != typeof window ? window : globalThis);

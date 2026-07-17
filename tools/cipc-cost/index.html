@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SA CIPC Company Registration Cost Calculator | AfroTools</title>
+<meta name="description" content="Calculate CIPC registration costs for South Africa. Private company (Pty Ltd), non-profit, co-op, and close corporation. 2025 CIPC fees and requirements.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="CIPC Registration Cost Calculator | AfroTools">
+<meta property="og:description" content="Calculate CIPC registration costs for Pty Ltd, NPC, and other entities in South Africa.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/cipc-cost.webp">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/cipc-cost/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419;--accent:#0062CC}
+.tool-hero{background:linear-gradient(135deg,#1e3a5f 0%,#0062CC 50%,#0056b3 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#bfdbfe}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#bfdbfe;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-em{background:rgba(191,219,254,.2);color:#bfdbfe;border:1px solid rgba(191,219,254,.4)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+select,input{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
+select:focus,input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,98,204,.15)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px}
+.btn-primary{background:linear-gradient(135deg,#0056b3,#0062CC);color:#fff}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
+.result-box .num{font-size:1.4rem;font-weight:800;color:#0062CC}
+.result-box .lbl{font-size:.68rem;color:#64748b;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
+.result-box.highlight{background:linear-gradient(135deg,#eff6ff,#dbeafe);border-color:#93c5fd;grid-column:1/-1}
+.result-box.highlight .num{font-size:1.8rem}
+.breakdown{margin-top:14px}
+.breakdown-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:.82rem}
+.breakdown-row .item{color:#475569}.breakdown-row .cost{font-weight:700;color:#0062CC}
+.breakdown-row.total{border-top:2px solid #e2e8f0;border-bottom:none;font-weight:800;font-size:.92rem}
+.breakdown-row.total .cost{color:#0056b3}
+.chk{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:.82rem;color:#475569}
+.chk input{width:auto}
+.sidebar .info-card{background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#1e3a5f;margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:#1e3a5f;line-height:1.6}
+.info-card ul{padding-left:16px;margin:6px 0}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
+</style>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CIPC Registration Cost Calculator | AfroTools">
+<meta name="twitter:description" content="Calculate CIPC registration costs for Pty Ltd, NPC, and other entities in South Africa.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/cipc-cost.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "CIPC Registration Cost Calculator",
+      "item": "https://afrotools.com/tools/cipc-cost/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="stylesheet" href="/assets/css/legal-enhancements.css?v=faefe7bf">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "SA CIPC Company Registration Cost Calculator",
+  "description": "Calculate CIPC registration costs for South Africa. Private company (Pty Ltd), non-profit, co-op, and close corporation. 2025 CIPC fees and requirements.",
+  "url": "https://afrotools.com/tools/cipc-cost/",
+  "inLanguage": "en",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/cipc-cost.webp"
+}
+</script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How long does CIPC registration take?","acceptedAnswer":{"@type":"Answer","text":"Online registration through BizPortal typically takes 1-3 business days for a Pty Ltd. Name reservation takes 1-7 days. Manual (paper) filing takes 7-21 days. Complex entities like NPCs with custom MOIs may take longer. SARS tax registration can be done simultaneously and usually takes 1-5 business days."}},{"@type":"Question","name":"Can a foreigner register a company in South Africa?","acceptedAnswer":{"@type":"Answer","text":"Yes. Foreigners can register a Pty Ltd in South Africa. You'll need a valid passport, a South African registered address (can use a registered agent), and at least one director. If the company is already registered abroad, you'll register as an External Company (higher fees). A local director is recommended but not always required."}},{"@type":"Question","name":"What's the difference between Pty Ltd and CC?","acceptedAnswer":{"@type":"Answer","text":"Close Corporations (CC) can no longer be registered since May 2011 when the Companies Act 2008 took full effect. Existing CCs can continue operating or convert to Pty Ltd. A Pty Ltd requires at least 1 director and 1 shareholder (can be the same person), has a MOI, and offers limited liability protection."}}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/cipc-cost/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/cipc-cost/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/cout-cipc/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/gharama-za-cipc-afrika-kusini/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/cipc-cost/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>CIPC Cost</span></div>
+<h1>CIPC Registration <em>Cost Calculator</em></h1>
+<p class="hero-sub">Calculate the total cost to register a company with CIPC in South Africa. Covers Pty Ltd, NPC (Non-Profit), Co-operative, and Close Corporation conversions.</p>
+<div class="hero-badges"><span class="badge b-em">CIPC 2025</span><span class="badge b-em">South Africa</span><span class="badge b-em">All Entity Types</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calculator">
+<div class="card">
+<div class="card-head"><span class="card-title">Registration Details</span></div>
+<div class="card-body">
+<div class="row" style="margin-bottom:14px">
+<div><label for="entityType">Entity Type</label>
+<select id="entityType" onchange="updateOptions()">
+<option value="pty">Private Company (Pty) Ltd</option>
+<option value="inc">Personal Liability Company (Inc)</option>
+<option value="npc">Non-Profit Company (NPC)</option>
+<option value="coop">Co-operative</option>
+<option value="ext">External Company (Foreign)</option>
+</select></div>
+<div><label>Registration Method</label>
+<select id="method" aria-label="Method">
+<option value="online">Online (BizPortal)</option>
+<option value="manual">Manual (Paper Filing)</option>
+</select></div>
+</div>
+<div style="margin-bottom:14px">
+<label>Additional Services</label>
+<div class="chk"><input type="checkbox" id="nameRes" checked><label for="nameRes">Company Name Reservation</label></div>
+<div class="chk"><input type="checkbox" id="bbbee"><label for="bbbee">B-BBEE Affidavit</label></div>
+<div class="chk"><input type="checkbox" id="taxReg"><label for="taxReg">SARS Tax Registration (by agent)</label></div>
+<div class="chk"><input type="checkbox" id="uif"><label for="uif">UIF Registration (by agent)</label></div>
+<div class="chk"><input type="checkbox" id="coida"><label for="coida">COIDA Registration (by agent)</label></div>
+<div class="chk"><input type="checkbox" id="useAgent"><label for="useAgent">Use Registration Agent</label></div>
+</div>
+<button type="button" class="btn btn-primary" onclick="calculate()">Calculate Total Cost</button>
+</div></div>
+
+<div class="card" id="resultCard" style="display:none">
+<div class="card-head"><span class="card-title">Cost Breakdown</span></div>
+<div class="card-body">
+<div class="result-grid" id="resultGrid"></div>
+<div class="breakdown" id="breakdown"></div>
+</div></div>
+</div>
+
+<div class="sidebar">
+<div class="card">
+<div class="card-head"><span class="card-title">CIPC Fee Schedule 2025</span></div>
+<div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
+<p><strong>Name Reservation:</strong> R50 (online) / R75 (manual)</p>
+<p><strong>Pty Ltd Registration:</strong> R125 (online) / R175 (manual)</p>
+<p><strong>NPC Registration:</strong> R75 (online) / R125 (manual)</p>
+<p><strong>Co-operative:</strong> R215 (online)</p>
+<p><strong>External Company:</strong> R425 (online)</p>
+<p style="margin-top:8px;color:#64748b;font-size:.72rem">*CIPC fees are set by regulation and may change. Last updated Jan 2025.</p>
+</div></div>
+<div class="info-card">
+<h4>What You Need</h4>
+<ul>
+<li>Valid SA ID / Passport</li>
+<li>CIPC customer account</li>
+<li>At least 1 director</li>
+<li>Registered address in SA</li>
+<li>Company name (3 options)</li>
+<li>MOI (standard or custom)</li>
+</ul>
+</div>
+<div class="info-card" style="margin-top:10px">
+<h4>Timeline</h4>
+<ul>
+<li><strong>Name reservation:</strong> 1-7 days</li>
+<li><strong>Online registration:</strong> 1-3 days</li>
+<li><strong>Manual registration:</strong> 7-21 days</li>
+<li><strong>Tax number:</strong> 1-5 days</li>
+</ul>
+</div>
+</div>
+</div></section>
+
+<section class="seo-section">
+<h2>Registering a Company with CIPC in South Africa</h2>
+<p>The Companies and Intellectual Property Commission (CIPC) is the regulatory body responsible for company registrations in South Africa. Whether you're starting a Pty Ltd, registering a non-profit, or setting up a co-operative, CIPC is your first stop. The process has been significantly digitised through the BizPortal platform, making online registration faster and cheaper than manual filing.</p>
+<p>A standard Private Company (Pty) Ltd is the most common entity type for small to medium businesses in South Africa. The CIPC registration fee is R125 online (or R175 for manual filing), plus R50 for name reservation. However, the total cost of getting your company fully operational includes additional registrations with SARS (for income tax, VAT, and PAYE), the Department of Labour (for UIF and COIDA), and potentially B-BBEE compliance documentation.</p>
+<p>Many entrepreneurs use registration agents or attorneys to handle the process, which adds R1,500-R5,000 to the cost but ensures everything is done correctly. This is particularly recommended for foreign nationals registering an external company, or for non-profit organisations that need customised Memoranda of Incorporation (MOI). The total cost for a basic Pty Ltd registration (DIY online) can be as low as R175, while a fully agent-managed registration with all ancillary registrations typically costs R3,000-R6,000.</p>
+<p>Our calculator helps you estimate the total cost based on your specific requirements, entity type, and whether you plan to use a registration agent or go the DIY route through BizPortal.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>How long does CIPC registration take?</summary><p>Online registration through BizPortal typically takes 1-3 business days for a Pty Ltd. Name reservation takes 1-7 days. Manual (paper) filing takes 7-21 days. Complex entities like NPCs with custom MOIs may take longer. SARS tax registration can be done simultaneously and usually takes 1-5 business days.</p></details>
+<details class="faq-item"><summary>Can a foreigner register a company in South Africa?</summary><p>Yes. Foreigners can register a Pty Ltd in South Africa. You'll need a valid passport, a South African registered address (can use a registered agent), and at least one director. If the company is already registered abroad, you'll register as an External Company (higher fees). A local director is recommended but not always required.</p></details>
+<details class="faq-item"><summary>What's the difference between Pty Ltd and CC?</summary><p>Close Corporations (CC) can no longer be registered since May 2011 when the Companies Act 2008 took full effect. Existing CCs can continue operating or convert to Pty Ltd. A Pty Ltd requires at least 1 director and 1 shareholder (can be the same person), has a MOI, and offers limited liability protection.</p></details>
+</section>
+
+<!-- LEGAL-WORKFLOW-COPILOT:START -->
+<section class="leg-workflow-copilot" aria-labelledby="legal-workflow-heading">
+  <script type="application/json" class="leg-workflow-data">{"slug":"cipc-cost","title":"SA CIPC Registration Cost","workflowTitle":"CIPC fee and name-reservation check","coverage":"South Africa","decision":"Whether to reserve a name or register under an enterprise number first","evidence":["Verify the current CIPC fee schedule before paying an agent","Keep CoR documents, director details and CIPC customer code in a controlled account","Add annual returns and beneficial ownership filing to the first-year compliance calendar"],"redFlags":["Quotes that imply SARS, UIF, COIDA or tax clearance are included when they are separate steps","Name reservation paid with no follow-up registration plan","Company access credentials kept only by the agent"],"related":[{"label":"Annual Returns","href":"/tools/annual-returns/"},{"label":"Company Type Selector","href":"/tools/company-type-selector/"},{"label":"TIN Guide","href":"/tools/tin-guide/"}],"competitor":{"group":"company","label":"LegalZoom, Firstbase, Stripe Atlas and registry portals","patterns":["Guided formation flows collect facts once, then reuse them for filings, annual reminders, tax setup and registered-agent style tasks.","The strongest products turn one filing into an operating calendar with renewal dates, evidence storage and next-step prompts.","They make official portal verification visible so users can tell a government fee from an agent or bundled service fee."],"implemented":["This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.","The app-specific checklist is not generic: it starts with \"Verify the current CIPC fee schedule before paying an agent\".","Saved workflows can be resumed from the dashboard and handed off to Annual Returns when the matter naturally continues.","The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report."]}}</script>
+  <div class="leg-workflow-head">
+    <span class="leg-action-kicker">Case workspace</span>
+    <h2 id="legal-workflow-heading">Build, save and export this legal workflow</h2>
+    <p>This workspace turns the cipc fee and name-reservation check result into a reusable matter note, dashboard item and gated PDF checklist. Use the app first, then save the evidence trail.</p>
+  </div>
+  <div class="leg-workflow-grid">
+    <label class="leg-field"><span class="leg-f-label">Matter or project</span><input aria-label="E.g. Supplier DPA review" class="leg-f-input" data-workflow-field="matter" type="text" placeholder="e.g. Supplier DPA review"></label>
+    <label class="leg-field"><span class="leg-f-label">Country or regime</span><input aria-label="E.g. Kenya, NDPA, Lagos" class="leg-f-input" data-workflow-field="country" type="text" placeholder="e.g. Kenya, NDPA, Lagos"></label>
+    <label class="leg-field"><span class="leg-f-label">Target date</span><input aria-label="Leg f input" class="leg-f-input" data-workflow-field="date" type="date"></label>
+    <label class="leg-field"><span class="leg-f-label">Status</span><select class="leg-f-select" data-workflow-field="status"><option>Checking evidence</option><option>Ready to verify</option><option>Waiting on official source</option><option>Escalate before action</option></select></label>
+  </div>
+  <div class="leg-workflow-columns">
+    <div>
+      <h3 class="leg-mini-heading">Evidence checked</h3>
+      <div class="leg-workflow-checklist" data-workflow-evidence-list></div>
+    </div>
+    <div>
+      <h3 class="leg-mini-heading">Risk flags</h3>
+      <div class="leg-workflow-checklist warning" data-workflow-risk-list></div>
+    </div>
+  </div>
+  <label class="leg-field full"><span class="leg-f-label">Private notes</span><textarea class="leg-f-textarea" data-workflow-field="note" placeholder="Add facts, missing documents, portal references, lawyer comments, or next actions."></textarea></label>
+  <div class="leg-workflow-summary" data-workflow-summary></div>
+  <div class="leg-workflow-actions">
+    <button type="button" class="leg-copy-btn" data-workflow-build>Build handoff note</button>
+    <button type="button" class="leg-secondary-btn" data-workflow-save>Save to dashboard</button>
+    <button type="button" class="leg-secondary-btn" data-workflow-load>Load saved</button>
+    <a class="leg-secondary-btn" href="/dashboard/">Open dashboard</a>
+  </div>
+  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly aria-label="Text entry"></textarea>
+  <form class="leg-pdf-gate" data-workflow-gate novalidate>
+    <div>
+      <span class="leg-action-kicker">PDF gate</span>
+      <h3>Email the checklist and unlock print/PDF</h3>
+      <p>The core tool stays free. The deeper PDF pack captures email only when the user wants a portable report, checklist and dashboard reminder.</p>
+    </div>
+    <label class="leg-field"><span class="leg-f-label">Email</span><input aria-label="You@example.com" class="leg-f-input" data-workflow-field="email" data-workflow-email type="email" autocomplete="email" placeholder="you@example.com"></label>
+    <label class="leg-workflow-optin"><input type="checkbox" data-workflow-optin checked><span>Send me occasional AfroTools legal checklist updates.</span></label>
+    <div class="leg-workflow-actions compact">
+      <button type="submit" class="leg-copy-btn" data-workflow-pdf-gate>Email checklist + unlock PDF</button>
+      <button type="button" class="leg-secondary-btn" data-workflow-print>Print or save PDF</button>
+      <button type="button" class="leg-secondary-btn" data-workflow-copy>Copy handoff note</button>
+    </div>
+    <div class="leg-gate-status" data-workflow-gate-status></div>
+  </form>
+  <div class="leg-workflow-next">
+    <span>Continue workflow</span>
+    <div><a href="/tools/annual-returns/">Annual Returns</a><a href="/tools/company-type-selector/">Company Type Selector</a><a href="/tools/tin-guide/">TIN Guide</a></div>
+  </div>
+</section>
+<!-- LEGAL-WORKFLOW-COPILOT:END -->
+<!-- LEGAL-COMPETITOR-CHECK:START -->
+<section class="leg-competitor" aria-labelledby="legal-competitor-heading">
+  <div class="leg-action-kicker">Competitor check - 28 April 2026</div>
+  <div class="leg-competitor-head">
+    <h2 id="legal-competitor-heading">What stronger tools teach this app</h2>
+    <p>Benchmarked against LegalZoom, Firstbase, Stripe Atlas and registry portals. The goal is not to copy them; it is to bring the useful workflow pattern into an Africa-first tool with official-source caution and local evidence capture.</p>
+  </div>
+  <div class="leg-competitor-grid">
+    <div>
+      <h3>Observed feature pattern</h3>
+      <ul><li>Guided formation flows collect facts once, then reuse them for filings, annual reminders, tax setup and registered-agent style tasks.</li><li>The strongest products turn one filing into an operating calendar with renewal dates, evidence storage and next-step prompts.</li><li>They make official portal verification visible so users can tell a government fee from an agent or bundled service fee.</li></ul>
+    </div>
+    <div>
+      <h3>Implemented on this app</h3>
+      <ul><li>This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.</li><li>The app-specific checklist is not generic: it starts with &quot;Verify the current CIPC fee schedule before paying an agent&quot;.</li><li>Saved workflows can be resumed from the dashboard and handed off to Annual Returns when the matter naturally continues.</li><li>The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report.</li></ul>
+    </div>
+    <div>
+      <h3>Best next move</h3>
+      <ul><li>Whether to reserve a name or register under an enterprise number first</li><li>Verify the current CIPC fee schedule before paying an agent</li><li>Quotes that imply SARS, UIF, COIDA or tax clearance are included when they are separate steps</li></ul>
+    </div>
+  </div>
+</section>
+<!-- LEGAL-COMPETITOR-CHECK:END -->
+<!-- LEGAL-DEEP-IMPROVEMENT:START -->
+<section class="leg-upgrade" aria-labelledby="legal-upgrade-heading">
+  <div class="leg-upgrade-kicker">Reviewed 28 April 2026 · South Africa</div>
+  <h2 id="legal-upgrade-heading">CIPC fee and name-reservation check</h2>
+  <p>Use this app before paying for a South African company setup so the user can see the CIPC fee, name reservation choice, document route and the recurring annual-return obligation.</p>
+  <div class="leg-upgrade-grid">
+    <div class="leg-upgrade-block">
+      <h3>Decisions this clarifies</h3>
+      <ul><li>Whether to reserve a name or register under an enterprise number first</li><li>Which CIPC filing path is needed for a private company, non-profit, external company or amendment</li><li>How CIPC fees differ from SARS, bank, B-BBEE, labour and domain setup costs</li></ul>
+    </div>
+    <div class="leg-upgrade-block">
+      <h3>Before you rely on it</h3>
+      <ul><li>Verify the current CIPC fee schedule before paying an agent</li><li>Keep CoR documents, director details and CIPC customer code in a controlled account</li><li>Add annual returns and beneficial ownership filing to the first-year compliance calendar</li></ul>
+    </div>
+    <div class="leg-upgrade-block warning">
+      <h3>Red flags</h3>
+      <ul><li>Quotes that imply SARS, UIF, COIDA or tax clearance are included when they are separate steps</li><li>Name reservation paid with no follow-up registration plan</li><li>Company access credentials kept only by the agent</li></ul>
+    </div>
+  </div>
+  <div class="leg-source-row">
+    <div>
+      <span>Primary checks</span>
+      <div class="leg-source-links"><a href="https://www.cipc.co.za/?page_id=3804" target="_blank" rel="noopener">CIPC company forms and fees</a><a href="https://www.cipc.co.za/?page_id=15683" target="_blank" rel="noopener">CIPC company records and returns</a><a href="https://annualreturns.cipc.co.za/Default.aspx" target="_blank" rel="noopener">CIPC annual returns filing</a></div>
+    </div>
+    <div>
+      <span>Next best tools</span>
+      <div class="leg-source-links internal"><a href="/tools/annual-returns/">Annual Returns</a><a href="/tools/company-type-selector/">Company Type Selector</a><a href="/tools/tin-guide/">TIN Guide</a></div>
+    </div>
+  </div>
+</section>
+<!-- LEGAL-DEEP-IMPROVEMENT:END -->
+<!-- LEGAL-ACTION-PACK:START -->
+<section class="leg-action-pack" aria-labelledby="legal-action-pack-heading">
+  <div class="leg-action-head">
+    <span class="leg-action-kicker">Review pack</span>
+    <h2 id="legal-action-pack-heading">Save the cipc fee and name-reservation check trail</h2>
+    <p>Before filing, signing, publishing, or sending anything, keep a short record that links the app result to evidence and official-source checks.</p>
+  </div>
+  <div class="leg-action-grid">
+    <div>
+      <h3>Capture</h3>
+      <p>Save the country or regime, parties, dates, amounts, selected options, and final output. Add why this matters: Whether to reserve a name or register under an enterprise number first.</p>
+    </div>
+    <div>
+      <h3>Attach</h3>
+      <p>Verify the current CIPC fee schedule before paying an agent. Also keep the strongest supporting document, receipt, portal reference, ID, contract, policy, or court file beside the generated result.</p>
+    </div>
+    <div>
+      <h3>Escalate</h3>
+      <p>If you see this risk, pause and get qualified help: Quotes that imply SARS, UIF, COIDA or tax clearance are included when they are separate steps.</p>
+    </div>
+  </div>
+  <label class="leg-action-copy-label">Copyable review note</label>
+  <textarea class="leg-action-copy-text" readonly aria-label="Text entry">CIPC fee and name-reservation check action pack
+Tool: cipc-cost
+Coverage: South Africa
+
+Result to save:
+- Country or regime selected, parties involved, dates, amounts, and the generated output from the app.
+- The reason this output was prepared: Whether to reserve a name or register under an enterprise number first.
+
+Evidence to attach:
+- Verify the current CIPC fee schedule before paying an agent
+- Keep CoR documents, director details and CIPC customer code in a controlled account
+- Add annual returns and beneficial ownership filing to the first-year compliance calendar
+
+Escalate before filing or signing if:
+- Quotes that imply SARS, UIF, COIDA or tax clearance are included when they are separate steps
+- Name reservation paid with no follow-up registration plan
+- Company access credentials kept only by the agent
+
+Primary checks:
+- CIPC company forms and fees: https://www.cipc.co.za/?page_id=3804
+- CIPC company records and returns: https://www.cipc.co.za/?page_id=15683
+- CIPC annual returns filing: https://annualreturns.cipc.co.za/Default.aspx
+
+Reviewed by AfroTools workflow on 28 April 2026. Informational only, not legal advice.</textarea>
+  <div class="leg-action-copy-row">
+    <button type="button" class="leg-action-copy-btn" data-legal-copy-action>Copy review pack</button>
+    <span>Paste this into your matter file, compliance folder, board pack, or lawyer handoff.</span>
+  </div>
+</section>
+<!-- LEGAL-ACTION-PACK:END -->
+<afro-related-tools category="legal" current="cipc-cost" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/business-registration/" data-related-tool data-id="business-registration" data-name="Business Registration Checklist" data-category="legal" data-icon="BR" data-desc="Step-by-step business registration checklist for 16 African countries. Documents, fees, timelines, regulatory bodies.">Business Registration Checklist</a></li><li><a href="/tools/nda-generator/" data-related-tool data-id="nda-generator" data-name="NDA Generator" data-category="legal" data-icon="NG" data-desc="Generate Non-Disclosure Agreements for African jurisdictions. Mutual and unilateral NDAs compliant with local contract l">NDA Generator</a></li><li><a href="/tools/rent-intelligence/" data-related-tool data-id="rent-intelligence" data-name="Rent Intelligence" data-category="legal" data-icon="RI" data-desc="Track rent asks, lease terms, deposits, and vacancy signals by neighborhood with moderated contributor data.">Rent Intelligence</a></li><li><a href="/tools/company-type-selector/" data-related-tool data-id="company-type-selector" data-name="Company Type Selector" data-category="legal" data-icon="CT" data-desc="Choose the right business structure for Africa — Sole Trader, LLC, PLC, Partnership. Tax, liability, compliance comparis">Company Type Selector</a></li><li><a href="/tools/land-title-check/" data-related-tool data-id="land-title-check" data-name="Land Title Verification Checklist" data-category="legal" data-icon="LT" data-desc="Verify land titles before buying property in Africa. Country-specific checklists for Nigeria (C of O), Kenya (Title Deed">Land Title Verification Checklist</a></li><li><a href="/tools/lease-risk-check/" data-related-tool data-id="lease-risk-check" data-name="Lease Risk Check" data-category="legal" data-icon="LR" data-desc="Nigeria-first lease scam and risky listing checker powered by contributor reports and reviewer approval.">Lease Risk Check</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+const FEES = {
+  pty:  { online: 125, manual: 175, label: 'Private Company (Pty) Ltd' },
+  inc:  { online: 125, manual: 175, label: 'Personal Liability Co (Inc)' },
+  npc:  { online: 75, manual: 125, label: 'Non-Profit Company (NPC)' },
+  coop: { online: 215, manual: 310, label: 'Co-operative' },
+  ext:  { online: 425, manual: 600, label: 'External Company' }
+};
+const NAME_FEE = { online: 50, manual: 75 };
+
+function updateOptions() {}
+
+function calculate() {
+  const type = document.getElementById('entityType').value;
+  const method = document.getElementById('method').value;
+  const nameRes = document.getElementById('nameRes').checked;
+  const bbbee = document.getElementById('bbbee').checked;
+  const taxReg = document.getElementById('taxReg').checked;
+  const uif = document.getElementById('uif').checked;
+  const coida = document.getElementById('coida').checked;
+  const useAgent = document.getElementById('useAgent').checked;
+
+  const fee = FEES[type];
+  const items = [];
+  let total = 0;
+
+  // CIPC registration fee
+  const regFee = fee[method];
+  items.push({ name: fee.label + ' Registration', cost: regFee });
+  total += regFee;
+
+  // Name reservation
+  if (nameRes) {
+    const nf = NAME_FEE[method];
+    items.push({ name: 'Company Name Reservation', cost: nf });
+    total += nf;
+  }
+
+  // B-BBEE
+  if (bbbee) {
+    items.push({ name: 'B-BBEE Affidavit (Commissioner of Oaths)', cost: 0, note: 'Free at police station' });
+  }
+
+  // Agent fee
+  if (useAgent) {
+    const agentFee = type === 'ext' ? 5000 : type === 'npc' ? 3000 : type === 'coop' ? 3500 : 2500;
+    items.push({ name: 'Registration Agent Fee', cost: agentFee });
+    total += agentFee;
+  }
+
+  // SARS
+  if (taxReg) {
+    const taxFee = useAgent ? 1500 : 0;
+    items.push({ name: 'SARS Tax Registration' + (useAgent ? ' (agent)' : ' (free DIY)'), cost: taxFee });
+    total += taxFee;
+  }
+
+  // UIF
+  if (uif) {
+    const uifFee = useAgent ? 800 : 0;
+    items.push({ name: 'UIF Registration' + (useAgent ? ' (agent)' : ' (free DIY)'), cost: uifFee });
+    total += uifFee;
+  }
+
+  // COIDA
+  if (coida) {
+    const coidaFee = useAgent ? 800 : 0;
+    items.push({ name: 'COIDA Registration' + (useAgent ? ' (agent)' : ' (free DIY)'), cost: coidaFee });
+    total += coidaFee;
+  }
+
+  const fmt = n => 'R ' + n.toLocaleString('en');
+
+  let gridHtml = `<div class="result-box highlight"><div class="num">${fmt(total)}</div><div class="lbl">Total Estimated Cost</div></div>`;
+  gridHtml += `<div class="result-box"><div class="num">${fmt(regFee)}</div><div class="lbl">CIPC Fee</div></div>`;
+  gridHtml += `<div class="result-box"><div class="num">${method === 'online' ? '1-3 days' : '7-21 days'}</div><div class="lbl">Processing Time</div></div>`;
+  document.getElementById('resultGrid').innerHTML = gridHtml;
+
+  let bdHtml = '';
+  items.forEach(i => {
+    bdHtml += `<div class="breakdown-row"><span class="item">${i.name}</span><span class="cost">${i.note || fmt(i.cost)}</span></div>`;
+  });
+  bdHtml += `<div class="breakdown-row total"><span class="item">Total</span><span class="cost">${fmt(total)}</span></div>`;
+  document.getElementById('breakdown').innerHTML = bdHtml;
+
+  document.getElementById('resultCard').style.display = 'block';
+  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
+}
+</script>
+
+<script>
+(function(){
+  var target = document.getElementById('resultCard');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
+  div.innerHTML = '<save-result-button tool-slug="cipc-cost" tool-name="CIPC Registration Cost"></save-result-button><share-result-button tool-name="CIPC Registration Cost" tool-slug="cipc-cost"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script id="legal-action-copy-script">
+(function(){
+  document.addEventListener('click', function(event) {
+    var button = event.target.closest('[data-legal-copy-action]');
+    if (!button) return;
+    var section = button.closest('.leg-action-pack');
+    var area = section && section.querySelector('.leg-action-copy-text');
+    if (!area) return;
+    var original = button.textContent;
+    var done = function(){ button.textContent = "Copied"; setTimeout(function(){ button.textContent = original; }, 1800); };
+    var fallback = function(){ area.focus(); area.select(); try { document.execCommand("copy"); done(); } catch (err) { button.textContent = "Select text manually"; } };
+    if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(area.value).then(done).catch(fallback); } else { fallback(); }
+  });
+}());
+</script>
+<script src="/assets/js/legal-workflow-copilot.js?v=20da8404" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

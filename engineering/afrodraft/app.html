@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AfroDraft CAD v7.0 — Professional 2D CAD | AfroTools</title>
+<meta name="description" content="Free browser-based 2D CAD drafting tool — an AutoCAD alternative for African engineers. Draw, dimension, annotate, and export to DXF/PDF/SVG.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="stylesheet" href="assets/css/app.css?v=2c7e9cb4">
+<link rel="stylesheet" href="assets/css/themes/dark.css?v=6811a464" id="theme-css">
+  <link rel="stylesheet" href="assets/css/workspace-shell.css?v=45ba6262">
+  <link rel="stylesheet" href="assets/css/templates.css?v=70dad86a">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AfroDraft CAD v7.0 — Professional 2D CAD | AfroTools">
+<meta name="twitter:description" content="Free browser-based 2D CAD drafting tool — an AutoCAD alternative for African engineers. Draw, dimension, annotate, and export to DXF/PDF/SVG.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="article:modified_time" content="2026-04-14">
+<meta property="og:url" content="https://afrotools.com/engineering/afrodraft/app">
+  <link rel="stylesheet" href="/assets/css/engineering-enhancements.css?v=b4d7dd3f">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c4853917">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/lib/dark-mode.js?v=5cb64ba3" defer></script>
+<link rel="canonical" href="https://afrotools.com/engineering/afrodraft/app">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/engineering/afrodraft/app">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/engineering/afrodraft/app">
+</head>
+<body class="theme-dark top-level-page-ui-refresh">
+  <h1 style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0">AfroDraft CAD — Professional 2D Design for Africa</h1>
+  <!-- Loading screen -->
+  <div id="loading">
+    <div class="loading-logo">AfroDraft</div>
+    <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+    <div class="loading-text">Starting CAD engine...</div>
+  </div>
+
+  <div id="cad-app">
+    <!-- Tab bar (open drawings) -->
+    <div id="tab-bar">
+      <div id="tab-list"></div>
+      <button type="button" id="tab-new" title="New Drawing (Ctrl+N)">+</button>
+    </div>
+
+    <!-- Ribbon toolbar -->
+    <div id="ribbon"></div>
+
+    <!-- Main area: rulers + canvas + panels -->
+    <div id="main-area">
+      <!-- Corner square -->
+      <div id="ruler-corner"></div>
+      <!-- Top ruler -->
+      <canvas id="ruler-h" class="ruler"></canvas>
+      <!-- Left ruler -->
+      <canvas id="ruler-v" class="ruler"></canvas>
+      <!-- Canvas viewport -->
+      <div id="canvas-wrap">
+        <canvas id="cad-canvas"></canvas>
+        <!-- Minimap -->
+        <canvas id="minimap" width="160" height="120"></canvas>
+        <!-- Zoom controls -->
+        <div id="zoom-controls">
+          <button type="button" id="zoom-in" title="Zoom In (+)">
+            <svg width="14" height="14" viewBox="0 0 14 14"><line x1="7" y1="2" x2="7" y2="12" stroke="currentColor" stroke-width="1.5"/><line x1="2" y1="7" x2="12" y2="7" stroke="currentColor" stroke-width="1.5"/></svg>
+          </button>
+          <span id="zoom-pct">100%</span>
+          <button type="button" id="zoom-out" title="Zoom Out (-)">
+            <svg width="14" height="14" viewBox="0 0 14 14"><line x1="2" y1="7" x2="12" y2="7" stroke="currentColor" stroke-width="1.5"/></svg>
+          </button>
+          <button type="button" id="zoom-ext" title="Zoom Extents (Z+E)">
+            <svg width="14" height="14" viewBox="0 0 14 14"><rect x="2" y="2" width="10" height="10" rx="1" stroke="currentColor" stroke-width="1.2" fill="none"/><line x1="7" y1="4" x2="7" y2="10" stroke="currentColor" stroke-width="1"/><line x1="4" y1="7" x2="10" y2="7" stroke="currentColor" stroke-width="1"/></svg>
+          </button>
+        </div>
+      </div>
+      <!-- Properties Panel (right) -->
+      <div id="properties-panel" class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Properties</span>
+          <button type="button" class="panel-toggle" title="Collapse Panel">&rsaquo;</button>
+        </div>
+        <div class="panel-body">
+          <div id="props-content"></div>
+          <div id="layer-panel"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status bar -->
+    <div id="status-bar">
+      <div id="status-coords">
+        <span id="coord-x">X: 0.0000</span>
+        <span id="coord-y">Y: 0.0000</span>
+      </div>
+      <div id="status-toggles"></div>
+      <div id="status-units">mm</div>
+    </div>
+
+    <!-- Command line -->
+    <div id="command-area">
+      <div id="cmd-history"></div>
+      <div id="cmd-input-wrap">
+        <span id="cmd-prompt">Command:</span>
+        <input aria-label="Type a command" id="cmd-input" type="text" placeholder="Type a command..." autocomplete="off" spellcheck="false">
+      </div>
+    </div>
+  </div>
+
+  <!-- Context menu -->
+  <div id="context-menu" class="hidden"></div>
+
+  <!-- Modal container -->
+  <div id="modal-overlay" class="hidden"></div>
+
+  <!-- Toast -->
+  <div id="toast" class="hidden"></div>
+
+  <!-- Autocomplete dropdown -->
+  <div id="cmd-autocomplete" class="hidden"></div>
+
+  <!-- Entity hover tooltip -->
+  <div id="entity-tooltip"></div>
+
+  <!-- Command palette -->
+  <div id="command-palette" class="hidden">
+    <div class="cp-box">
+      <input aria-label="Type a command name" class="cp-input" id="cp-input" type="text" placeholder="Type a command name..." autocomplete="off" spellcheck="false">
+      <div class="cp-list" id="cp-list"></div>
+    </div>
+  </div>
+
+  <script type="module" src="app.js?v=c3b27c8f"></script>
+  <script type="module" src="src/ui/WorkspaceShell.js?v=01a44c70"></script>
+  <script type="module" src="src/ui/TemplateLauncher.js?v=e83e4500"></script>
+  <script src="src/features/v7-features.js?v=463928b3"></script>
+  <script src="/assets/js/engineering-toolkit.js?v=6a55083f" defer></script>
+</body>
+</html>

@@ -1,0 +1,1429 @@
+﻿<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF kwenda Sauti | AfroTools</title>
+<meta name="description" content="Badilisha PDF yenye maandishi kuwa kusikiliza kwa browser voices au AI voice mode, pamoja na speed, pitch, cleanup, bookmarks na export.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="PDF kwenda Sauti | AfroTools">
+<meta property="og:description" content="Badilisha PDF yenye maandishi kuwa kusikiliza kwa browser voices au AI voice mode, pamoja na speed, pitch, cleanup, bookmarks na export.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/sw/zana/pdf-kwenda-sauti/">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PDF kwenda Sauti | AfroTools">
+<meta name="twitter:description" content="Badilisha PDF yenye maandishi kuwa kusikiliza kwa browser voices au AI voice mode, pamoja na speed, pitch, cleanup, bookmarks na export.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+  :root {
+    --afro-green: var(--color-primary);
+    --afro-dark: #0f1419;
+  }
+
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-hero::after {
+    content: '\1F50A';
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8rem;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--afro-green);
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    color: var(--afro-green);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 6px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .b-green {
+    background: rgba(0, 113, 227, 0.18);
+    color: var(--color-primary);
+    border: 1px solid rgba(0, 113, 227, 0.38);
+  }
+
+  .tool-main {
+    padding: 28px 0 72px;
+  }
+
+  .tool-main-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 22px;
+    align-items: start;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .card + .card {
+    margin-top: 18px;
+  }
+
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #e5e7eb;
+    background: #f9fafb;
+  }
+
+  .card-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #374151;
+  }
+
+  .card-body {
+    padding: 22px;
+  }
+
+  .file-input-label {
+    display: block;
+    padding: 20px;
+    background: #EFF6FF;
+    border: 2px dashed #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+    color: #334155;
+    font-weight: 600;
+  }
+
+  .file-input-label:hover {
+    border-color: var(--afro-green);
+  }
+
+  .file-input-label.dragover {
+    border-color: var(--afro-green);
+    background: rgba(0, 113, 227, 0.1);
+  }
+
+  .file-info {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 8px;
+    margin-top: 14px;
+  }
+
+  .file-info.on { display: flex; }
+
+  .file-info-name {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #1e293b;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .file-info-pages {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #374151;
+    white-space: nowrap;
+  }
+
+  /* Audio Player */
+  .audio-player {
+    display: none;
+    background: #0f1419;
+    border-radius: 12px;
+    padding: 20px 22px;
+    margin-top: 18px;
+  }
+
+  .audio-player.on { display: block; }
+
+  .player-page-info {
+    text-align: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .player-progress {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 18px;
+    cursor: pointer;
+  }
+
+  .player-progress-fill {
+    height: 100%;
+    background: var(--afro-green);
+    border-radius: 4px;
+    transition: width 0.15s;
+    width: 0;
+  }
+
+  .player-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .ctrl-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    background: transparent;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .ctrl-btn:hover {
+    border-color: var(--afro-green);
+    background: rgba(0, 113, 227, 0.1);
+  }
+
+  .ctrl-btn.play-btn {
+    width: 56px;
+    height: 56px;
+    background: var(--afro-green);
+    border: none;
+    font-size: 1.3rem;
+  }
+
+  .ctrl-btn.play-btn:hover {
+    filter: brightness(1.15);
+    transform: scale(1.05);
+  }
+
+  .player-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .voice-engine-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .engine-btn {
+    min-height: 38px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.76rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .engine-btn.active {
+    border-color: var(--afro-green);
+    background: rgba(0, 113, 227, 0.18);
+    color: #fff;
+  }
+
+  .player-opt-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .player-select {
+    width: 100%;
+    padding: 8px 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    appearance: none;
+  }
+
+  .voice-tools {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .voice-tools input,
+  .voice-tools select,
+  .small-input {
+    width: 100%;
+    padding: 8px 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 6px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .voice-tools option,
+  .small-input option {
+    background: #1a1f2e;
+    color: #fff;
+  }
+
+  .voice-note {
+    margin-top: 10px;
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 0.74rem;
+    line-height: 1.55;
+  }
+
+  .voice-note strong {
+    color: #fff;
+  }
+
+  .player-select option {
+    background: #1a1f2e;
+    color: #fff;
+  }
+
+  .speed-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .speed-slider {
+    flex: 1;
+    accent-color: var(--afro-green);
+    cursor: pointer;
+  }
+
+  .speed-val {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--afro-green);
+    min-width: 32px;
+    text-align: right;
+  }
+
+  .auto-advance-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .advanced-controls {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .range-control {
+    min-width: 0;
+  }
+
+  .range-control input[type="range"] {
+    width: 100%;
+    accent-color: var(--afro-green);
+  }
+
+  .reader-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .reader-btn {
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-radius: 7px;
+    background: rgba(255, 255, 255, 0.07);
+    color: rgba(255, 255, 255, 0.78);
+    padding: 8px 10px;
+    font-size: 0.74rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .reader-btn:hover:not(:disabled) {
+    border-color: var(--afro-green);
+    color: #fff;
+  }
+
+  .reader-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .reader-filters {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .filter-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .filter-grid label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 0.74rem;
+    font-weight: 700;
+  }
+
+  .filter-grid input {
+    width: 15px;
+    height: 15px;
+    accent-color: var(--afro-green);
+  }
+
+  .pronunciation-box {
+    margin-top: 10px;
+    width: 100%;
+    min-height: 58px;
+    padding: 9px 10px;
+    resize: vertical;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 7px;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.76rem;
+    line-height: 1.45;
+  }
+
+  .listen-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .listen-stat {
+    padding: 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #f9fafb;
+  }
+
+  .listen-stat strong {
+    display: block;
+    color: #111827;
+    font-size: 0.96rem;
+    line-height: 1.1;
+  }
+
+  .listen-stat span {
+    display: block;
+    margin-top: 4px;
+    color: #64748b;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .auto-advance-row input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--afro-green);
+    cursor: pointer;
+  }
+
+  .auto-advance-row label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+  }
+
+  /* Text Display */
+  .text-display {
+    display: none;
+    max-height: 340px;
+    overflow-y: auto;
+    padding: 18px 20px;
+    background: #FAFAF8;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    line-height: 1.85;
+    color: #374151;
+    scroll-behavior: smooth;
+  }
+
+  .text-display.on { display: block; }
+
+  .text-display .sentence {
+    transition: background 0.15s;
+    border-radius: 3px;
+    padding: 0 2px;
+  }
+
+  .text-display .sentence.active {
+    background: rgba(0, 113, 227, 0.15);
+    color: #1e293b;
+    font-weight: 600;
+  }
+
+  .text-display .sentence {
+    cursor: pointer;
+  }
+
+  .text-display .sentence:hover {
+    background: rgba(0, 113, 227, 0.08);
+  }
+
+  .page-strip {
+    display: none;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 12px 0 0;
+  }
+
+  .page-strip.on {
+    display: flex;
+  }
+
+  .page-pill {
+    flex: 0 0 auto;
+    min-width: 86px;
+    border: 1px solid #e5e7eb;
+    border-radius: 7px;
+    background: #fff;
+    color: #475569;
+    padding: 8px 10px;
+    text-align: left;
+    font-size: 0.72rem;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .page-pill.active {
+    border-color: var(--afro-green);
+    background: #eff6ff;
+    color: #1e40af;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .info-card {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .info-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #374151;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .info-text {
+    font-size: 0.8rem;
+    color: #334155;
+    line-height: 1.6;
+  }
+
+  .info-text ul {
+    margin: 0;
+    padding-left: 18px;
+  }
+
+  .info-text li {
+    margin-bottom: 6px;
+  }
+
+  .info-text li::marker {
+    color: var(--afro-green);
+  }
+
+  /* SEO / FAQs */
+  .seo-section {
+    max-width: 1200px;
+    margin: 0 auto 60px;
+    padding: 0 24px;
+  }
+
+  .seo-section h2 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 24px;
+    letter-spacing: -0.01em;
+  }
+
+  .faq-item {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+
+  .faq-q {
+    width: 100%;
+    padding: 14px 18px;
+    background: #f9fafb;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #1e293b;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .faq-q::after {
+    content: '+';
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    transition: transform 0.2s;
+  }
+
+  .faq-q.open::after {
+    content: '-';
+  }
+
+  .faq-a {
+    padding: 0 18px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s, padding 0.3s;
+    font-size: 0.82rem;
+    color: #374151;
+    line-height: 1.7;
+  }
+
+  .faq-a.open {
+    padding: 14px 18px;
+    max-height: 400px;
+  }
+
+  .sw-proof-panel {
+    max-width: 1100px;
+    margin: 28px auto;
+    padding: 0 20px;
+  }
+
+  .sw-proof-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .sw-proof-card {
+    border: 1px solid #dbe6f4;
+    border-radius: 12px;
+    background: #fff;
+    padding: 14px;
+    box-shadow: 0 1px 8px rgba(15, 23, 42, 0.05);
+  }
+
+  .sw-proof-card strong {
+    display: block;
+    color: #0f172a;
+    font-size: 0.9rem;
+    line-height: 1.25;
+    margin-bottom: 6px;
+  }
+
+  .sw-proof-card p {
+    margin: 0;
+    color: #52637a;
+    font-size: 0.82rem;
+    line-height: 1.55;
+  }
+
+  @media (max-width: 768px) {
+    .tool-main-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .player-options {
+      grid-template-columns: 1fr;
+    }
+
+    .voice-engine-row,
+    .voice-tools,
+    .advanced-controls,
+    .filter-grid,
+    .listen-stats,
+    .sw-proof-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+
+
+<meta property="og:locale" content="sw_KE">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="article:modified_time" content="2026-04-28">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"PDF kwenda Sauti","url":"https://afrotools.com/sw/zana/pdf-kwenda-sauti/","applicationCategory":"BusinessApplication","operatingSystem":"Any","inLanguage":"sw","description":"Badilisha PDF yenye maandishi kuwa kusikiliza kwa browser voices au AI voice mode, pamoja na speed, pitch, cleanup, bookmarks na export.","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Hati na PDF","item":"https://afrotools.com/sw/hati-na-pdf/"},{"@type":"ListItem","position":4,"name":"PDF kwenda Sauti","item":"https://afrotools.com/sw/zana/pdf-kwenda-sauti/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Je, PDF yangu inapakiwa?","acceptedAnswer":{"@type":"Answer","text":"Browser voice mode husoma na kuchakata PDF kwenye kifaa. AI voice mode inaweza kutuma kipande cha maandishi tu kwa mtoa huduma aliyewekwa, pale tu unapochagua hali hiyo."}},{"@type":"Question","name":"Je, sauti na matamshi ni sahihi?","acceptedAnswer":{"@type":"Answer","text":"Ubora hutegemea browser, mfumo wa uendeshaji, lugha na sauti zilizopo. Hakiki maandishi muhimu kabla ya kuyatumia rasmi."}},{"@type":"Question","name":"Naweza kusikiliza PDF zilizochanganuliwa?","acceptedAnswer":{"@type":"Answer","text":"Zana hii hutoa maandishi kutoka text layers za PDF. PDF ya picha pekee inahitaji OCR kwanza, kisha unaweza kuisikiliza hapa."}},{"@type":"Question","name":"Naweza kupakua audio?","acceptedAnswer":{"@type":"Answer","text":"Export ya maandishi hufanya kazi kwenye browser mode. Audio ya kupakua hupatikana baada ya AI voice generation kwa sababu browser speech engines hazitoi faili ya audio ya kupakua."}},{"@type":"Question","name":"Je, auto-advance hufanya kazi kwenye kurasa zote?","acceptedAnswer":{"@type":"Answer","text":"Ndiyo. Ukiwasha auto-advance, zana husoma ukurasa unaofuata baada ya ukurasa wa sasa na husimama baada ya ukurasa wa mwisho."}}]}</script>
+<link rel="canonical" href="https://afrotools.com/sw/zana/pdf-kwenda-sauti/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-to-audio/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/pdf-en-audio/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/pdf-kwenda-sauti/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-to-audio/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">AfroTools</a> / <a href="/sw/tools/">Zana</a> / <span>PDF kwenda Sauti</span>
+    </div>
+    <h1>PDF kwenda <em>Sauti</em></h1>
+    <p class="hero-sub">Pakia PDF na sikiliza kwa sauti bora zinazopatikana kwenye kivinjari yako, au tumia AI voices kama gateway ya seva imewekwa. Imetengenezwa kwa kusoma, accessibility, review ya hati na kusikiliza kwenye bandwidth ndogo.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">Sauti zilizopangwa</span>
+      <span class="badge b-green">AI voice iko tayari</span>
+      <span class="badge b-green">Hali ya ndani ya faragha</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <!-- Faili Pakia -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Pakia PDF</span>
+        </div>
+        <div class="card-body">
+          <div>
+            <input type="file" id="pdfInput" accept=".pdf" style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;">
+            <label for="pdfInput" class="file-input-label" id="dropLabel">
+              Bofya au buruta PDF hapa
+            </label>
+          </div>
+          <div class="file-info" id="fileInfo">
+            <span class="file-info-name" id="fileName"></span>
+            <span class="file-info-pages" id="fileKurasa"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Audio Player -->
+      <div class="audio-player" id="audioPlayer">
+        <div class="player-page-info" id="pageInfo">Inasoma ukurasa 1 kati ya 1</div>
+
+        <div class="player-progress" id="progressBar">
+          <div class="player-progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="player-controls">
+          <button type="button" class="ctrl-btn" id="prevBtn" title="Iliyopita page">&#9664;&#9664;</button>
+          <button type="button" class="ctrl-btn" id="stopBtn" title="Stop">&#9632;</button>
+          <button type="button" class="ctrl-btn play-btn" id="playBtn" title="Play / Pause">&#9654;</button>
+          <button type="button" class="ctrl-btn" id="nextBtn" title="Inayofuata page">&#9654;&#9654;</button>
+        </div>
+
+        <div class="voice-engine-row" role="group" aria-label="Sauti engine">
+          <button type="button" class="engine-btn active" data-engine="browser" id="browserEngineBtn">Sauti za kivinjari</button>
+          <button type="button" class="engine-btn" data-engine="ai" id="aiEngineBtn">Sauti za AI</button>
+        </div>
+
+        <div class="voice-tools">
+          <select id="voiceLanguage" aria-label="Chuja lugha ya sauti">
+            <option value="all">Lugha zote</option>
+            <option value="en">Kiingereza</option>
+            <option value="fr">Kifaransa</option>
+            <option value="ar">Kiarabu</option>
+            <option value="pt">Kireno</option>
+            <option value="sw">Kiswahili</option>
+            <option value="ha">Hausa</option>
+            <option value="yo">Yoruba</option>
+            <option value="ig">Igbo</option>
+          </select>
+          <input id="voiceSearch" type="search" placeholder="Tafuta sauti" aria-label="Tafuta sauti">
+        </div>
+
+        <div class="player-options">
+          <div>
+            <div class="player-opt-label">Sauti</div>
+            <select class="player-select" id="voiceSelect" aria-label="Voice chagua">
+              <option value="">Inapakia sauti...</option>
+            </select>
+          </div>
+          <div>
+            <div class="player-opt-label">Kasi</div>
+            <div class="speed-row">
+              <input aria-label="SpeedSlider" type="range" class="speed-slider" id="speedSlider" min="0.5" max="2.5" step="0.1" value="1">
+              <span class="speed-val" id="speedVal">1x</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="advanced-controls">
+          <div class="range-control">
+            <div class="player-opt-label">Pitch <span id="pitchVal">1.0</span></div>
+            <input aria-label="PitchSlider" type="range" id="pitchSlider" min="0.6" max="1.6" step="0.1" value="1">
+          </div>
+          <div class="range-control">
+            <div class="player-opt-label">Volume <span id="volumeVal">100%</span></div>
+            <input aria-label="VolumeSlider" type="range" id="volumeSlider" min="0" max="1" step="0.05" value="1">
+          </div>
+          <div class="range-control">
+            <div class="player-opt-label">Pause <span id="pauseVal">0s</span></div>
+            <input aria-label="PauseSlider" type="range" id="pauseSlider" min="0" max="2" step="0.25" value="0">
+          </div>
+        </div>
+
+        <div class="auto-advance-row">
+          <input type="checkbox" id="autoAdvance" checked>
+          <label for="autoAdvance">Nenda ukurasa unaofuata moja kwa moja</label>
+        </div>
+
+        <div class="reader-filters">
+          <div class="player-opt-label">Usafishaji wa kusikiliza</div>
+          <div class="filter-grid">
+            <label><input aria-label="SkipHeaders" type="checkbox" id="skipHeaders" checked> Ruka headers zinazorudiwa</label>
+            <label><input aria-label="SkipUkurasaNumbers" type="checkbox" id="skipUkurasaNumbers" checked> Ruka namba za kurasa</label>
+            <label><input aria-label="SkipUrls" type="checkbox" id="skipUrls" checked> Ruka URL ndefu</label>
+            <label><input aria-label="SkipCitations" type="checkbox" id="skipCitations"> Ruka nukuu za mabano</label>
+          </div>
+          <textarea class="pronunciation-box" id="pronunciationBox" placeholder="Pronunciation fixes, one per line: GRA = G R A" aria-label="Pronunciation fixes, one per line: GRA = G R A"></textarea>
+        </div>
+
+        <div class="reader-actions">
+          <button type="button" class="reader-btn" id="previewSautiBtn">Jaribu sauti</button>
+          <button type="button" class="reader-btn" id="bookmarkBtn">Weka bookmark</button>
+          <button type="button" class="reader-btn" id="resumeBtn">Endelea</button>
+          <button type="button" class="reader-btn" id="copyMaandishiBtn">Nakili maandishi</button>
+          <button type="button" class="reader-btn" id="downloadMaandishiBtn">Pakua maandishi</button>
+          <button type="button" class="reader-btn" id="downloadAudioBtn" disabled>Pakua sauti</button>
+        </div>
+
+        <div class="voice-note" id="voiceStatus"><strong>Mpangilio wa sauti:</strong> inapakia sauti za kifaa...</div>
+      </div>
+
+      <!-- Maandishi Display -->
+      <div class="card" style="margin-top:18px;">
+        <div class="card-head">
+          <span class="card-title">Muonekano wa maandishi</span>
+        </div>
+        <div class="card-body" style="padding:0;">
+          <div class="text-display" id="textDisplay"></div>
+          <div id="textPlaceholder" style="padding:22px;text-align:center;font-size:0.82rem;color:#9ca3af;font-weight:500;">Pakia PDF kuona maandishi yaliyotolewa hapa</div>
+        </div>
+      </div>
+
+      <div class="listen-stats" id="listenStats" aria-label="Listening summary">
+        <div class="listen-stat"><strong id="statKurasa">0</strong><span>Kurasa</span></div>
+        <div class="listen-stat"><strong id="statManeno">0</strong><span>Maneno</span></div>
+        <div class="listen-stat"><strong id="statTime">0 min</strong><span>Muda wa kusikiliza</span></div>
+        <div class="listen-stat"><strong id="statSauti">0</strong><span>Sauti</span></div>
+      </div>
+
+      <div class="page-strip" id="pageStrip" aria-label="PDF page navigation"></div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="info-card">
+        <div class="info-title">Jinsi inavyofanya kazi</div>
+        <div class="info-text">
+          <ol style="margin:0;padding-left:18px;">
+            <li>Pakia faili yoyote ya PDF</li>
+            <li>Maandishi hutolewa kutoka kila ukurasa</li>
+            <li>Chagua sauti ya kivinjari au AI</li>
+            <li>Tumia filters, bookmarks na ufuatiliaji wa sentensi wakati wa kusikiliza</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Vipengele</div>
+        <div class="info-text">
+          <ul>
+            <li>Hupanga sauti za ndani kwa labels za natural na neural zinapopatikana</li>
+            <li>AI voices ni hiari kupitia gateway ya seva iliyowekwa</li>
+            <li>Badilisha kasi, pitch, volume na pause kati ya sentensi</li>
+            <li>Navigation ya ukurasa kwa ukurasa</li>
+            <li>Auto-advance kwenda ukurasa unaofuata</li>
+            <li>Bofya sentensi yoyote kuanzia hapo</li>
+            <li>Cleanup ya maandishi kwa headers, URLs na page numbers</li>
+            <li>Bookmark, endelea ulipoacha, nakili, text export na AI audio export</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="info-card" data-tool-verification-panel>
+        <div class="info-title">Faragha na mipaka</div>
+        <div class="info-text">
+          kivinjari voice mode huchakata PDF na speech kwenye kifaa chako. AI voice mode hutuma kipande cha maandishi cha sasa tu kwa provider ya sauti ya seva iliyowekwa, na pale tu unapochagua AI voices.
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">vivinjari zinazoungwa mkono</div>
+        <div class="info-text">
+          Hufanya kazi vizuri zaidi kwenye Chrome, Edge na Safari. Ubora wa sauti za kivinjari hutegemea operating system, hivyo reader hupanga sauti za natural, neural, enhanced, mtandaoni na premium kwanza zinapopatikana.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section style="max-width:900px;margin:32px auto;padding:0 20px;">
+  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
+    <p>Reader ya PDF kwenda Sauti hubadilisha PDF kuwa sehemu ya kusikiliza. kivinjari voice mode huweka kazi kwenye kifaa chako, wakati AI voice mode inaweza kutumia provider ya seva kwa sauti za kisasa zaidi na audio ya kupakua. Reader ina ufuatiliaji wa sentensi, navigation ya kurasa, cleanup ya maandishi, pronunciation fixes, bookmarks na zana za export kwa wanafunzi, wataalamu, watafiti na accessibility michakato ya kazi.</p>
+  </div>
+</section>
+<section class="sw-proof-panel" aria-labelledby="pdf-audio-proof-title">
+  <h2 id="pdf-audio-proof-title" style="margin:0 0 12px;color:#0f172a;font-size:1.25rem;">Kabla ya kusikiliza hati</h2>
+  <div class="sw-proof-grid">
+    <div class="sw-proof-card"><strong>Inafaa kwa nini</strong><p>Review ya ripoti, notes za masomo, manuals, mikataba mirefu na hati unazotaka kusikiliza ukurasa kwa ukurasa.</p></div>
+    <div class="sw-proof-card"><strong>Chanzo cha sauti</strong><p>Sauti za kivinjari hutoka kwenye kifaa chako. AI voices ni hiari na zinahitaji gateway ya seva kabla ya audio pakua.</p></div>
+    <div class="sw-proof-card"><strong>Kikomo muhimu</strong><p>PDF ya scan au picha pekee haitatoa maandishi mpaka ipitie OCR. Hakiki maandishi kabla ya kutumia kwenye kazi rasmi.</p></div>
+  </div>
+</section>
+<!-- FAQs -->
+<div class="seo-section">
+  <h2>Maswali ya mara kwa mara</h2>
+
+
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+  <div class="faq-item">
+    <button type="button" class="faq-q">Je, zana hii inapakia PDF yangu kwenye seva?</button>
+    <div class="faq-a">kivinjari voice mode haipakii PDF yako. AI voice mode hutuma kipande cha maandishi cha sasa tu kwa provider ya sauti ya seva unapochagua hali hiyo, na ukurasa unaonyesha tofauti hiyo wazi.</div>
+  </div>
+
+  <div class="faq-item">
+    <button type="button" class="faq-q">Kwa nini baadhi ya sauti bado zinasikika za roboti?</button>
+    <div class="faq-a">Sauti za kivinjari hutoka kwenye operating system na kivinjari yako, hivyo ubora hubadilika. Reader hupanga sauti za natural, neural, enhanced, mtandaoni na premium kwanza zinapopatikana. Kwa sauti za kisasa zaidi kila wakati, sanidi AI voice gateway.</div>
+  </div>
+
+  <div class="faq-item">
+    <button type="button" class="faq-q">Naweza kusikiliza PDF zilizochanganuliwa?</button>
+    <div class="faq-a">Zana hii hutoa maandishi kutoka text layers za PDF. PDF zilizochanganuliwa zenye picha pekee hazitakuwa na maandishi ya kutoa. Kwa scans, tumia kwanza OCR ya PDF kuongeza text layer, kisha sikiliza hapa.</div>
+  </div>
+
+  <div class="faq-item">
+    <button type="button" class="faq-q">Naweza kupakua audio?</button>
+    <div class="faq-a">Export ya maandishi hufanya kazi kwenye kivinjari mode. Audio ya kupakua hupatikana baada ya AI voice generation, kwa sababu kivinjari speech engines hazitoi faili ya audio ya kupakua.</div>
+  </div>
+
+  <div class="faq-item">
+    <button type="button" class="faq-q">Je, auto-advance hufanya kazi kwenye kurasa zote?</button>
+    <div class="faq-a">Ndiyo. Ukiwasha auto-advance, zana huenda ukurasa unaofuata baada ya kusoma ukurasa wa sasa. Husimama baada ya ukurasa wa mwisho, na unaweza kuruka kurasa mwenyewe kwa vitufe vya skip.</div>
+  </div>
+</div>
+
+<afro-related-tools category="document-pdf" current="pdf-to-audio"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+<script src="/assets/js/components/related-tools.js?v=4123e336" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
+<script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
+<script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
+<script src="/assets/js/lib/pdf-utils.js?v=dd2ba85f"></script>
+
+<script src="/assets/js/pages/pdf-to-audio.js?v=1cb4581c"></script>
+<script type="application/x-afrotools-legacy-disabled">
+(function() {
+  'use strict';
+
+  const synth = window.speechSynthesis;
+  let pages = [];
+  let currentPage = 0;
+  let currentUtterance = null;
+  let isPlaying = false;
+  let isPaused = false;
+  let voices = [];
+  let selectedVoice = null;
+  let currentSpeed = 1;
+
+  // DOM refs
+  const pdfInput = document.getElementById('pdfInput');
+  const dropLabel = document.getElementById('dropLabel');
+  const fileInfo = document.getElementById('fileInfo');
+  const fileName = document.getElementById('fileName');
+  const filePages = document.getElementById('filePages');
+  const audioPlayer = document.getElementById('audioPlayer');
+  const pageInfo = document.getElementById('pageInfo');
+  const progressFill = document.getElementById('progressFill');
+  const playBtn = document.getElementById('playBtn');
+  const stopBtn = document.getElementById('stopBtn');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const voiceSelect = document.getElementById('voiceSelect');
+  const speedSlider = document.getElementById('speedSlider');
+  const speedVal = document.getElementById('speedVal');
+  const autoAdvance = document.getElementById('autoAdvance');
+  const textDisplay = document.getElementById('textDisplay');
+  const textPlaceholder = document.getElementById('textPlaceholder');
+
+  // Load voices
+  function loadVoices() {
+    voices = synth.getVoices();
+    if (voices.length === 0) return;
+    voiceSelect.innerHTML = '';
+    voices.forEach(function(v, i) {
+      var opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = v.name + ' (' + v.lang + ')';
+      if (v.default) opt.selected = true;
+      voiceSelect.appendChild(opt);
+    });
+    selectedVoice = voices[voiceSelect.value] || voices[0];
+  }
+
+  loadVoices();
+  if (synth.onvoiceschanged !== undefined) {
+    synth.onvoiceschanged = loadVoices;
+  }
+
+  voiceSelect.addEventListener('change', function() {
+    selectedVoice = voices[this.value] || null;
+  });
+
+  speedSlider.addEventListener('input', function() {
+    currentSpeed = parseFloat(this.value);
+    speedVal.textContent = currentSpeed + 'x';
+  });
+
+  // File handling
+  async function handleFile(file) {
+    if (!file || !file.name.toLowerCase().endsWith('.pdf')) return;
+
+    dropLabel.textContent = 'Loading...';
+    try {
+      var result = await PdfUtils.loadPdf(file);
+      var extracted = await PdfUtils.extractText(result.pdfDoc);
+      pages = extracted;
+      currentPage = 0;
+
+      fileName.textContent = file.name;
+      filePages.textContent = pages.length + ' page' + (pages.length !== 1 ? 's' : '');
+      fileInfo.classList.add('on');
+      audioPlayer.classList.add('on');
+      textPlaceholder.style.display = 'none';
+      textDisplay.classList.add('on');
+      dropLabel.textContent = 'Bofya au buruta PDF nyingine hapa';
+
+      showPageText(0);
+      updatePageInfo();
+    } catch (err) {
+      dropLabel.textContent = 'Bofya au buruta faili ya PDF hapa';
+      PdfUtils.showToast('Error: ' + err.message, true);
+    }
+  }
+
+  pdfInput.addEventListener('change', function(e) {
+    if (e.target.files[0]) handleFile(e.target.files[0]);
+  });
+
+  dropLabel.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    dropLabel.classList.add('dragover');
+  });
+
+  dropLabel.addEventListener('dragleave', function() {
+    dropLabel.classList.remove('dragover');
+  });
+
+  dropLabel.addEventListener('drop', function(e) {
+    e.preventDefault();
+    dropLabel.classList.remove('dragover');
+    var file = e.dataTransfer.files[0];
+    if (file) handleFile(file);
+  });
+
+  // Text display with sentences
+  function showPageText(index) {
+    if (!pages[index]) return;
+    var text = pages[index].text.trim();
+    if (!text) {
+      textDisplay.innerHTML = '<em style="color:#9ca3af;">No text found on this page.</em>';
+      return;
+    }
+    // Split into sentences
+    var sentences = text.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [text];
+    textDisplay.innerHTML = sentences.map(function(s, i) {
+      return '<span class="sentence" data-idx="' + i + '">' + escapeHtml(s.trim()) + ' </span>';
+    }).join('');
+  }
+
+  function highlightSentence(charIndex) {
+    var spans = textDisplay.querySelectorAll('.sentence');
+    var cumulative = 0;
+    spans.forEach(function(span) {
+      span.classList.remove('active');
+      var len = span.textContent.length;
+      if (charIndex >= cumulative && charIndex < cumulative + len) {
+        span.classList.add('active');
+        // Scroll into view
+        span.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      cumulative += len;
+    });
+  }
+
+  function updatePageInfo() {
+    pageInfo.textContent = 'Reading page ' + (currentPage + 1) + ' of ' + pages.length;
+  }
+
+  // Speech functions
+  function speakPage(pageIndex) {
+    if (pageIndex < 0 || pageIndex >= pages.length) {
+      stopPlayback();
+      return;
+    }
+
+    synth.cancel();
+    currentPage = pageIndex;
+    showPageText(pageIndex);
+    updatePageInfo();
+
+    var text = pages[pageIndex].text.trim();
+    if (!text) {
+      // Empty page — skip
+      if (autoAdvance.checked && pageIndex < pages.length - 1) {
+        speakPage(pageIndex + 1);
+      } else {
+        stopPlayback();
+      }
+      return;
+    }
+
+    var utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = currentSpeed;
+    if (selectedVoice) utterance.voice = selectedVoice;
+
+    utterance.onboundary = function(e) {
+      if (e.name === 'word' || e.name === 'sentence') {
+        highlightSentence(e.charIndex);
+        // Update progress
+        var pct = Math.min(100, (e.charIndex / text.length) * 100);
+        progressFill.style.width = pct + '%';
+      }
+    };
+
+    utterance.onend = function() {
+      progressFill.style.width = '100%';
+      if (autoAdvance.checked && pageIndex < pages.length - 1) {
+        speakPage(pageIndex + 1);
+      } else {
+        stopPlayback();
+      }
+    };
+
+    utterance.onerror = function(e) {
+      if (e.error !== 'canceled') {
+        PdfUtils.showToast('Speech error: ' + e.error, true);
+        stopPlayback();
+      }
+    };
+
+    currentUtterance = utterance;
+    synth.speak(utterance);
+    isPlaying = true;
+    isPaused = false;
+    playBtn.innerHTML = '&#10074;&#10074;';
+  }
+
+  function stopPlayback() {
+    synth.cancel();
+    isPlaying = false;
+    isPaused = false;
+    currentUtterance = null;
+    playBtn.innerHTML = '&#9654;';
+    progressFill.style.width = '0';
+    // Remove highlights
+    textDisplay.querySelectorAll('.sentence.active').forEach(function(s) {
+      s.classList.remove('active');
+    });
+  }
+
+  // Controls
+  playBtn.addEventListener('click', function() {
+    if (pages.length === 0) return;
+
+    if (isPlaying && !isPaused) {
+      // Pause
+      synth.pause();
+      isPaused = true;
+      playBtn.innerHTML = '&#9654;';
+    } else if (isPaused) {
+      // Resume
+      synth.resume();
+      isPaused = false;
+      playBtn.innerHTML = '&#10074;&#10074;';
+    } else {
+      // Start from current page
+      speakPage(currentPage);
+    }
+  });
+
+  stopBtn.addEventListener('click', function() {
+    stopPlayback();
+  });
+
+  prevBtn.addEventListener('click', function() {
+    if (pages.length === 0) return;
+    var wasPlaying = isPlaying;
+    stopPlayback();
+    currentPage = Math.max(0, currentPage - 1);
+    showPageText(currentPage);
+    updatePageInfo();
+    if (wasPlaying) speakPage(currentPage);
+  });
+
+  nextBtn.addEventListener('click', function() {
+    if (pages.length === 0) return;
+    var wasPlaying = isPlaying;
+    stopPlayback();
+    currentPage = Math.min(pages.length - 1, currentPage + 1);
+    showPageText(currentPage);
+    updatePageInfo();
+    if (wasPlaying) speakPage(currentPage);
+  });
+
+  function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  // FAQ toggles
+  document.querySelectorAll('.faq-q').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var answer = btn.nextElementSibling;
+      var isOpen = btn.classList.contains('open');
+      document.querySelectorAll('.faq-q').forEach(function(b) { b.classList.remove('open'); });
+      document.querySelectorAll('.faq-a').forEach(function(a) { a.classList.remove('open'); });
+      if (!isOpen) {
+        btn.classList.add('open');
+        answer.classList.add('open');
+      }
+    });
+  });
+
+  // Cleanup on page unload
+  window.addEventListener('beforeunload', function() {
+    synth.cancel();
+  });
+
+})();
+</script>
+
+<script>
+// Save/Share buttons — manual placement needed
+(function(){
+  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
+  div.innerHTML = '<share-result-button tool-name="PDF kwenda Sauti" tool-slug="pdf-to-audio"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<email-gate-modal></email-gate-modal>
+<script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
+<script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
+<script>
+(function(){
+  const textMap = new Map([["Upload PDF","Pakia PDF"],["Download PDF","Pakua PDF"],["Download ZIP","Pakua ZIP"],["Download Report","Pakua ripoti"],["Download result","Pakua matokeo"],["Download audit CSV","Pakua audit CSV"],["Download CSV","Pakua CSV"],["Download Text","Pakua maandishi"],["Download Audio","Pakua sauti"],["Clear","Futa"],["Copy","Nakili"],["Save","Hifadhi"],["Cancel","Ghairi"],["Close","Funga"],["Remove file","Ondoa faili"],["Remove","Ondoa"],["Add Step","Ongeza hatua"],["Run Pipeline","Endesha mtiririko"],["Validate workflow","Hakiki workflow"],["Repair PDF","Rekebisha PDF"],["Translate PDF","Tafsiri PDF"],["Convert to PDF","Badilisha kuwa PDF"],["Find Matches","Tafuta matches"],["Replace Selected","Badilisha iliyochaguliwa"],["Replace All","Badilisha zote"],["Run Comparison","Endesha ulinganisho"],["Copy Summary","Nakili muhtasari"],["Loading...","Inapakia..."],["Loading voices...","Inapakia sauti..."],["Upload a PDF to get started.","Pakia PDF kuanza."],["Upload a PDF to start","Pakia PDF kuanza"],["Click or drag & drop a PDF file","Bofya au buruta faili ya PDF hapa"],["Click or drag & drop a different PDF","Bofya au buruta PDF nyingine hapa"],["No file selected","Hakuna faili iliyochaguliwa"],["No text found on this page. Try PDF OCR first for scanned documents.","Hakuna maandishi yaliyopatikana kwenye ukurasa huu. Tumia OCR kwanza kwa PDF za scan."],["Reading page","Inasoma ukurasa"],["sentence","sentensi"],["of","kati ya"],["Processing...","Inachakata..."],["Ready","Tayari"],["AI voices unavailable","Sauti za AI hazipatikani"],["No voices match the filter","Hakuna sauti inayolingana na kichujio"],["No browser voices loaded yet","Hakuna sauti za browser zilizopakiwa bado"],["Browser voices","Sauti za browser"],["Browser voices:","Sauti za browser:"],["AI voices","Sauti za AI"],["AI voices:","Sauti za AI:"],["Voice setup","Mpangilio wa sauti"],["Voice setup:","Mpangilio wa sauti:"],["loading browser voices and checking AI voice gateway...","inapakia sauti za browser na kukagua gateway ya AI voice..."],["waiting for voices from your operating system. Chrome, Edge, and Safari usually expose more options.","inasubiri sauti kutoka mfumo wa kifaa chako. Chrome, Edge na Safari mara nyingi huonyesha chaguo zaidi."],["PDF ready to listen.","PDF iko tayari kusikilizwa."],["Error","Hitilafu"]]);
+  const attrMap = textMap;
+  function swapText(node){
+    const raw = node.textContent || '';
+    const trimmed = raw.trim();
+    if (!trimmed) return;
+    let translated = textMap.get(trimmed);
+    if (!translated) {
+      translated = trimmed
+        .replace(/^(\d+) voices found, (\d+) likely natural or enhanced\. Best voices are ranked first\.$/, '$1 sauti zimepatikana. Sauti zilizo natural au enhanced hupangwa kwanza.')
+        .replace(/^(\d+) AI voices loaded\. Audio is generated only for the current page text\.$/, '$1 sauti za AI zimepakiwa. Audio huundwa kwa maandishi ya ukurasa wa sasa tu.');
+      if (translated === trimmed) translated = '';
+    }
+    if (!translated) return;
+    node.textContent = raw.replace(trimmed, translated);
+  }
+  function walk(root){
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node){
+        const parent = node.parentElement;
+        if (!parent || /^(SCRIPT|STYLE|NOSCRIPT)$/i.test(parent.tagName)) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(swapText);
+    root.querySelectorAll && root.querySelectorAll('[placeholder],[aria-label],button,input[type="button"],input[type="submit"]').forEach(el => {
+      ['placeholder','aria-label','value','title'].forEach(attr => {
+        const value = el.getAttribute(attr);
+        if (value && attrMap.has(value.trim())) el.setAttribute(attr, attrMap.get(value.trim()));
+      });
+    });
+  }
+  function run(){ walk(document.body); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
+  new MutationObserver(mutations => {
+    for (const mutation of mutations) {
+      mutation.addedNodes.forEach(node => {
+        if (node.nodeType === Node.TEXT_NODE) swapText(node);
+        else if (node.nodeType === Node.ELEMENT_NODE) walk(node);
+      });
+    }
+  }).observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script>
+  <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
+</body>
+</html>

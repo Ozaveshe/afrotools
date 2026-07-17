@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Password Protect PDF Online | AES-256 Local Tool | AfroTools</title>
+<meta name="description" content="Password protect PDFs locally with AES-256, strength checks, owner permissions, password copy helper, batch ZIP output, and unlock when you know the password.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Password Protect PDF Online | AfroTools">
+<meta property="og:description" content="Encrypt PDFs locally with AES-256, set print/copy/edit permissions, generate and copy strong passwords, or unlock PDFs when you know the password.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/pdf-password/">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/pdf-password.webp">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Password Protect PDF Online | AfroTools">
+<meta name="twitter:description" content="AES-256 PDF password protection, permissions, password helper, and unlock in your browser.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-password.webp">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<meta property="article:modified_time" content="2026-04-27">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script>
+<style>
+  :root {
+    --pw-blue: var(--color-primary);
+    --pw-dark: #0f1419;
+    --pw-ink: #0f172a;
+    --pw-muted: #64748b;
+    --pw-soft: #eff6ff;
+    --pw-gold: #b7791f;
+    --pw-green: #047857;
+    --pw-red: #b91c1c;
+  }
+
+  .tool-hero {
+    background: #f7fbff;
+    border-bottom: 1px solid #dbeafe;
+    padding: 34px 0 22px;
+  }
+
+  .tool-hero-inner,
+  .tool-main-inner {
+    max-width: 1220px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #64748b;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: #64748b;
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--pw-blue);
+  }
+
+  h1 {
+    color: #0f172a;
+    font-size: clamp(1.65rem, 4vw, 2.55rem);
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: 1.08;
+    margin: 0 0 10px;
+  }
+
+  h1 em {
+    color: var(--pw-blue);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    color: #334155;
+    font-size: 0.9rem;
+    line-height: 1.62;
+    max-width: 720px;
+    margin: 0 0 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    padding: 5px 11px;
+    border-radius: 999px;
+    border: 1px solid #bae6fd;
+    background: #fff;
+    color: #075985;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .tool-main {
+    padding: 24px 0 56px;
+  }
+
+  .workflow-strip {
+    max-width: 1220px;
+    margin: 0 auto 14px;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .workflow-step {
+    background: #fff;
+    border: 1px solid #dbeafe;
+    border-radius: 8px;
+    padding: 12px 14px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .step-num {
+    flex: 0 0 28px;
+    min-height: 28px;
+    border-radius: 6px;
+    background: #e0f2fe;
+    color: #075985;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 800;
+  }
+
+  .step-title {
+    display: block;
+    font-size: 0.82rem;
+    color: #0f172a;
+    font-weight: 800;
+    margin-bottom: 2px;
+  }
+
+  .step-copy {
+    display: block;
+    font-size: 0.74rem;
+    color: #64748b;
+    line-height: 1.45;
+  }
+
+  .tool-main-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 390px;
+    gap: 22px;
+    align-items: start;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(15,23,42,0.05);
+  }
+
+  .card + .card {
+    margin-top: 18px;
+  }
+
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+    background: #f9fafb;
+  }
+
+  .card-title {
+    color: #374151;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .card-kicker {
+    color: var(--pw-muted);
+    font-size: 0.68rem;
+    font-weight: 700;
+  }
+
+  .card-body {
+    padding: 22px;
+  }
+
+  .segmented {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .mode-btn,
+  .mini-btn,
+  .toggle-password {
+    border: 1.5px solid #dbeafe;
+    border-radius: 7px;
+    background: var(--pw-soft);
+    color: #1e40af;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 800;
+    transition: border-color 0.16s, background 0.16s, color 0.16s, box-shadow 0.16s;
+    touch-action: manipulation;
+  }
+
+  .mode-btn {
+    min-height: 46px;
+    padding: 12px 14px;
+    font-size: 0.75rem;
+  }
+
+  .mode-btn:hover,
+  .mini-btn:hover,
+  .toggle-password:hover,
+  .mode-btn:focus-visible,
+  .mini-btn:focus-visible,
+  .toggle-password:focus-visible {
+    border-color: var(--pw-blue);
+    box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+    outline: none;
+  }
+
+  .mode-btn.on {
+    background: var(--pw-blue);
+    border-color: var(--pw-blue);
+    color: #fff;
+  }
+
+  .drop-zone {
+    border: 2px dashed #bfdbfe;
+    border-radius: 8px;
+    background: var(--pw-soft);
+    cursor: pointer;
+    padding: 30px 18px;
+    text-align: center;
+    transition: background 0.16s, border-color 0.16s, box-shadow 0.16s;
+    min-height: 128px;
+    touch-action: manipulation;
+  }
+
+  .drop-zone:hover,
+  .drop-zone.dragover,
+  .drop-zone:focus-visible {
+    background: #fff;
+    border-color: var(--pw-blue);
+    box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+    outline: none;
+  }
+
+  .drop-title {
+    color: #1e293b;
+    font-size: 0.95rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+
+  .drop-hint {
+    color: #6b8cae;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  .hidden-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+  }
+
+  .file-summary {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 12px;
+    padding: 10px 12px;
+    border: 1px solid #dbeafe;
+    background: #f8fbff;
+    border-radius: 7px;
+  }
+
+  .file-summary.on {
+    display: flex;
+  }
+
+  .file-summary-text {
+    color: #1e40af;
+    font-size: 0.76rem;
+    font-weight: 800;
+  }
+
+  .file-list {
+    display: grid;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .file-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
+    border-radius: 6px;
+    padding: 10px 12px;
+  }
+
+  .file-info {
+    min-width: 0;
+  }
+
+  .file-name {
+    color: #1e293b;
+    font-size: 0.82rem;
+    font-weight: 800;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .file-meta,
+  .field-hint {
+    color: var(--pw-muted);
+    font-size: 0.68rem;
+    line-height: 1.45;
+  }
+
+  .mini-btn,
+  .toggle-password {
+    min-height: 40px;
+    padding: 8px 11px;
+    font-size: 0.68rem;
+  }
+
+  .panel {
+    display: block;
+  }
+
+  .panel.hidden {
+    display: none;
+  }
+
+  .field {
+    margin-bottom: 16px;
+  }
+
+  .field:last-child {
+    margin-bottom: 0;
+  }
+
+  .label-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  .label-text {
+    color: #1e293b;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+  }
+
+  .input-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+  }
+
+  .input {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 7px;
+    background: #fff;
+    color: #1e293b;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 650;
+    outline: none;
+  }
+
+  .input:focus {
+    border-color: var(--pw-blue);
+    box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+  }
+
+  .grid-2,
+  .permission-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .permission-grid {
+    margin-top: 8px;
+  }
+
+  .check-option {
+    display: flex;
+    gap: 9px;
+    align-items: flex-start;
+    min-height: 46px;
+    padding: 10px 11px;
+    border: 1px solid #e5e7eb;
+    border-radius: 7px;
+    background: #f8fafc;
+    color: #334155;
+    font-size: 0.76rem;
+    font-weight: 800;
+    line-height: 1.35;
+  }
+
+  .check-option input {
+    accent-color: var(--pw-blue);
+    margin-top: 2px;
+  }
+
+  .password-strength {
+    display: none;
+    margin-top: 8px;
+  }
+
+  .password-strength.on {
+    display: block;
+  }
+
+  .strength-meter {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 4px;
+    margin-bottom: 5px;
+  }
+
+  .strength-meter span {
+    height: 5px;
+    border-radius: 999px;
+    background: #e5e7eb;
+  }
+
+  .strength-meter[data-score="1"] span:nth-child(-n+1) { background: var(--pw-red); }
+  .strength-meter[data-score="2"] span:nth-child(-n+2) { background: #d97706; }
+  .strength-meter[data-score="3"] span:nth-child(-n+3) { background: var(--pw-gold); }
+  .strength-meter[data-score="4"] span:nth-child(-n+4) { background: #059669; }
+  .strength-meter[data-score="5"] span:nth-child(-n+5) { background: var(--pw-green); }
+
+  .strength-line {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    color: #475569;
+    font-size: 0.68rem;
+    font-weight: 700;
+  }
+
+  .calc-btn,
+  .act-btn {
+    width: 100%;
+    border: 0;
+    border-radius: 7px;
+    background: var(--pw-blue);
+    color: #fff;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.84rem;
+    font-weight: 800;
+    padding: 13px 16px;
+    min-height: 46px;
+    transition: box-shadow 0.16s, opacity 0.16s, background 0.16s;
+    touch-action: manipulation;
+  }
+
+  .calc-btn:hover,
+  .act-btn:hover,
+  .calc-btn:focus-visible,
+  .act-btn:focus-visible {
+    box-shadow: 0 10px 22px rgba(0,113,227,0.22);
+    outline: none;
+  }
+
+  .calc-btn:disabled,
+  .mini-btn:disabled,
+  .toggle-password:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+    box-shadow: none;
+  }
+
+  .result-card {
+    display: none;
+  }
+
+  .result-card.on {
+    display: block;
+  }
+
+  .result-text {
+    color: #1e293b;
+    font-size: 0.86rem;
+    font-weight: 800;
+    line-height: 1.55;
+  }
+
+  .progress-bar {
+    display: none;
+    width: 100%;
+    height: 6px;
+    margin-top: 12px;
+    border-radius: 999px;
+    background: #e5e7eb;
+    overflow: hidden;
+  }
+
+  .progress-bar.on {
+    display: block;
+  }
+
+  .progress-fill {
+    width: 0%;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--pw-blue), #60a5fa);
+    transition: width 0.25s;
+  }
+
+  .result-rows {
+    display: grid;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .result-row {
+    padding: 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    background: #f8fafc;
+  }
+
+  .result-row.error {
+    border-color: #fecaca;
+    background: #fff7f7;
+  }
+
+  .result-name {
+    color: #1e293b;
+    font-size: 0.76rem;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+  }
+
+  .result-meta {
+    color: #64748b;
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1.45;
+    margin-top: 3px;
+  }
+
+  .result-row.error .result-meta {
+    color: var(--pw-red);
+  }
+
+  .result-note {
+    display: none;
+    margin-top: 12px;
+    padding: 10px 12px;
+    border: 1px solid #dbeafe;
+    border-radius: 6px;
+    background: var(--pw-soft);
+    color: #334155;
+    font-size: 0.76rem;
+    font-weight: 700;
+    line-height: 1.55;
+  }
+
+  .result-note.on {
+    display: block;
+  }
+
+  .action-row {
+    display: none;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .action-row.on {
+    display: grid;
+  }
+
+  .info-card {
+    margin-top: 18px;
+    border-left: 4px solid var(--pw-blue);
+    border-radius: 8px;
+    background: #f8fafc;
+    padding: 18px;
+  }
+
+  .info-card.gold {
+    border-left-color: var(--pw-gold);
+    background: #fffaf0;
+  }
+
+  .info-title {
+    color: var(--pw-ink);
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .info-text {
+    color: #475569;
+    font-size: 0.82rem;
+    font-weight: 650;
+    line-height: 1.62;
+  }
+
+  .info-text ul {
+    margin: 10px 0 0;
+    padding-left: 18px;
+  }
+
+  @media (max-width: 900px) {
+    .tool-main-inner {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .tool-hero {
+      padding: 34px 0 30px;
+    }
+
+    .tool-hero-inner,
+    .tool-main-inner,
+    .workflow-strip {
+      padding: 0 16px;
+    }
+
+    .segmented,
+    .grid-2,
+    .permission-grid,
+    .input-row,
+    .workflow-strip {
+      grid-template-columns: 1fr;
+    }
+
+    .card-body {
+      padding: 18px;
+    }
+
+    .file-summary {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Password Protect PDF Online",
+  "description": "Protect PDFs with AES-256 passwords, owner permissions, password strength checks, password copy helper, and batch ZIP output. Unlock PDFs when you know the password.",
+  "url": "https://afrotools.com/tools/pdf-password/",
+  "inLanguage": "en",
+  "applicationCategory": "SecurityApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript and WebAssembly",
+  "featureList": [
+    "AES-256 PDF password protection",
+    "Owner permission controls",
+    "Password generator and copy helper",
+    "Password strength estimate",
+    "Known-password PDF unlock",
+    "Batch ZIP output"
+  ],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/pdf-password.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "PDF Password",
+      "item": "https://afrotools.com/tools/pdf-password/"
+    }
+  ]
+}
+</script>
+
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<style>
+  body.top-level-page-ui-refresh .tool-hero h1 { color: #0f172a; }
+  body.top-level-page-ui-refresh .tool-hero h1 em,
+  body.top-level-page-ui-refresh .breadcrumb span { color: var(--color-primary); }
+</style>
+<link rel="canonical" href="https://afrotools.com/tools/pdf-password/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-password/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/proteger-pdf/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kulinda-pdf-kwa-nenosiri/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-password/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="tools"></afro-navbar>
+
+<section class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="/">AfroTools</a> / <span>Tools</span></div>
+    <h1>Password protect a PDF</h1>
+    <p class="hero-sub">Add an open password, set viewer permissions, batch export protected PDFs, or unlock a file when you already know the password. Files and passwords stay in this browser.</p>
+    <div class="hero-badges">
+      <span class="badge">AES-256</span>
+      <span class="badge">Known-password unlock</span>
+      <span class="badge">Batch ZIP</span>
+    </div>
+  </div>
+</section>
+
+<main class="tool-main">
+  <div class="workflow-strip" aria-label="PDF password steps">
+    <div class="workflow-step"><span class="step-num">1</span><span><span class="step-title">Choose mode</span><span class="step-copy">Protect a PDF, or unlock with a known password.</span></span></div>
+    <div class="workflow-step"><span class="step-num">2</span><span><span class="step-title">Set password</span><span class="step-copy">Generate, confirm, copy, and store it separately.</span></span></div>
+    <div class="workflow-step"><span class="step-num">3</span><span><span class="step-title">Download</span><span class="step-copy">Save a protected PDF or batch ZIP.</span></span></div>
+  </div>
+  <div class="tool-main-inner">
+    <section>
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Mode</span>
+          <span class="card-kicker">Protect or unlock</span>
+        </div>
+        <div class="card-body">
+          <div class="segmented" role="group" aria-label="PDF password mode">
+            <button class="mode-btn on" id="modeProtect" type="button" aria-pressed="true">Protect PDF</button>
+            <button class="mode-btn" id="modeUnlock" type="button" aria-pressed="false">Unlock PDF</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title" id="fileModeLabel">Upload PDFs to protect</span>
+          <span class="card-kicker">PDF only</span>
+        </div>
+        <div class="card-body">
+          <div class="drop-zone" id="dropZone" role="button" tabindex="0" aria-controls="pdfFileInput">
+            <div class="drop-title" id="dropTitle">Choose PDFs to password-protect</div>
+            <div class="drop-hint" id="dropHint">Single PDF downloads as a PDF. Multiple PDFs download as a ZIP.</div>
+            <input aria-label="PDF files" class="hidden-input" id="pdfFileInput" type="file" accept="application/pdf,.pdf" multiple>
+          </div>
+          <div class="file-summary" id="fileSummary">
+            <span class="file-summary-text" id="fileSummaryText">No PDFs selected.</span>
+            <button class="mini-btn" id="clearFilesBtn" type="button">Clear</button>
+          </div>
+          <div class="file-list" id="fileList" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <div class="card panel" id="protectPanel">
+        <div class="card-head">
+          <span class="card-title">Protection Settings</span>
+          <span class="card-kicker">AES-256 standard security</span>
+        </div>
+        <div class="card-body">
+          <div class="grid-2">
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="openPassword">Open Password</label></div>
+              <div class="input-row">
+                <input class="input" id="openPassword" type="password" autocomplete="new-password" placeholder="Password to open">
+                <button class="toggle-password" type="button" data-target="openPassword">Show</button>
+              </div>
+              <div class="password-strength" id="passwordStrength">
+                <div class="strength-meter" id="strengthMeter" data-score="0"><span></span><span></span><span></span><span></span><span></span></div>
+                <div class="strength-line"><span id="strengthLabel">Empty</span><span id="strengthHint"></span></div>
+              </div>
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="confirmPassword">Confirm Password</label></div>
+              <div class="input-row">
+                <input class="input" id="confirmPassword" type="password" autocomplete="new-password" placeholder="Repeat password">
+                <button class="toggle-password" type="button" data-target="confirmPassword">Show</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="ownerPassword">Owner Password</label><span class="field-hint">Optional</span></div>
+              <div class="input-row">
+                <input class="input" id="ownerPassword" type="password" autocomplete="new-password" placeholder="Full-access password">
+                <button class="toggle-password" type="button" data-target="ownerPassword">Show</button>
+              </div>
+              <div class="field-hint">Leave blank to generate an internal owner key.</div>
+            </div>
+            <div class="field">
+              <div class="label-row"><span class="label-text">Password Tool</span></div>
+              <button class="mini-btn" id="generatePassword" type="button">Generate Strong Password</button>
+              <button class="mini-btn" id="copyOpenPassword" type="button" style="margin-left:8px;">Copy Password</button>
+              <div class="field-hint" id="passwordToolStatus" role="status" aria-live="polite" style="margin-top:6px;"></div>
+              <div class="field-hint" style="margin-top:6px;">Store the password safely. Lost open passwords cannot be recovered.</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="label-row"><span class="label-text">Viewer Permissions</span><span class="field-hint">Compliant viewers</span></div>
+            <div class="permission-grid">
+              <label class="check-option"><input type="checkbox" id="allowPrint" checked> Allow printing</label>
+              <label class="check-option"><input type="checkbox" id="allowCopy" checked> Allow text and image copying</label>
+              <label class="check-option"><input type="checkbox" id="allowEdit" checked> Allow document editing</label>
+              <label class="check-option"><input type="checkbox" id="allowAnnotate" checked> Allow comments and annotations</label>
+              <label class="check-option"><input type="checkbox" id="allowForm" checked> Allow form filling</label>
+              <label class="check-option"><input type="checkbox" id="allowAssemble" checked> Allow page extraction and assembly</label>
+            </div>
+          </div>
+
+          <button class="calc-btn" id="processBtn" type="button" disabled>Protect PDF</button>
+        </div>
+      </div>
+
+      <div class="card panel hidden" id="unlockPanel">
+        <div class="card-head">
+          <span class="card-title">Unlock Settings</span>
+          <span class="card-kicker">Known password required</span>
+        </div>
+        <div class="card-body">
+          <div class="field">
+            <div class="label-row"><label class="label-text" for="unlockPassword">PDF Password</label></div>
+            <div class="input-row">
+              <input class="input" id="unlockPassword" type="password" autocomplete="current-password" placeholder="Open or owner password">
+              <button class="toggle-password" type="button" data-target="unlockPassword">Show</button>
+            </div>
+            <div class="field-hint">This tool cannot guess, bypass, or recover an unknown open password.</div>
+          </div>
+          <button class="calc-btn" id="unlockProcessBtn" type="button" disabled>Unlock PDF</button>
+        </div>
+      </div>
+    </section>
+
+    <aside>
+      <div class="card result-card" id="resultCard">
+        <div class="card-head"><span class="card-title">Result</span></div>
+        <div class="card-body">
+          <div class="result-text" id="resultText" role="status" aria-live="polite"></div>
+          <div class="progress-bar" id="progressBar" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+          <div class="result-rows" id="resultRows"></div>
+          <div class="result-note" id="resultNote" role="status" aria-live="polite"></div>
+          <div class="action-row" id="actionRow">
+            <button class="act-btn" id="downloadBtn" type="button">Download PDF</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Security Model</div>
+        <div class="info-text">
+          QPDF WebAssembly applies PDF standard security locally in the browser. Files and passwords are not uploaded to AfroTools.
+          <ul>
+            <li>AES-256 protect output.</li>
+            <li>User and owner password support.</li>
+            <li>Single PDF or batch ZIP downloads.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="info-card gold">
+        <div class="info-title">Important</div>
+        <div class="info-text">
+          PDF permission flags restrict actions in compliant readers, but they are not the same as document rights management. Keep a clean original and store passwords securely.
+        </div>
+      </div>
+    </aside>
+  </div>
+
+</main>
+
+<section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="pdf-password-verification-title">
+  <div class="tool-verification-card">
+    <div class="tool-verification-head">
+      <div>
+        <span class="tool-verification-kicker">Protection limits</span>
+        <h2 class="tool-verification-title" id="pdf-password-verification-title">Protect a copy, then test the password in another reader</h2>
+        <p class="tool-verification-lead">Password protection and unlock attempts run locally. This tool does not recover unknown passwords, store passwords, or guarantee that every PDF reader enforces permissions the same way.</p>
+      </div>
+      <div class="tool-verification-status">
+        <span class="tool-verification-badge">Local-first PDF protection</span>
+        <p class="tool-verification-note">Reviewed 2026. Disclaimer: verify with the recipient and another PDF reader before relying on protection. The shared PDF account gate does not upload your files.</p>
+      </div>
+    </div>
+    <div class="tool-verification-grid">
+      <div class="tool-verification-block">
+        <h3>Methodology</h3>
+        <ul class="tool-verification-list">
+          <li>Uses local PDF encryption/decryption support to create protected copies or unlock PDFs when the correct password is supplied.</li>
+          <li>Password strength feedback is a local estimate and does not check breach databases.</li>
+          <li>Permission flags can be interpreted differently by PDF readers; encryption strength and compatibility should be tested.</li>
+        </ul>
+      </div>
+      <div class="tool-verification-block">
+        <h3>Before sharing</h3>
+        <ul class="tool-verification-list">
+          <li>Keep the original unprotected file, test the protected output, and share the password through a separate trusted channel.</li>
+          <li>Do not use this as a legal redaction, certified security, password recovery, or compliance workflow.</li>
+          <li>For visible covers, signatures, or page cleanup before protecting, use <a href="/tools/pdf-workspace/">PDF Workspace</a>.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<afro-related-tools category="document-pdf" current="pdf-password" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/cv-builder/" data-related-tool data-id="cv-builder" data-name="CV / Resume Builder" data-category="document-pdf" data-icon="CR" data-desc="Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.">CV / Resume Builder</a></li><li><a href="/tools/invoice-generator/" data-related-tool data-id="invoice-generator" data-name="Invoice Generator" data-category="document-pdf" data-icon="IG" data-desc="Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.">Invoice Generator</a></li><li><a href="/tools/pdf-editor/" data-related-tool data-id="pdf-editor" data-name="PDF Editor" data-category="document-pdf" data-icon="PE" data-desc="Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt">PDF Editor</a></li><li><a href="/tools/pdf-merge-split/" data-related-tool data-id="pdf-merge-split" data-name="PDF Merge &amp; Split" data-category="document-pdf" data-icon="PM" data-desc="Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only">PDF Merge &amp; Split</a></li><li><a href="/tools/pdf-workspace/" data-related-tool data-id="pdf-workspace" data-name="PDF Workspace" data-category="document-pdf" data-icon="PW" data-desc="Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.">PDF Workspace</a></li><li><a href="/tools/pdf-compress/" data-related-tool data-id="pdf-compress" data-name="PDF Compressor" data-category="document-pdf" data-icon="PC" data-desc="Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.">PDF Compressor</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script src="/assets/js/lib/qpdf-aes.js?v=d44daa51"></script>
+<script src="/tools/pdf-password/app.js?v=a8419072"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var copyButton = document.getElementById('copyOpenPassword');
+    var password = document.getElementById('openPassword');
+    var status = document.getElementById('passwordToolStatus');
+    if (!copyButton || !password || !status) return;
+    copyButton.addEventListener('click', function () {
+      var value = password.value || '';
+      if (!value) {
+        status.textContent = 'Generate or enter a password first.';
+        return;
+      }
+      if (!navigator.clipboard || !navigator.clipboard.writeText) {
+        status.textContent = 'Clipboard is not available in this browser.';
+        return;
+      }
+      navigator.clipboard.writeText(value).then(function () {
+        status.textContent = 'Password copied. Share it through a separate channel.';
+      }).catch(function () {
+        status.textContent = 'Copy blocked. Select and copy the password manually.';
+      });
+    });
+  });
+</script>
+<script src="/assets/js/components/related-tools.js?v=4123e336" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
+<script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
+<script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
+<email-gate-modal></email-gate-modal>
+<script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
+<script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+var HsLookupEngine = function() {
+  "use strict";
+  function e(e) {
+    for (var t = e.replace(/\s/g, ""), r = 0; r < HS_DATABASE.searchIndex.length; r++) {
+      var a = HS_DATABASE.searchIndex[r];
+      if (a.code.replace(".", "") === t.replace(".", "")) {
+        return a;
+      }
+    }
+    if (4 === t.length) {
+      for (var n = 0; n < HS_DATABASE.chapters.length; n++) {
+        for (var i = HS_DATABASE.chapters[n], c = 0; c < (i.headings || []).length; c++) {
+          if (i.headings[c].code === t) {
+            return {
+              code: i.headings[c].code,
+              description: i.headings[c].description,
+              chapter: i.chapter,
+              chapterTitle: i.title
+            };
+          }
+        }
+      }
+    }
+    if (t.length <= 2) {
+      var s = t.padStart(2, "0");
+      if (HS_DATABASE.chapterMap[s]) {
+        var o = HS_DATABASE.chapterMap[s];
+        return {
+          code: s,
+          description: o.title,
+          chapter: s,
+          chapterTitle: o.title
+        };
+      }
+    }
+    return null;
+  }
+  function t(t, r) {
+    var a = COUNTRY_DUTY_RATES[r];
+    if (!a) {
+      return null;
+    }
+    var n = e(t);
+    if (!n) {
+      return null;
+    }
+    var i = (n.chapter || t.substring(0, 2)).toString().padStart(2, "0"), c = a.dutyRates && a.dutyRates[i];
+    return {
+      country: a.name,
+      flag: a.flag,
+      authority: a.authority,
+      currency: a.currency,
+      vatRate: a.vatRate,
+      dutyRange: c ? c.range : "N/A",
+      dutyTypical: c ? c.typical : null,
+      notes: c ? c.notes : null,
+      levies: a.additionalLevies || [],
+      tradeBloc: a.tradeBloc
+    };
+  }
+  function r(e, r) {
+    var a = [];
+    return r.forEach(function(r) {
+      var n = t(e, r);
+      n && a.push(n);
+    }), a.sort(function(e, t) {
+      return (e.dutyTypical || 999) - (t.dutyTypical || 999);
+    }), a;
+  }
+  return {
+    searchByProduct: function(e) {
+      if (!e || e.trim().length < 2) {
+        return [];
+      }
+      for (var t = e.trim().toLowerCase(), r = [], a = HS_DATABASE.searchIndex, n = 0; n < a.length; n++) {
+        var i = a[n], c = 0;
+        if (i.code.replace(".", "").toLowerCase() === t.replace(".", "")) {
+          c = 100;
+        } else if (i.code.toLowerCase().startsWith(t)) {
+          c = 90;
+        } else if (i.searchText.includes(" " + t + " ") || i.searchText.startsWith(t)) {
+          c = 80;
+        } else if (i.description.toLowerCase().includes(t)) {
+          c = 70;
+        } else if (i.keywords.toLowerCase().includes(t)) {
+          c = 60;
+        } else {
+          var s = t.split(/\s+/), o = s.filter(function(e) {
+            return i.searchText.includes(e);
+          });
+          o.length === s.length ? c = 50 : o.length > 0 && (c = o.length / s.length * 30);
+        }
+        c > 0 && r.push({
+          score: c,
+          item: i
+        });
+      }
+      return r.sort(function(e, t) {
+        return t.score - e.score;
+      }), r.slice(0, 20).map(function(e) {
+        return e.item;
+      });
+    },
+    lookupByCode: e,
+    getDutyRates: t,
+    compareRates: r,
+    getChapterTree: function(e) {
+      return HS_DATABASE.chapterMap[e.padStart(2, "0")] || null;
+    },
+    getAllChapters: function() {
+      return HS_DATABASE.chapters.map(function(e) {
+        return {
+          chapter: e.chapter,
+          title: e.title,
+          section: e.section,
+          sectionTitle: e.sectionTitle
+        };
+      });
+    },
+    getObservations: function(t, a) {
+      var n = e(t);
+      if (!n) {
+        return [];
+      }
+      var i = [], c = n.chapter ? n.chapter.padStart(2, "0") : t.substring(0, 2), s = r(t, Object.keys(COUNTRY_DUTY_RATES));
+      if (s.length > 0 && null !== s[0].dutyTypical) {
+        var o = s[0];
+        a && o.country !== COUNTRY_DUTY_RATES[a]?.name && i.push({
+          type: "tip",
+          text: "Lowest duty on this product: " + o.dutyTypical + "% in " + o.flag + " " + o.country + ". Consider routing via trade bloc arrangements."
+        });
+      }
+      i.push({
+        type: "info",
+        text: "AfCFTA preferential rates are being phased in across 54 countries. Check your country's tariff offer schedule for possible reduced rates."
+      });
+      var u = {
+        27: "Petroleum products may attract additional fuel levies not reflected in customs duty rates.",
+        87: "Vehicle imports often attract excise duty and age restrictions on top of customs duty.",
+        61: "Secondhand clothing (mitumba/okrika) may be subject to flat-rate or per-kg duty in some countries.",
+        62: "Woven apparel typically attracts the highest duty bands (40–45% in South Africa).",
+        30: "Essential medicines are often duty-free or attract 0% under bilateral health agreements.",
+        85: "Solar panels (HS 8541.49) are duty-free in Kenya and Rwanda under green energy policies.",
+        31: "Fertilisers are typically duty-free across Africa to support food security.",
+        10: "Rice (1006.30) attracts high protection in East Africa — up to 75% in Kenya and Tanzania."
+      };
+      return u[c] && i.push({
+        type: "warn",
+        text: u[c]
+      }), i;
+    }
+  };
+}();

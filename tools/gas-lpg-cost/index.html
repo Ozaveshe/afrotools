@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gas / LPG Cost Calculator | AfroTools</title>
+<meta name="description" content="Estimate LPG cooking gas costs with cylinder size, refill price, household or business usage, local currency, refill forecast, source notes, and export options.">
+<meta name="tool-id" content="gas-lpg-cost">
+<meta property="og:title" content="Gas / LPG Cost Calculator | AfroTools">
+<meta property="og:description" content="Estimate LPG cooking gas costs with local refill prices, cylinder size, usage frequency, cost breakdown, and safety notes.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/gas-lpg-cost.webp">
+<meta property="og:url" content="https://afrotools.com/tools/gas-lpg-cost/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta property="article:modified_time" content="2026-05-15">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Gas / LPG Cost Calculator | AfroTools">
+<meta name="twitter:description" content="Plan LPG refill cost, monthly spend, refill dates, cost per meal, and cost per burner hour in local currency.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/gas-lpg-cost.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/energy.css?v=d1d794d4">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Gas / LPG Cost Calculator",
+  "description": "Estimate LPG cooking gas costs by cylinder size, refill price, local currency, and usage pattern. Includes daily, weekly, monthly cost, refill forecast, methodology, assumptions, and safety notes.",
+  "url": "https://afrotools.com/tools/gas-lpg-cost/",
+  "inLanguage": "en",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "dateModified": "2026-05-15",
+  "image": "https://afrotools.com/assets/img/tools/gas-lpg-cost.webp"
+}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Energy & Utilities","item":"https://afrotools.com/energy/"},{"@type":"ListItem","position":3,"name":"Gas / LPG Cost Calculator","item":"https://afrotools.com/tools/gas-lpg-cost/"}]}
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#f7fafc;color:#0f172a;font-family:"DM Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.lpg-hero{background:#0d1726;color:#fff;padding:42px 0 34px}
+.lpg-shell{max-width:1180px;margin:0 auto;padding:0 22px}
+.lpg-breadcrumb{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px;color:#a8b3c7;font-size:.82rem}
+.lpg-breadcrumb a{color:#d8e5ff}
+.lpg-hero-grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;align-items:end}
+.lpg-hero h1{margin:0 0 10px;font-size:clamp(2rem,5vw,3.4rem);line-height:1.02;letter-spacing:0;font-weight:800}
+.lpg-hero p{margin:0;max-width:720px;color:#d3dbea;font-size:1rem;line-height:1.7}
+.lpg-stamps{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+.lpg-stamp{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#e7eefb;border-radius:999px;padding:8px 11px;font-size:.76rem;font-weight:800}
+.lpg-main{padding:28px 0 56px}
+.lpg-layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:22px;align-items:start}
+.lpg-panel{background:#fff;border:1px solid #dbe4f0;border-radius:12px;box-shadow:0 1px 10px rgba(15,23,42,.05)}
+.lpg-panel-head{padding:18px 20px;border-bottom:1px solid #e8eef7;display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+.lpg-panel-title{font-size:.86rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#0f172a}
+.lpg-panel-note{margin-top:5px;color:#5b677a;font-size:.86rem;line-height:1.55}
+.lpg-panel-body{padding:20px}
+.lpg-form{display:grid;gap:18px}
+.lpg-fieldset{border:0;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.lpg-field{display:grid;gap:7px}
+.lpg-label{font-size:.76rem;font-weight:900;letter-spacing:.04em;text-transform:uppercase;color:#334155}
+.lpg-help{font-size:.78rem;color:#64748b;line-height:1.45}
+.lpg-input,.lpg-select{width:100%;min-height:46px;border:1.5px solid #cfd9e8;border-radius:9px;background:#fff;color:#0f172a;font:600 1rem "DM Sans",system-ui,sans-serif;padding:10px 12px}
+.lpg-input:focus,.lpg-select:focus{outline:none;border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+.lpg-assumptions{border:1px solid #dbe4f0;border-radius:10px;background:#f8fbff;overflow:hidden}
+.lpg-assumptions summary{cursor:pointer;padding:14px 16px;font-weight:900;color:#0f172a}
+.lpg-assumptions-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding:0 16px 16px}
+.lpg-action-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.lpg-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;border:1.5px solid #cfd9e8;border-radius:999px;background:#fff;color:#0f172a;font:800 .92rem "DM Sans",system-ui,sans-serif;padding:10px 16px;cursor:pointer}
+.lpg-btn:hover{border-color:#2563eb;color:#1d4ed8}
+.lpg-btn-primary{background:#2563eb;border-color:#2563eb;color:#fff;box-shadow:0 8px 18px rgba(37,99,235,.25)}
+.lpg-btn-primary:hover{background:#1d4ed8;color:#fff}
+.lpg-results{margin-top:18px;display:grid;gap:16px}
+.lpg-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.lpg-metric{border:1px solid #dbe4f0;border-radius:10px;background:#f8fafc;padding:15px;min-height:108px}
+.lpg-metric strong{display:block;color:#0f172a;font-size:1.35rem;line-height:1.1;margin:6px 0 5px;word-break:break-word}
+.lpg-metric span{display:block;color:#64748b;font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+.lpg-metric em{display:block;color:#64748b;font-size:.78rem;font-style:normal;line-height:1.4}
+.lpg-metric-main{background:#eff6ff;border-color:#bfdbfe}
+.lpg-metric-main strong{color:#1d4ed8}
+.lpg-breakdown{width:100%;border-collapse:collapse;font-size:.9rem}
+.lpg-breakdown th,.lpg-breakdown td{padding:11px 12px;border-bottom:1px solid #e8eef7;text-align:left;vertical-align:top}
+.lpg-breakdown th{background:#f8fbff;color:#334155;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}
+.lpg-breakdown td:last-child{font-weight:800;color:#0f172a}
+.lpg-fill-guide{display:flex;gap:12px;align-items:center;border:1px solid #bfdbfe;background:#eff6ff;color:#1e3a8a;border-radius:10px;padding:13px 15px}
+.lpg-fill-icon{display:grid;place-items:center;width:40px;height:40px;flex:0 0 40px;border-radius:10px;background:#fff;color:#1d4ed8}
+.lpg-fill-icon svg{width:22px;height:22px}
+.lpg-fill-guide strong{display:block;font-size:.9rem}
+.lpg-fill-guide span{display:block;margin-top:3px;color:#475569;font-size:.8rem;line-height:1.45}
+.lpg-alert{border:1px solid #bbf7d0;background:#f0fdf4;color:#14532d;border-radius:10px;padding:13px 15px;font-size:.88rem;line-height:1.55}
+.lpg-notes{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.lpg-note-card{border:1px solid #dbe4f0;border-radius:10px;background:#fff;padding:15px}
+.lpg-note-card h2,.lpg-side-card h2,.lpg-related h2,.lpg-commercial h2{margin:0 0 9px;font-size:.86rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:#0f172a}
+.lpg-note-card ul{margin:0;padding-left:18px;color:#475569;font-size:.86rem;line-height:1.65}
+.lpg-side{display:grid;gap:14px}
+.lpg-side-card{background:#fff;border:1px solid #dbe4f0;border-radius:12px;padding:18px}
+.lpg-side-card p,.lpg-side-card li{color:#475569;font-size:.86rem;line-height:1.65}
+.lpg-side-card ul,.lpg-side-card ol{margin:0;padding-left:18px}
+.lpg-source{border-color:#bfdbfe;background:#f8fbff}
+.lpg-source time{font-weight:900;color:#1d4ed8}
+.lpg-related{margin-top:20px;background:#fff;border:1px solid #dbe4f0;border-radius:12px;padding:18px}
+.lpg-link-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.lpg-link-card{border:1px solid #dbe4f0;border-radius:10px;padding:13px;background:#f8fafc}
+.lpg-link-card strong{display:block;font-size:.92rem;color:#0f172a;margin-bottom:4px}
+.lpg-link-card span{display:block;color:#64748b;font-size:.8rem;line-height:1.45}
+.lpg-countries{margin-top:20px}
+.lpg-country-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px}
+.lpg-country-grid a{border:1px solid #dbe4f0;border-radius:9px;background:#fff;padding:10px 11px;color:#334155;font-weight:800;font-size:.84rem}
+.lpg-country-grid a:hover{border-color:#2563eb;color:#1d4ed8;background:#eff6ff}
+.lpg-commercial{margin-top:20px;border:1px solid #bfdbfe;background:#eff6ff;border-radius:12px;padding:18px}
+.lpg-commercial p{margin:0 0 12px;color:#334155;line-height:1.65}
+.lpg-commercial .lpg-action-row a{background:#fff}
+.lpg-status{min-height:1.4em;color:#1d4ed8;font-weight:800;font-size:.86rem}
+@media(max-width:980px){.lpg-hero-grid,.lpg-layout{grid-template-columns:1fr}.lpg-stamps{justify-content:flex-start}.lpg-side{grid-template-columns:1fr 1fr}.lpg-link-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.lpg-country-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:700px){.lpg-main{padding-top:18px}.lpg-fieldset,.lpg-assumptions-grid,.lpg-metrics,.lpg-notes,.lpg-side{grid-template-columns:1fr}.lpg-panel-head{display:block}.lpg-panel-body{padding:16px}.lpg-link-grid,.lpg-country-grid{grid-template-columns:1fr}.lpg-btn{width:100%}.lpg-input,.lpg-select{font-size:16px}.lpg-metric{min-height:auto}}
+@media print{afro-navbar,afro-footer,.lpg-action-row,.lpg-related,.lpg-commercial,.lpg-countries,.lpg-breadcrumb{display:none!important}.lpg-hero{background:#fff;color:#0f172a;padding:0 0 18px}.lpg-hero p{color:#334155}.lpg-layout{display:block}.lpg-panel,.lpg-side-card{box-shadow:none;break-inside:avoid}}
+</style>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/gas-lpg-cost/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/gas-lpg-cost/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/cout-gaz-lpg/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/gharama-za-gesi-lpg/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/gas-lpg-cost/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar theme="dark" active="energy"></afro-navbar>
+<header class="lpg-hero">
+  <div class="lpg-shell">
+    <nav class="lpg-breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a><span>/</span><a href="/energy/">Energy &amp; Utilities</a><span>/</span><span>Gas / LPG Cost Calculator</span>
+    </nav>
+    <div class="lpg-hero-grid">
+      <div>
+        <h1>Gas / LPG Cost Calculator</h1>
+        <p>Model cooking gas spend from your cylinder size, local refill price, usage frequency, household or business pattern, and editable consumption assumptions.</p>
+      </div>
+      <div class="lpg-stamps" aria-label="Tool status">
+        <span class="lpg-stamp">Local currency</span>
+        <span class="lpg-stamp">Refill forecast</span>
+        <span class="lpg-stamp">Updated 2026</span>
+      </div>
+    </div>
+  </div>
+</header>
+<main class="lpg-main">
+  <div class="lpg-shell">
+    <div class="lpg-layout">
+      <section class="lpg-panel" aria-labelledby="calculator-title">
+        <div class="lpg-panel-head">
+          <div>
+            <h2 class="lpg-panel-title" id="calculator-title">Calculator inputs</h2>
+            <p class="lpg-panel-note">Use a dealer quote or edit one of the starter country assumptions. All calculations run in the browser.</p>
+          </div>
+          <div class="lpg-status" id="lpgStatus" role="status" aria-live="polite"></div>
+        </div>
+        <div class="lpg-panel-body">
+          <form class="lpg-form" id="lpgForm">
+            <fieldset class="lpg-fieldset">
+              <div class="lpg-field">
+                <label class="lpg-label" for="country">Country preset</label>
+                <select class="lpg-select" id="country" name="country">
+                  <option value="NG">Nigeria</option>
+                  <option value="KE">Kenya</option>
+                  <option value="ZA">South Africa</option>
+                  <option value="GH">Ghana</option>
+                  <option value="EG">Egypt</option>
+                  <option value="ET">Ethiopia</option>
+                  <option value="TZ">Tanzania</option>
+                  <option value="UG">Uganda</option>
+                  <option value="RW">Rwanda</option>
+                  <option value="CI">Cote d'Ivoire</option>
+                  <option value="CM">Cameroon</option>
+                  <option value="SN">Senegal</option>
+                  <option value="MA">Morocco</option>
+                  <option value="TN">Tunisia</option>
+                  <option value="AO">Angola</option>
+                </select>
+                <span class="lpg-help">Preset values are editable starter assumptions, not live quotes.</span>
+              </div>
+              <div class="lpg-field">
+                <label class="lpg-label" for="currency">Local currency</label>
+                <select class="lpg-select" id="currency" name="currency">
+                  <option value="NGN">NGN - Nigerian naira</option>
+                  <option value="KES">KES - Kenyan shilling</option>
+                  <option value="ZAR">ZAR - South African rand</option>
+                  <option value="GHS">GHS - Ghanaian cedi</option>
+                  <option value="EGP">EGP - Egyptian pound</option>
+                  <option value="ETB">ETB - Ethiopian birr</option>
+                  <option value="TZS">TZS - Tanzanian shilling</option>
+                  <option value="UGX">UGX - Ugandan shilling</option>
+                  <option value="RWF">RWF - Rwandan franc</option>
+                  <option value="XOF">XOF - West African CFA franc</option>
+                  <option value="XAF">XAF - Central African CFA franc</option>
+                  <option value="MAD">MAD - Moroccan dirham</option>
+                  <option value="TND">TND - Tunisian dinar</option>
+                  <option value="AOA">AOA - Angolan kwanza</option>
+                  <option value="USD">USD - US dollar</option>
+                </select>
+              </div>
+              <div class="lpg-field">
+                <label class="lpg-label" for="cylinderKg">Cylinder size</label>
+                <select class="lpg-select" id="cylinderKg" name="cylinderKg">
+                  <option value="3">3 kg small cylinder</option>
+                  <option value="6">6 kg cylinder</option>
+                  <option value="9">9 kg cylinder</option>
+                  <option value="12">12 kg cylinder</option>
+                  <option value="12.5">12.5 kg cylinder</option>
+                  <option value="13">13 kg cylinder</option>
+                  <option value="14">14 kg cylinder</option>
+                  <option value="15">15 kg cylinder</option>
+                  <option value="25">25 kg commercial cylinder</option>
+                  <option value="50">50 kg commercial cylinder</option>
+                </select>
+              </div>
+              <div class="lpg-field">
+                <label class="lpg-label" for="refillPrice">Refill price</label>
+                <input class="lpg-input" id="refillPrice" name="refillPrice" type="number" min="0" step="0.01" inputmode="decimal" value="15000" required>
+                <span class="lpg-help">Total amount paid to refill the selected cylinder.</span>
+              </div>
+              <div class="lpg-field">
+                <label class="lpg-label" for="tareWeightKg">Cylinder tare weight (optional)</label>
+                <input class="lpg-input" id="tareWeightKg" name="tareWeightKg" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 6.20">
+                <span class="lpg-help">Empty-cylinder weight stamped on the cylinder or measured on a scale.</span>
+              </div>
+              <div class="lpg-field">
+                <label class="lpg-label" for="filledWeightKg">Filled scale weight (optional)</label>
+                <input class="lpg-input" id="filledWeightKg" name="filledWeightKg" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 18.10">
+                <span class="lpg-help">Cylinder plus LPG after refill. Delivered LPG equals filled weight minus tare weight.</span>
+              </div>
+              <div class="lpg-field">
+                <label class="lpg-label" for="mode">Usage mode</label>
+                <select class="lpg-select" id="mode" name="mode">
+                  <option value="household">Household cooking</option>
+                  <option value="business">Restaurant, stall, or catering</option>
+                </select>
+              </div>
+              <div class="lpg-field">
+                <label class="lpg-label" for="daysPerWeek">Usage frequency</label>
+                <input class="lpg-input" id="daysPerWeek" name="daysPerWeek" type="number" min="1" max="7" step="1" inputmode="numeric" value="7" required>
+                <span class="lpg-help">Cooking or service days per week.</span>
+              </div>
+              <div class="lpg-field">
+                <label class="lpg-label" for="usageBasis">Main usage model</label>
+                <select class="lpg-select" id="usageBasis" name="usageBasis">
+                  <option value="meals">Meals per day</option>
+                  <option value="hours">Burner hours per day</option>
+                </select>
+              </div>
+              <div class="lpg-field">
+                <label class="lpg-label" for="mealsPerDay">Meals per day</label>
+                <input class="lpg-input" id="mealsPerDay" name="mealsPerDay" type="number" min="0" step="0.5" inputmode="decimal" value="3">
+              </div>
+              <div class="lpg-field">
+                <label class="lpg-label" for="burnerHours">Burner hours per day</label>
+                <input class="lpg-input" id="burnerHours" name="burnerHours" type="number" min="0" step="0.25" inputmode="decimal" value="2">
+              </div>
+              <div class="lpg-field">
+                <label class="lpg-label" for="activeBurners">Active burners</label>
+                <input class="lpg-input" id="activeBurners" name="activeBurners" type="number" min="1" max="12" step="1" inputmode="numeric" value="1">
+              </div>
+            </fieldset>
+            <details class="lpg-assumptions" open>
+              <summary>Editable assumptions and methodology inputs</summary>
+              <div class="lpg-assumptions-grid">
+                <div class="lpg-field">
+                  <label class="lpg-label" for="kgPerMeal">LPG per meal</label>
+                  <input class="lpg-input" id="kgPerMeal" name="kgPerMeal" type="number" min="0.01" step="0.01" inputmode="decimal" value="0.12">
+                  <span class="lpg-help">Small household meals often use 0.08 to 0.18 kg depending on pot size and cooking time.</span>
+                </div>
+                <div class="lpg-field">
+                  <label class="lpg-label" for="kgPerHour">LPG per burner-hour</label>
+                  <input class="lpg-input" id="kgPerHour" name="kgPerHour" type="number" min="0.02" step="0.01" inputmode="decimal" value="0.20">
+                  <span class="lpg-help">A domestic burner commonly uses about 0.12 to 0.25 kg per hour.</span>
+                </div>
+                <div class="lpg-field">
+                  <label class="lpg-label" for="daysPerMonth">Billing month length</label>
+                  <input class="lpg-input" id="daysPerMonth" name="daysPerMonth" type="number" min="28" max="31" step="1" inputmode="numeric" value="30">
+                </div>
+                <div class="lpg-field">
+                  <label class="lpg-label" for="safetyBuffer">Planning buffer</label>
+                  <input class="lpg-input" id="safetyBuffer" name="safetyBuffer" type="number" min="0" max="50" step="1" inputmode="numeric" value="10">
+                  <span class="lpg-help">Adds a reserve for longer cooking, guests, or business rush periods.</span>
+                </div>
+              </div>
+            </details>
+            <div class="lpg-action-row">
+              <button class="lpg-btn lpg-btn-primary" type="submit" id="calculateBtn">Calculate LPG cost</button>
+              <button class="lpg-btn" type="button" id="copyBtn">Copy report</button>
+              <button class="lpg-btn" type="button" id="printBtn">Print</button>
+              <button class="lpg-btn" type="button" id="exportBtn">Export CSV</button>
+              <button class="lpg-btn" type="button" id="shareBtn">Share</button>
+            </div>
+          </form>
+
+          <section class="lpg-results" aria-labelledby="results-title">
+            <h2 class="lpg-panel-title" id="results-title">Cost breakdown</h2>
+            <div class="lpg-fill-guide"><span class="lpg-fill-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l2 18H4z"/><path d="M9 8a3 3 0 0 1 6 0"/><path d="M12 8v3"/></svg></span><div><strong>Optional weigh-back check</strong><span id="fillBasisSummary">Rated cylinder size is being used. Add tare and filled scale weights to verify delivered LPG.</span></div></div>
+            <div class="lpg-metrics">
+              <div class="lpg-metric lpg-metric-main"><span>Daily cost</span><strong id="dailyCost">-</strong><em id="dailyKg">Average LPG use</em></div>
+              <div class="lpg-metric"><span>Weekly cost</span><strong id="weeklyCost">-</strong><em id="weeklyKg">Usage week</em></div>
+              <div class="lpg-metric"><span>Monthly cost</span><strong id="monthlyCost">-</strong><em id="monthlyKg">Planning month</em></div>
+              <div class="lpg-metric"><span>Refill forecast</span><strong id="refillForecast">-</strong><em id="refillsMonth">Refills per month</em></div>
+              <div class="lpg-metric"><span>Cost per meal</span><strong id="costPerMeal">-</strong><em id="mealNote">Meal model</em></div>
+              <div class="lpg-metric"><span>Cost per burner hour</span><strong id="costPerHour">-</strong><em id="hourNote">Hour model</em></div>
+            </div>
+            <table class="lpg-breakdown" aria-label="LPG calculation breakdown">
+              <thead><tr><th>Item</th><th>Method</th><th>Result</th></tr></thead>
+              <tbody>
+                <tr><td>Refill price per kg</td><td>Refill price divided by measured delivered LPG or rated-size fallback</td><td id="pricePerKg">-</td></tr>
+                <tr><td>Delivered LPG basis</td><td>Filled scale weight minus tare weight; rated size is the fallback</td><td id="fillWeightResult">-</td></tr>
+                <tr><td>Fill variance</td><td>Measured LPG compared with the rated cylinder capacity</td><td id="fillVarianceResult">-</td></tr>
+                <tr><td>Primary usage estimate</td><td id="usageFormula">Meals or burner hours multiplied by frequency</td><td id="usageEstimate">-</td></tr>
+                <tr><td>Planning buffer</td><td>Reserve added to avoid under-budgeting</td><td id="bufferResult">-</td></tr>
+                <tr><td>Full-cylinder duration</td><td>Cylinder kg divided by average daily kg</td><td id="durationResult">-</td></tr>
+                <tr><td>Next refill date</td><td>Forecast assumes a full cylinder starting today</td><td id="nextRefillDate">-</td></tr>
+              </tbody>
+            </table>
+            <div class="lpg-alert" id="priceCheck">Run a calculation to see price-check notes.</div>
+            <div class="lpg-notes">
+              <article class="lpg-note-card">
+                <h2>Safety notes</h2>
+                <ul id="safetyNotes"></ul>
+              </article>
+              <article class="lpg-note-card">
+                <h2>Price-check notes</h2>
+                <ul id="priceNotes"></ul>
+              </article>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <aside class="lpg-side" aria-label="Assumptions and sources">
+        <section class="lpg-side-card lpg-source" data-tool-verification-panel>
+          <h2>Sources &amp; verification</h2>
+          <p><strong>Last verified:</strong> <time datetime="2026-05-15">15 May 2026</time>. Starter LPG prices are editable reference assumptions from the AfroTools Energy &amp; Utilities data snapshot and country pages.</p>
+          <p>LPG retail prices vary by city, dealer, delivery, cylinder ownership, subsidy rules, and fill weight. Confirm the refill price with a licensed dealer and relevant national energy regulator or petroleum authority before buying.</p>
+        </section>
+        <section class="lpg-side-card">
+          <h2>Methodology</h2>
+          <ol>
+            <li>If both scale weights are entered, delivered LPG equals filled weight minus tare weight; otherwise the rated cylinder size is used.</li>
+            <li>Price per kg equals refill price divided by the delivered-LPG basis.</li>
+            <li>Meal model: meals per day times cooking days times kg per meal.</li>
+            <li>Hour model: burner hours times active burners times kg per burner-hour.</li>
+            <li>The planning buffer is added before daily, weekly, and monthly cost are calculated.</li>
+            <li>Refill forecast divides measured delivered LPG, or the rated-size fallback, by average daily LPG use.</li>
+          </ol>
+        </section>
+        <section class="lpg-side-card">
+          <h2>Disclaimer</h2>
+          <p>This calculator is an estimate only. It does not replace dealer quotes, official price notices, appliance manuals, fire-safety rules, or advice from a qualified gas technician.</p>
+        </section>
+      </aside>
+    </div>
+
+    <section class="lpg-related" aria-labelledby="related-title">
+      <h2 id="related-title">Related energy tools</h2>
+      <div class="lpg-link-grid">
+        <a class="lpg-link-card" href="/tools/outage-cost/"><strong>Outage cost</strong><span>Estimate business losses when power fails.</span></a>
+        <a class="lpg-link-card" href="/tools/generator-fuel/"><strong>Generator fuel</strong><span>Compare fuel spend against LPG and grid power.</span></a>
+        <a class="lpg-link-card" href="/tools/electricity-estimator/"><strong>Electricity estimator</strong><span>Model grid kWh and household bills.</span></a>
+        <a class="lpg-link-card" href="/tools/solar-calculator/"><strong>Solar calculator</strong><span>Size panels, batteries, and inverter needs.</span></a>
+      </div>
+    </section>
+
+    <section class="lpg-related lpg-countries" aria-labelledby="country-title">
+      <h2 id="country-title">Country LPG pages</h2>
+      <div class="lpg-country-grid">
+        <a href="/tools/gas-lpg-cost/nigeria/">Nigeria</a>
+        <a href="/tools/gas-lpg-cost/kenya/">Kenya</a>
+        <a href="/tools/gas-lpg-cost/south-africa/">South Africa</a>
+        <a href="/tools/gas-lpg-cost/ghana/">Ghana</a>
+        <a href="/tools/gas-lpg-cost/egypt/">Egypt</a>
+        <a href="/tools/gas-lpg-cost/ethiopia/">Ethiopia</a>
+        <a href="/tools/gas-lpg-cost/tanzania/">Tanzania</a>
+        <a href="/tools/gas-lpg-cost/uganda/">Uganda</a>
+        <a href="/tools/gas-lpg-cost/rwanda/">Rwanda</a>
+        <a href="/tools/gas-lpg-cost/cote-divoire/">Cote d'Ivoire</a>
+        <a href="/tools/gas-lpg-cost/cameroon/">Cameroon</a>
+        <a href="/tools/gas-lpg-cost/senegal/">Senegal</a>
+        <a href="/tools/gas-lpg-cost/morocco/">Morocco</a>
+        <a href="/tools/gas-lpg-cost/tunisia/">Tunisia</a>
+        <a href="/tools/gas-lpg-cost/angola/">Angola</a>
+      </div>
+    </section>
+
+    <section class="lpg-commercial" aria-labelledby="business-title">
+      <h2 id="business-title">For utilities, LPG dealers, and energy publishers</h2>
+      <p>Need this calculator as a branded widget, sponsored placement, API-backed tariff flow, or custom dealer quote tool? AfroTools can adapt the same model for your local prices and lead capture path.</p>
+      <div class="lpg-action-row">
+        <a class="lpg-btn" href="/widgets/">Widgets</a>
+        <a class="lpg-btn" href="/custom-calculators/">Custom calculators</a>
+        <a class="lpg-btn" href="/api/">API</a>
+        <a class="lpg-btn" href="/business-enquiry/">Business enquiry</a>
+      </div>
+    </section>
+
+  </div>
+</main>
+<afro-related-tools data-ssr="1" category="energy" current="gas-lpg-cost">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/solar-roi/" data-related-tool data-id="solar-roi" data-name="Solar Panel ROI Calculator" data-category="energy" data-icon="SP" data-desc="Compare solar, battery, generator, outage loss, financing, maintenance, payback, and affordability risk.">Solar Panel ROI Calculator</a></li><li><a href="/tools/generator-fuel/" data-related-tool data-id="generator-fuel" data-name="Generator Fuel Cost Calculator" data-category="energy" data-icon="GF" data-desc="Calculate generator fuel cost across 15 African markets. Daily litres, monthly spend, maintenance, and cost per kWh.">Generator Fuel Cost Calculator</a></li><li><a href="/tools/electricity-tariff/" data-related-tool data-id="electricity-tariff" data-name="Electricity Tariff Calculator" data-category="energy" data-icon="ET" data-desc="Estimate electricity bills for supported African countries. Residential, commercial, industrial, and tiered tariff bands">Electricity Tariff Calculator</a></li><li><a href="/tools/solar-vs-generator/" data-related-tool data-id="solar-vs-generator" data-name="Solar vs Generator" data-category="energy" data-icon="SV" data-desc="Compare solar and generator total ownership across top African energy markets. Fuel, maintenance, battery, and payback.">Solar vs Generator</a></li><li><a href="/tools/prepaid-meter/" data-related-tool data-id="prepaid-meter" data-name="Prepaid Meter Calculator" data-category="energy" data-icon="PM" data-desc="Estimate prepaid electricity units in any African country. Token amount, service charges, account type, and days of supp">Prepaid Meter Calculator</a></li><li><a href="/tools/electricity-bill-verify/" data-related-tool data-id="electricity-bill-verify" data-name="Electricity Bill Verifier" data-category="energy" data-icon="EB" data-desc="Check meter readings against expected tariff charges. Spot overbilling, estimated readings, and unusual variance.">Electricity Bill Verifier</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+<script src="/assets/js/energy-tool-assistant.js?v=b5a3b994"></script>
+<script>
+(function(){
+  "use strict";
+
+  var COUNTRIES = {
+    NG:{name:"Nigeria",currency:"NGN",cylinder:12.5,price:15000,agency:"national energy regulator or petroleum authority"},
+    KE:{name:"Kenya",currency:"KES",cylinder:13,price:3000,agency:"energy regulator or petroleum authority"},
+    ZA:{name:"South Africa",currency:"ZAR",cylinder:9,price:280,agency:"energy regulator or petroleum authority"},
+    GH:{name:"Ghana",currency:"GHS",cylinder:14,price:420,agency:"energy regulator or petroleum authority"},
+    EG:{name:"Egypt",currency:"EGP",cylinder:12,price:145,agency:"energy regulator or petroleum authority"},
+    ET:{name:"Ethiopia",currency:"ETB",cylinder:12,price:1800,agency:"energy authority"},
+    TZ:{name:"Tanzania",currency:"TZS",cylinder:15,price:60000,agency:"energy and water utilities regulator"},
+    UG:{name:"Uganda",currency:"UGX",cylinder:12,price:120000,agency:"electricity regulatory authority or petroleum regulator"},
+    RW:{name:"Rwanda",currency:"RWF",cylinder:12,price:25000,agency:"utilities regulatory authority"},
+    CI:{name:"Cote d'Ivoire",currency:"XOF",cylinder:12,price:7500,agency:"energy regulator"},
+    CM:{name:"Cameroon",currency:"XAF",cylinder:12,price:8000,agency:"electricity sector regulator or petroleum authority"},
+    SN:{name:"Senegal",currency:"XOF",cylinder:12,price:9500,agency:"energy regulator"},
+    MA:{name:"Morocco",currency:"MAD",cylinder:12,price:120,agency:"energy regulator"},
+    TN:{name:"Tunisia",currency:"TND",cylinder:13,price:12,agency:"energy regulator"},
+    AO:{name:"Angola",currency:"AOA",cylinder:15,price:5000,agency:"energy regulator"}
+  };
+
+  var lastReport = null;
+  var ids = [
+    "country","currency","cylinderKg","refillPrice","tareWeightKg","filledWeightKg","mode","daysPerWeek","usageBasis",
+    "mealsPerDay","burnerHours","activeBurners","kgPerMeal","kgPerHour","daysPerMonth","safetyBuffer"
+  ];
+  var el = {};
+  ids.forEach(function(id){ el[id] = document.getElementById(id); });
+
+  function byId(id){ return document.getElementById(id); }
+  function numberValue(id, fallback){
+    var value = parseFloat(el[id] && el[id].value);
+    return Number.isFinite(value) ? value : fallback;
+  }
+  function clamp(value, min, max){ return Math.max(min, Math.min(max, value)); }
+  function round(value, places){
+    var p = Math.pow(10, places || 2);
+    return Math.round(value * p) / p;
+  }
+  function money(value, currency){
+    if(!Number.isFinite(value)) return "-";
+    try {
+      return new Intl.NumberFormat(undefined, {
+        style:"currency",
+        currency:currency,
+        maximumFractionDigits:value >= 1000 ? 0 : 2
+      }).format(value);
+    } catch(error) {
+      return currency + " " + (value >= 1000 ? Math.round(value).toLocaleString() : value.toFixed(2));
+    }
+  }
+  function dateFromNow(days){
+    var date = new Date();
+    date.setDate(date.getDate() + Math.max(1, Math.ceil(days)));
+    return date.toLocaleDateString(undefined, { year:"numeric", month:"short", day:"numeric" });
+  }
+  function setText(id, value){ byId(id).textContent = value; }
+  function renderList(id, items){
+    byId(id).innerHTML = items.map(function(item){ return "<li>" + escapeHtml(item) + "</li>"; }).join("");
+  }
+  function escapeHtml(value){
+    return String(value).replace(/[&<>"']/g,function(ch){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch];
+    });
+  }
+  function csvCell(value){
+    return "\"" + String(value == null ? "" : value).replace(/"/g, "\"\"") + "\"";
+  }
+
+  function applyCountryPreset(){
+    var preset = COUNTRIES[el.country.value] || COUNTRIES.NG;
+    el.currency.value = preset.currency;
+    el.cylinderKg.value = String(preset.cylinder);
+    el.refillPrice.value = String(preset.price);
+    el.tareWeightKg.value = "";
+    el.filledWeightKg.value = "";
+    calculate();
+  }
+
+  function calculate(event){
+    if(event) event.preventDefault();
+    var country = COUNTRIES[el.country.value] || COUNTRIES.NG;
+    var currency = el.currency.value || country.currency;
+    var cylinderKg = Math.max(0.1, numberValue("cylinderKg", country.cylinder));
+    var refillPrice = Math.max(0, numberValue("refillPrice", country.price));
+    var tareWeightKg = numberValue("tareWeightKg", NaN);
+    var filledWeightKg = numberValue("filledWeightKg", NaN);
+    var hasAnyWeight = Number.isFinite(tareWeightKg) || Number.isFinite(filledWeightKg);
+    var hasMeasuredFill = Number.isFinite(tareWeightKg) && Number.isFinite(filledWeightKg) && tareWeightKg >= 0 && filledWeightKg > tareWeightKg;
+    var deliveredKg = hasMeasuredFill ? filledWeightKg - tareWeightKg : cylinderKg;
+    var fillPct = deliveredKg / cylinderKg * 100;
+    var fillGapKg = cylinderKg - deliveredKg;
+    var fillShortfallPct = fillGapKg / cylinderKg * 100;
+    var daysPerWeek = clamp(numberValue("daysPerWeek", 7), 1, 7);
+    var basis = el.usageBasis.value;
+    var mealsPerDay = Math.max(0, numberValue("mealsPerDay", 0));
+    var burnerHours = Math.max(0, numberValue("burnerHours", 0));
+    var activeBurners = clamp(numberValue("activeBurners", 1), 1, 12);
+    var kgPerMeal = Math.max(0.01, numberValue("kgPerMeal", 0.12));
+    var kgPerHour = Math.max(0.01, numberValue("kgPerHour", 0.20));
+    var daysPerMonth = clamp(numberValue("daysPerMonth", 30), 28, 31);
+    var bufferPct = clamp(numberValue("safetyBuffer", 10), 0, 50) / 100;
+    var pricePerKg = refillPrice / deliveredKg;
+    var weeklyBaseKg;
+    var formula;
+
+    if(basis === "hours"){
+      weeklyBaseKg = burnerHours * activeBurners * daysPerWeek * kgPerHour;
+      formula = burnerHours + " burner hours/day x " + activeBurners + " burner(s) x " + daysPerWeek + " days/week x " + kgPerHour + " kg/hour";
+    } else {
+      weeklyBaseKg = mealsPerDay * daysPerWeek * kgPerMeal;
+      formula = mealsPerDay + " meals/day x " + daysPerWeek + " days/week x " + kgPerMeal + " kg/meal";
+    }
+
+    if(weeklyBaseKg <= 0 || refillPrice <= 0){
+      byId("lpgStatus").textContent = "Enter a refill price and usage amount.";
+      return null;
+    }
+
+    var weeklyKg = weeklyBaseKg * (1 + bufferPct);
+    var dailyKg = weeklyKg / 7;
+    var monthlyKg = dailyKg * daysPerMonth;
+    var dailyCost = dailyKg * pricePerKg;
+    var weeklyCost = weeklyKg * pricePerKg;
+    var monthlyCost = monthlyKg * pricePerKg;
+    var daysPerCylinder = deliveredKg / dailyKg;
+    var refillsPerMonth = monthlyKg / deliveredKg;
+    var mealCountWeek = mealsPerDay * daysPerWeek;
+    var costPerMeal = mealCountWeek > 0 ? weeklyCost / mealCountWeek : 0;
+    var costPerHour = activeBurners * kgPerHour * pricePerKg;
+    var presetPerKg = country.price / country.cylinder;
+    var variance = presetPerKg > 0 ? (pricePerKg - presetPerKg) / presetPerKg : 0;
+    var primaryUnit = basis === "hours" ? "burner-hour model" : "meal model";
+    var forecast = Math.max(1, Math.round(daysPerCylinder)) + " days";
+    var nextDate = dateFromNow(daysPerCylinder);
+    var businessPrefix = el.mode.value === "business" ? "Business service pattern" : "Household cooking pattern";
+
+    setText("dailyCost", money(dailyCost, currency));
+    setText("dailyKg", round(dailyKg, 2) + " kg/day average");
+    setText("weeklyCost", money(weeklyCost, currency));
+    setText("weeklyKg", round(weeklyKg, 2) + " kg/week with buffer");
+    setText("monthlyCost", money(monthlyCost, currency));
+    setText("monthlyKg", round(monthlyKg, 2) + " kg/month");
+    setText("refillForecast", forecast);
+    setText("refillsMonth", round(refillsPerMonth, 2) + " refills/month");
+    setText("costPerMeal", mealCountWeek > 0 ? money(costPerMeal, currency) : "-");
+    setText("mealNote", mealCountWeek > 0 ? mealCountWeek + " meals/week" : "Add meals to estimate");
+    setText("costPerHour", money(costPerHour, currency));
+    setText("hourNote", activeBurners + " burner(s) at " + kgPerHour + " kg/hour");
+    setText("pricePerKg", money(pricePerKg, currency) + " per kg");
+    var fillBasisSummary;
+    var fillWeightResult;
+    var fillVarianceResult;
+    if(hasMeasuredFill){
+      fillBasisSummary = "Measured fill used: " + round(deliveredKg, 2) + " kg LPG from " + round(filledWeightKg, 2) + " kg filled minus " + round(tareWeightKg, 2) + " kg tare.";
+      fillWeightResult = round(deliveredKg, 2) + " kg measured LPG (" + round(fillPct, 1) + "% of " + cylinderKg + " kg rating)";
+      if(Math.abs(fillGapKg) < 0.05){
+        fillVarianceResult = "Measured fill matches the rated capacity.";
+      } else if(fillGapKg > 0){
+        fillVarianceResult = round(fillGapKg, 2) + " kg below rated (" + round(fillShortfallPct, 1) + "% shortfall)";
+      } else {
+        fillVarianceResult = round(Math.abs(fillGapKg), 2) + " kg above rated (" + round(Math.abs(fillShortfallPct), 1) + "%); verify the cylinder size and scale.";
+      }
+    } else if(hasAnyWeight){
+      fillBasisSummary = "Weight check is incomplete or invalid, so the rated " + cylinderKg + " kg capacity is still being used.";
+      fillWeightResult = "Rated " + cylinderKg + " kg fallback";
+      fillVarianceResult = "Enter both weights with filled weight greater than tare weight.";
+    } else {
+      fillBasisSummary = "Rated " + cylinderKg + " kg capacity is being used. Add tare and filled scale weights to verify delivered LPG.";
+      fillWeightResult = "Rated " + cylinderKg + " kg fallback";
+      fillVarianceResult = "Not measured";
+    }
+    setText("fillBasisSummary", fillBasisSummary);
+    setText("fillWeightResult", fillWeightResult);
+    setText("fillVarianceResult", fillVarianceResult);
+    setText("usageFormula", formula);
+    setText("usageEstimate", round(weeklyBaseKg, 2) + " kg/week before buffer");
+    setText("bufferResult", Math.round(bufferPct * 100) + "% buffer gives " + round(weeklyKg, 2) + " kg/week");
+    setText("durationResult", "About " + round(daysPerCylinder, 1) + " days per " + (hasMeasuredFill ? "measured " + round(deliveredKg, 2) + " kg fill" : "rated " + cylinderKg + " kg fallback"));
+    setText("nextRefillDate", nextDate);
+
+    var priceSummary;
+    var priceNotes = [
+      "Your entered refill quote equals " + money(pricePerKg, currency) + " per kg.",
+      "Check the cylinder tare weight and filled weight so the refill is priced on actual LPG, not only the cylinder label.",
+      "Delivery, deposits, regulator hoses, and cylinder swaps can change the final cash price."
+    ];
+    if(hasMeasuredFill){
+      priceNotes.unshift("Scale check: " + round(filledWeightKg, 2) + " kg filled minus " + round(tareWeightKg, 2) + " kg tare = " + round(deliveredKg, 2) + " kg delivered LPG.");
+    }
+    if(variance > 0.15){
+      priceSummary = "Your quote is more than 15% above the starter " + country.name + " assumption. Compare at least two dealers before refill.";
+      priceNotes.push("Ask whether transport, delivery, or cylinder exchange fees are included.");
+    } else if(variance < -0.15){
+      priceSummary = "Your quote is more than 15% below the starter " + country.name + " assumption. Verify fill weight and dealer safety credentials.";
+      priceNotes.push("Very low prices can reflect underfilled cylinders or a different cylinder size.");
+    } else {
+      priceSummary = "Your quote is close to the editable starter assumption for " + country.name + ". Still confirm the price on refill day.";
+    }
+    if(hasMeasuredFill && fillShortfallPct > 5){
+      priceSummary = "Measured LPG is " + round(fillShortfallPct, 1) + "% below the rated cylinder capacity. Ask the dealer to confirm fill weight. " + priceSummary;
+      priceNotes.push("The measured shortfall changes price per kg, cylinder duration, and planned refill count in this report.");
+    } else if(hasAnyWeight && !hasMeasuredFill){
+      priceSummary = "The weight check is incomplete or invalid, so calculations use rated capacity. " + priceSummary;
+    }
+    setText("priceCheck", priceSummary + " Reference path: local dealer quote plus " + country.agency + ".");
+
+    var safetyNotes = [
+      "Keep LPG cylinders upright, outside heat, and in a ventilated area.",
+      "Close the valve after cooking and use soapy water to check suspected leaks.",
+      "Replace cracked hoses, weak clips, damaged regulators, and rusty cylinders before the next refill."
+    ];
+    if(daysPerCylinder < 10){
+      safetyNotes.push("High refill frequency suggests heavy use. Keep a spare cylinder only if storage is safe and local rules allow it.");
+    }
+    if(cylinderKg >= 25){
+      safetyNotes.push("Large cylinders need stable storage, clear handling space, and trained handling for business kitchens.");
+    }
+    renderList("safetyNotes", safetyNotes);
+    renderList("priceNotes", priceNotes);
+
+    lastReport = {
+      country:country.name,
+      mode:businessPrefix,
+      currency:currency,
+      cylinderKg:cylinderKg,
+      refillPrice:refillPrice,
+      tareWeightKg:hasMeasuredFill?tareWeightKg:null,
+      filledWeightKg:hasMeasuredFill?filledWeightKg:null,
+      deliveredKg:deliveredKg,
+      fillBasis:hasMeasuredFill?"measured":"rated fallback",
+      fillVariance:fillVarianceResult,
+      pricePerKg:pricePerKg,
+      basis:primaryUnit,
+      formula:formula,
+      dailyKg:dailyKg,
+      weeklyKg:weeklyKg,
+      monthlyKg:monthlyKg,
+      dailyCost:dailyCost,
+      weeklyCost:weeklyCost,
+      monthlyCost:monthlyCost,
+      daysPerCylinder:daysPerCylinder,
+      refillsPerMonth:refillsPerMonth,
+      costPerMeal:costPerMeal,
+      costPerHour:costPerHour,
+      nextRefillDate:nextDate,
+      priceSummary:priceSummary
+    };
+    try { localStorage.setItem("afro_lpg_cost_last", JSON.stringify(lastReport)); } catch(error) {}
+    byId("lpgStatus").textContent = hasAnyWeight && !hasMeasuredFill ? "Check both scale weights" : hasMeasuredFill ? "Measured fill used" : "Updated";
+    return lastReport;
+  }
+
+  function reportLines(){
+    var report = lastReport || calculate();
+    if(!report) return [];
+    return [
+      "AfroTools LPG cost estimate",
+      "Country: " + report.country,
+      "Mode: " + report.mode,
+      "Cylinder: " + report.cylinderKg + " kg",
+      "Refill price: " + money(report.refillPrice, report.currency),
+      "Delivered LPG basis: " + round(report.deliveredKg, 2) + " kg (" + report.fillBasis + ")",
+      "Fill variance: " + report.fillVariance,
+      "Price per kg: " + money(report.pricePerKg, report.currency),
+      "Usage model: " + report.formula,
+      "Daily cost: " + money(report.dailyCost, report.currency) + " (" + round(report.dailyKg, 2) + " kg)",
+      "Weekly cost: " + money(report.weeklyCost, report.currency) + " (" + round(report.weeklyKg, 2) + " kg)",
+      "Monthly cost: " + money(report.monthlyCost, report.currency) + " (" + round(report.monthlyKg, 2) + " kg)",
+      "Refill forecast: about " + round(report.daysPerCylinder, 1) + " days; next refill around " + report.nextRefillDate,
+      "Refills per month: " + round(report.refillsPerMonth, 2),
+      "Cost per meal: " + (report.costPerMeal ? money(report.costPerMeal, report.currency) : "not enough meal data"),
+      "Cost per burner hour: " + money(report.costPerHour, report.currency),
+      "Price-check note: " + report.priceSummary,
+      "Disclaimer: estimate only. Confirm current dealer prices, fill weight, and local safety rules."
+    ];
+  }
+
+  function copyReport(){
+    var text = reportLines().join("\n");
+    if(!text) return Promise.resolve();
+    function fallbackCopy(){
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); } catch(error) {}
+      ta.remove();
+      return Promise.resolve();
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      return navigator.clipboard.writeText(text).catch(fallbackCopy);
+    }
+    return fallbackCopy();
+  }
+
+  function exportCsv(){
+    var report = lastReport || calculate();
+    if(!report) return;
+    var rows = [
+      ["metric","value"],
+      ["country",report.country],
+      ["mode",report.mode],
+      ["currency",report.currency],
+      ["cylinder_kg",report.cylinderKg],
+      ["refill_price",round(report.refillPrice, 2)],
+      ["tare_weight_kg",report.tareWeightKg == null ? "" : round(report.tareWeightKg, 2)],
+      ["filled_weight_kg",report.filledWeightKg == null ? "" : round(report.filledWeightKg, 2)],
+      ["delivered_lpg_kg",round(report.deliveredKg, 2)],
+      ["fill_basis",report.fillBasis],
+      ["fill_variance",report.fillVariance],
+      ["price_per_kg",round(report.pricePerKg, 2)],
+      ["usage_formula",report.formula],
+      ["daily_kg",round(report.dailyKg, 3)],
+      ["weekly_kg",round(report.weeklyKg, 3)],
+      ["monthly_kg",round(report.monthlyKg, 3)],
+      ["daily_cost",round(report.dailyCost, 2)],
+      ["weekly_cost",round(report.weeklyCost, 2)],
+      ["monthly_cost",round(report.monthlyCost, 2)],
+      ["days_per_cylinder",round(report.daysPerCylinder, 2)],
+      ["refills_per_month",round(report.refillsPerMonth, 2)],
+      ["next_refill_date",report.nextRefillDate],
+      ["cost_per_meal",round(report.costPerMeal, 2)],
+      ["cost_per_burner_hour",round(report.costPerHour, 2)]
+    ];
+    var csv = rows.map(function(row){ return row.map(csvCell).join(","); }).join("\n");
+    var blob = new Blob([csv], { type:"text/csv;charset=utf-8" });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement("a");
+    link.href = url;
+    link.download = "afrotools-lpg-cost-estimate.csv";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+  }
+
+  document.getElementById("lpgForm").addEventListener("submit", calculate);
+  el.country.addEventListener("change", applyCountryPreset);
+  ids.filter(function(id){ return id !== "country"; }).forEach(function(id){
+    if(el[id]) {
+      el[id].addEventListener("input", calculate);
+      el[id].addEventListener("change", calculate);
+    }
+  });
+  document.getElementById("copyBtn").addEventListener("click", function(){
+    copyReport().then(function(){
+      byId("copyBtn").textContent = "Copied";
+      setTimeout(function(){ byId("copyBtn").textContent = "Copy report"; }, 1400);
+    });
+  });
+  document.getElementById("printBtn").addEventListener("click", function(){ window.print(); });
+  document.getElementById("exportBtn").addEventListener("click", exportCsv);
+  document.getElementById("shareBtn").addEventListener("click", function(){
+    var text = reportLines().join("\n");
+    if(navigator.share){
+      navigator.share({ title:"AfroTools LPG cost estimate", text:text, url:location.href }).catch(function(){});
+    } else {
+      copyReport().then(function(){ byId("shareBtn").textContent = "Copied link"; setTimeout(function(){ byId("shareBtn").textContent = "Share"; }, 1400); });
+    }
+  });
+  applyCountryPreset();
+}());
+</script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

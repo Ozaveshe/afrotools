@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AfroTools API Documentation | AfroTools</title>
+  <meta name="description" content="Developer documentation for AfroTools API v1: authentication, sandbox keys, PAYE, tax rates, VAT, FX, fuel, central-bank rates, countries, status, rate limits, and errors.">
+  <meta property="og:title" content="AfroTools API Documentation">
+  <meta property="og:url" content="https://afrotools.com/api/docs/">
+  <meta property="og:type" content="website">
+  <meta property="og:description" content="Start in sandbox, create a dashboard key, and integrate African tax, VAT, FX, fuel, rate, and country data.">
+  <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="AfroTools">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AfroTools API Documentation">
+  <meta name="twitter:description" content="Docs for AfroTools API v1, sandbox keys, free keys, paid pilots, and public African data endpoints.">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    body{margin:0;font-family:'DM Sans',system-ui,sans-serif;color:#111827;background:#fff}
+    .docs-shell{--blue:#0062cc;--green:#008751;--ink:#111827;--muted:#5f6b7a;--line:#e5e7eb;--soft:#f7f9fc;--code:#0b1220}
+    .hero{background:#f7f9fc;border-bottom:1px solid var(--line);padding:82px 24px 46px}
+    .hero-inner{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:1fr 360px;gap:44px;align-items:center}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:900;color:#0f5132;background:#eaf7ef;border:1px solid #bfe8cf;border-radius:999px;padding:6px 12px;margin-bottom:16px}
+    .eyebrow::before{content:'';width:8px;height:8px;background:var(--green);border-radius:50%}
+    h1{font-size:clamp(34px,6vw,56px);line-height:1.05;letter-spacing:-.02em;margin:0 0 16px;color:var(--ink)}
+    .lead{font-size:18px;color:#354052;line-height:1.65;margin:0;max-width:760px}
+    .quick-card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:20px;box-shadow:0 12px 30px rgba(17,24,39,.08)}
+    .quick-card strong{display:block;font-size:16px;margin-bottom:8px}.quick-card p{font-size:13px;color:var(--muted);line-height:1.55;margin:0 0 14px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;border-radius:8px;padding:10px 15px;font-weight:900;text-decoration:none;border:1px solid transparent}
+    .btn-primary{background:var(--blue);color:#fff}.btn-secondary{background:#f3f6fa;color:#111827;border-color:#d7dee8}
+    .layout{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:240px minmax(0,1fr);gap:42px;padding:0 24px}
+    .side{position:sticky;top:76px;align-self:start;max-height:calc(100vh - 86px);overflow:auto;padding:34px 0}
+    .side h3{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#8a96a6;margin:20px 0 8px}.side h3:first-child{margin-top:0}
+    .side a{display:block;text-decoration:none;color:#5f6b7a;font-size:13px;padding:7px 10px;border-radius:7px}.side a:hover{background:#f3f6fa;color:#111827}
+    .content{padding:34px 0 78px;min-width:0}
+    .content section{padding:30px 0;border-top:1px solid var(--line)}.content section:first-child{border-top:none;padding-top:0}
+    h2{font-size:clamp(24px,4vw,34px);line-height:1.16;margin:0 0 14px;color:#111827}h3{font-size:19px;margin:24px 0 10px}
+    p{color:#455160;line-height:1.7;margin:0 0 16px}.small{font-size:13px;color:var(--muted)}
+    code{font-family:Consolas,'JetBrains Mono',monospace;background:#eef2f7;border-radius:5px;padding:2px 5px;font-size:.9em;color:#182235}
+    pre{background:var(--code);color:#d8e6f8;border-radius:8px;padding:18px;overflow:auto;font:13px/1.7 Consolas,'JetBrains Mono',monospace;margin:14px 0 22px;white-space:pre}
+    .note{background:#eef8f2;border:1px solid #bfe8cf;color:#0f5132;border-radius:8px;padding:14px 16px;margin:14px 0 22px;font-size:14px;line-height:1.6}
+    .warn{background:#fff7ed;border:1px solid #fed7aa;color:#8a4600;border-radius:8px;padding:14px 16px;margin:14px 0 22px;font-size:14px;line-height:1.6}
+    .endpoint-table,.param-table,.error-table{width:100%;border-collapse:collapse;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:16px 0 24px}
+    th,td{padding:12px 12px;border-bottom:1px solid var(--line);font-size:13px;text-align:left;vertical-align:top}
+    thead th{background:#f7f9fc;text-transform:uppercase;letter-spacing:.05em;font-size:11px;color:#4b5563}
+    tbody tr:last-child td{border-bottom:none}.method{display:inline-flex;border-radius:5px;color:#fff;background:#16a34a;font-size:11px;font-weight:900;padding:3px 7px}.method.post{background:#2563eb}
+    .endpoint-box{border:1px solid var(--line);border-radius:8px;padding:16px;margin:14px 0 18px;background:#fff}.endpoint-box header{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.endpoint-box code{font-size:13px;background:#f3f6fa}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.tile{border:1px solid var(--line);border-radius:8px;padding:18px;background:#fff}.tile h3{margin:0 0 8px;font-size:17px}.tile p{font-size:14px;margin:0}
+    .copy-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.copy-row .btn{font-size:13px}
+    @media(max-width:900px){.hero-inner{grid-template-columns:1fr}.layout{grid-template-columns:1fr}.side{position:static;display:flex;overflow:auto;gap:6px;padding:18px 0;border-bottom:1px solid var(--line)}.side h3{display:none}.side a{white-space:nowrap;background:#f3f6fa}.grid{grid-template-columns:1fr}}
+    @media(max-width:620px){.hero{padding:68px 18px 38px}.layout{padding:0 18px}.content{padding-bottom:54px}.endpoint-table,.param-table,.error-table{display:block;overflow:auto}.endpoint-table table,.param-table table,.error-table table{min-width:720px}}
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "AfroTools API Documentation",
+    "url": "https://afrotools.com/api/docs/",
+    "about": "African tax, FX, fuel, rate, and country APIs"
+  }
+  </script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/api/docs/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/api/docs/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/docs/api/changelog">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/api/docs/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<main class="docs-shell">
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="eyebrow">API v1 documentation</div>
+        <h1>Start in sandbox. Move to a reviewed API pilot.</h1>
+        <p class="lead">AfroTools API gives product teams African PAYE, tax-rate, VAT, FX, fuel, central-bank, and country data through predictable JSON endpoints.</p>
+      </div>
+      <aside class="quick-card">
+        <strong>Base URL</strong>
+        <p><code>https://afrotools.com/api/v1</code></p>
+        <p>Free tier: 100 requests/day and 3,000/month.</p>
+        <a class="btn btn-primary" href="/auth/?mode=signup&amp;intent=api-key&amp;next=/dashboard/api/">Create free key</a>
+      </aside>
+    </div>
+  </section>
+
+  <div class="layout">
+    <nav class="side" aria-label="API documentation sections">
+      <h3>Start</h3>
+      <a href="#quickstart">Quickstart</a>
+      <a href="#auth">Authentication</a>
+      <a href="#limits">Rate limits</a>
+      <a href="#catalog">Endpoint catalog</a>
+      <a href="#salarypadi-catalog">SalaryPadi catalog</a>
+      <h3>Endpoints</h3>
+      <a href="#paye">PAYE</a>
+      <a href="#tax-rates">Tax rates</a>
+      <a href="#vat">VAT</a>
+      <a href="#fx">FX</a>
+      <a href="#fuel">Fuel</a>
+      <a href="#rates">Rates</a>
+      <a href="#countries">Countries</a>
+      <a href="#status">Status</a>
+      <h3>Support</h3>
+      <a href="#errors">Errors</a>
+      <a href="#production">Production</a>
+    </nav>
+
+    <article class="content">
+      <section id="quickstart">
+        <h2>Quickstart</h2>
+        <p>Use the demo sandbox key below for deterministic development responses. Replace it with a dashboard key when your route needs authenticated production access.</p>
+        <div class="note">Test keys return deterministic sandbox data. Keys beginning with <code>afro_test_</code> are safe for documentation, demos, and local development.</div>
+<pre>curl -X POST "https://afrotools.com/api/v1/tax/paye" \
+  -H "x-api-key: afro_test_demo123456789" \
+  -H "Content-Type: application/json" \
+  -d '{"country":"NG","grossMonthly":500000}'</pre>
+        <p class="small">Expected result: <code>200 OK</code> with <code>status</code>, <code>sandbox</code>, and <code>result.netMonthly</code>.</p>
+      </section>
+
+      <section id="auth">
+        <h2>Authentication</h2>
+        <p>Send API keys with the <code>x-api-key</code> header. Query-string keys are accepted for quick testing, but headers are recommended for production.</p>
+<pre># Header, recommended
+x-api-key: afro_live_xxxxxxxxxxxxx
+
+# Query parameter, quick testing only
+?api_key=afro_live_xxxxxxxxxxxxx</pre>
+        <div class="grid">
+          <div class="tile">
+            <h3>Sandbox keys</h3>
+            <p><code>afro_test_*</code> keys return deterministic sandbox data and use sandbox free-tier limits.</p>
+          </div>
+          <div class="tile">
+            <h3>Live keys</h3>
+            <p><code>afro_live_*</code> keys are created after sign-in and email verification in the API dashboard.</p>
+          </div>
+          <div class="tile">
+            <h3>Service keys</h3>
+            <p>Named partner integrations use dedicated server-side keys, endpoint scopes, and negotiated quotas. They are not browser credentials.</p>
+          </div>
+        </div>
+        <div class="warn">Do not expose production keys in browser JavaScript, public mobile apps, logs, screenshots, or support tickets. Use your backend as a proxy.</div>
+      </section>
+
+      <section id="limits">
+        <h2>Rate limits</h2>
+        <table class="param-table">
+          <thead><tr><th>Tier</th><th>Daily limit</th><th>Monthly limit</th><th>Activation</th></tr></thead>
+          <tbody>
+            <tr><td>Free API</td><td>100</td><td>3,000</td><td>Verified dashboard key</td></tr>
+            <tr><td>API Growth</td><td>10,000</td><td>300,000</td><td>Manual paid pilot</td></tr>
+            <tr><td>API Pro</td><td>100,000</td><td>3,000,000</td><td>Manual paid pilot</td></tr>
+            <tr><td>Enterprise/custom</td><td>Custom</td><td>Custom</td><td>Contracted access</td></tr>
+          </tbody>
+        </table>
+        <p>Where a route exposes rate-limit headers, they use <code>X-RateLimit-Limit</code> and <code>X-RateLimit-Remaining</code>. Daily limits reset at midnight UTC.</p>
+      </section>
+
+      <section id="catalog">
+        <h2>Endpoint catalog</h2>
+        <table class="endpoint-table">
+          <thead><tr><th>Method</th><th>Path</th><th>Use</th><th>Try first with</th></tr></thead>
+          <tbody>
+            <tr><td><span class="method post">POST</span></td><td><code>/api/v1/tax/paye</code></td><td>Calculate PAYE salary tax for supported African countries.</td><td>Sandbox key</td></tr>
+            <tr><td><span class="method">GET</span></td><td><code>/api/v1/tax/rates</code></td><td>Read PAYE and VAT reference rates by country.</td><td>Sandbox key</td></tr>
+            <tr><td><span class="method post">POST</span></td><td><code>/api/v1/vat/calculate</code></td><td>Add or extract VAT for supported countries.</td><td>Sandbox key</td></tr>
+            <tr><td><span class="method">GET</span></td><td><code>/api/v1/fx/rates</code></td><td>Read latest and historical FX rates.</td><td>Sandbox key or live call</td></tr>
+            <tr><td><span class="method">GET</span></td><td><code>/api/v1/fuel/prices</code></td><td>Read latest fuel prices by country or region.</td><td>Sandbox key or live call</td></tr>
+            <tr><td><span class="method">GET</span></td><td><code>/api/v1/rates/central-bank</code></td><td>Read central-bank policy-rate and inflation reference data.</td><td>Sandbox key or live call</td></tr>
+            <tr><td><span class="method">GET</span></td><td><code>/api/v1/countries</code></td><td>Read country metadata and available API products.</td><td>Sandbox key</td></tr>
+            <tr><td><span class="method">GET</span></td><td><code>/api/v1/catalog/tools?product=salarypadi&amp;category=career</code></td><td>Read SalaryPadi's versioned career-tool integration contract.</td><td>SalaryPadi service key</td></tr>
+            <tr><td><span class="method">GET</span></td><td><code>/api/v1/catalog/health</code></td><td>Verify the published catalog schema, count, and verification date.</td><td>SalaryPadi service key</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="salarypadi-catalog">
+        <h2>SalaryPadi tool catalog</h2>
+        <div class="endpoint-box"><header><span class="method">GET</span><code>/api/v1/catalog/tools?product=salarypadi&amp;category=career</code></header></div>
+        <p>This server-to-server endpoint publishes schema version <code>1.0.0</code>. Every tool is explicitly classified as <code>api</code>, <code>widget</code>, or <code>link</code>. PAYE and FX are API integrations. Other career tools remain link integrations until a matching calculation or widget contract is both implemented and tested.</p>
+        <div class="warn">Keep the dedicated SalaryPadi service key on the server. Do not place it in browser JavaScript, public environment variables, client logs, analytics, or screenshots. Salary values and calculation results must not be logged.</div>
+<pre>curl "https://afrotools.com/api/v1/catalog/tools?product=salarypadi&amp;category=career" \
+  -H "x-api-key: $SALARYPADI_API_KEY"</pre>
+        <p>A representative tool record inside the response:</p>
+<pre>{
+  "id": "ng-paye",
+  "integrationMode": "api",
+  "canonicalUrl": "https://afrotools.com/nigeria/ng-salary-tax",
+  "countries": ["NG"],
+  "api": { "method": "POST", "path": "/api/v1/tax/paye" },
+  "inputSchema": "https://afrotools.com/api/schemas/v1/paye-request.schema.json",
+  "outputSchema": "https://afrotools.com/api/schemas/v1/paye-response.schema.json",
+  "rulesVersion": "NG-PAYE:PITA_2025+NTA_2026",
+  "lastVerified": "2026-07-11"
+}</pre>
+        <p>Successful responses include standard <code>ETag</code>, the exact application validator in <code>X-AfroTools-Catalog-ETag</code>, <code>Cache-Control</code>, <code>X-RateLimit-Limit</code>, <code>X-RateLimit-Remaining</code>, and <code>X-RateLimit-Scope</code>. Prefer the AfroTools validator and replay its exact value in both <code>X-AfroTools-If-None-Match</code> and standard <code>If-None-Match</code>; the application header takes precedence when an intermediary consumes or normalizes the standard header. Retain the last-known-good catalog on <code>304 Not Modified</code>. The full schema is published at <a href="/api/schemas/v1/tool-catalog-response.schema.json"><code>/api/schemas/v1/tool-catalog-response.schema.json</code></a>.</p>
+      </section>
+
+      <section id="paye">
+        <h2>PAYE calculate</h2>
+        <div class="endpoint-box"><header><span class="method post">POST</span><code>/api/v1/tax/paye</code></header></div>
+        <p>Calculate gross-to-net or net-to-gross PAYE scenarios. Provide one salary input.</p>
+        <table class="param-table">
+          <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>country</code></td><td>string</td><td>Yes</td><td>ISO alpha-2 country code such as <code>NG</code>, <code>KE</code>, or <code>ZA</code>.</td></tr>
+            <tr><td><code>grossAnnual</code></td><td>number</td><td>One salary input</td><td>Annual gross salary in local currency.</td></tr>
+            <tr><td><code>grossMonthly</code></td><td>number</td><td>One salary input</td><td>Monthly gross salary in local currency.</td></tr>
+            <tr><td><code>netAnnual</code></td><td>number</td><td>One salary input</td><td>Annual net salary for reverse calculation.</td></tr>
+            <tr><td><code>netMonthly</code></td><td>number</td><td>One salary input</td><td>Monthly net salary for reverse calculation.</td></tr>
+          </tbody>
+        </table>
+        <p>Every successful response follows the published <a href="/api/schemas/v1/paye-response.schema.json">PAYE response schema</a>. Each <code>tax.bands[]</code> item includes canonical <code>label</code>, <code>rate</code>, and <code>amount</code> fields. Production rows retain <code>from</code>, <code>to</code>, and <code>taxInBand</code> as v1 compatibility fields. Production metadata includes <code>_meta.sandbox: false</code> and a non-empty <code>_meta.dataPolicy</code>.</p>
+<pre>curl -X POST "https://afrotools.com/api/v1/tax/paye" \
+  -H "x-api-key: afro_test_demo123456789" \
+  -H "Content-Type: application/json" \
+  -d '{"country":"NG","grossMonthly":500000}'</pre>
+      </section>
+
+      <section id="tax-rates">
+        <h2>Tax rates</h2>
+        <div class="endpoint-box"><header><span class="method">GET</span><code>/api/v1/tax/rates</code></header></div>
+        <p>Read PAYE and VAT reference data. Use <code>country</code> for a single market and <code>type</code> to filter to <code>paye</code> or <code>vat</code>. Production responses include <code>sandbox: false</code> and a non-empty <code>data_policy</code>; deterministic sandbox responses identify themselves with <code>sandbox: true</code>.</p>
+<pre>curl "https://afrotools.com/api/v1/tax/rates?country=NG" \
+  -H "x-api-key: afro_test_demo123456789"</pre>
+      </section>
+
+      <section id="vat">
+        <h2>VAT calculate</h2>
+        <div class="endpoint-box"><header><span class="method post">POST</span><code>/api/v1/vat/calculate</code></header></div>
+        <p>Add VAT to an exclusive amount or extract VAT from an inclusive amount.</p>
+        <table class="param-table">
+          <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>country</code></td><td>string</td><td>Yes</td><td>ISO alpha-2 country code.</td></tr>
+            <tr><td><code>amount</code></td><td>number</td><td>Yes</td><td>Amount in local currency.</td></tr>
+            <tr><td><code>operation</code></td><td>string</td><td>No</td><td><code>add</code> or <code>extract</code>.</td></tr>
+            <tr><td><code>customRate</code></td><td>number</td><td>No</td><td>Optional override when a reduced or special rate applies.</td></tr>
+          </tbody>
+        </table>
+<pre>curl -X POST "https://afrotools.com/api/v1/vat/calculate" \
+  -H "x-api-key: afro_test_demo123456789" \
+  -H "Content-Type: application/json" \
+  -d '{"country":"NG","amount":1000,"operation":"add"}'</pre>
+      </section>
+
+      <section id="fx">
+        <h2>FX rates</h2>
+        <div class="endpoint-box"><header><span class="method">GET</span><code>/api/v1/fx/rates</code></header></div>
+        <p>Read current rates, single pairs, base conversions, and stored historical pairs where available.</p>
+        <table class="param-table">
+          <thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>base</code></td><td>string</td><td>No</td><td>Base currency, for example <code>USD</code>.</td></tr>
+            <tr><td><code>target</code></td><td>string</td><td>No</td><td>Target currency, for example <code>NGN</code>.</td></tr>
+            <tr><td><code>amount</code></td><td>number</td><td>No</td><td>Optional amount to convert.</td></tr>
+            <tr><td><code>days</code></td><td>number</td><td>No</td><td>Historical lookback when stored for the pair.</td></tr>
+          </tbody>
+        </table>
+<pre>curl "https://afrotools.com/api/v1/fx/rates?base=USD&target=NGN"</pre>
+      </section>
+
+      <section id="fuel">
+        <h2>Fuel prices</h2>
+        <div class="endpoint-box"><header><span class="method">GET</span><code>/api/v1/fuel/prices</code></header></div>
+        <p>Read petrol, diesel, and LPG prices where source coverage is available. Results include timestamps and source metadata.</p>
+<pre>curl "https://afrotools.com/api/v1/fuel/prices?country=NG"</pre>
+      </section>
+
+      <section id="rates">
+        <h2>Central-bank rates</h2>
+        <div class="endpoint-box"><header><span class="method">GET</span><code>/api/v1/rates/central-bank</code></header></div>
+        <p>Read policy rates, inflation reference data, central-bank names, and source fields by country or region.</p>
+<pre>curl "https://afrotools.com/api/v1/rates/central-bank?country=NG"</pre>
+      </section>
+
+      <section id="countries">
+        <h2>Countries</h2>
+        <div class="endpoint-box"><header><span class="method">GET</span><code>/api/v1/countries</code></header></div>
+        <p>Read country names, currencies, regions, population reference values, and available API products.</p>
+<pre>curl "https://afrotools.com/api/v1/countries?code=NG" \
+  -H "x-api-key: afro_test_demo123456789"</pre>
+      </section>
+
+      <section id="status">
+        <h2>Status and health</h2>
+        <p>The status route returns the public API contract. The v1 health route returns category freshness and source metadata.</p>
+<pre>curl "https://afrotools.com/api/status"</pre>
+<pre>curl "https://afrotools.com/api/v1/health"</pre>
+      </section>
+
+      <section id="errors">
+        <h2>Error format</h2>
+        <p>Errors return JSON with an <code>error</code> field and, where available, a stable <code>code</code>.</p>
+<pre>{
+  "error": "Invalid or missing API key",
+  "code": "INVALID_API_KEY"
+}</pre>
+        <table class="error-table">
+          <thead><tr><th>Status</th><th>Code</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td>400</td><td><code>MISSING_REQUIRED_FIELD</code></td><td>A required field or parameter is missing.</td></tr>
+            <tr><td>401</td><td><code>INVALID_API_KEY</code></td><td>The key is missing or invalid for the route.</td></tr>
+            <tr><td>404</td><td><code>INVALID_COUNTRY</code></td><td>The requested country, currency pair, or resource was not found.</td></tr>
+            <tr><td>429</td><td><code>RATE_LIMIT_EXCEEDED</code></td><td>The key or anonymous caller exceeded the allowed request limit.</td></tr>
+            <tr><td>500</td><td><code>INTERNAL_ERROR</code></td><td>The service could not complete the request.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="production">
+        <h2>Production path</h2>
+        <p>Use sandbox keys for deterministic examples, Free API for dashboard-key testing, and API Growth or API Pro when a real product needs higher limits or support. Enterprise/custom is available for negotiated data scope, request limits, billing, and implementation review.</p>
+        <div class="copy-row">
+          <a class="btn btn-primary" href="/api/pricing">View pricing</a>
+          <a class="btn btn-secondary" href="/business-enquiry/?offer=api-pilot&amp;prospect=developer-api&amp;source=api-docs">Request API pilot</a>
+        </div>
+      </section>
+    </article>
+  </div>
+</main>
+<afro-footer></afro-footer>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+</body>
+</html>

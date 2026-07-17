@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="view-transition" content="same-origin">
+<title>Encodeur/décodeur Base64 | AfroTools</title>
+<meta name="description" content="Encodeur et décodeur Base64 gratuit. Convertissez texte, fichiers et images instantanément. Aucun envoi serveur requis.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="Encodeur/décodeur Base64 | AfroTools">
+<meta property="og:description" content="Encodeur et décodeur Base64 gratuit. Convertissez texte, fichiers et images instantanément.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/base64.webp">
+<meta property="og:url" content="https://afrotools.com/fr/tools/encodeur-base64/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Encodeur/décodeur Base64 | AfroTools">
+<meta name="twitter:description" content="Encodeur et décodeur Base64 gratuit. Convertissez texte, fichiers et images instantanément. Aucun envoi serveur requis.">
+<meta name="robots" content="index, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+.fr-hero{background:#0f172a;padding:42px 0 30px}
+.fr-hero-inner{max-width:1120px;margin:0 auto;padding:0 20px}
+.fr-kicker{display:inline-flex;margin-bottom:10px;color:#93c5fd;font-size:.74rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase}
+.fr-hero h1{font-size:clamp(1.55rem,4vw,2.45rem);font-weight:800;color:#fff;margin:0 0 10px;max-width:760px;line-height:1.08}
+.fr-hero p{color:rgba(255,255,255,.72);font-size:.95rem;max-width:680px;line-height:1.65;margin:0}
+.fr-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.fr-badge{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#dbeafe;border-radius:999px;padding:6px 10px;font-size:.76rem;font-weight:700}
+.fr-wrap{max-width:1120px;margin:0 auto;padding:24px 20px 64px}
+.fr-tool-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;align-items:start}
+.fr-panel{background:#fff;border:1px solid #dbe3ef;border-radius:10px;box-shadow:0 8px 24px rgba(15,23,42,.06);overflow:hidden}
+.fr-panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #e8eef7;background:#f8fafc;padding:14px 18px}
+.fr-panel-title{font-size:.76rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#0f172a}
+.fr-panel-body{padding:18px}
+.fr-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:14px}
+.fr-field label{display:block;font-size:.76rem;font-weight:700;color:#334155;margin-bottom:6px}
+.fr-field select,.fr-field input[type=file],.fr-base-input,.fr-base-output{width:100%;box-sizing:border-box;border:1.5px solid #cbd5e1;border-radius:8px;background:#f8fafc;color:#0f172a;font:600 .88rem/1.55 "Courier New",monospace}
+.fr-field select,.fr-field input[type=file]{padding:9px 10px;font-family:"DM Sans",sans-serif}
+.fr-base-input,.fr-base-output{min-height:220px;padding:14px;resize:vertical;tab-size:2}
+.fr-base-output{background:#0f172a;color:#e2e8f0;min-height:240px}
+.fr-field select:focus,.fr-field input[type=file]:focus,.fr-base-input:focus,.fr-base-output:focus{outline:none;border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.14);background:#fff}
+.fr-check{display:flex;align-items:center;gap:8px;margin:10px 0 0;color:#334155;font-size:.84rem;font-weight:700}
+.fr-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.fr-btn{border:1px solid #cbd5e1;border-radius:8px;padding:10px 14px;font-size:.82rem;font-weight:800;cursor:pointer;background:#fff;color:#334155}
+.fr-btn-primary{background:#2563eb;border-color:#2563eb;color:#fff}
+.fr-btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(15,23,42,.12)}
+.fr-status{min-height:20px;margin-top:10px;color:#475569;font-size:.82rem;line-height:1.5}
+.fr-side{display:grid;gap:12px}
+.fr-note-card{background:#fff;border:1px solid #dbe3ef;border-radius:10px;padding:16px}
+.fr-note-card h2,.fr-note-card h3{font-size:.86rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#0f172a;margin:0 0 8px}
+.fr-note-card p,.fr-note-card li{font-size:.84rem;color:#475569;line-height:1.65;margin:0}
+.fr-note-card ul{padding-left:18px;margin:0}
+.fr-seo{max-width:760px;margin-top:34px}
+.fr-seo h2{font-size:1.15rem;font-weight:800;color:#0f172a;margin:0 0 12px}
+.fr-seo p{font-size:.88rem;color:#475569;line-height:1.7;margin:0 0 14px}
+.fr-faq{margin-top:28px;max-width:760px}.fr-faq h2{font-size:1.1rem;font-weight:800;color:#0f172a;margin-bottom:16px}
+.fr-faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;background:#fff}
+.fr-faq summary{padding:14px 18px;font-weight:700;font-size:.9rem;cursor:pointer;color:#0f172a}
+.fr-faq details p{padding:0 18px 14px;font-size:.84rem;color:#475569;line-height:1.65;margin:0}
+@media(max-width:820px){.fr-tool-grid{grid-template-columns:1fr}.fr-options{grid-template-columns:1fr}.fr-panel-head{align-items:flex-start;flex-direction:column}.fr-btn{width:100%}}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Encodeur/décodeur Base64",
+  "url": "https://afrotools.com/fr/tools/encodeur-base64/",
+  "inLanguage": "fr",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/base64.webp"
+}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"L'encodage Base64 est-il un chiffrement ?","acceptedAnswer":{"@type":"Answer","text":"Non, Base64 est un encodage et non un chiffrement. Il transforme les données binaires en texte ASCII lisible mais ne fournit aucune protection de sécurité."}},{"@type":"Question","name":"Quelle est la taille maximale pour l'encodage ?","acceptedAnswer":{"@type":"Answer","text":"L'outil gère des fichiers jusqu'à plusieurs mégaoctets. Pour les fichiers très volumineux, le traitement peut prendre quelques secondes."}},{"@type":"Question","name":"Puis-je encoder des fichiers binaires ?","acceptedAnswer":{"@type":"Answer","text":"Oui, l'outil gère l'encodage de fichiers binaires en Base64. Glissez-déposez un fichier ou utilisez le sélecteur de fichiers."}}]}
+</script>
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/base64.webp">
+<style data-mobile-control-comfort="fr-tools">
+@media (max-width: 640px) {
+  .fr-faq summary {
+    font-size: 1rem;
+    min-height: 44px;
+  }
+}
+</style>
+<link rel="canonical" href="https://afrotools.com/fr/tools/encodeur-base64/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/base64/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/encodeur-base64/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/base64/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/base64/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="tools"></afro-navbar>
+<section class="fr-hero">
+<div class="fr-hero-inner">
+<span class="fr-kicker">Outil développeur local</span>
+<h1>Encodeur Base64 pour texte, API et petits fichiers</h1>
+<p>Encodez, décodez, copiez ou téléchargez le résultat sans envoyer votre contenu à un serveur.</p>
+<div class="fr-badges"><span class="fr-badge">Texte UTF-8</span><span class="fr-badge">Fichier vers Base64</span><span class="fr-badge">URL-safe</span><span class="fr-badge">Local par défaut</span></div>
+</div>
+</section>
+<div class="fr-wrap">
+<div class="fr-tool-grid">
+<div>
+<section class="fr-panel" aria-labelledby="base64-workspace-title">
+<div class="fr-panel-head">
+<span class="fr-panel-title" id="base64-workspace-title">Entrée</span>
+<span class="fr-status" id="base64Status" aria-live="polite">Prêt.</span>
+</div>
+<div class="fr-panel-body">
+<div class="fr-options">
+<div class="fr-field"><label for="base64Mode">Action</label><select id="base64Mode"><option value="encode" selected>Encoder le texte</option><option value="decode">Décoder Base64</option><option value="file">Encoder un fichier</option></select></div>
+<div class="fr-field"><label for="base64Sample">Exemple</label><select id="base64Sample"><option value="">Choisir...</option><option value="api">Payload API</option><option value="css">Image CSS</option><option value="ref">Référence de test</option></select></div>
+<div class="fr-field"><label for="base64File">Fichier</label><input id="base64File" type="file" aria-label="Fichier à encoder en Base64"></div>
+</div>
+<textarea class="fr-base-input" id="base64Input" spellcheck="false" aria-label="Texte ou Base64 à convertir">Bonjour AfroTools</textarea>
+<label class="fr-check"><input type="checkbox" id="urlSafe"> Utiliser le format URL-safe</label>
+<label class="fr-check"><input type="checkbox" id="dataPrefix"> Inclure le préfixe data: pour les fichiers</label>
+<div class="fr-actions">
+<button type="button" class="fr-btn fr-btn-primary" id="convertBase64Btn">Convertir</button>
+<button type="button" class="fr-btn" id="swapBase64Btn">Échanger entrée/résultat</button>
+<button type="button" class="fr-btn" id="clearBase64Btn">Effacer</button>
+</div>
+</div>
+</section>
+<section class="fr-panel" style="margin-top:18px" aria-labelledby="base64-output-title">
+<div class="fr-panel-head"><span class="fr-panel-title" id="base64-output-title">Résultat</span></div>
+<div class="fr-panel-body">
+<textarea class="fr-base-output" id="base64Output" readonly aria-label="Résultat Base64"></textarea>
+<div class="fr-actions">
+<button type="button" class="fr-btn" id="copyBase64Btn">Copier</button>
+<button type="button" class="fr-btn" id="downloadBase64Btn">Télécharger .txt</button>
+</div>
+</div>
+</section>
+</div>
+<aside class="fr-side" aria-label="Conseils Base64">
+<div class="fr-note-card"><h2>Flux rapide</h2><ul><li>Choisissez encoder, décoder ou fichier.</li><li>Convertissez localement dans le navigateur.</li><li>Copiez le résultat vers votre API, CSS ou ticket technique.</li></ul></div>
+<div class="fr-note-card"><h3>Confidentialité</h3><p>Le texte et les fichiers restent dans votre navigateur. Base64 n'est pas un chiffrement; n'y mettez pas de mots de passe, clés privées ou données client réelles.</p></div>
+<div class="fr-note-card"><h3>À vérifier</h3><p>Pour les API, confirmez si le service attend le format standard, URL-safe ou un préfixe <code>data:</code>.</p></div>
+</aside>
+</div>
+<div class="fr-seo">
+<h2>Encodeur Base64 en ligne</h2>
+<p>L'encodeur Base64 d'AfroTools convertit instantanément du texte, des fichiers et des images en Base64 et inversement. Tout le traitement se fait localement dans votre navigateur, ce qui préserve la confidentialité de vos données. Utile pour intégrer des images dans du CSS ou encoder des données pour les API.</p>
+<p>L'outil supporte l'encodage et le décodage de chaînes de texte, de fichiers binaires et d'images. Copiez le résultat en un clic ou téléchargez le fichier décodé directement.</p>
+</div>
+<div class="fr-seo" data-tool-verification-panel="encodeur-base64-fr">
+<h2>Sources et vérification</h2>
+<p><strong>Méthodologie:</strong> le texte est converti en octets UTF-8 dans le navigateur, puis encode ou decode en Base64. Le mode fichier utilise FileReader localement et n'envoie pas le contenu a AfroTools.</p>
+<p><strong>Sources et références:</strong> format Base64 standard tel que decrit par RFC 4648 et les API Web courantes <code>TextEncoder</code>, <code>TextDecoder</code> et <code>atob</code>/<code>btoa</code>. Dernière révision du flux: juin 2026.</p>
+<p><strong>Limites:</strong> Base64 est un encodage, pas un chiffrement. Ne l'utilisez pas pour proteger des mots de passe, secrets API, clés privées ou données client sensibles.</p>
+</div>
+<div class="fr-faq">
+<h2>Questions fréquentes</h2>
+<details><summary>L'encodage Base64 est-il un chiffrement ?</summary><p>Non, Base64 est un encodage et non un chiffrement. Il transforme les données binaires en texte ASCII lisible mais ne fournit aucune protection de sécurité.</p></details>
+<details><summary>Quelle est la taille maximale pour l'encodage ?</summary><p>L'outil gère des fichiers jusqu'à plusieurs mégaoctets. Pour les fichiers très volumineux, le traitement peut prendre quelques secondes car tout est fait dans le navigateur.</p></details>
+<details><summary>Puis-je encoder des fichiers binaires ?</summary><p>Oui, l'outil gère l'encodage de fichiers binaires en Base64. Glissez-déposez un fichier ou utilisez le sélecteur de fichiers pour l'encoder directement.</p></details>
+</div>
+</div>
+<script>
+(function(){
+  var input = document.getElementById("base64Input");
+  var output = document.getElementById("base64Output");
+  var status = document.getElementById("base64Status");
+  var fileInput = document.getElementById("base64File");
+  var samples = {
+    api: '{"country":"Kenya","amount":12500,"currency":"KES"}',
+    css: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjwvc3ZnPg==",
+    ref: "reference-client-test-afrotools-123"
+  };
+
+  function bytesToBase64(bytes){
+    var binary = "";
+    var chunk = 0x8000;
+    for(var i = 0; i < bytes.length; i += chunk){
+      binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+    }
+    return btoa(binary);
+  }
+
+  function base64ToBytes(value){
+    var clean = value.trim().replace(/^data:[^,]+,/, "").replace(/\s+/g, "");
+    if(document.getElementById("urlSafe").checked){
+      clean = clean.replace(/-/g, "+").replace(/_/g, "/");
+    }
+    while(clean.length % 4) clean += "=";
+    var binary = atob(clean);
+    var bytes = new Uint8Array(binary.length);
+    for(var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    return bytes;
+  }
+
+  function maybeUrlSafe(value){
+    if(!document.getElementById("urlSafe").checked) return value;
+    return value.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+  }
+
+  function encodeText(){
+    var text = input.value;
+    if(!text.trim()){
+      status.textContent = "Collez du texte avant d'encoder.";
+      input.focus();
+      return;
+    }
+    var bytes = new TextEncoder().encode(text);
+    output.value = maybeUrlSafe(bytesToBase64(bytes));
+    status.textContent = "Texte encodé : " + bytes.length + " octets.";
+  }
+
+  function decodeText(){
+    var text = input.value.trim();
+    if(!text){
+      status.textContent = "Collez une chaîne Base64 avant de décoder.";
+      input.focus();
+      return;
+    }
+    try{
+      var bytes = base64ToBytes(text);
+      output.value = new TextDecoder("utf-8", {fatal:false}).decode(bytes);
+      status.textContent = "Base64 décodé : " + bytes.length + " octets.";
+    }catch(error){
+      status.textContent = "Base64 invalide ou incomplet.";
+    }
+  }
+
+  function encodeFile(){
+    var file = fileInput.files && fileInput.files[0];
+    if(!file){
+      status.textContent = "Choisissez un fichier à encoder.";
+      fileInput.focus();
+      return;
+    }
+    var reader = new FileReader();
+    reader.onload = function(){
+      var bytes = new Uint8Array(reader.result);
+      var encoded = maybeUrlSafe(bytesToBase64(bytes));
+      if(document.getElementById("dataPrefix").checked && !document.getElementById("urlSafe").checked){
+        encoded = "data:" + (file.type || "application/octet-stream") + ";base64," + encoded;
+      }
+      output.value = encoded;
+      status.textContent = "Fichier encodé : " + file.name + " (" + bytes.length + " octets).";
+    };
+    reader.onerror = function(){ status.textContent = "Impossible de lire ce fichier."; };
+    reader.readAsArrayBuffer(file);
+  }
+
+  function convert(){
+    var mode = document.getElementById("base64Mode").value;
+    if(mode === "decode") decodeText();
+    else if(mode === "file") encodeFile();
+    else encodeText();
+  }
+
+  function copyOutput(){
+    var text = output.value.trim();
+    if(!text){
+      status.textContent = "Aucun résultat à copier.";
+      return;
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){ status.textContent = "Résultat copié."; }).catch(fallbackCopy);
+    }else{
+      fallbackCopy();
+    }
+    function fallbackCopy(){
+      output.focus();
+      output.select();
+      document.execCommand("copy");
+      status.textContent = "Résultat copié.";
+    }
+  }
+
+  function downloadOutput(){
+    var text = output.value;
+    if(!text.trim()){
+      status.textContent = "Aucun résultat à télécharger.";
+      return;
+    }
+    var blob = new Blob([text], {type: "text/plain;charset=utf-8"});
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement("a");
+    link.href = url;
+    link.download = "resultat-base64.txt";
+    link.click();
+    URL.revokeObjectURL(url);
+    status.textContent = "Fichier texte préparé.";
+  }
+
+  document.getElementById("convertBase64Btn").addEventListener("click", convert);
+  document.getElementById("copyBase64Btn").addEventListener("click", copyOutput);
+  document.getElementById("downloadBase64Btn").addEventListener("click", downloadOutput);
+  document.getElementById("clearBase64Btn").addEventListener("click", function(){
+    input.value = "";
+    output.value = "";
+    fileInput.value = "";
+    status.textContent = "Champs effacés.";
+    input.focus();
+  });
+  document.getElementById("swapBase64Btn").addEventListener("click", function(){
+    if(!output.value.trim()){
+      status.textContent = "Aucun résultat à échanger.";
+      return;
+    }
+    input.value = output.value;
+    output.value = "";
+    status.textContent = "Résultat replacé dans l'entrée.";
+  });
+  document.getElementById("base64Sample").addEventListener("change", function(event){
+    if(samples[event.target.value]){
+      input.value = samples[event.target.value];
+      document.getElementById("base64Mode").value = event.target.value === "css" ? "decode" : "encode";
+      convert();
+    }
+  });
+  document.getElementById("base64Mode").addEventListener("change", function(event){
+    fileInput.disabled = event.target.value !== "file";
+    status.textContent = event.target.value === "file" ? "Choisissez un fichier à encoder." : "Prêt.";
+  });
+  fileInput.disabled = true;
+  convert();
+})();
+</script>
+<afro-footer></afro-footer>
+</body>
+</html>

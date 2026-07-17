@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>African Public Holidays 2026 | AfroTools</title>
+<meta name="description" content="Complete list of public holidays for 10 African countries in 2025-2027. Nigeria, Kenya, South Africa, Ghana, Egypt, Tanzania, Uganda, Ethiopia, Morocco, Senegal. Export to calendar.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="African Public Holidays | AfroTools">
+<meta property="og:description" content="Complete public holiday calendar for 10 African countries. Export to Google Calendar.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/public-holidays.webp">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/public-holidays/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419;--accent:#dc2626}
+.tool-hero{background:linear-gradient(135deg,#0A1628 0%,#1a2744 50%,#1e3a5f 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:var(--afro-blue)}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#4DA3FF;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.5);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-blue{background:rgba(0,98,204,.15);color:#4DA3FF;border:1px solid rgba(0,98,204,.3)}
+.b-green{background:rgba(16,185,129,.12);color:#10b981;border:1px solid rgba(16,185,129,.3)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+.controls{display:flex;gap:12px;flex-wrap:wrap;align-items:end;margin-bottom:18px}
+.controls .field{flex:1;min-width:160px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+select{width:100%;padding:10px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
+select:focus{outline:none;border-color:var(--afro-blue);box-shadow:0 0 0 3px rgba(0,98,204,.15)}
+.export-btn{padding:10px 16px;background:linear-gradient(135deg,#0062CC,#0055D4);box-shadow:0 4px 14px rgba(0,98,204,.35);color:#fff;border:none;border-radius:7px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;transition:all .15s}
+.export-btn:hover{background:#0059B3;transform:translateY(-1px)}
+.holiday-table{width:100%;border-collapse:collapse;font-size:.82rem}
+.holiday-table th{text-align:left;padding:10px;background:#EFF6FF;color:var(--afro-blue);font-weight:700;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;border-bottom:2px solid #BFDBFE}
+.holiday-table td{padding:10px;border-bottom:1px solid #f1f5f9;color:#475569}
+.holiday-table tr:hover{background:#EFF6FF}
+.holiday-table .past{opacity:.45}
+.holiday-table .next{background:#EFF6FF;font-weight:700}
+.day-badge{display:inline-block;font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:3px}
+.day-badge.weekend{background:#dbeafe;color:#2563eb}
+.day-badge.weekday{background:#dcfce7;color:#16a34a}
+.countdown{text-align:center;padding:18px;background:linear-gradient(135deg,#EFF6FF,#DBEAFE);border-radius:10px;margin-bottom:18px}
+.countdown .big{font-size:2rem;font-weight:900;color:var(--afro-blue)}
+.countdown .label{font-size:.72rem;color:#0063D1;font-weight:600;margin-top:4px}
+.countdown .next-name{font-size:.88rem;color:#475569;margin-top:6px}
+.summary-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin-bottom:18px}
+.summary-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px;text-align:center}
+.summary-box .num{font-size:1.3rem;font-weight:800;color:var(--afro-blue)}
+.summary-box .lbl{font-size:.65rem;color:#64748b;font-weight:600;margin-top:2px;text-transform:uppercase}
+.month-divider{background:#f1f5f9;font-weight:700;font-size:.72rem;color:#475569;text-transform:uppercase;letter-spacing:.05em}
+.month-divider td{padding:8px 10px!important;border:none!important}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.summary-grid{grid-template-columns:1fr 1fr}.controls{flex-direction:column}}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "African Public Holidays",
+  "description": "Complete list of public holidays for 10 African countries with calendar export.",
+  "url": "https://afrotools.com/tools/public-holidays/",
+  "inLanguage": "en",
+  "applicationCategory": "WebApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/public-holidays.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "African Public Holidays",
+  "url": "https://afrotools.com/tools/public-holidays/",
+  "description": "Complete list of public holidays for 10 African countries with calendar export.",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/public-holidays.webp"
+}
+</script>
+
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="African Public Holidays | AfroTools">
+<meta name="twitter:description" content="Complete public holiday calendar for 10 African countries. Export to Google Calendar.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/public-holidays.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "African Public Holidays",
+      "item": "https://afrotools.com/tools/public-holidays/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How many public holidays does Nigeria have?","acceptedAnswer":{"@type":"Answer","text":"Nigeria has approximately 13 official public holidays, including New Year, Workers' Day, Democracy Day (June 12), Independence Day (October 1), Christmas, and Islamic holidays which vary by lunar calendar."}},{"@type":"Question","name":"What happens when a holiday falls on a weekend?","acceptedAnswer":{"@type":"Answer","text":"Policies vary. In South Africa, if a public holiday falls on a Sunday, the Monday is observed. In Nigeria, the Federal Government may declare the Monday as a holiday. Kenya follows a similar Monday-substitution rule."}},{"@type":"Question","name":"Why are Islamic holiday dates estimated?","acceptedAnswer":{"@type":"Answer","text":"Islamic holidays follow the lunar calendar, so exact dates depend on moon sighting. Dates shown are estimates based on astronomical calculations and may shift by 1-2 days."}},{"@type":"Question","name":"Can I export holidays to Google Calendar?","acceptedAnswer":{"@type":"Answer","text":"Yes. Click the \"Export to Calendar\" button to download an .ics file. Import it into Google Calendar, Apple Calendar, Outlook, or any calendar app that supports .ics files."}},{"@type":"Question","name":"How do I use the African Public Holiday Calendar?","acceptedAnswer":{"@type":"Answer","text":"Enter your data in the fields above. The African Public Holiday Calendar then gives you an organised, ready-to-use result you can use straight away."}},{"@type":"Question","name":"How accurate is the African Public Holiday Calendar?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm the figures before you share them before you rely on it."}},{"@type":"Question","name":"Is the African Public Holiday Calendar free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/data-productivity-focus.css?v=b68786ac">
+<script src="/assets/js/pages/data-productivity-tool-focus.js?v=539704c2" defer></script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/public-holidays/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/public-holidays/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/jours-feries/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kalenda-likizo-za-umma/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/public-holidays/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Public Holidays</span></div>
+<h1>African Public <em>Holidays</em></h1>
+<p class="hero-sub">Complete public holiday calendar for 10 African countries. Plan leave days, see countdowns, and export holidays to your calendar.</p>
+<div class="hero-badges"><span class="badge b-blue">10 Countries</span><span class="badge b-blue">2025-2027</span><span class="badge b-green">Export to Calendar</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="card">
+<div class="card-head"><span class="card-title">Holiday Calendar</span><button type="button" class="export-btn" onclick="exportICS()">Export to Calendar (.ics)</button></div>
+<div class="card-body">
+<div class="controls">
+<div class="field"><label for="country">Country</label>
+<select id="country" onchange="render()">
+<option value="NG">Nigeria</option>
+<option value="KE">Kenya</option>
+<option value="ZA">South Africa</option>
+<option value="GH">Ghana</option>
+<option value="EG">Egypt</option>
+<option value="TZ">Tanzania</option>
+<option value="UG">Uganda</option>
+<option value="ET">Ethiopia</option>
+<option value="MA">Morocco</option>
+<option value="SN">Senegal</option>
+</select></div>
+<div class="field"><label>Year</label>
+<select id="year" onchange="render()" aria-label="Year">
+<option value="2025">2025</option>
+<option value="2026" selected>2026</option>
+<option value="2027">2027</option>
+</select></div>
+<div class="field"><label>Filter</label>
+<select id="filter" onchange="render()" aria-label="Filter">
+<option value="all">All Holidays</option>
+<option value="upcoming">Upcoming Only</option>
+<option value="weekend">Falls on Weekend</option>
+</select></div>
+</div>
+<div id="countdown" class="countdown"></div>
+<div class="summary-grid" id="summaryGrid"></div>
+<div style="overflow-x:auto"><table class="holiday-table" id="holidayTable"></table></div>
+</div></div>
+</div></section>
+
+<section class="seo-section">
+<h2>Public Holidays in Africa</h2>
+<p>African countries observe a mix of national, religious, and cultural holidays. Nigeria has approximately <strong>13 public holidays</strong>, while South Africa has <strong>12 national holidays</strong>. Kenya observes <strong>12 gazetted public holidays</strong>, and Ghana has <strong>14</strong>. Islamic holidays (Eid al-Fitr, Eid al-Adha, Maulid) shift by about 10-11 days each year due to the lunar calendar.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>How many public holidays does Nigeria have?</summary><p>Nigeria has approximately 13 official public holidays, including New Year, Workers' Day, Democracy Day (June 12), Independence Day (October 1), Christmas, and Islamic holidays which vary by lunar calendar.</p></details>
+<details class="faq-item"><summary>What happens when a holiday falls on a weekend?</summary><p>Policies vary. In South Africa, if a public holiday falls on a Sunday, the Monday is observed. In Nigeria, the Federal Government may declare the Monday as a holiday. Kenya follows a similar Monday-substitution rule.</p></details>
+<details class="faq-item"><summary>Why are Islamic holiday dates estimated?</summary><p>Islamic holidays follow the lunar calendar, so exact dates depend on moon sighting. Dates shown are estimates based on astronomical calculations and may shift by 1-2 days.</p></details>
+<details class="faq-item"><summary>Can I export holidays to Google Calendar?</summary><p>Yes. Click the "Export to Calendar" button to download an .ics file. Import it into Google Calendar, Apple Calendar, Outlook, or any calendar app that supports .ics files.</p></details>
+</section>
+
+
+<section class="df-upgrade" data-df-upgrade="public-holidays">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Practical workflow</span>
+      <h2>African Public Holiday Calendar: quick guide</h2>
+      <p>Not sure how to get the most from the African Public Holiday Calendar? Enter your data and it returns an organised, ready-to-use result — built for all 54 African countries.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> an organised, ready-to-use result, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the African Public Holiday Calendar takes your data and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm the figures before you share them before you rely on the result.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm the figures before you share them before acting.</p>
+    </div>
+    <form class="df-form" data-df-form="public-holidays">
+      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
+      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
+      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
+      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="public-holidays" data-df-base="African Public Holiday Calendar — enter your details above to see your result." aria-live="polite">African Public Holiday Calendar — enter your details above to see your result.</output>
+      <div class="df-actions"><button type="button" data-df-copy="public-holidays">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="public-holidays-faq-title">
+  <h2 id="public-holidays-faq-title">African Public Holiday Calendar FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the African Public Holiday Calendar?</summary><p>Enter your data in the fields above. The African Public Holiday Calendar then gives you an organised, ready-to-use result you can use straight away.</p></details><details><summary>How accurate is the African Public Holiday Calendar?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm the figures before you share them before you rely on it.</p></details><details><summary>Is the African Public Holiday Calendar free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
+</section>
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+<afro-related-tools category="data-productivity" current="public-holidays" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/unit-converter/" data-related-tool data-id="unit-converter" data-name="Unit Converter (African)" data-category="data-productivity" data-icon="UC" data-desc="Convert units including African measurements: Nigerian plots, SA morgen, etc.">Unit Converter (African)</a></li><li><a href="/tools/budget-planner/" data-related-tool data-id="budget-planner" data-name="Monthly Budget Planner" data-category="data-productivity" data-icon="MB" data-desc="50/30/20 rule adapted for African income patterns and mobile money.">Monthly Budget Planner</a></li><li><a href="/tools/grade-tracker/" data-related-tool data-id="grade-tracker" data-name="Student Grade Tracker" data-category="data-productivity" data-icon="SG" data-desc="Track CA and exam scores with Africa exam presets, risk flags, GPA, CGPA, and revision handoffs.">Student Grade Tracker</a></li><li><a href="/tools/pomodoro/" data-related-tool data-id="pomodoro" data-name="Pomodoro Timer" data-category="data-productivity" data-icon="PT" data-desc="Focus timer with African language motivational quotes. Works offline.">Pomodoro Timer</a></li><li><a href="/tools/age-calculator/" data-related-tool data-id="age-calculator" data-name="Age Calculator" data-category="data-productivity" data-icon="AC" data-desc="Exact age in years/months/days. Next birthday countdown.">Age Calculator</a></li><li><a href="/tools/time-zone/" data-related-tool data-id="time-zone" data-name="African Time Zone Converter" data-category="data-productivity" data-icon="AT" data-desc="All 8 African time zones. Team meeting planner across Africa.">African Time Zone Converter</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+/* Easter calculation using Anonymous Gregorian algorithm */
+function easterDate(year) {
+  var a = year % 19, b = Math.floor(year / 100), c = year % 100;
+  var d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25);
+  var g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30;
+  var i = Math.floor(c / 4), k = c % 4;
+  var l = (32 + 2 * e + 2 * i - h - k) % 7;
+  var m = Math.floor((a + 11 * h + 22 * l) / 451);
+  var month = Math.floor((h + l - 7 * m + 114) / 31);
+  var day = ((h + l - 7 * m + 114) % 31) + 1;
+  return new Date(year, month - 1, day);
+}
+
+function dateStr(y, m, d) {
+  return y + '-' + String(m).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+}
+
+function addDays(date, n) {
+  var d = new Date(date);
+  d.setDate(d.getDate() + n);
+  return d;
+}
+
+/* Approximate Islamic dates (shift ~10-11 days/year from 2025 base) */
+function islamicDates(year) {
+  var base = { eidFitr: [2025, 2, 30], eidAdha: [2025, 5, 6], mawlid: [2025, 8, 5] };
+  var diff = year - 2025;
+  function shift(b) {
+    var d = new Date(b[0], b[1], b[2]);
+    d.setDate(d.getDate() - Math.round(diff * 10.63));
+    while (d.getFullYear() < year) d.setDate(d.getDate() + 354);
+    while (d.getFullYear() > year) d.setDate(d.getDate() - 354);
+    return d;
+  }
+  return { eidFitr: shift(base.eidFitr), eidAdha: shift(base.eidAdha), mawlid: shift(base.mawlid) };
+}
+
+function getHolidays(country, year) {
+  var easter = easterDate(year);
+  var goodFriday = addDays(easter, -2);
+  var easterMonday = addDays(easter, 1);
+  var isl = islamicDates(year);
+  var y = year;
+
+  function d(m, day) { return dateStr(y, m, day); }
+  function fd(dt) { return dateStr(dt.getFullYear(), dt.getMonth() + 1, dt.getDate()); }
+
+  var holidays = {
+    NG: [
+      { date: d(1,1), name: "New Year's Day" },
+      { date: fd(isl.eidFitr), name: 'Eid al-Fitr (est.)' },
+      { date: fd(addDays(isl.eidFitr, 1)), name: 'Eid al-Fitr Day 2 (est.)' },
+      { date: fd(goodFriday), name: 'Good Friday' },
+      { date: fd(easterMonday), name: 'Easter Monday' },
+      { date: d(5,1), name: "Workers' Day" },
+      { date: fd(isl.eidAdha), name: 'Eid al-Adha (est.)' },
+      { date: fd(addDays(isl.eidAdha, 1)), name: 'Eid al-Adha Day 2 (est.)' },
+      { date: d(6,12), name: 'Democracy Day' },
+      { date: fd(isl.mawlid), name: 'Eid al-Maulid (est.)' },
+      { date: d(10,1), name: 'Independence Day' },
+      { date: d(12,25), name: 'Christmas Day' },
+      { date: d(12,26), name: 'Boxing Day' },
+    ],
+    KE: [
+      { date: d(1,1), name: "New Year's Day" },
+      { date: fd(isl.eidFitr), name: 'Eid al-Fitr (est.)' },
+      { date: fd(goodFriday), name: 'Good Friday' },
+      { date: fd(easterMonday), name: 'Easter Monday' },
+      { date: d(5,1), name: 'Labour Day' },
+      { date: d(6,1), name: 'Madaraka Day' },
+      { date: fd(isl.eidAdha), name: 'Eid al-Adha (est.)' },
+      { date: d(10,10), name: 'Huduma Day' },
+      { date: d(10,20), name: 'Mashujaa Day' },
+      { date: d(12,12), name: 'Jamhuri Day' },
+      { date: d(12,25), name: 'Christmas Day' },
+      { date: d(12,26), name: 'Boxing Day' },
+    ],
+    ZA: [
+      { date: d(1,1), name: "New Year's Day" },
+      { date: d(3,21), name: 'Human Rights Day' },
+      { date: fd(goodFriday), name: 'Good Friday' },
+      { date: fd(easterMonday), name: 'Family Day' },
+      { date: d(4,27), name: 'Freedom Day' },
+      { date: d(5,1), name: "Workers' Day" },
+      { date: d(6,16), name: 'Youth Day' },
+      { date: d(8,9), name: "National Women's Day" },
+      { date: d(9,24), name: 'Heritage Day' },
+      { date: d(12,16), name: 'Day of Reconciliation' },
+      { date: d(12,25), name: 'Christmas Day' },
+      { date: d(12,26), name: 'Day of Goodwill' },
+    ],
+    GH: [
+      { date: d(1,1), name: "New Year's Day" },
+      { date: d(1,7), name: 'Constitution Day' },
+      { date: d(3,6), name: 'Independence Day' },
+      { date: fd(isl.eidFitr), name: 'Eid al-Fitr (est.)' },
+      { date: fd(goodFriday), name: 'Good Friday' },
+      { date: fd(easterMonday), name: 'Easter Monday' },
+      { date: d(5,1), name: 'May Day' },
+      { date: d(5,25), name: 'Africa Day' },
+      { date: fd(isl.eidAdha), name: 'Eid al-Adha (est.)' },
+      { date: d(7,1), name: 'Republic Day' },
+      { date: d(8,4), name: "Founders' Day" },
+      { date: d(9,21), name: 'Kwame Nkrumah Memorial Day' },
+      { date: d(12,25), name: 'Christmas Day' },
+      { date: d(12,26), name: 'Boxing Day' },
+    ],
+    EG: [
+      { date: d(1,7), name: 'Coptic Christmas' },
+      { date: d(1,25), name: 'Revolution Day' },
+      { date: fd(isl.eidFitr), name: 'Eid al-Fitr (est.)' },
+      { date: d(4,25), name: 'Sinai Liberation Day' },
+      { date: d(5,1), name: 'Labour Day' },
+      { date: fd(isl.eidAdha), name: 'Eid al-Adha (est.)' },
+      { date: d(6,30), name: 'June 30 Revolution Day' },
+      { date: d(7,23), name: 'Revolution Day' },
+      { date: fd(isl.mawlid), name: 'Mawlid al-Nabi (est.)' },
+      { date: d(10,6), name: 'Armed Forces Day' },
+    ],
+    TZ: [
+      { date: d(1,1), name: "New Year's Day" },
+      { date: d(1,12), name: 'Zanzibar Revolution Day' },
+      { date: fd(isl.eidFitr), name: 'Eid al-Fitr (est.)' },
+      { date: d(4,7), name: 'Karume Day' },
+      { date: fd(goodFriday), name: 'Good Friday' },
+      { date: fd(easterMonday), name: 'Easter Monday' },
+      { date: d(4,26), name: 'Union Day' },
+      { date: d(5,1), name: "Workers' Day" },
+      { date: fd(isl.eidAdha), name: 'Eid al-Adha (est.)' },
+      { date: d(7,7), name: 'Saba Saba Day' },
+      { date: d(8,8), name: 'Nane Nane Day' },
+      { date: fd(isl.mawlid), name: 'Maulid Day (est.)' },
+      { date: d(12,9), name: 'Independence Day' },
+      { date: d(12,25), name: 'Christmas Day' },
+      { date: d(12,26), name: 'Boxing Day' },
+    ],
+    UG: [
+      { date: d(1,1), name: "New Year's Day" },
+      { date: d(1,26), name: 'NRM Liberation Day' },
+      { date: d(2,16), name: "Archbishop Janani Luwum Day" },
+      { date: d(3,8), name: "Women's Day" },
+      { date: fd(goodFriday), name: 'Good Friday' },
+      { date: fd(easterMonday), name: 'Easter Monday' },
+      { date: d(5,1), name: 'Labour Day' },
+      { date: d(6,3), name: "Martyrs' Day" },
+      { date: d(6,9), name: 'National Heroes Day' },
+      { date: fd(isl.eidFitr), name: 'Eid al-Fitr (est.)' },
+      { date: fd(isl.eidAdha), name: 'Eid al-Adha (est.)' },
+      { date: d(10,9), name: 'Independence Day' },
+      { date: d(12,25), name: 'Christmas Day' },
+      { date: d(12,26), name: 'Boxing Day' },
+    ],
+    ET: [
+      { date: d(1,7), name: 'Ethiopian Christmas (Genna)' },
+      { date: d(1,19), name: 'Timkat (Epiphany)' },
+      { date: d(3,2), name: 'Battle of Adwa' },
+      { date: fd(isl.eidFitr), name: 'Eid al-Fitr (est.)' },
+      { date: fd(goodFriday), name: 'Good Friday' },
+      { date: fd(easter), name: 'Easter (Fasika)' },
+      { date: d(5,1), name: 'Labour Day' },
+      { date: d(5,5), name: "Patriots' Day" },
+      { date: d(5,28), name: 'Derg Downfall Day' },
+      { date: fd(isl.eidAdha), name: 'Eid al-Adha (est.)' },
+      { date: fd(isl.mawlid), name: 'Mawlid (est.)' },
+      { date: d(9,11), name: 'Ethiopian New Year (Enkutatash)' },
+      { date: d(9,27), name: 'Finding of the True Cross (Meskel)' },
+    ],
+    MA: [
+      { date: d(1,1), name: "New Year's Day" },
+      { date: d(1,11), name: 'Independence Manifesto Day' },
+      { date: fd(isl.eidFitr), name: 'Eid al-Fitr (est.)' },
+      { date: d(5,1), name: 'Labour Day' },
+      { date: fd(isl.eidAdha), name: 'Eid al-Adha (est.)' },
+      { date: d(7,30), name: 'Throne Day' },
+      { date: d(8,14), name: 'Oued Ed-Dahab Day' },
+      { date: d(8,20), name: 'Revolution Day' },
+      { date: d(8,21), name: "King's Birthday" },
+      { date: fd(isl.mawlid), name: 'Mawlid al-Nabi (est.)' },
+      { date: d(11,6), name: 'Green March Day' },
+      { date: d(11,18), name: 'Independence Day' },
+    ],
+    SN: [
+      { date: d(1,1), name: "New Year's Day" },
+      { date: fd(isl.eidFitr), name: 'Korité / Eid al-Fitr (est.)' },
+      { date: d(4,4), name: 'Independence Day' },
+      { date: fd(easterMonday), name: 'Easter Monday' },
+      { date: d(5,1), name: 'Labour Day' },
+      { date: fd(addDays(easter, 39)), name: 'Ascension Day' },
+      { date: fd(isl.eidAdha), name: 'Tabaski / Eid al-Adha (est.)' },
+      { date: d(8,15), name: 'Assumption Day' },
+      { date: fd(isl.mawlid), name: 'Mawlid (est.)' },
+      { date: d(11,1), name: "All Saints' Day" },
+      { date: d(12,25), name: 'Christmas Day' },
+    ],
+  };
+  return (holidays[country] || []).sort(function(a, b) { return a.date.localeCompare(b.date); });
+}
+
+var DAY_NAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+var MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+var currentHolidays = [];
+
+function render() {
+  var country = document.getElementById('country').value;
+  var year = parseInt(document.getElementById('year').value);
+  var filter = document.getElementById('filter').value;
+  var holidays = getHolidays(country, year);
+  var today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  // Apply filter
+  if (filter === 'upcoming') {
+    holidays = holidays.filter(function(h) { return new Date(h.date + 'T00:00:00') >= today; });
+  } else if (filter === 'weekend') {
+    holidays = holidays.filter(function(h) { var day = new Date(h.date + 'T00:00:00').getDay(); return day === 0 || day === 6; });
+  }
+
+  currentHolidays = holidays;
+
+  // Countdown to next holiday
+  var nextHoliday = null;
+  var allHolidays = getHolidays(country, year);
+  allHolidays.forEach(function(h) {
+    var hDate = new Date(h.date + 'T00:00:00');
+    if (hDate >= today && !nextHoliday) nextHoliday = { name: h.name, dateObj: hDate, date: h.date };
+  });
+
+  var countdownEl = document.getElementById('countdown');
+  if (nextHoliday) {
+    var daysUntil = Math.ceil((nextHoliday.dateObj - today) / 86400000);
+    var label = daysUntil === 0 ? 'Today!' : daysUntil === 1 ? '1 day' : daysUntil + ' days';
+    countdownEl.innerHTML = '<div class="big">' + label + '</div><div class="label">Until Next Holiday</div><div class="next-name">' + nextHoliday.name + ' — ' + nextHoliday.dateObj.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) + '</div>';
+    countdownEl.style.display = 'block';
+  } else {
+    countdownEl.style.display = 'none';
+  }
+
+  // Summary stats
+  var totalAll = allHolidays.length;
+  var remaining = allHolidays.filter(function(h) { return new Date(h.date + 'T00:00:00') >= today; }).length;
+  var weekendCount = allHolidays.filter(function(h) { var day = new Date(h.date + 'T00:00:00').getDay(); return day === 0 || day === 6; }).length;
+  var longWeekends = 0;
+  allHolidays.forEach(function(h) {
+    var day = new Date(h.date + 'T00:00:00').getDay();
+    if (day === 1 || day === 5) longWeekends++;
+  });
+
+  document.getElementById('summaryGrid').innerHTML =
+    '<div class="summary-box"><div class="num">' + totalAll + '</div><div class="lbl">Total</div></div>' +
+    '<div class="summary-box"><div class="num">' + remaining + '</div><div class="lbl">Remaining</div></div>' +
+    '<div class="summary-box"><div class="num">' + weekendCount + '</div><div class="lbl">On Weekend</div></div>' +
+    '<div class="summary-box"><div class="num">' + longWeekends + '</div><div class="lbl">Long Weekends</div></div>';
+
+  // Table with month grouping
+  var table = '<tr><th>Date</th><th>Day</th><th>Holiday</th><th>Status</th></tr>';
+  var lastMonth = -1;
+  holidays.forEach(function(h) {
+    var hDate = new Date(h.date + 'T00:00:00');
+    var month = hDate.getMonth();
+    if (month !== lastMonth) {
+      table += '<tr class="month-divider"><td colspan="4">' + MONTH_NAMES[month] + ' ' + year + '</td></tr>';
+      lastMonth = month;
+    }
+    var dayNum = hDate.getDay();
+    var dayName = DAY_NAMES[dayNum];
+    var isWeekend = dayNum === 0 || dayNum === 6;
+    var isPast = hDate < today;
+    var isNext = nextHoliday && h.date === nextHoliday.date;
+    var dateDisplay = hDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+
+    table += '<tr class="' + (isPast ? 'past' : '') + ' ' + (isNext ? 'next' : '') + '">' +
+      '<td style="font-weight:600;white-space:nowrap">' + dateDisplay + '</td>' +
+      '<td><span class="day-badge ' + (isWeekend ? 'weekend' : 'weekday') + '">' + dayName + '</span></td>' +
+      '<td>' + h.name + '</td>' +
+      '<td style="font-size:.72rem;color:' + (isPast ? '#94a3b8' : isNext ? 'var(--afro-blue)' : '#16a34a') + ';font-weight:' + (isNext ? '700' : '400') + '">' +
+      (isPast ? 'Passed' : isNext ? 'Next Up' : 'Upcoming') + '</td></tr>';
+  });
+  document.getElementById('holidayTable').innerHTML = table || '<tr><td colspan="4" style="text-align:center;color:#94a3b8;padding:32px">No holidays match your filter.</td></tr>';
+
+  // Update page title
+  document.title = 'African Public Holidays ' + year + ' | AfroTools';
+}
+
+function exportICS() {
+  var country = document.getElementById('country').value;
+  var year = document.getElementById('year').value;
+  var countryNames = { NG: 'Nigeria', KE: 'Kenya', ZA: 'South Africa', GH: 'Ghana', EG: 'Egypt', TZ: 'Tanzania', UG: 'Uganda', ET: 'Ethiopia', MA: 'Morocco', SN: 'Senegal' };
+  var holidays = getHolidays(country, parseInt(year));
+  if (!holidays.length) return;
+
+  var ics = 'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//AfroTools//Public Holidays//EN\r\nCALSCALE:GREGORIAN\r\nX-WR-CALNAME:' + countryNames[country] + ' Public Holidays ' + year + '\r\n';
+  holidays.forEach(function(h) {
+    var d = h.date.replace(/-/g, '');
+    var nextDay = addDays(new Date(h.date + 'T00:00:00'), 1);
+    var nd = dateStr(nextDay.getFullYear(), nextDay.getMonth() + 1, nextDay.getDate()).replace(/-/g, '');
+    var now = new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    ics += 'BEGIN:VEVENT\r\n' +
+      'UID:' + d + '-' + country + '-' + h.name.replace(/[^a-zA-Z0-9]/g, '') + '@afrotools.com\r\n' +
+      'DTSTAMP:' + now + '\r\n' +
+      'DTSTART;VALUE=DATE:' + d + '\r\n' +
+      'DTEND;VALUE=DATE:' + nd + '\r\n' +
+      'SUMMARY:' + h.name + ' (' + countryNames[country] + ')\r\n' +
+      'DESCRIPTION:Public holiday in ' + countryNames[country] + '\r\n' +
+      'TRANSP:TRANSPARENT\r\n' +
+      'END:VEVENT\r\n';
+  });
+  ics += 'END:VCALENDAR\r\n';
+
+  var blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = countryNames[country].toLowerCase().replace(/\s+/g, '-') + '-holidays-' + year + '.ics';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+render();
+</script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+</body>
+</html>

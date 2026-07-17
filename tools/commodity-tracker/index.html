@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+<title>African Commodity Trade Tracker 2026 — Imports &amp; Exports by Country | AfroTools</title>
+<meta name="description" content="Track Africa's top traded commodities. See import and export volumes for Nigeria, Kenya, South Africa, Ghana, Egypt and more. Trade balance, commodity prices, and top trading partners.">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/tool-landing.css?v=09fede9d">
+<script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+/* ── Tool Shell, Hero & Navigation ──────────────── */
+:root{--brand:#0062CC;--brand-d:#0063D1;--surface:#fff;--border:#e2e8f0;--text:#0f172a;--text-muted:#64748b}
+.tool-shell{background:#F8FAFD;min-height:100vh}
+.tool-hero{background:linear-gradient(135deg,#0a1628 0%,#0f2044 60%,#0a1e3d 100%);padding:52px 24px 0;text-align:center;position:relative;overflow:hidden}
+.tool-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 70% 20%,rgba(0,98,204,.12),transparent),radial-gradient(ellipse 40% 40% at 20% 70%,rgba(77,163,255,.07),transparent);pointer-events:none}
+.tool-hero-icon{font-size:44px;margin-bottom:14px;position:relative;display:block}
+.tool-hero-title,.tool-hero h1{font-size:clamp(1.75rem,4vw,2.6rem)!important;font-weight:900!important;color:#fff!important;letter-spacing:-.025em;line-height:1.15;margin:0 auto 10px;max-width:700px;position:relative}
+.tool-hero-desc{font-size:.96rem;color:rgba(255,255,255,.72);max-width:580px;margin:0 auto 0;line-height:1.65;position:relative}
+.tool-tabs{display:flex;justify-content:center;gap:4px;flex-wrap:wrap;padding:20px 0 0;position:relative}
+.tool-tab{padding:11px 22px;border:1.5px solid rgba(255,255,255,.12);border-bottom:none;background:rgba(255,255,255,.1);border-radius:12px 12px 0 0;font-size:.85rem;font-weight:700;color:rgba(255,255,255,.7);cursor:pointer;transition:all .2s;white-space:nowrap;font-family:inherit}
+.tool-tab:hover{background:rgba(255,255,255,.18);color:#fff}
+.tool-tab.on{background:#F8FAFD;color:#0a1628;border-color:#F8FAFD}
+.tool-panel{display:none;max-width:1200px;margin:0 auto;padding:28px 24px 72px}
+.tool-panel.on{display:block}
+.tool-section{background:#fff;border:1.5px solid var(--border,#e2e8f0);border-radius:18px;padding:24px;margin-bottom:20px}
+.section-title{font-size:1.15rem;font-weight:800;color:var(--text,#0f172a);margin-bottom:6px}
+.section-desc{font-size:.88rem;color:var(--text-muted,#64748b);margin-bottom:16px}
+.field-group{margin-bottom:16px}
+.field-label{display:block;font-size:.78rem;font-weight:700;color:var(--text,#0f172a);margin-bottom:6px;letter-spacing:.02em}
+.field-input,.field-select{width:100%;padding:11px 14px;background:#F4F7FA;border:1.5px solid #CBD5E1;border-radius:8px;font-size:.95rem;font-weight:600;color:var(--text,#0f172a);outline:none;transition:border-color .18s;font-family:inherit}
+.field-input:focus,.field-select:focus{border-color:#0062CC;background:#fff;box-shadow:0 0 0 3px rgba(0,98,204,.1)}
+.pill-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 26px;border:none;border-radius:980px;font-size:.88rem;font-weight:800;cursor:pointer;transition:all .2s;font-family:inherit}
+@media(max-width:640px){.tool-tabs{overflow-x:auto;flex-wrap:nowrap;justify-content:flex-start;-webkit-overflow-scrolling:touch;scrollbar-width:none}.tool-tabs::-webkit-scrollbar{display:none}.tool-tab{flex-shrink:0;padding:9px 14px;font-size:.78rem}.tool-panel{padding:20px 16px 60px}}
+/* ── Tool-specific ──────────────────────────────── */
+.country-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin:16px 0}
+.country-btn{background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:12px;text-align:center;cursor:pointer;transition:all .2s;font-size:13px}
+.country-btn:hover,.country-btn.active{border-color:var(--brand);background:#E8F2FF}
+.country-flag{font-size:24px;display:block;margin-bottom:4px}
+.country-name{font-weight:700;font-size:12px}
+.stat-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}
+.stat-card{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:16px;text-align:center}
+.stat-val{font-size:22px;font-weight:800}
+.stat-lbl{font-size:11px;text-transform:uppercase;color:var(--text-muted);font-weight:800;margin-top:2px}
+.surplus{color:#34C759}
+.deficit{color:#FF3B30}
+.chart-wrap{background:var(--surface);border:1.5px solid var(--border);border-radius:18px;padding:20px;margin:12px 0}
+.chart-title{font-weight:800;font-size:14px;margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
+.commodity-bar{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:13px}
+.commodity-bar-label{width:160px;flex-shrink:0;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.commodity-bar-track{flex:1;height:20px;background:#F0F0F0;border-radius:10px;overflow:hidden}
+.commodity-bar-fill{height:100%;border-radius:10px;transition:width .5s ease}
+.commodity-bar-value{width:90px;text-align:right;font-size:12px;color:var(--text-muted)}
+.partner-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.partner-pill{background:#E8F2FF;color:var(--brand);padding:4px 12px;border-radius:980px;font-size:12px;font-weight:700}
+.price-table{width:100%;border-collapse:collapse;font-size:13px}
+.price-table th{background:var(--brand);color:#fff;font-weight:800;text-transform:uppercase;font-size:11px;padding:10px 12px;text-align:left}
+.price-table td{padding:10px 12px;border-bottom:1px solid var(--border)}
+.obs-box{background:#F0F7FF;border:1px solid var(--brand);border-radius:0 12px 12px 0;padding:14px 16px;margin:8px 0;font-size:14px}
+.search-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:980px;font-size:14px;outline:none;transition:border-color .2s}
+.search-input:focus{border-color:var(--brand)}
+.cat-pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.cat-pill{background:var(--surface);border:1.5px solid var(--border);border-radius:980px;padding:6px 16px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s}
+.cat-pill.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+
+@media(max-width:640px){
+  .stat-cards{grid-template-columns:1fr;}
+  .chart-wrap{padding:12px;}
+}
+
+.price-table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%;}
+</style>
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://afrotools.com/tools/commodity-tracker/">
+  <meta property="og:title" content="African Commodity Trade Tracker 2026 — Imports &amp; Exports by Country">
+  <meta property="og:description" content="Track Africa's top traded commodities. See import and export volumes for Nigeria, Kenya, South Africa, Ghana, Egypt and more. Trade balance, commodity pric">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/commodity-tracker.webp">
+  <meta property="og:site_name" content="AfroTools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="African Commodity Trade Tracker 2026 — Imports &amp; Exports by Country">
+  <meta name="twitter:description" content="Track Africa's top traded commodities. See import and export volumes for Nigeria, Kenya, South Africa, Ghana, Egypt and more. Trade balance, commodity pric">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/commodity-tracker.webp">
+<meta property="article:modified_time" content="2026-03-28">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<link rel="stylesheet" href="/assets/css/trade-toolkit.css?v=2465f40a">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Commodity Trade Tracker?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Commodity Trade Tracker then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Commodity Trade Tracker?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Commodity Trade Tracker free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for Nigeria, Kenya, South Africa and other African markets."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "African Commodity Trade Tracker 2026 — Imports & Exports by Country",
+  "description": "Track Africa",
+  "url": "https://afrotools.com/tools/commodity-tracker/",
+  "inLanguage": "en",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/commodity-tracker.webp"
+}
+</script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"African Commodity Trade Tracker 2026 — Imports & Exports by Country","item":"https://afrotools.com/tools/commodity-tracker/"}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/commodity-tracker/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/commodity-tracker/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ufuatiliaji-bei-za-bidhaa/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/commodity-tracker/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="trade"></afro-navbar>
+
+<main class="tool-shell">
+  <div class="tool-hero">
+    <div class="tool-hero-icon">📦</div>
+    <h1 class="tool-hero-title">African Commodity Trade Tracker</h1>
+    <p class="tool-hero-desc">Top imports &amp; exports, trade balance, and commodity price references for 8 African economies.</p>
+    <div class="tool-tabs" id="tabs">
+      <button type="button" class="tool-tab on" onclick="setTab('country',this)">Country View</button>
+      <button type="button" class="tool-tab" onclick="setTab('commodity',this)">Commodity Search</button>
+      <button type="button" class="tool-tab" onclick="setTab('prices',this)">Price Reference</button>
+    </div>
+  </div>
+
+  <!-- COUNTRY VIEW -->
+  <div class="tool-panel on" id="country">
+    <div class="tool-section">
+      <h2 class="section-title">Select a Country</h2>
+      <div class="country-grid" id="countryGrid"></div>
+      <div id="countryDetail" style="display:none">
+        <div class="stat-cards" id="statCards"></div>
+        <div class="cat-pills" id="catFilter"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div class="chart-wrap">
+            <div class="chart-title">Top Exports</div>
+            <div id="exportBars"></div>
+          </div>
+          <div class="chart-wrap">
+            <div class="chart-title">Top Imports</div>
+            <div id="importBars"></div>
+          </div>
+        </div>
+        <div class="chart-wrap" style="margin-top:12px">
+          <div class="chart-title">Trade Balance</div>
+          <canvas id="balanceChart" height="100"></canvas>
+        </div>
+        <div class="chart-wrap">
+          <div class="chart-title">Top Trade Partners</div>
+          <div id="partnerSection"></div>
+        </div>
+        <div id="countryObs" style="margin-top:8px"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMMODITY SEARCH -->
+  <div class="tool-panel" id="commodity">
+    <div class="tool-section">
+      <h2 class="section-title">Find African Traders by Commodity</h2>
+      <input aria-label="E.g. cocoa, gold, coffee, petroleum" class="search-input" id="commoditySearch" placeholder="e.g. cocoa, gold, coffee, petroleum..." oninput="searchCommodity()">
+      <div id="commodityResults" style="margin-top:16px"></div>
+    </div>
+  </div>
+
+  <!-- PRICE REFERENCE -->
+  <div class="tool-panel" id="prices">
+    <div class="tool-section">
+      <h2 class="section-title">Commodity Price Reference</h2>
+      <p class="section-desc">Reference prices as at early 2026. Actual traded prices vary — check live exchanges for current values.</p>
+      <div class="obs-box">📊 These are indicative reference prices from ICE, LME, London Fix and Mombasa Auction as of early 2026. Always verify with live market data before trading.</div>
+      <table class="price-table" id="priceTable">
+        <thead><tr><th>Commodity</th><th>Reference Price</th><th>Unit</th><th>Source</th></tr></thead>
+        <tbody id="priceBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+<section class="df-upgrade" data-df-upgrade="commodity-tracker">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Practical workflow</span>
+      <h2>Turn country trade data into a procurement briefing</h2>
+      <p>Not sure how to get the most from the Commodity Trade Tracker? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for Nigeria, Kenya, South Africa and other African markets.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Commodity Trade Tracker takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
+    </div>
+    <form class="df-form" data-df-form="commodity-tracker">
+      <label>Focus country<select name="country" aria-label="Focus country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
+      <label>Shipment or deal value USD<input name="amount" type="number" value="25000" min="0" step="any" aria-label="Shipment or deal value USD"></label>
+      <label>Decision focus<select name="priority" aria-label="Decision focus"><option value="buyers">buyer demand</option><option value="suppliers">supplier availability</option><option value="price">price risk</option><option value="logistics">logistics risk</option></select></label>
+      <label>Risk buffer percent<input name="buffer" type="number" value="12" min="0" step="any" aria-label="Risk buffer percent"></label>
+      <button type="submit">Create trade brief</button>
+      <output class="df-result" data-df-result="commodity-tracker" data-df-base="Commodity Trade Tracker — enter your details above to see your result." aria-live="polite">Commodity Trade Tracker — enter your details above to see your result.</output>
+      <div class="df-actions"><button type="button" data-df-copy="commodity-tracker">Copy trade brief</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="commodity-tracker-faq-title">
+  <h2 id="commodity-tracker-faq-title">Commodity Trade Tracker FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the Commodity Trade Tracker?</summary><p>Enter your amounts, rates and dates in the fields above. The Commodity Trade Tracker then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Commodity Trade Tracker?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Commodity Trade Tracker free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for Nigeria, Kenya, South Africa and other African markets.</p></details></div>
+</section>
+<section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="commodity-verification-title">
+  <div class="tool-verification-card">
+    <div class="tool-verification-head">
+      <div>
+        <span class="tool-verification-kicker">Sources &amp; verification</span>
+        <h2 class="tool-verification-title" id="commodity-verification-title">Treat commodity data as a source-dated planning reference</h2>
+        <p class="tool-verification-lead">This tracker helps compare trade composition, partner exposure, and indicative price references. It does not provide live market quotes or trading advice.</p>
+      </div>
+      <div class="tool-verification-status">
+        <span class="tool-verification-badge">Static reference data</span>
+        <p class="tool-verification-note">Reviewed 2026. Volumes, prices, partners, and policy restrictions can move quickly.</p>
+      </div>
+    </div>
+    <div class="tool-verification-grid">
+      <div class="tool-verification-block">
+        <h3>Methodology</h3>
+        <ul class="tool-verification-list">
+          <li>Country view summarises export/import categories, trade balance, and partner concentration from bundled reference data.</li>
+          <li>Commodity search finds countries where a product appears in the local trade dataset.</li>
+          <li>Price reference is indicative only and should be replaced with live exchange, auction, buyer, or broker quotes.</li>
+        </ul>
+      </div>
+      <div class="tool-verification-block">
+        <h3>Before acting</h3>
+        <ul class="tool-verification-list">
+          <li>Verify current export restrictions, quality grade, logistics route, buyer terms, FX, commodity exchange price, and local taxes.</li>
+          <li>Use official statistics, exchange data, port data, buyer contracts, and broker quotes before pricing a shipment.</li>
+          <li>Copy the planning summary for trade desk, procurement, supplier, or finance review.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tool-verification-actions">
+      <p class="tool-verification-disclaimer">Planning reference only. AfroTools does not provide investment advice, live trading data, commodity brokerage, customs filing, or guaranteed market prices.</p>
+    </div>
+  </div>
+</section>
+<afro-business-cta tool-name="Commodity Trade Tracker" prospect-segment="trade-market-data" save-note="Explore country and commodity data, then copy the summary for procurement, trade desk, supplier, or finance review."></afro-business-cta>
+</main>
+<afro-related-tools data-ssr="1" category="trade" current="commodity-tracker">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/afcfta-tracker/" data-related-tool data-id="afcfta-tracker" data-name="AfCFTA Tariff Tracker" data-category="trade" data-icon="AT" data-desc="Live AfCFTA duty schedule. Check duty-free status for any item between 54 African countries. Phase I &amp; II schedules.">AfCFTA Tariff Tracker</a></li><li><a href="/tools/landed-cost/" data-related-tool data-id="landed-cost" data-name="Landed Cost Calculator" data-category="trade" data-icon="LC" data-desc="Estimate landed cost for selected African import markets with source-confidence labels for user inputs, estimates, and v">Landed Cost Calculator</a></li><li><a href="/tools/incoterms-calculator/" data-related-tool data-id="incoterms-calculator" data-name="Incoterms 2020 Calculator" data-category="trade" data-icon="I2" data-desc="All 11 Incoterms 2020 explained with cost-split calculator, comparison tool, and Africa-specific trade guide.">Incoterms 2020 Calculator</a></li><li><a href="/tools/shipping-estimator/" data-related-tool data-id="shipping-estimator" data-name="Shipping Cost Estimator" data-category="trade" data-icon="SC" data-desc="Estimate sea freight, air freight and road haulage costs for Africa trade corridors. 16 ports, 8 airlines, 8 trucking ro">Shipping Cost Estimator</a></li><li><a href="/tools/export-docs/" data-related-tool data-id="export-docs-trade" data-name="Export Documentation Checklist" data-category="trade" data-icon="ED" data-desc="Country-specific checklist for every document needed to export from Africa. 17 origin countries, 8 destinations includin">Export Documentation Checklist</a></li><li><a href="/tools/fx-import-impact/" data-related-tool data-id="fx-import-impact" data-name="FX Import Cost Impact" data-category="trade" data-icon="FI" data-desc="Calculate how currency depreciation affects import costs. Model FX scenarios for 15 African currencies.">FX Import Cost Impact</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script>
+<script src="/assets/js/bundles/tool-page.315f0428.min.js?v=315f0428" defer></script>
+<script src="/data/trade/commodity-trade-data.js?v=92753c11"></script>
+<script src="/engines/commodity-engine.js?v=92bc3ff7"></script>
+<script defer src="/assets/js/lib/data-freshness.js?v=ab79d040" data-category="commodities"></script>
+<script defer src="/assets/js/lib/crowdsource-bridge.js?v=c1268e3a" data-category="product_price"></script>
+<script>
+var activeCountry = 'NG';
+var activeCategory = 'all';
+var balanceChart = null;
+
+function setTab(id, btn) {
+  document.querySelectorAll('.tool-panel').forEach(function(p){ p.classList.remove('on'); });
+  document.querySelectorAll('.tool-tab').forEach(function(b){ b.classList.remove('on'); });
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+}
+
+function fmtB(n) {
+  if (Math.abs(n) >= 1000) return '$' + (n/1000).toFixed(1) + 'B';
+  return '$' + Math.abs(n) + 'M';
+}
+
+/* ── Country Grid ────────────────────────────────────── */
+function buildCountryGrid() {
+  var countries = CommodityEngine.getAllCountries();
+  document.getElementById('countryGrid').innerHTML = countries.map(function(c) {
+    return '<div class="country-btn" id="cb-' + c.code + '" onclick="selectCountry(\'' + c.code + '\')">' +
+      '<span class="country-flag">' + c.flag + '</span>' +
+      '<span class="country-name">' + c.name + '</span>' +
+    '</div>';
+  }).join('');
+}
+
+function buildCatFilter() {
+  document.getElementById('catFilter').innerHTML = CommodityEngine.getCategories().map(function(cat) {
+    return '<div class="cat-pill' + (cat.id === activeCategory ? ' active' : '') + '" onclick="selectCat(\'' + cat.id + '\')">' + cat.label + '</div>';
+  }).join('');
+}
+
+function selectCat(catId) {
+  activeCategory = catId;
+  document.querySelectorAll('.cat-pill').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.cat-pill').forEach(function(p){ if(p.textContent === CommodityEngine.getCategories().find(function(c){return c.id===catId;}).label) p.classList.add('active'); });
+  renderExportImport();
+}
+
+function selectCountry(code) {
+  activeCountry = code;
+  activeCategory = 'all';
+  document.querySelectorAll('.country-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('cb-' + code).classList.add('active');
+  renderCountryDetail(code);
+}
+
+function renderCountryDetail(code) {
+  var summary = CommodityEngine.getCountrySummary(code);
+  if (!summary) return;
+  document.getElementById('countryDetail').style.display = 'block';
+  var balance = CommodityEngine.getTradeBalance(code);
+
+  document.getElementById('statCards').innerHTML =
+    '<div class="stat-card"><div class="stat-val surplus">' + fmtB(summary.totalExports) + '</div><div class="stat-lbl">Total Exports</div></div>' +
+    '<div class="stat-card"><div class="stat-val deficit">' + fmtB(summary.totalImports) + '</div><div class="stat-lbl">Total Imports</div></div>' +
+    '<div class="stat-card"><div class="stat-val ' + balance.status + '">' + (balance.balance >= 0 ? '+' : '-') + fmtB(balance.absBalance) + '</div><div class="stat-lbl">' + balance.statusLabel + '</div></div>';
+
+  buildCatFilter();
+  renderExportImport();
+  renderBalance(summary, balance);
+  renderPartners(summary);
+  renderObservations(summary);
+}
+
+function renderExportImport() {
+  var exp = CommodityEngine.getRankedList(activeCountry, 'exports', activeCategory);
+  var imp = CommodityEngine.getRankedList(activeCountry, 'imports', activeCategory);
+  var maxExp = exp.length ? exp[0].value : 1;
+  var maxImp = imp.length ? imp[0].value : 1;
+
+  document.getElementById('exportBars').innerHTML = exp.slice(0,7).map(function(item) {
+    var pct = (item.value / maxExp * 100).toFixed(1);
+    return '<div class="commodity-bar">' +
+      '<div class="commodity-bar-label" title="' + item.commodity + '">' + item.commodity + '</div>' +
+      '<div class="commodity-bar-track"><div class="commodity-bar-fill" style="width:' + pct + '%;background:#34C759"></div></div>' +
+      '<div class="commodity-bar-value">' + fmtB(item.value) + ' (' + item.share + '%)</div>' +
+    '</div>';
+  }).join('') || '<p style="color:var(--text-muted);font-size:13px">No data for this category.</p>';
+
+  document.getElementById('importBars').innerHTML = imp.slice(0,7).map(function(item) {
+    var pct = (item.value / maxImp * 100).toFixed(1);
+    return '<div class="commodity-bar">' +
+      '<div class="commodity-bar-label" title="' + item.commodity + '">' + item.commodity + '</div>' +
+      '<div class="commodity-bar-track"><div class="commodity-bar-fill" style="width:' + pct + '%;background:#FF3B30"></div></div>' +
+      '<div class="commodity-bar-value">' + fmtB(item.value) + ' (' + item.share + '%)</div>' +
+    '</div>';
+  }).join('') || '<p style="color:var(--text-muted);font-size:13px">No data for this category.</p>';
+}
+
+function renderBalance(summary, balance) {
+  if (balanceChart) { balanceChart.destroy(); balanceChart = null; }
+  var canvas = document.getElementById('balanceChart');
+  var fallback = document.getElementById('balanceFallback');
+  if (!fallback) {
+    fallback = document.createElement('div');
+    fallback.id = 'balanceFallback';
+    fallback.className = 'obs-box';
+    fallback.style.marginTop = '10px';
+    canvas.parentNode.appendChild(fallback);
+  }
+  if (typeof Chart === 'undefined') {
+    canvas.style.display = 'none';
+    fallback.style.display = 'block';
+    fallback.innerHTML = '<strong>Exports:</strong> ' + fmtB(summary.totalExports) + ' &nbsp; <strong>Imports:</strong> ' + fmtB(summary.totalImports) + ' &nbsp; <strong>Balance:</strong> ' + fmtB(balance);
+    return;
+  }
+  canvas.style.display = 'block';
+  fallback.style.display = 'none';
+  var ctx = canvas.getContext('2d');
+  balanceChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Exports', 'Imports'],
+      datasets: [{ data: [summary.totalExports, summary.totalImports], backgroundColor: ['#34C759', '#FF3B30'], borderRadius: 8 }]
+    },
+    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: function(v){ return '$' + (v/1000).toFixed(0) + 'B'; } } } } }
+  });
+}
+
+function renderPartners(summary) {
+  var p = summary.topPartners;
+  var html = '';
+  if (p.exports && p.exports.length) {
+    html += '<div style="margin-bottom:12px"><div style="font-size:12px;font-weight:800;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px">Export Partners</div>';
+    html += '<div class="partner-pills">' + p.exports.map(function(c){ return '<span class="partner-pill">' + c + '</span>'; }).join('') + '</div></div>';
+  }
+  if (p.imports && p.imports.length) {
+    html += '<div><div style="font-size:12px;font-weight:800;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px">Import Partners</div>';
+    html += '<div class="partner-pills">' + p.imports.map(function(c){ return '<span class="partner-pill" style="background:#FFE5E5;color:#C0392B">' + c + '</span>'; }).join('') + '</div></div>';
+  }
+  document.getElementById('partnerSection').innerHTML = html;
+}
+
+function renderObservations(summary) {
+  document.getElementById('countryObs').innerHTML = summary.observations.map(function(o) {
+    return '<div class="obs-box">' + o + '</div>';
+  }).join('');
+}
+
+/* ── Commodity Search ────────────────────────────────── */
+function searchCommodity() {
+  var q = document.getElementById('commoditySearch').value.trim();
+  if (!q || q.length < 2) { document.getElementById('commodityResults').innerHTML = ''; return; }
+  var results = CommodityEngine.findCommodityTraders(q);
+  if (!results.length) { document.getElementById('commodityResults').innerHTML = '<p style="color:var(--text-muted)">No matches found for "' + q + '".</p>'; return; }
+  var html = '<table class="price-table"><thead><tr><th>Country</th><th>Type</th><th>Commodity</th><th>Value (M USD)</th><th>Share</th></tr></thead><tbody>';
+  results.forEach(function(r) {
+    html += '<tr><td>' + r.flag + ' ' + r.countryName + '</td>' +
+      '<td><span style="font-weight:700;color:' + (r.type==='export'?'#34C759':'#FF3B30') + '">' + r.type.toUpperCase() + '</span></td>' +
+      '<td>' + r.item.commodity + '</td><td>$' + r.item.value.toLocaleString() + '</td><td>' + (r.item.share || '—') + '%</td></tr>';
+  });
+  html += '</tbody></table>';
+  document.getElementById('commodityResults').innerHTML = html;
+}
+
+/* ── Price Table ─────────────────────────────────────── */
+function buildPriceTable() {
+  var prices = CommodityEngine.getPriceContext();
+  document.getElementById('priceBody').innerHTML = prices.map(function(p) {
+    return '<tr><td><strong>' + p.name + '</strong></td><td><strong>$' + p.refPrice.toLocaleString() + '</strong></td><td>' + p.unit + '</td><td>' + p.source + '</td></tr>';
+  }).join('');
+}
+
+/* ── Live Price Overlay ──────────────────────────────── */
+function overlayLivePrices() {
+  fetch('/.netlify/functions/api-commodity-prices?source=live')
+    .then(function(res) { return res.ok ? res.json() : null; })
+    .then(function(data) {
+      if (!data || !data.commodities) return;
+      // Update the price table with live data
+      var nameMap = {};
+      data.commodities.forEach(function(c) { nameMap[c.name] = c; nameMap[c.id] = c; });
+      var rows = document.querySelectorAll('#priceBody tr');
+      rows.forEach(function(row) {
+        var nameCell = row.querySelector('td:first-child strong');
+        if (!nameCell) return;
+        var name = nameCell.textContent.trim();
+        var match = null;
+        data.commodities.forEach(function(c) {
+          if (name.toLowerCase().includes(c.name.toLowerCase().split('(')[0].trim()) ||
+              c.name.toLowerCase().includes(name.toLowerCase().split('(')[0].trim())) {
+            match = c;
+          }
+        });
+        if (match) {
+          var priceCell = row.querySelector('td:nth-child(2) strong');
+          if (priceCell) {
+            priceCell.textContent = '$' + match.price.toLocaleString();
+            priceCell.style.color = '#34C759';
+            priceCell.title = 'Live price — updated ' + new Date(data.lastUpdated).toLocaleDateString();
+          }
+        }
+      });
+    })
+    .catch(function(e) { console.log('[commodity] Live overlay failed:', e.message); });
+}
+
+/* ── init ─────────────────────────────────────────────── */
+buildCountryGrid();
+buildPriceTable();
+selectCountry('NG');
+</script>
+<script src="/assets/js/trade-toolkit.js?v=748d8913" defer></script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

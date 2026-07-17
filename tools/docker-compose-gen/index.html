@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Docker Compose Generator with Healthchecks | AfroTools</title>
+<meta name="description" content="Generate Docker Compose stacks with healthchecks, depends_on conditions, profiles, secrets, .env examples, Nginx config and deployment commands for African developers shipping on VPS and cloud hosts.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Docker Compose Generator | AfroTools">
+<meta property="og:description" content="Build compose.yaml with healthchecks, secrets, profiles, reverse proxy config and deploy notes.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/docker-compose-gen.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/docker-compose-gen/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Docker Compose Generator | AfroTools">
+<meta name="twitter:description" content="Generate Compose stacks with healthchecks, profiles, secrets and deploy notes.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/docker-compose-gen.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Docker Compose Generator",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "url": "https://afrotools.com/tools/docker-compose-gen/",
+  "description": "Generate Docker Compose stacks with healthchecks, depends_on conditions, profiles, secrets, environment examples and deployment commands.",
+  "featureList": [
+    "compose.yaml generation",
+    ".env example generation",
+    "Dockerfile starter snippets",
+    "Nginx and Caddy proxy snippets",
+    "Healthcheck and depends_on guidance",
+    "Deployment preflight checklist"
+  ],
+  "browserRequirements": "Runs locally in a modern browser. No Docker command is executed by this page.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "image": "https://afrotools.com/assets/img/tools/docker-compose-gen.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to generate a safer Docker Compose starter stack",
+  "description": "Choose a runtime, database, proxy, optional services, and safety options, then review the generated compose.yaml, environment example, commands, proxy config, Dockerfile, and preflight checklist before running Docker Compose.",
+  "step": [
+    {"@type": "HowToStep", "name": "Select the stack shape", "text": "Pick a profile, runtime, database, proxy, and supporting services that match the app you are deploying."},
+    {"@type": "HowToStep", "name": "Enable safety options", "text": "Use healthchecks, file secrets, named volumes, private networking, profiles, and resource limits when they fit your host."},
+    {"@type": "HowToStep", "name": "Review generated files", "text": "Copy the compose, environment, command, proxy, Dockerfile, and preflight outputs into your project and replace placeholders."},
+    {"@type": "HowToStep", "name": "Validate locally", "text": "Run docker compose config and test the stack in staging before exposing services publicly."}
+  ],
+  "url": "https://afrotools.com/tools/docker-compose-gen/"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "AfroTools", "item": "https://afrotools.com/"},
+    {"@type": "ListItem", "position": 2, "name": "Developer Tools", "item": "https://afrotools.com/developer-tools/"},
+    {"@type": "ListItem", "position": 3, "name": "Docker Compose Generator", "item": "https://afrotools.com/tools/docker-compose-gen/"}
+  ]
+}
+</script>
+<style>
+:root{
+  --ink:#172033;
+  --muted:#64748b;
+  --line:#dbe4ee;
+  --soft:#f8fafc;
+  --panel:#fff;
+  --blue:#2563eb;
+  --green:#047857;
+  --amber:#b45309;
+  --red:#b91c1c;
+  --shadow:0 10px 30px rgba(15,23,42,.08);
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Consolas,monospace;
+}
+body{font-family:Inter,system-ui,sans-serif;background:#f8fafc;color:var(--ink)}
+.hero{background:linear-gradient(135deg,#08111f 0%,#17314b 52%,#2563eb 100%);color:#fff}
+.hero-inner{max-width:1280px;margin:0 auto;padding:42px 22px 34px}
+.breadcrumb{display:flex;gap:8px;align-items:center;font-size:.74rem;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.62);margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.72);text-decoration:none}
+.breadcrumb a:hover{color:#fff}
+h1{font-size:clamp(2rem,5vw,4.5rem);line-height:.98;margin:0 0 14px;font-weight:800;letter-spacing:0;max-width:940px}
+.hero-copy{font-size:1.02rem;line-height:1.72;max-width:830px;color:rgba(255,255,255,.82);margin:0}
+.hero-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:26px}
+.hero-stat{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);border-radius:8px;padding:14px}
+.hero-stat strong{display:block;font-size:1.45rem;color:#fff}
+.hero-stat span{font-size:.78rem;color:rgba(255,255,255,.68)}
+.wrap{max-width:1280px;margin:0 auto;padding:24px 22px 70px}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 430px;gap:18px;align-items:start}
+.left,.right{display:grid;gap:16px}
+.right{position:sticky;top:78px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);overflow:hidden}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);background:#fbfdff}
+.card-title{font-size:.76rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#334155}
+.card-body{padding:16px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+label{display:block;font-size:.74rem;font-weight:700;color:#475569;margin-bottom:5px}
+select,input{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:7px;background:#fff;color:var(--ink);font:500 .88rem Inter,sans-serif;padding:9px 10px;min-height:44px}
+input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.13)}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:7px;padding:8px 11px;min-height:44px;font:800 .76rem Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.btn:hover{border-color:#94a3b8;background:#f8fafc}
+.btn.primary{background:#2563eb;border-color:#2563eb;color:#fff}
+.btn.primary:hover{background:#1d4ed8}
+.btn.small{font-size:.72rem;padding:7px 9px}
+.service-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
+.service{border:1px solid var(--line);background:#fff;border-radius:8px;padding:11px;min-height:72px;cursor:pointer;display:grid;gap:5px;text-align:left}
+.service:hover{border-color:#93c5fd;background:#eff6ff}
+.service.active{border-color:#2563eb;background:#eff6ff}
+.service strong{font-size:.86rem}
+.service span{font-size:.74rem;color:#64748b;line-height:1.4}
+.switch-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.switch{display:flex;gap:9px;align-items:flex-start;border:1px solid var(--line);border-radius:8px;padding:10px;background:#fff}
+.switch input{width:auto;margin-top:3px}
+.switch strong{display:block;font-size:.82rem}
+.switch span{display:block;font-size:.74rem;color:#64748b;line-height:1.4;margin-top:2px}
+.notice{border:1px solid #94a3b8;background:#f8fafc;border-radius:7px;padding:10px 11px;font-size:.82rem;line-height:1.45}
+.notice.ok{border-left-color:var(--green);background:#ecfdf5;color:#064e3b}
+.notice.warn{border-left-color:var(--amber);background:#fffbeb;color:#78350f}
+.notice.error{border-left-color:var(--red);background:#fef2f2;color:#7f1d1d}
+.score-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.score{border:1px solid var(--line);border-radius:8px;padding:12px;background:#fff}
+.score strong{display:block;font-size:1.35rem}
+.score span{font-size:.72rem;color:#64748b;font-weight:800}
+.tabs{display:flex;border-bottom:1px solid var(--line);background:#f8fafc;overflow:auto}
+.tab{border:0;border-right:1px solid var(--line);background:transparent;padding:11px 13px;min-height:44px;font:800 .73rem Inter,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#64748b;cursor:pointer;white-space:nowrap}
+.tab.active{background:#fff;color:#2563eb}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+.codebox{margin:0;background:#0b1220;color:#dbeafe;border-radius:0;padding:16px;overflow:auto;white-space:pre;line-height:1.55;font:500 .78rem var(--mono);max-height:620px}
+.source-list{display:grid;gap:8px}
+.source-list a{font-size:.84rem;color:#2563eb;text-decoration:none;font-weight:800;min-height:44px;display:flex;align-items:center}
+.source-list a:hover{text-decoration:underline}
+.compose-faq{max-width:1280px;margin:18px auto 0;display:grid;gap:12px}
+.compose-faq h2{font-size:1.2rem;margin:0;color:#172033}
+.compose-faq-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.compose-faq details{border:1px solid var(--line);background:#fff;border-radius:8px;padding:14px;box-shadow:var(--shadow)}
+.compose-faq summary{cursor:pointer;font-weight:800;color:#1f2937;min-height:44px;display:flex;align-items:center}
+.compose-faq p{margin:8px 0 0;color:#64748b;line-height:1.55;font-size:.9rem}
+.toast{position:fixed;right:18px;bottom:18px;background:#0f172a;color:#fff;border-radius:8px;padding:11px 14px;font-size:.84rem;font-weight:700;box-shadow:0 12px 30px rgba(0,0,0,.24);opacity:0;transform:translateY(8px);transition:.18s;z-index:40}
+.toast.show{opacity:1;transform:translateY(0)}
+@media(max-width:1080px){
+  .layout{grid-template-columns:1fr}
+  .right{position:static}
+  .hero-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:720px){
+  .hero-inner,.wrap{padding-left:16px;padding-right:16px}
+  .grid,.grid.two,.switch-grid,.score-grid,.hero-grid,.compose-faq-grid{grid-template-columns:1fr}
+}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What files does this create?","acceptedAnswer":{"@type":"Answer","text":"It generates local starter snippets for compose.yaml, .env, deploy commands, reverse proxy config, Dockerfile, and a preflight checklist."}},{"@type":"Question","name":"Does it run Docker commands?","acceptedAnswer":{"@type":"Answer","text":"No. The page only produces text for review. Copy the snippets into your project and run Docker commands from your own terminal."}},{"@type":"Question","name":"What must I verify first?","acceptedAnswer":{"@type":"Answer","text":"Check secrets, exposed ports, health endpoints, backups, TLS, resource limits, Docker Compose version support, and your hosting provider limits."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Docker Compose Generator with Healthchecks",
+  "description": "Generate Docker Compose stacks with healthchecks, depends_on conditions, profiles, secrets, .env examples, Nginx config and deployment commands for African developers shipping on VPS and cloud hosts.",
+  "url": "https://afrotools.com/tools/docker-compose-gen/",
+  "inLanguage": "en",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/docker-compose-gen.webp"
+}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/docker-compose-gen/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/docker-compose-gen/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-docker-compose/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kizalishaji-docker-compose/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/docker-compose-gen/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+
+<header class="hero">
+  <div class="hero-inner">
+    <nav class="breadcrumb">
+      <a href="/">AfroTools</a><span>/</span>
+      <a href="/developer-tools/">Developer Tools</a><span>/</span>
+      <span>Docker Compose Generator</span>
+    </nav>
+    <h1>Generate Compose stacks with the production footguns already called out.</h1>
+    <p class="hero-copy">Pick a stack profile, services and deploy target. Generate compose.yaml, .env.example, reverse proxy config, Dockerfile starter and commands with healthchecks, secrets, profiles and depends_on conditions.</p>
+    <div class="hero-grid">
+      <div class="hero-stat"><strong id="stat-services">0</strong><span>selected services</span></div>
+      <div class="hero-stat"><strong id="stat-health">0</strong><span>healthchecks</span></div>
+      <div class="hero-stat"><strong>Secrets</strong><span>file-based option</span></div>
+      <div class="hero-stat"><strong>Profiles</strong><span>debug and ops services</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="layout">
+    <div class="left">
+      <section class="card">
+        <div class="card-head"><span class="card-title">Project Settings</span></div>
+        <div class="card-body">
+          <div class="grid">
+            <div><label for="project">Project name</label><input id="project" value="afro-app"></div>
+            <div><label for="domain">Domain</label><input id="domain" value="app.example.com"></div>
+            <div><label for="target">Deploy target</label><select id="target"><option value="dev">Local dev</option><option value="vps">Small VPS</option><option value="prod">Production starter</option></select></div>
+          </div>
+          <div class="grid" style="margin-top:12px">
+            <div><label for="runtime">Primary runtime</label><select id="runtime"><option value="node">Node.js API</option><option value="python">Python FastAPI</option><option value="django">Django</option><option value="laravel">Laravel PHP</option></select></div>
+            <div><label for="db">Primary database</label><select id="db"><option value="postgres">Postgres</option><option value="mysql">MySQL</option><option value="none">No database</option></select></div>
+            <div><label for="proxy">Reverse proxy</label><select id="proxy"><option value="nginx">Nginx</option><option value="caddy">Caddy</option><option value="none">None</option></select></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><span class="card-title">Stack Profile</span></div>
+        <div class="card-body">
+          <div class="service-grid" id="profiles"></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><span class="card-title">Services</span><button class="btn small" id="reset-services" type="button">Reset</button></div>
+        <div class="card-body">
+          <div class="service-grid" id="services"></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><span class="card-title">Safety Options</span></div>
+        <div class="card-body">
+          <div class="switch-grid">
+            <label class="switch"><input aria-label="Healthchecks" id="healthchecks" type="checkbox" checked><span><strong>Healthchecks</strong><span>Add service healthchecks and depends_on conditions where Compose supports them.</span></span></label>
+            <label class="switch"><input aria-label="Secrets" id="secrets" type="checkbox" checked><span><strong>File secrets</strong><span>Use secrets files for database passwords instead of hardcoding passwords in compose.yaml.</span></span></label>
+            <label class="switch"><input aria-label="ProfilesOpt" id="profilesOpt" type="checkbox" checked><span><strong>Profiles</strong><span>Put Adminer, Mailhog and monitoring behind optional debug or ops profiles.</span></span></label>
+            <label class="switch"><input aria-label="ResourceLimits" id="resourceLimits" type="checkbox"><span><strong>VPS limits</strong><span>Add conservative memory and CPU limits for small VPS deployments.</span></span></label>
+            <label class="switch"><input aria-label="NamedVolumes" id="namedVolumes" type="checkbox" checked><span><strong>Named volumes</strong><span>Use named volumes for database, Redis and upload data.</span></span></label>
+            <label class="switch"><input aria-label="PrivateNetwork" id="privateNetwork" type="checkbox" checked><span><strong>Private app network</strong><span>Keep services on a dedicated network instead of relying on the default network.</span></span></label>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <aside class="right">
+      <section class="card">
+        <div class="card-head"><span class="card-title">Output</span><button class="btn small primary" id="copy-output" type="button">Copy active file</button></div>
+        <div class="tabs">
+          <button class="tab active" data-tab="compose" type="button">compose.yaml</button>
+          <button class="tab" data-tab="env" type="button">.env</button>
+          <button class="tab" data-tab="commands" type="button">commands</button>
+          <button class="tab" data-tab="proxyConf" type="button">proxy</button>
+          <button class="tab" data-tab="dockerfile" type="button">Dockerfile</button>
+          <button class="tab" data-tab="preflight" type="button">preflight</button>
+        </div>
+        <div class="tab-panel active" id="panel-compose"><pre class="codebox" id="compose-code"></pre></div>
+        <div class="tab-panel" id="panel-env"><pre class="codebox" id="env-code"></pre></div>
+        <div class="tab-panel" id="panel-commands"><pre class="codebox" id="commands-code"></pre></div>
+        <div class="tab-panel" id="panel-proxyConf"><pre class="codebox" id="proxy-code"></pre></div>
+        <div class="tab-panel" id="panel-dockerfile"><pre class="codebox" id="dockerfile-code"></pre></div>
+        <div class="tab-panel" id="panel-preflight"><pre class="codebox" id="preflight-code"></pre></div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><span class="card-title">Stack Health</span></div>
+        <div class="card-body">
+          <div class="score-grid">
+            <div class="score"><strong id="score-warnings">0</strong><span>warnings</span></div>
+            <div class="score"><strong id="score-volumes">0</strong><span>volumes</span></div>
+            <div class="score"><strong id="score-profiles">0</strong><span>profiles</span></div>
+          </div>
+          <div id="warnings" style="display:grid;gap:8px;margin-top:12px"></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><span class="card-title">Official References</span></div>
+        <div class="card-body source-list">
+          <a href="https://docs.docker.com/compose/compose-file/" target="_blank" rel="noopener">Docker Compose file reference</a>
+          <a href="https://docs.docker.com/compose/how-tos/startup-order/" target="_blank" rel="noopener">Startup order and depends_on</a>
+          <a href="https://docs.docker.com/compose/how-tos/profiles/" target="_blank" rel="noopener">Compose profiles</a>
+          <a href="https://docs.docker.com/compose/how-tos/use-secrets/" target="_blank" rel="noopener">Compose secrets</a>
+        </div>
+      </section>
+    </aside>
+  </section>
+
+<section class="compose-faq" aria-labelledby="docker-compose-gen-faq-title">
+  <h2 id="docker-compose-gen-faq-title">Docker Compose Generator FAQ</h2>
+  <div class="compose-faq-grid">
+    <details>
+      <summary>What files does this create?</summary>
+      <p>It generates local starter snippets for compose.yaml, .env, deploy commands, reverse proxy config, Dockerfile, and a preflight checklist.</p>
+    </details>
+    <details>
+      <summary>Does it run Docker commands?</summary>
+      <p>No. The page only produces text for review. Copy the snippets into your project and run Docker commands from your own terminal.</p>
+    </details>
+    <details>
+      <summary>What must I verify first?</summary>
+      <p>Check secrets, exposed ports, health endpoints, backups, TLS, resource limits, Docker Compose version support, and your hosting provider limits.</p>
+    </details>
+  </div>
+</section>
+<section class="tool-verification-sec" data-tool-verification-panel="docker-compose-gen">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Deployment config check</span>
+          <h2 class="tool-verification-title">Review generated Compose files before production</h2>
+          <p class="tool-verification-lead">Generate compose.yaml, .env, commands, reverse-proxy config, Dockerfile starter, healthchecks, secrets, profiles, and dependency conditions.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Local generator</span>
+          <p class="tool-verification-note">No container is built or deployed from this page.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>What to check</h3>
+          <ul class="tool-verification-list">
+            <li>Methodology: combine selected runtime, database, proxy, service toggles, and hardening options into Compose, env, command, proxy, and Dockerfile snippets.</li>
+            <li>Replace every placeholder secret, domain, image tag, volume path, resource limit, and database password before running.</li>
+            <li>Validate healthchecks, depends_on behavior, backups, TLS, networking, persistent volumes, and environment-specific overrides in a staging environment.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Limitations</h3>
+          <ul class="tool-verification-list">
+            <li>Disclaimer: starter generator only, not a security audit, production deployment, cloud architecture review, or uptime guarantee.</li>
+            <li>Compose features differ by Docker Compose version and hosting provider.</li>
+            <li>Do not paste production secrets into generated snippets, tickets, screenshots, or shared chat.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <a class="tool-verification-report" href="#compose-code">Review compose output</a>
+        <p class="tool-verification-disclaimer">Source/reference note: verify against current Docker Compose docs, image docs, proxy docs, and your hosting provider before deploying.</p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<div class="toast" id="toast"></div>
+<afro-related-tools data-ssr="1" category="developer" current="docker-compose-gen">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/json-formatter/" data-related-tool data-id="json-formatter" data-name="JSON Formatter &amp; Validator" data-category="developer" data-icon="JF" data-desc="Format, validate, repair, query and diff JSON or NDJSON. Includes schema, TypeScript and API Tester snippets.">JSON Formatter &amp; Validator</a></li><li><a href="/tools/data-converter/" data-related-tool data-id="data-converter" data-name="Data Format Converter" data-category="developer" data-icon="DF" data-desc="Convert between JSON, CSV, XML, YAML, TOML, TSV. Auto-detect, SQL INSERT generator, preview table.">Data Format Converter</a></li><li><a href="/tools/ussd-simulator/" data-related-tool data-id="ussd-simulator" data-name="USSD Code Simulator" data-category="developer" data-icon="UC" data-desc="Visual USSD menu builder for African fintech developers.">USSD Code Simulator</a></li><li><a href="/tools/api-tester/" data-related-tool data-id="api-tester" data-name="API Tester (Postman Lite)" data-category="developer" data-icon="AT" data-desc="REST API testing in-browser. No install needed. Pre-built Africa fintech collections.">API Tester (Postman Lite)</a></li><li><a href="/tools/base64/" data-related-tool data-id="base64" data-name="Base64 Encoder/Decoder" data-category="developer" data-icon="BE" data-desc="Encode/decode text and files. Image-to-Base64, URL-safe mode, live encoding, stats bar. AI assist.">Base64 Encoder/Decoder</a></li><li><a href="/tools/hash-generator/" data-related-tool data-id="hash-generator" data-name="Hash Generator" data-category="developer" data-icon="HG" data-desc="MD5, SHA-1, SHA-256, SHA-512, SHA-3, HMAC, CRC32. All-at-once grid, checksum verify, file hashing.">Hash Generator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+(function(){
+  'use strict';
+
+  var activeTab = 'compose';
+  var selected = new Set(['app','postgres','redis','nginx']);
+
+  var PROFILES = [
+    {id:'api', name:'API + Postgres', desc:'Backend API, Postgres, Redis and reverse proxy.', services:['app','postgres','redis','nginx']},
+    {id:'fintech', name:'Fintech Sandbox', desc:'API, Postgres, Redis, worker, Mailhog and Adminer.', services:['app','worker','postgres','redis','mailhog','adminer','nginx']},
+    {id:'content', name:'Content App', desc:'Web app, database, object uploads and proxy.', services:['app','postgres','uploads','nginx']},
+    {id:'ops', name:'Ops Observability', desc:'Add Prometheus and Grafana behind ops profile.', services:['app','postgres','redis','prometheus','grafana','nginx']}
+  ];
+  var SERVICES = [
+    {id:'app', name:'App runtime', desc:'Generated from selected runtime.'},
+    {id:'worker', name:'Background worker', desc:'Queue worker for jobs, webhooks and retries.'},
+    {id:'postgres', name:'Postgres', desc:'Default durable relational database.'},
+    {id:'mysql', name:'MySQL', desc:'Alternative relational database.'},
+    {id:'redis', name:'Redis', desc:'Cache, queues and rate limits.'},
+    {id:'nginx', name:'Nginx', desc:'Reverse proxy and static file front.'},
+    {id:'caddy', name:'Caddy', desc:'Reverse proxy with automatic TLS.'},
+    {id:'adminer', name:'Adminer', desc:'Debug database UI in profile.'},
+    {id:'mailhog', name:'Mailhog', desc:'Local email testing in profile.'},
+    {id:'prometheus', name:'Prometheus', desc:'Metrics store in ops profile.'},
+    {id:'grafana', name:'Grafana', desc:'Metrics dashboard in ops profile.'},
+    {id:'uploads', name:'Uploads volume', desc:'Persistent local file storage.'}
+  ];
+
+  function $(id){ return document.getElementById(id); }
+  function checked(id){ return $(id).checked; }
+  function val(id){ return $(id).value.trim(); }
+  function esc(value){
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function(ch){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];
+    });
+  }
+  function slug(value){ return String(value || 'app').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') || 'app'; }
+  function toast(message){
+    var el = $('toast');
+    el.textContent = message;
+    el.classList.add('show');
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(function(){ el.classList.remove('show'); }, 1700);
+  }
+  function safeCopy(text){
+    function fallbackCopy(){
+      var area = document.createElement('textarea');
+      area.value = text;
+      area.setAttribute('readonly', '');
+      area.style.position = 'fixed';
+      area.style.left = '-9999px';
+      document.body.appendChild(area);
+      area.focus();
+      area.select();
+      try {
+        document.execCommand('copy');
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject(error);
+      } finally {
+        document.body.removeChild(area);
+      }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).catch(fallbackCopy);
+    }
+    return fallbackCopy();
+  }
+  function has(id){ return selected.has(id); }
+  function addLines(lines, text){ text.split('\n').forEach(function(line){ lines.push(line); }); }
+
+  function renderChoices(){
+    $('profiles').innerHTML = PROFILES.map(function(profile){
+      return '<button class="service" data-profile="'+profile.id+'" type="button"><strong>'+esc(profile.name)+'</strong><span>'+esc(profile.desc)+'</span></button>';
+    }).join('');
+    $('services').innerHTML = SERVICES.map(function(svc){
+      return '<button class="service '+(has(svc.id) ? 'active' : '')+'" data-service="'+svc.id+'" type="button"><strong>'+esc(svc.name)+'</strong><span>'+esc(svc.desc)+'</span></button>';
+    }).join('');
+  }
+
+  function runtimeService(){
+    var runtime = val('runtime');
+    if (runtime === 'python') return {
+      image:'build: .',
+      command:'uvicorn app.main:app --host 0.0.0.0 --port 8000',
+      port:'8000'
+    };
+    if (runtime === 'django') return {
+      image:'build: .',
+      command:'python manage.py runserver 0.0.0.0:8000',
+      port:'8000'
+    };
+    if (runtime === 'laravel') return {
+      image:'build: .',
+      command:'php artisan serve --host=0.0.0.0 --port=8000',
+      port:'8000'
+    };
+    return {
+      image:'build: .',
+      command:'npm run dev -- --host 0.0.0.0',
+      port:'3000'
+    };
+  }
+
+  function generateCompose(){
+    var project = slug(val('project'));
+    var app = runtimeService();
+    var lines = [];
+    var volumes = [];
+    var secrets = [];
+    var networks = checked('privateNetwork') ? ['  app_net:'] : [];
+    var healthCount = 0;
+    var profiles = new Set();
+
+    lines.push('name: ' + project);
+    lines.push('');
+    lines.push('services:');
+
+    if (has('app')) {
+      lines.push('  app:');
+      lines.push('    ' + app.image);
+      lines.push('    command: ' + app.command);
+      lines.push('    restart: unless-stopped');
+      lines.push('    env_file: .env');
+      lines.push('    ports:');
+      lines.push('      - "${APP_PORT:-' + app.port + '}:' + app.port + '"');
+      if (has('postgres') || has('mysql') || has('redis')) {
+        lines.push('    depends_on:');
+        if (checked('healthchecks')) {
+          if (has('postgres')) lines.push('      postgres:\n        condition: service_healthy');
+          if (has('mysql')) lines.push('      mysql:\n        condition: service_healthy');
+          if (has('redis')) lines.push('      redis:\n        condition: service_healthy');
+        } else {
+          if (has('postgres')) lines.push('      - postgres');
+          if (has('mysql')) lines.push('      - mysql');
+          if (has('redis')) lines.push('      - redis');
+        }
+      }
+      if (has('uploads')) {
+        lines.push('    volumes:');
+        lines.push('      - uploads_data:/app/uploads');
+        volumes.push('uploads_data');
+      }
+      if (checked('healthchecks')) {
+        healthCount++;
+        addLines(lines, '    healthcheck:\n      test: ["CMD-SHELL", "wget -qO- http://localhost:' + app.port + '/health || exit 1"]\n      interval: 30s\n      timeout: 5s\n      retries: 5\n      start_period: 30s');
+      }
+      if (checked('privateNetwork')) lines.push('    networks:\n      - app_net');
+      addResource(lines);
+    }
+
+    if (has('worker')) {
+      lines.push('  worker:');
+      lines.push('    build: .');
+      lines.push('    command: npm run worker');
+      lines.push('    restart: unless-stopped');
+      lines.push('    env_file: .env');
+      lines.push('    depends_on:');
+      lines.push('      app:\n        condition: service_started');
+      if (has('redis') && checked('healthchecks')) lines.push('      redis:\n        condition: service_healthy');
+      if (checked('profilesOpt')) { lines.push('    profiles: ["worker"]'); profiles.add('worker'); }
+      if (checked('privateNetwork')) lines.push('    networks:\n      - app_net');
+      addResource(lines);
+    }
+
+    if (has('postgres')) {
+      lines.push('  postgres:');
+      lines.push('    image: postgres:16-alpine');
+      lines.push('    restart: unless-stopped');
+      lines.push('    environment:');
+      lines.push('      POSTGRES_DB: ${POSTGRES_DB:-app}');
+      lines.push('      POSTGRES_USER: ${POSTGRES_USER:-app}');
+      if (checked('secrets')) {
+        lines.push('      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password');
+        lines.push('    secrets:\n      - postgres_password');
+        secrets.push('postgres_password');
+      } else {
+        lines.push('      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change_me}');
+      }
+      if (checked('namedVolumes')) { lines.push('    volumes:\n      - postgres_data:/var/lib/postgresql/data'); volumes.push('postgres_data'); }
+      if (checked('healthchecks')) {
+        healthCount++;
+        addLines(lines, '    healthcheck:\n      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-app} -d ${POSTGRES_DB:-app}"]\n      interval: 10s\n      timeout: 5s\n      retries: 5');
+      }
+      if (checked('privateNetwork')) lines.push('    networks:\n      - app_net');
+      addResource(lines);
+    }
+
+    if (has('mysql')) {
+      lines.push('  mysql:');
+      lines.push('    image: mysql:8.4');
+      lines.push('    restart: unless-stopped');
+      lines.push('    environment:');
+      lines.push('      MYSQL_DATABASE: ${MYSQL_DATABASE:-app}');
+      lines.push('      MYSQL_USER: ${MYSQL_USER:-app}');
+      lines.push('      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-change_me}');
+      lines.push('      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-change_me_root}');
+      if (checked('namedVolumes')) { lines.push('    volumes:\n      - mysql_data:/var/lib/mysql'); volumes.push('mysql_data'); }
+      if (checked('healthchecks')) {
+        healthCount++;
+        addLines(lines, '    healthcheck:\n      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u${MYSQL_USER:-app} -p${MYSQL_PASSWORD:-change_me}"]\n      interval: 10s\n      timeout: 5s\n      retries: 5');
+      }
+      if (checked('privateNetwork')) lines.push('    networks:\n      - app_net');
+      addResource(lines);
+    }
+
+    if (has('redis')) {
+      lines.push('  redis:');
+      lines.push('    image: redis:7-alpine');
+      lines.push('    restart: unless-stopped');
+      lines.push('    command: redis-server --appendonly yes');
+      if (checked('namedVolumes')) { lines.push('    volumes:\n      - redis_data:/data'); volumes.push('redis_data'); }
+      if (checked('healthchecks')) {
+        healthCount++;
+        addLines(lines, '    healthcheck:\n      test: ["CMD", "redis-cli", "ping"]\n      interval: 10s\n      timeout: 5s\n      retries: 5');
+      }
+      if (checked('privateNetwork')) lines.push('    networks:\n      - app_net');
+      addResource(lines);
+    }
+
+    if (has('nginx') && val('proxy') === 'nginx') {
+      lines.push('  nginx:');
+      lines.push('    image: nginx:1.27-alpine');
+      lines.push('    restart: unless-stopped');
+      lines.push('    ports:\n      - "80:80"');
+      lines.push('    volumes:\n      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro');
+      lines.push('    depends_on:\n      app:\n        condition: service_started');
+      if (checked('privateNetwork')) lines.push('    networks:\n      - app_net');
+      addResource(lines);
+    }
+
+    if (has('caddy') && val('proxy') === 'caddy') {
+      lines.push('  caddy:');
+      lines.push('    image: caddy:2-alpine');
+      lines.push('    restart: unless-stopped');
+      lines.push('    ports:\n      - "80:80"\n      - "443:443"');
+      lines.push('    volumes:\n      - ./Caddyfile:/etc/caddy/Caddyfile:ro\n      - caddy_data:/data');
+      volumes.push('caddy_data');
+      if (checked('privateNetwork')) lines.push('    networks:\n      - app_net');
+    }
+
+    if (has('adminer')) {
+      lines.push('  adminer:');
+      lines.push('    image: adminer:4');
+      lines.push('    restart: unless-stopped');
+      lines.push('    ports:\n      - "8080:8080"');
+      if (checked('profilesOpt')) { lines.push('    profiles: ["debug"]'); profiles.add('debug'); }
+      if (checked('privateNetwork')) lines.push('    networks:\n      - app_net');
+    }
+
+    if (has('mailhog')) {
+      lines.push('  mailhog:');
+      lines.push('    image: mailhog/mailhog:v1.0.1');
+      lines.push('    ports:\n      - "8025:8025"');
+      if (checked('profilesOpt')) { lines.push('    profiles: ["debug"]'); profiles.add('debug'); }
+      if (checked('privateNetwork')) lines.push('    networks:\n      - app_net');
+    }
+
+    if (has('prometheus')) {
+      lines.push('  prometheus:');
+      lines.push('    image: prom/prometheus:v2.54.1');
+      lines.push('    ports:\n      - "9090:9090"');
+      if (checked('profilesOpt')) { lines.push('    profiles: ["ops"]'); profiles.add('ops'); }
+      if (checked('privateNetwork')) lines.push('    networks:\n      - app_net');
+    }
+
+    if (has('grafana')) {
+      lines.push('  grafana:');
+      lines.push('    image: grafana/grafana:11.2.0');
+      lines.push('    ports:\n      - "3001:3000"');
+      if (checked('namedVolumes')) { lines.push('    volumes:\n      - grafana_data:/var/lib/grafana'); volumes.push('grafana_data'); }
+      if (checked('profilesOpt')) { lines.push('    profiles: ["ops"]'); profiles.add('ops'); }
+      if (checked('privateNetwork')) lines.push('    networks:\n      - app_net');
+    }
+
+    volumes = Array.from(new Set(volumes));
+    secrets = Array.from(new Set(secrets));
+    if (volumes.length) {
+      lines.push('');
+      lines.push('volumes:');
+      volumes.forEach(function(v){ lines.push('  ' + v + ':'); });
+    }
+    if (secrets.length) {
+      lines.push('');
+      lines.push('secrets:');
+      secrets.forEach(function(s){ lines.push('  ' + s + ':\n    file: ./secrets/' + s + '.txt'); });
+    }
+    if (networks.length) {
+      lines.push('');
+      lines.push('networks:');
+      networks.forEach(function(n){ lines.push(n); });
+    }
+
+    return {text:lines.join('\n'), volumes:volumes.length, profiles:profiles.size, health:healthCount};
+  }
+
+  function addResource(lines){
+    if (!checked('resourceLimits')) return;
+    lines.push('    deploy:');
+    lines.push('      resources:');
+    lines.push('        limits:');
+    lines.push('          cpus: "0.75"');
+    lines.push('          memory: 512M');
+  }
+
+  function generateEnv(){
+    var runtime = runtimeService();
+    var lines = [
+      '# Generated by AfroTools Docker Compose Generator',
+      '# Copy to .env and replace every placeholder before production.',
+      '',
+      'APP_ENV=local',
+      'APP_PORT=' + runtime.port,
+      'APP_URL=https://' + (val('domain') || 'app.example.com'),
+      '',
+      'POSTGRES_DB=app',
+      'POSTGRES_USER=app',
+      'POSTGRES_PASSWORD=change_me',
+      '',
+      'MYSQL_DATABASE=app',
+      'MYSQL_USER=app',
+      'MYSQL_PASSWORD=change_me',
+      'MYSQL_ROOT_PASSWORD=change_me_root',
+      '',
+      'REDIS_URL=redis://redis:6379/0',
+      'SMTP_HOST=mailhog',
+      'SMTP_PORT=1025'
+    ];
+    if (checked('secrets')) {
+      lines.push('');
+      lines.push('# If file secrets are enabled, create: secrets/postgres_password.txt');
+    }
+    return lines.join('\n');
+  }
+
+  function generateCommands(){
+    var project = slug(val('project'));
+    var lines = [
+      '# ' + project + ' compose commands',
+      'mkdir -p secrets',
+      'printf "replace-with-a-long-random-password" > secrets/postgres_password.txt',
+      'cp .env.example .env',
+      'docker compose config',
+      'docker compose up -d --build',
+      'docker compose ps',
+      'docker compose logs -f app',
+      '',
+      '# Run optional profiles',
+      'docker compose --profile debug up -d',
+      'docker compose --profile ops up -d',
+      '',
+      '# Back up Postgres',
+      'docker compose exec postgres pg_dump -U ${POSTGRES_USER:-app} ${POSTGRES_DB:-app} > backup.sql',
+      '',
+      '# Update safely',
+      'docker compose pull',
+      'docker compose up -d --build',
+      'docker compose logs --tail=100 app'
+    ];
+    return lines.join('\n');
+  }
+
+  function generatePreflight(compose){
+    var project = slug(val('project'));
+    var checks = [
+      '# ' + project + ' deployment preflight',
+      '',
+      '[ ] Run: docker compose config',
+      '[ ] Replace image tags, APP_URL, passwords, SMTP values and every placeholder in .env',
+      '[ ] Confirm the app health endpoint used by the generated healthcheck exists',
+      '[ ] Confirm open ports match the host firewall and proxy plan',
+      '[ ] Test startup order after a clean volume reset in staging',
+      '[ ] Document restore steps before relying on named volumes',
+      '[ ] Keep production secrets out of screenshots, tickets and shared chat'
+    ];
+    if (checked('secrets')) {
+      checks.push('[ ] Create secrets/postgres_password.txt with a strong value and restrict file permissions');
+    } else {
+      checks.push('[ ] Move database passwords out of compose.yaml and .env before production');
+    }
+    if (has('postgres')) checks.push('[ ] Test Postgres backup and restore, not only pg_dump creation');
+    if (has('mysql')) checks.push('[ ] Test MySQL backup and restore with the selected image version');
+    if (has('redis')) checks.push('[ ] Decide whether Redis persistence and eviction policy fit the workload');
+    if (val('proxy') === 'nginx') checks.push('[ ] Add TLS termination or place Nginx behind a managed HTTPS proxy');
+    if (val('proxy') === 'caddy') checks.push('[ ] Confirm DNS points to the host before relying on automatic TLS');
+    if (has('adminer')) checks.push('[ ] Keep Adminer behind a debug profile, VPN or private network');
+    if (has('prometheus') || has('grafana')) checks.push('[ ] Protect monitoring dashboards and review retention/storage growth');
+    if (checked('resourceLimits')) {
+      checks.push('[ ] Load test the 512M/0.75 CPU limits before using them on real traffic');
+    } else if (val('target') !== 'dev') {
+      checks.push('[ ] Add resource limits or host monitoring before production traffic');
+    }
+    if (!checked('healthchecks')) checks.push('[ ] Re-enable healthchecks before relying on depends_on readiness');
+    if (!checked('privateNetwork')) checks.push('[ ] Add explicit networks or verify the default network is acceptable');
+    checks.push('');
+    checks.push('Generated summary: ' + selected.size + ' services, ' + compose.health + ' healthchecks, ' + compose.volumes + ' named volumes.');
+    checks.push('Reference commands: docker compose config; docker compose up -d --build; docker compose ps; docker compose logs --tail=100 app');
+    return checks.join('\n');
+  }
+
+  function generateProxy(){
+    var app = runtimeService();
+    var domain = val('domain') || 'app.example.com';
+    if (val('proxy') === 'caddy') {
+      return domain + ' {\n  reverse_proxy app:' + app.port + '\n  encode gzip zstd\n}';
+    }
+    if (val('proxy') === 'none') return '# No reverse proxy selected.';
+    return [
+      'server {',
+      '  listen 80;',
+      '  server_name ' + domain + ';',
+      '',
+      '  client_max_body_size 20m;',
+      '',
+      '  location / {',
+      '    proxy_pass http://app:' + app.port + ';',
+      '    proxy_set_header Host $host;',
+      '    proxy_set_header X-Real-IP $remote_addr;',
+      '    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;',
+      '    proxy_set_header X-Forwarded-Proto $scheme;',
+      '  }',
+      '}'
+    ].join('\n');
+  }
+
+  function generateDockerfile(){
+    var runtime = val('runtime');
+    if (runtime === 'python') {
+      return [
+        'FROM python:3.12-slim',
+        'WORKDIR /app',
+        'COPY requirements.txt .',
+        'RUN pip install --no-cache-dir -r requirements.txt',
+        'COPY . .',
+        'EXPOSE 8000',
+        'CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]'
+      ].join('\n');
+    }
+    if (runtime === 'django') {
+      return [
+        'FROM python:3.12-slim',
+        'WORKDIR /app',
+        'COPY requirements.txt .',
+        'RUN pip install --no-cache-dir -r requirements.txt',
+        'COPY . .',
+        'EXPOSE 8000',
+        'CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]'
+      ].join('\n');
+    }
+    if (runtime === 'laravel') {
+      return [
+        'FROM php:8.3-cli',
+        'WORKDIR /app',
+        'COPY --from=composer:2 /usr/bin/composer /usr/bin/composer',
+        'COPY . .',
+        'RUN composer install --no-dev --optimize-autoloader',
+        'EXPOSE 8000',
+        'CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]'
+      ].join('\n');
+    }
+    return [
+      'FROM node:22-alpine',
+      'WORKDIR /app',
+      'COPY package*.json ./',
+      'RUN npm ci',
+      'COPY . .',
+      'EXPOSE 3000',
+      'CMD ["npm", "run", "start"]'
+    ].join('\n');
+  }
+
+  function warnings(compose){
+    var notes = [];
+    if (has('app') && val('target') !== 'dev') notes.push({type:'warn', text:'The app service still exposes APP_PORT directly. Put it behind the proxy or firewall on production hosts.'});
+    if (!checked('secrets')) notes.push({type:'error', text:'File secrets are disabled. Avoid committing database passwords in compose.yaml or .env.'});
+    if (!checked('healthchecks')) notes.push({type:'warn', text:'Healthchecks are disabled, so depends_on cannot wait for database readiness.'});
+    if (has('adminer') && !checked('profilesOpt')) notes.push({type:'warn', text:'Adminer is not behind a profile. Do not expose it on public servers.'});
+    if (val('target') === 'vps' && !checked('resourceLimits')) notes.push({type:'warn', text:'Small VPS target selected without resource limits. Consider enabling VPS limits.'});
+    if (!notes.length) notes.push({type:'ok', text:'Stack includes the main safety options for this generator.'});
+    $('warnings').innerHTML = notes.map(function(note){ return '<div class="notice '+note.type+'">'+esc(note.text)+'</div>'; }).join('');
+    $('score-warnings').textContent = notes.filter(function(n){ return n.type !== 'ok'; }).length;
+    $('score-volumes').textContent = compose.volumes;
+    $('score-profiles').textContent = compose.profiles;
+  }
+
+  function render(){
+    if (val('db') === 'postgres') { selected.add('postgres'); selected.delete('mysql'); }
+    if (val('db') === 'mysql') { selected.add('mysql'); selected.delete('postgres'); }
+    if (val('db') === 'none') { selected.delete('mysql'); selected.delete('postgres'); }
+    if (val('proxy') === 'nginx') { selected.add('nginx'); selected.delete('caddy'); }
+    if (val('proxy') === 'caddy') { selected.add('caddy'); selected.delete('nginx'); }
+    if (val('proxy') === 'none') { selected.delete('nginx'); selected.delete('caddy'); }
+    renderChoices();
+    var compose = generateCompose();
+    $('compose-code').textContent = compose.text;
+    $('env-code').textContent = generateEnv();
+    $('commands-code').textContent = generateCommands();
+    $('proxy-code').textContent = generateProxy();
+    $('dockerfile-code').textContent = generateDockerfile();
+    $('preflight-code').textContent = generatePreflight(compose);
+    $('stat-services').textContent = selected.size;
+    $('stat-health').textContent = compose.health;
+    warnings(compose);
+  }
+
+  document.addEventListener('click', function(event){
+    var svc = event.target.closest('[data-service]');
+    if (svc) {
+      var id = svc.getAttribute('data-service');
+      if (selected.has(id)) selected.delete(id); else selected.add(id);
+      render();
+    }
+    var profile = event.target.closest('[data-profile]');
+    if (profile) {
+      var p = PROFILES.find(function(item){ return item.id === profile.getAttribute('data-profile'); });
+      if (p) { selected = new Set(p.services); render(); }
+    }
+    if (event.target.classList.contains('tab')) {
+      activeTab = event.target.getAttribute('data-tab');
+      document.querySelectorAll('.tab').forEach(function(tab){ tab.classList.toggle('active', tab === event.target); });
+      document.querySelectorAll('.tab-panel').forEach(function(panel){ panel.classList.remove('active'); });
+      $('panel-' + activeTab).classList.add('active');
+    }
+  });
+  document.addEventListener('input', function(event){ if (event.target.closest('main')) render(); });
+  document.addEventListener('change', function(event){ if (event.target.closest('main')) render(); });
+  $('reset-services').addEventListener('click', function(){ selected = new Set(['app','postgres','redis','nginx']); render(); });
+  $('copy-output').addEventListener('click', function(){
+    var nodes = {
+      compose: $('compose-code'),
+      env: $('env-code'),
+      commands: $('commands-code'),
+      proxyConf: $('proxy-code'),
+      dockerfile: $('dockerfile-code'),
+      preflight: $('preflight-code')
+    };
+    var node = nodes[activeTab] || $('compose-code');
+    safeCopy(node.textContent).then(function(){ toast('Copied ' + activeTab); }).catch(function(){ toast('Copy failed'); });
+  });
+
+  renderChoices();
+  render();
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

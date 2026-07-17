@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BNPL Cost Calculator — Buy Now Pay Later Africa | AfroTools</title>
+<meta name="description" content="Calculate the true cost of Buy Now Pay Later in Africa — effective APR, total fees and installments vs paying upfront. Compare Kashem, Carbon, PayFlex, Zip SA.">
+<meta property="og:title" content="BNPL Cost Calculator | AfroTools">
+<meta property="og:description" content="Calculate the true cost of Buy Now Pay Later in Africa. Compare M-Pesa Kashem, Carbon Pay Later, PayFlex, Zip SA — effective APR and total cost vs upfront payment.">
+<meta property="og:url" content="https://afrotools.com/tools/bnpl-calc/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="BNPL Cost Calculator — Buy Now Pay Later Africa | AfroTools">
+<meta name="twitter:description" content="Calculate the true cost of Buy Now Pay Later in Africa. Compare M-Pesa Kashem, Carbon Pay Later, PayFlex, Zip SA — effective APR and total cost vs upfront payment.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "BNPL Cost Calculator",
+  "url": "https://afrotools.com/tools/bnpl-calc/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools"
+  },
+  "image": "https://afrotools.com/assets/img/tools/bnpl-calc.webp"
+}
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Fintech & Banking","item":"https://afrotools.com/fintech/"},{"@type":"ListItem","position":3,"name":"BNPL Calculator","item":"https://afrotools.com/tools/bnpl-calc/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
+.tool-hero{background:linear-gradient(135deg,#0A1628 0%,#1a1035 50%,#2d1b69 100%);color:#fff;padding:2.5rem 1.5rem 3rem}
+.tool-hero .container{max-width:900px;margin:0 auto}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.78);margin-bottom:.75rem}
+.breadcrumb a{color:rgba(255,255,255,.78);text-decoration:none}
+.breadcrumb span{margin:0 .35rem;opacity:.4}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin:.25rem 0 .6rem;line-height:1.2}
+.tool-hero p{font-size:.95rem;color:rgba(255,255,255,.92);max-width:580px;line-height:1.65}
+.hero-badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.hero-badge{padding:4px 12px;border-radius:100px;font-size:.75rem;font-weight:600;background:rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1.25rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{display:flex;flex-direction:column;gap:4px}
+label{font-size:.82rem;font-weight:600;color:#374151}
+select,input[type="number"]{width:100%;padding:.65rem .85rem;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.9rem;background:#fff;transition:border-color .2s}
+select:focus,input:focus{outline:none;border-color:var(--color-primary)}
+.btn-calc{width:100%;padding:.85rem;border:none;border-radius:10px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:.5rem;transition:filter .2s}
+.btn-calc:hover{filter:brightness(1.1)}
+.results{display:none;margin-top:1.25rem}
+.results.on{display:block}
+.res-hero{background:linear-gradient(135deg,#0f172a,#1e3a5f);border-radius:14px;padding:1.75rem;text-align:center;color:#fff;margin-bottom:1.25rem}
+.res-label{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.7)}
+.res-val{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:800;color:#fff;margin:.2rem 0}
+.res-sub{font-size:.85rem;color:rgba(255,255,255,.65)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.25rem}
+.metric{background:#f8fafd;border:1.5px solid #e5e7eb;border-radius:12px;padding:1rem;text-align:center}
+.metric-val{font-size:1.3rem;font-weight:800;color:var(--color-primary)}
+.metric-label{font-size:.75rem;color:#6b7280;margin-top:3px}
+.installments{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.75rem;margin-bottom:1rem}
+.installment{background:#f8fafc;border:1px solid #e5e7eb;border-radius:10px;padding:.85rem;text-align:center}
+.inst-label{font-size:.72rem;font-weight:700;text-transform:uppercase;color:#6b7280}
+.inst-val{font-size:1.1rem;font-weight:800;color:#0f172a;margin-top:.25rem}
+.bnpl-compare{width:100%;border-collapse:collapse;font-size:.85rem}
+.bnpl-compare th{background:#0f172a;color:#fff;padding:9px 10px;font-weight:700;font-size:.75rem;text-transform:uppercase;text-align:left}
+.bnpl-compare td{padding:9px 10px;border-bottom:1px solid #f1f5f9}
+.bnpl-compare tr.best td{background:#f5f3ff;font-weight:700}
+.warn-box{background:#fef9c3;border:1px solid #fde68a;border-radius:12px;padding:1rem 1.25rem;font-size:.85rem;color:#92400e;line-height:1.6;margin-top:1rem}
+details summary{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;list-style:none;background:#f9fafb;display:flex;justify-content:space-between}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
+details[open] summary::after{content:'\2212'}
+.faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
+.faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+@media(max-width:680px){.form-grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}}
+</style>
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/bnpl-calc.webp">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/bnpl-calc.webp">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the BNPL Cost Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The BNPL Cost Calculator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the BNPL Cost Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the BNPL Cost Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for Nigeria, Kenya, Ghana and other African markets."}},{"@type":"Question","name":"Is BNPL really 0% like PayFlex?","acceptedAnswer":{"@type":"Answer","text":"PayFlex (South Africa) and some other providers offer 0% if you pay within the agreed period (typically 4 weekly installments). However, late payment fees can be very high (5-15% of the purchase). The 0% is only truly free if you pay on time — the merchant typically subsidizes the fee. Always read the terms carefully."}},{"@type":"Question","name":"Can BNPL affect my credit score?","acceptedAnswer":{"@type":"Answer","text":"Yes. Late BNPL payments are increasingly reported to credit bureaus. In South Africa, Zip reports to credit bureaus. In Kenya and Nigeria, BNPL defaults can affect your access to digital lending. On-time BNPL payments can positively build credit history for first-time borrowers."}},{"@type":"Question","name":"When does BNPL make sense?","acceptedAnswer":{"@type":"Answer","text":"BNPL makes sense when: (1) The total fee is small relative to your cash flow benefit, (2) You absolutely need the item now and can repay on schedule, (3) The provider charges 0% with no conditions (like some PayFlex plans), (4) You're building credit history with on-time payments. Never use BNPL for discretionary wants — only needs."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/bnpl-calc/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/bnpl-calc/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/cout-bnpl/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/lipa-sasa-au-baadaye/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/bnpl-calc/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar theme="dark" active="fintech"></afro-navbar>
+<div class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb"><a href="/">AfroTools</a><span>›</span><a href="/fintech/">Fintech &amp; Banking</a><span>›</span>BNPL Calculator</nav>
+    <h1>BNPL Cost Calculator</h1>
+    <p>Calculate the true APR of Buy Now Pay Later. Compare M-Pesa Kashem, Carbon Pay Later, PayFlex, Zip SA — and see if BNPL really saves you money.</p>
+    <div class="hero-badges"><span class="hero-badge">15 Countries</span><span class="hero-badge">True APR</span><span class="hero-badge">Free</span></div>
+  </div>
+</div>
+<div class="container">
+  <div class="card">
+    <h2>Calculate BNPL True Cost</h2>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="bnpl-provider">BNPL Provider</label>
+        <select id="bnpl-provider" onchange="fillBNPL()">
+          <option value="kashem" data-rate="0.085" data-installments="4" data-flat="true" data-countries="KE">M-Pesa Kashem (Kenya)</option>
+          <option value="flutterwave" data-rate="0.03" data-installments="3" data-flat="false" data-countries="NG,GH,KE">Flutterwave BNPL</option>
+          <option value="carbon" data-rate="0.05" data-installments="4" data-flat="false" data-countries="NG,KE">Carbon Pay Later</option>
+          <option value="payflex" data-rate="0" data-installments="4" data-flat="true" data-countries="ZA">PayFlex (SA — 0% if paid in 4 weeks)</option>
+          <option value="zip" data-rate="0.025" data-installments="4" data-flat="false" data-countries="ZA">Zip (South Africa)</option>
+          <option value="lipa" data-rate="0.02" data-installments="6" data-flat="false" data-countries="KE">Lipa Later (Kenya)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="bnpl-price">Item Price</label>
+        <input type="number" id="bnpl-price" value="50000" min="0">
+      </div>
+      <div class="form-group">
+        <label for="bnpl-installments">Number of Installments</label>
+        <input type="number" id="bnpl-installments" value="4" min="2" max="12">
+      </div>
+      <div class="form-group">
+        <label for="bnpl-rate">Fee Rate (%)</label>
+        <input type="number" id="bnpl-rate" value="8.5" step="0.1">
+      </div>
+    </div>
+    <button type="button" class="btn-calc" onclick="calcBNPL()">Calculate BNPL Cost</button>
+    <div class="results" id="bnpl-results" role="region" aria-live="polite" aria-label="BNPL cost results">
+      <div class="res-hero">
+        <div class="res-label">Total BNPL Cost (vs Upfront)</div>
+        <div class="res-val" id="bnpl-extra-cost"></div>
+        <div class="res-sub" id="bnpl-sub"></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-val" id="bnpl-installment-amt"></div><div class="metric-label">Per Installment</div></div>
+        <div class="metric"><div class="metric-val" id="bnpl-total"></div><div class="metric-label">Total You Pay</div></div>
+        <div class="metric"><div class="metric-val" id="bnpl-fee"></div><div class="metric-label">Total Fee</div></div>
+        <div class="metric"><div class="metric-val" id="bnpl-apr"></div><div class="metric-label">Effective APR</div></div>
+      </div>
+      <h3 style="font-size:.95rem;font-weight:700;margin:.5rem 0 .75rem">Installment Schedule</h3>
+      <div class="installments" id="bnpl-schedule"></div>
+      <div class="warn-box">BNPL effective APRs are often 100-200%. It's affordable only when the installments fit your cash flow AND you don't miss payments (late fees can double the cost). Never use BNPL for items you wouldn't buy with cash. This is an educational estimate, not financial advice — confirm each provider's current fees and terms before borrowing.</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Frequently Asked Questions</h2>
+
+<section class="df-upgrade" data-df-upgrade="bnpl-calc">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Payment comparison workflow</span>
+      <h2>BNPL Cost Calculator: quick guide</h2>
+      <p>Not sure how to get the most from the BNPL Cost Calculator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for Nigeria, Kenya, Ghana and other African markets.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the BNPL Cost Calculator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
+    </div>
+    <form class="df-form" data-df-form="bnpl-calc">
+      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
+      <label>Transaction value<input name="transaction" type="number" value="50000" min="0" step="any" aria-label="Transaction value"></label>
+      <label>Fee percent<input name="fee" type="number" value="1.5" min="0" step="any" aria-label="Fee percent"></label>
+      <label>Channel<select name="channel" aria-label="Channel"><option value="POS">POS</option><option value="bank transfer">bank transfer</option><option value="mobile money">mobile money</option><option value="card">card</option></select></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="bnpl-calc" data-df-base="BNPL Cost Calculator — enter your details above to see your result." aria-live="polite">BNPL Cost Calculator — enter your details above to see your result.</output>
+      <div class="df-actions"><button type="button" data-df-copy="bnpl-calc">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="bnpl-calc-faq-title">
+  <h2 id="bnpl-calc-faq-title">BNPL Cost Calculator FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the BNPL Cost Calculator?</summary><p>Enter your amounts, rates and dates in the fields above. The BNPL Cost Calculator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the BNPL Cost Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the BNPL Cost Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for Nigeria, Kenya, Ghana and other African markets.</p></details></div>
+</section>
+    <div class="faq-item"><details><summary>Is BNPL really 0% like PayFlex?</summary><div class="faq-a">PayFlex (South Africa) and some other providers offer 0% if you pay within the agreed period (typically 4 weekly installments). However, late payment fees can be very high (5-15% of the purchase). The 0% is only truly free if you pay on time — the merchant typically subsidizes the fee. Always read the terms carefully.</div></details></div>
+    <div class="faq-item"><details><summary>Can BNPL affect my credit score?</summary><div class="faq-a">Yes. Late BNPL payments are increasingly reported to credit bureaus. In South Africa, Zip reports to credit bureaus. In Kenya and Nigeria, BNPL defaults can affect your access to digital lending. On-time BNPL payments can positively build credit history for first-time borrowers.</div></details></div>
+    <div class="faq-item"><details><summary>When does BNPL make sense?</summary><div class="faq-a">BNPL makes sense when: (1) The total fee is small relative to your cash flow benefit, (2) You absolutely need the item now and can repay on schedule, (3) The provider charges 0% with no conditions (like some PayFlex plans), (4) You're building credit history with on-time payments. Never use BNPL for discretionary wants — only needs.</div></details></div>
+  </div>
+</div>
+<afro-related-tools data-ssr="1" category="fintech" current="bnpl-calc">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/loan-shark-compare/" data-related-tool data-id="loan-shark-compare" data-name="Loan Shark vs Bank Rate" data-category="fintech" data-icon="LS" data-desc="Compare informal moneylender rates vs bank loans vs fintech apps. True APR calculator showing hidden cost of predatory l">Loan Shark vs Bank Rate</a></li><li><a href="/tools/mobile-vs-bank/" data-related-tool data-id="mobile-vs-bank" data-name="Mobile Money vs Bank Transfer" data-category="fintech" data-icon="MM" data-desc="Compare M-Pesa, MTN MoMo, Airtel Money vs bank transfer fees for domestic and cross-border payments across Africa.">Mobile Money vs Bank Transfer</a></li><li><a href="/tools/digital-lending/" data-related-tool data-id="digital-lending" data-name="Digital Lending App Rates" data-category="fintech" data-icon="DL" data-desc="Compare digital lending apps (Fuliza, FairMoney, Carbon, PalmCredit) — true APR, fees, repayment periods.">Digital Lending App Rates</a></li><li><a href="/tools/fixed-deposit/" data-related-tool data-id="fixed-deposit" data-name="Fixed Deposit Rate Comparator" data-category="fintech" data-icon="FD" data-desc="Compare fixed deposit and savings account interest rates across African banks. 30/60/90/180/365-day tenors, 20+ banks.">Fixed Deposit Rate Comparator</a></li><li><a href="/tools/microfinance-loan/" data-related-tool data-id="microfinance-loan" data-name="Microfinance Loan Calculator" data-category="fintech" data-icon="ML" data-desc="Calculate microfinance loan repayments for African MFIs. Flat vs reducing balance, group vs individual loans.">Microfinance Loan Calculator</a></li><li><a href="/tools/payment-gateway/" data-related-tool data-id="payment-gateway" data-name="Payment Gateway Fee Compare" data-category="fintech" data-icon="PG" data-desc="Compare Paystack, Flutterwave, Stripe, DPO, Peach Payments transaction fees for African merchants.">Payment Gateway Fee Compare</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+<script>
+function fillBNPL(){
+  var sel=document.getElementById('bnpl-provider');
+  var opt=sel.options[sel.selectedIndex];
+  document.getElementById('bnpl-rate').value=(parseFloat(opt.getAttribute('data-rate'))*100).toFixed(1);
+  document.getElementById('bnpl-installments').value=opt.getAttribute('data-installments');
+}
+function calcBNPL(){
+  var price=parseFloat(document.getElementById('bnpl-price').value)||0;
+  var installments=parseInt(document.getElementById('bnpl-installments').value)||4;
+  var feeRate=parseFloat(document.getElementById('bnpl-rate').value)/100;
+  var totalFee=price*feeRate;
+  var totalPay=price+totalFee;
+  var instAmt=totalPay/installments;
+  // Effective APR: the flat fee is charged once but principal is repaid in
+  // equal installments (one every ~30 days), so we solve the internal rate of
+  // return on the amortising cash flows, then compound the monthly rate to a
+  // yearly figure. A simple (1+fee)^(12/n) understates the true cost.
+  var apr=0;
+  if(feeRate>0){
+    var lo=0,hi=5; // monthly rate bracket
+    for(var k=0;k<100;k++){
+      var mid=(lo+hi)/2;
+      var pv=mid===0?instAmt*installments:instAmt*(1-Math.pow(1+mid,-installments))/mid;
+      if(pv>price){lo=mid;}else{hi=mid;}
+    }
+    var monthly=(lo+hi)/2;
+    apr=(Math.pow(1+monthly,12)-1)*100;
+  }
+  function fmt(n){return (Math.round(n)).toLocaleString();}
+  document.getElementById('bnpl-extra-cost').textContent=fmt(totalFee);
+  document.getElementById('bnpl-sub').textContent='Total: '+fmt(totalPay)+' | Item price: '+fmt(price);
+  document.getElementById('bnpl-installment-amt').textContent=fmt(instAmt);
+  document.getElementById('bnpl-total').textContent=fmt(totalPay);
+  document.getElementById('bnpl-fee').textContent=fmt(totalFee);
+  document.getElementById('bnpl-apr').textContent=feeRate===0?'0% (free!)':apr.toFixed(0)+'%';
+  var schedule=document.getElementById('bnpl-schedule');
+  schedule.innerHTML='';
+  for(var i=1;i<=installments;i++){
+    schedule.innerHTML+='<div class="installment"><div class="inst-label">Installment '+i+'</div><div class="inst-val">'+fmt(instAmt)+'</div></div>';
+  }
+  document.getElementById('bnpl-results').classList.add('on');
+}
+</script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

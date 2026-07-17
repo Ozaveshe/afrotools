@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Favicon Generator - Create Website Icons | AfroTools</title>
+<meta name="description" content="Free favicon generator. Create favicons from images, text, or emoji. Generate favicon sets (16x16, 32x32, 48x48, 64x64 PNG + ICO). Download as ZIP.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Favicon Generator | AfroTools">
+<meta property="og:description" content="Create professional favicons from images or text. Multiple sizes, instant download.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/favicon-generator/">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/favicon-generator.webp">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Favicon Generator | AfroTools">
+<meta name="twitter:description" content="Free favicon generator with multiple size outputs.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<link rel="stylesheet" href="/assets/css/image-design-workflow.css?v=0c4f7205">
+<link rel="stylesheet" href="/assets/css/image-design-tool-focus.css?v=6f9baf9f">
+<script src="/assets/js/pages/image-design-tool-focus.js?v=257c735f" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+  :root {
+    --afro-blue: var(--color-primary);
+    --afro-dark: #0f1419;
+    --afro-light: #f5f7fa;
+  }
+
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-hero::after {
+    content: '?';
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8rem;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--afro-blue);
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    color: var(--afro-blue);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 6px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .b-green {
+    background: rgba(0, 113, 227, 0.18);
+    color: var(--color-primary);
+    border: 1px solid rgba(0, 113, 227, 0.38);
+  }
+
+  .tool-main {
+    padding: 28px 0 72px;
+  }
+
+  .tool-main-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 22px;
+    align-items: start;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #DBEAFE;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .card + .card {
+    margin-top: 18px;
+  }
+
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #EFF6FF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #F5F9FF;
+  }
+
+  .card-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #0a4018;
+  }
+
+  .card-body {
+    padding: 22px;
+  }
+
+  .field {
+    margin-bottom: 18px;
+  }
+
+  .field:last-child {
+    margin-bottom: 0;
+  }
+
+  .f-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .f-label-text {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #0d2813;
+  }
+
+  .f-input {
+    width: 100%;
+    padding: 11px 13px;
+    background: #EFF6FF;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 7px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0d2813;
+    outline: none;
+    transition: border-color 0.18s, box-shadow 0.18s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .f-input:focus {
+    border-color: var(--afro-blue);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+  }
+
+  .upload-area {
+    border: 2px dashed #BFDBFE;
+    border-radius: 8px;
+    padding: 30px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.18s;
+    background: #EFF6FF;
+  }
+
+  .upload-area:hover {
+    border-color: var(--afro-blue);
+    background: rgba(0, 113, 227, 0.05);
+  }
+
+  .upload-area.active {
+    border-color: var(--afro-blue);
+    background: rgba(0, 113, 227, 0.08);
+  }
+
+  .upload-icon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+
+  .upload-text {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #244d2c;
+    margin-bottom: 4px;
+  }
+
+  .upload-hint {
+    font-size: 0.75rem;
+    color: #6B8CAE;
+  }
+
+  #imageInput {
+    display: none;
+  }
+
+  .mode-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
+  .mode-btn {
+    padding: 10px 12px;
+    background: #EFF6FF;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #244d2c;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .mode-btn:hover {
+    border-color: var(--afro-blue);
+  }
+
+  .mode-btn.on {
+    border-color: var(--afro-blue);
+    background: var(--afro-blue);
+    color: #fff;
+  }
+
+  .color-input {
+    width: 100%;
+    height: 45px;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 7px;
+    cursor: pointer;
+    background: #EFF6FF;
+  }
+
+  .calc-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--afro-blue);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: all 0.18s;
+    margin-top: 8px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .calc-btn:hover {
+    background: #0059B3;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 113, 227, 0.3);
+  }
+
+  .calc-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .preview-card {
+    background: #F5F9FF;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    display: none;
+  }
+
+  .preview-card.on {
+    display: block;
+  }
+
+  .favicon-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .favicon-item {
+    padding: 10px;
+    background: #fff;
+    border: 1px solid #DBEAFE;
+    border-radius: 6px;
+    text-align: center;
+  }
+
+  .favicon-item canvas {
+    max-width: 80%;
+    margin-bottom: 4px;
+  }
+
+  .favicon-size {
+    font-size: 0.65rem;
+    color: #6B8CAE;
+  }
+
+  .action-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 0 22px 22px;
+  }
+
+  .act-btn {
+    padding: 10px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-family: 'DM Sans', sans-serif;
+    border: none;
+  }
+
+  .act-download {
+    background: rgba(0, 113, 227, 0.1);
+    border: 1.5px solid rgba(0, 113, 227, 0.35);
+    color: #1a5c3a;
+  }
+
+  .act-download:hover {
+    background: rgba(0, 113, 227, 0.2);
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .info-card {
+    background: #F5F9FF;
+    border: 1px solid #DBEAFE;
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .info-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #0a4018;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .info-text {
+    font-size: 0.8rem;
+    color: #244d2c;
+    line-height: 1.6;
+  }
+
+  .info-text li {
+    margin-bottom: 8px;
+  }
+
+  @media (max-width: 768px) {
+    .tool-main-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .mode-row {
+      grid-template-columns: 1fr;
+    }
+
+    .action-row {
+      grid-template-columns: 1fr;
+    }
+
+    .favicon-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "https://afrotools.com/",
+  "description": "https://afrotools.com/",
+  "url": "https://afrotools.com/",
+  "inLanguage": "en",
+  "applicationCategory": "DesignApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/favicon-generator.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "https://afrotools.com/",
+  "url": "https://afrotools.com/",
+  "description": "https://afrotools.com/",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/favicon-generator.webp"
+}
+</script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/favicon-generator.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Favicon Generator",
+      "item": "https://afrotools.com/tools/favicon-generator/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What sizes are included in the favicon set?","acceptedAnswer":{"@type":"Answer","text":"The download includes PNG files at 16x16, 32x32, 48x48, and 64x64 pixels, plus an ICO file that bundles all sizes together. This covers all major browser and platform requirements."}},{"@type":"Question","name":"What is the difference between PNG and ICO formats?","acceptedAnswer":{"@type":"Answer","text":"PNG favicons are used by modern browsers and support transparency. ICO is the legacy format that bundles multiple sizes into a single file and is required for older browsers and certain platforms like Windows."}},{"@type":"Question","name":"Can I create a favicon from text without a logo?","acceptedAnswer":{"@type":"Answer","text":"Yes. Switch to text mode, enter a letter or short text, choose your background and text colours, and the tool generates a clean typographic favicon ready for download."}},{"@type":"Question","name":"How do I add the favicon to my website?","acceptedAnswer":{"@type":"Answer","text":"Place the generated favicon files in your website's root directory, then add a link tag in your HTML head: <link rel=\"icon\" type=\"image/png\" href=\"/favicon-32x32.png\">. The ICO file can be referenced with <link rel=\"icon\" href=\"/favicon.ico\">."}},{"@type":"Question","name":"Does the tool support transparent backgrounds?","acceptedAnswer":{"@type":"Answer","text":"Yes. If you upload a PNG image with a transparent background, the transparency is preserved in the generated favicon files. This works in image mode for both PNG and ICO outputs."}}]}
+</script>
+<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/favicon-generator/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/favicon-generator/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-favicon/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/favicon-generator/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">AfroTools</a> / <span>Tools</span>
+    </div>
+    <h1>Favicon <em>Generator</em></h1>
+    <p class="hero-sub">Create favicon sets from images, text, or emoji. Generate multiple sizes (16x16, 32x32, 48x48, 64x64) and download as ZIP.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">Client-side</span>
+      <span class="badge b-green">Multi-size</span>
+      <span class="badge b-green">Fast</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main" id="main-content" role="main">
+  <div class="tool-main-inner">
+    <div>
+      <!-- Mode Selection -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Favicon Mode</span>
+        </div>
+        <div class="card-body">
+          <div class="mode-row">
+            <button type="button" class="mode-btn on" data-mode="image">Image</button>
+            <button type="button" class="mode-btn" data-mode="text">Text/Emoji</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Image Upload -->
+      <div class="card" id="imageMode">
+        <div class="card-head">
+          <span class="card-title">Upload Image</span>
+        </div>
+        <div class="card-body">
+          <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">??</div>
+            <div class="upload-text">Choose an image or drag it here</div>
+            <div class="upload-hint">PNG, JPG, WebP (Square recommended)</div>
+            <input aria-label="ImageInput" type="file" id="imageInput" accept="image/*">
+          </div>
+        </div>
+      </div>
+
+      <!-- Text Mode -->
+      <div class="card" id="textMode" style="display: none;">
+        <div class="card-head">
+          <span class="card-title">Text/Emoji</span>
+        </div>
+        <div class="card-body">
+          <div class="field">
+            <label class="f-label">
+              <span class="f-label-text">Text or Emoji</span>
+            </label>
+            <input aria-label="A, ??, or logo" type="text" class="f-input" id="textInput" placeholder="A, ??, or logo" maxlength="3">
+          </div>
+
+          <div class="field">
+            <label class="f-label">
+              <span class="f-label-text">Background Color</span>
+            </label>
+            <input aria-label="BgColor" type="color" class="color-input" id="bgColor" value="#0062cc">
+          </div>
+
+          <div class="field">
+            <label class="f-label">
+              <span class="f-label-text">Text Color</span>
+            </label>
+            <input aria-label="TextColor" type="color" class="color-input" id="textColor" value="#ffffff">
+          </div>
+        </div>
+      </div>
+
+      <!-- Generate Button -->
+      <div class="card">
+        <div class="card-body">
+          <button type="button" class="calc-btn" id="generateBtn" disabled>Generate Favicons</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Preview -->
+      <div class="card preview-card" id="previewCard">
+        <div class="card-head">
+          <span class="card-title">Sizes</span>
+        </div>
+        <div class="card-body">
+          <div class="favicon-grid" id="faviconGrid"></div>
+        </div>
+        <div class="action-row">
+          <button type="button" class="act-btn act-download" id="downloadBtn">?? Download ZIP</button>
+        </div>
+<div class="result-actions" style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
+  <share-result-button
+    tool-name="Favicon Generator"
+    tool-slug="favicon-generator">
+  </share-result-button>
+</div>
+      </div>
+
+      <!-- Info Card -->
+      <div class="info-card">
+        <div class="info-title">Favicon Generator</div>
+        <div class="info-text">
+          Generate favicons in all common sizes.
+          <ul style="margin-top:10px;">
+            <li>? Multiple sizes</li>
+            <li>? Image or text</li>
+            <li>? Custom colors</li>
+            <li>? ZIP download</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<afro-related-tools category="image-design" current="favicon-generator" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/image-compress/" data-related-tool data-id="image-compress" data-name="Image Compressor Studio" data-category="image-design" data-icon="IC" data-desc="Batch compress, resize, convert, compare, and target file-size limits locally in the browser.">Image Compressor Studio</a></li><li><a href="/tools/flyer-maker/" data-related-tool data-id="flyer-maker" data-name="AI Flyer &amp; Poster Studio" data-category="image-design" data-icon="AF" data-desc="Prompt your way to WhatsApp, Instagram, story, and print flyers with brand kits, uploads, checks, and local exports.">AI Flyer &amp; Poster Studio</a></li><li><a href="/tools/background-remover/" data-related-tool data-id="background-remover" data-name="Background Remover Studio" data-category="image-design" data-icon="BR" data-desc="Remove or replace backgrounds with AI person cutout, color key, brush refine, and local exports.">Background Remover Studio</a></li><li><a href="/tools/image-resize/" data-related-tool data-id="image-resize" data-name="Image Resizer Studio" data-category="image-design" data-icon="IR" data-desc="Batch resize, crop, pad, convert, compare, and export multiple social or web sizes locally.">Image Resizer Studio</a></li><li><a href="/tools/passport-photo/" data-related-tool data-id="passport-photo" data-name="Passport Photo Studio" data-category="image-design" data-icon="PP" data-desc="Create source-backed passport and visa photos with African specs, face guides, and print sheets.">Passport Photo Studio</a></li><li><a href="/tools/qr-generator/" data-related-tool data-id="qr-generator" data-name="QR Code Generator" data-category="image-design" data-icon="QC" data-desc="Generate QR codes for M-Pesa links, WhatsApp, WiFi, URLs. Download as PNG/SVG.">QR Code Generator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+
+<section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
+  <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Favicon Generator: How It Works</h2>
+  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
+    <p>The AfroTools Favicon Generator creates website icons from images, text, or emoji in seconds. Upload an existing logo or image, type a letter or word, or pick an emoji to create a complete favicon set in all standard sizes - 16x16, 32x32, 48x48, and 64x64 pixels as PNG files, plus the traditional ICO format. Download everything as a single ZIP file ready to drop into your website. The text mode lets you choose a background colour, font, and letter to create a clean typographic favicon even if you do not have a logo yet. The emoji mode is perfect for quick project favicons or personal sites. For the image mode, the tool automatically resizes and crops your upload to each required dimension while maintaining clarity at small sizes. Favicons are critical for browser tab recognition, bookmark displays, and mobile home screen icons. Without one, your site looks unfinished and loses brand recognition. This tool is designed for web developers, bloggers, small business owners, and anyone launching a website who needs a professional favicon without opening Photoshop or paying a designer.</p>
+  </div>
+  <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Frequently Asked Questions</h3>
+
+
+<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="favicon-generator" aria-labelledby="favicon-generator-verification-title">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Favicon export check</span>
+          <h2 class="tool-verification-title" id="favicon-generator-verification-title">Generate the full icon set, then test it on real tabs and devices</h2>
+          <p class="tool-verification-lead">Turn a logo, lettermark, or simple mark into browser icons, touch icons, preview states, and downloadable assets for site launches.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Local canvas export</span>
+          <p class="tool-verification-note">Source artwork stays in the browser while icons are generated.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>Primary task</h3>
+          <ul class="tool-verification-list"><li>Upload or create the source mark and choose background settings.</li><li>Preview square, rounded, and small-tab appearances.</li><li>Download the icon package and copy the HTML tags or manifest references.</li></ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Result and export</h3>
+          <ul class="tool-verification-list"><li>Favicon and app icon exports in common sizes.</li><li>Preview of light, dark, and browser tab contexts.</li><li>Copyable implementation snippet.</li></ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Before you use it</h3>
+          <ul class="tool-verification-list"><li>Use a simple high-contrast mark at 16x16 and 32x32.</li><li>Verify transparency and maskable icon safe areas.</li><li>Check brand rights before using third-party logos.</li></ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Assumptions and freshness</h3>
+          <p class="tool-verification-meta">Design helper only. Browser and platform icon requirements can change; test generated assets in your target app or CMS.</p>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <a class="tool-verification-report" href="/contact/">Report tool issue</a>
+        <p class="tool-verification-disclaimer">Planning utility only. It is not an official provider, legal, tax, security, filing, compliance, or live-data service. Keep sensitive content local unless you intentionally export or share it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<afro-business-cta tool-name="Favicon Generator" prospect-segment="design-workflows" save-note="Generate local icon sizes, preview light/dark surfaces, then download the favicon package and implementation snippets."></afro-business-cta>
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+  <div class="landing-faq" style="display:flex;flex-direction:column;gap:8px;">
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">What sizes are included in the favicon set?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">The download includes PNG files at 16x16, 32x32, 48x48, and 64x64 pixels, plus an ICO file that bundles all sizes together. This covers all major browser and platform requirements.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">What is the difference between PNG and ICO formats?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">PNG favicons are used by modern browsers and support transparency. ICO is the legacy format that bundles multiple sizes into a single file and is required for older browsers and certain platforms like Windows.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Can I create a favicon from text without a logo?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Yes. Switch to text mode, enter a letter or short text, choose your background and text colours, and the tool generates a clean typographic favicon ready for download.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">How do I add the favicon to my website?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Place the generated favicon files in your website's root directory, then add a link tag in your HTML head: &lt;link rel="icon" type="image/png" href="/favicon-32x32.png"&gt;. The ICO file can be referenced with &lt;link rel="icon" href="/favicon.ico"&gt;.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Does the tool support transparent backgrounds?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Yes. If you upload a PNG image with a transparent background, the transparency is preserved in the generated favicon files. This works in image mode for both PNG and ICO outputs.</p>
+    </details>
+  </div>
+</section>
+
+
+<section style="background:#f8fafc;padding:40px 24px;border-top:1px solid #e2e8f0"><div style="max-width:900px;margin:0 auto">
+<h2 style="font-size:1.15rem;font-weight:800;color:#111827;margin-bottom:14px">Related Image Tools</h2>
+<div style="display:flex;flex-wrap:wrap;gap:10px"><a href="/tools/logo-maker/" style="padding:10px 16px;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#1e293b;text-decoration:none;transition:all .2s">Logo Maker</a><a href="/tools/color-picker/" style="padding:10px 16px;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#1e293b;text-decoration:none;transition:all .2s">Color Picker</a><a href="/tools/image-resize/" style="padding:10px 16px;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#1e293b;text-decoration:none;transition:all .2s">Image Resizer</a>
+<a href="/image-design/" style="padding:10px 16px;background:#f3f4f6;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#6b7280;text-decoration:none;transition:all .2s">View All Image Tools</a>
+</div>
+</div></section>
+<afro-footer></afro-footer>
+
+<script>
+  const modeButtons = document.querySelectorAll('.mode-btn');
+  const imageMode = document.getElementById('imageMode');
+  const textMode = document.getElementById('textMode');
+  const uploadArea = document.getElementById('uploadArea');
+  const imageInput = document.getElementById('imageInput');
+  const textInput = document.getElementById('textInput');
+  const bgColor = document.getElementById('bgColor');
+  const textColor = document.getElementById('textColor');
+  const generateBtn = document.getElementById('generateBtn');
+  const previewCard = document.getElementById('previewCard');
+  const faviconGrid = document.getElementById('faviconGrid');
+  const downloadBtn = document.getElementById('downloadBtn');
+
+  let currentMode = 'image';
+  let sourceImage = null;
+  const sizes = [16, 32, 48, 64];
+  const canvases = {};
+
+  modeButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentMode = btn.dataset.mode;
+      modeButtons.forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+
+      if (currentMode === 'image') {
+        imageMode.style.display = 'block';
+        textMode.style.display = 'none';
+        sourceImage = null;
+      } else {
+        imageMode.style.display = 'none';
+        textMode.style.display = 'block';
+      }
+      generateBtn.disabled = currentMode === 'image' ? !sourceImage : !textInput.value;
+    });
+  });
+
+  uploadArea.addEventListener('click', () => imageInput.click());
+  uploadArea.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploadArea.classList.add('active');
+  });
+  uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('active'));
+  uploadArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadArea.classList.remove('active');
+    if (e.dataTransfer.files.length) {
+      imageInput.files = e.dataTransfer.files;
+      handleImageUpload();
+    }
+  });
+
+  imageInput.addEventListener('change', handleImageUpload);
+
+  function handleImageUpload() {
+    const file = imageInput.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        sourceImage = img;
+        generateBtn.disabled = false;
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  textInput.addEventListener('input', () => {
+    generateBtn.disabled = !textInput.value;
+  });
+
+  generateBtn.addEventListener('click', () => {
+    faviconGrid.innerHTML = '';
+    Object.keys(canvases).forEach(k => delete canvases[k]);
+
+    sizes.forEach(size => {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+
+        if (!ctx) {
+          console.error(`Failed to get 2D context for ${size}x${size} canvas`);
+          return;
+        }
+
+        if (currentMode === 'image' && sourceImage) {
+          ctx.drawImage(sourceImage, 0, 0, size, size);
+        } else {
+          ctx.fillStyle = bgColor.value;
+          ctx.fillRect(0, 0, size, size);
+          ctx.fillStyle = textColor.value;
+          ctx.font = `bold ${size * 0.6}px Arial`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(textInput.value, size / 2, size / 2);
+        }
+
+        canvases[size] = canvas;
+
+        const item = document.createElement('div');
+        item.className = 'favicon-item';
+        const clonedCanvas = canvas.cloneNode();
+        clonedCanvas.width = 80;
+        clonedCanvas.height = 80;
+        const clonedCtx = clonedCanvas.getContext('2d');
+        if (clonedCtx) {
+          clonedCtx.drawImage(canvas, 0, 0, 80, 80);
+        }
+        item.appendChild(clonedCanvas);
+        item.innerHTML += `<div class="favicon-size">${size}x${size}</div>`;
+        faviconGrid.appendChild(item);
+      } catch (err) {
+        console.error(`Error generating ${size}x${size} favicon:`, err);
+      }
+    });
+
+    previewCard.classList.add('on');
+  });
+
+  downloadBtn.addEventListener('click', async () => {
+    const zip = new JSZip();
+
+    try {
+      const blobPromises = Object.entries(canvases).map(([size, canvas]) => {
+        return new Promise((resolve, reject) => {
+          canvas.toBlob(blob => {
+            if (!blob) {
+              reject(new Error(`Failed to create blob for ${size}x${size}`));
+              return;
+            }
+            zip.file(`favicon-${size}x${size}.png`, blob);
+            resolve();
+          }, 'image/png');
+        });
+      });
+
+      await Promise.all(blobPromises);
+      const zipBlob = await zip.generateAsync({ type: 'blob' });
+      const url = URL.createObjectURL(zipBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'favicons.zip';
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Error creating favicon ZIP:', err);
+      alert('Failed to generate favicon ZIP. Please try again.');
+    }
+  });
+</script>
+<script src="/assets/js/lib/image-design-workflow.js?v=f9b20b1b" defer></script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

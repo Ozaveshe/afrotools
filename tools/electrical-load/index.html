@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electrical Load Calculator — Wiring, Breaker, Generator</title>
+<meta name="description" content="Calculate electrical load for African homes. Appliance library, cable sizing, breaker rating, generator sizing, monthly cost estimate. NEMSA, KEBS, SANS standards.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Electrical Load Calculator | AfroTools">
+<meta property="og:description" content="Size your wiring, breakers, and generator. Appliance library with African tariff-based cost estimates.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/electrical-load.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/electrical-load/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Electrical Load Calculator | AfroTools">
+<meta name="twitter:description" content="Size wiring, breakers, generators. African appliance library with cost estimates.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/electrical-load.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+:root{--accent:#0062CC;--accent-dark:#0059B3;--green:#008751;--dark:#0f1419;--bg:#f8fafc;--border:#e2e8f0;--muted:#64748b}
+.tool-hero{background:linear-gradient(135deg,#0A1628 0%,#1e3a5f 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#4DA3FF}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#4DA3FF;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-blue{background:rgba(77,163,255,.2);color:#4DA3FF;border:1px solid rgba(77,163,255,.4)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc;display:flex;justify-content:space-between;align-items:center}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dark)}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:var(--muted);letter-spacing:.04em;margin-bottom:5px}
+input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:var(--bg);font-family:inherit;transition:border .2s}
+input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,98,204,.15)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:980px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px;transition:transform .1s;font-family:inherit}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{transform:translateY(-1px);background:var(--accent-dark)}
+.btn-reset{background:transparent;color:var(--muted);border:1.5px solid var(--border)}
+.btn-sm{display:inline-flex;padding:6px 12px;font-size:.72rem;border-radius:6px;border:1.5px solid #cbd5e1;background:#fff;cursor:pointer;font-weight:600;color:#475569;font-family:inherit;white-space:nowrap}
+.btn-sm:hover{border-color:var(--accent);color:var(--accent)}
+
+/* Appliance categories */
+.cat-section{margin-bottom:16px}
+.cat-toggle{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#f8fafc;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-weight:700;font-size:.82rem;color:var(--dark)}
+.cat-toggle .cat-count{font-size:.72rem;font-weight:600;color:var(--accent)}
+.cat-items{padding:10px 0}
+.app-row{display:grid;grid-template-columns:1fr 70px 50px 65px 36px;gap:6px;align-items:center;margin-bottom:6px;font-size:.8rem}
+.app-row input,.app-row select{padding:7px 8px;font-size:.78rem}
+.app-row .app-name{font-weight:600;color:var(--dark);font-size:.78rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.app-row .remove-btn{background:#fee2e2;color:#dc2626;border:none;border-radius:6px;padding:6px 8px;cursor:pointer;font-size:.72rem;font-weight:700}
+.app-header{display:grid;grid-template-columns:1fr 70px 50px 65px 36px;gap:6px;font-size:.65rem;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;padding:0 0 4px;margin-bottom:6px;border-bottom:1px solid #f1f5f9}
+
+/* Results */
+.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+.result-box{background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:14px;text-align:center}
+.result-box .num{font-size:1.6rem;font-weight:800;color:var(--accent)}
+.result-box .lbl{font-size:.68rem;color:var(--muted);font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
+.result-box.green{background:#ECFDF5;border-color:#A7F3D0}
+.result-box.green .num{color:var(--green)}
+.result-box.amber{background:#FFFBEB;border-color:#FDE68A}
+.result-box.amber .num{color:#d97706}
+.result-box.red{background:#FEF2F2;border-color:#FECACA}
+.result-box.red .num{color:#dc2626}
+.rec-card{border:2px solid;border-radius:8px;padding:16px;margin-top:14px}
+.rec-card.green{border-color:#22c55e;background:#f0fdf4}
+.rec-card.amber{border-color:#f59e0b;background:#fffbeb}
+.rec-card.red{border-color:#ef4444;background:#fef2f2}
+.rec-card h3{font-size:1rem;font-weight:800;margin-bottom:4px}
+.rec-card p{font-size:.78rem;line-height:1.5;color:#475569}
+.load-bars{margin-top:14px}
+.load-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.load-bar-label{font-size:.72rem;font-weight:600;color:#475569;width:90px;text-align:right;flex-shrink:0}
+.load-bar-wrap{flex:1;height:22px;background:#f1f5f9;border-radius:6px;overflow:hidden}
+.load-bar{height:100%;border-radius:6px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;transition:width .4s}
+.load-bar span{font-size:.68rem;font-weight:700;color:#fff;white-space:nowrap}
+.cost-note{margin-top:14px;padding:12px 16px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;font-size:.8rem;color:#1E40AF;line-height:1.5}
+.warning{margin-top:10px;padding:12px 16px;background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;font-size:.8rem;color:#991B1B;line-height:1.5}
+.sidebar .info-card{background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:#1E40AF;line-height:1.6}
+.info-card ul{padding-left:16px;margin:6px 0}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--dark)}
+.seo-section h3{font-size:1.1rem;font-weight:700;margin:20px 0 8px;color:var(--dark)}
+.seo-section p,.seo-section li{font-size:.88rem;color:#475569;line-height:1.75}
+.seo-section ul{padding-left:20px}
+.faq-item{border:1px solid var(--border);border-radius:8px;margin-bottom:8px;overflow:hidden}
+.faq-item summary{padding:14px 18px;font-weight:700;font-size:.88rem;cursor:pointer;color:var(--dark);background:#f8fafc}
+.faq-item[open] summary{border-bottom:1px solid var(--border)}
+.faq-item p{padding:14px 18px;font-size:.84rem;color:#475569;line-height:1.7}
+.related-section{max-width:1200px;margin:0 auto;padding:0 24px 60px}
+.related-section h2{font-size:1.2rem;font-weight:800;color:var(--dark);margin-bottom:16px}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.related-card{display:block;padding:18px;background:#fff;border:1px solid var(--border);border-radius:10px;text-decoration:none;color:inherit;transition:.15s}
+.related-card:hover{border-color:var(--accent);box-shadow:0 2px 12px rgba(0,98,204,.1)}
+.related-card .rc-name{font-weight:700;font-size:.9rem;color:var(--dark);margin-bottom:4px}
+.related-card .rc-desc{font-size:.78rem;color:var(--muted);line-height:1.5}
+/* Site coherence pass */
+.tool-hero{background:#f8fafc;border-bottom:1px solid #e2e8f0}
+.breadcrumb,.breadcrumb a{color:#64748b}
+.breadcrumb span{color:#0057B8}
+.tool-hero h1{color:#0f172a;letter-spacing:0}
+.tool-hero h1 em{color:#0057B8}
+.hero-sub{color:#475569}
+.badge,.b-blue{background:#fff;color:#475569;border:1px solid #dbe3ef;border-radius:8px}
+.card,.cat-toggle,.result-box,.rec-card,.cost-note,.warning,.sidebar .info-card,.faq-item,.related-card{border-radius:8px;box-shadow:none}
+.card-head{background:#f8fafc}
+input,select,.btn,.btn-sm,.app-row .remove-btn{border-radius:8px}
+input,select,.btn,.btn-sm{min-height:44px}
+.btn{box-shadow:none}
+.btn-primary{background:#0062CC}
+.btn-primary:hover{background:#0057B8;transform:none}
+.btn-reset:hover,.btn-sm:hover,.related-card:hover{box-shadow:none;transform:none}
+.app-row,.app-header{min-width:0}
+.cat-items{overflow-x:auto;-webkit-overflow-scrolling:touch}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.app-row{grid-template-columns:1fr 60px 45px 55px 32px}.result-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.tool-hero{padding:36px 0 28px}.tool-hero-inner,.tool-main-inner{padding-left:16px;padding-right:16px}.result-grid{grid-template-columns:1fr}.app-row,.app-header{grid-template-columns:minmax(120px,1fr) 56px 44px 52px 34px;min-width:0}}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Electrical Load Calculator",
+  "description": "Calculate electrical load, cable sizes, breaker ratings, generator sizing for African homes and offices.",
+  "url": "https://afrotools.com/tools/electrical-load/",
+  "inLanguage": "en",
+  "applicationCategory": "WebApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/electrical-load.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Electrical Load Calculator",
+  "url": "https://afrotools.com/tools/electrical-load/",
+  "description": "Calculate electrical load, cable sizes, breaker ratings, generator sizing for African homes and offices.",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/electrical-load.webp"
+}
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Engineering Tools","item":"https://afrotools.com/engineering/"},{"@type":"ListItem","position":3,"name":"Electrical Load Calculator","item":"https://afrotools.com/tools/electrical-load/"}]}</script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+  <link rel="stylesheet" href="/assets/css/engineering-enhancements.css?v=b4d7dd3f">
+  <link rel="stylesheet" href="/assets/css/engineering-tool-focus.css?v=04f93306">
+  <script src="/assets/js/pages/engineering-tool-focus.js?v=adc5d213" defer></script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What size cable do I need for my house?","acceptedAnswer":{"@type":"Answer","text":"For a typical single-phase home with 5-8 kW demand load, a 16mm² copper cable from meter to DB is standard. Individual circuits use 2.5mm² for sockets and 1.5mm² for lighting. This calculator sizes the main cable based on your actual load."}},{"@type":"Question","name":"Do I need single phase or three phase?","acceptedAnswer":{"@type":"Answer","text":"Single phase (230V) handles up to about 13 kW demand load. If your load exceeds this — common in homes with multiple ACs, water heaters, or workshops — you need three-phase supply. In Nigeria, this requires a DisCo application."}},{"@type":"Question","name":"What is a diversity factor?","acceptedAnswer":{"@type":"Answer","text":"Diversity factor accounts for the fact that not all appliances run simultaneously. A 0.7 (70%) factor means you size your supply for 70% of the total connected load. 0.6 is conservative (better for generator sizing), 0.8 is used for offices where more equipment runs continuously."}},{"@type":"Question","name":"How do I size a generator for my home?","acceptedAnswer":{"@type":"Answer","text":"Take your demand load in kW, divide by 0.8 (power factor), and add 25% for motor starting surges. For example, 5 kW demand ÷ 0.8 = 6.25 kVA × 1.25 = ~8 kVA generator. This calculator does this automatically."}},{"@type":"Question","name":"Why does my breaker keep tripping?","acceptedAnswer":{"@type":"Answer","text":"Your breaker trips when current exceeds its rating. This means either your total load is too high for the breaker, or you have a short circuit or earth fault. Calculate your actual load with this tool — if it exceeds the breaker rating, you need a larger breaker and cable, or you need to redistribute loads across circuits."}},{"@type":"Question","name":"How much does electricity cost monthly in Nigeria?","acceptedAnswer":{"@type":"Answer","text":"It depends on your DisCo band and consumption. Band A customers pay approximately ₦68/kWh. A typical 3-bedroom home uses 200-500 kWh per month (₦13,600-34,000). Homes with multiple ACs can exceed 1,000 kWh (₦68,000+). This calculator estimates your specific monthly cost based on your appliances."}}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/electrical-load/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/electrical-load/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/charge-electrique/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-mzigo-wa-umeme/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/electrical-load/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/engineering/">Engineering</a> / <span>Electrical Load</span></div>
+<h1>Electrical Load <em>Calculator</em></h1>
+<p class="hero-sub">Calculate total load, size wiring, breakers, generator, and estimate monthly electricity cost. Full appliance library with African standards (NEMSA, KEBS, SANS).</p>
+<div class="hero-badges"><span class="badge b-blue">Appliance Library</span><span class="badge b-blue">Cable Sizing</span><span class="badge b-blue">Generator Sizing</span><span class="badge b-blue">Monthly Cost</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calculator">
+
+<!-- Supply Details -->
+<div class="card">
+<div class="card-head"><span class="card-title">Supply Details</span></div>
+<div class="card-body">
+<div class="row3">
+<div><label for="country">Country</label>
+<select id="country" onchange="updateCountry()">
+<option value="NG" data-v="230" data-hz="50" data-std="NEMSA" data-tariff="68" data-curr="NGN" data-sym="&#8358;">Nigeria (230V/50Hz, NEMSA)</option>
+<option value="KE" data-v="240" data-hz="50" data-std="KEBS" data-tariff="25" data-curr="KES" data-sym="KSh">Kenya (240V/50Hz, KEBS)</option>
+<option value="ZA" data-v="230" data-hz="50" data-std="SANS 10142" data-tariff="3.50" data-curr="ZAR" data-sym="R">South Africa (230V/50Hz, SANS)</option>
+<option value="GH" data-v="230" data-hz="50" data-std="EC Ghana" data-tariff="1.80" data-curr="GHS" data-sym="GH&#8373;">Ghana (230V/50Hz)</option>
+<option value="EG" data-v="220" data-hz="50" data-std="Egyptian Code" data-tariff="2.00" data-curr="EGP" data-sym="E&#163;">Egypt (220V/50Hz)</option>
+</select></div>
+<div><label for="phase">Phase</label>
+<select id="phase">
+<option value="1">Single Phase</option>
+<option value="3">Three Phase (415V)</option>
+</select></div>
+<div><label for="diversity">Diversity Factor</label>
+<select id="diversity">
+<option value="0.6">0.6 — Conservative</option>
+<option value="0.7" selected>0.7 — Standard residential</option>
+<option value="0.8">0.8 — Office / commercial</option>
+<option value="1.0">1.0 — No diversity</option>
+</select></div>
+</div>
+</div></div>
+
+<!-- Appliances by Category -->
+<div class="card">
+<div class="card-head"><span class="card-title">Appliances</span><span style="font-size:.72rem;color:#94a3b8">Click categories to expand</span></div>
+<div class="card-body">
+<div class="app-header"><span>Appliance</span><span>Watts</span><span>Qty</span><span>Hrs/Day</span><span></span></div>
+<div id="applianceList"></div>
+<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+<button type="button" class="btn-sm" onclick="addCustomRow()">+ Add Custom Appliance</button>
+<button type="button" class="btn-sm" onclick="loadHomePreset()">Load Typical Home</button>
+<button type="button" class="btn-sm" onclick="loadOfficePreset()">Load Typical Office</button>
+</div>
+<button type="button" class="btn btn-primary" onclick="calculate()">Calculate Load</button>
+<button type="button" class="btn btn-reset" onclick="resetAll()">Reset All</button>
+</div></div>
+
+<!-- Results -->
+<div class="card" id="resultCard" style="display:none">
+<div class="card-head"><span class="card-title">Load Analysis</span></div>
+<div class="card-body">
+<div class="result-grid" id="resultGrid"></div>
+<div id="loadBars" class="load-bars"></div>
+<div id="recommendation"></div>
+<div id="genSection"></div>
+<div id="costSection"></div>
+<div id="warnings"></div>
+<div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
+<button type="button" onclick="window.print()" class="btn-sm">Print</button>
+<button type="button" onclick="shareResult()" class="btn-sm">Share</button>
+<button type="button" onclick="copyElectricalBrief()" class="btn-sm">Copy brief</button>
+<button type="button" onclick="downloadElectricalCsv()" class="btn-sm">Download CSV</button>
+</div>
+<p id="electricalStatus" role="status" aria-live="polite" style="margin:.55rem 0 0;color:#64748b;font-size:.86rem"></p>
+</div></div>
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar">
+<div class="card">
+<div class="card-head"><span class="card-title">Quick Add</span></div>
+<div class="card-body" style="display:flex;flex-wrap:wrap;gap:4px" id="quickAdd"></div>
+</div>
+<div class="info-card">
+<h4>Cable Size Guide (Copper)</h4>
+<ul>
+<li><strong>1.5mm²:</strong> up to 15A (lighting circuits)</li>
+<li><strong>2.5mm²:</strong> up to 20A (socket circuits)</li>
+<li><strong>4.0mm²:</strong> up to 30A (water heater)</li>
+<li><strong>6.0mm²:</strong> up to 40A (cooker)</li>
+<li><strong>10mm²:</strong> up to 60A (sub-main)</li>
+<li><strong>16mm²:</strong> up to 80A (main cable)</li>
+<li><strong>25mm²:</strong> up to 100A (heavy duty)</li>
+</ul>
+</div>
+<div class="info-card" style="margin-top:10px">
+<h4>Circuit Breaker Sizing</h4>
+<p>Select the next standard size above the calculated current: <strong>6A, 10A, 16A, 20A, 32A, 40A, 63A, 100A</strong>. Breaker must be ≥1.25× the normal operating current.</p>
+</div>
+<div class="info-card" style="margin-top:10px">
+<h4>Country Standards</h4>
+<ul>
+<li><strong>Nigeria:</strong> NEMSA, 230V/50Hz, Type G plugs</li>
+<li><strong>Kenya:</strong> KEBS, 240V/50Hz, Type G plugs</li>
+<li><strong>South Africa:</strong> SANS 10142, 230V/50Hz, Type M/N</li>
+<li><strong>Ghana:</strong> 230V/50Hz, Type D/G plugs</li>
+<li><strong>Egypt:</strong> 220V/50Hz, Type C/F plugs</li>
+</ul>
+</div>
+</div>
+</div></section>
+
+<!-- SEO -->
+<section class="seo-section">
+<h2>Electrical Load Calculation for African Buildings</h2>
+<p>Proper electrical load calculation prevents fires, protects appliances, and ensures your wiring and breakers are correctly sized. In many African countries, electrical installations must comply with local wiring regulations — NEMSA in Nigeria, KEBS standards in Kenya, or SANS 10142 in South Africa. This calculator helps you meet those requirements.</p>
+
+<h3>Understanding Total Load vs Demand Load</h3>
+<p>The total connected load is the sum of all appliance wattages. But not everything runs at once — your iron, kettle, and AC don't typically operate simultaneously. The demand load applies a diversity factor (usually 0.6-0.8 for residential) to give a realistic operating load. This calculator uses this demand load for sizing cables, breakers, and generators.</p>
+
+<h3>Generator Sizing for Africa</h3>
+<p>With unreliable grid power across many African cities, generator sizing is as important as grid sizing. A generator should be rated at least 25% above your demand load to handle motor startup surges (fridges, ACs, pumps). This calculator recommends the minimum generator size in kVA based on your load, accounting for a 0.8 power factor.</p>
+
+<h3>Monthly Electricity Cost</h3>
+<p>Understanding your electricity consumption helps you budget and identify energy-saving opportunities. This calculator estimates monthly kWh consumption based on each appliance's wattage and daily usage hours, then applies your country's average tariff rate. In Nigeria, Band A tariff is approximately 68 NGN/kWh. Kenya Power charges about 25 KES/kWh. Eskom in South Africa charges roughly 3.50 ZAR/kWh for residential customers.</p>
+
+<h3>Safety First</h3>
+<p>Electrical safety is critical in African construction. Common hazards include undersized cables (causing overheating), missing earth connections, lack of circuit breakers, and water exposure. Always hire a licensed electrician and insist on proper testing before energising any installation. Use RCDs (Residual Current Devices) on all socket circuits to protect against electric shock.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>What size cable do I need for my house?</summary><p>For a typical single-phase home with 5-8 kW demand load, a 16mm² copper cable from meter to DB is standard. Individual circuits use 2.5mm² for sockets and 1.5mm² for lighting. This calculator sizes the main cable based on your actual load.</p></details>
+<details class="faq-item"><summary>Do I need single phase or three phase?</summary><p>Single phase (230V) handles up to about 13 kW demand load. If your load exceeds this — common in homes with multiple ACs, water heaters, or workshops — you need three-phase supply. In Nigeria, this requires a DisCo application.</p></details>
+<details class="faq-item"><summary>What is a diversity factor?</summary><p>Diversity factor accounts for the fact that not all appliances run simultaneously. A 0.7 (70%) factor means you size your supply for 70% of the total connected load. 0.6 is conservative (better for generator sizing), 0.8 is used for offices where more equipment runs continuously.</p></details>
+<details class="faq-item"><summary>How do I size a generator for my home?</summary><p>Take your demand load in kW, divide by 0.8 (power factor), and add 25% for motor starting surges. For example, 5 kW demand ÷ 0.8 = 6.25 kVA × 1.25 = ~8 kVA generator. This calculator does this automatically.</p></details>
+<details class="faq-item"><summary>Why does my breaker keep tripping?</summary><p>Your breaker trips when current exceeds its rating. This means either your total load is too high for the breaker, or you have a short circuit or earth fault. Calculate your actual load with this tool — if it exceeds the breaker rating, you need a larger breaker and cable, or you need to redistribute loads across circuits.</p></details>
+<details class="faq-item"><summary>How much does electricity cost monthly in Nigeria?</summary><p>It depends on your DisCo band and consumption. Band A customers pay approximately ₦68/kWh. A typical 3-bedroom home uses 200-500 kWh per month (₦13,600-34,000). Homes with multiple ACs can exceed 1,000 kWh (₦68,000+). This calculator estimates your specific monthly cost based on your appliances.</p></details>
+</section>
+
+<section class="related-section">
+<h2>Related Engineering Tools</h2>
+<div class="related-grid">
+<a href="/tools/generator-fuel/" class="related-card"><div class="rc-name">Generator Fuel Calculator</div><div class="rc-desc">Calculate monthly fuel costs and compare generator vs grid vs solar economics.</div></a>
+<a href="/tools/boq-builder/" class="related-card"><div class="rc-name">BOQ Builder</div><div class="rc-desc">Include electrical installation costs in your Bill of Quantities.</div></a>
+<a href="/tools/borehole-cost/" class="related-card"><div class="rc-name">Borehole Cost Estimator</div><div class="rc-desc">Size your borehole pump — electrical load is a key input for pump selection.</div></a>
+<a href="/tools/unit-converter/" class="related-card"><div class="rc-name">Unit Converter</div><div class="rc-desc">Convert between watts, kilowatts, amps, and other electrical units.</div></a>
+</div>
+</section>
+<afro-related-tools data-ssr="1" category="engineering" current="electrical-load">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/engineering/afrodraft/" data-related-tool data-id="afrodraft" data-name="AfroDraft 2D CAD" data-category="engineering" data-icon="A2" data-desc="60+ AutoCAD-style features. Draw, dimension, annotate, trim, offset, fillet. SVG/DXF/PNG export. Touch-enabled mobile CA">AfroDraft 2D CAD</a></li><li><a href="/engineering/floor-planner/" data-related-tool data-id="afroplan-floor-planner" data-name="AfroPlan Floor Planner" data-category="engineering" data-icon="AF" data-desc="AI-assisted floor planner for African homes and small projects. Draw walls, doors, windows and furniture, estimate costs">AfroPlan Floor Planner</a></li><li><a href="/tools/solar-calculator/" data-related-tool data-id="solar-calculator" data-name="Solar Panel Calculator" data-category="engineering" data-icon="SP" data-desc="Size your solar system with African irradiance data. Battery bank, inverter sizing, and 10-year ROI vs generator.">Solar Panel Calculator</a></li><li><a href="/tools/floor-plan/" data-related-tool data-id="floor-plan" data-name="Building Cost Estimator" data-category="engineering" data-icon="BC" data-desc="Estimate construction cost per m² by African city. 10 cities, 4 finish tiers, room-by-room input, full cost breakdown, t">Building Cost Estimator</a></li><li><a href="/tools/boq-builder/" data-related-tool data-id="boq-generator" data-name="BOQ Builder" data-category="engineering" data-icon="BB" data-desc="11 QS categories, 5 pre-built templates, 9 currencies, contingency + VAT + markup. Branded PDF export for African constr">BOQ Builder</a></li><li><a href="/tools/rebar-calculator/" data-related-tool data-id="rebar-calc" data-name="Rebar Calculator" data-category="engineering" data-icon="RC" data-desc="Bar bending schedule, cutting lengths, lap lengths, weight and cost. Y8 to Y32 bars with African steel prices.">Rebar Calculator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+/* ── Appliance Library ── */
+var APPLIANCES = {
+  'Lighting': [
+    {name:'LED Bulb',w:10},{name:'Fluorescent Tube (36W)',w:36},{name:'Security Light',w:100},{name:'Recessed Downlight',w:15},{name:'Floodlight (exterior)',w:50}
+  ],
+  'Kitchen': [
+    {name:'Refrigerator',w:150},{name:'Freezer (chest)',w:200},{name:'Microwave',w:1000},{name:'Electric Cooker',w:2000},{name:'Electric Kettle',w:2200},{name:'Blender',w:400},{name:'Toaster',w:800},{name:'Rice Cooker',w:700}
+  ],
+  'Cooling': [
+    {name:'Standing Fan',w:75},{name:'Ceiling Fan',w:60},{name:'AC 1HP (split)',w:750},{name:'AC 1.5HP (split)',w:1120},{name:'AC 2HP (split)',w:1500},{name:'AC 2.5HP (split)',w:1900}
+  ],
+  'Heating': [
+    {name:'Water Heater (geyser)',w:2000},{name:'Immersion Heater',w:3000},{name:'Electric Iron',w:1000},{name:'Room Heater',w:1500}
+  ],
+  'Entertainment': [
+    {name:'TV (LED 43")',w:100},{name:'TV (LED 55")',w:150},{name:'Home Theatre System',w:300},{name:'DSTV / Decoder',w:30},{name:'Gaming Console',w:200},{name:'Sound Bar',w:60}
+  ],
+  'Office': [
+    {name:'Laptop',w:65},{name:'Desktop Computer',w:300},{name:'Printer',w:500},{name:'Router / Modem',w:15},{name:'Monitor',w:40},{name:'UPS (small)',w:150}
+  ],
+  'Laundry': [
+    {name:'Washing Machine',w:500},{name:'Tumble Dryer',w:2500},{name:'Iron',w:1000}
+  ],
+  'Power Tools': [
+    {name:'Angle Grinder',w:800},{name:'Electric Drill',w:600},{name:'Welding Machine',w:3000},{name:'Circular Saw',w:1200}
+  ],
+  'Water': [
+    {name:'Borehole Pump (0.75kW)',w:750},{name:'Borehole Pump (1.5kW)',w:1500},{name:'Borehole Pump (2.2kW)',w:2200},{name:'Pressure Pump',w:370}
+  ],
+  'Other': [
+    {name:'Phone Charger',w:15},{name:'Hair Dryer',w:1500},{name:'CCTV Camera',w:15},{name:'Gate Motor',w:200},{name:'Electric Fence Energiser',w:100}
+  ]
+};
+
+var rowId = 0;
+var appList = document.getElementById('applianceList');
+var lastElectricalLoad = null;
+
+function addRow(name, watts, qty, hrs) {
+  var id = rowId++;
+  var div = document.createElement('div');
+  div.className = 'app-row';
+  div.id = 'row-' + id;
+  div.innerHTML = '<input aria-label="Appliance" type="text" value="' + (name||'') + '" placeholder="Appliance" style="font-weight:600">' +
+    '<input aria-label="W" type="number" value="' + (watts||'') + '" min="1" placeholder="W">' +
+    '<input type="number" value="' + (qty||1) + '" min="1" max="50" aria-label="Input value">' +
+    '<input type="number" value="' + (hrs||8) + '" min="0.5" max="24" step="0.5" aria-label="Input value">' +
+    '<button type="button" class="remove-btn" onclick="this.parentElement.remove()">X</button>';
+  appList.appendChild(div);
+}
+
+function addCustomRow() { addRow('', '', 1, 8); }
+
+/* ── Quick Add Buttons ── */
+var quickAdd = document.getElementById('quickAdd');
+Object.keys(APPLIANCES).forEach(function(cat) {
+  APPLIANCES[cat].forEach(function(a) {
+    var btn = document.createElement('button');
+    btn.className = 'btn-sm';
+    btn.textContent = a.name + ' (' + a.w + 'W)';
+    btn.style.fontSize = '.65rem';
+    btn.onclick = function() { addRow(a.name, a.w, 1, 8); };
+    quickAdd.appendChild(btn);
+  });
+});
+
+/* ── Presets ── */
+function loadHomePreset() {
+  appList.innerHTML = ''; rowId = 0;
+  addRow('LED Bulb', 10, 8, 6);
+  addRow('Ceiling Fan', 60, 4, 10);
+  addRow('TV (LED 43")', 100, 1, 6);
+  addRow('Refrigerator', 150, 1, 24);
+  addRow('AC 1.5HP', 1120, 2, 8);
+  addRow('Washing Machine', 500, 1, 1);
+  addRow('Water Pump', 750, 1, 2);
+  addRow('Electric Iron', 1000, 1, 0.5);
+  addRow('Microwave', 1000, 1, 0.5);
+  addRow('Phone Charger', 15, 4, 3);
+  addRow('Router / Modem', 15, 1, 24);
+  addRow('DSTV / Decoder', 30, 1, 8);
+}
+
+function loadOfficePreset() {
+  appList.innerHTML = ''; rowId = 0;
+  addRow('LED Panel Light', 36, 12, 10);
+  addRow('AC 2HP', 1500, 3, 10);
+  addRow('Desktop Computer', 300, 8, 10);
+  addRow('Monitor', 40, 8, 10);
+  addRow('Printer', 500, 2, 2);
+  addRow('Router / Modem', 15, 2, 24);
+  addRow('Water Dispenser', 100, 1, 12);
+  addRow('Refrigerator', 150, 1, 24);
+  addRow('Microwave', 1000, 1, 0.5);
+  addRow('Security Camera', 15, 4, 24);
+}
+
+function resetAll() {
+  appList.innerHTML = ''; rowId = 0;
+  document.getElementById('resultCard').style.display = 'none';
+  addRow('', '', 1, 8);
+}
+
+function updateCountry() {
+  // No-op for now, country data is embedded in select options
+}
+
+/* ── Calculate ── */
+function calculate() {
+  var opt = document.getElementById('country').options[document.getElementById('country').selectedIndex];
+  var voltage = parseFloat(opt.dataset.v);
+  var phases = parseInt(document.getElementById('phase').value);
+  var divFactor = parseFloat(document.getElementById('diversity').value);
+  var tariff = parseFloat(opt.dataset.tariff);
+  var currSym = opt.dataset.sym;
+  var rows = document.querySelectorAll('.app-row');
+
+  var totalWatts = 0, monthlyKwh = 0;
+  var catTotals = {};
+  rows.forEach(function(row) {
+    var inputs = row.querySelectorAll('input');
+    var name = inputs[0].value || 'Unknown';
+    var watts = parseFloat(inputs[1].value) || 0;
+    var qty = parseInt(inputs[2].value) || 1;
+    var hrs = parseFloat(inputs[3].value) || 0;
+    var itemWatts = watts * qty;
+    totalWatts += itemWatts;
+    monthlyKwh += (itemWatts * hrs * 30) / 1000;
+    // Categorise for chart
+    var cat = 'Other';
+    Object.keys(APPLIANCES).forEach(function(c) {
+      APPLIANCES[c].forEach(function(a) { if (name.toLowerCase().includes(a.name.toLowerCase().split(' ')[0].toLowerCase())) cat = c; });
+    });
+    catTotals[cat] = (catTotals[cat] || 0) + itemWatts;
+  });
+
+  var demandWatts = totalWatts * divFactor;
+  var totalKW = totalWatts / 1000;
+  var demandKW = demandWatts / 1000;
+
+  var amps;
+  if (phases === 1) {
+    amps = demandWatts / voltage;
+  } else {
+    amps = demandWatts / (voltage * 1.732);
+  }
+
+  // Breaker
+  var breakerSizes = [6, 10, 16, 20, 25, 32, 40, 50, 63, 80, 100, 125, 160];
+  var breaker = breakerSizes[breakerSizes.length - 1];
+  for (var i = 0; i < breakerSizes.length; i++) {
+    if (breakerSizes[i] >= amps * 1.25) { breaker = breakerSizes[i]; break; }
+  }
+
+  // Cable
+  var cable = '25mm²+';
+  if (amps <= 15) cable = '1.5mm²';
+  else if (amps <= 20) cable = '2.5mm²';
+  else if (amps <= 30) cable = '4.0mm²';
+  else if (amps <= 40) cable = '6.0mm²';
+  else if (amps <= 60) cable = '10mm²';
+  else if (amps <= 80) cable = '16mm²';
+  else if (amps <= 100) cable = '25mm²';
+
+  // Generator (kVA = kW / 0.8 power factor × 1.25 safety margin)
+  var genKVA = Math.ceil((demandKW / 0.8) * 1.25);
+  var genSizes = [2.5, 3.5, 5, 6.5, 8, 10, 12.5, 15, 20, 25, 30, 40, 50, 60, 80, 100];
+  var recGen = genSizes[genSizes.length - 1];
+  for (var j = 0; j < genSizes.length; j++) {
+    if (genSizes[j] >= genKVA) { recGen = genSizes[j]; break; }
+  }
+
+  // Monthly cost
+  var monthlyCost = Math.round(monthlyKwh * tariff);
+  lastElectricalLoad = {
+    country: opt.textContent.trim(),
+    voltage: voltage,
+    phases: phases,
+    diversity: divFactor,
+    tariff: tariff,
+    currencySymbol: currSym,
+    appliances: Array.from(rows).map(function(row){
+      var inputs = row.querySelectorAll('input');
+      var watts = parseFloat(inputs[1].value) || 0;
+      var qty = parseInt(inputs[2].value) || 1;
+      var hrs = parseFloat(inputs[3].value) || 0;
+      return {
+        name: inputs[0].value || 'Unknown',
+        watts: watts,
+        quantity: qty,
+        hoursPerDay: hrs,
+        connectedWatts: watts * qty,
+        monthlyKwh: (watts * qty * hrs * 30) / 1000
+      };
+    }),
+    totalKW: totalKW,
+    demandKW: demandKW,
+    amps: amps,
+    breaker: breaker,
+    cable: cable,
+    generatorKva: recGen,
+    monthlyKwh: monthlyKwh,
+    monthlyCost: monthlyCost,
+    recommendation: recTitle + ': ' + recText
+  };
+
+  // Results grid
+  var html = '';
+  html += '<div class="result-box"><div class="num">' + totalKW.toFixed(1) + ' kW</div><div class="lbl">Total Connected</div></div>';
+  html += '<div class="result-box"><div class="num">' + demandKW.toFixed(1) + ' kW</div><div class="lbl">Demand Load (' + Math.round(divFactor*100) + '%)</div></div>';
+  html += '<div class="result-box"><div class="num">' + amps.toFixed(1) + ' A</div><div class="lbl">Current Draw</div></div>';
+  html += '<div class="result-box"><div class="num">' + breaker + 'A</div><div class="lbl">Main Breaker</div></div>';
+  html += '<div class="result-box"><div class="num">' + cable + '</div><div class="lbl">Main Cable</div></div>';
+  html += '<div class="result-box green"><div class="num">' + recGen + ' kVA</div><div class="lbl">Min. Generator</div></div>';
+  document.getElementById('resultGrid').innerHTML = html;
+
+  // Load distribution bars
+  var maxCat = Math.max.apply(null, Object.values(catTotals).concat([1]));
+  var barColors = {Lighting:'#fbbf24',Kitchen:'#ef4444',Cooling:'#3b82f6',Heating:'#f97316',Entertainment:'#8b5cf6',Office:'#06b6d4',Laundry:'#ec4899',Water:'#0ea5e9','Power Tools':'#64748b',Other:'#94a3b8'};
+  var barsHtml = '';
+  Object.keys(catTotals).sort(function(a,b){return catTotals[b]-catTotals[a];}).forEach(function(cat) {
+    var pct = (catTotals[cat] / totalWatts * 100).toFixed(0);
+    var color = barColors[cat] || '#94a3b8';
+    barsHtml += '<div class="load-bar-row"><span class="load-bar-label">' + cat + '</span><div class="load-bar-wrap"><div class="load-bar" style="width:' + pct + '%;background:' + color + '"><span>' + (catTotals[cat]/1000).toFixed(1) + 'kW (' + pct + '%)</span></div></div></div>';
+  });
+  document.getElementById('loadBars').innerHTML = '<h4 style="font-size:.82rem;font-weight:700;margin-bottom:8px">Load Distribution</h4>' + barsHtml;
+
+  // Recommendation
+  var recClass = 'green', recTitle = 'Single Phase Adequate', recText = '';
+  if (demandKW > 13 && phases === 1) {
+    recClass = 'red';
+    recTitle = 'Three Phase Required';
+    recText = 'Your demand load of ' + demandKW.toFixed(1) + ' kW exceeds single-phase capacity (~13 kW). Apply for three-phase supply.';
+  } else if (demandKW > 8 && phases === 1) {
+    recClass = 'amber';
+    recTitle = 'Approaching Single Phase Limit';
+    recText = 'Your demand load of ' + demandKW.toFixed(1) + ' kW is high for single phase. Consider three-phase if adding more appliances.';
+  } else {
+    recText = 'Your demand load of ' + demandKW.toFixed(1) + ' kW is within ' + (phases === 1 ? 'single' : 'three') + '-phase capacity. Use a ' + breaker + 'A main breaker with ' + cable + ' cable.';
+  }
+  document.getElementById('recommendation').innerHTML = '<div class="rec-card ' + recClass + '"><h3>' + recTitle + '</h3><p>' + recText + '</p></div>';
+
+  // Generator section
+  document.getElementById('genSection').innerHTML = '<div class="cost-note"><strong>Generator recommendation:</strong> Minimum ' + recGen + ' kVA generator for your ' + demandKW.toFixed(1) + ' kW demand load (includes 25% margin for motor starting surges). Popular sizes in Africa: Sumec Firman, Mikano, Mantrac/CAT, Elepaq.<br><a href="/tools/generator-fuel/" style="color:#1E40AF;font-weight:700">Calculate fuel costs →</a></div>';
+
+  // Monthly cost
+  document.getElementById('costSection').innerHTML = '<div class="cost-note" style="margin-top:10px"><strong>Estimated monthly electricity:</strong> ' + Math.round(monthlyKwh) + ' kWh × ' + currSym + tariff + '/kWh = <strong>' + currSym + monthlyCost.toLocaleString() + '/month</strong><br><span style="font-size:.72rem;color:#64748b">Based on appliance wattages × daily usage hours × 30 days. Actual cost varies by tariff band and provider.</span></div>';
+
+  // Safety warnings
+  var warns = '';
+  if (totalKW > 20 && phases === 1) warns += '<p>Your total connected load exceeds 20 kW on single phase. This is unsafe and could cause cable overheating and fire.</p>';
+  if (amps > 100) warns += '<p>Current draw exceeds 100A. Ensure your main cable and distribution board are rated for this load. Consult a licensed electrician.</p>';
+  document.getElementById('warnings').innerHTML = warns ? '<div class="warning"><strong>Safety Warning:</strong>' + warns + '</div>' : '';
+
+  document.getElementById('resultCard').style.display = 'block';
+  var status = document.getElementById('electricalStatus');
+  if(status) status.textContent = 'Load analysis ready. Copy the brief or download CSV before asking an electrician to verify.';
+  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
+}
+
+function shareResult() {
+  var grid = document.getElementById('resultGrid');
+  var text = 'Electrical Load Analysis:\n' + grid.textContent.replace(/\s+/g, ' ').trim() + '\nCalculated with AfroTools\nhttps://afrotools.com/tools/electrical-load/';
+  if (navigator.share) { navigator.share({title:'Electrical Load | AfroTools',text:text}).catch(function(){}); }
+  else { navigator.clipboard.writeText(text).then(function(){alert('Copied!');}); }
+}
+
+function ensureElectricalLoad(){
+  if(!lastElectricalLoad) calculate();
+  return lastElectricalLoad;
+}
+
+function electricalBriefText(){
+  var r = ensureElectricalLoad();
+  if(!r) return '';
+  return [
+    'AfroTools electrical load brief',
+    'Country/standard profile: '+r.country,
+    'Supply: '+r.voltage+'V, '+(r.phases===1?'single phase':'three phase')+', diversity '+Math.round(r.diversity*100)+'%',
+    'Connected load: '+r.totalKW.toFixed(1)+' kW; demand load: '+r.demandKW.toFixed(1)+' kW; current draw: '+r.amps.toFixed(1)+' A',
+    'Recommended main breaker: '+r.breaker+'A; main cable: '+r.cable+'; minimum generator: '+r.generatorKva+' kVA',
+    'Estimated monthly use: '+Math.round(r.monthlyKwh)+' kWh; estimated monthly cost: '+r.currencySymbol+r.monthlyCost.toLocaleString(),
+    'Top loads: '+r.appliances.filter(function(a){return a.connectedWatts>0;}).sort(function(a,b){return b.connectedWatts-a.connectedWatts;}).slice(0,5).map(function(a){return a.name+' '+a.connectedWatts+'W';}).join('; '),
+    'Safety note: confirm wiring, earthing, breaker coordination, phase, load balancing, RCDs, generator surge, and local code compliance with a licensed electrician.'
+  ].join('\n');
+}
+
+function copyElectricalBrief(){
+  var text = electricalBriefText();
+  var status = document.getElementById('electricalStatus');
+  if(!text) return;
+  if(navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function(){ if(status) status.textContent = 'Electrical load brief copied.'; }).catch(function(){ if(status) status.textContent = text; });
+  } else if(status) status.textContent = text;
+}
+
+function downloadElectricalCsv(){
+  var r = ensureElectricalLoad();
+  var status = document.getElementById('electricalStatus');
+  if(!r) return;
+  var rows = [
+    ['appliance','watts','quantity','hours_per_day','connected_watts','monthly_kwh']
+  ];
+  r.appliances.forEach(function(a){ rows.push([a.name,a.watts,a.quantity,a.hoursPerDay,a.connectedWatts,a.monthlyKwh.toFixed(2)]); });
+  rows.push([]);
+  rows.push(['field','value']);
+  rows.push(['country_profile',r.country],['voltage',r.voltage],['phases',r.phases],['diversity_percent',Math.round(r.diversity*100)],['connected_kw',r.totalKW.toFixed(2)],['demand_kw',r.demandKW.toFixed(2)],['amps',r.amps.toFixed(2)],['main_breaker_a',r.breaker],['main_cable',r.cable],['minimum_generator_kva',r.generatorKva],['monthly_kwh',r.monthlyKwh.toFixed(2)],['monthly_cost',r.monthlyCost],['safety_note','Verify wiring, earthing, breaker coordination, phase, load balancing, RCDs, generator surge, and local code compliance.']);
+  var csv = rows.map(function(row){ return row.map(function(cell){ return '"' + String(cell == null ? '' : cell).replace(/"/g,'""') + '"'; }).join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'afrotools-electrical-load-schedule.csv';
+  a.dataset.noPdfGate = 'true';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  if(status) status.textContent = 'CSV downloaded. Have a licensed electrician verify the final design.';
+}
+
+// Init with typical home
+loadHomePreset();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+  <script src="/assets/js/engineering-toolkit.js?v=6a55083f" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

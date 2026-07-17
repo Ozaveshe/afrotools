@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arabic & Eastern Arabic Numeral Converter | AfroTools</title>
+<meta name="description" content="Convert between Western digits (0-9), Eastern Arabic numerals (٠-٩), and written Arabic number words. Essential for North African languages and Islamic studies.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Arabic Numeral Converter | AfroTools">
+<meta property="og:description" content="Convert between Western, Eastern Arabic, and written Arabic numerals instantly.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/arabic-calc.webp">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/arabic-numerals/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419;--accent:#7c3aed}
+.tool-hero{background:linear-gradient(135deg,#4c1d95 0%,#7c3aed 50%,#6d28d9 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#ddd6fe}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#ddd6fe;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-em{background:rgba(221,214,254,.2);color:#ddd6fe;border:1px solid rgba(221,214,254,.4)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+input,select,textarea{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,58,237,.15)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px}
+.btn-primary{background:linear-gradient(135deg,#6d28d9,#7c3aed);color:#fff}
+.result-area{margin-top:18px}
+.res-block{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin-bottom:12px}
+.res-block .lbl{font-size:.68rem;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.res-block .val{font-size:1.6rem;font-weight:800;color:#7c3aed;direction:rtl;word-break:break-all}
+.res-block .val.sm{font-size:1rem}
+.ref-table{width:100%;border-collapse:collapse;margin-top:10px}
+.ref-table th,.ref-table td{padding:8px 10px;text-align:center;border-bottom:1px solid #f1f5f9;font-size:.82rem}
+.ref-table th{background:#f8fafc;font-weight:700;color:#64748b;font-size:.68rem;text-transform:uppercase;letter-spacing:.06em}
+.ref-table td.ar{font-size:1.2rem;color:#7c3aed;font-weight:700}
+.sidebar .info-card{background:#f5f3ff;border:1px solid #ddd6fe;border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#6d28d9;margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:#6d28d9;line-height:1.6}
+.info-card ul{padding-left:16px;margin:6px 0}
+.copy-btn{background:none;border:1px solid #cbd5e1;border-radius:5px;padding:4px 10px;font-size:.68rem;cursor:pointer;color:#64748b;font-weight:600;margin-top:6px;width:auto}
+.copy-btn:hover{background:#f1f5f9}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Arabic Numeral Converter",
+  "description": "Convert between Western digits, Eastern Arabic numerals, and written Arabic number words.",
+  "url": "https://afrotools.com/tools/arabic-numerals/",
+  "inLanguage": "en",
+  "applicationCategory": "WebApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/arabic-calc.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Arabic Numeral Converter",
+  "url": "https://afrotools.com/tools/arabic-numerals/",
+  "description": "Convert between Western digits, Eastern Arabic numerals, and written Arabic number words.",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/arabic-calc.webp"
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Arabic Numeral Converter | AfroTools">
+<meta name="twitter:description" content="Convert between Western, Eastern Arabic, and written Arabic numerals instantly.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/arabic-calc.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Arabic Numeral Converter",
+      "item": "https://afrotools.com/tools/arabic-numerals/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What's the difference between Arabic numerals and Eastern Arabic numerals?","acceptedAnswer":{"@type":"Answer","text":"\"Arabic numerals\" (0-9) are the standard global digits, originally derived from the Hindu-Arabic system. \"Eastern Arabic numerals\" (٠-٩) are the symbols actually used in Arabic-speaking countries like Egypt and Sudan. Both represent the same values in the same base-10 positional system — only the symbols differ."}},{"@type":"Question","name":"Which African countries use Eastern Arabic numerals?","acceptedAnswer":{"@type":"Answer","text":"Egypt is the primary African country where Eastern Arabic numerals are used daily — on price tags, license plates, phone numbers, and official documents. Sudan also uses them extensively. Libya uses a mix. Morocco, Tunisia, and Algeria predominantly use Western digits, though Eastern Arabic appears in some religious and traditional contexts."}},{"@type":"Question","name":"How do I read large numbers in Eastern Arabic?","acceptedAnswer":{"@type":"Answer","text":"Eastern Arabic numbers follow the same place-value system as Western numbers. Read them right-to-left for the digit order (matching Arabic text direction), but the numerical value is the same. For example, ١٢٣ = 123. The rightmost digit is ones, then tens, then hundreds — exactly as in Western notation."}},{"@type":"Question","name":"How do I use the Arabic Number Converter?","acceptedAnswer":{"@type":"Answer","text":"Enter your text or word in the fields above. The Arabic Number Converter then gives you a clear result with local context you can use straight away."}},{"@type":"Question","name":"How accurate is the Arabic Number Converter?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm a native speaker for important or public use before you rely on it."}},{"@type":"Question","name":"Is the Arabic Number Converter free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for Egypt, Morocco, Algeria and other African markets."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/arabic-numerals/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/arabic-numerals/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/chiffres-arabes/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/nambari-za-kiarabu/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/arabic-numerals/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Arabic Numerals</span></div>
+<h1>Arabic & Eastern Arabic <em>Numeral Converter</em></h1>
+<p class="hero-sub">Convert between Western digits (0-9), Eastern Arabic numerals (٠-٩), and written Arabic number words. Used across North Africa and the Arab world.</p>
+<div class="hero-badges"><span class="badge b-em">Instant Convert</span><span class="badge b-em">Eastern Arabic</span><span class="badge b-em">Number Words</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calculator">
+<div class="card">
+<div class="card-head"><span class="card-title">Enter a Number</span></div>
+<div class="card-body">
+<label>Type a number in any format</label>
+<input aria-label="E.g. 2025 or ٢٠٢٥" type="text" id="numInput" placeholder="e.g. 2025 or ٢٠٢٥" style="font-size:1.2rem;padding:14px" oninput="convert()">
+<div class="row" style="margin-top:14px">
+<div><label>Input Format</label>
+<select id="inputFormat" onchange="convert()" aria-label="Input Format">
+<option value="western">Western (0-9)</option>
+<option value="eastern">Eastern Arabic (٠-٩)</option>
+</select></div>
+<div><label>Direction</label>
+<select id="direction" onchange="convert()" aria-label="Direction">
+<option value="auto">Auto-detect</option>
+<option value="w2e">Western → Eastern Arabic</option>
+<option value="e2w">Eastern Arabic → Western</option>
+</select></div>
+</div>
+</div></div>
+
+<div class="card" id="resultCard" style="display:none">
+<div class="card-head"><span class="card-title">Conversion Results</span></div>
+<div class="card-body">
+<div class="result-area" id="results"></div>
+</div></div>
+</div>
+
+<div class="sidebar">
+<div class="card">
+<div class="card-head"><span class="card-title">Reference Table</span></div>
+<div class="card-body" style="padding:12px">
+<table class="ref-table">
+<thead><tr><th>Western</th><th>Eastern Arabic</th><th>Arabic Name</th></tr></thead>
+<tbody>
+<tr><td>0</td><td class="ar">٠</td><td>صفر (sifr)</td></tr>
+<tr><td>1</td><td class="ar">١</td><td>واحد (wahid)</td></tr>
+<tr><td>2</td><td class="ar">٢</td><td>اثنان (ithnan)</td></tr>
+<tr><td>3</td><td class="ar">٣</td><td>ثلاثة (thalatha)</td></tr>
+<tr><td>4</td><td class="ar">٤</td><td>أربعة (arba'a)</td></tr>
+<tr><td>5</td><td class="ar">٥</td><td>خمسة (khamsa)</td></tr>
+<tr><td>6</td><td class="ar">٦</td><td>ستة (sitta)</td></tr>
+<tr><td>7</td><td class="ar">٧</td><td>سبعة (sab'a)</td></tr>
+<tr><td>8</td><td class="ar">٨</td><td>ثمانية (thamaniya)</td></tr>
+<tr><td>9</td><td class="ar">٩</td><td>تسعة (tis'a)</td></tr>
+</tbody>
+</table>
+</div></div>
+<div class="info-card">
+<h4>About Arabic Numerals</h4>
+<p>The digits 0-9 we use globally actually originated from Arabic scholars. "Eastern Arabic" numerals (٠١٢٣٤٥٦٧٨٩) are still used in Egypt, Sudan, Libya, and across the Middle East.</p>
+</div>
+<div class="info-card" style="margin-top:10px">
+<h4>Where They're Used in Africa</h4>
+<ul>
+<li><strong>Egypt</strong> — daily use in prices, signs</li>
+<li><strong>Sudan</strong> — government & commerce</li>
+<li><strong>Libya</strong> — mixed with Western</li>
+<li><strong>Morocco/Tunisia</strong> — Western digits dominant</li>
+<li><strong>Islamic schools</strong> — Quranic study across Africa</li>
+</ul>
+</div>
+</div>
+</div></section>
+
+<section class="seo-section">
+<h2>Understanding Arabic Numeral Systems</h2>
+<p>When people say "Arabic numerals," they usually mean the digits 0 through 9 that are used globally. These originated from the Hindu-Arabic numeral system, transmitted to Europe through Arab mathematicians in North Africa and the Iberian Peninsula. However, many Arabic-speaking countries in Africa and the Middle East actually use a different set of symbols called Eastern Arabic numerals (also known as Arabic-Indic numerals).</p>
+<p>Eastern Arabic numerals (٠ ١ ٢ ٣ ٤ ٥ ٦ ٧ ٨ ٩) are the standard in Egypt, Sudan, and parts of Libya. They share the same positional decimal system — the difference is purely visual. A number like 2025 in Western digits is written as ٢٠٢٥ in Eastern Arabic. The mathematical value and place-value system are identical.</p>
+<p>This converter is particularly useful for students of Arabic, travelers to North Africa and the Middle East, professionals working with Arabic-language documents, and anyone studying Islamic texts where Eastern Arabic numerals frequently appear. Understanding both numeral systems helps bridge communication gaps across the African continent.</p>
+<p>The Arabic word for zero, "sifr" (صفر), is the origin of our English word "cipher" and the concept of zero in mathematics — a contribution from the Islamic Golden Age that transformed science and commerce worldwide. North African scholars in cities like Cairo, Fez, and Timbuktu were instrumental in preserving and advancing this mathematical knowledge.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>What's the difference between Arabic numerals and Eastern Arabic numerals?</summary><p>"Arabic numerals" (0-9) are the standard global digits, originally derived from the Hindu-Arabic system. "Eastern Arabic numerals" (٠-٩) are the symbols actually used in Arabic-speaking countries like Egypt and Sudan. Both represent the same values in the same base-10 positional system — only the symbols differ.</p></details>
+<details class="faq-item"><summary>Which African countries use Eastern Arabic numerals?</summary><p>Egypt is the primary African country where Eastern Arabic numerals are used daily — on price tags, license plates, phone numbers, and official documents. Sudan also uses them extensively. Libya uses a mix. Morocco, Tunisia, and Algeria predominantly use Western digits, though Eastern Arabic appears in some religious and traditional contexts.</p></details>
+<details class="faq-item"><summary>How do I read large numbers in Eastern Arabic?</summary><p>Eastern Arabic numbers follow the same place-value system as Western numbers. Read them right-to-left for the digit order (matching Arabic text direction), but the numerical value is the same. For example, ١٢٣ = 123. The rightmost digit is ones, then tens, then hundreds — exactly as in Western notation.</p></details>
+</section>
+
+
+
+<section class="df-upgrade" data-df-upgrade="arabic-calc">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Practical workflow</span>
+      <h2>Arabic Number Converter: quick guide</h2>
+      <p>Not sure how to get the most from the Arabic Number Converter? Enter your text or word and it returns a clear result with local context — built for Egypt, Morocco, Algeria and other African markets.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear result with local context, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Arabic Number Converter takes your text or word and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm a native speaker for important or public use before you rely on the result.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm a native speaker for important or public use before acting.</p>
+    </div>
+    <form class="df-form" data-df-form="arabic-calc">
+      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
+      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
+      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
+      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="arabic-calc" data-df-base="Arabic Number Converter — enter your details above to see your result." aria-live="polite">Arabic Number Converter — enter your details above to see your result.</output>
+      <div class="df-actions"><button type="button" data-df-copy="arabic-calc">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="arabic-calc-faq-title">
+  <h2 id="arabic-calc-faq-title">Arabic Number Converter FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the Arabic Number Converter?</summary><p>Enter your text or word in the fields above. The Arabic Number Converter then gives you a clear result with local context you can use straight away.</p></details><details><summary>How accurate is the Arabic Number Converter?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm a native speaker for important or public use before you rely on it.</p></details><details><summary>Is the Arabic Number Converter free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for Egypt, Morocco, Algeria and other African markets.</p></details></div>
+</section>
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+<afro-related-tools category="language" current="arabic-calc" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/pidgin-translator/" data-related-tool data-id="pidgin-translator" data-name="Nigerian Pidgin Translator" data-category="language" data-icon="NP" data-desc="English ↔ Nigerian Pidgin translation with common phrases and slang dictionary.">Nigerian Pidgin Translator</a></li><li><a href="/tools/african-name-meaning/" data-related-tool data-id="african-name-meaning" data-name="African Name Meaning Finder" data-category="language" data-icon="AN" data-desc="Find meaning, origin, and pronunciation of 5,000+ African names across 50 cultures.">African Name Meaning Finder</a></li><li><a href="/tools/swahili-translator/" data-related-tool data-id="swahili-translator" data-name="Swahili Translator" data-category="language" data-icon="ST" data-desc="English ↔ Swahili. 50,000+ word pairs including business terms.">Swahili Translator</a></li><li><a href="/tools/french-african/" data-related-tool data-id="french-african" data-name="Francophone Africa Translator" data-category="language" data-icon="FA" data-desc="French ↔ English with West &amp; Central African French business terminology.">Francophone Africa Translator</a></li><li><a href="/tools/yoruba-translator/" data-related-tool data-id="yoruba-translator" data-name="Yoruba Translator &amp; Phrasebook" data-category="language" data-icon="YT" data-desc="English ↔ Yoruba with tones. Business, greetings, legal phrases.">Yoruba Translator &amp; Phrasebook</a></li><li><a href="/tools/hausa-translator/" data-related-tool data-id="hausa-translator" data-name="Hausa Translator &amp; Phrasebook" data-category="language" data-icon="HT" data-desc="English ↔ Hausa. Business, market, greetings, legal phrases.">Hausa Translator &amp; Phrasebook</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+const W = '0123456789';
+const E = '٠١٢٣٤٥٦٧٨٩';
+
+function toEastern(str) {
+  return str.split('').map(c => { const i = W.indexOf(c); return i >= 0 ? E[i] : c; }).join('');
+}
+function toWestern(str) {
+  return str.split('').map(c => { const i = E.indexOf(c); return i >= 0 ? W[i] : c; }).join('');
+}
+
+const ones = ['','واحد','اثنان','ثلاثة','أربعة','خمسة','ستة','سبعة','ثمانية','تسعة'];
+const teens = ['عشرة','أحد عشر','اثنا عشر','ثلاثة عشر','أربعة عشر','خمسة عشر','ستة عشر','سبعة عشر','ثمانية عشر','تسعة عشر'];
+const tens = ['','','عشرون','ثلاثون','أربعون','خمسون','ستون','سبعون','ثمانون','تسعون'];
+const hundreds = ['','مائة','مائتان','ثلاثمائة','أربعمائة','خمسمائة','ستمائة','سبعمائة','ثمانمائة','تسعمائة'];
+
+function numToArabicWords(n) {
+  n = Math.floor(Math.abs(n));
+  if (n === 0) return 'صفر';
+  if (n > 999999999) return 'عدد كبير جداً';
+
+  const parts = [];
+
+  if (n >= 1000000) {
+    const m = Math.floor(n / 1000000);
+    if (m === 1) parts.push('مليون');
+    else if (m === 2) parts.push('مليونان');
+    else if (m <= 10) parts.push(ones[m] + ' ملايين');
+    else parts.push(smallNum(m) + ' مليون');
+    n %= 1000000;
+  }
+  if (n >= 1000) {
+    const t = Math.floor(n / 1000);
+    if (t === 1) parts.push('ألف');
+    else if (t === 2) parts.push('ألفان');
+    else if (t <= 10) parts.push(ones[t] + ' آلاف');
+    else parts.push(smallNum(t) + ' ألف');
+    n %= 1000;
+  }
+  if (n > 0) parts.push(smallNum(n));
+
+  return parts.join(' و ');
+}
+
+function smallNum(n) {
+  if (n === 0) return '';
+  const parts = [];
+  if (n >= 100) { parts.push(hundreds[Math.floor(n/100)]); n %= 100; }
+  if (n >= 10 && n <= 19) { parts.push(teens[n-10]); }
+  else {
+    if (n % 10 > 0) parts.push(ones[n%10]);
+    if (n >= 20) parts.push(tens[Math.floor(n/10)]);
+  }
+  return parts.join(' و ');
+}
+
+function detect(str) {
+  if (/[٠-٩]/.test(str)) return 'eastern';
+  return 'western';
+}
+
+function convert() {
+  const raw = document.getElementById('numInput').value.trim();
+  if (!raw) { document.getElementById('resultCard').style.display='none'; return; }
+
+  const dir = document.getElementById('direction').value;
+  let fmt = dir === 'auto' ? detect(raw) : (dir === 'e2w' ? 'eastern' : 'western');
+
+  const western = fmt === 'eastern' ? toWestern(raw) : raw.replace(/[^0-9.,]/g,'');
+  const eastern = toEastern(western.replace(/[^0-9]/g,''));
+  const num = parseInt(western.replace(/[^0-9]/g,''), 10);
+
+  let html = '';
+  html += `<div class="res-block"><div class="lbl">Western Digits</div><div class="val" style="direction:ltr">${western.replace(/[^0-9]/g,'') ? parseInt(western.replace(/[^0-9]/g,'')).toLocaleString('en') : '—'}</div><button type="button" class="copy-btn" onclick="cp('${western.replace(/[^0-9]/g,'')}')">Copy</button></div>`;
+  html += `<div class="res-block"><div class="lbl">Eastern Arabic Numerals</div><div class="val">${eastern || '—'}</div><button type="button" class="copy-btn" onclick="cp('${eastern}')">Copy</button></div>`;
+
+  if (!isNaN(num) && num <= 999999999) {
+    const words = numToArabicWords(num);
+    html += `<div class="res-block"><div class="lbl">Arabic Number Words</div><div class="val sm">${words}</div><button type="button" class="copy-btn" onclick="cp('${words}')">Copy</button></div>`;
+  }
+
+  if (!isNaN(num)) {
+    html += `<div class="res-block"><div class="lbl">Roman Numerals</div><div class="val sm" style="direction:ltr">${num <= 3999999 && num > 0 ? toRoman(num) : 'N/A (out of range)'}</div></div>`;
+  }
+
+  document.getElementById('results').innerHTML = html;
+  document.getElementById('resultCard').style.display = 'block';
+}
+
+function toRoman(n) {
+  if (n <= 0 || n > 3999) return 'N/A';
+  const vals = [1000,900,500,400,100,90,50,40,10,9,5,4,1];
+  const syms = ['M','CM','D','CD','C','XC','L','XL','X','IX','V','IV','I'];
+  let r = '';
+  for (let i = 0; i < vals.length; i++) { while (n >= vals[i]) { r += syms[i]; n -= vals[i]; } }
+  return r;
+}
+
+function cp(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const btns = document.querySelectorAll('.copy-btn');
+    btns.forEach(b => { if(b.textContent !== 'Copy') return; });
+    event.target.textContent = 'Copied!';
+    setTimeout(() => event.target.textContent = 'Copy', 1500);
+  });
+}
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

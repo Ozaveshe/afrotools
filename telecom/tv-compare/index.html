@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="view-transition" content="same-origin">
+<title>DStv, GOtv &amp; Showmax Package Comparator | AfroTools</title>
+<meta name="description" content="Compare DStv, GOtv, and Showmax packages side by side. See prices, channels, and cost-per-channel to find the best TV value in your country.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="DStv, GOtv &amp; Showmax Package Comparator | AfroTools">
+<meta property="og:description" content="Compare DStv, GOtv, and Showmax packages side by side. Find the best TV value in your country.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/telecom-tv.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/telecom/tv-compare/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+.tool-hero{background:linear-gradient(135deg,#0A1628 0%,#0e2a4a 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin:0 0 .5rem}
+.tool-hero p{color:#94a3b8;font-size:1.05rem;max-width:620px;margin:0 auto}
+.tool-hero .accent{color:#06B6D4}
+.tool-main{max-width:1100px;margin:0 auto;padding:1.5rem}
+.ctrl-bar{display:flex;flex-wrap:wrap;gap:1rem;align-items:end;margin-bottom:1.5rem}
+.ctrl-group{display:flex;flex-direction:column;gap:.3rem}
+.ctrl-group label{font-size:.82rem;font-weight:600;color:#64748b}
+.ctrl-group select,.ctrl-group input{padding:.55rem .8rem;border:1px solid #cbd5e1;border-radius:8px;font-size:.95rem;background:#fff}
+.ctrl-group select:focus,.ctrl-group input:focus{outline:none;border-color:#06B6D4;box-shadow:0 0 0 3px rgba(6,182,212,.15)}
+.ctrl-group select{min-width:180px}
+.ctrl-group input[type=range]{min-width:160px;padding:.3rem 0}
+
+.filter-chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem}
+.f-chip{padding:.35rem .75rem;border:1px solid #cbd5e1;border-radius:20px;font-size:.82rem;cursor:pointer;background:#fff;font-weight:500;transition:all .15s}
+.f-chip:hover{border-color:#06B6D4}
+.f-chip.active{background:#06B6D4;color:#fff;border-color:#06B6D4}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:1.5rem}
+table{width:100%;border-collapse:collapse;min-width:600px}
+thead th{background:#f1f5f9;padding:.65rem .75rem;text-align:left;font-size:.82rem;font-weight:700;color:#475569;border-bottom:2px solid #e2e8f0;cursor:pointer;white-space:nowrap;user-select:none}
+thead th:hover{background:#e2e8f0}
+thead th.sorted-asc::after{content:' \\2191'}
+thead th.sorted-desc::after{content:' \\2193'}
+tbody td{padding:.6rem .75rem;border-bottom:1px solid #f1f5f9;font-size:.9rem;color:#334155}
+tbody tr:hover{background:#f8fafc}
+tbody tr.best-row{background:#ecfdf5}
+tbody tr.best-row td{font-weight:600}
+.provider-badge{display:inline-block;padding:.15rem .5rem;border-radius:12px;font-size:.75rem;font-weight:600}
+.provider-badge.dstv{background:#1a237e;color:#fff}
+.provider-badge.gotv{background:#f57c00;color:#fff}
+.provider-badge.showmax{background:#e91e63;color:#fff}
+.provider-badge.startimes{background:#f44336;color:#fff}
+.provider-badge.other{background:#607d8b;color:#fff}
+.best-tag{display:inline-block;background:#06B6D4;color:#fff;font-size:.68rem;font-weight:700;padding:.1rem .45rem;border-radius:10px;margin-left:.3rem;vertical-align:middle}
+.streaming-note{font-size:.78rem;color:#64748b;font-style:italic}
+.price-range-display{font-size:.85rem;color:#334155;margin-bottom:1rem;font-weight:500}
+
+.summary-bar{margin-top:1rem;padding:1.25rem;background:#f0fdfa;border:1px solid #99f6e4;border-radius:12px}
+.summary-bar h3{font-size:1rem;font-weight:700;color:#0f766e;margin:0 0 .5rem}
+.summary-bar p{font-size:.9rem;color:#134e4a;margin:0;line-height:1.5}
+
+.empty-state{text-align:center;padding:3rem 1rem;color:#94a3b8}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "DStv, GOtv & Showmax Package Comparator",
+  "description": "Compare TV and streaming packages across Africa including DStv, GOtv, Showmax, and more.",
+  "url": "https://afrotools.com/telecom/tv-compare/",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/telecom-tv.webp"
+}
+</script>
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/telecom-tv.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DStv, GOtv &amp;amp; Showmax Package Comparator | AfroTools">
+<meta name="twitter:description" content="Compare DStv, GOtv, and Showmax packages side by side. See prices, channels, and cost-per-channel to find the best TV value in your country.">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Compare pay-TV packages by must-watch channels?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use monthly price, channel count, sports need, and streaming alternatives to avoid paying for unused bundles."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What should I verify?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "https://www.dstv.com/"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this an official result?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. It is a planning workflow. Confirm prices, rules, terms, and source documents before acting."
+      }
+    }
+  ],
+  "url": "https://afrotools.com/telecom/tv-compare/"
+}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/telecom/tv-compare/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/telecom/tv-compare/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kilinganisha-tv-na-streaming/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/telecom/tv-compare/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="telecom"></afro-navbar>
+
+<div class="tool-hero">
+  <h1>DStv / GOtv / Showmax <span class="accent">Comparator</span></h1>
+  <p>Compare TV and streaming packages side by side. Find the best entertainment value in your country.</p>
+</div>
+
+<div class="tool-main">
+  <div class="ctrl-bar">
+    <div class="ctrl-group">
+      <label for="country-sel">Country</label>
+      <select id="country-sel"><option value="">Select country...</option></select>
+    </div>
+    <div class="ctrl-group">
+      <label for="sort-sel">Sort by</label>
+      <select id="sort-sel">
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="channels-desc">Most Channels</option>
+        <option value="value">Best Value (Price/Channel)</option>
+      </select>
+    </div>
+    <div class="ctrl-group">
+      <label for="price-max">Max price: <span id="price-max-label">Any</span></label>
+      <input type="range" id="price-max" min="0" max="100000" step="100" value="100000">
+    </div>
+  </div>
+
+  <div id="filter-area" class="filter-chips" style="display:none"></div>
+  <div id="price-display" class="price-range-display" style="display:none"></div>
+
+  <div id="table-area">
+    <div class="empty-state"><p>Select a country to compare TV packages</p></div>
+  </div>
+
+  <div id="summary" class="summary-bar" style="display:none">
+    <h3 id="sum-title"></h3>
+    <p id="sum-text"></p>
+  </div>
+</div>
+
+
+<section class="df-upgrade" data-df-upgrade="telecom-tv">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">TV package value check</span>
+      <h2>Compare pay-TV packages by must-watch channels</h2>
+      <p>Use monthly price, channel count, sports need, and streaming alternatives to avoid paying for unused bundles.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: Result: TV package comparison ready with cost per useful channel, sports need, decoder cost, and cancellation terms.</li><li>Methodology: use the fields to create a local planning summary with clear assumptions.</li><li>Source note: confirm live prices, official rules, or platform terms before acting.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Consumer note: channel lineups and rights can change. Confirm the current package before renewal. Sources/reference: <a href="https://www.dstv.com/" target="_blank" rel="noopener">DStv packages</a></p>
+    </div>
+    <form class="df-form" data-df-form="telecom-tv">
+      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
+      <label>Monthly package price<input name="price" type="number" value="24000" min="0" step="any" aria-label="Monthly package price"></label>
+      <label>Useful channels<input name="channels" type="number" value="18" min="0" step="any" aria-label="Useful channels"></label>
+      <label>Sports required<select name="sports" aria-label="Sports required"><option value="yes">yes</option><option value="no">no</option></select></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="telecom-tv" data-df-base="Result: TV package comparison ready with cost per useful channel, sports need, decoder cost, and cancellation terms." aria-live="polite">Result: TV package comparison ready with cost per useful channel, sports need, decoder cost, and cancellation terms.</output>
+      <div class="df-actions"><button type="button" data-df-copy="telecom-tv">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="telecom-tv-faq-title">
+  <h2 id="telecom-tv-faq-title">Frequently Asked Questions</h2>
+  <div class="df-faq__grid"><details><summary>What should I verify?</summary><p>Consumer note: channel lineups and rights can change. Confirm the current package before renewal.</p></details><details><summary>Is this an official result?</summary><p>No. It is a planning workflow. Confirm prices, rules, terms, and source documents before acting.</p></details></div>
+</section>
+
+<section class="df-faq quality-verification-panel" data-quality-proof="TV Package Comparator" aria-label="TV Package Comparator verification and limitations">
+  <h2>TV Package Comparator verification and limitations</h2>
+  <div class="df-faq__grid">
+    <details open><summary>Official/source check</summary><p>Channel rights, sports coverage, decoder fees, streaming bundles, and promotional pricing change often. Confirm the current provider package and cancellation terms before renewal.</p></details>
+    <details><summary>Export or save path</summary><p>Use the page output, copy, print, download, or saved draft controls where available, and keep a separate record before acting on a money, travel, career, telecom, or document decision.</p></details>
+    <details><summary>Related next steps</summary><p><a href="/telecom/internet-compare/">Internet compare</a> &middot; <a href="/telecom/data-usage-calc/">Data usage calculator</a> &middot; <a href="/tools/budget-planner/">Budget planner</a></p></details>
+  </div>
+</section>
+
+<afro-business-cta tool-name="TV Package Comparator" save-note="Save or export the scenario, then request a branded calculator or widget if your team needs this workflow for customers."></afro-business-cta>
+<afro-related-tools data-ssr="1" category="telecom" current="telecom-tv">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/telecom/ussd-directory/" data-related-tool data-id="telecom-ussd" data-name="USSD Code Directory" data-category="telecom" data-icon="UC" data-desc="Complete USSD codes database for all major African telecom operators. Airtime, data, money transfer, balance check.">USSD Code Directory</a></li><li><a href="/telecom/data-plan-compare/" data-related-tool data-id="telecom-data-plan" data-name="Data Plan Comparator" data-category="telecom" data-icon="DP" data-desc="Compare mobile data plans from MTN, Airtel, Glo, Safaricom, Vodacom across 20 African countries. Best value bundles reve">Data Plan Comparator</a></li><li><a href="/telecom/starlink-compare/" data-related-tool data-id="telecom-starlink" data-name="Starlink vs Local ISP" data-category="telecom" data-icon="SV" data-desc="Compare Starlink pricing vs local ISP and LTE home internet across 30 African countries. Speed, cost, latency comparison">Starlink vs Local ISP</a></li><li><a href="/telecom/data-usage-calc/" data-related-tool data-id="telecom-data-usage" data-name="Data Usage Calculator" data-category="telecom" data-icon="DU" data-desc="Estimate monthly mobile data consumption by usage habits. Streaming, social media, video calls — find the right plan siz">Data Usage Calculator</a></li><li><a href="/telecom/whatsapp-vs-sms/" data-related-tool data-id="telecom-whatsapp-vs-sms" data-name="WhatsApp Business vs SMS" data-category="telecom" data-icon="WB" data-desc="Compare WhatsApp Business API message categories against bulk SMS for marketing, utility, and service traffic.">WhatsApp Business vs SMS</a></li><li><a href="/telecom/bulk-sms-pricing/" data-related-tool data-id="telecom-bulk-sms" data-name="Bulk SMS Pricing Calculator" data-category="telecom" data-icon="BS" data-desc="Model domestic and international bulk SMS volume, discounts, providers, and campaign delivery costs.">Bulk SMS Pricing Calculator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<script src="/data/telecom/country-telecom-index.js?v=3e55f4e3"></script>
+<script>
+(function(){
+  'use strict';
+
+  var countrySel = document.getElementById('country-sel');
+  var sortSel = document.getElementById('sort-sel');
+  var priceMax = document.getElementById('price-max');
+  var priceMaxLabel = document.getElementById('price-max-label');
+  var filterArea = document.getElementById('filter-area');
+  var priceDisplay = document.getElementById('price-display');
+  var tableArea = document.getElementById('table-area');
+  var summaryEl = document.getElementById('summary');
+  var sumTitle = document.getElementById('sum-title');
+  var sumText = document.getElementById('sum-text');
+
+  var activeProviders = {};
+  var currentSort = 'price-asc';
+  var allPackages = [];
+  var maxPriceVal = 100000;
+
+  function formatNum(n) {
+    return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  function init() {
+    if (typeof TELECOM_DATA === 'undefined') return;
+    var codes = Object.keys(TELECOM_DATA.countries);
+    codes.sort(function(a, b) {
+      return TELECOM_DATA.countries[a].name.localeCompare(TELECOM_DATA.countries[b].name);
+    });
+    for (var i = 0; i < codes.length; i++) {
+      var c = TELECOM_DATA.countries[codes[i]];
+      if (c.tvProviders && c.tvProviders.length > 0) {
+        var opt = document.createElement('option');
+        opt.value = codes[i];
+        opt.textContent = c.name;
+        countrySel.appendChild(opt);
+      }
+    }
+    countrySel.addEventListener('change', onCountryChange);
+    sortSel.addEventListener('change', function() { currentSort = sortSel.value; renderTable(); });
+    priceMax.addEventListener('input', function() {
+      maxPriceVal = parseInt(priceMax.value);
+      priceMaxLabel.textContent = maxPriceVal >= parseInt(priceMax.max) ? 'Any' : formatNum(maxPriceVal);
+      renderTable();
+    });
+  }
+
+  function getProviderClass(name) {
+    var n = name.toLowerCase();
+    if (n.indexOf('dstv') !== -1) return 'dstv';
+    if (n.indexOf('gotv') !== -1) return 'gotv';
+    if (n.indexOf('showmax') !== -1) return 'showmax';
+    if (n.indexOf('startimes') !== -1) return 'startimes';
+    return 'other';
+  }
+
+  function onCountryChange() {
+    var code = countrySel.value;
+    if (!code) {
+      tableArea.innerHTML = '<div class="empty-state"><p>Select a country to compare TV packages</p></div>';
+      filterArea.style.display = 'none';
+      priceDisplay.style.display = 'none';
+      summaryEl.style.display = 'none';
+      return;
+    }
+    var country = TELECOM_DATA.countries[code];
+    var sym = country.symbol;
+    allPackages = [];
+    activeProviders = {};
+
+    var providers = country.tvProviders || [];
+    var highestPrice = 0;
+    for (var i = 0; i < providers.length; i++) {
+      var prov = providers[i];
+      activeProviders[prov.name] = true;
+      for (var j = 0; j < prov.packages.length; j++) {
+        var pkg = prov.packages[j];
+        var channels = pkg.channels || 0;
+        var ppc = channels > 0 ? (pkg.price / channels) : 0;
+        allPackages.push({
+          provider: prov.name,
+          name: pkg.name,
+          price: pkg.price,
+          channels: channels,
+          ppc: ppc,
+          notes: pkg.notes || '',
+          isStreaming: channels === 0
+        });
+        if (pkg.price > highestPrice) highestPrice = pkg.price;
+      }
+    }
+
+    priceMax.max = Math.ceil(highestPrice * 1.1);
+    priceMax.value = priceMax.max;
+    maxPriceVal = parseInt(priceMax.max);
+    priceMaxLabel.textContent = 'Any';
+
+    buildFilterChips(providers);
+    renderTable();
+  }
+
+  function buildFilterChips(providers) {
+    var html = '';
+    for (var i = 0; i < providers.length; i++) {
+      var cls = getProviderClass(providers[i].name);
+      html += '<span class="f-chip active" data-prov="' + providers[i].name + '">' + providers[i].name + '</span>';
+    }
+    filterArea.innerHTML = html;
+    filterArea.style.display = 'flex';
+
+    var chips = filterArea.querySelectorAll('.f-chip');
+    for (var i = 0; i < chips.length; i++) {
+      chips[i].addEventListener('click', function() {
+        var prov = this.getAttribute('data-prov');
+        this.classList.toggle('active');
+        activeProviders[prov] = this.classList.contains('active');
+        renderTable();
+      });
+    }
+  }
+
+  function renderTable() {
+    var code = countrySel.value;
+    if (!code) return;
+    var country = TELECOM_DATA.countries[code];
+    var sym = country.symbol;
+
+    var filtered = [];
+    for (var i = 0; i < allPackages.length; i++) {
+      var p = allPackages[i];
+      if (!activeProviders[p.provider]) continue;
+      if (p.price > maxPriceVal) continue;
+      filtered.push(p);
+    }
+
+    filtered.sort(function(a, b) {
+      if (currentSort === 'price-asc') return a.price - b.price;
+      if (currentSort === 'price-desc') return b.price - a.price;
+      if (currentSort === 'channels-desc') return b.channels - a.channels;
+      if (currentSort === 'value') {
+        var aV = a.ppc || 999999;
+        var bV = b.ppc || 999999;
+        return aV - bV;
+      }
+      return 0;
+    });
+
+    var bestValueIdx = -1;
+    var bestPpc = Infinity;
+    for (var i = 0; i < filtered.length; i++) {
+      if (filtered[i].ppc > 0 && filtered[i].ppc < bestPpc) {
+        bestPpc = filtered[i].ppc;
+        bestValueIdx = i;
+      }
+    }
+
+    if (filtered.length === 0) {
+      tableArea.innerHTML = '<div class="empty-state"><p>No packages match your filters</p></div>';
+      summaryEl.style.display = 'none';
+      priceDisplay.style.display = 'none';
+      return;
+    }
+
+    priceDisplay.textContent = 'Showing ' + filtered.length + ' package' + (filtered.length !== 1 ? 's' : '') + ' in ' + country.name;
+    priceDisplay.style.display = 'block';
+
+    var html = '<div class="table-wrap"><table>';
+    html += '<thead><tr>';
+    html += '<th>Provider</th><th>Package</th><th>Price/mo</th><th>Channels</th><th>Price/Channel</th>';
+    html += '</tr></thead><tbody>';
+
+    for (var i = 0; i < filtered.length; i++) {
+      var p = filtered[i];
+      var isBest = (i === bestValueIdx);
+      var cls = getProviderClass(p.provider);
+      html += '<tr class="' + (isBest ? 'best-row' : '') + '">';
+      html += '<td><span class="provider-badge ' + cls + '">' + p.provider + '</span></td>';
+      html += '<td>' + p.name + (isBest ? '<span class="best-tag">Best Value</span>' : '') + '</td>';
+      html += '<td>' + sym + formatNum(p.price) + '</td>';
+      if (p.isStreaming) {
+        html += '<td><span class="streaming-note">Streaming</span></td>';
+        html += '<td><span class="streaming-note">' + (p.notes || 'On-demand') + '</span></td>';
+      } else {
+        html += '<td>' + p.channels + '</td>';
+        html += '<td>' + sym + p.ppc.toFixed(1) + '</td>';
+      }
+      html += '</tr>';
+    }
+
+    html += '</tbody></table></div>';
+    tableArea.innerHTML = html;
+
+    if (bestValueIdx >= 0) {
+      var best = filtered[bestValueIdx];
+      sumTitle.textContent = 'Best Value: ' + best.provider + ' ' + best.name;
+      sumText.textContent = best.channels + ' channels at ' + sym + formatNum(best.price) + '/mo = ' + sym + best.ppc.toFixed(1) + ' per channel. This is the lowest cost per channel across all packages in ' + country.name + '.';
+      summaryEl.style.display = 'block';
+    } else {
+      summaryEl.style.display = 'none';
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script src="/assets/js/telecom-toolkit.js?v=4c2582bb" defer></script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

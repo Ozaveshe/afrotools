@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tithe & Offering Calculator — Christian Giving in Africa</title>
+<meta name="description" content="Calculate your tithe (10%) and plan offerings on gross or net income. Set monthly giving goals and annual totals. Free calculator for Christians across Africa.">
+<meta name="robots" content="index, follow">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Tithe & Offering Calculator | AfroTools">
+<meta property="og:description" content="Calculate your tithe and plan your giving based on income.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/tithe-offering.webp">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/tithe-calculator/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419;--accent:#7c3aed}
+.tool-hero{background:linear-gradient(135deg,#312e81 0%,#7c3aed 50%,#4c1d95 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#ddd6fe}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#ddd6fe;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-purple{background:rgba(221,214,254,.2);color:#ddd6fe;border:1px solid rgba(221,214,254,.4)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc;display:flex;justify-content:space-between;align-items:center}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;transition:border .2s}
+input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,58,237,.15)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px;transition:transform .1s}
+.btn-primary{background:linear-gradient(135deg,#6d28d9,#7c3aed);color:#fff}
+.btn-primary:hover{transform:translateY(-1px)}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
+.result-box .num{font-size:1.4rem;font-weight:800;color:#7c3aed}
+.result-box .lbl{font-size:.68rem;color:#64748b;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
+.giving-plan{margin-top:18px}
+.plan-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #f1f5f9}
+.plan-row .label{font-size:.82rem;font-weight:600;color:var(--afro-dark)}
+.plan-row .amount{font-size:.88rem;font-weight:700;color:#7c3aed}
+.steward-card{margin-top:18px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:16px}
+.steward-head{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.steward-title{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#312e81}
+.steward-copy{border:1.5px solid #ddd6fe;background:#fff;color:#6d28d9;border-radius:999px;padding:7px 11px;font-size:.72rem;font-weight:800;cursor:pointer}
+.steward-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.steward-metric{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:11px;text-align:center}
+.steward-k{font-size:.6rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#64748b;margin-bottom:4px}
+.steward-v{font-size:.94rem;font-weight:900;color:#7c3aed}
+.steward-list{display:grid;gap:8px;padding:0;margin:0;list-style:none}
+.steward-list li{background:#f5f3ff;border:1px solid #ddd6fe;border-radius:9px;padding:9px 11px;font-size:.78rem;color:#4c1d95;line-height:1.55}
+@media(max-width:680px){.steward-grid{grid-template-columns:1fr}.steward-copy{width:100%}}
+.verse{background:linear-gradient(135deg,#f5f3ff,#ede9fe);border-radius:10px;padding:18px;margin-top:18px;text-align:center;font-style:italic;color:#6d28d9;font-size:.85rem;line-height:1.7}
+.verse cite{display:block;font-style:normal;font-weight:700;margin-top:8px;font-size:.72rem;color:#7c3aed}
+.sidebar .info-card{background:#f5f3ff;border:1px solid #ddd6fe;border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#6d28d9;margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:#6d28d9;line-height:1.6}
+.info-card ul{padding-left:16px;margin:6px 0}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Tithe & Offering Calculator",
+  "description": "Calculate your tithe and plan offerings based on income. Free calculator for Christians in Africa.",
+  "url": "https://afrotools.com/tools/tithe-calculator/",
+  "inLanguage": "en",
+  "applicationCategory": "WebApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/tithe-offering.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Tithe & Offering Calculator",
+  "url": "https://afrotools.com/tools/tithe-calculator/",
+  "description": "Calculate your tithe and plan offerings based on income. Free calculator for Christians in Africa.",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/tithe-offering.webp"
+}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Should I tithe on gross or net income? ↓","acceptedAnswer":{"@type":"Answer","text":"This is a personal conviction. Tithing on gross income means giving 10% of your full salary before deductions. Tithing on net income means giving 10% of your take-home pay after PAYE and pension. Both approaches are valid — the Bible encourages cheerful giving from the heart (2 Corinthians 9:7)."}},{"@type":"Question","name":"What is the biblical basis for tithing? ↓","acceptedAnswer":{"@type":"Answer","text":"Tithing is rooted in Malachi 3:10 which speaks of bringing the whole tithe into the storehouse. The word tithe means tenth — giving 10% of income. The New Testament emphasizes generous, cheerful, and purposeful giving (2 Corinthians 9:6-7). Many churches encourage but do not mandate tithing."}},{"@type":"Question","name":"Do I tithe on bonuses, gifts, and side hustle income? ↓","acceptedAnswer":{"@type":"Answer","text":"Many believers tithe on all income including bonuses, 13th month salary, monetary gifts, and side hustle earnings. Others tithe only on regular salary. This is a personal decision — follow your conviction and discuss with your pastor if unsure."}},{"@type":"Question","name":"What is the difference between tithe and offering? ↓","acceptedAnswer":{"@type":"Answer","text":"A tithe is specifically 10% of your income, considered a baseline of giving. An offering is any amount given above and beyond the tithe. Other forms of giving include first fruits (first income of the year), seed offerings (special faith offerings), and alms (giving to the poor)."}},{"@type":"Question","name":"How do I use the Tithe & Offering Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your location and dates in the fields above. The Tithe & Offering Calculator then gives you a clear schedule and reference you can use straight away."}},{"@type":"Question","name":"How accurate is the Tithe & Offering Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm your local mosque, church or community timetable before you rely on it."}},{"@type":"Question","name":"Is the Tithe & Offering Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}}]}
+</script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Tithe & Offering Calculator | AfroTools">
+<meta name="twitter:description" content="Calculate your tithe and plan your giving based on income.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/tithe-offering.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Tithe & Offering Calculator",
+      "item": "https://afrotools.com/tools/tithe-calculator/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=c0a56b60">
+<script src="/assets/js/african-workflow.js?v=cf96f534" defer></script>
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/tithe-calculator/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/tithe-calculator/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-dime/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-fungu-la-kumi-na-sadaka/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/tithe-calculator/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Tithe Calculator</span></div>
+<h1>Tithe & Offering <em>Calculator</em></h1>
+<p class="hero-sub">Calculate your tithe and plan your giving. Whether you tithe on gross or net income, this calculator helps you budget faithfully and plan special offerings.</p>
+<div class="hero-badges"><span class="badge b-purple">Tithe (10%)</span><span class="badge b-purple">Offerings</span><span class="badge b-purple">Annual Planning</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calculator">
+<div class="card">
+<div class="card-head"><span class="card-title">Income Details</span></div>
+<div class="card-body">
+<div class="row" style="margin-bottom:14px">
+<div><label>Monthly Income</label><input aria-label="Income" type="number" id="income" value="500000" min="0" step="10000"></div>
+<div><label>Currency</label>
+<select id="currency" aria-label="Currency">
+<option value="NGN">NGN (Naira)</option>
+<option value="KES">KES (Shilling)</option>
+<option value="ZAR">ZAR (Rand)</option>
+<option value="GHS">GHS (Cedi)</option>
+<option value="USD">USD (Dollar)</option>
+</select></div>
+</div>
+<div class="row" style="margin-bottom:14px">
+<div><label>Tithe Basis</label>
+<select id="basis" aria-label="Basis">
+<option value="gross">Gross Income (before tax)</option>
+<option value="net">Net Income (after tax)</option>
+</select></div>
+<div><label>Tithe Percentage</label>
+<select id="tithePct" aria-label="Tithe Pct">
+<option value="10" selected>10% (Standard tithe)</option>
+<option value="5">5% (First fruits)</option>
+<option value="15">15% (Tithe + 5% offering)</option>
+<option value="20">20% (Double portion)</option>
+</select></div>
+</div>
+<div class="row" style="margin-bottom:14px">
+<div><label>Additional Monthly Offering</label><input aria-label="Offering" type="number" id="offering" value="0" min="0" step="1000"></div>
+<div><label>Other Income (side hustle, etc.)</label><input aria-label="OtherIncome" type="number" id="otherIncome" value="0" min="0" step="10000"></div>
+</div>
+<div class="row" style="margin-bottom:14px">
+<div><label>Essential Monthly Expenses</label><input aria-label="Rent, food, school, transport" type="number" id="essentials" value="0" min="0" step="1000" placeholder="Rent, food, school, transport"></div>
+<div><label>Special Pledge Goal</label><input aria-label="Optional building/project pledge" type="number" id="pledgeGoal" value="0" min="0" step="1000" placeholder="Optional building/project pledge"></div>
+</div>
+<div class="row" style="margin-bottom:14px">
+<div><label>Pledge Months</label><input aria-label="PledgeMonths" type="number" id="pledgeMonths" value="6" min="1" max="60" step="1"></div>
+<div><label>Giving Rhythm</label>
+<select id="givingRhythm" aria-label="Giving Rhythm">
+<option value="weekly">Weekly envelope</option>
+<option value="monthly" selected>Monthly transfer</option>
+<option value="split">Split tithe and offering dates</option>
+</select></div>
+</div>
+<button type="button" class="btn btn-primary" onclick="calculate()">Calculate Giving</button>
+<p style="margin-top:12px;font-size:.72rem;color:#94a3b8;line-height:1.55;text-align:center">This is a personal planning guide, not religious instruction. Give as you purpose in your heart, and follow your own conviction and the teaching of your faith community.</p>
+</div></div>
+
+<div class="card" id="resultCard" style="display:none">
+<div class="card-head"><span class="card-title">Your Giving Plan</span></div>
+<div class="card-body">
+<div class="result-grid" id="resultGrid" aria-live="polite"></div>
+<div class="giving-plan" id="givingPlan"></div>
+<div id="stewardshipPlan"></div>
+<div class="verse" id="verse"></div>
+</div></div>
+</div>
+
+<div class="sidebar">
+<div class="card">
+<div class="card-head"><span class="card-title">Gross vs Net Tithe</span></div>
+<div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
+<p><strong>Gross income</strong> — Tithe on your full salary before tax deductions. Some believe this honors God with the "firstfruits" (Proverbs 3:9).</p>
+<p style="margin-top:8px"><strong>Net income</strong> — Tithe on your take-home pay after PAYE and pension deductions. Practical for those with lower income.</p>
+<p style="margin-top:8px;color:#94a3b8;font-size:.72rem">The Bible does not specify — give cheerfully as you purpose in your heart (2 Corinthians 9:7).</p>
+</div></div>
+<div class="info-card">
+<h4>Types of Giving</h4>
+<ul>
+<li><strong>Tithe:</strong> 10% of income (Malachi 3:10)</li>
+<li><strong>Offering:</strong> Above and beyond tithe</li>
+<li><strong>First Fruits:</strong> First income of the year</li>
+<li><strong>Seed:</strong> Special faith offering</li>
+<li><strong>Alms:</strong> Giving to the poor</li>
+</ul>
+</div>
+</div>
+</div></section>
+
+<section class="seo-section">
+<h2>Understanding Tithing in African Churches</h2>
+<p>Tithing is a deeply rooted practice across African Christianity, from Pentecostal and Charismatic churches to Catholic and Anglican congregations. The word "tithe" literally means "tenth" — giving 10% of your income to the church or religious organization. Across Nigeria, Kenya, Ghana, South Africa, and other African nations, tithing is practiced by millions of believers as an act of faith and obedience.</p>
+<p>This calculator helps you determine your tithe amount based on your income, whether you choose to tithe on gross or net salary. It also helps you plan additional offerings, track annual giving totals, and budget faithfully.</p>
+
+</section>
+
+<section style="max-width:800px;margin:0 auto;padding:48px 24px">
+<h2 style="font-size:1.3rem;font-weight:800;margin-bottom:16px">Frequently Asked Questions</h2>
+<details style="border:1.5px solid #e2e8f0;border-radius:10px;margin-bottom:10px;overflow:hidden" open>
+  <summary style="padding:16px 20px;font-size:.92rem;font-weight:700;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between">Should I tithe on gross or net income?<span style="font-size:.8rem;color:#64748b">&#8595;</span></summary>
+  <div style="padding:0 20px 16px;font-size:.87rem;color:#64748b;line-height:1.7;border-top:1px solid #e2e8f0;padding-top:14px">This is a personal conviction. Tithing on gross income means giving 10% of your full salary before deductions. Tithing on net income means giving 10% of your take-home pay after PAYE and pension. Both approaches are valid — the Bible encourages cheerful giving from the heart (2 Corinthians 9:7).</div>
+</details>
+<details style="border:1.5px solid #e2e8f0;border-radius:10px;margin-bottom:10px;overflow:hidden">
+  <summary style="padding:16px 20px;font-size:.92rem;font-weight:700;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between">What is the biblical basis for tithing?<span style="font-size:.8rem;color:#64748b">&#8595;</span></summary>
+  <div style="padding:0 20px 16px;font-size:.87rem;color:#64748b;line-height:1.7;border-top:1px solid #e2e8f0;padding-top:14px">Tithing is rooted in Malachi 3:10 which speaks of bringing the whole tithe into the storehouse. The word tithe means tenth — giving 10% of income. The New Testament emphasizes generous, cheerful, and purposeful giving (2 Corinthians 9:6-7). Many churches encourage but do not mandate tithing.</div>
+</details>
+<details style="border:1.5px solid #e2e8f0;border-radius:10px;margin-bottom:10px;overflow:hidden">
+  <summary style="padding:16px 20px;font-size:.92rem;font-weight:700;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between">Do I tithe on bonuses, gifts, and side hustle income?<span style="font-size:.8rem;color:#64748b">&#8595;</span></summary>
+  <div style="padding:0 20px 16px;font-size:.87rem;color:#64748b;line-height:1.7;border-top:1px solid #e2e8f0;padding-top:14px">Many believers tithe on all income including bonuses, 13th month salary, monetary gifts, and side hustle earnings. Others tithe only on regular salary. This is a personal decision — follow your conviction and discuss with your pastor if unsure.</div>
+</details>
+<details style="border:1.5px solid #e2e8f0;border-radius:10px;margin-bottom:10px;overflow:hidden">
+  <summary style="padding:16px 20px;font-size:.92rem;font-weight:700;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between">What is the difference between tithe and offering?<span style="font-size:.8rem;color:#64748b">&#8595;</span></summary>
+  <div style="padding:0 20px 16px;font-size:.87rem;color:#64748b;line-height:1.7;border-top:1px solid #e2e8f0;padding-top:14px">A tithe is specifically 10% of your income, considered a baseline of giving. An offering is any amount given above and beyond the tithe. Other forms of giving include first fruits (first income of the year), seed offerings (special faith offerings), and alms (giving to the poor).</div>
+</details>
+</section>
+
+<section class="df-upgrade" data-df-upgrade="tithe-offering">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Practical workflow</span>
+      <h2>Tithe &amp; Offering Calculator: quick guide</h2>
+      <p>Not sure how to get the most from the Tithe &amp; Offering Calculator? Enter your location and dates and it returns a clear schedule and reference — built for all 54 African countries.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear schedule and reference, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Tithe &amp; Offering Calculator takes your location and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm your local mosque, church or community timetable before you rely on the result.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm your local mosque, church or community timetable before acting.</p>
+    </div>
+    <form class="df-form" data-df-form="tithe-offering">
+      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
+      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
+      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
+      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="tithe-offering" data-df-base="Tithe &amp; Offering Calculator — enter your details above to see your result." aria-live="polite">Tithe &amp; Offering Calculator — enter your details above to see your result.</output>
+      <div class="df-actions"><button type="button" data-df-copy="tithe-offering">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="tithe-offering-faq-title">
+  <h2 id="tithe-offering-faq-title">Tithe &amp; Offering Calculator FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the Tithe &amp; Offering Calculator?</summary><p>Enter your location and dates in the fields above. The Tithe &amp; Offering Calculator then gives you a clear schedule and reference you can use straight away.</p></details><details><summary>How accurate is the Tithe &amp; Offering Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm your local mosque, church or community timetable before you rely on it.</p></details><details><summary>Is the Tithe &amp; Offering Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
+</section>
+<afro-related-tools category="religious-cultural" current="tithe-offering" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/zakat-calculator/" data-related-tool data-id="zakat-calculator" data-name="Zakat Calculator" data-category="religious-cultural" data-icon="ZC" data-desc="Calculate zakat on cash, gold, silver, business inventory, receivables and liabilities with gold or silver nisab plannin">Zakat Calculator</a></li><li><a href="/tools/lobola-calculator/" data-related-tool data-id="lobola-calculator" data-name="Lobola Calculator" data-category="religious-cultural" data-icon="LC" data-desc="Estimate a respectful family budget for cash, livestock, gifts, and ceremony costs.">Lobola Calculator</a></li><li><a href="/tools/prayer-times/" data-related-tool data-id="prayer-times" data-name="Prayer Times and Qibla Planner" data-category="religious-cultural" data-icon="PT" data-desc="Plan daily salah times with African city presets, prayer method adjustments, Asr school choice and Qibla bearing.">Prayer Times and Qibla Planner</a></li><li><a href="/tools/faraid-inheritance/" data-related-tool data-id="faraid-inheritance" data-name="Islamic Inheritance Faraid Calculator" data-category="religious-cultural" data-icon="II" data-desc="Model common Faraid inheritance shares for spouse, parents, sons and daughters with estate deductions and scholar review">Islamic Inheritance Faraid Calculator</a></li><li><a href="/tools/ramadan-timetable/" data-related-tool data-id="ramadan-timetable" data-name="Ramadan Timetable Generator" data-category="religious-cultural" data-icon="RT" data-desc="Generate a Ramadan planning timetable with suhoor, iftar, taraweeh, last ten nights and Eid preparation markers.">Ramadan Timetable Generator</a></li><li><a href="/tools/hajj-budget/" data-related-tool data-id="hajj-budget" data-name="Hajj and Umrah Budget Calculator" data-category="religious-cultural" data-icon="HA" data-desc="Estimate Hajj or Umrah costs by origin, package level, travelers, days, visa, food, transport and contingency.">Hajj and Umrah Budget Calculator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+
+<section class="rs-upgrade-shell" data-rs-tool-id="tithe-calculator"></section>
+<script src="/assets/js/religious-cultural-apps.js?v=6fdda1a6" defer></script>
+<afro-footer></afro-footer>
+
+<script>
+const VERSES = [
+  { text: '"Bring the whole tithe into the storehouse, that there may be food in my house. Test me in this," says the LORD Almighty, "and see if I will not throw open the floodgates of heaven and pour out so much blessing that there will not be room enough to store it."', ref: 'Malachi 3:10 (NIV)' },
+  { text: '"Each of you should give what you have decided in your heart to give, not reluctantly or under compulsion, for God loves a cheerful giver."', ref: '2 Corinthians 9:7 (NIV)' },
+  { text: '"Honor the LORD with your wealth, with the firstfruits of all your crops; then your barns will be filled to overflowing."', ref: 'Proverbs 3:9-10 (NIV)' },
+  { text: '"Give, and it will be given to you. A good measure, pressed down, shaken together and running over, will be poured into your lap."', ref: 'Luke 6:38 (NIV)' },
+];
+let lastGivingPlanText = '';
+
+function calculate() {
+  const income = +document.getElementById('income').value;
+  const otherIncome = +document.getElementById('otherIncome').value;
+  const currency = document.getElementById('currency').value;
+  const basis = document.getElementById('basis').value;
+  const tithePct = +document.getElementById('tithePct').value / 100;
+  const offering = +document.getElementById('offering').value;
+  const essentials = +document.getElementById('essentials').value || 0;
+  const pledgeGoal = +document.getElementById('pledgeGoal').value || 0;
+  const pledgeMonths = Math.max(1, +document.getElementById('pledgeMonths').value || 1);
+  const givingRhythm = document.getElementById('givingRhythm').value;
+
+  const totalIncome = income + otherIncome;
+  const monthlyTithe = totalIncome * tithePct;
+  const pledgeMonthly = pledgeGoal > 0 ? pledgeGoal / pledgeMonths : 0;
+  const monthlyTotal = monthlyTithe + offering + pledgeMonthly;
+  const annualTithe = monthlyTithe * 12;
+  const annualTotal = monthlyTotal * 12;
+  const weeklyTithe = monthlyTithe / 4.33;
+  const remainingAfterEssentials = totalIncome - essentials;
+  const remainingAfterGiving = totalIncome - essentials - monthlyTotal;
+  const givingShare = totalIncome > 0 ? monthlyTotal / totalIncome * 100 : 0;
+
+  const basisLabel = basis === 'gross' ? 'Gross Income (before tax)' : 'Net Income (after tax)';
+  const fmt = n => currency + ' ' + Math.round(n).toLocaleString('en');
+
+  let html = '';
+  if (basis === 'net') {
+    html += `<div class="result-box" style="grid-column:1/-1;background:#f5f3ff;border-color:#ddd6fe"><div style="font-size:.78rem;color:#6d28d9;line-height:1.5">Calculating on <strong>net income</strong> (take-home pay). Enter the amount you receive after PAYE, pension, and other deductions.</div></div>`;
+  }
+  html += `<div class="result-box"><div class="num">${fmt(monthlyTithe)}</div><div class="lbl">Monthly Tithe (${basisLabel})</div></div>`;
+  html += `<div class="result-box"><div class="num">${fmt(monthlyTotal)}</div><div class="lbl">Total Monthly Giving</div></div>`;
+  html += `<div class="result-box"><div class="num">${fmt(annualTithe)}</div><div class="lbl">Annual Tithe</div></div>`;
+  html += `<div class="result-box"><div class="num">${fmt(annualTotal)}</div><div class="lbl">Annual Total Giving</div></div>`;
+  document.getElementById('resultGrid').innerHTML = html;
+
+  let plan = '';
+  plan += `<div class="plan-row"><span class="label">Weekly tithe</span><span class="amount">${fmt(weeklyTithe)}</span></div>`;
+  plan += `<div class="plan-row"><span class="label">Monthly tithe (${(tithePct * 100)}% of ${basisLabel.toLowerCase()}: ${fmt(totalIncome)})</span><span class="amount">${fmt(monthlyTithe)}</span></div>`;
+  if (offering > 0) plan += `<div class="plan-row"><span class="label">Monthly offering</span><span class="amount">${fmt(offering)}</span></div>`;
+  if (pledgeGoal > 0) plan += `<div class="plan-row"><span class="label">Special pledge over ${pledgeMonths} months</span><span class="amount">${fmt(pledgeMonthly)} / month</span></div>`;
+  plan += `<div class="plan-row"><span class="label">Quarterly giving</span><span class="amount">${fmt(monthlyTotal * 3)}</span></div>`;
+  plan += `<div class="plan-row"><span class="label">Annual total</span><span class="amount" style="font-size:1rem">${fmt(annualTotal)}</span></div>`;
+  plan += `<div class="plan-row"><span class="label">Remaining after essentials and giving</span><span class="amount" style="color:${remainingAfterGiving < 0 ? '#dc2626' : '#059669'}">${fmt(remainingAfterGiving)}</span></div>`;
+  document.getElementById('givingPlan').innerHTML = plan;
+
+  renderStewardshipPlan({
+    currency, fmt, totalIncome, monthlyTithe, offering, pledgeGoal, pledgeMonths,
+    pledgeMonthly, monthlyTotal, annualTotal, essentials, remainingAfterEssentials,
+    remainingAfterGiving, givingShare, givingRhythm, basisLabel
+  });
+
+  const verse = VERSES[Math.floor(Math.random() * VERSES.length)];
+  document.getElementById('verse').innerHTML = `${verse.text}<cite>${verse.ref}</cite>`;
+
+  document.getElementById('resultCard').style.display = 'block';
+  document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth' });
+}
+
+function renderStewardshipPlan(data) {
+  const rhythmLabels = {
+    weekly: 'Set aside weekly envelopes or mobile-money transfers.',
+    monthly: 'Schedule one monthly transfer after income lands.',
+    split: 'Split tithe and offering dates so pledge giving does not crowd rent, food, school, or transport.'
+  };
+  let status = 'Comfortable';
+  if (data.remainingAfterGiving < 0) status = 'Needs review';
+  else if (data.givingShare > 20 || data.remainingAfterGiving < data.totalIncome * 0.15) status = 'Tight';
+
+  const actions = [];
+  actions.push(rhythmLabels[data.givingRhythm] || rhythmLabels.monthly);
+  if (data.essentials > 0) actions.push('Essentials entered: ' + data.fmt(data.essentials) + '. Remaining after essentials before giving is ' + data.fmt(data.remainingAfterEssentials) + '.');
+  if (data.pledgeGoal > 0) actions.push('Pledge pace: ' + data.fmt(data.pledgeMonthly) + ' per month for ' + data.pledgeMonths + ' months.');
+  if (data.remainingAfterGiving < 0) actions.push('This plan is above the entered household margin. Consider reducing the pledge pace or extending the pledge months.');
+  else actions.push('After this giving plan, household margin is ' + data.fmt(data.remainingAfterGiving) + ' for the month.');
+  actions.push('Keep a receipt or note with date, church/project, amount, and purpose for family budgeting.');
+
+  lastGivingPlanText = [
+    'Giving plan',
+    'Income base: ' + data.fmt(data.totalIncome) + ' | Basis: ' + data.basisLabel,
+    'Monthly tithe: ' + data.fmt(data.monthlyTithe) + ' | Offering: ' + data.fmt(data.offering) + ' | Pledge: ' + data.fmt(data.pledgeMonthly),
+    'Total monthly giving: ' + data.fmt(data.monthlyTotal) + ' (' + data.givingShare.toFixed(1) + '% of income).',
+    actions.join(' ')
+  ].join('\n');
+
+  document.getElementById('stewardshipPlan').innerHTML = `
+    <div class="steward-card">
+      <div class="steward-head"><div class="steward-title">Stewardship guardrails</div><button type="button" class="steward-copy" onclick="copyGivingPlan(this)">Copy plan</button></div>
+      <div class="steward-grid">
+        <div class="steward-metric"><div class="steward-k">Affordability</div><div class="steward-v">${status}</div></div>
+        <div class="steward-metric"><div class="steward-k">Giving share</div><div class="steward-v">${data.givingShare.toFixed(1)}%</div></div>
+        <div class="steward-metric"><div class="steward-k">Monthly margin</div><div class="steward-v">${data.fmt(data.remainingAfterGiving)}</div></div>
+      </div>
+      <ul class="steward-list">${actions.map(item => `<li>${item}</li>`).join('')}</ul>
+    </div>
+  `;
+}
+
+function copyGivingPlan(btn) {
+  if (!lastGivingPlanText) return;
+  const done = () => {
+    if (btn) {
+      const old = btn.textContent;
+      btn.textContent = 'Copied';
+      setTimeout(() => { btn.textContent = old; }, 1300);
+    }
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(lastGivingPlanText).then(done).catch(() => fallbackCopyGivingPlan(done));
+  } else {
+    fallbackCopyGivingPlan(done);
+  }
+}
+
+function fallbackCopyGivingPlan(done) {
+  const area = document.createElement('textarea');
+  area.value = lastGivingPlanText;
+  area.setAttribute('readonly','');
+  area.style.position = 'fixed';
+  area.style.left = '-9999px';
+  document.body.appendChild(area);
+  area.select();
+  try { document.execCommand('copy'); done(); } catch(e) {}
+  document.body.removeChild(area);
+}
+</script>
+<script>
+(function(){
+  var target = document.getElementById('resultCard');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
+  div.innerHTML = '<save-result-button tool-slug="tithe-calculator" tool-name="Tithe Calculator"></save-result-button><share-result-button tool-name="Tithe Calculator" tool-slug="tithe-calculator"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

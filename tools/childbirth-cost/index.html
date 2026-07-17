@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Childbirth Cost Calculator Africa — Hospital Delivery Costs | AfroTools</title>
+<meta name="description" content="Calculate delivery and maternity costs across Nigeria, Kenya, South Africa and Ghana. Compare public hospitals, mission hospitals, and private clinics. Includes ANC, delivery, and postnatal costs.">
+<meta name="content-language" content="en">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Childbirth Cost Calculator Africa | AfroTools">
+<meta property="og:description" content="Compare maternity costs across African hospitals. Calculate ANC, delivery, and postnatal costs with NHIS/NHIF coverage estimates.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/childbirth-cost.webp">
+<meta property="og:url" content="https://afrotools.com/tools/childbirth-cost/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Childbirth Cost Calculator Africa — Hospital Delivery Costs | AfroTools">
+<meta name="twitter:description" content="Calculate delivery and maternity costs across Nigeria, Kenya, South Africa and Ghana. Compare public hospitals, mission hospitals, and private clinics. Includes ANC, delivery, and postnatal costs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;margin:0;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+.tool-hero{background:linear-gradient(135deg,#7f1d1d 0%,#dc2626 50%,#b91c1c 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3)}.breadcrumb span{color:#fca5a5}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#fca5a5;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.7);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(252,165,165,.2);color:#fca5a5;border:1px solid rgba(252,165,165,.3)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0f172a}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+select,input{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.85rem;background:#f8fafc;font-family:inherit;box-sizing:border-box;color:#0f172a}
+select:focus,input:focus{outline:none;border-color:#dc2626;box-shadow:0 0 0 3px rgba(220,38,38,.1)}
+.field{margin-bottom:14px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.85rem;font-weight:700;cursor:pointer;margin-top:18px;font-family:inherit}
+.btn-primary{background:linear-gradient(135deg,#7f1d1d,#dc2626);color:#fff;transition:transform .15s,box-shadow .15s}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(220,38,38,.35)}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.res-item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
+.res-num{font-size:1.2rem;font-weight:800;color:#dc2626}
+.res-lbl{font-size:.66rem;color:#64748b;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
+.res-hero{background:linear-gradient(135deg,#fef2f2,#fee2e2);border:1px solid #fca5a5;border-radius:10px;padding:20px;text-align:center;margin-bottom:14px}
+.res-hero .big{font-size:2rem;font-weight:800;color:#dc2626}
+.res-hero .lbl{font-size:.75rem;color:#7f1d1d;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-top:4px}
+.cost-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:.84rem}
+.cost-row:last-child{border-bottom:none;padding-bottom:0}
+.cost-row .label{color:#475569}
+.cost-row .amount{font-weight:700;color:#0f172a}
+.cost-row.total .label{font-weight:700;color:#0f172a;font-size:.88rem}
+.cost-row.total .amount{font-size:1.1rem;color:#dc2626}
+.coverage-note{background:#dbeafe;border:1px solid #bfdbfe;border-radius:8px;padding:14px;font-size:.78rem;color:#1d4ed8;line-height:1.6;margin-top:12px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:#0f172a;list-style:none}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7;margin-bottom:0}
+.info-card{background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#7f1d1d;margin:0 0 8px}
+.info-card p,.info-card li{font-size:.78rem;color:#991b1b;line-height:1.6;margin:0}
+.info-card ul{padding-left:16px;margin:6px 0}
+.disclaimer{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:14px;font-size:.74rem;color:#78350f;line-height:1.6;margin-top:14px}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.2rem;font-weight:800;margin-bottom:12px;color:#0f172a}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.row{grid-template-columns:1fr}.result-grid{grid-template-columns:1fr 1fr}}
+</style>
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/childbirth-cost.webp">
+<link rel="stylesheet" href="/assets/css/health-enhancements.css?v=e7e3e3a6">
+<meta name="tool-id" content="childbirth-cost">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Childbirth Cost Calculator Africa — Hospital Delivery Costs",
+  "description": "Calculate delivery and maternity costs across Nigeria, Kenya, South Africa and Ghana. Compare public hospitals, mission hospitals, and private clinics. Includes ANC, delivery, and postnatal costs.",
+  "url": "https://afrotools.com/tools/childbirth-cost/",
+  "inLanguage": "en",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/childbirth-cost.webp"
+}
+</script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is Linda Mama in Kenya?","acceptedAnswer":{"@type":"Answer","text":"Linda Mama (Swahili for \"Protect Mother\") is a free maternity care programme in Kenya that covers all deliveries at public hospitals for mothers enrolled in NHIF. It covers antenatal care, delivery, and postnatal care at no cost. Any Kenyan can register for NHIF for a monthly premium of KES 500 and access Linda Mama benefits immediately. This programme has significantly reduced maternal deaths at public hospitals."}},{"@type":"Question","name":"Is maternity care free in South Africa?","acceptedAnswer":{"@type":"Answer","text":"Yes — maternity care is free at public hospitals and clinics for all South African citizens and permanent residents. This includes all antenatal visits, delivery (normal or C-section if medically indicated), and postnatal care. However, public hospitals often face overcrowding. Private hospitals in South Africa require medical aid or payment upfront; a normal delivery at a private hospital can cost ZAR 25,000–60,000 and a C-section ZAR 50,000–100,000."}},{"@type":"Question","name":"What does NHIS cover for maternity in Nigeria?","acceptedAnswer":{"@type":"Answer","text":"NHIS (National Health Insurance Scheme) covers antenatal care at accredited facilities, normal delivery, and basic postnatal care. The coverage varies by state — some states have more active NHIS implementation than others. NHIS covers delivery up to approximately NGN 50,000 for normal births and NGN 150,000 for C-sections at accredited facilities. Medicines on the NHIS essential list are also covered."}},{"@type":"Question","name":"Why do C-sections cost so much more?","acceptedAnswer":{"@type":"Answer","text":"C-sections require a surgical team (surgeon, anaesthetist, scrub nurse, and paediatric standby), an operating theatre, anaesthesia, longer hospital stay (3-5 days vs 1-2 days), more medications, and post-operative care. In private hospitals, there are also theatre fees, anaesthesia fees (billed separately), and higher medication costs. However, medically unnecessary C-sections are costly and carry higher surgical risks — the WHO recommends C-sections only when medically necessary."}}]}
+</script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Childbirth Cost Calculator Africa — Hospital Delivery Costs","item":"https://afrotools.com/tools/childbirth-cost/"}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/childbirth-cost/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/childbirth-cost/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/cout-accouchement/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/gharama-za-kujifungua/">
+<link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/kudin-haihuwa/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/childbirth-cost/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="/">Home</a> › <a href="/health/">Health</a> › <span>Childbirth Cost Calculator</span></div>
+    <h1>Childbirth Cost<br><em>Calculator</em></h1>
+    <p class="hero-sub">Calculate the full cost of having a baby in Africa — antenatal care, delivery, medications, and postnatal follow-up. Compare public, mission, and private facilities.</p>
+    <div class="hero-badges">
+      <span class="badge">Always Free</span>
+      <span class="badge">Nigeria · Kenya · South Africa · Ghana</span>
+      <span class="badge">NHIS / NHIF / Linda Mama</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <div class="card">
+        <div class="card-head"><div class="card-title">Calculate Your Maternity Costs</div></div>
+        <div class="card-body">
+          <div class="row">
+            <div class="field">
+              <label for="country">Country</label>
+              <select id="country" onchange="updateInsuranceLabel()">
+                <option value="NG">Nigeria</option>
+                <option value="KE">Kenya</option>
+                <option value="ZA">South Africa</option>
+                <option value="GH">Ghana</option>
+                <option value="TZ">Tanzania</option>
+                <option value="RW">Rwanda</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Facility Type</label>
+              <select id="facility" aria-label="Facility">
+                <option value="public">Public Hospital</option>
+                <option value="mission">Mission / Faith-based</option>
+                <option value="private">Private Clinic</option>
+                <option value="premium">Premium Private Hospital</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label>Delivery Type</label>
+              <select id="delivery" aria-label="Delivery">
+                <option value="normal">Normal Vaginal Birth</option>
+                <option value="csection">Caesarean Section (C-Section)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Number of ANC Visits</label>
+              <select id="anc" aria-label="Anc">
+                <option value="8">8 visits (WHO minimum)</option>
+                <option value="10">10 visits</option>
+                <option value="12">12 visits</option>
+                <option value="4">4 visits (minimum)</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label id="insurance-label">Insurance / Coverage</label>
+            <select id="insurance" aria-label="Insurance">
+              <option value="none">None (Out-of-pocket)</option>
+              <option value="nhis">NHIS (Nigeria)</option>
+              <option value="nhif">NHIF / Linda Mama (Kenya)</option>
+              <option value="nhis_gh">NHIS (Ghana)</option>
+              <option value="medical_aid">Medical Aid (South Africa)</option>
+            </select>
+          </div>
+          <button type="button" class="btn btn-primary" onclick="calculate()">Calculate Total Cost</button>
+        </div>
+      </div>
+
+      <div id="results" style="display:none;margin-top:18px">
+        <div class="card">
+          <div class="card-head"><div class="card-title">Cost Breakdown</div></div>
+          <div class="card-body" id="results-body"></div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="card" style="margin-top:18px">
+        <div class="card-head"><div class="card-title">Frequently Asked Questions</div></div>
+        <div class="card-body">
+          <details class="faq-item">
+            <summary>What is Linda Mama in Kenya?</summary>
+            <p>Linda Mama (Swahili for "Protect Mother") is a free maternity care programme in Kenya that covers all deliveries at public hospitals for mothers enrolled in NHIF. It covers antenatal care, delivery, and postnatal care at no cost. Any Kenyan can register for NHIF for a monthly premium of KES 500 and access Linda Mama benefits immediately. This programme has significantly reduced maternal deaths at public hospitals.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Is maternity care free in South Africa?</summary>
+            <p>Yes — maternity care is free at public hospitals and clinics for all South African citizens and permanent residents. This includes all antenatal visits, delivery (normal or C-section if medically indicated), and postnatal care. However, public hospitals often face overcrowding. Private hospitals in South Africa require medical aid or payment upfront; a normal delivery at a private hospital can cost ZAR 25,000–60,000 and a C-section ZAR 50,000–100,000.</p>
+          </details>
+          <details class="faq-item">
+            <summary>What does NHIS cover for maternity in Nigeria?</summary>
+            <p>NHIS (National Health Insurance Scheme) covers antenatal care at accredited facilities, normal delivery, and basic postnatal care. The coverage varies by state — some states have more active NHIS implementation than others. NHIS covers delivery up to approximately NGN 50,000 for normal births and NGN 150,000 for C-sections at accredited facilities. Medicines on the NHIS essential list are also covered.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Why do C-sections cost so much more?</summary>
+            <p>C-sections require a surgical team (surgeon, anaesthetist, scrub nurse, and paediatric standby), an operating theatre, anaesthesia, longer hospital stay (3-5 days vs 1-2 days), more medications, and post-operative care. In private hospitals, there are also theatre fees, anaesthesia fees (billed separately), and higher medication costs. However, medically unnecessary C-sections are costly and carry higher surgical risks — the WHO recommends C-sections only when medically necessary.</p>
+          </details>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="card-head"><div class="card-title">Maternity Cost Summary</div></div>
+        <div class="card-body">
+          <div class="info-card">
+            <h4>Cost Ranges by Country</h4>
+            <ul>
+              <li><strong>Nigeria:</strong> NGN 55k–4.7M (public to premium)</li>
+              <li><strong>Kenya:</strong> Free (Linda Mama) to KES 760k (premium)</li>
+              <li><strong>South Africa:</strong> Free (public) to ZAR 162k (premium)</li>
+              <li><strong>Ghana:</strong> Free (NHIS/public) to GHS 20.5k (premium)</li>
+            </ul>
+          </div>
+          <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:14px;margin-top:12px">
+            <h4 style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#166534;margin:0 0 8px">ANC: Why 8 Visits?</h4>
+            <p style="font-size:.78rem;color:#166534;margin:0;line-height:1.6">WHO recommends minimum 8 antenatal care visits during pregnancy. Studies show 8+ visits reduce perinatal deaths by 8% compared to 4 visits. Each visit includes BP check, urine test, blood tests, ultrasound, and fetal monitoring.</p>
+          </div>
+          <div class="disclaimer">
+            ⚠️ <strong>Medical Disclaimer:</strong> Cost estimates are approximate reference ranges. Actual costs vary by hospital, city, doctor, and complications. Always get a written cost estimate before admission. Consult a healthcare provider for medical decisions.
+          </div>
+          <div style="margin-top:12px">
+            <a href="/tools/csection-vs-natural/" style="display:block;padding:10px 16px;background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;font-size:.78rem;font-weight:700;color:#dc2626;text-align:center">C-Section vs Natural Birth Comparison →</a>
+          </div>
+          <div style="margin-top:8px">
+            <a href="/tools/maternal-mortality/" style="display:block;padding:10px 16px;background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;font-size:.78rem;font-weight:700;color:#dc2626;text-align:center">Maternal Risk Assessment →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="seo-section">
+  <h2>Childbirth Costs Across Africa: What to Expect</h2>
+  <p>The cost of having a baby in Africa varies enormously — from completely free at public facilities in South Africa and Ghana, to over NGN 3 million at premium private hospitals in Lagos. Understanding these costs before your due date helps avoid financial surprises and allows better planning.</p>
+  <p>In Nigeria, public hospitals offer the most affordable option, but overcrowding, staff shortages, and inconsistent drug availability are common challenges. Mission hospitals (run by Catholic, Anglican, or other faith organisations) often offer a good balance of quality and affordability. Private hospitals, while more expensive, typically offer better facilities, shorter waiting times, and more consistent care standards.</p>
+  <p>Kenya's Linda Mama programme has been a landmark policy — providing completely free maternity care at all public hospitals for NHIF members. Rwanda's Community-Based Health Insurance (CBHI/Mutuelle de Santé) covers 90% of the population and dramatically reduces out-of-pocket maternity costs.</p>
+  <p>Financial planning for childbirth should include not just the delivery fee, but: all antenatal visits (8 minimum), any emergency scans or tests, medications during pregnancy (iron, folic acid, malaria prophylaxis), delivery costs, any complications (premature labour, instrumental delivery, C-section), 2-6 weeks of postnatal care, and newborn care including vaccines.</p>
+</div>
+
+<!-- HEALTH-DEEP-IMPROVEMENT:START -->
+<section class="health-deep" aria-labelledby="health-deep-title">
+<span class="health-deep-kicker">Deep Review - 27 April 2026</span>
+<h2 id="health-deep-title">Use Childbirth Cost Calculator in a safer care workflow</h2>
+<p class="health-deep-lead">Family-health tools should turn dates, costs, growth, feeding, and vaccine questions into safer preparation for antenatal, paediatric, and community health visits.</p>
+<div class="health-deep-grid">
+<div class="health-deep-block"><h3>Use It To Decide</h3><ul><li>Which appointment, vaccine, or milestone needs attention next</li><li>What the household should budget or prepare before care is needed</li><li>Which warning signs should move the family from planning to urgent care</li></ul></div>
+<div class="health-deep-block"><h3>Better Workflow</h3><ul><li>Record dates, facility name, and provider instructions</li><li>Bring the result to antenatal, delivery, paediatric, or immunisation visits</li><li>Use local clinic guidance as the final authority</li></ul></div>
+<div class="health-deep-block warning"><h3>Do Not Ignore</h3><ul><li>Bleeding, severe headache, fever, reduced fetal movement, or seizures in pregnancy</li><li>A child with lethargy, dehydration, breathing difficulty, or persistent fever</li><li>Missed vaccines or growth concerns without a clinic follow-up plan</li></ul></div>
+</div>
+<div class="health-source-row">
+<div><span>Official Context</span><div class="health-source-links"><a href="https://www.who.int/publications/i/item/9789241549912">WHO antenatal care recommendations</a><a href="https://www.who.int/news-room/fact-sheets/detail/immunization-coverage">WHO immunization coverage</a><a href="https://www.who.int/tools/child-growth-standards">WHO child growth standards</a><a href="https://www.who.int/health-topics/breastfeeding">WHO breastfeeding</a></div></div>
+<div><span>Related AfroTools</span><div class="health-source-links internal"><a href="/health/pregnancy-due-date/">Pregnancy Due Date Calculator</a><a href="/tools/vaccine-schedule/">African Child Vaccine Schedule</a><a href="/tools/child-growth/">Child Growth Chart (WHO + African Context)</a><a href="/tools/pregnancy-nutrition/">Pregnancy Nutrition Calculator (African Diet)</a></div></div>
+</div>
+</section>
+<!-- HEALTH-DEEP-IMPROVEMENT:END -->
+<!-- HEALTH-COMPLETE-PACKAGE:START -->
+<section class="health-action-kit" data-health-tool-id="childbirth-cost" data-health-tool-name="Childbirth Cost Calculator" data-health-href="/tools/childbirth-cost/" data-health-bucket="family" data-health-journey="family" data-health-source-name="Healthcare Bluebook price transparency" data-health-source-url="https://healthcarebluebook.com/" data-health-competitor="Hospital cost estimators" data-health-feature="Birth-cost tools should split facility, professional, procedure, transport, and emergency buffers." aria-labelledby="health-action-title-childbirth-cost">
+<span class="health-action-kicker">Complete package upgrade</span>
+<h2 id="health-action-title-childbirth-cost">Childbirth Cost Calculator: save, export, and continue the workflow</h2>
+<p>This app now has its own benchmarked improvement layer, dashboard handoff, email-gated PDF plan, and a route into the Pregnancy and child care plan workflow.</p>
+<div class="health-action-grid">
+<div class="health-action-card">
+<h3>Competitor feature checked</h3>
+<p><strong>Hospital cost estimators</strong>: Birth-cost tools should split facility, professional, procedure, transport, and emergency buffers.</p>
+<p><strong>Implemented here:</strong> Added care and family workflow routing with PDF budget capture.</p>
+<p><a href="https://healthcarebluebook.com/" rel="noopener" target="_blank">Healthcare Bluebook price transparency</a></p>
+</div>
+<div class="health-action-card">
+<h3>Dashboard and PDF actions</h3>
+<ul>
+<li>Save this health plan to the dashboard workspace on this device.</li>
+<li>Unlock a PDF version through the Health email gate for follow-up and visit prep.</li>
+<li>Signed-in sessions attempt account workspace sync when the shared workspace API is available.</li>
+</ul>
+<div class="health-action-buttons">
+<button type="button" class="health-workflow-btn" data-health-action="save" data-health-tool-id="childbirth-cost">Save to dashboard</button>
+<button type="button" class="health-workflow-btn secondary" data-health-action="pdf" data-health-tool-id="childbirth-cost">Get PDF plan</button>
+</div>
+</div>
+</div>
+<div class="health-action-card" style="margin-top:1rem">
+<h3>Continue in Pregnancy and child care plan</h3>
+<div class="health-action-links">
+<a href="/health/pregnancy-due-date/">Open workflow hub</a>
+<a href="/health/pregnancy-due-date/">Pregnancy Due Date Calculator</a><a href="/tools/pregnancy-nutrition/">Pregnancy Nutrition Calculator (African Diet)</a><a href="/tools/vaccine-schedule/">African Child Vaccine Schedule</a><a href="/tools/child-growth/">Child Growth Chart (WHO + African Context)</a>
+</div>
+</div>
+</section>
+<!-- HEALTH-COMPLETE-PACKAGE:END -->
+<afro-related-tools data-ssr="1" category="health" current="childbirth-cost">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/medical-report/" data-related-tool data-id="medical-report" data-name="Medical Report Interpreter" data-category="health" data-icon="MR" data-desc="Upload or paste lab results and get plain-English explanations for CBC, lipid, liver, kidney, thyroid, and diabetes mark">Medical Report Interpreter</a></li><li><a href="/tools/genotype-checker/" data-related-tool data-id="genotype-checker" data-name="Genotype Compatibility Checker" data-category="health" data-icon="GC" data-desc="Full pre-marriage genotype and blood group compatibility check. Sickle cell Punnett square, Rh factor incompatibility, b">Genotype Compatibility Checker</a></li><li><a href="/tools/drug-price-compare/" data-related-tool data-id="drug-price-compare" data-name="Drug/Medicine Price Comparator" data-category="health" data-icon="DM" data-desc="Compare brand vs generic medicine prices across African countries. See savings on antimalarials, antibiotics, diabetes, ">Drug/Medicine Price Comparator</a></li><li><a href="/tools/blood-group/" data-related-tool data-id="blood-group" data-name="Blood Group Compatibility Checker" data-category="health" data-icon="BG" data-desc="Check blood transfusion compatibility (donor/recipient) and pregnancy Rh incompatibility. Includes African blood group f">Blood Group Compatibility Checker</a></li><li><a href="/tools/african-meal-plan/" data-related-tool data-id="african-meal-plan" data-name="African Meal Plan Generator" data-category="health" data-icon="AM" data-desc="Generate a personalized 7-day meal plan using African foods. Choose region (West/East/Southern/North Africa), health goa">African Meal Plan Generator</a></li><li><a href="/tools/csection-vs-natural/" data-related-tool data-id="csection-vs-natural" data-name="C-Section vs Natural Birth Cost" data-category="health" data-icon="CS" data-desc="Side-by-side cost and recovery comparison between C-section and natural birth across 4 African countries. Includes WHO r">C-Section vs Natural Birth Cost</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+var COSTS = {
+  NG: {
+    currency: "NGN", name: "Nigeria",
+    anc: { public: 2000, mission: 5000, private: 15000, premium: 50000 },
+    normal: { public: 50000, mission: 100000, private: 350000, premium: 1500000 },
+    csection: { public: 150000, mission: 250000, private: 800000, premium: 3000000 },
+    postnatal: { public: 5000, mission: 10000, private: 30000, premium: 100000 },
+    insurance: {
+      nhis: "NHIS covers: All ANC at accredited facilities, ~NGN 50,000 for normal delivery / ~NGN 150,000 for C-section at accredited centres. Postnatal check included.",
+      nhif: null, nhis_gh: null, medical_aid: null,
+      none: null
+    },
+    notes: "Costs vary significantly by state. Lagos prices are highest. Rural areas may be 30-50% lower."
+  },
+  KE: {
+    currency: "KES", name: "Kenya",
+    anc: { public: 200, mission: 1000, private: 3000, premium: 10000 },
+    normal: { public: 5000, mission: 15000, private: 80000, premium: 250000 },
+    csection: { public: 30000, mission: 60000, private: 200000, premium: 500000 },
+    postnatal: { public: 500, mission: 2000, private: 8000, premium: 25000 },
+    insurance: {
+      nhif: "Linda Mama: FREE delivery at all public hospitals for NHIF members. NHIF covers KES 10,000 at public / KES 30,000 at private accredited facilities.",
+      nhis: null, nhis_gh: null, medical_aid: null, none: null
+    },
+    notes: "Linda Mama: completely free maternity at all public hospitals for NHIF members (KES 500/month). Significant cost saver."
+  },
+  ZA: {
+    currency: "ZAR", name: "South Africa",
+    anc: { public: 0, mission: 200, private: 800, premium: 2000 },
+    normal: { public: 0, mission: 5000, private: 25000, premium: 60000 },
+    csection: { public: 0, mission: 15000, private: 50000, premium: 100000 },
+    postnatal: { public: 0, mission: 500, private: 2000, premium: 5000 },
+    insurance: {
+      medical_aid: "Medical aid typically covers: full delivery costs at accredited hospitals (subject to benefit limits). Standard hospital plan covers ~ZAR 30,000-50,000 for normal, ZAR 60,000-80,000 for C-section.",
+      nhis: null, nhif: null, nhis_gh: null, none: null
+    },
+    notes: "Public hospitals: FREE for SA citizens. Private: medical aid or cash required."
+  },
+  GH: {
+    currency: "GHS", name: "Ghana",
+    anc: { public: 0, mission: 50, private: 200, premium: 500 },
+    normal: { public: 0, mission: 500, private: 2000, premium: 5000 },
+    csection: { public: 500, mission: 2000, private: 6000, premium: 15000 },
+    postnatal: { public: 0, mission: 100, private: 300, premium: 1000 },
+    insurance: {
+      nhis_gh: "NHIS Ghana covers all antenatal care and delivery at accredited facilities at no cost. Free maternity under NHIS registered members.",
+      nhis: null, nhif: null, medical_aid: null, none: null
+    },
+    notes: "NHIS Ghana: free maternity care at accredited facilities. Premium private hospitals not NHIS-accredited."
+  },
+  TZ: {
+    currency: "TZS", name: "Tanzania",
+    anc: { public: 5000, mission: 20000, private: 80000, premium: 200000 },
+    normal: { public: 20000, mission: 100000, private: 500000, premium: 2000000 },
+    csection: { public: 100000, mission: 300000, private: 1500000, premium: 5000000 },
+    postnatal: { public: 5000, mission: 15000, private: 50000, premium: 150000 },
+    insurance: { none: null, nhis: null, nhif: null, nhis_gh: null, medical_aid: null },
+    notes: "Tanzania introduced free maternal care at public facilities in 2016. Verify locally."
+  },
+  RW: {
+    currency: "RWF", name: "Rwanda",
+    anc: { public: 3000, mission: 5000, private: 20000, premium: 80000 },
+    normal: { public: 3000, mission: 15000, private: 80000, premium: 300000 },
+    csection: { public: 50000, mission: 100000, private: 300000, premium: 800000 },
+    postnatal: { public: 1000, mission: 3000, private: 10000, premium: 40000 },
+    insurance: { none: "Community-Based Health Insurance (Mutuelle) covers most basic maternity costs for enrolled members.", nhis: null, nhif: null, nhis_gh: null, medical_aid: null },
+    notes: "Rwanda CBHI (Mutuelle de Santé) covers ~90% of population. Very low out-of-pocket costs."
+  }
+};
+
+function updateInsuranceLabel() {
+  var c = document.getElementById("country").value;
+  var sel = document.getElementById("insurance");
+  var opts = sel.options;
+  // Show most relevant option first
+  if (c === "NG") sel.value = "nhis";
+  else if (c === "KE") sel.value = "nhif";
+  else if (c === "GH") sel.value = "nhis_gh";
+  else if (c === "ZA") sel.value = "medical_aid";
+  else sel.value = "none";
+}
+
+function fmt(n, cur) {
+  return cur + " " + n.toLocaleString();
+}
+
+function calculate() {
+  var country = document.getElementById("country").value;
+  var facility = document.getElementById("facility").value;
+  var delivery = document.getElementById("delivery").value;
+  var ancVisits = parseInt(document.getElementById("anc").value);
+  var insurance = document.getElementById("insurance").value;
+
+  var c = COSTS[country];
+  if (!c) return;
+
+  var ancTotal = (c.anc[facility] || 0) * ancVisits;
+  var deliveryCost = delivery === "normal" ? (c.normal[facility] || 0) : (c.csection[facility] || 0);
+  var postnatal = c.postnatal[facility] || 0;
+  var medications = Math.round(deliveryCost * 0.15); // ~15% for meds
+  var total = ancTotal + deliveryCost + postnatal + medications;
+
+  var facilityLabel = {public:"Public Hospital",mission:"Mission Hospital",private:"Private Clinic",premium:"Premium Private Hospital"}[facility];
+  var deliveryLabel = delivery === "normal" ? "Normal Vaginal Birth" : "Caesarean Section";
+
+  var html = '<div class="res-hero"><div class="big">' + fmt(total, c.currency) + '</div><div class="lbl">Estimated Total — ' + deliveryLabel + ' at ' + facilityLabel + '</div></div>';
+  html += '<div>';
+  html += '<div class="cost-row"><span class="label">Antenatal Care (' + ancVisits + ' visits × ' + fmt(c.anc[facility]||0, c.currency) + ')</span><span class="amount">' + fmt(ancTotal, c.currency) + '</span></div>';
+  html += '<div class="cost-row"><span class="label">' + deliveryLabel + '</span><span class="amount">' + fmt(deliveryCost, c.currency) + '</span></div>';
+  html += '<div class="cost-row"><span class="label">Medications (estimate ~15%)</span><span class="amount">' + fmt(medications, c.currency) + '</span></div>';
+  html += '<div class="cost-row"><span class="label">Postnatal Care</span><span class="amount">' + fmt(postnatal, c.currency) + '</span></div>';
+  html += '<div class="cost-row total"><span class="label">TOTAL ESTIMATE</span><span class="amount">' + fmt(total, c.currency) + '</span></div>';
+  html += '</div>';
+
+  var insNote = c.insurance[insurance];
+  if (insNote) {
+    html += '<div class="coverage-note"><strong>Insurance Coverage Note:</strong><br>' + insNote + '</div>';
+  }
+
+  if (c.notes) {
+    html += '<p style="font-size:.76rem;color:#64748b;margin-top:12px;line-height:1.5">' + c.notes + '</p>';
+  }
+
+  // Comparison across facilities
+  html += '<div style="margin-top:18px"><div style="font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#dc2626;margin-bottom:10px">Compare All Facility Types</div>';
+  html += '<table style="width:100%;border-collapse:collapse;font-size:.8rem"><thead><tr style="background:#f8fafc"><th style="padding:8px;text-align:left;border-bottom:2px solid #e2e8f0;font-size:.68rem;letter-spacing:.04em">Facility</th><th style="padding:8px;text-align:right;border-bottom:2px solid #e2e8f0;font-size:.68rem;letter-spacing:.04em">Delivery</th><th style="padding:8px;text-align:right;border-bottom:2px solid #e2e8f0;font-size:.68rem;letter-spacing:.04em">Total Est.</th></tr></thead><tbody>';
+  ["public","mission","private","premium"].forEach(function(f) {
+    var dCost = delivery === "normal" ? (c.normal[f]||0) : (c.csection[f]||0);
+    if (dCost === 0 && f !== "public") return;
+    var tot = (c.anc[f]||0)*ancVisits + dCost + (c.postnatal[f]||0) + Math.round(dCost*0.15);
+    var labels = {public:"Public Hospital",mission:"Mission Hospital",private:"Private Clinic",premium:"Premium Private"};
+    var active = f === facility ? ' style="background:#fef2f2"' : '';
+    html += '<tr' + active + '><td style="padding:8px;border-bottom:1px solid #f1f5f9">' + labels[f] + (f===facility?" ✓":"") + '</td><td style="padding:8px;text-align:right;border-bottom:1px solid #f1f5f9">' + fmt(dCost, c.currency) + '</td><td style="padding:8px;text-align:right;border-bottom:1px solid #f1f5f9;font-weight:700">' + fmt(tot, c.currency) + '</td></tr>';
+  });
+  html += '</tbody></table></div>';
+
+  document.getElementById("results-body").innerHTML = html;
+  document.getElementById("results").style.display = "block";
+  document.getElementById("results").scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+</script>
+<script src="/assets/js/health-workflow.js?v=e8ad8f1d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

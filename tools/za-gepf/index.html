@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SA GEPF Pension Calculator | AfroTools</title>
+<meta name="description" content="Calculate your GEPF pension benefits — annuity, gratuity, survivor benefits, resignation vs. preservation, pension growth, home loan eligibility, and deductions. South Africa's most comprehensive GEPF tool.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="SA GEPF Pension Calculator | AfroTools">
+<meta property="og:description" content="Complete GEPF calculator — annuity, survivor benefits, resignation impact, pension growth, home loan &amp; deductions.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/za-gepf.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/za-gepf/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SA GEPF Pension Calculator | AfroTools">
+<meta name="twitter:description" content="Complete GEPF calculator — annuity, survivor benefits, resignation impact, pension growth, home loan &amp; deductions.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/za-gepf.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},
+    {"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},
+    {"@type":"ListItem","position":3,"name":"SA GEPF Pension Calculator","item":"https://afrotools.com/tools/za-gepf/"}
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-04-04">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<style>
+/* ── GEPF Tool — Blue theme, gepf- CSS prefix ── */
+:root {
+  --gepf-accent: #1D4ED8;
+  --gepf-dark:   #1E3A8A;
+  --gepf-mid:    #2563EB;
+  --gepf-pale:   #EFF6FF;
+  --gepf-border: #BFDBFE;
+  --gepf-text:   #1e3a5f;
+  --gepf-muted:  #475569;
+}
+
+/* ── Skip link (keyboard accessibility) ── */
+.gepf-skip-link {
+  position: absolute; top: -100%; left: 16px; z-index: 9999;
+  background: var(--gepf-accent); color: #fff; padding: 10px 18px;
+  border-radius: 0 0 8px 8px; font-size: .875rem; font-weight: 700;
+  text-decoration: none; transition: top .15s;
+}
+.gepf-skip-link:focus { top: 0; outline: 3px solid #fff; outline-offset: 2px; }
+
+/* ── Hero ── */
+.gepf-hero {
+  background: linear-gradient(135deg, #1E3A8A 0%, #1D4ED8 55%, #2563EB 100%);
+  padding: 48px 0 40px; position: relative; overflow: hidden;
+}
+/* Subtle dot-grid texture */
+.gepf-hero::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,.07) 1px, transparent 1px);
+  background-size: 22px 22px; pointer-events: none;
+}
+.gepf-hero-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; }
+.gepf-breadcrumb {
+  font-size: .72rem; font-weight: 500; color: rgba(255,255,255,.45);
+  letter-spacing: .08em; text-transform: uppercase; margin-bottom: 16px;
+}
+.gepf-breadcrumb a { color: rgba(255,255,255,.45); text-decoration: none; }
+.gepf-breadcrumb a:hover { color: rgba(255,255,255,.7); }
+.gepf-breadcrumb span { color: #BFDBFE; }
+.gepf-hero h1 {
+  font-size: clamp(1.7rem, 4vw, 2.5rem); font-weight: 800; color: #fff;
+  letter-spacing: -.02em; line-height: 1.1; margin-bottom: 12px;
+}
+.gepf-hero h1 em { color: #93C5FD; font-style: normal; }
+.gepf-hero-sub {
+  font-size: .9rem; color: rgba(255,255,255,.78); line-height: 1.65;
+  max-width: 620px; margin-bottom: 18px;
+}
+.gepf-badges { display: flex; flex-wrap: wrap; gap: 7px; }
+.gepf-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 12px; border-radius: 5px; font-size: .69rem;
+  font-weight: 700; letter-spacing: .05em;
+  background: rgba(147,197,253,.18); color: #BFDBFE;
+  border: 1px solid rgba(147,197,253,.3);
+}
+
+/* ── Main layout ── */
+.gepf-main { padding: 28px 0 80px; background: #F5F7FA; }
+.gepf-main-inner {
+  max-width: 1200px; margin: 0 auto; padding: 0 24px;
+  display: grid; grid-template-columns: 1fr 320px; gap: 22px; align-items: start;
+}
+
+/* ── Cards ── */
+.gepf-card {
+  background: #fff; border: 1px solid #E4E9F0;
+  border-radius: 12px; overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,.04), 0 6px 20px rgba(0,0,0,.04);
+}
+.gepf-card + .gepf-card { margin-top: 16px; }
+.gepf-card-head {
+  padding: 13px 20px; border-bottom: 1px solid #f1f5f9; background: #FAFBFC;
+}
+.gepf-card-title {
+  font-size: .72rem; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; color: #0f172a;
+}
+.gepf-card-body { padding: 20px; }
+
+/* ── Inputs ── */
+.gepf-label {
+  display: block; font-size: .75rem; font-weight: 600;
+  color: #374151; letter-spacing: .02em; margin-bottom: 6px;
+}
+.gepf-input, .gepf-select {
+  width: 100%; padding: 10px 13px; border: 1.5px solid #D1D5DB;
+  border-radius: 8px; font-size: .875rem; background: #fff;
+  font-family: inherit; box-sizing: border-box; color: #111827;
+  min-height: 44px; transition: border-color .15s, box-shadow .15s;
+}
+/* Remove number spinner arrows for cleaner look */
+.gepf-input[type="number"]::-webkit-inner-spin-button,
+.gepf-input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.gepf-input[type="number"] { -moz-appearance: textfield; }
+.gepf-input:hover, .gepf-select:hover { border-color: #9CA3AF; }
+.gepf-input:focus, .gepf-select:focus {
+  outline: none; border-color: var(--gepf-accent);
+  box-shadow: 0 0 0 3px rgba(29,78,216,.15);
+}
+.gepf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.gepf-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.gepf-field { margin-bottom: 14px; }
+
+/* ── Calculate button ── */
+.gepf-btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 12px 16px; min-height: 46px; border: none;
+  border-radius: 9px; font-size: .875rem; font-weight: 700; letter-spacing: .01em;
+  cursor: pointer; margin-top: 4px; font-family: inherit;
+  background: linear-gradient(135deg, #1E3A8A, #1D4ED8); color: #fff;
+  box-shadow: 0 2px 10px rgba(29,78,216,.28); transition: opacity .15s, box-shadow .15s, transform .1s;
+}
+.gepf-btn:hover:not(:disabled) { opacity: .93; box-shadow: 0 4px 18px rgba(29,78,216,.38); }
+.gepf-btn:active:not(:disabled) { transform: translateY(1px); box-shadow: 0 1px 6px rgba(29,78,216,.22); }
+.gepf-btn:focus-visible { outline: 3px solid var(--gepf-accent); outline-offset: 3px; }
+.gepf-btn:disabled { opacity: .6; cursor: not-allowed; }
+.gepf-btn-spinner {
+  width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.4);
+  border-top-color: #fff; border-radius: 50%; animation: gepf-spin .6s linear infinite;
+  display: none; flex-shrink: 0;
+}
+.gepf-btn.gepf-loading .gepf-btn-spinner { display: block; }
+.gepf-btn.gepf-loading .gepf-btn-text::after { content: '…'; }
+@keyframes gepf-spin { to { transform: rotate(360deg); } }
+
+/* ── Tab bar ── */
+.gepf-tabs-wrap { position: relative; overflow: hidden; }
+.gepf-tabs-wrap::after {
+  content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 32px;
+  background: linear-gradient(to left, #fff 40%, transparent);
+  pointer-events: none; z-index: 1;
+}
+.gepf-tabs {
+  display: flex; overflow-x: auto; border-bottom: 2px solid #E8EEF4;
+  scrollbar-width: none; -ms-overflow-style: none;
+}
+.gepf-tabs::-webkit-scrollbar { display: none; }
+.gepf-tab-btn {
+  flex-shrink: 0; padding: 0 18px; height: 46px; font-size: .78rem; font-weight: 600;
+  color: #6B7280; background: none; border: none; cursor: pointer;
+  border-bottom: 2px solid transparent; margin-bottom: -2px;
+  font-family: inherit; white-space: nowrap;
+  display: flex; align-items: center;
+  transition: color .15s;
+}
+.gepf-tab-btn:hover { color: var(--gepf-accent); background: var(--gepf-pale); border-radius: 6px 6px 0 0; }
+.gepf-tab-btn.active { color: var(--gepf-accent); border-bottom-color: var(--gepf-accent); font-weight: 700; }
+.gepf-tab-btn:focus-visible { outline: 3px solid var(--gepf-accent); outline-offset: -2px; border-radius: 4px 4px 0 0; }
+.gepf-panel { display: none; padding: 20px 0 4px; animation: gepf-fadein .15s ease; }
+.gepf-panel.active { display: block; }
+@keyframes gepf-fadein { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+/* ── Result boxes ── */
+.gepf-result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.gepf-result-box {
+  background: #F8FAFC; border: 1px solid #E4E9F0;
+  border-radius: 10px; padding: 14px 12px; text-align: center;
+  transition: box-shadow .15s, border-color .15s, transform .1s;
+}
+.gepf-result-box:hover {
+  box-shadow: 0 3px 14px rgba(29,78,216,.09); border-color: var(--gepf-border);
+  transform: translateY(-1px);
+}
+.gepf-result-box .gepf-num {
+  font-size: 1.22rem; font-weight: 800; color: var(--gepf-accent); line-height: 1.2;
+}
+.gepf-result-box .gepf-lbl {
+  font-size: .68rem; color: #475569; font-weight: 600;
+  margin-top: 4px; text-transform: uppercase; letter-spacing: .04em; line-height: 1.35;
+}
+.gepf-result-box.gepf-highlight {
+  background: linear-gradient(135deg, var(--gepf-pale), #DBEAFE);
+  border-color: #93C5FD; grid-column: 1 / -1;
+  box-shadow: 0 0 0 1px var(--gepf-border), 0 4px 20px rgba(29,78,216,.1);
+  padding: 20px 16px;
+}
+.gepf-result-box.gepf-highlight .gepf-num { font-size: 2.1rem; color: var(--gepf-dark); }
+.gepf-result-box.gepf-highlight .gepf-lbl { font-size: .73rem; color: var(--gepf-dark); font-weight: 700; }
+
+/* ── Comparison grid ── */
+.gepf-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+.gepf-compare-col {
+  border: 1.5px solid #E4E9F0; border-radius: 10px; padding: 18px; background: #F8FAFC;
+}
+.gepf-compare-col.gepf-winner {
+  border-color: #93C5FD; background: var(--gepf-pale);
+  box-shadow: 0 2px 12px rgba(29,78,216,.08);
+}
+.gepf-compare-col h4 {
+  font-size: .73rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .07em; color: var(--gepf-dark); margin-bottom: 14px;
+  padding-bottom: 8px; border-bottom: 1px solid rgba(29,78,216,.1);
+}
+.gepf-compare-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-size: .83rem; padding: 6px 0; border-bottom: 1px solid rgba(0,0,0,.05);
+  gap: 8px;
+}
+.gepf-compare-row:last-child { border-bottom: none; }
+.gepf-compare-row .gepf-val { font-weight: 700; color: var(--gepf-accent); flex-shrink: 0; }
+.gepf-diff-pill {
+  display: inline-flex; align-items: center; padding: 4px 11px; border-radius: 20px;
+  font-size: .72rem; font-weight: 700; margin-top: 10px; gap: 4px;
+  background: #DBEAFE; color: var(--gepf-dark);
+}
+
+/* ── Callout / info boxes ── */
+.gepf-callout {
+  border-radius: 8px; padding: 13px 15px; font-size: .8rem;
+  line-height: 1.65; margin-top: 14px;
+}
+.gepf-callout-info { background: var(--gepf-pale); border:1px solid var(--gepf-accent); color: var(--gepf-text);border-radius:8px}
+.gepf-callout-warn { background: #FEF3C7; border:1px solid #D97706; color: #78350F;border-radius:8px}
+.gepf-callout-success { background: #F0FDF4; border:1px solid #16A34A; color: #14532D;border-radius:8px}
+.gepf-callout strong { font-weight: 700; }
+
+/* ── Progress bars ── */
+.gepf-bar-wrap { background: #e2e8f0; border-radius: 4px; height: 8px; overflow: hidden; margin-top: 5px; }
+.gepf-bar { height: 8px; border-radius: 4px; background: var(--gepf-accent); transition: width .5s ease; }
+
+/* ── History table ── */
+.gepf-table { width: 100%; border-collapse: collapse; font-size: .8rem; }
+.gepf-table th {
+  font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
+  color: #6B7280; padding: 7px 10px; text-align: left; border-bottom: 2px solid #E4E9F0;
+}
+.gepf-table td { padding: 8px 10px; border-bottom: 1px solid #f1f5f9; }
+.gepf-table tr:hover td { background: #FAFBFF; }
+.gepf-table tr:last-child td { border-bottom: none; }
+.gepf-rate-bar { display: flex; align-items: center; gap: 8px; }
+.gepf-rate-bar span { font-weight: 700; color: var(--gepf-accent); min-width: 40px; }
+
+/* ── Deductions breakdown ── */
+.gepf-deduct-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 0; border-bottom: 1px solid #F1F5F9; font-size: .84rem;
+}
+.gepf-deduct-row:last-child { border-bottom: none; }
+.gepf-deduct-lbl { color: #374151; }
+.gepf-deduct-amt { font-weight: 700; color: var(--gepf-accent); }
+.gepf-deduct-row.gepf-takehome {
+  background: linear-gradient(135deg, var(--gepf-pale), #DBEAFE);
+  border-radius: 8px; padding: 12px 14px; margin-top: 12px;
+  border: 1px solid var(--gepf-border);
+}
+.gepf-deduct-row.gepf-takehome .gepf-deduct-lbl { color: var(--gepf-dark); font-weight: 700; font-size: .9rem; }
+.gepf-deduct-row.gepf-takehome .gepf-deduct-amt { font-size: 1.2rem; color: var(--gepf-dark); }
+
+/* ── Sidebar ── */
+.gepf-sidebar { position: sticky; top: 20px; }
+.gepf-sidebar .gepf-card + .gepf-card { margin-top: 14px; }
+.gepf-info-card {
+  background: var(--gepf-pale); border: 1px solid var(--gepf-border);
+  border-radius: 9px; padding: 15px; margin-top: 14px;
+}
+.gepf-info-card h4 {
+  font-size: .72rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .06em; color: var(--gepf-dark); margin-bottom: 8px;
+}
+.gepf-info-card p, .gepf-info-card li {
+  font-size: .79rem; color: var(--gepf-text); line-height: 1.65;
+}
+.gepf-info-card ul { padding-left: 16px; margin: 6px 0; }
+.gepf-formula {
+  font-size: .8rem; background: #E8F0FE; border-radius: 6px;
+  padding: 11px 13px; font-family: monospace; color: var(--gepf-dark);
+  margin: 8px 0; line-height: 1.65; border: 1px solid #C7D9FB;
+}
+.gepf-checklist { list-style: none; padding: 0; margin: 8px 0; }
+.gepf-checklist li {
+  display: flex; align-items: flex-start; gap: 8px; font-size: .79rem;
+  color: var(--gepf-text); line-height: 1.5; padding: 4px 0;
+  border-bottom: 1px solid rgba(29,78,216,.06);
+}
+.gepf-checklist li:last-child { border-bottom: none; }
+.gepf-checklist li::before {
+  content: ''; width: 16px; height: 16px; border: 1.5px solid var(--gepf-border);
+  border-radius: 3px; flex-shrink: 0; margin-top: 1px; background: #fff;
+}
+
+/* ── Section dividers ── */
+.gepf-section-title {
+  font-size: .72rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .07em; color: #6B7280; margin: 20px 0 12px;
+  padding-bottom: 7px; border-bottom: 1px solid #E4E9F0;
+  display: flex; align-items: center; gap: 8px;
+}
+
+/* ── SEO section ── */
+.gepf-seo { max-width: 800px; margin: 0 auto; padding: 52px 24px; }
+.gepf-seo h2 { font-size: 1.35rem; font-weight: 800; margin-bottom: 12px; color: #0f172a; }
+.gepf-seo p { font-size: .9rem; color: #374151; line-height: 1.78; margin-bottom: 16px; }
+.gepf-faq { border-bottom: 1px solid #e2e8f0; padding: 14px 0; }
+.gepf-faq summary {
+  font-weight: 700; font-size: .9rem; cursor: pointer; color: #0f172a;
+  list-style: none; display: flex; justify-content: space-between; align-items: center;
+}
+.gepf-faq summary::-webkit-details-marker { display: none; }
+.gepf-faq summary::after { content: '+'; font-size: 1.1rem; color: var(--gepf-accent); font-weight: 400; }
+details[open] .gepf-faq summary::after { content: '−'; }
+.gepf-faq p { margin-top: 10px; font-size: .86rem; color: #374151; line-height: 1.75; }
+
+/* ── Notes / disclaimer ── */
+.gepf-note { font-size: .75rem; color: #64748b; line-height: 1.65; margin-top: 14px; }
+
+/* ── Mobile ── */
+@media (max-width: 900px) {
+  .gepf-main-inner { grid-template-columns: 1fr; }
+  .gepf-sidebar { position: static; }
+  .gepf-row-3 { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 520px) {
+  .gepf-hero { padding: 36px 0 30px; }
+  .gepf-row, .gepf-row-3 { grid-template-columns: 1fr; }
+  .gepf-compare { grid-template-columns: 1fr; }
+  .gepf-result-grid { grid-template-columns: 1fr; }
+  .gepf-result-box.gepf-highlight { grid-column: auto; }
+  .gepf-tab-btn { padding: 0 13px; font-size: .74rem; }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .gepf-btn, .gepf-input, .gepf-select, .gepf-tab-btn, .gepf-result-box,
+  .gepf-bar, .gepf-skip-link, .gepf-panel { transition: none !important; animation: none !important; }
+}
+</style>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script>
+<script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+<script src="/assets/js/lib/auto-email-gate.js?v=fa3f2d98" defer></script>
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How is my GEPF monthly pension calculated?","acceptedAnswer":{"@type":"Answer","text":"Annual Pension = Monthly Salary × 12 × Years of Service × (1/55). If you take the maximum gratuity, your monthly pension = Annual Pension × (2/3) ÷ 12. Example: R45,000/month salary × 12 × 25 years × (1/55) = R295,909/year → monthly pension (after max gratuity) ≈ R16,440/month."}},{"@type":"Question","name":"What is the early retirement penalty?","acceptedAnswer":{"@type":"Answer","text":"Retiring before your normal retirement age (60 or 65) results in a reduction of approximately 0.3% per month before NRA. Retiring at 55 is 60 months early, giving a reduction of up to 18%. However, the exact reduction depends on your conditions of service."}},{"@type":"Question","name":"What does my spouse receive if I die after retirement?","acceptedAnswer":{"@type":"Answer","text":"Your surviving spouse receives 50% of your monthly pension for the rest of their life. Dependent children receive 25% each (up to 3 children), until age 22 — or age 25 if studying full-time. This makes GEPF extremely valuable for estate planning."}},{"@type":"Question","name":"Should I take the gratuity or full annuity?","acceptedAnswer":{"@type":"Answer","text":"The gratuity lump sum is useful for paying off home loans, medical costs, or other lump-sum needs in early retirement. However, taking the gratuity reduces your monthly income for life. Most financial planners recommend taking the gratuity only if you have a specific use for it — not just to invest."}},{"@type":"Question","name":"What happens to my pension if I resign?","acceptedAnswer":{"@type":"Answer","text":"If you resign, you receive a withdrawal benefit equal to your actuarial fund credit. This is taxable under the SARS withdrawal benefit table. It is almost always financially better to preserve this in a preservation fund or retirement annuity rather than cash it out — cashing out destroys the compound growth and future annuity income."}},{"@type":"Question","name":"Does GEPF keep up with inflation?","acceptedAnswer":{"@type":"Answer","text":"GEPF grants annual pension increases to retirees, targeting CPI minus 0.5%. In recent years, increases have ranged from 3% to 5.52%. This provides meaningful protection, though the real purchasing power of your pension slowly erodes if increases fall below actual inflation."}},{"@type":"Question","name":"How do I use the SA GEPF Pension Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The SA GEPF Pension Calculator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the SA GEPF Pension Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the SA GEPF Pension Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for South Africa."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "SA GEPF Pension Calculator",
+  "description": "Calculate your GEPF pension benefits — annuity, gratuity, survivor benefits, resignation vs. preservation, pension growth, home loan eligibility, and deductions. South Africa",
+  "url": "https://afrotools.com/tools/za-gepf/",
+  "inLanguage": "en",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/za-gepf.webp"
+}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/za-gepf/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/za-gepf/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/za-gepf/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/za-gepf/">
+</head>
+<body class="top-level-page-ui-refresh">
+<a class="gepf-skip-link" href="#gepf-main">Skip to calculator</a>
+<afro-navbar></afro-navbar>
+
+<!-- ── Hero ─────────────────────────────────────────────── -->
+<section class="gepf-hero">
+  <div class="gepf-hero-inner">
+    <div class="gepf-breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>SA GEPF</span></div>
+    <h1>SA <em>GEPF Pension</em> Calculator</h1>
+    <p class="gepf-hero-sub">Your government pension. Every rand accounted for. Calculate annuity, gratuity, survivor benefits, resignation impact, inflation protection, home loan eligibility, and your full deductions dashboard.</p>
+    <div class="gepf-badges">
+      <span class="gepf-badge">GEPF Defined Benefit</span>
+      <span class="gepf-badge">South Africa</span>
+      <span class="gepf-badge">GEP Law 1996</span>
+      <span class="gepf-badge">1.2 Million Members</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── Main ──────────────────────────────────────────────── -->
+<main id="gepf-main">
+<section class="gepf-main">
+  <div class="gepf-main-inner">
+
+    <!-- ── Left: calculator ── -->
+    <div class="gepf-calculator">
+
+      <!-- Base inputs card -->
+      <div class="gepf-card">
+        <div class="gepf-card-head"><span class="gepf-card-title">Your Details</span></div>
+        <div class="gepf-card-body">
+          <div class="gepf-row gepf-field">
+            <div>
+              <label class="gepf-label" for="g-salary">Monthly Pensionable Salary (R)</label>
+              <input type="number" id="g-salary" class="gepf-input" value="45000" min="0" step="1000" autocomplete="off" aria-describedby="g-salary-hint">
+              <span id="g-salary-hint" style="font-size:.7rem;color:#6B7280;margin-top:3px;display:block">e.g. R 45,000/month = R 540,000/year</span>
+            </div>
+            <div>
+              <label class="gepf-label" for="g-years">Years of Pensionable Service</label>
+              <input type="number" id="g-years" class="gepf-input" value="25" min="0" max="45" step="1" autocomplete="off">
+            </div>
+          </div>
+          <div class="gepf-row gepf-field">
+            <div>
+              <label class="gepf-label" for="g-age">Current Age</label>
+              <input type="number" id="g-age" class="gepf-input" value="45" min="20" max="75" step="1" autocomplete="off">
+            </div>
+            <div>
+              <label class="gepf-label" for="g-rettype">Retirement Type</label>
+              <select id="g-rettype" class="gepf-select">
+                <option value="normal">Normal Retirement (60/65)</option>
+                <option value="early">Early Retirement (55+)</option>
+                <option value="ill-health">Ill-Health Retirement</option>
+              </select>
+            </div>
+          </div>
+          <div class="gepf-row gepf-field">
+            <div>
+              <label class="gepf-label" for="g-gratuity">Gratuity Option</label>
+              <select id="g-gratuity" class="gepf-select">
+                <option value="max">Standard GEPF Gratuity Estimate</option>
+                <option value="none">No Gratuity (Full Annuity)</option>
+              </select>
+            </div>
+            <div>
+              <label class="gepf-label" aria-hidden="true">&nbsp;</label>
+              <button type="button" id="gepf-calc-btn" class="gepf-btn" onclick="gepfCalculateAll()">
+                <span class="gepf-btn-spinner" aria-hidden="true"></span>
+                <span class="gepf-btn-text">Calculate Benefits</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab bar -->
+      <div class="gepf-card" id="gepf-result-area" style="display:none">
+        <div class="gepf-card-head" style="padding-bottom:0; background:#fff;">
+          <div class="gepf-tabs-wrap">
+            <div class="gepf-tabs" id="gepf-tabs" role="tablist" aria-label="GEPF Calculator sections">
+              <button type="button" class="gepf-tab-btn active" role="tab" id="gepf-tab-pension"    aria-selected="true"  aria-controls="gepf-panel-pension"    onclick="gepfTab('pension',this)">My Pension</button>
+              <button type="button" class="gepf-tab-btn"        role="tab" id="gepf-tab-compare"    aria-selected="false" aria-controls="gepf-panel-compare"    onclick="gepfTab('compare',this)">Early vs Normal</button>
+              <button type="button" class="gepf-tab-btn"        role="tab" id="gepf-tab-survivor"   aria-selected="false" aria-controls="gepf-panel-survivor"   onclick="gepfTab('survivor',this)">Survivor Benefits</button>
+              <button type="button" class="gepf-tab-btn"        role="tab" id="gepf-tab-resign"     aria-selected="false" aria-controls="gepf-panel-resign"     onclick="gepfTab('resign',this)">Resign vs Preserve</button>
+              <button type="button" class="gepf-tab-btn"        role="tab" id="gepf-tab-growth"     aria-selected="false" aria-controls="gepf-panel-growth"     onclick="gepfTab('growth',this)">Pension Growth</button>
+              <button type="button" class="gepf-tab-btn"        role="tab" id="gepf-tab-deductions" aria-selected="false" aria-controls="gepf-panel-deductions" onclick="gepfTab('deductions',this)">My Deductions</button>
+              <button type="button" class="gepf-tab-btn"        role="tab" id="gepf-tab-homeloan"   aria-selected="false" aria-controls="gepf-panel-homeloan"   onclick="gepfTab('homeloan',this)">Home Loan</button>
+            </div>
+          </div>
+        </div>
+        <div class="gepf-card-body">
+
+          <!-- ── TAB 1: My Pension ── -->
+          <div id="gepf-panel-pension" class="gepf-panel active" role="tabpanel" aria-labelledby="gepf-tab-pension" tabindex="0">
+            <div class="gepf-result-grid" id="gepf-pension-grid"></div>
+
+            <!-- Prior pension funds (optional) -->
+            <div class="gepf-section-title" style="margin-top:22px">Prior Private Sector Pension (Optional)</div>
+            <div class="gepf-row gepf-field">
+              <div>
+                <label class="gepf-label" for="g-prior-fund">Prior Fund Current Value (R)</label>
+                <input type="number" id="g-prior-fund" class="gepf-input" value="0" min="0" step="10000" autocomplete="off" oninput="gepfUpdateCombined()">
+              </div>
+              <div id="gepf-combined-result" style="display:flex;align-items:flex-end;padding-bottom:14px">
+                <div class="gepf-callout gepf-callout-info" style="width:100%;margin-top:0" id="gepf-combined-box">
+                  Enter a prior fund value above to see combined retirement income.
+                </div>
+              </div>
+            </div>
+
+            <p class="gepf-note" id="gepf-pension-note"></p>
+            <div id="gepf-pension-actions"></div>
+          </div>
+
+          <!-- ── TAB 2: Early vs Normal ── -->
+          <div id="gepf-panel-compare" class="gepf-panel" role="tabpanel" aria-labelledby="gepf-tab-compare" tabindex="0">
+            <div class="gepf-row gepf-field" style="margin-bottom:8px">
+              <div>
+                <label class="gepf-label" for="g-early-age">Compare: Retire at age</label>
+                <select id="g-early-age" class="gepf-select" onchange="gepfUpdateComparison()">
+                  <option value="55" selected>55 (Early)</option>
+                  <option value="56">56</option>
+                  <option value="57">57</option>
+                  <option value="58">58</option>
+                  <option value="59">59</option>
+                </select>
+              </div>
+              <div>
+                <label class="gepf-label" for="g-normal-age">vs Normal Retirement at</label>
+                <select id="g-normal-age" class="gepf-select" onchange="gepfUpdateComparison()">
+                  <option value="60" selected>60 (Normal)</option>
+                  <option value="65">65</option>
+                </select>
+              </div>
+            </div>
+            <div class="gepf-compare" id="gepf-compare-grid"></div>
+            <div id="gepf-breakeven-box"></div>
+            <div class="gepf-callout gepf-callout-info" style="margin-top:14px">
+              <strong>Health note:</strong> The break-even calculation assumes average life expectancy.
+              If you have health concerns, retiring earlier may be worthwhile despite the reduced pension.
+            </div>
+          </div>
+
+          <!-- ── TAB 3: Survivor Benefits ── -->
+          <div id="gepf-panel-survivor" class="gepf-panel" role="tabpanel" aria-labelledby="gepf-tab-survivor" tabindex="0">
+            <div class="gepf-row gepf-field">
+              <div>
+                <label class="gepf-label" for="g-children">Number of Dependent Children (max 3)</label>
+                <select id="g-children" class="gepf-select" onchange="gepfUpdateSurvivor()">
+                  <option value="0">0 children</option>
+                  <option value="1">1 child</option>
+                  <option value="2">2 children</option>
+                  <option value="3">3 children</option>
+                </select>
+              </div>
+              <div>
+                <label class="gepf-label" for="g-survivor-status">Benefit Scenario</label>
+                <select id="g-survivor-status" class="gepf-select" onchange="gepfUpdateSurvivor()">
+                  <option value="post-retirement">Post-Retirement Death</option>
+                  <option value="in-service">In-Service Death</option>
+                </select>
+              </div>
+            </div>
+            <div id="gepf-survivor-grid" class="gepf-result-grid"></div>
+            <div id="gepf-survivor-note" class="gepf-callout gepf-callout-info" style="margin-top:14px"></div>
+            <div class="gepf-section-title">GEPF Beneficiary Checklist</div>
+            <ul class="gepf-checklist">
+              <li>I have submitted a beneficiary nomination form to GEPF (Z 864)</li>
+              <li>My nomination reflects my current marital/family status (post-divorce/remarriage)</li>
+              <li>My spouse is aware of the 50% survivor pension entitlement</li>
+              <li>Children under 22 are listed as nominated dependants</li>
+              <li>Full-time student dependants up to age 25 are registered with GEPF</li>
+              <li>I have reviewed nominations within the last 2 years</li>
+            </ul>
+          </div>
+
+          <!-- ── TAB 4: Resign vs Preserve ── -->
+          <div id="gepf-panel-resign" class="gepf-panel" role="tabpanel" aria-labelledby="gepf-tab-resign" tabindex="0">
+            <div id="gepf-resign-grid" class="gepf-result-grid"></div>
+            <div id="gepf-resign-compare" class="gepf-compare" style="margin-top:18px"></div>
+            <div id="gepf-resign-callout"></div>
+          </div>
+
+          <!-- ── TAB 5: Pension Growth ── -->
+          <div id="gepf-panel-growth" class="gepf-panel" role="tabpanel" aria-labelledby="gepf-tab-growth" tabindex="0">
+            <div id="gepf-growth-grid" class="gepf-result-grid"></div>
+            <div class="gepf-section-title">GEPF Historical Annual Increases</div>
+            <table class="gepf-table" id="gepf-history-table">
+              <thead><tr><th>Year</th><th>Increase Granted</th><th>Rate</th></tr></thead>
+              <tbody></tbody>
+            </table>
+            <div class="gepf-callout gepf-callout-info" style="margin-top:14px">
+              <strong>Assumption:</strong> Future increases projected at 5.0%/year (GEPF policy: CPI&nbsp;&minus;&nbsp;0.5%, assuming CPI&nbsp;≈&nbsp;5.5%).
+              Inflation modelled at 5.5% CPI. Real purchasing power is in today's rands.
+            </div>
+          </div>
+
+          <!-- ── TAB 6: My Deductions ── -->
+          <div id="gepf-panel-deductions" class="gepf-panel" role="tabpanel" aria-labelledby="gepf-tab-deductions" tabindex="0">
+            <div class="gepf-row gepf-field">
+              <div>
+                <label class="gepf-label" for="g-gems">GEMS Medical Scheme Option</label>
+                <select id="g-gems" class="gepf-select" onchange="gepfUpdateDeductions()">
+                  <option value="None">None / Private scheme</option>
+                  <option value="Coral">Coral &mdash; ~R 1,700/mo</option>
+                  <option value="Beryl">Beryl &mdash; ~R 2,900/mo</option>
+                  <option value="Topaz">Topaz &mdash; ~R 2,500/mo</option>
+                  <option value="Emerald Value">Emerald Value &mdash; ~R 3,200/mo</option>
+                  <option value="Ruby">Ruby &mdash; ~R 4,100/mo</option>
+                  <option value="Sapphire">Sapphire &mdash; ~R 5,800/mo</option>
+                </select>
+              </div>
+              <div>
+                <label class="gepf-label" for="g-pensionable">Pensionable Salary (if different)</label>
+                <input type="number" id="g-pensionable" class="gepf-input" placeholder="Leave blank = same as salary" min="0" step="1000" autocomplete="off" oninput="gepfUpdateDeductions()">
+              </div>
+            </div>
+            <div id="gepf-deduct-breakdown"></div>
+            <div class="gepf-callout gepf-callout-info" style="margin-top:14px">
+              <strong>Note:</strong> PAYE is an estimate using SARS tax tables effective 1 March 2026 (2027 tax year), with primary rebate only.
+              Actual tax may differ with medical credits, retirement deductions, and other allowances.
+              GEMS contributions shown are approximate 2025 member rates.
+            </div>
+          </div>
+
+          <!-- ── TAB 7: Home Loan ── -->
+          <div id="gepf-panel-homeloan" class="gepf-panel" role="tabpanel" aria-labelledby="gepf-tab-homeloan" tabindex="0">
+            <div class="gepf-row gepf-field">
+              <div>
+                <label class="gepf-label" for="g-loan-amount">Loan Amount Required (R)</label>
+                <input type="number" id="g-loan-amount" class="gepf-input" placeholder="Leave blank for maximum" min="0" step="50000" autocomplete="off" oninput="gepfUpdateHomeLoan()">
+              </div>
+              <div id="gepf-loan-max-box" style="display:flex;align-items:flex-end;padding-bottom:14px">
+                <div class="gepf-callout gepf-callout-info" style="margin-top:0;width:100%" id="gepf-loan-max-text"></div>
+              </div>
+            </div>
+            <div id="gepf-loan-grid" class="gepf-result-grid"></div>
+            <div id="gepf-loan-impact" class="gepf-callout gepf-callout-warn" style="margin-top:14px"></div>
+            <div class="gepf-callout gepf-callout-info" style="margin-top:10px">
+              <strong>How GEPF housing loans work:</strong> The GEPF Housing Loan Guarantee allows approved banks to lend
+              against your pension benefit. Loan rate is typically prime (currently ~11.25%). Participating banks include
+              Standard Bank, ABSA, Nedbank, and FNB. Apply through your employer's HR department.
+            </div>
+          </div>
+
+        </div><!-- /card-body -->
+      </div><!-- /result card -->
+    </div><!-- /calculator -->
+
+    <!-- ── Sidebar ── -->
+    <div class="gepf-sidebar">
+      <div class="gepf-card">
+        <div class="gepf-card-head"><span class="gepf-card-title">GEPF Formula</span></div>
+        <div class="gepf-card-body">
+          <p style="font-size:.78rem;color:#475569;line-height:1.65;margin-bottom:10px">
+            GEPF is a <strong>defined benefit</strong> fund — your pension is guaranteed by formula, not investment performance.
+          </p>
+          <div class="gepf-formula">
+            Annual Pension<br>
+            = Salary × Service Years × (1/55)<br><br>
+            Monthly Pension<br>
+            = Annual Pension × (2/3) ÷ 12<br>
+            (if max gratuity taken)<br><br>
+            Gratuity (lump sum)<br>
+            = Annual Pension × (1/3) × ~12
+          </div>
+          <p style="font-size:.76rem;color:#64748b;margin-top:8px;line-height:1.6">
+            Accrual factor is 1/55 (1.818%) per year. You need ~36.6 years for a 2/3 replacement rate.
+          </p>
+        </div>
+      </div>
+
+      <div class="gepf-info-card">
+        <h4>Who Qualifies?</h4>
+        <ul>
+          <li>National &amp; provincial government employees</li>
+          <li>Public school teachers (via ELRC)</li>
+          <li>South African Police Service members</li>
+          <li>Correctional services staff</li>
+          <li>Certain public entities &amp; parastatals</li>
+        </ul>
+      </div>
+
+      <div class="gepf-info-card">
+        <h4>Contributions</h4>
+        <ul>
+          <li><strong>Employee:</strong> 7.5% of pensionable salary</li>
+          <li><strong>Employer:</strong> 13% of pensionable salary</li>
+          <li><strong>Total:</strong> 20.5% — one of Africa's highest</li>
+        </ul>
+      </div>
+
+      <div class="gepf-info-card">
+        <h4>Retirement Lump Sum Tax</h4>
+        <ul>
+          <li>First R550,000 — <strong>0%</strong></li>
+          <li>R550,001 – R770,000 — <strong>18%</strong></li>
+          <li>R770,001 – R1,155,000 — <strong>27%</strong></li>
+          <li>Above R1,155,000 — <strong>36%</strong></li>
+        </ul>
+        <p style="margin-top:8px">Monthly annuity is taxed as income (PAYE).</p>
+      </div>
+
+      <div class="gepf-info-card" style="margin-top:16px">
+        <h4>Key Retirement Ages</h4>
+        <ul>
+          <li>Normal: <strong>60</strong> (some conditions: 65)</li>
+          <li>Early (voluntary): <strong>55</strong> with 10+ years</li>
+          <li>Ill-health: any age, no reduction</li>
+        </ul>
+      </div>
+    </div><!-- /sidebar -->
+
+  </div>
+</section>
+
+<!-- ── SEO Content ──────────────────────────────────────── -->
+<section class="gepf-seo">
+  <h2>Understanding GEPF in South Africa</h2>
+  <p>The Government Employees Pension Fund (GEPF) is the largest pension fund in Africa and one of the largest defined benefit funds in the world, with over 1.2 million active members and assets exceeding R2 trillion. It covers employees of the South African national and provincial government — teachers, police, correctional services staff, and numerous public entities.</p>
+  <p>Unlike private retirement funds, GEPF is a <strong>defined benefit</strong> scheme: your pension is determined by a formula (salary × service × 1/55), not by how your contributions were invested. This means the government bears the investment risk, not you. Your benefit is guaranteed regardless of market conditions.</p>
+  <p>At retirement, members can commute (convert) up to one-third of the annual pension into a tax-advantaged lump sum (gratuity). The remaining two-thirds is paid as a monthly annuity for life. GEPF also grants annual pension increases, targeting CPI minus 0.5%, which provides meaningful inflation protection over a multi-decade retirement.</p>
+  <p>The GEPF is one of the most comprehensive pension arrangements in Africa. It includes survivor benefits (50% of pension to spouse for life), children's pensions until age 22, housing loan guarantees, and the ability to consolidate prior private-sector pension funds into your retirement picture.</p>
+
+  <h2>Frequently Asked Questions</h2>
+  <details class="gepf-faq"><summary>How is my GEPF monthly pension calculated?</summary>
+    <p>Annual Pension = Monthly Salary × 12 × Years of Service × (1/55). If you take the maximum gratuity, your monthly pension = Annual Pension × (2/3) ÷ 12. Example: R45,000/month salary × 12 × 25 years × (1/55) = R295,909/year → monthly pension (after max gratuity) ≈ R16,440/month.</p></details>
+  <details class="gepf-faq"><summary>What is the early retirement penalty?</summary>
+    <p>Retiring before your normal retirement age (60 or 65) results in a reduction of approximately 0.3% per month before NRA. Retiring at 55 is 60 months early, giving a reduction of up to 18%. However, the exact reduction depends on your conditions of service.</p></details>
+  <details class="gepf-faq"><summary>What does my spouse receive if I die after retirement?</summary>
+    <p>Your surviving spouse receives 50% of your monthly pension for the rest of their life. Dependent children receive 25% each (up to 3 children), until age 22 — or age 25 if studying full-time. This makes GEPF extremely valuable for estate planning.</p></details>
+  <details class="gepf-faq"><summary>Should I take the gratuity or full annuity?</summary>
+    <p>The gratuity lump sum is useful for paying off home loans, medical costs, or other lump-sum needs in early retirement. However, taking the gratuity reduces your monthly income for life. Most financial planners recommend taking the gratuity only if you have a specific use for it — not just to invest.</p></details>
+  <details class="gepf-faq"><summary>What happens to my pension if I resign?</summary>
+    <p>If you resign, you receive a withdrawal benefit equal to your actuarial fund credit. This is taxable under the SARS withdrawal benefit table. It is almost always financially better to preserve this in a preservation fund or retirement annuity rather than cash it out — cashing out destroys the compound growth and future annuity income.</p></details>
+  <details class="gepf-faq"><summary>Does GEPF keep up with inflation?</summary>
+    <p>GEPF grants annual pension increases to retirees, targeting CPI minus 0.5%. In recent years, increases have ranged from 3% to 5.52%. This provides meaningful protection, though the real purchasing power of your pension slowly erodes if increases fall below actual inflation.</p></details>
+</section>
+
+<section class="df-upgrade" data-df-upgrade="za-gepf">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Practical workflow</span>
+      <h2>SA GEPF Pension Calculator: quick guide</h2>
+      <p>Not sure how to get the most from the SA GEPF Pension Calculator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for South Africa.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the SA GEPF Pension Calculator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
+    </div>
+    <form class="df-form" data-df-form="za-gepf">
+      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
+      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
+      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
+      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="za-gepf" data-df-base="SA GEPF Pension Calculator — enter your details above to see your result." aria-live="polite">SA GEPF Pension Calculator — enter your details above to see your result.</output>
+      <div class="df-actions"><button type="button" data-df-copy="za-gepf">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="za-gepf-faq-title">
+  <h2 id="za-gepf-faq-title">SA GEPF Pension Calculator FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the SA GEPF Pension Calculator?</summary><p>Enter your amounts, rates and dates in the fields above. The SA GEPF Pension Calculator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the SA GEPF Pension Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the SA GEPF Pension Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for South Africa.</p></details></div>
+</section>
+</main>
+<afro-related-tools category="financial" current="za-gepf" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Tracker" data-category="financial" data-icon="AA" data-desc="Compare petrol, diesel, and LPG prices across 54 African countries, then estimate generator fuel costs in local currency">AfroFuel — African Fuel Price Tracker</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<!-- ── Engine + Controller ─────────────────────────────── -->
+<script src="/engines/za-gepf-engine.js?v=efae7836"></script>
+<script>
+var _gepfData = {};
+
+// ── Tab switching (ARIA-compliant) ────────────────────────
+function gepfTab(id, btn) {
+  document.querySelectorAll('.gepf-panel').forEach(function(p) {
+    p.classList.remove('active');
+    p.setAttribute('aria-hidden', 'true');
+  });
+  document.querySelectorAll('.gepf-tab-btn').forEach(function(b) {
+    b.classList.remove('active');
+    b.setAttribute('aria-selected', 'false');
+  });
+  var panel = document.getElementById('gepf-panel-' + id);
+  panel.classList.add('active');
+  panel.removeAttribute('aria-hidden');
+  btn = btn || (typeof event !== 'undefined' && event ? event.target : null);
+  btn.classList.add('active');
+  btn.setAttribute('aria-selected', 'true');
+}
+
+// ── Master calculate ──────────────────────────────────────
+function gepfCalculateAll() {
+  if (typeof GEPFEngine === 'undefined') {
+    setTimeout(gepfCalculateAll, 200);
+    return;
+  }
+  // Loading state — must show before calculation to be visible
+  var btn = document.getElementById('gepf-calc-btn');
+  if (btn) { btn.classList.add('gepf-loading'); btn.disabled = true; }
+
+  var salary      = +document.getElementById('g-salary').value  || 0;
+  var years       = +document.getElementById('g-years').value   || 0;
+  var age         = +document.getElementById('g-age').value     || 45;
+  var retType     = document.getElementById('g-rettype').value;
+  var gratuityOpt = document.getElementById('g-gratuity').value;
+
+  // annualSalary used in GEPF pension formula; salary (monthly) used for deductions
+  _gepfData = { salary: salary, annualSalary: salary * 12, years: years, age: age, retType: retType, gratuityOpt: gratuityOpt };
+
+  // Defer render by one frame so the loading state paints before JS blocks the thread
+  setTimeout(function() {
+    if (btn) { btn.classList.remove('gepf-loading'); btn.disabled = false; }
+    document.getElementById('gepf-result-area').style.display = 'block';
+    document.getElementById('gepf-result-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    gepfRenderPension();
+    gepfUpdateComparison();
+    gepfUpdateSurvivor();
+    gepfRenderResignation();
+    gepfRenderGrowth();
+    gepfUpdateDeductions();
+    gepfUpdateHomeLoan();
+    gepfUpdateCombined();
+  }, 16);
+}
+
+// ── Tab 1: My Pension ─────────────────────────────────────
+function gepfRenderPension() {
+  var E = GEPFEngine;
+  var d = _gepfData;
+  var r = E.calcCore({ salary: d.annualSalary, years: d.years, retType: d.retType, gratuityOpt: d.gratuityOpt, currentAge: d.age });
+
+  var html = '';
+  html += box('highlight', E.fmt(r.monthlyPension) + '/mo', 'Monthly Pension (After Gratuity)');
+  html += box('', E.fmt(r.annuityAnnual) + '/yr', 'Annual Annuity');
+  if (r.gratuityLump > 0) html += box('', E.fmt(r.gratuityLump), 'Gratuity (Tax-Advantaged Lump Sum)');
+  html += box('', r.replRate.toFixed(0) + '%', 'Replacement Rate');
+  html += box('', E.fmt(r.annualPension) + '/yr', 'Full Pension Before Commutation');
+  html += box('', d.years + ' yrs', 'Pensionable Service');
+  html += box('', E.fmt(r.empContrib) + '/mo', 'Your Contribution (7.5%)');
+  html += box('', E.fmt(r.erContrib) + '/mo', 'Employer Contribution (13%)');
+
+  document.getElementById('gepf-pension-grid').innerHTML = html;
+
+  var note = '<strong>Note:</strong> This estimate uses the GEPF formula (1/55 accrual, monthly salary basis). ' +
+    'Gratuity commutation factor simplified as ×12. Actual benefits depend on your specific conditions of service and GEPF actuarial calculations.';
+  if (r.reductionPct > 0) note += ' Early retirement reduction of ' + r.reductionPct.toFixed(1) + '% applied.';
+  document.getElementById('gepf-pension-note').innerHTML = note;
+
+  // Store for survivor/growth
+  _gepfData.annualPension  = r.annualPension;
+  _gepfData.monthlyPension = r.monthlyPension;
+
+  // Actions
+  var actions = document.getElementById('gepf-pension-actions');
+  if (!actions.querySelector('save-result-button')) {
+    actions.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap';
+    actions.innerHTML = '<save-result-button tool-slug="za-gepf" tool-name="South Africa GEPF Calculator"></save-result-button>' +
+      '<share-result-button tool-name="South Africa GEPF Calculator" tool-slug="za-gepf"></share-result-button>';
+  }
+}
+
+// ── Tab 2: Early vs Normal ────────────────────────────────
+function gepfUpdateComparison() {
+  if (!_gepfData.salary) return;
+  var E = GEPFEngine;
+  var d = _gepfData;
+  var earlyAge  = +document.getElementById('g-early-age').value  || 55;
+  var normalAge = +document.getElementById('g-normal-age').value || 60;
+
+  var r = E.calcComparison({ salary: d.annualSalary, currentAge: d.age, currentYears: d.years, earlyAge: earlyAge, normalAge: normalAge });
+  var html = '';
+
+  // Early column
+  html += '<div class="gepf-compare-col">';
+  html += '<h4>Retire at ' + earlyAge + ' (Early)</h4>';
+  html += cRow('Service at retirement', r.early.years.toFixed(0) + ' years');
+  html += cRow('Early retirement reduction', r.early.reductionPct.toFixed(1) + '%');
+  html += cRow('Monthly pension', E.fmt(r.early.monthly) + '/mo');
+  html += cRow('Gratuity (lump sum)', E.fmt(r.early.gratuity));
+  html += '</div>';
+
+  // Normal column
+  html += '<div class="gepf-compare-col gepf-winner">';
+  html += '<h4>Retire at ' + normalAge + ' (Normal)</h4>';
+  html += cRow('Service at retirement', r.normal.years.toFixed(0) + ' years');
+  html += cRow('Early retirement reduction', r.normal.reductionPct.toFixed(1) + '%');
+  html += cRow('Monthly pension', E.fmt(r.normal.monthly) + '/mo');
+  html += cRow('Gratuity (lump sum)', E.fmt(r.normal.gratuity));
+  html += '</div>';
+
+  document.getElementById('gepf-compare-grid').innerHTML = html;
+
+  var beHtml = '';
+  if (r.monthlyDiff > 0) {
+    beHtml += '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">';
+    beHtml += '<span class="gepf-diff-pill">Gratuity: ' + E.fmt(r.gratuityDiff) + ' more at ' + normalAge + '</span>';
+    beHtml += '<span class="gepf-diff-pill">Monthly: ' + E.fmt(r.monthlyDiff) + '/mo more at ' + normalAge + '</span>';
+    if (r.breakEvenAge) {
+      beHtml += '<span class="gepf-diff-pill">Break-even age: ' + r.breakEvenAge + '</span>';
+    }
+    beHtml += '</div>';
+    if (r.breakEvenAge) {
+      beHtml += '<div class="gepf-callout gepf-callout-info" style="margin-top:12px">' +
+        'If you live past age <strong>' + r.breakEvenAge + '</strong>, retiring at ' + normalAge +
+        ' gives you more total lifetime pension income. Before that age, retiring at ' + earlyAge + ' pays out more in total.' +
+        '</div>';
+    }
+  }
+  document.getElementById('gepf-breakeven-box').innerHTML = beHtml;
+}
+
+// ── Tab 3: Survivor Benefits ──────────────────────────────
+function gepfUpdateSurvivor() {
+  if (!_gepfData.annualPension) return;
+  var E = GEPFEngine;
+  var children = +document.getElementById('g-children').value || 0;
+  var status   = document.getElementById('g-survivor-status').value;
+  var r = E.calcSurvivor({ annualPension: _gepfData.annualPension, numChildren: children, status: status });
+
+  var html = '';
+  html += box('highlight', E.fmt(r.spouseMonthly) + '/mo', 'Spouse Pension (50% for Life)');
+  if (r.numChildren > 0) {
+    html += box('', E.fmt(r.childEachMonthly) + '/mo', 'Each Child (25%, until 22)');
+    html += box('', E.fmt(r.totalChildMonthly) + '/mo', 'Total Children\'s Pension');
+  }
+  html += box('', E.fmt(r.totalDependantMonthly) + '/mo', 'Total Dependant Pension');
+
+  document.getElementById('gepf-survivor-grid').innerHTML = html;
+
+  var noteHtml = '';
+  if (status === 'in-service') {
+    noteHtml = '<strong>In-service death:</strong> Your spouse receives 50% of your accrued pension as a monthly pension for life. ' +
+      'A funeral benefit and orphan\'s pension for children under 22 are also payable.';
+  } else {
+    noteHtml = '<strong>Post-retirement death:</strong> Your spouse receives 50% of your pension for life. ' +
+      'Dependent children receive 25% each (max 3) until age 22 — or 25 if studying full-time.';
+  }
+  document.getElementById('gepf-survivor-note').innerHTML = noteHtml;
+}
+
+// ── Tab 4: Resign vs Preserve ─────────────────────────────
+function gepfRenderResignation() {
+  if (!_gepfData.salary) return;
+  var E = GEPFEngine;
+  var d = _gepfData;
+  var r = E.calcResignation({ salary: d.annualSalary, years: d.years, currentAge: d.age });
+
+  var grid = '';
+  grid += box('', E.fmt(r.fundCredit), 'Estimated Fund Credit');
+  grid += box('', E.fmt(r.tax), 'Tax on Withdrawal');
+  grid += box('highlight', E.fmt(r.netLumpSum), 'Net Cash if You Resign Today');
+  grid += box('', E.fmt(r.preservedValue), 'Preserved Value at 60 (7% growth)');
+
+  document.getElementById('gepf-resign-grid').innerHTML = grid;
+
+  var cmp = '';
+  cmp += '<div class="gepf-compare-col">';
+  cmp += '<h4>Option A — Cash Out</h4>';
+  cmp += cRow('Fund credit', E.fmt(r.fundCredit));
+  cmp += cRow('Tax deducted', E.fmt(r.tax));
+  cmp += cRow('Net lump sum', E.fmt(r.netLumpSum));
+  cmp += cRow('Monthly retirement income', '—');
+  cmp += '<span class="gepf-diff-pill" style="background:#FEE2E2;color:#991B1B">Not recommended</span>';
+  cmp += '</div>';
+
+  cmp += '<div class="gepf-compare-col gepf-winner">';
+  cmp += '<h4>Option B — Preserve</h4>';
+  cmp += cRow('Fund credit transferred', E.fmt(r.fundCredit));
+  cmp += cRow('Value at 60', E.fmt(r.preservedValue));
+  cmp += cRow('Monthly drawdown (4%)', E.fmt(r.preservedMonthly) + '/mo');
+  cmp += cRow('GEPF pension if you stayed', E.fmt(r.futurePensionMonthly) + '/mo');
+  cmp += '<span class="gepf-diff-pill">Recommended</span>';
+  cmp += '</div>';
+
+  document.getElementById('gepf-resign-compare').innerHTML = cmp;
+
+  var callout = '';
+  if (r.incomeGap > 0) {
+    callout = '<div class="gepf-callout gepf-callout-warn" style="margin-top:14px">' +
+      '<strong>Cost of leaving GEPF:</strong> By resigning and preserving, rather than staying, you lose approximately ' +
+      '<strong>' + E.fmt(r.incomeGap) + '/month</strong> in retirement income — ' +
+      'equivalent to <strong>' + E.fmt(r.lostOver20Yrs) + '</strong> over 20 years of retirement. ' +
+      'Most financial advisors strongly recommend staying in GEPF if possible. ' +
+      'If you must leave, always preserve — never cash out.' +
+      '</div>';
+  }
+  document.getElementById('gepf-resign-callout').innerHTML = callout;
+}
+
+// ── Tab 5: Pension Growth ──────────────────────────────────
+function gepfRenderGrowth() {
+  if (!_gepfData.monthlyPension) return;
+  var E = GEPFEngine;
+  var r = E.calcInflation({ monthlyPension: _gepfData.monthlyPension });
+
+  var grid = '';
+  grid += box('', E.fmt(r.current) + '/mo', 'Current Monthly Pension');
+  grid += box('', E.fmt(r.in10Nominal) + '/mo', 'Nominal Value in 10 Years');
+  grid += box('', E.fmt(r.in20Nominal) + '/mo', 'Nominal Value in 20 Years');
+  grid += box('highlight', E.fmt(r.in10Real) + '/mo', 'Real Value in 10 Years (Today\'s Rands)');
+  grid += box('', E.fmt(r.in20Real) + '/mo', 'Real Value in 20 Years (Today\'s Rands)');
+  grid += box('', r.assumedInc.toFixed(1) + '% p.a.', 'Assumed GEPF Increase Rate');
+
+  document.getElementById('gepf-growth-grid').innerHTML = grid;
+
+  var tbody = '';
+  var maxRate = Math.max.apply(null, r.history.map(function(h) { return h.rate; }));
+  r.history.forEach(function(h) {
+    var w = Math.round((h.rate / maxRate) * 100);
+    tbody += '<tr><td>' + h.year + '</td><td>' +
+      '<div class="gepf-rate-bar"><div class="gepf-bar-wrap" style="flex:1"><div class="gepf-bar" style="width:' + w + '%"></div></div>' +
+      '<span>' + h.rate.toFixed(2) + '%</span></div></td>' +
+      '<td style="font-weight:600;color:' + (h.rate >= 5 ? '#1D4ED8' : '#64748b') + '">' + (h.rate >= 5 ? '▲' : '▼') + ' ' + h.rate.toFixed(2) + '%</td></tr>';
+  });
+  document.getElementById('gepf-history-table').querySelector('tbody').innerHTML = tbody;
+}
+
+// ── Tab 6: Deductions ────────────────────────────────────
+function gepfUpdateDeductions() {
+  if (!_gepfData.salary) return;
+  var E = GEPFEngine;
+  var d = _gepfData;
+  var gemsKey = document.getElementById('g-gems').value;
+  var psInput = +document.getElementById('g-pensionable').value;
+  var pensionable = psInput > 0 ? psInput : d.salary;
+
+  var r = E.calcDeductions({ grossMonthly: d.salary, pensionableMonthly: pensionable, gemsOption: gemsKey });
+
+  var html = '';
+  html += dRow('Gross Monthly Salary', E.fmt(r.gross), false);
+  html += '<div style="height:10px"></div>';
+  html += dRow('GEPF Contribution (7.5%)', '− ' + E.fmt(r.gepf), false);
+  if (r.gems > 0) html += dRow('GEMS Medical Scheme', '− ' + E.fmt(r.gems), false);
+  html += dRow('UIF (1%, capped)', '− ' + E.fmt(r.uif), false);
+  html += dRow('Estimated PAYE Tax', '− ' + E.fmt(r.paye), false);
+  html += dRow('Total Deductions (' + r.deductRate.toFixed(0) + '% of gross)', '− ' + E.fmt(r.total), false);
+  html += '<div class="gepf-deduct-row gepf-takehome"><span class="gepf-deduct-lbl">Take-Home Pay</span><span class="gepf-deduct-amt">' + E.fmt(r.takeHome) + '/mo</span></div>';
+
+  document.getElementById('gepf-deduct-breakdown').innerHTML = html;
+}
+
+// ── Tab 7: Home Loan ──────────────────────────────────────
+function gepfUpdateHomeLoan() {
+  if (!_gepfData.salary) return;
+  var E = GEPFEngine;
+  var d = _gepfData;
+  var loanAmt = +document.getElementById('g-loan-amount').value || 0;
+  var r = E.calcHomeLoan({ salary: d.annualSalary, years: d.years, loanAmount: loanAmt });
+
+  document.getElementById('gepf-loan-max-text').innerHTML =
+    'Maximum borrowable: <strong>' + E.fmt(r.maxLoan) + '</strong> (60% of estimated fund credit of ' + E.fmt(r.fundCredit) + ')';
+
+  var grid = '';
+  grid += box('highlight', E.fmt(r.loanAmount), 'Loan Amount');
+  grid += box('', E.fmt(r.monthlyRepayment) + '/mo', 'Monthly Repayment (Prime, 20 yr)');
+  grid += box('', E.fmt(r.totalRepayable), 'Total Repayable');
+  grid += box('', E.fmt(r.totalInterest), 'Total Interest Cost');
+
+  document.getElementById('gepf-loan-grid').innerHTML = grid;
+
+  document.getElementById('gepf-loan-impact').innerHTML =
+    '<strong>Pension impact:</strong> Borrowing ' + E.fmt(r.loanAmount) +
+    ' reduces your fund credit by a proportional amount, reducing your estimated monthly pension by approximately ' +
+    '<strong>' + E.fmt(r.pensionImpact) + '/month</strong>. Consider whether this trade-off is worthwhile.';
+}
+
+// ── Combined Retirement ───────────────────────────────────
+function gepfUpdateCombined() {
+  if (!_gepfData.monthlyPension) return;
+  var E = GEPFEngine;
+  var priorFund = +document.getElementById('g-prior-fund').value || 0;
+  if (priorFund <= 0) {
+    document.getElementById('gepf-combined-box').innerHTML = 'Enter a prior fund value above to see combined retirement income.';
+    return;
+  }
+  var yrsLeft = Math.max(0, 60 - (_gepfData.age || 45));
+  var r = E.calcCombined({ gepfMonthly: _gepfData.monthlyPension, priorFundValue: priorFund, yearsToRetirement: yrsLeft });
+  document.getElementById('gepf-combined-box').innerHTML =
+    'Prior fund grows to <strong>' + E.fmt(r.priorFuture) + '</strong> at 60 → <strong>' + E.fmt(r.priorMonthly) + '/mo</strong> drawdown. ' +
+    'Combined retirement income: <strong>' + E.fmt(r.totalMonthly) + '/mo</strong>';
+}
+
+// ── Helpers ───────────────────────────────────────────────
+function box(cls, num, lbl) {
+  return '<div class="gepf-result-box' + (cls ? ' gepf-' + cls : '') + '">' +
+    '<div class="gepf-num">' + num + '</div>' +
+    '<div class="gepf-lbl">' + lbl + '</div></div>';
+}
+function cRow(lbl, val) {
+  return '<div class="gepf-compare-row"><span>' + lbl + '</span><span class="gepf-val">' + val + '</span></div>';
+}
+function dRow(lbl, val, isTakeHome) {
+  return '<div class="gepf-deduct-row' + (isTakeHome ? ' gepf-takehome' : '') + '">' +
+    '<span class="gepf-deduct-lbl">' + lbl + '</span>' +
+    '<span class="gepf-deduct-amt">' + val + '</span></div>';
+}
+
+// ── Auto-calculate on load ────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  gepfCalculateAll();
+  // Re-calculate on any base input change
+  ['g-salary','g-years','g-age','g-rettype','g-gratuity'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('change', gepfCalculateAll);
+  });
+});
+</script>
+
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script>
+(function () {
+  "use strict";
+
+  function updateStaticCopy() {
+    var formula = document.querySelector('.gepf-formula');
+    if (formula) {
+      formula.innerHTML = 'Annual Annuity<br>= (Salary &times; Service Years &divide; 55) + R360<br><br>Monthly Pension<br>= Annual Annuity &divide; 12<br><br>Gratuity (lump sum)<br>= Salary &times; Service Years &times; 5.85%';
+    }
+
+    Array.from(document.querySelectorAll('p')).forEach(function (p) {
+      if (p.textContent.indexOf('Accrual factor is 1/55') !== -1) {
+        p.textContent = 'GEPF retirement benefits are typically expressed as a gratuity plus annuity, not a one-third commutation of a single pension figure.';
+      }
+      if (p.textContent.indexOf('Unlike private retirement funds, GEPF is a defined benefit scheme') !== -1) {
+        p.innerHTML = 'Unlike private retirement funds, GEPF is a <strong>defined benefit</strong> scheme: your retirement benefit is determined by a formula linked to pensionable salary and service, not by investment returns on an individual account. This means the government bears the investment risk, not you. Your benefit is guaranteed regardless of market conditions.';
+      }
+      if (p.textContent.indexOf('At retirement, members can commute') !== -1) {
+        p.textContent = 'At retirement, GEPF generally pays a gratuity plus a monthly annuity. A practical estimate uses a gratuity of 5.85% of final salary for each year of pensionable service and an annual annuity of salary × service ÷ 55 plus R360, subject to the fund rules and any early-retirement actuarial reduction. GEPF also grants annual pension increases, targeting CPI minus 0.5%.';
+      }
+    });
+
+    Array.from(document.querySelectorAll('details')).forEach(function (detail) {
+      var summary = detail.querySelector('summary');
+      if (summary && summary.textContent.indexOf('How is my GEPF monthly pension calculated?') !== -1) {
+        var body = detail.querySelector('p');
+        if (body) {
+          body.textContent = 'A practical estimate uses two parts: gratuity = annual pensionable salary × years of service × 5.85%, and annual annuity = annual pensionable salary × years of service ÷ 55 + R360. Example: R45,000/month salary gives annual salary of R540,000. At 25 years, estimated gratuity is about R789,750 and annual annuity is about R245,815, or roughly R20,485/month before tax.';
+        }
+      }
+    });
+  }
+
+  var originalCalculateAll = window.gepfCalculateAll;
+  window.gepfCalculateAll = function () {
+    originalCalculateAll();
+
+    var note = document.getElementById('gepf-pension-note');
+    var grid = document.getElementById('gepf-pension-grid');
+
+    if (note) {
+      note.innerHTML = '<strong>Note:</strong> This estimate uses the GEPF gratuity-plus-annuity approach on annual pensionable salary. Actual benefits depend on your specific conditions of service, fund rules, and GEPF actuarial calculations.';
+    }
+
+    if (grid) {
+      grid.innerHTML = grid.innerHTML
+        .replace('Monthly Pension (After Gratuity)', 'Estimated Monthly Annuity')
+        .replace('Gratuity (Tax-Advantaged Lump Sum)', 'Estimated Gratuity')
+        .replace('Full Pension Before Commutation', 'Estimated Annual Annuity');
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded', function () {
+    updateStaticCopy();
+    if (typeof window.gepfCalculateAll === 'function') {
+      window.gepfCalculateAll();
+    }
+  });
+}());
+</script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

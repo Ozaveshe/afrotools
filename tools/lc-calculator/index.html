@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Letter of Credit Fee Calculator — Trade Finance Costs for Africa | AfroTools</title>
+<meta name="description" content="Calculate LC fees for African trade. Opening charges, confirmation, SWIFT, margin deposit — see the full cost of Letters of Credit for imports to Nigeria, Kenya, South Africa and more.">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/tool-landing.css?v=09fede9d">
+<style>
+:root { --lc-blue:#0062CC; --lc-dark:#0A1628; --lc-pale:#E8F2FF; }
+.lc-hero { background:var(--lc-dark); color:#fff; padding:2.5rem 1.5rem 2rem; }
+.lc-hero h1 { font-size:clamp(1.6rem,4vw,2.4rem); font-family:'Instrument Serif',serif; line-height:1.2; margin:0 0 .75rem; }
+.lc-hero h1 em { color:var(--lc-blue); font-style:normal; }
+.lc-hero p { color:#94A3B8; max-width:580px; margin:0 0 1.25rem; }
+.lc-badges { display:flex; flex-wrap:wrap; gap:.5rem; }
+.badge { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); border-radius:980px; padding:.3rem .85rem; font-size:.75rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:#CBD5E1; }
+.badge.blue { background:rgba(0,98,204,.2); border-color:rgba(0,98,204,.4); color:#60A5FA; }
+.badge.amber { background:rgba(245,158,11,.15); border-color:rgba(245,158,11,.4); color:#FCD34D; }
+.lc-body { padding:1.5rem; max-width:900px; margin:0 auto; }
+.lc-tabs { display:flex; gap:.25rem; background:#F1F5F9; border-radius:12px; padding:.3rem; margin-bottom:1.5rem; overflow-x:auto; }
+.lc-tab { flex:1; min-width:100px; padding:.55rem 1rem; border:none; background:transparent; border-radius:9px; font-size:.82rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; cursor:pointer; color:#64748B; white-space:nowrap; }
+.lc-tab.on { background:#fff; color:var(--lc-blue); box-shadow:0 1px 4px rgba(0,0,0,.1); }
+.tab-panel { display:none; } .tab-panel.on { display:block; }
+.card { background:#fff; border:1px solid #E2E8F0; border-radius:18px; padding:1.5rem; margin-bottom:1.25rem; }
+.card-head { font-size:.72rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:#94A3B8; margin-bottom:1rem; }
+.f-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem; }
+@media(max-width:600px){ .f-row { grid-template-columns:1fr; } }
+.f-label { font-size:.75rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:#64748B; margin-bottom:.35rem; }
+.f-input, .f-select { width:100%; padding:.65rem .9rem; border:1.5px solid #E2E8F0; border-radius:10px; font-size:.95rem; color:#0f172a; background:#FAFAFA; box-sizing:border-box; }
+.f-input:focus, .f-select:focus { outline:none; border-color:var(--lc-blue); background:#fff; }
+.toggle-row { display:flex; align-items:center; gap:.75rem; margin-bottom:.75rem; }
+.toggle { position:relative; width:44px; height:24px; }
+.toggle input { opacity:0; width:0; height:0; }
+.toggle-slider { position:absolute; cursor:pointer; inset:0; background:#CBD5E1; border-radius:24px; transition:.25s; }
+.toggle-slider:before { content:''; position:absolute; width:18px; height:18px; left:3px; bottom:3px; background:#fff; border-radius:50%; transition:.25s; }
+.toggle input:checked + .toggle-slider { background:var(--lc-blue); }
+.toggle input:checked + .toggle-slider:before { transform:translateX(20px); }
+.toggle-label { font-size:.9rem; color:#334155; }
+.calc-btn { width:100%; padding:.9rem; background:var(--lc-blue); color:#fff; border:none; border-radius:980px; font-size:.95rem; font-weight:800; letter-spacing:.04em; cursor:pointer; margin-top:.5rem; }
+.calc-btn:hover { background:#0063D1; }
+/* Results */
+.lc-total { background:var(--lc-dark); color:#fff; border-radius:18px; padding:1.5rem; margin-bottom:1.25rem; display:none; }
+.lc-total.show { display:block; }
+.total-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem; }
+.total-item .ti-val { font-size:1.6rem; font-weight:800; color:var(--lc-blue); }
+.total-item .ti-label { font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:#94A3B8; margin-top:.25rem; }
+.wf-table { width:100%; border-collapse:collapse; }
+.wf-table tr td { padding:.6rem .75rem; font-size:.9rem; border-bottom:1px solid #F1F5F9; }
+.wf-table tr td:last-child { text-align:right; font-weight:700; }
+.wf-table tr.wf-total td { background:var(--lc-pale); font-weight:800; color:var(--lc-blue); border-radius:8px; }
+.wf-table tr.wf-margin td { color:#F59E0B; }
+.risk-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1rem; }
+@media(max-width:560px){ .risk-grid { grid-template-columns:1fr; } }
+.pm-card { border:2px solid #E2E8F0; border-radius:14px; padding:1rem; }
+.pm-card.recommended { border-color:var(--lc-blue); background:var(--lc-pale); }
+.pm-name { font-weight:800; font-size:.9rem; margin-bottom:.3rem; }
+.pm-risk { font-size:.75rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; margin-bottom:.5rem; }
+.pm-risk.low { color:#10B981; } .pm-risk.medium { color:#F59E0B; } .pm-risk.high { color:#EF4444; }
+.pm-bars { display:flex; flex-direction:column; gap:.3rem; margin:.5rem 0; }
+.pm-bar-row { display:flex; align-items:center; gap:.5rem; font-size:.75rem; }
+.pm-bar-track { flex:1; height:6px; background:#E2E8F0; border-radius:3px; overflow:hidden; }
+.pm-bar-fill { height:100%; border-radius:3px; background:var(--lc-blue); }
+.pm-bar-fill.seller { background:#10B981; }
+.pm-bar-fill.buyer { background:#F59E0B; }
+.pm-desc { font-size:.8rem; color:#64748B; }
+.pm-cost { font-weight:800; color:#0A1628; font-size:.9rem; margin-top:.5rem; }
+/* AI Obs */
+.obs-panel { margin-top:1.25rem; }
+.obs-item { display:flex; gap:.65rem; padding:.75rem; border-radius:10px; margin-bottom:.6rem; font-size:.875rem; line-height:1.5; }
+.obs-item.info { background:#EFF6FF; color:#1D4ED8; }
+.obs-item.warn { background:#FFFBEB; color:#92400E; }
+.obs-item.tip { background:#ECFDF5; color:#065F46; }
+.obs-icon { font-size:1rem; flex-shrink:0; margin-top:.05rem; }
+
+@media(max-width:640px){
+  .total-row{grid-template-columns:1fr;}
+}
+</style>
+<link rel="stylesheet" href="/assets/css/trade-focus.css?v=67d7d132">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://afrotools.com/tools/lc-calculator/">
+  <meta property="og:title" content="Letter of Credit Fee Calculator — Trade Finance Costs for Africa">
+  <meta property="og:description" content="Calculate LC fees for African trade. Opening charges, confirmation, SWIFT, margin deposit — see the full cost of Letters of Credit for imports to Nigeria, ">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/lc-calculator.webp">
+  <meta property="og:site_name" content="AfroTools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Letter of Credit Fee Calculator — Trade Finance Costs for Africa">
+  <meta name="twitter:description" content="Calculate LC fees for African trade. Opening charges, confirmation, SWIFT, margin deposit — see the full cost of Letters of Credit for imports to Nigeria, ">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/lc-calculator.webp">
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<link rel="stylesheet" href="/assets/css/trade-toolkit.css?v=2465f40a">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the LC Fee Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The LC Fee Calculator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the LC Fee Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the LC Fee Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for Nigeria, Kenya, South Africa and other African markets."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Letter of Credit Fee Calculator — Trade Finance Costs for Africa",
+  "description": "Calculate LC fees for African trade. Opening charges, confirmation, SWIFT, margin deposit — see the full cost of Letters of Credit for imports to Nigeria, Kenya, South Africa and more.",
+  "url": "https://afrotools.com/tools/lc-calculator/",
+  "inLanguage": "en",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/lc-calculator.webp"
+}
+</script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Letter of Credit Fee Calculator — Trade Finance Costs for Africa","item":"https://afrotools.com/tools/lc-calculator/"}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/lc-calculator/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/lc-calculator/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-credit-documentaire/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ada-lc/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/lc-calculator/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="lc-hero">
+  <nav aria-label="Breadcrumb" style="margin-bottom:1rem;font-size:.8rem;color:#64748B;">
+    <a href="/" style="color:#94A3B8;text-decoration:none;">Home</a> /
+    <a href="/tools/" style="color:#94A3B8;text-decoration:none;">Tools</a> /
+    <span style="color:#CBD5E1;">LC Fee Calculator</span>
+  </nav>
+  <h1>Letter of Credit<br><em>Fee Calculator</em></h1>
+  <p>Calculate the full cost of opening and using a Letter of Credit for African trade. See issuance, confirmation, SWIFT, margin deposit, and more — broken down by country.</p>
+  <div class="lc-badges">
+    <span class="badge blue">15 African Countries</span>
+    <span class="badge">All LC Types</span>
+    <span class="badge amber">Margin Deposit Alert</span>
+    <span class="badge">Payment Method Comparison</span>
+  </div>
+</div>
+
+<div class="lc-body">
+  <div class="lc-tabs" role="tablist">
+    <button type="button" class="lc-tab on" onclick="setTab('calc',this)">🏦 Calculate Fees</button>
+    <button type="button" class="lc-tab" onclick="setTab('compare',this)">↔️ Payment Methods</button>
+    <button type="button" class="lc-tab" onclick="setTab('guide',this)">📖 LC Guide</button>
+  </div>
+
+  <!-- TAB 1: Calculate -->
+  <div id="tabCalc" class="tab-panel on">
+    <div class="card">
+      <div class="card-head">LC Details</div>
+      <div class="f-row">
+        <div>
+          <div class="f-label">LC Value (USD)</div>
+          <input aria-label="E.g. 50000" type="number" id="lcValue" class="f-input" placeholder="e.g. 50000" value="50000">
+        </div>
+        <div>
+          <div class="f-label">Importing Country</div>
+          <select id="lcCountry" class="f-select" onchange="onCountryChange()" aria-label="Lc Country"></select>
+        </div>
+      </div>
+      <div class="f-row">
+        <div>
+          <div class="f-label">LC Type</div>
+          <select id="lcType" class="f-select" aria-label="Lc Type"></select>
+        </div>
+        <div>
+          <div class="f-label">Number of Amendments Expected</div>
+          <input aria-label="LcAmendments" type="number" id="lcAmendments" class="f-input" min="0" value="0" placeholder="0">
+        </div>
+      </div>
+      <div class="toggle-row">
+        <label class="toggle"><input aria-label="LcConfirmed" type="checkbox" id="lcConfirmed" checked><span class="toggle-slider"></span></label>
+        <span class="toggle-label">Confirmed LC (confirming bank fee applies)</span>
+      </div>
+      <div class="toggle-row">
+        <label class="toggle"><input aria-label="LcMargin" type="checkbox" id="lcMargin"><span class="toggle-slider"></span></label>
+        <span class="toggle-label">Include margin deposit in total cash required</span>
+      </div>
+      <div id="marginAlert" style="display:none;background:#FFF7ED;border:1px solid #FED7AA;border-radius:10px;padding:.75rem 1rem;font-size:.85rem;color:#92400E;margin-top:.75rem;">
+        ⚠️ This country typically requires <strong id="marginPct">—</strong>% margin deposit. That's <strong id="marginAmt">—</strong> of working capital tied up until LC settles.
+      </div>
+      <button type="button" class="calc-btn" onclick="calculateLC()">🏦 Calculate LC Fees</button>
+    </div>
+
+    <!-- Results -->
+    <div class="lc-total" id="lcTotal">
+      <div class="total-row">
+        <div class="total-item"><div class="ti-val" id="resTotalFees">—</div><div class="ti-label">Total Fees (USD)</div></div>
+        <div class="total-item"><div class="ti-val" id="resFeesPct">—</div><div class="ti-label">Cost as % of LC</div></div>
+        <div class="total-item"><div class="ti-val" id="resTotalCash">—</div><div class="ti-label">Total Cash Needed</div></div>
+      </div>
+    </div>
+
+    <div class="card" id="feeBreakdown" style="display:none;">
+      <div class="card-head">Fee Breakdown</div>
+      <table class="wf-table" id="feeTable"></table>
+    </div>
+
+    <div class="card" id="countryNotesCard" style="display:none;">
+      <div class="card-head">Country-Specific Notes</div>
+      <p id="countryNotes" style="font-size:.9rem;color:#334155;line-height:1.6;margin:0;"></p>
+    </div>
+
+    <div class="obs-panel" id="obsPanel"></div>
+    <div class="card" id="lcExportCard" style="display:none;">
+      <div class="card-head">Export LC Brief</div>
+      <p style="font-size:.86rem;color:#475569;line-height:1.6;margin:0 0 .75rem;">Copy or download the fee breakdown for a bank, supplier, broker, or finance review. Treat this as a planning estimate until your bank confirms current charges and margin rules.</p>
+      <div class="df-actions">
+        <button type="button" onclick="copyLcBrief()">Copy LC brief</button>
+        <button type="button" data-no-gate="true" data-no-pdf-gate="true" onclick="downloadLcCsv()">Download CSV</button>
+      </div>
+      <p id="lcStatus" role="status" aria-live="polite" style="margin:.55rem 0 0;color:#64748b;font-size:.86rem"></p>
+    </div>
+  </div>
+
+  <!-- TAB 2: Payment Methods Comparison -->
+  <div id="tabCompare" class="tab-panel">
+    <div class="card">
+      <div class="card-head">Compare Payment Methods — Risk vs Cost</div>
+      <p style="font-size:.875rem;color:#64748B;margin:0 0 1.25rem;">Run a calculation first to see cost comparison. Or enter an LC value below:</p>
+      <div class="f-row" style="max-width:400px;">
+        <div>
+          <div class="f-label">Shipment Value (USD)</div>
+          <input aria-label="E.g. 50000" type="number" id="cmpValue" class="f-input" placeholder="e.g. 50000" value="50000">
+        </div>
+        <div style="display:flex;align-items:flex-end;">
+          <button type="button" class="calc-btn" style="margin:0;" onclick="showComparison()">Compare</button>
+        </div>
+      </div>
+    </div>
+    <div id="pmGrid" class="risk-grid"></div>
+  </div>
+
+  <!-- TAB 3: LC Guide -->
+  <div id="tabGuide" class="tab-panel">
+    <div class="card">
+      <div class="card-head">What is a Letter of Credit?</div>
+      <p style="font-size:.9rem;line-height:1.7;color:#334155;">A <strong>Letter of Credit (LC)</strong> is a payment guarantee issued by a bank on behalf of an importer (buyer) to a supplier (seller). The bank promises to pay the seller once specific documents are presented — typically a Bill of Lading, Commercial Invoice, and Packing List that match the LC terms exactly.</p>
+      <p style="font-size:.9rem;line-height:1.7;color:#334155;margin-top:.75rem;">In Africa, LCs are the dominant trade finance instrument for international imports, especially from China, Europe, India, and Turkey. They are required by most central banks when importing above certain thresholds (e.g., Nigeria's CBN requires Form M and bank-domiciled LCs for imports over $100).</p>
+    </div>
+    <div class="card">
+      <div class="card-head">Types of LCs — Quick Guide</div>
+      <div id="lcTypeGuide"></div>
+    </div>
+    <div class="card">
+      <div class="card-head">Confirmed vs Unconfirmed LC</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+        <div style="background:#ECFDF5;border-radius:12px;padding:1rem;">
+          <div style="font-weight:800;font-size:.9rem;color:#065F46;margin-bottom:.5rem;">✅ Confirmed LC</div>
+          <p style="font-size:.82rem;color:#065F46;line-height:1.6;margin:0;">A second (confirming) bank — usually in the seller's country — adds its own payment guarantee. The seller gets paid by the local bank even if the issuing bank fails. Higher cost but more secure for the supplier.</p>
+        </div>
+        <div style="background:#EFF6FF;border-radius:12px;padding:1rem;">
+          <div style="font-weight:800;font-size:.9rem;color:#1D4ED8;margin-bottom:.5rem;">🔵 Unconfirmed LC</div>
+          <p style="font-size:.82rem;color:#1D4ED8;line-height:1.6;margin:0;">Only the issuing bank (buyer's bank in Africa) guarantees payment. Lower cost but the seller relies solely on the issuing bank's creditworthiness. Suitable for reputable banks and trusted relationships.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">Africa LC Tips</div>
+      <ul style="font-size:.9rem;line-height:1.9;color:#334155;margin:0;padding-left:1.25rem;">
+        <li>🇳🇬 <strong>Nigeria:</strong> All LCs require CBN Form M. Most banks require 100% cash margin. Open LC at an authorised dealer bank at least 3 weeks before shipment.</li>
+        <li>🇬🇭 <strong>Ghana:</strong> BoG requires destination inspection for most goods. Allow extra time for ICUMS processing.</li>
+        <li>🇿🇦 <strong>South Africa:</strong> Most sophisticated LC market in Africa. SARB rules apply. Forward cover available to hedge FX.</li>
+        <li>💡 <strong>Tip:</strong> Request a "transferable LC" if you are a middleman/trader — it allows you to transfer LC rights to your supplier.</li>
+        <li>💡 <strong>Tip:</strong> For repeat purchases with the same supplier, a <strong>Revolving LC</strong> can be cheaper than opening a new LC each time.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<section class="df-upgrade" data-df-upgrade="lc-calculator">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Practical workflow</span>
+      <h2>Turn an LC estimate into a bank-ready fee brief</h2>
+      <p>Not sure how to get the most from the LC Fee Calculator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for Nigeria, Kenya, South Africa and other African markets.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the LC Fee Calculator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
+    </div>
+    <form class="df-form" data-df-form="lc-calculator">
+      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
+      <label>LC value USD<input name="amount" type="number" value="50000" min="0" step="any" aria-label="LC value USD"></label>
+      <label>Decision focus<select name="priority" aria-label="Decision focus"><option value="cost">lowest fees</option><option value="risk">seller protection</option><option value="cashflow">cash tied up</option><option value="documents">document risk</option></select></label>
+      <label>Contingency percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Contingency percent"></label>
+      <button type="submit">Create LC fee brief</button>
+      <output class="df-result" data-df-result="lc-calculator" data-df-base="LC Fee Calculator — enter your details above to see your result." aria-live="polite">LC Fee Calculator — enter your details above to see your result.</output>
+      <div class="df-actions"><button type="button" data-df-copy="lc-calculator">Copy LC brief</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="lc-calculator-faq-title">
+  <h2 id="lc-calculator-faq-title">LC Fee Calculator FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the LC Fee Calculator?</summary><p>Enter your amounts, rates and dates in the fields above. The LC Fee Calculator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the LC Fee Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the LC Fee Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for Nigeria, Kenya, South Africa and other African markets.</p></details></div>
+</section>
+<section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="lc-verification-title">
+  <div class="tool-verification-card">
+    <div class="tool-verification-head">
+      <div>
+        <span class="tool-verification-kicker">Sources &amp; verification</span>
+        <h2 class="tool-verification-title" id="lc-verification-title">Confirm LC fees with your bank before opening</h2>
+        <p class="tool-verification-lead">This calculator models bank charges, confirmation, SWIFT, amendments, and margin cash requirements for planning. It does not open an LC or quote a bank tariff.</p>
+      </div>
+      <div class="tool-verification-status">
+        <span class="tool-verification-badge">Bank-tariff planning model</span>
+        <p class="tool-verification-note">Reviewed 2026. Bank tariffs, FX, margin rules, and import documentation can change.</p>
+      </div>
+    </div>
+    <div class="tool-verification-grid">
+      <div class="tool-verification-block">
+        <h3>Methodology</h3>
+        <ul class="tool-verification-list">
+          <li>Total fee estimate combines opening, confirmation, SWIFT, tenor, and amendment assumptions from the selected country and LC type.</li>
+          <li>Margin deposit is shown separately because it is cash tied up, not a bank fee.</li>
+          <li>Payment-method comparison contrasts cost with seller and buyer protection for trade planning.</li>
+        </ul>
+      </div>
+      <div class="tool-verification-block">
+        <h3>Before acting</h3>
+        <ul class="tool-verification-list">
+          <li>Confirm issuing bank tariff, confirmation bank charge, amendment fees, SWIFT, margin deposit, FX, and document wording.</li>
+          <li>Check import permits, Form M or equivalent requirements, sanctions screening, insurance, inspection, and shipping documents.</li>
+          <li>Copy or download the LC brief before asking your bank, supplier, or broker to quote.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tool-verification-actions">
+      <p class="tool-verification-disclaimer">Planning estimate only. AfroTools is not a bank, trade-finance provider, customs broker, legal adviser, or tax adviser.</p>
+    </div>
+  </div>
+</section>
+<afro-business-cta tool-name="LC Fee Calculator" prospect-segment="trade-finance" save-note="Calculate fees, then copy the LC brief or download CSV for bank, supplier, broker, or finance review."></afro-business-cta>
+<afro-related-tools data-ssr="1" category="trade" current="lc-calculator">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/afcfta-tracker/" data-related-tool data-id="afcfta-tracker" data-name="AfCFTA Tariff Tracker" data-category="trade" data-icon="AT" data-desc="Live AfCFTA duty schedule. Check duty-free status for any item between 54 African countries. Phase I &amp; II schedules.">AfCFTA Tariff Tracker</a></li><li><a href="/tools/landed-cost/" data-related-tool data-id="landed-cost" data-name="Landed Cost Calculator" data-category="trade" data-icon="LC" data-desc="Estimate landed cost for selected African import markets with source-confidence labels for user inputs, estimates, and v">Landed Cost Calculator</a></li><li><a href="/tools/incoterms-calculator/" data-related-tool data-id="incoterms-calculator" data-name="Incoterms 2020 Calculator" data-category="trade" data-icon="I2" data-desc="All 11 Incoterms 2020 explained with cost-split calculator, comparison tool, and Africa-specific trade guide.">Incoterms 2020 Calculator</a></li><li><a href="/tools/shipping-estimator/" data-related-tool data-id="shipping-estimator" data-name="Shipping Cost Estimator" data-category="trade" data-icon="SC" data-desc="Estimate sea freight, air freight and road haulage costs for Africa trade corridors. 16 ports, 8 airlines, 8 trucking ro">Shipping Cost Estimator</a></li><li><a href="/tools/export-docs/" data-related-tool data-id="export-docs-trade" data-name="Export Documentation Checklist" data-category="trade" data-icon="ED" data-desc="Country-specific checklist for every document needed to export from Africa. 17 origin countries, 8 destinations includin">Export Documentation Checklist</a></li><li><a href="/tools/fx-import-impact/" data-related-tool data-id="fx-import-impact" data-name="FX Import Cost Impact" data-category="trade" data-icon="FI" data-desc="Calculate how currency depreciation affects import costs. Model FX scenarios for 15 African currencies.">FX Import Cost Impact</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script>
+<script src="/assets/js/bundles/tool-page.315f0428.min.js?v=315f0428" defer></script>
+<script src="/engines/lc-fee-engine.js?v=391d6ff4"></script>
+<script>
+var currentResult = null;
+
+function setTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('on'); });
+  document.querySelectorAll('.lc-tab').forEach(function(b){ b.classList.remove('on'); });
+  document.getElementById('tab' + id.charAt(0).toUpperCase() + id.slice(1)).classList.add('on');
+  btn.classList.add('on');
+}
+
+// Populate selects
+(function init() {
+  var cSel = document.getElementById('lcCountry');
+  var countries = LcFeeEngine.getAllCountries();
+  countries.sort(function(a,b){ return a.code.localeCompare(b.code); });
+  countries.forEach(function(c) {
+    var o = document.createElement('option'); o.value = c.code;
+    o.textContent = c.flag + ' ' + c.code + ' (margin ' + c.marginRequirement + '%)';
+    cSel.appendChild(o);
+  });
+  cSel.value = 'NG';
+
+  var tSel = document.getElementById('lcType');
+  var types = LcFeeEngine.getLcTypes();
+  Object.keys(types).forEach(function(key) {
+    var o = document.createElement('option'); o.value = key;
+    o.textContent = types[key].label + ' — ' + types[key].description;
+    tSel.appendChild(o);
+  });
+
+  // LC type guide
+  var guide = document.getElementById('lcTypeGuide');
+  var html = '<div style="display:flex;flex-direction:column;gap:.6rem;">';
+  Object.keys(types).forEach(function(key) {
+    var t = types[key];
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:.65rem .85rem;background:#F8FAFD;border-radius:10px;">';
+    html += '<div><strong style="font-size:.9rem;">' + t.label + '</strong><span style="font-size:.8rem;color:#64748B;margin-left:.5rem;">— ' + t.description + '</span></div>';
+    html += '<span style="font-size:.8rem;font-weight:700;color:' + (t.tenorCostRate > 0 ? '#F59E0B' : '#10B981') + ';">' + (t.tenorCostRate > 0 ? '+' + t.tenorCostRate + '%' : 'No tenor cost') + '</span></div>';
+  });
+  guide.innerHTML = html + '</div>';
+
+  onCountryChange();
+})();
+
+function onCountryChange() {
+  var code = document.getElementById('lcCountry').value;
+  var data = LcFeeEngine.getBankCharges(code);
+  var alert = document.getElementById('marginAlert');
+  if (data) {
+    document.getElementById('marginPct').textContent = data.marginRequirement;
+    document.getElementById('marginAmt').textContent = '$' + Math.round(parseFloat(document.getElementById('lcValue').value || 50000) * data.marginRequirement / 100).toLocaleString();
+    alert.style.display = data.marginRequirement >= 30 ? 'block' : 'none';
+  }
+}
+
+function calculateLC() {
+  var result = LcFeeEngine.calculate({
+    lcValue: document.getElementById('lcValue').value,
+    countryCode: document.getElementById('lcCountry').value,
+    lcType: document.getElementById('lcType').value,
+    confirmed: document.getElementById('lcConfirmed').checked,
+    amendments: document.getElementById('lcAmendments').value,
+    includeMargin: document.getElementById('lcMargin').checked
+  });
+  if (!result) return;
+  currentResult = result;
+
+  document.getElementById('resTotalFees').textContent = '$' + Math.round(result.totalFees).toLocaleString();
+  document.getElementById('resFeesPct').textContent = result.feePercentage + '%';
+  document.getElementById('resTotalCash').textContent = '$' + Math.round(result.totalCashRequired).toLocaleString();
+  document.getElementById('lcTotal').classList.add('show');
+
+  // Fee table
+  var rows = '';
+  result.breakdown.forEach(function(row) {
+    if (row.amount === 0 && row.id !== 'confirmation') return;
+    var na = row.amount === 0;
+    rows += '<tr' + (na ? ' style="opacity:.4;"' : '') + '><td>' + row.label + '</td><td style="color:#64748B;font-size:.8rem;">' + row.basis + '</td><td>' + (na ? '—' : '$' + row.amount.toFixed(2)) + '</td></tr>';
+  });
+  rows += '<tr class="wf-total"><td colspan="2">Total Fees</td><td>$' + Math.round(result.totalFees).toLocaleString() + '</td></tr>';
+  if (result.marginDeposit > 0) rows += '<tr class="wf-margin"><td colspan="2">Margin Deposit (deposit, not a fee — returned)</td><td>$' + Math.round(result.marginDeposit).toLocaleString() + '</td></tr>';
+  document.getElementById('feeTable').innerHTML = rows;
+  document.getElementById('feeBreakdown').style.display = 'block';
+
+  document.getElementById('countryNotes').textContent = result.countryNotes;
+  document.getElementById('countryNotesCard').style.display = 'block';
+
+  // Observations
+  var obs = LcFeeEngine.getObservations(result);
+  var icons = { info:'ℹ️', warn:'⚠️', tip:'💡' };
+  var html = obs.map(function(o){ return '<div class="obs-item ' + o.type + '"><span class="obs-icon">' + (icons[o.type]||'ℹ️') + '</span><span>' + o.text + '</span></div>'; }).join('');
+  document.getElementById('obsPanel').innerHTML = html;
+  document.getElementById('lcExportCard').style.display = 'block';
+  document.getElementById('lcStatus').textContent = 'LC estimate ready. Copy the brief or download CSV for bank review.';
+}
+
+function lcSelectionText(id) {
+  var el = document.getElementById(id);
+  return el && el.options[el.selectedIndex] ? el.options[el.selectedIndex].text : '';
+}
+
+function lcBriefText() {
+  if(!currentResult) calculateLC();
+  var r = currentResult;
+  if(!r) return '';
+  var lines = [
+    'AfroTools LC fee brief',
+    'Country: '+lcSelectionText('lcCountry'),
+    'LC type: '+lcSelectionText('lcType'),
+    'LC value: $'+Math.round(r.lcValue).toLocaleString(),
+    'Total fees: $'+Math.round(r.totalFees).toLocaleString()+' ('+r.feePercentage+'% of LC)',
+    'Margin deposit: $'+Math.round(r.marginDeposit || 0).toLocaleString(),
+    'Total cash needed: $'+Math.round(r.totalCashRequired).toLocaleString(),
+    'Country notes: '+r.countryNotes,
+    'Planning note: confirm issuing bank tariff, confirmation bank charge, SWIFT, amendment fees, margin deposit, Form M/import permit, FX, and document wording before opening the LC.'
+  ];
+  return lines.join('\n');
+}
+
+function copyLcBrief() {
+  var text = lcBriefText();
+  var status = document.getElementById('lcStatus');
+  if(!text) return;
+  if(navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function(){ status.textContent = 'LC brief copied.'; }).catch(function(){ status.textContent = text; });
+  } else status.textContent = text;
+}
+
+function downloadLcCsv() {
+  if(!currentResult) calculateLC();
+  var r = currentResult;
+  var status = document.getElementById('lcStatus');
+  if(!r) return;
+  var rows = [
+    ['field','value'],
+    ['country',lcSelectionText('lcCountry')],
+    ['lc_type',lcSelectionText('lcType')],
+    ['lc_value_usd',r.lcValue],
+    ['confirmed',document.getElementById('lcConfirmed').checked ? 'yes' : 'no'],
+    ['amendments',document.getElementById('lcAmendments').value || '0'],
+    ['total_fees_usd',r.totalFees.toFixed(2)],
+    ['fee_percentage',r.feePercentage],
+    ['margin_deposit_usd',(r.marginDeposit || 0).toFixed(2)],
+    ['total_cash_required_usd',r.totalCashRequired.toFixed(2)],
+    ['country_notes',r.countryNotes],
+    ['planning_note','Verify bank tariff, confirmation charge, SWIFT, amendment fees, margin, import permits, FX, and document wording before acting.'],
+    [],
+    ['breakdown_label','basis','amount_usd']
+  ];
+  r.breakdown.forEach(function(row){ rows.push([row.label,row.basis,(row.amount || 0).toFixed(2)]); });
+  var csv = rows.map(function(row){ return row.map(function(cell){ return '"' + String(cell == null ? '' : cell).replace(/"/g,'""') + '"'; }).join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'afrotools-lc-fee-brief.csv';
+  a.dataset.noPdfGate = 'true';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  status.textContent = 'CSV downloaded. Replace estimates with current written bank charges.';
+}
+
+function showComparison() {
+  var val = parseFloat(document.getElementById('cmpValue').value) || 50000;
+  var mockResult = currentResult || { lcValue: val, totalFees: val * 0.04, feePercentage: '4.0' };
+  var methods = LcFeeEngine.comparePaymentMethods(mockResult);
+  var html = '';
+  methods.forEach(function(m) {
+    var isRecommended = m.method === 'lc';
+    html += '<div class="pm-card' + (isRecommended ? ' recommended' : '') + '">';
+    html += '<div class="pm-name">' + (isRecommended ? '★ ' : '') + m.label + '</div>';
+    var riskClass = m.riskLabel.includes('Low') ? 'low' : m.riskLabel.includes('High') ? 'high' : 'medium';
+    html += '<div class="pm-risk ' + riskClass + '">' + m.riskLabel + ' Risk</div>';
+    html += '<div class="pm-bars">';
+    html += '<div class="pm-bar-row"><span style="width:55px;font-size:.72rem;color:#64748B;">Seller</span><div class="pm-bar-track"><div class="pm-bar-fill seller" style="width:' + (m.sellerProtection * 20) + '%"></div></div><span style="width:20px;font-size:.72rem;text-align:right;">' + m.sellerProtection + '/5</span></div>';
+    html += '<div class="pm-bar-row"><span style="width:55px;font-size:.72rem;color:#64748B;">Buyer</span><div class="pm-bar-track"><div class="pm-bar-fill buyer" style="width:' + (m.buyerProtection * 20) + '%"></div></div><span style="width:20px;font-size:.72rem;text-align:right;">' + m.buyerProtection + '/5</span></div>';
+    html += '</div>';
+    html += '<div class="pm-desc">' + m.desc + '</div>';
+    html += '<div class="pm-cost">Typical cost: ' + (m.cost > 0 ? '~$' + Math.round(m.cost).toLocaleString() + ' (' + m.costPct + '%)' : 'Free') + '</div>';
+    html += '</div>';
+  });
+  document.getElementById('pmGrid').innerHTML = html;
+}
+</script>
+<script src="/assets/js/trade-toolkit.js?v=748d8913" defer></script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/pages/trade-focus.js?v=50a063e9" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

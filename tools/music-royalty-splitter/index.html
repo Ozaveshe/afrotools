@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Music Royalty Splitter — Africa | AfroTools</title>
+<meta name="description" content="Split music royalties fairly among songwriters, producers, artists, beatmakers and labels. Supports NGN, KES, ZAR, GHS. Free African music tool.">
+<meta property="og:title" content="Music Royalty Splitter — Africa | AfroTools">
+<meta property="og:description" content="Split music royalties fairly among songwriters, producers, artists, beatmakers and labels. Supports NGN, KES, ZAR, GHS. Free African music tool.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/music-royalty-splitter.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/energy.css?v=d1d794d4">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+:root{--en-accent:#DB2777;--en-accent-dark:#BE185D;--en-accent-light:#FCE7F3;--en-accent-pale:#FDF4FF;--en-shadow-hover:0 4px 16px rgba(219,39,119,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#1a0a14 50%,#3d0a1e 100%)!important}
+.collab-row{display:grid;grid-template-columns:1fr 1fr 80px 40px;gap:10px;align-items:end;margin-bottom:10px}
+.collab-row .en-label{margin-bottom:4px}
+.remove-btn{background:#fee2e2;border:1px solid #fca5a5;color:#dc2626;border-radius:8px;padding:8px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;height:40px;transition:background .15s}
+.remove-btn:hover{background:#fca5a5}
+.add-collab-btn{background:var(--en-accent-pale);border:1.5px dashed var(--en-accent-light);color:var(--en-accent-dark);border-radius:10px;padding:10px 18px;cursor:pointer;font-size:.88rem;font-weight:600;font-family:'DM Sans',sans-serif;width:100%;margin-top:4px;transition:background .15s}
+.add-collab-btn:hover{background:var(--en-accent-light)}
+.split-validation{padding:10px 14px;border-radius:8px;font-size:.85rem;font-weight:600;margin-top:10px}
+.split-ok{background:#dcfce7;color:#166534;border:1px solid #86efac}
+.split-err{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5}
+.split-row{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid var(--en-border)}
+.split-row:last-child{border-bottom:none}
+.split-bar-wrap{width:120px;background:#f1f5f9;border-radius:4px;height:6px;margin:0 12px}
+.split-bar{height:6px;border-radius:4px;background:linear-gradient(90deg,var(--en-accent),var(--en-accent-dark))}
+@media(max-width:600px){.collab-row{grid-template-columns:1fr 80px 40px}}
+</style>
+<meta property="og:url" content="https://afrotools.com/tools/music-royalty-splitter/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Music Royalty Splitter — Africa | AfroTools">
+<meta name="twitter:description" content="Split music royalties fairly among songwriters, producers, artists, beatmakers and labels. Supports NGN, KES, ZAR, GHS. Free African music tool.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/music-royalty-splitter.webp">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Music Royalty Splitter?","acceptedAnswer":{"@type":"Answer","text":"Enter your options in the fields above. The Music Royalty Splitter then gives you a ready-to-use result you can copy or download you can use straight away."}},{"@type":"Question","name":"How accurate is the Music Royalty Splitter?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm the output looks right for your use before you rely on it."}},{"@type":"Question","name":"Is the Music Royalty Splitter free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Music Royalty Splitter — Africa",
+  "description": "Split music royalties fairly among songwriters, producers, artists, beatmakers and labels. Supports NGN, KES, ZAR, GHS. Free African music tool.",
+  "url": "https://afrotools.com/tools/music-royalty-splitter/",
+  "inLanguage": "en",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/music-royalty-splitter.webp"
+}
+</script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Music Royalty Splitter — Africa","item":"https://afrotools.com/tools/music-royalty-splitter/"}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/music-royalty-splitter/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/music-royalty-splitter/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/partage-redevances-musicales/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/music-royalty-splitter/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar theme="dark" active="creative"></afro-navbar>
+
+<section class="en-tool-hero">
+  <div class="en-tool-hero-inner">
+    <nav class="en-breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a><span class="en-breadcrumb-sep">›</span>
+      <a href="/creative/">Creative Economy</a><span class="en-breadcrumb-sep">›</span>
+      <span class="en-breadcrumb-current">Music Royalty Splitter</span>
+    </nav>
+    <h1>Music Royalty <em>Splitter</em></h1>
+    <p>Distribute royalties fairly among all collaborators — songwriters, producers, artists, beatmakers, labels and publishers. Validates splits total 100%. Outputs in NGN, KES, ZAR or GHS.</p>
+    <div class="en-tool-hero-meta">
+      <span class="en-tool-hero-pill">&#x1f3b6; Music</span>
+      <span class="en-tool-hero-pill">&#x1f91d; Collaboration</span>
+      <span class="en-tool-hero-pill">&#x1f4b0; Royalties</span>
+      <span class="en-tool-hero-pill">&#x1f30d; 15 Countries</span>
+    </div>
+  </div>
+</section>
+
+<div class="en-tool-layout">
+
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x1f3b5;</div>Song Details</div>
+    <div class="en-form-grid">
+      <div class="en-field">
+        <label class="en-label">Song Title</label>
+        <input aria-label="E.g. Afrobeats Anthem" type="text" id="songTitle" class="en-input" placeholder="e.g. Afrobeats Anthem">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Country</label>
+        <select id="country" class="en-select" aria-label="Country">
+          <option value="NG">Nigeria 🇳🇬 (NGN)</option>
+          <option value="KE">Kenya 🇰🇪 (KES)</option>
+          <option value="ZA">South Africa 🇿🇦 (ZAR)</option>
+          <option value="GH">Ghana 🇬🇭 (GHS)</option>
+          <option value="EG">Egypt 🇪🇬 (EGP)</option>
+          <option value="TZ">Tanzania 🇹🇿 (TZS)</option>
+          <option value="UG">Uganda 🇺🇬 (UGX)</option>
+          <option value="RW">Rwanda 🇷🇼 (RWF)</option>
+          <option value="CM">Cameroon 🇨🇲 (XAF)</option>
+          <option value="SN">Senegal 🇸🇳 (XOF)</option>
+          <option value="MA">Morocco 🇲🇦 (MAD)</option>
+          <option value="ET">Ethiopia 🇪🇹 (ETB)</option>
+          <option value="CI">Côte d'Ivoire 🇨🇮 (XOF)</option>
+          <option value="TN">Tunisia 🇹🇳 (TND)</option>
+          <option value="AO">Angola 🇦🇴 (AOA)</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Total Royalties (USD)</label>
+        <input aria-label="TotalRoyalties" type="number" id="totalRoyalties" class="en-input" placeholder="5000" min="0" step="0.01">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Royalty Period</label>
+        <select id="period" class="en-select" aria-label="Period">
+          <option value="1">Monthly</option>
+          <option value="3" selected>Quarterly</option>
+          <option value="12">Annual</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x1f465;</div>Collaborators &amp; Splits</div>
+    <p style="font-size:.85rem;color:#64748b;margin-bottom:16px">Add each collaborator with their role and percentage split. All splits must total exactly 100%.</p>
+
+    <div id="collabList"></div>
+    <button type="button" class="add-collab-btn" onclick="addCollab()">+ Add Collaborator</button>
+
+    <div id="splitValidation" class="split-validation" style="display:none"></div>
+  </div>
+
+  <div class="en-form-actions">
+    <button type="button" class="en-btn en-btn-full" onclick="calculate()">Calculate Royalty Splits</button>
+  </div>
+
+  <div class="en-results" id="results">
+    <div class="en-results-hero">
+      <div class="en-results-hero-inner">
+        <div class="en-results-hero-grid">
+          <div>
+            <div class="en-results-hero-label">Total Royalties</div>
+            <div class="en-results-hero-value" id="totalDisplay">$0</div>
+            <div class="en-results-hero-sub" id="localDisplay"></div>
+          </div>
+          <div class="en-results-hero-aside">
+            <div style="font-size:.78rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Period</div>
+            <div style="font-size:1.4rem;font-weight:800;color:var(--en-accent)" id="periodDisplay"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4ca;</div>Split Breakdown</div>
+      <div id="splitTable"></div>
+    </div>
+
+    <div class="en-metrics" id="metricsRow"></div>
+
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4c6;</div>Quarterly Projections</div>
+      <div class="en-results-table-wrap">
+        <table class="en-results-table">
+          <thead><tr><th>Collaborator</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4 (Annual)</th></tr></thead>
+          <tbody id="projTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="en-tip">
+      <div class="en-tip-icon">&#x1f4dc;</div>
+      <div class="en-tip-body">
+        <div class="en-tip-label">Split Sheet Tip</div>
+        <div class="en-tip-text" id="splitTip">Always formalise splits in a written agreement before release. Register all songs with COSON (Nigeria), MCSK (Kenya), or SAMRO (South Africa) to collect performance royalties.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<section class="df-upgrade" data-df-upgrade="music-royalty-splitter">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Practical workflow</span>
+      <h2>Music Royalty Splitter: quick guide</h2>
+      <p>Not sure how to get the most from the Music Royalty Splitter? Enter your options and it returns a ready-to-use result you can copy or download — built for all 54 African countries.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a ready-to-use result you can copy or download, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Music Royalty Splitter takes your options and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm the output looks right for your use before you rely on the result.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm the output looks right for your use before acting.</p>
+    </div>
+    <form class="df-form" data-df-form="music-royalty-splitter">
+      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
+      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
+      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
+      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="music-royalty-splitter" data-df-base="Music Royalty Splitter — enter your details above to see your result." aria-live="polite">Music Royalty Splitter — enter your details above to see your result.</output>
+      <div class="df-actions"><button type="button" data-df-copy="music-royalty-splitter">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="music-royalty-splitter-faq-title">
+  <h2 id="music-royalty-splitter-faq-title">Music Royalty Splitter — Africa FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the Music Royalty Splitter?</summary><p>Enter your options in the fields above. The Music Royalty Splitter then gives you a ready-to-use result you can copy or download you can use straight away.</p></details><details><summary>How accurate is the Music Royalty Splitter?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm the output looks right for your use before you rely on it.</p></details><details><summary>Is the Music Royalty Splitter free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
+</section>
+<afro-related-tools data-ssr="1" category="creative" current="music-royalty-splitter">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/african-palette/" data-related-tool data-id="african-palette" data-name="African Color Palette Generator — Kente, Invoice, Savanna" data-category="creative" data-icon="AC" data-desc="Generate African-inspired color palettes. Kente, Invoice, Savanna, Desert, Night Market, Ubuntu, Afrobeats, Nollywood. E">African Color Palette Generator — Kente, Invoice, Savanna</a></li><li><a href="/tools/afrostream/" data-related-tool data-id="afrostream" data-name="AfroStream — Africa&#39;s Creator Streaming Hub" data-category="creative" data-icon="AA" data-desc="Watch live African creators, track rankings, and discover talent across YouTube, Twitch, TikTok, Kick, Rumble, and Insta">AfroStream — Africa&#39;s Creator Streaming Hub</a></li><li><a href="/tools/art-commission/" data-related-tool data-id="art-commission" data-name="Art Commission Price Calculator — Africa" data-category="creative" data-icon="AC" data-desc="Price your art commissions fairly in Africa. Digital, oil, watercolour, portrait — personal vs commercial rights. NGN, K">Art Commission Price Calculator — Africa</a></li><li><a href="/tools/creator-bios/" data-related-tool data-id="creator-bios" data-name="BioForge — One Tap, Every Platform Bio" data-category="creative" data-icon="BO" data-desc="Generate platform-perfect bios for Instagram, TikTok, X, LinkedIn, YouTube, Threads &amp; more — all at once. Tailored chara">BioForge — One Tap, Every Platform Bio</a></li><li><a href="/tools/book-publishing-cost/" data-related-tool data-id="book-publishing-cost" data-name="Book Publishing Cost Calculator — Africa" data-category="creative" data-icon="BP" data-desc="Calculate self-publishing vs traditional publishing costs for African authors. Editing, cover, print, distribution. Brea">Book Publishing Cost Calculator — Africa</a></li><li><a href="/tools/creator-captions/" data-related-tool data-id="creator-captions" data-name="CaptionCraft" data-category="creative" data-icon="C" data-desc="Write captions for Instagram, X, LinkedIn, TikTok, and Facebook. Get three versions, then copy and post.">CaptionCraft</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+<script>
+var FX={NG:1660,KE:130,ZA:18.5,GH:15.5,EG:48,TZ:2600,UG:3750,RW:1300,CM:615,SN:615,CI:615,MA:10,ET:57,TN:3.1,AO:835};
+var SYM={NG:'₦',KE:'KES ',ZA:'R',GH:'GHS ',EG:'EGP ',TZ:'TZS ',UG:'UGX ',RW:'RWF ',CM:'XAF ',SN:'XOF ',CI:'XOF ',MA:'MAD ',ET:'ETB ',TN:'TND ',AO:'AOA '};
+var ROLES=['Songwriter','Producer','Lead Artist','Beatmaker','Featured Artist','Label','Publisher','Manager','Co-writer','Mixing Engineer'];
+var collabs=[];
+var collabId=0;
+
+function addCollab(name,role,pct){
+  var id=++collabId;
+  collabs.push(id);
+  var div=document.createElement('div');
+  div.className='collab-row';
+  div.id='cr'+id;
+  div.innerHTML='<div class="en-field"><label class="en-label">Name</label><input aria-label="E.g. Davido" type="text" id="cn'+id+'" class="en-input" placeholder="e.g. Davido" value="'+(name||'')+'"></div>'+
+    '<div class="en-field"><label class="en-label">Role</label><select id="cr_role'+id+'" class="en-select" aria-label="Cr Role">'+ROLES.map(function(r){return '<option'+(r==role?' selected':'')+'>'+r+'</option>'}).join('')+'</select></div>'+
+    '<div class="en-field"><label class="en-label">Split %</label><input aria-label="Cp'+id+'" type="number" id="cp'+id+'" class="en-input" placeholder="25" min="0" max="100" value="'+(pct||'')+'" oninput="validateSplits()"></div>'+
+    '<button type="button" class="remove-btn" onclick="removeCollab('+id+')" title="Remove">&times;</button>';
+  document.getElementById('collabList').appendChild(div);
+  validateSplits();
+}
+
+function removeCollab(id){
+  var idx=collabs.indexOf(id);
+  if(idx>-1) collabs.splice(idx,1);
+  var el=document.getElementById('cr'+id);
+  if(el) el.remove();
+  validateSplits();
+}
+
+function validateSplits(){
+  var total=0;
+  collabs.forEach(function(id){
+    var v=parseFloat(document.getElementById('cp'+id)||{}).value||0;
+    total+=v;
+  });
+  var el=document.getElementById('splitValidation');
+  if(collabs.length===0){el.style.display='none';return;}
+  el.style.display='block';
+  var t=Math.round(total*100)/100;
+  if(t===100){
+    el.className='split-validation split-ok';
+    el.textContent='✓ Splits total 100% — ready to calculate';
+  } else {
+    el.className='split-validation split-err';
+    el.textContent='⚠ Splits total '+t+'% — must equal exactly 100%';
+  }
+}
+
+function fmt(n){return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+
+function calculate(){
+  var title=document.getElementById('songTitle').value||'Untitled';
+  var country=document.getElementById('country').value;
+  var totalUSD=parseFloat(document.getElementById('totalRoyalties').value)||0;
+  var period=parseInt(document.getElementById('period').value);
+  var periodLabel={1:'Monthly',3:'Quarterly',12:'Annual'}[period];
+  if(totalUSD<=0){alert('Please enter total royalties.');return;}
+  if(collabs.length===0){alert('Add at least one collaborator.');return;}
+  var total=0;
+  var data=collabs.map(function(id){
+    var n=document.getElementById('cn'+id).value||'Collaborator';
+    var r=document.getElementById('cr_role'+id).value;
+    var p=parseFloat(document.getElementById('cp'+id).value)||0;
+    total+=p;
+    return{id:id,name:n,role:r,pct:p};
+  });
+  if(Math.round(total*100)/100!==100){alert('Splits must total exactly 100%. Currently '+Math.round(total*100)/100+'%.');return;}
+  var rate=FX[country];
+  var sym=SYM[country];
+  document.getElementById('totalDisplay').textContent='$'+fmt(totalUSD);
+  document.getElementById('localDisplay').textContent=sym+fmt(totalUSD*rate)+' ('+periodLabel+')';
+  document.getElementById('periodDisplay').textContent=periodLabel;
+
+  var tableHtml='';
+  data.forEach(function(d,i){
+    var shareUSD=totalUSD*(d.pct/100);
+    var shareLocal=shareUSD*rate;
+    var w=Math.round(d.pct);
+    tableHtml+='<div class="split-row"><div style="flex:1"><div style="font-weight:700">'+d.name+'</div><div style="font-size:.78rem;color:#64748b">'+d.role+'</div></div>'+
+      '<div class="split-bar-wrap"><div class="split-bar" style="width:'+w+'%"></div></div>'+
+      '<div style="text-align:right"><div style="font-weight:800;color:var(--en-accent-dark)">'+d.pct+'%</div><div style="font-size:.85rem;color:#64748b">$'+fmt(shareUSD)+'</div><div style="font-size:.85rem;font-weight:600">'+sym+fmt(shareLocal)+'</div></div></div>';
+  });
+  document.getElementById('splitTable').innerHTML=tableHtml;
+
+  var metricsHtml='';
+  data.forEach(function(d){
+    var shareUSD=totalUSD*(d.pct/100);
+    metricsHtml+='<div class="en-metric"><div class="en-metric-label">'+d.name+'</div><div class="en-metric-value">'+d.pct+'%</div><div class="en-metric-unit">$'+fmt(shareUSD)+' / period</div></div>';
+  });
+  document.getElementById('metricsRow').innerHTML=metricsHtml;
+
+  var projHtml='';
+  var qFactor=period===1?3:(period===3?1:0.25);
+  data.forEach(function(d){
+    var shareUSD=totalUSD*(d.pct/100);
+    var q=shareUSD*qFactor;
+    projHtml+='<tr><td class="en-td-value">'+d.name+'<br><span style="font-size:.75rem;color:#64748b">'+d.role+'</span></td>'+
+      '<td>$'+fmt(q)+'</td><td>$'+fmt(q)+'</td><td>$'+fmt(q)+'</td><td class="en-td-highlight">$'+fmt(q*4)+'</td></tr>';
+  });
+  document.getElementById('projTable').innerHTML=projHtml;
+
+  document.getElementById('results').classList.add('on');
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// Initialise with 3 default collaborators
+addCollab('','Songwriter',40);
+addCollab('','Producer',30);
+addCollab('','Lead Artist',30);
+document.getElementById('splitValidation').style.display='none';
+</script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

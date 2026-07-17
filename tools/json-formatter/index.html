@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JSON Formatter, Validator and JSON Pointer Workbench | AfroTools</title>
+<meta name="description" content="Format, validate, repair, query, diff and document JSON or NDJSON in the browser with JSON Pointer, schema inference, TypeScript output and local history.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="JSON Formatter, Validator and JSON Pointer Workbench | AfroTools">
+<meta property="og:description" content="Client-side JSON workbench with formatting, repair, tree view, JSON Pointer queries, NDJSON mode, schema inference, TypeScript output and diff.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/json-formatter.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/json-formatter/">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/json-formatter.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "JSON Formatter, Validator and JSON Pointer Workbench",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "url": "https://afrotools.com/tools/json-formatter/",
+  "description": "Format, validate, repair, query, diff and document JSON or NDJSON in the browser with JSON Pointer, schema inference, TypeScript output and local history.",
+  "featureList": [
+    "JSON and NDJSON formatting",
+    "best-effort JSON repair",
+    "JSON Pointer query workbench",
+    "schema and TypeScript inference",
+    "JSON Patch-style diff",
+    "redacted output copy"
+  ],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "image": "https://afrotools.com/assets/img/tools/json-formatter.webp"
+}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"HowTo","name":"How to format and safely share JSON","description":"Paste JSON or NDJSON, format it locally, inspect structure, run pointer queries, infer schema or TypeScript, and copy a redacted version before sharing examples.","step":[{"@type":"HowToStep","name":"Paste or open JSON","text":"Paste JSON, NDJSON, an API response, or a config file into the local editor."},{"@type":"HowToStep","name":"Format and inspect","text":"Format, repair, sort, query, view the tree, infer schema or TypeScript, or compare payloads."},{"@type":"HowToStep","name":"Redact before sharing","text":"Use the redacted copy action and manually review for tokens, passwords, personal data, and production identifiers."},{"@type":"HowToStep","name":"Validate against your contract","text":"Compare the output with your OpenAPI, JSON Schema, backend tests, or provider documentation before shipping changes."}],"url":"https://afrotools.com/tools/json-formatter/"}
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Developer Tools","item":"https://afrotools.com/developer-tools/"},{"@type":"ListItem","position":3,"name":"JSON Formatter","item":"https://afrotools.com/tools/json-formatter/"}]}</script>
+<style>
+:root{
+  --page:#f6f8fb;
+  --ink:#111827;
+  --muted:#64748b;
+  --line:#dbe4ef;
+  --panel:#fff;
+  --blue:#2563eb;
+  --green:#059669;
+  --amber:#b45309;
+  --red:#b91c1c;
+  --soft-blue:#eaf2ff;
+  --soft-green:#e9f8f1;
+  --soft-amber:#fff6db;
+  --soft-red:#fee2e2;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;
+  --shadow:0 14px 38px rgba(15,23,42,.08);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font-family:"DM Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+a{color:var(--blue)}
+.hero{background:#0f172a;color:#fff;border-bottom:1px solid #1e293b}
+.hero-inner{max-width:1240px;margin:0 auto;padding:32px 20px 28px}
+.crumb{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:.84rem;color:#b6c6dc;margin-bottom:16px}
+.crumb a{color:#dbeafe;text-decoration:none}
+h1{font-size:44px;line-height:1.02;margin:0 0 12px;color:#fff;letter-spacing:0;max-width:940px}
+.hero p{max-width:860px;margin:0;color:#d7e3f4;font-size:1.02rem;line-height:1.65}
+.hero-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.pill{border:1px solid rgba(255,255,255,.24);background:rgba(255,255,255,.08);border-radius:999px;padding:7px 11px;font-size:.82rem;font-weight:800}
+.layout{max-width:1240px;margin:0 auto;padding:20px 20px 56px}
+.toolbar{position:sticky;top:0;z-index:40;background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);padding:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.toolbar button,.toolbar select,.panel button,.panel input,.panel select{font:inherit}
+button,.file-label{border:1px solid var(--line);background:#fff;border-radius:8px;padding:9px 11px;min-height:44px;min-width:44px;font-weight:800;font-size:.82rem;color:#1f2937;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+button.primary{background:#111827;border-color:#111827;color:#fff}
+button.active{background:var(--soft-blue);border-color:#93c5fd;color:#1d4ed8}
+button.warn{background:var(--soft-amber);border-color:#fcd34d;color:#92400e}
+button.success{background:var(--soft-green);border-color:#86efac;color:#047857}
+button.danger{background:var(--soft-red);border-color:#fecaca;color:var(--red)}
+select,input[type="text"]{border:1px solid var(--line);background:#fff;border-radius:8px;padding:9px 10px;min-height:44px;font:inherit}
+.spacer{flex:1}
+.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);overflow:hidden}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line);background:#f8fafc}
+.panel-title{font-weight:900}
+.panel-sub{color:var(--muted);font-size:.8rem}
+.editor{width:100%;min-height:520px;border:0;outline:0;resize:vertical;padding:14px;font-family:var(--mono);font-size:.86rem;line-height:1.55;color:#172033;background:#fff;tab-size:2}
+.output{min-height:520px;max-height:760px;overflow:auto;padding:14px;font-family:var(--mono);font-size:.84rem;line-height:1.55;background:#fff;white-space:pre-wrap;word-break:break-word}
+.status{display:flex;flex-wrap:wrap;gap:8px;padding:10px 14px;border-top:1px solid var(--line);background:#fbfdff}
+.badge{border-radius:999px;padding:5px 8px;font-size:.74rem;font-weight:900;background:#f1f5f9;color:#334155}
+.badge.good{background:var(--soft-green);color:#047857}
+.badge.warn{background:var(--soft-amber);color:#92400e}
+.badge.bad{background:var(--soft-red);color:var(--red)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs button{padding:7px 9px;font-size:.76rem}
+.tools-row{display:grid;grid-template-columns:1fr auto;gap:8px;margin:0 0 10px}
+.query-box{padding:14px;border-bottom:1px solid var(--line);background:#fbfdff}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px 0}
+.stat-card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:11px}
+.stat-card strong{display:block;font-size:1.08rem}
+.stat-card span{display:block;color:var(--muted);font-size:.76rem;margin-top:4px}
+.tree ul{list-style:none;margin:0;padding-left:18px}
+.tree li{margin:2px 0}
+.tree button{font-family:var(--mono);font-size:.76rem;border:0;background:transparent;padding:0;color:var(--blue)}
+.key{color:#1d4ed8}
+.string{color:#047857}
+.number{color:#b45309}
+.bool{color:#7c3aed}
+.null{color:#64748b}
+.punct{color:#64748b}
+.diff-add{background:#ecfdf5;border-left:3px solid #10b981;padding:6px 8px;margin:4px 0;border-radius:6px}
+.diff-remove{background:#fef2f2;border-left:3px solid #ef4444;padding:6px 8px;margin:4px 0;border-radius:6px}
+.diff-change{background:#fffbeb;border-left:3px solid #f59e0b;padding:6px 8px;margin:4px 0;border-radius:6px}
+.history-list{display:grid;gap:8px}
+.history-item{display:flex;justify-content:space-between;gap:10px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:8px;background:#fff}
+.history-item span{color:var(--muted);font-size:.78rem}
+.source-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.source-card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:11px}
+.source-card strong{display:block;font-size:.84rem}
+.source-card p{margin:5px 0 8px;color:var(--muted);font-size:.78rem;line-height:1.5}
+.source-card a{min-height:44px;display:inline-flex;align-items:center;font-weight:800}
+.json-faq{max-width:1240px;margin:14px auto 0;display:grid;gap:12px}
+.json-faq h2{font-size:1.2rem;margin:0;color:#172033}
+.json-faq-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.json-faq details{border:1px solid var(--line);background:#fff;border-radius:8px;padding:14px;box-shadow:var(--shadow)}
+.json-faq summary{cursor:pointer;font-weight:800;color:#1f2937;min-height:44px;display:flex;align-items:center}
+.json-faq p{margin:8px 0 0;color:var(--muted);line-height:1.55;font-size:.9rem}
+.helper{color:var(--muted);font-size:.84rem;line-height:1.6}
+.toast{position:fixed;right:20px;bottom:20px;background:#111827;color:#fff;border-radius:8px;padding:10px 14px;box-shadow:var(--shadow);opacity:0;transform:translateY(8px);transition:.18s;z-index:80}
+.toast.on{opacity:1;transform:translateY(0)}
+input[type="file"]{display:none}
+@media(max-width:980px){
+  .grid,.source-grid,.cards,.json-faq-grid{grid-template-columns:1fr}
+  h1{font-size:32px}
+  .toolbar{position:static}
+}
+</style>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="JSON Formatter, Validator and JSON Pointer Workbench | AfroTools">
+<meta name="twitter:description" content="Format, validate, repair, query, diff and document JSON or NDJSON in the browser with JSON Pointer, schema inference, TypeScript output and local history.">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How should I use this?","acceptedAnswer":{"@type":"Answer","text":"Paste JSON, format or repair it, inspect errors, run a pointer query, infer schema or types, then copy or download only the output you intend to share."}},{"@type":"Question","name":"What does redacted copy mask?","acceptedAnswer":{"@type":"Answer","text":"It masks common secret fields such as tokens, passwords, API keys, authorization values, email addresses, and phone fields. Review manually before sharing."}},{"@type":"Question","name":"Is this a production validator?","acceptedAnswer":{"@type":"Answer","text":"No. It is a local browser utility. Compare the result against your OpenAPI, JSON Schema, backend tests, or provider documentation."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "JSON Formatter, Validator and JSON Pointer Workbench",
+  "description": "Format, validate, repair, query, diff and document JSON or NDJSON in the browser with JSON Pointer, schema inference, TypeScript output and local history.",
+  "url": "https://afrotools.com/tools/json-formatter/",
+  "inLanguage": "en",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/json-formatter.webp"
+}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/json-formatter/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/json-formatter/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/formateur-json/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kirekebisha-json/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/json-formatter/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="tools"></afro-navbar>
+
+<section class="hero">
+  <div class="hero-inner">
+    <nav class="crumb">
+      <a href="/">AfroTools</a><span>/</span>
+      <a href="/developer-tools/">Developer Tools</a><span>/</span>
+      <span>JSON Formatter</span>
+    </nav>
+    <h1>JSON formatting, repair, diff and schema work in one browser tab.</h1>
+    <p>Paste API payloads, webhook bodies, config files or NDJSON logs. Everything runs client-side unless you explicitly copy data elsewhere.</p>
+    <div class="hero-meta">
+      <span class="pill">JSON and NDJSON</span>
+      <span class="pill">JSON Pointer RFC 6901</span>
+      <span class="pill">JSON Patch-style diff</span>
+      <span class="pill">Local history</span>
+    </div>
+  </div>
+</section>
+
+<main class="layout">
+  <div class="toolbar" aria-label="JSON tools toolbar">
+    <button id="formatBtn" class="primary" type="button">Format</button>
+    <button id="minifyBtn" type="button">Minify</button>
+    <button id="repairBtn" class="warn" type="button">Repair</button>
+    <button id="sortBtn" type="button">Sort Keys</button>
+    <select id="modeSelect" aria-label="Input mode">
+      <option value="json">JSON</option>
+      <option value="ndjson">NDJSON / JSON Lines</option>
+    </select>
+    <select id="indentSelect" aria-label="Indentation">
+      <option value="2">2 spaces</option>
+      <option value="4">4 spaces</option>
+      <option value="tab">Tab</option>
+    </select>
+    <button id="sampleBtn" type="button">Sample</button>
+    <label class="file-label" for="fileInput">Open File</label>
+    <input id="fileInput" type="file" accept=".json,.jsonl,.ndjson,.txt,application/json">
+    <button id="copyBtn" type="button">Copy Output</button>
+    <button id="redactCopyBtn" type="button">Copy Redacted</button>
+    <button id="downloadBtn" type="button">Download</button>
+    <button id="apiTesterBtn" class="success" type="button">Save To API Tester</button>
+    <span class="spacer"></span>
+    <button id="clearBtn" class="danger" type="button">Clear</button>
+  </div>
+
+  <section class="grid">
+    <div class="panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Input</div>
+          <div class="panel-sub">Ctrl+Enter formats. Tab inserts indentation.</div>
+        </div>
+        <div class="panel-sub" id="privacyNote">Client-side</div>
+      </div>
+      <textarea id="input" class="editor" spellcheck="false" placeholder='Paste JSON here, for example: {"customer":"Amina","country":"NG","orders":[{"id":1,"total":12500}]}' aria-label="JSON or NDJSON input editor"></textarea>
+      <div id="status" class="status"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Workbench</div>
+          <div class="panel-sub" id="outputSub">Formatted output</div>
+        </div>
+        <div class="tabs">
+          <button id="tabFormatted" class="active" type="button">Formatted</button>
+          <button id="tabTree" type="button">Tree</button>
+          <button id="tabQuery" type="button">Query</button>
+          <button id="tabSchema" type="button">Schema</button>
+          <button id="tabTypes" type="button">Types</button>
+          <button id="tabDiff" type="button">Diff</button>
+          <button id="tabHistory" type="button">History</button>
+        </div>
+      </div>
+      <div id="queryBox" class="query-box" hidden>
+        <div class="tools-row">
+          <input id="pointerInput" type="text" value="/orders/0/total" aria-label="JSON Pointer or simple dot path">
+          <button id="runPointerBtn" type="button">Run Query</button>
+        </div>
+        <p class="helper">Use RFC 6901 JSON Pointer like <code>/orders/0/total</code>, or simple paths like <code>orders.0.total</code>.</p>
+      </div>
+      <div id="diffBox" class="query-box" hidden>
+        <textarea id="diffInput" class="editor" style="min-height:180px" spellcheck="false" placeholder="Paste the JSON you want to compare against the input." aria-label="Paste the JSON you want to compare against the input."></textarea>
+        <div style="margin-top:8px"><button id="runDiffBtn" type="button">Generate Patch</button></div>
+      </div>
+      <div id="output" class="output"></div>
+    </div>
+  </section>
+
+  <section class="cards" aria-label="JSON statistics">
+    <div class="stat-card"><strong id="statBytes">0 B</strong><span>Payload size</span></div>
+    <div class="stat-card"><strong id="statNodes">0</strong><span>Values and containers</span></div>
+    <div class="stat-card"><strong id="statDepth">0</strong><span>Maximum nesting depth</span></div>
+    <div class="stat-card"><strong id="statArrays">0</strong><span>Arrays found</span></div>
+  </section>
+
+  <section class="panel" style="margin-top:14px">
+    <div class="panel-head">
+      <div>
+        <div class="panel-title">Reference Notes</div>
+        <div class="panel-sub">Stable references used while redesigning this tool.</div>
+      </div>
+    </div>
+    <div class="source-grid" style="padding:14px">
+      <div class="source-card">
+        <strong>JSON.parse and JSON.stringify</strong>
+        <p>Native browser parsing and stringifying are used for validation, formatting and minification.</p>
+        <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse" target="_blank" rel="noopener">MDN JSON.parse</a>
+      </div>
+      <div class="source-card">
+        <strong>JSON Pointer</strong>
+        <p>Pointer queries use RFC 6901 escaping rules for slash and tilde characters.</p>
+        <a href="https://datatracker.ietf.org/doc/html/rfc6901" target="_blank" rel="noopener">RFC 6901</a>
+      </div>
+      <div class="source-card">
+        <strong>JSON Patch</strong>
+        <p>The diff tab emits add, remove and replace operations shaped like RFC 6902 patch entries.</p>
+        <a href="https://datatracker.ietf.org/doc/html/rfc6902" target="_blank" rel="noopener">RFC 6902</a>
+      </div>
+      <div class="source-card">
+        <strong>JSON Schema</strong>
+        <p>Schema inference outputs a draft 2020-12 starter schema that should be reviewed before production use.</p>
+        <a href="https://json-schema.org/learn/getting-started-step-by-step" target="_blank" rel="noopener">JSON Schema</a>
+      </div>
+    </div>
+  </section>
+
+<section class="json-faq" aria-labelledby="json-formatter-faq-title">
+  <h2 id="json-formatter-faq-title">JSON Formatter &amp; Validator FAQ</h2>
+  <div class="json-faq-grid">
+    <details>
+      <summary>How should I use this?</summary>
+      <p>Paste JSON, format or repair it, inspect errors, run a pointer query, infer schema or types, then copy or download only the output you intend to share.</p>
+    </details>
+    <details>
+      <summary>What does redacted copy mask?</summary>
+      <p>It masks common secret fields such as tokens, passwords, API keys, authorization values, email addresses, and phone fields. Review manually before sharing.</p>
+    </details>
+    <details>
+      <summary>Is this a production validator?</summary>
+      <p>No. It is a local browser utility. Compare the result against your OpenAPI, JSON Schema, backend tests, or provider documentation.</p>
+    </details>
+  </div>
+</section>
+<section class="tool-verification-sec" data-tool-verification-panel="json-formatter">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Developer safety check</span>
+          <h2 class="tool-verification-title">Validate structure before sharing payloads</h2>
+          <p class="tool-verification-lead">Use formatting, repair, pointer queries, schema/type inference, diffing, copy, and download as a local API-debugging workflow.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Runs in browser</span>
+          <p class="tool-verification-note">Payloads are not uploaded by the formatter itself.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>What to check</h3>
+          <ul class="tool-verification-list">
+            <li>Methodology: parse the payload locally, render the selected mode, then compare schema, type, query, or diff output against your real contract.</li>
+            <li>Verify parse status, required fields, date formats, array depth, null handling, and schema or TypeScript fit against the real API contract.</li>
+            <li>Remove tokens, passwords, keys, personal data, and production identifiers before copying output into tickets or docs.</li>
+            <li>Use download only for sanitized examples that are safe to store locally.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Limitations</h3>
+          <ul class="tool-verification-list">
+            <li>Disclaimer: local utility only, not an official schema validator, security scanner, or production API guarantee.</li>
+            <li>Repair and type inference are best-effort helpers; review generated schema/types before committing code.</li>
+            <li>Local-first privacy depends on not pasting sensitive payloads into external chats, logs, or shared screenshots.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <a class="tool-verification-report" href="#output">Review formatter output</a>
+        <p class="tool-verification-disclaimer">Source/reference note: compare against your current OpenAPI, JSON Schema, backend tests, or provider documentation before shipping changes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<afro-related-tools data-ssr="1" category="developer" current="json-formatter">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/data-converter/" data-related-tool data-id="data-converter" data-name="Data Format Converter" data-category="developer" data-icon="DF" data-desc="Convert between JSON, CSV, XML, YAML, TOML, TSV. Auto-detect, SQL INSERT generator, preview table.">Data Format Converter</a></li><li><a href="/tools/ussd-simulator/" data-related-tool data-id="ussd-simulator" data-name="USSD Code Simulator" data-category="developer" data-icon="UC" data-desc="Visual USSD menu builder for African fintech developers.">USSD Code Simulator</a></li><li><a href="/tools/api-tester/" data-related-tool data-id="api-tester" data-name="API Tester (Postman Lite)" data-category="developer" data-icon="AT" data-desc="REST API testing in-browser. No install needed. Pre-built Africa fintech collections.">API Tester (Postman Lite)</a></li><li><a href="/tools/base64/" data-related-tool data-id="base64" data-name="Base64 Encoder/Decoder" data-category="developer" data-icon="BE" data-desc="Encode/decode text and files. Image-to-Base64, URL-safe mode, live encoding, stats bar. AI assist.">Base64 Encoder/Decoder</a></li><li><a href="/tools/hash-generator/" data-related-tool data-id="hash-generator" data-name="Hash Generator" data-category="developer" data-icon="HG" data-desc="MD5, SHA-1, SHA-256, SHA-512, SHA-3, HMAC, CRC32. All-at-once grid, checksum verify, file hashing.">Hash Generator</a></li><li><a href="/tools/markdown-editor/" data-related-tool data-id="markdown-editor" data-name="Markdown Editor" data-category="developer" data-icon="ME" data-desc="Live preview, GFM tables, toolbar, scroll sync, fullscreen, word count, export to HTML/MD. AI assist.">Markdown Editor</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+(function(){
+  'use strict';
+
+  var storageKey = 'afrotools.jsonWorkbench.history.v1';
+  var apiTesterKey = 'afrotools.apiTester.saved.v1';
+  var input = $('input');
+  var output = $('output');
+  var status = $('status');
+  var currentTab = 'formatted';
+  var last = { ok:false, value:null, formatted:'', warnings:[], mode:'json' };
+
+  function $(id){ return document.getElementById(id); }
+  function esc(value){
+    return String(value == null ? '' : value).replace(/[&<>"']/g,function(ch){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];
+    });
+  }
+  function toast(message){
+    var el = $('toast');
+    el.textContent = message;
+    el.classList.add('on');
+    setTimeout(function(){ el.classList.remove('on'); }, 1500);
+  }
+  function safeCopy(text){
+    function fallbackCopy(){
+      var area = document.createElement('textarea');
+      area.value = text;
+      area.setAttribute('readonly', '');
+      area.style.position = 'fixed';
+      area.style.left = '-9999px';
+      document.body.appendChild(area);
+      area.focus();
+      area.select();
+      try {
+        document.execCommand('copy');
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject(error);
+      } finally {
+        document.body.removeChild(area);
+      }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).catch(fallbackCopy);
+    }
+    return fallbackCopy();
+  }
+  function sensitiveKey(key){
+    return /(password|passwd|pwd|token|secret|api[_-]?key|apikey|authorization|auth|bearer|private[_-]?key|client[_-]?secret|access[_-]?token|refresh[_-]?token|session|cookie|email|phone|msisdn)/i.test(String(key || ''));
+  }
+  function scanSensitive(value){
+    var found = [];
+    function walk(node, path){
+      if (!node || typeof node !== 'object') return;
+      Object.keys(node).forEach(function(key){
+        var nextPath = path ? path + '.' + key : key;
+        if (sensitiveKey(key)) found.push(nextPath);
+        walk(node[key], nextPath);
+      });
+    }
+    walk(value, '');
+    return found.slice(0, 8);
+  }
+  function redactValue(value){
+    if (Array.isArray(value)) return value.map(redactValue);
+    if (value && typeof value === 'object') {
+      return Object.keys(value).reduce(function(acc, key){
+        acc[key] = sensitiveKey(key) ? '[REDACTED]' : redactValue(value[key]);
+        return acc;
+      }, {});
+    }
+    return value;
+  }
+  function indent(){
+    var value = $('indentSelect').value;
+    return value === 'tab' ? '\t' : Number(value);
+  }
+  function bytes(text){ return new Blob([text]).size; }
+  function fmtBytes(value){
+    if(value < 1024) return value + ' B';
+    if(value < 1048576) return (value / 1024).toFixed(1) + ' KB';
+    return (value / 1048576).toFixed(1) + ' MB';
+  }
+  function setTab(tab){
+    currentTab = tab;
+    ['Formatted','Tree','Query','Schema','Types','Diff','History'].forEach(function(name){
+      $('tab' + name).classList.toggle('active', tab.toLowerCase() === name.toLowerCase());
+    });
+    $('queryBox').hidden = tab !== 'query';
+    $('diffBox').hidden = tab !== 'diff';
+    render();
+  }
+  function parseText(text){
+    var mode = $('modeSelect').value;
+    var warnings = lintRaw(text);
+    if(!text.trim()) return { ok:false, value:null, formatted:'', warnings:warnings, error:'Paste JSON to begin.', mode:mode };
+    try{
+      if(mode === 'ndjson'){
+        var rows = text.split(/\r?\n/).filter(function(line){ return line.trim(); }).map(function(line, index){
+          try { return JSON.parse(line); }
+          catch(err){ throw new Error('Line ' + (index + 1) + ': ' + err.message); }
+        });
+        var rowSecrets = scanSensitive(rows);
+        if(rowSecrets.length) warnings.push('Possible sensitive fields: ' + rowSecrets.join(', '));
+        return { ok:true, value:rows, formatted:JSON.stringify(rows, null, indent()), warnings:warnings, mode:mode };
+      }
+      var parsed = JSON.parse(text);
+      var secretPaths = scanSensitive(parsed);
+      if(secretPaths.length) warnings.push('Possible sensitive fields: ' + secretPaths.join(', '));
+      return { ok:true, value:parsed, formatted:JSON.stringify(parsed, null, indent()), warnings:warnings, mode:mode };
+    }catch(err){
+      return { ok:false, value:null, formatted:'', warnings:warnings, error:err.message, mode:mode };
+    }
+  }
+  function lintRaw(text){
+    var warnings = [];
+    if(/^\uFEFF/.test(text)) warnings.push('Byte order mark detected.');
+    if(/,\s*[\]}]/.test(text)) warnings.push('Trailing comma pattern found.');
+    if(/(^|[^:])\/\/|\/\*/.test(text)) warnings.push('JavaScript comments found. JSON does not allow comments.');
+    if(/'[^']*'\s*:/.test(text) || /:\s*'[^']*'/.test(text)) warnings.push('Single-quoted strings found.');
+    if(bytes(text) > 1048576) warnings.push('Payload is over 1 MB. Browser tools may feel slower.');
+    return warnings;
+  }
+  function repairText(text){
+    var next = text.replace(/^\uFEFF/, '');
+    next = next.replace(/[\u201C\u201D]/g, '"').replace(/[\u2018\u2019]/g, "'");
+    next = next.replace(/\/\*[\s\S]*?\*\//g, '');
+    next = next.replace(/(^|[^:])\/\/.*$/gm, '$1');
+    next = next.replace(/,\s*([}\]])/g, '$1');
+    next = next.replace(/([{,]\s*)([A-Za-z_$][\w$-]*)(\s*:)/g, '$1"$2"$3');
+    next = next.replace(/'([^'\\]*(?:\\.[^'\\]*)*)'/g, function(_, body){
+      return '"' + body.replace(/"/g, '\\"') + '"';
+    });
+    next = next.replace(/\bNone\b/g, 'null').replace(/\bTrue\b/g, 'true').replace(/\bFalse\b/g, 'false');
+    return next;
+  }
+  function sortKeys(value){
+    if(Array.isArray(value)) return value.map(sortKeys);
+    if(value && typeof value === 'object'){
+      return Object.keys(value).sort().reduce(function(acc, key){ acc[key] = sortKeys(value[key]); return acc; }, {});
+    }
+    return value;
+  }
+  function countStats(value){
+    var stats = { nodes:0, depth:0, arrays:0, objects:0, strings:0, numbers:0 };
+    function walk(node, depth){
+      stats.nodes += 1;
+      stats.depth = Math.max(stats.depth, depth);
+      if(Array.isArray(node)){
+        stats.arrays += 1;
+        node.forEach(function(item){ walk(item, depth + 1); });
+      } else if(node && typeof node === 'object'){
+        stats.objects += 1;
+        Object.keys(node).forEach(function(key){ walk(node[key], depth + 1); });
+      } else if(typeof node === 'string') stats.strings += 1;
+      else if(typeof node === 'number') stats.numbers += 1;
+    }
+    if(value !== null && value !== undefined) walk(value, 1);
+    return stats;
+  }
+  function highlight(json){
+    return esc(json).replace(/(&quot;(?:\\.|[^\\])*?&quot;)(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d+)?(?:[eE][+\-]?\d+)?|[{}\[\],:]/g, function(match, str, colon){
+      if(str) return '<span class="'+(colon ? 'key' : 'string')+'">'+str+'</span>'+(colon || '');
+      if(match === 'true' || match === 'false') return '<span class="bool">'+match+'</span>';
+      if(match === 'null') return '<span class="null">'+match+'</span>';
+      if(/^-?\d/.test(match)) return '<span class="number">'+match+'</span>';
+      return '<span class="punct">'+match+'</span>';
+    });
+  }
+  function pointerEscape(segment){ return String(segment).replace(/~/g,'~0').replace(/\//g,'~1'); }
+  function pointerUnescape(segment){ return segment.replace(/~1/g,'/').replace(/~0/g,'~'); }
+  function dotToPointer(path){
+    if(path === '$' || !path) return '';
+    return '/' + path.replace(/^\$?\./,'').split('.').filter(Boolean).map(pointerEscape).join('/');
+  }
+  function resolvePointer(value, pointer){
+    var ptr = pointer.trim();
+    if(!ptr || ptr === '$') return value;
+    if(ptr[0] !== '/') ptr = dotToPointer(ptr);
+    return ptr.split('/').slice(1).reduce(function(node, segment){
+      if(node == null) throw new Error('Path not found at ' + segment);
+      return node[pointerUnescape(segment)];
+    }, value);
+  }
+  function renderTree(value){
+    function nodeHtml(node, pointer, keyLabel){
+      var label = keyLabel === undefined ? '' : '<button type="button" data-pointer="'+esc(pointer)+'">'+esc(keyLabel)+'</button>: ';
+      if(Array.isArray(node)){
+        return '<li>'+label+'<span class="punct">[</span> <span class="null">'+node.length+' items</span><ul>'+
+          node.map(function(item, i){ return nodeHtml(item, pointer + '/' + i, i); }).join('')+
+          '</ul><span class="punct">]</span></li>';
+      }
+      if(node && typeof node === 'object'){
+        var keys = Object.keys(node);
+        return '<li>'+label+'<span class="punct">{</span> <span class="null">'+keys.length+' keys</span><ul>'+
+          keys.map(function(key){ return nodeHtml(node[key], pointer + '/' + pointerEscape(key), key); }).join('')+
+          '</ul><span class="punct">}</span></li>';
+      }
+      return '<li>'+label+'<span class="'+typeClass(node)+'">'+esc(JSON.stringify(node))+'</span></li>';
+    }
+    return '<div class="tree"><ul>'+nodeHtml(value, '', 'root')+'</ul></div>';
+  }
+  function typeClass(value){
+    if(value === null) return 'null';
+    if(typeof value === 'string') return 'string';
+    if(typeof value === 'number') return 'number';
+    if(typeof value === 'boolean') return 'bool';
+    return 'punct';
+  }
+  function inferSchema(value){
+    if(value === null) return { type:'null' };
+    if(Array.isArray(value)) return { type:'array', items:value.length ? inferSchema(value[0]) : {} };
+    if(typeof value === 'object'){
+      var props = {};
+      Object.keys(value).forEach(function(key){ props[key] = inferSchema(value[key]); });
+      return { '$schema':'https://json-schema.org/draft/2020-12/schema', type:'object', required:Object.keys(value), properties:props, additionalProperties:true };
+    }
+    if(Number.isInteger(value)) return { type:'integer' };
+    return { type:typeof value };
+  }
+  function tsType(value, name){
+    return 'type ' + name + ' = ' + tsExpr(value, 1) + ';';
+  }
+  function tsExpr(value, level){
+    if(value === null) return 'null';
+    if(Array.isArray(value)){
+      if(!value.length) return 'unknown[]';
+      return tsExpr(value[0], level) + '[]';
+    }
+    if(typeof value === 'object'){
+      var pad = '  '.repeat(level);
+      var closePad = '  '.repeat(Math.max(0, level - 1));
+      var lines = ['{'];
+      Object.keys(value).forEach(function(key){
+        lines.push(pad + safeTsKey(key) + ': ' + tsExpr(value[key], level + 1) + ';');
+      });
+      lines.push(closePad + '}');
+      return lines.join('\n');
+    }
+    return typeof value;
+  }
+  function safeTsKey(key){ return /^[A-Za-z_$][\w$]*$/.test(key) ? key : JSON.stringify(key); }
+  function flatten(value){
+    var rows = [];
+    function walk(node, path){
+      if(Array.isArray(node)) node.forEach(function(item, i){ walk(item, path + '[' + i + ']'); });
+      else if(node && typeof node === 'object') Object.keys(node).forEach(function(key){ walk(node[key], path ? path + '.' + key : key); });
+      else rows.push({ path:path || '$', value:node });
+    }
+    walk(value, '');
+    return rows;
+  }
+  function diff(a,b,path){
+    var ops = [];
+    if(JSON.stringify(a) === JSON.stringify(b)) return ops;
+    if(a === undefined){ ops.push({ op:'add', path:path || '', value:b }); return ops; }
+    if(b === undefined){ ops.push({ op:'remove', path:path || '' }); return ops; }
+    if(a === null || b === null || typeof a !== typeof b || Array.isArray(a) !== Array.isArray(b) || typeof a !== 'object'){
+      ops.push({ op:'replace', path:path || '', value:b });
+      return ops;
+    }
+    var keys = Array.from(new Set(Object.keys(a).concat(Object.keys(b))));
+    keys.forEach(function(key){
+      ops = ops.concat(diff(a[key], b[key], (path || '') + '/' + pointerEscape(key)));
+    });
+    return ops;
+  }
+  function saveHistory(){
+    if(!last.ok) return;
+    var list = readHistory();
+    list.unshift({ at:new Date().toISOString(), mode:last.mode, size:bytes(input.value), text:input.value.slice(0, 300000) });
+    localStorage.setItem(storageKey, JSON.stringify(list.slice(0, 10)));
+  }
+  function readHistory(){
+    try { return JSON.parse(localStorage.getItem(storageKey) || '[]'); }
+    catch(_) { return []; }
+  }
+  function renderHistory(){
+    var list = readHistory();
+    if(!list.length) return '<p class="helper">No local history yet. Valid payloads are saved automatically after formatting.</p>';
+    return '<div class="history-list">'+list.map(function(item, index){
+      return '<div class="history-item"><div><strong>Snapshot '+(index+1)+'</strong><br><span>'+esc(item.at)+' | '+fmtBytes(item.size)+' | '+esc(item.mode)+'</span></div><button type="button" data-history="'+index+'">Restore</button></div>';
+    }).join('')+'</div>';
+  }
+  function render(){
+    last = parseText(input.value);
+    var stats = last.ok ? countStats(last.value) : { nodes:0, depth:0, arrays:0 };
+    $('statBytes').textContent = fmtBytes(bytes(input.value));
+    $('statNodes').textContent = String(stats.nodes);
+    $('statDepth').textContent = String(stats.depth);
+    $('statArrays').textContent = String(stats.arrays);
+    var badges = [];
+    badges.push(last.ok ? '<span class="badge good">Valid '+esc(last.mode.toUpperCase())+'</span>' : '<span class="badge bad">'+esc(last.error || 'Invalid')+'</span>');
+    last.warnings.forEach(function(w){ badges.push('<span class="badge warn">'+esc(w)+'</span>'); });
+    if(last.ok && typeof last.value !== 'object') badges.push('<span class="badge warn">Valid JSON root is not object or array</span>');
+    status.innerHTML = badges.join('');
+    if(!last.ok){
+      output.innerHTML = '<p class="helper">'+esc(last.error || 'Invalid JSON')+'</p>';
+      return;
+    }
+    if(currentTab === 'formatted') output.innerHTML = highlight(last.formatted);
+    if(currentTab === 'tree') output.innerHTML = renderTree(last.value);
+    if(currentTab === 'query') runPointer(false);
+    if(currentTab === 'schema') output.textContent = JSON.stringify(inferSchema(last.value), null, indent());
+    if(currentTab === 'types') output.textContent = tsType(last.value, 'Root');
+    if(currentTab === 'diff') output.innerHTML = '<p class="helper">Paste comparison JSON and click Generate Patch.</p>';
+    if(currentTab === 'history') output.innerHTML = renderHistory();
+  }
+  function runPointer(showToast){
+    if(!last.ok) return;
+    try{
+      var result = resolvePointer(last.value, $('pointerInput').value);
+      output.textContent = JSON.stringify(result, null, indent());
+      if(showToast) toast('Query resolved');
+    }catch(err){
+      output.innerHTML = '<p class="helper">'+esc(err.message)+'</p>';
+    }
+  }
+  function runDiff(){
+    if(!last.ok) return;
+    try{
+      var other = JSON.parse($('diffInput').value);
+      var ops = diff(last.value, other, '');
+      if(!ops.length){ output.innerHTML = '<p class="helper">No differences found.</p>'; return; }
+      output.innerHTML = ops.map(function(op){
+        var cls = op.op === 'add' ? 'diff-add' : op.op === 'remove' ? 'diff-remove' : 'diff-change';
+        return '<div class="'+cls+'"><strong>'+esc(op.op.toUpperCase())+'</strong> '+esc(op.path || '/')+
+          (op.op === 'remove' ? '' : '<br><code>'+esc(JSON.stringify(op.value))+'</code>')+'</div>';
+      }).join('');
+    }catch(err){
+      output.innerHTML = '<p class="helper">Comparison JSON is invalid: '+esc(err.message)+'</p>';
+    }
+  }
+  function bind(){
+    input.addEventListener('input', render);
+    input.addEventListener('keydown', function(event){
+      if(event.key === 'Tab'){
+        event.preventDefault();
+        var pad = $('indentSelect').value === 'tab' ? '\t' : ' '.repeat(Number($('indentSelect').value));
+        var start = input.selectionStart;
+        input.value = input.value.slice(0,start) + pad + input.value.slice(input.selectionEnd);
+        input.selectionStart = input.selectionEnd = start + pad.length;
+        render();
+      }
+      if((event.ctrlKey || event.metaKey) && event.key === 'Enter'){
+        event.preventDefault();
+        $('formatBtn').click();
+      }
+    });
+    $('formatBtn').onclick = function(){ if(last.ok){ input.value = last.formatted; saveHistory(); render(); toast('Formatted'); } else toast('Fix validation errors first'); };
+    $('minifyBtn').onclick = function(){ if(last.ok){ input.value = JSON.stringify(last.value); saveHistory(); render(); toast('Minified'); } };
+    $('repairBtn').onclick = function(){ input.value = repairText(input.value); render(); toast('Repair attempted'); };
+    $('sortBtn').onclick = function(){ if(last.ok){ input.value = JSON.stringify(sortKeys(last.value), null, indent()); saveHistory(); render(); toast('Keys sorted'); } };
+    $('sampleBtn').onclick = function(){
+      input.value = JSON.stringify({ customer:{ name:'Amina Okafor', country:'NG', city:'Lagos' }, orders:[{ id:'AF-1001', total:12500, currency:'NGN', paid:true }, { id:'AF-1002', total:6400, currency:'NGN', paid:false }], meta:{ source:'AfroTools sample', generatedAt:'2026-04-28' } }, null, 2);
+      render();
+    };
+    $('clearBtn').onclick = function(){ input.value = ''; render(); };
+    $('copyBtn').onclick = function(){
+      var text = output.textContent || '';
+      safeCopy(text).then(function(){ toast('Copied'); }).catch(function(){ toast('Copy failed'); });
+    };
+    $('redactCopyBtn').onclick = function(){
+      if(!last.ok) { toast('Format valid JSON first'); return; }
+      var text = JSON.stringify(redactValue(last.value), null, indent());
+      safeCopy(text).then(function(){ toast('Redacted copy ready'); }).catch(function(){ toast('Copy failed'); });
+    };
+    $('downloadBtn').onclick = function(){
+      var content = currentTab === 'formatted' && last.ok ? last.formatted : output.textContent;
+      var blob = new Blob([content || input.value], { type:'application/json' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = currentTab === 'schema' ? 'schema.json' : currentTab === 'types' ? 'types.ts' : 'data.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    };
+    $('apiTesterBtn').onclick = function(){
+      if(!last.ok){ toast('Valid JSON required'); return; }
+      var saved = [];
+      try { saved = JSON.parse(localStorage.getItem(apiTesterKey) || '[]'); } catch(_) {}
+      saved.unshift({ name:'JSON Formatter Payload', method:'POST', url:'https://api.example.com/endpoint', headers:{ 'Content-Type':'application/json' }, body:JSON.stringify(last.value, null, 2), createdAt:new Date().toISOString(), source:'json-formatter' });
+      localStorage.setItem(apiTesterKey, JSON.stringify(saved.slice(0, 25)));
+      toast('Saved to API Tester');
+    };
+    $('fileInput').onchange = function(event){
+      var file = event.target.files[0];
+      if(!file) return;
+      var reader = new FileReader();
+      reader.onload = function(ev){ input.value = ev.target.result; render(); toast('File loaded'); };
+      reader.readAsText(file);
+    };
+    $('modeSelect').onchange = render;
+    $('indentSelect').onchange = render;
+    $('tabFormatted').onclick = function(){ setTab('formatted'); };
+    $('tabTree').onclick = function(){ setTab('tree'); };
+    $('tabQuery').onclick = function(){ setTab('query'); };
+    $('tabSchema').onclick = function(){ setTab('schema'); };
+    $('tabTypes').onclick = function(){ setTab('types'); };
+    $('tabDiff').onclick = function(){ setTab('diff'); };
+    $('tabHistory').onclick = function(){ setTab('history'); };
+    $('runPointerBtn').onclick = function(){ runPointer(true); };
+    $('runDiffBtn').onclick = runDiff;
+    output.addEventListener('click', function(event){
+      var treeButton = event.target.closest('button[data-pointer]');
+      var historyButton = event.target.closest('button[data-history]');
+      if(treeButton){
+        $('pointerInput').value = treeButton.getAttribute('data-pointer');
+        setTab('query');
+        safeCopy($('pointerInput').value).catch(function(){});
+      }
+      if(historyButton){
+        var item = readHistory()[Number(historyButton.getAttribute('data-history'))];
+        if(item){ input.value = item.text; $('modeSelect').value = item.mode || 'json'; setTab('formatted'); toast('Snapshot restored'); }
+      }
+    });
+  }
+  bind();
+  $('sampleBtn').click();
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

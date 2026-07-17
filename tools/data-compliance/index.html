@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POPIA / NDPR Data Compliance Checker | AfroTools</title>
+<meta name="description" content="Check your website or business compliance with African data protection laws — POPIA (South Africa), NDPR/NDPA (Nigeria), DPA (Kenya), and DPA (Ghana).">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="POPIA/NDPR Compliance Checker | AfroTools">
+<meta property="og:description" content="Check compliance with African data protection laws — POPIA, NDPR, Kenya DPA, Ghana DPA.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/data-compliance.webp">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/data-compliance/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+:root{--afro-dark:#0f1419;--accent:#1d4ed8}
+.tool-hero{background:linear-gradient(135deg,#1e3a5f 0%,#1d4ed8 50%,#1e40af 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#bfdbfe}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#bfdbfe;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-em{background:rgba(191,219,254,.2);color:#bfdbfe;border:1px solid rgba(191,219,254,.4)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
+.check-group{margin-top:14px}
+.check-section{margin-bottom:18px}
+.check-section-title{font-size:.74rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #e2e8f0}
+.check-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #f1f5f9}
+.check-item:last-child{border-bottom:none}
+.check-item input[type=checkbox]{margin-top:3px;width:16px;height:16px;accent-color:var(--accent);flex-shrink:0}
+.check-item label{margin:0;font-size:.8rem;color:var(--afro-dark);line-height:1.5;cursor:pointer}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px}
+.btn-primary{background:linear-gradient(135deg,#1e40af,#1d4ed8);color:#fff}
+.score-ring{width:120px;height:120px;margin:0 auto 14px;position:relative}
+.score-ring svg{transform:rotate(-90deg)}
+.score-ring .bg{stroke:#e2e8f0;fill:none;stroke-width:10}
+.score-ring .fg{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset .6s}
+.score-num{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:1.8rem;font-weight:800}
+.score-label{text-align:center;font-size:.88rem;font-weight:700;margin-bottom:6px}
+.score-desc{text-align:center;font-size:.78rem;color:#64748b;line-height:1.5;margin-bottom:18px}
+.gap-list{list-style:none;padding:0}
+.gap-list li{padding:8px 0;border-bottom:1px solid #f1f5f9;font-size:.8rem;color:#475569;display:flex;gap:8px;align-items:flex-start}
+.gap-list li::before{content:'';flex-shrink:0;width:8px;height:8px;background:#ef4444;border-radius:50%;margin-top:5px}
+.sidebar .info-card{background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#1e3a5f;margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:#1e3a5f;line-height:1.6}
+.info-card ul{padding-left:16px;margin:6px 0}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
+</style>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="POPIA/NDPR Compliance Checker | AfroTools">
+<meta name="twitter:description" content="Check compliance with African data protection laws — POPIA, NDPR, Kenya DPA, Ghana DPA.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/data-compliance.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "POPIA/NDPR Compliance Checker",
+      "item": "https://afrotools.com/tools/data-compliance/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<link rel="stylesheet" href="/assets/css/legal-enhancements.css?v=faefe7bf">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "POPIA / NDPR Data Compliance Checker",
+  "description": "Check your website or business compliance with African data protection laws — POPIA (South Africa), NDPR/NDPA (Nigeria), DPA (Kenya), and DPA (Ghana).",
+  "url": "https://afrotools.com/tools/data-compliance/",
+  "inLanguage": "en",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/data-compliance.webp"
+}
+</script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Do I need to comply with POPIA if I'm not in South Africa?","acceptedAnswer":{"@type":"Answer","text":"Yes, if you process the personal information of South African data subjects. POPIA applies to any \"responsible party\" that processes personal information in the context of activities in South Africa, regardless of where the processing physically occurs. This is similar to the GDPR's extraterritorial reach."}},{"@type":"Question","name":"Do I need a Data Protection Officer?","acceptedAnswer":{"@type":"Answer","text":"Under POPIA, every responsible party must designate an Information Officer (and can appoint deputy Information Officers). Under the NDPA, organisations processing large volumes of personal data must appoint a DPO. Kenya's DPA requires a DPO for organisations processing sensitive data or monitoring individuals systematically."}}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/data-compliance/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/data-compliance/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/conformite-donnees/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ukaguzi-wa-ulinzi-wa-data/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/data-compliance/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Data Compliance</span></div>
+<h1>African <em>Data Protection</em> Compliance Checker</h1>
+<p class="hero-sub">Assess your organisation's compliance with African data protection laws. Covers POPIA (South Africa), NDPA (Nigeria), DPA (Kenya), and DPA (Ghana).</p>
+<div class="hero-badges"><span class="badge b-em">POPIA</span><span class="badge b-em">NDPA / NDPR</span><span class="badge b-em">Kenya DPA</span><span class="badge b-em">Ghana DPA</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calculator">
+<div class="card">
+<div class="card-head"><span class="card-title">Compliance Assessment</span></div>
+<div class="card-body">
+<div style="margin-bottom:14px"><label for="jurisdiction">Primary Jurisdiction</label>
+<select id="jurisdiction">
+<option value="za">South Africa (POPIA)</option>
+<option value="ng">Nigeria (NDPA / NDPR)</option>
+<option value="ke">Kenya (DPA 2019)</option>
+<option value="gh">Ghana (DPA 2012)</option>
+</select></div>
+
+<div class="check-group">
+<div class="check-section">
+<div class="check-section-title">Lawful Basis for Processing</div>
+<div class="check-item"><input type="checkbox" id="c1"><label for="c1">You have identified and documented a lawful basis for each processing activity (consent, contract, legal obligation, legitimate interest, etc.)</label></div>
+<div class="check-item"><input type="checkbox" id="c2"><label for="c2">Where consent is the basis, it is freely given, specific, informed, and unambiguous</label></div>
+<div class="check-item"><input type="checkbox" id="c3"><label for="c3">You have a mechanism for data subjects to withdraw consent easily</label></div>
+</div>
+
+<div class="check-section">
+<div class="check-section-title">Notice &amp; Transparency</div>
+<div class="check-item"><input type="checkbox" id="c4"><label for="c4">You have a published privacy policy / PAIA manual that is accessible to data subjects</label></div>
+<div class="check-item"><input type="checkbox" id="c5"><label for="c5">The privacy notice states: what data is collected, why, how long it's kept, and who it's shared with</label></div>
+<div class="check-item"><input type="checkbox" id="c6"><label for="c6">You provide notice at or before the point of collection</label></div>
+</div>
+
+<div class="check-section">
+<div class="check-section-title">Data Subject Rights</div>
+<div class="check-item"><input type="checkbox" id="c7"><label for="c7">You have a process for data subjects to access their personal data</label></div>
+<div class="check-item"><input type="checkbox" id="c8"><label for="c8">You can correct or delete personal data upon request</label></div>
+<div class="check-item"><input type="checkbox" id="c9"><label for="c9">You can respond to data subject requests within the statutory timeframe (e.g., 30 days for POPIA)</label></div>
+</div>
+
+<div class="check-section">
+<div class="check-section-title">Security &amp; Breach Management</div>
+<div class="check-item"><input type="checkbox" id="c10"><label for="c10">You have appropriate technical and organisational security measures (encryption, access controls, etc.)</label></div>
+<div class="check-item"><input type="checkbox" id="c11"><label for="c11">You have a documented data breach response plan</label></div>
+<div class="check-item"><input type="checkbox" id="c12"><label for="c12">You can notify the regulator and affected data subjects within required timeframes after a breach</label></div>
+</div>
+
+<div class="check-section">
+<div class="check-section-title">Governance &amp; Accountability</div>
+<div class="check-item"><input type="checkbox" id="c13"><label for="c13">You have appointed a Data Protection Officer (DPO) / Information Officer where required</label></div>
+<div class="check-item"><input type="checkbox" id="c14"><label for="c14">You have registered with the relevant data protection authority (Information Regulator, NITDA, ODPC, etc.)</label></div>
+<div class="check-item"><input type="checkbox" id="c15"><label for="c15">You maintain a record of processing activities (ROPA)</label></div>
+<div class="check-item"><input type="checkbox" id="c16"><label for="c16">You conduct Data Protection Impact Assessments (DPIAs) for high-risk processing</label></div>
+</div>
+
+<div class="check-section">
+<div class="check-section-title">Cross-Border Transfers</div>
+<div class="check-item"><input type="checkbox" id="c17"><label for="c17">You have identified all cross-border data transfers</label></div>
+<div class="check-item"><input type="checkbox" id="c18"><label for="c18">Cross-border transfers have adequate safeguards (adequacy, consent, binding corporate rules, etc.)</label></div>
+</div>
+
+<div class="check-section">
+<div class="check-section-title">Third-Party Management</div>
+<div class="check-item"><input type="checkbox" id="c19"><label for="c19">You have data processing agreements with all third-party processors</label></div>
+<div class="check-item"><input type="checkbox" id="c20"><label for="c20">You conduct due diligence on third-party data processors' security practices</label></div>
+</div>
+</div>
+
+<button type="button" class="btn btn-primary" onclick="assess()">Assess Compliance</button>
+</div></div>
+
+<div class="card" id="resultCard" style="display:none">
+<div class="card-head"><span class="card-title">Compliance Score</span></div>
+<div class="card-body" id="resultBody"></div>
+</div>
+</div>
+
+<div class="sidebar">
+<div class="card">
+<div class="card-head"><span class="card-title">Penalties</span></div>
+<div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
+<p><strong>POPIA (SA):</strong> Up to R10 million fine and/or imprisonment up to 10 years.</p>
+<p style="margin-top:6px"><strong>NDPA (NG):</strong> Up to ₦10 million or 2% of annual gross revenue (whichever is higher).</p>
+<p style="margin-top:6px"><strong>DPA (KE):</strong> Up to KSh 5 million or 1% of annual turnover.</p>
+<p style="margin-top:6px"><strong>DPA (GH):</strong> Up to GH₵6,000 fine and/or imprisonment.</p>
+</div></div>
+<div class="info-card">
+<h4>Key Regulators</h4>
+<ul>
+<li><strong>SA:</strong> Information Regulator</li>
+<li><strong>NG:</strong> NITDA / Nigeria Data Protection Commission</li>
+<li><strong>KE:</strong> Office of the Data Protection Commissioner (ODPC)</li>
+<li><strong>GH:</strong> Data Protection Commission</li>
+</ul>
+</div>
+</div>
+</div></section>
+
+<section class="seo-section">
+<h2>Data Protection Compliance in Africa</h2>
+<p>Data protection legislation across Africa has rapidly matured in recent years. South Africa's Protection of Personal Information Act (POPIA) became fully enforceable in July 2021. Nigeria replaced its NDPR with the comprehensive Nigeria Data Protection Act (NDPA) in 2023. Kenya's Data Protection Act 2019 is actively enforced by the ODPC. Ghana's Data Protection Act 2012 was one of the continent's earliest comprehensive data protection laws.</p>
+<p>These laws share common principles derived from international standards: lawful processing, purpose limitation, data minimisation, accuracy, storage limitation, security, and accountability. They all require organisations to have a lawful basis for processing personal data, provide transparency through privacy notices, respect data subject rights, implement appropriate security measures, and manage cross-border data transfers responsibly.</p>
+<p>For businesses operating across multiple African markets, compliance can be complex. Each jurisdiction has its own registration requirements, breach notification timelines, and specific rules around cross-border transfers. A pan-African compliance strategy should identify the strictest requirements and build baseline compliance around those, with country-specific additions where needed.</p>
+<p>Common compliance gaps include: lack of a formal privacy policy, failure to register with the relevant authority, no documented data breach response plan, inadequate third-party processor agreements, and no mechanism for handling data subject access requests. This checklist helps you identify these gaps quickly and prioritise your compliance efforts.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>Do I need to comply with POPIA if I'm not in South Africa?</summary><p>Yes, if you process the personal information of South African data subjects. POPIA applies to any "responsible party" that processes personal information in the context of activities in South Africa, regardless of where the processing physically occurs. This is similar to the GDPR's extraterritorial reach.</p></details>
+<details class="faq-item"><summary>Do I need a Data Protection Officer?</summary><p>Under POPIA, every responsible party must designate an Information Officer (and can appoint deputy Information Officers). Under the NDPA, organisations processing large volumes of personal data must appoint a DPO. Kenya's DPA requires a DPO for organisations processing sensitive data or monitoring individuals systematically.</p></details>
+</section>
+
+
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+<!-- LEGAL-WORKFLOW-COPILOT:START -->
+<section class="leg-workflow-copilot" aria-labelledby="legal-workflow-heading">
+  <script type="application/json" class="leg-workflow-data">{"slug":"data-compliance","title":"POPIA/NDPR Compliance Checker","workflowTitle":"Privacy compliance command check","coverage":"Nigeria, South Africa and Kenya","decision":"Which law is the main risk driver for the product, customer base or data location","evidence":["Map personal data categories, purposes, vendors, countries and retention periods first","Use the country-specific checker for the highest-risk country after scoring","Attach evidence for each control instead of treating yes/no answers as proof"],"redFlags":["Treating POPIA, NDPA and Kenya DPA as identical because the checklist score is high","No breach decision tree or regulator contact route","No processor contract even though payment, cloud, CRM or analytics vendors handle personal data"],"related":[{"label":"NDPA Checker","href":"/tools/ndpa-checker/"},{"label":"POPIA Checker","href":"/tools/popia-checker/"},{"label":"Kenya DPA Checker","href":"/tools/kenya-dpa/"}],"competitor":{"group":"privacy","label":"Termly, OneTrust and enterprise consent platforms","patterns":["Mature privacy tools scan or map real processing activity, then connect policies, cookie choices, DSARs, consent logs and regulator evidence.","They preserve an audit trail instead of leaving users with a static policy that drifts away from the product.","They route high-risk processing into DPIA, breach and processor-contract workflows before launch or vendor onboarding."],"implemented":["This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.","The app-specific checklist is not generic: it starts with \"Map personal data categories, purposes, vendors, countries and retention periods first\".","Saved workflows can be resumed from the dashboard and handed off to NDPA Checker when the matter naturally continues.","The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report."]}}</script>
+  <div class="leg-workflow-head">
+    <span class="leg-action-kicker">Case workspace</span>
+    <h2 id="legal-workflow-heading">Build, save and export this legal workflow</h2>
+    <p>This workspace turns the privacy compliance command check result into a reusable matter note, dashboard item and gated PDF checklist. Use the app first, then save the evidence trail.</p>
+  </div>
+  <div class="leg-workflow-grid">
+    <label class="leg-field"><span class="leg-f-label">Matter or project</span><input aria-label="E.g. Supplier DPA review" class="leg-f-input" data-workflow-field="matter" type="text" placeholder="e.g. Supplier DPA review"></label>
+    <label class="leg-field"><span class="leg-f-label">Country or regime</span><input aria-label="E.g. Kenya, NDPA, Lagos" class="leg-f-input" data-workflow-field="country" type="text" placeholder="e.g. Kenya, NDPA, Lagos"></label>
+    <label class="leg-field"><span class="leg-f-label">Target date</span><input aria-label="Leg f input" class="leg-f-input" data-workflow-field="date" type="date"></label>
+    <label class="leg-field"><span class="leg-f-label">Status</span><select class="leg-f-select" data-workflow-field="status"><option>Checking evidence</option><option>Ready to verify</option><option>Waiting on official source</option><option>Escalate before action</option></select></label>
+  </div>
+  <div class="leg-workflow-columns">
+    <div>
+      <h3 class="leg-mini-heading">Evidence checked</h3>
+      <div class="leg-workflow-checklist" data-workflow-evidence-list></div>
+    </div>
+    <div>
+      <h3 class="leg-mini-heading">Risk flags</h3>
+      <div class="leg-workflow-checklist warning" data-workflow-risk-list></div>
+    </div>
+  </div>
+  <label class="leg-field full"><span class="leg-f-label">Private notes</span><textarea class="leg-f-textarea" data-workflow-field="note" placeholder="Add facts, missing documents, portal references, lawyer comments, or next actions."></textarea></label>
+  <div class="leg-workflow-summary" data-workflow-summary></div>
+  <div class="leg-workflow-actions">
+    <button type="button" class="leg-copy-btn" data-workflow-build>Build handoff note</button>
+    <button type="button" class="leg-secondary-btn" data-workflow-save>Save to dashboard</button>
+    <button type="button" class="leg-secondary-btn" data-workflow-load>Load saved</button>
+    <a class="leg-secondary-btn" href="/dashboard/">Open dashboard</a>
+  </div>
+  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly aria-label="Text entry"></textarea>
+  <form class="leg-pdf-gate" data-workflow-gate novalidate>
+    <div>
+      <span class="leg-action-kicker">PDF gate</span>
+      <h3>Email the checklist and unlock print/PDF</h3>
+      <p>The core tool stays free. The deeper PDF pack captures email only when the user wants a portable report, checklist and dashboard reminder.</p>
+    </div>
+    <label class="leg-field"><span class="leg-f-label">Email</span><input aria-label="You@example.com" class="leg-f-input" data-workflow-field="email" data-workflow-email type="email" autocomplete="email" placeholder="you@example.com"></label>
+    <label class="leg-workflow-optin"><input type="checkbox" data-workflow-optin checked><span>Send me occasional AfroTools legal checklist updates.</span></label>
+    <div class="leg-workflow-actions compact">
+      <button type="submit" class="leg-copy-btn" data-workflow-pdf-gate>Email checklist + unlock PDF</button>
+      <button type="button" class="leg-secondary-btn" data-workflow-print>Print or save PDF</button>
+      <button type="button" class="leg-secondary-btn" data-workflow-copy>Copy handoff note</button>
+    </div>
+    <div class="leg-gate-status" data-workflow-gate-status></div>
+  </form>
+  <div class="leg-workflow-next">
+    <span>Continue workflow</span>
+    <div><a href="/tools/ndpa-checker/">NDPA Checker</a><a href="/tools/popia-checker/">POPIA Checker</a><a href="/tools/kenya-dpa/">Kenya DPA Checker</a></div>
+  </div>
+</section>
+<!-- LEGAL-WORKFLOW-COPILOT:END -->
+<!-- LEGAL-COMPETITOR-CHECK:START -->
+<section class="leg-competitor" aria-labelledby="legal-competitor-heading">
+  <div class="leg-action-kicker">Competitor check - 28 April 2026</div>
+  <div class="leg-competitor-head">
+    <h2 id="legal-competitor-heading">What stronger tools teach this app</h2>
+    <p>Benchmarked against Termly, OneTrust and enterprise consent platforms. The goal is not to copy them; it is to bring the useful workflow pattern into an Africa-first tool with official-source caution and local evidence capture.</p>
+  </div>
+  <div class="leg-competitor-grid">
+    <div>
+      <h3>Observed feature pattern</h3>
+      <ul><li>Mature privacy tools scan or map real processing activity, then connect policies, cookie choices, DSARs, consent logs and regulator evidence.</li><li>They preserve an audit trail instead of leaving users with a static policy that drifts away from the product.</li><li>They route high-risk processing into DPIA, breach and processor-contract workflows before launch or vendor onboarding.</li></ul>
+    </div>
+    <div>
+      <h3>Implemented on this app</h3>
+      <ul><li>This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.</li><li>The app-specific checklist is not generic: it starts with &quot;Map personal data categories, purposes, vendors, countries and retention periods first&quot;.</li><li>Saved workflows can be resumed from the dashboard and handed off to NDPA Checker when the matter naturally continues.</li><li>The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report.</li></ul>
+    </div>
+    <div>
+      <h3>Best next move</h3>
+      <ul><li>Which law is the main risk driver for the product, customer base or data location</li><li>Map personal data categories, purposes, vendors, countries and retention periods first</li><li>Treating POPIA, NDPA and Kenya DPA as identical because the checklist score is high</li></ul>
+    </div>
+  </div>
+</section>
+<!-- LEGAL-COMPETITOR-CHECK:END -->
+<!-- LEGAL-DEEP-IMPROVEMENT:START -->
+<section class="leg-upgrade" aria-labelledby="legal-upgrade-heading">
+  <div class="leg-upgrade-kicker">Reviewed 28 April 2026 · Nigeria, South Africa and Kenya</div>
+  <h2 id="legal-upgrade-heading">Privacy compliance command check</h2>
+  <p>This older compliance checker should function as a fast triage layer across NDPA, POPIA and Kenya DPA before users move into the deeper country-specific tools.</p>
+  <div class="leg-upgrade-grid">
+    <div class="leg-upgrade-block">
+      <h3>Decisions this clarifies</h3>
+      <ul><li>Which law is the main risk driver for the product, customer base or data location</li><li>Whether the organisation needs registration, a DPO, a DPIA, breach process or processor contracts</li><li>Which gaps belong in policies, vendor contracts, technical controls or staff training</li></ul>
+    </div>
+    <div class="leg-upgrade-block">
+      <h3>Before you rely on it</h3>
+      <ul><li>Map personal data categories, purposes, vendors, countries and retention periods first</li><li>Use the country-specific checker for the highest-risk country after scoring</li><li>Attach evidence for each control instead of treating yes/no answers as proof</li></ul>
+    </div>
+    <div class="leg-upgrade-block warning">
+      <h3>Red flags</h3>
+      <ul><li>Treating POPIA, NDPA and Kenya DPA as identical because the checklist score is high</li><li>No breach decision tree or regulator contact route</li><li>No processor contract even though payment, cloud, CRM or analytics vendors handle personal data</li></ul>
+    </div>
+  </div>
+  <div class="leg-source-row">
+    <div>
+      <span>Primary checks</span>
+      <div class="leg-source-links"><a href="https://www.ndpc.gov.ng/ndp-act-2023/" target="_blank" rel="noopener">Nigeria Data Protection Commission</a><a href="https://inforegulator.org.za/" target="_blank" rel="noopener">South Africa Information Regulator</a><a href="https://www.odpc.go.ke/faqs/" target="_blank" rel="noopener">Kenya ODPC FAQs</a></div>
+    </div>
+    <div>
+      <span>Next best tools</span>
+      <div class="leg-source-links internal"><a href="/tools/ndpa-checker/">NDPA Checker</a><a href="/tools/popia-checker/">POPIA Checker</a><a href="/tools/kenya-dpa/">Kenya DPA Checker</a></div>
+    </div>
+  </div>
+</section>
+<!-- LEGAL-DEEP-IMPROVEMENT:END -->
+<!-- LEGAL-ACTION-PACK:START -->
+<section class="leg-action-pack" aria-labelledby="legal-action-pack-heading">
+  <div class="leg-action-head">
+    <span class="leg-action-kicker">Review pack</span>
+    <h2 id="legal-action-pack-heading">Save the privacy compliance command check trail</h2>
+    <p>Before filing, signing, publishing, or sending anything, keep a short record that links the app result to evidence and official-source checks.</p>
+  </div>
+  <div class="leg-action-grid">
+    <div>
+      <h3>Capture</h3>
+      <p>Save the country or regime, parties, dates, amounts, selected options, and final output. Add why this matters: Which law is the main risk driver for the product, customer base or data location.</p>
+    </div>
+    <div>
+      <h3>Attach</h3>
+      <p>Map personal data categories, purposes, vendors, countries and retention periods first. Also keep the strongest supporting document, receipt, portal reference, ID, contract, policy, or court file beside the generated result.</p>
+    </div>
+    <div>
+      <h3>Escalate</h3>
+      <p>If you see this risk, pause and get qualified help: Treating POPIA, NDPA and Kenya DPA as identical because the checklist score is high.</p>
+    </div>
+  </div>
+  <label class="leg-action-copy-label">Copyable review note</label>
+  <textarea class="leg-action-copy-text" readonly aria-label="Text entry">Privacy compliance command check action pack
+Tool: data-compliance
+Coverage: Nigeria, South Africa and Kenya
+
+Result to save:
+- Country or regime selected, parties involved, dates, amounts, and the generated output from the app.
+- The reason this output was prepared: Which law is the main risk driver for the product, customer base or data location.
+
+Evidence to attach:
+- Map personal data categories, purposes, vendors, countries and retention periods first
+- Use the country-specific checker for the highest-risk country after scoring
+- Attach evidence for each control instead of treating yes/no answers as proof
+
+Escalate before filing or signing if:
+- Treating POPIA, NDPA and Kenya DPA as identical because the checklist score is high
+- No breach decision tree or regulator contact route
+- No processor contract even though payment, cloud, CRM or analytics vendors handle personal data
+
+Primary checks:
+- Nigeria Data Protection Commission: https://www.ndpc.gov.ng/ndp-act-2023/
+- South Africa Information Regulator: https://inforegulator.org.za/
+- Kenya ODPC FAQs: https://www.odpc.go.ke/faqs/
+
+Reviewed by AfroTools workflow on 28 April 2026. Informational only, not legal advice.</textarea>
+  <div class="leg-action-copy-row">
+    <button type="button" class="leg-action-copy-btn" data-legal-copy-action>Copy review pack</button>
+    <span>Paste this into your matter file, compliance folder, board pack, or lawyer handoff.</span>
+  </div>
+</section>
+<!-- LEGAL-ACTION-PACK:END -->
+<afro-related-tools category="legal" current="data-compliance" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/business-registration/" data-related-tool data-id="business-registration" data-name="Business Registration Checklist" data-category="legal" data-icon="BR" data-desc="Step-by-step business registration checklist for 16 African countries. Documents, fees, timelines, regulatory bodies.">Business Registration Checklist</a></li><li><a href="/tools/nda-generator/" data-related-tool data-id="nda-generator" data-name="NDA Generator" data-category="legal" data-icon="NG" data-desc="Generate Non-Disclosure Agreements for African jurisdictions. Mutual and unilateral NDAs compliant with local contract l">NDA Generator</a></li><li><a href="/tools/rent-intelligence/" data-related-tool data-id="rent-intelligence" data-name="Rent Intelligence" data-category="legal" data-icon="RI" data-desc="Track rent asks, lease terms, deposits, and vacancy signals by neighborhood with moderated contributor data.">Rent Intelligence</a></li><li><a href="/tools/company-type-selector/" data-related-tool data-id="company-type-selector" data-name="Company Type Selector" data-category="legal" data-icon="CT" data-desc="Choose the right business structure for Africa — Sole Trader, LLC, PLC, Partnership. Tax, liability, compliance comparis">Company Type Selector</a></li><li><a href="/tools/land-title-check/" data-related-tool data-id="land-title-check" data-name="Land Title Verification Checklist" data-category="legal" data-icon="LT" data-desc="Verify land titles before buying property in Africa. Country-specific checklists for Nigeria (C of O), Kenya (Title Deed">Land Title Verification Checklist</a></li><li><a href="/tools/lease-risk-check/" data-related-tool data-id="lease-risk-check" data-name="Lease Risk Check" data-category="legal" data-icon="LR" data-desc="Nigeria-first lease scam and risky listing checker powered by contributor reports and reviewer approval.">Lease Risk Check</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+const LABELS={
+  c1:'Lawful basis documented',c2:'Valid consent mechanism',c3:'Consent withdrawal mechanism',
+  c4:'Published privacy policy',c5:'Comprehensive privacy notice',c6:'Notice at point of collection',
+  c7:'Data access request process',c8:'Correction/deletion process',c9:'Timely response to requests',
+  c10:'Security measures in place',c11:'Breach response plan',c12:'Breach notification capability',
+  c13:'DPO/Information Officer appointed',c14:'Registered with regulator',c15:'Record of processing activities',c16:'DPIAs for high-risk processing',
+  c17:'Cross-border transfers identified',c18:'Transfer safeguards in place',
+  c19:'Third-party processing agreements',c20:'Third-party due diligence'
+};
+
+function assess(){
+  const total=20;
+  let checked=0;
+  const gaps=[];
+  for(let i=1;i<=total;i++){
+    const el=document.getElementById('c'+i);
+    if(el.checked)checked++;
+    else gaps.push(LABELS['c'+i]);
+  }
+
+  const pct=Math.round((checked/total)*100);
+  const circumference=2*Math.PI*50;
+  const offset=circumference-(pct/100)*circumference;
+
+  let color,level,desc;
+  if(pct>=90){color='#16a34a';level='Strong Compliance';desc='Your organisation demonstrates strong compliance. Address any remaining gaps to achieve full compliance.';}
+  else if(pct>=70){color='#eab308';level='Moderate Compliance';desc='You have a solid foundation but several important gaps remain. Prioritise the items below.';}
+  else if(pct>=50){color='#f97316';level='Partial Compliance';desc='Significant compliance gaps exist. You are at risk of enforcement action. Immediate attention required.';}
+  else{color='#dc2626';level='Low Compliance';desc='Major compliance gaps across multiple areas. Your organisation is at serious risk. Seek professional data protection guidance urgently.';}
+
+  let html=`
+    <div class="score-ring">
+      <svg width="120" height="120" viewBox="0 0 120 120">
+        <circle class="bg" cx="60" cy="60" r="50"/>
+        <circle class="fg" cx="60" cy="60" r="50" stroke="${color}" stroke-dasharray="${circumference}" stroke-dashoffset="${offset}"/>
+      </svg>
+      <div class="score-num" style="color:${color}">${pct}%</div>
+    </div>
+    <div class="score-label" style="color:${color}">${level}</div>
+    <div class="score-desc">${desc}<br><strong>${checked}/${total}</strong> items checked.</div>
+  `;
+
+  if(gaps.length>0){
+    html+=`<div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--afro-dark);margin-bottom:8px">Compliance Gaps (${gaps.length})</div>`;
+    html+=`<ul class="gap-list">${gaps.map(g=>`<li>${g}</li>`).join('')}</ul>`;
+  }
+
+  document.getElementById('resultBody').innerHTML=html;
+  document.getElementById('resultCard').style.display='block';
+  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
+}
+</script>
+
+<script>
+(function(){
+  var target = document.getElementById('resultCard');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
+  div.innerHTML = '<save-result-button tool-slug="data-compliance" tool-name="Data Compliance"></save-result-button><share-result-button tool-name="Data Compliance" tool-slug="data-compliance"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script id="legal-action-copy-script">
+(function(){
+  document.addEventListener('click', function(event) {
+    var button = event.target.closest('[data-legal-copy-action]');
+    if (!button) return;
+    var section = button.closest('.leg-action-pack');
+    var area = section && section.querySelector('.leg-action-copy-text');
+    if (!area) return;
+    var original = button.textContent;
+    var done = function(){ button.textContent = "Copied"; setTimeout(function(){ button.textContent = original; }, 1800); };
+    var fallback = function(){ area.focus(); area.select(); try { document.execCommand("copy"); done(); } catch (err) { button.textContent = "Select text manually"; } };
+    if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(area.value).then(done).catch(fallback); } else { fallback(); }
+  });
+}());
+</script>
+<script src="/assets/js/legal-workflow-copilot.js?v=20da8404" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

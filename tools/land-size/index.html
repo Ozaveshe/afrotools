@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Land Size Calculator Africa | AfroTools</title>
+<meta name="description" content="Convert land sizes between square meters, hectares, acres, Nigerian plots, SA Morgen, and more. Visual land preview, price calculator, and African plot reference.">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Land Size Calculator | AfroTools">
+<meta property="og:url" content="https://afrotools.com/tools/land-size/">
+<meta property="og:type" content="website">
+<meta property="og:description" content="Convert between plots, acres, hectares, square meters. Includes Nigerian plots, SA Morgen, and price calculator.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/land-size.webp">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Land Size Calculator | AfroTools">
+<meta name="twitter:description" content="Convert between plots, acres, hectares, square meters. Includes Nigerian plots, SA Morgen, and price calculator.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/land-size.webp">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Engineering Tools","item":"https://afrotools.com/engineering/"},{"@type":"ListItem","position":3,"name":"Land Size Converter","item":"https://afrotools.com/tools/land-size/"}]}</script>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<meta name="tool-id" content="land-size">
+<script src="/assets/js/favorites.js?v=163519f9" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Land Size Calculator",
+  "description": "Convert land sizes between square meters, hectares, acres, Nigerian plots, SA Morgen, and more. Visual preview and price calculator.",
+  "url": "https://afrotools.com/tools/land-size/",
+  "inLanguage": "en",
+  "applicationCategory": "WebApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/land-size.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Land Size Calculator",
+  "url": "https://afrotools.com/tools/land-size/",
+  "description": "Convert land sizes between square meters, hectares, acres, Nigerian plots, SA Morgen, and more. Visual preview and price calculator.",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/land-size.webp"
+}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the size of a standard Nigerian plot?","acceptedAnswer":{"@type":"Answer","text":"A standard Nigerian plot measures 60 feet by 120 feet, which equals approximately 648 square meters. A half plot is 60 by 60 feet (324 sqm). Actual sizes can vary slightly depending on the surveyor and location."}},{"@type":"Question","name":"What is a South African Morgen?","acceptedAnswer":{"@type":"Answer","text":"A Morgen is a traditional South African unit of land measurement equal to approximately 8,567 square meters (about 2.12 acres). It was historically used by Dutch settlers and is still referenced in some rural property dealings."}},{"@type":"Question","name":"Which units does the calculator support?","acceptedAnswer":{"@type":"Answer","text":"Square meters, square feet, hectares, acres, Nigerian plots (648 sqm), half plots, SA Morgen (8567 sqm), and Kenyan acres. You can input by dimensions (length x width) or enter area directly."}},{"@type":"Question","name":"How does the visual preview work?","acceptedAnswer":{"@type":"Answer","text":"When you enter dimensions (length x width), a scaled rectangle is drawn on the canvas showing the proportions of the land. This gives you a visual sense of whether the land is a square, wide rectangle, or narrow strip."}},{"@type":"Question","name":"How does the price calculator work?","acceptedAnswer":{"@type":"Answer","text":"Enter the price per square meter in your local currency. The calculator multiplies that by the total area in square meters to give the total land cost. This helps you quickly estimate land purchase prices."}}]}
+</script>
+<style>
+  :root { --afro-green: var(--color-primary); --afro-dark: #0f1419; }
+  *, *::before, *::after { box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--color-bg); color: #111; }
+  .tool-hero { background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%); padding: 44px 0 36px; position: relative; overflow: hidden; }
+  .tool-hero::after { content: '\25A3'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 7rem; opacity: 0.06; pointer-events: none; font-weight: 800; color: #fff; }
+  .tool-hero-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; }
+  .breadcrumb { font-size: 0.72rem; font-weight: 500; color: rgba(255,255,255,0.3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+  .breadcrumb a { color: rgba(255,255,255,0.3); text-decoration: none; }
+  .breadcrumb span { color: var(--afro-green); }
+  h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; color: #fff; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 10px; }
+  h1 em { color: var(--afro-green); font-style: normal; }
+  .hero-sub { font-size: 0.88rem; color: rgba(255,255,255,0.45); line-height: 1.6; max-width: 560px; margin-bottom: 14px; }
+  .hero-badges { display: flex; flex-wrap: wrap; gap: 7px; }
+  .badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px; border-radius: 4px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.05em; }
+  .b-green { background: rgba(0,98,204,0.18); color: var(--color-primary); border: 1px solid rgba(0,98,204,0.38); }
+  .tool-main { padding: 28px 0 72px; }
+  .tool-main-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: 1fr 380px; gap: 22px; align-items: start; }
+  .card { background: #fff; border: 1.5px solid #e5e7eb; border-radius: 14px; overflow: hidden; box-shadow: 0 1px 8px rgba(0,0,0,0.05); }
+  .card + .card { margin-top: 18px; }
+  .card-head { padding: 15px 22px; border-bottom: 1px solid #EFF6FF; background: #F5F9FF; display: flex; justify-content: space-between; align-items: center; }
+  .card-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #0A1628; }
+  .card-body { padding: 22px; }
+  .mode-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 18px; }
+  .mode-tab { padding: 10px; background: #EFF6FF; border: 1.5px solid #BFDBFE; border-radius: 7px; cursor: pointer; font-size: 0.78rem; font-weight: 700; color: #0A1628; transition: all 0.15s; font-family: 'DM Sans', sans-serif; text-align: center; }
+  .mode-tab.on { background: var(--afro-green); color: #fff; border-color: var(--afro-green); }
+  .field { margin-bottom: 16px; }
+  .f-label { font-size: 0.75rem; font-weight: 700; color: #0f172a; margin-bottom: 6px; display: block; }
+  .f-input, .f-select { width: 100%; padding: 11px 13px; background: #EFF6FF; border: 1.5px solid #BFDBFE; border-radius: 7px; font-size: 0.92rem; font-weight: 600; color: #0f172a; outline: none; font-family: 'DM Sans', sans-serif; }
+  .f-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23007AFF' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; cursor: pointer; }
+  .f-input:focus, .f-select:focus { border-color: var(--afro-green); box-shadow: 0 0 0 3px rgba(0,98,204,0.1); }
+  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .dim-section, .area-section { display: none; }
+  .dim-section.active, .area-section.active { display: block; }
+  .conversions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px; }
+  .conv-item { background: #F5F9FF; border: 1px solid #DBEAFE; border-radius: 8px; padding: 10px 12px; }
+  .conv-label { font-size: 0.6rem; font-weight: 700; color: #6B8CAE; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 2px; }
+  .conv-value { font-size: 1rem; font-weight: 800; color: var(--afro-green); }
+  .canvas-wrap { margin-top: 16px; background: #F8FAFF; border: 1.5px solid #e5e7eb; border-radius: 10px; padding: 16px; text-align: center; }
+  .canvas-wrap canvas { max-width: 100%; border: 1px dashed #BFDBFE; border-radius: 6px; background: #fff; }
+  .canvas-label { font-size: 0.68rem; color: #6B8CAE; margin-top: 6px; }
+  .price-section { margin-top: 18px; padding-top: 18px; border-top: 1px solid #EFF6FF; }
+  .price-result { font-size: 1.5rem; font-weight: 800; color: var(--afro-green); margin-top: 8px; }
+  .land-plan { margin-top: 18px; padding-top: 18px; border-top: 1px solid #EFF6FF; }
+  .plan-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; margin-bottom: 12px; }
+  .plan-sub { font-size: .78rem; color: #64748b; line-height: 1.55; margin-top: 4px; }
+  .plan-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .plan-output { margin-top: 12px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .plan-card { border: 1px solid #DBEAFE; border-radius: 8px; background: #F8FAFF; padding: 12px; }
+  .plan-value { font-size: 1.05rem; font-weight: 800; color: #0f172a; }
+  .plan-label { font-size: .62rem; font-weight: 800; color: #6B8CAE; text-transform: uppercase; letter-spacing: .05em; margin-top: 3px; }
+  .plan-advice { margin-top: 12px; padding: 12px; border-radius: 8px; background: #ecfdf5; color: #14532d; font-size: .82rem; line-height: 1.6; }
+  .plan-empty { margin-top: 12px; padding: 12px; border-radius: 8px; background: #fffbeb; color: #78350f; font-size: .82rem; line-height: 1.6; }
+  .sidebar .info-card { background: #fff; border: 1.5px solid #e5e7eb; border-radius: 14px; padding: 20px; margin-bottom: 16px; }
+  .sidebar .info-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #0A1628; margin-bottom: 10px; }
+  .sidebar .info-text { font-size: 0.78rem; color: #4b5563; line-height: 1.7; }
+  .ref-table { width: 100%; border-collapse: collapse; font-size: 0.72rem; }
+  .ref-table th { text-align: left; padding: 6px 8px; background: #F5F9FF; color: #0A1628; font-weight: 700; border-bottom: 1px solid #BFDBFE; }
+  .ref-table td { padding: 5px 8px; border-bottom: 1px solid #EFF6FF; color: #333; }
+  .zfun{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+  .zfun-card{padding:16px;border-radius:10px;text-align:center}
+  .zfun-card.gold{background:#FFF8E7;border:1.5px solid rgba(212,168,67,.3)}
+  .zfun-card.blue{background:#E8F2FF;border:1.5px solid rgba(0,98,204,.2)}
+  .zfun-card.rose{background:#fff1f2;border:1.5px solid rgba(225,29,72,.2)}
+  .zfun-card.green{background:#f0fdf4;border:1.5px solid #86efac}
+  .zfun-emoji{font-size:2rem;margin-bottom:6px}
+  .zfun-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+  .zfun-card.gold .zfun-title{color:#92400e}
+  .zfun-card.blue .zfun-title{color:#1e40af}
+  .zfun-card.rose .zfun-title{color:#be123c}
+  .zfun-card.green .zfun-title{color:#166534}
+  .zfun-text{font-size:.78rem;font-weight:600;color:#1e293b;line-height:1.5}
+  .zfun-dyk{margin-top:16px;background:linear-gradient(135deg,#faf5ff,#f3e8ff);border:1.5px solid #c4b5fd;border-radius:12px;padding:18px}
+  .zfun-dyk-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6d28d9;margin-bottom:8px}
+  .zfun-dyk-text{font-size:.82rem;color:#4c1d95;line-height:1.7}
+  @media(max-width:500px){.zfun{grid-template-columns:1fr}}
+  @media(max-width:680px) {
+    .tool-main-inner { grid-template-columns: 1fr; }
+    .row-2 { grid-template-columns: 1fr; }
+    .conversions-grid { grid-template-columns: 1fr; }
+    .plan-grid, .plan-output { grid-template-columns: 1fr; }
+    .plan-head { display: block; }
+    .tool-hero { padding: 32px 0 28px; }
+  }
+</style>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=c0a56b60">
+<script src="/assets/js/african-workflow.js?v=cf96f534" defer></script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/land-size/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/land-size/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/taille-terrain/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/land-size/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Land Size Calculator</span></div>
+    <h1><em>Land Size</em> Calculator</h1>
+    <p class="hero-sub">Convert between square meters, plots, acres, hectares, and more. Includes Nigerian plots, SA Morgen, and a price calculator.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">African Units</span>
+      <span class="badge b-green">Visual Preview</span>
+      <span class="badge b-green">Price Calculator</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Input Mode</span></div>
+        <div class="card-body">
+          <div class="mode-tabs">
+            <button type="button" class="mode-tab on" onclick="setMode('dim')">Dimensions (L x W)</button>
+            <button type="button" class="mode-tab" onclick="setMode('area')">Area Directly</button>
+          </div>
+
+          <div class="dim-section active" id="dimSection">
+            <div class="row-2">
+              <div class="field">
+                <label class="f-label">Length</label>
+                <input aria-label="DimLength" type="number" class="f-input" id="dimLength" placeholder="60" min="0" step="any" oninput="calcFromDim()">
+              </div>
+              <div class="field">
+                <label class="f-label">Width</label>
+                <input aria-label="DimWidth" type="number" class="f-input" id="dimWidth" placeholder="120" min="0" step="any" oninput="calcFromDim()">
+              </div>
+            </div>
+            <div class="field">
+              <label class="f-label">Unit</label>
+              <select class="f-select" id="dimUnit" onchange="calcFromDim()" aria-label="Dim Unit">
+                <option value="ft">Feet</option>
+                <option value="m" selected>Meters</option>
+                <option value="yd">Yards</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="area-section" id="areaSection">
+            <div class="row-2">
+              <div class="field">
+                <label class="f-label">Area</label>
+                <input aria-label="AreaVal" type="number" class="f-input" id="areaVal" placeholder="648" min="0" step="any" oninput="calcFromArea()">
+              </div>
+              <div class="field">
+                <label class="f-label">Unit</label>
+                <select class="f-select" id="areaUnit" onchange="calcFromArea()" aria-label="Area Unit">
+                  <option value="sqm" selected>Square Meters</option>
+                  <option value="sqft">Square Feet</option>
+                  <option value="ha">Hectares</option>
+                  <option value="acre">Acres</option>
+                  <option value="plot">Nigerian Plot (648 sqm)</option>
+                  <option value="halfplot">Half Plot (324 sqm)</option>
+                  <option value="gplot">Ghana Standard Plot (650 sqm)</option>
+                  <option value="keighth">Kenya 1/8 Acre (506 sqm)</option>
+                  <option value="morgen">SA Morgen (8567 sqm)</option>
+                  <option value="kacre">Kenyan Acre (4047 sqm)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="conversions-grid" id="convGrid"></div>
+          <div id="funZone" style="display:none">
+            <div class="zfun" id="funCards"></div>
+            <div class="zfun-dyk">
+              <div class="zfun-dyk-title">Did You Know?</div>
+              <div class="zfun-dyk-text">A standard Nigerian plot (60ft x 120ft) is exactly 648 square metres. But in Lagos, that same plot costs more than a mansion in most other African cities! Location, location, location.</div>
+            </div>
+          </div>
+
+          <div class="canvas-wrap" id="canvasWrap" style="display:none">
+            <canvas id="landCanvas" width="300" height="200"></canvas>
+            <div class="canvas-label" id="canvasLabel"></div>
+          </div>
+
+          <div class="price-section">
+            <div class="f-label">Price Calculator</div>
+            <div class="row-2">
+              <div class="field">
+                <label class="f-label" style="font-size:0.68rem;color:#6B8CAE">Price per sqm</label>
+                <input aria-label="E.g. 50000" type="number" class="f-input" id="pricePerUnit" placeholder="e.g. 50000" min="0" step="any" oninput="calcPrice()">
+              </div>
+              <div class="field">
+                <label class="f-label" style="font-size:0.68rem;color:#6B8CAE">Currency</label>
+                <select class="f-select" id="priceCurrency" onchange="calcPrice()" aria-label="Price Currency">
+                  <option value="NGN">\u20A6 NGN</option>
+                  <option value="KES">KES</option>
+                  <option value="ZAR">R ZAR</option>
+                  <option value="GHS">GHS</option>
+                  <option value="USD">$ USD</option>
+                </select>
+              </div>
+            </div>
+            <div class="price-result" id="priceResult" style="display:none"></div>
+          </div>
+
+          <div class="land-plan">
+            <div class="plan-head">
+              <div>
+                <div class="card-title">Subdivision Planner</div>
+                <div class="plan-sub">Estimate sellable area after access roads, compare it to local plot standards, and build a buyer due-diligence note.</div>
+              </div>
+              <button class="mode-tab" type="button" id="copyLandPlan" style="max-width:160px">Copy Brief</button>
+            </div>
+            <div class="plan-grid">
+              <div class="field">
+                <label class="f-label" for="planPlotUnit">Local Plot Standard</label>
+                <select class="f-select" id="planPlotUnit" onchange="updateLandPlan()">
+                  <option value="plot">Nigeria 60x120ft</option>
+                  <option value="gplot">Ghana 70x100ft</option>
+                  <option value="keighth">Kenya 1/8 acre</option>
+                  <option value="halfplot">Half plot</option>
+                  <option value="acre">Acre</option>
+                </select>
+              </div>
+              <div class="field">
+                <label class="f-label">Access/Setback Reserve %</label>
+                <input aria-label="PlanReserve" type="number" class="f-input" id="planReserve" value="15" min="0" max="70" step="1" oninput="updateLandPlan()">
+              </div>
+              <div class="field">
+                <label class="f-label">Closing/Survey Buffer %</label>
+                <input aria-label="PlanClosing" type="number" class="f-input" id="planClosing" value="8" min="0" max="50" step="1" oninput="updateLandPlan()">
+              </div>
+              <div class="field">
+                <label class="f-label">Intended Use</label>
+                <select class="f-select" id="planUse" onchange="updateLandPlan()" aria-label="Plan Use">
+                  <option value="residential">Residential plots</option>
+                  <option value="mixed">Mixed-use shops and homes</option>
+                  <option value="farm">Farm or estate</option>
+                  <option value="hold">Land bank</option>
+                </select>
+              </div>
+            </div>
+            <div id="landPlanOutput" class="plan-empty">Enter land dimensions or area to see subdivision and due-diligence guidance.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="info-card">
+        <div class="info-title">Common Plot Sizes</div>
+        <div class="info-text">
+          <table class="ref-table">
+            <tr><th>Country</th><th>Name</th><th>Size</th></tr>
+            <tr><td>Nigeria</td><td>Standard Plot</td><td>60x120ft (648 sqm)</td></tr>
+            <tr><td>Nigeria</td><td>Half Plot</td><td>60x60ft (324 sqm)</td></tr>
+            <tr><td>Nigeria</td><td>Corner Piece</td><td>60x120ft (648 sqm)</td></tr>
+            <tr><td>Ghana</td><td>Standard Plot</td><td>70x100ft (650 sqm)</td></tr>
+            <tr><td>Ghana</td><td>Town Plot</td><td>80x80ft (594 sqm)</td></tr>
+            <tr><td>Kenya</td><td>1/8 Acre</td><td>50x100ft (506 sqm)</td></tr>
+            <tr><td>Kenya</td><td>1/4 Acre</td><td>100x100ft (1012 sqm)</td></tr>
+            <tr><td>South Africa</td><td>Morgen</td><td>8567 sqm</td></tr>
+            <tr><td>South Africa</td><td>Typical erf</td><td>500-1000 sqm</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-title">Quick Reference</div>
+        <div class="info-text">
+          &bull; 1 Hectare = 10,000 sqm<br>
+          &bull; 1 Acre = 4,046.86 sqm<br>
+          &bull; 1 sqm = 10.764 sqft<br>
+          &bull; 1 Nigerian Plot = 648 sqm<br>
+          &bull; 1 SA Morgen = 8,567 sqm<br>
+          &bull; 1 Kenyan Acre = 4,047 sqm
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section style="max-width:900px;margin:32px auto;padding:0 20px;">
+  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
+    <p>The Land Size Converter helps you convert between common African land measurement units including plots, acres, hectares, square metres, and square feet. Land measurements in Africa vary widely by region, with a plot in Lagos differing from one in Accra or Nairobi. This tool uses standardised and region-specific conversion factors so you can compare land sizes accurately. Whether you are buying property, verifying a survey, or comparing listings from different agents, the converter gives you instant, reliable results. Real estate buyers, developers, surveyors, and land agents across Africa rely on it to avoid costly measurement misunderstandings.</p>
+  </div>
+</section>
+
+<section class="faq-section" style="max-width:1200px;margin:40px auto;padding:0 24px">
+  <h2 style="font-size:1.3rem;font-weight:800;color:#111;margin-bottom:20px;font-family:'DM Sans',sans-serif">Frequently Asked Questions</h2>
+  <div class="faq-list">
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        What is the size of a standard Nigerian plot?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        A standard Nigerian plot measures 60 feet by 120 feet, which equals approximately 648 square meters. A half plot is 60 by 60 feet (324 sqm). Actual sizes can vary slightly depending on the surveyor and location.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        What is a South African Morgen?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        A Morgen is a traditional South African unit of land measurement equal to approximately 8,567 square meters (about 2.12 acres). It was historically used by Dutch settlers and is still referenced in some rural property dealings.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Which units does the calculator support?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Square meters, square feet, hectares, acres, Nigerian plots (648 sqm), half plots, SA Morgen (8567 sqm), and Kenyan acres. You can input by dimensions (length x width) or enter area directly.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        How does the visual preview work?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        When you enter dimensions (length x width), a scaled rectangle is drawn on the canvas showing the proportions of the land. This gives you a visual sense of whether the land is a square, wide rectangle, or narrow strip.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        How does the price calculator work?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Enter the price per square meter in your local currency. The calculator multiplies that by the total area in square meters to give the total land cost. This helps you quickly estimate land purchase prices.
+      </div>
+    </details>
+  </div>
+</section>
+
+<afro-related-tools category="african" current="land-size" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/afropoints/" data-related-tool data-id="afropoints" data-name="AfroPoints — Earn Money Contributing Data" data-category="african" data-icon="AE" data-desc="Earn real money by sharing African market data — prices, rates, salaries, costs. Contribute, earn points, cash out via m">AfroPoints — Earn Money Contributing Data</a></li><li><a href="/tools/remittance-compare/" data-related-tool data-id="remittance-compare" data-name="Remittance Comparator" data-category="african" data-icon="RC" data-desc="Compare Wise, WorldRemit, Western Union and 8 more. Find cheapest way to send money to Africa.">Remittance Comparator</a></li><li><a href="/tools/remittance-v2/" data-related-tool data-id="remittance-v2" data-name="Remittance Comparator Pro" data-category="african" data-icon="RC" data-desc="Compare editable remittance quotes by recipient value, FX margin, fee, speed, and payout method.">Remittance Comparator Pro</a></li><li><a href="/tools/afroatlas/" data-related-tool data-id="afroatlas" data-name="AfroAtlas — Africa Resource Explorer" data-category="african" data-icon="AA" data-desc="Interactive explorer for African country profiles, GDP, natural resources, trade data, rankings, and side-by-side compar">AfroAtlas — Africa Resource Explorer</a></li><li><a href="/tools/informal-fx-watch/" data-related-tool data-id="informal-fx-watch" data-name="Informal FX Watch" data-category="african" data-icon="IF" data-desc="Track street, BDC, and P2P informal FX spreads across African markets with contributor-backed quotes.">Informal FX Watch</a></li><li><a href="/tools/africa-conflict/" data-related-tool data-id="africa-conflict" data-name="AfroConflict — Conflict Intelligence" data-category="african" data-icon="AC" data-desc="Africa conflict intelligence dashboard — active conflicts, displacement tracker, economic impact, actor networks, scenar">AfroConflict — Conflict Intelligence</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+  var currentSqm = 0;
+  var currentLength = 0;
+  var currentWidth = 0;
+
+  var unitToSqm = {
+    sqm: 1,
+    sqft: 0.092903,
+    ha: 10000,
+    acre: 4046.86,
+    plot: 648,
+    halfplot: 324,
+    gplot: 650,
+    keighth: 505.86,
+    morgen: 8567,
+    kacre: 4047
+  };
+
+  var dimToM = { ft: 0.3048, m: 1, yd: 0.9144 };
+
+  var convUnits = [
+    { key: 'sqm', label: 'Square Meters', fmt: 2 },
+    { key: 'sqft', label: 'Square Feet', fmt: 1 },
+    { key: 'ha', label: 'Hectares', fmt: 4 },
+    { key: 'acre', label: 'Acres', fmt: 4 },
+    { key: 'plot', label: 'Nigerian Plots', fmt: 3 },
+    { key: 'halfplot', label: 'Half Plots', fmt: 3 },
+    { key: 'gplot', label: 'Ghana Plots', fmt: 3 },
+    { key: 'keighth', label: 'Kenya 1/8 Acres', fmt: 3 },
+    { key: 'morgen', label: 'SA Morgen', fmt: 4 },
+    { key: 'kacre', label: 'Kenyan Acres', fmt: 4 }
+  ];
+
+  function setMode(mode) {
+    var tabs = document.querySelectorAll('.mode-tab');
+    tabs[0].classList.toggle('on', mode === 'dim');
+    tabs[1].classList.toggle('on', mode === 'area');
+    document.getElementById('dimSection').classList.toggle('active', mode === 'dim');
+    document.getElementById('areaSection').classList.toggle('active', mode === 'area');
+    if (mode === 'dim') calcFromDim();
+    else calcFromArea();
+  }
+
+  function calcFromDim() {
+    var l = parseFloat(document.getElementById('dimLength').value) || 0;
+    var w = parseFloat(document.getElementById('dimWidth').value) || 0;
+    var unit = document.getElementById('dimUnit').value;
+    var lm = l * dimToM[unit];
+    var wm = w * dimToM[unit];
+    currentSqm = lm * wm;
+    currentLength = lm;
+    currentWidth = wm;
+    updateConversions();
+    drawLand(l, w, unit);
+    calcPrice();
+  }
+
+  function calcFromArea() {
+    var val = parseFloat(document.getElementById('areaVal').value) || 0;
+    var unit = document.getElementById('areaUnit').value;
+    currentSqm = val * unitToSqm[unit];
+    currentLength = 0;
+    currentWidth = 0;
+    updateConversions();
+    document.getElementById('canvasWrap').style.display = 'none';
+    calcPrice();
+  }
+
+  function updateConversions() {
+    var grid = document.getElementById('convGrid');
+    var funZone = document.getElementById('funZone');
+    if (currentSqm <= 0) {
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:16px;color:#9ca3af;font-size:0.8rem">Enter dimensions or area to see conversions.</div>';
+      funZone.style.display = 'none';
+      updateLandPlan();
+      return;
+    }
+    grid.innerHTML = convUnits.map(function(u) {
+      var val = currentSqm / unitToSqm[u.key];
+      return '<div class="conv-item"><div class="conv-label">' + u.label + '</div><div class="conv-value">' + formatNum(val, u.fmt) + '</div></div>';
+    }).join('');
+    updateFunCards();
+    updateLandPlan();
+  }
+
+  function updateFunCards() {
+    var funZone = document.getElementById('funZone');
+    var funCards = document.getElementById('funCards');
+    if (currentSqm <= 0) { funZone.style.display = 'none'; return; }
+    funZone.style.display = 'block';
+    var pitches = currentSqm / 7140;
+    var plots = currentSqm / 648;
+    var hectares = currentSqm / 10000;
+    var maizeBags = Math.round(hectares * 20);
+    var parkingSpaces = Math.floor(currentSqm / 12);
+    funCards.innerHTML =
+      '<div class="zfun-card green"><div class="zfun-emoji">&#9917;</div><div class="zfun-title">Football Pitches</div><div class="zfun-text">' + pitches.toFixed(2) + ' pitches</div></div>' +
+      '<div class="zfun-card blue"><div class="zfun-emoji">&#127968;</div><div class="zfun-title">Nigerian Plots</div><div class="zfun-text">' + plots.toFixed(2) + ' plots (60x120ft)</div></div>' +
+      '<div class="zfun-card gold"><div class="zfun-emoji">&#127805;</div><div class="zfun-title">Maize Harvest</div><div class="zfun-text">~' + maizeBags + ' bags of maize</div></div>' +
+      '<div class="zfun-card rose"><div class="zfun-emoji">&#127359;&#65039;</div><div class="zfun-title">Parking Spaces</div><div class="zfun-text">' + parkingSpaces.toLocaleString() + ' cars could park</div></div>';
+  }
+
+  function formatNum(n, decimals) {
+    if (n >= 1000) return n.toLocaleString(undefined, { minimumFractionDigits: decimals > 2 ? 2 : decimals, maximumFractionDigits: decimals });
+    return n.toFixed(decimals);
+  }
+
+  function drawLand(l, w, unit) {
+    if (l <= 0 || w <= 0) {
+      document.getElementById('canvasWrap').style.display = 'none';
+      return;
+    }
+    document.getElementById('canvasWrap').style.display = 'block';
+    var canvas = document.getElementById('landCanvas');
+    var ctx = canvas.getContext('2d');
+    var cw = canvas.width;
+    var ch = canvas.height;
+    ctx.clearRect(0, 0, cw, ch);
+
+    var padding = 40;
+    var maxW = cw - padding * 2;
+    var maxH = ch - padding * 2;
+    var scale = Math.min(maxW / Math.max(l, w), maxH / Math.min(l, w));
+    var drawW = l * scale;
+    var drawH = w * scale;
+    if (drawW > maxW) { scale = maxW / l; drawW = l * scale; drawH = w * scale; }
+    if (drawH > maxH) { scale = maxH / w; drawW = l * scale; drawH = w * scale; }
+
+    var x = (cw - drawW) / 2;
+    var y = (ch - drawH) / 2;
+
+    ctx.fillStyle = '#EFF6FF';
+    ctx.strokeStyle = '#0062CC';
+    ctx.lineWidth = 2;
+    ctx.fillRect(x, y, drawW, drawH);
+    ctx.strokeRect(x, y, drawW, drawH);
+
+    // Diagonal hatching
+    ctx.strokeStyle = 'rgba(0,98,204,0.12)';
+    ctx.lineWidth = 1;
+    for (var i = -Math.max(drawW, drawH); i < Math.max(drawW, drawH) * 2; i += 12) {
+      ctx.beginPath();
+      ctx.moveTo(x + i, y);
+      ctx.lineTo(x + i + drawH, y + drawH);
+      ctx.stroke();
+    }
+
+    // Labels
+    ctx.fillStyle = '#0A1628';
+    ctx.font = '600 11px DM Sans, sans-serif';
+    ctx.textAlign = 'center';
+    var unitLabel = unit === 'ft' ? 'ft' : unit === 'yd' ? 'yd' : 'm';
+    ctx.fillText(l + ' ' + unitLabel, x + drawW / 2, y - 8);
+    ctx.save();
+    ctx.translate(x - 10, y + drawH / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillText(w + ' ' + unitLabel, 0, 0);
+    ctx.restore();
+
+    document.getElementById('canvasLabel').textContent = 'Area: ' + formatNum(currentSqm, 2) + ' sqm (' + formatNum(currentSqm / unitToSqm.sqft, 1) + ' sqft)';
+  }
+
+  function calcPrice() {
+    var price = parseFloat(document.getElementById('pricePerUnit').value);
+    var cur = document.getElementById('priceCurrency').value;
+    var el = document.getElementById('priceResult');
+    if (!price || price <= 0 || currentSqm <= 0) {
+      el.style.display = 'none';
+      updateLandPlan();
+      return;
+    }
+    var total = price * currentSqm;
+    var symbols = { NGN: '\u20A6', KES: 'KES ', ZAR: 'R', GHS: 'GHS ', USD: '$' };
+    el.textContent = 'Total: ' + (symbols[cur] || '') + total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    el.style.display = 'block';
+    updateLandPlan();
+  }
+
+  function moneyLand(value) {
+    var cur = document.getElementById('priceCurrency').value;
+    var symbols = { NGN: '\u20A6', KES: 'KES ', ZAR: 'R', GHS: 'GHS ', USD: '$' };
+    return (symbols[cur] || '') + Number(value || 0).toLocaleString(undefined, { maximumFractionDigits: 0 });
+  }
+
+  var lastLandBrief = '';
+  function updateLandPlan() {
+    var output = document.getElementById('landPlanOutput');
+    if (!output) return;
+    if (currentSqm <= 0) {
+      output.className = 'plan-empty';
+      output.textContent = 'Enter land dimensions or area to see subdivision and due-diligence guidance.';
+      lastLandBrief = 'Land size brief: enter dimensions or area before planning subdivision.';
+      return;
+    }
+    var plotUnit = document.getElementById('planPlotUnit').value;
+    var reservePct = Math.max(0, parseFloat(document.getElementById('planReserve').value) || 0);
+    var closingPct = Math.max(0, parseFloat(document.getElementById('planClosing').value) || 0);
+    var use = document.getElementById('planUse').value;
+    var price = parseFloat(document.getElementById('pricePerUnit').value) || 0;
+    var sellable = currentSqm * Math.max(0, 1 - reservePct / 100);
+    var plotSize = unitToSqm[plotUnit] || 648;
+    var equivalentPlots = sellable / plotSize;
+    var totalValue = price ? currentSqm * price : 0;
+    var projectBuffer = totalValue * closingPct / 100;
+    var perPlotValue = price ? (plotSize * price) : 0;
+    var useAdvice = {
+      residential: 'Check survey beacon coordinates, road access, drainage, title history, and local planning approvals before paying a deposit.',
+      mixed: 'Confirm commercial zoning, frontage width, loading access, parking pressure, and service connections before carving plots.',
+      farm: 'Ask for soil and water access notes, right-of-way, community land claims, and whether the area is affected by seasonal flooding.',
+      hold: 'Document title chain, tax or ground rent obligations, access road status, and realistic resale comparables.'
+    }[use];
+    lastLandBrief = 'Land brief: gross area ' + formatNum(currentSqm, 2) + ' sqm; sellable after ' + reservePct + '% reserve is ' + formatNum(sellable, 2) + ' sqm; equivalent local plots ' + equivalentPlots.toFixed(2) + '; total value ' + (price ? moneyLand(totalValue) : 'not priced') + '; closing/survey buffer ' + (price ? moneyLand(projectBuffer) : closingPct + '% of purchase budget') + '. ' + useAdvice;
+    output.className = '';
+    output.innerHTML = '<div class="plan-output">' +
+      '<div class="plan-card"><div class="plan-value">' + formatNum(sellable, 2) + '</div><div class="plan-label">Sellable sqm</div></div>' +
+      '<div class="plan-card"><div class="plan-value">' + equivalentPlots.toFixed(2) + '</div><div class="plan-label">Equivalent plots</div></div>' +
+      '<div class="plan-card"><div class="plan-value">' + (price ? moneyLand(perPlotValue) : 'Add price') + '</div><div class="plan-label">Per plot value</div></div>' +
+      '<div class="plan-card"><div class="plan-value">' + (price ? moneyLand(projectBuffer) : closingPct + '%') + '</div><div class="plan-label">Buffer</div></div>' +
+      '</div><div class="plan-advice"><strong>Due diligence:</strong> ' + useAdvice + '</div>';
+  }
+
+  var copyLandPlanBtn = document.getElementById('copyLandPlan');
+  if (copyLandPlanBtn) {
+    copyLandPlanBtn.addEventListener('click', function () {
+      updateLandPlan();
+      navigator.clipboard.writeText(lastLandBrief).catch(function () {
+        window.prompt('Copy land brief', lastLandBrief);
+      });
+    });
+  }
+
+  // Init
+  updateConversions();
+</script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
+<script src="/assets/js/favorites.js?v=163519f9" defer></script>
+<script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
+<script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
+
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+</body>
+</html>

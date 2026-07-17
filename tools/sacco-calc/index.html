@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SACCO / Credit Union Savings, Dividend & Loan Calculator — Africa | AfroTools</title>
+<meta name="description" content="Model SACCO savings, dividends, loan capacity and net benefit vs a bank for Kenya, Uganda, Tanzania, Ghana &amp; Nigeria. Free credit union savings calculator.">
+<meta property="og:title" content="SACCO / Credit Union Savings Calculator | AfroTools">
+<meta property="og:description" content="Model SACCO savings, dividends, loan capacity and net benefit vs a bank for Kenya, Uganda, Tanzania, Ghana &amp; Nigeria. Free credit union savings calculator.">
+<meta property="og:url" content="https://afrotools.com/tools/sacco-calc/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SACCO / Credit Union Savings Calculator — Africa | AfroTools">
+<meta name="twitter:description" content="Model SACCO savings, dividends, loan capacity and net benefit vs a bank for Kenya, Uganda, Tanzania, Ghana &amp; Nigeria. Free credit union savings calculator.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "SACCO / Credit Union Savings Calculator",
+  "url": "https://afrotools.com/tools/sacco-calc/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools"
+  },
+  "image": "https://afrotools.com/assets/img/tools/sacco-calc.webp"
+}
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Fintech & Banking","item":"https://afrotools.com/fintech/"},{"@type":"ListItem","position":3,"name":"SACCO Savings Calculator","item":"https://afrotools.com/tools/sacco-calc/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
+.tool-hero{background:linear-gradient(135deg,#0A1628 0%,#1a1035 50%,#2d1b69 100%);color:#fff;padding:2.5rem 1.5rem 3rem}
+.tool-hero .container{max-width:900px;margin:0 auto}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.78);margin-bottom:.75rem}
+.breadcrumb a{color:rgba(255,255,255,.78);text-decoration:none}
+.breadcrumb span{margin:0 .35rem;opacity:.4}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin:.25rem 0 .6rem;line-height:1.2}
+.tool-hero p{font-size:.95rem;color:rgba(255,255,255,.92);max-width:580px;line-height:1.65}
+.hero-badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.hero-badge{padding:4px 12px;border-radius:100px;font-size:.75rem;font-weight:600;background:rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1.25rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{display:flex;flex-direction:column;gap:4px}
+label{font-size:.82rem;font-weight:600;color:#374151}
+select,input[type="number"]{width:100%;padding:.65rem .85rem;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.9rem;background:#fff;transition:border-color .2s}
+select:focus,input:focus{outline:none;border-color:var(--color-primary)}
+.btn-calc{width:100%;padding:.85rem;border:none;border-radius:10px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:.5rem;transition:filter .2s}
+.btn-calc:hover{filter:brightness(1.1)}
+.results{display:none;margin-top:1.25rem}
+.results.on{display:block}
+.res-hero{background:linear-gradient(135deg,#0f172a,#1e3a5f);border-radius:14px;padding:1.75rem;text-align:center;color:#fff;margin-bottom:1.25rem}
+.res-label{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.7)}
+.res-val{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:800;color:#fff;margin:.2rem 0}
+.res-sub{font-size:.85rem;color:rgba(255,255,255,.65)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.25rem}
+.metric{background:#f8fafd;border:1.5px solid #e5e7eb;border-radius:12px;padding:1rem;text-align:center}
+.metric-val{font-size:1.3rem;font-weight:800;color:var(--color-primary)}
+.metric-label{font-size:.75rem;color:#6b7280;margin-top:3px}
+.info-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:1rem 1.25rem;font-size:.85rem;color:#1e40af;line-height:1.6;margin-top:1rem}
+details summary{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;list-style:none;background:#f9fafb;display:flex;justify-content:space-between}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
+details[open] summary::after{content:'\2212'}
+.faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
+.faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+@media(max-width:680px){.form-grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}}
+</style>
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/sacco-calc.webp">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/sacco-calc.webp">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the SACCO/Credit Union Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The SACCO/Credit Union Calculator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the SACCO/Credit Union Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the SACCO/Credit Union Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for Kenya, Uganda, Tanzania and other African markets."}},{"@type":"Question","name":"What is a SACCO?","acceptedAnswer":{"@type":"Answer","text":"A SACCO (Savings and Credit Cooperative Organization) is a member-owned financial institution that accepts savings deposits and provides loans to members, typically at lower interest rates than commercial banks. Kenya has Africa's most mature SACCO sector with over 10,000 registered SACCOs managing billions in assets."}},{"@type":"Question","name":"How much can I borrow from a SACCO?","acceptedAnswer":{"@type":"Answer","text":"Most SACCOs allow you to borrow 2-3x your savings deposits. Some deposit-taking SACCOs offer up to 4x. In Kenya, SACCOs typically offer emergency loans (1x savings) and development loans (3x savings). The longer you save and the more you contribute, the higher your loan capacity."}},{"@type":"Question","name":"Are SACCOs regulated in Africa?","acceptedAnswer":{"@type":"Answer","text":"Yes. In Kenya, SACCOs are regulated by SASRA (SACCO Societies Regulatory Authority). In Uganda by MSCL. In Ghana cooperatives by the Department of Cooperatives. Deposit-taking SACCOs are generally safer than non-deposit-taking ones. Check if your SACCO is regulated before joining."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/sacco-calc/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/sacco-calc/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-sacco-cooperative/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-sacco-na-vyama-vya-akiba/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/sacco-calc/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar theme="dark" active="fintech"></afro-navbar>
+<div class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb"><a href="/">AfroTools</a><span>›</span><a href="/fintech/">Fintech &amp; Banking</a><span>›</span>SACCO Savings Calculator</nav>
+    <h1>SACCO / Credit Union Savings Calculator</h1>
+    <p>Model SACCO savings growth: contributions, dividend rate, loan capacity, and how your SACCO compares to a commercial bank savings account.</p>
+    <div class="hero-badges"><span class="hero-badge">8 Countries</span><span class="hero-badge">Loan Capacity</span><span class="hero-badge">Free</span></div>
+  </div>
+</div>
+<div class="container">
+  <div class="card">
+    <h2>SACCO Savings &amp; Benefits Calculator</h2>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="sc-country">Country</label>
+        <select id="sc-country" onchange="fillSACCO()">
+          <option value="KE" data-sym="KSh" data-div="12" data-bank="4" data-loan-mult="3">Kenya</option>
+          <option value="UG" data-sym="USh" data-div="14" data-bank="5" data-loan-mult="3">Uganda</option>
+          <option value="TZ" data-sym="TSh" data-div="10" data-bank="3" data-loan-mult="3">Tanzania</option>
+          <option value="RW" data-sym="FRw" data-div="10" data-bank="3" data-loan-mult="3">Rwanda</option>
+          <option value="GH" data-sym="GH&#x20B5;" data-div="0" data-bank="5" data-loan-mult="2">Ghana (Susu)</option>
+          <option value="NG" data-sym="&#x20A6;" data-div="0" data-bank="3" data-loan-mult="2">Nigeria (Ajo)</option>
+          <option value="ZA" data-sym="R" data-div="8" data-bank="5" data-loan-mult="3">South Africa</option>
+          <option value="ET" data-sym="Br" data-div="9" data-bank="3" data-loan-mult="3">Ethiopia</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="sc-monthly">Monthly Contribution</label>
+        <input type="number" id="sc-monthly" value="5000" min="0">
+      </div>
+      <div class="form-group">
+        <label for="sc-years">Membership Duration (Years)</label>
+        <select id="sc-years">
+          <option value="1">1 Year</option>
+          <option value="2">2 Years</option>
+          <option value="3" selected>3 Years</option>
+          <option value="5">5 Years</option>
+          <option value="10">10 Years</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="sc-div">Annual Dividend Rate (%)</label>
+        <input type="number" id="sc-div" value="12" step="0.5">
+      </div>
+      <div class="form-group">
+        <label for="sc-bank-rate">Bank Savings Rate (%)</label>
+        <input type="number" id="sc-bank-rate" value="4" step="0.1">
+      </div>
+      <div class="form-group">
+        <label for="sc-loan-mult">Loan Multiplier (x savings)</label>
+        <input type="number" id="sc-loan-mult" value="3" step="0.5" min="1">
+      </div>
+      <div class="form-group">
+        <label for="sc-loan-rate">SACCO Loan Interest Rate (%/yr)</label>
+        <input type="number" id="sc-loan-rate" value="12" step="0.5">
+      </div>
+      <div class="form-group">
+        <label for="sc-bank-loan-rate">Bank Loan Rate (%/yr)</label>
+        <input type="number" id="sc-bank-loan-rate" value="18" step="0.5">
+      </div>
+    </div>
+    <button type="button" class="btn-calc" onclick="calcSACCO()">Calculate SACCO Benefits</button>
+    <div class="results" id="sc-results" aria-live="polite">
+      <div class="res-hero">
+        <div class="res-label">Total SACCO Savings at Maturity</div>
+        <div class="res-val" id="sc-total"></div>
+        <div class="res-sub" id="sc-sub"></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-val" id="sc-principal"></div><div class="metric-label">Total Contributions</div></div>
+        <div class="metric"><div class="metric-val" id="sc-dividend"></div><div class="metric-label">Total Dividends Earned</div></div>
+        <div class="metric"><div class="metric-val" id="sc-loan-cap"></div><div class="metric-label">Loan Capacity</div></div>
+        <div class="metric"><div class="metric-val" id="sc-bank-total"></div><div class="metric-label">Bank Savings (Equivalent)</div></div>
+        <div class="metric"><div class="metric-val" id="sc-advantage"></div><div class="metric-label">SACCO Advantage</div></div>
+        <div class="metric"><div class="metric-val" id="sc-loan-savings"></div><div class="metric-label">Loan Interest Savings</div></div>
+      </div>
+      <div class="info-box">SACCO loan capacity is based on your total savings x the multiplier. The interest rate on SACCO loans is typically much lower than commercial bank loans, making SACCOs especially powerful for accessing affordable credit.<br><br><strong>This is an estimate.</strong> Dividend rates, loan multipliers and interest terms vary by SACCO and year — confirm the current figures with your own society before you rely on them.</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Frequently Asked Questions</h2>
+
+<section class="df-upgrade" data-df-upgrade="sacco-calc">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Payment comparison workflow</span>
+      <h2>SACCO/Credit Union Calculator: quick guide</h2>
+      <p>Not sure how to get the most from the SACCO/Credit Union Calculator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for Kenya, Uganda, Tanzania and other African markets.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the SACCO/Credit Union Calculator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
+    </div>
+    <form class="df-form" data-df-form="sacco-calc">
+      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
+      <label>Transaction value<input name="transaction" type="number" value="50000" min="0" step="any" aria-label="Transaction value"></label>
+      <label>Fee percent<input name="fee" type="number" value="1.5" min="0" step="any" aria-label="Fee percent"></label>
+      <label>Channel<select name="channel" aria-label="Channel"><option value="POS">POS</option><option value="bank transfer">bank transfer</option><option value="mobile money">mobile money</option><option value="card">card</option></select></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="sacco-calc" data-df-base="SACCO/Credit Union Calculator — enter your details above to see your result." aria-live="polite">SACCO/Credit Union Calculator — enter your details above to see your result.</output>
+      <div class="df-actions"><button type="button" data-df-copy="sacco-calc">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="sacco-calc-faq-title">
+  <h2 id="sacco-calc-faq-title">SACCO/Credit Union Calculator FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the SACCO/Credit Union Calculator?</summary><p>Enter your amounts, rates and dates in the fields above. The SACCO/Credit Union Calculator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the SACCO/Credit Union Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the SACCO/Credit Union Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for Kenya, Uganda, Tanzania and other African markets.</p></details></div>
+</section>
+    <div class="faq-item"><details><summary>What is a SACCO?</summary><div class="faq-a">A SACCO (Savings and Credit Cooperative Organization) is a member-owned financial institution that accepts savings deposits and provides loans to members, typically at lower interest rates than commercial banks. Kenya has Africa's most mature SACCO sector with over 10,000 registered SACCOs managing billions in assets.</div></details></div>
+    <div class="faq-item"><details><summary>How much can I borrow from a SACCO?</summary><div class="faq-a">Most SACCOs allow you to borrow 2-3x your savings deposits. Some deposit-taking SACCOs offer up to 4x. In Kenya, SACCOs typically offer emergency loans (1x savings) and development loans (3x savings). The longer you save and the more you contribute, the higher your loan capacity.</div></details></div>
+    <div class="faq-item"><details><summary>Are SACCOs regulated in Africa?</summary><div class="faq-a">Yes. In Kenya, SACCOs are regulated by SASRA (SACCO Societies Regulatory Authority). In Uganda by MSCL. In Ghana cooperatives by the Department of Cooperatives. Deposit-taking SACCOs are generally safer than non-deposit-taking ones. Check if your SACCO is regulated before joining.</div></details></div>
+  </div>
+</div>
+<afro-related-tools data-ssr="1" category="fintech" current="sacco-calc">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/loan-shark-compare/" data-related-tool data-id="loan-shark-compare" data-name="Loan Shark vs Bank Rate" data-category="fintech" data-icon="LS" data-desc="Compare informal moneylender rates vs bank loans vs fintech apps. True APR calculator showing hidden cost of predatory l">Loan Shark vs Bank Rate</a></li><li><a href="/tools/mobile-vs-bank/" data-related-tool data-id="mobile-vs-bank" data-name="Mobile Money vs Bank Transfer" data-category="fintech" data-icon="MM" data-desc="Compare M-Pesa, MTN MoMo, Airtel Money vs bank transfer fees for domestic and cross-border payments across Africa.">Mobile Money vs Bank Transfer</a></li><li><a href="/tools/digital-lending/" data-related-tool data-id="digital-lending" data-name="Digital Lending App Rates" data-category="fintech" data-icon="DL" data-desc="Compare digital lending apps (Fuliza, FairMoney, Carbon, PalmCredit) — true APR, fees, repayment periods.">Digital Lending App Rates</a></li><li><a href="/tools/fixed-deposit/" data-related-tool data-id="fixed-deposit" data-name="Fixed Deposit Rate Comparator" data-category="fintech" data-icon="FD" data-desc="Compare fixed deposit and savings account interest rates across African banks. 30/60/90/180/365-day tenors, 20+ banks.">Fixed Deposit Rate Comparator</a></li><li><a href="/tools/microfinance-loan/" data-related-tool data-id="microfinance-loan" data-name="Microfinance Loan Calculator" data-category="fintech" data-icon="ML" data-desc="Calculate microfinance loan repayments for African MFIs. Flat vs reducing balance, group vs individual loans.">Microfinance Loan Calculator</a></li><li><a href="/tools/payment-gateway/" data-related-tool data-id="payment-gateway" data-name="Payment Gateway Fee Compare" data-category="fintech" data-icon="PG" data-desc="Compare Paystack, Flutterwave, Stripe, DPO, Peach Payments transaction fees for African merchants.">Payment Gateway Fee Compare</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+<script>
+function fillSACCO(){
+  var sel=document.getElementById('sc-country');
+  var opt=sel.options[sel.selectedIndex];
+  document.getElementById('sc-div').value=opt.getAttribute('data-div');
+  document.getElementById('sc-bank-rate').value=opt.getAttribute('data-bank');
+  document.getElementById('sc-loan-mult').value=opt.getAttribute('data-loan-mult');
+}
+function calcSACCO(){
+  var sel=document.getElementById('sc-country');
+  var sym=sel.options[sel.selectedIndex].getAttribute('data-sym');
+  var monthly=parseFloat(document.getElementById('sc-monthly').value)||0;
+  var years=parseInt(document.getElementById('sc-years').value);
+  var divRate=parseFloat(document.getElementById('sc-div').value)/100;
+  var bankRate=parseFloat(document.getElementById('sc-bank-rate').value)/100;
+  var loanMult=parseFloat(document.getElementById('sc-loan-mult').value);
+  var saccoLoanRate=parseFloat(document.getElementById('sc-loan-rate').value)/100;
+  var bankLoanRate=parseFloat(document.getElementById('sc-bank-loan-rate').value)/100;
+  var months=years*12;
+  var principal=monthly*months;
+  // SACCO savings grow with annual dividend on balance
+  var balance=0;
+  var dividends=0;
+  for(var m=1;m<=months;m++){
+    balance+=monthly;
+    if(m%12===0){var div=balance*divRate;dividends+=div;balance+=div;}
+  }
+  var saccoTotal=balance;
+  // Bank simple interest on average balance
+  var bankTotal=principal+(principal/2)*bankRate*years;
+  var loanCap=saccoTotal*loanMult;
+  var advantage=saccoTotal-bankTotal;
+  // Loan interest savings for one loan cycle
+  var sampleLoan=loanCap*0.5;
+  var saccoInterest=sampleLoan*saccoLoanRate;
+  var bankInterest=sampleLoan*bankLoanRate;
+  var loanSavings=bankInterest-saccoInterest;
+  function fmt(n){return sym+(Math.round(n)).toLocaleString();}
+  document.getElementById('sc-total').textContent=fmt(saccoTotal);
+  document.getElementById('sc-sub').textContent=years+' years | '+months+' contributions';
+  document.getElementById('sc-principal').textContent=fmt(principal);
+  document.getElementById('sc-dividend').textContent=fmt(dividends);
+  document.getElementById('sc-loan-cap').textContent=fmt(loanCap);
+  document.getElementById('sc-bank-total').textContent=fmt(bankTotal);
+  document.getElementById('sc-advantage').textContent=fmt(advantage);
+  document.getElementById('sc-loan-savings').textContent=fmt(Math.max(0,loanSavings));
+  document.getElementById('sc-results').classList.add('on');
+}
+</script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

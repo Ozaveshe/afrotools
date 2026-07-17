@@ -1,0 +1,278 @@
+!function(e) {
+  "use strict";
+  var a = {
+    NG: .2,
+    KE: .22,
+    ZA: .25,
+    GH: .22,
+    EG: .18,
+    TZ: .18,
+    UG: .18,
+    RW: .18,
+    ET: .18,
+    SN: .2,
+    CI: .22,
+    CM: .22,
+    MA: .24,
+    TN: .22,
+    DZ: .22,
+    BW: .2,
+    NA: .22,
+    ZM: .22,
+    ZW: .2,
+    MU: .15,
+    MG: .15,
+    MW: .25,
+    SZ: .22,
+    LS: .24,
+    AO: .17,
+    MZ: .2,
+    BJ: .2,
+    TG: .22,
+    GN: .2,
+    ML: .18,
+    BF: .2,
+    NE: .18,
+    RW: .2,
+    SS: .15,
+    SD: .15,
+    LY: .15,
+    TN: .2
+  }, t = {
+    NG: .08,
+    KE: .06,
+    ZA: .075,
+    GH: .055,
+    EG: .11,
+    TZ: .1,
+    UG: .05,
+    RW: .06,
+    ET: .07,
+    MA: .0448,
+    TN: .0918,
+    DZ: .09,
+    BW: .05,
+    NA: .009,
+    ZM: .05,
+    MU: .03,
+    MW: .1
+  }, n = {
+    startup: {
+      label: "Startup / Scale-up",
+      rates: [ .1, .2, .2, .15, .15 ],
+      titles: [ "Junior/Mid", "Mid-Level", "Senior", "Senior+", "Lead/Principal" ],
+      note: "High variance — equity upside if company succeeds. Median: 16% avg annual growth."
+    },
+    fintech: {
+      label: "Fintech / Tech Startup",
+      rates: [ .12, .2, .25, .18, .15 ],
+      titles: [ "Junior Dev", "Developer", "Senior Dev", "Staff Engineer", "Principal/Head" ],
+      note: "Fastest-growing segment in Africa. Typically pays 20-30% above market."
+    },
+    corporate: {
+      label: "Corporate / Bank",
+      rates: [ .1, .12, .1, .12, .1 ],
+      titles: [ "Officer", "Senior Officer", "Manager", "Senior Manager", "AGM/Director" ],
+      note: "Structured 10-12% annual increments. Predictable but slower path."
+    },
+    mnc: {
+      label: "MNC / Multinational",
+      rates: [ .12, .15, .12, .15, .12 ],
+      titles: [ "Associate", "Senior Associate", "Manager", "Senior Manager", "Associate Director" ],
+      note: "Performance bonuses + international exposure. Strong benefits."
+    },
+    government: {
+      label: "Government / Public Sector",
+      rates: [ .05, .05, .08, .05, .05 ],
+      titles: [ "Officer I", "Officer II", "Principal Officer", "Asst Director", "Director" ],
+      note: "Job security and pension, but real wages erode in high-inflation Africa."
+    },
+    ngo: {
+      label: "NGO / International Org",
+      rates: [ .08, .08, .1, .08, .08 ],
+      titles: [ "Programme Officer", "Senior Officer", "Programme Manager", "Senior Manager", "Director" ],
+      note: "Mission-driven. UN/INGO scale often USD-denominated — better inflation protection."
+    }
+  };
+  function r(e) {
+    return a[e] || .2;
+  }
+  function o(e) {
+    return t[e] || .08;
+  }
+  function i(e, a) {
+    var t = r(a), n = e * o(a), i = (e - n) * t, s = e - n - i;
+    return {
+      gross: Math.round(e),
+      pensionEe: Math.round(n),
+      tax: Math.round(i),
+      net: Math.round(s),
+      effectivePct: ((n + i) / e * 100).toFixed(1)
+    };
+  }
+  function s(e) {
+    var a = 12 * (e.transport || 0), t = 12 * (e.housing || 0), n = 12 * (e.health || 0), r = (e.salary || 0) * ((e.pensionEr || 0) / 100) * 12, o = e.gym ? 12 * (e.gymValue || 5e3) : 0, i = e.bonus13th && e.salary || 0, s = (e.salary || 0) / 260 * (e.leave || 0), l = (e.remote || 0) * (e.commute || 0) * 52 * 2 / 5;
+    return {
+      transport: Math.round(a),
+      housing: Math.round(t),
+      health: Math.round(n),
+      pensionEr: Math.round(r),
+      gym: Math.round(o),
+      bonus13th: Math.round(i),
+      leaveValue: Math.round(s),
+      remoteValue: Math.round(l),
+      total: Math.round(a + t + n + r + o + i)
+    };
+  }
+  e.JoeEngine = {
+    getTaxRate: r,
+    getPensionEeRate: o,
+    calcNetPay: i,
+    monetizeBenefits: s,
+    calcEquity: function(e) {
+      if (!e || !e.hasEquity) {
+        return null;
+      }
+      var a = e.shares || 0, t = e.fullyDiluted || 1e6, n = e.valuation || 0, r = e.strikePrice || 0, o = e.vestingYears || 4, i = e.cliffMonths || 12, s = t > 0 ? n / t : 0, l = Math.max(0, (s - r) * a), u = t > 0 ? a / t * 100 : 0, c = 12 * o, h = c > i ? a / (c - i) : 0, f = [ 5e6, 1e7, 5e7, 1e8 ].map(function(e) {
+        var n = t > 0 ? e / t : 0;
+        return {
+          valuation: e,
+          sharePrice: n,
+          value: Math.max(0, (n - r) * a)
+        };
+      }), d = 0 + .35 * f[1].value + .2 * f[2].value + .05 * f[3].value, m = new Date;
+      return m.setMonth(m.getMonth() + i), {
+        shares: a,
+        fullyDiluted: t,
+        valuation: n,
+        strikePrice: r,
+        vestingYears: o,
+        cliffMonths: i,
+        sharePrice: s,
+        currentValue: Math.round(l),
+        ownership: u.toFixed(4),
+        monthlyVestAfterCliff: h.toFixed(2),
+        scenarios: f,
+        probEV: Math.round(d),
+        cliffDate: m.toLocaleDateString("en-GB", {
+          month: "short",
+          year: "numeric"
+        })
+      };
+    },
+    project5Year: function(e, a) {
+      for (var t = n[e.companyType] || n.corporate, i = r(a), s = o(a), l = e.salary || 0, u = [], c = 0, h = 0; h < 5; h++) {
+        var f = 12 * l, d = f * s, m = f - d - (f - d) * i, g = f * ((e.bonusPct || 0) / 100), p = 12 * ((e.transport || 0) + (e.housing || 0) + (e.health || 0)), y = m + g + p;
+        u.push({
+          year: h + 1,
+          salary: Math.round(l),
+          annualGross: Math.round(f),
+          annualNet: Math.round(m),
+          annualBonus: Math.round(g),
+          annualBenefits: Math.round(p),
+          yearTotal: Math.round(y),
+          title: t.titles[h] || t.titles[4],
+          growthRate: (100 * (t.rates[h] || 0)).toFixed(0) + "%"
+        }), c += y, l *= 1 + (t.rates[h] || 0);
+      }
+      return {
+        years: u,
+        totalEarnings: Math.round(c),
+        finalSalary: u[4].salary,
+        finalTitle: u[4].title,
+        profileLabel: t.label,
+        note: t.note
+      };
+    },
+    calcRelocation: function(e, a) {
+      var t, n = (e.movingCost || 0) + (e.deposit || 0) + (e.settling || 0) + (e.tempAccom || 0) - (e.allowance || 0), r = a > 0 ? Math.ceil(n / a) : 1 / 0;
+      return t = r <= 6 ? "Excellent — breaks even in under 6 months" : r <= 12 ? "Good — breaks even within a year" : r <= 24 ? "Manageable — breaks even in " + r + " months" : r === 1 / 0 ? "No salary increase entered — cannot calculate break-even" : "Risky — takes over 2 years to break even",
+      {
+        totalCost: Math.round(n),
+        breakEvenMonths: isFinite(r) ? r : null,
+        label: t
+      };
+    },
+    calcCultureScore: function(e) {
+      var a = {
+        wlb: .2,
+        manager: .15,
+        growth: .2,
+        stability: .15,
+        mission: .1,
+        team: .1,
+        remote: .1
+      }, t = 0, n = 0;
+      return Object.keys(a).forEach(function(r) {
+        var o = parseFloat(e[r]);
+        isNaN(o) || (t += o * a[r], n += a[r]);
+      }), n > 0 ? Math.round(t / n * 10) : 50;
+    },
+    assessCounter: function(e, a) {
+      if (!e || !a) {
+        return null;
+      }
+      var t, n, r, o = (a - e) / e * 100;
+      return o <= 0 ? (t = "Counter is at or below the offer — consider negotiating upward",
+      n = "Auto-accept (but you may have left money on the table)", r = "I am excited about this role and would like to discuss the full compensation package.") : o <= 5 ? (t = "Very reasonable — highly likely to be accepted",
+      n = "Very High (85-95%)", r = "I appreciate the offer. I'm just looking for a small adjustment to finalize and get started.") : o <= 10 ? (t = "Reasonable ask — good probability of success",
+      n = "High (65-80%)", r = "I'm very excited about this opportunity. The small gap we need to close is well within market range for my experience.") : o <= 15 ? (t = "Moderate ask — will need market data to justify",
+      n = "Moderate (40-60%)", r = "Based on current market benchmarks for this role in [city], and considering my [X years experience / competing offer], I'm targeting this range.") : o <= 25 ? (t = "Aggressive — justify strongly with competing offers or market data",
+      n = "Low-Moderate (20-35%)", r = "I have a competing offer at [amount] and want to give your company first right of match. I believe the value I bring in the first 90 days will justify the investment.") : (t = "Very aggressive — expect significant pushback or a split-the-difference response",
+      n = "Low (<20%)", r = "I understand this is at the top of the range. I'm open to structuring this as base + performance bonus + equity to reach the total compensation target."),
+      {
+        pct: Math.abs(o).toFixed(1),
+        isAbove: o > 0,
+        assessment: t,
+        probability: n,
+        tip: r
+      };
+    },
+    compareOffers: function(e, a) {
+      return e.map(function(e) {
+        var t = i(e.salary || 0, a), n = s(e), r = 12 * (e.salary || 0) * ((e.bonusPct || 0) / 100), o = 12 * (e.commute || 0), l = 12 * t.net + r + n.transport + n.housing - o, u = l + n.health + n.pensionEr + n.gym + n.bonus13th;
+        return {
+          name: e.name || "Offer",
+          companyType: e.companyType || "corporate",
+          salary: e.salary || 0,
+          annualGross: 12 * t.gross,
+          pensionEeAnn: 12 * t.pensionEe,
+          taxAnn: 12 * t.tax,
+          netMonthly: t.net,
+          annualNet: 12 * t.net,
+          annualBonus: Math.round(r),
+          transport: n.transport,
+          housing: n.housing,
+          health: n.health,
+          pensionEr: n.pensionEr,
+          gym: n.gym,
+          bonus13th: n.bonus13th,
+          annualCommute: o,
+          totalBenefits: n.total,
+          remoteValue: n.remoteValue,
+          leave: e.leave || 0,
+          remote: e.remote || 0,
+          totalCash: Math.round(l),
+          totalComp: Math.round(u),
+          hasEquity: e.hasEquity || !1,
+          hasRelocation: e.hasRelocation || !1,
+          deadline: e.deadline || null,
+          effectivePct: t.effectivePct
+        };
+      }).sort(function(e, a) {
+        return a.totalComp - e.totalComp;
+      });
+    },
+    daysUntilDeadline: function(e) {
+      if (!e) {
+        return null;
+      }
+      var a = new Date;
+      a.setHours(0, 0, 0, 0);
+      var t = new Date(e);
+      return Math.round((t - a) / 864e5);
+    },
+    GROWTH_PROFILES: n,
+    RELOCATION_CITIES: [ "Abidjan", "Abuja", "Accra", "Addis Ababa", "Alexandria", "Algiers", "Antananarivo", "Bamako", "Cairo", "Cape Town", "Casablanca", "Conakry", "Dakar", "Dar es Salaam", "Douala", "Durban", "Harare", "Ibadan", "Johannesburg", "Kampala", "Kano", "Khartoum", "Kigali", "Kinshasa", "Lagos", "Libreville", "Lilongwe", "Lomé", "Luanda", "Lusaka", "Maputo", "Mombasa", "Nairobi", "Niamey", "Ouagadougou", "Port Harcourt", "Pretoria", "Rabat", "Tunis", "Yaounde", "Zanzibar" ]
+  };
+}("undefined" != typeof window ? window : this);

@@ -1,0 +1,865 @@
+!function() {
+  "use strict";
+  var e = {
+    COUNTRIES: [ {
+      code: "DZ",
+      name: "Algeria",
+      flag: "🇩🇿"
+    }, {
+      code: "AO",
+      name: "Angola",
+      flag: "🇦🇴"
+    }, {
+      code: "BJ",
+      name: "Benin",
+      flag: "🇧🇯"
+    }, {
+      code: "BW",
+      name: "Botswana",
+      flag: "🇧🇼"
+    }, {
+      code: "BF",
+      name: "Burkina Faso",
+      flag: "🇧🇫"
+    }, {
+      code: "BI",
+      name: "Burundi",
+      flag: "🇧🇮"
+    }, {
+      code: "CV",
+      name: "Cabo Verde",
+      flag: "🇨🇻"
+    }, {
+      code: "CM",
+      name: "Cameroon",
+      flag: "🇨🇲"
+    }, {
+      code: "CF",
+      name: "Central African Republic",
+      flag: "🇨🇫"
+    }, {
+      code: "TD",
+      name: "Chad",
+      flag: "🇹🇩"
+    }, {
+      code: "KM",
+      name: "Comoros",
+      flag: "🇰🇲"
+    }, {
+      code: "CG",
+      name: "Congo (Republic)",
+      flag: "🇨🇬"
+    }, {
+      code: "CD",
+      name: "DR Congo",
+      flag: "🇨🇩"
+    }, {
+      code: "DJ",
+      name: "Djibouti",
+      flag: "🇩🇯"
+    }, {
+      code: "EG",
+      name: "Egypt",
+      flag: "🇪🇬"
+    }, {
+      code: "GQ",
+      name: "Equatorial Guinea",
+      flag: "🇬🇶"
+    }, {
+      code: "ER",
+      name: "Eritrea",
+      flag: "🇪🇷"
+    }, {
+      code: "SZ",
+      name: "Eswatini",
+      flag: "🇸🇿"
+    }, {
+      code: "ET",
+      name: "Ethiopia",
+      flag: "🇪🇹"
+    }, {
+      code: "GA",
+      name: "Gabon",
+      flag: "🇬🇦"
+    }, {
+      code: "GM",
+      name: "Gambia",
+      flag: "🇬🇲"
+    }, {
+      code: "GH",
+      name: "Ghana",
+      flag: "🇬🇭"
+    }, {
+      code: "GN",
+      name: "Guinea",
+      flag: "🇬🇳"
+    }, {
+      code: "GW",
+      name: "Guinea-Bissau",
+      flag: "🇬🇼"
+    }, {
+      code: "CI",
+      name: "Ivory Coast",
+      flag: "🇨🇮"
+    }, {
+      code: "KE",
+      name: "Kenya",
+      flag: "🇰🇪"
+    }, {
+      code: "LS",
+      name: "Lesotho",
+      flag: "🇱🇸"
+    }, {
+      code: "LR",
+      name: "Liberia",
+      flag: "🇱🇷"
+    }, {
+      code: "LY",
+      name: "Libya",
+      flag: "🇱🇾"
+    }, {
+      code: "MG",
+      name: "Madagascar",
+      flag: "🇲🇬"
+    }, {
+      code: "MW",
+      name: "Malawi",
+      flag: "🇲🇼"
+    }, {
+      code: "ML",
+      name: "Mali",
+      flag: "🇲🇱"
+    }, {
+      code: "MR",
+      name: "Mauritania",
+      flag: "🇲🇷"
+    }, {
+      code: "MU",
+      name: "Mauritius",
+      flag: "🇲🇺"
+    }, {
+      code: "MA",
+      name: "Morocco",
+      flag: "🇲🇦"
+    }, {
+      code: "MZ",
+      name: "Mozambique",
+      flag: "🇲🇿"
+    }, {
+      code: "NA",
+      name: "Namibia",
+      flag: "🇳🇦"
+    }, {
+      code: "NE",
+      name: "Niger",
+      flag: "🇳🇪"
+    }, {
+      code: "NG",
+      name: "Nigeria",
+      flag: "🇳🇬"
+    }, {
+      code: "RW",
+      name: "Rwanda",
+      flag: "🇷🇼"
+    }, {
+      code: "ST",
+      name: "São Tomé & Príncipe",
+      flag: "🇸🇹"
+    }, {
+      code: "SN",
+      name: "Senegal",
+      flag: "🇸🇳"
+    }, {
+      code: "SC",
+      name: "Seychelles",
+      flag: "🇸🇨"
+    }, {
+      code: "SL",
+      name: "Sierra Leone",
+      flag: "🇸🇱"
+    }, {
+      code: "SO",
+      name: "Somalia",
+      flag: "🇸🇴"
+    }, {
+      code: "ZA",
+      name: "South Africa",
+      flag: "🇿🇦"
+    }, {
+      code: "SS",
+      name: "South Sudan",
+      flag: "🇸🇸"
+    }, {
+      code: "SD",
+      name: "Sudan",
+      flag: "🇸🇩"
+    }, {
+      code: "TZ",
+      name: "Tanzania",
+      flag: "🇹🇿"
+    }, {
+      code: "TG",
+      name: "Togo",
+      flag: "🇹🇬"
+    }, {
+      code: "TN",
+      name: "Tunisia",
+      flag: "🇹🇳"
+    }, {
+      code: "UG",
+      name: "Uganda",
+      flag: "🇺🇬"
+    }, {
+      code: "ZM",
+      name: "Zambia",
+      flag: "🇿🇲"
+    }, {
+      code: "ZW",
+      name: "Zimbabwe",
+      flag: "🇿🇼"
+    } ],
+    DOCUMENT_TYPES: [ {
+      id: "employment-contract",
+      name: "Employment Contract",
+      icon: "📋",
+      desc: "Full employment agreement with all mandatory country-specific clauses — salary, hours, leave, notice, pension."
+    }, {
+      id: "offer-letter",
+      name: "Offer Letter",
+      icon: "📨",
+      desc: "Formal offer of employment including role, salary, start date, and acceptance conditions."
+    }, {
+      id: "termination-letter",
+      name: "Termination Letter",
+      icon: "🚪",
+      desc: "Confirms termination of employment — covers notice, final pay, leave payout, and property return."
+    }, {
+      id: "retrenchment-letter",
+      name: "Retrenchment Letter",
+      icon: "📉",
+      desc: "Retrenchment/redundancy letter with severance calculation and consultation notice references."
+    }, {
+      id: "warning-letter",
+      name: "Warning Letter (Written)",
+      icon: "⚠️",
+      desc: "First or second written warning under a progressive discipline framework."
+    }, {
+      id: "final-warning",
+      name: "Final Warning Letter",
+      icon: "🔴",
+      desc: "Final written warning — last step before dismissal, with clear improvement conditions."
+    }, {
+      id: "disciplinary-notice",
+      name: "Disciplinary Hearing Notice",
+      icon: "📣",
+      desc: "Formal notice of a disciplinary hearing including charges, date, and right to representation."
+    }, {
+      id: "leave-approval",
+      name: "Leave Approval Form",
+      icon: "🌴",
+      desc: "Leave application and approval record for any leave type — annual, sick, maternity, paternity."
+    }, {
+      id: "salary-review",
+      name: "Salary Review Letter",
+      icon: "💰",
+      desc: "Documents a salary increase — new amount, effective date, percentage, and reason."
+    }, {
+      id: "nda",
+      name: "NDA / Confidentiality Agreement",
+      icon: "🤫",
+      desc: "Mutual or one-way non-disclosure agreement with scope, duration, and exception clauses."
+    } ],
+    COUNTRY_LEGAL: {
+      NG: {
+        act: "Labour Act Cap L1 LFN 2004",
+        currency: "NGN",
+        annualLeaveDays: 6,
+        sickLeaveDays: 12,
+        maternityDays: 84,
+        paternityDays: 0,
+        probationMax: 6,
+        pensionEmployee: 8,
+        pensionEmployer: 10,
+        pensionBody: "PenCom / CPS — Pension Reform Act 2014",
+        noticePeriods: [ {
+          maxMonths: 3,
+          noticeDays: 1,
+          label: "Under 3 months: 1 day"
+        }, {
+          maxMonths: 24,
+          noticeDays: 7,
+          label: "3 months – 2 years: 1 week"
+        }, {
+          maxMonths: 60,
+          noticeDays: 30,
+          label: "2 – 5 years: 1 month"
+        }, {
+          maxMonths: 1 / 0,
+          noticeDays: 60,
+          label: "Over 5 years: 2 months"
+        } ],
+        dismissalNote: "Termination must state reason if for cause. Payment in lieu of notice is permitted. Unfair dismissal claims filed at Industrial Arbitration Panel (IAP) or National Industrial Court (NIC).",
+        retrenchmentNote: "No statutory consultation period prescribed for small employers, but best practice is 30 days. Severance is at employer's discretion unless negotiated.",
+        disciplineNote: "Employer must give reasonable opportunity to respond to charges. NICN enforces procedural fairness."
+      },
+      KE: {
+        act: "Employment Act 2007 (No. 11 of 2007)",
+        currency: "KES",
+        annualLeaveDays: 21,
+        sickLeaveDays: 30,
+        maternityDays: 90,
+        paternityDays: 14,
+        probationMax: 6,
+        pensionEmployee: 6,
+        pensionEmployer: 6,
+        pensionBody: "NSSF (National Social Security Fund) — NSSF Act 2013",
+        noticePeriods: [ {
+          maxMonths: 1,
+          noticeDays: 0,
+          label: "First month: no notice required"
+        }, {
+          maxMonths: 3,
+          noticeDays: 7,
+          label: "Under 3 months: 1 week"
+        }, {
+          maxMonths: 1 / 0,
+          noticeDays: 28,
+          label: "3 months or more: 28 days (4 weeks)"
+        } ],
+        dismissalNote: "Termination must follow fair procedure: employee must be heard, may be represented, and may appeal. Unfair dismissal complaints filed at Employment and Labour Relations Court (ELRC).",
+        retrenchmentNote: "Minimum 1 month notice. Severance: 15 working days' pay per completed year of service (s.40(1)(g)).",
+        disciplineNote: "Employee entitled to representation by fellow employee or union representative (s.41). Hearing must be conducted before dismissal."
+      },
+      ZA: {
+        act: "Basic Conditions of Employment Act 75 of 1997 (BCEA)",
+        complementAct: "Labour Relations Act 66 of 1995 (LRA)",
+        currency: "ZAR",
+        annualLeaveDays: 15,
+        sickLeaveDays: 30,
+        maternityDays: 120,
+        paternityDays: 10,
+        probationMax: 0,
+        pensionEmployee: 7.5,
+        pensionEmployer: 7.5,
+        pensionBody: "GEPF (public sector) or employer-selected pension fund (private sector) — Pension Funds Act 24 of 1956",
+        noticePeriods: [ {
+          maxMonths: 6,
+          noticeDays: 7,
+          label: "Under 6 months: 1 week"
+        }, {
+          maxMonths: 12,
+          noticeDays: 14,
+          label: "6 months – 1 year: 2 weeks"
+        }, {
+          maxMonths: 1 / 0,
+          noticeDays: 28,
+          label: "Over 1 year: 4 weeks (28 days)"
+        } ],
+        dismissalNote: "Both substantive and procedural fairness required (LRA Schedule 8 — Code of Good Practice: Dismissal). CCMA jurisdiction. Employee may refer unfair dismissal within 30 days of dismissal date.",
+        retrenchmentNote: "S.189 LRA consultation mandatory. S.189A applies (45-day process) for 10+ employees. Severance: 1 week's remuneration per completed year of service (BCEA s.41).",
+        disciplineNote: "CCMA Code of Good Practice: employer must investigate, give notice of hearing, allow representation, conduct hearing before deciding, allow appeal. Progressive discipline strongly preferred."
+      },
+      GH: {
+        act: "Labour Act 2003 (Act 651)",
+        currency: "GHS",
+        annualLeaveDays: 15,
+        sickLeaveDays: 12,
+        maternityDays: 84,
+        paternityDays: 0,
+        probationMax: 6,
+        pensionEmployee: 5.5,
+        pensionEmployer: 13,
+        pensionBody: "SSNIT Tier 1 + Occupational Pension Tier 2 — National Pensions Act 2008 (Act 766)",
+        noticePeriods: [ {
+          maxMonths: 36,
+          noticeDays: 7,
+          label: "Under 3 years: 1 week"
+        }, {
+          maxMonths: 60,
+          noticeDays: 14,
+          label: "3 – 5 years: 2 weeks"
+        }, {
+          maxMonths: 1 / 0,
+          noticeDays: 30,
+          label: "Over 5 years: 1 month"
+        } ],
+        dismissalNote: "Termination without notice requires payment in lieu (s.17). Summary dismissal requires serious misconduct. Complaints to National Labour Commission (NLC).",
+        retrenchmentNote: "Employer must notify and consult with workers and NLC at least 3 months before retrenchment. Severance pay negotiated between parties.",
+        disciplineNote: "Employee must be given opportunity to respond. NLC has jurisdiction for labour disputes."
+      },
+      TZ: {
+        act: "Employment and Labour Relations Act 2004 (ELRA)",
+        currency: "TZS",
+        annualLeaveDays: 28,
+        sickLeaveDays: 126,
+        maternityDays: 84,
+        paternityDays: 3,
+        probationMax: 12,
+        pensionEmployee: 10,
+        pensionEmployer: 10,
+        pensionBody: "NSSF Tanzania (National Social Security Fund)",
+        noticePeriods: [ {
+          maxMonths: 1,
+          noticeDays: 7,
+          label: "Under 1 month: 7 days"
+        }, {
+          maxMonths: 3,
+          noticeDays: 14,
+          label: "1 – 3 months: 14 days"
+        }, {
+          maxMonths: 1 / 0,
+          noticeDays: 28,
+          label: "Over 3 months: 28 days"
+        } ],
+        dismissalNote: "Fair reason and fair procedure required. Employee has right to union representation. Commission for Mediation and Arbitration (CMA) jurisdiction.",
+        retrenchmentNote: "Employer must consult with employees and/or union. Severance: 7 days' wages per year of service.",
+        disciplineNote: "Employer must investigate allegation, notify employee in writing, hold a hearing with representation."
+      },
+      ET: {
+        act: "Labour Proclamation No. 1156/2019",
+        currency: "ETB",
+        annualLeaveDays: 16,
+        sickLeaveDays: 6,
+        maternityDays: 90,
+        paternityDays: 3,
+        probationMax: 3,
+        pensionEmployee: 7,
+        pensionEmployer: 11,
+        pensionBody: "Private Organisations Employees Social Security Agency (POESSA)",
+        noticePeriods: [ {
+          maxMonths: 1 / 0,
+          noticeDays: 30,
+          label: "1 month notice (30 days)"
+        } ],
+        dismissalNote: "Just cause and due process required. Labour Dispute Settlement Mechanism applies.",
+        retrenchmentNote: "Severance: 1 month's wage per year of service, max 12 months.",
+        disciplineNote: "Employer must give written warning before dismissal for conduct issues (save for serious misconduct)."
+      },
+      UG: {
+        act: "Employment Act 2006",
+        currency: "UGX",
+        annualLeaveDays: 21,
+        sickLeaveDays: 14,
+        maternityDays: 60,
+        paternityDays: 4,
+        probationMax: 6,
+        pensionEmployee: 5,
+        pensionEmployer: 10,
+        pensionBody: "NSSF Uganda (National Social Security Fund)",
+        noticePeriods: [ {
+          maxMonths: 6,
+          noticeDays: 7,
+          label: "Under 6 months: 1 week"
+        }, {
+          maxMonths: 12,
+          noticeDays: 14,
+          label: "6 months – 1 year: 2 weeks"
+        }, {
+          maxMonths: 1 / 0,
+          noticeDays: 30,
+          label: "Over 1 year: 1 month"
+        } ],
+        dismissalNote: "Fair cause required. Employee entitled to representation. Industrial Court jurisdiction.",
+        retrenchmentNote: "Employer must give notice and pay severance: 1 month's wages per year of service.",
+        disciplineNote: "Employee must be given hearing before dismissal."
+      },
+      RW: {
+        act: "Labour Code (Law No. 66/2018)",
+        currency: "RWF",
+        annualLeaveDays: 18,
+        sickLeaveDays: 15,
+        maternityDays: 84,
+        paternityDays: 4,
+        probationMax: 3,
+        pensionEmployee: 6,
+        pensionEmployer: 6,
+        pensionBody: "RSSB (Rwanda Social Security Board)",
+        noticePeriods: [ {
+          maxMonths: 12,
+          noticeDays: 15,
+          label: "Under 1 year: 15 days"
+        }, {
+          maxMonths: 60,
+          noticeDays: 30,
+          label: "1 – 5 years: 1 month"
+        }, {
+          maxMonths: 1 / 0,
+          noticeDays: 60,
+          label: "Over 5 years: 2 months"
+        } ],
+        dismissalNote: "Employer must give reasons. Unfair dismissal compensation = 3 months' wages per year of service, up to 12 months.",
+        retrenchmentNote: "Consultation with employees required. Severance equivalent to unfair dismissal compensation.",
+        disciplineNote: "Written warning required before dismissal for misconduct, except for serious offences."
+      }
+    },
+    _defaultLegal: {
+      act: "National Labour Law",
+      currency: "USD",
+      annualLeaveDays: 15,
+      sickLeaveDays: 10,
+      maternityDays: 84,
+      paternityDays: 0,
+      probationMax: 6,
+      pensionEmployee: 5,
+      pensionEmployer: 10,
+      pensionBody: "National Social Security Authority",
+      noticePeriods: [ {
+        maxMonths: 1 / 0,
+        noticeDays: 30,
+        label: "1 month notice (30 days)"
+      } ],
+      dismissalNote: "Ensure compliance with applicable national labour laws and fair procedure requirements.",
+      retrenchmentNote: "Consult with employees and comply with applicable retrenchment and severance requirements.",
+      disciplineNote: "Provide the employee with a fair hearing and opportunity to respond before any disciplinary action."
+    },
+    getCountryDefaults: function(e) {
+      return this.COUNTRY_LEGAL[e] || this._defaultLegal;
+    },
+    getCountry: function(e) {
+      for (var t = 0; t < this.COUNTRIES.length; t++) {
+        if (this.COUNTRIES[t].code === e) {
+          return this.COUNTRIES[t];
+        }
+      }
+      return null;
+    },
+    getDocType: function(e) {
+      for (var t = 0; t < this.DOCUMENT_TYPES.length; t++) {
+        if (this.DOCUMENT_TYPES[t].id === e) {
+          return this.DOCUMENT_TYPES[t];
+        }
+      }
+      return null;
+    },
+    getNoticePeriod: function(e, t) {
+      for (var n = this.getCountryDefaults(e), a = 12 * (parseFloat(t) || 0), o = 0; o < n.noticePeriods.length; o++) {
+        if (a <= n.noticePeriods[o].maxMonths) {
+          return n.noticePeriods[o];
+        }
+      }
+      return n.noticePeriods[n.noticePeriods.length - 1];
+    },
+    formatDate: function(e) {
+      if (!e) {
+        return "_______________";
+      }
+      try {
+        return new Date(e + "T12:00:00").toLocaleDateString("en-GB", {
+          day: "numeric",
+          month: "long",
+          year: "numeric"
+        });
+      } catch (t) {
+        return e;
+      }
+    },
+    formatCurrency: function(e, t) {
+      if (!e) {
+        return "_______________";
+      }
+      var n = parseFloat(String(e).replace(/,/g, ""));
+      return isNaN(n) ? e : (t || "") + " " + n.toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    },
+    renderDocument: function(e, t) {
+      var n = {
+        "employment-contract": this._renderEmploymentContract,
+        "offer-letter": this._renderOfferLetter,
+        "termination-letter": this._renderTerminationLetter,
+        "retrenchment-letter": this._renderRetrenchmentLetter,
+        "warning-letter": this._renderWarningLetter,
+        "final-warning": this._renderFinalWarning,
+        "disciplinary-notice": this._renderDisciplinaryNotice,
+        "leave-approval": this._renderLeaveApproval,
+        "salary-review": this._renderSalaryReview,
+        nda: this._renderNDA
+      }[e];
+      return n ? n.call(this, t) : '<p style="color:red">Template not found for: ' + e + "</p>";
+    },
+    _docHeader: function(e) {
+      var t = e.employer || {}, n = e.country || {};
+      return e.defaults, '<div class="dg-doc-header"><div class="dg-doc-company"><div class="dg-doc-company-name">' + (t.name || "_______________") + "</div>" + (t.regNumber ? '<div class="dg-doc-company-sub">Reg. No: ' + t.regNumber + "</div>" : "") + (t.address ? '<div class="dg-doc-company-sub">' + t.address + "</div>" : "") + '</div><div class="dg-doc-meta"><div><strong>Date:</strong> ' + this.formatDate(e.generatedDate) + "</div><div><strong>Country:</strong> " + (n.flag || "") + " " + (n.name || "") + "</div></div></div>";
+    },
+    _sigBlock: function(e) {
+      var t = e.employer || {}, n = e.employee || {};
+      return '<div class="dg-sig-block"><div class="dg-sig-col"><div class="dg-sig-line"></div><div class="dg-sig-label"><strong>' + (t.signatoryName || "Authorised Signatory") + '</strong></div><div class="dg-sig-label">' + (t.signatoryTitle || "") + '</div><div class="dg-sig-label">For: ' + (t.name || "_______________") + '</div><div class="dg-sig-label">Date: _______________</div></div><div class="dg-sig-col"><div class="dg-sig-line"></div><div class="dg-sig-label"><strong>' + (n.name || "_______________") + '</strong></div><div class="dg-sig-label">Employee</div><div class="dg-sig-label">ID/Passport: ' + (n.idNumber || "_______________") + '</div><div class="dg-sig-label">Date: _______________</div></div></div>';
+    },
+    _renderEmploymentContract: function(e) {
+      var t = e.fields || {}, n = e.employer || {}, a = e.employee || {}, o = e.country || {}, r = e.defaults || {}, i = this, s = {
+        permanent: "Permanent Employment",
+        "fixed-term": "Fixed-Term Employment",
+        probationary: "Probationary Employment"
+      }[t.contractType] || "Employment", l = t.noticePeriodDays ? t.noticePeriodDays + " calendar days" : r.noticePeriods && r.noticePeriods.length ? r.noticePeriods[r.noticePeriods.length - 1].noticeDays + " calendar days" : "30 calendar days", c = i._docHeader(e);
+      if (c += '<h1 class="dg-doc-title">EMPLOYMENT CONTRACT<br><span style="font-size:.7em;font-weight:500">(' + s + ")</span></h1>",
+      c += '<p class="dg-doc-intro">This Employment Contract (<strong>"Agreement"</strong>) is entered into on ' + i.formatDate(e.generatedDate) + "</p>",
+      c += '<p class="dg-doc-intro"><strong>BETWEEN:</strong></p>', c += '<p class="dg-doc-intro">' + (n.name || "_______________") + (n.regNumber ? " (Registration No: " + n.regNumber + ")" : "") + ", a company registered under the laws of " + (o.name || "_______________") + (n.address ? ", with its principal place of business at " + n.address : "") + ' (<strong>"Employer"</strong>' + (n.signatoryName ? ", represented by " + n.signatoryName + (n.signatoryTitle ? ", " + n.signatoryTitle : "") : "") + ")</p>",
+      c += '<p class="dg-doc-intro"><strong>AND:</strong></p>', c += '<p class="dg-doc-intro">' + (a.name || "_______________") + (a.idNumber ? " (ID/Passport No: " + a.idNumber + ")" : "") + ' (<strong>"Employee"</strong>)</p>',
+      c += '<p class="dg-doc-intro"><strong>COLLECTIVELY REFERRED TO AS "THE PARTIES"</strong></p>',
+      c += '<hr class="dg-doc-rule">', c += '<h2 class="dg-clause-h">1. COMMENCEMENT AND DURATION</h2>',
+      c += "<p>1.1 Employment commences on <strong>" + i.formatDate(t.startDate) + "</strong> as a <strong>" + s + "</strong> position.</p>",
+      "fixed-term" === t.contractType && t.endDate && (c += "<p>1.2 This fixed-term contract shall terminate on <strong>" + i.formatDate(t.endDate) + "</strong> unless renewed by mutual written agreement prior to expiry.</p>"),
+      c += '<h2 class="dg-clause-h">2. POSITION AND DUTIES</h2>', c += "<p>2.1 The Employee is appointed as <strong>" + (a.jobTitle || "_______________") + "</strong>" + (a.department ? " in the <strong>" + a.department + "</strong> department" : "") + (a.reportingTo ? ", reporting to <strong>" + a.reportingTo + "</strong>" : "") + ".</p>",
+      c += "<p>2.2 The Employee shall perform all duties reasonably assigned by the Employer consistent with the role and may be required to perform other duties as business needs require.</p>",
+      c += '<h2 class="dg-clause-h">3. REMUNERATION</h2>', c += "<p>3.1 The Employee shall receive a gross salary of <strong>" + i.formatCurrency(t.salary, t.currency || r.currency) + " per " + (t.payFrequency || "month") + "</strong>.</p>",
+      c += "<p>3.2 Salary shall be paid by bank transfer " + ("monthly" === t.payFrequency ? "on or before the last working day of each month" : "as agreed") + ". Statutory deductions (tax, pension, social security) shall be made as required by law.</p>",
+      t.currency && t.currency !== r.currency && (c += "<p>3.3 Salary shall be paid in " + t.currency + ".</p>"),
+      c += '<h2 class="dg-clause-h">4. WORKING HOURS</h2>', c += "<p>4.1 Normal working hours: <strong>" + (t.workingHours || 8) + " hours per day, " + (t.workingDays || 5) + " days per week</strong>.</p>",
+      c += "<p>4.2 Overtime shall be compensated in accordance with applicable law under the " + (r.act || "national labour law") + ".</p>",
+      c += '<h2 class="dg-clause-h">5. PROBATION PERIOD</h2>', "permanent" === t.contractType || "probationary" === t.contractType) {
+        var d = t.probationMonths || r.probationMax || 3;
+        c += "<p>5.1 The first <strong>" + d + " month" + (d > 1 ? "s" : "") + "</strong> of employment shall constitute a probationary period, during which either party may terminate with shorter notice as permitted by the " + (r.act || "applicable law") + ".</p>",
+        c += "<p>5.2 Performance shall be assessed during probation and the Employer may extend probation by written notice where permitted by law.</p>";
+      } else {
+        c += "<p>5.1 No probation period applies to this fixed-term appointment. The full terms of this contract apply from commencement.</p>";
+      }
+      c += '<h2 class="dg-clause-h">6. NOTICE PERIOD</h2>', c += "<p>6.1 Either party may terminate this contract by giving <strong>" + l + "</strong> written notice, or payment in lieu thereof at the Employer's election.</p>",
+      r.noticePeriods && (c += "<p>6.2 Statutory minimum notice periods under the " + (r.act || "applicable law") + ":</p><ul>",
+      r.noticePeriods.forEach(function(e) {
+        c += "<li>" + e.label + "</li>";
+      }), c += "</ul>", c += "<p>6.3 The notice period stated in clause 6.1 meets or exceeds the statutory minimum. Where notice provided is less than the statutory minimum, payment in lieu shall be made for the shortfall.</p>"),
+      c += '<h2 class="dg-clause-h">7. LEAVE ENTITLEMENTS</h2>', c += "<p>7.1 <strong>Annual Leave:</strong> The Employee is entitled to <strong>" + (t.annualLeaveDays || r.annualLeaveDays || 15) + " working days</strong> per completed year of service. Leave accrues monthly at a rate of " + ((t.annualLeaveDays || r.annualLeaveDays || 15) / 12).toFixed(1) + " days per month.</p>",
+      c += "<p>7.2 <strong>Sick Leave:</strong> The Employee is entitled to <strong>" + (t.sickLeaveDays || r.sickLeaveDays || 10) + " days</strong> sick leave per year (or as prescribed by applicable law), subject to production of a valid medical certificate for absences exceeding 2 consecutive days.</p>",
+      c += "<p>7.3 <strong>Maternity / Paternity Leave:</strong> As prescribed by " + (r.act || "applicable law") + " (" + (r.maternityDays || 84) + " days maternity" + (r.paternityDays ? ", " + r.paternityDays + " days paternity" : "") + ").</p>",
+      c += "<p>7.4 Public holidays shall be observed as declared by the Government of " + (o.name || "_______________") + ".</p>",
+      c += '<h2 class="dg-clause-h">8. PENSION / SOCIAL SECURITY</h2>', c += "<p>8.1 Contributions shall be made to <strong>" + (r.pensionBody || "the applicable social security authority") + "</strong> as follows:</p>",
+      c += "<ul><li>Employee contribution: <strong>" + (t.pensionEmployee || r.pensionEmployee || 5) + "%</strong> of gross salary</li>",
+      c += "<li>Employer contribution: <strong>" + (t.pensionEmployer || r.pensionEmployer || 10) + "%</strong> of gross salary</li></ul>",
+      c += "<p>8.2 Both employer and employee contributions are mandatory. The Employer shall remit all contributions by the statutory deadline.</p>",
+      t.remoteWork && (c += '<h2 class="dg-clause-h">9. REMOTE WORK</h2>', c += "<p>9.1 The Employee is authorised to work remotely subject to the Employer's Remote Work Policy, which forms part of this Agreement. The Employer may amend the remote work arrangement on reasonable notice.</p>",
+      c += "<p>9.2 The Employee remains subject to all applicable workplace policies, data security obligations, and performance standards while working remotely.</p>");
+      var _ = t.remoteWork ? "10" : "9";
+      return t.includeNDA && (c += '<h2 class="dg-clause-h">' + _ + ". CONFIDENTIALITY</h2>",
+      c += "<p>" + _ + ".1 The Employee shall not, during or after the term of this Agreement, disclose to any third party any Confidential Information belonging to the Employer without prior written consent.</p>",
+      c += "<p>" + _ + '.2 "Confidential Information" means all trade secrets, business plans, client data, financial information, technical processes, and any other information designated as confidential or which by its nature ought to be treated as confidential.</p>',
+      c += "<p>" + _ + ".3 This obligation survives termination of employment indefinitely for trade secrets and for 2 years for other confidential information.</p>",
+      _ = String(parseInt(_) + 1)), t.includeRestraintOfTrade && (c += '<h2 class="dg-clause-h">' + _ + ". RESTRAINT OF TRADE</h2>",
+      c += "<p>" + _ + ".1 For a period of <strong>" + (t.restraintMonths || 12) + " months</strong> following termination of employment, the Employee shall not, within <strong>" + (t.restraintArea || o.name || "the applicable region") + "</strong>, directly or indirectly engage in any business that competes with the Employer's business as conducted at the date of termination.</p>",
+      c += "<p>" + _ + ".2 This restriction applies only to activities in which the Employee was directly involved during the last 12 months of employment. The Employer acknowledges this restriction must be reasonable as to scope, area, and duration to be enforceable under " + (r.act || "applicable law") + ".</p>",
+      _ = String(parseInt(_) + 1)), c += '<h2 class="dg-clause-h">' + _ + ". GENERAL PROVISIONS</h2>",
+      c += "<p>" + _ + ".1 <strong>Entire Agreement:</strong> This Agreement constitutes the entire agreement between the Parties regarding employment and supersedes all prior offers, representations, and understandings.</p>",
+      c += "<p>" + _ + ".2 <strong>Amendments:</strong> No amendment to this Agreement shall be valid unless made in writing and signed by both Parties.</p>",
+      c += "<p>" + _ + ".3 <strong>Governing Law:</strong> This Agreement is governed by the laws of <strong>" + (o.name || "_______________") + "</strong> and specifically the " + (r.act || "applicable national labour law") + (r.complementAct ? " and " + r.complementAct : "") + ".</p>",
+      c += "<p>" + _ + ".4 <strong>Dispute Resolution:</strong> " + (r.dismissalNote ? r.dismissalNote.split(".")[0] + "." : "Disputes shall be resolved through the applicable labour dispute mechanisms.") + "</p>",
+      c += "<p>" + _ + ".5 <strong>Severability:</strong> If any clause of this Agreement is found to be unenforceable, it shall be severed and the remaining clauses shall remain in full force.</p>",
+      c += '<hr class="dg-doc-rule">', c += '<p style="text-align:center;font-weight:600">IN WITNESS WHEREOF, the Parties have signed this Agreement on the date first written above.</p>',
+      c += i._sigBlock(e), c += '<div class="dg-doc-disclaimer">Generated by AfroTools Document Generator · For informational purposes only. Not legal advice. Verify compliance with current ' + (r.act || "applicable law") + " before use.</div>";
+    },
+    _renderOfferLetter: function(e) {
+      var t = e.fields || {}, n = e.employer || {}, a = e.employee || {}, o = e.country || {}, r = e.defaults || {}, i = this, s = i._docHeader(e);
+      return s += '<h1 class="dg-doc-title">OFFER OF EMPLOYMENT</h1>', s += "<p><strong>" + i.formatDate(e.generatedDate) + "</strong></p>",
+      s += "<p><strong>" + (a.name || "_______________") + "</strong><br>" + (a.address || "") + "</p>",
+      s += "<p><strong>Dear " + (a.name ? a.name.split(" ")[0] : "_______________") + ",</strong></p>",
+      s += "<p>We are pleased to offer you employment with <strong>" + (n.name || "_______________") + "</strong> on the following terms and conditions:</p>",
+      s += '<table class="dg-offer-table">', s += "<tr><td><strong>Position</strong></td><td>" + (a.jobTitle || "_______________") + "</td></tr>",
+      s += "<tr><td><strong>Department</strong></td><td>" + (a.department || "_______________") + "</td></tr>",
+      s += "<tr><td><strong>Reports To</strong></td><td>" + (a.reportingTo || "_______________") + "</td></tr>",
+      s += "<tr><td><strong>Start Date</strong></td><td>" + i.formatDate(t.startDate) + "</td></tr>",
+      s += "<tr><td><strong>Gross Salary</strong></td><td><strong>" + i.formatCurrency(t.salary, t.currency || r.currency) + " per " + (t.payFrequency || "month") + "</strong></td></tr>",
+      s += "<tr><td><strong>Work Location</strong></td><td>" + (t.workLocation || n.address || o.name || "_______________") + "</td></tr>",
+      s += "<tr><td><strong>Contract Type</strong></td><td>" + ({
+        permanent: "Permanent",
+        "fixed-term": "Fixed-Term",
+        probationary: "Probationary"
+      }[t.contractType] || "Permanent") + "</td></tr>", "fixed-term" === t.contractType && t.endDate && (s += "<tr><td><strong>Contract End Date</strong></td><td>" + i.formatDate(t.endDate) + "</td></tr>"),
+      s += "</table>", s += '<h2 class="dg-clause-h">Conditions of This Offer</h2>', s += "<p>This offer is conditional upon:</p><ol>",
+      t.conditionBackground && (s += "<li>Satisfactory outcome of a pre-employment background check</li>"),
+      t.conditionReference && (s += "<li>Receipt of satisfactory employment references from previous employers</li>"),
+      t.conditionMedical && (s += "<li>Satisfactory pre-employment medical examination</li>"),
+      t.conditionQualification && (s += "<li>Verification of academic and professional qualifications</li>"),
+      t.conditionBackground || t.conditionReference || t.conditionMedical || t.conditionQualification || (s += "<li>Verification of your right to work in " + (o.name || "_______________") + "</li>"),
+      s += "<li>Execution of a formal Employment Contract prior to or on commencement date</li>",
+      s += "</ol>", s += "<p>Your employment will be governed by the <strong>" + (r.act || "applicable labour law") + "</strong> of " + (o.name || "_______________") + " and the Employer's applicable policies and procedures.</p>",
+      t.offerExpiryDate && (s += "<p>This offer will expire on <strong>" + i.formatDate(t.offerExpiryDate) + "</strong> if not accepted in writing by that date.</p>"),
+      s += "<p>To accept this offer, please sign and return a copy of this letter. We look forward to welcoming you to the team.</p>",
+      s += "<p>Yours sincerely,</p>", s += "<br>", s += "<p><strong>" + (n.signatoryName || "_______________") + "</strong><br>" + (n.signatoryTitle || "") + "<br>" + (n.name || "_______________") + "</p>",
+      s += '<hr class="dg-doc-rule">', s += '<p style="text-align:center;font-weight:600;font-size:.85em">ACCEPTANCE OF OFFER</p>',
+      s += '<p style="font-size:.85em">I, <strong>' + (a.name || "_______________") + "</strong>, hereby accept the offer of employment on the terms stated above.</p>",
+      (s += i._sigBlock(e)) + '<div class="dg-doc-disclaimer">Generated by AfroTools Document Generator · For informational purposes only. Not legal advice.</div>';
+    },
+    _renderTerminationLetter: function(e) {
+      var t = e.fields || {}, n = e.employer || {}, a = e.employee || {}, o = (e.country,
+      e.defaults || {}), r = this, i = {
+        resignation: "Acceptance of Resignation",
+        dismissal: "Termination of Employment",
+        retrenchment: "Retrenchment",
+        "end-of-contract": "End of Fixed-Term Contract",
+        "ill-health": "Termination on Grounds of Ill Health"
+      }[t.terminationType] || "Termination of Employment", s = r._docHeader(e);
+      return s += '<h1 class="dg-doc-title">LETTER OF ' + i.toUpperCase() + "</h1>", s += "<p><strong>" + r.formatDate(e.generatedDate) + "</strong></p>",
+      s += "<p><strong>PRIVATE &amp; CONFIDENTIAL</strong></p>", s += "<p>" + (a.name || "_______________") + "<br>",
+      a.jobTitle && (s += a.jobTitle + "<br>"), n.name && (s += n.name + "<br>"), s += "</p>",
+      s += "<p><strong>Dear " + (a.name ? a.name.split(" ")[0] : "_______________") + ",</strong></p>",
+      "resignation" === t.terminationType ? (s += "<p>We write to confirm receipt of your resignation dated <strong>" + r.formatDate(t.resignationDate || t.lastDay) + "</strong> from the position of " + (a.jobTitle || "_______________") + ".</p>",
+      s += "<p>Your resignation is accepted and your last day of employment is confirmed as <strong>" + r.formatDate(t.lastDay) + "</strong>.</p>") : "end-of-contract" === t.terminationType ? (s += "<p>We write to confirm that your fixed-term contract of employment, which commenced on <strong>" + r.formatDate(t.startDate) + "</strong>, will expire on <strong>" + r.formatDate(t.lastDay) + "</strong> and will not be renewed.</p>",
+      s += "<p>Your last day of employment is <strong>" + r.formatDate(t.lastDay) + "</strong>.</p>") : "ill-health" === t.terminationType ? (s += "<p>Following an incapacity investigation conducted on <strong>" + r.formatDate(t.incapacityDate || e.generatedDate) + "</strong>, and having considered all relevant information, the Employer has determined that your continued employment is no longer feasible due to ill health/incapacity.</p>",
+      s += "<p>Your last day of employment is <strong>" + r.formatDate(t.lastDay) + "</strong>.</p>") : (s += "<p>This letter serves to inform you that your employment with <strong>" + (n.name || "_______________") + "</strong> as <strong>" + (a.jobTitle || "_______________") + "</strong> is hereby terminated with effect from <strong>" + r.formatDate(t.lastDay) + "</strong>.</p>",
+      t.terminationReason && (s += "<p><strong>Reason for Termination:</strong> " + t.terminationReason + "</p>")),
+      s += '<h2 class="dg-clause-h">Notice / Payment in Lieu of Notice</h2>', "payment-in-lieu" === t.noticeType ? s += "<p>You will receive payment in lieu of notice equivalent to <strong>" + (t.noticePeriodDays || "___") + " calendar days</strong>' remuneration. This payment will be included in your final pay.</p>" : s += "<p>Your notice period of <strong>" + (t.noticePeriodDays || "___") + " calendar days</strong> " + (new Date(t.lastDay) > new Date(e.generatedDate) ? "will run until " + r.formatDate(t.lastDay) : "has been served") + ".</p>",
+      s += '<h2 class="dg-clause-h">Leave Payout</h2>', t.outstandingLeaveDays && parseFloat(t.outstandingLeaveDays) > 0 ? s += "<p>You have <strong>" + t.outstandingLeaveDays + " days</strong> of outstanding annual leave, which will be paid out at your current daily rate of " + r.formatCurrency(t.dailyRate, t.currency || o.currency) + " per day, totalling approximately " + r.formatCurrency(parseFloat(t.outstandingLeaveDays) * parseFloat(t.dailyRate || 0), t.currency || o.currency) + ".</p>" : s += "<p>No outstanding annual leave is due at termination.</p>",
+      s += '<h2 class="dg-clause-h">Final Pay</h2>', s += "<p>Your final pay (including any outstanding salary, leave payout, and notice pay where applicable) will be processed on <strong>" + r.formatDate(t.finalPayDate) + "</strong> via your normal payment method.</p>",
+      t.propertyToReturn && (s += '<h2 class="dg-clause-h">Return of Company Property</h2>',
+      s += "<p>Please ensure the following company property is returned by your last day of employment:</p>",
+      s += "<ul>", t.propertyToReturn.split("\n").forEach(function(e) {
+        e.trim() && (s += "<li>" + e.trim() + "</li>");
+      }), s += "</ul>"), "yes" === t.provideReference && (s += '<h2 class="dg-clause-h">Reference</h2>',
+      s += "<p>The Employer agrees to provide a factual reference confirming your employment dates and position to prospective employers upon request.</p>"),
+      s += "<p>We wish you well in your future endeavours.</p>", s += "<p>Yours sincerely,</p><br>",
+      s += "<p><strong>" + (n.signatoryName || "_______________") + "</strong><br>" + (n.signatoryTitle || "") + "<br>" + (n.name || "_______________") + "</p>",
+      s += "<br><p><em>Acknowledged and received by employee:</em></p>", s += r._sigBlock(e),
+      s += '<div class="dg-doc-disclaimer">Generated by AfroTools · ' + (o.dismissalNote || "") + "</div>";
+    },
+    _renderRetrenchmentLetter: function(e) {
+      var t = e.fields || {}, n = e.employer || {}, a = e.employee || {}, o = (e.country,
+      e.defaults || {}), r = this, i = r._docHeader(e);
+      return i += '<h1 class="dg-doc-title">NOTICE OF RETRENCHMENT</h1>', i += "<p><strong>" + r.formatDate(e.generatedDate) + "</strong></p>",
+      i += "<p><strong>PRIVATE &amp; CONFIDENTIAL</strong></p>", i += "<p>" + (a.name || "_______________") + "<br>",
+      a.jobTitle && (i += a.jobTitle + "<br>"), i += "</p>", i += "<p><strong>Dear " + (a.name ? a.name.split(" ")[0] : "_______________") + ",</strong></p>",
+      i += '<h2 class="dg-clause-h">1. Reason for Retrenchment</h2>', i += "<p>" + (t.retrenchmentReason || "Due to changes in operational requirements, the position of " + (a.jobTitle || "_______________") + " has been identified as redundant. This retrenchment is based on operational requirements and is not a reflection of the Employee's performance.") + "</p>",
+      i += '<h2 class="dg-clause-h">2. Consultation</h2>', i += "<p>The Employer commenced consultation with " + (t.consultationWith || "affected employees") + " on <strong>" + r.formatDate(t.consultationDate) + "</strong> in accordance with " + (o.act || "applicable law") + ".</p>",
+      i += "<p>" + (o.retrenchmentNote || "Retrenchment has been carried out in compliance with applicable law.") + "</p>",
+      i += '<h2 class="dg-clause-h">3. Effective Date</h2>', i += "<p>Your retrenchment takes effect on <strong>" + r.formatDate(t.lastDay) + "</strong>. Your notice period of <strong>" + (t.noticePeriodDays || "___") + " days</strong> commenced on " + r.formatDate(e.generatedDate) + ".</p>",
+      i += '<h2 class="dg-clause-h">4. Severance Pay</h2>', i += "<p>You are entitled to severance pay calculated as follows:</p>",
+      i += "<ul>", i += "<li>Completed years of service: <strong>" + (t.yearsOfService || "___") + " years</strong></li>",
+      i += "<li>Formula: " + (t.severanceFormula || o.retrenchmentNote || "1 week per completed year of service") + "</li>",
+      i += "<li>Estimated severance: <strong>" + r.formatCurrency(t.severanceAmount, t.currency || o.currency) + "</strong></li>",
+      i += "</ul>", i += '<h2 class="dg-clause-h">5. Leave Encashment &amp; Final Pay</h2>',
+      i += "<p>Outstanding annual leave (" + (t.outstandingLeaveDays || "___") + " days) will be paid out at your daily rate. Final pay including severance, notice pay (if applicable), and leave encashment will be processed by <strong>" + r.formatDate(t.finalPayDate) + "</strong>.</p>",
+      i += '<h2 class="dg-clause-h">6. Return of Company Property</h2>', i += "<p>" + (t.propertyToReturn || "All company property must be returned by the last day of employment.") + "</p>",
+      i += "<p>We regret the necessity of this retrenchment and thank you for your service to " + (n.name || "_______________") + ". We wish you success in your future career.</p>",
+      i += "<p>Yours sincerely,</p><br>", i += "<p><strong>" + (n.signatoryName || "_______________") + "</strong><br>" + (n.signatoryTitle || "") + "<br>" + (n.name || "_______________") + "</p>",
+      (i += r._sigBlock(e)) + '<div class="dg-doc-disclaimer">Generated by AfroTools · ' + (o.retrenchmentNote || "") + "</div>";
+    },
+    _renderWarningLetter: function(e) {
+      var t = e.fields || {}, n = e.employer || {}, a = e.employee || {}, o = e.defaults || {}, r = this, i = {
+        none: "First Written Warning",
+        verbal: "Second Warning (Written)",
+        written: "Second Written Warning"
+      }[t.priorWarnings] || "Written Warning", s = r._docHeader(e);
+      return s += '<h1 class="dg-doc-title">' + i.toUpperCase() + "</h1>", s += "<p><strong>" + r.formatDate(e.generatedDate) + "</strong></p>",
+      s += "<p><strong>PRIVATE &amp; CONFIDENTIAL</strong></p>", s += "<p>" + (a.name || "_______________") + "<br>" + (a.jobTitle || "") + "</p>",
+      s += "<p><strong>Dear " + (a.name ? a.name.split(" ")[0] : "_______________") + ",</strong></p>",
+      s += "<p>This letter constitutes a <strong>" + i + "</strong> in respect of the following misconduct:</p>",
+      s += '<h2 class="dg-clause-h">Description of Misconduct</h2>', s += "<p><strong>Date of Incident:</strong> " + r.formatDate(t.incidentDate) + "</p>",
+      s += "<p><strong>Nature of Misconduct:</strong></p>", s += "<p>" + (t.incidentDescription || "_______________") + "</p>",
+      t.priorWarnings && "none" !== t.priorWarnings && (s += '<h2 class="dg-clause-h">Prior Disciplinary History</h2>',
+      s += "<p>You have previously received a " + ("verbal" === t.priorWarnings ? "verbal warning" : "written warning") + " regarding similar conduct. This is now a <strong>" + i + "</strong> — a final step before escalation.</p>"),
+      s += '<h2 class="dg-clause-h">Required Improvement</h2>', s += "<p>" + (t.requiredImprovement || "You are required to improve your conduct immediately and ensure no recurrence of the above misconduct.") + "</p>",
+      s += '<h2 class="dg-clause-h">Consequences of Non-Improvement</h2>', s += "<p>" + (t.consequenceIfNotImproved || "Failure to comply with the above, or any recurrence of similar misconduct, may result in a final written warning or dismissal.") + "</p>",
+      s += '<h2 class="dg-clause-h">Response</h2>', s += "<p>You are invited to respond to this warning in writing within <strong>" + (t.responseDeadlineDays || 5) + " working days</strong>. Your response will be retained on file.</p>",
+      s += "<p>This warning will remain on your disciplinary record for a period of <strong>" + (t.warningValidityMonths || 12) + " months</strong> from the date of this letter.</p>",
+      s += "<p>Yours sincerely,</p><br>", s += "<p><strong>" + (n.signatoryName || "_______________") + "</strong><br>" + (n.signatoryTitle || "") + "<br>" + (n.name || "_______________") + "</p>",
+      s += "<br><p><em>Acknowledged and received by employee:</em></p>", (s += r._sigBlock(e)) + '<div class="dg-doc-disclaimer">Generated by AfroTools · ' + (o.disciplineNote || "Ensure compliance with applicable progressive discipline requirements.") + "</div>";
+    },
+    _renderFinalWarning: function(e) {
+      var t = e.fields || {}, n = e.employer || {}, a = e.employee || {}, o = e.defaults || {}, r = this, i = r._docHeader(e);
+      return i += '<h1 class="dg-doc-title">FINAL WRITTEN WARNING</h1>', i += "<p><strong>" + r.formatDate(e.generatedDate) + "</strong></p>",
+      i += "<p><strong>PRIVATE &amp; CONFIDENTIAL</strong></p>", i += "<p>" + (a.name || "_______________") + "<br>" + (a.jobTitle || "") + "</p>",
+      i += "<p><strong>Dear " + (a.name ? a.name.split(" ")[0] : "_______________") + ",</strong></p>",
+      i += "<p>This letter constitutes a <strong>FINAL WRITTEN WARNING</strong> — the most serious warning before dismissal proceedings — regarding the following misconduct:</p>",
+      i += '<h2 class="dg-clause-h">Description of Misconduct</h2>', i += "<p><strong>Date of Incident:</strong> " + r.formatDate(t.incidentDate) + "</p>",
+      i += "<p>" + (t.incidentDescription || "_______________") + "</p>", i += '<h2 class="dg-clause-h">Disciplinary History</h2>',
+      i += "<p>" + (t.previousWarnings || "Previous warnings have been issued regarding similar or related conduct. Despite prior warnings, the misconduct has continued or recurred.") + "</p>",
+      i += '<h2 class="dg-clause-h">Required Action</h2>', i += "<p>" + (t.requiredImprovement || "Immediate, sustained improvement is required. There must be no further instances of this or similar misconduct.") + "</p>",
+      i += '<h2 class="dg-clause-h">Consequence of Non-Compliance</h2>', i += '<p style="color:#dc2626;font-weight:600">Any further misconduct or failure to meet the required standard will result in a disciplinary hearing at which dismissal will be considered.</p>',
+      i += "<p>This warning will remain on your disciplinary record for <strong>" + (t.warningValidityMonths || 12) + " months</strong> unless extended by further disciplinary action.</p>",
+      i += "<p>Yours sincerely,</p><br>", i += "<p><strong>" + (n.signatoryName || "_______________") + "</strong><br>" + (n.signatoryTitle || "") + "<br>" + (n.name || "_______________") + "</p>",
+      i += "<br><p><em>Acknowledged and received by employee:</em></p>", (i += r._sigBlock(e)) + '<div class="dg-doc-disclaimer">Generated by AfroTools · ' + (o.disciplineNote || "Ensure compliance with applicable progressive discipline requirements.") + "</div>";
+    },
+    _renderDisciplinaryNotice: function(e) {
+      var t = e.fields || {}, n = e.employer || {}, a = e.employee || {}, o = e.defaults || {}, r = this, i = r._docHeader(e);
+      return i += '<h1 class="dg-doc-title">NOTICE OF DISCIPLINARY HEARING</h1>', i += "<p><strong>" + r.formatDate(e.generatedDate) + "</strong></p>",
+      i += "<p><strong>PRIVATE &amp; CONFIDENTIAL</strong></p>", i += "<p>" + (a.name || "_______________") + "<br>" + (a.jobTitle || "") + "</p>",
+      i += "<p><strong>Dear " + (a.name ? a.name.split(" ")[0] : "_______________") + ",</strong></p>",
+      i += "<p>You are hereby notified that a disciplinary hearing has been scheduled to consider the following charges:</p>",
+      i += '<h2 class="dg-clause-h">Charges</h2>', i += "<ol>", (t.charges || "Charge to be specified").split("\n").forEach(function(e) {
+        e.trim() && (i += "<li>" + e.trim() + "</li>");
+      }), i += "</ol>", i += '<h2 class="dg-clause-h">Hearing Details</h2>', i += '<table class="dg-offer-table">',
+      i += "<tr><td><strong>Date</strong></td><td>" + r.formatDate(t.hearingDate) + "</td></tr>",
+      i += "<tr><td><strong>Time</strong></td><td>" + (t.hearingTime || "___:___") + "</td></tr>",
+      i += "<tr><td><strong>Location</strong></td><td>" + (t.hearingLocation || "_______________") + "</td></tr>",
+      i += "<tr><td><strong>Presiding Officer</strong></td><td>" + (t.presidingOfficer || "_______________") + "</td></tr>",
+      i += "</table>", i += '<h2 class="dg-clause-h">Right to Representation</h2>', i += "<p>" + (o.disciplineNote || "You have the right to be represented at this hearing.") + " You may be accompanied by:</p>",
+      i += "<ul><li>A fellow employee of your choice</li>", i += "<li>A union representative (if you are a union member)</li>",
+      !e.country || "ZA" !== e.country.code && "KE" !== e.country.code || (i += "<li>A legal representative (by prior arrangement with the presiding officer)</li>"),
+      i += "</ul>", i += "<p>Please confirm your attendance and the identity of your representative (if any) to " + (n.signatoryName || "_______________") + " by <strong>" + r.formatDate(t.responseDeadline) + "</strong>.</p>",
+      i += "<p>Failure to attend without a valid reason may result in the hearing proceeding in your absence.</p>",
+      i += "<p>Yours sincerely,</p><br>", i += "<p><strong>" + (n.signatoryName || "_______________") + "</strong><br>" + (n.signatoryTitle || "") + "<br>" + (n.name || "_______________") + "</p>",
+      i += "<br><p><em>Acknowledged and received by employee:</em></p>", i += r._sigBlock(e),
+      i += '<div class="dg-doc-disclaimer">Generated by AfroTools · ' + (o.disciplineNote || "") + "</div>";
+    },
+    _renderLeaveApproval: function(e) {
+      var t = e.fields || {}, n = (e.employer, e.employee || {}), a = e.defaults || {}, o = this, r = {
+        annual: "Annual Leave",
+        sick: "Sick Leave",
+        maternity: "Maternity Leave",
+        paternity: "Paternity Leave",
+        unpaid: "Unpaid Leave",
+        toil: "Time Off In Lieu (TOIL)"
+      }[t.leaveType] || t.leaveType || "Annual Leave", i = o._docHeader(e);
+      return i += '<h1 class="dg-doc-title">LEAVE APPROVAL FORM</h1>', i += '<table class="dg-offer-table">',
+      i += "<tr><td><strong>Employee Name</strong></td><td>" + (n.name || "_______________") + "</td></tr>",
+      i += "<tr><td><strong>Job Title</strong></td><td>" + (n.jobTitle || "_______________") + "</td></tr>",
+      i += "<tr><td><strong>Department</strong></td><td>" + (n.department || "_______________") + "</td></tr>",
+      i += "<tr><td><strong>Date of Application</strong></td><td>" + o.formatDate(e.generatedDate) + "</td></tr>",
+      i += "<tr><td><strong>Leave Type</strong></td><td><strong>" + r + "</strong></td></tr>",
+      i += "<tr><td><strong>Leave From</strong></td><td>" + o.formatDate(t.leaveStart) + "</td></tr>",
+      i += "<tr><td><strong>Leave To</strong></td><td>" + o.formatDate(t.leaveEnd) + "</td></tr>",
+      i += "<tr><td><strong>Number of Days</strong></td><td><strong>" + (t.leaveDays || "___") + " working days</strong></td></tr>",
+      i += "<tr><td><strong>Return to Work Date</strong></td><td>" + o.formatDate(t.returnDate) + "</td></tr>",
+      i += "</table>", t.notes && (i += '<h2 class="dg-clause-h">Notes / Reason</h2>',
+      i += "<p>" + t.notes + "</p>"), i += '<h2 class="dg-clause-h">Leave Balance (after this application)</h2>',
+      i += '<table class="dg-offer-table">', i += "<tr><td>Annual leave entitlement</td><td>" + (t.leaveEntitlement || a.annualLeaveDays || "___") + " days</td></tr>",
+      i += "<tr><td>Leave taken to date (this cycle)</td><td>" + (t.leaveTakenToDate || "0") + " days</td></tr>",
+      i += "<tr><td>This application</td><td>" + (t.leaveDays || "___") + " days</td></tr>",
+      i += "<tr><td><strong>Remaining balance</strong></td><td><strong>" + (t.leaveBalance || "___") + " days</strong></td></tr>",
+      i += "</table>", i += '<h2 class="dg-clause-h">Approval</h2>', i += "<p>☐ &nbsp; <strong>APPROVED</strong> &nbsp;&nbsp;&nbsp; ☐ &nbsp; <strong>DECLINED</strong></p>",
+      i += "<p>Reason for decline (if applicable): _______________________________________________</p>",
+      (i += o._sigBlock(e)) + '<div class="dg-doc-disclaimer">Generated by AfroTools Document Generator</div>';
+    },
+    _renderSalaryReview: function(e) {
+      var t = e.fields || {}, n = e.employer || {}, a = e.employee || {}, o = (e.country,
+      e.defaults || {}), r = this, i = t.currency || o.currency || "", s = parseFloat(String(t.currentSalary || 0).replace(/,/g, "")), l = parseFloat(String(t.newSalary || 0).replace(/,/g, "")), c = s > 0 ? ((l - s) / s * 100).toFixed(1) : t.percentageIncrease || "___", d = r._docHeader(e);
+      return d += '<h1 class="dg-doc-title">SALARY REVIEW LETTER</h1>', d += "<p><strong>" + r.formatDate(e.generatedDate) + "</strong></p>",
+      d += "<p><strong>PRIVATE &amp; CONFIDENTIAL</strong></p>", d += "<p>" + (a.name || "_______________") + "<br>" + (a.jobTitle || "") + "</p>",
+      d += "<p><strong>Dear " + (a.name ? a.name.split(" ")[0] : "_______________") + ",</strong></p>",
+      d += "<p>We are pleased to confirm the outcome of your salary review for the period ending " + r.formatDate(t.reviewDate) + ".</p>",
+      d += '<table class="dg-offer-table">', d += "<tr><td><strong>Current Gross Salary</strong></td><td>" + r.formatCurrency(t.currentSalary, i) + " per month</td></tr>",
+      d += "<tr><td><strong>New Gross Salary</strong></td><td><strong>" + r.formatCurrency(t.newSalary, i) + " per month</strong></td></tr>",
+      d += "<tr><td><strong>Increase Amount</strong></td><td>" + r.formatCurrency(l - s, i) + " per month</td></tr>",
+      d += "<tr><td><strong>Increase Percentage</strong></td><td>" + c + "%</td></tr>",
+      d += "<tr><td><strong>Effective Date</strong></td><td><strong>" + r.formatDate(t.effectiveDate) + "</strong></td></tr>",
+      d += "</table>", t.reviewReason && (d += "<p><strong>Basis for Adjustment:</strong> " + t.reviewReason + "</p>"),
+      d += "<p>All other terms and conditions of your employment remain unchanged. A copy of this letter will be placed on your personnel file.</p>",
+      d += "<p>Congratulations on this recognition of your contribution. We look forward to your continued excellent work.</p>",
+      d += "<p>Yours sincerely,</p><br>", d += "<p><strong>" + (n.signatoryName || "_______________") + "</strong><br>" + (n.signatoryTitle || "") + "<br>" + (n.name || "_______________") + "</p>",
+      d += "<br><p><em>Acknowledged and received by employee:</em></p>", (d += r._sigBlock(e)) + '<div class="dg-doc-disclaimer">Generated by AfroTools Document Generator</div>';
+    },
+    _renderNDA: function(e) {
+      var t = e.fields || {}, n = e.employer || {}, a = e.employee || {}, o = e.country || {}, r = (e.defaults,
+      this), i = "mutual" === t.ndaType ? "MUTUAL NON-DISCLOSURE AGREEMENT" : "NON-DISCLOSURE AGREEMENT (ONE-WAY)", s = (t.ndaDurationYears || 2) + " years from the termination of employment", l = r._docHeader(e);
+      return l += '<h1 class="dg-doc-title">' + i + "</h1>", l += '<p class="dg-doc-intro">This Non-Disclosure Agreement (<strong>"Agreement"</strong>) is entered into on ' + r.formatDate(e.generatedDate) + " between " + (n.name || "_______________") + ' (<strong>"Disclosing Party"</strong>) and ' + (a.name || "_______________") + ' (<strong>"Receiving Party"</strong>).</p>',
+      l += '<h2 class="dg-clause-h">1. DEFINITION OF CONFIDENTIAL INFORMATION</h2>', l += '<p>"Confidential Information" means all non-public information disclosed by the Disclosing Party to the Receiving Party, whether orally, in writing, or by any other means, including but not limited to:</p>',
+      l += "<ul>", t.scope ? t.scope.split("\n").forEach(function(e) {
+        e.trim() && (l += "<li>" + e.trim() + "</li>");
+      }) : (l += "<li>Trade secrets, business strategies, and financial information</li>",
+      l += "<li>Client lists, pricing, and proprietary processes</li>", l += "<li>Technical data, software, and intellectual property</li>",
+      l += "<li>Personnel information and internal communications</li>"), l += "</ul>",
+      l += '<h2 class="dg-clause-h">2. OBLIGATIONS OF THE RECEIVING PARTY</h2>', l += "<p>2.1 The Receiving Party agrees to: (a) keep all Confidential Information strictly confidential; (b) not disclose it to any third party without prior written consent; (c) use it only for purposes of employment with the Disclosing Party; (d) apply at least the same degree of care as the Receiving Party uses for its own confidential information, but no less than reasonable care.</p>",
+      "mutual" === t.ndaType && (l += '<h2 class="dg-clause-h">3. MUTUAL OBLIGATIONS</h2>',
+      l += "<p>Both Parties acknowledge that they may disclose and receive Confidential Information. Each Party's obligations as Receiving Party apply equally to the other. The Employer undertakes to keep the Employee's personal and employment information confidential in accordance with applicable data protection law.</p>"),
+      l += '<h2 class="dg-clause-h">' + ("mutual" === t.ndaType ? "4" : "3") + ". EXCEPTIONS</h2>",
+      l += "<p>The obligations do not apply to information that: (a) is or becomes publicly known through no fault of the Receiving Party; (b) was rightfully known to the Receiving Party before disclosure; (c) is independently developed by the Receiving Party without reference to the Confidential Information; (d) is required to be disclosed by law or court order, provided the Receiving Party gives prompt written notice to allow the Disclosing Party to seek a protective order.</p>",
+      l += '<h2 class="dg-clause-h">' + ("mutual" === t.ndaType ? "5" : "4") + ". DURATION</h2>",
+      l += "<p>This Agreement is effective from the date of signature and obligations survive for <strong>" + s + "</strong>. Obligations relating to trade secrets continue indefinitely.</p>",
+      l += '<h2 class="dg-clause-h">' + ("mutual" === t.ndaType ? "6" : "5") + ". GOVERNING LAW</h2>",
+      l += "<p>This Agreement is governed by the laws of " + (o.name || "_______________") + ". Any dispute shall be resolved through the applicable courts or labour dispute mechanisms of " + (o.name || "_______________") + ".</p>",
+      l += '<h2 class="dg-clause-h">' + ("mutual" === t.ndaType ? "7" : "6") + ". REMEDIES</h2>",
+      l += "<p>The Parties acknowledge that breach of this Agreement may cause irreparable harm for which monetary damages would be inadequate. Accordingly, the non-breaching Party shall be entitled to seek injunctive relief in addition to any other remedies available at law.</p>",
+      l += '<hr class="dg-doc-rule">', l += r._sigBlock(e), l += '<div class="dg-doc-disclaimer">Generated by AfroTools Document Generator · For informational purposes only. Not legal advice.</div>';
+    }
+  };
+  window.AfroTools = window.AfroTools || {}, window.AfroTools.engines = window.AfroTools.engines || {},
+  window.AfroTools.engines.docGenerator = e;
+}();

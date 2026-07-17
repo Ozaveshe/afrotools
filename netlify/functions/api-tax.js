@@ -1,0 +1,442 @@
+/**
+ * AfroTax API — Tax Calculation Endpoint
+ * POST: Calculate income tax (gross-to-net or net-to-gross)
+ * GET:  Country info or list all supported countries
+ * Auth: x-api-key header or api_key query param
+ */
+const engines = require('./_engines/index');
+const { getStore } = require('@netlify/blobs');
+const { getAllowedOrigin } = require('./utils/cors');
+const { normalizeTaxOptions, resolveAnnualSalaryInputs } = require('./_shared/tax-request');
+const { checkRateLimit, getRemaining } = require('./_shared/rate-limit');
+const { getApiPlanLimit, normalizeApiTier } = require('./_shared/api-plans');
+const { authenticateSalaryPadiServiceKey } = require('./_shared/salarypadi-service-auth');
+
+const CORS = {
+  'Access-Control-Allow-Origin': 'https://afrotools.com',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, x-api-key',
+  'Content-Type': 'application/json'
+};
+
+const PRODUCTION_DATA_POLICY = 'calculated from versioned AfroTools country tax rules; salary inputs and results are not intentionally retained';
+
+function respond(status, body, extra = {}) {
+  return { statusCode: status, headers: { ...CORS, ...extra }, body: JSON.stringify(body) };
+}
+
+function sandboxRateKey(apiKey, event) {
+  const headers = event.headers || {};
+  const ip = String(
+    headers['x-nf-client-connection-ip'] ||
+    headers['client-ip'] ||
+    headers['x-forwarded-for'] ||
+    'unknown'
+  ).split(',')[0].trim() || 'unknown';
+  return 'sandbox:' + apiKey + ':' + ip;
+}
+
+function sandboxTaxResponse(body) {
+  const country = String((body && body.country) || 'NG').toUpperCase();
+  const grossAnnual = Number((body && (body.grossAnnual || (body.grossMonthly ? body.grossMonthly * 12 : 0))) || 7200000);
+  const taxAnnual = Math.round(grossAnnual * 0.1413);
+  const pension = Math.round(grossAnnual * 0.08);
+  const netAnnual = Math.max(0, grossAnnual - taxAnnual - pension);
+  return {
+    status: 'success',
+    sandbox: true,
+    input: { country, grossAnnual },
+    deductions: {
+      pension,
+      totalDeductions: pension
+    },
+    tax: {
+      taxableIncome: Math.max(0, grossAnnual - pension),
+      netTax: taxAnnual,
+      bands: [
+        { label: 'Sandbox PAYE estimate', rate: 0.1413, amount: taxAnnual }
+      ]
+    },
+    result: {
+      netAnnual,
+      netMonthly: Math.round(netAnnual / 12),
+      effectiveRate: '14.13%'
+    },
+    _meta: {
+      api: 'AfroTax',
+      version: 'v1',
+      timestamp: new Date().toISOString(),
+      sandbox: true,
+      dataPolicy: 'deterministic sandbox data',
+      docs: 'https://afrotools.com/docs/api/tax'
+    }
+  };
+}
+
+function formatBandBoundary(value) {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return '';
+  return new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(numeric);
+}
+
+function normalizeTaxBandForApi(band, currency) {
+  if (!band || typeof band !== 'object') return band;
+
+  const from = Number(band.from);
+  const to = Number(band.to);
+  const rate = Number(band.rate);
+  const amount = Number(band.amount !== undefined ? band.amount : band.taxInBand);
+  const existingLabel = typeof band.label === 'string' ? band.label.trim() : '';
+  const boundaryLabel = Number.isFinite(from) && Number.isFinite(to)
+    ? `${currency ? `${currency} ` : ''}${formatBandBoundary(from)} to ${formatBandBoundary(to)}`
+    : '';
+
+  return {
+    ...band,
+    label: existingLabel || boundaryLabel,
+    rate,
+    amount
+  };
+}
+
+function normalizeTaxResultForApi(result, currency) {
+  if (!result || !result.tax || !Array.isArray(result.tax.bands)) return result;
+  return {
+    ...result,
+    tax: {
+      ...result.tax,
+      bands: result.tax.bands.map(band => normalizeTaxBandForApi(band, currency))
+    }
+  };
+}
+
+exports.normalizeTaxResultForApi = normalizeTaxResultForApi;
+
+function slugify(value) {
+  return String(value || '')
+    .toLowerCase()
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function resolveCountryCode(value) {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+  const upper = raw.toUpperCase();
+  if (engines.get(upper)) return upper;
+  const slug = slugify(raw);
+  const match = engines.listCountries().find(country =>
+    slugify(country.name) === slug || String(country.code || '').toLowerCase() === slug
+  );
+  return match ? match.code : upper;
+}
+
+function getCountryFromPath(event) {
+  const path = String(event.path || '')
+    .replace(/^\/\.netlify\/functions\/api-tax\/?/, '')
+    .replace(/^\/?api\/v1\/tax\/?/, '')
+    .replace(/^\/?api\/tax\/?/, '')
+    .replace(/^\/+|\/+$/g, '');
+  if (!path) return '';
+  const first = path.split('/').filter(Boolean)[0];
+  if (!first || ['paye', 'calculate', 'rates'].includes(first.toLowerCase())) return '';
+  return resolveCountryCode(first);
+}
+
+function salaryParamsFromQuery(params) {
+  return {
+    country: params.country,
+    grossAnnual: params.grossAnnual || params.gross_annual || params.gross,
+    grossMonthly: params.grossMonthly || params.gross_monthly,
+    netAnnual: params.netAnnual || params.net_annual,
+    netMonthly: params.netMonthly || params.net_monthly
+  };
+}
+
+function normalizeBodyWithPathCountry(event, body) {
+  const next = { ...(body || {}) };
+  if (!next.country) next.country = getCountryFromPath(event);
+  return next;
+}
+
+async function validateApiKey(apiKey, event) {
+  if (!apiKey) return { valid: false };
+
+  const serviceAuth = await authenticateSalaryPadiServiceKey(event, 'tax:paye');
+  if (serviceAuth) {
+    return {
+      valid: serviceAuth.valid,
+      tier: serviceAuth.tier,
+      remaining: serviceAuth.remaining,
+      limit: serviceAuth.limit,
+      resetAt: serviceAuth.retryAfter ? 'midnight UTC' : undefined,
+      status: serviceAuth.status,
+      error: serviceAuth.error
+    };
+  }
+
+  // Sandbox keys use deterministic data and their own free-tier limits.
+  if (apiKey.startsWith('afro_test_')) {
+    const freeLimits = getApiPlanLimit('free');
+    const key = sandboxRateKey(apiKey, event);
+    if (!checkRateLimit(key, freeLimits.day)) {
+      return { valid: false, status: 429, error: 'Sandbox daily rate limit exceeded', tier: 'sandbox', sandbox: true, remaining: 0, limit: freeLimits.day, resetAt: 'midnight UTC' };
+    }
+    return { valid: true, tier: 'sandbox', sandbox: true, remaining: getRemaining(key, freeLimits.day), limit: freeLimits.day };
+  }
+
+  try {
+    const store = getStore('apikeys');
+    const data = await store.get(apiKey, { type: 'json' });
+    if (!data) return { valid: false };
+
+    const tier = normalizeApiTier(data.tier || 'free');
+    const limits = getApiPlanLimit(tier);
+    const today = new Date().toISOString().split('T')[0];
+    const month = today.slice(0, 7);
+
+    // Initialise usage buckets
+    if (!data.usage) data.usage = {};
+    if (!data.usage[today]) data.usage[today] = 0;
+    if (!data.usage[month]) data.usage[month] = 0;
+
+    const dailyUsage = data.usage[today];
+    const monthlyUsage = data.usage[month];
+
+    // Check daily limit (-1 means custom contract limit)
+    if (limits.day !== -1 && dailyUsage >= limits.day) {
+      return { valid: false, status: 429, error: 'Daily rate limit exceeded', tier, remaining: 0, limit: limits.day, resetAt: 'midnight UTC' };
+    }
+    // Check monthly limit
+    if (limits.month !== -1 && monthlyUsage >= limits.month) {
+      return { valid: false, status: 429, error: 'Monthly rate limit exceeded', tier, remaining: 0, limit: limits.month, resetAt: 'end of month' };
+    }
+
+    // Increment counters and persist
+    data.usage[today] = dailyUsage + 1;
+    data.usage[month] = monthlyUsage + 1;
+    data.lastUsed = new Date().toISOString();
+    await store.setJSON(apiKey, data);
+
+    return {
+      valid: true,
+      tier,
+      remaining: limits.day === -1 ? 999999 : limits.day - dailyUsage - 1,
+      limit: limits.day
+    };
+  } catch (err) {
+    console.error('Key validation error:', err.message);
+    return { valid: false };
+  }
+}
+
+exports.handler = async (event) => {
+  delete CORS['X-RateLimit-Limit'];
+  delete CORS['X-RateLimit-Remaining'];
+  delete CORS['X-RateLimit-Scope'];
+  CORS['Access-Control-Allow-Origin'] = getAllowedOrigin(event);
+  /* ---- CORS preflight ---- */
+  if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS };
+
+  /* ---- Authenticate ---- */
+  const apiKey =
+    event.headers['x-api-key'] ||
+    event.headers['X-Api-Key'] ||
+    (event.queryStringParameters || {}).api_key;
+
+  const auth = await validateApiKey(apiKey, event);
+
+  if (!auth.valid) {
+    return respond(auth.status || 401, {
+      error: auth.error || 'Invalid or missing API key',
+      code: auth.status === 429 ? 'RATE_LIMIT_EXCEEDED' : 'INVALID_API_KEY',
+      docs: 'https://afrotools.com/docs/api/authentication'
+    }, auth.status === 429 ? { 'Retry-After': '3600' } : {});
+  }
+  CORS['X-RateLimit-Limit'] = String(auth.limit);
+  CORS['X-RateLimit-Remaining'] = String(auth.remaining);
+  if (auth.tier === 'service') CORS['X-RateLimit-Scope'] = 'service:salarypadi';
+
+  /* ---- GET: country info / list ---- */
+  if (event.httpMethod === 'GET') {
+    const params = event.queryStringParameters || {};
+    const pathCountry = getCountryFromPath(event);
+    const country = resolveCountryCode(params.country || pathCountry);
+
+    if (auth.sandbox) {
+      if (pathCountry) {
+        return respond(200, sandboxTaxResponse({ ...salaryParamsFromQuery(params), country }));
+      }
+      if (!country) {
+        return respond(200, {
+          status: 'success',
+          sandbox: true,
+          countries: [{ country: 'NG', name: 'Nigeria Sandbox', currency: 'NGN' }],
+          total: 1,
+          dataPolicy: 'deterministic sandbox data'
+        });
+      }
+      return respond(200, {
+        status: 'success',
+        sandbox: true,
+        country: 'NG',
+        name: 'Nigeria Sandbox',
+        currency: 'NGN',
+        regimes: ['SANDBOX_2026'],
+        options: { pension: true },
+        lastUpdated: '2026-01-01',
+        source: 'AfroTools sandbox data'
+      });
+    }
+
+    if (!country) {
+      return respond(200, {
+        status: 'success',
+        countries: engines.listCountries(),
+        total: engines.count()
+      });
+    }
+
+    const engine = engines.get(country);
+    if (!engine) {
+      return respond(404, {
+        error: `Country '${country}' not supported`,
+        code: 'INVALID_COUNTRY',
+        supported: engines.listCountryCodes()
+      });
+    }
+
+    if (pathCountry) {
+      const salaryBody = salaryParamsFromQuery(params);
+      salaryBody.country = country;
+      if (!salaryBody.grossAnnual && !salaryBody.grossMonthly && !salaryBody.netAnnual && !salaryBody.netMonthly) {
+        salaryBody.grossAnnual = 7200000;
+      }
+      const rawOptions = { ...params };
+      [
+        'country', 'grossAnnual', 'gross_annual', 'gross',
+        'grossMonthly', 'gross_monthly', 'netAnnual', 'net_annual',
+        'netMonthly', 'net_monthly'
+      ].forEach(key => delete rawOptions[key]);
+      const salaryInput = resolveAnnualSalaryInputs(salaryBody);
+      const options = normalizeTaxOptions(country, rawOptions);
+      const startTime = Date.now();
+      const result = salaryInput.mode === 'gross'
+        ? engine.calculate({ grossAnnual: salaryInput.annualAmount, ...options })
+        : engine.reverseCalculate({ netAnnual: salaryInput.annualAmount, ...options });
+      const contractResult = normalizeTaxResultForApi(result, engine.currency);
+
+      return respond(200, {
+        status: 'success',
+        ...contractResult,
+        _meta: {
+          api: 'AfroTax',
+          version: '1.0',
+          route: `/api/v1/tax/${slugify(engine.countryName)}/paye`,
+          timestamp: new Date().toISOString(),
+          responseTime: `${Date.now() - startTime}ms`,
+          sandbox: false,
+          dataPolicy: PRODUCTION_DATA_POLICY,
+          docs: 'https://afrotools.com/docs/api/tax'
+        }
+      });
+    }
+
+    return respond(200, {
+      status: 'success',
+      country: engine.country,
+      name: engine.countryName,
+      currency: engine.currency,
+      regimes: engine.regimes,
+      options: engine.getOptions(),
+      lastUpdated: engine.lastUpdated,
+      source: engine.source
+    });
+  }
+
+  /* ---- POST: calculate tax ---- */
+  if (event.httpMethod === 'POST') {
+    let body;
+    try {
+      body = JSON.parse(event.body);
+    } catch {
+      return respond(400, { error: 'Invalid JSON body', code: 'INVALID_JSON' });
+    }
+
+    if (auth.sandbox) {
+      return respond(200, sandboxTaxResponse(body));
+    }
+
+    body = normalizeBodyWithPathCountry(event, body);
+
+    const {
+      country,
+      grossAnnual,
+      grossMonthly,
+      netAnnual,
+      netMonthly,
+      ...rawOptions
+    } = body;
+
+    if (!country) {
+      return respond(400, {
+        error: 'Missing required field: country',
+        code: 'MISSING_REQUIRED_FIELD'
+      });
+    }
+
+    const engine = engines.get(country);
+    if (!engine) {
+      return respond(404, {
+        error: `Country '${country}' not supported`,
+        code: 'INVALID_COUNTRY',
+        supported: engines.listCountryCodes()
+      });
+    }
+
+    try {
+      const salaryInput = resolveAnnualSalaryInputs(body);
+      if (!salaryInput) {
+        return respond(400, {
+          error: 'Provide exactly one of grossAnnual, grossMonthly, netAnnual, or netMonthly',
+          code: 'MISSING_REQUIRED_FIELD'
+        });
+      }
+
+      const options = normalizeTaxOptions(country, rawOptions);
+      const startTime = Date.now();
+      const result = salaryInput.mode === 'gross'
+        ? engine.calculate({ grossAnnual: salaryInput.annualAmount, ...options })
+        : engine.reverseCalculate({ netAnnual: salaryInput.annualAmount, ...options });
+      const contractResult = normalizeTaxResultForApi(result, engine.currency);
+
+      return respond(200, {
+        status: 'success',
+        ...contractResult,
+        _meta: {
+          api: 'AfroTax',
+          version: '1.0',
+          timestamp: new Date().toISOString(),
+          responseTime: `${Date.now() - startTime}ms`,
+          sandbox: auth.sandbox || false,
+          dataPolicy: PRODUCTION_DATA_POLICY,
+          docs: 'https://afrotools.com/docs/api/tax'
+        }
+      });
+    } catch (err) {
+      const code = err.message && err.message.includes('Provide exactly one')
+        ? 'INVALID_SALARY_INPUT'
+        : 'ENGINE_ERROR';
+      return respond(400, { error: err.message, code });
+    }
+  }
+
+  /* ---- Anything else ---- */
+  return respond(405, {
+    error: 'Method not allowed. Use GET or POST.',
+    code: 'METHOD_NOT_ALLOWED'
+  });
+};
+
+exports.handler = require('./_shared/with-api').withApi(exports.handler, { name: 'api-tax' });

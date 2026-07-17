@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Algebra Equation Solver | AfroTools</title>
+<meta name="description" content="Solve linear, quadratic, simultaneous equations & inequalities step by step. Free algebra calculator with graphing, practice problems, and exam prep for WAEC, KCSE, Matric.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Algebra Equation Solver | AfroTools">
+<meta property="og:description" content="Solve equations with step-by-step solutions, graphs & practice problems.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/algebra-solver.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/algebra-solver/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;600;700&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
+<style>
+:root{--bg:#FAFAF8;--surface:#fff;--surface-alt:#f6f8fa;--border:#e2e8f0;--border-light:#f1f5f9;--text:#0f172a;--text-2:#475569;--text-3:#94a3b8;--accent:#4f46e5;--accent-light:#eef2ff;--accent-dark:#3730a3;--green:#16a34a;--green-light:#f0fdf4;--green-border:#86efac;--red:#dc2626;--red-light:#fef2f2;--orange:#ea580c;--purple:#7c3aed;--mono:'JetBrains Mono',monospace;--sans:'DM Sans',sans-serif;--radius:10px}
+*,*::before,*::after{box-sizing:border-box;margin:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+
+/* ── Hero ── */
+.hero{background:linear-gradient(135deg,#1e1b4b 0%,#312e81 40%,#4338ca 100%);padding:48px 0 40px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-60%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(99,102,241,.15),transparent 70%);pointer-events:none}
+.hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.35);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.35);text-decoration:none}.breadcrumb a:hover{color:rgba(255,255,255,.6)}
+.breadcrumb span{color:#c7d2fe}
+h1{font-size:clamp(1.7rem,4vw,2.6rem);font-weight:800;color:#fff;letter-spacing:-.03em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#a5b4fc;font-style:normal}
+.hero-sub{font-size:.9rem;color:rgba(255,255,255,.5);line-height:1.65;max-width:580px;margin-bottom:16px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:6px;font-size:.68rem;font-weight:700;letter-spacing:.04em;background:rgba(165,180,252,.18);color:#c7d2fe;border:1px solid rgba(165,180,252,.25)}
+.hero-stats{display:flex;gap:24px;margin-top:18px}
+.hero-stat{font-size:.75rem;color:rgba(255,255,255,.4)}.hero-stat strong{color:#a5b4fc}
+
+/* ── Layout ── */
+.main{padding:32px 0 72px}
+.main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:start}
+
+/* ── Mode Tabs (Solve / Practice) ── */
+.mode-tabs{display:flex;gap:0;margin-bottom:20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.mode-tab{flex:1;padding:13px 20px;font-size:.82rem;font-weight:700;cursor:pointer;color:var(--text-3);text-align:center;border:none;background:none;transition:all .2s}
+.mode-tab.active{color:var(--accent);background:var(--accent-light)}
+.mode-tab:not(.active):hover{background:var(--surface-alt)}
+
+/* ── Input Area ── */
+.input-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.input-header{padding:16px 22px;border-bottom:1px solid var(--border-light);display:flex;align-items:center;justify-content:space-between}
+.input-title{font-size:.74rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text)}
+.type-pills{display:flex;gap:6px;flex-wrap:wrap}
+.type-pill{padding:5px 12px;border-radius:20px;font-size:.7rem;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:none;color:var(--text-2);transition:all .15s}
+.type-pill.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.type-pill:not(.active):hover{border-color:var(--accent);color:var(--accent)}
+.input-body{padding:22px}
+.equation-input-wrap{position:relative;margin-bottom:14px}
+.equation-input{width:100%;padding:16px 18px;padding-right:90px;border:2px solid var(--border);border-radius:var(--radius);font-family:var(--mono);font-size:1.1rem;font-weight:600;color:var(--text);background:var(--surface-alt);transition:border-color .2s}
+.equation-input:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 4px rgba(79,70,229,.08)}
+.equation-input::placeholder{color:var(--text-3);font-weight:400}
+.solve-btn{position:absolute;right:6px;top:50%;transform:translateY(-50%);padding:10px 20px;border:none;border-radius:8px;background:var(--accent);color:#fff;font-size:.8rem;font-weight:700;cursor:pointer;font-family:var(--sans);transition:background .15s}
+.solve-btn:hover{background:var(--accent-dark)}
+.solve-btn:active{transform:translateY(-50%) scale(.97)}
+
+/* Simultaneous second input */
+.eq2-row{display:none;margin-bottom:14px}
+.eq2-row.show{display:block}
+.eq2-input{width:100%;padding:14px 18px;border:2px solid var(--border);border-radius:var(--radius);font-family:var(--mono);font-size:1.05rem;font-weight:600;color:var(--text);background:var(--surface-alt);transition:border-color .2s}
+.eq2-input:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 4px rgba(79,70,229,.08)}
+.eq2-label{font-size:.72rem;font-weight:600;color:var(--text-3);margin-bottom:6px;display:block}
+
+/* Examples */
+.examples{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.examples-label{font-size:.7rem;font-weight:600;color:var(--text-3);margin-right:4px;line-height:28px}
+.example-btn{padding:4px 10px;border-radius:6px;font-size:.72rem;font-weight:600;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--text-2);transition:all .15s}
+.example-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-light)}
+
+/* Math keyboard */
+.math-kb{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border-light)}
+.kb-btn{width:40px;height:36px;border:1px solid var(--border);border-radius:6px;background:var(--surface);font-family:var(--mono);font-size:.85rem;font-weight:600;color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .12s}
+.kb-btn:hover{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
+.kb-btn.wide{width:auto;padding:0 12px;font-family:var(--sans);font-size:.7rem}
+
+/* ── Solution Area ── */
+.solution-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-top:20px;box-shadow:0 1px 3px rgba(0,0,0,.04);display:none}
+.solution-card.show{display:block}
+.sol-header{padding:16px 22px;border-bottom:1px solid var(--border-light);display:flex;align-items:center;justify-content:space-between;background:var(--surface-alt)}
+.sol-title{font-size:.74rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text)}
+.sol-method{font-size:.72rem;color:var(--text-3);font-weight:500}
+.sol-body{padding:22px}
+
+/* Steps */
+.steps{list-style:none;padding:0}
+.step-item{padding:14px 16px;border-radius:8px;margin-bottom:8px;background:var(--surface-alt);border:1px solid transparent;opacity:0;transform:translateY(8px);transition:all .3s ease}
+.step-item.visible{opacity:1;transform:translateY(0)}
+.step-item:hover{border-color:var(--border)}
+.step-top{display:flex;align-items:flex-start;gap:12px}
+.step-num{min-width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-num.check{background:var(--green)}
+.step-num.warn{background:var(--orange)}
+.step-content{flex:1}
+.step-text{font-size:.84rem;color:var(--text-2);line-height:1.65}
+.step-math{font-family:var(--mono);font-size:.92rem;font-weight:700;color:var(--accent);margin-top:6px;padding:8px 12px;background:#fff;border-radius:6px;border:1px solid var(--border-light);display:inline-block}
+.step-why{margin-top:8px}
+.step-why-toggle{font-size:.72rem;font-weight:600;color:var(--accent);cursor:pointer;border:none;background:none;padding:0;font-family:var(--sans)}
+.step-why-toggle:hover{text-decoration:underline}
+.step-why-content{font-size:.78rem;color:var(--text-3);line-height:1.6;margin-top:6px;padding:8px 12px;background:var(--accent-light);border-radius:6px;display:none}
+.step-why-content.show{display:block}
+.step-highlight{background:rgba(79,70,229,.04);border-color:rgba(79,70,229,.15)}
+
+/* Answer box */
+.answer-box{margin-top:16px;padding:20px;background:linear-gradient(135deg,var(--green-light),#dcfce7);border:1.5px solid var(--green-border);border-radius:var(--radius);text-align:center}
+.answer-val{font-family:var(--mono);font-size:1.4rem;font-weight:800;color:var(--green)}
+.answer-label{font-size:.72rem;color:var(--text-2);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:6px}
+.answer-box.complex{background:linear-gradient(135deg,var(--accent-light),#e0e7ff);border-color:#a5b4fc}
+.answer-box.complex .answer-val{color:var(--accent)}
+.answer-box.error{background:var(--red-light);border-color:#fca5a5}
+.answer-box.error .answer-val{color:var(--red);font-size:1rem}
+
+/* Next step button */
+.next-step-row{text-align:center;margin-top:12px}
+.next-step-btn{padding:10px 28px;border:2px solid var(--accent);border-radius:8px;background:none;color:var(--accent);font-size:.82rem;font-weight:700;cursor:pointer;font-family:var(--sans);transition:all .15s}
+.next-step-btn:hover{background:var(--accent);color:#fff}
+.show-all-btn{padding:8px 18px;border:none;border-radius:6px;background:var(--surface-alt);color:var(--text-3);font-size:.72rem;font-weight:600;cursor:pointer;margin-left:8px;font-family:var(--sans)}
+.show-all-btn:hover{color:var(--text)}
+
+/* ── Graph ── */
+.graph-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-top:20px;box-shadow:0 1px 3px rgba(0,0,0,.04);display:none}
+.graph-card.show{display:block}
+.graph-header{padding:14px 22px;border-bottom:1px solid var(--border-light);background:var(--surface-alt)}
+.graph-title{font-size:.74rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text)}
+.graph-body{padding:16px}
+.graph-canvas{width:100%;height:280px;border-radius:8px;background:#f8fafc;border:1px solid var(--border-light);cursor:crosshair}
+
+/* ── Sidebar ── */
+.sidebar{display:flex;flex-direction:column;gap:16px}
+
+/* Sidebar cards */
+.side-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.side-head{padding:14px 18px;border-bottom:1px solid var(--border-light);background:var(--surface-alt)}
+.side-title{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text)}
+.side-body{padding:16px}
+
+/* Formula reference */
+.formula-item{padding:10px 0;border-bottom:1px solid var(--border-light)}
+.formula-item:last-child{border-bottom:none}
+.formula-name{font-size:.72rem;font-weight:700;color:var(--text);margin-bottom:4px}
+.formula-math{font-family:var(--mono);font-size:.78rem;color:var(--accent);font-weight:600}
+.formula-note{font-size:.7rem;color:var(--text-3);margin-top:2px}
+
+/* Session stats */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat-box{text-align:center;padding:12px 8px;background:var(--surface-alt);border-radius:8px}
+.stat-val{font-size:1.3rem;font-weight:800;color:var(--accent)}
+.stat-lbl{font-size:.65rem;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;margin-top:2px}
+
+/* Exam tips */
+.tip-item{padding:8px 0;border-bottom:1px solid var(--border-light);font-size:.78rem;color:var(--text-2);line-height:1.55}
+.tip-item:last-child{border-bottom:none}
+.tip-item strong{color:var(--text);font-size:.72rem}
+
+/* ── Practice Mode ── */
+.practice-area{display:none}
+.practice-area.show{display:block}
+.practice-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.practice-header{padding:16px 22px;border-bottom:1px solid var(--border-light);display:flex;align-items:center;justify-content:space-between}
+.practice-title{font-size:.74rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text)}
+.diff-pills{display:flex;gap:5px}
+.diff-pill{padding:5px 12px;border-radius:20px;font-size:.68rem;font-weight:700;cursor:pointer;border:1.5px solid var(--border);background:none;color:var(--text-2);transition:all .15s}
+.diff-pill.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.practice-body{padding:22px}
+.practice-problem{font-family:var(--mono);font-size:1.3rem;font-weight:700;color:var(--text);text-align:center;padding:28px 16px;background:var(--surface-alt);border-radius:var(--radius);margin-bottom:18px;border:2px dashed var(--border)}
+.practice-input-row{display:flex;gap:10px;margin-bottom:14px}
+.practice-input{flex:1;padding:12px 16px;border:2px solid var(--border);border-radius:var(--radius);font-family:var(--mono);font-size:1rem;font-weight:600}
+.practice-input:focus{outline:none;border-color:var(--accent)}
+.check-btn{padding:12px 24px;border:none;border-radius:var(--radius);background:var(--accent);color:#fff;font-weight:700;font-size:.82rem;cursor:pointer;font-family:var(--sans)}
+.practice-btns{display:flex;gap:8px;flex-wrap:wrap}
+.p-btn{padding:10px 18px;border:1.5px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text-2);font-size:.78rem;font-weight:600;cursor:pointer;font-family:var(--sans);transition:all .15s}
+.p-btn:hover{border-color:var(--accent);color:var(--accent)}
+.p-btn.green{border-color:var(--green);color:var(--green)}
+.practice-feedback{margin-top:14px;padding:14px 16px;border-radius:8px;font-size:.84rem;font-weight:600;display:none}
+.practice-feedback.correct{display:block;background:var(--green-light);color:var(--green);border:1px solid var(--green-border)}
+.practice-feedback.wrong{display:block;background:var(--red-light);color:var(--red);border:1px solid #fca5a5}
+.practice-score{text-align:center;padding:16px;background:var(--accent-light);border-radius:var(--radius);margin-top:16px}
+.practice-score strong{color:var(--accent)}
+
+/* ── SEO ── */
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--text)}
+.seo-section p{font-size:.88rem;color:var(--text-2);line-height:1.75;margin-bottom:14px}
+.faq-item{border-bottom:1px solid var(--border);padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--text);list-style:none}
+.faq-item summary::before{content:'+ ';color:var(--accent);font-weight:800}
+.faq-item[open] summary::before{content:'- '}
+.faq-item p{margin-top:8px;font-size:.84rem;color:var(--text-2);line-height:1.7}
+
+/* ── Responsive ── */
+@media(max-width:900px){
+  .main-inner{grid-template-columns:1fr}
+  .type-pills{gap:4px}
+  .type-pill{font-size:.65rem;padding:4px 9px}
+  .input-header{flex-direction:column;gap:10px;align-items:flex-start}
+  .equation-input{font-size:.95rem;padding:14px 16px;padding-right:80px}
+  .solve-btn{padding:8px 14px;font-size:.75rem}
+  .practice-input-row{flex-direction:column}
+  .hero-stats{flex-wrap:wrap;gap:14px}
+}
+@media(max-width:480px){
+  .hero{padding:36px 0 30px}
+  .main{padding:20px 0 48px}
+  .examples{gap:4px}
+  .math-kb{gap:3px}
+  .kb-btn{width:34px;height:32px;font-size:.78rem}
+  .step-math{font-size:.82rem}
+  .answer-val{font-size:1.1rem}
+}
+</style>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Algebra Equation Solver | AfroTools">
+<meta name="twitter:description" content="Solve equations with step-by-step solutions, graphs & practice problems.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/algebra-solver.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Algebra Equation Solver",
+      "item": "https://afrotools.com/tools/algebra-solver/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Algebra Equation Solver",
+  "description": "Solve linear, quadratic, simultaneous equations & inequalities step by step. Free algebra calculator with graphing, practice problems, and exam prep for WAEC, KCSE, Matric.",
+  "url": "https://afrotools.com/tools/algebra-solver/",
+  "inLanguage": "en",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/algebra-solver.webp"
+}
+</script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the quadratic formula?","acceptedAnswer":{"@type":"Answer","text":"The quadratic formula is x = (-b &plusmn; &radic;(b&sup2;-4ac)) / 2a, used to solve equations of the form ax&sup2; + bx + c = 0. The expression b&sup2;-4ac under the square root is called the discriminant. If it's positive, there are two real solutions; if zero, one repeated solution; if negative, complex roots."}},{"@type":"Question","name":"How do I solve simultaneous equations?","acceptedAnswer":{"@type":"Answer","text":"Three main methods: substitution (solve one equation for a variable, substitute into the other), elimination (add/subtract equations to cancel a variable), and Cramer's Rule (using determinants). This solver uses Cramer's Rule for 2&times;2 systems, which is systematic and exam-efficient."}},{"@type":"Question","name":"When do I flip the inequality sign?","acceptedAnswer":{"@type":"Answer","text":"You flip (reverse) the inequality sign when you multiply or divide both sides by a negative number. For example, if -2x > 6, dividing both sides by -2 gives x"}},{"@type":"Question","name":"What does the discriminant tell us?","acceptedAnswer":{"@type":"Answer","text":"The discriminant D = b&sup2; - 4ac tells you the nature of roots without solving: D > 0 means two distinct real roots, D = 0 means one repeated root (the parabola touches the x-axis), and D"}}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/algebra-solver/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/algebra-solver/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/solveur-algebre/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kisuluhishi-algebra/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/algebra-solver/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+
+<!-- ── Hero ── -->
+<section class="hero"><div class="hero-inner">
+  <div class="breadcrumb"><a href="/">Home</a> / <a href="/education/">Education</a> / <span>Algebra Solver</span></div>
+  <h1>Algebra <em>Equation Solver</em></h1>
+  <p class="hero-sub">Type any equation and get step-by-step solutions with explanations. Learn the "why" behind every step — not just the answer.</p>
+  <div class="hero-badges">
+    <span class="badge">Linear</span>
+    <span class="badge">Quadratic</span>
+    <span class="badge">Simultaneous</span>
+    <span class="badge">Inequalities</span>
+    <span class="badge">Step-by-Step</span>
+    <span class="badge">Graphing</span>
+  </div>
+  <div class="hero-stats">
+    <span class="hero-stat"><strong id="sessionCount">0</strong> solved this session</span>
+  </div>
+</div></section>
+
+<!-- ── Main ── -->
+<section class="main"><div class="main-inner">
+<div class="workspace">
+
+  <!-- Mode tabs -->
+  <div class="mode-tabs">
+    <button type="button" class="mode-tab active" onclick="setMode('solve')">Solve</button>
+    <button type="button" class="mode-tab" onclick="setMode('practice')">Practice</button>
+  </div>
+
+  <!-- ── Solve Mode ── -->
+  <div id="solveArea">
+    <div class="input-card">
+      <div class="input-header">
+        <span class="input-title">Enter Equation</span>
+        <div class="type-pills">
+          <button type="button" class="type-pill active" data-type="linear" onclick="setType('linear')">Linear</button>
+          <button type="button" class="type-pill" data-type="quadratic" onclick="setType('quadratic')">Quadratic</button>
+          <button type="button" class="type-pill" data-type="simultaneous" onclick="setType('simultaneous')">System</button>
+          <button type="button" class="type-pill" data-type="inequality" onclick="setType('inequality')">Inequality</button>
+        </div>
+      </div>
+      <div class="input-body">
+        <div class="equation-input-wrap">
+          <input aria-label="E.g. 2x + 5 = 13" type="text" class="equation-input" id="eqInput" placeholder="e.g. 2x + 5 = 13" autocomplete="off" spellcheck="false">
+          <button type="button" class="solve-btn" onclick="solveEquation()">Solve</button>
+        </div>
+        <div class="eq2-row" id="eq2Row">
+          <label class="eq2-label">Equation 2</label>
+          <input aria-label="E.g. 4x y = 5" type="text" class="eq2-input" id="eq2Input" placeholder="e.g. 4x - y = 5" autocomplete="off" spellcheck="false">
+        </div>
+        <div class="examples" id="examplesRow">
+          <span class="examples-label">Try:</span>
+        </div>
+        <div class="math-kb">
+          <button type="button" class="kb-btn" onclick="insertChar('x')">x</button>
+          <button type="button" class="kb-btn" onclick="insertChar('y')">y</button>
+          <button type="button" class="kb-btn" onclick="insertChar('^2')">x&sup2;</button>
+          <button type="button" class="kb-btn" onclick="insertChar('^3')">x&sup3;</button>
+          <button type="button" class="kb-btn" onclick="insertChar('^')">^</button>
+          <button type="button" class="kb-btn" onclick="insertChar('√')">&#8730;</button>
+          <button type="button" class="kb-btn" onclick="insertChar('(')">(</button>
+          <button type="button" class="kb-btn" onclick="insertChar(')')">)</button>
+          <button type="button" class="kb-btn" onclick="insertChar('+')" style="font-size:1rem">+</button>
+          <button type="button" class="kb-btn" onclick="insertChar('-')" style="font-size:1rem">-</button>
+          <button type="button" class="kb-btn" onclick="insertChar('=')">=</button>
+          <button type="button" class="kb-btn" onclick="insertChar('>')">&gt;</button>
+          <button type="button" class="kb-btn" onclick="insertChar('<')">&lt;</button>
+          <button type="button" class="kb-btn" onclick="insertChar('>=')">&ge;</button>
+          <button type="button" class="kb-btn" onclick="insertChar('<=')">&le;</button>
+          <button type="button" class="kb-btn wide" onclick="clearInput()">Clear</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Solution -->
+    <div class="solution-card" id="solutionCard">
+      <div class="sol-header">
+        <span class="sol-title">Step-by-Step Solution</span>
+        <span class="sol-method" id="solMethod"></span>
+      </div>
+      <div class="sol-body">
+        <ol class="steps" id="stepsContainer"></ol>
+        <div class="next-step-row" id="nextStepRow">
+          <button type="button" class="next-step-btn" id="nextStepBtn" onclick="showNextStep()">Next Step</button>
+          <button type="button" class="show-all-btn" onclick="showAllSteps()">Show All</button>
+        </div>
+        <div id="answerContainer"></div>
+      </div>
+    </div>
+
+    <!-- Graph -->
+    <div class="graph-card" id="graphCard">
+      <div class="graph-header"><span class="graph-title">Graph</span></div>
+      <div class="graph-body">
+        <canvas class="graph-canvas" id="graphCanvas"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Practice Mode ── -->
+  <div class="practice-area" id="practiceArea">
+    <div class="practice-card">
+      <div class="practice-header">
+        <span class="practice-title">Practice Problem</span>
+        <div class="diff-pills">
+          <button type="button" class="diff-pill active" onclick="setDifficulty('easy',this)">Easy</button>
+          <button type="button" class="diff-pill" onclick="setDifficulty('medium',this)">Medium</button>
+          <button type="button" class="diff-pill" onclick="setDifficulty('hard',this)">Hard</button>
+        </div>
+      </div>
+      <div class="practice-body">
+        <div class="practice-problem" id="practiceQ">Click "New Problem" to start</div>
+        <div class="practice-input-row">
+          <input aria-label="Your answer (e.g. x = 5)" type="text" class="practice-input" id="practiceAnswer" placeholder="Your answer (e.g. x = 5)">
+          <button type="button" class="check-btn" onclick="checkPractice()">Check</button>
+        </div>
+        <div class="practice-btns">
+          <button type="button" class="p-btn" onclick="newPractice()">New Problem</button>
+          <button type="button" class="p-btn" onclick="showPracticeHint()">Hint</button>
+          <button type="button" class="p-btn green" onclick="solvePractice()">Show Solution</button>
+        </div>
+        <div class="practice-feedback" id="practiceFeedback"></div>
+        <div class="practice-score" id="practiceScore">
+          Score: <strong><span id="pCorrect">0</span></strong> / <span id="pTotal">0</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Sidebar ── -->
+<div class="sidebar">
+
+  <!-- Session stats -->
+  <div class="side-card">
+    <div class="side-head"><span class="side-title">Session Progress</span></div>
+    <div class="side-body">
+      <div class="stats-grid">
+        <div class="stat-box"><div class="stat-val" id="statSolved">0</div><div class="stat-lbl">Solved</div></div>
+        <div class="stat-box"><div class="stat-val" id="statStreak">0</div><div class="stat-lbl">Streak</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Formulas -->
+  <div class="side-card">
+    <div class="side-head"><span class="side-title">Formula Reference</span></div>
+    <div class="side-body">
+      <div class="formula-item">
+        <div class="formula-name">Linear Equation</div>
+        <div class="formula-math">ax + b = c &rarr; x = (c - b) / a</div>
+      </div>
+      <div class="formula-item">
+        <div class="formula-name">Quadratic Formula</div>
+        <div class="formula-math">x = (-b &plusmn; &radic;(b&sup2;-4ac)) / 2a</div>
+        <div class="formula-note">D = b&sup2; - 4ac determines root type</div>
+      </div>
+      <div class="formula-item">
+        <div class="formula-name">Discriminant Guide</div>
+        <div class="formula-math">D &gt; 0: two real roots<br>D = 0: one repeated root<br>D &lt; 0: complex roots</div>
+      </div>
+      <div class="formula-item">
+        <div class="formula-name">Cramer's Rule (2&times;2)</div>
+        <div class="formula-math">x = (c₁b₂ - c₂b₁) / D<br>y = (a₁c₂ - a₂c₁) / D</div>
+        <div class="formula-note">D = a₁b₂ - a₂b₁</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exam tips -->
+  <div class="side-card">
+    <div class="side-head"><span class="side-title">Exam Tips</span></div>
+    <div class="side-body">
+      <div class="tip-item"><strong>WAEC:</strong> Quadratics appear in both Paper 1 (MCQ) and Paper 2. Always check discriminant first.</div>
+      <div class="tip-item"><strong>KCSE:</strong> Simultaneous equations frequently appear in Paper 2. Practice Cramer's Rule for speed.</div>
+      <div class="tip-item"><strong>Matric:</strong> Inequalities are common in Paper 1. Remember to flip the sign when multiplying by negatives.</div>
+      <div class="tip-item"><strong>General:</strong> Always verify by substituting your answer back into the original equation.</div>
+      <div class="tip-item"><strong>Show working:</strong> Marks are awarded for method, not just the final answer. Show every step clearly.</div>
+    </div>
+  </div>
+
+</div>
+</div></section>
+
+<!-- ── SEO ── -->
+<section class="seo-section">
+  <h2>Algebra Equation Solver for African Students</h2>
+  <p>Algebra is a fundamental branch of mathematics that forms the backbone of secondary and tertiary education curricula across Africa. Whether you're preparing for WAEC, KCSE, South African Matric examinations, or university entrance tests, strong algebra skills are essential.</p>
+  <p>This equation solver handles linear equations, quadratic equations, simultaneous systems, and inequalities. Each solution includes detailed step-by-step working with explanations of <em>why</em> each step is taken — helping you truly understand the process, not just memorize it.</p>
+  <p>The built-in practice mode generates random problems at three difficulty levels, so you can drill until you're confident. The interactive graph helps visual learners see what equations look like geometrically.</p>
+
+  <h2>Frequently Asked Questions</h2>
+  <details class="faq-item"><summary>What is the quadratic formula?</summary><p>The quadratic formula is x = (-b &plusmn; &radic;(b&sup2;-4ac)) / 2a, used to solve equations of the form ax&sup2; + bx + c = 0. The expression b&sup2;-4ac under the square root is called the discriminant. If it's positive, there are two real solutions; if zero, one repeated solution; if negative, complex roots.</p></details>
+  <details class="faq-item"><summary>How do I solve simultaneous equations?</summary><p>Three main methods: substitution (solve one equation for a variable, substitute into the other), elimination (add/subtract equations to cancel a variable), and Cramer's Rule (using determinants). This solver uses Cramer's Rule for 2&times;2 systems, which is systematic and exam-efficient.</p></details>
+  <details class="faq-item"><summary>When do I flip the inequality sign?</summary><p>You flip (reverse) the inequality sign when you multiply or divide both sides by a negative number. For example, if -2x > 6, dividing both sides by -2 gives x < -3 (sign flips). This is one of the most common mistakes in exams.</p></details>
+  <details class="faq-item"><summary>What does the discriminant tell us?</summary><p>The discriminant D = b&sup2; - 4ac tells you the nature of roots without solving: D > 0 means two distinct real roots, D = 0 means one repeated root (the parabola touches the x-axis), and D < 0 means no real roots (complex/imaginary roots).</p></details>
+</section>
+
+
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+<afro-related-tools category="education" current="algebra-solver" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/education-hub/" data-related-tool data-id="education-hub" data-name="Education Hub" data-category="education" data-icon="EH" data-desc="Your complete education journey for GPA, JAMB, IELTS pathway planning, and personalized scholarship matching.">Education Hub</a></li><li><a href="/tools/waec-calculator/" data-related-tool data-id="waec-calculator" data-name="WAEC/NECO Grade Calculator" data-category="education" data-icon="WN" data-desc="Aggregate score, JAMB + O’Level eligibility, GPA converter (4.0 &amp; 5.0 scale), Ghana WASSCE. 12 universities, all cut-off">WAEC/NECO Grade Calculator</a></li><li><a href="/tools/scholarship-finder/" data-related-tool data-id="scholarship-finder" data-name="African Scholarship Finder" data-category="education" data-icon="AS" data-desc="Quick scholarship check using source-linked opportunities where available, with profile-aware match scoring, fit notes, ">African Scholarship Finder</a></li><li><a href="/tools/study-abroad-cost/" data-related-tool data-id="study-abroad-cost" data-name="Study Abroad Cost Calculator" data-category="education" data-icon="SA" data-desc="Total cost of studying abroad from Africa — tuition, visa, accommodation, living expenses. 20 destination countries.">Study Abroad Cost Calculator</a></li><li><a href="/tools/jamb-aggregate/" data-related-tool data-id="jamb-aggregate" data-name="JAMB Aggregate Calculator" data-category="education" data-icon="JA" data-desc="Calculate JAMB aggregate score for any Nigerian university department.">JAMB Aggregate Calculator</a></li><li><a href="/tools/scientific-calc/" data-related-tool data-id="scientific-calc" data-name="Scientific Calculator" data-category="education" data-icon="SC" data-desc="Full scientific calculator with graphing. Works offline. African exam mode.">Scientific Calculator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+/* ══════════════════════════════════════════════════════
+   AfroTools Algebra Solver — Educational Engine
+   ══════════════════════════════════════════════════════ */
+
+var currentType = 'linear';
+var currentMode = 'solve';
+var currentDifficulty = 'easy';
+var allSteps = [];
+var visibleSteps = 0;
+var sessionSolved = 0;
+var sessionStreak = 0;
+var practiceCorrect = 0;
+var practiceTotal = 0;
+var currentPractice = null;
+
+var EXAMPLES = {
+  linear: ['2x + 5 = 13','3x - 7 = 2','5x + 3 = 28','-4x + 10 = 2','x/2 + 3 = 7'],
+  quadratic: ['x^2 - 5x + 6 = 0','2x^2 + 3x - 5 = 0','x^2 - 9 = 0','x^2 + 4x + 4 = 0','3x^2 - 12 = 0'],
+  simultaneous: ['2x + 3y = 13','x + 2y = 7','3x - y = 5','5x + 2y = 16'],
+  inequality: ['2x + 3 > 7','3x - 5 <= 10','-2x + 4 > 0','x/3 + 1 >= 4']
+};
+
+/* ── Init ── */
+document.addEventListener('DOMContentLoaded', function() {
+  updateExamples();
+  document.getElementById('eqInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') solveEquation();
+  });
+  document.getElementById('eq2Input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') solveEquation();
+  });
+  document.getElementById('practiceAnswer').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') checkPractice();
+  });
+});
+
+/* ── Mode switching ── */
+function setMode(mode) {
+  currentMode = mode;
+  document.querySelectorAll('.mode-tab').forEach(function(t) { t.classList.remove('active'); });
+  event.target.classList.add('active');
+  document.getElementById('solveArea').style.display = mode === 'solve' ? 'block' : 'none';
+  document.getElementById('practiceArea').classList.toggle('show', mode === 'practice');
+}
+
+/* ── Type switching ── */
+function setType(type) {
+  currentType = type;
+  document.querySelectorAll('.type-pill').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelector('[data-type="'+type+'"]').classList.add('active');
+  document.getElementById('eq2Row').classList.toggle('show', type === 'simultaneous');
+  var placeholders = {linear:'e.g. 2x + 5 = 13', quadratic:'e.g. x^2 - 5x + 6 = 0', simultaneous:'Equation 1: e.g. 2x + 3y = 13', inequality:'e.g. 2x + 3 > 7'};
+  document.getElementById('eqInput').placeholder = placeholders[type] || '';
+  updateExamples();
+}
+
+function updateExamples() {
+  var row = document.getElementById('examplesRow');
+  var exs = EXAMPLES[currentType] || [];
+  row.innerHTML = '<span class="examples-label">Try:</span>';
+  var count = currentType === 'simultaneous' ? 2 : 4;
+  for (var i = 0; i < Math.min(count, exs.length); i++) {
+    (function(ex, idx) {
+      var btn = document.createElement('button');
+      btn.className = 'example-btn';
+      btn.textContent = ex;
+      btn.onclick = function() {
+        if (currentType === 'simultaneous') {
+          document.getElementById('eqInput').value = EXAMPLES.simultaneous[idx * 2] || ex;
+          document.getElementById('eq2Input').value = EXAMPLES.simultaneous[idx * 2 + 1] || '';
+        } else {
+          document.getElementById('eqInput').value = ex;
+        }
+      };
+      row.appendChild(btn);
+    })(exs[i], i);
+  }
+}
+
+/* ── Math keyboard ── */
+function insertChar(ch) {
+  var input = document.getElementById('eqInput');
+  var start = input.selectionStart;
+  var end = input.selectionEnd;
+  var val = input.value;
+  input.value = val.substring(0, start) + ch + val.substring(end);
+  input.selectionStart = input.selectionEnd = start + ch.length;
+  input.focus();
+}
+function clearInput() {
+  document.getElementById('eqInput').value = '';
+  document.getElementById('eq2Input').value = '';
+  document.getElementById('eqInput').focus();
+}
+
+/* ══════════════════════════════════════════════════════
+   EQUATION PARSER
+   ══════════════════════════════════════════════════════ */
+
+function parseLinear(eq) {
+  // Parse "ax + b = c" or "ax + b = cx + d" etc.
+  eq = eq.replace(/\s+/g, '').replace(/−/g, '-');
+  var sides = eq.split('=');
+  if (sides.length !== 2) return null;
+  var left = parseLinearExpr(sides[0]);
+  var right = parseLinearExpr(sides[1]);
+  if (!left || !right) return null;
+  // ax + b = cx + d → (a-c)x = d - b
+  var a = left.coeff - right.coeff;
+  var b = right.constant - left.constant;
+  return {a: a, b_left: left.constant, b_right: right.constant, a_left: left.coeff, a_right: right.coeff, rhs: b, original: eq};
+}
+
+function parseLinearExpr(expr) {
+  var coeff = 0, constant = 0;
+  // Handle terms like: 3x, -2x, x, -x, 5, -3, x/2
+  expr = expr.replace(/(?<=[0-9)])(?=[a-z(])/gi, '*'); // implicit mult
+  // Split into terms respecting signs
+  var terms = expr.match(/[+-]?[^+-]+/g) || [];
+  for (var i = 0; i < terms.length; i++) {
+    var t = terms[i].trim();
+    if (t.indexOf('x') !== -1) {
+      // x term
+      t = t.replace('x', '');
+      if (t === '' || t === '+') coeff += 1;
+      else if (t === '-') coeff += -1;
+      else if (t.indexOf('/') !== -1) {
+        var parts = t.split('/');
+        coeff += parseFloat(parts[0] || 1) / parseFloat(parts[1]);
+      } else {
+        t = t.replace('*', '');
+        coeff += parseFloat(t) || 0;
+      }
+    } else {
+      if (t.indexOf('/') !== -1) {
+        var parts = t.split('/');
+        constant += parseFloat(parts[0]) / parseFloat(parts[1]);
+      } else {
+        constant += parseFloat(t) || 0;
+      }
+    }
+  }
+  return {coeff: coeff, constant: constant};
+}
+
+function parseQuadratic(eq) {
+  eq = eq.replace(/\s+/g, '').replace(/−/g, '-');
+  var sides = eq.split('=');
+  if (sides.length !== 2) return null;
+  var left = parseQuadExpr(sides[0]);
+  var right = parseQuadExpr(sides[1]);
+  if (!left || !right) return null;
+  return {a: left.a - right.a, b: left.b - right.b, c: left.c - right.c};
+}
+
+function parseQuadExpr(expr) {
+  var a = 0, b = 0, c = 0;
+  // Normalize: x^2 → x²
+  expr = expr.replace(/x\^2/g, 'Q').replace(/x²/g, 'Q');
+  var terms = expr.match(/[+-]?[^+-]+/g) || [];
+  for (var i = 0; i < terms.length; i++) {
+    var t = terms[i].trim().replace(/\*/g, '');
+    if (t.indexOf('Q') !== -1) {
+      t = t.replace('Q', '');
+      if (t === '' || t === '+') a += 1;
+      else if (t === '-') a += -1;
+      else a += parseFloat(t) || 0;
+    } else if (t.indexOf('x') !== -1) {
+      t = t.replace('x', '');
+      if (t === '' || t === '+') b += 1;
+      else if (t === '-') b += -1;
+      else b += parseFloat(t) || 0;
+    } else {
+      c += parseFloat(t) || 0;
+    }
+  }
+  return {a: a, b: b, c: c};
+}
+
+function parseInequality(eq) {
+  eq = eq.replace(/\s+/g, '').replace(/−/g, '-');
+  var op = null, sides;
+  if (eq.indexOf('>=') !== -1) { op = '>='; sides = eq.split('>='); }
+  else if (eq.indexOf('<=') !== -1) { op = '<='; sides = eq.split('<='); }
+  else if (eq.indexOf('≥') !== -1) { op = '>='; sides = eq.split('≥'); }
+  else if (eq.indexOf('≤') !== -1) { op = '<='; sides = eq.split('≤'); }
+  else if (eq.indexOf('>') !== -1) { op = '>'; sides = eq.split('>'); }
+  else if (eq.indexOf('<') !== -1) { op = '<'; sides = eq.split('<'); }
+  if (!op || sides.length !== 2) return null;
+  var left = parseLinearExpr(sides[0]);
+  var right = parseLinearExpr(sides[1]);
+  if (!left || !right) return null;
+  var a = left.coeff - right.coeff;
+  var b = right.constant - left.constant;
+  return {a: a, b: b, op: op, leftExpr: sides[0], rightExpr: sides[1]};
+}
+
+function parseSimultaneous(eq1, eq2) {
+  // Parse "ax + by = c" form
+  function parseSim(expr) {
+    expr = expr.replace(/\s+/g, '').replace(/−/g, '-');
+    var sides = expr.split('=');
+    if (sides.length !== 2) return null;
+    var left = parseSimExpr(sides[0]);
+    var right = parseSimExpr(sides[1]);
+    if (!left || !right) return null;
+    return {a: left.x - right.x, b: left.y - right.y, c: right.c - left.c};
+  }
+  function parseSimExpr(expr) {
+    var x = 0, y = 0, c = 0;
+    var terms = expr.match(/[+-]?[^+-]+/g) || [];
+    for (var i = 0; i < terms.length; i++) {
+      var t = terms[i].trim().replace(/\*/g, '');
+      if (t.indexOf('x') !== -1) {
+        t = t.replace('x', '');
+        if (t === '' || t === '+') x += 1;
+        else if (t === '-') x += -1;
+        else x += parseFloat(t) || 0;
+      } else if (t.indexOf('y') !== -1) {
+        t = t.replace('y', '');
+        if (t === '' || t === '+') y += 1;
+        else if (t === '-') y += -1;
+        else y += parseFloat(t) || 0;
+      } else {
+        c += parseFloat(t) || 0;
+      }
+    }
+    return {x: x, y: y, c: c};
+  }
+  var e1 = parseSim(eq1);
+  var e2 = parseSim(eq2);
+  if (!e1 || !e2) return null;
+  return {a1: e1.a, b1: e1.b, c1: e1.c, a2: e2.a, b2: e2.b, c2: e2.c};
+}
+
+/* ══════════════════════════════════════════════════════
+   SOLVERS
+   ══════════════════════════════════════════════════════ */
+
+function fmt(n) {
+  if (typeof n !== 'number' || isNaN(n)) return '?';
+  if (Number.isInteger(n)) return n.toString();
+  // Check for clean fractions
+  for (var d = 2; d <= 12; d++) {
+    var num = n * d;
+    if (Math.abs(num - Math.round(num)) < 1e-9) {
+      var rn = Math.round(num);
+      var g = gcd(Math.abs(rn), d);
+      var fn = rn / g, fd = d / g;
+      if (fd === 1) return fn.toString();
+      return fn + '/' + fd;
+    }
+  }
+  return parseFloat(n.toFixed(6)).toString();
+}
+
+function fmtDec(n) {
+  if (Number.isInteger(n)) return n.toString();
+  return parseFloat(n.toFixed(6)).toString();
+}
+
+function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
+
+function fmtCoeff(n, showPlus) {
+  var s = '';
+  if (showPlus && n > 0) s = '+ ';
+  else if (n < 0) { s = '- '; n = -n; }
+  if (n === 1) return s;
+  return s + fmt(n);
+}
+
+function solveEquation() {
+  var eq1 = document.getElementById('eqInput').value.trim();
+  if (!eq1) return;
+
+  allSteps = [];
+  visibleSteps = 0;
+
+  if (currentType === 'linear') solveLinear(eq1);
+  else if (currentType === 'quadratic') solveQuadratic(eq1);
+  else if (currentType === 'simultaneous') {
+    var eq2 = document.getElementById('eq2Input').value.trim();
+    if (!eq2) { showError('Please enter both equations for a simultaneous system.'); return; }
+    solveSimultaneous(eq1, eq2);
+  }
+  else if (currentType === 'inequality') solveInequality(eq1);
+}
+
+function solveLinear(eq) {
+  var parsed = parseLinear(eq);
+  if (!parsed) { showError('Could not parse. Try format: 2x + 5 = 13'); return; }
+  var a = parsed.a, rhs = parsed.rhs;
+
+  addStep('Start with the equation', eq, 'We write the equation exactly as given before making any changes.');
+
+  // If terms on both sides
+  if (parsed.a_right !== 0) {
+    addStep('Move x terms to one side',
+      fmtDec(parsed.a_left) + 'x - ' + fmtDec(parsed.a_right) + 'x = ' + fmtDec(parsed.b_right) + ' - ' + fmtDec(parsed.b_left),
+      'We want all x terms on the left and all constants on the right. Move terms by adding/subtracting from both sides.');
+    addStep('Combine like terms',
+      fmt(a) + 'x = ' + fmt(rhs),
+      'Simplify each side by combining the x terms together and the constants together.');
+  } else if (parsed.b_left !== 0) {
+    var sign = parsed.b_left > 0 ? 'Subtract' : 'Add';
+    var val = Math.abs(parsed.b_left);
+    addStep(sign + ' ' + fmt(val) + ' from both sides',
+      fmt(parsed.a_left) + 'x = ' + fmtDec(parsed.b_right) + ' - (' + fmtDec(parsed.b_left) + ') = ' + fmt(rhs),
+      'To isolate the x term, we remove the constant from the left side by doing the opposite operation to both sides. This keeps the equation balanced.');
+  }
+
+  if (a === 0) {
+    if (rhs === 0) {
+      addStep('Identity', 'True for all x', 'Both sides are equal regardless of x value. This means any number is a solution (infinitely many solutions).');
+      showSolution(allSteps, 'All real numbers', 'Identity — true for all x', false);
+    } else {
+      addStep('Contradiction', 'No solution', 'We get a false statement (e.g., 0 = 5). This means the equation has no solution.');
+      showSolution(allSteps, 'No solution', 'Contradiction', true);
+    }
+    return;
+  }
+
+  if (a !== 1) {
+    var x = rhs / a;
+    addStep('Divide both sides by ' + fmt(a),
+      'x = ' + fmt(rhs) + ' / ' + fmt(a) + ' = ' + fmt(x),
+      'Since ' + fmt(a) + ' is multiplied by x, we divide both sides by ' + fmt(a) + ' to get x alone. Division is the inverse of multiplication.');
+  }
+
+  var x = rhs / a;
+
+  // Verification
+  var check = parsed.a_left * x + parsed.b_left;
+  var checkRight = parsed.a_right * x + parsed.b_right;
+  addStep('Verify: substitute x = ' + fmt(x) + ' back',
+    'Left = ' + fmtDec(check) + ', Right = ' + fmtDec(checkRight) + ' ✓',
+    'Always substitute your answer back into the original equation to verify. If both sides are equal, the solution is correct.', true);
+
+  showSolution(allSteps, 'x = ' + fmt(x), 'Linear Equation', false);
+  drawLinearGraph(parsed.a_left, parsed.b_left, parsed.a_right, parsed.b_right, x);
+  updateSession();
+}
+
+function solveQuadratic(eq) {
+  var parsed = parseQuadratic(eq);
+  if (!parsed) { showError('Could not parse. Try format: x^2 - 5x + 6 = 0'); return; }
+  var a = parsed.a, b = parsed.b, c = parsed.c;
+  if (a === 0) { showError('Coefficient of x² cannot be 0 (not a quadratic equation).'); return; }
+
+  addStep('Identify the equation in standard form',
+    fmt(a) + 'x² ' + (b >= 0 ? '+ ' : '- ') + fmt(Math.abs(b)) + 'x ' + (c >= 0 ? '+ ' : '- ') + fmt(Math.abs(c)) + ' = 0',
+    'Standard form is ax² + bx + c = 0. We identify a = ' + fmt(a) + ', b = ' + fmt(b) + ', c = ' + fmt(c) + '.');
+
+  var D = b * b - 4 * a * c;
+  addStep('Calculate the discriminant (D)',
+    'D = b² - 4ac = (' + fmt(b) + ')² - 4(' + fmt(a) + ')(' + fmt(c) + ') = ' + fmt(b*b) + ' - (' + fmt(4*a*c) + ') = ' + fmt(D),
+    'The discriminant tells us how many solutions exist. D > 0: two solutions, D = 0: one solution, D < 0: complex solutions.');
+
+  if (D > 0) {
+    var sqrtD = Math.sqrt(D);
+    addStep('D = ' + fmt(D) + ' > 0 — Two distinct real roots',
+      'Since D is positive, the parabola crosses the x-axis at two points.',
+      'Geometrically, D > 0 means the parabola intersects the x-axis twice.');
+
+    addStep('Apply the quadratic formula',
+      'x = (-b ± √D) / 2a = (' + fmt(-b) + ' ± √' + fmt(D) + ') / ' + fmt(2*a),
+      'The quadratic formula gives both solutions at once. The ± means we calculate once with + and once with -.');
+
+    var x1 = (-b + sqrtD) / (2 * a);
+    var x2 = (-b - sqrtD) / (2 * a);
+
+    addStep('Calculate x₁ (using +)',
+      'x₁ = (' + fmt(-b) + ' + ' + fmtDec(sqrtD) + ') / ' + fmt(2*a) + ' = ' + fmt(x1),
+      'First solution: take the positive square root.');
+
+    addStep('Calculate x₂ (using -)',
+      'x₂ = (' + fmt(-b) + ' - ' + fmtDec(sqrtD) + ') / ' + fmt(2*a) + ' = ' + fmt(x2),
+      'Second solution: take the negative square root.');
+
+    // Check if factorable
+    if (Number.isInteger(x1) && Number.isInteger(x2)) {
+      addStep('Factored form',
+        fmt(a) + '(x ' + (x1 < 0 ? '+ ' + (-x1) : '- ' + x1) + ')(x ' + (x2 < 0 ? '+ ' + (-x2) : '- ' + x2) + ') = 0',
+        'Since the roots are integers, we can write the equation in factored form. Each factor equals zero at a root.');
+    }
+
+    // Verify
+    var v1 = a*x1*x1 + b*x1 + c;
+    addStep('Verify x₁: substitute back',
+      fmt(a) + '(' + fmt(x1) + ')² + ' + fmt(b) + '(' + fmt(x1) + ') + ' + fmt(c) + ' = ' + fmtDec(v1) + ' ✓',
+      'Plugging x₁ back in should give 0.', true);
+
+    showSolution(allSteps, 'x₁ = ' + fmt(x1) + ', x₂ = ' + fmt(x2), 'Two Real Solutions', false);
+    drawQuadraticGraph(a, b, c, [x1, x2]);
+  } else if (D === 0) {
+    var x = -b / (2 * a);
+    addStep('D = 0 — One repeated root',
+      'The parabola just touches the x-axis at one point (the vertex).',
+      'D = 0 means the vertex of the parabola lies exactly on the x-axis.');
+
+    addStep('Calculate the root',
+      'x = -b / 2a = ' + fmt(-b) + ' / ' + fmt(2*a) + ' = ' + fmt(x),
+      'With D = 0, the ± part vanishes and we only get one value.');
+
+    addStep('Verify: substitute back',
+      fmt(a) + '(' + fmt(x) + ')² + ' + fmt(b) + '(' + fmt(x) + ') + ' + fmt(c) + ' = ' + fmtDec(a*x*x + b*x + c) + ' ✓',
+      'Plugging back confirms our answer.', true);
+
+    showSolution(allSteps, 'x = ' + fmt(x) + ' (repeated)', 'One Repeated Root', false);
+    drawQuadraticGraph(a, b, c, [x]);
+  } else {
+    addStep('D = ' + fmt(D) + ' < 0 — Complex (imaginary) roots',
+      'The parabola does not cross the x-axis.',
+      'D < 0 means we need to take the square root of a negative number, giving imaginary numbers (using i = √(-1)).');
+
+    var real = -b / (2 * a);
+    var imag = Math.sqrt(-D) / (2 * a);
+    addStep('Calculate complex roots',
+      'x = ' + fmt(real) + ' ± ' + fmtDec(imag) + 'i',
+      'We split into real part (-b/2a = ' + fmt(real) + ') and imaginary part (√|D|/2a = ' + fmtDec(imag) + ').');
+
+    showSolution(allSteps, fmt(real) + ' ± ' + fmtDec(imag) + 'i', 'Complex Solutions', false, true);
+    drawQuadraticGraph(a, b, c, []);
+  }
+  updateSession();
+}
+
+function solveSimultaneous(eq1str, eq2str) {
+  var parsed = parseSimultaneous(eq1str, eq2str);
+  if (!parsed) { showError('Could not parse. Try format: 2x + 3y = 13'); return; }
+  var a1 = parsed.a1, b1 = parsed.b1, c1 = parsed.c1;
+  var a2 = parsed.a2, b2 = parsed.b2, c2 = parsed.c2;
+
+  addStep('Write the system of equations',
+    'Eq1: ' + fmt(a1) + 'x + ' + fmt(b1) + 'y = ' + fmt(c1) + '\nEq2: ' + fmt(a2) + 'x + ' + fmt(b2) + 'y = ' + fmt(c2),
+    'We have two equations with two unknowns (x and y). We need both equations to find unique values.');
+
+  addStep('Using Cramer\'s Rule — calculate the determinant',
+    'D = a₁b₂ - a₂b₁ = (' + fmt(a1) + ')(' + fmt(b2) + ') - (' + fmt(a2) + ')(' + fmt(b1) + ') = ' + fmt(a1*b2) + ' - ' + fmt(a2*b1) + ' = ' + fmt(a1*b2 - a2*b1),
+    'Cramer\'s Rule uses determinants to solve systems. The main determinant D tells us if a unique solution exists. If D = 0, the lines are parallel (no unique solution).');
+
+  var D = a1 * b2 - a2 * b1;
+  if (D === 0) {
+    addStep('D = 0 — No unique solution',
+      'The lines are parallel or identical.',
+      'When D = 0, the two equations represent either parallel lines (no solution) or the same line (infinitely many solutions).');
+    showSolution(allSteps, 'No unique solution (D = 0)', 'Parallel or Identical Lines', true);
+    return;
+  }
+
+  var x = (c1 * b2 - c2 * b1) / D;
+  var y = (a1 * c2 - a2 * c1) / D;
+
+  addStep('Calculate x using Cramer\'s Rule',
+    'x = (c₁b₂ - c₂b₁) / D = (' + fmt(c1) + '·' + fmt(b2) + ' - ' + fmt(c2) + '·' + fmt(b1) + ') / ' + fmt(D) + ' = ' + fmt(c1*b2 - c2*b1) + ' / ' + fmt(D) + ' = ' + fmt(x),
+    'Replace the x-column of coefficients with the constants column, then divide by D.');
+
+  addStep('Calculate y using Cramer\'s Rule',
+    'y = (a₁c₂ - a₂c₁) / D = (' + fmt(a1) + '·' + fmt(c2) + ' - ' + fmt(a2) + '·' + fmt(c1) + ') / ' + fmt(D) + ' = ' + fmt(a1*c2 - a2*c1) + ' / ' + fmt(D) + ' = ' + fmt(y),
+    'Replace the y-column of coefficients with the constants column, then divide by D.');
+
+  addStep('Verify in Equation 1',
+    fmt(a1) + '(' + fmt(x) + ') + ' + fmt(b1) + '(' + fmt(y) + ') = ' + fmtDec(a1*x + b1*y) + ' = ' + fmt(c1) + ' ✓',
+    'Substitute x and y back into Equation 1 to confirm.', true);
+
+  addStep('Verify in Equation 2',
+    fmt(a2) + '(' + fmt(x) + ') + ' + fmt(b2) + '(' + fmt(y) + ') = ' + fmtDec(a2*x + b2*y) + ' = ' + fmt(c2) + ' ✓',
+    'Substitute into Equation 2 as well. Both must check out.', true);
+
+  showSolution(allSteps, 'x = ' + fmt(x) + ', y = ' + fmt(y), 'Unique Solution (Cramer\'s Rule)', false);
+  drawSimultaneousGraph(a1, b1, c1, a2, b2, c2, x, y);
+  updateSession();
+}
+
+function solveInequality(eq) {
+  var parsed = parseInequality(eq);
+  if (!parsed) { showError('Could not parse. Try format: 2x + 3 > 7'); return; }
+  var a = parsed.a, b = parsed.b, op = parsed.op;
+
+  addStep('Start with the inequality', eq, 'Write the inequality exactly as given.');
+
+  addStep('Move constants to one side',
+    fmt(a) + 'x ' + op + ' ' + fmt(b),
+    'Subtract/add constants to isolate the x term on one side.');
+
+  if (a === 0) {
+    var result = (op === '>' && 0 > b) || (op === '>=' && 0 >= b) || (op === '<' && 0 < b) || (op === '<=' && 0 <= b);
+    addStep(result ? 'Always true' : 'Never true',
+      result ? 'True for all x' : 'No solution',
+      'The x term cancelled out, leaving a statement that is always ' + (result ? 'true' : 'false') + '.');
+    showSolution(allSteps, result ? 'All real numbers' : 'No solution', 'Inequality', result ? false : true);
+    return;
+  }
+
+  var x = b / a;
+  var flipped = a < 0;
+  var finalOp = op;
+  if (flipped) {
+    finalOp = op === '>' ? '<' : op === '<' ? '>' : op === '>=' ? '<=' : '>=';
+    addStep('Divide by ' + fmt(a) + ' — FLIP the inequality sign!',
+      'x ' + finalOp + ' ' + fmt(x),
+      'CRITICAL RULE: When you divide (or multiply) both sides by a negative number, you must reverse the inequality sign. This is because multiplying by a negative flips the order on the number line.');
+  } else {
+    addStep('Divide both sides by ' + fmt(a),
+      'x ' + finalOp + ' ' + fmt(x),
+      'Dividing by a positive number does not change the inequality direction.');
+  }
+
+  // Number line description
+  var lineDesc = finalOp.indexOf('=') !== -1 ? '(inclusive, closed dot at ' + fmt(x) + ')' : '(exclusive, open dot at ' + fmt(x) + ')';
+  var direction = finalOp.indexOf('>') !== -1 ? 'right' : 'left';
+  addStep('Number line interpretation',
+    'Shade to the ' + direction + ' of ' + fmt(x) + ' ' + lineDesc,
+    'On a number line, draw a dot at x = ' + fmt(x) + ' and shade the region that satisfies the inequality.', true);
+
+  showSolution(allSteps, 'x ' + finalOp + ' ' + fmt(x), 'Inequality Solution', false);
+  drawInequalityGraph(x, finalOp);
+  updateSession();
+}
+
+/* ══════════════════════════════════════════════════════
+   UI HELPERS
+   ══════════════════════════════════════════════════════ */
+
+function addStep(title, math, why, isCheck) {
+  allSteps.push({title: title, math: math, why: why, isCheck: isCheck || false});
+}
+
+function showError(msg) {
+  var card = document.getElementById('solutionCard');
+  card.classList.add('show');
+  document.getElementById('solMethod').textContent = '';
+  document.getElementById('stepsContainer').innerHTML = '';
+  document.getElementById('nextStepRow').style.display = 'none';
+  document.getElementById('answerContainer').innerHTML = '<div class="answer-box error"><div class="answer-val">' + msg + '</div></div>';
+  document.getElementById('graphCard').classList.remove('show');
+}
+
+function showSolution(steps, answer, method, isError, isComplex) {
+  var card = document.getElementById('solutionCard');
+  card.classList.add('show');
+  document.getElementById('solMethod').textContent = method;
+
+  var container = document.getElementById('stepsContainer');
+  container.innerHTML = '';
+
+  for (var i = 0; i < steps.length; i++) {
+    var s = steps[i];
+    var li = document.createElement('li');
+    li.className = 'step-item';
+    li.setAttribute('data-index', i);
+    var mathLines = s.math.split('\n').map(function(l) { return '<div>' + escHtml(l) + '</div>'; }).join('');
+    li.innerHTML =
+      '<div class="step-top">' +
+        '<span class="step-num' + (s.isCheck ? ' check' : '') + '">' + (s.isCheck ? '✓' : (i + 1)) + '</span>' +
+        '<div class="step-content">' +
+          '<div class="step-text">' + escHtml(s.title) + '</div>' +
+          '<div class="step-math">' + mathLines + '</div>' +
+          '<div class="step-why">' +
+            '<button type="button" class="step-why-toggle" onclick="toggleWhy(this)">Why?</button>' +
+            '<div class="step-why-content">' + escHtml(s.why) + '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    container.appendChild(li);
+  }
+
+  // Show first step
+  visibleSteps = 0;
+  showNextStep();
+
+  document.getElementById('nextStepRow').style.display = steps.length > 1 ? 'block' : 'none';
+
+  var cls = isError ? 'error' : (isComplex ? 'complex' : '');
+  document.getElementById('answerContainer').innerHTML =
+    '<div class="answer-box ' + cls + '" style="display:none">' +
+      '<div class="answer-val">' + escHtml(answer) + '</div>' +
+      '<div class="answer-label">' + (isError ? 'Error' : 'Answer') + '</div>' +
+    '</div>';
+
+  card.scrollIntoView({behavior: 'smooth', block: 'start'});
+}
+
+function showNextStep() {
+  var items = document.querySelectorAll('.step-item');
+  if (visibleSteps < items.length) {
+    items[visibleSteps].classList.add('visible');
+    visibleSteps++;
+  }
+  if (visibleSteps >= items.length) {
+    document.getElementById('nextStepRow').style.display = 'none';
+    // Show answer
+    var ans = document.querySelector('.answer-box');
+    if (ans) { ans.style.display = 'block'; ans.style.animation = 'none'; ans.offsetHeight; }
+  }
+}
+
+function showAllSteps() {
+  var items = document.querySelectorAll('.step-item');
+  for (var i = 0; i < items.length; i++) items[i].classList.add('visible');
+  visibleSteps = items.length;
+  document.getElementById('nextStepRow').style.display = 'none';
+  var ans = document.querySelector('.answer-box');
+  if (ans) ans.style.display = 'block';
+}
+
+function toggleWhy(btn) {
+  var content = btn.nextElementSibling;
+  content.classList.toggle('show');
+  btn.textContent = content.classList.contains('show') ? 'Hide' : 'Why?';
+}
+
+function escHtml(s) {
+  var d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function updateSession() {
+  sessionSolved++;
+  sessionStreak++;
+  document.getElementById('statSolved').textContent = sessionSolved;
+  document.getElementById('statStreak').textContent = sessionStreak;
+  document.getElementById('sessionCount').textContent = sessionSolved;
+}
+
+/* ══════════════════════════════════════════════════════
+   GRAPHING (Canvas)
+   ══════════════════════════════════════════════════════ */
+
+function setupCanvas() {
+  var card = document.getElementById('graphCard');
+  card.classList.add('show');
+  var canvas = document.getElementById('graphCanvas');
+  var rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width * (window.devicePixelRatio || 1);
+  canvas.height = 280 * (window.devicePixelRatio || 1);
+  canvas.style.width = rect.width + 'px';
+  canvas.style.height = '280px';
+  var ctx = canvas.getContext('2d');
+  ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+  return {ctx: ctx, w: rect.width, h: 280};
+}
+
+function drawGrid(ctx, w, h, xMin, xMax, yMin, yMax) {
+  var toX = function(x) { return (x - xMin) / (xMax - xMin) * w; };
+  var toY = function(y) { return h - (y - yMin) / (yMax - yMin) * h; };
+
+  ctx.clearRect(0, 0, w, h);
+
+  // Background
+  ctx.fillStyle = '#f8fafc';
+  ctx.fillRect(0, 0, w, h);
+
+  // Grid lines
+  ctx.strokeStyle = '#e2e8f0';
+  ctx.lineWidth = 0.5;
+  var step = Math.pow(10, Math.floor(Math.log10(Math.max(xMax - xMin, yMax - yMin) / 5)));
+  if ((xMax - xMin) / step > 20) step *= 2;
+  if ((xMax - xMin) / step < 4) step /= 2;
+
+  for (var gx = Math.ceil(xMin / step) * step; gx <= xMax; gx += step) {
+    ctx.beginPath(); ctx.moveTo(toX(gx), 0); ctx.lineTo(toX(gx), h); ctx.stroke();
+  }
+  for (var gy = Math.ceil(yMin / step) * step; gy <= yMax; gy += step) {
+    ctx.beginPath(); ctx.moveTo(0, toY(gy)); ctx.lineTo(w, toY(gy)); ctx.stroke();
+  }
+
+  // Axes
+  ctx.strokeStyle = '#94a3b8';
+  ctx.lineWidth = 1.5;
+  if (yMin <= 0 && yMax >= 0) {
+    ctx.beginPath(); ctx.moveTo(0, toY(0)); ctx.lineTo(w, toY(0)); ctx.stroke();
+  }
+  if (xMin <= 0 && xMax >= 0) {
+    ctx.beginPath(); ctx.moveTo(toX(0), 0); ctx.lineTo(toX(0), h); ctx.stroke();
+  }
+
+  // Labels
+  ctx.fillStyle = '#94a3b8';
+  ctx.font = '10px "DM Sans"';
+  ctx.textAlign = 'center';
+  for (var lx = Math.ceil(xMin / step) * step; lx <= xMax; lx += step) {
+    if (Math.abs(lx) < 1e-9) continue;
+    ctx.fillText(fmt(lx), toX(lx), toY(0) + 14);
+  }
+  ctx.textAlign = 'right';
+  for (var ly = Math.ceil(yMin / step) * step; ly <= yMax; ly += step) {
+    if (Math.abs(ly) < 1e-9) continue;
+    ctx.fillText(fmt(ly), toX(0) - 5, toY(ly) + 4);
+  }
+
+  return {toX: toX, toY: toY};
+}
+
+function drawLinearGraph(aL, bL, aR, bR, xSol) {
+  var g = setupCanvas();
+  var ctx = g.ctx, w = g.w, h = g.h;
+
+  var pad = Math.max(Math.abs(xSol) * 1.5, 5);
+  var xMin = xSol - pad, xMax = xSol + pad;
+  // y = aL*x + bL (left side) and y = aR*x + bR (right side)
+  var y1 = aL * xMin + bL, y2 = aL * xMax + bL;
+  var yMin = Math.min(y1, y2, aR * xMin + bR, aR * xMax + bR) - 2;
+  var yMax = Math.max(y1, y2, aR * xMin + bR, aR * xMax + bR) + 2;
+
+  var m = drawGrid(ctx, w, h, xMin, xMax, yMin, yMax);
+
+  // Draw left side as line (y = aL*x + bL)
+  ctx.strokeStyle = '#4f46e5';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  for (var px = 0; px <= w; px += 2) {
+    var x = xMin + (px / w) * (xMax - xMin);
+    var y = aL * x + bL;
+    if (px === 0) ctx.moveTo(px, m.toY(y));
+    else ctx.lineTo(px, m.toY(y));
+  }
+  ctx.stroke();
+
+  // Draw right side if it has x terms
+  if (aR !== 0) {
+    ctx.strokeStyle = '#ea580c';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    for (var px = 0; px <= w; px += 2) {
+      var x = xMin + (px / w) * (xMax - xMin);
+      var y = aR * x + bR;
+      if (px === 0) ctx.moveTo(px, m.toY(y));
+      else ctx.lineTo(px, m.toY(y));
+    }
+    ctx.stroke();
+  } else {
+    // Draw horizontal line y = bR
+    ctx.strokeStyle = '#ea580c';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([6, 4]);
+    ctx.beginPath();
+    ctx.moveTo(0, m.toY(bR));
+    ctx.lineTo(w, m.toY(bR));
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  // Mark solution point
+  var ySol = aL * xSol + bL;
+  ctx.fillStyle = '#16a34a';
+  ctx.beginPath();
+  ctx.arc(m.toX(xSol), m.toY(ySol), 6, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#fff';
+  ctx.beginPath();
+  ctx.arc(m.toX(xSol), m.toY(ySol), 3, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Label
+  ctx.fillStyle = '#16a34a';
+  ctx.font = 'bold 11px "DM Sans"';
+  ctx.textAlign = 'left';
+  ctx.fillText('x = ' + fmt(xSol), m.toX(xSol) + 10, m.toY(ySol) - 8);
+}
+
+function drawQuadraticGraph(a, b, c, roots) {
+  var g = setupCanvas();
+  var ctx = g.ctx, w = g.w, h = g.h;
+
+  var vertex_x = -b / (2 * a);
+  var vertex_y = a * vertex_x * vertex_x + b * vertex_x + c;
+
+  var pad = Math.max(Math.abs(vertex_x) + 5, roots.length ? Math.max.apply(null, roots.map(Math.abs)) + 3 : 5);
+  var xMin = vertex_x - pad, xMax = vertex_x + pad;
+  var ys = [];
+  for (var t = xMin; t <= xMax; t += (xMax - xMin) / 20) {
+    ys.push(a * t * t + b * t + c);
+  }
+  var yMin = Math.min.apply(null, ys) - 2;
+  var yMax = Math.max.apply(null, ys) + 2;
+  if (yMax - yMin < 10) { var mid = (yMax + yMin) / 2; yMin = mid - 5; yMax = mid + 5; }
+
+  var m = drawGrid(ctx, w, h, xMin, xMax, yMin, yMax);
+
+  // Draw parabola
+  ctx.strokeStyle = '#4f46e5';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  var started = false;
+  for (var px = 0; px <= w; px++) {
+    var x = xMin + (px / w) * (xMax - xMin);
+    var y = a * x * x + b * x + c;
+    if (y >= yMin && y <= yMax) {
+      if (!started) { ctx.moveTo(px, m.toY(y)); started = true; }
+      else ctx.lineTo(px, m.toY(y));
+    } else {
+      started = false;
+    }
+  }
+  ctx.stroke();
+
+  // Mark roots
+  for (var i = 0; i < roots.length; i++) {
+    ctx.fillStyle = '#16a34a';
+    ctx.beginPath();
+    ctx.arc(m.toX(roots[i]), m.toY(0), 6, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(m.toX(roots[i]), m.toY(0), 3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#16a34a';
+    ctx.font = 'bold 11px "DM Sans"';
+    ctx.textAlign = i === 0 ? 'right' : 'left';
+    ctx.fillText('x=' + fmt(roots[i]), m.toX(roots[i]) + (i === 0 ? -10 : 10), m.toY(0) - 10);
+  }
+
+  // Mark vertex
+  ctx.fillStyle = '#ea580c';
+  ctx.beginPath();
+  ctx.arc(m.toX(vertex_x), m.toY(vertex_y), 4, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.font = '10px "DM Sans"';
+  ctx.textAlign = 'center';
+  ctx.fillText('vertex', m.toX(vertex_x), m.toY(vertex_y) + (a > 0 ? 16 : -10));
+}
+
+function drawSimultaneousGraph(a1, b1, c1, a2, b2, c2, xSol, ySol) {
+  var g = setupCanvas();
+  var ctx = g.ctx, w = g.w, h = g.h;
+
+  var pad = Math.max(Math.abs(xSol), Math.abs(ySol), 5) * 1.5;
+  var xMin = -pad, xMax = pad, yMin = -pad, yMax = pad;
+  var m = drawGrid(ctx, w, h, xMin, xMax, yMin, yMax);
+
+  function drawLine(a, b, c, color) {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    if (Math.abs(b) > 1e-9) {
+      var y1 = (c - a * xMin) / b;
+      var y2 = (c - a * xMax) / b;
+      ctx.moveTo(m.toX(xMin), m.toY(y1));
+      ctx.lineTo(m.toX(xMax), m.toY(y2));
+    } else {
+      var x = c / a;
+      ctx.moveTo(m.toX(x), 0);
+      ctx.lineTo(m.toX(x), h);
+    }
+    ctx.stroke();
+  }
+
+  drawLine(a1, b1, c1, '#4f46e5');
+  drawLine(a2, b2, c2, '#ea580c');
+
+  // Mark intersection
+  ctx.fillStyle = '#16a34a';
+  ctx.beginPath();
+  ctx.arc(m.toX(xSol), m.toY(ySol), 7, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#fff';
+  ctx.beginPath();
+  ctx.arc(m.toX(xSol), m.toY(ySol), 3.5, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = '#16a34a';
+  ctx.font = 'bold 11px "DM Sans"';
+  ctx.textAlign = 'left';
+  ctx.fillText('(' + fmt(xSol) + ', ' + fmt(ySol) + ')', m.toX(xSol) + 12, m.toY(ySol) - 10);
+
+  // Legend
+  ctx.font = '11px "DM Sans"';
+  ctx.fillStyle = '#4f46e5';
+  ctx.textAlign = 'left';
+  ctx.fillText('Eq 1', 12, 18);
+  ctx.fillStyle = '#ea580c';
+  ctx.fillText('Eq 2', 12, 34);
+}
+
+function drawInequalityGraph(x, op) {
+  var g = setupCanvas();
+  var ctx = g.ctx, w = g.w, h = g.h;
+
+  ctx.clearRect(0, 0, w, h);
+  ctx.fillStyle = '#f8fafc';
+  ctx.fillRect(0, 0, w, h);
+
+  var pad = Math.max(Math.abs(x) * 2, 6);
+  var xMin = x - pad, xMax = x + pad;
+
+  // Number line
+  var lineY = h / 2;
+  ctx.strokeStyle = '#94a3b8';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(30, lineY);
+  ctx.lineTo(w - 30, lineY);
+  ctx.stroke();
+
+  // Arrow ends
+  ctx.beginPath();
+  ctx.moveTo(w - 30, lineY);
+  ctx.lineTo(w - 38, lineY - 5);
+  ctx.moveTo(w - 30, lineY);
+  ctx.lineTo(w - 38, lineY + 5);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(30, lineY);
+  ctx.lineTo(38, lineY - 5);
+  ctx.moveTo(30, lineY);
+  ctx.lineTo(38, lineY + 5);
+  ctx.stroke();
+
+  var toX = function(v) { return 30 + (v - xMin) / (xMax - xMin) * (w - 60); };
+
+  // Tick marks
+  ctx.fillStyle = '#64748b';
+  ctx.font = '11px "DM Sans"';
+  ctx.textAlign = 'center';
+  var step = Math.pow(10, Math.floor(Math.log10(xMax - xMin))) / 2;
+  if ((xMax - xMin) / step > 15) step *= 2;
+  for (var t = Math.ceil(xMin / step) * step; t <= xMax; t += step) {
+    var tx = toX(t);
+    ctx.beginPath();
+    ctx.moveTo(tx, lineY - 5);
+    ctx.lineTo(tx, lineY + 5);
+    ctx.stroke();
+    ctx.fillText(fmt(t), tx, lineY + 22);
+  }
+
+  // Shade solution region
+  var ptX = toX(x);
+  ctx.fillStyle = 'rgba(79, 70, 229, 0.12)';
+  if (op.indexOf('>') !== -1) {
+    ctx.fillRect(ptX, lineY - 30, w - 30 - ptX, 60);
+  } else {
+    ctx.fillRect(30, lineY - 30, ptX - 30, 60);
+  }
+
+  // Point
+  var filled = op.indexOf('=') !== -1;
+  ctx.beginPath();
+  ctx.arc(ptX, lineY, 8, 0, Math.PI * 2);
+  if (filled) {
+    ctx.fillStyle = '#4f46e5';
+    ctx.fill();
+  } else {
+    ctx.fillStyle = '#fff';
+    ctx.fill();
+    ctx.strokeStyle = '#4f46e5';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+  }
+
+  // Label
+  ctx.fillStyle = '#4f46e5';
+  ctx.font = 'bold 13px "DM Sans"';
+  ctx.textAlign = 'center';
+  ctx.fillText('x ' + op + ' ' + fmt(x), ptX, lineY - 40);
+
+  ctx.font = '10px "DM Sans"';
+  ctx.fillStyle = '#94a3b8';
+  ctx.fillText(filled ? 'Closed dot (inclusive)' : 'Open dot (exclusive)', ptX, lineY + 45);
+}
+
+/* ══════════════════════════════════════════════════════
+   PRACTICE MODE
+   ══════════════════════════════════════════════════════ */
+
+function setDifficulty(diff, btn) {
+  currentDifficulty = diff;
+  document.querySelectorAll('.diff-pill').forEach(function(p) { p.classList.remove('active'); });
+  btn.classList.add('active');
+}
+
+function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+function newPractice() {
+  var fb = document.getElementById('practiceFeedback');
+  fb.className = 'practice-feedback';
+  document.getElementById('practiceAnswer').value = '';
+
+  var prob, answer, hint, type;
+
+  if (currentDifficulty === 'easy') {
+    // Simple linear: ax + b = c with integer answer
+    var a = randInt(2, 6);
+    var x = randInt(-8, 8);
+    var b = randInt(-10, 10);
+    var c = a * x + b;
+    prob = a + 'x ' + (b >= 0 ? '+ ' + b : '- ' + (-b)) + ' = ' + c;
+    answer = x;
+    hint = 'Move ' + b + ' to the right side, then divide by ' + a + '.';
+    type = 'linear';
+  } else if (currentDifficulty === 'medium') {
+    // Quadratic with integer roots
+    var x1 = randInt(-6, 6);
+    var x2 = randInt(-6, 6);
+    var a = 1;
+    var b = -(x1 + x2);
+    var c = x1 * x2;
+    prob = 'x² ' + (b >= 0 ? '+ ' + b : '- ' + (-b)) + 'x ' + (c >= 0 ? '+ ' + c : '- ' + (-c)) + ' = 0';
+    answer = [Math.min(x1, x2), Math.max(x1, x2)];
+    hint = 'Find two numbers that multiply to ' + c + ' and add to ' + b + '.';
+    type = 'quadratic';
+  } else {
+    // Simultaneous equations
+    var x = randInt(-5, 5);
+    var y = randInt(-5, 5);
+    var a1 = randInt(1, 4);
+    var b1 = randInt(1, 4) * (Math.random() > 0.5 ? 1 : -1);
+    var a2 = randInt(1, 4);
+    var b2 = randInt(1, 4) * (Math.random() > 0.5 ? 1 : -1);
+    while (a1 * b2 - a2 * b1 === 0) { b2 = randInt(1, 4) * (Math.random() > 0.5 ? 1 : -1); }
+    var c1 = a1 * x + b1 * y;
+    var c2 = a2 * x + b2 * y;
+    prob = a1 + 'x ' + (b1 >= 0 ? '+ ' + b1 : '- ' + (-b1)) + 'y = ' + c1 + '\n' + a2 + 'x ' + (b2 >= 0 ? '+ ' + b2 : '- ' + (-b2)) + 'y = ' + c2;
+    answer = {x: x, y: y};
+    hint = 'Use elimination or Cramer\'s Rule. D = ' + (a1*b2 - a2*b1) + '.';
+    type = 'simultaneous';
+  }
+
+  currentPractice = {problem: prob, answer: answer, hint: hint, type: type};
+  document.getElementById('practiceQ').innerText = 'Solve: ' + prob;
+  document.getElementById('practiceAnswer').placeholder = type === 'simultaneous' ? 'e.g. x = 2, y = 3' : (type === 'quadratic' ? 'e.g. x = 2, x = 3' : 'e.g. x = 5');
+}
+
+function checkPractice() {
+  if (!currentPractice) { newPractice(); return; }
+  var userAns = document.getElementById('practiceAnswer').value.trim().toLowerCase();
+  if (!userAns) return;
+
+  var fb = document.getElementById('practiceFeedback');
+  var correct = false;
+
+  if (currentPractice.type === 'linear') {
+    var nums = userAns.match(/-?\d+\.?\d*/g);
+    if (nums && parseFloat(nums[nums.length - 1]) === currentPractice.answer) correct = true;
+  } else if (currentPractice.type === 'quadratic') {
+    var nums = userAns.match(/-?\d+\.?\d*/g);
+    if (nums && nums.length >= 2) {
+      var u = [parseFloat(nums[0]), parseFloat(nums[1])].sort(function(a,b){return a-b;});
+      var a = currentPractice.answer;
+      if (u[0] === a[0] && u[1] === a[1]) correct = true;
+    } else if (nums && nums.length === 1 && currentPractice.answer[0] === currentPractice.answer[1]) {
+      if (parseFloat(nums[0]) === currentPractice.answer[0]) correct = true;
+    }
+  } else {
+    var nums = userAns.match(/-?\d+\.?\d*/g);
+    if (nums && nums.length >= 2) {
+      // Try to figure out which is x and which is y
+      var ux = parseFloat(nums[0]), uy = parseFloat(nums[1]);
+      if (ux === currentPractice.answer.x && uy === currentPractice.answer.y) correct = true;
+    }
+  }
+
+  practiceTotal++;
+  if (correct) {
+    practiceCorrect++;
+    fb.className = 'practice-feedback correct';
+    fb.textContent = 'Correct! Well done.';
+  } else {
+    sessionStreak = 0;
+    document.getElementById('statStreak').textContent = 0;
+    fb.className = 'practice-feedback wrong';
+    if (currentPractice.type === 'linear') {
+      fb.textContent = 'Not quite. The answer is x = ' + currentPractice.answer + '. ' + currentPractice.hint;
+    } else if (currentPractice.type === 'quadratic') {
+      fb.textContent = 'Not quite. The answers are x = ' + currentPractice.answer[0] + ' and x = ' + currentPractice.answer[1] + '.';
+    } else {
+      fb.textContent = 'Not quite. x = ' + currentPractice.answer.x + ', y = ' + currentPractice.answer.y;
+    }
+  }
+
+  document.getElementById('pCorrect').textContent = practiceCorrect;
+  document.getElementById('pTotal').textContent = practiceTotal;
+}
+
+function showPracticeHint() {
+  if (!currentPractice) return;
+  var fb = document.getElementById('practiceFeedback');
+  fb.className = 'practice-feedback correct';
+  fb.style.display = 'block';
+  fb.textContent = 'Hint: ' + currentPractice.hint;
+}
+
+function solvePractice() {
+  if (!currentPractice) return;
+  // Load into solve mode
+  setMode('solve');
+  document.querySelectorAll('.mode-tab').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelector('.mode-tab').classList.add('active');
+
+  if (currentPractice.type === 'linear') {
+    setType('linear');
+    document.getElementById('eqInput').value = currentPractice.problem;
+  } else if (currentPractice.type === 'quadratic') {
+    setType('quadratic');
+    document.getElementById('eqInput').value = currentPractice.problem;
+  } else {
+    setType('simultaneous');
+    var lines = currentPractice.problem.split('\n');
+    document.getElementById('eqInput').value = lines[0];
+    document.getElementById('eq2Input').value = lines[1] || '';
+  }
+  solveEquation();
+}
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+</body>
+</html>

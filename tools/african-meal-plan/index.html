@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>African Meal Plan & Nutrition Tracker | AfroTools</title>
+<meta name="description" content="Generate a personalised 7-day African meal plan based on your goals, body stats, and local foods. Covers Nigeria, Kenya, Ghana, South Africa, Ethiopia, Egypt. Includes macros, TDEE, and shopping list.">
+<meta name="content-language" content="en">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="African Meal Plan & Nutrition Tracker | AfroTools">
+<meta property="og:description" content="7-day African meal plans with local foods, calorie targets, macro breakdowns and shopping list generator.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/african-meal-plan.webp">
+<meta property="og:url" content="https://afrotools.com/tools/african-meal-plan/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="African Meal Plan &amp; Nutrition Tracker | AfroTools">
+<meta name="twitter:description" content="Generate a personalised 7-day African meal plan based on your goals, body stats, and local foods. Covers Nigeria, Kenya, Ghana, South Africa, Ethiopia, Egypt. Includes macros, TDEE, and shopping list.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "African Meal Plan & Nutrition Tracker",
+      "url": "https://afrotools.com/tools/african-meal-plan/",
+      "description": "Generate personalised 7-day African meal plans with TDEE calculation, macros and shopping list.",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "image": "https://afrotools.com/assets/img/tools/african-meal-plan.webp"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://afrotools.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Health Tools",
+          "item": "https://afrotools.com/health/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "African Meal Plan",
+          "item": "https://afrotools.com/tools/african-meal-plan/"
+        }
+      ]
+    }
+  ]
+}
+</script>
+<style>
+*{box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;margin:0;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+.tool-hero{background:linear-gradient(135deg,#7f1d1d 0%,#dc2626 50%,#b91c1c 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.5);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.5)}
+.breadcrumb span{color:#fca5a5}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.15;margin:0 0 10px}
+h1 em{color:#fca5a5;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.75);line-height:1.6;max-width:600px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(252,165,165,.2);color:#fca5a5;border:1px solid rgba(252,165,165,.3)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:380px 1fr;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc;display:flex;align-items:center;gap:10px}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0f172a}
+.card-icon{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,#7f1d1d,#dc2626);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.card-body{padding:20px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+select,input[type=number]{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.85rem;background:#f8fafc;font-family:inherit;box-sizing:border-box;color:#0f172a;-webkit-appearance:none}
+select:focus,input:focus{outline:none;border-color:#dc2626;box-shadow:0 0 0 3px rgba(220,38,38,.1)}
+.field{margin-bottom:13px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.toggle-group{display:flex;gap:0;border:1.5px solid #cbd5e1;border-radius:7px;overflow:hidden}
+.toggle-btn{flex:1;padding:8px 6px;border:none;background:#f8fafc;font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit;color:#64748b;transition:all .15s;text-align:center}
+.toggle-btn.active{background:#dc2626;color:#fff}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer;margin-top:16px;font-family:inherit;transition:all .15s}
+.btn-primary{background:linear-gradient(135deg,#7f1d1d,#dc2626);color:#fff}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(220,38,38,.35)}
+.btn-secondary{background:#f1f5f9;color:#0f172a;margin-top:10px}
+.btn-secondary:hover{background:#e2e8f0}
+.results-section{display:none}
+.results-section.visible{display:block}
+
+/* TDEE Summary */
+.tdee-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.tdee-box{background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:14px;text-align:center}
+.tdee-box .tv{font-size:1.4rem;font-weight:800;color:#dc2626}
+.tdee-box .tl{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:#991b1b;margin-top:3px}
+
+/* Macro bars */
+.macro-bars{margin-bottom:16px}
+.macro-row{margin-bottom:10px}
+.macro-label{display:flex;justify-content:space-between;font-size:.78rem;font-weight:600;color:#0f172a;margin-bottom:4px}
+.macro-bar{height:10px;background:#f1f5f9;border-radius:5px;overflow:hidden}
+.macro-fill{height:100%;border-radius:5px;transition:width .5s}
+.fill-carb{background:#dc2626}
+.fill-prot{background:#16a34a}
+.fill-fat{background:#d97706}
+
+/* Day tabs */
+.day-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:14px}
+.day-tab{padding:5px 12px;border:1.5px solid #e2e8f0;border-radius:6px;font-size:.72rem;font-weight:700;cursor:pointer;background:#fff;transition:all .15s}
+.day-tab.active{background:#dc2626;color:#fff;border-color:#dc2626}
+.meal-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;margin-bottom:10px}
+.meal-time{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#dc2626;margin-bottom:5px}
+.meal-name{font-size:.92rem;font-weight:700;color:#0f172a;margin-bottom:3px}
+.meal-portion{font-size:.75rem;color:#64748b;margin-bottom:6px}
+.meal-macros{display:flex;gap:10px;font-size:.72rem}
+.mm{padding:3px 8px;border-radius:4px;font-weight:700}
+.mm-cal{background:#fee2e2;color:#dc2626}
+.mm-prot{background:#dcfce7;color:#16a34a}
+.mm-carb{background:#dbeafe;color:#1d4ed8}
+.mm-fat{background:#fef3c7;color:#d97706}
+
+/* Shopping list */
+.shop-section{margin-top:14px}
+.shop-category{margin-bottom:14px}
+.shop-cat-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#64748b;margin-bottom:7px;display:flex;align-items:center;gap:6px}
+.shop-items{display:flex;flex-wrap:wrap;gap:6px}
+.shop-item{background:#f1f5f9;border:1px solid #e2e8f0;border-radius:5px;padding:4px 10px;font-size:.75rem;font-weight:600;color:#0f172a}
+
+.section-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#dc2626;margin:16px 0 10px}
+.disclaimer{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:12px;font-size:.74rem;color:#78350f;line-height:1.6;margin-top:12px}
+.faq-wrap{max-width:860px;margin:40px auto 0;padding:0 24px}
+.faq-wrap h2{font-size:1.2rem;font-weight:800;margin-bottom:18px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;list-style:none;color:#0f172a;display:flex;justify-content:space-between}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::after{content:"＋";color:#dc2626}
+details[open] .faq-item summary::after{content:"−"}
+.faq-item p{margin:8px 0 0;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:640px){
+  .tool-main-inner{grid-template-columns:1fr}
+  .tdee-grid{grid-template-columns:1fr 1fr}
+  .row2{grid-template-columns:1fr}
+}
+</style>
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/african-meal-plan.webp">
+<link rel="stylesheet" href="/assets/css/health-enhancements.css?v=e7e3e3a6">
+<meta name="tool-id" content="african-meal-plan">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is TDEE and how is it calculated?","acceptedAnswer":{"@type":"Answer","text":"TDEE (Total Daily Energy Expenditure) is the total number of calories your body burns in a day. It's calculated using the Mifflin-St Jeor formula to find your BMR (Basal Metabolic Rate — calories burned at rest), then multiplied by an activity factor. For men: BMR = 10×weight(kg) + 6.25×height(cm) − 5×age + 5. For women: BMR = 10×weight + 6.25×height − 5×age − 161. Your TDEE is BMR × activity multiplier (1.2 to 1.9)."}},{"@type":"Question","name":"Are African foods nutritious enough for weight loss?","acceptedAnswer":{"@type":"Answer","text":"Absolutely. Many traditional African foods are excellent for weight management. Foods like ugali and fufu are high in complex carbohydrates for sustained energy. Soups like egusi and groundnut soup are rich in protein and healthy fats. Vegetables like sukuma wiki and efo riro are nutrient-dense and low-calorie. The key is portion control — traditional African portions are often generous. The challenge is the high use of palm oil and refined starches in some dishes."}},{"@type":"Question","name":"Can I follow this meal plan if I have diabetes?","acceptedAnswer":{"@type":"Answer","text":"The diabetes management plan reduces simple carbohydrates and increases fibre-rich foods, protein, and vegetables. However, everyone's blood sugar response is different. Always consult your doctor or a dietitian before changing your diet if you have diabetes. Monitor blood glucose carefully when changing eating patterns. Traditional foods like bitter leaf, garden egg (eggplant), and African star apple have been studied for blood sugar benefits in African contexts."}},{"@type":"Question","name":"Why doesn't this include Western foods like rice and pasta?","acceptedAnswer":{"@type":"Answer","text":"This tool focuses specifically on locally available African foods for cultural relevance, affordability, and availability. Eating local foods is often more sustainable, cheaper, and nutritionally appropriate for the local climate and activity levels. That said, rice (especially ofada and local varieties), which appears in the Nigeria plan, is widely eaten and nutritionally comparable to imported varieties. Many African cuisines already incorporate global influences in their traditional recipes."}}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/african-meal-plan/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/african-meal-plan/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/plan-repas-africain/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/mpango-wa-milo-afrika/">
+<link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/abincin-afirka/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/african-meal-plan/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar theme="light" active="health"></afro-navbar>
+
+<section class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="/">Home</a> › <a href="/health/">Health</a> › <span>African Meal Plan</span></div>
+    <h1>African <em>Meal Plan</em> & Nutrition Tracker</h1>
+    <p class="hero-sub">Get a personalised 7-day meal plan using real African foods — jollof rice, ugali, injera, nyama choma and more. Includes calorie targets, macro breakdown, and a shopping list.</p>
+    <div class="hero-badges">
+      <span class="badge">🍽️ 7-Day Plans</span>
+      <span class="badge">🌍 6 Countries</span>
+      <span class="badge">🆓 Always Free</span>
+      <span class="badge">📊 Macro Tracking</span>
+    </div>
+  </div>
+</section>
+
+<section class="tool-main">
+  <div class="tool-main-inner">
+    <!-- LEFT: Inputs -->
+    <div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon">📝</div>
+          <span class="card-title">Your Profile</span>
+        </div>
+        <div class="card-body">
+          <div class="row2">
+            <div class="field">
+              <label for="mp-country">Country / Cuisine</label>
+              <select id="mp-country">
+                <option value="NG">🇳🇬 Nigeria</option>
+                <option value="KE">🇰🇪 Kenya</option>
+                <option value="GH">🇬🇭 Ghana</option>
+                <option value="ZA">🇿🇦 South Africa</option>
+                <option value="ET">🇪🇹 Ethiopia</option>
+                <option value="EG">🇪🇬 Egypt</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="mp-goal">Health Goal</label>
+              <select id="mp-goal">
+                <option value="balanced">Balanced Diet</option>
+                <option value="loss">Weight Loss</option>
+                <option value="gain">Muscle Gain</option>
+                <option value="diabetes">Diabetes Management</option>
+              </select>
+            </div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="mp-age">Age (years)</label>
+              <input type="number" id="mp-age" value="30" min="15" max="80">
+            </div>
+            <div class="field">
+              <label>Gender</label>
+              <div class="toggle-group">
+                <button type="button" class="toggle-btn active" onclick="setGender('male',this)">Male</button>
+                <button type="button" class="toggle-btn" onclick="setGender('female',this)">Female</button>
+              </div>
+            </div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="mp-weight">Weight (kg)</label>
+              <input type="number" id="mp-weight" value="70" min="30" max="200">
+            </div>
+            <div class="field">
+              <label for="mp-height">Height (cm)</label>
+              <input type="number" id="mp-height" value="170" min="100" max="230">
+            </div>
+          </div>
+          <div class="field">
+            <label for="mp-activity">Activity Level</label>
+            <select id="mp-activity">
+              <option value="1.2">Sedentary (desk job, little exercise)</option>
+              <option value="1.375">Lightly Active (1–3 days/week exercise)</option>
+              <option value="1.55" selected>Moderately Active (3–5 days/week)</option>
+              <option value="1.725">Very Active (6–7 days/week hard exercise)</option>
+              <option value="1.9">Extra Active (physical job + daily training)</option>
+            </select>
+          </div>
+
+          <div class="disclaimer">
+            <strong>⚠️ Health Disclaimer</strong> This tool is for educational purposes. Consult a registered dietitian or doctor before making significant dietary changes, especially if you have a medical condition.
+          </div>
+          <button type="button" class="btn btn-primary" onclick="generateMealPlan()">Generate My 7-Day Meal Plan →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Results -->
+    <div class="results-section" id="mp-results">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon">📊</div>
+          <span class="card-title">Your Daily Targets</span>
+        </div>
+        <div class="card-body">
+          <div class="tdee-grid">
+            <div class="tdee-box"><div class="tv" id="res-tdee">—</div><div class="tl">Daily Calories</div></div>
+            <div class="tdee-box"><div class="tv" id="res-bmr">—</div><div class="tl">BMR (base)</div></div>
+            <div class="tdee-box"><div class="tv" id="res-bmi">—</div><div class="tl">BMI</div></div>
+          </div>
+          <div class="macro-bars">
+            <div class="macro-row">
+              <div class="macro-label"><span>🌾 Carbohydrates</span><span id="res-carb-g">—g</span></div>
+              <div class="macro-bar"><div class="macro-fill fill-carb" id="bar-carb" style="width:0%"></div></div>
+            </div>
+            <div class="macro-row">
+              <div class="macro-label"><span>🥩 Protein</span><span id="res-prot-g">—g</span></div>
+              <div class="macro-bar"><div class="macro-fill fill-prot" id="bar-prot" style="width:0%"></div></div>
+            </div>
+            <div class="macro-row">
+              <div class="macro-label"><span>🥑 Fat</span><span id="res-fat-g">—g</span></div>
+              <div class="macro-bar"><div class="macro-fill fill-fat" id="bar-fat" style="width:0%"></div></div>
+            </div>
+          </div>
+          <div id="res-goal-note" style="font-size:.78rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:7px;padding:10px 12px;color:#475569;line-height:1.6"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon">🍽️</div>
+          <span class="card-title">7-Day Meal Plan</span>
+        </div>
+        <div class="card-body">
+          <div class="day-tabs" id="day-tabs"></div>
+          <div id="day-meals"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon">🛒</div>
+          <span class="card-title">Weekly Shopping List</span>
+        </div>
+        <div class="card-body">
+          <div class="shop-section" id="shop-list"></div>
+          <button type="button" class="btn btn-secondary" onclick="printShoppingList()">🖨️ Print Shopping List</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Placeholder before generation -->
+    <div id="mp-placeholder" style="display:flex;align-items:center;justify-content:center;min-height:300px">
+      <div style="text-align:center;color:#94a3b8">
+        <div style="font-size:3rem;margin-bottom:12px">🍽️</div>
+        <div style="font-size:.88rem;font-weight:600">Fill in your profile and click<br>Generate My 7-Day Meal Plan</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+<div class="faq-wrap">
+  <h2>Frequently Asked Questions</h2>
+  <details class="faq-item">
+    <summary>What is TDEE and how is it calculated?</summary>
+    <p>TDEE (Total Daily Energy Expenditure) is the total number of calories your body burns in a day. It's calculated using the Mifflin-St Jeor formula to find your BMR (Basal Metabolic Rate — calories burned at rest), then multiplied by an activity factor. For men: BMR = 10×weight(kg) + 6.25×height(cm) − 5×age + 5. For women: BMR = 10×weight + 6.25×height − 5×age − 161. Your TDEE is BMR × activity multiplier (1.2 to 1.9).</p>
+  </details>
+  <details class="faq-item">
+    <summary>Are African foods nutritious enough for weight loss?</summary>
+    <p>Absolutely. Many traditional African foods are excellent for weight management. Foods like ugali and fufu are high in complex carbohydrates for sustained energy. Soups like egusi and groundnut soup are rich in protein and healthy fats. Vegetables like sukuma wiki and efo riro are nutrient-dense and low-calorie. The key is portion control — traditional African portions are often generous. The challenge is the high use of palm oil and refined starches in some dishes.</p>
+  </details>
+  <details class="faq-item">
+    <summary>Can I follow this meal plan if I have diabetes?</summary>
+    <p>The diabetes management plan reduces simple carbohydrates and increases fibre-rich foods, protein, and vegetables. However, everyone's blood sugar response is different. Always consult your doctor or a dietitian before changing your diet if you have diabetes. Monitor blood glucose carefully when changing eating patterns. Traditional foods like bitter leaf, garden egg (eggplant), and African star apple have been studied for blood sugar benefits in African contexts.</p>
+  </details>
+  <details class="faq-item">
+    <summary>Why doesn't this include Western foods like rice and pasta?</summary>
+    <p>This tool focuses specifically on locally available African foods for cultural relevance, affordability, and availability. Eating local foods is often more sustainable, cheaper, and nutritionally appropriate for the local climate and activity levels. That said, rice (especially ofada and local varieties), which appears in the Nigeria plan, is widely eaten and nutritionally comparable to imported varieties. Many African cuisines already incorporate global influences in their traditional recipes.</p>
+  </details>
+</div>
+
+<!-- HEALTH-DEEP-IMPROVEMENT:START -->
+<section class="health-deep" aria-labelledby="health-deep-title">
+<span class="health-deep-kicker">Deep Review - 27 April 2026</span>
+<h2 id="health-deep-title">Use African Meal Plan Generator in a safer care workflow</h2>
+<p class="health-deep-lead">These apps are strongest when they translate local foods and everyday activity into a practical plan the user can repeat for a week.</p>
+<div class="health-deep-grid">
+<div class="health-deep-block"><h3>Use It To Decide</h3><ul><li>Whether the meal, budget, or activity plan matches a realistic daily routine</li><li>Which local foods can improve protein, fibre, hydration, or calorie balance</li><li>Whether a paid gym or home routine gives the better habit loop</li></ul></div>
+<div class="health-deep-block"><h3>Better Workflow</h3><ul><li>Pick foods the household actually eats</li><li>Adjust targets for pregnancy, illness, hard labour, or clinician advice</li><li>Review progress weekly instead of chasing a perfect single day</li></ul></div>
+<div class="health-deep-block warning"><h3>Do Not Ignore</h3><ul><li>Very low calorie targets</li><li>Rapid weight loss plans during pregnancy or illness</li><li>Exercise with chest pain, fainting, severe breathlessness, or injury</li></ul></div>
+</div>
+<div class="health-source-row">
+<div><span>Official Context</span><div class="health-source-links"><a href="https://www.who.int/news-room/fact-sheets/detail/healthy-diet">WHO healthy diet</a><a href="https://www.who.int/news-room/fact-sheets/detail/physical-activity">WHO physical activity</a><a href="https://www.who.int/health-topics/breastfeeding">WHO breastfeeding</a></div></div>
+<div><span>Related AfroTools</span><div class="health-source-links internal"><a href="/health/calorie-counter/">Calorie Counter (African Foods)</a><a href="/tools/african-meal-plan/">African Meal Plan Generator</a><a href="/tools/home-workout/">Home Workout Calorie Burner</a><a href="/tools/gym-cost-compare/">Gym Membership Cost Comparator</a></div></div>
+</div>
+</section>
+<!-- HEALTH-DEEP-IMPROVEMENT:END -->
+<!-- HEALTH-COMPLETE-PACKAGE:START -->
+<section class="health-action-kit" data-health-tool-id="african-meal-plan" data-health-tool-name="African Meal Plan Generator" data-health-href="/tools/african-meal-plan/" data-health-bucket="nutrition" data-health-journey="nutrition" data-health-source-name="WHO healthy diet" data-health-source-url="https://www.who.int/news-room/fact-sheets/detail/healthy-diet" data-health-competitor="Cronometer and meal planner apps" data-health-feature="Meal planners work best with nutrient prompts and realistic weekly routines." aria-labelledby="health-action-title-african-meal-plan">
+<span class="health-action-kicker">Complete package upgrade</span>
+<h2 id="health-action-title-african-meal-plan">African Meal Plan Generator: save, export, and continue the workflow</h2>
+<p>This app now has its own benchmarked improvement layer, dashboard handoff, email-gated PDF plan, and a route into the Nutrition and activity plan workflow.</p>
+<div class="health-action-grid">
+<div class="health-action-card">
+<h3>Competitor feature checked</h3>
+<p><strong>Cronometer and meal planner apps</strong>: Meal planners work best with nutrient prompts and realistic weekly routines.</p>
+<p><strong>Implemented here:</strong> Added nutrition workflow save/PDF actions and local-plate checklist.</p>
+<p><a href="https://www.who.int/news-room/fact-sheets/detail/healthy-diet" rel="noopener" target="_blank">WHO healthy diet</a></p>
+</div>
+<div class="health-action-card">
+<h3>Dashboard and PDF actions</h3>
+<ul>
+<li>Save this health plan to the dashboard workspace on this device.</li>
+<li>Unlock a PDF version through the Health email gate for follow-up and visit prep.</li>
+<li>Signed-in sessions attempt account workspace sync when the shared workspace API is available.</li>
+</ul>
+<div class="health-action-buttons">
+<button type="button" class="health-workflow-btn" data-health-action="save" data-health-tool-id="african-meal-plan">Save to dashboard</button>
+<button type="button" class="health-workflow-btn secondary" data-health-action="pdf" data-health-tool-id="african-meal-plan">Get PDF plan</button>
+</div>
+</div>
+</div>
+<div class="health-action-card" style="margin-top:1rem">
+<h3>Continue in Nutrition and activity plan</h3>
+<div class="health-action-links">
+<a href="/health/calorie-counter/">Open workflow hub</a>
+<a href="/health/calorie-counter/">Calorie Counter (African Foods)</a><a href="/tools/home-workout/">Home Workout Calorie Burner</a><a href="/tools/gym-cost-compare/">Gym Membership Cost Comparator</a>
+</div>
+</div>
+</section>
+<!-- HEALTH-COMPLETE-PACKAGE:END -->
+<afro-related-tools data-ssr="1" category="health" current="african-meal-plan">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/medical-report/" data-related-tool data-id="medical-report" data-name="Medical Report Interpreter" data-category="health" data-icon="MR" data-desc="Upload or paste lab results and get plain-English explanations for CBC, lipid, liver, kidney, thyroid, and diabetes mark">Medical Report Interpreter</a></li><li><a href="/tools/genotype-checker/" data-related-tool data-id="genotype-checker" data-name="Genotype Compatibility Checker" data-category="health" data-icon="GC" data-desc="Full pre-marriage genotype and blood group compatibility check. Sickle cell Punnett square, Rh factor incompatibility, b">Genotype Compatibility Checker</a></li><li><a href="/tools/childbirth-cost/" data-related-tool data-id="childbirth-cost" data-name="Childbirth Cost Calculator" data-category="health" data-icon="CC" data-desc="Compare delivery costs across public hospitals, private clinics, and premium facilities in Nigeria, Kenya, South Africa,">Childbirth Cost Calculator</a></li><li><a href="/tools/drug-price-compare/" data-related-tool data-id="drug-price-compare" data-name="Drug/Medicine Price Comparator" data-category="health" data-icon="DM" data-desc="Compare brand vs generic medicine prices across African countries. See savings on antimalarials, antibiotics, diabetes, ">Drug/Medicine Price Comparator</a></li><li><a href="/tools/blood-group/" data-related-tool data-id="blood-group" data-name="Blood Group Compatibility Checker" data-category="health" data-icon="BG" data-desc="Check blood transfusion compatibility (donor/recipient) and pregnancy Rh incompatibility. Includes African blood group f">Blood Group Compatibility Checker</a></li><li><a href="/tools/csection-vs-natural/" data-related-tool data-id="csection-vs-natural" data-name="C-Section vs Natural Birth Cost" data-category="health" data-icon="CS" data-desc="Side-by-side cost and recovery comparison between C-section and natural birth across 4 African countries. Includes WHO r">C-Section vs Natural Birth Cost</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+var selectedGender = 'male';
+var currentDay = 0;
+var currentPlan = [];
+
+function setGender(val, btn) {
+  selectedGender = val;
+  var btns = btn.parentNode.querySelectorAll('.toggle-btn');
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+  btn.classList.add('active');
+}
+
+var AFRICAN_FOODS = {
+  NG: [
+    {name:'Jollof Rice', cat:'Grains', cal:206, prot:4, carb:44, fat:2, portion:'200g serving'},
+    {name:'Egusi Soup', cat:'Soups', cal:160, prot:8, carb:6, fat:12, portion:'150g bowl'},
+    {name:'Suya (Skewered Beef)', cat:'Protein', cal:220, prot:26, carb:2, fat:12, portion:'100g skewer'},
+    {name:'Moin Moin (Bean Pudding)', cat:'Protein', cal:130, prot:9, carb:14, fat:4, portion:'150g wrap'},
+    {name:'Ogi / Akamu (Pap)', cat:'Grains', cal:65, prot:2, carb:14, fat:0.5, portion:'250ml bowl'},
+    {name:'Boiled Yam', cat:'Grains', cal:118, prot:1.5, carb:28, fat:0.1, portion:'200g slice'},
+    {name:'Fried Plantain (Dodo)', cat:'Grains', cal:237, prot:1, carb:38, fat:10, portion:'150g plate'},
+    {name:'Ofada Rice & Ayamase', cat:'Grains', cal:230, prot:5, carb:43, fat:5, portion:'200g'},
+    {name:'Efo Riro (Spinach Stew)', cat:'Vegetables', cal:90, prot:5, carb:8, fat:5, portion:'150g bowl'},
+    {name:'Banga Soup (Palm Nut)', cat:'Soups', cal:180, prot:10, carb:8, fat:14, portion:'150g bowl'},
+    {name:'Akara (Bean Cakes)', cat:'Protein', cal:170, prot:8, carb:18, fat:7, portion:'3 pieces'},
+    {name:'Ogbono Soup', cat:'Soups', cal:155, prot:9, carb:5, fat:12, portion:'150g bowl'},
+    {name:'Eba (Garri Swallow)', cat:'Grains', cal:195, prot:2, carb:46, fat:0.3, portion:'200g ball'},
+    {name:'Catfish Pepper Soup', cat:'Protein', cal:120, prot:22, carb:3, fat:4, portion:'200g bowl'},
+    {name:'African Salad (Abacha)', cat:'Vegetables', cal:140, prot:4, carb:25, fat:5, portion:'150g plate'},
+    {name:'Zobo Drink (Hibiscus)', cat:'Drinks', cal:30, prot:0.2, carb:7, fat:0, portion:'300ml cup'}
+  ],
+  KE: [
+    {name:'Ugali (Maize Porridge)', cat:'Grains', cal:160, prot:2, carb:36, fat:0.5, portion:'200g'},
+    {name:'Nyama Choma (Roast Meat)', cat:'Protein', cal:250, prot:28, carb:0, fat:15, portion:'150g'},
+    {name:'Sukuma Wiki (Kale)', cat:'Vegetables', cal:30, prot:2, carb:5, fat:0.5, portion:'100g'},
+    {name:'Githeri (Maize & Beans)', cat:'Grains', cal:140, prot:8, carb:26, fat:1, portion:'200g'},
+    {name:'Pilau (Spiced Rice)', cat:'Grains', cal:190, prot:12, carb:28, fat:4, portion:'200g'},
+    {name:'Mukimo (Mashed Greens)', cat:'Vegetables', cal:110, prot:3, carb:22, fat:1.5, portion:'200g'},
+    {name:'Irio (Peas & Potato Mash)', cat:'Vegetables', cal:130, prot:4, carb:26, fat:1, portion:'200g'},
+    {name:'Mandazi (Fried Bread)', cat:'Grains', cal:280, prot:5, carb:42, fat:10, portion:'2 pieces'},
+    {name:'Matumbo (Tripe Stew)', cat:'Protein', cal:180, prot:20, carb:5, fat:9, portion:'150g'},
+    {name:'Tilapia Fish (Grilled)', cat:'Protein', cal:128, prot:26, carb:0, fat:3, portion:'150g'},
+    {name:'Maharagwe (Kidney Beans)', cat:'Protein', cal:127, prot:9, carb:22, fat:0.5, portion:'150g'},
+    {name:'Chapati', cat:'Grains', cal:220, prot:5, carb:36, fat:7, portion:'1 piece'},
+    {name:'Wali wa Nazi (Coconut Rice)', cat:'Grains', cal:230, prot:3, carb:44, fat:5, portion:'200g'},
+    {name:'Kunde (Black-eyed Peas)', cat:'Protein', cal:115, prot:8, carb:20, fat:0.5, portion:'150g'},
+    {name:'Mutura (Blood Sausage)', cat:'Protein', cal:210, prot:16, carb:4, fat:15, portion:'100g'}
+  ],
+  GH: [
+    {name:'Jollof Rice (Ghana style)', cat:'Grains', cal:210, prot:4, carb:45, fat:2.5, portion:'200g'},
+    {name:'Banku with Tilapia', cat:'Grains', cal:180, prot:15, carb:32, fat:3, portion:'200g'},
+    {name:'Fufu with Light Soup', cat:'Grains', cal:220, prot:5, carb:48, fat:2, portion:'200g ball'},
+    {name:'Kenkey (Fermented Corn)', cat:'Grains', cal:175, prot:3, carb:38, fat:1.5, portion:'200g'},
+    {name:'Groundnut Soup', cat:'Soups', cal:200, prot:10, carb:8, fat:16, portion:'150g bowl'},
+    {name:'Kontomire Stew (Cocoyam Leaves)', cat:'Vegetables', cal:80, prot:4, carb:8, fat:4, portion:'150g'},
+    {name:'Waakye (Rice & Beans)', cat:'Grains', cal:175, prot:7, carb:33, fat:2, portion:'200g'},
+    {name:'Kelewele (Spiced Plantain)', cat:'Grains', cal:200, prot:1.5, carb:35, fat:8, portion:'150g'},
+    {name:'Red Red (Bean Stew)', cat:'Protein', cal:160, prot:8, carb:22, fat:5, portion:'200g'},
+    {name:'Grilled Tilapia', cat:'Protein', cal:128, prot:26, carb:0, fat:3, portion:'150g'},
+    {name:'Omo Tuo (Rice Balls)', cat:'Grains', cal:190, prot:3, carb:42, fat:0.8, portion:'200g'},
+    {name:'Palava Sauce (Cocoyam Leaves)', cat:'Vegetables', cal:90, prot:5, carb:7, fat:5, portion:'150g'},
+    {name:'Tom Brown (Roasted Corn Porridge)', cat:'Grains', cal:140, prot:4, carb:28, fat:2, portion:'250ml bowl'},
+    {name:'Abenkwan (Palm Nut Soup)', cat:'Soups', cal:185, prot:11, carb:7, fat:15, portion:'150g'},
+    {name:'Kaklo (Fried Plantain Balls)', cat:'Grains', cal:220, prot:1.5, carb:36, fat:9, portion:'3 pieces'}
+  ],
+  ZA: [
+    {name:'Pap (Maize Meal Porridge)', cat:'Grains', cal:160, prot:2.5, carb:35, fat:0.8, portion:'200g'},
+    {name:'Chakalaka (Spiced Vegetable Relish)', cat:'Vegetables', cal:60, prot:2, carb:10, fat:2, portion:'100g'},
+    {name:'Braai (BBQ Mixed Meat)', cat:'Protein', cal:260, prot:27, carb:0, fat:17, portion:'150g'},
+    {name:'Boerewors (Beef Sausage)', cat:'Protein', cal:300, prot:18, carb:2, fat:24, portion:'100g'},
+    {name:'Umngqusho (Samp & Beans)', cat:'Grains', cal:180, prot:8, carb:32, fat:2, portion:'200g'},
+    {name:'Morogo (Wild Spinach)', cat:'Vegetables', cal:25, prot:2.5, carb:3, fat:0.3, portion:'100g'},
+    {name:'Amadumbe (Taro Root)', cat:'Grains', cal:112, prot:1.5, carb:26, fat:0.2, portion:'150g'},
+    {name:'Bobotie (Spiced Mince)', cat:'Protein', cal:230, prot:20, carb:12, fat:12, portion:'150g'},
+    {name:'Vetkoek (Fried Bread)', cat:'Grains', cal:290, prot:6, carb:44, fat:10, portion:'1 piece'},
+    {name:'Umleqwa (Free-range Chicken)', cat:'Protein', cal:165, prot:25, carb:0, fat:7, portion:'150g'},
+    {name:'Isophi (Vegetable Soup)', cat:'Soups', cal:70, prot:3, carb:12, fat:1, portion:'250ml'},
+    {name:'Inkobe (Boiled Corn & Beans)', cat:'Grains', cal:155, prot:7, carb:28, fat:1.5, portion:'200g'},
+    {name:'Potjie (Slow-cooked Stew)', cat:'Protein', cal:200, prot:18, carb:15, fat:8, portion:'200g'},
+    {name:'Melktert (Milk Tart)', cat:'Treats', cal:260, prot:5, carb:36, fat:11, portion:'1 slice'},
+    {name:'Masonja (Mopane Worms)', cat:'Protein', cal:165, prot:22, carb:5, fat:7, portion:'50g dry'}
+  ],
+  ET: [
+    {name:'Injera (Sourdough Flatbread)', cat:'Grains', cal:90, prot:3, carb:18, fat:0.8, portion:'1 large piece'},
+    {name:'Doro Wat (Chicken Stew)', cat:'Protein', cal:210, prot:22, carb:8, fat:11, portion:'150g'},
+    {name:'Misir Wat (Red Lentil Stew)', cat:'Protein', cal:130, prot:9, carb:20, fat:3, portion:'150g'},
+    {name:'Tibs (Sautéed Meat)', cat:'Protein', cal:220, prot:25, carb:3, fat:12, portion:'150g'},
+    {name:'Shiro (Chickpea Powder Stew)', cat:'Protein', cal:140, prot:8, carb:18, fat:4, portion:'150g'},
+    {name:'Gomen (Collard Greens)', cat:'Vegetables', cal:35, prot:2.5, carb:5, fat:1, portion:'100g'},
+    {name:'Kitfo (Minced Raw Beef)', cat:'Protein', cal:200, prot:24, carb:0, fat:12, portion:'100g'},
+    {name:'Atakilt Wat (Potato & Carrot)', cat:'Vegetables', cal:90, prot:2, carb:18, fat:2, portion:'150g'},
+    {name:'Firfir (Torn Injera in Sauce)', cat:'Grains', cal:120, prot:4, carb:22, fat:3, portion:'200g'},
+    {name:'Azifa (Green Lentil Salad)', cat:'Protein', cal:110, prot:8, carb:17, fat:1.5, portion:'150g'},
+    {name:'Genfo (Barley Porridge)', cat:'Grains', cal:155, prot:5, carb:32, fat:1.5, portion:'200g'},
+    {name:'Tej (Honey Wine)', cat:'Drinks', cal:100, prot:0.2, carb:18, fat:0, portion:'150ml'},
+    {name:'Quanta Firfir (Dried Beef)', cat:'Protein', cal:180, prot:22, carb:5, fat:8, portion:'100g'},
+    {name:'Kategna (Toasted Injera with Butter)', cat:'Grains', cal:140, prot:3, carb:24, fat:5, portion:'2 pieces'},
+    {name:'Fossolia (Green Bean Stew)', cat:'Vegetables', cal:65, prot:2, carb:11, fat:2, portion:'150g'}
+  ],
+  EG: [
+    {name:'Koshari (Rice, Lentil & Pasta)', cat:'Grains', cal:210, prot:8, carb:42, fat:2, portion:'250g'},
+    {name:'Ful Medames (Fava Beans)', cat:'Protein', cal:150, prot:10, carb:25, fat:2, portion:'200g'},
+    {name:'Ta\'meya (Egyptian Falafel)', cat:'Protein', cal:200, prot:8, carb:22, fat:10, portion:'4 pieces'},
+    {name:'Molokhia (Jute Leaf Soup)', cat:'Vegetables', cal:45, prot:3, carb:7, fat:0.8, portion:'200ml'},
+    {name:'Kofta (Grilled Mince)', cat:'Protein', cal:230, prot:22, carb:5, fat:14, portion:'150g'},
+    {name:'Om Ali (Bread Pudding)', cat:'Treats', cal:350, prot:8, carb:48, fat:14, portion:'150g'},
+    {name:'Shakshuka (Eggs in Tomato)', cat:'Protein', cal:160, prot:12, carb:10, fat:9, portion:'200g'},
+    {name:'Feteer Meshaltet (Layered Bread)', cat:'Grains', cal:320, prot:7, carb:44, fat:13, portion:'2 pieces'},
+    {name:'Grilled Hamour (Fish)', cat:'Protein', cal:110, prot:23, carb:0, fat:2, portion:'150g'},
+    {name:'Bamia (Okra Stew)', cat:'Vegetables', cal:80, prot:4, carb:12, fat:2, portion:'150g'},
+    {name:'Macarona Bechamel (Pasta Bake)', cat:'Grains', cal:280, prot:14, carb:36, fat:9, portion:'200g'},
+    {name:'Hawawshi (Spiced Meat Bread)', cat:'Protein', cal:290, prot:18, carb:30, fat:11, portion:'1 piece'},
+    {name:'Rice with Butter & Vermicelli', cat:'Grains', cal:195, prot:3, carb:40, fat:4, portion:'200g'},
+    {name:'Salata Baladi (Tomato Salad)', cat:'Vegetables', cal:35, prot:1, carb:7, fat:0.5, portion:'150g'},
+    {name:'Baba Ghanoush', cat:'Vegetables', cal:90, prot:2, carb:12, fat:4, portion:'100g'}
+  ]
+};
+
+var GOAL_MACROS = {
+  balanced: {carb:0.5, prot:0.25, fat:0.25, calAdj:0, note:'Your plan maintains a balanced 50/25/25 carb/protein/fat split using local African foods. Focus on variety across the week.'},
+  loss: {carb:0.4, prot:0.35, fat:0.25, calAdj:-500, note:'Weight loss plan reduces daily calories by 500kcal (safe rate: 0.5kg/week). Higher protein (35%) helps preserve muscle while losing fat.'},
+  gain: {carb:0.45, prot:0.35, fat:0.2, calAdj:300, note:'Muscle gain plan adds 300kcal above maintenance with high protein (35%). Focus on post-workout meals with protein-rich African foods.'},
+  diabetes: {carb:0.35, prot:0.35, fat:0.3, calAdj:-200, note:'Diabetes plan reduces carbohydrates to 35%, increases protein and healthy fats. Prioritises low-glycaemic local foods like legumes and leafy vegetables.'}
+};
+
+var DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+var MEALS = ['Breakfast','Mid-Morning Snack','Lunch','Afternoon Snack','Dinner'];
+
+function generateMealPlan() {
+  var age = parseInt(document.getElementById('mp-age').value) || 30;
+  var weight = parseFloat(document.getElementById('mp-weight').value) || 70;
+  var height = parseFloat(document.getElementById('mp-height').value) || 170;
+  var activity = parseFloat(document.getElementById('mp-activity').value) || 1.55;
+  var goal = document.getElementById('mp-goal').value;
+  var country = document.getElementById('mp-country').value;
+
+  // Mifflin-St Jeor BMR
+  var bmr;
+  if (selectedGender === 'male') {
+    bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+  } else {
+    bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+  }
+  var tdee = Math.round(bmr * activity);
+  var bmi = (weight / ((height / 100) * (height / 100))).toFixed(1);
+
+  var gm = GOAL_MACROS[goal];
+  var targetCal = Math.max(1200, tdee + gm.calAdj);
+  var carbG = Math.round((targetCal * gm.carb) / 4);
+  var protG = Math.round((targetCal * gm.prot) / 4);
+  var fatG = Math.round((targetCal * gm.fat) / 9);
+
+  document.getElementById('res-tdee').textContent = targetCal + ' kcal';
+  document.getElementById('res-bmr').textContent = Math.round(bmr) + ' kcal';
+  document.getElementById('res-bmi').textContent = bmi;
+  document.getElementById('res-carb-g').textContent = carbG + 'g';
+  document.getElementById('res-prot-g').textContent = protG + 'g';
+  document.getElementById('res-fat-g').textContent = fatG + 'g';
+
+  document.getElementById('bar-carb').style.width = Math.round(gm.carb * 100) + '%';
+  document.getElementById('bar-prot').style.width = Math.round(gm.prot * 100) + '%';
+  document.getElementById('bar-fat').style.width = Math.round(gm.fat * 100) + '%';
+  document.getElementById('res-goal-note').innerHTML = '<strong>Plan note:</strong> ' + gm.note;
+
+  // Build 7-day plan
+  var foods = AFRICAN_FOODS[country];
+  currentPlan = [];
+  for (var d = 0; d < 7; d++) {
+    var dayMeals = [];
+    var usedIdxs = [];
+    var mealCals = [Math.round(targetCal*0.25), Math.round(targetCal*0.1), Math.round(targetCal*0.35), Math.round(targetCal*0.1), Math.round(targetCal*0.2)];
+    for (var m = 0; m < 5; m++) {
+      var best = null, bestDiff = 99999;
+      for (var f = 0; f < foods.length; f++) {
+        if (usedIdxs.indexOf(f) !== -1) continue;
+        var diff = Math.abs(foods[f].cal - mealCals[m] / 2);
+        if (diff < bestDiff) { bestDiff = diff; best = f; }
+      }
+      if (best === null) best = d % foods.length;
+      usedIdxs.push(best);
+      dayMeals.push({meal: MEALS[m], food: foods[best]});
+    }
+    currentPlan.push(dayMeals);
+  }
+
+  // Render day tabs
+  var tabsEl = document.getElementById('day-tabs');
+  tabsEl.innerHTML = '';
+  for (var i = 0; i < 7; i++) {
+    (function(idx){
+      var btn = document.createElement('button');
+      btn.className = 'day-tab' + (idx === 0 ? ' active' : '');
+      btn.textContent = DAYS[idx].substring(0,3);
+      btn.onclick = function(){
+        currentDay = idx;
+        document.querySelectorAll('.day-tab').forEach(function(b,j){b.classList.toggle('active', j===idx)});
+        renderDayMeals(idx);
+      };
+      tabsEl.appendChild(btn);
+    })(i);
+  }
+  currentDay = 0;
+  renderDayMeals(0);
+  buildShoppingList(country);
+
+  document.getElementById('mp-results').classList.add('visible');
+  document.getElementById('mp-placeholder').style.display = 'none';
+  document.getElementById('mp-results').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function renderDayMeals(dayIdx) {
+  var el = document.getElementById('day-meals');
+  var meals = currentPlan[dayIdx];
+  var html = '';
+  for (var i = 0; i < meals.length; i++) {
+    var m = meals[i];
+    var f = m.food;
+    html += '<div class="meal-card">';
+    html += '<div class="meal-time">' + m.meal + '</div>';
+    html += '<div class="meal-name">' + f.name + '</div>';
+    html += '<div class="meal-portion">' + f.portion + '</div>';
+    html += '<div class="meal-macros">';
+    html += '<span class="mm mm-cal">' + f.cal + ' kcal</span>';
+    html += '<span class="mm mm-prot">' + f.prot + 'g protein</span>';
+    html += '<span class="mm mm-carb">' + f.carb + 'g carbs</span>';
+    html += '<span class="mm mm-fat">' + f.fat + 'g fat</span>';
+    html += '</div></div>';
+  }
+  el.innerHTML = html;
+}
+
+function buildShoppingList(country) {
+  var allFoods = {};
+  for (var d = 0; d < currentPlan.length; d++) {
+    for (var m = 0; m < currentPlan[d].length; m++) {
+      var f = currentPlan[d][m].food;
+      if (!allFoods[f.name]) allFoods[f.name] = {count: 0, cat: f.cat};
+      allFoods[f.name].count++;
+    }
+  }
+  var cats = {};
+  for (var name in allFoods) {
+    var cat = allFoods[name].cat;
+    if (!cats[cat]) cats[cat] = [];
+    cats[cat].push(name);
+  }
+  var icons = {Grains:'🌾', Protein:'🥩', Vegetables:'🥬', Soups:'🍲', Drinks:'🥤', Treats:'🍰'};
+  var html = '';
+  for (var cat in cats) {
+    html += '<div class="shop-category">';
+    html += '<div class="shop-cat-title"><span>' + (icons[cat] || '🛒') + '</span>' + cat + '</div>';
+    html += '<div class="shop-items">';
+    for (var i = 0; i < cats[cat].length; i++) {
+      html += '<span class="shop-item">' + cats[cat][i] + '</span>';
+    }
+    html += '</div></div>';
+  }
+  document.getElementById('shop-list').innerHTML = html;
+}
+
+function printShoppingList() {
+  var content = document.getElementById('shop-list').innerText;
+  var win = window.open('', '_blank');
+  win.document.write('<html><head><title>AfroTools Shopping List</title><style>body{font-family:sans-serif;padding:20px}h1{font-size:18px}pre{white-space:pre-wrap}</style></head><body><h1>AfroTools Weekly Shopping List</h1><pre>' + content + '</pre><script src="/assets/js/health-workflow.js?v=e8ad8f1d" defer><\/script></body></html>');
+  win.print();
+}
+</script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

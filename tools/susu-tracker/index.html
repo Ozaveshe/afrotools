@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>Susu / Esusu / Chama Group Tracker | AfroTools</title>
+<meta name="description" content="Track contributions, payouts, and members for rotating savings groups - Susu (Ghana), Esusu/Ajo (Nigeria), Chama (Kenya), Stokvel (South Africa).">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Susu / Savings Group Tracker | AfroTools"><meta property="og:description" content="Track rotating savings group contributions and payouts.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/susu-tracker.webp"><meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/susu-tracker/">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Susu / Savings Group Tracker | AfroTools"><meta name="twitter:description" content="Track rotating savings group contributions and payouts."><meta name="twitter:image" content="https://afrotools.com/assets/img/tools/susu-tracker.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb"><link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script><script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+:root{--afro-dark:#0f1419;--accent:#0062CC}
+.tool-hero{background:linear-gradient(135deg,#0A1628 0%,#0062CC 50%,#0063D1 100%);padding:44px 0 36px}.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#93c5fd}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}h1 em{color:#93c5fd;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}.b-em{background:rgba(147,197,253,.2);color:#93c5fd;border:1px solid rgba(147,197,253,.4)}
+.tool-main{padding:28px 0 72px}.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc;display:flex;justify-content:space-between;align-items:center}.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
+input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,98,204,.15)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}.field{margin-bottom:14px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border:none;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer}.btn-primary{background:linear-gradient(135deg,#0063D1,#0062CC);color:#fff}.btn-sm{padding:6px 12px;font-size:.72rem}
+.btn-outline{background:transparent;border:1.5px solid #cbd5e1;color:#475569}.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+.btn-block{display:block;width:100%;margin-top:18px;text-align:center;justify-content:center}
+.result-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:18px}
+.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
+.result-box .num{font-size:1.2rem;font-weight:800;color:#0062CC}.result-box .lbl{font-size:.68rem;color:#64748b;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
+.schedule-table{width:100%;border-collapse:collapse;font-size:.76rem;margin-top:10px}
+.schedule-table th,.schedule-table td{padding:8px 10px;border-bottom:1px solid #e2e8f0;text-align:left}
+.schedule-table th{background:#f8fafc;font-weight:700;font-size:.68rem;text-transform:uppercase;position:sticky;top:0}
+.schedule-table tr.current{background:#E8F2FF;font-weight:700}
+.schedule-table tr.paid{color:#94a3b8}
+.status-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.66rem;font-weight:700}
+.status-paid{background:#DBEAFE;color:#0062CC}.status-next{background:#dbeafe;color:#2563eb}.status-pending{background:#f1f5f9;color:#94a3b8}
+.rule-panel{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;margin-bottom:14px}
+.rule-panel strong{display:block;color:#0A1628;margin-bottom:4px}
+.rule-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:10px}
+.rule-card{background:#fff;border:1px solid #dbeafe;border-radius:8px;padding:10px}
+.rule-card .num{font-weight:800;color:#0062CC;font-size:1rem}
+.rule-card .lbl{font-size:.64rem;text-transform:uppercase;letter-spacing:.04em;color:#64748b;margin-top:2px}
+.card-head-actions{display:flex;gap:8px;flex-wrap:wrap}
+.sidebar .info-card{background:#E8F2FF;border:1px solid #93c5fd;border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#0A1628;margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:#0A1628;line-height:1.6}.info-card ul{padding-left:16px;margin:6px 0}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.result-grid,.rule-grid{grid-template-columns:1fr 1fr}.row3{grid-template-columns:1fr}}
+@media(max-width:520px){.result-grid,.rule-grid{grid-template-columns:1fr}}
+.mfun{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.mfun-card{padding:16px;border-radius:10px;text-align:center}
+.mfun-card.gold{background:#FFF8E7;border:1.5px solid rgba(212,168,67,.3)}
+.mfun-card.blue{background:#E8F2FF;border:1.5px solid rgba(0,98,204,.2)}
+.mfun-card.rose{background:#fff1f2;border:1.5px solid rgba(225,29,72,.2)}
+.mfun-card.green{background:#f0fdf4;border:1.5px solid #86efac}
+.mfun-emoji{font-size:2rem;margin-bottom:6px}
+.mfun-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.mfun-card.gold .mfun-title{color:#92400e}
+.mfun-card.blue .mfun-title{color:#1e40af}
+.mfun-card.rose .mfun-title{color:#be123c}
+.mfun-card.green .mfun-title{color:#166534}
+.mfun-text{font-size:.78rem;font-weight:600;color:#1e293b;line-height:1.5}
+.mfun-dyk{margin-top:16px;background:linear-gradient(135deg,#faf5ff,#f3e8ff);border:1.5px solid #c4b5fd;border-radius:12px;padding:18px}
+.mfun-dyk-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6d28d9;margin-bottom:8px}
+.mfun-dyk-text{font-size:.82rem;color:#4c1d95;line-height:1.7}
+@media(max-width:500px){.mfun{grid-template-columns:1fr}}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Susu / Esusu / Chama Group Tracker",
+  "description": "Track contributions, payouts, and members for rotating savings groups including Susu, Esusu, Ajo, Chama, Stokvel, and Tontine.",
+  "url": "https://afrotools.com/tools/susu-tracker/",
+  "inLanguage": "en",
+  "applicationCategory": "WebApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/susu-tracker.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Susu / Esusu / Chama Group Tracker",
+  "url": "https://afrotools.com/tools/susu-tracker/",
+  "description": "Track contributions, payouts, and members for rotating savings groups including Susu, Esusu, Ajo, Chama, Stokvel, and Tontine.",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/susu-tracker.webp"
+}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I decide the payout order in a Susu group? ↓","acceptedAnswer":{"@type":"Answer","text":"Common methods include random draw at the start (fairest), needs-based where members with upcoming expenses go first, auction where members bid for early positions, or rotation from the previous cycle. Whatever method you choose, agree and document it before starting."}},{"@type":"Question","name":"What if a member defaults after receiving their payout? ↓","acceptedAnswer":{"@type":"Answer","text":"This is the biggest risk with rotating savings groups. Mitigate it by only including trusted members, requiring a guarantor, holding a security deposit, using social pressure, and having a clear penalty system. Some groups require post-dated cheques or authorize mobile money deductions."}},{"@type":"Question","name":"Are Susu and savings groups regulated in Africa? ↓","acceptedAnswer":{"@type":"Answer","text":"Generally, informal ROSCAs are unregulated. In Kenya, Chama groups can register as investment groups or SACCOs for legal protection. In South Africa, the National Stokvel Association provides a framework. Registration gives legal recourse if disputes arise."}},{"@type":"Question","name":"What is the difference between Susu, Esusu, Chama, and Stokvel? ↓","acceptedAnswer":{"@type":"Answer","text":"They are all names for the same concept -- rotating savings and credit associations (ROSCAs). Susu is used in Ghana, Esusu and Ajo in Nigeria, Chama in Kenya, Stokvel in South Africa, Tontine in Francophone Africa, and Ekub in Ethiopia. Members contribute regularly and take turns receiving the pool."}}]}
+</script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Susu / Savings Group Tracker",
+      "item": "https://afrotools.com/tools/susu-tracker/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=c0a56b60">
+<script src="/assets/js/african-workflow.js?v=cf96f534" defer></script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/susu-tracker/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/susu-tracker/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kifuatiliaji-susu/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/susu-tracker/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Susu Tracker</span></div>
+<h1>Susu / Esusu / <em>Chama Tracker</em></h1>
+<p class="hero-sub">Plan and track rotating savings group contributions and payouts. Works for Susu (Ghana), Esusu/Ajo (Nigeria), Chama (Kenya), Stokvel (South Africa), and Tontine (Francophone Africa).</p>
+<div class="hero-badges"><span class="badge b-em">All Group Types</span><span class="badge b-em">Payout Schedule</span><span class="badge b-em">Offline Ready</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calculator">
+<div class="card">
+<div class="card-head"><span class="card-title">Group Setup</span></div>
+<div class="card-body">
+<div class="row field">
+<div><label for="groupType">Group Type</label>
+<select id="groupType">
+<option value="rotating">Rotating (one member receives pot each round)</option>
+<option value="fixed">Fixed Savings (all receive at end)</option>
+</select></div>
+<div><label>Currency</label>
+<select id="currency" aria-label="Currency">
+<option value="₦">₦ (Nigeria)</option>
+<option value="KSh ">KSh (Kenya)</option>
+<option value="GH₵">GH₵ (Ghana)</option>
+<option value="R ">R (South Africa)</option>
+<option value="UGX ">UGX (Uganda)</option>
+<option value="FCFA ">FCFA (West/Central Africa)</option>
+</select></div>
+</div>
+<div class="row3 field">
+<div><label>Number of Members</label><input aria-label="Members" type="number" id="members" value="10" min="2" max="50"></div>
+<div><label>Contribution per Round</label><input aria-label="Contribution" type="number" id="contribution" value="10000" min="100" step="1000"></div>
+<div><label>Frequency</label>
+<select id="frequency" aria-label="Frequency">
+<option value="weekly">Weekly</option>
+<option value="biweekly">Bi-Weekly</option>
+<option value="monthly" selected>Monthly</option>
+</select></div>
+</div>
+<div class="field" id="memberNamesField">
+<label>Member Names (comma-separated, optional)</label>
+<input aria-label="Ama, Kofi, Kwame, Adjoa, Yaw, Akua, Kweku, Aba, Kojo, Adwoa" type="text" id="memberNames" placeholder="Ama, Kofi, Kwame, Adjoa, Yaw, Akua, Kweku, Aba, Kojo, Adwoa">
+</div>
+<div class="row3 field">
+<div><label>Cycle Start Date</label><input aria-label="StartDate" type="date" id="startDate"></div>
+<div><label>Collector/Admin Fee %</label><input aria-label="CollectorFee" type="number" id="collectorFee" value="0" min="0" max="30" step="0.5"></div>
+<div><label>Reserve Fund %</label><input aria-label="ReservePct" type="number" id="reservePct" value="0" min="0" max="50" step="0.5"></div>
+</div>
+<div class="row3 field">
+<div><label>Late Grace Days</label><input aria-label="GraceDays" type="number" id="graceDays" value="3" min="0" max="30"></div>
+<div><label>Late Penalty per Miss</label><input aria-label="LatePenalty" type="number" id="latePenalty" value="0" min="0" step="100"></div>
+<div><label>Missed Payments Now</label><input aria-label="MissedPayments" type="number" id="missedPayments" value="0" min="0" max="50"></div>
+</div>
+<button type="button" class="btn btn-primary btn-block" onclick="generate()">Generate Schedule</button>
+</div></div>
+
+<div class="card" id="resultCard" style="display:none">
+<div class="card-head">
+<span class="card-title">Payout Schedule</span>
+<div class="card-head-actions"><button type="button" class="btn btn-sm btn-outline" onclick="copyGroupBrief()">Copy Brief</button><button type="button" class="btn btn-sm btn-outline" onclick="downloadCSV()">Download CSV</button></div>
+</div>
+<div class="card-body">
+<div class="result-grid" id="summaryGrid"></div>
+<div id="ruleBrief" class="rule-panel"></div>
+<table class="schedule-table" id="scheduleTable"></table>
+</div></div>
+<p id="emptyState" style="margin-top:14px;font-size:.8rem;color:#64748b;text-align:center;line-height:1.6">Enter your group details above and tap <strong>Generate Schedule</strong> to see the payout order, per-round contributions, and a shareable group brief. Your setup is saved on this device.</p>
+</div>
+
+<div class="sidebar">
+<div class="card">
+<div class="card-head"><span class="card-title">Names Across Africa</span></div>
+<div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
+<p><strong>Susu</strong> - Ghana, Liberia</p>
+<p><strong>Esusu / Ajo</strong> - Nigeria (Yoruba / Hausa)</p>
+<p><strong>Chama / Merry-Go-Round</strong> - Kenya, Tanzania</p>
+<p><strong>Stokvel</strong> - South Africa</p>
+<p><strong>Tontine</strong> - Senegal, Cameroon, Francophone Africa</p>
+<p><strong>Ekub</strong> - Ethiopia</p>
+<p><strong>Chilemba</strong> - Malawi, Zambia</p>
+<p style="margin-top:8px;font-style:italic;color:#94a3b8">Same concept, different names: members contribute regularly, and each takes turns receiving the pool.</p>
+</div></div>
+<div class="info-card">
+<h4>Best Practices</h4>
+<ul>
+<li>Keep group size at 10-15 for manageability</li>
+<li>Set clear rules on late/missed payments</li>
+<li>Decide payout order upfront (random draw or agreed)</li>
+<li>Use mobile money for transparent payments</li>
+<li>Keep written records (this tool helps!)</li>
+<li>Consider a penalty for late payment (5-10%)</li>
+</ul>
+</div>
+<div class="info-card" style="margin-top:10px">
+<h4>Why Susu Groups Work</h4>
+<p>Over 50% of African adults participate in informal savings groups. They succeed because of social accountability, zero paperwork, no interest charges, and the discipline of regular saving. Many groups have operated for decades.</p>
+</div>
+</div>
+</div></section>
+
+<section class="seo-section">
+<h2>Understanding Rotating Savings Groups in Africa</h2>
+<p>Rotating Savings and Credit Associations (ROSCAs) are one of Africa's oldest and most successful financial innovations. Known by various names - Susu in Ghana, Esusu or Ajo in Nigeria, Chama in Kenya, Stokvel in South Africa, and Tontine in Francophone Africa - these groups operate on a simple principle: members make regular, equal contributions to a common pool, and each member takes turns receiving the entire pool. With over 50% of adults in Sub-Saharan Africa participating in some form of informal savings group, ROSCAs are arguably the continent's most important financial institution.</p>
+<p>The mechanics are straightforward. If 10 members each contribute $100 monthly, the pot is $1,000 each month. One member receives the full $1,000, and over 10 months, each member will have received the pot once. Early recipients effectively receive an interest-free loan, while later recipients are effectively saving. The order of payout can be determined by lottery, auction, or mutual agreement. Some groups allow members with urgent needs to request early payout positions.</p>
+<p>In Nigeria alone, the Esusu and Ajo system moves an estimated ?4 trillion annually - rivaling formal banking for everyday Nigerians. Kenya's Chama groups collectively manage over KSh 300 billion, with some evolving into formal investment groups registered with SACCO regulators. South African Stokvels hold an estimated R50 billion, with burial stokvels and grocery stokvels being particularly popular. Ghana's Susu system is so important that the Bank of Ghana has incorporated Susu collectors into its financial inclusion strategy.</p>
+<p>Modern technology is transforming these age-old systems. Apps like ChamaPesa (Kenya), Esusu (Nigeria/USA), and various fintech platforms now offer digital tracking, mobile money integration, and even credit scoring based on group participation. However, the core trust-based, community-driven model remains unchanged - and this simple tool helps groups stay organized with clear payout schedules and records.</p>
+
+</section>
+
+<section style="max-width:800px;margin:0 auto;padding:48px 24px">
+<h2 style="font-size:1.3rem;font-weight:800;margin-bottom:16px">Frequently Asked Questions</h2>
+<details style="border:1.5px solid #e2e8f0;border-radius:10px;margin-bottom:10px;overflow:hidden" open>
+  <summary style="padding:16px 20px;font-size:.92rem;font-weight:700;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between">How do I decide the payout order in a Susu group?<span style="font-size:.8rem;color:#64748b">&#8595;</span></summary>
+  <div style="padding:0 20px 16px;font-size:.87rem;color:#64748b;line-height:1.7;border-top:1px solid #e2e8f0;padding-top:14px">Common methods include random draw at the start (fairest), needs-based where members with upcoming expenses go first, auction where members bid for early positions, or rotation from the previous cycle. Whatever method you choose, agree and document it before starting.</div>
+</details>
+<details style="border:1.5px solid #e2e8f0;border-radius:10px;margin-bottom:10px;overflow:hidden">
+  <summary style="padding:16px 20px;font-size:.92rem;font-weight:700;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between">What if a member defaults after receiving their payout?<span style="font-size:.8rem;color:#64748b">&#8595;</span></summary>
+  <div style="padding:0 20px 16px;font-size:.87rem;color:#64748b;line-height:1.7;border-top:1px solid #e2e8f0;padding-top:14px">This is the biggest risk with rotating savings groups. Mitigate it by only including trusted members, requiring a guarantor, holding a security deposit, using social pressure, and having a clear penalty system. Some groups require post-dated cheques or authorize mobile money deductions.</div>
+</details>
+<details style="border:1.5px solid #e2e8f0;border-radius:10px;margin-bottom:10px;overflow:hidden">
+  <summary style="padding:16px 20px;font-size:.92rem;font-weight:700;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between">Are Susu and savings groups regulated in Africa?<span style="font-size:.8rem;color:#64748b">&#8595;</span></summary>
+  <div style="padding:0 20px 16px;font-size:.87rem;color:#64748b;line-height:1.7;border-top:1px solid #e2e8f0;padding-top:14px">Generally, informal ROSCAs are unregulated. In Kenya, Chama groups can register as investment groups or SACCOs for legal protection. In South Africa, the National Stokvel Association provides a framework. Registration gives legal recourse if disputes arise.</div>
+</details>
+<details style="border:1.5px solid #e2e8f0;border-radius:10px;margin-bottom:10px;overflow:hidden">
+  <summary style="padding:16px 20px;font-size:.92rem;font-weight:700;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between">What is the difference between Susu, Esusu, Chama, and Stokvel?<span style="font-size:.8rem;color:#64748b">&#8595;</span></summary>
+  <div style="padding:0 20px 16px;font-size:.87rem;color:#64748b;line-height:1.7;border-top:1px solid #e2e8f0;padding-top:14px">They are all names for the same concept -- rotating savings and credit associations (ROSCAs). Susu is used in Ghana, Esusu and Ajo in Nigeria, Chama in Kenya, Stokvel in South Africa, Tontine in Francophone Africa, and Ekub in Ethiopia. Members contribute regularly and take turns receiving the pool.</div>
+</details>
+</section>
+
+<afro-related-tools category="african" current="susu-tracker" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/afropoints/" data-related-tool data-id="afropoints" data-name="AfroPoints — Earn Money Contributing Data" data-category="african" data-icon="AE" data-desc="Earn real money by sharing African market data — prices, rates, salaries, costs. Contribute, earn points, cash out via m">AfroPoints — Earn Money Contributing Data</a></li><li><a href="/tools/remittance-compare/" data-related-tool data-id="remittance-compare" data-name="Remittance Comparator" data-category="african" data-icon="RC" data-desc="Compare Wise, WorldRemit, Western Union and 8 more. Find cheapest way to send money to Africa.">Remittance Comparator</a></li><li><a href="/tools/remittance-v2/" data-related-tool data-id="remittance-v2" data-name="Remittance Comparator Pro" data-category="african" data-icon="RC" data-desc="Compare editable remittance quotes by recipient value, FX margin, fee, speed, and payout method.">Remittance Comparator Pro</a></li><li><a href="/tools/afroatlas/" data-related-tool data-id="afroatlas" data-name="AfroAtlas — Africa Resource Explorer" data-category="african" data-icon="AA" data-desc="Interactive explorer for African country profiles, GDP, natural resources, trade data, rankings, and side-by-side compar">AfroAtlas — Africa Resource Explorer</a></li><li><a href="/tools/informal-fx-watch/" data-related-tool data-id="informal-fx-watch" data-name="Informal FX Watch" data-category="african" data-icon="IF" data-desc="Track street, BDC, and P2P informal FX spreads across African markets with contributor-backed quotes.">Informal FX Watch</a></li><li><a href="/tools/africa-conflict/" data-related-tool data-id="africa-conflict" data-name="AfroConflict — Conflict Intelligence" data-category="african" data-icon="AC" data-desc="Africa conflict intelligence dashboard — active conflicts, displacement tracker, economic impact, actor networks, scenar">AfroConflict — Conflict Intelligence</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+let scheduleData=[];
+let lastGroupBrief='';
+
+function escapeHtml(value){
+  return String(value||'').replace(/[&<>"']/g,function(ch){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]);});
+}
+
+function addPeriod(start, freq, index){
+  const d=new Date(start.getTime());
+  if(freq==='weekly')d.setDate(d.getDate()+index*7);
+  else if(freq==='biweekly')d.setDate(d.getDate()+index*14);
+  else d.setMonth(d.getMonth()+index);
+  return d;
+}
+
+function fmtDate(date){
+  return date.toLocaleDateString('en',{year:'numeric',month:'short',day:'numeric'});
+}
+
+function generate(){
+  const type=document.getElementById('groupType').value;
+  const cur=document.getElementById('currency').value;
+  const n=+document.getElementById('members').value;
+  const contrib=+document.getElementById('contribution').value;
+  const freq=document.getElementById('frequency').value;
+  const namesInput=document.getElementById('memberNames').value.trim();
+  const startRaw=document.getElementById('startDate').value;
+  const startDate=startRaw?new Date(startRaw+'T00:00:00'):new Date();
+  const feePct=+document.getElementById('collectorFee').value||0;
+  const reservePct=+document.getElementById('reservePct').value||0;
+  const graceDays=+document.getElementById('graceDays').value||0;
+  const latePenalty=+document.getElementById('latePenalty').value||0;
+  const missedPayments=+document.getElementById('missedPayments').value||0;
+
+  let names=[];
+  if(namesInput){
+    names=namesInput.split(',').map(s=>s.trim()).filter(s=>s);
+  }
+  while(names.length<n)names.push('Member '+(names.length+1));
+  names=names.slice(0,n);
+
+  const potSize=contrib*n;
+  const feeAmount=potSize*feePct/100;
+  const reserveAmount=potSize*reservePct/100;
+  const netPot=Math.max(0,potSize-feeAmount-reserveAmount);
+  const defaultExposure=missedPayments*contrib;
+  const penaltyDue=missedPayments*latePenalty;
+  const totalCycles=n;
+  const freqLabel={weekly:'Week',biweekly:'Fortnight',monthly:'Month'}[freq];
+  const freqPerYear={weekly:52,biweekly:26,monthly:12}[freq];
+
+  const fmt=v=>cur+Math.round(v).toLocaleString('en');
+
+  // Summary
+  let sHtml='';
+  sHtml+=`<div class="result-box"><div class="num">${n}</div><div class="lbl">Members</div></div>`;
+  sHtml+=`<div class="result-box"><div class="num">${fmt(netPot)}</div><div class="lbl">Net Payout / Round</div></div>`;
+  sHtml+=`<div class="result-box"><div class="num">${totalCycles} ${freqLabel}s</div><div class="lbl">Full Cycle</div></div>`;
+  document.getElementById('summaryGrid').innerHTML=sHtml;
+
+  const cycleEnd=addPeriod(startDate,freq,totalCycles-1);
+  const riskLabel=missedPayments>1?'High collection risk':missedPayments===1?'Watch one missed payment':'On track';
+  lastGroupBrief='Susu group brief: '+n+' members contribute '+fmt(contrib)+' '+freq+'. Gross pot '+fmt(potSize)+', net payout '+fmt(netPot)+', reserve '+fmt(reserveAmount)+', collector/admin fee '+fmt(feeAmount)+'. Cycle starts '+fmtDate(startDate)+' and ends '+fmtDate(cycleEnd)+'. Grace period '+graceDays+' days, late penalty '+fmt(latePenalty)+'. '+riskLabel+'.';
+  document.getElementById('ruleBrief').innerHTML=
+    '<strong>Cycle readiness</strong><span>'+escapeHtml(lastGroupBrief)+'</span>'+
+    '<div class="rule-grid">'+
+    '<div class="rule-card"><div class="num">'+fmt(feeAmount)+'</div><div class="lbl">Admin fee</div></div>'+
+    '<div class="rule-card"><div class="num">'+fmt(reserveAmount)+'</div><div class="lbl">Reserve fund</div></div>'+
+    '<div class="rule-card"><div class="num">'+fmt(defaultExposure)+'</div><div class="lbl">Missed exposure</div></div>'+
+    '<div class="rule-card"><div class="num">'+fmt(penaltyDue)+'</div><div class="lbl">Penalty due</div></div>'+
+    '</div>';
+
+  // Schedule
+  scheduleData=[];
+  let tbl='<tr><th>#</th><th>Due Date</th><th>Each Pays</th><th>Net Pot</th><th>Recipient</th><th>Status</th></tr>';
+
+  if(type==='rotating'){
+    for(let i=0;i<n;i++){
+      const dueDate=fmtDate(addPeriod(startDate,freq,i));
+      const status=i===0?'next':'pending';
+      const statusHtml=i===0?'<span class="status-badge status-next">NEXT</span>':'<span class="status-badge status-pending">Pending</span>';
+      const rowClass=i===0?' class="current"':'';
+      tbl+=`<tr${rowClass}><td>${i+1}</td><td>${dueDate}</td><td>${fmt(contrib)}</td><td>${fmt(netPot)}</td><td>${escapeHtml(names[i])}</td><td>${statusHtml}</td></tr>`;
+      scheduleData.push({round:i+1,period:dueDate,contribution:contrib,pot:netPot,recipient:names[i],status});
+    }
+  } else {
+    for(let i=0;i<n;i++){
+      const dueDate=fmtDate(addPeriod(startDate,freq,i));
+      tbl+=`<tr><td>${i+1}</td><td>${dueDate}</td><td>${fmt(contrib)}</td><td>${fmt(Math.max(0,contrib*(i+1)-feeAmount-reserveAmount))}</td><td>Pool</td><td><span class="status-badge status-pending">Saving</span></td></tr>`;
+      scheduleData.push({round:i+1,period:dueDate,contribution:contrib,pot:contrib*(i+1),recipient:'Pool',status:'saving'});
+    }
+    tbl+=`<tr class="current" style="font-weight:800;background:#E8F2FF"><td></td><td>${fmtDate(cycleEnd)}</td><td></td><td>${fmt(netPot)}</td><td>All Members</td><td><span class="status-badge status-next">PAYOUT</span></td></tr>`;
+  }
+
+  // Totals
+  tbl+=`<tr style="background:#f8fafc;font-weight:700;border-top:2px solid #e2e8f0"><td colspan="2">Total per member</td><td>${fmt(contrib*totalCycles)}</td><td></td><td>Receives ${fmt(netPot)}</td><td></td></tr>`;
+
+  document.getElementById('scheduleTable').innerHTML=tbl;
+  document.getElementById('resultCard').style.display='block';
+  const emptyEl=document.getElementById('emptyState');if(emptyEl)emptyEl.style.display='none';
+  saveState();
+  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
+
+  // Fun comparisons
+  var totalSaved = potSize;
+  var ricePrice = cur === 'GH\u20B5' ? 450 : cur === 'KSh ' ? 6500 : cur === 'R ' ? 600 : cur === 'UGX ' ? 180000 : cur === 'FCFA ' ? 25000 : 80000;
+  var rentPrice = cur === 'GH\u20B5' ? 3000 : cur === 'KSh ' ? 35000 : cur === 'R ' ? 8000 : cur === 'UGX ' ? 800000 : cur === 'FCFA ' ? 150000 : 150000;
+  var phonePrice = cur === 'GH\u20B5' ? 2500 : cur === 'KSh ' ? 25000 : cur === 'R ' ? 4000 : cur === 'UGX ' ? 600000 : cur === 'FCFA ' ? 100000 : 120000;
+  var tuitionPrice = cur === 'GH\u20B5' ? 5000 : cur === 'KSh ' ? 60000 : cur === 'R ' ? 25000 : cur === 'UGX ' ? 2000000 : cur === 'FCFA ' ? 300000 : 250000;
+
+  var riceBags = Math.floor(totalSaved / ricePrice);
+  var rentMonths = (totalSaved / rentPrice).toFixed(1);
+  var phones = Math.floor(totalSaved / phonePrice);
+  var semesters = (totalSaved / tuitionPrice).toFixed(1);
+
+  var funDiv = document.getElementById('susuFunComparisons');
+  if (!funDiv) {
+    funDiv = document.createElement('div');
+    funDiv.id = 'susuFunComparisons';
+    document.getElementById('resultCard').querySelector('.card-body').appendChild(funDiv);
+  }
+  funDiv.innerHTML = '<div class="mfun">'
+    + '<div class="mfun-card gold"><div class="mfun-emoji">🌾</div><div class="mfun-title">Bags of Rice</div><div class="mfun-text">' + riceBags + ' bags of 50kg rice</div></div>'
+    + '<div class="mfun-card blue"><div class="mfun-emoji">🏠</div><div class="mfun-title">Rent</div><div class="mfun-text">' + rentMonths + ' months of rent</div></div>'
+    + '<div class="mfun-card rose"><div class="mfun-emoji">📱</div><div class="mfun-title">Phones</div><div class="mfun-text">' + phones + ' mid-range smartphones</div></div>'
+    + '<div class="mfun-card green"><div class="mfun-emoji">🎓</div><div class="mfun-title">Tuition</div><div class="mfun-text">' + semesters + ' semesters at public uni</div></div>'
+    + '</div>'
+    + '<div class="mfun-dyk"><div class="mfun-dyk-title">\uD83D\uDCA1 Did You Know?</div><div class="mfun-dyk-text">The word \u201CSusu\u201D comes from the Akan people of Ghana. Susu collectors have operated for over 300 years, walking door-to-door to collect daily savings. The original mobile banking! \uD83D\uDEB6\u200D\u2642\uFE0F\uD83D\uDCB0</div></div>';
+}
+
+function downloadCSV(){
+  if(!scheduleData.length)return;
+  let csv='Round,Period,Contribution,Pot Total,Recipient,Status\n';
+  scheduleData.forEach(r=>{
+    csv+=`${r.round},"${r.period}",${r.contribution},${r.pot},"${r.recipient}",${r.status}\n`;
+  });
+  const blob=new Blob([csv],{type:'text/csv'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='susu-schedule.csv';
+  a.click();
+}
+
+function copyGroupBrief(){
+  if(!lastGroupBrief)generate();
+  navigator.clipboard.writeText(lastGroupBrief).catch(function(){
+    window.prompt('Copy group brief',lastGroupBrief);
+  });
+}
+
+const SUSU_STATE_KEY='afro-susu-tracker';
+const SUSU_FIELDS=['groupType','currency','members','contribution','frequency','memberNames','startDate','collectorFee','reservePct','graceDays','latePenalty','missedPayments'];
+
+function saveState(){
+  try{
+    const state={};
+    SUSU_FIELDS.forEach(id=>{const el=document.getElementById(id);if(el)state[id]=el.value;});
+    localStorage.setItem(SUSU_STATE_KEY,JSON.stringify(state));
+  }catch(e){}
+}
+
+function restoreState(){
+  let saved=null;
+  try{saved=JSON.parse(localStorage.getItem(SUSU_STATE_KEY)||'null');}catch(e){saved=null;}
+  if(saved&&typeof saved==='object'){
+    SUSU_FIELDS.forEach(id=>{
+      if(saved[id]!=null){const el=document.getElementById(id);if(el)el.value=saved[id];}
+    });
+    return true;
+  }
+  return false;
+}
+
+const hadSaved=restoreState();
+const startDateInput=document.getElementById('startDate');
+if(startDateInput&&!startDateInput.value)startDateInput.valueAsDate=new Date();
+if(hadSaved)generate();
+</script>
+
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

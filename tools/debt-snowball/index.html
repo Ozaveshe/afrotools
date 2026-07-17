@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Debt Snowball / Avalanche Calculator | AfroTools</title>
+<meta name="description" content="Pay off multiple debts faster. Compare Debt Snowball (smallest balance first) vs Debt Avalanche (highest rate first) — see which saves more money and time.">
+<meta property="og:title" content="Debt Snowball / Avalanche Calculator | AfroTools">
+<meta property="og:description" content="Pay off multiple debts faster. Compare Debt Snowball (smallest balance first) vs Debt Avalanche (highest rate first) — see which saves more money and time.">
+<meta property="og:url" content="https://afrotools.com/tools/debt-snowball/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Debt Snowball / Avalanche Calculator | AfroTools">
+<meta name="twitter:description" content="Pay off multiple debts faster. Compare Debt Snowball (smallest balance first) vs Debt Avalanche (highest rate first) — see which saves more money and time.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Debt Snowball Avalanche Calculator",
+  "url": "https://afrotools.com/tools/debt-snowball/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools"
+  },
+  "image": "https://afrotools.com/assets/img/tools/debt-snowball.webp"
+}
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Fintech & Banking","item":"https://afrotools.com/fintech/"},{"@type":"ListItem","position":3,"name":"Debt Snowball Calculator","item":"https://afrotools.com/tools/debt-snowball/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
+.tool-hero{background:linear-gradient(135deg,#0A1628 0%,#1a1035 50%,#2d1b69 100%);color:#fff;padding:2.5rem 1.5rem 3rem}
+.tool-hero .container{max-width:900px;margin:0 auto}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.78);margin-bottom:.75rem}
+.breadcrumb a{color:rgba(255,255,255,.78);text-decoration:none}
+.breadcrumb span{margin:0 .35rem;opacity:.4}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin:.25rem 0 .6rem;line-height:1.2}
+.tool-hero p{font-size:.95rem;color:rgba(255,255,255,.92);max-width:580px;line-height:1.65}
+.hero-badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.hero-badge{padding:4px 12px;border-radius:100px;font-size:.75rem;font-weight:600;background:rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1.25rem}
+.debt-table{width:100%;border-collapse:collapse;margin-bottom:.75rem}
+.debt-table th{background:#f1f5f9;padding:9px 8px;font-weight:700;font-size:.75rem;text-transform:uppercase;text-align:left}
+.debt-table td{padding:7px 8px;border-bottom:1px solid #f1f5f9}
+.debt-table input{width:100%;padding:5px 8px;border:1px solid #e5e7eb;border-radius:6px;font-family:inherit;font-size:.85rem}
+.debt-table input:focus{outline:none;border-color:var(--color-primary)}
+.btn-add{padding:.5rem 1rem;border:1.5px dashed #e5e7eb;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;background:#f9fafb;color:#6b7280;transition:all .2s;width:100%;margin-bottom:.75rem}
+.btn-add:hover{border-color:var(--color-primary);color:var(--color-primary)}
+.btn-del{background:none;border:none;cursor:pointer;color:#ef4444;font-size:.9rem}
+.extra-payment{display:flex;gap:1rem;align-items:flex-end;margin-bottom:.75rem}
+.form-group{display:flex;flex-direction:column;gap:4px;flex:1}
+label{font-size:.82rem;font-weight:600;color:#374151}
+input[type="number"]{width:100%;padding:.65rem .85rem;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.9rem;background:#fff;transition:border-color .2s}
+input[type="number"]:focus{outline:none;border-color:var(--color-primary)}
+.btn-calc{width:100%;padding:.85rem;border:none;border-radius:10px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:.5rem;transition:filter .2s}
+.btn-calc:hover{filter:brightness(1.1)}
+.results{display:none;margin-top:1.25rem}
+.results.on{display:block}
+.compare-methods{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem}
+.method-card{border-radius:14px;padding:1.5rem;border:2px solid #e5e7eb}
+.method-card.winner{border-color:var(--color-primary);background:#eff6ff}
+.method-title{font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem}
+.method-snowball .method-title{color:#f59e0b}
+.method-avalanche .method-title{color:var(--color-primary)}
+.method-val{font-size:1.3rem;font-weight:800;color:#0f172a;margin:.25rem 0}
+.method-sub{font-size:.8rem;color:#6b7280}
+.winner-tag{display:inline-block;background:var(--color-primary);color:#fff;font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:100px;margin-bottom:.35rem}
+.payoff-table{width:100%;border-collapse:collapse;font-size:.85rem;margin-top:.75rem}
+.payoff-table th{background:#0f172a;color:#fff;padding:9px 10px;font-weight:700;font-size:.75rem;text-transform:uppercase;text-align:left}
+.payoff-table td{padding:9px 10px;border-bottom:1px solid #f1f5f9}
+.info-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:1rem 1.25rem;font-size:.85rem;color:#1e40af;line-height:1.6;margin-top:1rem}
+details summary{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;list-style:none;background:#f9fafb;display:flex;justify-content:space-between}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
+details[open] summary::after{content:'\2212'}
+.faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
+.faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+@media(max-width:680px){.compare-methods{grid-template-columns:1fr}.extra-payment{flex-direction:column}}
+</style>
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/debt-snowball.webp">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/debt-snowball.webp">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Debt Snowball / Avalanche Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Debt Snowball / Avalanche Calculator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Debt Snowball / Avalanche Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Debt Snowball / Avalanche Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"Snowball vs Avalanche — which is better?","acceptedAnswer":{"@type":"Answer","text":"Mathematically, Avalanche saves more money (you pay less total interest). Psychologically, Snowball is more motivating because you get quick wins from eliminating small debts. Research shows many people who start with Snowball stay more committed. If you have one very high-interest debt (like a digital loan at 120% APR), pay that off first regardless of balance."}},{"@type":"Question","name":"How much extra should I put toward debt payoff?","acceptedAnswer":{"@type":"Answer","text":"Even small extra amounts help enormously. An extra 10-20% above minimum payments can cut payoff time by 30-50%. Prioritize debt payoff over investing when your debt interest rate exceeds your expected investment return. High-rate debt (digital loans, informal lenders) should be paid as fast as possible."}},{"@type":"Question","name":"Should I consolidate debt or use snowball/avalanche?","acceptedAnswer":{"@type":"Answer","text":"If you can consolidate all debts into one lower-rate loan, do that first — then use snowball/avalanche on the consolidated loan. Use our Loan Consolidation Calculator to check if consolidation makes sense for your debts."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/debt-snowball/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/debt-snowball/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/boule-neige-dettes/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/mpango-wa-kulipa-madeni/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/debt-snowball/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar theme="dark" active="fintech"></afro-navbar>
+<div class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb"><a href="/">AfroTools</a><span>›</span><a href="/fintech/">Fintech &amp; Banking</a><span>›</span>Debt Snowball Calculator</nav>
+    <h1>Debt Snowball / Avalanche Calculator</h1>
+    <p>Enter all your debts and an extra monthly payment. Compare Snowball (smallest first) vs Avalanche (highest rate first) — see which pays off faster and cheaper.</p>
+    <div class="hero-badges"><span class="hero-badge">Universal</span><span class="hero-badge">2 Methods</span><span class="hero-badge">Free</span></div>
+  </div>
+</div>
+<div class="container">
+  <div class="card">
+    <h2>Enter Your Debts</h2>
+    <table class="debt-table">
+      <thead><tr><th>Debt Name</th><th>Balance</th><th>Monthly Min. Payment</th><th>Annual Rate (%)</th><th></th></tr></thead>
+      <tbody id="debt-list">
+        <tr><td><input type="text" value="Digital Loan (Branch)" aria-label="Input value"></td><td><input type="number" value="50000" aria-label="Input value"></td><td><input type="number" value="15000" aria-label="Input value"></td><td><input type="number" value="120" aria-label="Input value"></td><td><button type="button" class="btn-del" onclick="this.closest('tr').remove()">&#x2715;</button></td></tr>
+        <tr><td><input type="text" value="Bank Personal Loan" aria-label="Input value"></td><td><input type="number" value="300000" aria-label="Input value"></td><td><input type="number" value="18000" aria-label="Input value"></td><td><input type="number" value="24" aria-label="Input value"></td><td><button type="button" class="btn-del" onclick="this.closest('tr').remove()">&#x2715;</button></td></tr>
+        <tr><td><input type="text" value="SACCO Loan" aria-label="Input value"></td><td><input type="number" value="150000" aria-label="Input value"></td><td><input type="number" value="14000" aria-label="Input value"></td><td><input type="number" value="14" aria-label="Input value"></td><td><button type="button" class="btn-del" onclick="this.closest('tr').remove()">&#x2715;</button></td></tr>
+      </tbody>
+    </table>
+    <button type="button" class="btn-add" onclick="addDebtRow()">+ Add Debt</button>
+    <div class="extra-payment">
+      <div class="form-group">
+        <label for="ds-extra">Extra Monthly Payment (above minimums)</label>
+        <input type="number" id="ds-extra" value="10000" min="0">
+      </div>
+    </div>
+    <button type="button" class="btn-calc" onclick="calcDebtPayoff()">Calculate Payoff Plan</button>
+    <div class="results" id="ds-results">
+      <div class="compare-methods">
+        <div class="comp-method method-snowball" id="ds-snowball-card">
+          <div class="method-title">&#x2603; Snowball Method</div>
+          <div style="font-size:.78rem;color:#6b7280;margin-bottom:.5rem">Smallest balance first</div>
+          <div class="method-val" id="ds-snowball-months"></div>
+          <div class="method-sub" id="ds-snowball-interest"></div>
+          <div class="method-sub" id="ds-snowball-total"></div>
+        </div>
+        <div class="comp-method method-avalanche" id="ds-avalanche-card">
+          <div class="method-title">&#x1F3C4; Avalanche Method</div>
+          <div style="font-size:.78rem;color:#6b7280;margin-bottom:.5rem">Highest rate first</div>
+          <div class="method-val" id="ds-avalanche-months"></div>
+          <div class="method-sub" id="ds-avalanche-interest"></div>
+          <div class="method-sub" id="ds-avalanche-total"></div>
+        </div>
+      </div>
+      <div id="ds-recommendation"></div>
+      <h3 style="font-size:.95rem;font-weight:700;margin:.75rem 0 .5rem">Snowball Payoff Order</h3>
+      <table class="payoff-table"><thead><tr><th>Priority</th><th>Debt</th><th>Balance</th><th>Rate</th><th>Est. Payoff</th></tr></thead><tbody id="ds-order"></tbody></table>
+      <div class="info-box">The Avalanche method saves the most money mathematically. The Snowball method provides quicker wins (paying off small debts first), which many people find more motivating. Choose the one you're most likely to stick with.</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Frequently Asked Questions</h2>
+
+<section class="df-upgrade" data-df-upgrade="debt-snowball">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Debt payoff method check</span>
+      <h2>Compare snowball and avalanche payoff logic</h2>
+      <p>Not sure how to get the most from the Debt Snowball / Avalanche Calculator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Debt Snowball / Avalanche Calculator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
+    </div>
+    <form class="df-form" data-df-form="debt-snowball">
+      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
+      <label>Number of debts<input name="debts" type="number" value="4" min="0" step="any" aria-label="Number of debts"></label>
+      <label>Extra monthly payment<input name="extra" type="number" value="80000" min="0" step="any" aria-label="Extra monthly payment"></label>
+      <label>Method<select name="method" aria-label="Method"><option value="snowball">snowball</option><option value="avalanche">avalanche</option></select></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="debt-snowball" data-df-base="Debt Snowball / Avalanche Calculator — enter your details above to see your result." aria-live="polite">Debt Snowball / Avalanche Calculator — enter your details above to see your result.</output>
+      <div class="df-actions"><button type="button" data-df-copy="debt-snowball">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="debt-snowball-faq-title">
+  <h2 id="debt-snowball-faq-title">Frequently Asked Questions</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the Debt Snowball / Avalanche Calculator?</summary><p>Enter your amounts, rates and dates in the fields above. The Debt Snowball / Avalanche Calculator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Debt Snowball / Avalanche Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Debt Snowball / Avalanche Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
+</section>
+    <div class="faq-item"><details><summary>Snowball vs Avalanche — which is better?</summary><div class="faq-a">Mathematically, Avalanche saves more money (you pay less total interest). Psychologically, Snowball is more motivating because you get quick wins from eliminating small debts. Research shows many people who start with Snowball stay more committed. If you have one very high-interest debt (like a digital loan at 120% APR), pay that off first regardless of balance.</div></details></div>
+    <div class="faq-item"><details><summary>How much extra should I put toward debt payoff?</summary><div class="faq-a">Even small extra amounts help enormously. An extra 10-20% above minimum payments can cut payoff time by 30-50%. Prioritize debt payoff over investing when your debt interest rate exceeds your expected investment return. High-rate debt (digital loans, informal lenders) should be paid as fast as possible.</div></details></div>
+    <div class="faq-item"><details><summary>Should I consolidate debt or use snowball/avalanche?</summary><div class="faq-a">If you can consolidate all debts into one lower-rate loan, do that first — then use snowball/avalanche on the consolidated loan. Use our Loan Consolidation Calculator to check if consolidation makes sense for your debts.</div></details></div>
+  </div>
+</div>
+<afro-related-tools data-ssr="1" category="fintech" current="debt-snowball">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/loan-shark-compare/" data-related-tool data-id="loan-shark-compare" data-name="Loan Shark vs Bank Rate" data-category="fintech" data-icon="LS" data-desc="Compare informal moneylender rates vs bank loans vs fintech apps. True APR calculator showing hidden cost of predatory l">Loan Shark vs Bank Rate</a></li><li><a href="/tools/mobile-vs-bank/" data-related-tool data-id="mobile-vs-bank" data-name="Mobile Money vs Bank Transfer" data-category="fintech" data-icon="MM" data-desc="Compare M-Pesa, MTN MoMo, Airtel Money vs bank transfer fees for domestic and cross-border payments across Africa.">Mobile Money vs Bank Transfer</a></li><li><a href="/tools/digital-lending/" data-related-tool data-id="digital-lending" data-name="Digital Lending App Rates" data-category="fintech" data-icon="DL" data-desc="Compare digital lending apps (Fuliza, FairMoney, Carbon, PalmCredit) — true APR, fees, repayment periods.">Digital Lending App Rates</a></li><li><a href="/tools/fixed-deposit/" data-related-tool data-id="fixed-deposit" data-name="Fixed Deposit Rate Comparator" data-category="fintech" data-icon="FD" data-desc="Compare fixed deposit and savings account interest rates across African banks. 30/60/90/180/365-day tenors, 20+ banks.">Fixed Deposit Rate Comparator</a></li><li><a href="/tools/microfinance-loan/" data-related-tool data-id="microfinance-loan" data-name="Microfinance Loan Calculator" data-category="fintech" data-icon="ML" data-desc="Calculate microfinance loan repayments for African MFIs. Flat vs reducing balance, group vs individual loans.">Microfinance Loan Calculator</a></li><li><a href="/tools/payment-gateway/" data-related-tool data-id="payment-gateway" data-name="Payment Gateway Fee Compare" data-category="fintech" data-icon="PG" data-desc="Compare Paystack, Flutterwave, Stripe, DPO, Peach Payments transaction fees for African merchants.">Payment Gateway Fee Compare</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+<script>
+function addDebtRow(){
+  var tbody=document.getElementById('debt-list');
+  var tr=document.createElement('tr');
+  tr.innerHTML='<td><input aria-label="Debt name" type="text" placeholder="Debt name"></td><td><input aria-label="Line item amount" type="number" placeholder="0" value="0"></td><td><input aria-label="Line item amount" type="number" placeholder="0" value="0"></td><td><input aria-label="Line item amount" type="number" placeholder="0" value="0"></td><td><button type="button" class="btn-del" onclick="this.closest(\'tr\').remove()">&#x2715;</button></td>';
+  tbody.appendChild(tr);
+}
+function parseDebts(){
+  var rows=document.querySelectorAll('#debt-list tr');
+  var debts=[];
+  rows.forEach(function(row){
+    var inputs=row.querySelectorAll('input');
+    var name=inputs[0].value||'Debt';
+    var balance=parseFloat(inputs[1].value)||0;
+    var minPayment=parseFloat(inputs[2].value)||0;
+    var annualRate=parseFloat(inputs[3].value)/100||0;
+    if(balance>0)debts.push({name,balance,minPayment,annualRate:annualRate/12});
+  });
+  return debts;
+}
+function simulatePayoff(debts,extra,sortFn){
+  var ds=debts.map(function(d){return {name:d.name,balance:d.balance,minPayment:d.minPayment,rate:d.annualRate,origBalance:d.balance};});
+  ds.sort(sortFn);
+  var totalMonths=0,totalInterest=0;
+  var maxMonths=360;
+  var order=ds.map(function(d){return {name:d.name,balance:d.origBalance};});
+  var month=0;
+  while(ds.some(function(d){return d.balance>0;})&&month<maxMonths){
+    month++;
+    var extraLeft=extra;
+    for(var i=0;i<ds.length;i++){
+      if(ds[i].balance<=0)continue;
+      var interest=ds[i].balance*ds[i].rate;
+      totalInterest+=interest;
+      ds[i].balance+=interest;
+      var payment=Math.min(ds[i].balance,ds[i].minPayment+extraLeft);
+      if(i===0)payment=Math.min(ds[i].balance,ds[i].minPayment+extraLeft);
+      ds[i].balance-=payment;
+      if(ds[i].balance<0)ds[i].balance=0;
+    }
+  }
+  return {months:month,totalInterest:Math.round(totalInterest),order:order};
+}
+function calcDebtPayoff(){
+  var debts=parseDebts();
+  if(debts.length===0){alert('Please enter at least one debt.');return;}
+  var extra=parseFloat(document.getElementById('ds-extra').value)||0;
+  var snowball=simulatePayoff(JSON.parse(JSON.stringify(debts)),extra,function(a,b){return a.balance-b.balance;});
+  var avalanche=simulatePayoff(JSON.parse(JSON.stringify(debts)),extra,function(a,b){return b.annualRate-a.annualRate;});
+  function months(m){return m+' months ('+(m/12).toFixed(1)+' years)';}
+  function fmt(n){return n.toLocaleString();}
+  document.getElementById('ds-snowball-months').textContent=months(snowball.months);
+  document.getElementById('ds-snowball-interest').textContent='Total interest: '+fmt(snowball.totalInterest);
+  document.getElementById('ds-snowball-total').textContent='Total paid: '+fmt(debts.reduce(function(s,d){return s+d.balance;},0)+snowball.totalInterest);
+  document.getElementById('ds-avalanche-months').textContent=months(avalanche.months);
+  document.getElementById('ds-avalanche-interest').textContent='Total interest: '+fmt(avalanche.totalInterest);
+  document.getElementById('ds-avalanche-total').textContent='Total paid: '+fmt(debts.reduce(function(s,d){return s+d.balance;},0)+avalanche.totalInterest);
+  var avWins=avalanche.totalInterest<=snowball.totalInterest;
+  var interestSaved=Math.abs(snowball.totalInterest-avalanche.totalInterest);
+  document.getElementById('ds-snowball-card').className='comp-method method-snowball'+(avWins?'':' winner');
+  document.getElementById('ds-avalanche-card').className='comp-method method-avalanche'+(avWins?' winner':'');
+  var rec=document.getElementById('ds-recommendation');
+  if(avWins){
+    rec.innerHTML='<div style="background:#f5f3ff;border:1px solid #86efac;border-radius:12px;padding:1rem;margin-bottom:1rem;font-size:.85rem;color:#4c1d95"><strong>Avalanche saves '+fmt(interestSaved)+' more</strong> than Snowball. Choose Avalanche if you are disciplined. Choose Snowball if you need quick motivation wins.</div>';
+  } else {
+    rec.innerHTML='<div style="background:#f5f3ff;border:1px solid #86efac;border-radius:12px;padding:1rem;margin-bottom:1rem;font-size:.85rem;color:#4c1d95"><strong>Both methods take the same time</strong> in this case. Snowball may feel more motivating with no financial cost difference.</div>';
+  }
+  // Show payoff order (snowball)
+  var tbody=document.getElementById('ds-order');
+  var sortedByBalance=[].concat(debts).sort(function(a,b){return a.balance-b.balance;});
+  tbody.innerHTML='';
+  sortedByBalance.forEach(function(d,i){
+    tbody.innerHTML+='<tr><td>'+(i+1)+'</td><td>'+d.name+'</td><td>'+fmt(Math.round(d.balance))+'</td><td>'+(d.annualRate*1200).toFixed(1)+'%</td><td>~'+(Math.round(d.balance/d.minPayment))+' months</td></tr>';
+  });
+  document.getElementById('ds-results').classList.add('on');
+}
+</script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

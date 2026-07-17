@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Markdown Editor - Live Preview | AfroTools</title>
+<meta name="description" content="Write Markdown with live GFM preview, toolbar actions, word count, local auto-save, sanitized HTML preview, and Markdown/HTML export tools.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Markdown Editor | AfroTools">
+<meta property="og:description" content="Edit Markdown locally with live GFM preview, toolbar actions, word count, local auto-save, and Markdown/HTML exports.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/markdown-editor/">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/markdown-editor.webp">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Markdown Editor | AfroTools">
+<meta name="twitter:description" content="Free Markdown editor with live GFM preview, local auto-save and export options.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js" defer></script>
+<style>
+  :root {
+    --afro-green: var(--color-primary);
+    --afro-dark: #0f1419;
+    --afro-light: #f5f7fa;
+  }
+
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-hero::after {
+    content: '\270D';
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8rem;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--afro-green);
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    color: var(--afro-green);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 6px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .b-green {
+    background: rgba(0, 113, 227, 0.18);
+    color: var(--color-primary);
+    border: 1px solid rgba(0, 113, 227, 0.38);
+  }
+
+  .tool-main {
+    padding: 28px 0 72px;
+  }
+
+  .tool-main-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* Editor action bar above the container */
+  .editor-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .action-btn {
+    padding: 6px 14px;
+    background: #fff;
+    border: 1.5px solid #DBEAFE;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #244d2c;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .action-btn:hover {
+    border-color: var(--afro-green);
+    background: rgba(0, 113, 227, 0.04);
+  }
+
+  .action-btn.active {
+    background: var(--afro-green);
+    color: #fff;
+    border-color: var(--afro-green);
+  }
+
+  .editor-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 18px;
+  }
+
+  .editor-panel {
+    background: #fff;
+    border: 1px solid #DBEAFE;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+    min-height: 500px;
+  }
+
+  .panel-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #EFF6FF;
+    background: #F5F9FF;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #0a4018;
+  }
+
+  .panel-toolbar {
+    padding: 10px 12px;
+    border-bottom: 1px solid #EFF6FF;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .toolbar-btn {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 8px 10px;
+    background: #EFF6FF;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #244d2c;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .toolbar-btn:hover {
+    border-color: var(--afro-green);
+    background: rgba(0, 113, 227, 0.05);
+  }
+
+  .toolbar-sep {
+    width: 1px;
+    background: #DBEAFE;
+    margin: 2px 2px;
+    align-self: stretch;
+  }
+
+  .editor-area {
+    flex: 1;
+    padding: 16px;
+    overflow: hidden;
+    display: flex;
+  }
+
+  #editor {
+    width: 100%;
+    height: 100%;
+    background: #EFF6FF;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #0d2813;
+    outline: none;
+    font-family: 'Courier New', monospace;
+    resize: none;
+  }
+
+  #editor:focus {
+    border-color: var(--afro-green);
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+  }
+
+  .preview-area {
+    flex: 1;
+    padding: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #preview {
+    width: 100%;
+    flex: 1;
+    overflow-y: auto;
+    font-size: 1rem;
+    color: #244d2c;
+    line-height: 1.6;
+  }
+
+  #preview h1, #preview h2, #preview h3, #preview h4, #preview h5, #preview h6 {
+    color: #0a4018;
+    font-weight: 700;
+    margin-top: 16px;
+    margin-bottom: 8px;
+  }
+
+  #preview h1 { font-size: 1.8rem; }
+  #preview h2 { font-size: 1.5rem; }
+  #preview h3 { font-size: 1.3rem; }
+
+  #preview p {
+    margin-bottom: 12px;
+  }
+
+  #preview code {
+    background: rgba(0, 113, 227, 0.05);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    color: #005c3d;
+  }
+
+  #preview pre {
+    background: #EFF6FF;
+    border: 1px solid #BFDBFE;
+    padding: 12px;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+
+  #preview pre code {
+    background: none;
+    padding: 0;
+  }
+
+  #preview ul, #preview ol {
+    margin-left: 20px;
+    margin-bottom: 12px;
+  }
+
+  #preview li {
+    margin-bottom: 4px;
+  }
+
+  #preview a {
+    color: var(--afro-green);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  #preview blockquote {
+    border-left: 3px solid var(--afro-green);
+    margin: 12px 0;
+    padding-left: 12px;
+    color: #6B8CAE;
+  }
+
+  #preview table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 12px 0;
+  }
+
+  #preview th, #preview td {
+    border: 1px solid #DBEAFE;
+    padding: 8px 12px;
+    text-align: left;
+  }
+
+  #preview th {
+    background: #F5F9FF;
+    font-weight: 700;
+  }
+
+  /* GFM strikethrough */
+  #preview del {
+    text-decoration: line-through;
+    color: #999;
+  }
+
+  /* GFM task lists */
+  #preview input[type="checkbox"] {
+    margin-right: 6px;
+    pointer-events: none;
+  }
+
+  #preview li.task-list-item {
+    list-style: none;
+    margin-left: -20px;
+  }
+
+  .stats-section {
+    padding: 8px 12px;
+    border-top: 1px solid #EFF6FF;
+    background: #F5F9FF;
+    font-size: 0.75rem;
+    color: #244d2c;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .stats-left {
+    display: flex;
+    gap: 14px;
+  }
+
+  .export-section {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .export-btn {
+    flex: 1;
+    padding: 12px;
+    background: var(--afro-green);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s;
+    font-family: 'DM Sans', sans-serif;
+    min-width: 140px;
+  }
+
+  .export-btn:hover {
+    background: #0059B3;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 113, 227, 0.3);
+  }
+
+  /* Dark preview theme */
+  .preview-dark #preview {
+    background: #1e1e2e;
+    color: #cdd6f4;
+    padding: 12px;
+    border-radius: 6px;
+  }
+  .preview-dark #preview h1, .preview-dark #preview h2, .preview-dark #preview h3,
+  .preview-dark #preview h4, .preview-dark #preview h5, .preview-dark #preview h6 {
+    color: #a6e3a1;
+  }
+  .preview-dark #preview code {
+    background: rgba(166,227,161,0.12);
+    color: #a6e3a1;
+  }
+  .preview-dark #preview pre {
+    background: #181825;
+    border-color: #313244;
+  }
+  .preview-dark #preview blockquote {
+    border-color: #a6e3a1;
+    color: #9399b2;
+  }
+  .preview-dark #preview a {
+    color: #89b4fa;
+  }
+  .preview-dark #preview th {
+    background: #313244;
+    color: #cdd6f4;
+  }
+  .preview-dark #preview th, .preview-dark #preview td {
+    border-color: #45475a;
+  }
+  .preview-dark #preview del {
+    color: #6c7086;
+  }
+
+  /* Fullscreen mode */
+  .fullscreen-mode {
+    position: fixed !important;
+    inset: 0;
+    z-index: 9999;
+    background: #f5f7fa;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+  }
+
+  .fullscreen-mode .editor-container {
+    flex: 1;
+    min-height: 0;
+  }
+
+  .fullscreen-mode .editor-panel {
+    min-height: 0;
+  }
+
+  .fullscreen-mode .editor-area,
+  .fullscreen-mode .preview-area {
+    min-height: 0;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .fullscreen-mode #editor {
+    height: 100%;
+  }
+
+  .fullscreen-exit-hint {
+    text-align: center;
+    font-size: 0.7rem;
+    color: #999;
+    padding: 6px;
+    display: none;
+  }
+
+  .fullscreen-mode .fullscreen-exit-hint {
+    display: block;
+  }
+
+  /* Table generator modal */
+  .table-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .table-modal-overlay.open {
+    display: flex;
+  }
+
+  .table-modal {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    width: 320px;
+    max-width: 90vw;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .table-modal h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0a4018;
+    margin-bottom: 16px;
+  }
+
+  .table-modal label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
+  }
+
+  .table-modal input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+  }
+
+  .table-modal input:focus {
+    border-color: var(--afro-green);
+  }
+
+  .table-modal-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  .table-modal-actions button {
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    border: none;
+  }
+
+  .tm-cancel {
+    background: #f0f0f0;
+    color: #555;
+  }
+
+  .tm-insert {
+    background: var(--afro-green);
+    color: #fff;
+  }
+
+  /* Local publish checklist */
+  .publish-checklist {
+    margin-top: 20px;
+    border: 1px solid #DBEAFE;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+    overflow: hidden;
+  }
+
+  .publish-checklist-head {
+    padding: 14px 20px;
+    background: #F5F9FF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #0a4018;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .publish-checklist-body {
+    padding: 16px 20px;
+    border-top: 1px solid #EFF6FF;
+    display: grid;
+    gap: 10px;
+  }
+
+  .publish-check-item {
+    background: #F8FBFF;
+    border: 1px solid #DBEAFE;
+    border-radius: 8px;
+    padding: 11px 12px;
+  }
+
+  .publish-check-item strong {
+    display: block;
+    font-size: 0.78rem;
+    color: #0d2813;
+    margin-bottom: 4px;
+  }
+
+  .publish-check-item span {
+    display: block;
+    color: #475569;
+    font-size: 0.76rem;
+    line-height: 1.6;
+  }
+
+  /* Toast */
+  .md-toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #0a4018;
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    z-index: 99999;
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+  }
+
+  .md-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  @media (max-width: 1024px) {
+    .editor-container {
+      grid-template-columns: 1fr;
+      min-height: 400px;
+    }
+
+    #editor {
+      height: 400px;
+    }
+
+    .editor-actions {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .export-section {
+      flex-direction: column;
+    }
+
+    .export-btn {
+      min-width: 100%;
+    }
+  }
+
+  details[open] summary svg { transform: rotate(180deg); }
+  details summary::-webkit-details-marker { display: none; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Markdown Editor",
+  "description": "Write Markdown with live GFM preview, toolbar actions, word count, local auto-save, sanitized HTML preview, and Markdown/HTML export tools.",
+  "url": "https://afrotools.com/tools/markdown-editor/",
+  "inLanguage": "en",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript and a modern browser",
+  "featureList": [
+    "Live split-view Markdown preview",
+    "GitHub Flavored Markdown tables, task lists and code fences",
+    "Formatting toolbar and table generator",
+    "Word count and reading-time estimate",
+    "Local browser auto-save",
+    "Download Markdown and HTML exports",
+    "Copy sanitized rendered HTML"
+  ],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/markdown-editor.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Markdown Editor",
+  "url": "https://afrotools.com/tools/markdown-editor/",
+  "description": "Browser-based Markdown editor with live GFM preview, local auto-save, formatting toolbar and Markdown/HTML export tools.",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/markdown-editor.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to preview and export Markdown with AfroTools",
+  "description": "Write Markdown locally, preview the rendered output, then copy or download Markdown and HTML exports.",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "Write or paste Markdown",
+      "text": "Use the editor pane and toolbar to draft Markdown, tables, lists, links and code blocks."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Review the preview",
+      "text": "Check headings, links, tables, code fences, images, embedded HTML and private notes in the live preview."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Export the draft",
+      "text": "Download Markdown or HTML, or copy the sanitized rendered HTML for your target publishing system."
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does the AfroTools Markdown Editor support GitHub Flavored Markdown?","acceptedAnswer":{"@type":"Answer","text":"Yes. The editor uses the marked.js library with GFM mode enabled, supporting tables, fenced code blocks, strikethrough, task lists, and autolinks out of the box."}},{"@type":"Question","name":"Can I export my markdown to HTML?","acceptedAnswer":{"@type":"Answer","text":"Yes. AfroTools Markdown Editor offers three export options: download as a .md file, download as a styled .html file, or copy the raw HTML to your clipboard for pasting into other applications."}},{"@type":"Question","name":"Is my content stored or saved?","acceptedAnswer":{"@type":"Answer","text":"Your content is auto-saved locally in your browser. Use Markdown, HTML, or copy exports when you need to move the draft to another device or publishing system. You can clear the saved content at any time."}},{"@type":"Question","name":"Does the markdown editor work offline?","acceptedAnswer":{"@type":"Answer","text":"Once the required browser libraries have loaded, editing, preview rendering, local auto-save, and exports run in your browser without sending draft content to AfroTools."}},{"@type":"Question","name":"How do I create a markdown table quickly?","acceptedAnswer":{"@type":"Answer","text":"Click the \"Table+\" button in the toolbar to open the table generator. Enter the number of rows and columns, and a properly formatted markdown table template will be inserted at your cursor position."}}]}
+</script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/markdown-editor.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Markdown Editor",
+      "item": "https://afrotools.com/tools/markdown-editor/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<style>
+  .top-level-page-ui-refresh .tool-main-inner,
+  .top-level-page-ui-refresh .editor-container,
+  .top-level-page-ui-refresh .editor-panel,
+  .top-level-page-ui-refresh .preview-area,
+  .top-level-page-ui-refresh .publish-checklist {
+    min-width: 0;
+  }
+
+  .top-level-page-ui-refresh button,
+  .top-level-page-ui-refresh input,
+  .top-level-page-ui-refresh summary {
+    min-height: 44px;
+  }
+
+  .top-level-page-ui-refresh #editor,
+  .top-level-page-ui-refresh #preview,
+  .top-level-page-ui-refresh #preview pre,
+  .top-level-page-ui-refresh #preview table {
+    overflow-wrap: anywhere;
+  }
+
+  .top-level-page-ui-refresh :is(button, input, textarea, summary):focus-visible {
+    outline: 3px solid rgba(0, 113, 227, 0.35);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 560px) {
+    .top-level-page-ui-refresh .editor-actions,
+    .top-level-page-ui-refresh .export-section {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .top-level-page-ui-refresh .action-btn,
+    .top-level-page-ui-refresh .toolbar-btn,
+    .top-level-page-ui-refresh .export-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
+<link rel="canonical" href="https://afrotools.com/tools/markdown-editor/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/markdown-editor/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/editeur-markdown/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kihariri-markdown/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/markdown-editor/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">AfroTools</a> / <span>Tools</span>
+    </div>
+    <h1>Markdown <em>Editor</em></h1>
+    <p class="hero-sub">Write markdown with live split-view preview. Formatting toolbar, word count, read-time estimate. Export to HTML or download .md/.html files. Auto-save locally in this browser.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">Live Preview</span>
+      <span class="badge b-green">GFM Support</span>
+      <span class="badge b-green">Export Options</span>
+      <span class="badge b-green">Auto-Save</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <!-- Action bar -->
+    <div class="editor-actions">
+      <button type="button" class="action-btn" id="themeToggleBtn" title="Toggle dark/light preview">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        Theme
+      </button>
+      <button type="button" class="action-btn" id="fullscreenBtn" title="Toggle fullscreen (Esc to exit)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 00-2 2v3M21 8V5a2 2 0 00-2-2h-3M3 16v3a2 2 0 002 2h3M16 21h3a2 2 0 002-2v-3"/></svg>
+        Fullscreen
+      </button>
+    </div>
+
+    <div class="editor-container" id="editorContainer">
+      <!-- Editor Panel -->
+      <div class="editor-panel">
+        <div class="panel-head">Editor</div>
+        <div class="panel-toolbar">
+          <button type="button" class="toolbar-btn" data-action="bold" title="Bold">B</button>
+          <button type="button" class="toolbar-btn" data-action="italic" title="Italic"><i>I</i></button>
+          <button type="button" class="toolbar-btn" data-action="strikethrough" title="Strikethrough"><s>S</s></button>
+          <span class="toolbar-sep"></span>
+          <button type="button" class="toolbar-btn" data-action="h1" title="Heading 1">H1</button>
+          <button type="button" class="toolbar-btn" data-action="h2" title="Heading 2">H2</button>
+          <button type="button" class="toolbar-btn" data-action="h3" title="Heading 3">H3</button>
+          <span class="toolbar-sep"></span>
+          <button type="button" class="toolbar-btn" data-action="link" title="Link">Link</button>
+          <button type="button" class="toolbar-btn" data-action="image" title="Image">Img</button>
+          <button type="button" class="toolbar-btn" data-action="code" title="Inline code">Code</button>
+          <button type="button" class="toolbar-btn" data-action="codeblock" title="Code block">{ }</button>
+          <span class="toolbar-sep"></span>
+          <button type="button" class="toolbar-btn" data-action="quote" title="Blockquote">&gt;</button>
+          <button type="button" class="toolbar-btn" data-action="ul" title="Unordered list">- List</button>
+          <button type="button" class="toolbar-btn" data-action="ol" title="Ordered list">1. List</button>
+          <button type="button" class="toolbar-btn" data-action="task" title="Task list">[ ]</button>
+          <span class="toolbar-sep"></span>
+          <button type="button" class="toolbar-btn" data-action="table" title="Insert simple table">Table</button>
+          <button type="button" class="toolbar-btn" data-action="table-gen" title="Table generator">Table+</button>
+          <button type="button" class="toolbar-btn" data-action="hr" title="Horizontal rule">---</button>
+        </div>
+        <div class="editor-area">
+          <textarea id="editor" placeholder="# Write markdown here...&#10;&#10;This is a **markdown** editor with live preview.&#10;&#10;## Features&#10;- Formatting toolbar&#10;- Real-time preview&#10;- Auto-save&#10;- Export options&#10;&#10;[Visit AfroTools](https://afrotools.com)" aria-label="# Write markdown here...&amp;#10;&amp;#10;This is a **markdown** editor with live preview.&amp;#10;&amp;#10;## Features&amp;#10;- Formatting"></textarea>
+        </div>
+        <div class="stats-section">
+          <div class="stats-left">
+            <span id="wordCount">Words: 0</span>
+            <span id="charCount">Chars: 0</span>
+            <span id="readTime">Read: ~0 min</span>
+          </div>
+          <span id="autoSaveStatus" style="color:#9ca3af">Auto-saved</span>
+        </div>
+      </div>
+
+      <!-- Preview Panel -->
+      <div class="editor-panel" id="previewPanel">
+        <div class="panel-head">Preview</div>
+        <div class="preview-area">
+          <div id="preview"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fullscreen-exit-hint">Press <kbd>Esc</kbd> to exit fullscreen</div>
+
+    <!-- Export Section -->
+    <div class="export-section">
+      <button type="button" class="export-btn" id="downloadMdBtn">Download .md</button>
+      <button type="button" class="export-btn" id="downloadHtmlBtn">Download .html</button>
+      <button type="button" class="export-btn" id="copyHtmlBtn">Copy HTML</button>
+      <button type="button" class="export-btn" id="copyChecklistBtn">Copy Publish Note</button>
+    </div>
+
+    <div class="publish-checklist" aria-labelledby="publishChecklistTitle">
+      <div class="publish-checklist-head">
+        <span id="publishChecklistTitle">Local Publish Checklist</span>
+      </div>
+      <div class="publish-checklist-body">
+        <div class="publish-check-item">
+          <strong>Structure</strong>
+          <span>Check heading order, table alignment, code fences, image paths and link targets before publishing.</span>
+        </div>
+        <div class="publish-check-item">
+          <strong>HTML safety</strong>
+          <span>The preview and HTML export are sanitized in the browser, but untrusted HTML still needs review in your target CMS or docs system.</span>
+        </div>
+        <div class="publish-check-item">
+          <strong>Privacy</strong>
+          <span>Drafts auto-save in this browser. Remove private notes, client details and unreleased content before copying or exporting.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Table Generator Modal -->
+<div class="table-modal-overlay" id="tableModal">
+  <div class="table-modal">
+    <h3>Generate Markdown Table</h3>
+    <label for="tableRows">Rows (excluding header)</label>
+    <input type="number" id="tableRows" min="1" max="20" value="3">
+    <label for="tableCols">Columns</label>
+    <input type="number" id="tableCols" min="1" max="10" value="3">
+    <div class="table-modal-actions">
+      <button type="button" class="tm-cancel" id="tableCancel">Cancel</button>
+      <button type="button" class="tm-insert" id="tableInsert">Insert Table</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="md-toast" id="mdToast"></div>
+
+<section style="max-width:900px;margin:32px auto;padding:0 20px;">
+  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
+    <p>This Markdown editor provides a split-pane writing environment with live preview, letting you write in Markdown syntax on the left and see the formatted output on the right in real time. It supports full GitHub-Flavoured Markdown including tables, task lists, code blocks with syntax highlighting, and embedded images. Export your document as HTML, copy the rendered output, or download the raw Markdown file. The editor is perfect for developers writing documentation, bloggers drafting posts, students taking notes, and anyone who prefers writing in plain text with lightweight formatting. Everything runs locally with no account required.</p>
+  </div>
+</section>
+
+
+<section class="faq-section quality-verification-panel" data-tool-verification-panel data-quality-proof="Markdown Editor" aria-labelledby="markdown-editor-verification-title">
+  <h2 id="markdown-editor-verification-title">Markdown editor sources and verification</h2>
+  <div class="landing-faq" style="display:flex;flex-direction:column;gap:8px;">
+    <details open><summary>Sources and methodology</summary><p>The preview is generated from the Markdown you type or paste using marked with GFM mode, then sanitized with DOMPurify before display and export.</p></details>
+    <details><summary>Before publishing</summary><p>Check heading order, broken links, image paths, code fences, table alignment, embedded HTML, private comments, client details, and how the exported HTML renders in your target CMS, docs site, repository, or email tool.</p></details>
+    <details><summary>Privacy and limitations</summary><p>Drafts are stored locally in this browser unless you copy, download, or clear them. This editor does not publish to GitHub, CMS platforms, email systems, or documentation hosts, and sanitizer output still needs review for your target system.</p></details>
+  </div>
+</section>
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+<section class="faq-section" style="max-width:1200px;margin:40px auto;padding:0 24px">
+  <h2 style="font-size:1.3rem;font-weight:800;color:#111;margin-bottom:20px;font-family:'DM Sans',sans-serif">Frequently Asked Questions</h2>
+  <div class="faq-list">
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Does the AfroTools Markdown Editor support GitHub Flavored Markdown?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Yes. The editor uses the marked.js library with GFM mode enabled, supporting tables, fenced code blocks, strikethrough, task lists, and autolinks out of the box.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Can I export my markdown to HTML?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Yes. AfroTools Markdown Editor offers three export options: download as a .md file, download as a styled .html file, or copy the raw HTML to your clipboard for pasting into other applications.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Is my content stored or saved?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Your content is auto-saved locally in your browser. Use Markdown, HTML, or copy exports when you need to move the draft to another device or publishing system. You can clear the saved content at any time.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Does the markdown editor work offline?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Once the required browser libraries have loaded, editing, preview rendering, local auto-save, and exports run in your browser without sending draft content to AfroTools.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        How do I create a markdown table quickly?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Click the "Table+" button in the toolbar to open the table generator. Enter the number of rows and columns, and a properly formatted markdown table template will be inserted at your cursor position.
+      </div>
+    </details>
+  </div>
+</section>
+
+<afro-related-tools category="developer" current="markdown-editor" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/json-formatter/" data-related-tool data-id="json-formatter" data-name="JSON Formatter &amp; Validator" data-category="developer" data-icon="JF" data-desc="Format, validate, repair, query and diff JSON or NDJSON. Includes schema, TypeScript and API Tester snippets.">JSON Formatter &amp; Validator</a></li><li><a href="/tools/data-converter/" data-related-tool data-id="data-converter" data-name="Data Format Converter" data-category="developer" data-icon="DF" data-desc="Convert between JSON, CSV, XML, YAML, TOML, TSV. Auto-detect, SQL INSERT generator, preview table.">Data Format Converter</a></li><li><a href="/tools/ussd-simulator/" data-related-tool data-id="ussd-simulator" data-name="USSD Code Simulator" data-category="developer" data-icon="UC" data-desc="Visual USSD menu builder for African fintech developers.">USSD Code Simulator</a></li><li><a href="/tools/api-tester/" data-related-tool data-id="api-tester" data-name="API Tester (Postman Lite)" data-category="developer" data-icon="AT" data-desc="REST API testing in-browser. No install needed. Pre-built Africa fintech collections.">API Tester (Postman Lite)</a></li><li><a href="/tools/base64/" data-related-tool data-id="base64" data-name="Base64 Encoder/Decoder" data-category="developer" data-icon="BE" data-desc="Encode/decode text and files. Image-to-Base64, URL-safe mode, live encoding, stats bar. AI assist.">Base64 Encoder/Decoder</a></li><li><a href="/tools/hash-generator/" data-related-tool data-id="hash-generator" data-name="Hash Generator" data-category="developer" data-icon="HG" data-desc="MD5, SHA-1, SHA-256, SHA-512, SHA-3, HMAC, CRC32. All-at-once grid, checksum verify, file hashing.">Hash Generator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+
+<afro-footer></afro-footer>
+
+<script>
+(function() {
+  function escapeHtml(value) {
+    return String(value || '').replace(/[&<>"']/g, function(ch) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch];
+    });
+  }
+  function fallbackMarkdown(markdown) {
+    var lines = String(markdown || '').split(/\r?\n/);
+    var html = [];
+    var inList = false;
+    var inCode = false;
+    var codeLines = [];
+    function inline(text) {
+      return escapeHtml(text)
+        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" rel="noopener noreferrer">$1</a>');
+    }
+    function closeList() {
+      if (inList) {
+        html.push('</ul>');
+        inList = false;
+      }
+    }
+    lines.forEach(function(line) {
+      if (/^```/.test(line)) {
+        if (inCode) {
+          html.push('<pre><code>' + escapeHtml(codeLines.join('\n')) + '</code></pre>');
+          codeLines = [];
+          inCode = false;
+        } else {
+          closeList();
+          inCode = true;
+        }
+        return;
+      }
+      if (inCode) {
+        codeLines.push(line);
+        return;
+      }
+      if (!line.trim()) {
+        closeList();
+        return;
+      }
+      var heading = line.match(/^(#{1,3})\s+(.+)$/);
+      if (heading) {
+        closeList();
+        html.push('<h' + heading[1].length + '>' + inline(heading[2]) + '</h' + heading[1].length + '>');
+        return;
+      }
+      var item = line.match(/^\s*[-*]\s+(.+)$/);
+      if (item) {
+        if (!inList) {
+          html.push('<ul>');
+          inList = true;
+        }
+        html.push('<li>' + inline(item[1]) + '</li>');
+        return;
+      }
+      closeList();
+      html.push('<p>' + inline(line) + '</p>');
+    });
+    closeList();
+    if (inCode) html.push('<pre><code>' + escapeHtml(codeLines.join('\n')) + '</code></pre>');
+    return html.join('\n');
+  }
+  if (!window.marked) {
+    window.marked = { setOptions: function(){}, parse: fallbackMarkdown };
+  }
+  if (!window.DOMPurify) {
+    window.DOMPurify = {
+      sanitize: function(html) {
+        var template = document.createElement('template');
+        template.innerHTML = String(html || '');
+        template.content.querySelectorAll('script,iframe,object,embed').forEach(function(node) { node.remove(); });
+        template.content.querySelectorAll('*').forEach(function(node) {
+          Array.from(node.attributes).forEach(function(attr) {
+            if (/^on/i.test(attr.name)) node.removeAttribute(attr.name);
+          });
+        });
+        return template.innerHTML;
+      }
+    };
+  }
+  /* ── Configure marked.js with GFM ─────────────────────────────── */
+  marked.setOptions({
+    gfm: true,
+    breaks: true,
+    tables: true
+  });
+
+  /* ── DOM refs ──────────────────────────────────────────────────── */
+  const editor = document.getElementById('editor');
+  const preview = document.getElementById('preview');
+  const previewPanel = document.getElementById('previewPanel');
+  const editorContainer = document.getElementById('editorContainer');
+  const downloadMdBtn = document.getElementById('downloadMdBtn');
+  const downloadHtmlBtn = document.getElementById('downloadHtmlBtn');
+  const copyHtmlBtn = document.getElementById('copyHtmlBtn');
+  const copyChecklistBtn = document.getElementById('copyChecklistBtn');
+  const wordCountEl = document.getElementById('wordCount');
+  const charCountEl = document.getElementById('charCount');
+  const readTimeEl = document.getElementById('readTime');
+  const autoSaveEl = document.getElementById('autoSaveStatus');
+  const themeToggleBtn = document.getElementById('themeToggleBtn');
+  const fullscreenBtn = document.getElementById('fullscreenBtn');
+  const toolMainInner = document.querySelector('.tool-main-inner');
+
+  const STORAGE_KEY = 'md-editor-content';
+  let scrollSyncEnabled = true;
+  let isFullscreen = false;
+
+  /* ── Toast helper ──────────────────────────────────────────────── */
+  function showToast(msg) {
+    const t = document.getElementById('mdToast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  function copyText(text, successMessage) {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function() {
+        showToast(successMessage);
+      }).catch(function() {
+        fallbackCopyText(text, successMessage);
+      });
+      return;
+    }
+    fallbackCopyText(text, successMessage);
+  }
+
+  function fallbackCopyText(text, successMessage) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      document.execCommand('copy');
+      showToast(successMessage);
+    } catch (err) {
+      showToast('Copy failed. Select and copy manually.');
+    }
+    document.body.removeChild(textarea);
+  }
+
+  /* ── Mermaid init ─────────────────────────────────────────────── */
+  let mermaidReady = false;
+  function initMermaid() {
+    if (mermaidReady || typeof mermaid === 'undefined') return;
+    mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose' });
+    mermaidReady = true;
+  }
+
+  /* ── Update preview ────────────────────────────────────────────── */
+  function updatePreview() {
+    const markdown = editor.value;
+    const html = marked.parse(markdown);
+    preview.innerHTML = DOMPurify.sanitize(html, { ADD_TAGS: ['pre', 'code'], ADD_ATTR: ['class'] });
+    // Render mermaid diagrams
+    const mermaidBlocks = preview.querySelectorAll('code.language-mermaid');
+    if (mermaidBlocks.length > 0) {
+      initMermaid();
+      if (mermaidReady) {
+        mermaidBlocks.forEach((block, i) => {
+          const pre = block.parentElement;
+          const container = document.createElement('div');
+          container.className = 'mermaid';
+          container.textContent = block.textContent;
+          pre.replaceWith(container);
+        });
+        try { mermaid.run({ nodes: preview.querySelectorAll('.mermaid') }); } catch(e) {}
+      }
+    }
+    updateStats();
+    saveToLocalStorage();
+  }
+
+  /* ── Stats ─────────────────────────────────────────────────────── */
+  function updateStats() {
+    const text = editor.value;
+    const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
+    const chars = text.length;
+    const readMin = Math.max(1, Math.ceil(words / 200));
+    wordCountEl.textContent = 'Words: ' + words;
+    charCountEl.textContent = 'Chars: ' + chars;
+    readTimeEl.textContent = 'Read: ~' + (words === 0 ? 0 : readMin) + ' min';
+  }
+
+  /* ── LocalStorage ──────────────────────────────────────────────── */
+  function saveToLocalStorage() {
+    localStorage.setItem(STORAGE_KEY, editor.value);
+    autoSaveEl.textContent = 'Auto-saved';
+  }
+
+  function loadFromLocalStorage() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      editor.value = saved;
+      updatePreview();
+    }
+  }
+
+  /* ── Toolbar actions ───────────────────────────────────────────── */
+  function insertAtCursor(before, after, placeholder) {
+    const start = editor.selectionStart;
+    const end = editor.selectionEnd;
+    const selected = editor.value.substring(start, end);
+    const insert = selected || placeholder || '';
+    const val = editor.value;
+    after = after || '';
+    editor.value = val.substring(0, start) + before + insert + after + val.substring(end);
+    editor.focus();
+    if (selected) {
+      editor.selectionStart = start + before.length;
+      editor.selectionEnd = start + before.length + insert.length;
+    } else {
+      editor.selectionStart = start + before.length;
+      editor.selectionEnd = start + before.length + insert.length;
+    }
+    updatePreview();
+  }
+
+  const toolbarActions = {
+    bold:          () => insertAtCursor('**', '**', 'bold text'),
+    italic:        () => insertAtCursor('*', '*', 'italic text'),
+    strikethrough: () => insertAtCursor('~~', '~~', 'strikethrough'),
+    h1:            () => insertAtCursor('# ', '', 'Heading 1'),
+    h2:            () => insertAtCursor('## ', '', 'Heading 2'),
+    h3:            () => insertAtCursor('### ', '', 'Heading 3'),
+    link:          () => insertAtCursor('[', '](url)', 'link text'),
+    image:         () => insertAtCursor('![', '](image-url)', 'alt text'),
+    code:          () => insertAtCursor('`', '`', 'code'),
+    codeblock:     () => insertAtCursor('```\n', '\n```', 'code here'),
+    quote:         () => insertAtCursor('> ', '', 'quote'),
+    ul:            () => insertAtCursor('- ', '', 'item'),
+    ol:            () => insertAtCursor('1. ', '', 'item'),
+    task:          () => insertAtCursor('- [ ] ', '', 'task'),
+    hr:            () => insertAtCursor('\n---\n', '', ''),
+    table:         () => insertAtCursor('| Column 1 | Column 2 | Column 3 |\n|----------|----------|----------|\n| cell     | cell     | cell     |\n', '', ''),
+    'table-gen':   () => openTableModal()
+  };
+
+  document.querySelector('.panel-toolbar').addEventListener('click', function(e) {
+    const btn = e.target.closest('.toolbar-btn');
+    if (!btn) return;
+    const action = btn.dataset.action;
+    if (action && toolbarActions[action]) {
+      toolbarActions[action]();
+    }
+  });
+
+  /* ── Table Generator Modal ─────────────────────────────────────── */
+  const tableModal = document.getElementById('tableModal');
+  const tableRowsInput = document.getElementById('tableRows');
+  const tableColsInput = document.getElementById('tableCols');
+
+  function openTableModal() {
+    tableRowsInput.value = 3;
+    tableColsInput.value = 3;
+    tableModal.classList.add('open');
+    tableRowsInput.focus();
+  }
+
+  document.getElementById('tableCancel').addEventListener('click', () => {
+    tableModal.classList.remove('open');
+  });
+
+  tableModal.addEventListener('click', function(e) {
+    if (e.target === tableModal) tableModal.classList.remove('open');
+  });
+
+  document.getElementById('tableInsert').addEventListener('click', function() {
+    const rows = Math.min(20, Math.max(1, parseInt(tableRowsInput.value) || 3));
+    const cols = Math.min(10, Math.max(1, parseInt(tableColsInput.value) || 3));
+    let md = '| ' + Array.from({length: cols}, (_, i) => 'Header ' + (i + 1)).join(' | ') + ' |\n';
+    md += '| ' + Array.from({length: cols}, () => '---').join(' | ') + ' |\n';
+    for (let r = 0; r < rows; r++) {
+      md += '| ' + Array.from({length: cols}, () => '   ').join(' | ') + ' |\n';
+    }
+    tableModal.classList.remove('open');
+    insertAtCursor(md, '', '');
+    showToast('Table inserted');
+  });
+
+  /* ── Scroll Sync ───────────────────────────────────────────────── */
+  editor.addEventListener('scroll', function() {
+    if (!scrollSyncEnabled) return;
+    const pct = editor.scrollTop / (editor.scrollHeight - editor.clientHeight || 1);
+    preview.scrollTop = pct * (preview.scrollHeight - preview.clientHeight);
+  });
+
+  /* ── Theme Toggle ──────────────────────────────────────────────── */
+  let darkPreview = false;
+  themeToggleBtn.addEventListener('click', function() {
+    darkPreview = !darkPreview;
+    previewPanel.classList.toggle('preview-dark', darkPreview);
+    themeToggleBtn.classList.toggle('active', darkPreview);
+    showToast(darkPreview ? 'Dark preview enabled' : 'Light preview enabled');
+  });
+
+  /* ── Fullscreen ────────────────────────────────────────────────── */
+  fullscreenBtn.addEventListener('click', toggleFullscreen);
+
+  function toggleFullscreen() {
+    isFullscreen = !isFullscreen;
+    toolMainInner.classList.toggle('fullscreen-mode', isFullscreen);
+    fullscreenBtn.classList.toggle('active', isFullscreen);
+    if (isFullscreen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && isFullscreen) {
+      toggleFullscreen();
+    }
+  });
+
+  /* ── Export handlers ───────────────────────────────────────────── */
+  downloadMdBtn.addEventListener('click', function() {
+    const blob = new Blob([editor.value], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'document.md';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('Markdown file downloaded');
+  });
+
+  downloadHtmlBtn.addEventListener('click', function() {
+    const exportBody = DOMPurify.sanitize(marked.parse(editor.value));
+    const html = [
+      '<!DOCTYPE html>',
+      '<html>',
+      '<head>',
+      '  <meta charset="UTF-8">',
+      '  <meta name="viewport" content="width=device-width, initial-scale=1.0">',
+      '  <title>Document</title>',
+      '  <style>',
+      '    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; }',
+      '    h1, h2, h3 { color: #0063D1; }',
+      '    code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-family: "Courier New", monospace; }',
+      '    pre { background: #f0f0f0; padding: 12px; border-radius: 6px; overflow-x: auto; }',
+      '    pre code { background: none; padding: 0; }',
+      '    blockquote { border-left: 3px solid #0062CC; margin: 12px 0; padding-left: 12px; }',
+      '    table { border-collapse: collapse; width: 100%; }',
+      '    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }',
+      '    th { background: #f0f0f0; }',
+      '    del { text-decoration: line-through; color: #999; }',
+      '  </style>',
+      '</head>',
+      '<body>',
+      exportBody,
+      '</body>',
+      '</html>'
+    ].join('\n');
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'document.html';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('HTML file downloaded');
+  });
+
+  copyHtmlBtn.addEventListener('click', function() {
+    const cleanHtml = DOMPurify.sanitize(marked.parse(editor.value));
+    copyText(cleanHtml, 'HTML copied to clipboard');
+  });
+
+  copyChecklistBtn.addEventListener('click', function() {
+    copyText(buildPublishNote(), 'Publish note copied');
+  });
+
+  function buildPublishNote() {
+    const markdown = editor.value;
+    const words = markdown.trim().split(/\s+/).filter(Boolean).length;
+    const chars = markdown.length;
+    const readMin = words === 0 ? 0 : Math.max(1, Math.ceil(words / 200));
+    const checks = [
+      hasPattern(markdown, /^#\s+/m) ? '[x] Has an H1 heading' : '[ ] Add one H1 heading',
+      hasPattern(markdown, /^#{2,6}\s+/m) ? '[x] Has section headings' : '[ ] Add section headings for scanability',
+      hasPattern(markdown, /\[[^\]]+\]\((https?:\/\/|\/|#)[^)]+\)/) ? '[x] Contains links to review' : '[ ] Review whether supporting links are needed',
+      hasPattern(markdown, /^\|.+\|$/m) ? '[x] Contains Markdown tables' : '[ ] No Markdown tables detected',
+      hasPattern(markdown, /```/) ? '[x] Contains fenced code blocks' : '[ ] No fenced code blocks detected',
+      hasPattern(markdown, /!\[[^\]]*\]\([^)]+\)/) ? '[x] Contains images with alt text to check' : '[ ] No images detected',
+      hasPattern(markdown, /<[^>]+>/) ? '[ ] Review embedded HTML before publishing' : '[x] No embedded HTML detected',
+      '[x] Preview and HTML export are sanitized in the browser',
+      '[ ] Check final output in the target CMS or docs system'
+    ];
+    return [
+      'Markdown publish note',
+      'Words: ' + words,
+      'Characters: ' + chars,
+      'Estimated read time: ' + readMin + ' min',
+      '',
+      'Checklist:',
+      checks.join('\n')
+    ].join('\n');
+  }
+
+  function hasPattern(text, pattern) {
+    return pattern.test(text);
+  }
+
+  /* ── AI Advisor ────────────────────────────────────────────────── */
+  /* ── Input handler ─────────────────────────────────────────────── */
+  editor.addEventListener('input', updatePreview);
+
+  /* ── Init ───────────────────────────────────────────────────────── */
+  window.AfroMarkdownEditor = {
+    getContent: function() {
+      return editor.value;
+    },
+    setContent: function(value) {
+      editor.value = value || '';
+    },
+    updatePreview: updatePreview,
+    showToast: showToast
+  };
+
+  loadFromLocalStorage();
+  updatePreview();
+})();
+</script>
+<script src="/assets/js/lib/workspace-sync.js?v=da7e0c2c" defer></script>
+<script src="/tools/markdown-editor/js/markdown-workspace-sync.js?v=1b9390c0" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

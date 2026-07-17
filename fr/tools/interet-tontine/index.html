@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Calculateur d'intérêt tontine et rotation | AfroTools</title>
+  <meta name="description" content="Calculez coût, avantage, rang, charges et risques de tontine avec rotation, contribution, pénalités, inflation, reserve et export local.">
+  <meta property="og:title" content="Calculateur d'intérêt tontine et rotation | AfroTools">
+  <meta property="og:description" content="Comparer votre rang dans une tontine: pot, contribution totale, coût implicite, bonus, pénalités, risques et résumé exportable.">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/ajo-interest.webp">
+  <meta property="og:url" content="https://afrotools.com/fr/tools/interet-tontine/">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:site_name" content="AfroTools">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Calculateur d'intérêt tontine et rotation | AfroTools">
+  <meta name="twitter:description" content="Outil local pour comprendre le coût ou l'avantage d'une tontine selon votre rang, les charges et les retards.">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/ajo-interest.webp">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+  <script src="/assets/js/components/related-tools.js?v=4123e336" defer></script>
+  <script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+  <script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><style>
+    :root {
+      --ti-ink: #101827;
+      --ti-muted: #617089;
+      --ti-line: #dae4f2;
+      --ti-blue: #265bcf;
+      --ti-green: #0f7a4f;
+      --ti-warn: #9a5f08;
+      --ti-red: #9f2d20;
+      --ti-soft: #f5f8fc;
+      --ti-card: #ffffff;
+    }
+    body { background: var(--ti-soft); color: var(--ti-ink); }
+    .ti-shell, .ti-shell * { box-sizing: border-box; }
+    .ti-shell { max-width: 1180px; margin: 0 auto; padding: 28px 18px 52px; }
+    .ti-hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(300px, .9fr); gap: 18px; margin-bottom: 18px; }
+    .ti-panel { background: var(--ti-card); border: 1px solid var(--ti-line); border-radius: 18px; box-shadow: 0 18px 48px rgba(24, 40, 70, .07); }
+    .ti-hero-main { padding: 30px; }
+    .eyebrow { color: var(--ti-blue); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; font-weight: 900; }
+    h1 { margin: 10px 0 12px; font-size: clamp(2rem, 5vw, 4.55rem); line-height: .97; letter-spacing: -.02em; }
+    .lead { color: var(--ti-muted); font-size: 1.05rem; line-height: 1.72; max-width: 760px; }
+    .ti-hero-side { padding: 22px; display: grid; gap: 12px; }
+    .side-row { border-bottom: 1px solid #edf2f8; padding-bottom: 12px; }
+    .side-row:last-child { border-bottom: 0; padding-bottom: 0; }
+    .side-row span { display: block; color: var(--ti-muted); font-weight: 850; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+    .side-row strong { display: block; margin-top: 4px; font-size: 1rem; }
+    .ti-grid { display: grid; grid-template-columns: minmax(330px, .9fr) minmax(0, 1.1fr); gap: 18px; align-items: start; }
+    .ti-grid > *, .ti-hero > * { min-width: 0; max-width: 100%; }
+    .ti-card { padding: 22px; }
+    .card-title { margin: 0 0 6px; font-size: 1.35rem; }
+    .card-note { margin: 0 0 18px; color: var(--ti-muted); line-height: 1.6; }
+    .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .field { display: grid; gap: 7px; }
+    .field.full { grid-column: 1 / -1; }
+    label, .label { font-weight: 850; font-size: .9rem; }
+    input, select, textarea { width: 100%; border: 1px solid var(--ti-line); border-radius: 12px; padding: 12px; font: inherit; color: var(--ti-ink); background: #fff; }
+    textarea { min-height: 86px; resize: vertical; }
+    .help { color: var(--ti-muted); font-size: .82rem; line-height: 1.45; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+    .btn { min-height: 44px; border-radius: 999px; border: 1px solid var(--ti-line); background: #fff; color: var(--ti-ink); padding: 11px 15px; font-weight: 850; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; }
+    .btn.primary { background: var(--ti-blue); border-color: var(--ti-blue); color: #fff; }
+    .btn:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid rgba(38, 91, 207, .25); outline-offset: 2px; }
+    .metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .metric { border: 1px solid var(--ti-line); border-radius: 16px; padding: 16px; background: linear-gradient(180deg, #fff, #f8fbff); }
+    .metric span { display: block; color: var(--ti-muted); font-size: .8rem; font-weight: 850; }
+    .metric strong { display: block; font-size: clamp(1.45rem, 4vw, 2.25rem); letter-spacing: -.02em; }
+    .mini-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
+    .mini { border: 1px solid var(--ti-line); border-radius: 14px; background: #fff; padding: 14px; }
+    .mini span { color: var(--ti-muted); font-size: .8rem; font-weight: 850; }
+    .mini strong { display: block; margin-top: 4px; }
+    .status { margin-top: 12px; border-radius: 16px; padding: 16px; border: 1px solid var(--ti-line); background: #fff; line-height: 1.6; }
+    .status.good { background: #effbf5; border-color: rgba(15, 122, 79, .26); }
+    .status.warn { background: #fff8e8; border-color: rgba(154, 95, 8, .25); }
+    .status.risk { background: #fff1ee; border-color: rgba(159, 45, 32, .25); }
+    .schedule { overflow-x: auto; border: 1px solid var(--ti-line); border-radius: 14px; margin-top: 14px; background: #fff; }
+    table { border-collapse: collapse; width: 100%; min-width: 620px; }
+    th, td { padding: 10px 12px; border-bottom: 1px solid #edf2f8; text-align: left; font-size: .9rem; }
+    th { color: var(--ti-muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; }
+    tr.highlight { background: #eef5ff; }
+    .summary { white-space: pre-wrap; background: #101827; color: #f8fbff; border-radius: 16px; padding: 16px; line-height: 1.6; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .88rem; overflow: auto; margin-top: 12px; }
+    .source-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .source-card { border: 1px solid var(--ti-line); border-radius: 14px; background: #fff; padding: 14px; }
+    .source-card a { color: var(--ti-blue); font-weight: 850; }
+    .source-card p, .faq p { color: var(--ti-muted); line-height: 1.55; }
+    .notice { margin-top: 18px; border-left: 4px solid var(--ti-blue); background: #eef5ff; padding: 14px 16px; border-radius: 12px; line-height: 1.6; }
+    .faq details { border: 1px solid var(--ti-line); border-radius: 14px; padding: 14px 16px; background: #fff; margin-bottom: 10px; }
+    .faq summary { font-weight: 850; cursor: pointer; }
+    @media (max-width: 880px) {
+      .ti-hero, .ti-grid, .source-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 620px) {
+      .ti-shell { padding: 18px 12px 42px; }
+      .ti-hero-main, .ti-card { padding: 20px; }
+      .form-grid, .metrics, .mini-grid { grid-template-columns: 1fr; }
+      .btn { width: 100%; }
+    }
+  </style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Calculateur d'intérêt tontine et rotation","url":"https://afrotools.com/fr/tools/interet-tontine/","applicationCategory":"FinanceApplication","operatingSystem":"Web","description":"Calculateur local pour comparer le coût implicite, la rotation, les charges, les pénalités et le risque d'une tontine ou ROSCA.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"AfroTools"},"image":"https://afrotools.com/assets/img/tools/ajo-interest.webp"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Une tontine paie-t-elle toujours des intérêts ?","acceptedAnswer":{"@type":"Answer","text":"Non. Beaucoup de tontines rotatives ne paient pas d'intérêt explicite. L'avantage vient surtout du moment ou un membre recoit le pot; certains groupes ajoutent des charges, des pénalités ou un fonds de prêt."}},{"@type":"Question","name":"Pourquoi le rang de rotation change-t-il le résultat ?","acceptedAnswer":{"@type":"Answer","text":"Recevoir le pot tot ressemble a un financement avance que le membre rembourse ensuite. Recevoir tard ressemble davantage a une épargne forcee, avec un coût d'opportunité ou une protection contre les dépenses impulsives."}},{"@type":"Question","name":"Quels risques vérifier avant d'entrer dans une tontine ?","acceptedAnswer":{"@type":"Answer","text":"Vérifiez les membres, les regles ecrites, les pénalités, la conservation des fonds, les recours en cas de defaut, le calendrier, la transparence des reunions et le traitement des sorties."}}]}</script>
+<link rel="canonical" href="https://afrotools.com/fr/tools/interet-tontine/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/ajo-interest/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/interet-tontine/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/riba-ya-ajo-esusu-stokvel/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/ajo-interest/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<main class="ti-shell">
+  <section class="ti-hero">
+    <div class="ti-panel ti-hero-main">
+      <div class="eyebrow">Tontine, Ajo, Chama, Susu</div>
+      <h1>Voir le vrai coût de votre rang dans la tontine</h1>
+      <p class="lead">Simulez une tontine rotative avec contribution, rang de paiement, charges, pénalités et inflation. L'objectif est de savoir si vous recevez un financement utile, une épargne forcee acceptable, ou un risque trop lourd.</p>
+      <div class="btn-row">
+        <a class="btn primary" href="#calculator">Calculer maintenant</a>
+        <a class="btn" href="#sources">Sources et méthode</a>
+      </div>
+    </div>
+    <aside class="ti-panel ti-hero-side" aria-label="Ce que mesure l'outil">
+      <div class="side-row"><span>Mesure principale</span><strong>Coût implicite ou avantage temporel selon votre ordre de rotation.</strong></div>
+      <div class="side-row"><span>Sorties</span><strong>Pot, total verse, charges, equivalent annuel, calendrier et résumé TXT.</strong></div>
+      <div class="side-row"><span>Dernière vérification</span><strong>Sources et hypothèses relues en juin 2026.</strong></div>
+      <div class="side-row"><span>Limite</span><strong>Estimation de planification, pas conseil financier ni garantie de remboursement.</strong></div>
+    </aside>
+  </section>
+
+  <section class="ti-grid" id="calculator">
+    <form class="ti-panel ti-card" id="tontineForm">
+      <h2 class="card-title">Paramètres du groupe</h2>
+      <p class="card-note">Gardez les montants identiques au reglement du groupe. Si le groupe n'applique pas de charge, laissez les taux a zero.</p>
+      <div class="form-grid">
+        <div class="field">
+          <label for="currency">Devise</label>
+          <select id="currency">
+            <option value="XOF">XOF - franc CFA</option>
+            <option value="XAF">XAF - franc CFA</option>
+            <option value="NGN">NGN - naira</option>
+            <option value="GHS">GHS - cedi</option>
+            <option value="KES">KES - shilling kenyan</option>
+            <option value="ZAR">ZAR - rand</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="frequency">Fréquence</label>
+          <select id="frequency">
+            <option value="52">Hebdomadaire</option>
+            <option value="26">Toutes les deux semaines</option>
+            <option value="12" selected>Mensuelle</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="members">Nombre de membres</label>
+          <input id="members" type="number" min="3" max="60" step="1" value="10">
+        </div>
+        <div class="field">
+          <label for="contribution">Contribution par période</label>
+          <input id="contribution" type="number" min="0" step="1000" value="50000">
+        </div>
+        <div class="field">
+          <label for="position">Votre rang de paiement</label>
+          <input id="position" type="number" min="1" max="60" step="1" value="3">
+          <span class="help">1 = vous recevez le premier pot.</span>
+        </div>
+        <div class="field">
+          <label for="serviceRate">Charge/bonus du groupe (%)</label>
+          <input id="serviceRate" type="number" min="0" max="30" step="0.1" value="3">
+          <span class="help">Charge payee par les rangs tot ou bonus partage par le groupe.</span>
+        </div>
+        <div class="field">
+          <label for="lateFees">Pénalités de retard prévues</label>
+          <input id="lateFees" type="number" min="0" step="500" value="0">
+        </div>
+        <div class="field">
+          <label for="reserveRate">Fonds social/reserve (%)</label>
+          <input id="reserveRate" type="number" min="0" max="20" step="0.5" value="2">
+        </div>
+        <div class="field">
+          <label for="bankRate">Taux épargne alternatif annuel (%)</label>
+          <input id="bankRate" type="number" min="0" max="40" step="0.1" value="5">
+        </div>
+        <div class="field">
+          <label for="inflationRate">Inflation / coût d'opportunité (%)</label>
+          <input id="inflationRate" type="number" min="0" max="60" step="0.1" value="8">
+        </div>
+        <div class="field full">
+          <label for="notes">Règles ou notes</label>
+          <textarea id="notes" placeholder="Exemple: ordre tire au sort, pénalité apres 48h, fonds social separe, signature du reglement."></textarea>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn primary" type="submit">Calculer</button>
+        <button class="btn" type="button" id="copyBtn">Copier</button>
+        <button class="btn" type="button" id="downloadBtn">Télécharger TXT</button>
+        <button class="btn" type="button" id="saveBtn">Sauvegarder localement</button>
+      </div>
+      <p class="help" id="status" role="status" aria-live="polite"></p>
+    </form>
+
+    <section class="ti-panel ti-card" aria-live="polite">
+      <h2 class="card-title">Résultat de la rotation</h2>
+      <div class="metrics">
+        <div class="metric"><span>Pot reçu</span><strong id="potOut">0</strong></div>
+        <div class="metric"><span>Coût/avantage net</span><strong id="netOut">0</strong></div>
+      </div>
+      <div class="mini-grid">
+        <div class="mini"><span>Total verse</span><strong id="paidOut">0</strong></div>
+        <div class="mini"><span>Equivalent annuel</span><strong id="aprOut">0%</strong></div>
+        <div class="mini"><span>Rang</span><strong id="rankOut">0/0</strong></div>
+      </div>
+      <div class="status" id="riskOut">Ajoutez les paramètres pour voir le risque.</div>
+      <div class="schedule">
+        <table>
+          <thead><tr><th>Tour</th><th>Bénéficiaire</th><th>Pot</th><th>Lecture</th></tr></thead>
+          <tbody id="scheduleBody"></tbody>
+        </table>
+      </div>
+      <pre class="summary" id="summaryOut"></pre>
+    </section>
+  </section>
+
+  <section class="ti-panel ti-card" id="sources" style="margin-top:18px">
+    <h2 class="card-title">Sources, méthode et limites</h2>
+    <p class="card-note"><strong>Methodology / méthode de calcul:</strong> pot = membres x contribution. Le total verse inclut les contributions, la reserve, les pénalités saisies et la charge si le rang recoit tot. Le breakdown compare ce total au pot reçu et ajoute un indicateur de valeur temporelle avec le taux d'opportunité saisi. Hypothèses à valider: reglement du groupe, dates, taux, defauts et personne gardienne des fonds.</p>
+    <div class="source-grid">
+      <div class="source-card">
+        <a href="https://www.uncdf.org/Download/AdminFileWithFilename?cultureId=127&filename=24062020052burkinasavingsreportnewv07rc002pdf&id=10853" target="_blank" rel="noopener">UNCDF - Savings Groups Linkages Toolkit</a>
+        <p>Decrit les ROSCA, chamas, susus, alajo, tontines et stokvels comme groupes de rotation avec pot distribue a tour de role.</p>
+      </div>
+      <div class="source-card">
+        <a href="https://www.care.org/our-work/economic-growth/savings-groups/vsla-101/" target="_blank" rel="noopener">CARE - VSLA 101</a>
+        <p>Explique l'épargne de groupe, les prêts, les charges de service, la constitution et la transparence des reunions.</p>
+      </div>
+      <div class="source-card">
+        <a href="https://fsdafrica.org/savings-groups-and-womens-financial-inclusion/" target="_blank" rel="noopener">FSD Africa - Savings groups</a>
+        <p>Montre le role des groupes d'épargne dans l'inclusion financière et la resilience des membres.</p>
+      </div>
+      <div class="source-card">
+        <a href="https://documents.worldbank.org/pt/publication/documents-reports/documentdetail/737181468914522468" target="_blank" rel="noopener">World Bank - Indigenous savings and crédit societies</a>
+        <p>Référence de contexte sur les sociétés informelles d'épargne et de crédit.</p>
+      </div>
+    </div>
+    <div class="notice" data-tool-verification-panel>
+      <strong>Vérification AfroTools:</strong> ce calcul ne vérifié pas la solvabilite des membres, ne remplace pas un reglement écrit et ne garantit pas les paiements. Vérifiez le fonds, le gardien de caisse, les signatures, les recours et la transparence avant d'envoyer de l'argent.
+    </div>
+  </section>
+
+  <section class="ti-panel ti-card" style="margin-top:18px">
+    <h2 class="card-title">Related tools / outils associes</h2>
+    <p class="card-note">Continuez avec les outils proches: suivi de tontine, plan de groupe, épargne et comparaison de rendement.</p>
+    <div class="btn-row">
+      <a class="btn" href="/fr/tools/ajo-chama/">Gestionnaire Ajo/Chama</a>
+      <a class="btn" href="/fr/tools/suivi-susu/">Suivi Susu</a>
+      <a class="btn" href="/fr/tools/suivi-tontine/">Suivi tontine</a>
+      <a class="btn" href="/fr/tools/ajo-interest/">Ajo interest</a>
+      <a class="btn" href="/fr/tools/thrift-calc/">Thrift returns</a>
+    </div>
+  </section>
+
+  <section class="ti-panel ti-card faq" style="margin-top:18px">
+    <h2 class="card-title">Questions fréquentes</h2>
+    <details>
+      <summary>Pourquoi recevoir tot peut-il couter plus cher ?</summary>
+      <p>Recevoir le premier ou deuxième pot donne accès a une somme importante avant d'avoir cotise la totalite. Certains groupes compensent cet avantage par une charge, un bonus aux autres membres ou une priorité aux besoins urgents.</p>
+    </details>
+    <details>
+      <summary>Une tontine est-elle la même chose qu'une VSLA ?</summary>
+      <p>Une tontine rotative distribue souvent le pot a tour de role. Une VSLA ou ASCA accumule aussi un fonds qui peut preter aux membres et redistribuer les gains selon les parts epargnees.</p>
+    </details>
+    <details>
+      <summary>Que faire si un membre ne paie pas après avoir reçu son pot ?</summary>
+      <p>Le risque doit être prévu avant le début: reglement signe, garant, pénalité, calendrier public, suivi de presence, reserve et accord clair sur les recours. Sans cela, le groupe repose uniquement sur la confiance.</p>
+    </details>
+  </section>
+
+  <section style="margin-top:18px">
+    <afro-business-cta
+      tool-name="Calculateur d'interet tontine"
+      save-note="Exportez le scenario TXT, puis adaptez-le au reglement de votre groupe avant de collecter les contributions."></afro-business-cta>
+    <afro-related-tools category="african" current="interet-tontine-fr"></afro-related-tools>
+  </section>
+</main>
+<afro-footer></afro-footer>
+
+<script>
+(function () {
+  'use strict';
+  var form = document.getElementById('tontineForm');
+  var status = document.getElementById('status');
+  var ids = ['currency', 'frequency', 'members', 'contribution', 'position', 'serviceRate', 'lateFees', 'reserveRate', 'bankRate', 'inflationRate', 'notes'];
+  var fields = ids.reduce(function (acc, id) {
+    acc[id] = document.getElementById(id);
+    return acc;
+  }, {});
+
+  function num(id) {
+    return Math.max(0, Number(fields[id].value || 0));
+  }
+
+  function money(value, currency) {
+    return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: currency, maximumFractionDigits: 0 }).format(value || 0);
+  }
+
+  function pct(value) {
+    return new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 1 }).format(value || 0) + '%';
+  }
+
+  function calculate() {
+    var currency = fields.currency.value;
+    var members = Math.max(3, Math.round(num('members')));
+    var contribution = num('contribution');
+    var position = Math.min(members, Math.max(1, Math.round(num('position'))));
+    fields.position.value = position;
+    var periodsPerYear = Number(fields.frequency.value || 12);
+    var pot = members * contribution;
+    var basePaid = members * contribution;
+    var reserve = basePaid * (num('reserveRate') / 100);
+    var earlyFactor = (members - position) / Math.max(1, members - 1);
+    var serviceCharge = pot * (num('serviceRate') / 100) * earlyFactor;
+    var lateFees = num('lateFees');
+    var totalPaid = basePaid + reserve + serviceCharge + lateFees;
+    var net = pot - totalPaid;
+    var cycleYears = members / periodsPerYear;
+    var opportunityCost = pot * ((num('inflationRate') + num('bankRate')) / 100) * ((position - 1) / periodsPerYear);
+    var adjustedNet = net - opportunityCost;
+    var apr = pot ? (adjustedNet / pot) / Math.max(cycleYears, 1 / periodsPerYear) * 100 : 0;
+    var summary;
+    var riskClass = 'good';
+    var riskText = 'Le scenario reste lisible: les charges sont explicites et le rang est documente.';
+
+    if (contribution <= 0 || members < 3) {
+      riskClass = 'risk';
+      riskText = 'Entrez au moins 3 membres et une contribution positive.';
+    } else if (lateFees > contribution || serviceCharge > pot * 0.08) {
+      riskClass = 'risk';
+      riskText = 'Risque eleve: charges ou penalites importantes. Faites valider le reglement par tous les membres avant le premier versement.';
+    } else if (position <= 2 && serviceCharge === 0) {
+      riskClass = 'warn';
+      riskText = 'Recevoir tres tot sans charge peut etre acceptable, mais le groupe doit documenter le risque de defaut apres paiement.';
+    } else if (position >= members - 1) {
+      riskClass = 'warn';
+      riskText = "Recevoir tard ressemble a une epargne forcee. Comparez avec une epargne bancaire ou un fonds d'urgence.";
+    }
+
+    document.getElementById('potOut').textContent = money(pot, currency);
+    document.getElementById('paidOut').textContent = money(totalPaid, currency);
+    document.getElementById('netOut').textContent = money(adjustedNet, currency);
+    document.getElementById('aprOut').textContent = pct(apr);
+    document.getElementById('rankOut').textContent = position + '/' + members;
+    document.getElementById('riskOut').className = 'status ' + riskClass;
+    document.getElementById('riskOut').textContent = riskText;
+
+    var rows = [];
+    for (var i = 1; i <= members; i += 1) {
+      var label = i === position ? 'Vous' : 'Membre ' + i;
+      var read = i < position ? 'Avant vous' : (i === position ? 'Votre pot' : 'Apres vous');
+      rows.push('<tr class="' + (i === position ? 'highlight' : '') + '"><td>' + i + '</td><td>' + label + '</td><td>' + money(pot, currency) + '</td><td>' + read + '</td></tr>');
+    }
+    document.getElementById('scheduleBody').innerHTML = rows.join('');
+
+    summary = [
+      'Calcul tontine - AfroTools',
+      'Membres: ' + members + ', rang: ' + position + ', frequence annuelle: ' + periodsPerYear,
+      'Contribution par periode: ' + money(contribution, currency),
+      'Pot recu: ' + money(pot, currency),
+      'Total verse avec reserve/charges: ' + money(totalPaid, currency),
+      "Cout/avantage ajuste: " + money(adjustedNet, currency),
+      'Equivalent annuel indicatif: ' + pct(apr),
+      'Lecture: ' + riskText,
+      fields.notes.value ? 'Notes: ' + fields.notes.value.trim() : '',
+      'Limite: estimation locale, pas conseil financier ni garantie de paiement.'
+    ].filter(Boolean).join('\n');
+    document.getElementById('summaryOut').textContent = summary;
+    return summary;
+  }
+
+  function setStatus(message) {
+    status.textContent = message;
+  }
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    calculate();
+    setStatus('Calcul mis a jour.');
+  });
+
+  form.addEventListener('input', calculate);
+
+  document.getElementById('copyBtn').addEventListener('click', function () {
+    navigator.clipboard.writeText(calculate()).then(function () {
+      setStatus('Resume copie.');
+    }).catch(function () {
+      setStatus('Copie indisponible dans ce navigateur.');
+    });
+  });
+
+  document.getElementById('downloadBtn').addEventListener('click', function () {
+    var blob = new Blob([calculate()], { type: 'text/plain;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement('a');
+    link.href = url;
+    link.download = 'calcul-interet-tontine-afrotools.txt';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    setStatus('Fichier TXT prepare.');
+  });
+
+  document.getElementById('saveBtn').addEventListener('click', function () {
+    var data = {};
+    ids.forEach(function (id) { data[id] = fields[id].value; });
+    data.savedAt = new Date().toISOString();
+    localStorage.setItem('afrotools:interet-tontine-fr', JSON.stringify(data));
+    setStatus('Scenario sauvegarde dans ce navigateur.');
+  });
+
+  try {
+    var saved = JSON.parse(localStorage.getItem('afrotools:interet-tontine-fr') || 'null');
+    if (saved) {
+      ids.forEach(function (id) {
+        if (Object.prototype.hasOwnProperty.call(saved, id)) fields[id].value = saved[id];
+      });
+      setStatus('Scenario local restaure.');
+    }
+  } catch (error) {
+    setStatus('Le scenario local n a pas pu etre restaure.');
+  }
+  calculate();
+})();
+</script>
+</body>
+</html>

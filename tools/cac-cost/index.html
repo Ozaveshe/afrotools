@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nigeria CAC Registration Cost Calculator | AfroTools</title>
+<meta name="description" content="Calculate the total cost of registering a business with Nigeria's Corporate Affairs Commission (CAC). Business name, LLC, LLP, NGO, and IT company registration fees.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Nigeria CAC Registration Cost Calculator | AfroTools">
+<meta property="og:description" content="How much does CAC registration cost? Calculate fees for business name, LLC, and company.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/cac-cost.webp">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/cac-cost/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419;--accent:#1d4ed8}
+.tool-hero{background:linear-gradient(135deg,#1e3a5f 0%,#1d4ed8 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#bfdbfe}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#bfdbfe;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-blue{background:rgba(191,219,254,.2);color:#bfdbfe;border:1px solid rgba(191,219,254,.4)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc;display:flex;justify-content:space-between;align-items:center}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;transition:border .2s}
+input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(29,78,216,.15)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px;transition:transform .1s}
+.btn-primary{background:linear-gradient(135deg,#1e40af,#1d4ed8);color:#fff}
+.btn-primary:hover{transform:translateY(-1px)}
+.type-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.type-card{border:2px solid #e2e8f0;border-radius:8px;padding:14px;cursor:pointer;transition:.2s;text-align:center}
+.type-card.active{border-color:#1d4ed8;background:#eff6ff}
+.type-card .icon{font-size:1.6rem}
+.type-card .name{font-size:.78rem;font-weight:700;color:var(--afro-dark);margin-top:4px}
+.type-card .price{font-size:.68rem;color:#64748b;margin-top:2px}
+.cost-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:.82rem}
+.cost-table th{text-align:left;padding:10px;background:#eff6ff;color:#1d4ed8;font-weight:700;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;border-bottom:2px solid #bfdbfe}
+.cost-table td{padding:10px;border-bottom:1px solid #f1f5f9;color:#475569}
+.cost-table td:last-child{text-align:right;font-weight:600}
+.cost-table tr:last-child td{font-weight:800;color:var(--afro-dark);border-top:2px solid #e2e8f0;font-size:.88rem}
+.total-display{text-align:center;padding:20px;background:linear-gradient(135deg,#eff6ff,#dbeafe);border-radius:10px;margin-top:14px}
+.total-display .amount{font-size:2rem;font-weight:900;color:#1d4ed8}
+.total-display .label{font-size:.72rem;color:#3b82f6;font-weight:600;margin-top:4px;text-transform:uppercase;letter-spacing:.08em}
+.sidebar .info-card{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#1e40af;margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:#1e40af;line-height:1.6}
+.info-card ul{padding-left:16px;margin:6px 0}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p,.seo-section li{font-size:.88rem;color:#475569;line-height:1.75}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:900px){.type-cards{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.type-cards{grid-template-columns:1fr 1fr}.row{grid-template-columns:1fr}}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Nigeria CAC Registration Cost Calculator",
+  "description": "Calculate CAC registration cost for business name, LLC, LLP, and company in Nigeria.",
+  "url": "https://afrotools.com/tools/cac-cost/",
+  "inLanguage": "en",
+  "applicationCategory": "WebApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/cac-cost.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Nigeria CAC Registration Cost Calculator",
+  "url": "https://afrotools.com/tools/cac-cost/",
+  "description": "Calculate CAC registration cost for business name, LLC, LLP, and company in Nigeria.",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/cac-cost.webp"
+}
+</script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Nigeria CAC Registration Cost Calculator | AfroTools">
+<meta name="twitter:description" content="How much does CAC registration cost? Calculate fees for business name, LLC, and company.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/cac-cost.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Nigeria CAC Registration Cost Calculator",
+      "item": "https://afrotools.com/tools/cac-cost/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="stylesheet" href="/assets/css/legal-enhancements.css?v=faefe7bf">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Can I register CAC myself without a lawyer?","acceptedAnswer":{"@type":"Answer","text":"Yes, you can register directly on the CAC portal (pre.cac.gov.ng). Business name registration is straightforward. However, LLC registration involves preparing Memorandum and Articles of Association, which most people hire a lawyer for (NGN 30,000-80,000)."}},{"@type":"Question","name":"What is the minimum share capital for a Nigerian company?","acceptedAnswer":{"@type":"Answer","text":"There is no legally mandated minimum share capital for private companies in Nigeria. However, most companies register with NGN 1,000,000 (1 million) as it's the standard for opening corporate bank accounts and bidding for contracts."}},{"@type":"Question","name":"How long does CAC registration take?","acceptedAnswer":{"@type":"Answer","text":"Business name: 2-7 working days. Limited company: 5-14 working days. NGO (CAC/IT): 14-28 working days. Express processing is available for an additional fee."}},{"@type":"Question","name":"Do I need CAC registration to open a business bank account?","acceptedAnswer":{"@type":"Answer","text":"Yes, all Nigerian commercial banks require a CAC certificate (business name or company) to open a business bank account. You'll also need your TIN (Tax Identification Number), which is now issued automatically during CAC registration. Some banks also require a Company Status Report (obtained from CAC portal for ~₦5,000)."}},{"@type":"Question","name":"What is the difference between a Business Name and an LLC?","acceptedAnswer":{"@type":"Answer","text":"A Business Name (sole proprietorship or partnership) is cheap and simple but creates no separate legal entity — you are personally liable for all business debts. A Limited Liability Company (LLC/LTD) creates a separate legal entity. Your personal assets are protected, and you can raise investment, bid for government contracts, and bring in shareholders. Most serious businesses should register as an LLC."}},{"@type":"Question","name":"What is stamp duty and how is it calculated?","acceptedAnswer":{"@type":"Answer","text":"Stamp duty is a government tax of 0.75% of your company's authorized share capital. For example, if you register with ₦1,000,000 share capital, stamp duty is ₦7,500. This is paid to the Federal Inland Revenue Service (FIRS) during company registration. It's separate from the CAC registration fee."}},{"@type":"Question","name":"What happens if I don't file annual returns?","acceptedAnswer":{"@type":"Answer","text":"CAC imposes late filing penalties of ₦5,000–10,000 per year for companies and ₦1,000–3,000 for business names. After 3 years of non-filing, CAC may strike off your company from the register, making it legally non-existent. You must then apply for re-instatement (an expensive process). Always file annual returns — it's cheap (₦3,000–10,000/year) compared to penalties."}},{"@type":"Question","name":"Can a foreigner register a company in Nigeria?","acceptedAnswer":{"@type":"Answer","text":"Yes, foreigners can register a private limited company in Nigeria. However, to operate, foreign companies must also obtain a Business Permit from the Ministry of Interior (₦500,000–1,000,000 in government fees) and register with NIPC (Nigerian Investment Promotion Commission). The CAC registration process itself is the same as for Nigerians."}}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/cac-cost/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/cac-cost/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/cout-cac/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/gharama-za-cac-nigeria/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/cac-cost/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>CAC Cost Calculator</span></div>
+<h1>Nigeria CAC <em>Registration Cost</em></h1>
+<p class="hero-sub">Calculate the total cost of registering your business with Nigeria's Corporate Affairs Commission. Includes filing fees, stamp duty, legal costs, and all government charges.</p>
+<div class="hero-badges"><span class="badge b-blue">Business Name</span><span class="badge b-blue">LLC / LTD</span><span class="badge b-blue">2025 Rates</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calculator">
+<div class="card">
+<div class="card-head"><span class="card-title">Registration Type</span></div>
+<div class="card-body">
+<div class="type-cards" id="typeCards">
+<div class="type-card active" data-type="bn" onclick="selectType('bn')"><div class="icon">📋</div><div class="name">Business Name</div><div class="price">From ₦14,000</div></div>
+<div class="type-card" data-type="llc" onclick="selectType('llc')"><div class="icon">🏢</div><div class="name">Private Company (LLC/LTD)</div><div class="price">From ₦25,000 + stamp duty</div></div>
+<div class="type-card" data-type="llp" onclick="selectType('llp')"><div class="icon">🤝</div><div class="name">Limited Liability Partnership</div><div class="price">From ₦25,000</div></div>
+<div class="type-card" data-type="ngo" onclick="selectType('ngo')"><div class="icon">💚</div><div class="name">NGO / Incorporated Trustee</div><div class="price">From ₦20,000</div></div>
+<div class="type-card" data-type="plc" onclick="selectType('plc')"><div class="icon">📈</div><div class="name">Public Company (PLC)</div><div class="price">From ₦100,000+</div></div>
+</div>
+</div></div>
+
+<div class="card" id="detailsCard">
+<div class="card-head"><span class="card-title">Registration Details</span></div>
+<div class="card-body">
+<div class="row" style="margin-bottom:14px">
+<div><label>Share Capital (NGN)</label><input aria-label="ShareCapital" type="number" id="shareCapital" value="1000000" min="10000" step="100000"></div>
+<div><label>Number of Directors/Partners</label><input aria-label="Directors" type="number" id="directors" value="2" min="1" max="20"></div>
+</div>
+<div class="row" style="margin-bottom:14px">
+<div><label>Use Agent / Lawyer?</label>
+<select id="useAgent" aria-label="Use Agent">
+<option value="self">Self (DIY via CAC portal)</option>
+<option value="agent" selected>Agent / Accredited lawyer</option>
+</select></div>
+<div><label>Express Processing?</label>
+<select id="express" aria-label="Express">
+<option value="no" selected>Standard (5-14 days)</option>
+<option value="yes">Express (2-5 days, +fee)</option>
+</select></div>
+</div>
+<div style="margin-bottom:14px">
+<label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:.78rem;color:#475569">
+<input aria-label="AddTin" type="checkbox" id="addTin" checked> Include TIN Registration (free)
+</label>
+<label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:.78rem;color:#475569;margin-top:6px">
+<input aria-label="AddScuml" type="checkbox" id="addScuml"> SCUML Registration (for NGOs, free)
+</label>
+<label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:.78rem;color:#475569;margin-top:6px">
+<input aria-label="AddAnnualReturns" type="checkbox" id="addAnnualReturns" checked> Include 1st Year Annual Returns Filing
+</label>
+<label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:.78rem;color:#475569;margin-top:6px">
+<input aria-label="AddStatusReport" type="checkbox" id="addStatusReport"> Company Status Report (for bank account)
+</label>
+</div>
+<button type="button" class="btn btn-primary" onclick="calculate()">Calculate Total Cost</button>
+</div></div>
+
+<div class="card" id="resultCard" style="display:none">
+<div class="card-head"><span class="card-title">Cost Breakdown</span></div>
+<div class="card-body">
+<div class="total-display"><div class="amount" id="totalAmount"></div><div class="label">Estimated Total Cost</div><div id="usdAmount" style="font-size:.78rem;color:#3b82f6;margin-top:6px;font-weight:600"></div></div>
+<table class="cost-table" id="costTable"></table>
+<p style="font-size:.72rem;color:#94a3b8;margin-top:12px;line-height:1.5">* Estimates based on 2025 CAC fee schedule. Agent fees vary by location and service provider. Prices may change — verify on <a href="https://pre.cac.gov.ng" target="_blank" style="color:#3b82f6">cac.gov.ng</a></p>
+</div></div>
+</div>
+
+<div class="sidebar">
+<div class="card">
+<div class="card-head"><span class="card-title">CAC Fee Schedule 2025</span></div>
+<div class="card-body" style="font-size:.75rem;color:#475569">
+<table style="width:100%;border-collapse:collapse;font-size:.72rem">
+<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px;font-weight:600">Business Name Registration</td><td style="text-align:right;padding:5px">NGN 13,500</td></tr>
+<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px;font-weight:600">Company (share cap up to 1M)</td><td style="text-align:right;padding:5px">NGN 25,000</td></tr>
+<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px;font-weight:600">Company (1M - 5M)</td><td style="text-align:right;padding:5px">NGN 35,000</td></tr>
+<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px;font-weight:600">Company (5M - 25M)</td><td style="text-align:right;padding:5px">NGN 50,000</td></tr>
+<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px;font-weight:600">Stamp Duty</td><td style="text-align:right;padding:5px">0.75% of capital</td></tr>
+<tr><td style="padding:5px;font-weight:600">IT/NGO Registration</td><td style="text-align:right;padding:5px">NGN 20,000</td></tr>
+</table>
+</div></div>
+<div class="info-card">
+<h4>Documents Required</h4>
+<ul>
+<li>Valid means of ID (NIN, Passport, Voter's card)</li>
+<li>Passport photograph</li>
+<li>Proof of address</li>
+<li>Completed CAC forms (auto-generated)</li>
+<li>Memorandum & Articles (for LLC)</li>
+</ul>
+</div>
+<div class="info-card" style="margin-top:10px">
+<h4>Processing Time</h4>
+<ul>
+<li>Business Name: 2-7 days</li>
+<li>LLC/LTD: 5-14 days</li>
+<li>NGO (IT): 14-28 days</li>
+<li>PLC: 21-45 days</li>
+<li>Express: +₦5,000–15,000</li>
+</ul>
+</div>
+<div class="info-card" style="margin-top:10px">
+<h4>After CAC Registration — Next Steps</h4>
+<ul>
+<li>✅ Get TIN from FIRS (free, automatic for new businesses)</li>
+<li>✅ Open corporate bank account (need CAC cert + CTC)</li>
+<li>✅ Register for VAT if turnover will exceed ₦25M/year</li>
+<li>✅ PENCOM registration for employee pensions</li>
+<li>✅ File annual returns every year to avoid penalties</li>
+<li>⚠️ Annual return late penalty: ₦5,000–10,000/year</li>
+</ul>
+</div>
+</div>
+</div></section>
+
+<section class="seo-section">
+<h2>How Much Does CAC Registration Cost in Nigeria?</h2>
+<p>Registering a business with Nigeria's Corporate Affairs Commission (CAC) is a legal requirement for any business operating in the country. The cost varies significantly depending on whether you're registering a simple <strong>business name</strong> (sole proprietorship/partnership) or a <strong>limited liability company (LLC/LTD)</strong>.</p>
+<p>As of 2025, a business name registration costs <strong>NGN 13,500</strong> in government fees alone. A limited company starts at <strong>NGN 25,000</strong> for share capital up to NGN 1 million, with additional stamp duty of 0.75% on the share capital. Most people use registered agents or lawyers, which adds NGN 30,000-80,000 to the cost.</p>
+
+<h2>Business Name vs Limited Company</h2>
+<p>A <strong>business name</strong> is the simplest and cheapest option for small businesses, sole traders, and freelancers. It doesn't create a separate legal entity — you and the business are the same in the eyes of the law. A <strong>limited liability company (LLC)</strong> creates a separate legal entity that protects your personal assets. It's required for businesses that want to open corporate bank accounts, bid for government contracts, or raise investment.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>Can I register CAC myself without a lawyer?</summary><p>Yes, you can register directly on the CAC portal (pre.cac.gov.ng). Business name registration is straightforward. However, LLC registration involves preparing Memorandum and Articles of Association, which most people hire a lawyer for (NGN 30,000-80,000).</p></details>
+<details class="faq-item"><summary>What is the minimum share capital for a Nigerian company?</summary><p>There is no legally mandated minimum share capital for private companies in Nigeria. However, most companies register with NGN 1,000,000 (1 million) as it's the standard for opening corporate bank accounts and bidding for contracts.</p></details>
+<details class="faq-item"><summary>How long does CAC registration take?</summary><p>Business name: 2-7 working days. Limited company: 5-14 working days. NGO (CAC/IT): 14-28 working days. Express processing is available for an additional fee.</p></details>
+<details class="faq-item"><summary>Do I need CAC registration to open a business bank account?</summary><p>Yes, all Nigerian commercial banks require a CAC certificate (business name or company) to open a business bank account. You'll also need your TIN (Tax Identification Number), which is now issued automatically during CAC registration. Some banks also require a Company Status Report (obtained from CAC portal for ~₦5,000).</p></details>
+<details class="faq-item"><summary>What is the difference between a Business Name and an LLC?</summary><p>A Business Name (sole proprietorship or partnership) is cheap and simple but creates no separate legal entity — you are personally liable for all business debts. A Limited Liability Company (LLC/LTD) creates a separate legal entity. Your personal assets are protected, and you can raise investment, bid for government contracts, and bring in shareholders. Most serious businesses should register as an LLC.</p></details>
+<details class="faq-item"><summary>What is stamp duty and how is it calculated?</summary><p>Stamp duty is a government tax of 0.75% of your company's authorized share capital. For example, if you register with ₦1,000,000 share capital, stamp duty is ₦7,500. This is paid to the Federal Inland Revenue Service (FIRS) during company registration. It's separate from the CAC registration fee.</p></details>
+<details class="faq-item"><summary>What happens if I don't file annual returns?</summary><p>CAC imposes late filing penalties of ₦5,000–10,000 per year for companies and ₦1,000–3,000 for business names. After 3 years of non-filing, CAC may strike off your company from the register, making it legally non-existent. You must then apply for re-instatement (an expensive process). Always file annual returns — it's cheap (₦3,000–10,000/year) compared to penalties.</p></details>
+<details class="faq-item"><summary>Can a foreigner register a company in Nigeria?</summary><p>Yes, foreigners can register a private limited company in Nigeria. However, to operate, foreign companies must also obtain a Business Permit from the Ministry of Interior (₦500,000–1,000,000 in government fees) and register with NIPC (Nigerian Investment Promotion Commission). The CAC registration process itself is the same as for Nigerians.</p></details>
+</section>
+
+<!-- LEGAL-WORKFLOW-COPILOT:START -->
+<section class="leg-workflow-copilot" aria-labelledby="legal-workflow-heading">
+  <script type="application/json" class="leg-workflow-data">{"slug":"cac-cost","title":"Nigeria CAC Registration Cost","workflowTitle":"CAC fee and filing reality check","coverage":"Nigeria","decision":"Whether the user needs a business name, limited company, trustee or company limited by guarantee route","evidence":["Check the CAC service page or portal before paying a third party","Keep name reservation, filing receipt, certificate, status report and MEMART together","Budget for TIN, bank account, tax filings, beneficial ownership and sector permits after registration"],"redFlags":["A quote that hides the CAC filing fee inside a vague package","Agent contact details controlling the CAC account or recovery email","Assuming CAC registration also covers FIRS, state tax, pension, NSITF or local permits"],"related":[{"label":"CAC Business Name Checker","href":"/tools/cac-checker/"},{"label":"Business Registration","href":"/tools/business-registration/"},{"label":"TIN Guide","href":"/tools/tin-guide/"}],"competitor":{"group":"company","label":"LegalZoom, Firstbase, Stripe Atlas and registry portals","patterns":["Guided formation flows collect facts once, then reuse them for filings, annual reminders, tax setup and registered-agent style tasks.","The strongest products turn one filing into an operating calendar with renewal dates, evidence storage and next-step prompts.","They make official portal verification visible so users can tell a government fee from an agent or bundled service fee."],"implemented":["This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.","The app-specific checklist is not generic: it starts with \"Check the CAC service page or portal before paying a third party\".","Saved workflows can be resumed from the dashboard and handed off to CAC Business Name Checker when the matter naturally continues.","The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report."]}}</script>
+  <div class="leg-workflow-head">
+    <span class="leg-action-kicker">Case workspace</span>
+    <h2 id="legal-workflow-heading">Build, save and export this legal workflow</h2>
+    <p>This workspace turns the cac fee and filing reality check result into a reusable matter note, dashboard item and gated PDF checklist. Use the app first, then save the evidence trail.</p>
+  </div>
+  <div class="leg-workflow-grid">
+    <label class="leg-field"><span class="leg-f-label">Matter or project</span><input aria-label="E.g. Supplier DPA review" class="leg-f-input" data-workflow-field="matter" type="text" placeholder="e.g. Supplier DPA review"></label>
+    <label class="leg-field"><span class="leg-f-label">Country or regime</span><input aria-label="E.g. Kenya, NDPA, Lagos" class="leg-f-input" data-workflow-field="country" type="text" placeholder="e.g. Kenya, NDPA, Lagos"></label>
+    <label class="leg-field"><span class="leg-f-label">Target date</span><input aria-label="Leg f input" class="leg-f-input" data-workflow-field="date" type="date"></label>
+    <label class="leg-field"><span class="leg-f-label">Status</span><select class="leg-f-select" data-workflow-field="status"><option>Checking evidence</option><option>Ready to verify</option><option>Waiting on official source</option><option>Escalate before action</option></select></label>
+  </div>
+  <div class="leg-workflow-columns">
+    <div>
+      <h3 class="leg-mini-heading">Evidence checked</h3>
+      <div class="leg-workflow-checklist" data-workflow-evidence-list></div>
+    </div>
+    <div>
+      <h3 class="leg-mini-heading">Risk flags</h3>
+      <div class="leg-workflow-checklist warning" data-workflow-risk-list></div>
+    </div>
+  </div>
+  <label class="leg-field full"><span class="leg-f-label">Private notes</span><textarea class="leg-f-textarea" data-workflow-field="note" placeholder="Add facts, missing documents, portal references, lawyer comments, or next actions."></textarea></label>
+  <div class="leg-workflow-summary" data-workflow-summary></div>
+  <div class="leg-workflow-actions">
+    <button type="button" class="leg-copy-btn" data-workflow-build>Build handoff note</button>
+    <button type="button" class="leg-secondary-btn" data-workflow-save>Save to dashboard</button>
+    <button type="button" class="leg-secondary-btn" data-workflow-load>Load saved</button>
+    <a class="leg-secondary-btn" href="/dashboard/">Open dashboard</a>
+  </div>
+  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly aria-label="Text entry"></textarea>
+  <form class="leg-pdf-gate" data-workflow-gate novalidate>
+    <div>
+      <span class="leg-action-kicker">PDF gate</span>
+      <h3>Email the checklist and unlock print/PDF</h3>
+      <p>The core tool stays free. The deeper PDF pack captures email only when the user wants a portable report, checklist and dashboard reminder.</p>
+    </div>
+    <label class="leg-field"><span class="leg-f-label">Email</span><input aria-label="You@example.com" class="leg-f-input" data-workflow-field="email" data-workflow-email type="email" autocomplete="email" placeholder="you@example.com"></label>
+    <label class="leg-workflow-optin"><input type="checkbox" data-workflow-optin checked><span>Send me occasional AfroTools legal checklist updates.</span></label>
+    <div class="leg-workflow-actions compact">
+      <button type="submit" class="leg-copy-btn" data-workflow-pdf-gate>Email checklist + unlock PDF</button>
+      <button type="button" class="leg-secondary-btn" data-workflow-print>Print or save PDF</button>
+      <button type="button" class="leg-secondary-btn" data-workflow-copy>Copy handoff note</button>
+    </div>
+    <div class="leg-gate-status" data-workflow-gate-status></div>
+  </form>
+  <div class="leg-workflow-next">
+    <span>Continue workflow</span>
+    <div><a href="/tools/cac-checker/">CAC Business Name Checker</a><a href="/tools/business-registration/">Business Registration</a><a href="/tools/tin-guide/">TIN Guide</a></div>
+  </div>
+</section>
+<!-- LEGAL-WORKFLOW-COPILOT:END -->
+<!-- LEGAL-COMPETITOR-CHECK:START -->
+<section class="leg-competitor" aria-labelledby="legal-competitor-heading">
+  <div class="leg-action-kicker">Competitor check - 28 April 2026</div>
+  <div class="leg-competitor-head">
+    <h2 id="legal-competitor-heading">What stronger tools teach this app</h2>
+    <p>Benchmarked against LegalZoom, Firstbase, Stripe Atlas and registry portals. The goal is not to copy them; it is to bring the useful workflow pattern into an Africa-first tool with official-source caution and local evidence capture.</p>
+  </div>
+  <div class="leg-competitor-grid">
+    <div>
+      <h3>Observed feature pattern</h3>
+      <ul><li>Guided formation flows collect facts once, then reuse them for filings, annual reminders, tax setup and registered-agent style tasks.</li><li>The strongest products turn one filing into an operating calendar with renewal dates, evidence storage and next-step prompts.</li><li>They make official portal verification visible so users can tell a government fee from an agent or bundled service fee.</li></ul>
+    </div>
+    <div>
+      <h3>Implemented on this app</h3>
+      <ul><li>This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.</li><li>The app-specific checklist is not generic: it starts with &quot;Check the CAC service page or portal before paying a third party&quot;.</li><li>Saved workflows can be resumed from the dashboard and handed off to CAC Business Name Checker when the matter naturally continues.</li><li>The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report.</li></ul>
+    </div>
+    <div>
+      <h3>Best next move</h3>
+      <ul><li>Whether the user needs a business name, limited company, trustee or company limited by guarantee route</li><li>Check the CAC service page or portal before paying a third party</li><li>A quote that hides the CAC filing fee inside a vague package</li></ul>
+    </div>
+  </div>
+</section>
+<!-- LEGAL-COMPETITOR-CHECK:END -->
+<!-- LEGAL-DEEP-IMPROVEMENT:START -->
+<section class="leg-upgrade" aria-labelledby="legal-upgrade-heading">
+  <div class="leg-upgrade-kicker">Reviewed 28 April 2026 · Nigeria</div>
+  <h2 id="legal-upgrade-heading">CAC fee and filing reality check</h2>
+  <p>This app should help a founder separate official CAC filing costs from agent bundles, name reservation, post-incorporation tax setup, and optional services that are often sold as mandatory.</p>
+  <div class="leg-upgrade-grid">
+    <div class="leg-upgrade-block">
+      <h3>Decisions this clarifies</h3>
+      <ul><li>Whether the user needs a business name, limited company, trustee or company limited by guarantee route</li><li>Which official CAC fee applies before adding agent, stamp, tax or document-prep costs</li><li>Which post-registration obligations will cost money after the certificate is issued</li></ul>
+    </div>
+    <div class="leg-upgrade-block">
+      <h3>Before you rely on it</h3>
+      <ul><li>Check the CAC service page or portal before paying a third party</li><li>Keep name reservation, filing receipt, certificate, status report and MEMART together</li><li>Budget for TIN, bank account, tax filings, beneficial ownership and sector permits after registration</li></ul>
+    </div>
+    <div class="leg-upgrade-block warning">
+      <h3>Red flags</h3>
+      <ul><li>A quote that hides the CAC filing fee inside a vague package</li><li>Agent contact details controlling the CAC account or recovery email</li><li>Assuming CAC registration also covers FIRS, state tax, pension, NSITF or local permits</li></ul>
+    </div>
+  </div>
+  <div class="leg-source-row">
+    <div>
+      <span>Primary checks</span>
+      <div class="leg-source-links"><a href="https://www.cac.gov.ng/business-names/" target="_blank" rel="noopener">Corporate Affairs Commission</a><a href="https://www.cac.gov.ng/wp-content/uploads/2020/12/CAMA-NOTE-BOOK-FULL-VERSION.pdf" target="_blank" rel="noopener">Companies and Allied Matters Act 2020</a></div>
+    </div>
+    <div>
+      <span>Next best tools</span>
+      <div class="leg-source-links internal"><a href="/tools/cac-checker/">CAC Business Name Checker</a><a href="/tools/business-registration/">Business Registration</a><a href="/tools/tin-guide/">TIN Guide</a></div>
+    </div>
+  </div>
+</section>
+<!-- LEGAL-DEEP-IMPROVEMENT:END -->
+<!-- LEGAL-ACTION-PACK:START -->
+<section class="leg-action-pack" aria-labelledby="legal-action-pack-heading">
+  <div class="leg-action-head">
+    <span class="leg-action-kicker">Review pack</span>
+    <h2 id="legal-action-pack-heading">Save the cac fee and filing reality check trail</h2>
+    <p>Before filing, signing, publishing, or sending anything, keep a short record that links the app result to evidence and official-source checks.</p>
+  </div>
+  <div class="leg-action-grid">
+    <div>
+      <h3>Capture</h3>
+      <p>Save the country or regime, parties, dates, amounts, selected options, and final output. Add why this matters: Whether the user needs a business name, limited company, trustee or company limited by guarantee route.</p>
+    </div>
+    <div>
+      <h3>Attach</h3>
+      <p>Check the CAC service page or portal before paying a third party. Also keep the strongest supporting document, receipt, portal reference, ID, contract, policy, or court file beside the generated result.</p>
+    </div>
+    <div>
+      <h3>Escalate</h3>
+      <p>If you see this risk, pause and get qualified help: A quote that hides the CAC filing fee inside a vague package.</p>
+    </div>
+  </div>
+  <label class="leg-action-copy-label">Copyable review note</label>
+  <textarea class="leg-action-copy-text" readonly aria-label="Text entry">CAC fee and filing reality check action pack
+Tool: cac-cost
+Coverage: Nigeria
+
+Result to save:
+- Country or regime selected, parties involved, dates, amounts, and the generated output from the app.
+- The reason this output was prepared: Whether the user needs a business name, limited company, trustee or company limited by guarantee route.
+
+Evidence to attach:
+- Check the CAC service page or portal before paying a third party
+- Keep name reservation, filing receipt, certificate, status report and MEMART together
+- Budget for TIN, bank account, tax filings, beneficial ownership and sector permits after registration
+
+Escalate before filing or signing if:
+- A quote that hides the CAC filing fee inside a vague package
+- Agent contact details controlling the CAC account or recovery email
+- Assuming CAC registration also covers FIRS, state tax, pension, NSITF or local permits
+
+Primary checks:
+- Corporate Affairs Commission: https://www.cac.gov.ng/business-names/
+- Companies and Allied Matters Act 2020: https://www.cac.gov.ng/wp-content/uploads/2020/12/CAMA-NOTE-BOOK-FULL-VERSION.pdf
+
+Reviewed by AfroTools workflow on 28 April 2026. Informational only, not legal advice.</textarea>
+  <div class="leg-action-copy-row">
+    <button type="button" class="leg-action-copy-btn" data-legal-copy-action>Copy review pack</button>
+    <span>Paste this into your matter file, compliance folder, board pack, or lawyer handoff.</span>
+  </div>
+</section>
+<!-- LEGAL-ACTION-PACK:END -->
+<afro-related-tools category="legal" current="cac-cost" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/business-registration/" data-related-tool data-id="business-registration" data-name="Business Registration Checklist" data-category="legal" data-icon="BR" data-desc="Step-by-step business registration checklist for 16 African countries. Documents, fees, timelines, regulatory bodies.">Business Registration Checklist</a></li><li><a href="/tools/nda-generator/" data-related-tool data-id="nda-generator" data-name="NDA Generator" data-category="legal" data-icon="NG" data-desc="Generate Non-Disclosure Agreements for African jurisdictions. Mutual and unilateral NDAs compliant with local contract l">NDA Generator</a></li><li><a href="/tools/rent-intelligence/" data-related-tool data-id="rent-intelligence" data-name="Rent Intelligence" data-category="legal" data-icon="RI" data-desc="Track rent asks, lease terms, deposits, and vacancy signals by neighborhood with moderated contributor data.">Rent Intelligence</a></li><li><a href="/tools/company-type-selector/" data-related-tool data-id="company-type-selector" data-name="Company Type Selector" data-category="legal" data-icon="CT" data-desc="Choose the right business structure for Africa — Sole Trader, LLC, PLC, Partnership. Tax, liability, compliance comparis">Company Type Selector</a></li><li><a href="/tools/land-title-check/" data-related-tool data-id="land-title-check" data-name="Land Title Verification Checklist" data-category="legal" data-icon="LT" data-desc="Verify land titles before buying property in Africa. Country-specific checklists for Nigeria (C of O), Kenya (Title Deed">Land Title Verification Checklist</a></li><li><a href="/tools/lease-risk-check/" data-related-tool data-id="lease-risk-check" data-name="Lease Risk Check" data-category="legal" data-icon="LR" data-desc="Nigeria-first lease scam and risky listing checker powered by contributor reports and reviewer approval.">Lease Risk Check</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+var selectedType = 'bn';
+var USD_RATE = 1620; // approximate NGN/USD rate
+
+function selectType(type) {
+  selectedType = type;
+  document.querySelectorAll('.type-card').forEach(function(c){c.classList.remove('active');});
+  document.querySelector('[data-type="'+type+'"]').classList.add('active');
+  var capRow = document.getElementById('shareCapital').closest('.row');
+  // Share capital only relevant for LLC, LLP, PLC
+  capRow.style.display = (type === 'bn' || type === 'ngo') ? 'none' : 'grid';
+  // Directors label change
+  var dirLabel = document.querySelector('label[for="directors"]') || document.getElementById('directors').previousElementSibling;
+  if (dirLabel) dirLabel.textContent = (type === 'llp') ? 'Number of Partners' : 'Number of Directors';
+}
+
+function calculate() {
+  var type = selectedType;
+  var shareCapital = +document.getElementById('shareCapital').value || 1000000;
+  var directors = +document.getElementById('directors').value || 2;
+  var useAgent = document.getElementById('useAgent').value;
+  var express = document.getElementById('express').value === 'yes';
+  var addAnnualReturns = document.getElementById('addAnnualReturns').checked;
+  var addStatusReport = document.getElementById('addStatusReport').checked;
+  var addScuml = document.getElementById('addScuml').checked;
+
+  var items = [];
+
+  if (type === 'bn') {
+    items.push({item:'Business Name Registration Fee (CAC)',amount:13500});
+    items.push({item:'Name Reservation Fee',amount:500});
+    if (useAgent === 'agent') items.push({item:'Agent / Accredited Lawyer Fee',amount:25000});
+    if (express) items.push({item:'Express Processing',amount:5000});
+    if (addAnnualReturns) items.push({item:'Annual Returns Filing (Year 1)',amount:3000});
+  } else if (type === 'llc') {
+    var regFee = 25000;
+    if (shareCapital > 1000000 && shareCapital <= 5000000) regFee = 35000;
+    else if (shareCapital > 5000000 && shareCapital <= 25000000) regFee = 50000;
+    else if (shareCapital > 25000000 && shareCapital <= 100000000) regFee = 100000;
+    else if (shareCapital > 100000000) regFee = 200000;
+
+    items.push({item:'Company Registration Fee (CAC)',amount:regFee});
+    items.push({item:'Name Reservation Fee',amount:500});
+    items.push({item:'Stamp Duty on Share Capital (0.75%)',amount:Math.round(shareCapital*0.0075)});
+    items.push({item:'CAC Filing Fee (MEMART)',amount:5000});
+    items.push({item:'Certified True Copy (CTC) of Certificate',amount:3000});
+    if (directors > 2) items.push({item:'Extra Director Forms ('+(directors-2)+' × ₦2,000)',amount:(directors-2)*2000});
+    if (useAgent === 'agent') items.push({item:'Lawyer Fee (MEMART drafting + filing)',amount:55000});
+    if (express) items.push({item:'Express Processing',amount:15000});
+    if (addStatusReport) items.push({item:'Company Status Report (for bank account)',amount:5000});
+    if (addAnnualReturns) items.push({item:'Annual Returns Filing (Year 1)',amount:5000});
+  } else if (type === 'llp') {
+    var llpRegFee = 25000;
+    if (shareCapital > 1000000 && shareCapital <= 5000000) llpRegFee = 35000;
+    else if (shareCapital > 5000000) llpRegFee = 50000;
+
+    items.push({item:'LLP Registration Fee (CAC)',amount:llpRegFee});
+    items.push({item:'Name Reservation Fee',amount:500});
+    items.push({item:'Partnership Deed Filing',amount:5000});
+    if (useAgent === 'agent') items.push({item:'Lawyer Fee (Deed drafting + filing)',amount:45000});
+    if (express) items.push({item:'Express Processing',amount:10000});
+    if (addAnnualReturns) items.push({item:'Annual Returns Filing (Year 1)',amount:5000});
+  } else if (type === 'ngo') {
+    items.push({item:'Incorporated Trustee / NGO Registration (CAC)',amount:20000});
+    items.push({item:'Name Reservation Fee',amount:500});
+    items.push({item:'Trustees Declaration Filing',amount:5000});
+    items.push({item:'Newspaper Publication (required by law)',amount:15000});
+    if (addScuml) items.push({item:'SCUML Registration',amount:0});
+    if (useAgent === 'agent') items.push({item:'Lawyer Fee (Constitution + filing)',amount:50000});
+    if (express) items.push({item:'Express Processing',amount:10000});
+    if (addAnnualReturns) items.push({item:'Annual Returns Filing (Year 1)',amount:3000});
+  } else if (type === 'plc') {
+    var plcRegFee = 200000;
+    if (shareCapital > 100000000 && shareCapital <= 500000000) plcRegFee = 350000;
+    else if (shareCapital > 500000000) plcRegFee = 500000;
+
+    items.push({item:'PLC Registration Fee (CAC)',amount:plcRegFee});
+    items.push({item:'Name Reservation Fee',amount:500});
+    items.push({item:'Stamp Duty on Share Capital (0.75%)',amount:Math.round(shareCapital*0.0075)});
+    items.push({item:'CAC Filing Fee (MEMART)',amount:15000});
+    items.push({item:'Certified True Copy (CTC)',amount:5000});
+    if (directors > 2) items.push({item:'Extra Director Forms ('+(directors-2)+' × ₦2,000)',amount:(directors-2)*2000});
+    if (useAgent === 'agent') items.push({item:'Lawyer Fee (MEMART + SEC filing)',amount:150000});
+    if (addStatusReport) items.push({item:'Company Status Report',amount:5000});
+    if (addAnnualReturns) items.push({item:'Annual Returns Filing (Year 1)',amount:10000});
+  }
+
+  var total = items.reduce(function(s,i){return s+i.amount;}, 0);
+  var usdEquiv = Math.round(total / USD_RATE);
+
+  document.getElementById('totalAmount').textContent = '₦' + total.toLocaleString('en-NG');
+  document.getElementById('usdAmount').textContent = '≈ $' + usdEquiv.toLocaleString('en') + ' USD (at ₦' + USD_RATE + '/USD)';
+
+  var table = '<tr><th>Item</th><th style="text-align:right">Amount (NGN)</th></tr>';
+  items.forEach(function(i){
+    table += '<tr><td>'+i.item+'</td><td style="text-align:right">'+(i.amount===0?'Free':'₦'+i.amount.toLocaleString('en-NG'))+'</td></tr>';
+  });
+  table += '<tr><td><strong>Total Estimated Cost</strong></td><td style="text-align:right"><strong>₦'+total.toLocaleString('en-NG')+'</strong></td></tr>';
+  document.getElementById('costTable').innerHTML = table;
+
+  document.getElementById('resultCard').style.display = 'block';
+  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
+}
+
+// Init: hide share capital for business name on load
+document.addEventListener('DOMContentLoaded', function(){
+  selectType('bn');
+});
+</script>
+
+<script>
+(function(){
+  var target = document.getElementById('resultCard');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
+  div.innerHTML = '<save-result-button tool-slug="cac-cost" tool-name="CAC Registration Cost"></save-result-button><share-result-button tool-name="CAC Registration Cost" tool-slug="cac-cost"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script id="legal-action-copy-script">
+(function(){
+  document.addEventListener('click', function(event) {
+    var button = event.target.closest('[data-legal-copy-action]');
+    if (!button) return;
+    var section = button.closest('.leg-action-pack');
+    var area = section && section.querySelector('.leg-action-copy-text');
+    if (!area) return;
+    var original = button.textContent;
+    var done = function(){ button.textContent = "Copied"; setTimeout(function(){ button.textContent = original; }, 1800); };
+    var fallback = function(){ area.focus(); area.select(); try { document.execCommand("copy"); done(); } catch (err) { button.textContent = "Select text manually"; } };
+    if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(area.value).then(done).catch(fallback); } else { fallback(); }
+  });
+}());
+</script>
+<script src="/assets/js/legal-workflow-copilot.js?v=20da8404" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

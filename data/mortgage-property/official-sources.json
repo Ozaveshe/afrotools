@@ -1,0 +1,318 @@
+{
+  "version": 1,
+  "category": "mortgage-property",
+  "name": "Mortgage & Property official sources",
+  "reviewCadenceDays": 180,
+  "highRiskCadenceDays": 90,
+  "notes": [
+    "Mortgage & Property carries two classes of perishable public numbers. (1) Transaction taxes and fees set by statute or gazette: stamp duty, transfer duty, property capital gains tax, land-registration fees. These change with a Finance Act or a gazetted notice and are authoritative only from the revenue authority. (2) Interest rates: central-bank policy rates move the floor, and commercial mortgage rates are lender offers layered on top.",
+    "Unlike energy/telecom, this hub has NO central dataset file. Each tool hard-codes its own country rate table inside tools/<tool>/index.html. The ledger therefore binds the AUTHORITY for each perishable claim class and records honest gaps; the validator checks the ledger's internal integrity and that every tool it lists still exists on disk.",
+    "Never update a stamp-duty band, transfer-duty scale, CGT rate or policy rate because a URL's content hash changed. Read the gazetted Finance Act, tax schedule or MPC statement, exactly as .claude/rules/government.md requires. A changed page is not a rate change.",
+    "A revenue authority (FIRS, KRA, SARS, GRA, TRA, URA, ETA, DGI) always outranks a law-firm summary, property-portal blog or bank marketing page for a tax rate. A central bank (CBN, CBK, SARB, BoG, BoT, BoU, CBE, Bank Al-Maghrib) is authoritative for the policy rate only — NOT for the mortgage rate a given bank offers.",
+    "Commercial mortgage rates, per-sqm property valuations, building-material prices, construction cost/sqm, short-let nightly rates and agent commission ranges are COMMERCIAL market data, not regulated figures. They are recorded here as unsourced by design and must be presented as planning-grade ranges with a review date, never as an official or guaranteed rate.",
+    "Housing schemes (Nigeria NHF via FMBN, South Africa FLISP via DHS, Kenya KMRC/Affordable Housing) publish their own eligibility and subsidised rates. Bind the scheme administrator, not a news article.",
+    "The bug class to watch, per .claude/rules/telecom.md and .claude/rules/energy.md: `country.data.field || 0` turns a missing rate into ZERO, which then wins as 'free' — e.g. stamp duty = 0 for a country the dropdown offers but the table omits. Every selector must offer only countries the rate table actually has, or force the user to enter the rate. Do not default a missing tax/fee to zero."
+  ],
+  "tools": [
+    "mortgage-calculator",
+    "stamp-duty",
+    "rental-yield",
+    "rent-vs-buy",
+    "mortgage-affordability",
+    "home-loan-eligibility",
+    "property-transfer-cost",
+    "home-renovation-cost",
+    "first-home-buyer",
+    "property-roi",
+    "land-title-check",
+    "property-valuation",
+    "rent-affordability",
+    "tenant-screening",
+    "rental-agreement",
+    "property-mgmt-fees",
+    "building-materials",
+    "construction-budget",
+    "dev-feasibility",
+    "survey-cost",
+    "property-cgt",
+    "service-charge",
+    "short-let-calc",
+    "agent-commission",
+    "plot-converter",
+    "building-permit",
+    "diaspora-property",
+    "offplan-vs-ready"
+  ],
+  "sources": [
+    {
+      "id": "rev-ng-firs",
+      "country": "NG",
+      "authority": "FIRS (Federal Inland Revenue Service)",
+      "title": "FIRS — Nigeria stamp duty & property taxes",
+      "url": "https://www.firs.gov.ng/",
+      "sourceType": "revenue-authority",
+      "watch": "availability-and-content",
+      "fields": ["stampDuty", "propertyCgt"],
+      "tools": ["stamp-duty", "property-transfer-cost", "property-cgt"],
+      "notes": "Administers stamp duty on instruments executed by companies (State Boards of Internal Revenue handle individuals) and capital gains tax. Read the current Stamp Duties Act schedule and the CGT rate (10%) before changing a figure."
+    },
+    {
+      "id": "cb-ng-cbn",
+      "country": "NG",
+      "authority": "Central Bank of Nigeria",
+      "title": "CBN — Monetary Policy Rate (mortgage rate floor)",
+      "url": "https://www.cbn.gov.ng/",
+      "sourceType": "central-bank",
+      "watch": "content",
+      "fields": ["policyRate"],
+      "tools": ["mortgage-calculator", "mortgage-affordability", "rent-vs-buy"],
+      "notes": "Authoritative for the MPR only. Commercial mortgage rates (18–26%) are lender offers on top of the MPR and are NOT set here — record them as planning-grade ranges."
+    },
+    {
+      "id": "scheme-ng-fmbn",
+      "country": "NG",
+      "authority": "Federal Mortgage Bank of Nigeria (NHF)",
+      "title": "FMBN — National Housing Fund scheme terms",
+      "url": "https://fmbn.gov.ng/",
+      "sourceType": "scheme-administrator",
+      "watch": "content",
+      "fields": ["housingScheme"],
+      "tools": ["mortgage-calculator", "first-home-buyer"],
+      "notes": "Administers the NHF: 2.5% salary contribution, subsidised 6% mortgage, ceiling loan amount. The 6% rate and the loan ceiling are the perishable claims — confirm on the FMBN site before changing."
+    },
+    {
+      "id": "rev-ke-kra",
+      "country": "KE",
+      "authority": "Kenya Revenue Authority",
+      "title": "KRA — stamp duty & capital gains tax",
+      "url": "https://www.kra.go.ke/",
+      "sourceType": "revenue-authority",
+      "watch": "availability-and-content",
+      "fields": ["stampDuty", "propertyCgt"],
+      "tools": ["stamp-duty", "property-transfer-cost", "property-cgt"],
+      "notes": "Stamp Duty Act: 4% urban / 2% rural residential transfer, first-time-buyer exemption, and CGT (15%). Read the current schedule; CGT moved from 5% to 15% via the Finance Act — a rate class especially prone to change."
+    },
+    {
+      "id": "cb-ke-cbk",
+      "country": "KE",
+      "authority": "Central Bank of Kenya",
+      "title": "CBK — Central Bank Rate (mortgage rate floor)",
+      "url": "https://www.centralbank.go.ke/",
+      "sourceType": "central-bank",
+      "watch": "content",
+      "fields": ["policyRate"],
+      "tools": ["mortgage-calculator", "mortgage-affordability"],
+      "notes": "Authoritative for the CBR only. Housing Finance / commercial rates (12–17%) are lender offers."
+    },
+    {
+      "id": "scheme-ke-kmrc",
+      "country": "KE",
+      "authority": "Kenya Mortgage Refinance Company",
+      "title": "KMRC — affordable-housing refinance terms",
+      "url": "https://kmrc.co.ke/",
+      "sourceType": "scheme-administrator",
+      "watch": "content",
+      "fields": ["housingScheme"],
+      "tools": ["mortgage-calculator", "first-home-buyer"],
+      "notes": "Refinances partner banks to enable single-digit (~9%) mortgages. The subsidised rate is the perishable claim."
+    },
+    {
+      "id": "rev-za-sars",
+      "country": "ZA",
+      "authority": "SARS (South African Revenue Service)",
+      "title": "SARS — Transfer Duty progressive scale & CGT",
+      "url": "https://www.sars.gov.za/",
+      "sourceType": "revenue-authority",
+      "watch": "availability-and-content",
+      "fields": ["transferDuty", "propertyCgt"],
+      "tools": ["stamp-duty", "property-transfer-cost", "property-cgt"],
+      "notes": "Transfer Duty is a progressive scale for natural persons (0% up to R1.1M, 3–13% above), re-tabled most years in the February Budget. The band thresholds are the high-churn perishable figures — read the current Transfer Duty table before changing."
+    },
+    {
+      "id": "cb-za-sarb",
+      "country": "ZA",
+      "authority": "South African Reserve Bank",
+      "title": "SARB — repo rate / prime lending rate",
+      "url": "https://www.resbank.co.za/",
+      "sourceType": "central-bank",
+      "watch": "content",
+      "fields": ["policyRate"],
+      "tools": ["mortgage-calculator", "mortgage-affordability", "rent-vs-buy"],
+      "notes": "Authoritative for the repo rate; prime = repo + 3.5%. Bond rates quoted to buyers are prime ± a lender margin."
+    },
+    {
+      "id": "scheme-za-dhs",
+      "country": "ZA",
+      "authority": "Department of Human Settlements (FLISP)",
+      "title": "DHS — FLISP first-home subsidy",
+      "url": "https://www.dhs.gov.za/",
+      "sourceType": "scheme-administrator",
+      "watch": "content",
+      "fields": ["housingScheme"],
+      "tools": ["mortgage-calculator", "first-home-buyer"],
+      "notes": "FLISP subsidy for earners R3,501–R22,000/month. The income band and subsidy amount are the perishable claims."
+    },
+    {
+      "id": "rev-gh-gra",
+      "country": "GH",
+      "authority": "Ghana Revenue Authority",
+      "title": "GRA — stamp duty & capital gains tax",
+      "url": "https://gra.gov.gh/",
+      "sourceType": "revenue-authority",
+      "watch": "availability-and-content",
+      "fields": ["stampDuty", "propertyCgt"],
+      "tools": ["stamp-duty", "property-transfer-cost", "property-cgt"],
+      "notes": "Stamp duty scale and CGT (15%, taxed as income) per the Income Tax Act and Stamp Duty schedule."
+    },
+    {
+      "id": "cb-gh-bog",
+      "country": "GH",
+      "authority": "Bank of Ghana",
+      "title": "Bank of Ghana — Monetary Policy Rate",
+      "url": "https://www.bog.gov.gh/",
+      "sourceType": "central-bank",
+      "watch": "content",
+      "fields": ["policyRate"],
+      "tools": ["mortgage-calculator", "mortgage-affordability"],
+      "notes": "Authoritative for the MPR. Ghana mortgage rates (24–36%) track the MPR and T-bill rates but are lender offers."
+    },
+    {
+      "id": "rev-tz-tra",
+      "country": "TZ",
+      "authority": "Tanzania Revenue Authority",
+      "title": "TRA — stamp duty & capital gains tax",
+      "url": "https://www.tra.go.tz/",
+      "sourceType": "revenue-authority",
+      "watch": "availability-and-content",
+      "fields": ["stampDuty", "propertyCgt"],
+      "tools": ["stamp-duty", "property-transfer-cost", "property-cgt"],
+      "notes": "Stamp Duty Act and CGT (10% resident) per the Income Tax Act."
+    },
+    {
+      "id": "rev-ug-ura",
+      "country": "UG",
+      "authority": "Uganda Revenue Authority",
+      "title": "URA — stamp duty & capital gains tax",
+      "url": "https://www.ura.go.ug/",
+      "sourceType": "revenue-authority",
+      "watch": "availability-and-content",
+      "fields": ["stampDuty", "propertyCgt"],
+      "tools": ["stamp-duty", "property-transfer-cost", "property-cgt"],
+      "notes": "Stamp Duty Act (1.5% on transfers) and CGT (30%, taxed as income) per the Income Tax Act — Uganda's 30% is unusually high, so verify it has not changed before relying on it."
+    },
+    {
+      "id": "rev-eg-eta",
+      "country": "EG",
+      "authority": "Egyptian Tax Authority",
+      "title": "ETA — real-estate transfer tax & CGT",
+      "url": "https://www.eta.gov.eg/",
+      "sourceType": "revenue-authority",
+      "watch": "availability-and-content",
+      "fields": ["stampDuty", "propertyCgt"],
+      "tools": ["stamp-duty", "property-transfer-cost", "property-cgt"],
+      "notes": "Real-estate disposal is subject to a 2.5% tax on the gross selling price (not the gain). Confirm on the ETA site."
+    },
+    {
+      "id": "cb-eg-cbe",
+      "country": "EG",
+      "authority": "Central Bank of Egypt",
+      "title": "CBE — policy rate (mortgage rate floor)",
+      "url": "https://www.cbe.org.eg/",
+      "sourceType": "central-bank",
+      "watch": "content",
+      "fields": ["policyRate"],
+      "tools": ["mortgage-calculator"],
+      "notes": "Authoritative for the policy rate. The subsidised social-housing mortgage and commercial rates are separate offers."
+    },
+    {
+      "id": "rev-ma-dgi",
+      "country": "MA",
+      "authority": "Direction Générale des Impôts (Maroc)",
+      "title": "DGI — droits d'enregistrement & plus-value immobilière",
+      "url": "https://www.tax.gov.ma/",
+      "sourceType": "revenue-authority",
+      "watch": "availability-and-content",
+      "fields": ["stampDuty", "propertyCgt"],
+      "tools": ["stamp-duty", "property-transfer-cost", "property-cgt"],
+      "notes": "Registration duties on property transfers and the plus-value immobilière (property capital gains) per the Code Général des Impôts."
+    }
+  ],
+  "gaps": {
+    "authoritiesWithoutUrl": [
+      {
+        "country": "ET",
+        "authority": "Ethiopian Ministry of Revenues",
+        "needs": ["stampDuty", "propertyCgt"],
+        "why": "Property transfer stamp duty and CGT (15%) are used in stamp-duty and property-cgt but no authority URL is bound. Treat as planning-grade until a gazetted schedule is cited."
+      },
+      {
+        "country": "RW",
+        "authority": "Rwanda Revenue Authority",
+        "needs": ["stampDuty", "propertyCgt"],
+        "why": "Transfer fees and CGT (5%) are used but no RRA URL is bound. Planning-grade until cited."
+      },
+      {
+        "country": "ZM",
+        "authority": "Zambia Revenue Authority",
+        "needs": ["stampDuty"],
+        "why": "Property transfer tax is used in stamp-duty but no ZRA URL is bound."
+      },
+      {
+        "country": "ZW",
+        "authority": "Zimbabwe Revenue Authority (ZIMRA)",
+        "needs": ["stampDuty"],
+        "why": "Stamp duty is used in stamp-duty but no ZIMRA URL is bound."
+      },
+      {
+        "country": "CM",
+        "authority": "Direction Générale des Impôts (Cameroun)",
+        "needs": ["stampDuty", "propertyCgt"],
+        "why": "Registration duty and CGT (10%) are used but no authority URL is bound."
+      },
+      {
+        "country": "CI",
+        "authority": "Direction Générale des Impôts (Côte d'Ivoire)",
+        "needs": ["propertyCgt", "policyRate"],
+        "why": "CGT (15%) and mortgage rates are used but no authority URL is bound (BCEAO sets the regional policy rate for CI and SN)."
+      },
+      {
+        "country": "SN",
+        "authority": "Direction Générale des Impôts et Domaines (Sénégal)",
+        "needs": ["propertyCgt", "policyRate"],
+        "why": "CGT (15%) and mortgage rates are used but no authority URL is bound (BCEAO sets the regional policy rate)."
+      },
+      {
+        "country": "BW",
+        "authority": "Botswana Unified Revenue Service (BURS)",
+        "needs": ["policyRate", "transferDuty"],
+        "why": "Mortgage rates and transfer duty are used in mortgage-calculator but no BURS / Bank of Botswana URL is bound."
+      }
+    ],
+    "unsourcedClaims": [
+      {
+        "field": "commercialMortgageRate",
+        "why": "Commercial-bank mortgage rate ranges (e.g. Nigeria 18–26%, Ghana 24–36%) are lender offers, not regulated rates. Recorded as planning-grade ranges; only the central-bank policy rate is a bound source."
+      },
+      {
+        "field": "propertyValuationPerSqm",
+        "why": "Per-sqm property values in property-valuation (Lagos, Nairobi, Cape Town, Accra, Cairo) are market data with no single authoritative publisher. Planning-grade by design."
+      },
+      {
+        "field": "buildingMaterialPrices",
+        "why": "Cement, block, iron-rod, roofing prices in building-materials and construction-budget are commercial market prices that move faster than any review cadence. Planning-grade by design."
+      },
+      {
+        "field": "shortLetNightlyRates",
+        "why": "Short-let nightly rates and occupancy in short-let-calc are platform market data (Airbnb etc.), not published rates. Planning-grade by design."
+      },
+      {
+        "field": "agentCommission",
+        "why": "Estate-agent commission ranges in agent-commission and property-mgmt-fees are negotiable commercial rates, not statutory. Planning-grade by design."
+      },
+      {
+        "field": "surveyAndPermitFees",
+        "why": "Survey and building-permit fee schedules in survey-cost and building-permit vary by professional body and municipality; bound only where a national authority publishes them."
+      }
+    ]
+  }
+}

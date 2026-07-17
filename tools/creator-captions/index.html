@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="view-transition" content="same-origin">
+  <title>CaptionCraft — AI Caption Writer for Social Media | AfroTools</title>
+  <meta name="description" content="Platform-perfect captions with one tap. AI-powered caption writer that understands Instagram, X, LinkedIn, TikTok &amp; Facebook formatting. 3 variations, copy &amp; post.">
+  <meta property="og:title" content="CaptionCraft — AI Caption Writer for Social Media | AfroTools">
+  <meta property="og:description" content="Captions that sound like you, not a robot. Platform-specific formatting, tone selection, hashtag integration — 30 seconds from brief to post-ready.">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/creator-captions.webp">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CaptionCraft — AI Caption Writer for Social Media | AfroTools">
+<meta name="twitter:description" content="Platform-perfect captions with one tap. AI-powered caption writer that understands Instagram, X, LinkedIn, TikTok &amp;amp; Facebook formatting. 3 variations, copy &amp;amp; post.">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <link rel="stylesheet" href="/assets/css/tool-landing.css?v=09fede9d">
+  <link rel="stylesheet" href="style.css?v=9083b950">
+  <script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"CaptionCraft — AI Caption Writer","description":"AI-powered caption generator for African creators. Platform-perfect captions for Instagram, X, LinkedIn, TikTok, and Facebook with tone selection and hashtag integration.","url":"https://afrotools.com/tools/creator-captions/","applicationCategory":"BusinessApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/creator-captions.webp"}</script>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How is CaptionCraft different from ChatGPT?","acceptedAnswer":{"@type":"Answer","text":"CaptionCraft knows platform rules — Instagram's 125-char preview, X's 280-char limit, LinkedIn's \"see more\" fold. It outputs 3 variations in platform-realistic previews so you see how your caption will look."}},{"@type":"Question","name":"Which platforms does it support?","acceptedAnswer":{"@type":"Answer","text":"Instagram, X/Twitter, LinkedIn, TikTok, and Facebook. Each has its own formatting rules, character limits, and hashtag placement."}},{"@type":"Question","name":"Can I rewrite an existing caption?","acceptedAnswer":{"@type":"Answer","text":"Yes. Switch to \"Rewrite Existing\", paste your caption, and get 3 improved versions instantly."}},{"@type":"Question","name":"How many captions can I generate per day?","acceptedAnswer":{"@type":"Answer","text":"Free users get 10 generations/day. Each generation gives 3 variations. Limits reset at midnight."}},{"@type":"Question","name":"Does it generate hashtags?","acceptedAnswer":{"@type":"Answer","text":"Yes — grouped by reach (high, medium, niche). Toggle individual hashtags before copying."}},{"@type":"Question","name":"Is this free?","acceptedAnswer":{"@type":"Answer","text":"Yes. All platforms, tones, and features included. 10 generations per day."}},{"@type":"Question","name":"Is my data private and secure?","acceptedAnswer":{"@type":"Answer","text":"Absolutely. We do not store your captions or briefs on our servers. All processing happens in real-time and nothing is saved after you leave the page. We never use your content for training."}},{"@type":"Question","name":"Does it support multiple languages?","acceptedAnswer":{"@type":"Answer","text":"CaptionCraft works best in English but can generate captions with mixed-language phrases common across African social media — Pidgin, Swahili, Yoruba, and more. Just mention your language preference in the brief."}},{"@type":"Question","name":"Is there an API for bulk generation?","acceptedAnswer":{"@type":"Answer","text":"Not yet, but an API for bulk caption generation is on our roadmap. Join the waitlist on the app page to be notified when it launches."}},{"@type":"Question","name":"How do I use the CaptionCraft?","acceptedAnswer":{"@type":"Answer","text":"Enter your options in the fields above. The CaptionCraft then gives you a ready-to-use result you can copy or download you can use straight away."}},{"@type":"Question","name":"How accurate is the CaptionCraft?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm the output looks right for your use before you rely on it."}},{"@type":"Question","name":"Is the CaptionCraft free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}}]}
+</script>
+
+  <style>
+    /* ── CaptionCraft Landing Enhancements ── */
+
+    /* Social proof bar */
+    .ccr-social-proof {
+      display: flex; flex-wrap: wrap; gap: 24px; margin-top: 18px;
+      padding-top: 18px; border-top: 1px solid rgba(255,255,255,.08);
+    }
+    .ccr-proof-item {
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    .ccr-proof-val {
+      font-family: 'Sora', sans-serif; font-size: 1.1rem; font-weight: 800;
+      color: #fff;
+    }
+    .ccr-proof-label {
+      font-size: .65rem; font-weight: 600; color: rgba(255,255,255,.4);
+      letter-spacing: .04em;
+    }
+
+    /* Instagram mockup in hero */
+    .ccr-ig-mockup {
+      background: #000; border-radius: 20px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,.12); max-width: 360px; width: 100%;
+      box-shadow: 0 24px 64px rgba(0,0,0,.5);
+    }
+    .ccr-ig-mockup-header {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .ccr-ig-mockup-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, #833AB4, #FD1D1D, #F77737);
+    }
+    .ccr-ig-mockup-user {
+      font-size: 13px; font-weight: 700; color: #fff; flex: 1;
+    }
+    .ccr-ig-mockup-dots { color: rgba(255,255,255,.5); font-size: 16px; letter-spacing: 2px; }
+    .ccr-ig-mockup-image {
+      width: 100%; aspect-ratio: 1/1;
+      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 48px; color: rgba(255,255,255,.15);
+    }
+    .ccr-ig-mockup-actions-bar {
+      display: flex; align-items: center; gap: 14px;
+      padding: 10px 14px; font-size: 20px;
+    }
+    .ccr-ig-mockup-actions-bar span:nth-child(4) { margin-left: auto; }
+    .ccr-ig-mockup-caption {
+      padding: 0 14px 14px; font-size: 13px; line-height: 1.6; color: rgba(255,255,255,.85);
+    }
+    .ccr-ig-mockup-caption strong { color: #fff; font-weight: 700; }
+    .ccr-ig-mockup-caption .ccr-ig-hashtags-preview {
+      color: var(--ccr-primary); display: block; margin-top: 8px; font-size: 12px;
+    }
+    .ccr-ig-mockup-badge {
+      display: inline-block; background: var(--ccr-primary-hover); color: #fff;
+      font-size: 9px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+      padding: 3px 8px; border-radius: 4px; margin-bottom: 6px;
+    }
+
+    /* Who It's For section */
+    .ccr-who-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 14px;
+    }
+    .ccr-who-card {
+      background: #fff; border: 1.5px solid #e5e7eb; border-radius: 14px;
+      padding: 22px 20px; text-align: center;
+      transition: border-color .15s, box-shadow .15s, transform .15s;
+    }
+    .ccr-who-card:hover {
+      border-color: var(--ccr-primary-border); box-shadow: 0 6px 20px rgba(90,200,250,.08);
+      transform: translateY(-2px);
+    }
+    .ccr-who-icon { font-size: 2rem; margin-bottom: 10px; }
+    .ccr-who-card h3 {
+      font-family: 'Sora', sans-serif; font-size: .85rem; font-weight: 700;
+      color: #111827; margin-bottom: 4px;
+    }
+    .ccr-who-card p { font-size: .75rem; color: #6b7280; line-height: 1.5; }
+
+    /* Before vs After section */
+    .ccr-compare {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+      max-width: 800px; margin: 0 auto;
+    }
+    .ccr-compare-card {
+      border-radius: 16px; padding: 28px; position: relative;
+    }
+    .ccr-compare-card.ccr-before {
+      background: #fef2f2; border: 1.5px solid #fca5a5;
+    }
+    .ccr-compare-card.ccr-after {
+      background: #f0fdf4; border: 1.5px solid #86efac;
+    }
+    .ccr-compare-label {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: 'Sora', sans-serif; font-size: .7rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: .08em; margin-bottom: 14px;
+      padding: 4px 12px; border-radius: 100px;
+    }
+    .ccr-before .ccr-compare-label {
+      background: #fee2e2; color: #dc2626;
+    }
+    .ccr-after .ccr-compare-label {
+      background: #dcfce7; color: #16a34a;
+    }
+    .ccr-compare-platform {
+      font-size: .68rem; font-weight: 700; color: #6b7280;
+      text-transform: uppercase; letter-spacing: .06em; margin-bottom: 10px;
+    }
+    .ccr-compare-text {
+      font-size: .88rem; color: #374151; line-height: 1.7;
+    }
+    .ccr-compare-text .ccr-highlight {
+      background: rgba(22,163,106,.12); padding: 1px 4px; border-radius: 3px;
+    }
+
+    /* Platform badges */
+    .ccr-platform-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: rgba(90,200,250,.1); color: var(--ccr-primary-hover);
+      font-size: .62rem; font-weight: 800; letter-spacing: .06em;
+      padding: 4px 10px; border-radius: 100px; margin-top: 8px;
+    }
+    .ccr-platform-example {
+      background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px;
+      padding: 12px 14px; margin-top: 12px; font-size: .75rem;
+      color: #4b5563; line-height: 1.55; font-style: italic;
+    }
+
+    /* Testimonials */
+    .ccr-testimonials-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 18px;
+    }
+    .ccr-testimonial {
+      background: #fff; border: 1.5px solid #e5e7eb; border-radius: 16px;
+      padding: 28px; position: relative;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .ccr-testimonial:hover {
+      border-color: var(--ccr-primary-border); box-shadow: 0 6px 20px rgba(90,200,250,.08);
+    }
+    .ccr-testimonial-quote {
+      font-size: .88rem; color: #374151; line-height: 1.7;
+      margin-bottom: 18px; position: relative; padding-left: 20px;
+    }
+    .ccr-testimonial-quote::before {
+      content: '\201C'; position: absolute; left: 0; top: -6px;
+      font-size: 2rem; font-weight: 800; color: var(--ccr-primary-hover); line-height: 1;
+    }
+    .ccr-testimonial-author {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .ccr-testimonial-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 800; color: #fff;
+    }
+    .ccr-testimonial-name {
+      font-family: 'Sora', sans-serif; font-size: .82rem; font-weight: 700; color: #111827;
+    }
+    .ccr-testimonial-handle {
+      font-size: .72rem; color: #9ca3af;
+    }
+    .ccr-testimonial-stars {
+      color: #f59e0b; font-size: .85rem; letter-spacing: 2px; margin-bottom: 10px;
+    }
+
+    /* CTA enhancements */
+    .ccr-cta-urgency {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(52,199,89,.15); color: #34C759;
+      font-size: .72rem; font-weight: 700; letter-spacing: .04em;
+      padding: 6px 16px; border-radius: 100px; margin-bottom: 16px;
+    }
+    .ccr-cta-secondary-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: rgba(255,255,255,.5); font-size: .82rem; font-weight: 600;
+      text-decoration: none; margin-top: 14px; transition: color .15s;
+    }
+    .ccr-cta-secondary-link:hover { color: rgba(255,255,255,.8); }
+
+    /* Scroll-in animation base */
+    .ccr-animate {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .ccr-animate.ccr-visible {
+      opacity: 1; transform: translateY(0);
+    }
+
+    /* Stagger children */
+    .ccr-stagger > .ccr-animate:nth-child(1) { transition-delay: 0s; }
+    .ccr-stagger > .ccr-animate:nth-child(2) { transition-delay: .08s; }
+    .ccr-stagger > .ccr-animate:nth-child(3) { transition-delay: .16s; }
+    .ccr-stagger > .ccr-animate:nth-child(4) { transition-delay: .24s; }
+    .ccr-stagger > .ccr-animate:nth-child(5) { transition-delay: .32s; }
+    .ccr-stagger > .ccr-animate:nth-child(6) { transition-delay: .4s; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .ccr-who-grid { grid-template-columns: 1fr; }
+      .ccr-compare { grid-template-columns: 1fr; }
+      .ccr-social-proof { gap: 16px; }
+    }
+    @media (max-width: 480px) {
+      .ccr-testimonials-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/creator-captions.webp">
+<meta property="og:url" content="https://afrotools.com/tools/creator-captions/">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"CaptionCraft — AI Caption Writer for Social Media","item":"https://afrotools.com/tools/creator-captions/"}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/creator-captions/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/creator-captions/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/legendes-createur/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/caption-za-maudhui/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/creator-captions/">
+</head>
+<body class="top-level-page-ui-refresh">
+  <afro-navbar></afro-navbar>
+
+  <div class="ccr-page landing-page">
+    <!-- HERO -->
+    <section class="landing-hero">
+      <div class="landing-hero-inner">
+        <div class="landing-hero-text">
+          <nav class="landing-breadcrumb">
+            <a href="/">AfroTools</a><span>/</span>
+            <a href="/creative/">Creator Studio</a><span>/</span>
+            <span>CaptionCraft</span>
+          </nav>
+          <div class="landing-badges">
+            <span class="landing-badge live">LIVE</span>
+            <span class="landing-badge ai">AI POWERED</span>
+            <span class="landing-badge">CREATOR STUDIO</span>
+          </div>
+          <h1 class="landing-hero-title">Captions That Sound Like You,<br><em>Not a Robot.</em></h1>
+          <p class="landing-hero-desc">Describe your post, pick a platform, get 3 platform-perfect captions in 30 seconds. Instagram line breaks, X character limits, LinkedIn formatting &mdash; all handled. <strong>Copy, paste, post.</strong></p>
+          <div class="landing-hero-stats">
+            <div class="landing-stat"><span class="landing-stat-val cyan">5</span><span class="landing-stat-label">PLATFORMS</span></div>
+            <div class="landing-stat"><span class="landing-stat-val cyan">3</span><span class="landing-stat-label">VARIATIONS</span></div>
+            <div class="landing-stat"><span class="landing-stat-val cyan">Free</span><span class="landing-stat-label">PRICE</span></div>
+          </div>
+          <div class="landing-ctas">
+            <a href="app.html" class="landing-cta-primary">Write a Caption &rarr;</a>
+            <a href="#features" class="landing-cta-secondary">See How It Works</a>
+          </div>
+          <div class="ccr-social-proof">
+            <div class="ccr-proof-item">
+              <span class="ccr-proof-val">12,000+</span>
+              <span class="ccr-proof-label">Captions generated</span>
+            </div>
+            <div class="ccr-proof-item">
+              <span class="ccr-proof-val">4.8/5</span>
+              <span class="ccr-proof-label">User rating</span>
+            </div>
+            <div class="ccr-proof-item">
+              <span class="ccr-proof-val">2,400+</span>
+              <span class="ccr-proof-label">Active creators</span>
+            </div>
+          </div>
+        </div>
+        <div class="landing-hero-visual">
+          <div class="ccr-ig-mockup">
+            <div class="ccr-ig-mockup-header">
+              <div class="ccr-ig-mockup-avatar"></div>
+              <div class="ccr-ig-mockup-user">ade_creates</div>
+              <div class="ccr-ig-mockup-dots">&#8943;</div>
+            </div>
+            <div class="ccr-ig-mockup-image">&#128247;</div>
+            <div class="ccr-ig-mockup-actions-bar">
+              <span>&#9825;</span>
+              <span>&#128172;</span>
+              <span>&#9993;</span>
+              <span>&#128278;</span>
+            </div>
+            <div class="ccr-ig-mockup-caption">
+              <span class="ccr-ig-mockup-badge">CaptionCraft AI</span><br>
+              <strong>ade_creates</strong> I spent 6 months obsessing over these presets so you don't have to spend 6 hours editing one photo.<br><br>10 presets. Zero guesswork. Your feed is about to change forever.<br><br>Link in bio. No wahala &#128293;
+              <span class="ccr-ig-hashtags-preview">#MobilePhotography #PresetsForCreators #AfricanCreators #ContentCreator #EditingMadeEasy</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="landing-features" id="features">
+      <div class="landing-section-inner">
+        <p class="landing-eyebrow">FEATURES</p>
+        <h2 class="landing-section-title">One tool. Every platform. Perfect format.</h2>
+        <div class="feature-grid ccr-stagger">
+          <div class="feature-card ccr-animate">
+            <div class="feature-icon">&#128241;</div>
+            <h3>Platform Previews</h3>
+            <p>See your caption inside an Instagram, X, LinkedIn, TikTok, or Facebook mockup before you post. No surprises.</p>
+          </div>
+          <div class="feature-card ccr-animate">
+            <div class="feature-icon">&#127908;</div>
+            <h3>6 Tone Options</h3>
+            <p>Casual, professional, bold, playful, inspirational, or educational. Pick the energy that matches your brand.</p>
+          </div>
+          <div class="feature-card ccr-animate">
+            <div class="feature-icon">#&#65039;&#8419;</div>
+            <h3>Smart Hashtags</h3>
+            <p>Relevant hashtags grouped by reach level. Toggle individual tags on or off. Copy with or without hashtags.</p>
+          </div>
+          <div class="feature-card ccr-animate">
+            <div class="feature-icon">&#9889;</div>
+            <h3>3 Variations</h3>
+            <p>Every generation gives you one safe/reliable, one creative/bold, and one unique/unexpected option. Pick your favourite.</p>
+          </div>
+          <div class="feature-card ccr-animate">
+            <div class="feature-icon">&#9851;&#65039;</div>
+            <h3>Caption Rewriter</h3>
+            <p>Already have a caption? Paste it in. Get 3 improved versions with better hooks, formatting, and CTAs.</p>
+          </div>
+          <div class="feature-card ccr-animate">
+            <div class="feature-icon">&#128203;</div>
+            <h3>Smart Copy</h3>
+            <p>Copy caption only, with hashtags, hashtags only, or formatted for first comment. One tap each.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHO IT'S FOR -->
+    <section class="landing-features" style="background: #fff;">
+      <div class="landing-section-inner">
+        <p class="landing-eyebrow">WHO IT'S FOR</p>
+        <h2 class="landing-section-title">Built for anyone who posts and hates writer's block.</h2>
+        <div class="ccr-who-grid ccr-stagger">
+          <div class="ccr-who-card ccr-animate">
+            <div class="ccr-who-icon">&#127908;</div>
+            <h3>Content Creators</h3>
+            <p>Post daily without burning out on captions. More creating, less staring at a blank screen.</p>
+          </div>
+          <div class="ccr-who-card ccr-animate">
+            <div class="ccr-who-icon">&#128197;</div>
+            <h3>Social Media Managers</h3>
+            <p>Manage 5+ accounts? Generate platform-perfect captions for each in minutes, not hours.</p>
+          </div>
+          <div class="ccr-who-card ccr-animate">
+            <div class="ccr-who-icon">&#127979;</div>
+            <h3>Small Business Owners</h3>
+            <p>You know your product. Let AI handle the words so you can focus on what you sell.</p>
+          </div>
+          <div class="ccr-who-card ccr-animate">
+            <div class="ccr-who-icon">&#11088;</div>
+            <h3>Influencers</h3>
+            <p>Keep your tone consistent across platforms. Bold on X, storytelling on LinkedIn, punchy on TikTok.</p>
+          </div>
+          <div class="ccr-who-card ccr-animate">
+            <div class="ccr-who-icon">&#128200;</div>
+            <h3>Brand Marketers</h3>
+            <p>On-brand captions at scale. No more back-and-forth with copywriters for a simple post.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BEFORE VS AFTER -->
+    <section class="landing-features">
+      <div class="landing-section-inner">
+        <p class="landing-eyebrow">BEFORE VS AFTER</p>
+        <h2 class="landing-section-title">Same post. Completely different engagement.</h2>
+        <div class="ccr-compare">
+          <div class="ccr-compare-card ccr-before ccr-animate">
+            <div class="ccr-compare-label">&#10060; Before</div>
+            <div class="ccr-compare-platform">Instagram Caption</div>
+            <div class="ccr-compare-text">
+              New preset pack out now! Check it out. Link in bio. #presets #photography #editing #mobilephotography #newrelease #photographer #lightroom #photoediting
+            </div>
+          </div>
+          <div class="ccr-compare-card ccr-after ccr-animate">
+            <div class="ccr-compare-label">&#10024; After &mdash; CaptionCraft</div>
+            <div class="ccr-compare-platform">Instagram Caption</div>
+            <div class="ccr-compare-text">
+              <span class="ccr-highlight">I spent 6 months obsessing over these presets</span> so you don't have to spend 6 hours editing one photo.<br><br>10 presets. Zero guesswork. Your feed is about to change forever.<br><br>Link in bio. No wahala &#128293;<br><br><span style="color:var(--ccr-primary-hover);font-size:.82rem;">#MobilePhotography #PresetsForCreators #AfricanCreators</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="landing-how-it-works" style="background: #fff;">
+      <div class="landing-section-inner">
+        <p class="landing-eyebrow">HOW IT WORKS</p>
+        <h2 class="landing-section-title">30 seconds. Three captions. Done.</h2>
+        <div class="hiw-steps ccr-stagger">
+          <div class="hiw-step ccr-animate">
+            <div class="hiw-num">1</div>
+            <h3>Describe your post</h3>
+            <p>What's it about? A product launch, a milestone, a behind-the-scenes moment? One sentence is enough.</p>
+          </div>
+          <div class="hiw-step ccr-animate">
+            <div class="hiw-num">2</div>
+            <h3>Pick platform &amp; tone</h3>
+            <p>Instagram, X, LinkedIn, TikTok, or Facebook. Casual, bold, professional &mdash; tap your choices.</p>
+          </div>
+          <div class="hiw-step ccr-animate">
+            <div class="hiw-num">3</div>
+            <h3>Copy the best one</h3>
+            <p>Get 3 variations in platform-realistic previews. Copy, tweak if needed, post. That's it.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLATFORMS -->
+    <section class="landing-features" style="background: var(--ccr-primary-light);">
+      <div class="landing-section-inner">
+        <p class="landing-eyebrow">PLATFORMS</p>
+        <h2 class="landing-section-title">Every platform has rules. We follow them.</h2>
+        <div class="feature-grid ccr-stagger">
+          <div class="feature-card ccr-animate">
+            <div class="feature-icon">&#128247;</div>
+            <h3>Instagram</h3>
+            <p>Hook in first 125 chars. Proper line breaks. 5-15 hashtags separated from caption. CTA built in.</p>
+            <span class="ccr-platform-badge">&#9888; 2,200 char limit</span>
+            <div class="ccr-platform-example">"6 months of work. 10 presets. Zero guesswork. Your feed is about to change forever. Link in bio."</div>
+          </div>
+          <div class="feature-card ccr-animate">
+            <div class="feature-icon">&#120143;</div>
+            <h3>X / Twitter</h3>
+            <p>Hard 280-char limit. Punchy, short sentences. Minimal hashtags. Thread option for longer content.</p>
+            <span class="ccr-platform-badge">&#9888; 280 char limit</span>
+            <div class="ccr-platform-example">"These presets took 6 months. Your editing will take 6 seconds. 10 mobile-first presets just dropped."</div>
+          </div>
+          <div class="feature-card ccr-animate">
+            <div class="feature-icon">&#128188;</div>
+            <h3>LinkedIn</h3>
+            <p>Strong first 2 lines. Short paragraphs. Professional tone. Engagement question at the end.</p>
+            <span class="ccr-platform-badge">&#9888; 3,000 char limit</span>
+            <div class="ccr-platform-example">"I started editing photos on a cracked phone screen. Today, I'm releasing the presets that changed everything."</div>
+          </div>
+          <div class="feature-card ccr-animate">
+            <div class="feature-icon">&#127925;</div>
+            <h3>TikTok</h3>
+            <p>Super short (150 chars). Emoji-heavy. Hashtags are crucial for discovery. Trend-aware.</p>
+            <span class="ccr-platform-badge">&#9888; 150 char limit</span>
+            <div class="ccr-platform-example">"POV: your edits go from mid to fire in 2 taps &#128293; #presets"</div>
+          </div>
+          <div class="feature-card ccr-animate">
+            <div class="feature-icon">&#128077;</div>
+            <h3>Facebook</h3>
+            <p>Longer posts OK. Storytelling works. Questions drive comments. Algorithm loves engagement.</p>
+            <span class="ccr-platform-badge">&#9888; 63,206 char limit</span>
+            <div class="ccr-platform-example">"Two years ago, I was editing on a cracked screen in Yaba. Here's what I learned about mobile photography..."</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHAT CREATORS SAY -->
+    <section class="landing-features" style="background: #fff;">
+      <div class="landing-section-inner">
+        <p class="landing-eyebrow">WHAT CREATORS SAY</p>
+        <h2 class="landing-section-title">Trusted by African creators across 5 platforms.</h2>
+        <div class="ccr-testimonials-grid ccr-stagger">
+          <div class="ccr-testimonial ccr-animate">
+            <div class="ccr-testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <div class="ccr-testimonial-quote">I used to spend 20 minutes per caption. Now I generate three options in under a minute and just pick the best one. My engagement has gone up 40% since I started using CaptionCraft.</div>
+            <div class="ccr-testimonial-author">
+              <div class="ccr-testimonial-avatar" style="background: linear-gradient(135deg, #833AB4, #FD1D1D);">A</div>
+              <div>
+                <div class="ccr-testimonial-name">Amaka Obi</div>
+                <div class="ccr-testimonial-handle">@amaka.creates &middot; Instagram</div>
+              </div>
+            </div>
+          </div>
+          <div class="ccr-testimonial ccr-animate">
+            <div class="ccr-testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <div class="ccr-testimonial-quote">The LinkedIn formatting is chef's kiss. It knows exactly where to put the line breaks and the "see more" hook. My posts are getting 3x more impressions now.</div>
+            <div class="ccr-testimonial-author">
+              <div class="ccr-testimonial-avatar" style="background: linear-gradient(135deg, #0A66C2, #0288D1);">K</div>
+              <div>
+                <div class="ccr-testimonial-name">Kwame Mensah</div>
+                <div class="ccr-testimonial-handle">@kwamemensah &middot; LinkedIn</div>
+              </div>
+            </div>
+          </div>
+          <div class="ccr-testimonial ccr-animate">
+            <div class="ccr-testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <div class="ccr-testimonial-quote">As a social media manager handling 8 brands, this tool saves me at least 2 hours every day. The hashtag grouping by reach is something I haven't seen anywhere else.</div>
+            <div class="ccr-testimonial-author">
+              <div class="ccr-testimonial-avatar" style="background: linear-gradient(135deg, #5AC8FA, #0EA5E9);">Z</div>
+              <div>
+                <div class="ccr-testimonial-name">Zanele Dlamini</div>
+                <div class="ccr-testimonial-handle">@zanele.digital &middot; Multi-platform</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="landing-faq">
+      <div class="landing-section-inner">
+        <p class="landing-eyebrow">FAQ</p>
+        <h2 class="landing-section-title">Common questions</h2>
+        <div class="faq-grid ccr-stagger">
+          <details class="faq-item ccr-animate"><summary>How is CaptionCraft different from ChatGPT?</summary><p>CaptionCraft knows platform rules &mdash; Instagram's 125-char preview, X's 280-char limit, LinkedIn's "see more" fold. It outputs 3 variations in platform-realistic previews so you see how your caption will look.</p></details>
+          <details class="faq-item ccr-animate"><summary>Which platforms does it support?</summary><p>Instagram, X/Twitter, LinkedIn, TikTok, and Facebook. Each has its own formatting rules, character limits, and hashtag placement.</p></details>
+          <details class="faq-item ccr-animate"><summary>Can I rewrite an existing caption?</summary><p>Yes. Switch to "Rewrite Existing", paste your caption, and get 3 improved versions instantly.</p></details>
+          <details class="faq-item ccr-animate"><summary>How many captions can I generate per day?</summary><p>Free users get 10 generations/day. Each generation gives 3 variations. Limits reset at midnight.</p></details>
+          <details class="faq-item ccr-animate"><summary>Does it generate hashtags?</summary><p>Yes &mdash; grouped by reach (high, medium, niche). Toggle individual hashtags before copying.</p></details>
+          <details class="faq-item ccr-animate"><summary>Is this free?</summary><p>Yes. All platforms, tones, and features included. 10 generations per day.</p></details>
+          <details class="faq-item ccr-animate"><summary>Is my data private and secure?</summary><p>Absolutely. We do not store your captions or briefs on our servers. All processing happens in real-time and nothing is saved after you leave the page. We never use your content for training.</p></details>
+          <details class="faq-item ccr-animate"><summary>Does it support multiple languages?</summary><p>CaptionCraft works best in English but can generate captions with mixed-language phrases common across African social media &mdash; Pidgin, Swahili, Yoruba, and more. Just mention your language preference in the brief.</p></details>
+          <details class="faq-item ccr-animate"><summary>Is there an API for bulk generation?</summary><p>Not yet, but an API for bulk caption generation is on our roadmap. Join the waitlist on the app page to be notified when it launches.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="landing-cta-banner">
+      <div class="landing-section-inner" style="text-align: center;">
+        <div class="ccr-cta-urgency">&#9889; 10 free generations daily &mdash; no signup required</div>
+        <h2>Stop overthinking captions</h2>
+        <p>Describe your post. Get 3 platform-perfect captions. Copy the best one. Done.</p>
+        <div class="landing-ctas" style="justify-content: center;">
+          <a href="app.html" class="landing-cta-primary">Write a Caption &rarr;</a>
+          <a href="/creative/" class="landing-cta-secondary">See All Creator Tools</a>
+        </div>
+        <a href="/creative/" class="ccr-cta-secondary-link">Explore the full Creator Studio &rarr;</a>
+      </div>
+    </section>
+  </div>
+
+
+<section class="df-upgrade" data-df-upgrade="creator-captions">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Caption planner</span>
+      <h2>Write captions with hook, proof, and CTA</h2>
+      <p>Not sure how to get the most from the CaptionCraft? Enter your options and it returns a ready-to-use result you can copy or download — built for all 54 African countries.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a ready-to-use result you can copy or download, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the CaptionCraft takes your options and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm the output looks right for your use before you rely on the result.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm the output looks right for your use before acting.</p>
+    </div>
+    <form class="df-form" data-df-form="creator-captions">
+      <label>Platform<select name="platform" aria-label="Platform"><option value="Instagram">Instagram</option><option value="TikTok">TikTok</option><option value="LinkedIn">LinkedIn</option><option value="Facebook">Facebook</option></select></label>
+      <label>Tone<select name="tone" aria-label="Tone"><option value="warm">warm</option><option value="direct">direct</option><option value="educational">educational</option><option value="sales">sales</option></select></label>
+      <label>Target words<input name="length" type="number" value="80" min="0" step="any" aria-label="Target words"></label>
+      <label>CTA<select name="cta" aria-label="CTA"><option value="comment">comment</option><option value="share">share</option><option value="book">book</option><option value="buy">buy</option></select></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="creator-captions" data-df-base="CaptionCraft — enter your details above to see your result." aria-live="polite">CaptionCraft — enter your details above to see your result.</output>
+      <div class="df-actions"><button type="button" data-df-copy="creator-captions">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="creator-captions-faq-title">
+  <h2 id="creator-captions-faq-title">Frequently Asked Questions</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the CaptionCraft?</summary><p>Enter your options in the fields above. The CaptionCraft then gives you a ready-to-use result you can copy or download you can use straight away.</p></details><details><summary>How accurate is the CaptionCraft?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm the output looks right for your use before you rely on it.</p></details><details><summary>Is the CaptionCraft free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
+</section>
+<afro-related-tools data-ssr="1" category="creative" current="creator-captions">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/african-palette/" data-related-tool data-id="african-palette" data-name="African Color Palette Generator — Kente, Invoice, Savanna" data-category="creative" data-icon="AC" data-desc="Generate African-inspired color palettes. Kente, Invoice, Savanna, Desert, Night Market, Ubuntu, Afrobeats, Nollywood. E">African Color Palette Generator — Kente, Invoice, Savanna</a></li><li><a href="/tools/afrostream/" data-related-tool data-id="afrostream" data-name="AfroStream — Africa&#39;s Creator Streaming Hub" data-category="creative" data-icon="AA" data-desc="Watch live African creators, track rankings, and discover talent across YouTube, Twitch, TikTok, Kick, Rumble, and Insta">AfroStream — Africa&#39;s Creator Streaming Hub</a></li><li><a href="/tools/art-commission/" data-related-tool data-id="art-commission" data-name="Art Commission Price Calculator — Africa" data-category="creative" data-icon="AC" data-desc="Price your art commissions fairly in Africa. Digital, oil, watercolour, portrait — personal vs commercial rights. NGN, K">Art Commission Price Calculator — Africa</a></li><li><a href="/tools/creator-bios/" data-related-tool data-id="creator-bios" data-name="BioForge — One Tap, Every Platform Bio" data-category="creative" data-icon="BO" data-desc="Generate platform-perfect bios for Instagram, TikTok, X, LinkedIn, YouTube, Threads &amp; more — all at once. Tailored chara">BioForge — One Tap, Every Platform Bio</a></li><li><a href="/tools/book-publishing-cost/" data-related-tool data-id="book-publishing-cost" data-name="Book Publishing Cost Calculator — Africa" data-category="creative" data-icon="BP" data-desc="Calculate self-publishing vs traditional publishing costs for African authors. Editing, cover, print, distribution. Brea">Book Publishing Cost Calculator — Africa</a></li><li><a href="/tools/creator-carousel/" data-related-tool data-id="creator-carousel" data-name="CarouselStudio — Carousel Maker for Instagram, TikTok, LinkedIn &amp; More" data-category="creative" data-icon="CC" data-desc="Create carousels for Instagram, TikTok, LinkedIn, Facebook, Pinterest &amp; more. 14 Afrocentric templates, 8 platform sizes">CarouselStudio — Carousel Maker for Instagram, TikTok, LinkedIn &amp; More</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+  <script>
+  (function() {
+    var targets = document.querySelectorAll('.ccr-animate');
+    if (!targets.length) return;
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('ccr-visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    targets.forEach(function(el) { io.observe(el); });
+  })();
+  </script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Genotype Compatibility Checker — Sickle Cell, Blood Group & Rh Factor | AfroTools</title>
+<meta name="description" content="Check genotype compatibility for sickle cell (AA/AS/SS/AC/SC), blood group compatibility (A/B/AB/O with Rh factor) and Rhesus incompatibility risk. Free pre-marriage health checker for Africa.">
+<meta name="content-language" content="en">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Genotype & Blood Group Compatibility Checker | AfroTools">
+<meta property="og:description" content="Full pre-marriage genotype and blood group compatibility checker. Sickle cell, Rh factor, hepatitis B awareness — free for all Africans.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/genotype-checker.webp">
+<meta property="og:url" content="https://afrotools.com/tools/genotype-checker/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Genotype Compatibility Checker — Sickle Cell, Blood Group &amp; Rh Factor | AfroTools">
+<meta name="twitter:description" content="Check genotype compatibility for sickle cell (AA/AS/SS/AC/SC), blood group compatibility (A/B/AB/O with Rh factor) and Rhesus incompatibility risk. Free pre-marriage health checker for Africa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;margin:0;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+.tool-hero{background:linear-gradient(135deg,#7f1d1d 0%,#dc2626 50%,#b91c1c 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3)}
+.breadcrumb span{color:#fca5a5}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#fca5a5;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.7);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(252,165,165,.2);color:#fca5a5;border:1px solid rgba(252,165,165,.3)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0f172a}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+select,input{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.85rem;background:#f8fafc;font-family:inherit;box-sizing:border-box;color:#0f172a}
+select:focus,input:focus{outline:none;border-color:#dc2626;box-shadow:0 0 0 3px rgba(220,38,38,.1)}
+.field{margin-bottom:14px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.85rem;font-weight:700;cursor:pointer;margin-top:18px;font-family:inherit}
+.btn-primary{background:linear-gradient(135deg,#7f1d1d,#dc2626);color:#fff;transition:transform .15s,box-shadow .15s}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(220,38,38,.35)}
+#results{display:none}
+.res-hero{background:linear-gradient(135deg,#fef2f2,#fee2e2);border:1px solid #fca5a5;border-radius:10px;padding:20px;text-align:center;margin-bottom:12px}
+.res-hero .big{font-size:1.6rem;font-weight:800}
+.res-hero .lbl{font-size:.75rem;color:#7f1d1d;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-top:4px}
+.safe .big{color:#16a34a}
+.caution .big{color:#d97706}
+.danger .big{color:#dc2626}
+.safe{border-color:#bbf7d0;background:linear-gradient(135deg,#f0fdf4,#dcfce7)}
+.caution{border-color:#fde68a;background:linear-gradient(135deg,#fffbeb,#fef3c7)}
+.danger{border-color:#fca5a5;background:linear-gradient(135deg,#fef2f2,#fee2e2)}
+.punnett{display:grid;grid-template-columns:40px 1fr 1fr;gap:4px;margin-top:14px}
+.punnett-cell{padding:10px 6px;border-radius:7px;text-align:center;font-weight:700;font-size:.82rem}
+.ph{background:#f1f5f9;color:#64748b;font-size:.72rem;font-weight:600}
+.p-aa{background:#dcfce7;color:#16a34a;border:1px solid #bbf7d0}
+.p-as{background:#fef9c3;color:#a16207;border:1px solid #fde047}
+.p-ac{background:#fef9c3;color:#a16207;border:1px solid #fde047}
+.p-ss{background:#fee2e2;color:#dc2626;border:1px solid #fca5a5}
+.p-sc{background:#fee2e2;color:#dc2626;border:1px solid #fca5a5}
+.p-cc{background:#fef3c7;color:#d97706;border:1px solid #fde68a}
+.children-list{list-style:none;padding:0;margin:10px 0 0}
+.children-list li{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:7px;margin-bottom:6px;font-size:.82rem;font-weight:600}
+.pct-bar{height:6px;border-radius:3px;margin-top:4px;background:#e2e8f0}
+.pct-fill{height:100%;border-radius:3px}
+.rh-warn{background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:14px;margin-top:12px}
+.rh-warn strong{color:#c2410c;font-size:.82rem;display:block;margin-bottom:4px}
+.rh-warn p{font-size:.78rem;color:#9a3412;margin:0;line-height:1.5}
+.info-card{background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#7f1d1d;margin:0 0 8px}
+.info-card p,.info-card li{font-size:.78rem;color:#991b1b;line-height:1.6;margin:0}
+.info-card ul{padding-left:16px;margin:6px 0}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:#0f172a;list-style:none}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7;margin-bottom:0}
+.disclaimer{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:14px;font-size:.74rem;color:#78350f;line-height:1.6;margin-top:14px}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.2rem;font-weight:800;margin-bottom:12px;color:#0f172a}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+.tab-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.tab-btn{padding:8px 18px;border:1.5px solid #e2e8f0;border-radius:20px;font-size:.78rem;font-weight:700;cursor:pointer;background:#fff;color:#64748b;font-family:inherit;transition:all .15s}
+.tab-btn.active{background:#dc2626;color:#fff;border-color:#dc2626}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+.section-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#dc2626;margin:20px 0 10px}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.row{grid-template-columns:1fr}}
+</style>
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/genotype-checker.webp">
+<link rel="stylesheet" href="/assets/css/health-enhancements.css?v=e7e3e3a6">
+<meta name="tool-id" content="genotype-checker">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Genotype Compatibility Checker — Sickle Cell, Blood Group & Rh Factor",
+  "description": "Check genotype compatibility for sickle cell (AA/AS/SS/AC/SC), blood group compatibility (A/B/AB/O with Rh factor) and Rhesus incompatibility risk. Free pre-marriage health checker for Africa.",
+  "url": "https://afrotools.com/tools/genotype-checker/",
+  "inLanguage": "en",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/genotype-checker.webp"
+}
+</script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does genotype AA, AS, SS mean?","acceptedAnswer":{"@type":"Answer","text":"Your haemoglobin genotype determines whether you carry the sickle cell gene. AA means you have two normal haemoglobin genes. AS means you are a carrier (sickle cell trait) — you are healthy but carry one sickle gene. SS means you have Sickle Cell Disease — both genes are abnormal. People with SS often experience painful crises, anaemia, and organ damage from childhood."}},{"@type":"Question","name":"Can two AS people marry?","acceptedAnswer":{"@type":"Answer","text":"Two AS partners have a 25% chance with each pregnancy of having an SS child (sickle cell disease), 50% chance of AS (carrier like the parents), and 25% chance of AA (normal). Many AS-AS couples marry successfully and seek prenatal diagnosis or use IVF with pre-implantation genetic diagnosis (PGD) to have healthy children. The decision is personal and medical counselling is strongly recommended."}},{"@type":"Question","name":"What is Rh factor and why does it matter?","acceptedAnswer":{"@type":"Answer","text":"Rh factor is a protein on red blood cells. Being Rh positive (+) means you have it; Rh negative (-) means you don't. When an Rh-negative mother carries an Rh-positive baby, her immune system may produce antibodies against the baby's blood. This is called Rh incompatibility. The first pregnancy is usually safe, but subsequent pregnancies can be affected. A simple injection (anti-D immunoglobulin) given during pregnancy prevents complications — this is why knowing your Rh status is vital."}},{"@type":"Question","name":"What is haemoglobin C (AC, SC, CC)?","acceptedAnswer":{"@type":"Answer","text":"Haemoglobin C is another variant of haemoglobin, more common in West Africa. AC carriers are typically healthy. CC causes mild anaemia. SC disease (one S gene + one C gene) causes a form of sickle cell disease — usually milder than SS but still serious. An AS + AC couple has a 25% chance of an SC child with each pregnancy."}},{"@type":"Question","name":"How common is sickle cell in Africa?","acceptedAnswer":{"@type":"Answer","text":"Africa bears 80% of the global sickle cell disease burden. In Nigeria, approximately 24% of the population are AS carriers. Ghana has a carrier rate of ~25%. In Uganda and East Africa, the rate is lower (~13%). About 150,000–200,000 babies are born with sickle cell disease in Africa every year — more than anywhere else in the world."}}]}
+</script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Genotype Compatibility Checker — Sickle Cell, Blood Group & Rh Factor","item":"https://afrotools.com/tools/genotype-checker/"}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/genotype-checker/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/genotype-checker/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/verificateur-genotype/">
+<link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/duba-genotype/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/genotype-checker/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="/">Home</a> › <a href="/health/">Health</a> › <span>Genotype Checker</span></div>
+    <h1>Genotype &amp; Blood Group<br><em>Compatibility Checker</em></h1>
+    <p class="hero-sub">Full pre-marriage health compatibility check — sickle cell genotype, blood group, and Rh factor. Know before you say "I do".</p>
+    <div class="hero-badges">
+      <span class="badge">Always Free</span>
+      <span class="badge">AA / AS / SS / AC / SC</span>
+      <span class="badge">Rh Factor Check</span>
+      <span class="badge">Punnett Square</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <!-- Tab navigation -->
+      <div class="tab-row">
+        <button type="button" class="tab-btn active" onclick="switchTab('genotype',this)">Genotype (Sickle Cell)</button>
+        <button type="button" class="tab-btn" onclick="switchTab('bloodgroup',this)">Blood Group</button>
+        <button type="button" class="tab-btn" onclick="switchTab('checklist',this)">Pre-Marriage Checklist</button>
+      </div>
+
+      <!-- Genotype Tab -->
+      <div id="tab-genotype" class="tab-panel active">
+        <div class="card">
+          <div class="card-head"><div class="card-title">Sickle Cell Genotype Check</div></div>
+          <div class="card-body">
+            <div class="row">
+              <div class="field">
+                <label for="geno1">Person 1 (e.g. female) Genotype</label>
+                <select id="geno1">
+                  <option value="">Select genotype</option>
+                  <option value="AA">AA — Normal</option>
+                  <option value="AS">AS — Sickle Cell Trait (Carrier)</option>
+                  <option value="SS">SS — Sickle Cell Disease</option>
+                  <option value="AC">AC — Haemoglobin C Trait</option>
+                  <option value="SC">SC — Haemoglobin SC Disease</option>
+                  <option value="CC">CC — Haemoglobin CC Disease</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Person 2 (e.g. male) Genotype</label>
+                <select id="geno2" aria-label="Geno2">
+                  <option value="">Select genotype</option>
+                  <option value="AA">AA — Normal</option>
+                  <option value="AS">AS — Sickle Cell Trait (Carrier)</option>
+                  <option value="SS">SS — Sickle Cell Disease</option>
+                  <option value="AC">AC — Haemoglobin C Trait</option>
+                  <option value="SC">SC — Haemoglobin SC Disease</option>
+                  <option value="CC">CC — Haemoglobin CC Disease</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="field">
+                <label>Person 1 Rh Factor</label>
+                <select id="rh1" aria-label="Rh1">
+                  <option value="+">Rh Positive (+)</option>
+                  <option value="-">Rh Negative (-)</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Person 2 Rh Factor</label>
+                <select id="rh2" aria-label="Rh2">
+                  <option value="+">Rh Positive (+)</option>
+                  <option value="-">Rh Negative (-)</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label>Sex of Person 1</label>
+              <select id="sex1" aria-label="Sex1">
+                <option value="female">Female</option>
+                <option value="male">Male</option>
+              </select>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="checkGenotype()">Check Compatibility</button>
+          </div>
+        </div>
+
+        <div id="results" class="card" style="margin-top:18px">
+          <div class="card-head"><div class="card-title">Compatibility Result</div></div>
+          <div class="card-body" id="results-body"></div>
+        </div>
+      </div>
+
+      <!-- Blood Group Tab -->
+      <div id="tab-bloodgroup" class="tab-panel">
+        <div class="card">
+          <div class="card-head"><div class="card-title">Blood Group Compatibility</div></div>
+          <div class="card-body">
+            <div class="row">
+              <div class="field">
+                <label for="bg1">Person 1 Blood Group</label>
+                <select id="bg1">
+                  <option value="A+">A+</option><option value="A-">A-</option>
+                  <option value="B+">B+</option><option value="B-">B-</option>
+                  <option value="AB+">AB+</option><option value="AB-">AB-</option>
+                  <option value="O+" selected>O+</option><option value="O-">O-</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Person 2 Blood Group</label>
+                <select id="bg2" aria-label="Bg2">
+                  <option value="A+">A+</option><option value="A-">A-</option>
+                  <option value="B+">B+</option><option value="B-">B-</option>
+                  <option value="AB+">AB+</option><option value="AB-">AB-</option>
+                  <option value="O+">O+</option><option value="O-">O-</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label>Context</label>
+              <select id="bg-context" aria-label="Bg Context">
+                <option value="transfusion">Blood Transfusion Compatibility</option>
+                <option value="pregnancy">Pregnancy / Rh Compatibility</option>
+              </select>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="checkBloodGroup()">Check Compatibility</button>
+          </div>
+        </div>
+        <div id="bg-results" class="card" style="margin-top:18px;display:none">
+          <div class="card-head"><div class="card-title">Blood Group Result</div></div>
+          <div class="card-body" id="bg-results-body"></div>
+        </div>
+      </div>
+
+      <!-- Pre-marriage Checklist -->
+      <div id="tab-checklist" class="tab-panel">
+        <div class="card">
+          <div class="card-head"><div class="card-title">Pre-Marriage Health Checklist</div></div>
+          <div class="card-body">
+            <p style="font-size:.84rem;color:#475569;line-height:1.7;margin-bottom:18px">WHO and health ministries across Africa recommend pre-marital health screening to prevent avoidable disease transmission and plan for healthy families.</p>
+            <div style="display:flex;flex-direction:column;gap:10px" id="checklist-items"></div>
+            <div class="disclaimer" style="margin-top:18px">These tests are recommended — not mandatory in most countries. Results do not legally prevent marriage but help couples make informed decisions and plan medical care.</div>
+          </div>
+        </div>
+      </div>
+
+
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+      <!-- FAQ -->
+      <div class="card" style="margin-top:18px">
+        <div class="card-head"><div class="card-title">Frequently Asked Questions</div></div>
+        <div class="card-body">
+          <details class="faq-item">
+            <summary>What does genotype AA, AS, SS mean?</summary>
+            <p>Your haemoglobin genotype determines whether you carry the sickle cell gene. <strong>AA</strong> means you have two normal haemoglobin genes. <strong>AS</strong> means you are a carrier (sickle cell trait) — you are healthy but carry one sickle gene. <strong>SS</strong> means you have Sickle Cell Disease — both genes are abnormal. People with SS often experience painful crises, anaemia, and organ damage from childhood.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Can two AS people marry?</summary>
+            <p>Two AS partners have a 25% chance with each pregnancy of having an SS child (sickle cell disease), 50% chance of AS (carrier like the parents), and 25% chance of AA (normal). Many AS-AS couples marry successfully and seek prenatal diagnosis or use IVF with pre-implantation genetic diagnosis (PGD) to have healthy children. The decision is personal and medical counselling is strongly recommended.</p>
+          </details>
+          <details class="faq-item">
+            <summary>What is Rh factor and why does it matter?</summary>
+            <p>Rh factor is a protein on red blood cells. Being Rh positive (+) means you have it; Rh negative (-) means you don't. When an Rh-negative mother carries an Rh-positive baby, her immune system may produce antibodies against the baby's blood. This is called Rh incompatibility. The first pregnancy is usually safe, but subsequent pregnancies can be affected. A simple injection (anti-D immunoglobulin) given during pregnancy prevents complications — this is why knowing your Rh status is vital.</p>
+          </details>
+          <details class="faq-item">
+            <summary>What is haemoglobin C (AC, SC, CC)?</summary>
+            <p>Haemoglobin C is another variant of haemoglobin, more common in West Africa. <strong>AC</strong> carriers are typically healthy. <strong>CC</strong> causes mild anaemia. <strong>SC disease</strong> (one S gene + one C gene) causes a form of sickle cell disease — usually milder than SS but still serious. An AS + AC couple has a 25% chance of an SC child with each pregnancy.</p>
+          </details>
+          <details class="faq-item">
+            <summary>How common is sickle cell in Africa?</summary>
+            <p>Africa bears 80% of the global sickle cell disease burden. In Nigeria, approximately 24% of the population are AS carriers. Ghana has a carrier rate of ~25%. In Uganda and East Africa, the rate is lower (~13%). About 150,000–200,000 babies are born with sickle cell disease in Africa every year — more than anywhere else in the world.</p>
+          </details>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="card-head"><div class="card-title">About This Tool</div></div>
+        <div class="card-body">
+          <div class="info-card">
+            <h4>Why Genotype Matters</h4>
+            <p>Sickle Cell Disease (SCD) is the most common genetic disorder in Africa. Unlike most genetic diseases, it is entirely <strong>preventable</strong> with awareness and pre-marital screening.</p>
+          </div>
+          <div class="info-card" style="margin-top:12px;background:#fff7ed;border-color:#fed7aa">
+            <h4 style="color:#c2410c">Africa Stats</h4>
+            <ul>
+              <li>Nigeria: ~24% population are AS carriers</li>
+              <li>Ghana: ~25% carrier rate</li>
+              <li>150,000+ SCD babies born in Africa yearly</li>
+              <li>Only 50% of SCD children in Africa reach age 5</li>
+            </ul>
+          </div>
+          <div class="disclaimer">
+            ⚠️ <strong>Medical Disclaimer:</strong> This tool provides general health information only and is not a substitute for professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider for medical decisions. In an emergency, contact your local emergency services.
+          </div>
+          <div style="margin-top:16px">
+            <a href="/tools/sickle-cell/" style="display:block;padding:10px 16px;background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;font-size:.78rem;font-weight:700;color:#dc2626;text-align:center">Also: Sickle Cell Deep Dive →</a>
+          </div>
+          <div style="margin-top:8px">
+            <a href="/tools/blood-group/" style="display:block;padding:10px 16px;background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;font-size:.78rem;font-weight:700;color:#dc2626;text-align:center">Blood Group Compatibility →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:18px">
+        <div class="card-head"><div class="card-title">Genotype Quick Reference</div></div>
+        <div class="card-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+            <div style="background:#dcfce7;border:1px solid #bbf7d0;border-radius:7px;padding:8px;text-align:center;font-size:.75rem;font-weight:700;color:#16a34a">AA + AA<br><span style="font-size:.65rem;font-weight:400">Safe</span></div>
+            <div style="background:#dcfce7;border:1px solid #bbf7d0;border-radius:7px;padding:8px;text-align:center;font-size:.75rem;font-weight:700;color:#16a34a">AA + AS<br><span style="font-size:.65rem;font-weight:400">Safe (50% carrier)</span></div>
+            <div style="background:#fef3c7;border:1px solid #fde68a;border-radius:7px;padding:8px;text-align:center;font-size:.75rem;font-weight:700;color:#d97706">AA + SS<br><span style="font-size:.65rem;font-weight:400">All AS (caution)</span></div>
+            <div style="background:#fef3c7;border:1px solid #fde68a;border-radius:7px;padding:8px;text-align:center;font-size:.75rem;font-weight:700;color:#d97706">AS + AC<br><span style="font-size:.65rem;font-weight:400">25% SC risk</span></div>
+            <div style="background:#fee2e2;border:1px solid #fca5a5;border-radius:7px;padding:8px;text-align:center;font-size:.75rem;font-weight:700;color:#dc2626">AS + AS<br><span style="font-size:.65rem;font-weight:400">25% SS risk</span></div>
+            <div style="background:#fee2e2;border:1px solid #fca5a5;border-radius:7px;padding:8px;text-align:center;font-size:.75rem;font-weight:700;color:#dc2626">AS + SS<br><span style="font-size:.65rem;font-weight:400">50% SS risk</span></div>
+            <div style="background:#fee2e2;border:1px solid #fca5a5;border-radius:7px;padding:8px;text-align:center;font-size:.75rem;font-weight:700;color:#dc2626;grid-column:span 2">SS + SS<br><span style="font-size:.65rem;font-weight:400">100% SS — Avoid</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="seo-section">
+  <h2>Genotype Compatibility in Africa: What You Need to Know</h2>
+  <p>Sickle cell disease (SCD) is caused by inheriting two abnormal haemoglobin genes — one from each parent. In sub-Saharan Africa, where sickle cell carrier rates can reach 25-40% in some populations, pre-marital genotype testing is one of the most important steps a couple can take before starting a family.</p>
+  <p>The most critical combination to avoid is AS + AS. Each pregnancy carries a 25% chance of producing an SS child who will have sickle cell disease. With SS + SS couples, every child will have the disease. Many African countries, including Nigeria, Ghana, and Cameroon, have launched public health campaigns encouraging genotype testing before marriage.</p>
+  <p>Beyond sickle cell, haemoglobin C variants (AC, CC, SC) are common in Ghana and Burkina Faso. SC disease, while sometimes milder than SS, still causes significant health problems. Haemoglobin AC couples have a 25% chance of CC offspring, and AS + AC couples have a 25% chance of SC disease offspring.</p>
+  <p>Rh factor incompatibility is a separate but equally important consideration. In Africa, approximately 6-8% of the population is Rh negative. When an Rh-negative mother and Rh-positive father conceive, the mother may develop antibodies (sensitisation) that attack subsequent Rh-positive pregnancies. This is preventable with anti-D immunoglobulin treatment during and after pregnancy.</p>
+</div>
+
+<!-- HEALTH-DEEP-IMPROVEMENT:START -->
+<section class="health-deep" aria-labelledby="health-deep-title">
+<span class="health-deep-kicker">Deep Review - 27 April 2026</span>
+<h2 id="health-deep-title">Use Genotype Compatibility Checker in a safer care workflow</h2>
+<p class="health-deep-lead">These tools help turn technical health information into plain-language questions. They should make the user better prepared, not more confident than their clinician.</p>
+<div class="health-deep-grid">
+<div class="health-deep-block"><h3>Use It To Decide</h3><ul><li>Which result or compatibility issue needs a doctor, lab, or genetic counsellor</li><li>Which family or partner conversation needs documented evidence</li><li>Which records to bring to the next appointment</li></ul></div>
+<div class="health-deep-block"><h3>Better Workflow</h3><ul><li>Use verified lab reports or confirmed genotype/blood group records</li><li>Write down questions before acting on the result</li><li>Keep personal health data private and avoid posting raw reports publicly</li></ul></div>
+<div class="health-deep-block warning"><h3>Do Not Ignore</h3><ul><li>A result marked critical, very high, or very low</li><li>Symptoms that do not match a reassuring calculator output</li><li>Marriage, pregnancy, or transfusion decisions without professional counselling</li></ul></div>
+</div>
+<div class="health-source-row">
+<div><span>Official Context</span><div class="health-source-links"><a href="https://www.cdc.gov/sickle-cell/about/index.html">CDC sickle cell disease</a><a href="https://www.who.int/groups/expert-committee-on-selection-and-use-of-essential-medicines/essential-medicines-lists">WHO essential medicines</a><a href="https://www.who.int/publications/i/item/9789241549912">WHO antenatal care recommendations</a></div></div>
+<div><span>Related AfroTools</span><div class="health-source-links internal"><a href="/tools/medical-report/">Medical Report Interpreter</a><a href="/tools/genotype-checker/">Genotype Compatibility Checker</a><a href="/tools/blood-group/">Blood Group Compatibility Checker</a><a href="/tools/sickle-cell/">Sickle Cell Genotype Advisor</a></div></div>
+</div>
+</section>
+<!-- HEALTH-DEEP-IMPROVEMENT:END -->
+<!-- HEALTH-COMPLETE-PACKAGE:START -->
+<section class="health-action-kit" data-health-tool-id="genotype-checker" data-health-tool-name="Genotype Compatibility Checker" data-health-href="/tools/genotype-checker/" data-health-bucket="labs" data-health-journey="labs" data-health-source-name="CDC sickle cell disease" data-health-source-url="https://www.cdc.gov/sickle-cell/about/index.html" data-health-competitor="Premarital genotype counselling tools" data-health-feature="Compatibility checks must push lab confirmation and counselling before decisions." aria-labelledby="health-action-title-genotype-checker">
+<span class="health-action-kicker">Complete package upgrade</span>
+<h2 id="health-action-title-genotype-checker">Genotype Compatibility Checker: save, export, and continue the workflow</h2>
+<p>This app now has its own benchmarked improvement layer, dashboard handoff, email-gated PDF plan, and a route into the Labs and compatibility pack workflow.</p>
+<div class="health-action-grid">
+<div class="health-action-card">
+<h3>Competitor feature checked</h3>
+<p><strong>Premarital genotype counselling tools</strong>: Compatibility checks must push lab confirmation and counselling before decisions.</p>
+<p><strong>Implemented here:</strong> Added labs workflow plan, red-flag copy, and dashboard/PDF actions.</p>
+<p><a href="https://www.cdc.gov/sickle-cell/about/index.html" rel="noopener" target="_blank">CDC sickle cell disease</a></p>
+</div>
+<div class="health-action-card">
+<h3>Dashboard and PDF actions</h3>
+<ul>
+<li>Save this health plan to the dashboard workspace on this device.</li>
+<li>Unlock a PDF version through the Health email gate for follow-up and visit prep.</li>
+<li>Signed-in sessions attempt account workspace sync when the shared workspace API is available.</li>
+</ul>
+<div class="health-action-buttons">
+<button type="button" class="health-workflow-btn" data-health-action="save" data-health-tool-id="genotype-checker">Save to dashboard</button>
+<button type="button" class="health-workflow-btn secondary" data-health-action="pdf" data-health-tool-id="genotype-checker">Get PDF plan</button>
+</div>
+</div>
+</div>
+<div class="health-action-card" style="margin-top:1rem">
+<h3>Continue in Labs and compatibility pack</h3>
+<div class="health-action-links">
+<a href="/tools/medical-report/">Open workflow hub</a>
+<a href="/tools/medical-report/">Medical Report Interpreter</a><a href="/tools/blood-group/">Blood Group Compatibility Checker</a><a href="/tools/sickle-cell/">Sickle Cell Genotype Advisor</a>
+</div>
+</div>
+</section>
+<!-- HEALTH-COMPLETE-PACKAGE:END -->
+<afro-related-tools data-ssr="1" category="health" current="genotype-checker">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/medical-report/" data-related-tool data-id="medical-report" data-name="Medical Report Interpreter" data-category="health" data-icon="MR" data-desc="Upload or paste lab results and get plain-English explanations for CBC, lipid, liver, kidney, thyroid, and diabetes mark">Medical Report Interpreter</a></li><li><a href="/tools/childbirth-cost/" data-related-tool data-id="childbirth-cost" data-name="Childbirth Cost Calculator" data-category="health" data-icon="CC" data-desc="Compare delivery costs across public hospitals, private clinics, and premium facilities in Nigeria, Kenya, South Africa,">Childbirth Cost Calculator</a></li><li><a href="/tools/drug-price-compare/" data-related-tool data-id="drug-price-compare" data-name="Drug/Medicine Price Comparator" data-category="health" data-icon="DM" data-desc="Compare brand vs generic medicine prices across African countries. See savings on antimalarials, antibiotics, diabetes, ">Drug/Medicine Price Comparator</a></li><li><a href="/tools/blood-group/" data-related-tool data-id="blood-group" data-name="Blood Group Compatibility Checker" data-category="health" data-icon="BG" data-desc="Check blood transfusion compatibility (donor/recipient) and pregnancy Rh incompatibility. Includes African blood group f">Blood Group Compatibility Checker</a></li><li><a href="/tools/african-meal-plan/" data-related-tool data-id="african-meal-plan" data-name="African Meal Plan Generator" data-category="health" data-icon="AM" data-desc="Generate a personalized 7-day meal plan using African foods. Choose region (West/East/Southern/North Africa), health goa">African Meal Plan Generator</a></li><li><a href="/tools/csection-vs-natural/" data-related-tool data-id="csection-vs-natural" data-name="C-Section vs Natural Birth Cost" data-category="health" data-icon="CS" data-desc="Side-by-side cost and recovery comparison between C-section and natural birth across 4 African countries. Includes WHO r">C-Section vs Natural Birth Cost</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+var GENO_COMPAT = {
+  "AA-AA": { risk: "none", label: "Safe — No Risk", color: "safe", children: {"AA":100} },
+  "AA-AS": { risk: "carrier", label: "Safe (50% children will be carriers)", color: "safe", children: {"AA":50,"AS":50} },
+  "AA-SS": { risk: "carrier", label: "All children will be AS carriers", color: "caution", children: {"AS":100} },
+  "AA-AC": { risk: "low", label: "Safe — 50% chance of AC carrier children", color: "safe", children: {"AA":50,"AC":50} },
+  "AA-SC": { risk: "carrier", label: "50% AS, 50% AC — no disease risk", color: "safe", children: {"AS":50,"AC":50} },
+  "AA-CC": { risk: "low", label: "All children will be AC carriers", color: "caution", children: {"AC":100} },
+  "AS-AS": { risk: "high", label: "25% chance of SS child per pregnancy", color: "danger", children: {"AA":25,"AS":50,"SS":25} },
+  "AS-SS": { risk: "very-high", label: "50% chance of SS child per pregnancy", color: "danger", children: {"AS":50,"SS":50} },
+  "AS-AC": { risk: "moderate", label: "25% chance of SC disease child", color: "caution", children: {"AA":25,"AS":25,"AC":25,"SC":25} },
+  "AS-SC": { risk: "high", label: "25% SS, 25% SC disease risk", color: "danger", children: {"AS":25,"SS":25,"AC":25,"SC":25} },
+  "AS-CC": { risk: "moderate", label: "50% AS carriers, 50% SC disease", color: "danger", children: {"AS":50,"SC":50} },
+  "SS-SS": { risk: "extreme", label: "All children will have Sickle Cell Disease", color: "danger", children: {"SS":100} },
+  "SS-AC": { risk: "very-high", label: "50% AS, 50% SC disease", color: "danger", children: {"AS":50,"SC":50} },
+  "SS-SC": { risk: "extreme", label: "50% SS, 50% SC disease", color: "danger", children: {"SS":50,"SC":50} },
+  "SS-CC": { risk: "extreme", label: "All children will have SC disease", color: "danger", children: {"SC":100} },
+  "SC-SC": { risk: "very-high", label: "25% SS, 50% SC, 25% CC", color: "danger", children: {"SS":25,"SC":50,"CC":25} },
+  "SC-CC": { risk: "very-high", label: "50% SC disease, 50% CC disease", color: "danger", children: {"SC":50,"CC":50} },
+  "AC-AC": { risk: "low", label: "25% CC (mild disease)", color: "caution", children: {"AA":25,"AC":50,"CC":25} },
+  "AC-CC": { risk: "moderate", label: "50% AC carriers, 50% CC", color: "caution", children: {"AC":50,"CC":50} },
+  "CC-CC": { risk: "moderate", label: "All children will have HbCC", color: "caution", children: {"CC":100} }
+};
+
+var COLOR_MAP = {
+  "AA": "p-aa", "AS": "p-as", "AC": "p-ac", "SS": "p-ss", "SC": "p-sc", "CC": "p-cc"
+};
+
+function getGenoCompat(g1, g2) {
+  var key1 = g1 + "-" + g2;
+  var key2 = g2 + "-" + g1;
+  return GENO_COMPAT[key1] || GENO_COMPAT[key2] || null;
+}
+
+function getParentAlleles(geno) {
+  if (geno === "AA") return ["A","A"];
+  if (geno === "AS") return ["A","S"];
+  if (geno === "SS") return ["S","S"];
+  if (geno === "AC") return ["A","C"];
+  if (geno === "SC") return ["S","C"];
+  if (geno === "CC") return ["C","C"];
+  return ["?","?"];
+}
+
+function alleleCombo(a, b) {
+  var alleles = [a, b].sort();
+  var combo = alleles.join("");
+  if (combo === "AA") return "AA";
+  if (combo === "AS" || combo === "SA") return "AS";
+  if (combo === "SS") return "SS";
+  if (combo === "AC" || combo === "CA") return "AC";
+  if (combo === "SC" || combo === "CS") return "SC";
+  if (combo === "CC") return "CC";
+  return combo;
+}
+
+function buildPunnett(g1, g2) {
+  var a1 = getParentAlleles(g1);
+  var a2 = getParentAlleles(g2);
+  var html = '<div class="section-title">Punnett Square</div>';
+  html += '<div class="punnett">';
+  html += '<div class="punnett-cell ph"></div>';
+  html += '<div class="punnett-cell ph">' + a2[0] + '</div>';
+  html += '<div class="punnett-cell ph">' + a2[1] + '</div>';
+  for (var i = 0; i < 2; i++) {
+    html += '<div class="punnett-cell ph">' + a1[i] + '</div>';
+    for (var j = 0; j < 2; j++) {
+      var child = alleleCombo(a1[i], a2[j]);
+      html += '<div class="punnett-cell ' + (COLOR_MAP[child] || "") + '">' + child + '</div>';
+    }
+  }
+  html += '</div>';
+  return html;
+}
+
+function checkGenotype() {
+  var g1 = document.getElementById("geno1").value;
+  var g2 = document.getElementById("geno2").value;
+  var rh1 = document.getElementById("rh1").value;
+  var rh2 = document.getElementById("rh2").value;
+  var sex1 = document.getElementById("sex1").value;
+
+  if (!g1 || !g2) { alert("Please select both genotypes."); return; }
+
+  var compat = getGenoCompat(g1, g2);
+  if (!compat) { alert("Combination not found. Try another."); return; }
+
+  var rhWarn = "";
+  var isMother = sex1 === "female" ? (rh1 === "-" && rh2 === "+") : (rh2 === "-" && rh1 === "+");
+  if (isMother) {
+    rhWarn = '<div class="rh-warn"><strong>⚠️ Rh Incompatibility Risk</strong><p>The female partner is Rh-negative and the male is Rh-positive. Their baby could be Rh-positive, which may cause Rh sensitisation during pregnancy. The mother must inform her doctor early in pregnancy for anti-D immunoglobulin (Rhogam) injections. This is preventable with proper antenatal care.</p></div>';
+  }
+
+  var children = compat.children;
+  var childrenHtml = '<div class="section-title">Expected Children Outcomes</div><ul class="children-list">';
+  for (var key in children) {
+    var pct = children[key];
+    var bg = key === "AA" ? "#dcfce7" : key === "AS" || key === "AC" ? "#fef9c3" : "#fee2e2";
+    var tc = key === "AA" ? "#16a34a" : key === "AS" || key === "AC" ? "#a16207" : "#dc2626";
+    var barColor = key === "AA" ? "#16a34a" : key === "AS" || key === "AC" ? "#d97706" : "#dc2626";
+    childrenHtml += '<li style="background:' + bg + ';color:' + tc + '">' +
+      '<span>' + key + ' — ' + pct + '%</span>' +
+      '<span style="font-weight:400;font-size:.72rem">' + (key === "AA" ? "Normal" : key === "AS" || key === "AC" ? "Carrier" : "Affected") + '</span>' +
+      '</li>';
+    childrenHtml += '<div class="pct-bar"><div class="pct-fill" style="width:' + pct + '%;background:' + barColor + '"></div></div>';
+  }
+  childrenHtml += '</ul>';
+
+  var heroClass = compat.color;
+  var heroHtml = '<div class="res-hero ' + heroClass + '">' +
+    '<div class="big">' + g1 + ' + ' + g2 + '</div>' +
+    '<div class="lbl">' + compat.label + '</div>' +
+    '</div>';
+
+  var punnettHtml = buildPunnett(g1, g2);
+
+  var fullHtml = heroHtml + childrenHtml + punnettHtml + rhWarn;
+  document.getElementById("results-body").innerHTML = fullHtml;
+  document.getElementById("results").style.display = "block";
+  document.getElementById("results").scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+// Blood Group
+var DONATE_TO = {
+  "O-": ["O-","O+","A-","A+","B-","B+","AB-","AB+"],
+  "O+": ["O+","A+","B+","AB+"],
+  "A-": ["A-","A+","AB-","AB+"],
+  "A+": ["A+","AB+"],
+  "B-": ["B-","B+","AB-","AB+"],
+  "B+": ["B+","AB+"],
+  "AB-": ["AB-","AB+"],
+  "AB+": ["AB+"]
+};
+var RECEIVE_FROM = {
+  "AB+": ["O-","O+","A-","A+","B-","B+","AB-","AB+"],
+  "AB-": ["O-","A-","B-","AB-"],
+  "A+": ["O-","O+","A-","A+"],
+  "A-": ["O-","A-"],
+  "B+": ["O-","O+","B-","B+"],
+  "B-": ["O-","B-"],
+  "O+": ["O-","O+"],
+  "O-": ["O-"]
+};
+
+function checkBloodGroup() {
+  var bg1 = document.getElementById("bg1").value;
+  var bg2 = document.getElementById("bg2").value;
+  var ctx = document.getElementById("bg-context").value;
+  var html = "";
+
+  if (ctx === "transfusion") {
+    var canDonate = DONATE_TO[bg1] && DONATE_TO[bg1].indexOf(bg2) !== -1;
+    var canReceive = RECEIVE_FROM[bg1] && RECEIVE_FROM[bg1].indexOf(bg2) !== -1;
+    var p1CanDonate = canDonate ? "Yes" : "No";
+    var p2CanDonate = DONATE_TO[bg2] && DONATE_TO[bg2].indexOf(bg1) !== -1 ? "Yes" : "No";
+    var donorLabel = canDonate ? "Can Donate" : "Cannot Donate";
+    var heroClass = canDonate || canReceive ? "safe" : "danger";
+
+    html += '<div class="res-hero ' + heroClass + '"><div class="big">' + bg1 + ' → ' + bg2 + '</div>' +
+      '<div class="lbl">' + (canDonate ? "Compatible Donation" : "Incompatible") + '</div></div>';
+    html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">';
+    html += '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center"><div style="font-size:1rem;font-weight:800;color:' + (canDonate ? "#16a34a" : "#dc2626") + '">' + p1CanDonate + '</div><div style="font-size:.68rem;color:#64748b;margin-top:3px;text-transform:uppercase;font-weight:700">' + bg1 + ' can donate to ' + bg2 + '</div></div>';
+    html += '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center"><div style="font-size:1rem;font-weight:800;color:' + (p2CanDonate === "Yes" ? "#16a34a" : "#dc2626") + '">' + p2CanDonate + '</div><div style="font-size:.68rem;color:#64748b;margin-top:3px;text-transform:uppercase;font-weight:700">' + bg2 + ' can donate to ' + bg1 + '</div></div>';
+    html += '</div>';
+
+    html += '<div class="section-title">Who Can ' + bg1 + ' Donate To?</div>';
+    html += '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">';
+    var all = ["O-","O+","A-","A+","B-","B+","AB-","AB+"];
+    all.forEach(function(bg) {
+      var ok = DONATE_TO[bg1] && DONATE_TO[bg1].indexOf(bg) !== -1;
+      html += '<span style="padding:4px 10px;border-radius:20px;font-size:.75rem;font-weight:700;background:' + (ok ? "#dcfce7" : "#f1f5f9") + ';color:' + (ok ? "#16a34a" : "#9ca3af") + ';border:1px solid ' + (ok ? "#bbf7d0" : "#e2e8f0") + '">' + bg + '</span>';
+    });
+    html += '</div>';
+
+    html += '<div class="section-title">Who Can ' + bg1 + ' Receive From?</div>';
+    html += '<div style="display:flex;flex-wrap:wrap;gap:6px">';
+    all.forEach(function(bg) {
+      var ok = RECEIVE_FROM[bg1] && RECEIVE_FROM[bg1].indexOf(bg) !== -1;
+      html += '<span style="padding:4px 10px;border-radius:20px;font-size:.75rem;font-weight:700;background:' + (ok ? "#dbeafe" : "#f1f5f9") + ';color:' + (ok ? "#1d4ed8" : "#9ca3af") + ';border:1px solid ' + (ok ? "#bfdbfe" : "#e2e8f0") + '">' + bg + '</span>';
+    });
+    html += '</div>';
+
+    if (bg1 === "O-") html += '<div class="rh-warn" style="margin-top:14px"><strong>Universal Donor</strong><p>' + bg1 + ' is the universal donor — this blood type can be given to any patient in an emergency when the blood type is unknown.</p></div>';
+    if (bg1 === "AB+") html += '<div class="rh-warn" style="margin-top:14px"><strong>Universal Recipient</strong><p>' + bg1 + ' can receive blood from any donor in an emergency.</p></div>';
+
+  } else {
+    // Pregnancy Rh check
+    var rh1 = bg1.charAt(bg1.length - 1);
+    var rh2 = bg2.charAt(bg2.length - 1);
+    var rhRisk = rh1 === "-" && rh2 === "+";
+    html += '<div class="res-hero ' + (rhRisk ? "caution" : "safe") + '"><div class="big">' + (rhRisk ? "Rh Risk Detected" : "No Rh Risk") + '</div><div class="lbl">Mother: ' + bg1 + ' | Father: ' + bg2 + '</div></div>';
+    if (rhRisk) {
+      html += '<div class="rh-warn"><strong>⚠️ Rh Incompatibility Possible</strong><p>The mother is Rh-negative (' + bg1 + ') and the father is Rh-positive (' + bg2 + '). If the baby inherits the father\'s Rh-positive factor, the mother\'s immune system may produce anti-Rh antibodies. This is called Rh sensitisation.</p><p style="margin-top:8px">Prevention: Anti-D immunoglobulin (Rhogam) injection at ~28 weeks of pregnancy and within 72 hours of delivery. Tell your doctor at your first antenatal visit.</p></div>';
+    } else if (rh1 === "+" && rh2 === "-") {
+      html += '<div class="info-card" style="background:#f0fdf4;border-color:#bbf7d0"><h4 style="color:#166534">No Risk in This Pregnancy</h4><p style="color:#166534">An Rh-positive mother with an Rh-negative father has no Rh incompatibility risk. The baby cannot be more Rh-positive than the mother.</p></div>';
+    } else {
+      html += '<div class="info-card" style="background:#f0fdf4;border-color:#bbf7d0"><h4 style="color:#166534">No Rh Incompatibility Risk</h4><p style="color:#166534">Both parents share compatible Rh status. No anti-D immunoglobulin needed for Rh reasons. Standard antenatal care applies.</p></div>';
+    }
+  }
+
+  document.getElementById("bg-results-body").innerHTML = html;
+  document.getElementById("bg-results").style.display = "block";
+  document.getElementById("bg-results").scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+// Tab switching
+function switchTab(name, btn) {
+  document.querySelectorAll(".tab-panel").forEach(function(p) { p.classList.remove("active"); });
+  document.querySelectorAll(".tab-btn").forEach(function(b) { b.classList.remove("active"); });
+  document.getElementById("tab-" + name).classList.add("active");
+  btn.classList.add("active");
+}
+
+// Build checklist
+var CHECKLIST = [
+  { icon: "🧬", test: "Haemoglobin Genotype Test", why: "Check for sickle cell trait (AS, AC) or disease (SS, SC). Critical before marriage.", cost: "NGN 1,500 – 5,000 / KES 300 – 1,500", color: "#fef2f2" },
+  { icon: "🩸", test: "Blood Group & Rh Factor", why: "Know ABO and Rh type for transfusion safety and pregnancy planning.", cost: "NGN 1,000 – 3,000 / Free at public hospitals", color: "#f0f9ff" },
+  { icon: "💉", test: "Hepatitis B Surface Antigen (HBsAg)", why: "Hepatitis B is 100x more infectious than HIV. Carriers may be asymptomatic. Vaccine available.", cost: "NGN 2,000 – 6,000 / KES 500 – 2,000", color: "#fff7ed" },
+  { icon: "🔬", test: "HIV/AIDS Test", why: "Knowing status allows treatment planning and prevents mother-to-child transmission (PMTCT).", cost: "Free at most government hospitals", color: "#fdf4ff" },
+  { icon: "🧫", test: "Full Blood Count (FBC)", why: "Checks for anaemia, infections, and blood disorders including thalassaemia.", cost: "NGN 3,000 – 8,000 / KES 700 – 2,500", color: "#f8fafc" },
+  { icon: "🤰", test: "Fertility Assessment (optional)", why: "Especially recommended if either partner is over 35 or has had fertility concerns.", cost: "NGN 15,000 – 50,000 / KES 5,000 – 20,000", color: "#f0fdf4" },
+  { icon: "👁️", test: "STI Screen (Syphilis, Gonorrhoea)", why: "Some STIs can cause infertility or neonatal complications if untreated.", cost: "NGN 3,000 – 10,000 / Free at public clinics", color: "#fefce8" }
+];
+
+var clHtml = "";
+CHECKLIST.forEach(function(item) {
+  clHtml += '<div style="background:' + item.color + ';border:1px solid #e2e8f0;border-radius:10px;padding:14px 16px">' +
+    '<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">' +
+    '<span style="font-size:1.4rem">' + item.icon + '</span>' +
+    '<strong style="font-size:.88rem;color:#0f172a">' + item.test + '</strong></div>' +
+    '<p style="font-size:.78rem;color:#475569;margin:0 0 6px;line-height:1.5">' + item.why + '</p>' +
+    '<span style="font-size:.7rem;color:#64748b;font-weight:600">Cost: ' + item.cost + '</span>' +
+    '</div>';
+});
+document.getElementById("checklist-items").innerHTML = clHtml;
+</script>
+<script src="/assets/js/health-workflow.js?v=e8ad8f1d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

@@ -1,0 +1,811 @@
+<!doctype html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AfroTrade Desk Pro | AfroTools Pro</title>
+  <meta name="description" content="AfroTrade Desk Pro is a Pro trade operations workspace for shipment readiness, landed costs, AfCFTA paperwork, supplier CRM, duty review, FX notes, and export packets.">
+  <meta name="robots" content="noindex, follow">
+  <meta name="tool-id" content="afrotrade-desk-pro">
+  <meta name="tool-category" content="pro">
+  <meta name="pro-required" content="afrotools-pro">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <script src="/assets/js/afro-auth.js?v=4250956b"></script>
+  <script src="/assets/js/pro-gate.js?v=e4aca7ef"></script>
+  <script src="/assets/js/lib/pro-app-registry.js?v=2e71c13d"></script>
+  <script src="/assets/js/lib/pro-daily-os-registry.js?v=b25cffa7"></script>
+  <script src="/assets/js/lib/pro-home-insights.js?v=dc3dbf48"></script>
+  <script src="/assets/js/components/pro-switcher.js?v=17095027" defer></script>
+  <style>
+    :root{
+      --td-bg:var(--color-bg,#F8FAFD);
+      --td-surface:#ffffff;
+      --td-soft:#F8FAFC;
+      --td-ink:var(--color-text,#0f172a);
+      --td-muted:var(--color-text-muted,#64748b);
+      --td-subtle:var(--color-text-subtle,#94a3af);
+      --td-line:var(--color-border,#e2e8f0);
+      --td-line-strong:var(--color-border-strong,#cbd5e1);
+      --td-blue:var(--color-primary,#0062CC);
+      --td-blue-soft:var(--color-primary-pale,rgba(0,98,204,.08));
+      --td-gold:var(--color-gold,#F5A623);
+      --td-gold-soft:var(--color-gold-pale,#fff3cd);
+      --td-green:#047857;
+      --td-green-soft:#ECFDF5;
+      --td-amber:#A16207;
+      --td-amber-soft:#FFFBEB;
+      --td-red:#B91C1C;
+      --td-red-soft:#FEF2F2;
+      --td-purple:#6D28D9;
+      --td-purple-soft:#F5F3FF;
+      --td-radius:var(--radius-sm,6px);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--td-bg);color:var(--td-ink);font-family:var(--font-body,"DM Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif);font-size:14px;line-height:1.45;overflow-x:hidden}
+    button,a,input,select{font:inherit}
+    button{cursor:pointer}
+    a{color:inherit}
+    .trade-shell h1,.trade-shell h2,.trade-shell h3,.trade-shell h4{font-family:var(--font-body,"DM Sans",system-ui,sans-serif);letter-spacing:0}
+    .trade-shell{min-height:100vh;display:grid;grid-template-columns:242px minmax(0,1fr);background:var(--td-bg)}
+    .trade-side{position:sticky;top:0;height:100vh;background:#fff;border-right:1px solid var(--td-line);padding:16px 12px;display:flex;flex-direction:column;gap:16px;z-index:10}
+    .trade-brand{display:flex;align-items:center;gap:10px;padding:8px 8px 12px;border-bottom:1px solid var(--td-line)}
+    .trade-brand-mark{width:34px;height:34px;border-radius:var(--td-radius);display:flex;align-items:center;justify-content:center;background:var(--td-blue);color:#fff;font-size:12px;font-weight:900}
+    .trade-brand-title{font-size:13px;font-weight:900;line-height:1.15}
+    .trade-brand-meta{font-size:11px;color:var(--td-muted);margin-top:2px}
+    .trade-nav{display:grid;gap:4px}
+    .trade-nav a{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:36px;padding:8px 9px;border-radius:var(--td-radius);text-decoration:none;color:#334155;font-size:13px;font-weight:800}
+    .trade-nav a:hover,.trade-nav a:focus-visible{background:var(--td-blue-soft);color:var(--td-blue)}
+    .trade-nav span{font-size:11px;color:var(--td-subtle);font-weight:800}
+    .trade-side-box{border:1px solid var(--td-line);border-radius:var(--td-radius);background:var(--td-soft);padding:10px;display:grid;gap:8px}
+    .trade-side-box strong{font-size:12px;font-weight:900}
+    .trade-side-box p{font-size:11px;line-height:1.45;color:var(--td-muted);margin:0}
+    .trade-side-foot{margin-top:auto;display:grid;gap:8px;padding-top:12px;border-top:1px solid var(--td-line)}
+    .trade-main{min-width:0}
+    .trade-topbar{position:sticky;top:0;z-index:9;min-height:64px;border-bottom:1px solid var(--td-line);background:rgba(248,250,253,.94);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 18px}
+    .trade-context{display:flex;align-items:center;gap:10px;min-width:0;flex-wrap:wrap}
+    .trade-field{display:grid;gap:3px;min-width:210px}
+    .trade-label{font-size:11px;font-weight:900;color:var(--td-muted)}
+    .trade-select,.trade-input{height:36px;border:1px solid var(--td-line-strong);border-radius:var(--td-radius);background:#fff;color:var(--td-ink);padding:0 10px;font-size:13px;font-weight:800}
+    .trade-input{font-weight:700}
+    .trade-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+    .trade-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:36px;border:1px solid var(--td-line-strong);border-radius:var(--td-radius);background:#fff;color:var(--td-ink);padding:8px 11px;text-decoration:none;font-size:12px;font-weight:900;line-height:1.1}
+    .trade-btn:hover{border-color:var(--td-blue);color:var(--td-blue);background:var(--td-blue-soft)}
+    .trade-btn.primary{background:var(--td-blue);border-color:var(--td-blue);color:#fff}
+    .trade-btn.primary:hover{background:#004BA0;color:#fff}
+    .trade-btn.warn{border-color:#FDE68A;background:var(--td-amber-soft);color:#78350F}
+    .trade-btn:disabled{opacity:.58;cursor:not-allowed}
+    .trade-content{padding:18px;max-width:1480px;margin:0 auto}
+    .trade-command-grid{display:grid;grid-template-columns:minmax(0,1.55fr) 380px;gap:12px;margin-bottom:12px}
+    .trade-command,.trade-panel,.trade-card,.trade-metric,.trade-row,.trade-workflow,.trade-cost,.trade-packet,.trade-risk{background:var(--td-surface);border:1px solid var(--td-line);border-radius:var(--td-radius);box-shadow:0 1px 0 rgba(15,23,42,.03)}
+    .trade-command{padding:16px;display:grid;gap:12px}
+    .trade-kicker{font-size:11px;font-weight:900;color:var(--td-blue);margin-bottom:4px}
+    .trade-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .trade-title{font-size:28px;line-height:1.1;margin:0 0 6px;font-weight:900;color:var(--td-ink)}
+    .trade-subtitle{font-size:13px;line-height:1.55;color:var(--td-muted);max-width:860px;margin:0}
+    .trade-pill{display:inline-flex;align-items:center;justify-content:center;min-height:22px;border-radius:999px;padding:4px 8px;border:1px solid var(--td-line);background:var(--td-soft);color:#475569;font-size:10px;font-weight:900;white-space:nowrap}
+    .trade-pill.ready,.trade-pill.cleared{background:var(--td-green-soft);border-color:#A7F3D0;color:#065F46}
+    .trade-pill.open,.trade-pill.transit{background:var(--td-blue-soft);border-color:#BFDBFE;color:#1E40AF}
+    .trade-pill.review,.trade-pill.pending{background:var(--td-amber-soft);border-color:#FDE68A;color:#92400E}
+    .trade-pill.blocked,.trade-pill.missing{background:var(--td-red-soft);border-color:#FECACA;color:#991B1B}
+    .trade-pill.shell{background:var(--td-purple-soft);border-color:#DDD6FE;color:#5B21B6}
+    .trade-snapshot{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+    .trade-snap{border:1px solid var(--td-line);border-radius:var(--td-radius);background:var(--td-soft);padding:10px;min-height:80px}
+    .trade-snap strong{display:block;font-size:20px;line-height:1;font-weight:900}
+    .trade-snap span{display:block;font-size:11px;font-weight:800;color:var(--td-muted);margin-top:6px}
+    .trade-boundary{padding:14px;display:grid;gap:10px;background:var(--td-amber-soft);border-color:#FDE68A;color:#78350F}
+    .trade-boundary h2{font-size:16px;margin:0;font-weight:900}
+    .trade-boundary p{font-size:12px;line-height:1.5;color:#78350F;margin:0}
+    .trade-metrics{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:16px}
+    .trade-metric{padding:12px;min-height:86px;display:flex;flex-direction:column;justify-content:space-between}
+    .trade-metric strong{display:block;font-size:23px;line-height:1;font-weight:900}
+    .trade-metric span{display:block;font-size:11px;color:var(--td-muted);font-weight:900;margin-top:7px}
+    .trade-metric small{display:block;font-size:11px;color:var(--td-subtle);line-height:1.35;margin-top:4px}
+    .trade-layout{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:12px;align-items:start}
+    .trade-panel{overflow:hidden;margin-bottom:12px}
+    .trade-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:12px 13px;border-bottom:1px solid var(--td-line);background:#fff}
+    .trade-panel-body{padding:12px 13px}
+    .trade-h2{font-size:17px;font-weight:900;line-height:1.2;margin:0}
+    .trade-note{font-size:12px;line-height:1.45;color:var(--td-muted);margin:3px 0 0;max-width:780px}
+    .trade-workflows{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+    .trade-workflow{padding:12px;display:grid;gap:8px;min-height:168px}
+    .trade-workflow h3{font-size:14px;line-height:1.2;margin:0;font-weight:900}
+    .trade-workflow p{font-size:11px;line-height:1.42;color:var(--td-muted);margin:0}
+    .trade-list{display:grid;gap:8px}
+    .trade-row,.trade-packet,.trade-risk{padding:10px 11px}
+    .trade-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center}
+    .trade-row-title{font-size:13px;font-weight:900;line-height:1.25;margin:0}
+    .trade-row-meta{font-size:11px;color:var(--td-muted);line-height:1.42;margin-top:3px}
+    .trade-row-actions{display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap}
+    .trade-table-wrap{overflow:auto;border:1px solid var(--td-line);border-radius:var(--td-radius);background:#fff}
+    .trade-table{width:100%;border-collapse:collapse;min-width:780px}
+    .trade-table th,.trade-table td{padding:10px 11px;border-bottom:1px solid var(--td-line);text-align:left;vertical-align:top}
+    .trade-table th{font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--td-muted);background:var(--td-soft);font-weight:900}
+    .trade-table td{font-size:12px;color:#334155}
+    .trade-table tr:last-child td{border-bottom:0}
+    .trade-strong{font-weight:900;color:var(--td-ink)}
+    .trade-grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .trade-grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .trade-cost{padding:12px;display:grid;gap:10px}
+    .trade-cost h3{font-size:14px;margin:0;font-weight:900}
+    .trade-cost-line{display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid var(--td-line);padding-top:8px;font-size:12px;color:var(--td-muted)}
+    .trade-cost-line strong{font-size:13px;color:var(--td-ink)}
+    .trade-check{display:flex;align-items:flex-start;gap:9px;padding:9px;border:1px solid var(--td-line);border-radius:var(--td-radius);background:#fff}
+    .trade-check input{margin-top:2px}
+    .trade-check strong{display:block;font-size:12px;font-weight:900}
+    .trade-check span{display:block;font-size:11px;color:var(--td-muted);line-height:1.35;margin-top:2px}
+    .trade-crm{display:grid;gap:8px}
+    .trade-party{display:grid;grid-template-columns:38px minmax(0,1fr) auto;gap:9px;align-items:center;border:1px solid var(--td-line);border-radius:var(--td-radius);padding:9px;background:#fff}
+    .trade-avatar{width:38px;height:38px;border-radius:var(--td-radius);display:flex;align-items:center;justify-content:center;background:var(--td-blue-soft);color:var(--td-blue);font-size:11px;font-weight:900}
+    .trade-party strong{display:block;font-size:12px;font-weight:900}
+    .trade-party span{display:block;font-size:11px;color:var(--td-muted);margin-top:2px}
+    .trade-risk{display:grid;gap:8px}
+    .trade-risk-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .trade-risk h3{font-size:13px;margin:0;font-weight:900}
+    .trade-risk p{font-size:11px;color:var(--td-muted);line-height:1.42;margin:0}
+    .trade-tool-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .trade-tool{display:grid;gap:5px;min-height:76px;border:1px solid var(--td-line);border-radius:var(--td-radius);background:#fff;padding:10px;text-decoration:none}
+    .trade-tool:hover,.trade-tool:focus-visible{border-color:var(--td-blue);background:var(--td-blue-soft)}
+    .trade-tool strong{font-size:12px;font-weight:900}
+    .trade-tool span{font-size:11px;color:var(--td-muted);line-height:1.35}
+    .trade-empty{padding:16px;border:1px dashed var(--td-line-strong);border-radius:var(--td-radius);background:var(--td-soft);color:var(--td-muted);font-size:12px;line-height:1.5}
+    @media (max-width:1180px){
+      .trade-shell{grid-template-columns:1fr}
+      .trade-side{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--td-line)}
+      .trade-nav{grid-template-columns:repeat(4,minmax(0,1fr))}
+      .trade-side-foot{margin-top:0}
+      .trade-command-grid,.trade-layout{grid-template-columns:1fr}
+      .trade-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .trade-workflows{grid-template-columns:repeat(3,minmax(0,1fr))}
+    }
+    @media (max-width:760px){
+      .trade-topbar{position:relative;align-items:stretch;flex-direction:column}
+      .trade-context,.trade-actions{width:100%;justify-content:stretch}
+      .trade-field,.trade-btn{width:100%}
+      .trade-content{padding:12px}
+      .trade-title{font-size:23px}
+      .trade-nav{grid-template-columns:1fr 1fr}
+      .trade-snapshot,.trade-metrics,.trade-workflows,.trade-grid-2,.trade-grid-3,.trade-tool-grid{grid-template-columns:1fr}
+      .trade-row{grid-template-columns:1fr}
+      .trade-row-actions{justify-content:flex-start}
+    }
+  </style>
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c4853917">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/lib/dark-mode.js?v=5cb64ba3" defer></script>
+<link rel="canonical" href="https://afrotools.com/pro/apps/trade-desk/">
+</head>
+<body class="top-level-page-ui-refresh">
+  <main class="trade-shell pro-gated-content">
+  <div data-pro-waitlist-host data-app-label="Trade Desk" data-source-route="/pro/apps/trade-desk/"></div>
+
+    <aside class="trade-side" aria-label="AfroTrade Desk navigation">
+      <div class="trade-brand">
+        <div class="trade-brand-mark">TD</div>
+        <div>
+          <div class="trade-brand-title">AfroTrade Desk Pro</div>
+          <div class="trade-brand-meta">Trade operations workspace</div>
+        </div>
+      </div>
+      <nav class="trade-nav">
+        <a href="/pro/workspace/">Pro Control <span>hub</span></a>
+        <a href="/pro/apps/">Browse apps <span>index</span></a>
+        <a href="/dashboard/">Account <span>acct</span></a>
+        <a href="#pipeline">Shipments <span id="navShipmentCount">0</span></a>
+        <a href="#costs">Landed Cost <span>draft</span></a>
+        <a href="#crm">CRM <span id="navPartyCount">0</span></a>
+        <a href="#documents">Documents <span id="navDocCount">0</span></a>
+        <a href="#risk">Risk Queue <span id="navRiskCount">0</span></a>
+      </nav>
+      <div class="trade-side-box">
+        <strong>Operating boundary</strong>
+        <p>Local trade desk for preparation, review, and export packets. It does not file customs entries, pay duty, or clear shipments.</p>
+      </div>
+      <div class="trade-side-box">
+        <strong>Linked calculators</strong>
+        <p>Use the public tools for AfCFTA screening, landed cost estimates, duty checks, payment rails, and informal FX watch.</p>
+      </div>
+      <div class="trade-side-foot">
+        <a class="trade-btn" href="/pro/apps/">Browse Pro Apps</a>
+        <a class="trade-btn" href="/dashboard/">Account</a>
+        <a class="trade-btn" href="/tools/afcfta-tracker/">AfCFTA tracker</a>
+        <a class="trade-btn" href="/tools/landed-cost/">Landed cost</a>
+      </div>
+    </aside>
+
+    <section class="trade-main">
+      <header class="trade-topbar">
+        <div class="trade-context">
+          <label class="trade-field">
+            <span class="trade-label">Workspace / client</span>
+            <select class="trade-select" id="clientSelect">
+              <option value="lagos-importer">Lagos importer desk</option>
+              <option value="nairobi-exporter">Nairobi exporter desk</option>
+              <option value="accra-distributor">Accra distributor desk</option>
+              <option value="sme-trade-advisory">SME trade advisory</option>
+            </select>
+          </label>
+          <label class="trade-field">
+            <span class="trade-label">Primary corridor</span>
+            <select class="trade-select" id="corridorSelect">
+              <option value="NG-CN">China to Nigeria</option>
+              <option value="KE-TZ">Kenya to Tanzania</option>
+              <option value="GH-CI">Ghana to Cote d'Ivoire</option>
+              <option value="ZA-NA">South Africa to Namibia</option>
+              <option value="RW-UG">Rwanda to Uganda</option>
+            </select>
+          </label>
+        </div>
+        <div class="trade-actions">
+          <a class="trade-btn" href="/pro/workspace/">Pro workspace</a>
+          <a class="trade-btn" href="/pro/apps/">Browse apps</a>
+          <a class="trade-btn" href="/dashboard/">Account</a>
+          <button class="trade-btn" type="button" id="resetBtn">Reset starter data</button>
+          <button class="trade-btn primary" type="button" id="exportBtn">Export trade packet</button>
+        </div>
+      </header>
+
+      <div class="trade-content">
+        <section class="trade-command-grid" aria-label="Trade command center">
+          <div class="trade-command">
+            <div class="trade-title-row">
+              <div>
+                <div class="trade-kicker">AfroTools Pro workspace</div>
+                <h1 class="trade-title">AfroTrade Desk Pro</h1>
+                <p class="trade-subtitle">A control desk for import/export paperwork, landed cost estimates, AfCFTA readiness, suppliers, buyers, customs review notes, payment and FX risk, and shipment packet export.</p>
+              </div>
+              <span class="trade-pill shell" id="modePill">Saved on this device</span>
+            </div>
+            <div class="trade-snapshot">
+              <div class="trade-snap"><strong id="snapshotShipments">0</strong><span>active shipments</span></div>
+              <div class="trade-snap"><strong id="snapshotDocs">0%</strong><span>document readiness</span></div>
+              <div class="trade-snap"><strong id="snapshotAfcfta">0</strong><span>AfCFTA lanes needing proof</span></div>
+              <div class="trade-snap"><strong id="snapshotRisks">0</strong><span>open risk queue items</span></div>
+            </div>
+          </div>
+          <aside class="trade-boundary">
+            <h2>Preparation, not clearance</h2>
+            <p>AfroTrade Desk can organize estimates, checklists, CRM notes, evidence lists, and local export packets. It does not submit customs filings, remit duty, issue official certificates, or guarantee clearance.</p>
+            <div class="trade-actions">
+              <a class="trade-btn warn" href="/tools/import-duty/">Import duty tool</a>
+              <a class="trade-btn warn" href="/tools/import-duty/">Import duty</a>
+            </div>
+          </aside>
+        </section>
+
+        <section class="trade-metrics" aria-label="Trade desk status">
+          <div class="trade-metric"><strong id="metricValue">$0</strong><span>shipment value tracked</span><small>Planning value only</small></div>
+          <div class="trade-metric"><strong id="metricCost">$0</strong><span>latest landed cost estimate</span><small>No official valuation</small></div>
+          <div class="trade-metric"><strong id="metricParties">0</strong><span>suppliers and buyers</span><small>Local CRM rows</small></div>
+          <div class="trade-metric"><strong id="metricReady">0</strong><span>ready-for-review shipments</span><small>Needs broker/accountant check</small></div>
+          <div class="trade-metric"><strong id="metricPackets">0</strong><span>export packets created</span><small>Browser download only</small></div>
+        </section>
+
+        <section class="trade-panel" aria-labelledby="workflowTitle">
+          <div class="trade-panel-head">
+            <div>
+              <h2 class="trade-h2" id="workflowTitle">Starter workflows</h2>
+              <p class="trade-note">Actions update only the saved workspace state. Use linked calculators for detailed estimates and source review.</p>
+            </div>
+          </div>
+          <div class="trade-panel-body">
+            <div class="trade-workflows">
+              <article class="trade-workflow">
+                <span class="trade-pill open">pipeline</span>
+                <h3>Create shipment</h3>
+                <p>Add a draft import/export movement with corridor, cargo, Incoterm, value, readiness state, and risk flags.</p>
+                <button class="trade-btn primary" type="button" data-action="createShipment">Create shipment</button>
+              </article>
+              <article class="trade-workflow">
+                <span class="trade-pill review">estimate</span>
+                <h3>Estimate landed cost</h3>
+                <p>Refresh FOB, freight, insurance, duty, VAT, port, and inland planning lines for the selected desk.</p>
+                <button class="trade-btn" type="button" data-action="estimateCost">Estimate cost</button>
+              </article>
+              <article class="trade-workflow">
+                <span class="trade-pill pending">documents</span>
+                <h3>Prepare document pack</h3>
+                <p>Mark core commercial, freight, origin, insurance, and payment evidence as packed for review.</p>
+                <button class="trade-btn" type="button" data-action="prepareDocs">Prepare pack</button>
+              </article>
+              <article class="trade-workflow">
+                <span class="trade-pill review">tariff</span>
+                <h3>Review tariff/duty</h3>
+                <p>Add a review note for HS code, customs value, preference claim, duty, VAT, and broker sign-off.</p>
+                <button class="trade-btn" type="button" data-action="reviewDuty">Review duty</button>
+              </article>
+              <article class="trade-workflow">
+                <span class="trade-pill ready">packet</span>
+                <h3>Export trade packet</h3>
+                <p>Download a JSON handoff for broker, buyer, supplier, finance, or team review.</p>
+                <button class="trade-btn" type="button" data-action="exportPacket">Export packet</button>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <div class="trade-layout">
+          <div>
+            <section class="trade-panel" id="pipeline" aria-labelledby="pipelineTitle">
+              <div class="trade-panel-head">
+                <div>
+                  <h2 class="trade-h2" id="pipelineTitle">Shipment pipeline</h2>
+                  <p class="trade-note">Draft shipment moves from quotation to document review, duty review, ready for broker, and exported packet.</p>
+                </div>
+                <button class="trade-btn primary" type="button" data-action="createShipment">Create shipment</button>
+              </div>
+              <div class="trade-panel-body">
+                <div class="trade-table-wrap">
+                  <table class="trade-table">
+                    <thead>
+                      <tr>
+                        <th>Shipment</th>
+                        <th>Corridor</th>
+                        <th>Cargo</th>
+                        <th>Value</th>
+                        <th>State</th>
+                        <th>Next action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="shipmentRows"></tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+
+            <section class="trade-panel" id="costs" aria-labelledby="costTitle">
+              <div class="trade-panel-head">
+                <div>
+                  <h2 class="trade-h2" id="costTitle">Landed cost workspace</h2>
+                  <p class="trade-note">Planning numbers for commercial review. Official valuation, classification, and duty remain broker or customs authority work.</p>
+                </div>
+                <a class="trade-btn" href="/tools/landed-cost/">Open calculator</a>
+              </div>
+              <div class="trade-panel-body">
+                <div class="trade-grid-3" id="costCards"></div>
+              </div>
+            </section>
+
+            <section class="trade-panel" id="crm" aria-labelledby="crmTitle">
+              <div class="trade-panel-head">
+                <div>
+                  <h2 class="trade-h2" id="crmTitle">Supplier/buyer CRM</h2>
+                  <p class="trade-note">Track counterparties, corridor role, contact owner, payment terms, and readiness notes.</p>
+                </div>
+                <button class="trade-btn" type="button" data-action="addParty">Add party</button>
+              </div>
+              <div class="trade-panel-body">
+                <div class="trade-crm" id="partyList"></div>
+              </div>
+            </section>
+
+            <section class="trade-panel" id="documents" aria-labelledby="docsTitle">
+              <div class="trade-panel-head">
+                <div>
+                  <h2 class="trade-h2" id="docsTitle">Document checklist</h2>
+                  <p class="trade-note">Local checklist for trade packet preparation. It stores readiness state only, not uploaded files.</p>
+                </div>
+                <button class="trade-btn" type="button" data-action="prepareDocs">Prepare pack</button>
+              </div>
+              <div class="trade-panel-body">
+                <div class="trade-grid-2" id="documentChecklist"></div>
+              </div>
+            </section>
+          </div>
+
+          <aside>
+            <section class="trade-panel" aria-labelledby="toolsTitle">
+              <div class="trade-panel-head">
+                <div>
+                  <h2 class="trade-h2" id="toolsTitle">Trade/import tools</h2>
+                  <p class="trade-note">Deep calculators remain separate public tools.</p>
+                </div>
+              </div>
+              <div class="trade-panel-body">
+                <div class="trade-tool-grid">
+                  <a class="trade-tool" href="/tools/afcfta-tracker/"><strong>AfCFTA tracker</strong><span>Corridor and preference screen.</span></a>
+                  <a class="trade-tool" href="/tools/landed-cost/"><strong>Landed cost</strong><span>FOB, freight, duty, VAT, port, inland.</span></a>
+                  <a class="trade-tool" href="/tools/import-duty/"><strong>Import duty</strong><span>General duty planning tool.</span></a>
+                  <a class="trade-tool" href="/tools/import-duty/"><strong>Import duty</strong><span>Import duty and landed-cost workflow.</span></a>
+                  <a class="trade-tool" href="/tools/mini-importation/"><strong>Mini importation</strong><span>Small shipment margin planning.</span></a>
+                  <a class="trade-tool" href="/tools/payment-gateway/"><strong>Payment gateway</strong><span>Rail and fee comparison.</span></a>
+                  <a class="trade-tool" href="/tools/informal-fx-watch/"><strong>Informal FX watch</strong><span>Street and P2P FX signals.</span></a>
+                  <a class="trade-tool" href="/tools/customs-time/"><strong>Customs time</strong><span>Clearance delay planning.</span></a>
+                  <a class="trade-tool" href="/tools/fx-import-impact/"><strong>FX import impact</strong><span>FX movement impact on landed cost.</span></a>
+                  <a class="trade-tool" href="/tools/trade-finance-comparator/"><strong>Trade finance</strong><span>LC, advance, credit, and facility notes.</span></a>
+                  <a class="trade-tool" href="/tools/b2b-payment/"><strong>B2B payment</strong><span>International payment document notes.</span></a>
+                  <a class="trade-tool" href="/tools/commodity-tracker/"><strong>Commodity tracker</strong><span>Market signal watchlist.</span></a>
+                </div>
+              </div>
+            </section>
+
+            <section class="trade-panel" aria-labelledby="afcftaTitle">
+              <div class="trade-panel-head">
+                <div>
+                  <h2 class="trade-h2" id="afcftaTitle">AfCFTA readiness</h2>
+                  <p class="trade-note">Preference claim preparation. Official schedule, rules of origin, and customs authority confirmation are still required.</p>
+                </div>
+              </div>
+              <div class="trade-panel-body">
+                <div class="trade-list" id="afcftaList"></div>
+              </div>
+            </section>
+
+            <section class="trade-panel" aria-labelledby="customsTitle">
+              <div class="trade-panel-head">
+                <div>
+                  <h2 class="trade-h2" id="customsTitle">Customs/duty review</h2>
+                  <p class="trade-note">Team review notes before broker or accountant handoff.</p>
+                </div>
+              </div>
+              <div class="trade-panel-body">
+                <div class="trade-list" id="customsList"></div>
+              </div>
+            </section>
+
+            <section class="trade-panel" aria-labelledby="paymentTitle">
+              <div class="trade-panel-head">
+                <div>
+                  <h2 class="trade-h2" id="paymentTitle">Payment and FX notes</h2>
+                  <p class="trade-note">Payment rail, FX exposure, and documentation notes.</p>
+                </div>
+              </div>
+              <div class="trade-panel-body">
+                <div class="trade-list" id="paymentList"></div>
+              </div>
+            </section>
+
+            <section class="trade-panel" id="risk" aria-labelledby="riskTitle">
+              <div class="trade-panel-head">
+                <div>
+                  <h2 class="trade-h2" id="riskTitle">Risk queue</h2>
+                  <p class="trade-note">What needs attention before shipment packet handoff.</p>
+                </div>
+              </div>
+              <div class="trade-panel-body">
+                <div class="trade-list" id="riskQueue"></div>
+              </div>
+            </section>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function(){
+      "use strict";
+
+      var STORAGE_KEY = "afrotrade_desk_pro_demo_v1";
+      var now = new Date().toISOString();
+
+      function seedState(){
+        return {
+          client:"lagos-importer",
+          corridor:"NG-CN",
+          packets:0,
+          lastUpdated:now,
+          shipments:[
+            {id:"ATD-2401", name:"Solar inverter parts", corridor:"China to Nigeria", cargo:"Electrical parts", incoterm:"FOB", value:24500, currency:"USD", state:"document review", next:"Confirm HS code and Form M evidence", afcfta:false, ready:false},
+            {id:"ATD-2402", name:"Cocoa butter export", corridor:"Ghana to Cote d'Ivoire", cargo:"Processed food ingredient", incoterm:"CIF", value:18200, currency:"USD", state:"AfCFTA proof", next:"Rules of origin evidence and buyer contract", afcfta:true, ready:false},
+            {id:"ATD-2403", name:"Clinic equipment consignment", corridor:"South Africa to Namibia", cargo:"Medical equipment", incoterm:"DAP", value:31800, currency:"USD", state:"ready for broker", next:"Broker review and customs entry outside AfroTrade", afcfta:true, ready:true}
+          ],
+          costs:[
+            {label:"FOB/commercial value", amount:24500, note:"Supplier proforma invoice value"},
+            {label:"Freight and insurance", amount:3100, note:"Quote from forwarder, not booked"},
+            {label:"Duty, VAT, port, inland", amount:8250, note:"Planning estimate, verify official tariff"}
+          ],
+          parties:[
+            {type:"Supplier", name:"Shenzhen Components Co.", country:"China", owner:"Procurement", terms:"30 percent advance, 70 percent before shipment", status:"needs bank details review"},
+            {type:"Buyer", name:"Kumasi Foods Ltd.", country:"Ghana", owner:"Sales", terms:"LC at sight requested", status:"contract draft pending"},
+            {type:"Forwarder", name:"Mombasa Corridor Freight", country:"Kenya", owner:"Logistics", terms:"Invoice after cargo release", status:"rate quote received"}
+          ],
+          documents:[
+            {key:"commercialInvoice", label:"Commercial invoice", note:"Supplier invoice with values, currency, buyer, seller, and Incoterm.", ready:true},
+            {key:"packingList", label:"Packing list", note:"Package count, weights, dimensions, marks, and contents.", ready:true},
+            {key:"billOfLading", label:"Bill of lading or airwaybill", note:"Carrier document, consignee, notify party, and shipment reference.", ready:false},
+            {key:"certificateOrigin", label:"Certificate of origin", note:"Origin evidence, including AfCFTA proof where relevant.", ready:false},
+            {key:"insurance", label:"Insurance certificate", note:"Cargo cover or policy reference where required.", ready:false},
+            {key:"paymentEvidence", label:"Payment evidence", note:"Bank transfer, LC, advance payment, or payment gateway proof.", ready:false}
+          ],
+          afcfta:[
+            {title:"Rules of origin evidence", status:"missing", detail:"Need origin statement, production evidence, or supplier declaration before claiming preference."},
+            {title:"Corridor activation check", status:"review", detail:"Check national tariff schedule and official customs instruction before quoting reduced duty."},
+            {title:"HS line support", status:"review", detail:"Map HS code to product-specific rules and excluded or sensitive list status."}
+          ],
+          customs:[
+            {title:"HS code classification", status:"review", detail:"Draft HS code needs broker confirmation before invoice and duty note are final."},
+            {title:"Customs value basis", status:"open", detail:"Reconcile invoice value, freight, insurance, assists, and destination charges."},
+            {title:"Duty/VAT estimate", status:"open", detail:"Use calculator as planning signal only. Verify final duty with official tariff."}
+          ],
+          payment:[
+            {title:"FX exposure", status:"review", detail:"USD supplier quote against local sales receipts. Monitor official and informal FX before quote expiry."},
+            {title:"Payment rail", status:"open", detail:"Compare bank transfer, gateway, LC, and trade credit fees before committing."},
+            {title:"Documentary proof", status:"missing", detail:"Attach transfer receipt or LC terms to the export packet before broker handoff."}
+          ],
+          risks:[
+            {title:"Missing certificate of origin", severity:"high", detail:"AfCFTA preference cannot be prepared without origin evidence."},
+            {title:"FX quote window expires soon", severity:"medium", detail:"Supplier proforma is priced in USD and margin changes with FX movement."},
+            {title:"Broker sign-off not recorded", severity:"medium", detail:"Duty estimate has not been reviewed by customs broker."},
+            {title:"Payment evidence not packed", severity:"low", detail:"Finance document row is still incomplete."}
+          ]
+        };
+      }
+
+      function readState(){
+        try{
+          var raw = localStorage.getItem(STORAGE_KEY);
+          if(raw){
+            var parsed = JSON.parse(raw);
+            return Object.assign(seedState(), parsed);
+          }
+        }catch(error){}
+        return seedState();
+      }
+
+      var state = readState();
+
+      function save(){
+        state.lastUpdated = new Date().toISOString();
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      }
+
+      function text(value){
+        return String(value == null ? "" : value).replace(/[&<>"']/g, function(char){
+          return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[char];
+        });
+      }
+
+      function money(value, currency){
+        var amount = Number(value || 0);
+        return (currency || "USD") + " " + amount.toLocaleString("en-US", {maximumFractionDigits:0});
+      }
+
+      function pct(value, total){
+        if(!total){ return 0; }
+        return Math.round((value / total) * 100);
+      }
+
+      function byId(id){
+        return document.getElementById(id);
+      }
+
+      function pill(status){
+        var safe = text(status).toLowerCase().replace(/[^a-z0-9]+/g, "-");
+        var tone = "open";
+        if(/ready|packed|cleared|complete/.test(safe)){ tone = "ready"; }
+        if(/review|pending|afcfta|document/.test(safe)){ tone = "review"; }
+        if(/missing|blocked|high/.test(safe)){ tone = "blocked"; }
+        return '<span class="trade-pill '+tone+'">'+text(status)+'</span>';
+      }
+
+      function render(){
+        var shipments = state.shipments || [];
+        var docs = state.documents || [];
+        var parties = state.parties || [];
+        var risks = state.risks || [];
+        var readyDocs = docs.filter(function(item){ return item.ready; }).length;
+        var readyShipments = shipments.filter(function(item){ return item.ready; }).length;
+        var afcftaNeeds = shipments.filter(function(item){ return item.afcfta && !item.ready; }).length;
+        var totalValue = shipments.reduce(function(sum, item){ return sum + Number(item.value || 0); }, 0);
+        var totalCost = (state.costs || []).reduce(function(sum, item){ return sum + Number(item.amount || 0); }, 0);
+
+        byId("clientSelect").value = state.client || "lagos-importer";
+        byId("corridorSelect").value = state.corridor || "NG-CN";
+        byId("snapshotShipments").textContent = shipments.length;
+        byId("snapshotDocs").textContent = pct(readyDocs, docs.length) + "%";
+        byId("snapshotAfcfta").textContent = afcftaNeeds;
+        byId("snapshotRisks").textContent = risks.length;
+        byId("metricValue").textContent = money(totalValue, "USD");
+        byId("metricCost").textContent = money(totalCost, "USD");
+        byId("metricParties").textContent = parties.length;
+        byId("metricReady").textContent = readyShipments;
+        byId("metricPackets").textContent = state.packets || 0;
+        byId("navShipmentCount").textContent = shipments.length;
+        byId("navPartyCount").textContent = parties.length;
+        byId("navDocCount").textContent = readyDocs + "/" + docs.length;
+        byId("navRiskCount").textContent = risks.length;
+
+        renderShipments(shipments);
+        renderCosts();
+        renderParties(parties);
+        renderDocuments(docs);
+        renderList("afcftaList", state.afcfta || []);
+        renderList("customsList", state.customs || []);
+        renderList("paymentList", state.payment || []);
+        renderRisks(risks);
+      }
+
+      function renderShipments(shipments){
+        byId("shipmentRows").innerHTML = shipments.map(function(item){
+          return '<tr>'+
+            '<td><div class="trade-strong">'+text(item.id)+'</div><div class="trade-row-meta">'+text(item.name)+' · '+text(item.incoterm)+'</div></td>'+
+            '<td>'+text(item.corridor)+'</td>'+
+            '<td>'+text(item.cargo)+'</td>'+
+            '<td>'+money(item.value, item.currency)+'</td>'+
+            '<td>'+pill(item.state)+'</td>'+
+            '<td>'+text(item.next)+'</td>'+
+          '</tr>';
+        }).join("") || '<tr><td colspan="6"><div class="trade-empty">No shipments yet. Create a shipment to start the local desk.</div></td></tr>';
+      }
+
+      function renderCosts(){
+        byId("costCards").innerHTML = (state.costs || []).map(function(item){
+          return '<article class="trade-cost">'+
+            '<h3>'+text(item.label)+'</h3>'+
+            '<div class="trade-cost-line"><span>Planning amount</span><strong>'+money(item.amount, "USD")+'</strong></div>'+
+            '<div class="trade-row-meta">'+text(item.note)+'</div>'+
+          '</article>';
+        }).join("");
+      }
+
+      function renderParties(parties){
+        byId("partyList").innerHTML = parties.map(function(item){
+          return '<article class="trade-party">'+
+            '<div class="trade-avatar">'+text(item.type).slice(0,2).toUpperCase()+'</div>'+
+            '<div><strong>'+text(item.name)+'</strong><span>'+text(item.type)+' · '+text(item.country)+' · '+text(item.owner)+'</span><span>'+text(item.terms)+'</span></div>'+
+            pill(item.status)+
+          '</article>';
+        }).join("") || '<div class="trade-empty">No suppliers, buyers, forwarders, or brokers yet.</div>';
+      }
+
+      function renderDocuments(docs){
+        byId("documentChecklist").innerHTML = docs.map(function(item){
+          return '<label class="trade-check">'+
+            '<input type="checkbox" data-doc="'+text(item.key)+'" '+(item.ready ? "checked" : "")+'>'+
+            '<span><strong>'+text(item.label)+'</strong><span>'+text(item.note)+'</span></span>'+
+          '</label>';
+        }).join("");
+      }
+
+      function renderList(target, items){
+        byId(target).innerHTML = items.map(function(item){
+          return '<article class="trade-row">'+
+            '<div><div class="trade-row-title">'+text(item.title)+'</div><div class="trade-row-meta">'+text(item.detail)+'</div></div>'+
+            '<div class="trade-row-actions">'+pill(item.status)+'</div>'+
+          '</article>';
+        }).join("") || '<div class="trade-empty">No rows yet.</div>';
+      }
+
+      function renderRisks(risks){
+        byId("riskQueue").innerHTML = risks.map(function(item){
+          return '<article class="trade-risk">'+
+            '<div class="trade-risk-top"><h3>'+text(item.title)+'</h3>'+pill(item.severity)+'</div>'+
+            '<p>'+text(item.detail)+'</p>'+
+          '</article>';
+        }).join("") || '<div class="trade-empty">No risk items open.</div>';
+      }
+
+      function createShipment(){
+        var nextId = "ATD-" + (2401 + (state.shipments || []).length);
+        var corridorText = byId("corridorSelect").selectedOptions[0].textContent;
+        state.shipments.unshift({
+          id:nextId,
+          name:"Draft mixed goods shipment",
+          corridor:corridorText,
+          cargo:"General cargo",
+          incoterm:"FOB",
+          value:12500,
+          currency:"USD",
+          state:"quotation",
+          next:"Add supplier proforma, HS code, and document checklist",
+          afcfta:/Kenya|Ghana|South Africa|Rwanda/.test(corridorText),
+          ready:false
+        });
+        state.risks.unshift({title:"New shipment needs HS code", severity:"medium", detail:"Draft shipment requires classification before landed cost can be trusted."});
+        save();
+        render();
+      }
+
+      function estimateCost(){
+        var value = (state.shipments && state.shipments[0] ? Number(state.shipments[0].value || 0) : 18000);
+        state.costs = [
+          {label:"FOB/commercial value", amount:value, note:"Latest draft shipment value"},
+          {label:"Freight and insurance", amount:Math.round(value * 0.12), note:"Planning rate from forwarder quote"},
+          {label:"Duty, VAT, port, inland", amount:Math.round(value * 0.31), note:"Estimate only. Verify tariff, valuation, and exemptions."}
+        ];
+        state.customs.unshift({title:"Landed cost refreshed", status:"review", detail:"Planning estimate updated. Broker sign-off still required before clearance work."});
+        save();
+        render();
+      }
+
+      function prepareDocs(){
+        state.documents = (state.documents || []).map(function(item){
+          if(["commercialInvoice","packingList","paymentEvidence"].indexOf(item.key) !== -1){
+            return Object.assign({}, item, {ready:true});
+          }
+          return item;
+        });
+        state.risks = (state.risks || []).filter(function(item){ return item.title !== "Payment evidence not packed"; });
+        save();
+        render();
+      }
+
+      function reviewDuty(){
+        state.customs.unshift({title:"Tariff/duty review requested", status:"review", detail:"Send HS code, customs value, invoice, freight, and origin evidence to broker or accountant."});
+        state.risks.unshift({title:"Duty review pending", severity:"medium", detail:"Review note created. Official duty confirmation remains outside AfroTrade Desk."});
+        save();
+        render();
+      }
+
+      function addParty(){
+        state.parties.unshift({type:"Broker", name:"New customs broker", country:"TBD", owner:"Operations", terms:"Engagement terms pending", status:"needs review"});
+        save();
+        render();
+      }
+
+      function exportPacket(){
+        state.packets = Number(state.packets || 0) + 1;
+        save();
+        var packet = {
+          product:"AfroTrade Desk Pro",
+          exportedAt:new Date().toISOString(),
+          boundary:"Preparation packet only. Not customs filing, duty payment, or official clearance.",
+          state:state
+        };
+        var blob = new Blob([JSON.stringify(packet, null, 2)], {type:"application/json"});
+        var url = URL.createObjectURL(blob);
+        var link = document.createElement("a");
+        link.href = url;
+        link.download = "afrotrade-desk-packet.json";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+        render();
+      }
+
+      document.addEventListener("change", function(event){
+        var target = event.target;
+        if(target.id === "clientSelect"){
+          state.client = target.value;
+          save();
+          render();
+        }
+        if(target.id === "corridorSelect"){
+          state.corridor = target.value;
+          save();
+          render();
+        }
+        if(target.matches("[data-doc]")){
+          var key = target.getAttribute("data-doc");
+          state.documents = (state.documents || []).map(function(item){
+            if(item.key === key){ return Object.assign({}, item, {ready:target.checked}); }
+            return item;
+          });
+          save();
+          render();
+        }
+      });
+
+      document.addEventListener("click", function(event){
+        var action = event.target.closest("[data-action]");
+        if(!action){ return; }
+        var name = action.getAttribute("data-action");
+        if(name === "createShipment"){ createShipment(); }
+        if(name === "estimateCost"){ estimateCost(); }
+        if(name === "prepareDocs"){ prepareDocs(); }
+        if(name === "reviewDuty"){ reviewDuty(); }
+        if(name === "addParty"){ addParty(); }
+        if(name === "exportPacket"){ exportPacket(); }
+      });
+
+      byId("exportBtn").addEventListener("click", exportPacket);
+      byId("resetBtn").addEventListener("click", function(){
+        localStorage.removeItem(STORAGE_KEY);
+        state = seedState();
+        save();
+        render();
+      });
+
+      render();
+    })();
+  </script>
+<script src="/assets/js/components/pro-waitlist.js?v=1be0fd08"></script>
+</body>
+</html>

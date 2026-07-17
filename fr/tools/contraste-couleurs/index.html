@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="tool-id" content="contraste-couleurs-fr">
+<title>Vérificateur de contraste des couleurs | AfroTools</title>
+<meta name="description" content="Vérifiez instantanément le contraste texte/fond avec les seuils WCAG AA et AAA, des aperçus, des alternatives accessibles et l'export du résultat.">
+<meta name="theme-color" content="#0f766e">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:title" content="Vérificateur de contraste des couleurs | AfroTools">
+<meta property="og:description" content="Calculez le rapport de contraste, les statuts WCAG AA/AAA, les aperçus et les alternatives accessibles.">
+<meta property="og:url" content="https://afrotools.com/fr/tools/contraste-couleurs/">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/color-contrast.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Vérificateur de contraste des couleurs | AfroTools">
+<meta name="twitter:description" content="Contrôlez les couleurs texte/fond selon WCAG et exportez le diagnostic.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/color-contrast.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Vérificateur de contraste des couleurs",
+  "description": "Vérifiez le contraste texte/fond avec les seuils WCAG AA et AAA, des aperçus et des alternatives accessibles.",
+  "url": "https://afrotools.com/fr/tools/contraste-couleurs/",
+  "inLanguage": "fr",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "dateModified": "2026-05-16",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/color-contrast.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://afrotools.com/fr/"},
+    {"@type": "ListItem", "position": 2, "name": "Outils", "item": "https://afrotools.com/fr/all-tools/"},
+    {"@type": "ListItem", "position": 3, "name": "Contraste des couleurs", "item": "https://afrotools.com/fr/tools/contraste-couleurs/"}
+  ]
+}
+</script>
+<style>
+:root {
+  --bg: #f7f8fb;
+  --panel: #ffffff;
+  --soft: #f1f6f4;
+  --ink: #111827;
+  --muted: #5b6475;
+  --line: #dbe2e8;
+  --brand: #0f766e;
+  --brand-dark: #0b4f4a;
+  --accent: #7c4a03;
+  --danger: #b42318;
+  --warn: #a15c07;
+  --good: #157347;
+  --shadow: 0 18px 46px rgba(15, 23, 42, .10);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+}
+a { color: inherit; }
+.skip-link {
+  position: absolute;
+  left: 16px;
+  top: -48px;
+  z-index: 20;
+  background: var(--ink);
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 6px;
+}
+.skip-link:focus { top: 12px; }
+.topbar {
+  background: #0c1f20;
+  color: #ecfdf5;
+  border-bottom: 1px solid rgba(255,255,255,.12);
+}
+.topbar-inner {
+  width: min(1120px, calc(100% - 32px));
+  min-height: 64px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.brand {
+  font-weight: 800;
+  text-decoration: none;
+  letter-spacing: .01em;
+}
+.topnav {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-size: .94rem;
+}
+.topnav a {
+  color: #d7ffef;
+  text-decoration: none;
+  padding: 6px 0;
+}
+.hero {
+  background: linear-gradient(135deg, #082f2a 0%, #0f4f46 56%, #1f2937 100%);
+  color: #fff;
+}
+.wrap {
+  width: min(1120px, calc(100% - 32px));
+  margin: 0 auto;
+}
+.hero .wrap { padding: 34px 0 38px; }
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: .92rem;
+  color: #c7f9e8;
+  margin-bottom: 22px;
+}
+.breadcrumb a { text-decoration: none; }
+h1 {
+  font-size: clamp(2rem, 6vw, 4.1rem);
+  line-height: 1.02;
+  margin: 0 0 14px;
+  max-width: 820px;
+}
+.hero-copy {
+  max-width: 780px;
+  margin: 0;
+  color: #e2fff4;
+  font-size: 1.08rem;
+}
+.hero-pills {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 22px;
+}
+.pill {
+  border: 1px solid rgba(255,255,255,.26);
+  background: rgba(255,255,255,.10);
+  border-radius: 999px;
+  padding: 7px 11px;
+  color: #f0fdf4;
+  font-size: .88rem;
+}
+main { padding: 28px 0 44px; }
+.app-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(330px, .92fr);
+  gap: 22px;
+  align-items: start;
+}
+.app-grid > * { min-width: 0; }
+.panel, .info-block {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  min-width: 0;
+}
+.panel-head { padding: 20px 22px 0; }
+.panel-head h2, .info-block h2 {
+  margin: 0 0 6px;
+  font-size: 1.22rem;
+}
+.panel-head p, .info-block p {
+  margin: 0;
+  color: var(--muted);
+}
+form { padding: 18px 22px 22px; }
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.field-full { grid-column: 1 / -1; }
+label {
+  display: block;
+  font-weight: 800;
+  font-size: .93rem;
+  margin-bottom: 6px;
+}
+input, select {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 10px 11px;
+  font: inherit;
+  color: var(--ink);
+  background: #fff;
+}
+input[type="color"] {
+  padding: 4px;
+  cursor: pointer;
+}
+input:focus, select:focus, button:focus-visible, a:focus-visible {
+  outline: 3px solid rgba(15, 118, 110, .32);
+  outline-offset: 2px;
+}
+.hint {
+  display: block;
+  color: var(--muted);
+  font-size: .82rem;
+  margin-top: 4px;
+}
+.swatch-row {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 10px;
+  align-items: center;
+}
+.swatch {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.42);
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+button {
+  min-height: 44px;
+  border: 0;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+.primary { background: var(--brand); color: #fff; }
+.secondary {
+  background: #e6f3ef;
+  color: var(--brand-dark);
+  border: 1px solid #b7d7d1;
+}
+.ghost {
+  background: #fff;
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+.result-panel {
+  position: sticky;
+  top: 16px;
+}
+.status-bar {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line);
+  background: #f6fbfa;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  border-radius: 8px 8px 0 0;
+}
+.status-label {
+  display: block;
+  color: var(--muted);
+  font-size: .78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+.status-pill {
+  border: 1px solid #fed7aa;
+  background: #fff7ed;
+  color: #8a4b0b;
+  border-radius: 999px;
+  padding: 5px 9px;
+  font-size: .82rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 18px;
+}
+.metric {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px;
+  background: #fff;
+}
+.metric span {
+  display: block;
+  color: var(--muted);
+  font-size: .82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.metric strong {
+  display: block;
+  font-size: clamp(1.22rem, 4vw, 1.9rem);
+  line-height: 1.16;
+  margin-top: 7px;
+  word-break: break-word;
+}
+.wide { grid-column: 1 / -1; }
+.result-copy {
+  padding: 0 18px 18px;
+}
+.result-copy h3 {
+  margin: 16px 0 8px;
+  font-size: 1rem;
+}
+.notice {
+  border-left: 4px solid var(--accent);
+  background: #fffbeb;
+  padding: 12px 13px;
+  border-radius: 0 8px 8px 0;
+  color: #4a2d03;
+}
+.notice.good {
+  border-left-color: var(--good);
+  background: #ecfdf3;
+  color: #0d4f2a;
+}
+.notice.danger {
+  border-left-color: var(--danger);
+  background: #fff1f2;
+  color: #7a271a;
+}
+.preview {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 18px;
+  margin-top: 12px;
+}
+.preview strong {
+  display: block;
+  font-size: 1.35rem;
+  line-height: 1.25;
+  margin-bottom: 8px;
+}
+.preview p { margin: 0; }
+.status-grid, .suggestions {
+  display: grid;
+  gap: 8px;
+}
+.status-row, .suggestion {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  border-bottom: 1px solid #edf2f7;
+  padding: 10px 0;
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 5px 9px;
+  font-size: .8rem;
+  font-weight: 900;
+}
+.pass { background: #dcfce7; color: #166534; }
+.fail { background: #fee2e2; color: #991b1b; }
+.suggestion button {
+  min-height: 36px;
+  padding: 7px 10px;
+  font-size: .86rem;
+}
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+}
+.error {
+  min-height: 20px;
+  color: var(--danger);
+  font-size: .86rem;
+  font-weight: 700;
+}
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 22px;
+}
+.info-block { padding: 20px; }
+.info-block ul, .info-block ol {
+  margin: 12px 0 0;
+  padding-left: 20px;
+}
+.info-block li { margin: 8px 0; }
+.related {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.related a {
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 8px;
+  padding: 14px;
+  text-decoration: none;
+  font-weight: 800;
+}
+.footer {
+  border-top: 1px solid var(--line);
+  background: #fff;
+  padding: 24px 0;
+  color: var(--muted);
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.footer a { color: var(--brand-dark); }
+@media (max-width: 900px) {
+  .app-grid, .info-grid, .related { grid-template-columns: 1fr; }
+  .result-panel { position: static; }
+}
+@media (max-width: 620px) {
+  .topbar-inner {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 14px 0;
+  }
+  .field-grid, .metrics { grid-template-columns: 1fr; }
+  .actions button { width: 100%; }
+  .wide { grid-column: auto; }
+  form, .panel-head { padding-left: 16px; padding-right: 16px; }
+  .status-row, .suggestion { grid-template-columns: 1fr; }
+  .suggestion button { width: 100%; }
+}
+@media print {
+  .topbar, .hero, .actions, .related, .footer, .suggestion button { display: none; }
+  body { background: #fff; }
+  .panel, .info-block { box-shadow: none; break-inside: avoid; }
+  main { padding: 0; }
+}
+</style>
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/fr/tools/contraste-couleurs/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/color-contrast/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/contraste-couleurs/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ukaguzi-contrast/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/color-contrast/">
+</head>
+<body class="top-level-page-ui-refresh">
+<a class="skip-link" href="#outil">Aller au verificateur</a>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="/fr/">AfroTools</a>
+    <nav class="topnav" aria-label="Navigation principale">
+      <a href="/fr/all-tools/">Outils</a>
+      <a href="/fr/tools/outils-image/">Image et design</a>
+      <a href="/fr/developer-tools/">Développeur</a>
+      <a href="/fr/tools/color-contrast/">Version anglaise</a>
+    </nav>
+  </div>
+</header>
+<section class="hero">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="Fil d'Ariane">
+      <a href="/fr/">Accueil</a><span aria-hidden="true">/</span>
+      <a href="/fr/all-tools/">Outils</a><span aria-hidden="true">/</span>
+      <span>Contraste des couleurs</span>
+    </nav>
+    <h1>Vérificateur de contraste des couleurs</h1>
+    <p class="hero-copy">Contrôlez une paire texte/fond avec le calcul WCAG, les statuts AA et AAA pour texte normal et grand texte, un aperçu réel, des alternatives accessibles et un résultat copiable.</p>
+    <div class="hero-pills" aria-label="Fonctionnalites">
+      <span class="pill">Rapport instantane</span>
+      <span class="pill">WCAG AA et AAA</span>
+      <span class="pill">Swatches visibles</span>
+      <span class="pill">Export CSV</span>
+    </div>
+  </div>
+</section>
+<main id="outil" class="wrap">
+  <div class="app-grid">
+    <section class="panel" aria-labelledby="saisie-titre">
+      <div class="panel-head">
+        <h2 id="saisie-titre">Choisir les couleurs</h2>
+        <p>Entrez des codes hexadecimaux ou utilisez les selecteurs. Le diagnostic se met à jour a chaque frappe.</p>
+      </div>
+      <form id="contrastForm" novalidate>
+        <div class="field-grid">
+          <div>
+            <label for="fgHex">Couleur du texte</label>
+            <div class="swatch-row">
+              <span class="swatch" id="fgSwatch" aria-hidden="true"></span>
+              <input id="fgHex" name="fgHex" type="text" value="#1f2937" autocomplete="off" spellcheck="false" inputmode="text" aria-describedby="fgHelp fgError">
+            </div>
+            <span id="fgHelp" class="hint">Format accepte : #1f2937 ou 1f2937.</span>
+            <div id="fgError" class="error" aria-live="polite"></div>
+          </div>
+          <div>
+            <label for="fgColor">Selecteur texte</label>
+            <input id="fgColor" name="fgColor" type="color" value="#1f2937">
+          </div>
+          <div>
+            <label for="bgHex">Couleur du fond</label>
+            <div class="swatch-row">
+              <span class="swatch" id="bgSwatch" aria-hidden="true"></span>
+              <input id="bgHex" name="bgHex" type="text" value="#ffffff" autocomplete="off" spellcheck="false" inputmode="text" aria-describedby="bgHelp bgError">
+            </div>
+            <span id="bgHelp" class="hint">Les codes courts comme #fff sont aussi acceptes.</span>
+            <div id="bgError" class="error" aria-live="polite"></div>
+          </div>
+          <div>
+            <label for="bgColor">Selecteur fond</label>
+            <input id="bgColor" name="bgColor" type="color" value="#ffffff">
+          </div>
+          <div>
+            <label for="sampleSize">Taille de l'aperçu</label>
+            <select id="sampleSize" name="sampleSize">
+              <option value="16">Texte normal 16 px</option>
+              <option value="19">Grand texte 19 px gras</option>
+              <option value="24">Grand texte 24 px</option>
+            </select>
+          </div>
+          <div>
+            <label for="sampleWeight">Graisse de l'aperçu</label>
+            <select id="sampleWeight" name="sampleWeight">
+              <option value="400">Regular</option>
+              <option value="700">Gras</option>
+            </select>
+          </div>
+          <div class="field-full">
+            <label for="sampleText">Texte d'exemple</label>
+            <input id="sampleText" name="sampleText" type="text" value="Lisibilite claire pour tous les utilisateurs">
+            <span class="hint">Utilisez un texte proche de votre interface réelle.</span>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="primary" type="submit">Vérifier le contraste</button>
+          <button class="secondary" type="button" id="swapBtn">Inverser</button>
+          <button class="secondary" type="button" id="copyBtn">Copier le résultat</button>
+          <button class="secondary" type="button" id="exportBtn">Exporter CSV</button>
+          <button class="ghost" type="button" id="resetBtn">Réinitialiser</button>
+        </div>
+      </form>
+    </section>
+    <aside class="panel result-panel" aria-labelledby="resultat-titre">
+      <div class="status-bar">
+        <div>
+          <span class="status-label">Résultat</span>
+          <strong id="resultat-titre">Diagnostic WCAG</strong>
+        </div>
+        <span class="status-pill" id="overallStatus" data-output="statut-global">Prêt</span>
+      </div>
+      <div class="metrics" aria-live="polite">
+        <div class="metric">
+          <span>Rapport</span>
+          <strong id="ratioOut" data-output="rapport-contraste">-</strong>
+        </div>
+        <div class="metric">
+          <span>Texte normal</span>
+          <strong id="normalOut" data-output="statut-normal">-</strong>
+        </div>
+        <div class="metric">
+          <span>Grand texte</span>
+          <strong id="largeOut" data-output="statut-grand">-</strong>
+        </div>
+        <div class="metric">
+          <span>Couleurs</span>
+          <strong id="pairOut" data-output="paire-couleurs">-</strong>
+        </div>
+        <div class="metric wide">
+          <span>Conseil</span>
+          <strong id="adviceOut" data-output="conseil">Entrez deux couleurs valides.</strong>
+        </div>
+      </div>
+      <div class="result-copy">
+        <div id="resultNote" class="notice" data-output="note-resultat">Le diagnostic apparaitra ici.</div>
+        <h3>Aperçu</h3>
+        <div id="preview" class="preview" data-output="aperçu">
+          <strong id="previewTitle">Lisibilite claire pour tous les utilisateurs</strong>
+          <p>Ce bloc simule un composant d'interface avec les couleurs choisies.</p>
+        </div>
+        <h3>Statuts WCAG</h3>
+        <div id="statusGrid" class="status-grid" data-output="statuts-wcag"></div>
+        <h3>Alternatives accessibles</h3>
+        <div id="suggestions" class="suggestions" data-output="alternatives"></div>
+      </div>
+    </aside>
+  </div>
+  <section class="info-grid" aria-label="Méthodologie et contexte">
+    <div class="info-block">
+      <h2>Méthodologie WCAG</h2>
+      <p>Le rapport de contraste compare la luminance relative du texte et celle du fond. WCAG calcule ce rapport de 1:1 à 21:1 avec la formule (L1 + 0,05) / (L2 + 0,05), où L1 est la luminance la plus claire.</p>
+      <ul>
+        <li>AA texte normal : au moins 4,5:1.</li>
+        <li>AAA texte normal : au moins 7:1.</li>
+        <li>AA grand texte : au moins 3:1.</li>
+        <li>AAA grand texte : au moins 4,5:1.</li>
+      </ul>
+    </div>
+    <div class="info-block">
+      <h2>Sources et vérification</h2>
+      <p><strong>Dernière revue : 2026-05-16.</strong> Les seuils affichés reprennent les critères WCAG 2.x de contraste minimum et renforcé, utilisés par les validateurs comme WebAIM et les guides MDN.</p>
+      <ul>
+        <li><a href="https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html" rel="noopener">W3C WAI : Contrast Minimum</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/Guides/Understanding_WCAG/Perceivable/Color_contrast" rel="noopener">MDN : color contrast</a></li>
+        <li><a href="https://webaim.org/resources/contrastchecker/" rel="noopener">WebAIM Contrast Checker</a></li>
+        <li><a href="https://coolors.co/contrast-checker/" rel="noopener">Coolors Contrast Checker</a></li>
+      </ul>
+    </div>
+    <div class="info-block">
+      <h2>Limites et disclaimer</h2>
+      <p>Ce calculateur est une aide de conception et d'audit rapide. Il ne remplace pas un audit accessibilité complet : vérifiez aussi les états focus, les liens, les icônes, les erreurs de formulaire, la taille de police, les contrastes non textuels et les tests avec lecteurs d'écran.</p>
+    </div>
+    <div class="info-block">
+      <h2>Bonnes pratiques</h2>
+      <ol>
+        <li>Testez les couleurs finales dans le composant reel, pas seulement dans une maquette.</li>
+        <li>Évitez d'utiliser la couleur seule pour signaler une erreur ou une réussite.</li>
+        <li>Contrôlez aussi les états hover, focus, disabled et dark mode.</li>
+        <li>Gardez une trace du ratio dans votre design system.</li>
+      </ol>
+    </div>
+    <div class="info-block field-full">
+      <h2>Outils lies</h2>
+      <div class="related">
+        <a href="/fr/tools/color-contrast/">Color Contrast</a>
+        <a href="/fr/tools/color-picker/">Color Picker</a>
+        <a href="/fr/tools/colour-palette/">Palette de couleurs</a>
+        <a href="/fr/tools/meta-tag-generator/">Meta Tag Generator</a>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <span>AfroTools aide les equipes produit a construire des interfaces plus accessibles.</span>
+    <span><a href="/fr/all-tools/">Tous les outils</a> | <a href="/fr/tools/color-contrast/">Version anglaise</a></span>
+  </div>
+</footer>
+<script>
+(function () {
+  "use strict";
+
+  var fgHex = document.getElementById("fgHex");
+  var bgHex = document.getElementById("bgHex");
+  var fgColor = document.getElementById("fgColor");
+  var bgColor = document.getElementById("bgColor");
+  var fgSwatch = document.getElementById("fgSwatch");
+  var bgSwatch = document.getElementById("bgSwatch");
+  var form = document.getElementById("contrastForm");
+  var suggestionsEl = document.getElementById("suggestions");
+  var statusGrid = document.getElementById("statusGrid");
+  var lastResult = null;
+
+  function normalizeHex(value) {
+    var clean = String(value || "").trim().replace(/^#/, "");
+    if (/^[0-9a-fA-F]{3}$/.test(clean)) {
+      clean = clean.split("").map(function (char) { return char + char; }).join("");
+    }
+    if (!/^[0-9a-fA-F]{6}$/.test(clean)) return null;
+    return "#" + clean.toLowerCase();
+  }
+
+  function hexToRgb(hex) {
+    var normalized = normalizeHex(hex);
+    if (!normalized) return null;
+    return {
+      r: parseInt(normalized.slice(1, 3), 16),
+      g: parseInt(normalized.slice(3, 5), 16),
+      b: parseInt(normalized.slice(5, 7), 16)
+    };
+  }
+
+  function rgbToHex(rgb) {
+    return "#" + [rgb.r, rgb.g, rgb.b].map(function (part) {
+      var value = Math.max(0, Math.min(255, Math.round(part))).toString(16);
+      return value.length === 1 ? "0" + value : value;
+    }).join("");
+  }
+
+  function srgb(part) {
+    var c = part / 255;
+    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  }
+
+  function luminance(hex) {
+    var rgb = hexToRgb(hex);
+    return 0.2126 * srgb(rgb.r) + 0.7152 * srgb(rgb.g) + 0.0722 * srgb(rgb.b);
+  }
+
+  function ratio(fg, bg) {
+    var l1 = luminance(fg);
+    var l2 = luminance(bg);
+    var light = Math.max(l1, l2);
+    var dark = Math.min(l1, l2);
+    return (light + 0.05) / (dark + 0.05);
+  }
+
+  function mix(hex, target, amount) {
+    var base = hexToRgb(hex);
+    var to = hexToRgb(target);
+    return rgbToHex({
+      r: base.r + (to.r - base.r) * amount,
+      g: base.g + (to.g - base.g) * amount,
+      b: base.b + (to.b - base.b) * amount
+    });
+  }
+
+  function findAccessibleColor(color, other, targetRatio, changeForeground) {
+    var candidates = [];
+    ["#000000", "#ffffff"].forEach(function (target) {
+      for (var step = 0; step <= 100; step += 1) {
+        var candidate = mix(color, target, step / 100);
+        var candidateRatio = changeForeground ? ratio(candidate, other) : ratio(other, candidate);
+        if (candidateRatio >= targetRatio) {
+          candidates.push({ hex: candidate, ratio: candidateRatio, step: step });
+          break;
+        }
+      }
+    });
+    candidates.sort(function (a, b) { return a.step - b.step; });
+    return candidates[0] || { hex: color, ratio: changeForeground ? ratio(color, other) : ratio(other, color), step: 0 };
+  }
+
+  function setText(id, text) {
+    document.getElementById(id).textContent = text;
+  }
+
+  function statusLabel(passAA, passAAA) {
+    if (passAAA) return "AAA";
+    if (passAA) return "AA";
+    return "Echec";
+  }
+
+  function badge(pass) {
+    return "<span class=\"badge " + (pass ? "pass" : "fail") + "\">" + (pass ? "Reussi" : "Echec") + "</span>";
+  }
+
+  function formatRatio(value) {
+    return value.toFixed(2) + ":1";
+  }
+
+  function validateInputs() {
+    var fg = normalizeHex(fgHex.value);
+    var bg = normalizeHex(bgHex.value);
+    document.getElementById("fgError").textContent = fg ? "" : "Code hex du texte invalide.";
+    document.getElementById("bgError").textContent = bg ? "" : "Code hex du fond invalide.";
+    return { fg: fg, bg: bg, valid: Boolean(fg && bg) };
+  }
+
+  function syncControls(fg, bg) {
+    fgHex.value = fg;
+    bgHex.value = bg;
+    fgColor.value = fg;
+    bgColor.value = bg;
+    fgSwatch.style.background = fg;
+    bgSwatch.style.background = bg;
+  }
+
+  function renderSuggestions(fg, bg, currentRatio) {
+    var textAA = findAccessibleColor(fg, bg, 4.5, true);
+    var bgAA = findAccessibleColor(bg, fg, 4.5, false);
+    var textAAA = findAccessibleColor(fg, bg, 7, true);
+    var rows = [
+      { label: "Ajuster le texte pour AA", fg: textAA.hex, bg: bg, value: textAA },
+      { label: "Ajuster le fond pour AA", fg: fg, bg: bgAA.hex, value: bgAA },
+      { label: "Ajuster le texte pour AAA", fg: textAAA.hex, bg: bg, value: textAAA }
+    ];
+    suggestionsEl.innerHTML = rows.map(function (item) {
+      return "<div class=\"suggestion\"><span><strong>" + item.label + "</strong><br><span class=\"mono\">" + item.fg + " sur " + item.bg + "</span> - " + formatRatio(item.value.ratio) + "</span><button type=\"button\" data-fg=\"" + item.fg + "\" data-bg=\"" + item.bg + "\">Appliquer</button></div>";
+    }).join("");
+    if (currentRatio >= 7) {
+      suggestionsEl.insertAdjacentHTML("afterbegin", "<div class=\"suggestion\"><span><strong>Deja tres robuste</strong><br>Cette combinaison atteint deja AAA pour texte normal.</span><span class=\"badge pass\">OK</span></div>");
+    }
+  }
+
+  function render() {
+    var parsed = validateInputs();
+    if (!parsed.valid) {
+      setText("ratioOut", "-");
+      setText("normalOut", "-");
+      setText("largeOut", "-");
+      setText("pairOut", "-");
+      setText("adviceOut", "Corrigez les codes hexadecimaux.");
+      document.getElementById("overallStatus").textContent = "Invalide";
+      document.getElementById("resultNote").className = "notice danger";
+      document.getElementById("resultNote").textContent = "Le calcul est bloque tant que les deux couleurs ne sont pas valides.";
+      return;
+    }
+    syncControls(parsed.fg, parsed.bg);
+    var value = ratio(parsed.fg, parsed.bg);
+    var normalAA = value >= 4.5;
+    var normalAAA = value >= 7;
+    var largeAA = value >= 3;
+    var largeAAA = value >= 4.5;
+    var overall = normalAAA ? "AAA" : normalAA ? "AA" : largeAA ? "Grand texte" : "Echec";
+    var preview = document.getElementById("preview");
+    var sampleSize = Number(document.getElementById("sampleSize").value);
+    var sampleWeight = document.getElementById("sampleWeight").value;
+    var sample = document.getElementById("sampleText").value || "Lisibilite claire pour tous les utilisateurs";
+    preview.style.color = parsed.fg;
+    preview.style.background = parsed.bg;
+    preview.style.fontSize = sampleSize + "px";
+    preview.style.fontWeight = sampleWeight;
+    document.getElementById("previewTitle").textContent = sample;
+    setText("ratioOut", formatRatio(value));
+    setText("normalOut", statusLabel(normalAA, normalAAA));
+    setText("largeOut", statusLabel(largeAA, largeAAA));
+    setText("pairOut", parsed.fg + " / " + parsed.bg);
+    document.getElementById("overallStatus").textContent = overall;
+    var note = document.getElementById("resultNote");
+    if (normalAAA) {
+      note.className = "notice good";
+      note.textContent = "La paire atteint AAA pour texte normal. Elle est solide pour les interfaces textuelles courantes.";
+      setText("adviceOut", "Vous pouvez documenter cette paire dans le design system.");
+    } else if (normalAA) {
+      note.className = "notice good";
+      note.textContent = "La paire atteint AA pour texte normal et AAA pour grand texte, mais pas AAA pour texte normal.";
+      setText("adviceOut", "OK pour la plupart des textes, a renforcer pour les contenus critiques.");
+    } else if (largeAA) {
+      note.className = "notice";
+      note.textContent = "La paire passe seulement pour grand texte AA. Evitez-la pour le texte normal.";
+      setText("adviceOut", "Augmentez le contraste avant de l'utiliser dans un paragraphe ou un bouton.");
+    } else {
+      note.className = "notice danger";
+      note.textContent = "La paire échoue aux seuils WCAG courants. Choisissez une alternative plus contrastée.";
+      setText("adviceOut", "Appliquez une des alternatives proposees.");
+    }
+    statusGrid.innerHTML = [
+      ["AA texte normal", ">= 4,5:1", normalAA],
+      ["AAA texte normal", ">= 7:1", normalAAA],
+      ["AA grand texte", ">= 3:1", largeAA],
+      ["AAA grand texte", ">= 4,5:1", largeAAA]
+    ].map(function (row) {
+      return "<div class=\"status-row\"><span><strong>" + row[0] + "</strong><br>" + row[1] + "</span>" + badge(row[2]) + "</div>";
+    }).join("");
+    renderSuggestions(parsed.fg, parsed.bg, value);
+    lastResult = {
+      fg: parsed.fg,
+      bg: parsed.bg,
+      ratio: value,
+      normalAA: normalAA,
+      normalAAA: normalAAA,
+      largeAA: largeAA,
+      largeAAA: largeAAA,
+      overall: overall
+    };
+    try {
+      localStorage.setItem("afrotools-contraste-couleurs-fr", JSON.stringify({ savedAt: new Date().toISOString(), result: lastResult }));
+    } catch (err) {}
+  }
+
+  function resultText() {
+    if (!lastResult) render();
+    return [
+      "AfroTools - Vérificateur de contraste",
+      "Date: " + new Date().toISOString().slice(0, 10),
+      "Texte: " + lastResult.fg,
+      "Fond: " + lastResult.bg,
+      "Rapport: " + formatRatio(lastResult.ratio),
+      "AA texte normal : " + (lastResult.normalAA ? "réussi" : "échec"),
+      "AAA texte normal : " + (lastResult.normalAAA ? "réussi" : "échec"),
+      "AA grand texte : " + (lastResult.largeAA ? "réussi" : "échec"),
+      "AAA grand texte : " + (lastResult.largeAAA ? "réussi" : "échec"),
+      "Disclaimer: aide de conception, pas un audit accessibilite complet."
+    ].join("\n");
+  }
+
+  function exportCsv() {
+    if (!lastResult) render();
+    var rows = [
+      ["Champ", "Valeur"],
+      ["Date", new Date().toISOString().slice(0, 10)],
+      ["Couleur texte", lastResult.fg],
+      ["Couleur fond", lastResult.bg],
+      ["Rapport", formatRatio(lastResult.ratio)],
+      ["AA texte normal", lastResult.normalAA ? "réussi" : "échec"],
+      ["AAA texte normal", lastResult.normalAAA ? "réussi" : "échec"],
+      ["AA grand texte", lastResult.largeAA ? "réussi" : "échec"],
+      ["AAA grand texte", lastResult.largeAAA ? "réussi" : "échec"]
+    ];
+    var csv = rows.map(function (row) {
+      return row.map(function (cell) {
+        return "\"" + String(cell).replace(/"/g, "\"\"") + "\"";
+      }).join(",");
+    }).join("\n");
+    var blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement("a");
+    link.href = url;
+    link.download = "afrotools-contraste-couleurs.csv";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    render();
+  });
+
+  [fgHex, bgHex, fgColor, bgColor, document.getElementById("sampleSize"), document.getElementById("sampleWeight"), document.getElementById("sampleText")].forEach(function (field) {
+    field.addEventListener("input", function () {
+      if (field === fgColor) fgHex.value = fgColor.value;
+      if (field === bgColor) bgHex.value = bgColor.value;
+      render();
+    });
+    field.addEventListener("change", function () {
+      if (field === fgColor) fgHex.value = fgColor.value;
+      if (field === bgColor) bgHex.value = bgColor.value;
+      render();
+    });
+  });
+
+  suggestionsEl.addEventListener("click", function (event) {
+    var button = event.target.closest("button[data-fg][data-bg]");
+    if (!button) return;
+    fgHex.value = button.getAttribute("data-fg");
+    bgHex.value = button.getAttribute("data-bg");
+    render();
+  });
+
+  document.getElementById("swapBtn").addEventListener("click", function () {
+    var fg = normalizeHex(fgHex.value) || "#1f2937";
+    var bg = normalizeHex(bgHex.value) || "#ffffff";
+    fgHex.value = bg;
+    bgHex.value = fg;
+    render();
+  });
+
+  document.getElementById("copyBtn").addEventListener("click", function () {
+    var text = resultText();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () {
+        setText("adviceOut", "Résultat copié.");
+      }).catch(function () {
+        window.prompt("Copier le resultat", text);
+      });
+    } else {
+      window.prompt("Copier le resultat", text);
+    }
+  });
+
+  document.getElementById("exportBtn").addEventListener("click", exportCsv);
+  document.getElementById("resetBtn").addEventListener("click", function () {
+    fgHex.value = "#1f2937";
+    bgHex.value = "#ffffff";
+    document.getElementById("sampleSize").value = "16";
+    document.getElementById("sampleWeight").value = "400";
+    document.getElementById("sampleText").value = "Lisibilite claire pour tous les utilisateurs";
+    render();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AfroPrices — Compare Prices Across Africa | AfroTools</title>
+<meta name="description" content="Find prices for phones, electronics, appliances, and everyday goods across African e-commerce platforms and local markets in Nigeria, Kenya, South Africa, Ghana, Egypt and more.">
+<meta name="theme-color" content="#0062CC">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:title" content="AfroPrices — Compare Prices Across Africa | AfroTools">
+<meta property="og:description" content="Compare product prices across African e-commerce platforms and local markets with practical buying notes.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/afroprices.webp">
+<meta property="og:url" content="https://afrotools.com/tools/afroprices/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@afrotoolsHQ">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Instrument+Serif&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Instrument+Serif&display=swap"></noscript>
+
+<!-- Design System -->
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+
+<!-- Chart.js -->
+<script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+
+<!-- Web Components -->
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/related-tools.js?v=4123e336" defer></script>
+
+<!-- Engine -->
+<script src="/engines/afroprices-engine.js?v=06b0eacf"></script>
+
+<!-- JSON-LD -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"AfroPrices — African Price Comparison","description":"Compare product prices across African e-commerce platforms and local markets with practical buying notes.","url":"https://afrotools.com/tools/afroprices/","inLanguage":"en","applicationCategory":"WebApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/afroprices.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"AfroPrices — African Price Comparison","url":"https://afrotools.com/tools/afroprices/","description":"Compare product prices across African e-commerce platforms and local markets with practical buying notes.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/afroprices.webp"}</script>
+
+<style>
+/* ── AfroPrices Page Styles ──────────────────────────────────────── */
+
+.ap-hero {
+  background: var(--color-bg-hero, linear-gradient(135deg, #F0F7FF 0%, #E8F4FD 50%, #F5F0FF 100%));
+  padding: 3.5rem 1.5rem 2.5rem;
+  text-align: center;
+}
+.ap-hero h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.75rem, 5vw, 2.75rem);
+  color: var(--color-text);
+  margin: 0 0 0.5rem;
+  line-height: var(--leading-tight);
+}
+.ap-hero p {
+  color: var(--color-text-muted);
+  font-size: var(--text-lg);
+  max-width: 540px;
+  margin: 0 auto 1.75rem;
+}
+
+/* Search bar */
+.ap-search-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+}
+.ap-search-bar {
+  display: flex;
+  gap: 0;
+  background: var(--color-bg-card);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.ap-search-bar:focus-within {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.15);
+}
+.ap-search-bar input {
+  flex: 1;
+  border: none;
+  padding: 0.875rem 1.25rem;
+  font-size: var(--text-base);
+  font-family: var(--font-body);
+  background: transparent;
+  color: var(--color-text);
+  outline: none;
+  min-width: 0;
+}
+.ap-search-bar input::placeholder { color: var(--color-text-subtle); }
+.ap-search-btn {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  padding: 0.875rem 1.75rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--text-base);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  white-space: nowrap;
+}
+.ap-search-btn:hover { background: var(--color-primary-dark); }
+
+.ap-filters {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.ap-filters select {
+  padding: 0.5rem 2rem 0.5rem 0.75rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-card);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+}
+
+/* Category grid */
+.ap-categories {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+}
+.ap-categories h2 {
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  margin: 0 0 1.25rem;
+  text-align: center;
+}
+.ap-cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
+.ap-cat-card {
+  background: var(--color-bg-card);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+.ap-cat-card:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.ap-cat-card .icon { font-size: 2rem; margin-bottom: 0.5rem; display: block; }
+.ap-cat-card .label { font-weight: 600; font-size: var(--text-sm); color: var(--color-text); }
+
+/* Results section */
+.ap-results-section {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  padding: 0 1.5rem 2rem;
+  display: none;
+}
+.ap-results-section.active { display: block; }
+.ap-results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.ap-results-header h2 {
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  margin: 0;
+}
+.ap-sort-select {
+  padding: 0.4rem 2rem 0.4rem 0.75rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-family: var(--font-body);
+  background: var(--color-bg-card);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+}
+
+/* Product card */
+.ap-product-card {
+  background: var(--color-bg-card);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+  transition: box-shadow var(--transition-fast);
+}
+.ap-product-card:hover { box-shadow: var(--shadow-md); }
+.ap-product-name {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  margin: 0 0 0.25rem;
+  color: var(--color-text);
+}
+.ap-product-brand {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-bottom: 1rem;
+}
+
+/* Listing row */
+.ap-listing {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  border-top: 1px solid var(--color-border-subtle);
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.ap-listing:first-of-type { border-top: none; }
+.ap-listing-source {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  flex: 1;
+}
+.ap-listing-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+.ap-listing-icon.affiliate { background: rgba(var(--color-primary-rgb), 0.1); color: var(--color-primary); }
+.ap-listing-icon.retail { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+.ap-listing-icon.market { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+.ap-listing-icon.community { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
+.ap-listing-name {
+  font-weight: 500;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ap-listing-meta {
+  font-size: 0.75rem;
+  color: var(--color-text-subtle);
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.ap-listing-price {
+  font-weight: 700;
+  font-size: var(--text-lg);
+  color: var(--color-text);
+  white-space: nowrap;
+}
+.ap-listing-price.best { color: var(--color-primary); }
+.ap-listing-action {
+  flex-shrink: 0;
+}
+.ap-listing-action a, .ap-listing-action span {
+  display: inline-block;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  transition: background var(--transition-fast);
+}
+.ap-listing-action a {
+  background: var(--color-primary);
+  color: #fff;
+}
+.ap-listing-action a:hover { background: var(--color-primary-dark); }
+.ap-listing-action .market-label {
+  background: rgba(245, 158, 11, 0.1);
+  color: #b45309;
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+.ap-listing-tip {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  padding-left: 1.75rem;
+  margin-top: -0.25rem;
+}
+
+/* AI Insight card */
+.ap-insight-card {
+  background: linear-gradient(135deg, rgba(var(--color-primary-rgb), 0.04) 0%, rgba(139, 92, 246, 0.04) 100%);
+  border: 1.5px solid rgba(var(--color-primary-rgb), 0.15);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.ap-insight-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  font-size: var(--text-sm);
+  color: var(--color-primary);
+}
+.ap-insight-text {
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  line-height: var(--leading-relaxed);
+}
+.ap-insight-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+.ap-insight-loading .dot-pulse {
+  display: inline-flex;
+  gap: 3px;
+}
+.ap-insight-loading .dot-pulse span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  animation: apPulse 1.2s ease-in-out infinite;
+}
+.ap-insight-loading .dot-pulse span:nth-child(2) { animation-delay: 0.2s; }
+.ap-insight-loading .dot-pulse span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes apPulse {
+  0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
+  40% { opacity: 1; transform: scale(1); }
+}
+
+/* Price history chart */
+.ap-chart-section {
+  background: var(--color-bg-card);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.ap-chart-section h3 {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  margin: 0 0 1rem;
+}
+.ap-chart-canvas {
+  width: 100%;
+  max-height: 240px;
+}
+
+/* Price alert */
+.ap-alert-card {
+  background: var(--color-bg-card);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.ap-alert-card h3 {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  margin: 0 0 0.75rem;
+}
+.ap-alert-form {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.ap-alert-form input {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.6rem 0.85rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+}
+.ap-alert-form button {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.25rem;
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  cursor: pointer;
+}
+
+/* Buyer decision desk */
+.ap-decision-card {
+  background: #fff;
+  border: 1.5px solid rgba(0,98,204,.18);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 12px 30px rgba(15,23,42,.06);
+}
+.ap-decision-card h3 {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  margin: 0 0 .5rem;
+}
+.ap-decision-card > p {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  margin: 0 0 1rem;
+}
+.ap-decision-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(170px,1fr));
+  gap: .75rem;
+  margin-bottom: 1rem;
+}
+.ap-decision-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text);
+}
+.ap-decision-grid input,
+.ap-decision-grid select {
+  padding: .6rem .75rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  background: var(--color-bg-card);
+}
+.ap-decision-output {
+  background: rgba(0,98,204,.05);
+  border: 1px solid rgba(0,98,204,.14);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  font-size: var(--text-sm);
+  line-height: 1.65;
+}
+.ap-decision-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(135px,1fr));
+  gap: .75rem;
+  margin-bottom: .85rem;
+}
+.ap-decision-metric {
+  background: #fff;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  padding: .7rem .8rem;
+}
+.ap-decision-metric span {
+  display: block;
+  color: var(--color-text-subtle);
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-bottom: .2rem;
+}
+.ap-decision-metric strong {
+  color: var(--color-text);
+}
+.ap-decision-actions {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+  margin-top: .85rem;
+}
+.ap-decision-actions button {
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: #fff;
+  color: var(--color-text);
+  font-weight: 700;
+  padding: .55rem .9rem;
+  cursor: pointer;
+}
+
+/* Community submit */
+.ap-submit-section {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+  border-top: 1px solid var(--color-border-subtle);
+}
+.ap-submit-section h2 {
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  margin: 0 0 0.5rem;
+  text-align: center;
+}
+.ap-submit-section > p {
+  text-align: center;
+  color: var(--color-text-muted);
+  margin-bottom: 1.5rem;
+}
+.ap-submit-form {
+  max-width: 540px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+.ap-submit-form label {
+  font-weight: 500;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.ap-submit-form input, .ap-submit-form select {
+  padding: 0.6rem 0.85rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  background: var(--color-bg-card);
+}
+.ap-submit-form .row {
+  display: flex;
+  gap: 0.75rem;
+}
+.ap-submit-form .row > label { flex: 1; }
+.ap-submit-btn {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--text-base);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+.ap-submit-btn:hover { background: var(--color-primary-dark); }
+.ap-submit-msg {
+  text-align: center;
+  font-size: var(--text-sm);
+  padding: 0.5rem;
+  border-radius: var(--radius-md);
+  display: none;
+}
+.ap-submit-msg.success { display: block; background: rgba(59, 130, 246, 0.08); color: var(--color-primary); }
+.ap-submit-msg.error { display: block; background: rgba(239, 68, 68, 0.08); color: var(--color-error); }
+
+/* Markets section */
+.ap-markets-section {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+  border-top: 1px solid var(--color-border-subtle);
+}
+.ap-markets-section h2 {
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  margin: 0 0 1.25rem;
+  text-align: center;
+}
+.ap-market-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+.ap-market-card {
+  background: var(--color-bg-card);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+}
+.ap-market-card h3 {
+  font-size: var(--text-base);
+  font-weight: 600;
+  margin: 0 0 0.35rem;
+}
+.ap-market-card .city {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-bottom: 0.5rem;
+}
+.ap-market-card .speciality {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  background: rgba(var(--color-primary-rgb), 0.08);
+  color: var(--color-primary);
+  border-radius: var(--radius-sm);
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.5rem;
+}
+.ap-market-card .tip {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: var(--leading-relaxed);
+}
+
+/* Trending chips */
+.ap-trending-section {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  border-top: 1px solid var(--color-border-subtle);
+}
+.ap-trending-section h2 {
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  margin: 0 0 1rem;
+  text-align: center;
+}
+.ap-trending-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+.ap-trending-chip {
+  padding: 0.4rem 1rem;
+  background: var(--color-bg-card);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+}
+.ap-trending-chip:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: rgba(var(--color-primary-rgb), 0.04);
+}
+
+/* Cross-links */
+.ap-crosslinks {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+  border-top: 1px solid var(--color-border-subtle);
+}
+.ap-crosslinks h2 {
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  margin: 0 0 1rem;
+  text-align: center;
+}
+.ap-crosslinks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+}
+.ap-crosslink-card {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1rem 1.25rem;
+  background: var(--color-bg-card);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--color-text);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.ap-crosslink-card:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+}
+.ap-crosslink-card .cl-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+.ap-crosslink-card .cl-text h4 {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  margin: 0;
+}
+.ap-crosslink-card .cl-text p {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin: 0.15rem 0 0;
+}
+
+/* Disclosure */
+.ap-disclosure {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  padding: 0 1.5rem 1.5rem;
+  font-size: 0.7rem;
+  color: var(--color-text-subtle);
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* Loading spinner */
+.ap-loading {
+  text-align: center;
+  padding: 2rem;
+  color: var(--color-text-muted);
+}
+.ap-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: apSpin 0.8s linear infinite;
+  margin: 0 auto 0.75rem;
+}
+@keyframes apSpin { to { transform: rotate(360deg); } }
+
+/* No results */
+.ap-no-results {
+  text-align: center;
+  padding: 2rem;
+}
+.ap-no-results .icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+.ap-no-results h3 { margin: 0 0 0.5rem; }
+.ap-no-results p { color: var(--color-text-muted); font-size: var(--text-sm); }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .ap-hero { padding: 2.5rem 1rem 2rem; }
+  .ap-search-bar { flex-direction: column; }
+  .ap-search-btn { padding: 0.75rem; }
+  .ap-listing { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+  .ap-listing-action { align-self: flex-end; }
+  .ap-submit-form .row { flex-direction: column; }
+  .ap-cat-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+  .ap-cat-card { padding: 0.85rem 0.5rem; }
+  .ap-cat-card .icon { font-size: 1.5rem; }
+}
+</style>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:title" content="AfroPrices — Compare Prices Across Africa | AfroTools">
+<meta name="twitter:description" content="Compare product prices across African e-commerce platforms and local markets with practical buying notes.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/afroprices.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "AfroPrices",
+      "item": "https://afrotools.com/tools/afroprices/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=c0a56b60">
+<script src="/assets/js/african-workflow.js?v=cf96f534" defer></script>
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/afroprices/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afroprices/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/afroprix/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/afroprices/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/afroprices/">
+</head>
+<body class="top-level-page-ui-refresh">
+
+<afro-navbar></afro-navbar>
+
+<!-- ─── HERO + SEARCH ─────────────────────────────────────────────── -->
+<section class="ap-hero">
+  <h1>Find the Best Price Anywhere in Africa</h1>
+  <p>Compare online platforms, local markets, and get practical buying notes before you spend.</p>
+
+  <div class="ap-search-wrap">
+    <div class="ap-search-bar">
+      <input aria-label="Search for a product e.g. Samsung Galaxy A15" type="text" id="apSearchInput" placeholder="Search for a product... e.g. Samsung Galaxy A15" autocomplete="off">
+      <button type="button" class="ap-search-btn" id="apSearchBtn">Search</button>
+    </div>
+
+    <div class="ap-filters">
+      <select id="apCountrySelect" aria-label="Select country"></select>
+      <select id="apCategorySelect" aria-label="Select category">
+        <option value="">All Categories</option>
+      </select>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CATEGORY GRID ─────────────────────────────────────────────── -->
+<section class="ap-categories" id="apCategoriesSection">
+  <h2>Browse by Category</h2>
+  <div class="ap-cat-grid" id="apCategoryGrid"></div>
+</section>
+
+<!-- ─── RESULTS ───────────────────────────────────────────────────── -->
+<section class="ap-results-section" id="apResultsSection">
+  <div class="ap-results-header">
+    <h2 id="apResultsTitle">Results</h2>
+    <select class="ap-sort-select" id="apSortSelect" aria-label="Ap Sort Select">
+      <option value="price-asc">Price: Low to High</option>
+      <option value="price-desc">Price: High to Low</option>
+      <option value="name">Name</option>
+    </select>
+  </div>
+
+  <!-- AI Insight -->
+  <div class="ap-insight-card" id="apInsightCard" style="display:none;">
+    <div class="ap-insight-header">
+      <span>💡</span> AI Buying Insight
+    </div>
+    <div id="apInsightBody">
+      <div class="ap-insight-loading">
+        Analysing prices <span class="dot-pulse"><span></span><span></span><span></span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product results -->
+  <div id="apResultsList"></div>
+
+  <!-- Buyer Decision Desk -->
+  <div class="ap-decision-card" id="apDecisionCard" style="display:none;">
+    <h3>Buyer Decision Desk</h3>
+    <p>Turn search results into a buying plan with a budget ceiling, urgency, warranty preference, and channel risk check.</p>
+    <div class="ap-decision-grid">
+      <label>Budget ceiling
+        <input aria-label="Optional" type="number" id="apBudgetCeiling" placeholder="Optional">
+      </label>
+      <label>Need by
+        <select id="apNeedBy">
+          <option value="today">Today</option>
+          <option value="week" selected>This week</option>
+          <option value="month">This month</option>
+          <option value="watch">Watch price</option>
+        </select>
+      </label>
+      <label>Warranty priority
+        <select id="apWarrantyPriority">
+          <option value="high" selected>High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+      </label>
+      <label>Preferred channel
+        <select id="apPreferredChannel">
+          <option value="any" selected>Any trusted source</option>
+          <option value="affiliate">Online / affiliate</option>
+          <option value="retail">Retail shop</option>
+          <option value="market">Physical market</option>
+          <option value="community">Community quote</option>
+        </select>
+      </label>
+    </div>
+    <div class="ap-decision-output" id="apDecisionOutput"></div>
+  </div>
+
+  <!-- Price History -->
+  <div class="ap-chart-section" id="apChartSection" style="display:none;">
+    <h3>📊 Price History</h3>
+    <canvas id="apPriceChart" class="ap-chart-canvas"></canvas>
+  </div>
+
+  <!-- Price Alert -->
+  <div class="ap-alert-card" id="apAlertCard" style="display:none;">
+    <h3>🔔 Set Price Alert</h3>
+    <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin:0 0 0.75rem;">Get notified when the price drops below your target.</p>
+    <div class="ap-alert-form">
+      <input aria-label="Target price" type="number" id="apAlertPrice" placeholder="Target price">
+      <input aria-label="Your email" type="email" id="apAlertEmail" placeholder="Your email">
+      <button type="button" id="apAlertBtn">Set Alert</button>
+    </div>
+    <div class="ap-submit-msg" id="apAlertMsg"></div>
+  </div>
+</section>
+
+<!-- ─── AFFILIATE DISCLOSURE ──────────────────────────────────────── -->
+<div class="ap-disclosure" id="apDisclosure" style="display:none;">
+  AfroTools may earn a commission when you click "View Deal" links. This doesn't affect which results appear or their order. Prices are shown as reported and may differ at time of purchase.
+</div>
+
+<!-- ─── COMMUNITY SUBMIT ──────────────────────────────────────────── -->
+<section class="ap-submit-section">
+  <h2>Submit a Price</h2>
+  <p>Saw a price in your local market? Share it and help fellow shoppers.</p>
+  <form class="ap-submit-form" id="apSubmitForm">
+    <label>
+      Product Name
+      <input aria-label="E.g. Samsung Galaxy A15" type="text" id="csProductName" required placeholder="e.g. Samsung Galaxy A15">
+    </label>
+    <div class="row">
+      <label>
+        Price
+        <input aria-label="E.g. 142000" type="number" id="csPrice" required placeholder="e.g. 142000" min="1">
+      </label>
+      <label>
+        Currency
+        <select id="csCurrency"></select>
+      </label>
+    </div>
+    <div class="row">
+      <label>
+        Market / Shop
+        <input aria-label="E.g. Computer Village" type="text" id="csMarket" placeholder="e.g. Computer Village">
+      </label>
+      <label>
+        City
+        <input aria-label="E.g. Lagos" type="text" id="csCity" placeholder="e.g. Lagos">
+      </label>
+    </div>
+    <button type="submit" class="ap-submit-btn">Submit Price</button>
+    <div class="ap-submit-msg" id="csMsg"></div>
+  </form>
+</section>
+
+<!-- ─── MARKETS ───────────────────────────────────────────────────── -->
+<section class="ap-markets-section" id="apMarketsSection">
+  <h2 id="apMarketsTitle">Popular Markets</h2>
+  <div class="ap-market-grid" id="apMarketGrid"></div>
+</section>
+
+<!-- ─── TRENDING ──────────────────────────────────────────────────── -->
+<section class="ap-trending-section">
+  <h2 id="apTrendingTitle">Trending Searches</h2>
+  <div class="ap-trending-chips" id="apTrendingChips"></div>
+</section>
+
+<!-- ─── CROSS-LINKS ───────────────────────────────────────────────── -->
+<section class="ap-crosslinks">
+  <h2>Related AfroTools</h2>
+  <div class="ap-crosslinks-grid">
+    <a href="/tools/import-duty/" class="ap-crosslink-card">
+      <span class="cl-icon">📦</span>
+      <div class="cl-text">
+        <h4>Import Duty Calculator</h4>
+        <p>Importing a product? Calculate duties &amp; taxes.</p>
+      </div>
+    </a>
+    <a href="/tools/currency-converter/" class="ap-crosslink-card">
+      <span class="cl-icon">💱</span>
+      <div class="cl-text">
+        <h4>Currency Converter</h4>
+        <p>Convert between 42 African currencies.</p>
+      </div>
+    </a>
+    <a href="/tools/remittance-compare/" class="ap-crosslink-card">
+      <span class="cl-icon">💸</span>
+      <div class="cl-text">
+        <h4>Remittance Comparator</h4>
+        <p>Send money? Compare transfer fees.</p>
+      </div>
+    </a>
+    <a href="/tools/fuel-tracker/" class="ap-crosslink-card">
+      <span class="cl-icon">⛽</span>
+      <div class="cl-text">
+        <h4>AfroFuel Tracker</h4>
+        <p>Track fuel &amp; generator running costs.</p>
+      </div>
+    </a>
+  </div>
+</section>
+<afro-related-tools data-ssr="1" category="african" current="afroprices">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/afropoints/" data-related-tool data-id="afropoints" data-name="AfroPoints — Earn Money Contributing Data" data-category="african" data-icon="AE" data-desc="Earn real money by sharing African market data — prices, rates, salaries, costs. Contribute, earn points, cash out via m">AfroPoints — Earn Money Contributing Data</a></li><li><a href="/tools/remittance-compare/" data-related-tool data-id="remittance-compare" data-name="Remittance Comparator" data-category="african" data-icon="RC" data-desc="Compare Wise, WorldRemit, Western Union and 8 more. Find cheapest way to send money to Africa.">Remittance Comparator</a></li><li><a href="/tools/remittance-v2/" data-related-tool data-id="remittance-v2" data-name="Remittance Comparator Pro" data-category="african" data-icon="RC" data-desc="Compare editable remittance quotes by recipient value, FX margin, fee, speed, and payout method.">Remittance Comparator Pro</a></li><li><a href="/tools/afroatlas/" data-related-tool data-id="afroatlas" data-name="AfroAtlas — Africa Resource Explorer" data-category="african" data-icon="AA" data-desc="Interactive explorer for African country profiles, GDP, natural resources, trade data, rankings, and side-by-side compar">AfroAtlas — Africa Resource Explorer</a></li><li><a href="/tools/informal-fx-watch/" data-related-tool data-id="informal-fx-watch" data-name="Informal FX Watch" data-category="african" data-icon="IF" data-desc="Track street, BDC, and P2P informal FX spreads across African markets with contributor-backed quotes.">Informal FX Watch</a></li><li><a href="/tools/africa-conflict/" data-related-tool data-id="africa-conflict" data-name="AfroConflict — Conflict Intelligence" data-category="african" data-icon="AC" data-desc="Africa conflict intelligence dashboard — active conflicts, displacement tracker, economic impact, actor networks, scenar">AfroConflict — Conflict Intelligence</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<!-- ─── MAIN SCRIPT ───────────────────────────────────────────────── -->
+<script>
+(function () {
+  'use strict';
+
+  // ── DOM REFS ──────────────────────────────────────────────────────
+  var searchInput = document.getElementById('apSearchInput');
+  var searchBtn = document.getElementById('apSearchBtn');
+  var countrySelect = document.getElementById('apCountrySelect');
+  var categorySelect = document.getElementById('apCategorySelect');
+  var categoriesSection = document.getElementById('apCategoriesSection');
+  var categoryGrid = document.getElementById('apCategoryGrid');
+  var resultsSection = document.getElementById('apResultsSection');
+  var resultsList = document.getElementById('apResultsList');
+  var resultsTitle = document.getElementById('apResultsTitle');
+  var sortSelect = document.getElementById('apSortSelect');
+  var insightCard = document.getElementById('apInsightCard');
+  var insightBody = document.getElementById('apInsightBody');
+  var decisionCard = document.getElementById('apDecisionCard');
+  var decisionOutput = document.getElementById('apDecisionOutput');
+  var budgetCeiling = document.getElementById('apBudgetCeiling');
+  var needBy = document.getElementById('apNeedBy');
+  var warrantyPriority = document.getElementById('apWarrantyPriority');
+  var preferredChannel = document.getElementById('apPreferredChannel');
+  var chartSection = document.getElementById('apChartSection');
+  var alertCard = document.getElementById('apAlertCard');
+  var alertBtn = document.getElementById('apAlertBtn');
+  var alertMsg = document.getElementById('apAlertMsg');
+  var disclosure = document.getElementById('apDisclosure');
+  var submitForm = document.getElementById('apSubmitForm');
+  var submitMsg = document.getElementById('csMsg');
+  var marketGrid = document.getElementById('apMarketGrid');
+  var marketsTitle = document.getElementById('apMarketsTitle');
+  var trendingChips = document.getElementById('apTrendingChips');
+  var trendingTitle = document.getElementById('apTrendingTitle');
+  var csCurrency = document.getElementById('csCurrency');
+
+  var currentResults = null;
+  var priceChart = null;
+  var lastBuyingBrief = '';
+
+  // ── INIT ──────────────────────────────────────────────────────────
+  function init() {
+    populateCountries();
+    populateCategories();
+    renderCategoryGrid();
+    updateForCountry();
+
+    // Events
+    searchBtn.addEventListener('click', doSearch);
+    searchInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') doSearch(); });
+    countrySelect.addEventListener('change', updateForCountry);
+    sortSelect.addEventListener('change', function () { if (currentResults) { renderResults(currentResults); renderDealDecision(currentResults); } });
+    alertBtn.addEventListener('click', handleSetAlert);
+    submitForm.addEventListener('submit', handleSubmitPrice);
+    [budgetCeiling, needBy, warrantyPriority, preferredChannel].forEach(function (el) {
+      if (el) el.addEventListener(el === budgetCeiling ? 'input' : 'change', function () {
+        if (currentResults) renderDealDecision(currentResults);
+      });
+    });
+
+    // Check URL params
+    var params = new URLSearchParams(window.location.search);
+    if (params.get('q')) {
+      searchInput.value = params.get('q');
+      if (params.get('country')) countrySelect.value = params.get('country');
+      if (params.get('cat')) categorySelect.value = params.get('cat');
+      doSearch();
+    }
+  }
+
+  // ── POPULATE DROPDOWNS ────────────────────────────────────────────
+  function populateCountries() {
+    var list = AfroPricesEngine.getCountries();
+    countrySelect.innerHTML = list.map(function (c) {
+      return '<option value="' + c.code + '"' + (c.code === 'NG' ? ' selected' : '') + '>' +
+        c.flag + ' ' + c.name + ' (' + c.platformCount + ' platforms)</option>';
+    }).join('');
+  }
+
+  function populateCategories() {
+    var cats = AfroPricesEngine.getCategories();
+    categorySelect.innerHTML = '<option value="">All Categories</option>' +
+      cats.map(function (c) {
+        return '<option value="' + c.id + '">' + c.icon + ' ' + c.name + '</option>';
+      }).join('');
+  }
+
+  // ── CATEGORY GRID ─────────────────────────────────────────────────
+  function renderCategoryGrid() {
+    var cats = AfroPricesEngine.getCategories();
+    categoryGrid.innerHTML = cats.map(function (c) {
+      return '<div class="ap-cat-card" data-cat="' + c.id + '">' +
+        '<span class="icon">' + c.icon + '</span>' +
+        '<span class="label">' + c.name + '</span>' +
+      '</div>';
+    }).join('');
+
+    categoryGrid.querySelectorAll('.ap-cat-card').forEach(function (card) {
+      card.addEventListener('click', function () {
+        categorySelect.value = card.dataset.cat;
+        searchInput.value = '';
+        searchInput.placeholder = 'Search in ' + AfroPricesEngine.getCategory(card.dataset.cat).name + '...';
+        searchInput.focus();
+      });
+    });
+  }
+
+  // ── UPDATE FOR COUNTRY ────────────────────────────────────────────
+  function updateForCountry() {
+    var code = countrySelect.value;
+    var country = AfroPricesEngine.getCountry(code);
+    if (!country) return;
+
+    // Markets
+    var markets = country.physicalMarkets;
+    marketsTitle.textContent = 'Popular Markets in ' + country.name;
+    marketGrid.innerHTML = markets.map(function (m) {
+      return '<div class="ap-market-card">' +
+        '<h3>📍 ' + m.name + '</h3>' +
+        '<div class="city">' + m.city + ', ' + country.name + '</div>' +
+        (m.speciality ? '<span class="speciality">' + m.speciality + '</span>' : '') +
+        (m.tip ? '<p class="tip">💡 ' + m.tip + '</p>' : '') +
+      '</div>';
+    }).join('');
+
+    // Trending
+    var trending = AfroPricesEngine.getTrending(code);
+    trendingTitle.textContent = 'Trending in ' + country.name;
+    trendingChips.innerHTML = trending.map(function (t) {
+      return '<span class="ap-trending-chip" data-query="' + t + '">' + t + '</span>';
+    }).join('');
+
+    trendingChips.querySelectorAll('.ap-trending-chip').forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        searchInput.value = chip.dataset.query;
+        doSearch();
+      });
+    });
+
+    // Currency in submit form
+    csCurrency.innerHTML = '<option value="' + country.currency.code + '">' + country.currency.symbol + ' ' + country.currency.code + '</option>';
+  }
+
+  // ── SEARCH ────────────────────────────────────────────────────────
+  async function doSearch() {
+    var query = searchInput.value.trim();
+    var code = countrySelect.value;
+    var cat = categorySelect.value;
+
+    if (!query && !cat) {
+      searchInput.focus();
+      return;
+    }
+
+    // If no text query but category selected, use category name
+    if (!query && cat) {
+      query = AfroPricesEngine.getCategory(cat).name;
+    }
+
+    // Update URL
+    var url = new URL(window.location);
+    url.searchParams.set('q', query);
+    url.searchParams.set('country', code);
+    if (cat) url.searchParams.set('cat', cat);
+    else url.searchParams.delete('cat');
+    window.history.replaceState({}, '', url);
+
+    // Show loading
+    categoriesSection.style.display = 'none';
+    resultsSection.classList.add('active');
+    resultsTitle.textContent = 'Searching for "' + query + '"...';
+    resultsList.innerHTML = '<div class="ap-loading"><div class="ap-spinner"></div>Searching platforms and markets...</div>';
+    insightCard.style.display = 'none';
+    decisionCard.style.display = 'none';
+    chartSection.style.display = 'none';
+    alertCard.style.display = 'none';
+    disclosure.style.display = 'none';
+
+    try {
+      var data = await AfroPricesEngine.searchProducts(query, code, cat || undefined);
+      currentResults = data;
+
+      if (data.results.length === 0) {
+        resultsTitle.textContent = 'No results for "' + query + '"';
+        resultsList.innerHTML = '<div class="ap-no-results">' +
+          '<div class="icon">🔍</div>' +
+          '<h3>No products found</h3>' +
+          '<p>Try a different search term or browse by category. You can also submit a price below to help build our database.</p>' +
+        '</div>';
+
+        // Still show AI insight for "no results" advice
+        decisionCard.style.display = 'none';
+        showAIInsight(query, code, []);
+        return;
+      }
+
+      resultsTitle.textContent = data.results.length + ' result' + (data.results.length > 1 ? 's' : '') + ' for "' + query + '"';
+      renderResults(data);
+      renderDealDecision(data);
+      disclosure.style.display = 'block';
+
+      // Show AI insight
+      showAIInsight(query, code, data.results);
+
+      // Show price history for first result
+      showPriceHistory(data.results[0].name, code);
+
+      // Show alert card
+      alertCard.style.display = 'block';
+    } catch (err) {
+      console.error('Search failed:', err);
+      resultsList.innerHTML = '<div class="ap-no-results"><div class="icon">⚠️</div><h3>Search failed</h3><p>Please try again.</p></div>';
+    }
+  }
+
+  // ── RENDER RESULTS ────────────────────────────────────────────────
+  function renderResults(data) {
+    var country = data.country;
+    var sym = country.currency.symbol;
+    var sortVal = sortSelect.value;
+
+    // Sort products by lowest listing price
+    var products = data.results.slice();
+    products.forEach(function (p) {
+      p._lowestPrice = Infinity;
+      (p.listings || []).forEach(function (l) {
+        var price = l.price || l.priceMin || Infinity;
+        if (price < p._lowestPrice) p._lowestPrice = price;
+      });
+    });
+
+    if (sortVal === 'price-asc') products.sort(function (a, b) { return a._lowestPrice - b._lowestPrice; });
+    else if (sortVal === 'price-desc') products.sort(function (a, b) { return b._lowestPrice - a._lowestPrice; });
+    else products.sort(function (a, b) { return a.name.localeCompare(b.name); });
+
+    resultsList.innerHTML = products.map(function (product) {
+      // Sort listings by price
+      var listings = (product.listings || []).slice();
+      listings.sort(function (a, b) { return (a.price || a.priceMin || 0) - (b.price || b.priceMin || 0); });
+      var lowestPrice = listings[0] ? (listings[0].price || listings[0].priceMin) : null;
+
+      var listingsHTML = listings.map(function (l) {
+        var isBest = (l.price || l.priceMin) === lowestPrice;
+        var typeIcon = l.type === 'affiliate' ? '🏷️' : l.type === 'market' ? '🏪' : l.type === 'community' ? '👥' : '🏬';
+        var iconClass = l.type === 'affiliate' ? 'affiliate' : l.type === 'market' ? 'market' : l.type === 'community' ? 'community' : 'retail';
+
+        var priceText;
+        if (l.priceMin && l.priceMax) {
+          priceText = AfroPricesEngine.formatPriceRange(l.priceMin, l.priceMax, sym);
+        } else {
+          priceText = AfroPricesEngine.formatPrice(l.price, sym);
+        }
+
+        var metaHTML = [];
+        if (l.inStock === true) metaHTML.push('✓ In Stock');
+        if (l.inStock === false) metaHTML.push('✗ Out of Stock');
+        if (l.rating) metaHTML.push('⭐ ' + l.rating);
+        if (l.delivery) metaHTML.push('🚚 ' + l.delivery);
+        if (l.city) metaHTML.push('📍 ' + l.city);
+        if (l.upvotes !== undefined) metaHTML.push('👍 ' + l.upvotes);
+        if (l.submittedAt) {
+          var days = Math.floor((Date.now() - new Date(l.submittedAt).getTime()) / 86400000);
+          metaHTML.push(days === 0 ? 'Today' : days + 'd ago');
+        }
+
+        var actionHTML;
+        if (l.url) {
+          var affLink = AfroPricesEngine.buildAffiliateLink(l.affiliate || '', l.url);
+          actionHTML = '<a href="' + affLink + '" target="_blank" rel="noopener noreferrer">View Deal →</a>';
+        } else if (l.type === 'market') {
+          actionHTML = '<span class="market-label">📍 Physical Market</span>';
+        } else {
+          actionHTML = '<span class="market-label">' + (l.type === 'community' ? '👥 Community' : '🏬 Retail') + '</span>';
+        }
+
+        return '<div class="ap-listing">' +
+          '<div class="ap-listing-source">' +
+            '<span class="ap-listing-icon ' + iconClass + '">' + typeIcon + '</span>' +
+            '<div>' +
+              '<div class="ap-listing-name">' + l.source + '</div>' +
+              (metaHTML.length ? '<div class="ap-listing-meta">' + metaHTML.map(function (m) { return '<span>' + m + '</span>'; }).join('') + '</div>' : '') +
+            '</div>' +
+          '</div>' +
+          '<div class="ap-listing-price' + (isBest ? ' best' : '') + '">' + priceText + '</div>' +
+          '<div class="ap-listing-action">' + actionHTML + '</div>' +
+        '</div>' +
+        (l.tip ? '<div class="ap-listing-tip">💡 ' + l.tip + '</div>' : '');
+      }).join('');
+
+      return '<div class="ap-product-card">' +
+        '<h3 class="ap-product-name">' + product.name + '</h3>' +
+        (product.brand ? '<div class="ap-product-brand">' + product.brand + (product.category ? ' · ' + product.category : '') + '</div>' : '') +
+        listingsHTML +
+      '</div>';
+    }).join('');
+  }
+
+  // ── AI INSIGHT ────────────────────────────────────────────────────
+  function esc(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function renderDealDecision(data) {
+    if (!data || !data.results || !data.results.length) {
+      decisionCard.style.display = 'none';
+      return;
+    }
+    var country = data.country || AfroPricesEngine.getCountry(countrySelect.value);
+    var sym = country.currency.symbol;
+    var listings = [];
+    data.results.forEach(function (product) {
+      (product.listings || []).forEach(function (listing) {
+        var price = Number(listing.price || listing.priceMin || 0);
+        if (!price) return;
+        listings.push({
+          product: product.name,
+          source: listing.source || 'Unknown source',
+          type: listing.type || 'retail',
+          price: price,
+          inStock: listing.inStock,
+          delivery: listing.delivery || '',
+          rating: listing.rating || '',
+          city: listing.city || '',
+          hasUrl: !!listing.url
+        });
+      });
+    });
+    if (!listings.length) {
+      decisionCard.style.display = 'none';
+      return;
+    }
+
+    var channel = preferredChannel.value;
+    var available = listings.filter(function (item) { return item.inStock !== false; });
+    var channelMatches = channel === 'any' ? available : available.filter(function (item) { return item.type === channel; });
+    var candidates = channelMatches.length ? channelMatches : available.length ? available : listings;
+    candidates.sort(function (a, b) { return a.price - b.price; });
+    listings.sort(function (a, b) { return a.price - b.price; });
+    var best = candidates[0];
+    var cheapest = listings[0];
+    var prices = listings.map(function (item) { return item.price; }).sort(function (a, b) { return a - b; });
+    var median = prices[Math.floor(prices.length / 2)];
+    var spread = prices[prices.length - 1] - prices[0];
+    var budget = parseFloat(budgetCeiling.value || '0');
+    var urgency = needBy.value;
+    var warranty = warrantyPriority.value;
+    var underBudget = budget ? best.price <= budget : true;
+    var reliability = best.type === 'affiliate' || best.type === 'retail' ? 'higher paper trail' : best.type === 'market' ? 'inspect before payment' : 'verify seller and receipt';
+    var recommendation = underBudget ? 'Buy candidate is inside your stated ceiling.' : 'Hold or negotiate because the best candidate is above your ceiling.';
+    if (urgency === 'watch') recommendation = 'Set a price alert and wait unless stock is scarce.';
+    if (urgency === 'today' && best.inStock === false) recommendation = 'Avoid this source today because stock is not confirmed.';
+    if (warranty === 'high' && (best.type === 'market' || best.type === 'community')) recommendation += ' Because warranty matters, ask for a receipt, serial check, and return terms before paying.';
+    var priceText = AfroPricesEngine.formatPrice(best.price, sym);
+    var medianText = AfroPricesEngine.formatPrice(median, sym);
+    var spreadText = AfroPricesEngine.formatPrice(spread, sym);
+    var savingText = cheapest && best.price > cheapest.price ? 'You are paying ' + AfroPricesEngine.formatPrice(best.price - cheapest.price, sym) + ' above the cheapest listing to satisfy your channel preference.' : 'This is also the cheapest listing found.';
+
+    lastBuyingBrief = [
+      'AfroPrices buying brief',
+      'Search: ' + (searchInput.value || data.query || 'Selected category'),
+      'Country: ' + country.name,
+      'Recommended source: ' + best.source + ' for ' + best.product,
+      'Price: ' + priceText,
+      'Budget ceiling: ' + (budget ? AfroPricesEngine.formatPrice(budget, sym) : 'Not set'),
+      'Median observed price: ' + medianText,
+      'Observed spread: ' + spreadText,
+      'Decision: ' + recommendation,
+      'Risk check: ' + reliability + '. ' + savingText
+    ].join('\n');
+
+    decisionCard.style.display = 'block';
+    decisionOutput.innerHTML =
+      '<div class="ap-decision-metrics">' +
+        '<div class="ap-decision-metric"><span>Best candidate</span><strong>' + esc(priceText) + '</strong></div>' +
+        '<div class="ap-decision-metric"><span>Median price</span><strong>' + esc(medianText) + '</strong></div>' +
+        '<div class="ap-decision-metric"><span>Price spread</span><strong>' + esc(spreadText) + '</strong></div>' +
+        '<div class="ap-decision-metric"><span>Confidence</span><strong>' + (underBudget ? 'Actionable' : 'Negotiate') + '</strong></div>' +
+      '</div>' +
+      '<p><strong>' + esc(best.source) + '</strong> has the current decision candidate for <strong>' + esc(best.product) + '</strong> at <strong>' + esc(priceText) + '</strong>.</p>' +
+      '<p>' + esc(recommendation) + ' ' + esc(savingText) + '</p>' +
+      '<p><strong>Risk check:</strong> ' + esc(reliability) + (best.delivery ? '. Delivery: ' + esc(best.delivery) : '') + (best.city ? '. City: ' + esc(best.city) : '') + '</p>' +
+      '<div class="ap-decision-actions"><button type="button" onclick="window.copyAfroPricesBuyingBrief()">Copy buying brief</button></div>';
+  }
+
+  window.copyAfroPricesBuyingBrief = function () {
+    if (lastBuyingBrief && navigator.clipboard) navigator.clipboard.writeText(lastBuyingBrief);
+  };
+
+  async function showAIInsight(query, countryCode, results) {
+    insightCard.style.display = 'block';
+    insightBody.innerHTML = '<div class="ap-insight-loading">Analysing prices <span class="dot-pulse"><span></span><span></span><span></span></span></div>';
+
+    try {
+      var insight = await AfroPricesEngine.getAIInsight(query, countryCode, results);
+      if (insight) {
+        insightBody.innerHTML = '<div class="ap-insight-text">' + insight + '</div>';
+      } else {
+        insightCard.style.display = 'none';
+      }
+    } catch (e) {
+      insightCard.style.display = 'none';
+    }
+  }
+
+  // ── PRICE HISTORY CHART ───────────────────────────────────────────
+  async function showPriceHistory(productName, countryCode) {
+    try {
+      var history = await AfroPricesEngine.getPriceHistory(productName, countryCode);
+      if (!history || history.length < 2) {
+        chartSection.style.display = 'none';
+        return;
+      }
+
+      chartSection.style.display = 'block';
+      var country = AfroPricesEngine.getCountry(countryCode);
+      var sym = country.currency.symbol;
+
+      var labels = history.map(function (h) {
+        var d = new Date(h.date || h.recorded_at);
+        return d.toLocaleDateString('en', { month: 'short', day: 'numeric' });
+      });
+      var prices = history.map(function (h) { return h.price; });
+
+      if (priceChart) priceChart.destroy();
+      var ctx = document.getElementById('apPriceChart').getContext('2d');
+      priceChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: productName + ' price (' + sym + ')',
+            data: prices,
+            borderColor: 'rgba(0, 98, 204, 1)',
+            backgroundColor: 'rgba(0, 98, 204, 0.08)',
+            fill: true,
+            tension: 0.3,
+            pointRadius: 4,
+            pointHoverRadius: 6,
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function (ctx) { return sym + ctx.parsed.y.toLocaleString(); }
+              }
+            }
+          },
+          scales: {
+            y: {
+              ticks: {
+                callback: function (v) { return sym + (v >= 1000 ? (v / 1000).toFixed(0) + 'k' : v); }
+              },
+              grid: { color: 'rgba(0,0,0,0.04)' }
+            },
+            x: { grid: { display: false } }
+          }
+        }
+      });
+    } catch (e) {
+      chartSection.style.display = 'none';
+    }
+  }
+
+  // ── PRICE ALERT ───────────────────────────────────────────────────
+  async function handleSetAlert() {
+    var price = document.getElementById('apAlertPrice').value;
+    var email = document.getElementById('apAlertEmail').value;
+
+    if (!price || !email) {
+      showMsg(alertMsg, 'Please fill in both fields.', 'error');
+      return;
+    }
+
+    var productId = currentResults && currentResults.results[0] ? currentResults.results[0].id : null;
+    var result = await AfroPricesEngine.setPriceAlert({
+      productId: productId || 'mock-' + Date.now(),
+      targetPrice: parseFloat(price),
+      email: email,
+      countryCode: countrySelect.value
+    });
+
+    showMsg(alertMsg, result.message || result.error, result.success ? 'success' : 'error');
+  }
+
+  // ── COMMUNITY SUBMIT ──────────────────────────────────────────────
+  async function handleSubmitPrice(e) {
+    e.preventDefault();
+    var data = {
+      productName: document.getElementById('csProductName').value,
+      price: parseFloat(document.getElementById('csPrice').value),
+      currencyCode: document.getElementById('csCurrency').value,
+      marketName: document.getElementById('csMarket').value,
+      city: document.getElementById('csCity').value,
+      countryCode: countrySelect.value
+    };
+
+    var result = await AfroPricesEngine.submitCommunityPrice(data);
+    showMsg(submitMsg, result.message || result.error, result.success ? 'success' : 'error');
+    if (result.success) submitForm.reset();
+  }
+
+  // ── HELPER ────────────────────────────────────────────────────────
+  function showMsg(el, text, type) {
+    el.className = 'ap-submit-msg ' + type;
+    el.textContent = text;
+    el.style.display = 'block';
+    setTimeout(function () { el.style.display = 'none'; }, 5000);
+  }
+
+  // ── BOOT ──────────────────────────────────────────────────────────
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+</body>
+</html>

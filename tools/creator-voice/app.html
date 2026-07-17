@@ -1,0 +1,1709 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CreatorVoice Studio | AfroTools</title>
+  <meta name="robots" content="noindex, follow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <link rel="stylesheet" href="style.css?v=fe5e4b7b">
+  <script src="/assets/js/supabase-auth.js?v=0c644f2e" defer></script>
+  <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js" defer></script>
+<meta property="og:url" content="https://afrotools.com/tools/creator-voice/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c4853917">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/lib/dark-mode.js?v=5cb64ba3" defer></script>
+<link rel="canonical" href="https://afrotools.com/tools/creator-voice/app">
+</head>
+<body class="cvo-app top-level-page-ui-refresh">
+
+  <!-- HEADER (Carousel-style) -->
+  <header class="cvo-app-header">
+    <a href="index.html" class="cvo-app-logo">
+      <span>&#127897;</span> CreatorVoice
+    </a>
+    <div class="cvo-header-center">
+      <input aria-label="ProjectName" type="text" class="cvo-project-input" id="projectName" value="Untitled Project" spellcheck="false">
+    </div>
+    <div class="cvo-header-actions">
+      <button type="button" class="cvo-btn-icon" id="projectsBtn" title="Projects">&#128193;</button>
+      <button type="button" class="cvo-btn-primary" id="saveBtn">&#128190; Save</button>
+    </div>
+  </header>
+
+  <!-- MODE TABS -->
+  <div class="cvo-mode-tabs">
+    <button type="button" class="cvo-mode-tab active" data-view="record">Record</button>
+    <button type="button" class="cvo-mode-tab" data-view="edit">Edit</button>
+    <button type="button" class="cvo-mode-tab" data-view="library">Library</button>
+  </div>
+
+  <!-- WORKSPACE -->
+  <div class="cvo-workspace">
+
+    <!-- ===================== RECORD VIEW ===================== -->
+    <div class="cvo-view active" id="recordView">
+      <div class="cvo-studio">
+        <select class="cvo-mic-select" id="micSelect" aria-label="Mic Select">
+          <option value="">Loading microphones...</option>
+        </select>
+
+        <div class="cvo-record-area">
+          <div class="cvo-timer" id="timer">00:00</div>
+          <button type="button" class="cvo-record-btn" id="recordBtn">&#9679;</button>
+          <div class="cvo-record-controls">
+            <button type="button" class="cvo-ctrl-btn" id="pauseBtn" disabled>&#9646;&#9646; Pause</button>
+            <button type="button" class="cvo-ctrl-btn" id="stopBtn" disabled>&#9632; Stop</button>
+          </div>
+        </div>
+
+        <div class="cvo-level-meter"><div class="cvo-level-fill" id="levelFill"></div></div>
+        <canvas class="cvo-live-waveform" id="liveWaveform"></canvas>
+
+        <p style="font-size:13px;color:rgba(255,255,255,.35);margin-top:12px;">Click the record button or press <strong style="color:rgba(255,255,255,.5)">R</strong> to start recording</p>
+      </div>
+    </div>
+
+    <!-- ===================== EDIT VIEW ===================== -->
+    <div class="cvo-view" id="editView">
+      <div class="cvo-editor">
+
+        <!-- Upload area (shown when no audio loaded) -->
+        <div class="cvo-upload-area" id="uploadArea">
+          <input aria-label="FileInput" type="file" id="fileInput" accept="audio/*">
+          <div class="cvo-upload-icon">&#128193;</div>
+          <div class="cvo-upload-text">Drag & drop audio here or <strong>click to browse</strong></div>
+          <div style="font-size:12px;color:rgba(255,255,255,.3);margin-top:8px;">MP3, WAV, OGG, M4A supported</div>
+        </div>
+
+        <!-- Editor panel (shown when audio is loaded) -->
+        <div id="editorPanel" style="display:none;">
+
+          <!-- Zoom bar -->
+          <div class="cvo-zoom-bar">
+            <button type="button" class="cvo-zoom-btn" id="zoomOutBtn">-</button>
+            <span class="cvo-zoom-label" id="zoomLabel">1.0x</span>
+            <button type="button" class="cvo-zoom-btn" id="zoomInBtn">+</button>
+            <span style="flex:1"></span>
+            <span class="cvo-zoom-label" id="selectionInfo"></span>
+          </div>
+
+          <!-- Waveform -->
+          <div class="cvo-waveform-wrap">
+            <canvas class="cvo-waveform-canvas" id="editorCanvas"></canvas>
+            <div class="cvo-waveform-time">
+              <span id="timeStart">0:00</span>
+              <span id="timeCursor">0:00</span>
+              <span id="timeEnd">0:00</span>
+            </div>
+          </div>
+
+          <!-- Playback -->
+          <div class="cvo-playback">
+            <button type="button" class="cvo-ctrl-btn" id="skipStartBtn">&#9198;</button>
+            <button type="button" class="cvo-play-btn" id="playBtn">&#9654;</button>
+            <button type="button" class="cvo-ctrl-btn" id="stopPlayBtn">&#9632;</button>
+            <button type="button" class="cvo-ctrl-btn" id="skipEndBtn">&#9197;</button>
+          </div>
+
+          <!-- Editing toolbar -->
+          <div class="cvo-edit-toolbar">
+            <button type="button" class="cvo-tool-btn" id="trimBtn" disabled>&#9986; Trim</button>
+            <button type="button" class="cvo-tool-btn" id="cutBtn" disabled>&#128465; Cut</button>
+            <button type="button" class="cvo-tool-btn" id="splitBtn">&#8967; Split</button>
+            <div class="cvo-tool-sep"></div>
+            <button type="button" class="cvo-tool-btn" id="fadeInBtn">&#8599; Fade In</button>
+            <button type="button" class="cvo-tool-btn" id="fadeOutBtn">&#8600; Fade Out</button>
+            <button type="button" class="cvo-tool-btn" id="normalizeBtn">&#128200; Normalize</button>
+            <div class="cvo-tool-sep"></div>
+            <button type="button" class="cvo-tool-btn" id="noiseBtn">&#128263; Noise Reduce</button>
+            <button type="button" class="cvo-tool-btn" id="reverseBtn">&#128260; Reverse</button>
+            <button type="button" class="cvo-tool-btn" id="silenceBtn">&#9723; Insert Silence</button>
+            <div class="cvo-tool-sep"></div>
+            <button type="button" class="cvo-tool-btn" id="reverbBtn">&#127748; Reverb</button>
+            <button type="button" class="cvo-tool-btn" id="eqBtn">&#127926; EQ</button>
+            <button type="button" class="cvo-tool-btn" id="compressorBtn">&#128296; Compressor</button>
+            <button type="button" class="cvo-tool-btn" id="pitchBtn">&#127925; Pitch Shift</button>
+            <div class="cvo-tool-sep"></div>
+            <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,255,255,.5);">Speed
+              <select class="cvo-speed-select" id="speedSelect">
+                <option value="0.5">0.5x</option>
+                <option value="0.75">0.75x</option>
+                <option value="1" selected>1.0x</option>
+                <option value="1.25">1.25x</option>
+                <option value="1.5">1.5x</option>
+                <option value="2">2.0x</option>
+              </select>
+            </label>
+            <div class="cvo-tool-sep"></div>
+            <button type="button" class="cvo-tool-btn" id="undoBtn">&#8630; Undo</button>
+            <button type="button" class="cvo-tool-btn" id="redoBtn">&#8631; Redo</button>
+          </div>
+
+          <!-- Multi-Track Panel -->
+          <div class="cvo-tracks">
+            <div class="cvo-tracks-header">
+              <div class="cvo-tracks-title">&#127924; Multi-Track Mixer</div>
+            </div>
+            <div class="cvo-track-lane" data-track="0">
+              <div class="cvo-track-info"><div class="cvo-track-name">Track 1</div><div class="cvo-track-type">Voice</div></div>
+              <div class="cvo-track-controls">
+                <button type="button" class="cvo-track-btn" data-action="mute" title="Mute">M</button>
+                <button type="button" class="cvo-track-btn" data-action="solo" title="Solo">S</button>
+                <input aria-label="Cvo track volume" type="range" class="cvo-track-volume" min="0" max="100" value="100" title="Volume">
+                <input aria-label="Cvo track pan" type="range" class="cvo-track-pan" min="-100" max="100" value="0" title="Pan">
+              </div>
+              <div class="cvo-track-wave" id="trackWave0">Main recording</div>
+            </div>
+            <div class="cvo-track-lane" data-track="1">
+              <div class="cvo-track-info"><div class="cvo-track-name">Track 2</div><div class="cvo-track-type">Music</div></div>
+              <div class="cvo-track-controls">
+                <button type="button" class="cvo-track-btn" data-action="mute" title="Mute">M</button>
+                <button type="button" class="cvo-track-btn" data-action="solo" title="Solo">S</button>
+                <input aria-label="Cvo track volume" type="range" class="cvo-track-volume" min="0" max="100" value="80" title="Volume">
+                <input aria-label="Cvo track pan" type="range" class="cvo-track-pan" min="-100" max="100" value="0" title="Pan">
+              </div>
+              <div class="cvo-track-wave" id="trackWave1">
+                <button type="button" class="cvo-track-upload-btn" data-track="1">+ Upload Music</button>
+              </div>
+            </div>
+            <div class="cvo-track-lane" data-track="2">
+              <div class="cvo-track-info"><div class="cvo-track-name">Track 3</div><div class="cvo-track-type">SFX</div></div>
+              <div class="cvo-track-controls">
+                <button type="button" class="cvo-track-btn" data-action="mute" title="Mute">M</button>
+                <button type="button" class="cvo-track-btn" data-action="solo" title="Solo">S</button>
+                <input aria-label="Cvo track volume" type="range" class="cvo-track-volume" min="0" max="100" value="70" title="Volume">
+                <input aria-label="Cvo track pan" type="range" class="cvo-track-pan" min="-100" max="100" value="0" title="Pan">
+              </div>
+              <div class="cvo-track-wave" id="trackWave2">
+                <button type="button" class="cvo-track-upload-btn" data-track="2">+ Upload SFX</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Export Panel -->
+          <div class="cvo-export-panel">
+            <div class="cvo-export-title">&#128229; Export Audio</div>
+            <div class="cvo-export-grid">
+              <div class="cvo-form-group">
+                <label class="cvo-form-label" for="exportFormat">Format</label>
+                <select class="cvo-form-select" id="exportFormat">
+                  <option value="wav">WAV (Lossless)</option>
+                  <option value="mp3">MP3 (Compressed)</option>
+                  <option value="ogg">OGG Vorbis</option>
+                  <option value="webm">WebM</option>
+                </select>
+              </div>
+              <div class="cvo-form-group">
+                <label class="cvo-form-label">Quality</label>
+                <select class="cvo-form-select" id="exportQuality" aria-label="Export Quality">
+                  <option value="high">High (320kbps)</option>
+                  <option value="medium" selected>Medium (192kbps)</option>
+                  <option value="low">Low (128kbps)</option>
+                </select>
+              </div>
+              <div class="cvo-form-group">
+                <label class="cvo-form-label">Title</label>
+                <input aria-label="Episode title" type="text" class="cvo-form-input" id="exportTitle" placeholder="Episode title...">
+              </div>
+              <div class="cvo-form-group">
+                <label class="cvo-form-label">Artist</label>
+                <input aria-label="Your name" type="text" class="cvo-form-input" id="exportArtist" placeholder="Your name...">
+              </div>
+            </div>
+            <button type="button" class="cvo-export-btn" id="exportBtn">Export &amp; Download</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ===================== LIBRARY VIEW ===================== -->
+    <div class="cvo-view" id="libraryView">
+      <div class="cvo-library">
+        <div class="cvo-library-title">&#127925; Sound Library</div>
+        <p style="margin-bottom:20px;">Click to preview. Use the <strong style="color:var(--cvo-primary);">+</strong> button to add to a track.</p>
+        <div class="cvo-sfx-grid" id="sfxGrid"></div>
+      </div>
+    </div>
+
+    <!-- ===================== PROJECTS PANEL (overlay) ===================== -->
+    <div id="projectsPanel" style="display:none;">
+      <div class="cvo-projects-panel">
+        <div class="cvo-projects-title">&#128193; Saved Projects</div>
+        <div class="cvo-project-list" id="projectList"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="cvo-bottom-nav">
+    <a href="app.html" class="active"><span class="cvo-bnav-icon">&#127897;</span>Record</a>
+    <a href="/tools/creator-captions/app"><span class="cvo-bnav-icon">&#9997;</span>Captions</a>
+    <a href="index.html"><span class="cvo-bnav-icon">&#8505;&#65039;</span>About</a>
+  </nav>
+
+  <!-- TOAST -->
+  <div class="cvo-toast" id="toast"></div>
+
+<script>
+!function() {
+  "use strict";
+
+  // ========================================
+  // UTILITY
+  // ========================================
+  function toast(msg) {
+    var el = document.getElementById('toast');
+    el.textContent = msg; el.classList.add('show');
+    setTimeout(function() { el.classList.remove('show'); }, 2500);
+  }
+
+  function formatTime(sec) {
+    var m = Math.floor(sec / 60);
+    var s = Math.floor(sec % 60);
+    return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
+  function formatTimeMs(sec) {
+    var m = Math.floor(sec / 60);
+    var s = Math.floor(sec % 60);
+    var ms = Math.floor((sec % 1) * 10);
+    return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s + '.' + ms;
+  }
+
+  // ========================================
+  // STATE
+  // ========================================
+  var audioCtx = null;
+  var mediaStream = null;
+  var mediaRecorder = null;
+  var recordedChunks = [];
+  var isRecording = false;
+  var isPaused = false;
+  var recordStartTime = 0;
+  var pausedDuration = 0;
+  var pauseStartTime = 0;
+  var timerInterval = null;
+
+  // Analyser for live waveform
+  var analyserNode = null;
+  var sourceNode = null;
+  var animFrameId = null;
+
+  // Editor state
+  var mainBuffer = null; // AudioBuffer for Track 1
+  var undoStack = [];
+  var playbackSource = null;
+  var isPlaying = false;
+  var cursorPos = 0; // in seconds
+  var selectionStart = -1;
+  var selectionEnd = -1;
+  var zoomLevel = 1;
+  var scrollOffset = 0;
+  var playStartTime = 0;
+  var playStartOffset = 0;
+
+  // Tracks
+  var tracks = [
+    { buffer: null, gain: 1, pan: 0, muted: false, solo: false },
+    { buffer: null, gain: 0.8, pan: 0, muted: false, solo: false },
+    { buffer: null, gain: 0.7, pan: 0, muted: false, solo: false }
+  ];
+
+  // ========================================
+  // AUDIO CONTEXT INIT
+  // ========================================
+  function ensureAudioCtx() {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    return audioCtx;
+  }
+
+  // ========================================
+  // TAB SWITCHING
+  // ========================================
+  document.querySelectorAll('.cvo-mode-tab').forEach(function(tab) {
+    tab.onclick = function() {
+      document.querySelectorAll('.cvo-mode-tab').forEach(function(t) { t.classList.remove('active'); });
+      tab.classList.add('active');
+      var view = tab.getAttribute('data-view');
+      document.querySelectorAll('.cvo-view').forEach(function(v) { v.classList.remove('active'); });
+      var el = document.getElementById(view + 'View');
+      if (el) el.classList.add('active');
+      document.getElementById('projectsPanel').style.display = 'none';
+    };
+  });
+
+  // ========================================
+  // MICROPHONE ENUMERATION
+  // ========================================
+  function loadMics() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+      document.getElementById('micSelect').innerHTML = '<option>Mic access not supported</option>';
+      return;
+    }
+    navigator.mediaDevices.enumerateDevices().then(function(devices) {
+      var sel = document.getElementById('micSelect');
+      sel.innerHTML = '';
+      var mics = devices.filter(function(d) { return d.kind === 'audioinput'; });
+      if (!mics.length) { sel.innerHTML = '<option>No microphones found</option>'; return; }
+      mics.forEach(function(mic, i) {
+        var opt = document.createElement('option');
+        opt.value = mic.deviceId;
+        opt.textContent = mic.label || 'Microphone ' + (i + 1);
+        sel.appendChild(opt);
+      });
+    });
+  }
+
+  // Try to get permission first so labels are available
+  navigator.mediaDevices && navigator.mediaDevices.getUserMedia({ audio: true })
+    .then(function(stream) {
+      stream.getTracks().forEach(function(t) { t.stop(); });
+      loadMics();
+    })
+    .catch(function() { loadMics(); });
+
+  // ========================================
+  // LIVE WAVEFORM
+  // ========================================
+  function drawLiveWaveform() {
+    var canvas = document.getElementById('liveWaveform');
+    var ctx = canvas.getContext('2d');
+    var W = canvas.width = canvas.offsetWidth * (window.devicePixelRatio || 1);
+    var H = canvas.height = canvas.offsetHeight * (window.devicePixelRatio || 1);
+
+    function draw() {
+      if (!analyserNode) return;
+      animFrameId = requestAnimationFrame(draw);
+
+      var bufLen = analyserNode.frequencyBinCount;
+      var data = new Uint8Array(bufLen);
+      analyserNode.getByteTimeDomainData(data);
+
+      ctx.fillStyle = 'rgba(0,0,0,0.1)';
+      ctx.fillRect(0, 0, W, H);
+
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = '#14B8A6';
+      ctx.beginPath();
+
+      var sliceW = W / bufLen;
+      var x = 0;
+      for (var i = 0; i < bufLen; i++) {
+        var v = data[i] / 128.0;
+        var y = v * H / 2;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+        x += sliceW;
+      }
+      ctx.lineTo(W, H / 2);
+      ctx.stroke();
+
+      // Level meter
+      var rms = 0;
+      for (var j = 0; j < bufLen; j++) {
+        var val = (data[j] - 128) / 128;
+        rms += val * val;
+      }
+      rms = Math.sqrt(rms / bufLen);
+      var level = Math.min(rms * 3, 1);
+      document.getElementById('levelFill').style.width = (level * 100) + '%';
+    }
+    draw();
+  }
+
+  function stopLiveWaveform() {
+    if (animFrameId) { cancelAnimationFrame(animFrameId); animFrameId = null; }
+    document.getElementById('levelFill').style.width = '0%';
+    var canvas = document.getElementById('liveWaveform');
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  // ========================================
+  // RECORDING
+  // ========================================
+  var recordBtn = document.getElementById('recordBtn');
+  var pauseBtn = document.getElementById('pauseBtn');
+  var stopBtn = document.getElementById('stopBtn');
+  var timerEl = document.getElementById('timer');
+
+  recordBtn.onclick = function() {
+    if (isRecording) return;
+    startRecording();
+  };
+
+  function startRecording() {
+    var deviceId = document.getElementById('micSelect').value;
+    var constraints = { audio: deviceId ? { deviceId: { exact: deviceId } } : true };
+
+    ensureAudioCtx();
+
+    navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
+      mediaStream = stream;
+      recordedChunks = [];
+
+      // Set up analyser for live waveform
+      sourceNode = audioCtx.createMediaStreamSource(stream);
+      analyserNode = audioCtx.createAnalyser();
+      analyserNode.fftSize = 2048;
+      sourceNode.connect(analyserNode);
+
+      // MediaRecorder
+      var options = {};
+      if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
+        options.mimeType = 'audio/webm;codecs=opus';
+      } else if (MediaRecorder.isTypeSupported('audio/webm')) {
+        options.mimeType = 'audio/webm';
+      }
+      mediaRecorder = new MediaRecorder(stream, options);
+
+      mediaRecorder.ondataavailable = function(e) {
+        if (e.data.size > 0) recordedChunks.push(e.data);
+      };
+
+      mediaRecorder.onstop = function() {
+        var blob = new Blob(recordedChunks, { type: mediaRecorder.mimeType });
+        recordedChunks = [];
+
+        // Decode to AudioBuffer
+        var reader = new FileReader();
+        reader.onloadend = function() {
+          audioCtx.decodeAudioData(reader.result).then(function(buffer) {
+            mainBuffer = buffer;
+            tracks[0].buffer = buffer;
+            undoStack = [];
+            switchToEditor();
+            toast('Recording ready for editing');
+          }).catch(function() { toast('Error decoding audio'); });
+        };
+        reader.readAsArrayBuffer(blob);
+      };
+
+      mediaRecorder.start(250); // collect data every 250ms
+      isRecording = true;
+      isPaused = false;
+      pausedDuration = 0;
+      recordStartTime = Date.now();
+
+      recordBtn.classList.add('recording');
+      recordBtn.innerHTML = '&#9679;';
+      pauseBtn.disabled = false;
+      stopBtn.disabled = false;
+
+      // Timer
+      timerInterval = setInterval(updateTimer, 100);
+
+      // Live waveform
+      drawLiveWaveform();
+
+    }).catch(function(err) {
+      toast('Mic access denied: ' + err.message);
+    });
+  }
+
+  function updateTimer() {
+    if (!isRecording) return;
+    var elapsed;
+    if (isPaused) {
+      elapsed = (pauseStartTime - recordStartTime - pausedDuration) / 1000;
+    } else {
+      elapsed = (Date.now() - recordStartTime - pausedDuration) / 1000;
+    }
+    timerEl.textContent = formatTime(Math.max(0, elapsed));
+  }
+
+  pauseBtn.onclick = function() {
+    if (!mediaRecorder || !isRecording) return;
+    if (isPaused) {
+      mediaRecorder.resume();
+      isPaused = false;
+      pausedDuration += Date.now() - pauseStartTime;
+      recordBtn.classList.remove('paused');
+      recordBtn.classList.add('recording');
+      pauseBtn.innerHTML = '&#9646;&#9646; Pause';
+      drawLiveWaveform();
+    } else {
+      mediaRecorder.pause();
+      isPaused = true;
+      pauseStartTime = Date.now();
+      recordBtn.classList.remove('recording');
+      recordBtn.classList.add('paused');
+      pauseBtn.innerHTML = '&#9654; Resume';
+      stopLiveWaveform();
+    }
+  };
+
+  stopBtn.onclick = function() {
+    if (!mediaRecorder || !isRecording) return;
+    mediaRecorder.stop();
+    isRecording = false;
+    isPaused = false;
+    clearInterval(timerInterval);
+
+    recordBtn.classList.remove('recording', 'paused');
+    pauseBtn.disabled = true;
+    stopBtn.disabled = true;
+    pauseBtn.innerHTML = '&#9646;&#9646; Pause';
+
+    // Clean up stream
+    if (mediaStream) {
+      mediaStream.getTracks().forEach(function(t) { t.stop(); });
+      mediaStream = null;
+    }
+    if (sourceNode) { sourceNode.disconnect(); sourceNode = null; }
+    analyserNode = null;
+    stopLiveWaveform();
+  };
+
+  // ========================================
+  // SWITCH TO EDITOR
+  // ========================================
+  function switchToEditor() {
+    // Activate edit tab
+    document.querySelectorAll('.cvo-mode-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelector('[data-view="edit"]').classList.add('active');
+    document.querySelectorAll('.cvo-view').forEach(function(v) { v.classList.remove('active'); });
+    document.getElementById('editView').classList.add('active');
+
+    document.getElementById('uploadArea').style.display = 'none';
+    document.getElementById('editorPanel').style.display = '';
+
+    drawEditorWaveform();
+    updateTrackWaveforms();
+    updateTimeLabels();
+  }
+
+  // ========================================
+  // FILE UPLOAD / DRAG & DROP
+  // ========================================
+  var uploadArea = document.getElementById('uploadArea');
+  var fileInput = document.getElementById('fileInput');
+
+  uploadArea.onclick = function() { fileInput.click(); };
+  uploadArea.ondragover = function(e) { e.preventDefault(); uploadArea.classList.add('dragover'); };
+  uploadArea.ondragleave = function() { uploadArea.classList.remove('dragover'); };
+  uploadArea.ondrop = function(e) {
+    e.preventDefault(); uploadArea.classList.remove('dragover');
+    var file = e.dataTransfer.files[0];
+    if (file) loadAudioFile(file);
+  };
+  fileInput.onchange = function() {
+    if (fileInput.files[0]) loadAudioFile(fileInput.files[0]);
+  };
+
+  function loadAudioFile(file) {
+    ensureAudioCtx();
+    var reader = new FileReader();
+    reader.onloadend = function() {
+      audioCtx.decodeAudioData(reader.result).then(function(buffer) {
+        mainBuffer = buffer;
+        tracks[0].buffer = buffer;
+        undoStack = [];
+        cursorPos = 0;
+        selectionStart = -1;
+        selectionEnd = -1;
+        switchToEditor();
+        toast('Audio loaded: ' + file.name);
+      }).catch(function() { toast('Could not decode audio file'); });
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  // Track upload buttons
+  document.querySelectorAll('.cvo-track-upload-btn').forEach(function(btn) {
+    btn.onclick = function(e) {
+      e.stopPropagation();
+      var trackIdx = parseInt(btn.getAttribute('data-track'));
+      var inp = document.createElement('input');
+      inp.type = 'file'; inp.accept = 'audio/*';
+      inp.onchange = function() {
+        if (!inp.files[0]) return;
+        ensureAudioCtx();
+        var fr = new FileReader();
+        fr.onloadend = function() {
+          audioCtx.decodeAudioData(fr.result).then(function(buf) {
+            tracks[trackIdx].buffer = buf;
+            updateTrackWaveforms();
+            toast('Track ' + (trackIdx + 1) + ' loaded');
+          }).catch(function() { toast('Could not decode file'); });
+        };
+        fr.readAsArrayBuffer(inp.files[0]);
+      };
+      inp.click();
+    };
+  });
+
+  // ========================================
+  // WAVEFORM EDITOR RENDERING
+  // ========================================
+  function drawEditorWaveform() {
+    if (!mainBuffer) return;
+    var canvas = document.getElementById('editorCanvas');
+    var dpr = window.devicePixelRatio || 1;
+    var W = canvas.offsetWidth * dpr;
+    var H = canvas.offsetHeight * dpr;
+    canvas.width = W; canvas.height = H;
+    var ctx = canvas.getContext('2d');
+
+    var data = mainBuffer.getChannelData(0);
+    var duration = mainBuffer.duration;
+    var samplesPerPixel = Math.floor(data.length / (W * zoomLevel));
+    var startSample = Math.floor(scrollOffset * mainBuffer.sampleRate);
+    var visibleDuration = duration / zoomLevel;
+
+    // Background
+    ctx.fillStyle = 'rgba(0,0,0,0)';
+    ctx.clearRect(0, 0, W, H);
+
+    // Selection highlight
+    if (selectionStart >= 0 && selectionEnd >= 0 && selectionEnd > selectionStart) {
+      var sx = ((selectionStart - scrollOffset) / visibleDuration) * W;
+      var sw = ((selectionEnd - selectionStart) / visibleDuration) * W;
+      ctx.fillStyle = 'rgba(20,184,166,0.15)';
+      ctx.fillRect(sx, 0, sw, H);
+    }
+
+    // Draw waveform
+    ctx.fillStyle = '#14B8A6';
+    var mid = H / 2;
+    for (var px = 0; px < W; px++) {
+      var sIdx = startSample + px * samplesPerPixel;
+      var min = 0, max = 0;
+      for (var s = 0; s < samplesPerPixel && sIdx + s < data.length; s++) {
+        var val = data[sIdx + s];
+        if (val < min) min = val;
+        if (val > max) max = val;
+      }
+      var top = mid + min * mid;
+      var bot = mid + max * mid;
+      ctx.fillRect(px, top, 1, Math.max(1, bot - top));
+    }
+
+    // Cursor / playhead
+    var cursorX = ((cursorPos - scrollOffset) / visibleDuration) * W;
+    if (cursorX >= 0 && cursorX <= W) {
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(cursorX, 0);
+      ctx.lineTo(cursorX, H);
+      ctx.stroke();
+    }
+  }
+
+  // Canvas click/drag for selection
+  var editorCanvas = document.getElementById('editorCanvas');
+  var isDragging = false;
+  var dragStartX = 0;
+
+  editorCanvas.onmousedown = function(e) {
+    if (!mainBuffer) return;
+    isDragging = true;
+    var rect = editorCanvas.getBoundingClientRect();
+    dragStartX = e.clientX - rect.left;
+    var frac = dragStartX / rect.width;
+    var visibleDuration = mainBuffer.duration / zoomLevel;
+    cursorPos = scrollOffset + frac * visibleDuration;
+    selectionStart = cursorPos;
+    selectionEnd = -1;
+    drawEditorWaveform();
+    updateTimeLabels();
+    updateSelectionButtons();
+  };
+
+  editorCanvas.onmousemove = function(e) {
+    if (!isDragging || !mainBuffer) return;
+    var rect = editorCanvas.getBoundingClientRect();
+    var x = e.clientX - rect.left;
+    var frac = Math.max(0, Math.min(1, x / rect.width));
+    var visibleDuration = mainBuffer.duration / zoomLevel;
+    selectionEnd = scrollOffset + frac * visibleDuration;
+    drawEditorWaveform();
+    updateSelectionInfo();
+    updateSelectionButtons();
+  };
+
+  editorCanvas.onmouseup = function() {
+    isDragging = false;
+    if (selectionStart >= 0 && selectionEnd >= 0 && selectionEnd < selectionStart) {
+      var tmp = selectionStart; selectionStart = selectionEnd; selectionEnd = tmp;
+    }
+    if (selectionStart >= 0 && selectionEnd >= 0 && Math.abs(selectionEnd - selectionStart) < 0.01) {
+      selectionEnd = -1; selectionStart = -1;
+    }
+    updateSelectionButtons();
+  };
+
+  function updateSelectionInfo() {
+    var el = document.getElementById('selectionInfo');
+    if (selectionStart >= 0 && selectionEnd >= 0) {
+      var dur = Math.abs(selectionEnd - selectionStart);
+      el.textContent = 'Selection: ' + formatTimeMs(dur);
+    } else {
+      el.textContent = '';
+    }
+  }
+
+  function updateSelectionButtons() {
+    var hasSel = selectionStart >= 0 && selectionEnd >= 0 && selectionEnd > selectionStart;
+    document.getElementById('trimBtn').disabled = !hasSel;
+    document.getElementById('cutBtn').disabled = !hasSel;
+  }
+
+  function updateTimeLabels() {
+    if (!mainBuffer) return;
+    var visibleDuration = mainBuffer.duration / zoomLevel;
+    document.getElementById('timeStart').textContent = formatTime(scrollOffset);
+    document.getElementById('timeCursor').textContent = formatTime(cursorPos);
+    document.getElementById('timeEnd').textContent = formatTime(scrollOffset + visibleDuration);
+  }
+
+  // Mini waveform for tracks
+  function updateTrackWaveforms() {
+    tracks.forEach(function(track, i) {
+      var el = document.getElementById('trackWave' + i);
+      if (!track.buffer) return;
+      el.classList.add('has-audio');
+      el.innerHTML = '';
+      var cvs = document.createElement('canvas');
+      el.appendChild(cvs);
+      var dpr = window.devicePixelRatio || 1;
+      var W = el.offsetWidth * dpr;
+      var H = el.offsetHeight * dpr;
+      cvs.width = W; cvs.height = H;
+      cvs.style.width = '100%'; cvs.style.height = '100%';
+      var ctx = cvs.getContext('2d');
+      var data = track.buffer.getChannelData(0);
+      var step = Math.floor(data.length / W) || 1;
+      ctx.fillStyle = i === 0 ? '#14B8A6' : i === 1 ? '#8B5CF6' : '#F59E0B';
+      var mid = H / 2;
+      for (var px = 0; px < W; px++) {
+        var idx = px * step;
+        var min = 0, max = 0;
+        for (var s = 0; s < step && idx + s < data.length; s++) {
+          if (data[idx+s] < min) min = data[idx+s];
+          if (data[idx+s] > max) max = data[idx+s];
+        }
+        ctx.fillRect(px, mid + min * mid, 1, Math.max(1, (max - min) * mid));
+      }
+    });
+  }
+
+  // ========================================
+  // ZOOM
+  // ========================================
+  document.getElementById('zoomInBtn').onclick = function() {
+    zoomLevel = Math.min(zoomLevel * 1.5, 32);
+    document.getElementById('zoomLabel').textContent = zoomLevel.toFixed(1) + 'x';
+    drawEditorWaveform();
+    updateTimeLabels();
+  };
+  document.getElementById('zoomOutBtn').onclick = function() {
+    zoomLevel = Math.max(zoomLevel / 1.5, 1);
+    scrollOffset = Math.max(0, scrollOffset);
+    document.getElementById('zoomLabel').textContent = zoomLevel.toFixed(1) + 'x';
+    drawEditorWaveform();
+    updateTimeLabels();
+  };
+
+  // ========================================
+  // PLAYBACK
+  // ========================================
+  document.getElementById('playBtn').onclick = function() {
+    if (!mainBuffer) return;
+    if (isPlaying) { stopPlayback(); return; }
+    startPlayback();
+  };
+
+  document.getElementById('stopPlayBtn').onclick = function() { stopPlayback(); };
+  document.getElementById('skipStartBtn').onclick = function() { cursorPos = 0; drawEditorWaveform(); updateTimeLabels(); };
+  document.getElementById('skipEndBtn').onclick = function() {
+    if (mainBuffer) { cursorPos = mainBuffer.duration; drawEditorWaveform(); updateTimeLabels(); }
+  };
+
+  function startPlayback() {
+    if (!mainBuffer) return;
+    ensureAudioCtx();
+
+    var speed = parseFloat(document.getElementById('speedSelect').value) || 1;
+
+    // Check which tracks to play based on solo/mute
+    var anySolo = tracks.some(function(t) { return t.solo; });
+
+    tracks.forEach(function(track, i) {
+      if (!track.buffer) return;
+      if (track.muted) return;
+      if (anySolo && !track.solo) return;
+
+      var src = audioCtx.createBufferSource();
+      src.buffer = track.buffer;
+      src.playbackRate.value = speed;
+
+      var gainNode = audioCtx.createGain();
+      gainNode.gain.value = track.gain;
+
+      var panNode = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
+      if (panNode) panNode.pan.value = track.pan;
+
+      src.connect(gainNode);
+      if (panNode) { gainNode.connect(panNode); panNode.connect(audioCtx.destination); }
+      else { gainNode.connect(audioCtx.destination); }
+
+      src.start(0, cursorPos);
+      if (i === 0) playbackSource = src;
+
+      src.onended = function() {
+        if (i === 0) { isPlaying = false; document.getElementById('playBtn').innerHTML = '&#9654;'; }
+      };
+    });
+
+    isPlaying = true;
+    playStartTime = audioCtx.currentTime;
+    playStartOffset = cursorPos;
+    document.getElementById('playBtn').innerHTML = '&#9646;&#9646;';
+
+    // Animate playhead
+    function animatePlayhead() {
+      if (!isPlaying) return;
+      var speed = parseFloat(document.getElementById('speedSelect').value) || 1;
+      cursorPos = playStartOffset + (audioCtx.currentTime - playStartTime) * speed;
+      if (mainBuffer && cursorPos >= mainBuffer.duration) { stopPlayback(); return; }
+      drawEditorWaveform();
+      updateTimeLabels();
+      requestAnimationFrame(animatePlayhead);
+    }
+    requestAnimationFrame(animatePlayhead);
+  }
+
+  function stopPlayback() {
+    if (playbackSource) {
+      try { playbackSource.stop(); } catch(e) {}
+      playbackSource = null;
+    }
+    isPlaying = false;
+    document.getElementById('playBtn').innerHTML = '&#9654;';
+  }
+
+  // ========================================
+  // EDITING OPERATIONS
+  // ========================================
+  function pushUndo() {
+    if (!mainBuffer) return;
+    // Store a copy of channel data
+    var channels = [];
+    for (var c = 0; c < mainBuffer.numberOfChannels; c++) {
+      channels.push(new Float32Array(mainBuffer.getChannelData(c)));
+    }
+    undoStack.push({ channels: channels, sampleRate: mainBuffer.sampleRate, numberOfChannels: mainBuffer.numberOfChannels });
+    if (undoStack.length > 20) undoStack.shift();
+  }
+
+  function bufferFromChannels(channels, sampleRate, numChannels) {
+    ensureAudioCtx();
+    var len = channels[0].length;
+    var buf = audioCtx.createBuffer(numChannels, len, sampleRate);
+    for (var c = 0; c < numChannels; c++) {
+      buf.getChannelData(c).set(channels[c]);
+    }
+    return buf;
+  }
+
+  function replaceMainBuffer(newBuf) {
+    mainBuffer = newBuf;
+    tracks[0].buffer = newBuf;
+    cursorPos = Math.min(cursorPos, newBuf.duration);
+    selectionStart = -1; selectionEnd = -1;
+    drawEditorWaveform();
+    updateTrackWaveforms();
+    updateTimeLabels();
+    updateSelectionInfo();
+    updateSelectionButtons();
+  }
+
+  // TRIM
+  document.getElementById('trimBtn').onclick = function() {
+    if (!mainBuffer || selectionStart < 0 || selectionEnd < 0) return;
+    pushUndo();
+    var sr = mainBuffer.sampleRate;
+    var s = Math.floor(Math.min(selectionStart, selectionEnd) * sr);
+    var e = Math.floor(Math.max(selectionStart, selectionEnd) * sr);
+    var len = e - s;
+    if (len < 1) return;
+
+    var channels = [];
+    for (var c = 0; c < mainBuffer.numberOfChannels; c++) {
+      channels.push(mainBuffer.getChannelData(c).slice(s, e));
+    }
+    replaceMainBuffer(bufferFromChannels(channels, sr, mainBuffer.numberOfChannels));
+    cursorPos = 0;
+    toast('Trimmed to selection');
+  };
+
+  // CUT
+  document.getElementById('cutBtn').onclick = function() {
+    if (!mainBuffer || selectionStart < 0 || selectionEnd < 0) return;
+    pushUndo();
+    var sr = mainBuffer.sampleRate;
+    var s = Math.floor(Math.min(selectionStart, selectionEnd) * sr);
+    var e = Math.floor(Math.max(selectionStart, selectionEnd) * sr);
+    var totalLen = mainBuffer.length;
+    var newLen = totalLen - (e - s);
+    if (newLen < 1) return;
+
+    var channels = [];
+    for (var c = 0; c < mainBuffer.numberOfChannels; c++) {
+      var old = mainBuffer.getChannelData(c);
+      var arr = new Float32Array(newLen);
+      arr.set(old.subarray(0, s), 0);
+      arr.set(old.subarray(e), s);
+      channels.push(arr);
+    }
+    replaceMainBuffer(bufferFromChannels(channels, sr, mainBuffer.numberOfChannels));
+    cursorPos = s / sr;
+    toast('Cut selection');
+  };
+
+  // SPLIT (place a marker — simplified: just set cursor)
+  document.getElementById('splitBtn').onclick = function() {
+    if (!mainBuffer) return;
+    toast('Split point set at ' + formatTime(cursorPos));
+  };
+
+  // FADE IN
+  document.getElementById('fadeInBtn').onclick = function() {
+    if (!mainBuffer) return;
+    pushUndo();
+    var sr = mainBuffer.sampleRate;
+    var fadeLen;
+    if (selectionStart >= 0 && selectionEnd >= 0) {
+      var s = Math.floor(Math.min(selectionStart, selectionEnd) * sr);
+      var e = Math.floor(Math.max(selectionStart, selectionEnd) * sr);
+      fadeLen = e - s;
+      applyFade(s, fadeLen, true);
+    } else {
+      fadeLen = Math.min(Math.floor(sr * 2), mainBuffer.length);
+      applyFade(0, fadeLen, true);
+    }
+    drawEditorWaveform();
+    toast('Fade in applied');
+  };
+
+  // FADE OUT
+  document.getElementById('fadeOutBtn').onclick = function() {
+    if (!mainBuffer) return;
+    pushUndo();
+    var sr = mainBuffer.sampleRate;
+    var fadeLen, startSample;
+    if (selectionStart >= 0 && selectionEnd >= 0) {
+      var s = Math.floor(Math.min(selectionStart, selectionEnd) * sr);
+      var e = Math.floor(Math.max(selectionStart, selectionEnd) * sr);
+      fadeLen = e - s;
+      startSample = s;
+    } else {
+      fadeLen = Math.min(Math.floor(sr * 2), mainBuffer.length);
+      startSample = mainBuffer.length - fadeLen;
+    }
+    applyFade(startSample, fadeLen, false);
+    drawEditorWaveform();
+    toast('Fade out applied');
+  };
+
+  function applyFade(startSample, fadeLen, isFadeIn) {
+    for (var c = 0; c < mainBuffer.numberOfChannels; c++) {
+      var data = mainBuffer.getChannelData(c);
+      for (var i = 0; i < fadeLen && startSample + i < data.length; i++) {
+        var factor = isFadeIn ? (i / fadeLen) : (1 - i / fadeLen);
+        data[startSample + i] *= factor;
+      }
+    }
+    tracks[0].buffer = mainBuffer;
+  }
+
+  // NORMALIZE
+  document.getElementById('normalizeBtn').onclick = function() {
+    if (!mainBuffer) return;
+    pushUndo();
+    var peak = 0;
+    for (var c = 0; c < mainBuffer.numberOfChannels; c++) {
+      var data = mainBuffer.getChannelData(c);
+      for (var i = 0; i < data.length; i++) {
+        var abs = Math.abs(data[i]);
+        if (abs > peak) peak = abs;
+      }
+    }
+    if (peak === 0 || peak >= 0.99) { toast('Already normalized'); return; }
+    var gain = 0.99 / peak;
+    for (var c2 = 0; c2 < mainBuffer.numberOfChannels; c2++) {
+      var d = mainBuffer.getChannelData(c2);
+      for (var j = 0; j < d.length; j++) d[j] *= gain;
+    }
+    tracks[0].buffer = mainBuffer;
+    drawEditorWaveform();
+    toast('Normalized (gain: ' + gain.toFixed(2) + 'x)');
+  };
+
+  // NOISE REDUCTION (noise gate)
+  document.getElementById('noiseBtn').onclick = function() {
+    if (!mainBuffer) return;
+    pushUndo();
+
+    // Estimate noise floor from first 0.5s
+    var sr = mainBuffer.sampleRate;
+    var noiseSamples = Math.min(Math.floor(sr * 0.5), mainBuffer.length);
+    var noiseRms = 0;
+    var data0 = mainBuffer.getChannelData(0);
+    for (var i = 0; i < noiseSamples; i++) {
+      noiseRms += data0[i] * data0[i];
+    }
+    noiseRms = Math.sqrt(noiseRms / noiseSamples);
+    var threshold = noiseRms * 2.5;
+
+    // Apply noise gate
+    var windowSize = Math.floor(sr * 0.02); // 20ms window
+    for (var c = 0; c < mainBuffer.numberOfChannels; c++) {
+      var ch = mainBuffer.getChannelData(c);
+      for (var j = 0; j < ch.length; j += windowSize) {
+        var end = Math.min(j + windowSize, ch.length);
+        var rms = 0;
+        for (var k = j; k < end; k++) rms += ch[k] * ch[k];
+        rms = Math.sqrt(rms / (end - j));
+        if (rms < threshold) {
+          for (var k2 = j; k2 < end; k2++) ch[k2] *= 0.05;
+        }
+      }
+    }
+    tracks[0].buffer = mainBuffer;
+    drawEditorWaveform();
+    toast('Noise reduction applied');
+  };
+
+  // REVERSE
+  document.getElementById('reverseBtn').onclick = function() {
+    if (!mainBuffer) return;
+    pushUndo();
+    for (var c = 0; c < mainBuffer.numberOfChannels; c++) {
+      var ch = mainBuffer.getChannelData(c);
+      Array.prototype.reverse.call(ch);
+    }
+    tracks[0].buffer = mainBuffer;
+    drawEditorWaveform();
+    toast('Audio reversed');
+  };
+
+  // INSERT SILENCE
+  document.getElementById('silenceBtn').onclick = function() {
+    if (!mainBuffer) return;
+    pushUndo();
+    var sr = mainBuffer.sampleRate;
+    var silenceDur = 1; // 1 second of silence
+    var insertAt = Math.floor(cursorPos * sr);
+    var silenceSamples = Math.floor(silenceDur * sr);
+    var newLen = mainBuffer.length + silenceSamples;
+    var channels = [];
+    for (var c = 0; c < mainBuffer.numberOfChannels; c++) {
+      var old = mainBuffer.getChannelData(c);
+      var arr = new Float32Array(newLen);
+      arr.set(old.subarray(0, insertAt), 0);
+      // silence gap is already zeros
+      arr.set(old.subarray(insertAt), insertAt + silenceSamples);
+      channels.push(arr);
+    }
+    replaceMainBuffer(bufferFromChannels(channels, sr, mainBuffer.numberOfChannels));
+    toast('1s silence inserted at ' + formatTime(cursorPos));
+  };
+
+  // REVERB
+  document.getElementById('reverbBtn').onclick = function() {
+    if (!mainBuffer) return;
+    pushUndo();
+    var sr = mainBuffer.sampleRate;
+    var decay = 1.5; // reverb tail in seconds
+    var tailSamples = Math.floor(decay * sr);
+    var newLen = mainBuffer.length + tailSamples;
+    for (var c = 0; c < mainBuffer.numberOfChannels; c++) {
+      var old = mainBuffer.getChannelData(c);
+      // Simple convolution-style reverb: layer delayed copies with decay
+      var out = new Float32Array(newLen);
+      out.set(old);
+      var delays = [0.03, 0.07, 0.12, 0.18, 0.25, 0.35, 0.5, 0.7, 1.0];
+      var gains = [0.6, 0.45, 0.35, 0.28, 0.22, 0.16, 0.11, 0.07, 0.04];
+      for (var d = 0; d < delays.length; d++) {
+        var offset = Math.floor(delays[d] * sr);
+        var g = gains[d];
+        for (var i = 0; i < old.length; i++) {
+          out[i + offset] += old[i] * g;
+        }
+      }
+      // Normalize if clipping
+      var peak = 0;
+      for (var j = 0; j < out.length; j++) { if (Math.abs(out[j]) > peak) peak = Math.abs(out[j]); }
+      if (peak > 1) { for (var k = 0; k < out.length; k++) out[k] /= peak; }
+      // Create new buffer with tail
+      if (c === 0) {
+        var newBuf = audioCtx.createBuffer(mainBuffer.numberOfChannels, newLen, sr);
+      }
+      newBuf.getChannelData(c).set(out);
+    }
+    replaceMainBuffer(newBuf);
+    toast('Reverb applied');
+  };
+
+  // EQ (3-band: boost mids, cut lows slightly)
+  document.getElementById('eqBtn').onclick = function() {
+    if (!mainBuffer) return;
+    pushUndo();
+    var sr = mainBuffer.sampleRate;
+    // Simple EQ via offline processing
+    var offCtx = new OfflineAudioContext(mainBuffer.numberOfChannels, mainBuffer.length, sr);
+    var src = offCtx.createBufferSource();
+    src.buffer = mainBuffer;
+
+    var low = offCtx.createBiquadFilter();
+    low.type = 'lowshelf'; low.frequency.value = 200; low.gain.value = -3;
+
+    var mid = offCtx.createBiquadFilter();
+    mid.type = 'peaking'; mid.frequency.value = 1500; mid.Q.value = 1; mid.gain.value = 4;
+
+    var high = offCtx.createBiquadFilter();
+    high.type = 'highshelf'; high.frequency.value = 6000; high.gain.value = 2;
+
+    src.connect(low); low.connect(mid); mid.connect(high); high.connect(offCtx.destination);
+    src.start(0);
+    offCtx.startRendering().then(function(rendered) {
+      replaceMainBuffer(rendered);
+      toast('EQ applied (voice boost preset)');
+    });
+  };
+
+  // COMPRESSOR
+  document.getElementById('compressorBtn').onclick = function() {
+    if (!mainBuffer) return;
+    pushUndo();
+    var sr = mainBuffer.sampleRate;
+    var offCtx = new OfflineAudioContext(mainBuffer.numberOfChannels, mainBuffer.length, sr);
+    var src = offCtx.createBufferSource();
+    src.buffer = mainBuffer;
+
+    var comp = offCtx.createDynamicsCompressor();
+    comp.threshold.value = -24;
+    comp.knee.value = 12;
+    comp.ratio.value = 4;
+    comp.attack.value = 0.003;
+    comp.release.value = 0.25;
+
+    var makeup = offCtx.createGain();
+    makeup.gain.value = 1.5;
+
+    src.connect(comp); comp.connect(makeup); makeup.connect(offCtx.destination);
+    src.start(0);
+    offCtx.startRendering().then(function(rendered) {
+      replaceMainBuffer(rendered);
+      toast('Compressor applied');
+    });
+  };
+
+  // PITCH SHIFT (simple resample approach)
+  document.getElementById('pitchBtn').onclick = function() {
+    if (!mainBuffer) return;
+    pushUndo();
+    var semitones = 2; // shift up 2 semitones
+    var rate = Math.pow(2, semitones / 12);
+    var sr = mainBuffer.sampleRate;
+    var newLen = Math.floor(mainBuffer.length / rate);
+    var channels = [];
+    for (var c = 0; c < mainBuffer.numberOfChannels; c++) {
+      var old = mainBuffer.getChannelData(c);
+      var arr = new Float32Array(newLen);
+      for (var i = 0; i < newLen; i++) {
+        var srcIdx = i * rate;
+        var idx = Math.floor(srcIdx);
+        var frac = srcIdx - idx;
+        arr[i] = idx + 1 < old.length ? old[idx] * (1 - frac) + old[idx + 1] * frac : old[Math.min(idx, old.length - 1)];
+      }
+      channels.push(arr);
+    }
+    replaceMainBuffer(bufferFromChannels(channels, sr, mainBuffer.numberOfChannels));
+    toast('Pitch shifted +2 semitones');
+  };
+
+  // UNDO
+  var redoStack = [];
+  document.getElementById('undoBtn').onclick = function() {
+    if (!undoStack.length) { toast('Nothing to undo'); return; }
+    // Save current state for redo
+    var curChannels = [];
+    for (var c = 0; c < mainBuffer.numberOfChannels; c++) {
+      curChannels.push(new Float32Array(mainBuffer.getChannelData(c)));
+    }
+    redoStack.push({ channels: curChannels, sampleRate: mainBuffer.sampleRate, numberOfChannels: mainBuffer.numberOfChannels });
+    var state = undoStack.pop();
+    var buf = bufferFromChannels(state.channels, state.sampleRate, state.numberOfChannels);
+    replaceMainBuffer(buf);
+    toast('Undo');
+  };
+
+  // REDO
+  document.getElementById('redoBtn').onclick = function() {
+    if (!redoStack.length) { toast('Nothing to redo'); return; }
+    pushUndo();
+    var state = redoStack.pop();
+    var buf = bufferFromChannels(state.channels, state.sampleRate, state.numberOfChannels);
+    replaceMainBuffer(buf);
+    toast('Redo');
+  };
+
+  // ========================================
+  // TRACK CONTROLS
+  // ========================================
+  document.querySelectorAll('.cvo-track-lane').forEach(function(lane) {
+    var idx = parseInt(lane.getAttribute('data-track'));
+
+    lane.querySelector('[data-action="mute"]').onclick = function() {
+      tracks[idx].muted = !tracks[idx].muted;
+      this.classList.toggle('muted', tracks[idx].muted);
+    };
+
+    lane.querySelector('[data-action="solo"]').onclick = function() {
+      tracks[idx].solo = !tracks[idx].solo;
+      this.classList.toggle('active', tracks[idx].solo);
+    };
+
+    lane.querySelector('.cvo-track-volume').oninput = function() {
+      tracks[idx].gain = this.value / 100;
+    };
+
+    lane.querySelector('.cvo-track-pan').oninput = function() {
+      tracks[idx].pan = this.value / 100;
+    };
+  });
+
+  // ========================================
+  // SOUND LIBRARY
+  // ========================================
+  var SFX_LIST = [
+    { name: 'Transition Whoosh', icon: '&#128168;', dur: '0.8s' },
+    { name: 'Ding', icon: '&#128276;', dur: '0.5s' },
+    { name: 'Applause', icon: '&#128079;', dur: '3.0s' },
+    { name: 'Crickets', icon: '&#129431;', dur: '4.0s' },
+    { name: 'Rain', icon: '&#127783;', dur: '5.0s' },
+    { name: 'Thunder', icon: '&#9889;', dur: '2.5s' },
+    { name: 'Keyboard Typing', icon: '&#9000;', dur: '2.0s' },
+    { name: 'Door Knock', icon: '&#128682;', dur: '1.5s' },
+    { name: 'Phone Ring', icon: '&#128222;', dur: '3.0s' },
+    { name: 'Camera Shutter', icon: '&#128247;', dur: '0.3s' },
+    { name: 'Crowd Cheer', icon: '&#127881;', dur: '4.0s' },
+    { name: 'Wind', icon: '&#127788;', dur: '5.0s' },
+    { name: 'Birds', icon: '&#128038;', dur: '4.0s' },
+    { name: 'Ocean Waves', icon: '&#127754;', dur: '5.0s' },
+    { name: 'Clock Tick', icon: '&#128344;', dur: '2.0s' },
+    { name: 'Beep', icon: '&#128264;', dur: '0.3s' },
+    { name: 'Pop', icon: '&#128165;', dur: '0.2s' },
+    { name: 'Swoosh', icon: '&#127744;', dur: '0.6s' },
+    { name: 'Chime', icon: '&#127932;', dur: '1.5s' },
+    { name: 'Snap', icon: '&#129295;', dur: '0.2s' }
+  ];
+
+  function renderSfxGrid() {
+    var grid = document.getElementById('sfxGrid');
+    var html = '';
+    SFX_LIST.forEach(function(sfx, i) {
+      html += '<div class="cvo-sfx-card" data-sfx="' + i + '">';
+      html += '<div class="cvo-sfx-icon">' + sfx.icon + '</div>';
+      html += '<div class="cvo-sfx-name">' + sfx.name + '</div>';
+      html += '<div class="cvo-sfx-dur">' + sfx.dur + '</div>';
+      html += '</div>';
+    });
+    grid.innerHTML = html;
+
+    grid.querySelectorAll('.cvo-sfx-card').forEach(function(card) {
+      card.onclick = function() {
+        // Generate a placeholder tone as preview
+        var sfxIdx = parseInt(card.getAttribute('data-sfx'));
+        var sfx = SFX_LIST[sfxIdx];
+        previewSfx(sfx, card);
+      };
+    });
+  }
+
+  function previewSfx(sfx, cardEl) {
+    ensureAudioCtx();
+    var durStr = sfx.dur.replace('s', '');
+    var dur = parseFloat(durStr) || 1;
+    dur = Math.min(dur, 2); // preview max 2s
+
+    // Generate a simple synth sound as placeholder
+    var sr = audioCtx.sampleRate;
+    var len = Math.floor(sr * dur);
+    var buf = audioCtx.createBuffer(1, len, sr);
+    var data = buf.getChannelData(0);
+
+    // Different tones for different SFX
+    var freq = 440 + (SFX_LIST.indexOf(sfx) * 50);
+    for (var i = 0; i < len; i++) {
+      var t = i / sr;
+      var envelope = Math.max(0, 1 - t / dur);
+      data[i] = Math.sin(2 * Math.PI * freq * t) * envelope * 0.3;
+    }
+
+    var src = audioCtx.createBufferSource();
+    src.buffer = buf;
+    src.connect(audioCtx.destination);
+    src.start();
+
+    cardEl.classList.add('playing');
+    src.onended = function() { cardEl.classList.remove('playing'); };
+
+    toast(sfx.name + ' (placeholder preview)');
+  }
+
+  renderSfxGrid();
+
+  // ========================================
+  // EXPORT
+  // ========================================
+  document.getElementById('exportBtn').onclick = function() {
+    if (!mainBuffer) { toast('No audio to export'); return; }
+
+    var format = document.getElementById('exportFormat').value;
+    var quality = document.getElementById('exportQuality').value;
+    var title = document.getElementById('exportTitle').value || document.getElementById('projectName').value;
+
+    toast('Preparing export...');
+
+    // Mix all tracks
+    var mixedBuffer = mixTracks();
+
+    if (format === 'wav') {
+      exportWav(mixedBuffer, title);
+    } else if (format === 'mp3') {
+      exportMp3(mixedBuffer, title, quality);
+    } else {
+      // OGG/WebM — use MediaRecorder offline
+      exportViaMediaRecorder(mixedBuffer, title, format);
+    }
+  };
+
+  function mixTracks() {
+    ensureAudioCtx();
+    var maxLen = 0;
+    var sr = mainBuffer.sampleRate;
+    var anySolo = tracks.some(function(t) { return t.solo && t.buffer; });
+
+    tracks.forEach(function(t) {
+      if (t.buffer && t.buffer.length > maxLen) maxLen = t.buffer.length;
+    });
+
+    var mixed = audioCtx.createBuffer(mainBuffer.numberOfChannels, maxLen, sr);
+
+    tracks.forEach(function(track) {
+      if (!track.buffer) return;
+      if (track.muted) return;
+      if (anySolo && !track.solo) return;
+
+      for (var c = 0; c < Math.min(track.buffer.numberOfChannels, mixed.numberOfChannels); c++) {
+        var src = track.buffer.getChannelData(c);
+        var dst = mixed.getChannelData(c);
+        for (var i = 0; i < src.length; i++) {
+          dst[i] += src[i] * track.gain;
+        }
+      }
+    });
+
+    return mixed;
+  }
+
+  function exportWav(buffer, title) {
+    var numCh = buffer.numberOfChannels;
+    var sr = buffer.sampleRate;
+    var len = buffer.length;
+    var bytesPerSample = 2; // 16-bit
+    var dataSize = len * numCh * bytesPerSample;
+    var bufferSize = 44 + dataSize;
+    var arrayBuffer = new ArrayBuffer(bufferSize);
+    var view = new DataView(arrayBuffer);
+
+    // WAV header
+    writeString(view, 0, 'RIFF');
+    view.setUint32(4, 36 + dataSize, true);
+    writeString(view, 8, 'WAVE');
+    writeString(view, 12, 'fmt ');
+    view.setUint32(16, 16, true);
+    view.setUint16(20, 1, true); // PCM
+    view.setUint16(22, numCh, true);
+    view.setUint32(24, sr, true);
+    view.setUint32(28, sr * numCh * bytesPerSample, true);
+    view.setUint16(32, numCh * bytesPerSample, true);
+    view.setUint16(34, 16, true);
+    writeString(view, 36, 'data');
+    view.setUint32(40, dataSize, true);
+
+    // Interleave and write samples
+    var offset = 44;
+    var channels = [];
+    for (var c = 0; c < numCh; c++) channels.push(buffer.getChannelData(c));
+
+    for (var i = 0; i < len; i++) {
+      for (var c2 = 0; c2 < numCh; c2++) {
+        var sample = Math.max(-1, Math.min(1, channels[c2][i]));
+        view.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7FFF, true);
+        offset += 2;
+      }
+    }
+
+    downloadBlob(new Blob([arrayBuffer], { type: 'audio/wav' }), title + '.wav');
+    toast('WAV exported');
+  }
+
+  function writeString(view, offset, str) {
+    for (var i = 0; i < str.length; i++) view.setUint8(offset + i, str.charCodeAt(i));
+  }
+
+  function exportMp3(buffer, title, quality) {
+    if (typeof lamejs === 'undefined') {
+      toast('MP3 encoder loading, please wait...');
+      setTimeout(function() { exportMp3(buffer, title, quality); }, 1000);
+      return;
+    }
+
+    var kbps = quality === 'high' ? 320 : quality === 'medium' ? 192 : 128;
+    var sr = buffer.sampleRate;
+    var numCh = Math.min(buffer.numberOfChannels, 2);
+
+    var mp3encoder = new lamejs.Mp3Encoder(numCh, sr, kbps);
+    var blockSize = 1152;
+    var mp3Data = [];
+
+    var left = convertTo16bit(buffer.getChannelData(0));
+    var right = numCh > 1 ? convertTo16bit(buffer.getChannelData(1)) : left;
+
+    for (var i = 0; i < left.length; i += blockSize) {
+      var leftChunk = left.subarray(i, i + blockSize);
+      var rightChunk = right.subarray(i, i + blockSize);
+      var mp3buf = mp3encoder.encodeBuffer(leftChunk, rightChunk);
+      if (mp3buf.length > 0) mp3Data.push(mp3buf);
+    }
+
+    var flush = mp3encoder.flush();
+    if (flush.length > 0) mp3Data.push(flush);
+
+    downloadBlob(new Blob(mp3Data, { type: 'audio/mp3' }), title + '.mp3');
+    toast('MP3 exported (' + kbps + 'kbps)');
+  }
+
+  function convertTo16bit(floatData) {
+    var arr = new Int16Array(floatData.length);
+    for (var i = 0; i < floatData.length; i++) {
+      var s = Math.max(-1, Math.min(1, floatData[i]));
+      arr[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+    }
+    return arr;
+  }
+
+  function exportViaMediaRecorder(buffer, title, format) {
+    ensureAudioCtx();
+    var offlineCtx = new OfflineAudioContext(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
+    var src = offlineCtx.createBufferSource();
+    src.buffer = buffer;
+    var dest = offlineCtx.createMediaStreamDestination ? null : null;
+
+    // Fallback: export as WAV if MediaRecorder not suitable
+    toast('Format not fully supported in this browser, exporting as WAV');
+    exportWav(buffer, title);
+  }
+
+  function downloadBlob(blob, filename) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  // ========================================
+  // PROJECT MANAGEMENT (IndexedDB)
+  // ========================================
+  var DB_NAME = 'cvo-projects';
+  var DB_VERSION = 1;
+  var STORE_NAME = 'projects';
+
+  function openDB(callback) {
+    var req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onupgradeneeded = function(e) {
+      var db = e.target.result;
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
+        db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+      }
+    };
+    req.onsuccess = function(e) { callback(e.target.result); };
+    req.onerror = function() { toast('DB error'); };
+  }
+
+  function saveProject() {
+    if (!mainBuffer) { toast('Nothing to save'); return; }
+    var name = document.getElementById('projectName').value || 'Untitled';
+    var id = 'proj_' + Date.now();
+
+    // Serialize buffer
+    var channels = [];
+    for (var c = 0; c < mainBuffer.numberOfChannels; c++) {
+      channels.push(Array.from(mainBuffer.getChannelData(c)));
+    }
+
+    // Check if existing project (match by name)
+    var projData = {
+      id: id,
+      name: name,
+      sampleRate: mainBuffer.sampleRate,
+      numberOfChannels: mainBuffer.numberOfChannels,
+      channels: channels,
+      createdAt: new Date().toISOString()
+    };
+
+    openDB(function(db) {
+      var tx = db.transaction(STORE_NAME, 'readwrite');
+      tx.objectStore(STORE_NAME).put(projData);
+      tx.oncomplete = function() { toast('Project saved: ' + name); loadProjectList(); };
+    });
+  }
+
+  function loadProjectList() {
+    openDB(function(db) {
+      var tx = db.transaction(STORE_NAME, 'readonly');
+      var req = tx.objectStore(STORE_NAME).getAll();
+      req.onsuccess = function() {
+        var projects = req.result || [];
+        var list = document.getElementById('projectList');
+        if (!projects.length) {
+          list.innerHTML = '<div class="cvo-empty-state"><div class="cvo-empty-icon">&#128193;</div><div class="cvo-empty-title">No saved projects</div><div class="cvo-empty-desc">Record or import audio, then hit Save.</div></div>';
+          return;
+        }
+        var html = '';
+        projects.sort(function(a, b) { return b.createdAt > a.createdAt ? 1 : -1; });
+        projects.forEach(function(p) {
+          var dur = p.channels && p.channels[0] ? formatTime(p.channels[0].length / p.sampleRate) : '--:--';
+          html += '<div class="cvo-project-item" data-id="' + p.id + '">';
+          html += '<div class="cvo-project-item-icon">&#127897;</div>';
+          html += '<div class="cvo-project-item-info"><div class="cvo-project-item-name">' + p.name + '</div>';
+          html += '<div class="cvo-project-item-meta">' + dur + ' &bull; ' + new Date(p.createdAt).toLocaleDateString() + '</div></div>';
+          html += '<button type="button" class="cvo-project-item-del" data-del="' + p.id + '">&times;</button>';
+          html += '</div>';
+        });
+        list.innerHTML = html;
+
+        // Wire clicks
+        list.querySelectorAll('.cvo-project-item').forEach(function(item) {
+          item.onclick = function(e) {
+            if (e.target.classList.contains('cvo-project-item-del')) return;
+            loadProject(item.getAttribute('data-id'));
+          };
+        });
+        list.querySelectorAll('.cvo-project-item-del').forEach(function(btn) {
+          btn.onclick = function(e) {
+            e.stopPropagation();
+            deleteProject(btn.getAttribute('data-del'));
+          };
+        });
+      };
+    });
+  }
+
+  function loadProject(id) {
+    openDB(function(db) {
+      var tx = db.transaction(STORE_NAME, 'readonly');
+      var req = tx.objectStore(STORE_NAME).get(id);
+      req.onsuccess = function() {
+        var p = req.result;
+        if (!p) { toast('Project not found'); return; }
+        ensureAudioCtx();
+        var channels = p.channels.map(function(ch) { return new Float32Array(ch); });
+        mainBuffer = bufferFromChannels(channels, p.sampleRate, p.numberOfChannels);
+        tracks[0].buffer = mainBuffer;
+        undoStack = [];
+        cursorPos = 0;
+        selectionStart = -1;
+        selectionEnd = -1;
+        document.getElementById('projectName').value = p.name;
+        document.getElementById('projectsPanel').style.display = 'none';
+        switchToEditor();
+        toast('Loaded: ' + p.name);
+      };
+    });
+  }
+
+  function deleteProject(id) {
+    openDB(function(db) {
+      var tx = db.transaction(STORE_NAME, 'readwrite');
+      tx.objectStore(STORE_NAME).delete(id);
+      tx.oncomplete = function() { toast('Project deleted'); loadProjectList(); };
+    });
+  }
+
+  // Save/Projects buttons
+  document.getElementById('saveBtn').onclick = saveProject;
+  document.getElementById('projectsBtn').onclick = function() {
+    var panel = document.getElementById('projectsPanel');
+    if (panel.style.display === 'none') {
+      panel.style.display = '';
+      loadProjectList();
+    } else {
+      panel.style.display = 'none';
+    }
+  };
+
+  // ========================================
+  // KEYBOARD SHORTCUTS
+  // ========================================
+  document.addEventListener('keydown', function(e) {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+
+    switch (e.key.toLowerCase()) {
+      case 'r':
+        if (!isRecording) { startRecording(); }
+        else { stopBtn.click(); }
+        e.preventDefault();
+        break;
+      case ' ':
+        e.preventDefault();
+        if (mainBuffer) {
+          if (isPlaying) stopPlayback();
+          else startPlayback();
+        }
+        break;
+      case 'z':
+        if (e.ctrlKey || e.metaKey) {
+          e.preventDefault();
+          document.getElementById('undoBtn').click();
+        }
+        break;
+    }
+  });
+
+  // ========================================
+  // WINDOW RESIZE REDRAW
+  // ========================================
+  var resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {
+      if (mainBuffer) { drawEditorWaveform(); updateTrackWaveforms(); }
+    }, 200);
+  });
+
+}();
+</script>
+</body>
+</html>

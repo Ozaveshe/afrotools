@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Displacement Tracker — AfroConflict | AfroTools</title>
+<meta name="description" content="Track conflict-driven displacement across Africa — IDPs, refugees, asylum seekers, and returnees. Data from UNHCR and IDMC.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Displacement Tracker - AfroConflict | AfroTools">
+<meta property="og:description" content="Track conflict-driven displacement across Africa - IDPs, refugees, asylum seekers, and returnees. Data from UNHCR and IDMC.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/africa-conflict/displacement">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Displacement Tracker - AfroConflict | AfroTools">
+<meta name="twitter:description" content="Track conflict-driven displacement across Africa - IDPs, refugees, asylum seekers, and returnees. Data from UNHCR and IDMC.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta name="robots" content="index, follow">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="style.css?v=efb99733">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js" defer></script>
+<script src="/tools/africa-conflict/local-api-guard.js?v=8f670098" defer></script>
+<script src="/engines/africa-conflict-engine.js?v=3f1cd07e" defer></script>
+<script src="/tools/africa-conflict/static-routes.js?v=eb9fb3ae" defer></script>
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="canonical" href="https://afrotools.com/tools/africa-conflict/displacement">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/africa-conflict/displacement">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/africa-conflict/displacement">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/africa-conflict/displacement">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<main class="acd-page">
+  <div class="acd-hero">
+    <div class="acd-hero-inner">
+      <div>
+        <div class="acd-hero-title"><span class="acd-live-dot"></span><h1>🏕️ Displacement Tracker</h1></div>
+        <p class="acd-hero-desc">Conflict-driven displacement across Africa — IDPs, refugees, and returnees</p>
+      </div>
+      <nav class="acd-hero-nav">
+        <a href="/tools/africa-conflict/">Dashboard</a>
+        <a href="/tools/africa-conflict/displacement" class="active">Displacement</a>
+        <a href="/tools/africa-conflict/methodology">Methodology</a>
+      </nav>
+    </div>
+  </div>
+
+  <div class="acd-section">
+    <!-- KPI row -->
+    <div class="acd-kpi-row" style="padding:0;margin-bottom:24px" id="acd-disp-kpis">
+      <div class="acd-skeleton acd-kpi-card" style="height:90px"></div>
+      <div class="acd-skeleton acd-kpi-card" style="height:90px"></div>
+      <div class="acd-skeleton acd-kpi-card" style="height:90px"></div>
+      <div class="acd-skeleton acd-kpi-card" style="height:90px"></div>
+    </div>
+
+    <!-- Top 10 by displacement -->
+    <div class="acd-chart-box">
+      <h3>Top Conflicts by Displacement</h3>
+      <div id="acd-disp-bar" style="height:300px"></div>
+      <div class="acd-source-tag" style="margin-top:8px">UNHCR / IDMC — IDPs + Refugees combined</div>
+    </div>
+
+    <!-- Displacement table -->
+    <div class="acd-chart-box">
+      <h3>All Conflicts — Displacement Summary</h3>
+      <div id="acd-disp-table"></div>
+    </div>
+
+    <div class="acd-disclaimer-box">
+      📊 Displacement figures from UNHCR Refugee Data Finder and IDMC. Numbers represent estimates at the time of last update. IDPs = Internally Displaced Persons. <a href="https://www.unhcr.org/refugee-statistics/" target="_blank" rel="noopener" style="color:var(--acd-accent)">UNHCR Source Portal ↗</a>
+    </div>
+  </div>
+</main>
+<afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script>
+(function(){
+  function conflictUrl(slug) {
+    if (window.AfroConflictStaticRoutes && typeof window.AfroConflictStaticRoutes.conflict === 'function') {
+      return window.AfroConflictStaticRoutes.conflict(slug);
+    }
+    return '/tools/africa-conflict/detail.html?id=' + encodeURIComponent(slug || '');
+  }
+
+  async function load() {
+    var res = await fetch('/api/conflicts');
+    var json = await res.json();
+    var conflicts = (json.data||[]).filter(function(c){ return (c.idps_count||0)+(c.refugees_count||0) > 0; });
+
+    var totalIdps = 0, totalRefs = 0, totalReturn = 0;
+    conflicts.forEach(function(c){ totalIdps+=(c.idps_count||0); totalRefs+=(c.refugees_count||0); totalReturn+=(c.returnees_count||0); });
+
+    var sorted = conflicts.slice().sort(function(a,b){ return ((b.idps_count||0)+(b.refugees_count||0))-((a.idps_count||0)+(a.refugees_count||0)); });
+
+    document.getElementById('acd-disp-kpis').innerHTML = [
+      { icon:'🏕️', label:'Total IDPs', val:AfroConflict.formatNumber(totalIdps), sub:'IDMC', color:'#ea580c' },
+      { icon:'🌍', label:'Total Refugees', val:AfroConflict.formatNumber(totalRefs), sub:'UNHCR', color:'#3b82f6' },
+      { icon:'🔄', label:'Returnees', val:AfroConflict.formatNumber(totalReturn), sub:'UNHCR', color:'#16a34a' },
+      { icon:'📊', label:'Conflicts w/ Displacement', val:conflicts.length, sub:'AfroConflict', color:'#6b7280' }
+    ].map(function(k){
+      return '<div class="acd-kpi-card" style="border-top-color:'+k.color+'"><div class="acd-kpi-icon">'+k.icon+'</div><div class="acd-kpi-value">'+k.val+'</div><div class="acd-kpi-label">'+k.label+'</div><div class="acd-kpi-sub">'+k.sub+'</div></div>';
+    }).join('');
+
+    if (typeof echarts !== 'undefined') {
+      var top = sorted.slice(0,10);
+      var chart = echarts.init(document.getElementById('acd-disp-bar'));
+      chart.setOption({
+        backgroundColor:'transparent',
+        tooltip:{ trigger:'axis' },
+        xAxis:{ type:'category', data:top.map(function(c){ return c.short_name||c.name; }), axisLabel:{ color:'#94a3b8',rotate:30,fontSize:11 }, axisLine:{ lineStyle:{ color:'#475569' } } },
+        yAxis:{ type:'value', axisLabel:{ color:'#94a3b8', formatter:function(v){ return (v/1e6).toFixed(1)+'M'; } }, splitLine:{ lineStyle:{ color:'#1e293b' } } },
+        legend:{ data:['IDPs','Refugees'], textStyle:{ color:'#94a3b8' } },
+        series:[
+          { name:'IDPs', type:'bar', stack:'disp', data:top.map(function(c){ return c.idps_count||0; }), itemStyle:{ color:'#ea580c' } },
+          { name:'Refugees', type:'bar', stack:'disp', data:top.map(function(c){ return c.refugees_count||0; }), itemStyle:{ color:'#3b82f6' } }
+        ]
+      });
+    }
+
+    document.getElementById('acd-disp-table').innerHTML =
+      '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.8rem"><thead><tr style="border-bottom:2px solid var(--acd-border)"><th style="padding:8px;text-align:left;color:var(--acd-text-dim)">Conflict</th><th style="padding:8px;text-align:right;color:var(--acd-text-dim)">IDPs</th><th style="padding:8px;text-align:right;color:var(--acd-text-dim)">Refugees</th><th style="padding:8px;text-align:right;color:var(--acd-text-dim)">Total</th><th style="padding:8px;text-align:left;color:var(--acd-text-dim)">Source</th></tr></thead><tbody>' +
+      sorted.map(function(c){
+        var total = (c.idps_count||0)+(c.refugees_count||0);
+        return '<tr style="border-bottom:1px solid var(--acd-border)"><td style="padding:8px">'+AfroConflict.flagEmoji(c.primary_country)+' <a href="'+conflictUrl(c.slug)+'" style="color:var(--acd-accent)">'+(c.short_name||c.name)+'</a></td><td style="padding:8px;text-align:right">'+AfroConflict.formatNumber(c.idps_count)+'</td><td style="padding:8px;text-align:right">'+AfroConflict.formatNumber(c.refugees_count)+'</td><td style="padding:8px;text-align:right;font-weight:700">'+AfroConflict.formatNumber(total)+'</td><td style="padding:8px;font-size:.72rem;color:var(--acd-text-dim)">'+(c.displacement_source||'—')+'</td></tr>';
+      }).join('') + '</tbody></table></div>';
+  }
+  document.addEventListener('DOMContentLoaded', function(){ AfroConflict.init(); load(); });
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+</body>
+</html>

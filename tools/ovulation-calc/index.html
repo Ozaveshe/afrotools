@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ovulation Calculator — Fertility Window, Cycle & Due Date | Africa</title>
+<meta name="description" content="Calculate your ovulation date, fertility window, and estimated due date. Track your cycle with our free ovulation calculator. Helpful for family planning in Africa.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Ovulation Calculator | AfroTools">
+<meta property="og:description" content="Fertility window, ovulation date, due date calculator.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/ovulation-calc.webp">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/ovulation-calc/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419;--pink:#ec4899;--pink-light:#fdf2f8}
+.tool-hero{background:linear-gradient(135deg,#831843 0%,#be185d 100%);padding:44px 0 36px;overflow:hidden}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#fbcfe8}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#fbcfe8;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-pink{background:rgba(251,207,232,.2);color:#fbcfe8;border:1px solid rgba(251,207,232,.4)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+.field{margin-bottom:16px}
+.f-label{font-size:.75rem;font-weight:700;color:var(--afro-dark);margin-bottom:6px;display:block}
+.f-input,.f-select{width:100%;padding:11px 13px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;font-weight:600;color:var(--afro-dark);outline:none;font-family:'DM Sans',sans-serif;box-sizing:border-box}
+.f-input:focus,.f-select:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(236,72,153,.12)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.calc-btn{width:100%;padding:13px;background:var(--pink);color:#fff;border:none;border-radius:8px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif}
+.calc-btn:hover{background:#db2777;transform:translateY(-1px);box-shadow:0 6px 20px rgba(236,72,153,.3)}
+.result-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:18px}
+.result-box{background:var(--pink-light);border:1px solid #fce7f3;border-radius:8px;padding:16px;text-align:center}
+.result-box.wide{grid-column:1/-1}
+.r-label{font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#64748b;margin-bottom:4px}
+.r-value{font-size:1.1rem;font-weight:800;color:var(--afro-dark)}
+.r-value.pink{color:var(--pink)}
+#results{display:none}
+.calendar{margin-top:18px}
+.cal-month{font-size:.85rem;font-weight:700;color:var(--afro-dark);text-align:center;margin-bottom:8px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-header{font-size:.65rem;font-weight:700;text-align:center;color:#94a3b8;padding:4px}
+.cal-day{font-size:.72rem;text-align:center;padding:6px 2px;border-radius:4px;font-weight:500;color:#475569}
+.cal-day.period{background:#fecdd3;color:#be123c;font-weight:700}
+.cal-day.fertile{background:#d946ef20;color:#a21caf;font-weight:700;border:1px solid #d946ef40}
+.cal-day.ovulation{background:var(--pink);color:#fff;font-weight:800;border-radius:50%}
+.cal-day.today{border:2px solid var(--afro-dark)}
+.cal-day.empty{opacity:0}
+.cal-legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px;font-size:.7rem;font-weight:600}
+.cal-legend span{display:flex;align-items:center;gap:4px}
+.cal-legend .dot{width:10px;height:10px;border-radius:3px;display:inline-block}
+.sidebar .card-body{font-size:.82rem;color:#475569;line-height:1.7}
+.disclaimer{background:#fef3c7;border:1px solid #fde68a;border-radius:8px;padding:12px 16px;margin-top:16px;font-size:.75rem;color:#92400e;line-height:1.6}
+.seo-content{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-content h2{font-size:1.4rem;font-weight:800;color:var(--afro-dark);margin:32px 0 12px}
+.seo-content p,.seo-content li{font-size:.92rem;color:#475569;line-height:1.8}
+.seo-content ul{padding-left:20px}
+.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;overflow:hidden}
+.faq summary{padding:14px 18px;font-weight:700;font-size:.88rem;cursor:pointer;background:#f8fafc;color:var(--afro-dark)}
+.faq details[open] summary{border-bottom:1px solid #e2e8f0}
+.faq details div{padding:14px 18px;font-size:.85rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.field-row{grid-template-columns:1fr}}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Ovulation Calculator",
+  "description": "Calculate ovulation date, fertility window, and estimated due date for family planning.",
+  "url": "https://afrotools.com/tools/ovulation-calc/",
+  "inLanguage": "en",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/ovulation-calc.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Ovulation Calculator",
+  "url": "https://afrotools.com/tools/ovulation-calc/",
+  "description": "Calculate ovulation date, fertility window, and estimated due date for family planning.",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/ovulation-calc.webp"
+}
+</script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ovulation Calculator | AfroTools">
+<meta name="twitter:description" content="Fertility window, ovulation date, due date calculator.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/ovulation-calc.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Ovulation Calculator",
+      "item": "https://afrotools.com/tools/ovulation-calc/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="stylesheet" href="/assets/css/health-enhancements.css?v=e7e3e3a6">
+<meta name="tool-id" content="ovulation-calc">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How accurate is the calendar method?","acceptedAnswer":{"@type":"Answer","text":"The calendar method is most accurate for women with regular cycles (25-35 days). For irregular cycles, it provides rough estimates only. For higher accuracy, combine with ovulation predictor kits (OPKs), basal body temperature tracking, or cervical mucus monitoring."}},{"@type":"Question","name":"Can I use this as contraception?","acceptedAnswer":{"@type":"Answer","text":"The calendar method alone is NOT reliable for contraception. When used perfectly, fertility awareness methods have about 95% effectiveness, but typical use effectiveness is around 76%. For contraception, use this alongside other methods and consult a healthcare provider."}},{"@type":"Question","name":"When should I see a doctor about fertility?","acceptedAnswer":{"@type":"Answer","text":"If you've been trying to conceive for 12 months (6 months if over 35) without success, consult a fertility specialist. Also seek help if you have very irregular periods, no periods, very painful periods, or a history of pelvic inflammatory disease."}},{"@type":"Question","name":"Does the luteal phase length vary?","acceptedAnswer":{"@type":"Answer","text":"The luteal phase (ovulation to next period) is relatively consistent at 12-16 days, with 14 being average. A luteal phase shorter than 10 days may indicate luteal phase deficiency, which can affect fertility. Track your cycles over several months for better accuracy."}}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/ovulation-calc/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/ovulation-calc/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-ovulation/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-ovulation/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/ovulation-calc/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/health/">Health</a> / <span>Ovulation Calculator</span></div>
+<h1>Ovulation & <em>Fertility Calculator</em></h1>
+<p class="hero-sub">Calculate your ovulation date, fertile window, and estimated due date based on your menstrual cycle. A helpful tool for family planning.</p>
+<div class="hero-badges"><span class="badge b-pink">Fertility Window</span><span class="badge b-pink">Due Date</span><span class="badge b-pink">Cycle Calendar</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calc-area">
+<div class="card"><div class="card-head"><span class="card-title">Your Cycle Details</span></div>
+<div class="card-body">
+<div class="field"><label class="f-label">First Day of Last Period</label><input aria-label="LastPeriod" type="date" id="lastPeriod" class="f-input"></div>
+<div class="field-row">
+<div class="field"><label class="f-label">Average Cycle Length (Days)</label>
+<select id="cycleLen" class="f-select" aria-label="Cycle Len">
+<option value="21">21 days</option><option value="22">22 days</option><option value="23">23 days</option>
+<option value="24">24 days</option><option value="25">25 days</option><option value="26">26 days</option>
+<option value="27">27 days</option><option value="28" selected>28 days (average)</option><option value="29">29 days</option>
+<option value="30">30 days</option><option value="31">31 days</option><option value="32">32 days</option>
+<option value="33">33 days</option><option value="34">34 days</option><option value="35">35 days</option>
+</select></div>
+<div class="field"><label class="f-label">Period Duration (Days)</label>
+<select id="periodLen" class="f-select" aria-label="Period Len">
+<option value="3">3 days</option><option value="4">4 days</option><option value="5" selected>5 days</option>
+<option value="6">6 days</option><option value="7">7 days</option>
+</select></div>
+</div>
+<button type="button" class="calc-btn" onclick="calculate()">Calculate Fertility Window</button>
+<div class="disclaimer" role="note" style="margin-top:14px"><strong>Estimate for planning only.</strong> These dates are calculated from cycle averages and are <strong>not a reliable method of contraception</strong> or medical advice. Every cycle varies — consult a doctor or family-planning clinic for personalised care.</div>
+</div></div>
+
+<div class="card" id="results">
+<div class="card-head"><span class="card-title">Your Fertility Calendar</span></div>
+<div class="card-body">
+<div class="result-grid">
+<div class="result-box"><div class="r-label">Estimated Ovulation</div><div class="r-value pink" id="rOvul">--</div></div>
+<div class="result-box"><div class="r-label">Fertile Window</div><div class="r-value" id="rFertile">--</div></div>
+<div class="result-box"><div class="r-label">Next Period Expected</div><div class="r-value" id="rNextPeriod">--</div></div>
+<div class="result-box"><div class="r-label">If Conceiving: Due Date</div><div class="r-value pink" id="rDueDate">--</div></div>
+</div>
+<div class="calendar" id="calendar"></div>
+<div class="cal-legend">
+<span><span class="dot" style="background:#fecdd3"></span> Period</span>
+<span><span class="dot" style="background:#d946ef40"></span> Fertile Window</span>
+<span><span class="dot" style="background:var(--pink)"></span> Ovulation Day</span>
+</div>
+<div class="disclaimer">This calculator provides estimates based on average cycle patterns. It should NOT be used as a sole method of contraception or fertility treatment. Every woman's cycle is unique. Consult a healthcare professional for personalised medical advice.</div>
+</div></div>
+</div>
+
+<div class="sidebar">
+<div class="card"><div class="card-head"><span class="card-title">Understanding Your Cycle</span></div>
+<div class="card-body">
+<p><strong>Ovulation</strong> typically occurs 14 days before your next period, not 14 days after your last period. For a 28-day cycle, this is day 14. For a 30-day cycle, it's day 16.</p>
+<p style="margin-top:8px"><strong>Fertile window:</strong> You're most fertile in the 5 days before ovulation and on ovulation day itself. Sperm can survive up to 5 days in the reproductive tract.</p>
+<p style="margin-top:8px"><strong>Cycle variations:</strong> Stress, diet, travel, illness, and climate can affect cycle length. Track over several months for more accuracy.</p>
+</div></div>
+<div class="card"><div class="card-head"><span class="card-title">Fertility in Africa</span></div>
+<div class="card-body">
+<p>Access to fertility information and family planning services varies across Africa. This tool aims to provide basic cycle awareness that helps with both conception and natural family planning.</p>
+<p style="margin-top:8px"><strong>Cultural context:</strong> In many African communities, fertility is a deeply personal topic. This tool provides private, accessible information without judgment.</p>
+<p style="margin-top:8px"><strong>Seek help if:</strong> You've been trying to conceive for 12+ months (or 6+ months if over 35), have irregular periods, or experience painful periods. Fertility clinics are available in major African cities.</p>
+</div></div>
+</div>
+</div></section>
+
+<section class="seo-content">
+<h2>How the Ovulation Calculator Works</h2>
+<p>This ovulation calculator estimates your fertile window based on the calendar method. It uses the first day of your last menstrual period and your average cycle length to calculate when ovulation is most likely to occur. Ovulation typically happens about 14 days before the start of your next period (the "luteal phase" is relatively constant at 14 days, while the first half of the cycle varies).</p>
+<p>Your fertile window spans approximately 6 days: the 5 days before ovulation and ovulation day itself. This is because sperm can survive in the female reproductive tract for up to 5 days, while an egg remains viable for about 12-24 hours after release.</p>
+
+<h2>Family Planning in Africa</h2>
+<p>Understanding your menstrual cycle is fundamental to both achieving and preventing pregnancy. In many parts of Africa, access to fertility education and contraception remains limited. According to UNFPA, only 36% of women in Sub-Saharan Africa use modern contraception. Cycle awareness tools like this can complement other family planning methods and help women make informed decisions about their reproductive health.</p>
+
+<h2>Factors That Affect Ovulation</h2>
+<ul>
+<li><strong>Stress:</strong> Physical or emotional stress can delay or suppress ovulation — common during challenging economic times</li>
+<li><strong>Weight:</strong> Both underweight and overweight status can affect ovulation regularity</li>
+<li><strong>Exercise:</strong> Extreme exercise can suppress ovulation; moderate exercise is beneficial</li>
+<li><strong>Age:</strong> Fertility peaks in the mid-20s and gradually declines, especially after 35</li>
+<li><strong>Infections:</strong> Untreated STIs (particularly chlamydia and gonorrhoea) can affect fertility — screening is important</li>
+<li><strong>Climate and diet:</strong> Nutritional deficiencies (especially iron, folate, zinc) can affect cycle regularity</li>
+</ul>
+
+
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+<div class="faq">
+<h2>Frequently Asked Questions</h2>
+<details><summary>How accurate is the calendar method?</summary><div>The calendar method is most accurate for women with regular cycles (25-35 days). For irregular cycles, it provides rough estimates only. For higher accuracy, combine with ovulation predictor kits (OPKs), basal body temperature tracking, or cervical mucus monitoring.</div></details>
+<details><summary>Can I use this as contraception?</summary><div>The calendar method alone is NOT reliable for contraception. When used perfectly, fertility awareness methods have about 95% effectiveness, but typical use effectiveness is around 76%. For contraception, use this alongside other methods and consult a healthcare provider.</div></details>
+<details><summary>When should I see a doctor about fertility?</summary><div>If you've been trying to conceive for 12 months (6 months if over 35) without success, consult a fertility specialist. Also seek help if you have very irregular periods, no periods, very painful periods, or a history of pelvic inflammatory disease.</div></details>
+<details><summary>Does the luteal phase length vary?</summary><div>The luteal phase (ovulation to next period) is relatively consistent at 12-16 days, with 14 being average. A luteal phase shorter than 10 days may indicate luteal phase deficiency, which can affect fertility. Track your cycles over several months for better accuracy.</div></details>
+</div>
+</section>
+
+<afro-related-tools data-ssr="1" category="health" current="ovulation-calc">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/medical-report/" data-related-tool data-id="medical-report" data-name="Medical Report Interpreter" data-category="health" data-icon="MR" data-desc="Upload or paste lab results and get plain-English explanations for CBC, lipid, liver, kidney, thyroid, and diabetes mark">Medical Report Interpreter</a></li><li><a href="/tools/genotype-checker/" data-related-tool data-id="genotype-checker" data-name="Genotype Compatibility Checker" data-category="health" data-icon="GC" data-desc="Full pre-marriage genotype and blood group compatibility check. Sickle cell Punnett square, Rh factor incompatibility, b">Genotype Compatibility Checker</a></li><li><a href="/tools/childbirth-cost/" data-related-tool data-id="childbirth-cost" data-name="Childbirth Cost Calculator" data-category="health" data-icon="CC" data-desc="Compare delivery costs across public hospitals, private clinics, and premium facilities in Nigeria, Kenya, South Africa,">Childbirth Cost Calculator</a></li><li><a href="/tools/drug-price-compare/" data-related-tool data-id="drug-price-compare" data-name="Drug/Medicine Price Comparator" data-category="health" data-icon="DM" data-desc="Compare brand vs generic medicine prices across African countries. See savings on antimalarials, antibiotics, diabetes, ">Drug/Medicine Price Comparator</a></li><li><a href="/tools/blood-group/" data-related-tool data-id="blood-group" data-name="Blood Group Compatibility Checker" data-category="health" data-icon="BG" data-desc="Check blood transfusion compatibility (donor/recipient) and pregnancy Rh incompatibility. Includes African blood group f">Blood Group Compatibility Checker</a></li><li><a href="/tools/african-meal-plan/" data-related-tool data-id="african-meal-plan" data-name="African Meal Plan Generator" data-category="health" data-icon="AM" data-desc="Generate a personalized 7-day meal plan using African foods. Choose region (West/East/Southern/North Africa), health goa">African Meal Plan Generator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<!-- HEALTH-DEEP-IMPROVEMENT:START -->
+<section class="health-deep" aria-labelledby="health-deep-title">
+<span class="health-deep-kicker">Deep Review - 27 April 2026</span>
+<h2 id="health-deep-title">Use Ovulation &amp; Fertility Calculator in a safer care workflow</h2>
+<p class="health-deep-lead">Family-health tools should turn dates, costs, growth, feeding, and vaccine questions into safer preparation for antenatal, paediatric, and community health visits.</p>
+<div class="health-deep-grid">
+<div class="health-deep-block"><h3>Use It To Decide</h3><ul><li>Which appointment, vaccine, or milestone needs attention next</li><li>What the household should budget or prepare before care is needed</li><li>Which warning signs should move the family from planning to urgent care</li></ul></div>
+<div class="health-deep-block"><h3>Better Workflow</h3><ul><li>Record dates, facility name, and provider instructions</li><li>Bring the result to antenatal, delivery, paediatric, or immunisation visits</li><li>Use local clinic guidance as the final authority</li></ul></div>
+<div class="health-deep-block warning"><h3>Do Not Ignore</h3><ul><li>Bleeding, severe headache, fever, reduced fetal movement, or seizures in pregnancy</li><li>A child with lethargy, dehydration, breathing difficulty, or persistent fever</li><li>Missed vaccines or growth concerns without a clinic follow-up plan</li></ul></div>
+</div>
+<div class="health-source-row">
+<div><span>Official Context</span><div class="health-source-links"><a href="https://www.who.int/publications/i/item/9789241549912">WHO antenatal care recommendations</a><a href="https://www.who.int/news-room/fact-sheets/detail/immunization-coverage">WHO immunization coverage</a><a href="https://www.who.int/tools/child-growth-standards">WHO child growth standards</a><a href="https://www.who.int/health-topics/breastfeeding">WHO breastfeeding</a></div></div>
+<div><span>Related AfroTools</span><div class="health-source-links internal"><a href="/health/pregnancy-due-date/">Pregnancy Due Date Calculator</a><a href="/tools/vaccine-schedule/">African Child Vaccine Schedule</a><a href="/tools/child-growth/">Child Growth Chart (WHO + African Context)</a><a href="/tools/pregnancy-nutrition/">Pregnancy Nutrition Calculator (African Diet)</a></div></div>
+</div>
+</section>
+<!-- HEALTH-DEEP-IMPROVEMENT:END -->
+<!-- HEALTH-COMPLETE-PACKAGE:START -->
+<section class="health-action-kit" data-health-tool-id="ovulation-calc" data-health-tool-name="Ovulation &amp; Fertility Calculator" data-health-href="/tools/ovulation-calc/" data-health-bucket="family" data-health-journey="family" data-health-source-name="WHO antenatal care recommendations" data-health-source-url="https://www.who.int/publications/i/item/9789241549912" data-health-competitor="Flo and Clue" data-health-feature="Cycle tools work better with reminders, uncertainty notes, and privacy-aware export." aria-labelledby="health-action-title-ovulation-calc">
+<span class="health-action-kicker">Complete package upgrade</span>
+<h2 id="health-action-title-ovulation-calc">Ovulation &amp; Fertility Calculator: save, export, and continue the workflow</h2>
+<p>This app now has its own benchmarked improvement layer, dashboard handoff, email-gated PDF plan, and a route into the Pregnancy and child care plan workflow.</p>
+<div class="health-action-grid">
+<div class="health-action-card">
+<h3>Competitor feature checked</h3>
+<p><strong>Flo and Clue</strong>: Cycle tools work better with reminders, uncertainty notes, and privacy-aware export.</p>
+<p><strong>Implemented here:</strong> Added family-health workflow routing plus dashboard/PDF actions for appointment planning.</p>
+<p><a href="https://www.who.int/publications/i/item/9789241549912" rel="noopener" target="_blank">WHO antenatal care recommendations</a></p>
+</div>
+<div class="health-action-card">
+<h3>Dashboard and PDF actions</h3>
+<ul>
+<li>Save this health plan to the dashboard workspace on this device.</li>
+<li>Unlock a PDF version through the Health email gate for follow-up and visit prep.</li>
+<li>Signed-in sessions attempt account workspace sync when the shared workspace API is available.</li>
+</ul>
+<div class="health-action-buttons">
+<button type="button" class="health-workflow-btn" data-health-action="save" data-health-tool-id="ovulation-calc">Save to dashboard</button>
+<button type="button" class="health-workflow-btn secondary" data-health-action="pdf" data-health-tool-id="ovulation-calc">Get PDF plan</button>
+</div>
+</div>
+</div>
+<div class="health-action-card" style="margin-top:1rem">
+<h3>Continue in Pregnancy and child care plan</h3>
+<div class="health-action-links">
+<a href="/health/pregnancy-due-date/">Open workflow hub</a>
+<a href="/health/pregnancy-due-date/">Pregnancy Due Date Calculator</a><a href="/tools/pregnancy-nutrition/">Pregnancy Nutrition Calculator (African Diet)</a><a href="/tools/childbirth-cost/">Childbirth Cost Calculator</a><a href="/tools/vaccine-schedule/">African Child Vaccine Schedule</a>
+</div>
+</div>
+</section>
+<!-- HEALTH-COMPLETE-PACKAGE:END -->
+<afro-footer></afro-footer>
+
+<script>
+function calculate(){
+  const lastPeriod=document.getElementById('lastPeriod').value;
+  if(!lastPeriod){alert('Please enter the first day of your last period.');return}
+  const cycleLen=parseInt(document.getElementById('cycleLen').value);
+  const periodLen=parseInt(document.getElementById('periodLen').value);
+
+  const lp=new Date(lastPeriod+'T00:00:00');
+  const ovulationDay=cycleLen-14;
+  const ovulDate=new Date(lp.getTime()+ovulationDay*86400000);
+  const fertileStart=new Date(ovulDate.getTime()-5*86400000);
+  const fertileEnd=new Date(ovulDate.getTime()); // fertile window ends on ovulation day (5 days before + ovulation day = 6 days)
+  const nextPeriod=new Date(lp.getTime()+cycleLen*86400000);
+  const dueDate=new Date(lp.getTime()+280*86400000); // 40 weeks from LMP
+
+  const opts={weekday:'short',month:'short',day:'numeric'};
+  document.getElementById('rOvul').textContent=ovulDate.toLocaleDateString('en',opts);
+  document.getElementById('rFertile').textContent=fertileStart.toLocaleDateString('en',{month:'short',day:'numeric'})+' - '+fertileEnd.toLocaleDateString('en',{month:'short',day:'numeric'});
+  document.getElementById('rNextPeriod').textContent=nextPeriod.toLocaleDateString('en',opts);
+  document.getElementById('rDueDate').textContent=dueDate.toLocaleDateString('en',{month:'long',day:'numeric',year:'numeric'});
+
+  // Build calendar
+  buildCalendar(lp,cycleLen,periodLen,ovulDate,fertileStart,fertileEnd);
+
+  document.getElementById('results').style.display='block';
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function buildCalendar(lp,cycleLen,periodLen,ovulDate,fertileStart,fertileEnd){
+  const cal=document.getElementById('calendar');
+  // Show 2 months
+  const months=[];
+  const startMonth=new Date(lp.getFullYear(),lp.getMonth(),1);
+  months.push(new Date(startMonth));
+  months.push(new Date(startMonth.getFullYear(),startMonth.getMonth()+1,1));
+
+  const periodEnd=new Date(lp.getTime()+(periodLen-1)*86400000);
+  const today=new Date();today.setHours(0,0,0,0);
+
+  let html='';
+  months.forEach(monthStart=>{
+    const year=monthStart.getFullYear();
+    const month=monthStart.getMonth();
+    const daysInMonth=new Date(year,month+1,0).getDate();
+    const firstDow=monthStart.getDay();
+    const monthName=monthStart.toLocaleDateString('en',{month:'long',year:'numeric'});
+
+    html+=`<div class="cal-month">${monthName}</div><div class="cal-grid">`;
+    ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(d=>html+=`<div class="cal-header">${d}</div>`);
+
+    for(let i=0;i<firstDow;i++)html+='<div class="cal-day empty"></div>';
+
+    for(let d=1;d<=daysInMonth;d++){
+      const date=new Date(year,month,d);
+      let cls='cal-day';
+      if(date>=lp&&date<=periodEnd)cls+=' period';
+      if(date>=fertileStart&&date<=fertileEnd)cls+=' fertile';
+      if(date.getTime()===ovulDate.getTime())cls+=' ovulation';
+      if(date.getTime()===today.getTime())cls+=' today';
+      html+=`<div class="${cls}">${d}</div>`;
+    }
+    html+='</div>';
+  });
+  cal.innerHTML=html;
+}
+
+// Set default date to today
+const today=new Date();
+document.getElementById('lastPeriod').value=today.toISOString().split('T')[0];
+</script>
+
+<script>
+(function(){
+  var target = document.getElementById('results');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
+  div.innerHTML = '<save-result-button tool-slug="ovulation-calc" tool-name="Ovulation Calc"></save-result-button><share-result-button tool-name="Ovulation Calc" tool-slug="ovulation-calc"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
+<script src="/assets/js/health-workflow.js?v=e8ad8f1d" defer></script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

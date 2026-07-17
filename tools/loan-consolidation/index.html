@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Loan Consolidation Calculator | AfroTools</title>
+<meta name="description" content="Should you consolidate your loans? Compare keeping multiple loans vs one consolidation loan — savings, break-even point, and new monthly payment.">
+<meta property="og:title" content="Loan Consolidation Calculator | AfroTools">
+<meta property="og:description" content="Should you consolidate your loans? Compare keeping multiple loans vs one consolidation loan — savings, break-even point, and new monthly payment.">
+<meta property="og:url" content="https://afrotools.com/tools/loan-consolidation/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Loan Consolidation Calculator | AfroTools">
+<meta name="twitter:description" content="Should you consolidate your loans? Compare keeping multiple loans vs one consolidation loan — savings, break-even point, and new monthly payment.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Loan Consolidation Calculator",
+  "url": "https://afrotools.com/tools/loan-consolidation/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools"
+  },
+  "image": "https://afrotools.com/assets/img/tools/loan-consolidation.webp"
+}
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Fintech & Banking","item":"https://afrotools.com/fintech/"},{"@type":"ListItem","position":3,"name":"Loan Consolidation","item":"https://afrotools.com/tools/loan-consolidation/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
+.tool-hero{background:linear-gradient(135deg,#0A1628 0%,#1a1035 50%,#2d1b69 100%);color:#fff;padding:2.5rem 1.5rem 3rem}
+.tool-hero .container{max-width:900px;margin:0 auto}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.78);margin-bottom:.75rem}
+.breadcrumb a{color:rgba(255,255,255,.78);text-decoration:none}
+.breadcrumb span{margin:0 .35rem;opacity:.4}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin:.25rem 0 .6rem;line-height:1.2}
+.tool-hero p{font-size:.95rem;color:rgba(255,255,255,.92);max-width:580px;line-height:1.65}
+.hero-badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.hero-badge{padding:4px 12px;border-radius:100px;font-size:.75rem;font-weight:600;background:rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1.25rem}
+.loan-entry{border:1.5px solid #e5e7eb;border-radius:10px;padding:1rem;margin-bottom:.75rem;position:relative}
+.loan-entry h4{font-size:.85rem;font-weight:700;margin:0 0 .75rem;color:#374151}
+.loan-entry-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem}
+.form-group{display:flex;flex-direction:column;gap:4px}
+label{font-size:.82rem;font-weight:600;color:#374151}
+input[type="number"]{width:100%;padding:.65rem .85rem;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.9rem;background:#fff;transition:border-color .2s}
+input:focus{outline:none;border-color:var(--color-primary)}
+.btn-add{padding:.5rem 1rem;border:1.5px dashed #e5e7eb;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;background:#f9fafb;color:#6b7280;width:100%;margin-bottom:.75rem;transition:all .2s}
+.btn-add:hover{border-color:var(--color-primary);color:var(--color-primary)}
+.btn-del{position:absolute;top:.75rem;right:.75rem;background:none;border:none;cursor:pointer;color:#ef4444;font-size:.9rem}
+.section-divider{border-top:2px solid #e5e7eb;margin:1.25rem 0 1rem;padding-top:1rem}
+.section-divider h3{font-size:.95rem;font-weight:700;color:#374151;margin:0 0 .75rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.btn-calc{width:100%;padding:.85rem;border:none;border-radius:10px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:.5rem;transition:filter .2s}
+.btn-calc:hover{filter:brightness(1.1)}
+.results{display:none;margin-top:1.25rem}
+.results.on{display:block}
+.verdict{border-radius:14px;padding:1.5rem;text-align:center;color:#fff;margin-bottom:1.25rem}
+.verdict.go{background:linear-gradient(135deg,#4c1d95,#7c3aed)}
+.verdict.no-go{background:linear-gradient(135deg,#991b1b,#dc2626)}
+.verdict-label{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;opacity:.75;margin-bottom:.35rem}
+.verdict-val{font-size:1.5rem;font-weight:800;margin:.25rem 0}
+.verdict-sub{font-size:.85rem;opacity:.8}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.25rem}
+.metric{background:#f8fafd;border:1.5px solid #e5e7eb;border-radius:12px;padding:1rem;text-align:center}
+.metric-val{font-size:1.3rem;font-weight:800;color:var(--color-primary)}
+.metric-label{font-size:.75rem;color:#6b7280;margin-top:3px}
+.info-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:1rem 1.25rem;font-size:.85rem;color:#1e40af;line-height:1.6;margin-top:1rem}
+details summary{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;list-style:none;background:#f9fafb;display:flex;justify-content:space-between}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
+details[open] summary::after{content:'\2212'}
+.faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
+.faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+@media(max-width:680px){.loan-entry-grid{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}}
+</style>
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/loan-consolidation.webp">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/loan-consolidation.webp">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Loan Consolidation Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Loan Consolidation Calculator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Loan Consolidation Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Loan Consolidation Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"When should I consolidate loans?","acceptedAnswer":{"@type":"Answer","text":"Consolidate when: (1) The new interest rate is lower than your weighted average current rate, (2) You're struggling with multiple due dates, (3) You need lower monthly payments for cash flow. Don't consolidate when: you would extend a short-term loan into a long-term one and pay more total interest, or when fees make it not worthwhile."}},{"@type":"Question","name":"Where can I get a loan consolidation in Africa?","acceptedAnswer":{"@type":"Answer","text":"Most commercial banks offer personal loan consolidation: Equity Bank (Kenya), GTBank (Nigeria), Standard Bank (South Africa), Absa, Stanbic, and others. You apply for a single personal loan equal to your total outstanding debt, then use it to pay off all existing loans. SACCOs in Kenya also offer competitive consolidation loans."}},{"@type":"Question","name":"Does loan consolidation hurt my credit score?","acceptedAnswer":{"@type":"Answer","text":"A consolidation loan involves one hard credit inquiry (minor temporary dip, -5 to -10 points). However, closing multiple accounts and having one new account can temporarily affect your score. The positive long-term effects (lower utilization, on-time payments on one loan) usually outweigh the short-term impact within 6-12 months."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/loan-consolidation/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/loan-consolidation/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/consolidation-prets/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/unganisha-mikopo/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/loan-consolidation/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar theme="dark" active="fintech"></afro-navbar>
+<div class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb"><a href="/">AfroTools</a><span>›</span><a href="/fintech/">Fintech &amp; Banking</a><span>›</span>Loan Consolidation</nav>
+    <h1>Loan Consolidation Calculator</h1>
+    <p>Should you consolidate your loans? Enter your current debts and compare keeping them vs one consolidation loan — save money or lower monthly payments.</p>
+    <div class="hero-badges"><span class="hero-badge">Universal</span><span class="hero-badge">Break-Even Analysis</span><span class="hero-badge">Free</span></div>
+  </div>
+</div>
+<div class="container">
+  <div class="card">
+    <h2>Current Loans</h2>
+    <div id="loans-list">
+      <div class="loan-entry">
+        <h4>Loan 1</h4>
+        <div class="loan-entry-grid">
+          <div class="form-group"><label>Balance</label><input aria-label="Lc balance" type="number" class="lc-balance" value="500000"></div>
+          <div class="form-group"><label>Monthly Payment</label><input aria-label="Lc payment" type="number" class="lc-payment" value="25000"></div>
+          <div class="form-group"><label>Annual Rate (%)</label><input aria-label="Lc rate" type="number" class="lc-rate" value="28"></div>
+        </div>
+        <button type="button" class="btn-del" onclick="this.closest('.loan-entry').remove()">&#x2715;</button>
+      </div>
+      <div class="loan-entry">
+        <h4>Loan 2</h4>
+        <div class="loan-entry-grid">
+          <div class="form-group"><label>Balance</label><input aria-label="Lc balance" type="number" class="lc-balance" value="300000"></div>
+          <div class="form-group"><label>Monthly Payment</label><input aria-label="Lc payment" type="number" class="lc-payment" value="18000"></div>
+          <div class="form-group"><label>Annual Rate (%)</label><input aria-label="Lc rate" type="number" class="lc-rate" value="36"></div>
+        </div>
+        <button type="button" class="btn-del" onclick="this.closest('.loan-entry').remove()">&#x2715;</button>
+      </div>
+      <div class="loan-entry">
+        <h4>Loan 3</h4>
+        <div class="loan-entry-grid">
+          <div class="form-group"><label>Balance</label><input aria-label="Lc balance" type="number" class="lc-balance" value="200000"></div>
+          <div class="form-group"><label>Monthly Payment</label><input aria-label="Lc payment" type="number" class="lc-payment" value="12000"></div>
+          <div class="form-group"><label>Annual Rate (%)</label><input aria-label="Lc rate" type="number" class="lc-rate" value="18"></div>
+        </div>
+        <button type="button" class="btn-del" onclick="this.closest('.loan-entry').remove()">&#x2715;</button>
+      </div>
+    </div>
+    <button type="button" class="btn-add" onclick="addLoan()">+ Add Loan</button>
+    <div class="section-divider">
+      <h3>Consolidation Loan Terms</h3>
+      <div class="form-grid">
+        <div class="form-group"><label for="lc-new-rate">Consolidation Loan Annual Rate (%)</label><input type="number" id="lc-new-rate" value="22"></div>
+        <div class="form-group"><label for="lc-new-tenor">Consolidation Tenor (Months)</label>
+          <select id="lc-new-tenor" style="width:100%;padding:.65rem .85rem;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.9rem">
+            <option value="12">12 Months</option>
+            <option value="24" selected>24 Months</option>
+            <option value="36">36 Months</option>
+            <option value="48">48 Months</option>
+            <option value="60">60 Months</option>
+          </select>
+        </div>
+        <div class="form-group"><label for="lc-origination">Origination / Processing Fee (%)</label><input type="number" id="lc-origination" value="2" step="0.5"></div>
+      </div>
+    </div>
+    <button type="button" class="btn-calc" onclick="calcConsolidation()">Compare Options</button>
+    <div class="results" id="lc-results">
+      <div class="verdict" id="lc-verdict-box">
+        <div class="verdict-label">Recommendation</div>
+        <div class="verdict-val" id="lc-verdict-val"></div>
+        <div class="verdict-sub" id="lc-verdict-sub"></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-val" id="lc-current-monthly"></div><div class="metric-label">Current Total Monthly</div></div>
+        <div class="metric"><div class="metric-val" id="lc-new-monthly"></div><div class="metric-label">New Monthly Payment</div></div>
+        <div class="metric"><div class="metric-val" id="lc-monthly-savings"></div><div class="metric-label">Monthly Savings</div></div>
+        <div class="metric"><div class="metric-val" id="lc-total-savings"></div><div class="metric-label">Total Interest Savings</div></div>
+        <div class="metric"><div class="metric-val" id="lc-breakeven"></div><div class="metric-label">Break-Even Period</div></div>
+        <div class="metric"><div class="metric-val" id="lc-total-balance"></div><div class="metric-label">Total Balance to Consolidate</div></div>
+      </div>
+      <div class="info-box">Consolidation makes sense when the new rate is lower than your weighted average current rate AND you need cash flow relief. Be cautious of extending the loan term too much — a lower monthly payment with longer tenor can cost more in total interest.</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Frequently Asked Questions</h2>
+
+<section class="df-upgrade" data-df-upgrade="loan-consolidation">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Payment comparison workflow</span>
+      <h2>Loan Consolidation Calculator: quick guide</h2>
+      <p>Not sure how to get the most from the Loan Consolidation Calculator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Loan Consolidation Calculator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
+    </div>
+    <form class="df-form" data-df-form="loan-consolidation">
+      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
+      <label>Transaction value<input name="transaction" type="number" value="50000" min="0" step="any" aria-label="Transaction value"></label>
+      <label>Fee percent<input name="fee" type="number" value="1.5" min="0" step="any" aria-label="Fee percent"></label>
+      <label>Channel<select name="channel" aria-label="Channel"><option value="POS">POS</option><option value="bank transfer">bank transfer</option><option value="mobile money">mobile money</option><option value="card">card</option></select></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="loan-consolidation" data-df-base="Loan Consolidation Calculator — enter your details above to see your result." aria-live="polite">Loan Consolidation Calculator — enter your details above to see your result.</output>
+      <div class="df-actions"><button type="button" data-df-copy="loan-consolidation">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="loan-consolidation-faq-title">
+  <h2 id="loan-consolidation-faq-title">Loan Consolidation Calculator FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the Loan Consolidation Calculator?</summary><p>Enter your amounts, rates and dates in the fields above. The Loan Consolidation Calculator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Loan Consolidation Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Loan Consolidation Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
+</section>
+    <div class="faq-item"><details><summary>When should I consolidate loans?</summary><div class="faq-a">Consolidate when: (1) The new interest rate is lower than your weighted average current rate, (2) You're struggling with multiple due dates, (3) You need lower monthly payments for cash flow. Don't consolidate when: you would extend a short-term loan into a long-term one and pay more total interest, or when fees make it not worthwhile.</div></details></div>
+    <div class="faq-item"><details><summary>Where can I get a loan consolidation in Africa?</summary><div class="faq-a">Most commercial banks offer personal loan consolidation: Equity Bank (Kenya), GTBank (Nigeria), Standard Bank (South Africa), Absa, Stanbic, and others. You apply for a single personal loan equal to your total outstanding debt, then use it to pay off all existing loans. SACCOs in Kenya also offer competitive consolidation loans.</div></details></div>
+    <div class="faq-item"><details><summary>Does loan consolidation hurt my credit score?</summary><div class="faq-a">A consolidation loan involves one hard credit inquiry (minor temporary dip, -5 to -10 points). However, closing multiple accounts and having one new account can temporarily affect your score. The positive long-term effects (lower utilization, on-time payments on one loan) usually outweigh the short-term impact within 6-12 months.</div></details></div>
+  </div>
+</div>
+<afro-related-tools data-ssr="1" category="fintech" current="loan-consolidation">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/loan-shark-compare/" data-related-tool data-id="loan-shark-compare" data-name="Loan Shark vs Bank Rate" data-category="fintech" data-icon="LS" data-desc="Compare informal moneylender rates vs bank loans vs fintech apps. True APR calculator showing hidden cost of predatory l">Loan Shark vs Bank Rate</a></li><li><a href="/tools/mobile-vs-bank/" data-related-tool data-id="mobile-vs-bank" data-name="Mobile Money vs Bank Transfer" data-category="fintech" data-icon="MM" data-desc="Compare M-Pesa, MTN MoMo, Airtel Money vs bank transfer fees for domestic and cross-border payments across Africa.">Mobile Money vs Bank Transfer</a></li><li><a href="/tools/digital-lending/" data-related-tool data-id="digital-lending" data-name="Digital Lending App Rates" data-category="fintech" data-icon="DL" data-desc="Compare digital lending apps (Fuliza, FairMoney, Carbon, PalmCredit) — true APR, fees, repayment periods.">Digital Lending App Rates</a></li><li><a href="/tools/fixed-deposit/" data-related-tool data-id="fixed-deposit" data-name="Fixed Deposit Rate Comparator" data-category="fintech" data-icon="FD" data-desc="Compare fixed deposit and savings account interest rates across African banks. 30/60/90/180/365-day tenors, 20+ banks.">Fixed Deposit Rate Comparator</a></li><li><a href="/tools/microfinance-loan/" data-related-tool data-id="microfinance-loan" data-name="Microfinance Loan Calculator" data-category="fintech" data-icon="ML" data-desc="Calculate microfinance loan repayments for African MFIs. Flat vs reducing balance, group vs individual loans.">Microfinance Loan Calculator</a></li><li><a href="/tools/payment-gateway/" data-related-tool data-id="payment-gateway" data-name="Payment Gateway Fee Compare" data-category="fintech" data-icon="PG" data-desc="Compare Paystack, Flutterwave, Stripe, DPO, Peach Payments transaction fees for African merchants.">Payment Gateway Fee Compare</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+<script>
+var loanCount=3;
+function addLoan(){
+  loanCount++;
+  var div=document.createElement('div');
+  div.className='loan-entry';
+  div.innerHTML='<h4>Loan '+loanCount+'</h4><div class="loan-entry-grid"><div class="form-group"><label>Balance</label><input aria-label="Lc balance" type="number" class="lc-balance" value="0"></div><div class="form-group"><label>Monthly Payment</label><input aria-label="Lc payment" type="number" class="lc-payment" value="0"></div><div class="form-group"><label>Annual Rate (%)</label><input aria-label="Lc rate" type="number" class="lc-rate" value="24"></div></div><button type="button" class="btn-del" onclick="this.closest(\'.loan-entry\').remove()">&#x2715;</button>';
+  document.getElementById('loans-list').appendChild(div);
+}
+function calcConsolidation(){
+  var balances=document.querySelectorAll('.lc-balance');
+  var payments=document.querySelectorAll('.lc-payment');
+  var rates=document.querySelectorAll('.lc-rate');
+  var totalBalance=0,totalMonthly=0,weightedRate=0;
+  for(var i=0;i<balances.length;i++){
+    var b=parseFloat(balances[i].value)||0;
+    var p=parseFloat(payments[i].value)||0;
+    var r=parseFloat(rates[i].value)/100||0;
+    totalBalance+=b;
+    totalMonthly+=p;
+    weightedRate+=b*(r/12);
+  }
+  var avgMonthlyRate=totalBalance>0?weightedRate/totalBalance:0;
+  var newRate=parseFloat(document.getElementById('lc-new-rate').value)/100;
+  var newMonthlyRate=newRate/12;
+  var newTenor=parseInt(document.getElementById('lc-new-tenor').value);
+  var originationPct=parseFloat(document.getElementById('lc-origination').value)/100;
+  var originationFee=totalBalance*originationPct;
+  var consolidatedAmount=totalBalance+originationFee;
+  var newMonthly=newMonthlyRate>0?consolidatedAmount*(newMonthlyRate*Math.pow(1+newMonthlyRate,newTenor))/(Math.pow(1+newMonthlyRate,newTenor)-1):consolidatedAmount/newTenor;
+  var newTotal=newMonthly*newTenor;
+  var newInterest=newTotal-totalBalance;
+  // Current total cost (approximate: current balance * avg weighted rate * approx months remaining)
+  var approxCurrentMonths=totalBalance>0?totalBalance/totalMonthly:12;
+  var currentTotalInterest=totalMonthly*approxCurrentMonths-totalBalance;
+  var totalInterestSavings=currentTotalInterest-newInterest;
+  var monthlyDiff=totalMonthly-newMonthly;
+  var breakEven=monthlyDiff>0?Math.ceil(originationFee/monthlyDiff):999;
+  function fmt(n){return (Math.round(n)).toLocaleString();}
+  var shouldConsolidate=newRate<avgMonthlyRate*12&&totalInterestSavings>0;
+  var verdictBox=document.getElementById('lc-verdict-box');
+  verdictBox.className='verdict '+(shouldConsolidate?'go':'no-go');
+  document.getElementById('lc-verdict-val').textContent=shouldConsolidate?'Consolidation Makes Sense':'Keep Current Loans';
+  document.getElementById('lc-verdict-sub').textContent=shouldConsolidate?'Lower rate than weighted average. Estimated savings: '+fmt(totalInterestSavings):'Consolidation rate ('+(newRate*100).toFixed(1)+'%) vs avg ('+(avgMonthlyRate*1200).toFixed(1)+'%) — not enough benefit.';
+  document.getElementById('lc-current-monthly').textContent=fmt(totalMonthly);
+  document.getElementById('lc-new-monthly').textContent=fmt(newMonthly);
+  document.getElementById('lc-monthly-savings').textContent=(monthlyDiff>=0?'+':'')+fmt(monthlyDiff);
+  document.getElementById('lc-total-savings').textContent=(totalInterestSavings>=0?'+':'')+fmt(totalInterestSavings);
+  document.getElementById('lc-breakeven').textContent=breakEven>120?'N/A':breakEven+' months';
+  document.getElementById('lc-total-balance').textContent=fmt(totalBalance);
+  document.getElementById('lc-results').classList.add('on');
+}
+</script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

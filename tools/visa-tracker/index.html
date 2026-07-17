@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Visa Application Tracker — UK, Canada, Australia, USA, UAE | AfroTools</title>
+<meta name="description" content="Track your visa application status, days elapsed, estimated completion date, and documents checklist for UK, Canada, Australia, USA, UAE, and Schengen visas from Africa.">
+<meta property="og:title" content="Visa Application Tracker — AfroTools">
+<meta property="og:description" content="Track your visa application: days elapsed, estimated completion, missing documents. UK, Canada, Australia, USA, UAE, Schengen.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/visa-tracker.webp">
+<meta property="og:url" content="https://afrotools.com/tools/visa-tracker/">
+<meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Visa Application Tracker — UK, Canada, Australia, USA, UAE | AfroTools">
+<meta name="twitter:description" content="Track your visa application status, days elapsed, estimated completion date, and documents checklist for UK, Canada, Australia, USA, UAE, and Schengen visas from Africa.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Visa Application Tracker",
+  "description": "Track your visa application status, days elapsed, and estimated completion for UK, Canada, Australia, USA, UAE, and Schengen.",
+  "url": "https://afrotools.com/tools/visa-tracker/",
+  "applicationCategory": "UtilityApplication",
+  "provider": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "image": "https://afrotools.com/assets/img/tools/visa-tracker.webp"
+}
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Diaspora Tools","item":"https://afrotools.com/diaspora/"},{"@type":"ListItem","position":3,"name":"Visa Application Tracker","item":"https://afrotools.com/tools/visa-tracker/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/diaspora.css?v=300f1bb0">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}
+.status-bar-wrap{background:#f1f5f9;border-radius:980px;height:12px;overflow:hidden;margin:12px 0}
+.status-bar{height:100%;background:linear-gradient(90deg,#7c3aed,#6d28d9);border-radius:980px;transition:width .6s ease}
+.status-steps{display:flex;justify-content:space-between;margin-top:6px}
+.status-step{font-size:.72rem;color:#94a3b8;font-weight:500}
+.status-step.active{color:#7c3aed;font-weight:700}
+.doc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px;margin-top:12px}
+.doc-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;border:1px solid #e2e8f0;background:#fff;font-size:.86rem;cursor:pointer;transition:border-color .15s}
+.doc-item:hover{border-color:#7c3aed}
+.doc-item input{accent-color:#7c3aed;width:16px;height:16px;flex-shrink:0;cursor:pointer}
+.doc-item.checked{background:#F5F3FF;border-color:#7c3aed}
+.doc-item label{cursor:pointer;line-height:1.3}
+.timeline-item{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid #f1f5f9}
+.timeline-item:last-child{border-bottom:none}
+.timeline-dot{width:10px;height:10px;border-radius:50%;background:#7c3aed;flex-shrink:0;margin-top:5px}
+.timeline-dot.pending{background:#e2e8f0}
+.timeline-content{flex:1}
+.timeline-label{font-size:.88rem;font-weight:600;color:#0f172a}
+.timeline-date{font-size:.78rem;color:#64748b;margin-top:2px}
+</style>
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/visa-tracker.webp">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/diaspora-focus.css?v=b5803faa">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Visa Application Tracker?","acceptedAnswer":{"@type":"Answer","text":"Enter your profile and documents in the fields above. The Visa Application Tracker then gives you a readiness checklist and estimate you can use straight away."}},{"@type":"Question","name":"How accurate is the Visa Application Tracker?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm the official immigration or embassy source before you rely on it. It is general information, not immigration advice."}},{"@type":"Question","name":"Is the Visa Application Tracker free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"How accurate are the processing time estimates?","acceptedAnswer":{"@type":"Answer","text":"Processing times are based on published government data and community reports as of 2026. Individual cases vary based on complexity, peak season, and whether additional documents are requested. Always check the official immigration portal for the most current times."}},{"@type":"Question","name":"What does 'biometric business days' mean for UK visas?","acceptedAnswer":{"@type":"Answer","text":"The UK Home Office counts business days from when your biometrics are submitted at a Visa Application Centre (VAC), not from when you paid online. The 15 business day standard service excludes weekends and UK public holidays."}},{"@type":"Question","name":"Can I expedite my visa application?","acceptedAnswer":{"@type":"Answer","text":"UK: Priority service (5 business days) and Super Priority (next working day) are available for most visa types at an extra cost. USA: Emergency appointments are available for genuine emergencies. Canada: No paid expedite; Express Entry applications are processed faster than paper applications. Australia: Priority processing is available in some streams."}},{"@type":"Question","name":"My application is past the estimated date — what should I do?","acceptedAnswer":{"@type":"Answer","text":"UK: You can contact the Home Office after the published timeframe. USA: Check CEAC status; file a service request with USCIS after 60 days past the published timeframe. Canada: Use the IRCC online portal to check status and submit a webform if delayed. Australia: Use ImmiAccount to check status and contact the Department if significantly delayed."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/visa-tracker/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/visa-tracker/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/visa-tracker/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar theme="dark" active="diaspora"></afro-navbar>
+
+<section class="ds-tool-hero">
+  <div class="ds-tool-hero-inner">
+    <nav class="ds-breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a><span class="ds-breadcrumb-sep">›</span>
+      <a href="/diaspora/">Diaspora Tools</a><span class="ds-breadcrumb-sep">›</span>
+      <span>Visa Application Tracker</span>
+    </nav>
+    <h1>&#x1f4cb; Visa Application <em>Tracker</em></h1>
+    <p>Track your visa application status, days elapsed, estimated completion date, and missing documents. UK, Canada, Australia, USA, UAE, and Schengen.</p>
+    <div class="ds-tool-hero-meta">
+      <span class="ds-tool-hero-pill">&#x2708;&#xfe0f; 6 Destinations</span>
+      <span class="ds-tool-hero-pill">&#x1f4c5; Timeline View</span>
+      <span class="ds-tool-hero-pill">&#x2705; Document Checklist</span>
+      <span class="ds-tool-hero-pill">&#x1f195; Free</span>
+    </div>
+  </div>
+</section>
+
+<div class="ds-tool-layout">
+
+  <div class="ds-card">
+    <div class="ds-card-title"><span class="ds-card-title-icon">&#x1f30d;</span> Application Details</div>
+    <div class="ds-form-grid">
+      <div class="ds-field">
+        <label class="ds-label" for="destCountry">Destination Country</label>
+        <select class="ds-select" id="destCountry" onchange="updateDocList()">
+          <option value="">— Select destination —</option>
+          <option value="UK">&#x1f1ec;&#x1f1e7; United Kingdom</option>
+          <option value="CA">&#x1f1e8;&#x1f1e6; Canada</option>
+          <option value="AU">&#x1f1e6;&#x1f1fa; Australia</option>
+          <option value="US">&#x1f1fa;&#x1f1f8; United States</option>
+          <option value="AE">&#x1f1e6;&#x1f1ea; UAE</option>
+          <option value="SC">&#x1f1ea;&#x1f1fa; Schengen (Europe)</option>
+        </select>
+      </div>
+      <div class="ds-field">
+        <label class="ds-label" for="originCountry">Your Home Country</label>
+        <select class="ds-select" id="originCountry">
+          <option value="NG">&#x1f1f3;&#x1f1ec; Nigeria</option>
+          <option value="KE">&#x1f1f0;&#x1f1ea; Kenya</option>
+          <option value="GH">&#x1f1ec;&#x1f1ed; Ghana</option>
+          <option value="ZA">&#x1f1ff;&#x1f1e6; South Africa</option>
+          <option value="EG">&#x1f1ea;&#x1f1ec; Egypt</option>
+          <option value="ET">&#x1f1ea;&#x1f1f9; Ethiopia</option>
+          <option value="TZ">&#x1f1f9;&#x1f1ff; Tanzania</option>
+          <option value="UG">&#x1f1fa;&#x1f1ec; Uganda</option>
+          <option value="RW">&#x1f1f7;&#x1f1fc; Rwanda</option>
+          <option value="CI">&#x1f1e8;&#x1f1ee; Côte d'Ivoire</option>
+          <option value="CM">&#x1f1e8;&#x1f1f2; Cameroon</option>
+          <option value="SN">&#x1f1f8;&#x1f1f3; Senegal</option>
+          <option value="MA">&#x1f1f2;&#x1f1e6; Morocco</option>
+          <option value="TN">&#x1f1f9;&#x1f1f3; Tunisia</option>
+          <option value="AO">&#x1f1e6;&#x1f1f4; Angola</option>
+        </select>
+      </div>
+      <div class="ds-field">
+        <label class="ds-label" for="visaType">Visa Type</label>
+        <select class="ds-select" id="visaType" onchange="updateDocList()">
+          <option value="tourist">Tourist / Visitor</option>
+          <option value="work">Work Visa</option>
+          <option value="study">Student / Study</option>
+          <option value="pr">Permanent Residence (PR)</option>
+          <option value="family">Family Reunion</option>
+        </select>
+      </div>
+      <div class="ds-field">
+        <label class="ds-label" for="submitDate">Application Submitted Date</label>
+        <input class="ds-input" type="date" id="submitDate">
+      </div>
+      <div class="ds-field ds-field-full">
+        <label class="ds-label">Documents Submitted (tick all that apply)</label>
+        <div class="doc-grid" id="docGrid">
+          <p style="color:#94a3b8;font-size:.85rem;padding:8px 0">Select a destination country to see document checklist</p>
+        </div>
+      </div>
+    </div>
+    <div class="ds-form-actions">
+      <button type="button" class="ds-btn" onclick="trackVisa()">Track Application</button>
+      <button type="button" class="ds-btn ds-btn-secondary" onclick="resetForm()">Reset</button>
+    </div>
+  </div>
+
+  <div class="ds-results" id="results">
+
+    <div class="ds-results-hero">
+      <div class="ds-results-hero-inner">
+        <div class="ds-results-hero-label">Days Elapsed</div>
+        <div class="ds-results-hero-value" id="rDaysElapsed">—</div>
+        <div class="ds-results-hero-sub" id="rStatus">Calculating...</div>
+      </div>
+    </div>
+
+    <div class="ds-metrics" id="rMetrics"></div>
+
+    <div class="ds-card">
+      <div class="ds-card-title"><span class="ds-card-title-icon">&#x1f4ca;</span> Application Progress</div>
+      <div class="status-bar-wrap"><div class="status-bar" id="progressBar" style="width:0%"></div></div>
+      <div class="status-steps">
+        <span class="status-step" id="step1">Submitted</span>
+        <span class="status-step" id="step2">Under Review</span>
+        <span class="status-step" id="step3">Decision</span>
+        <span class="status-step" id="step4">Complete</span>
+      </div>
+    </div>
+
+    <div class="ds-card">
+      <div class="ds-card-title"><span class="ds-card-title-icon">&#x1f4c5;</span> Application Timeline</div>
+      <div id="rTimeline"></div>
+    </div>
+
+    <div class="ds-card">
+      <div class="ds-card-title"><span class="ds-card-title-icon">&#x2705;</span> Document Status</div>
+      <div id="rDocStatus"></div>
+    </div>
+
+    <div class="ds-tip" id="rTip">
+      <span class="ds-tip-icon">&#x1f4a1;</span>
+      <div><div class="ds-tip-label">Pro Tip</div><div class="ds-tip-text" id="rTipText"></div></div>
+    </div>
+
+    <div class="ds-card">
+      <div class="ds-card-title"><span class="ds-card-title-icon">&#x1f310;</span> Next Steps</div>
+      <div id="rNextSteps"></div>
+    </div>
+
+  </div>
+
+<section class="df-upgrade" data-df-upgrade="visa-tracker">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Practical workflow</span>
+      <h2>Visa Application Tracker: quick guide</h2>
+      <p>Not sure how to get the most from the Visa Application Tracker? Enter your profile and documents and it returns a readiness checklist and estimate — built for all 54 African countries.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a readiness checklist and estimate, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Visa Application Tracker takes your profile and documents and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm the official immigration or embassy source before you rely on the result. It is general information, not immigration advice.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm the official immigration or embassy source before acting. It is general information, not immigration advice.</p>
+    </div>
+    <form class="df-form" data-df-form="visa-tracker">
+      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
+      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
+      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
+      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="visa-tracker" data-df-base="Visa Application Tracker — enter your details above to see your result." aria-live="polite">Visa Application Tracker — enter your details above to see your result.</output>
+      <div class="df-actions"><button type="button" data-df-copy="visa-tracker">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="visa-tracker-faq-title">
+  <h2 id="visa-tracker-faq-title">Visa Application Tracker — UK, Canada, Australia, USA, UAE FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the Visa Application Tracker?</summary><p>Enter your profile and documents in the fields above. The Visa Application Tracker then gives you a readiness checklist and estimate you can use straight away.</p></details><details><summary>How accurate is the Visa Application Tracker?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm the official immigration or embassy source before you rely on it. It is general information, not immigration advice.</p></details><details><summary>Is the Visa Application Tracker free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
+</section>
+  <div class="ds-faq">
+    <h2 class="ds-faq-title">Frequently Asked Questions</h2>
+    <div class="ds-faq-list">
+      <div class="ds-faq-item">
+        <button type="button" class="ds-faq-q" onclick="toggleFaq(this)">How accurate are the processing time estimates?</button>
+        <div class="ds-faq-a">Processing times are based on published government data and community reports as of 2026. Individual cases vary based on complexity, peak season, and whether additional documents are requested. Always check the official immigration portal for the most current times.</div>
+      </div>
+      <div class="ds-faq-item">
+        <button type="button" class="ds-faq-q" onclick="toggleFaq(this)">What does 'biometric business days' mean for UK visas?</button>
+        <div class="ds-faq-a">The UK Home Office counts business days from when your biometrics are submitted at a Visa Application Centre (VAC), not from when you paid online. The 15 business day standard service excludes weekends and UK public holidays.</div>
+      </div>
+      <div class="ds-faq-item">
+        <button type="button" class="ds-faq-q" onclick="toggleFaq(this)">Can I expedite my visa application?</button>
+        <div class="ds-faq-a">UK: Priority service (5 business days) and Super Priority (next working day) are available for most visa types at an extra cost. USA: Emergency appointments are available for genuine emergencies. Canada: No paid expedite; Express Entry applications are processed faster than paper applications. Australia: Priority processing is available in some streams.</div>
+      </div>
+      <div class="ds-faq-item">
+        <button type="button" class="ds-faq-q" onclick="toggleFaq(this)">My application is past the estimated date — what should I do?</button>
+        <div class="ds-faq-a">UK: You can contact the Home Office after the published timeframe. USA: Check CEAC status; file a service request with USCIS after 60 days past the published timeframe. Canada: Use the IRCC online portal to check status and submit a webform if delayed. Australia: Use ImmiAccount to check status and contact the Department if significantly delayed.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<afro-related-tools data-ssr="1" category="diaspora" current="visa-tracker">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/immigration-points/" data-related-tool data-id="immigration-points" data-name="Immigration Points Calculator — Canada CRS, Australia Points, UK Skilled Worker" data-category="diaspora" data-icon="IP" data-desc="Calculate your Canada Express Entry CRS score, Australia points test score, or check UK Skilled Worker visa eligibility.">Immigration Points Calculator — Canada CRS, Australia Points, UK Skilled Worker</a></li><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+var DOCS = {
+  UK: {
+    tourist: ['Valid passport (6+ months validity)','Passport photos (35x45mm)','Bank statements (3 months)','Proof of employment/income','Travel itinerary','Accommodation booking','Travel insurance','TB test certificate (if required)','Biometric appointment confirmation'],
+    work: ['Valid passport','Job offer letter from UK employer','Certificate of Sponsorship (CoS)','English language proof (IELTS/equivalent)','Qualifications certificates','Bank statements','TB test certificate','Biometric appointment confirmation'],
+    study: ['Valid passport','CAS (Confirmation of Acceptance for Studies)','Financial evidence (£1,334/month London or £1,023/month elsewhere)','English language proof','Academic qualifications','TB test certificate','Parental consent (if under 18)'],
+    pr: ['Valid passport','Biometric Residence Permit','5 years residence proof','Life in the UK test pass certificate','English language proof','Tax returns (P60s)','No Prior Conviction declaration'],
+    family: ['Valid passport','UK sponsor visa/ILR/citizenship proof','Relationship evidence','Financial evidence (sponsor meets income threshold)','TB test certificate','English language proof']
+  },
+  CA: {
+    tourist: ['Valid passport','Completed IMM 5257 form','Photos (35x45mm)','Proof of finances','Travel history','Ties to home country (employment letter, property)','Travel insurance'],
+    work: ['Valid passport','Job offer letter','LMIA (Labour Market Impact Assessment) if required','Provincial Nomination (if applicable)','Language test results','Educational credentials','Police clearance certificate'],
+    study: ['Valid passport','Letter of Acceptance from DLI','Proof of funds (CAD 20,635/year)','Language test results','Medical examination','Provincial Attestation Letter (PAL)'],
+    pr: ['Express Entry profile','Language test (IELTS CLB 7+)','Educational Credential Assessment (ECA)','Police clearance','Medical exam','Job offer (if applicable)','Proof of work experience'],
+    family: ['Valid passport','Sponsor undertaking (IMM 1344)','Sponsor financial proof','Proof of relationship','Police clearance','Medical exam']
+  },
+  AU: {
+    tourist: ['Valid passport','Completed application (online)','Financial evidence','Health insurance','Character declaration','Travel history'],
+    work: ['Valid passport','Sponsorship approval from employer','Skills assessment','English test (PTE/IELTS 6+)','Health examination','Police clearance','Character declaration'],
+    study: ['Valid passport','CoE (Confirmation of Enrolment)','OSHC (health cover)','Financial evidence (AUD 21,041/year)','English test results','GTE statement'],
+    pr: ['Skills assessment','English test (PTE/IELTS 6+)','Expression of Interest (EOI) in SkillSelect','State nomination (if subclass 190/491)','Health examination','Police clearance','Character declaration'],
+    family: ['Valid passport','Sponsor relationship proof','Financial evidence','Health examination','Police clearance']
+  },
+  US: {
+    tourist: ['Valid passport (6+ months validity)','DS-160 completed online','Visa application fee payment','Photo (5x5cm, white background)','Bank statements','Proof of employment/ties to home','Interview appointment confirmation'],
+    work: ['Valid passport','Approved petition (I-129 or I-140)','DS-160 form','Visa fee payment','SEVIS fee (for some categories)','Employment letter','Qualifications/credentials'],
+    study: ['Valid passport','I-20 from SEVIS-approved school','SEVIS fee payment receipt','Financial evidence','DS-160','Photo','English language proof'],
+    pr: ['I-485 or immigrant visa application','Approved I-130 or I-140 petition','Affidavit of Support (I-864)','Medical examination (I-693)','Police clearance','Birth certificate','Marriage certificate (if applicable)'],
+    family: ['Approved I-130 petition','Affidavit of Support','Financial evidence (125% poverty guideline)','Birth/marriage certificates','DS-260 (immigrant visa application)','Police clearance','Medical examination']
+  },
+  AE: {
+    tourist: ['Valid passport (6+ months)','Passport photo','Return flight booking','Hotel booking confirmation','Bank statement','Travel insurance (recommended)'],
+    work: ['Valid passport','Employment offer letter','Entry permit from employer','Medical fitness certificate','Emirates ID application','PRO service documents'],
+    study: ['Valid passport','University acceptance letter','Proof of funds','Sponsor letter (if sponsored)','Health insurance'],
+    pr: ['Long-term visa (investor/talent/retirement) documents','Property purchase deed (if property visa)','Financial evidence','Health insurance','Medical fitness certificate'],
+    family: ['Sponsor Emirates ID','Salary certificate (min AED 4,000)','Marriage/birth certificates','Tenancy contract','Health insurance for all members']
+  },
+  SC: {
+    tourist: ['Valid passport (3+ months beyond stay)','Completed Schengen application form','2 passport photos','Proof of accommodation','Travel insurance (EUR 30,000 minimum)','Bank statements (3 months)','Flight booking confirmation','Employment letter','No-objection certificate'],
+    work: ['Valid passport','Work permit from member state','Employment contract','Qualifications','Proof of accommodation','Health insurance'],
+    study: ['Valid passport','University acceptance letter','Proof of funds','Health insurance','Accommodation proof','Language proficiency'],
+    pr: ['Long-term residency documentation','5+ years legal residence in member state','Language test','Integration test (varies by country)','Stable income proof','Health insurance'],
+    family: ['Sponsor EU residence permit','Marriage/birth certificates','Proof of funds','Accommodation proof','Health insurance']
+  }
+};
+
+var PROCESSING = {
+  UK: { tourist: {min:15,max:21,unit:'business days',notes:'Standard service. Priority: 5 business days. Super Priority: 1 business day (extra cost).'}, work: {min:3,max:8,unit:'weeks',notes:'Skilled Worker visa. Processing starts after biometrics at VAC.'}, study: {min:3,max:6,unit:'weeks',notes:'Student visa. Apply up to 6 months before course start.'}, pr: {min:6,max:12,unit:'months',notes:'ILR/Settlement. Complex cases may take longer.'}, family: {min:12,max:24,unit:'months',notes:'Family reunion visas can have long queues. 2026 data.'}},
+  CA: { tourist: {min:14,max:56,unit:'days',notes:'Varies significantly. eTA: usually within 72 hours.'}, work: {min:2,max:24,unit:'months',notes:'LMIA-exempt: 2-4 months. LMIA required: up to 24 months depending on stream.'}, study: {min:4,max:16,unit:'weeks',notes:'Apply early. May need biometrics (adds 2-4 weeks).'}, pr: {min:6,max:24,unit:'months',notes:'Express Entry CRS draws: avg 6 months from ITA. PNP: up to 18 months.'}, family: {min:12,max:24,unit:'months',notes:'Spousal sponsorship: 12 months average. Parents/grandparents: up to 24 months.'}},
+  AU: { tourist: {min:1,max:60,unit:'days',notes:'eVisitor/ETA: 1 day. Visitor visa (600): 1 day to 60+ days.'}, work: {min:1,max:12,unit:'months',notes:'TSS (482): 1-6 months. ENS (186): up to 12 months.'}, study: {min:1,max:16,unit:'months',notes:'Student visa (500): 1 month for most. Complex cases longer.'}, pr: {min:6,max:24,unit:'months',notes:'189/190/491: 6-24 months. 186/187: up to 12 months.'}, family: {min:12,max:30,unit:'months',notes:'Partner visa: 12-30 months depending on stage.'}},
+  US: { tourist: {min:180,max:600,unit:'days',notes:'B1/B2 interview wait times are very high in 2026 — check travel.state.gov for your embassy.'}, work: {min:3,max:12,unit:'months',notes:'H-1B cap: annual lottery. L-1, O-1, TN may process faster.'}, study: {min:30,max:120,unit:'days',notes:'F-1 visa. Can apply up to 120 days before program start. SEVIS required.'}, pr: {min:12,max:72,unit:'months',notes:'Green card via employment: 1-6 years depending on preference category and country.'}, family: {min:12,max:240,unit:'months',notes:'IR categories: 12-24 months. F preference categories: 5-20+ years.'}},
+  AE: { tourist: {min:1,max:14,unit:'days',notes:'30-day visa on arrival for many African countries. e-Visa: 1-7 working days.'}, work: {min:7,max:30,unit:'days',notes:'Work permit via employer sponsor: typically 1-4 weeks.'}, study: {min:7,max:21,unit:'days',notes:'Student visa: 1-3 weeks. Requires university and health insurance.'}, pr: {min:14,max:90,unit:'days',notes:'Long-term residency visas (Golden Visa, Green Visa): 2 weeks to 3 months.'}, family: {min:14,max:60,unit:'days',notes:'Family residence visa: 2-8 weeks. Requires sponsor in UAE.'}},
+  SC: { tourist: {min:15,max:45,unit:'days',notes:'Apply to embassy of main destination country (most nights). Typically 15 days standard.'}, work: {min:30,max:90,unit:'days',notes:'Requires work permit from member state first.'}, study: {min:15,max:60,unit:'days',notes:'Apply to embassy of study country. Some countries faster than others.'}, pr: {min:12,max:60,unit:'months',notes:'EU Long-Term Residence permit: requires 5 years in member state first.'}, family: {min:3,max:12,unit:'months',notes:'Family reunification directive varies significantly by member state.'}}
+};
+
+var TIPS = {
+  UK: 'UK visas: Always check your VFS/TLScontact appointment availability before applying. Biometric appointment slots fill fast from Nigeria. Book as soon as you submit online.',
+  CA: 'Canada: The CRS cutoff fluctuates. Check the IRCC draws history to see if your score would have received an ITA in the last 6 months.',
+  AU: 'Australia: Lodge your application online via ImmiAccount. Many visas are decided within days if all documents are in order.',
+  US: 'USA: Interview wait times at Lagos/Nairobi/Accra embassies are among the longest globally. Book your appointment slot as soon as your DS-160 is ready.',
+  AE: 'UAE: Many African nationals get visa on arrival. Check the UAE GDRFA website to confirm your nationality\'s status before applying.',
+  SC: 'Schengen: Apply at the embassy of your primary destination country. If you have multiple stops of equal length, apply to the first country you will enter.'
+};
+
+function updateDocList() {
+  var dest = document.getElementById('destCountry').value;
+  var type = document.getElementById('visaType').value;
+  var grid = document.getElementById('docGrid');
+  if (!dest) { grid.innerHTML = '<p style="color:#94a3b8;font-size:.85rem;padding:8px 0">Select a destination country to see document checklist</p>'; return; }
+  var docs = (DOCS[dest] && DOCS[dest][type]) ? DOCS[dest][type] : [];
+  grid.innerHTML = docs.map(function(d, i) {
+    return '<div class="doc-item" id="doc-wrap-'+i+'"><input type="checkbox" id="doc-'+i+'" onchange="toggleDocItem('+i+')"><label for="doc-'+i+'">'+d+'</label></div>';
+  }).join('');
+}
+
+function toggleDocItem(i) {
+  var wrap = document.getElementById('doc-wrap-'+i);
+  var chk = document.getElementById('doc-'+i);
+  if (chk.checked) wrap.classList.add('checked'); else wrap.classList.remove('checked');
+}
+
+function trackVisa() {
+  var dest = document.getElementById('destCountry').value;
+  var type = document.getElementById('visaType').value;
+  var dateVal = document.getElementById('submitDate').value;
+  if (!dest || !dateVal) { alert('Please select a destination country and application submitted date.'); return; }
+
+  var submitDate = new Date(dateVal);
+  var today = new Date();
+  today.setHours(0,0,0,0);
+  var msPerDay = 86400000;
+  var daysElapsed = Math.floor((today - submitDate) / msPerDay);
+  if (daysElapsed < 0) { alert('Submission date cannot be in the future.'); return; }
+
+  var proc = PROCESSING[dest][type];
+  var minDays = proc.min, maxDays = proc.max;
+  // convert to calendar days if unit is weeks
+  if (proc.unit === 'weeks') { minDays = proc.min * 7; maxDays = proc.max * 7; }
+  if (proc.unit === 'months') { minDays = proc.min * 30; maxDays = proc.max * 30; }
+  // business days for UK tourist
+  var isBusinessDays = proc.unit === 'business days';
+  if (isBusinessDays) { minDays = proc.min * 1.4; maxDays = proc.max * 1.4; } // rough calendar conversion
+
+  var estMinDate = new Date(submitDate.getTime() + minDays * msPerDay);
+  var estMaxDate = new Date(submitDate.getTime() + maxDays * msPerDay);
+  var pct = Math.min(100, Math.round((daysElapsed / maxDays) * 100));
+
+  // count submitted docs
+  var docs = DOCS[dest][type] || [];
+  var submittedCount = 0;
+  docs.forEach(function(d, i) {
+    var el = document.getElementById('doc-'+i);
+    if (el && el.checked) submittedCount++;
+  });
+  var missingCount = docs.length - submittedCount;
+
+  document.getElementById('rDaysElapsed').textContent = daysElapsed + (daysElapsed === 1 ? ' day' : ' days');
+
+  var statusText = '';
+  if (daysElapsed < minDays * 0.3) statusText = 'Application recently submitted — in the queue.';
+  else if (daysElapsed < minDays) statusText = 'Within normal processing window — allow more time.';
+  else if (daysElapsed <= maxDays) statusText = 'Within maximum processing window — decision expected soon.';
+  else statusText = 'PAST estimated processing time — consider following up.';
+  document.getElementById('rStatus').textContent = statusText;
+
+  document.getElementById('progressBar').style.width = pct + '%';
+  var steps = ['step1','step2','step3','step4'];
+  steps.forEach(function(s) { document.getElementById(s).classList.remove('active'); });
+  if (pct < 25) document.getElementById('step1').classList.add('active');
+  else if (pct < 60) document.getElementById('step2').classList.add('active');
+  else if (pct < 90) document.getElementById('step3').classList.add('active');
+  else document.getElementById('step4').classList.add('active');
+
+  var fmt = function(d) { return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}); };
+  document.getElementById('rTimeline').innerHTML =
+    '<div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-label">Application Submitted</div><div class="timeline-date">'+fmt(submitDate)+'</div></div></div>'+
+    '<div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-label">Today (Day '+daysElapsed+')</div><div class="timeline-date">'+fmt(today)+'</div></div></div>'+
+    '<div class="timeline-item"><div class="timeline-dot '+(daysElapsed>=minDays?'':'pending')+'"></div><div class="timeline-content"><div class="timeline-label">Earliest Expected Decision</div><div class="timeline-date">'+fmt(estMinDate)+'</div></div></div>'+
+    '<div class="timeline-item"><div class="timeline-dot pending"></div><div class="timeline-content"><div class="timeline-label">Latest Expected Decision</div><div class="timeline-date">'+fmt(estMaxDate)+' &nbsp;<span style="font-size:.75rem;color:#94a3b8">('+proc.notes+')</span></div></div></div>';
+
+  var docHtml = '';
+  if (docs.length === 0) {
+    docHtml = '<p style="color:#94a3b8;font-size:.88rem">Select your destination and visa type to see document checklist.</p>';
+  } else {
+    docHtml = '<div style="margin-bottom:12px"><span style="font-size:.88rem;color:#16a34a;font-weight:700">'+submittedCount+' of '+docs.length+' documents ticked</span>';
+    if (missingCount > 0) docHtml += ' &nbsp;&#x26a0;&#xfe0f; <span style="color:#dc2626;font-weight:700">'+missingCount+' missing</span>';
+    docHtml += '</div>';
+    if (missingCount > 0) {
+      docHtml += '<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px 16px;margin-top:8px"><div style="font-size:.82rem;font-weight:700;color:#991b1b;margin-bottom:8px">MISSING DOCUMENTS:</div><ul style="margin:0;padding-left:18px;font-size:.86rem;color:#7f1d1d;line-height:1.8">';
+      docs.forEach(function(d, i) {
+        var el = document.getElementById('doc-'+i);
+        if (!el || !el.checked) docHtml += '<li>'+d+'</li>';
+      });
+      docHtml += '</ul></div>';
+    } else {
+      docHtml += '<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:14px 16px"><div style="font-size:.88rem;color:#166534;font-weight:600">&#x2705; All listed documents are ticked. Double-check originals and certified copies are included.</div></div>';
+    }
+  }
+  document.getElementById('rDocStatus').innerHTML = docHtml;
+
+  document.getElementById('rTipText').textContent = TIPS[dest] || 'Always keep copies of every document submitted.';
+
+  var nextSteps = '';
+  if (daysElapsed > maxDays) {
+    nextSteps = '<ul style="padding-left:18px;font-size:.88rem;line-height:2;color:#0f172a"><li>Submit a polite status enquiry through the official portal</li><li>Check for any correspondence requests you may have missed</li><li>Contact your immigration lawyer if applicable</li><li>Do not book non-refundable travel until you have a decision</li></ul>';
+  } else {
+    nextSteps = '<ul style="padding-left:18px;font-size:.88rem;line-height:2;color:#0f172a"><li>Monitor your email (including spam folder) for any requests for additional documents</li><li>Ensure your biometrics appointment is confirmed and attended</li><li>Do not travel internationally on a passport that is with the embassy</li><li>Avoid booking non-refundable flights before visa approval</li></ul>';
+  }
+  document.getElementById('rNextSteps').innerHTML = nextSteps;
+
+  var metricsHtml = [
+    {label:'Days Elapsed', value:daysElapsed, unit:'days', icon:'&#x1f4c5;'},
+    {label:'Min Processing', value:proc.min, unit:proc.unit, icon:'&#x23f1;'},
+    {label:'Max Processing', value:proc.max, unit:proc.unit, icon:'&#x23f3;'},
+    {label:'Docs Submitted', value:submittedCount+'/'+docs.length, unit:'docs', icon:'&#x2705;'}
+  ].map(function(m) {
+    return '<div class="ds-metric"><div class="ds-metric-icon">'+m.icon+'</div><div class="ds-metric-label">'+m.label+'</div><div class="ds-metric-value">'+m.value+'</div><div class="ds-metric-unit">'+m.unit+'</div></div>';
+  }).join('');
+  document.getElementById('rMetrics').innerHTML = metricsHtml;
+
+  document.getElementById('results').classList.add('on');
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function resetForm() {
+  document.getElementById('destCountry').value = '';
+  document.getElementById('visaType').value = 'tourist';
+  document.getElementById('submitDate').value = '';
+  document.getElementById('docGrid').innerHTML = '<p style="color:#94a3b8;font-size:.85rem;padding:8px 0">Select a destination country to see document checklist</p>';
+  document.getElementById('results').classList.remove('on');
+}
+
+function toggleFaq(btn) {
+  var item = btn.parentElement;
+  item.classList.toggle('open');
+}
+</script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/pages/diaspora-focus.js?v=921bb288" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recipe Collection — AfroKitchen | AfroTools</title>
+<meta name="description" content="Curated African recipe collection from AfroKitchen.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Instrument+Serif&family=JetBrains+Mono:wght@400;500;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Instrument+Serif&family=JetBrains+Mono:wght@400;500;700&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="style.css?v=b73d8c8f">
+<link rel="stylesheet" href="icon-system.css?v=e947352b">
+<link rel="stylesheet" href="responsive-fixes.css?v=f72d0d62">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Recipe Collection — AfroKitchen | AfroTools">
+<meta name="twitter:description" content="Curated African recipe collection from AfroKitchen.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<meta name="robots" content="noindex, follow">
+<meta property="og:url" content="https://afrotools.com/tools/afrokitchen/">
+<link rel="canonical" href="https://afrotools.com/tools/afrokitchen/collection">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<div class="ak-page">
+  <section class="ak-hero">
+    <div class="ak-hero-inner ak-hero-single">
+      <div class="ak-hero-text">
+        <nav class="ak-breadcrumb" aria-label="breadcrumb">
+          <a href="/">AfroTools</a><span>/</span><a href="/tools/afrokitchen/">AfroKitchen</a><span>/</span><span id="breadcrumb-col">Collection</span>
+        </nav>
+        <div class="ak-hero-badges">
+          <span class="ak-badge ak-badge-live">Curated</span>
+          <span class="ak-badge ak-badge-ai">Collection</span>
+        </div>
+        <div class="ak-eyebrow">COLLECTION</div>
+        <h1 id="col-title"></h1>
+        <p class="ak-hero-sub" id="col-desc"></p>
+      </div>
+      <div class="ak-hero-facts">
+        <div class="ak-fact-card">
+          <div class="ak-fact-card-label">Recipes in this edit</div>
+          <span class="ak-fact-card-value" id="col-count">--</span>
+          <p class="ak-fact-card-copy">A tighter collection view that feels curated instead of like a plain filter result.</p>
+        </div>
+        <div class="ak-fact-card">
+          <div class="ak-fact-card-label">Kitchen use</div>
+          <p class="ak-fact-card-copy">Use these bundles when you want a quick path into a dish family, course type, or mood.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ak-section">
+    <div class="ak-container">
+      <div class="ak-section-head rv">
+        <div class="ak-section-eyebrow">Recipe board</div>
+        <h2 class="ak-section-title">Inside this collection</h2>
+        <p class="ak-section-sub">A focused set of dishes pulled into one warmer, easier-to-scan browsing view.</p>
+      </div>
+      <div class="ak-loading" id="recipes-loading"><div class="ak-spinner"></div><div>Loading recipes...</div></div>
+      <div class="ak-grid" id="recipes-grid"></div>
+      <div class="ak-empty" id="recipes-empty" style="display:none">
+        <div class="ak-empty-mark">AK</div>
+        <h3>Collection coming soon</h3>
+        <p>We're still curating recipes for this collection.</p>
+        <a href="/tools/afrokitchen/" class="ak-btn ak-btn-primary">Browse all recipes</a>
+      </div>
+    </div>
+  </section>
+</div>
+<afro-footer></afro-footer>
+
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/assets/js/afro-auth.js?v=4250956b"></script>
+<script src="/engines/afrokitchen-engine.js?v=d9593a0c"></script>
+<script src="image-pipeline.js?v=79918a11"></script>
+<script src="static-routes.js?v=af767cda"></script>
+<script>
+(function () {
+  var AK = AfroKitchenEngine;
+  var AKImages = window.AfroKitchenImages;
+  var AKRoutes = window.AfroKitchenStaticRoutes || {
+    recipe: function (slug) {
+      return '/tools/afrokitchen/recipes/' + encodeURIComponent(slug) + '/';
+    }
+  };
+  var AK_CATEGORY_OPTIONS = [
+    { id: 'main', label: 'Main dishes', cardLabel: 'Main dish' },
+    { id: 'stew', label: 'Stews', cardLabel: 'Stew' },
+    { id: 'soup', label: 'Soups', cardLabel: 'Soup' },
+    { id: 'sauce', label: 'Sauces', cardLabel: 'Sauce' },
+    { id: 'side', label: 'Sides', cardLabel: 'Side' },
+    { id: 'snack', label: 'Snacks', cardLabel: 'Snack' },
+    { id: 'breakfast', label: 'Breakfast' },
+    { id: 'dessert', label: 'Desserts', cardLabel: 'Dessert' },
+    { id: 'drink', label: 'Drinks', cardLabel: 'Drink' }
+  ];
+  function categoryLabel(value) {
+    var category = AK_CATEGORY_OPTIONS.find(function (item) { return item.id === value; });
+    return category ? (category.cardLabel || category.label) : 'AfroKitchen';
+  }
+  function syncPreferredUrlMetadata(url) {
+    if (!url) return;
+    var canonical = document.querySelector('link[rel="canonical"]');
+    var robots = document.querySelector('meta[name="robots"]');
+    if (canonical && !(robots && /noindex/i.test(robots.content))) canonical.href = url;
+    var ogUrl = document.querySelector('meta[property="og:url"]');
+    if (!ogUrl) {
+      ogUrl = document.createElement('meta');
+      ogUrl.setAttribute('property', 'og:url');
+      document.head.appendChild(ogUrl);
+    }
+    ogUrl.setAttribute('content', url);
+  }
+  var params = new URLSearchParams(window.location.search);
+  var slug = params.get('slug');
+
+  async function load() {
+    var collections = await AK.fetchCollections();
+    var col = (collections || []).find(function (c) { return c.slug === slug; });
+    if (!col) {
+      document.getElementById('col-title').textContent = 'Collection Not Found';
+      document.getElementById('recipes-loading').style.display = 'none';
+      document.getElementById('recipes-empty').style.display = '';
+      return;
+    }
+
+    document.title = col.name + ' \u2014 AfroKitchen | AfroTools';
+    if (typeof AKRoutes.collection === 'function') {
+      syncPreferredUrlMetadata(window.location.origin + AKRoutes.collection(slug));
+    }
+    document.getElementById('breadcrumb-col').textContent = col.name;
+    document.getElementById('col-title').textContent = col.name;
+    document.getElementById('col-desc').textContent = col.description || '';
+
+    // Load recipes for this collection
+    var recipes = [];
+    if (col.recipe_ids && col.recipe_ids.length) {
+      recipes = await AK.fetchRecipes({ ids: col.recipe_ids });
+    } else {
+      // Fallback: show all recipes as placeholder
+      recipes = await AK.fetchRecipes({ limit: 12 });
+    }
+
+    var loading = document.getElementById('recipes-loading');
+    var grid = document.getElementById('recipes-grid');
+    var empty = document.getElementById('recipes-empty');
+    loading.style.display = 'none';
+
+    if (!recipes || !recipes.length) { empty.style.display = ''; return; }
+    document.getElementById('col-count').textContent = String(recipes.length);
+
+    recipes.forEach(function (r) {
+      var country = AK.COUNTRIES[r.country_code] || {};
+      var totalMin = (r.prep_time_minutes || 0) + (r.cook_time_minutes || 0);
+      var card = document.createElement('a');
+      card.className = 'ak-recipe-card';
+      card.href = AKRoutes.recipe(r.slug);
+      var thumbHtml = AKImages.createCardSlotMarkup(r, {
+        label: categoryLabel(r.category),
+        title: r.name,
+        alt: (r.name || 'Recipe') + ' recipe from ' + (r.country_name || 'AfroKitchen')
+      });
+      card.innerHTML =
+        thumbHtml +
+        '<div class="ak-recipe-card-body">' +
+          '<div class="ak-recipe-card-flag">' + (country.flag || '') + ' ' + r.country_name + '</div>' +
+          '<h3 class="ak-recipe-card-title">' + r.name + '</h3>' +
+          '<p class="ak-recipe-card-desc">' + (r.description || '').slice(0, 100) + '</p>' +
+          '<div class="ak-recipe-card-meta"><span><small>Time</small><strong>' + totalMin + ' min</strong></span><span><small>Level</small><strong>' + (r.difficulty || 'medium') + '</strong></span></div>' +
+        '</div>';
+      AKImages.hydrate(card);
+      grid.appendChild(card);
+    });
+  }
+
+  load();
+
+  var revealEls = document.querySelectorAll('.rv');
+  if (revealEls.length && 'IntersectionObserver' in window) {
+    var revealObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    revealEls.forEach(function (el) { revealObs.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add('visible'); });
+  }
+})();
+</script>
+</body>
+</html>

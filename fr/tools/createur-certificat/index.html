@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Createur de certificat | AfroTools</title>
+<meta name="description" content="Créez un certificat local en français avec modèle, logo optionnel, liste de noms, aperçu canvas, téléchargement PNG et résumé exportable.">
+<meta name="theme-color" content="#0062CC">
+<meta name="robots" content="index, follow">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:title" content="Createur de certificat | AfroTools">
+<meta property="og:description" content="Générez un certificat PNG dans le navigateur, sans envoyer les noms ou logos a un serveur.">
+<meta property="og:url" content="https://afrotools.com/fr/tools/createur-certificat/">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/certificate-maker.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Createur de certificat | AfroTools">
+<meta name="twitter:description" content="Certificats locaux avec batch names, logo, canvas et export PNG.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/certificate-maker.webp">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+:root{--cert-ink:#111827;--cert-muted:#526179;--cert-line:#d9e2ef;--cert-blue:#2457c5;--cert-gold:#b7791f;--cert-green:#13795b}
+body{background:#f5f7fb;color:var(--cert-ink)}
+.cert-shell{max-width:1180px;margin:0 auto;padding:32px 20px 64px}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:22px;align-items:stretch;margin-bottom:20px}
+.eyebrow{display:inline-flex;border:1px solid #bfd1ff;background:#eff5ff;color:#1d4fb8;border-radius:999px;padding:7px 12px;font-size:.74rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase}
+.hero h1{font-size:clamp(2rem,4.7vw,3.8rem);line-height:.98;letter-spacing:0;margin:18px 0 14px}
+.hero p{font-size:1rem;line-height:1.74;color:var(--cert-muted);max-width:720px}
+.btn{border:0;border-radius:8px;padding:12px 15px;font-weight:850;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;min-height:44px}
+.btn-primary{background:var(--cert-blue);color:#fff}.btn-secondary{background:#fff;color:#173f91;border:1px solid #cbd9f4}.btn-ghost{background:transparent;color:#173f91;border:1px solid #d7e0ee}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.hero-card,.tool-card,.side-card{background:#fff;border:1px solid var(--cert-line);border-radius:14px;box-shadow:0 16px 42px rgba(15,23,42,.06)}
+.hero-card{padding:20px;display:grid;gap:13px}.hero-card strong{display:block;font-size:1.05rem;margin-bottom:4px}.hero-card span{display:block;color:var(--cert-muted);font-size:.9rem;line-height:1.55}
+.tool-grid{display:grid;grid-template-columns:390px minmax(0,1fr);gap:18px;align-items:start}.tool-card{padding:20px}.tool-card h2,.side-card h2{font-size:1.13rem;margin:0 0 12px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:6px}.field label{font-weight:850;font-size:.84rem;color:#1f2937}.field input,.field select,.field textarea{width:100%;min-height:44px;border:1px solid #ced9e8;border-radius:8px;background:#fff;padding:11px 12px;font:inherit;color:#111827}.field textarea{min-height:98px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{outline:3px solid rgba(36,87,197,.18);border-color:var(--cert-blue)}.help{font-size:.77rem;color:#667085}.wide{grid-column:1/-1}
+.swatches{display:flex;gap:8px;flex-wrap:wrap}.swatches button{width:34px;height:34px;border-radius:999px;border:2px solid #fff;box-shadow:0 0 0 1px #cbd5e1;cursor:pointer}.swatches button[aria-pressed="true"]{box-shadow:0 0 0 3px rgba(36,87,197,.25)}
+.canvas-wrap{background:#fff;border:1px solid var(--cert-line);border-radius:14px;padding:14px;overflow:auto}.canvas-wrap canvas{display:block;width:100%;height:auto;max-width:100%;border-radius:10px;background:#fff;box-shadow:0 10px 28px rgba(15,23,42,.08)}
+.result-bar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}.metric{border:1px solid #dfe7f2;background:#f8fbff;border-radius:12px;padding:12px}.metric span{display:block;font-size:.68rem;font-weight:900;letter-spacing:.07em;text-transform:uppercase;color:#61728d;margin-bottom:5px}.metric strong{font-size:1rem}
+.side-stack{display:grid;gap:14px;margin-top:18px}.side-card{padding:18px}.side-card p,.side-card li{font-size:.9rem;line-height:1.65;color:#53627a}.side-card ul{margin:8px 0 0;padding-left:19px}.badge-list{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.badge{border-radius:999px;background:#edf5ff;color:#1d4fb8;padding:6px 10px;font-size:.75rem;font-weight:900}
+.notice{border-left:4px solid var(--cert-blue);background:#f7faff;border-radius:10px;padding:12px 14px;color:#334155;line-height:1.62;margin-top:12px}.faq{margin-top:22px}.faq details{background:#fff;border:1px solid var(--cert-line);border-radius:12px;padding:14px 16px;margin-bottom:10px}.faq summary{cursor:pointer;font-weight:900}.faq p{color:#526179;line-height:1.65}
+@media(max-width:960px){.hero,.tool-grid{grid-template-columns:1fr}.hero-card{order:-1}.form-grid,.result-bar{grid-template-columns:1fr}.cert-shell{padding:22px 14px 52px}.hero h1{font-size:clamp(2rem,11vw,3rem)}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Createur de certificat AfroTools","url":"https://afrotools.com/fr/tools/createur-certificat/","applicationCategory":"DesignApplication","operatingSystem":"Web","inLanguage":"fr","description":"Outil local pour créer et télécharger des certificats PNG avec logo optionnel et liste de noms.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/certificate-maker.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Les noms et logos sont-ils envoyes a AfroTools ?","acceptedAnswer":{"@type":"Answer","text":"Non. Le certificat est dessine dans le navigateur sur un canvas. Le logo optionnel reste local au navigateur."}},{"@type":"Question","name":"Puis-je créer plusieurs certificats ?","acceptedAnswer":{"@type":"Answer","text":"Oui. Collez une liste de noms, puis utilisez le bouton nom suivant pour générer et télécharger les certificats un par un."}},{"@type":"Question","name":"Le PNG est-il officiel ?","acceptedAnswer":{"@type":"Answer","text":"Non. C'est un visuel. L'organisation qui l'emet doit vérifier le texte, le nom, la date, la signature et les autorisations."}}]}</script>
+<link rel="canonical" href="https://afrotools.com/fr/tools/createur-certificat/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/certificate-maker/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/createur-certificat/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kitengeneza-cheti/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/certificate-maker/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<main class="cert-shell">
+  <section class="hero">
+    <div>
+      <span class="eyebrow">Canvas local et export PNG</span>
+      <h1>Createur de certificat</h1>
+      <p>Créez des certificats propres pour formation, église, école, association ou equipe. Les noms, logos et textes restent dans le navigateur; vous pouvez télécharger le PNG final.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#studio">Ouvrir le studio</a>
+        <button class="btn btn-secondary" type="button" id="sampleBtn">Exemple bootcamp</button>
+      </div>
+    </div>
+    <aside class="hero-card" aria-label="Ce que fait l'outil">
+      <div><strong>Modèle éditable</strong><span>Choisissez un style, une couleur, le texte, la date et le signataire.</span></div>
+      <div><strong>Logo optionnel</strong><span>Ajoutez un logo local. Il n'est pas televerse vers AfroTools.</span></div>
+      <div><strong>Batch simple</strong><span>Collez plusieurs noms et avancez personne par personne.</span></div>
+    </aside>
+  </section>
+
+  <section class="tool-grid" id="studio">
+    <div class="tool-card">
+      <h2>Contenu du certificat</h2>
+      <form id="certForm" class="form-grid">
+        <div class="field wide"><label for="template">Modèle</label><select id="template"><option value="achievement" selected>Excellence</option><option value="completion">Fin de formation</option><option value="service">Service communautaire</option><option value="participation">Participation</option></select></div>
+        <div class="field wide"><label for="recipient">Nom du bénéficiaire</label><input id="recipient" value="Amina Bello" maxlength="70"></div>
+        <div class="field wide"><label for="title">Titre</label><input id="title" value="Certificat d'excellence" maxlength="80"></div>
+        <div class="field wide"><label for="course">Programme ou raison</label><input id="course" value="Cohorte competences numeriques" maxlength="90"></div>
+        <div class="field"><label for="date">Date</label><input id="date" type="date"></div>
+        <div class="field"><label for="signer">Signataire</label><input id="signer" value="Directeur du programme" maxlength="60"></div>
+        <div class="field wide"><label for="organization">Organisation</label><input id="organization" value="AfroTools Academy" maxlength="70"></div>
+        <div class="field wide"><label for="logoFile">Logo optionnel</label><input id="logoFile" type="file" accept="image/png,image/jpeg,image/webp"><span class="help">Le fichier reste local. Utilisez un logo dont vous avez les droits.</span></div>
+        <div class="field wide"><label>Couleur principale</label><div class="swatches" id="swatches"><button type="button" style="background:#2457c5" data-color="#2457c5" aria-label="Bleu" aria-pressed="true"></button><button type="button" style="background:#13795b" data-color="#13795b" aria-label="Vert"></button><button type="button" style="background:#9a6700" data-color="#9a6700" aria-label="Or"></button><button type="button" style="background:#7c3aed" data-color="#7c3aed" aria-label="Violet"></button></div></div>
+        <div class="field wide"><label for="batchNames">Liste de noms pour batch</label><textarea id="batchNames">Amina Bello&#10;Kwame Mensah&#10;Fatou Diop</textarea><span class="help">Un nom par ligne. Utilisez "nom suivant" puis téléchargez.</span></div>
+        <div class="wide actions">
+          <button class="btn btn-primary" type="submit">Mettre à jour</button>
+          <button class="btn btn-secondary" type="button" id="nextNameBtn">Nom suivant</button>
+          <button class="btn btn-ghost" type="button" id="copySummary">Copier résumé</button>
+          <button class="btn btn-ghost" type="button" id="saveLocal">Sauvegarder localement</button>
+        </div>
+      </form>
+    </div>
+
+    <div>
+      <div class="canvas-wrap">
+        <canvas id="certCanvas" width="1400" height="990" aria-label="Aperçu du certificat"></canvas>
+      </div>
+      <div class="result-bar">
+        <div class="metric"><span>Format</span><strong>PNG paysage</strong></div>
+        <div class="metric"><span>Dimensions</span><strong>1400 x 990</strong></div>
+        <div class="metric"><span>Confidentialité</span><strong>Local</strong></div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-primary" type="button" id="downloadPng">Télécharger PNG</button>
+        <button class="btn btn-secondary" type="button" id="downloadAll">Télécharger batch</button>
+      </div>
+      <div class="notice"><strong>Vérification:</strong> relisez le nom, la date, le signataire, le logo et l'autorisation de l'organisation avant publication.</div>
+    </div>
+  </section>
+
+  <section class="side-stack">
+    <div class="side-card" data-tool-verification-panel="createur-certificat-fr">
+      <h2>Workflow et sources</h2>
+      <p><strong>Revu en 2026.</strong> Cet outil cree un visuel local; il ne valide pas l'identité, le diplôme ou l'autorite de l'organisation.</p>
+      <ul>
+        <li><strong>Méthodologie:</strong> texte + modèle + couleur + logo optionnel sont dessines sur un canvas HTML, puis exportes en PNG.</li>
+        <li><strong>Source technique:</strong> API Canvas du navigateur et téléchargement local par Blob/data URL.</li>
+        <li><strong>Droits:</strong> utilisez uniquement des logos, noms, signatures et textes que vous etes autorise à publier.</li>
+      </ul>
+      <div class="badge-list"><span class="badge">Canvas surface</span><span class="badge">File upload local</span><span class="badge">Batch workflow</span><span class="badge">télécharger PNG</span></div>
+    </div>
+  </section>
+
+  <section class="faq" aria-labelledby="faq-title">
+    <h2 id="faq-title">Questions fréquentes</h2>
+    <details open><summary>Puis-je faire un PDF ?</summary><p>Cette version exporte un PNG propre. Vous pouvez l'imprimer ou l'inserer dans un PDF avec le PDF Workspace AfroTools si besoin.</p></details>
+    <details><summary>Comment créer plusieurs certificats ?</summary><p>Collez les noms dans la liste batch, cliquez sur nom suivant, vérifiez l'aperçu, puis téléchargez. Le bouton batch declenche plusieurs PNG l'un après l'autre.</p></details>
+    <details><summary>Le certificat est-il officiel ?</summary><p>Non. Le fichier est un visuel. L'organisation emettrice reste responsable du contenu, de la signature, des droits et de la validite.</p></details>
+  </section>
+</main>
+<afro-footer></afro-footer>
+<script>
+(function(){
+  'use strict';
+  var STORAGE_KEY = 'afrotools:fr:createur-certificat:last';
+  var canvas = document.getElementById('certCanvas');
+  var ctx = canvas.getContext('2d');
+  var logoImage = null;
+  var activeColor = '#2457c5';
+  var batchIndex = 0;
+  var lastSummary = '';
+  var templateText = {
+    achievement: ['est honore pour son excellence dans', 'Ce certificat reconnait un travail remarquable.'],
+    completion: ['a termine avec succes', 'Ce certificat confirme la participation et la completion.'],
+    service: ['est remercie pour son service dans', 'Ce certificat reconnait une contribution utile a la communaute.'],
+    participation: ['a participe a', 'Ce certificat confirme la presence et la participation active.']
+  };
+
+  function value(id){ return document.getElementById(id).value.trim(); }
+
+  function draw(){
+    var template = document.getElementById('template').value;
+    var recipient = value('recipient') || 'Nom du beneficiaire';
+    var title = value('title') || 'Certificat';
+    var course = value('course') || 'Programme';
+    var organization = value('organization') || 'Organisation';
+    var signer = value('signer') || 'Signataire';
+    var dateValue = document.getElementById('date').value || new Date().toISOString().slice(0,10);
+    var action = templateText[template] || templateText.achievement;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = '#fffdf8';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.strokeStyle = activeColor;
+    ctx.lineWidth = 18;
+    ctx.strokeRect(42,42,canvas.width-84,canvas.height-84);
+    ctx.strokeStyle = '#e7d8b3';
+    ctx.lineWidth = 4;
+    ctx.strokeRect(78,78,canvas.width-156,canvas.height-156);
+    ctx.fillStyle = activeColor;
+    ctx.globalAlpha = .08;
+    ctx.beginPath();
+    ctx.arc(canvas.width/2, canvas.height/2, 330, 0, Math.PI*2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+    if (logoImage) {
+      drawContained(logoImage, canvas.width/2-70, 115, 140, 90);
+    } else {
+      ctx.fillStyle = activeColor;
+      ctx.font = '700 42px Georgia, serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('AFROTOOLS', canvas.width/2, 170);
+    }
+    ctx.fillStyle = activeColor;
+    ctx.font = '700 64px Georgia, serif';
+    ctx.textAlign = 'center';
+    wrapText(title.toUpperCase(), canvas.width/2, 260, 1040, 68);
+    ctx.fillStyle = '#475569';
+    ctx.font = '32px DM Sans, Arial, sans-serif';
+    ctx.fillText('Ce certificat est decerne a', canvas.width/2, 360);
+    ctx.fillStyle = '#0f172a';
+    ctx.font = '700 72px Georgia, serif';
+    wrapText(recipient, canvas.width/2, 455, 1120, 76);
+    ctx.fillStyle = '#475569';
+    ctx.font = '31px DM Sans, Arial, sans-serif';
+    ctx.fillText(action[0], canvas.width/2, 560);
+    ctx.fillStyle = '#111827';
+    ctx.font = '700 42px DM Sans, Arial, sans-serif';
+    wrapText(course, canvas.width/2, 625, 1050, 48);
+    ctx.fillStyle = '#64748b';
+    ctx.font = '27px DM Sans, Arial, sans-serif';
+    wrapText(action[1], canvas.width/2, 735, 960, 34);
+    ctx.strokeStyle = activeColor;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(230,830); ctx.lineTo(520,830);
+    ctx.moveTo(880,830); ctx.lineTo(1170,830);
+    ctx.stroke();
+    ctx.fillStyle = '#0f172a';
+    ctx.font = '700 26px DM Sans, Arial, sans-serif';
+    ctx.fillText(formatDate(dateValue), 375, 870);
+    ctx.fillText(signer, 1025, 870);
+    ctx.fillStyle = '#64748b';
+    ctx.font = '20px DM Sans, Arial, sans-serif';
+    ctx.fillText('Date', 375, 900);
+    ctx.fillText(organization, 1025, 900);
+    lastSummary = [
+      'Createur de certificat - AfroTools',
+      'Beneficiaire: ' + recipient,
+      'Titre: ' + title,
+      'Programme: ' + course,
+      'Organisation: ' + organization,
+      'Date: ' + dateValue,
+      'Modele: ' + template,
+      'Note: visuel local; verifier droits, nom, signature et validite avant publication.'
+    ].join('\n');
+  }
+
+  function wrapText(text, x, y, maxWidth, lineHeight){
+    var words = String(text).split(/\s+/);
+    var line = '';
+    for (var i=0;i<words.length;i++) {
+      var test = line ? line + ' ' + words[i] : words[i];
+      if (ctx.measureText(test).width > maxWidth && line) {
+        ctx.fillText(line, x, y);
+        line = words[i];
+        y += lineHeight;
+      } else {
+        line = test;
+      }
+    }
+    ctx.fillText(line, x, y);
+  }
+
+  function drawContained(img,x,y,w,h){
+    var ratio = Math.min(w/img.width, h/img.height);
+    var nw = img.width * ratio;
+    var nh = img.height * ratio;
+    ctx.drawImage(img, x + (w-nw)/2, y + (h-nh)/2, nw, nh);
+  }
+
+  function formatDate(date){
+    try { return new Date(date + 'T00:00:00').toLocaleDateString('fr-FR',{year:'numeric',month:'long',day:'numeric'}); }
+    catch(error) { return date; }
+  }
+
+  function download(name){
+    var link = document.createElement('a');
+    link.href = canvas.toDataURL('image/png');
+    link.download = (name || value('recipient') || 'certificat').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'') + '-certificat.png';
+    link.click();
+  }
+
+  function names(){
+    return document.getElementById('batchNames').value.split(/\n+/).map(function(name){return name.trim();}).filter(Boolean);
+  }
+
+  document.getElementById('date').value = new Date().toISOString().slice(0,10);
+  document.getElementById('certForm').addEventListener('submit', function(event){ event.preventDefault(); draw(); });
+  ['recipient','title','course','date','signer','organization','template'].forEach(function(id){ document.getElementById(id).addEventListener('input', draw); });
+  document.getElementById('logoFile').addEventListener('change', function(){
+    var file = this.files && this.files[0];
+    if (!file) { logoImage = null; draw(); return; }
+    var reader = new FileReader();
+    reader.onload = function(){
+      var img = new Image();
+      img.onload = function(){ logoImage = img; draw(); };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+  document.getElementById('swatches').addEventListener('click', function(event){
+    var button = event.target.closest('button[data-color]');
+    if (!button) return;
+    activeColor = button.getAttribute('data-color');
+    document.querySelectorAll('#swatches button').forEach(function(btn){ btn.setAttribute('aria-pressed','false'); });
+    button.setAttribute('aria-pressed','true');
+    draw();
+  });
+  document.getElementById('nextNameBtn').addEventListener('click', function(){
+    var list = names();
+    if (!list.length) return;
+    document.getElementById('recipient').value = list[batchIndex % list.length];
+    batchIndex++;
+    draw();
+  });
+  document.getElementById('downloadPng').addEventListener('click', function(){ draw(); download(); });
+  document.getElementById('downloadAll').addEventListener('click', function(){
+    var list = names().slice(0,12);
+    if (!list.length) { draw(); download(); return; }
+    list.forEach(function(name, index){
+      setTimeout(function(){
+        document.getElementById('recipient').value = name;
+        draw();
+        download(name);
+      }, index * 350);
+    });
+  });
+  document.getElementById('copySummary').addEventListener('click', function(){
+    draw();
+    var button = this;
+    function done(){ var old=button.textContent; button.textContent='Copie'; setTimeout(function(){button.textContent=old;},1200); }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(lastSummary).then(done).catch(function(){});
+  });
+  document.getElementById('saveLocal').addEventListener('click', function(){
+    draw();
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({savedAt:new Date().toISOString(), summary:lastSummary})); }
+    catch(error) {}
+  });
+  document.getElementById('sampleBtn').addEventListener('click', function(){
+    document.getElementById('template').value = 'completion';
+    document.getElementById('recipient').value = 'Amina Bello';
+    document.getElementById('title').value = 'Certificat de fin de formation';
+    document.getElementById('course').value = 'Bootcamp outils numeriques pour PME';
+    document.getElementById('organization').value = 'AfroTools Academy';
+    document.getElementById('signer').value = 'Coordinateur formation';
+    draw();
+    document.getElementById('studio').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+  draw();
+})();
+</script>
+</body>
+</html>

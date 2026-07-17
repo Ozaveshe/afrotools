@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TRA PAYE Calculator 2026 - Tanzania Salary Tax Estimate | AfroTools</title>
+<meta name="description" content="Tanzania TRA PAYE calculator for 2026 salary tax planning. Estimate net salary after NSSF or PSSSF, review SDL context, and check official TRA links.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="TRA PAYE Calculator 2026 | Tanzania Salary Tax Estimate">
+<meta property="og:description" content="Estimate Tanzania PAYE after NSSF or PSSSF and compare the result with official TRA calculator and filing context.">
+<meta property="og:type"        content="website">
+<meta property="og:url" content="https://afrotools.com/tanzania/tz-paye">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/tz-paye.webp">
+<meta property="og:locale"      content="en_TZ">
+<meta property="og:site_name"   content="AfroTools">
+<meta name="twitter:card"       content="summary_large_image">
+<meta name="twitter:title" content="TRA PAYE Calculator 2026 | Tanzania Salary Tax Estimate">
+<meta name="twitter:description" content="Estimate Tanzania PAYE after NSSF or PSSSF and compare the result with official TRA calculator and filing context.">
+<meta name="robots"             content="index, follow">
+<meta name="author"             content="AfroTools">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tanzania","item":"https://afrotools.com/tanzania/"},{"@type":"ListItem","position":3,"name":"Tanzania PAYE Calculator","item":"https://afrotools.com/tanzania/tz-paye"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"TRA PAYE Calculator 2026 - Tanzania Salary Tax Estimate","description":"Estimate Tanzania PAYE after NSSF or PSSSF and compare the result with official TRA calculator and filing context.","url":"https://afrotools.com/tanzania/tz-paye","inLanguage":"en","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"dateModified":"2026-05-04","datePublished":"2025-01-15","image":"https://afrotools.com/assets/img/tools/tz-paye.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"TRA PAYE Calculator 2026 - Tanzania Salary Tax Estimate | AfroTools","url":"https://afrotools.com/tanzania/tz-paye","description":"Tanzania TRA PAYE calculator for 2026 salary tax planning. Estimate net salary after NSSF or PSSSF, review SDL context, and check official TRA links.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"dateModified":"2026-05-04","datePublished":"2025-01-15","image":"https://afrotools.com/assets/img/tools/tz-paye.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are the Tanzania PAYE tax bands for 2025/26?","acceptedAnswer":{"@type":"Answer","text":"Five monthly bands: TZS 0–270,000 at 0%; TZS 270,001–520,000 at 8% on excess; TZS 520,001–760,000 at TZS 20,000 + 20% on excess; TZS 760,001–1,000,000 at TZS 68,000 + 25% on excess; above TZS 1,000,000 at TZS 128,000 + 30% on excess. Annual tax-free threshold: TZS 3,240,000."}},{"@type":"Question","name":"What is NSSF in Tanzania?","acceptedAnswer":{"@type":"Answer","text":"The National Social Security Fund (NSSF) covers private sector employees. Total contribution is 20% of gross salary — employer pays 10% and employee pays 10%. There is no upper cap. Employee NSSF contribution is deductible from taxable income before PAYE is calculated."}},{"@type":"Question","name":"What is SDL in Tanzania?","acceptedAnswer":{"@type":"Answer","text":"The Skills Development Levy (SDL) is an employer-only tax of 3.5% of gross monthly emoluments. It applies to employers with 10 or more employees. SDL is due by the 7th of the following month, paid alongside PAYE to TRA."}}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <link rel="stylesheet" href="/assets/css/calculator.min.css?v=47ed0a43">
+  <link rel="stylesheet" href="/assets/css/paye-calculation-sync.css?v=2df74017">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --calc-accent: #2563EB;
+    --calc-accent-rgb: 30,181,58;
+    --calc-accent-subtle: #2563EB12;
+    --calc-gold: #f5d76e;
+    --calc-gold-rgb: 245,215,110;
+    --tz-green:  #2563EB;   /* Tanzania flag green  */
+    --tz-blue:   #00A3DD;   /* Tanzania flag blue   */
+    --tz-gold:   #FCD116;   /* Tanzania flag yellow */
+    --tz-black:  #111827;
+    --tz-dark:   #071a0d;
+  }
+  .tool-hero::after { content: '🇹🇿'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: .06; pointer-events: none; }
+  .tool-hero { background: #071a0d; }
+
+  .tool-info-card{background:#fff;border:1px solid #DBEAFE;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+  .tool-info-header{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid #EFF6FF;background:#F5F9FF}
+  .tool-info-img{width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0}
+  .tool-info-meta{flex:1;min-width:0}
+  .tool-info-name{font-size:.82rem;font-weight:700;color:#0f172a;line-height:1.2;margin-bottom:2px}
+  .tool-info-cat{font-size:.62rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B8CAE}
+  .tool-info-body{padding:14px 18px}
+  .tool-info-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+  .tool-stat{text-align:center}
+  .tool-stat-val{font-size:1rem;font-weight:800;color:#0062CC;line-height:1}
+  .tool-stat-lbl{font-size:.6rem;font-weight:500;color:#6B8CAE;text-transform:uppercase;letter-spacing:.04em;margin-top:3px}
+  .tool-info-features{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+  .tool-feat{font-size:.62rem;font-weight:600;padding:3px 8px;background:#EFF6FF;border:1px solid #DBEAFE;border-radius:3px;color:#0f172a}
+  .tool-info-footer{display:flex;justify-content:space-between;align-items:center;padding:10px 18px;border-top:1px solid #EFF6FF;background:#FAFBFF}
+  .tool-info-updated{font-size:.62rem;color:#6B8CAE}
+  .tool-info-actions{display:flex;gap:6px}
+  .tool-info-action{font-size:.62rem;font-weight:600;color:#0062CC;text-decoration:none;padding:3px 8px;border:1px solid #DBEAFE;border-radius:4px;background:#fff;cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif}
+  .tool-info-action:hover{background:#EFF6FF;border-color:#0062CC}
+  @media(max-width:900px){.tool-info-card{order:1}}
+  @media(max-width:480px){.tool-info-stats{grid-template-columns:1fr 1fr 1fr}.tool-info-header{padding:12px 14px}.tool-info-body{padding:10px 14px}}
+
+  @media(max-width:768px){.tool-info-stats{grid-template-columns:1fr}}
+</style>
+<meta name="tool-id" content="tz-paye">
+  <link rel="stylesheet" href="/assets/css/print.css?v=ca13c10a" media="print">
+<script src="/assets/js/lib/chart-config.js?v=b81750bb"></script>
+<script src="/assets/js/lib/pdf-template.js?v=980345b6" defer></script>
+<meta id="afro-share-img-js" name="afrotools:share-image" content="disabled">
+<script src="/assets/js/bundles/tool-page.315f0428.min.js?v=315f0428" defer></script>
+<script type="module" src="/assets/js/lib/save-state.js?v=6cb0bca2"></script>
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/tz-paye.webp">
+<meta property="article:modified_time" content="2026-03-28">
+<link rel="stylesheet" href="/assets/css/paye-tool.css?v=075c178d">
+<style>
+.skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;}
+.skip-link:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;padding:10px 18px;background:#0062CC;color:#fff;font-weight:700;font-size:.9rem;border-radius:8px;z-index:9999;text-decoration:none;outline:none;}
+@media print{.tool-hero,.regime-bar,.regime-notice,.regime-helper{display:none!important;}#inputCard,.employer-card{display:none!important;}.results-card{display:block!important;break-inside:avoid;border:1px solid #ddd!important;box-shadow:none!important;background:#fff!important;}.action-row,.chart-tabs{display:none!important;}.tool-main,.tool-page main{padding-top:0!important;}}
+</style>
+<script src="/assets/js/lib/auto-email-gate.js?v=fa3f2d98" defer></script>
+<link rel="stylesheet" href="/assets/css/seo-clusters.css?v=2a9d2f08">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<link rel="stylesheet" href="/assets/css/country-tax-page-ui-refresh.css?v=fcc20688">
+<script src="/assets/js/lib/source-confidence.js?v=e7c3ebe4" defer></script>
+<link rel="canonical" href="https://afrotools.com/tanzania/tz-paye">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tanzania/tz-paye">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tanzania/tz-paye">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/tanzania/kikokotoo-kodi-mshahara/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tanzania/tz-paye">
+</head>
+<body class="tool-page country-tax-page-ui-refresh top-level-page-ui-refresh">
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<afro-navbar active="tools"></afro-navbar>
+
+<!-- HERO -->
+<section class="tool-hero">
+  <div class="tool-hero-inner">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a> / <a href="/tanzania/">🇹🇿 Tanzania</a> / <span>PAYE Calculator</span>
+    </nav>
+    <h1>Tanzania PAYE<br><em>Calculator 2025/26</em></h1>
+    <p class="hero-sub">Estimate Tanzania net salary from gross monthly pay, employee NSSF or PSSSF, TRA PAYE bands, and employer-side SDL/WCF context. Use the result as a planning estimate before official TRA filing or payroll review.</p>
+    <div class="hero-badges">
+      <span class="badge b-gold">✦ Includes AI Advisor</span>
+      <a class="badge b-green" href="#sources-verification" aria-label="TRA 2025/26 Verified evidence">TRA 2025/26 evidence</a>
+      <span class="badge b-blue">NSSF · SDL · WCF</span>
+      <span class="badge b-grey">TZS · Tanzanian Shilling</span>
+    </div>
+    <p class="hero-meta">Last verified: July 2025 · Source: TRA (tra.go.tz) · Income Tax Act 2004 · Finance Act 2024/25</p>
+    <p style="font-size:0.8rem;color:#64748b;margin-top:8px;">Also see: <a href="/tanzania/tz-vat" style="color:#0062CC;font-weight:600;">Tanzania VAT Calculator</a></p>
+  </div>
+</section>
+
+<!-- UPDATE BAR -->
+<div class="amendment-bar">
+  <div class="amendment-bar-inner">
+    <p><strong>2025/26 Key Facts:</strong> PAYE is estimated on monthly taxable pay after employee pension contribution. The visible bands run from the <strong>TZS 270,000/month</strong> tax-free band to a <strong>30%</strong> top band above TZS 1,000,000/month. SDL is shown as an employer-only context item. Confirm final remittance duties with TRA.</p>
+  </div>
+</div>
+
+<section class="seo-cluster-shell" aria-label="Tanzania PAYE direct answer">
+  <div class="seo-cluster seo-cluster--tool" data-seo-cluster="/tanzania/tz-paye/#quick-answer">
+    <div class="seo-cluster__inner">
+      <div class="seo-cluster__answer"><span class="seo-cluster__answer-label">Quick answer</span><p>The Tanzania TRA PAYE calculator estimates monthly income tax from taxable salary after employee NSSF or PSSSF contribution. It separates employee take-home pay from employer payroll costs such as SDL context. Use TRA systems for official taxpayer registration, returns, payment, and account records.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<div class="tool-main" id="main-content">
+  <div class="tool-main-inner">
+
+    <!-- LEFT COLUMN -->
+    <div>
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Enter Your Details</span>
+          <span class="card-sub">Tanzanian Shilling · TZS</span>
+        </div>
+        <div class="card-body">
+
+          <!-- SECTOR SELECTOR -->
+          <div class="field">
+            <div class="f-label"><span class="f-label-text">Sector</span><span class="f-hint">Determines social security fund</span></div>
+            <div class="sector-row">
+              <button type="button" class="sec-btn on" id="btnPrivate" onclick="setSector('private',this)">Private (NSSF)</button>
+              <button type="button" class="sec-btn" id="btnPublic" onclick="setSector('public',this)">Public Sector (PSSSF)</button>
+            </div>
+          </div>
+
+          <!-- SALARY SLIDER -->
+          <div class="slider-wrap">
+            <div class="slider-row">
+              <span class="slider-label">Monthly Gross Salary</span>
+              <span class="slider-val" id="sliderVal">TZS 1,500,000</span>
+            </div>
+            <input aria-label="SalarySlider" type="range" id="salarySlider" min="100000" max="20000000" step="50000" value="1500000" oninput="onSlider(this)">
+            <div class="slider-limits"><span>TZS 100,000</span><span>TZS 20,000,000</span></div>
+          </div>
+
+          <!-- INPUT -->
+          <div class="field">
+            <div class="f-label"><span class="f-label-text">Or type exact monthly amount</span><span class="f-hint">Before any deductions</span></div>
+            <div class="f-wrap">
+              <span class="f-prefix">TZS</span>
+              <input aria-label="GrossSalary" type="number" class="f-input" id="grossSalary" placeholder="1,500,000" min="0" step="50000" value="1500000" oninput="onInput(this)">
+            </div>
+          </div>
+          <!-- Quick Presets -->
+          <div class="presets">
+            <button type="button" class="preset-btn" onclick="setPreset(500000, this)">TZS 500k</button>
+            <button type="button" class="preset-btn" onclick="setPreset(1500000, this)">TZS 1.5M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(3000000, this)">TZS 3M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(6000000, this)">TZS 6M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(12000000, this)">TZS 12M</button>
+          </div>
+
+          <!-- CONTRIBUTION TOGGLES -->
+          <div class="field">
+            <div class="f-label"><span class="f-label-text">Active Deductions</span><span class="f-hint">Toggle to include / exclude</span></div>
+            <div class="toggles">
+              <div class="tog on" data-tog="nssf" onclick="togItem(this)">
+                <div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div><div class="tog-label" id="nssfLabel">NSSF (private)</div><div class="tog-rate">10% employee — tax-deductible</div></div>
+              </div>
+              <div class="tog" data-tog="secondary" onclick="togItem(this)">
+                <div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div><div class="tog-label">Secondary Employment</div><div class="tog-rate">Flat 30% no deductions</div></div>
+              </div>
+            </div>
+            <p class="f-note">NSSF employee contribution (10%) is fully deductible from taxable income before PAYE is calculated. Employer NSSF (10%) is an additional cost shown in employer chart. No NSSF cap — applies to full gross salary.</p>
+          </div>
+
+          <button type="button" class="calc-btn" onclick="calculate()">Calculate My Take-Home Pay →</button>
+        </div>
+      </div>
+
+      <!-- RESULTS -->
+      <div class="card results-card" id="resultsCard">
+        <div class="res-hero">
+          <div class="res-hero-label">Monthly Take-Home Pay</div>
+          <div class="res-hero-amount" id="resAmount">TZS 0</div>
+          <div class="res-hero-period">After PAYE, NSSF &amp; all deductions</div>
+          <div class="res-hero-gross" id="resGross"></div>
+        </div>
+        <div class="res-body">
+          <div class="period-row">
+            <button type="button" class="per-btn on" onclick="setPeriod('monthly',this)">Monthly</button>
+            <button type="button" class="per-btn" onclick="setPeriod('annual',this)">Annual</button>
+          </div>
+          <div id="resContent"></div>
+          <div class="rate-bar-wrap">
+            <div class="rate-bar-hdr">
+              <span class="rate-bar-lbl">Effective Tax Rate</span>
+              <span class="rate-bar-pct" id="effRateDisplay">0%</span>
+            </div>
+            <div class="rate-track"><div class="rate-fill" id="rateFill"></div></div>
+          </div>
+          <div class="employer-strip" id="employerStrip"></div>
+        </div>
+
+        <div class="chart-section">
+          <div class="chart-tabs">
+            <button type="button" class="chart-tab on" onclick="setChart('donut',this)">Breakdown</button>
+            <button type="button" class="chart-tab" onclick="setChart('bar',this)">Tax Bands</button>
+            <button type="button" class="chart-tab" onclick="setChart('employer',this)">Employer Cost</button>
+          </div>
+          <div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div>
+        </div>
+
+        <div class="action-row">
+          <button type="button" class="act-btn act-pdf" id="pdfBtn" data-no-gate="true" onclick="downloadPdfSummary()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Download PDF
+          </button>
+          <button type="button" class="act-btn" onclick="whatsappShare()" style="background:rgba(37,211,102,0.1);border-color:#25D366;color:#25D366">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492l4.618-1.462A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75c-2.171 0-4.2-.695-5.856-1.873l-.42-.277-2.735.867.87-2.664-.305-.44A9.72 9.72 0 012.25 12c0-5.385 4.365-9.75 9.75-9.75S21.75 6.615 21.75 12s-4.365 9.75-9.75 9.75z"/></svg>
+            WhatsApp
+          </button>
+          <button type="button" class="act-btn act-share" id="tzShareBtn" onclick="shareResult()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Share Result
+          </button>
+        </div>
+        <div class="calc-save-shell" id="calcSaveShell">
+          <div class="calc-save-head">
+            <div>
+              <h3>Save this scenario</h3>
+              <p>Name your result, keep it on this device, and sync it into your dashboard when you are signed in.</p>
+            </div>
+            <a href="/dashboard/#myWorkspace">Open dashboard</a>
+          </div>
+          <div class="calc-save-form">
+            <input aria-label="Example: Dar payroll or secondary job check" class="calc-save-input" id="calcSaveName" type="text" maxlength="120" placeholder="Example: Dar payroll or secondary job check">
+            <button class="calc-save-button" id="calcSaveBtn" type="button" disabled>Run a Calculation First</button>
+          </div>
+          <div class="calc-save-status" id="calcSaveStatus" data-tone="muted"></div>
+          <div class="calc-save-grid" id="calcSavedList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+      <!-- AI ADVISOR -->
+      <div class="ai-card">
+        <div class="ai-head">
+          <div class="ai-dot"></div>
+          <span class="ai-head-title">AI Tax Advisor</span>
+          <span class="ai-head-by">Optional AI · provider required</span>
+        </div>
+        <div class="ai-body">
+          <p class="ai-status" id="aiStatus">Calculate your salary first — I'll analyse your TRA PAYE position, explain NSSF deductibility, SDL implications, and give specific optimisation tips for Tanzania.</p>
+          <div class="ai-response" id="aiResp"></div>
+          <button type="button" class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculate first to unlock →</button>
+          <div class="ai-chat" id="aiChat">
+            <div class="chat-msgs" id="chatMsgs"></div>
+            <div class="chat-row">
+              <input aria-label="Ask a follow up" class="chat-in" id="chatIn" placeholder="Ask a follow-up…" onkeydown="if(event.key==='Enter')sendChat()">
+              <button type="button" class="chat-send" onclick="sendChat()">→</button>
+            </div>
+          </div>
+
+              </div>
+      </div>
+
+<!-- TRA TAX BANDS -->
+      <div class="card bands-card">
+        <div class="card-head" onclick="toggleBands(this)">
+          <span class="card-title">TRA 2025/26 Monthly Bands</span>
+          <span class="tog-arrow">▾</span>
+        </div>
+        <div class="bands-body">
+          <div class="band-row"><span class="band-range">TZS 0 – 270,000</span><span class="band-zero">0% — exempt</span></div>
+          <div class="band-row"><span class="band-range">TZS 270,001 – 520,000</span><span class="band-rate">8% on excess above 270k</span></div>
+          <div class="band-row"><span class="band-range">TZS 520,001 – 760,000</span><span class="band-rate">TZS 20,000 + 20% on excess</span></div>
+          <div class="band-row"><span class="band-range">TZS 760,001 – 1,000,000</span><span class="band-rate">TZS 68,000 + 25% on excess</span></div>
+          <div class="band-row"><span class="band-range">Above TZS 1,000,000</span><span class="band-rate">TZS 128,000 + 30% on excess</span></div>
+          <p class="band-note">Calculated monthly on taxable income (gross minus NSSF/PSSSF). Annual tax-free threshold: TZS 3,240,000. Secondary employment: flat 30% on gross, no deductions.</p>
+        </div>
+      </div>
+
+      <!-- LEVIES -->
+      <div class="card bands-card">
+        <div class="card-head" onclick="toggleBands(this)">
+          <span class="card-title">NSSF · SDL · WCF Rates 2025</span>
+          <span class="tog-arrow">▾</span>
+        </div>
+        <div class="bands-body">
+          <div class="band-row"><span class="band-range">Employee NSSF (private sector)</span><span class="band-rate">10% of gross (no cap)</span></div>
+          <div class="band-row"><span class="band-range">Employer NSSF (private sector)</span><span class="band-rate">10% of gross (no cap)</span></div>
+          <div class="band-row"><span class="band-range">Employee PSSSF (public sector)</span><span class="band-rate">5% of basic salary</span></div>
+          <div class="band-row"><span class="band-range">Employer PSSSF (public sector)</span><span class="band-rate">15% of basic salary</span></div>
+          <div class="band-row"><span class="band-range">SDL (employer only, 10+ staff)</span><span class="band-rate">3.5% of gross emoluments</span></div>
+          <div class="band-row"><span class="band-range">WCF (employer only, private)</span><span class="band-rate">0.5% of monthly wage bill</span></div>
+          <p class="band-note">NSSF/PSSSF employee contribution deductible from taxable income. SDL due by 7th of following month (same as PAYE). NSSF due end of following month. No cap on NSSF contributions.</p>
+        </div>
+      </div>
+
+      <div class="disclaimer">
+        <strong>Disclaimer:</strong> For informational purposes only. Not professional tax or legal advice. Rates based on Tanzania Income Tax Act 2004, Finance Act 2024/25. Verify with TRA (tra.go.tz) or a qualified Tanzanian tax advisor.
+      </div>
+
+      <div class="tool-info-card">
+        <div class="tool-info-header">
+          <img height="44" width="44" src="/assets/img/tools/tz-paye.webp" alt="Tanzania PAYE Calculator" class="tool-info-img" loading="lazy">
+          <div class="tool-info-meta">
+            <div class="tool-info-name">Tanzania PAYE Calculator</div>
+            <div class="tool-info-cat">Tax &amp; Finance</div>
+          </div>
+        </div>
+        <div class="tool-info-body">
+          <div class="tool-info-stats">
+            <div class="tool-stat"><div class="tool-stat-val">2.4K</div><div class="tool-stat-lbl">Calculations</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">Sources</div><div class="tool-stat-lbl">Linked</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">Free</div><div class="tool-stat-lbl">Forever</div></div>
+          </div>
+          <div class="tool-info-features">
+            <span class="tool-feat">Net Pay Calc</span>
+            <span class="tool-feat">Tax Bands</span>
+            <span class="tool-feat">PDF Export</span>
+            <span class="tool-feat">AI Advisor</span>
+            <span class="tool-feat">Deductions</span>
+          </div>
+        </div>
+        <div class="tool-info-save">
+          <button type="button" class="tool-info-save-btn" id="sidebarSaveBtn" onclick="toggleSaveTool()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            <span id="sidebarSaveLabel">Save to My Tools</span>
+          </button>
+        </div>
+        <div class="tool-info-footer">
+          <span class="tool-info-updated">Updated: Mar 2026</span>
+          <div class="tool-info-actions">
+            <button type="button" class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Share</button>
+            <a class="tool-info-action" href="/salary-tax/">All Countries</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+
+<!-- PDF MODAL -->
+<div class="modal-bg" id="pdfModal">
+  <div class="modal">
+    <div id="modalForm">
+      <h3>📄 Download Your PAYE Summary</h3>
+      <p>Enter your email to get a detailed PDF — we'll notify you when Tanzania tax rates change.</p>
+      <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
+        <input type="hidden" name="form-name" value="pdf-leads">
+      <p style="display:none"><input aria-label="Bot field" name="bot-field"></p>
+        <input type="hidden" name="country"      value="Tanzania">
+        <input type="hidden" name="country_code" value="TZ">
+        <input type="hidden" name="tool"         value="paye">
+        <input type="hidden" name="tool_id"      value="tz-paye">
+        <input type="hidden" name="currency"     value="TZS">
+        <input type="hidden" name="gross_salary" id="hiddenGross" value="">
+        <input aria-label="Your name (optional)" class="modal-input" type="text"  name="name"  id="pdfName"  placeholder="Your name (optional)" autocomplete="name">
+        <input aria-label="Your email address" class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Your email address" autocomplete="email" required>
+        <button class="modal-submit" type="submit">Get My PDF →</button>
+      </form>
+      <button type="button" class="modal-cancel" onclick="closePdfModal()">No thanks</button>
+    </div>
+    <div class="modal-success" id="modalSuccess">
+      <button type="button" onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Close">✕</button>
+      <div class="big-check">✅</div>
+      <h4>PDF opening now</h4>
+      <p>Click <strong>Save as PDF</strong> in the print dialog.</p>
+      <button type="button" class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Done →</button>
+    </div>
+  </div>
+</div>
+
+<!-- SEO Guide -->
+
+<!-- SAVE TOOL CTA -->
+<section class="ng-save-sec">
+  <div class="container">
+    <div class="ng-save-card">
+      <div class="ng-save-left">
+        <div class="ng-save-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div>
+          <h3 class="ng-save-title">Save this calculator</h3>
+          <p class="ng-save-desc">Bookmark Tanzania PAYE to your personal dashboard for quick access anytime.</p>
+        </div>
+      </div>
+      <div class="ng-save-actions">
+        <button type="button" class="ng-save-btn" id="inlineSaveBtn" onclick="toggleSaveTool()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          Save to My Tools
+        </button>
+        <button type="button" class="ng-save-btn ng-save-btn-ghost" onclick="typeof shareCalc==='function'?shareCalc():navigator.share?.({title:document.title,url:location.href})">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Share
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TWO-COLUMN GUIDE -->
+<section class="ng-guide-sec">
+  <div class="container">
+    <div class="ng-guide-header">
+      <h2 class="ng-guide-title">How Tanzania PAYE Tax Is Calculated 2025/26</h2>
+    </div>
+    <div class="ng-guide-grid">
+      <div class="ng-guide-col">
+        <div class="ng-guide-card">
+          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Tanzania's Pay As You Earn (PAYE) system is administered by the Tanzania Revenue Authority (TRA) and applies to all employees earning income from employment sources in Tanzania. Employers must register with TRA, deduct PAYE monthly, and remit it alongside the Skills Development Levy (SDL) by the 7th of the following month. Non-compliance attracts penalties of 2.5% per month on outstanding amounts. The Income Tax Act 2004 (as amended) and Finance Acts provide the legislative basis for PAYE in Tanzania.</p>
+        </div>
+        <div class="ng-guide-card">
+          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Tanzania uses a five-band progressive PAYE structure applied on monthly taxable income after NSSF deduction. The first TZS 270,000 per month is completely tax-free. Income between TZS 270,001 and TZS 520,000 is taxed at 8%. Above TZS 520,000 up to TZS 760,000, tax is TZS 20,000 plus 20% on the excess. From TZS 760,001 to TZS 1,000,000, tax is TZS 68,000 plus 25% on the excess. Above TZS 1,000,000 per month, tax is TZS 128,000 plus 30% on the excess. These are marginal rates — only the income within each band is taxed at that rate.</p>
+        </div>
+        <div class="ng-guide-card">
+          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Beyond PAYE, Tanzanian payroll involves several employer levies. The Skills Development Levy (SDL) is 3.5% of the total monthly gross wage bill and is entirely an employer cost — not deducted from employee pay. It applies to organisations employing 10 or more workers on mainland Tanzania. The Workers' Compensation Fund (WCF) is an additional 0.5% employer contribution covering workplace injury insurance. NSSF contributions are 10% from the employee and 10% from the employer (private sector), while public sector employees use the PSSSF at 5% each side.</p>
+        </div>
+        <div class="ng-guide-card">
+          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">For employees with a second job in Tanzania, secondary employment income is subject to a flat 30% withholding tax at source with no deductions allowed — a deliberate measure to prevent gaming of the progressive bands across multiple employers. All employment income is denominated in Tanzanian Shillings (TZS). Tanzania's economy is East Africa's second-largest with a GDP of approximately $80 billion, and mobile money via M-Pesa and Airtel Money is widely used for payroll disbursement.</p>
+        </div>
+        <div class="ng-guide-card">
+          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;"><!-- Rates as of 2025/26. Verify at TRA (tra.go.tz) for the latest updates. --></p>
+        </div>
+      </div>
+      <div class="ng-guide-col">
+        <div class="ng-guide-card ng-guide-card-table">
+          <h3>Tanzania PAYE Tax Bands 2025/26 (Monthly)</h3>
+          <div class="ng-bands-table-wrap"><div>
+    <table class="ng-bands-table">
+      <thead>
+        <tr>
+          <th>Monthly Band (TZS)</th>
+          <th>Rate</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>0 &ndash; 270,000</td><td>0%</td></tr>
+        <tr><td>270,001 &ndash; 520,000</td><td>8%</td></tr>
+        <tr><td>520,001 &ndash; 760,000</td><td>20%</td></tr>
+        <tr><td>760,001 &ndash; 1,000,000</td><td>25%</td></tr>
+        <tr><td>Over 1,000,000</td><td>30%</td></tr>
+      </tbody>
+    </table>
+  </div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="ng-faq-sec">
+  <div class="container">
+    <div class="ng-faq-header">
+      <span class="eyebrow">Tanzania Tax FAQ</span>
+      <h2 class="ng-faq-title">Common PAYE Questions</h2>
+    </div>
+    <div class="ng-faq-grid">
+      <div class="ng-faq-col">
+        <details class="ng-faq-item" open>
+          <summary>What are the Tanzania PAYE tax bands for 2025/26?</summary>
+          <p>Five monthly bands: 0% on first TZS 270,000; 8% on TZS 270,001–520,000; TZS 20,000 plus 20% on TZS 520,001–760,000; TZS 68,000 plus 25% on TZS 760,001–1,000,000; TZS 128,000 plus 30% above TZS 1,000,000. These bands are applied monthly against taxable income (after NSSF deduction).</p>
+        </details>
+        <details class="ng-faq-item">
+          <summary>Is NSSF contribution deductible from PAYE taxable income?</summary>
+          <p>Yes — the employee's mandatory 10% NSSF contribution (private sector) or 5% PSSSF contribution (public sector) is fully deductible from gross pay before calculating PAYE. This reduces your taxable income and therefore your PAYE tax. The employer's matching contribution is a separate employer cost, not deducted from your pay.</p>
+        </details>
+        <details class="ng-faq-item">
+          <summary>What is the Skills Development Levy (SDL)?</summary>
+          <p>SDL is an employer-only payroll tax of 3.5% of gross monthly emoluments, paid to TRA by the 7th of the following month alongside PAYE. It applies to organisations employing 10 or more people on Tanzania Mainland (4+ in Zanzibar). SDL is not deducted from employee pay — it's an additional cost borne entirely by the employer.</p>
+        </details>
+      </div>
+      <div class="ng-faq-col">
+        <details class="ng-faq-item">
+          <summary>How is secondary employment taxed in Tanzania?</summary>
+          <p>Income from a second job in Tanzania is taxed at a flat rate of 30% at source, with no deductions or tax-free band allowed. This is a final withholding tax — the secondary employer withholds 30% of the full gross amount and remits it to TRA. This prevents the progressive bands from being applied twice across two employers.</p>
+        </details>
+        <details class="ng-faq-item">
+          <summary>What is the Workers' Compensation Fund (WCF)?</summary>
+          <p>WCF is an employer-only contribution of 0.5% of the monthly gross wage bill for private sector employers (0.5% for public sector too). It funds compensation for employees injured at work. WCF returns are filed annually (1 March to 28 February), with monthly payments. This is separate from SDL and NSSF.</p>
+        </details>
+        <details class="ng-faq-item">
+          <summary>When must employers remit PAYE to TRA?</summary>
+          <p>PAYE and SDL must be filed and paid to TRA by the 7th day of the month following the payroll month. NSSF and WCF contributions are due by the end of the following month. Late payment attracts penalties of 2.5% per month (minimum TZS 100,000 for individuals). Employers must file a monthly PAYE return even for nil-tax months.</p>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- seo-cluster-block:start -->
+<section class="seo-cluster-shell" aria-label="TRA PAYE calculator and Tanzania salary tax guidance">
+  <div class="seo-cluster seo-cluster--tool" data-seo-cluster="/tanzania/tz-paye/">
+    <div class="seo-cluster__inner">
+      <div class="seo-cluster__eyebrow">Tanzania tax authority context</div>
+      <h2 class="seo-cluster__title">TRA PAYE calculator intent, salary tax, and official filing routes</h2>
+      <div class="seo-cluster__answer"><span class="seo-cluster__answer-label">Quick answer</span><p>Use AfroTools to estimate Tanzania PAYE after employee NSSF or PSSSF contributions, with employer SDL and WCF context shown separately. Use TRA systems for official taxpayer registration, returns, and payment. AfroTools is not the official TRA portal.</p></div>
+      <div class="seo-cluster__grid">
+        <div class="seo-cluster__card seo-cluster__card--cta"><span class="seo-cluster__kicker">Use the calculator</span><h3 class="seo-cluster__card-title">Estimate Tanzania PAYE and take-home salary</h3><p>Model TRA PAYE bands, private or public pension deductions, and employer payroll obligations.</p><a class="seo-cluster__cta" href="/tanzania/tz-paye">Open Tanzania PAYE Calculator</a></div>
+        <div class="seo-cluster__card"><h3>Official TRA links</h3><ul class="seo-cluster__list"><li><a href="https://www.tra.go.tz/calculators/paye" target="_blank" rel="noopener"><span class="seo-cluster__item-title">TRA PAYE calculator</span><span class="seo-cluster__item-reason">Official TRA calculator for monthly income tax payable.</span></a></li><li><a href="https://taxpayersportal.tra.go.tz/ept/main" target="_blank" rel="noopener"><span class="seo-cluster__item-title">TRA taxpayer portal</span><span class="seo-cluster__item-reason">Official portal for taxpayer account actions.</span></a></li></ul></div>
+        <div class="seo-cluster__card"><h3>AfroTools links</h3><ul class="seo-cluster__list"><li><a href="/blog/salary-after-tax-tanzania-2026/"><span class="seo-cluster__item-title">Tanzania salary after tax guide</span><span class="seo-cluster__item-reason">Plain-English PAYE examples and salary context.</span></a></li><li><a href="/tanzania/"><span class="seo-cluster__item-title">Tanzania tools hub</span><span class="seo-cluster__item-reason">Local tax, finance, PDF, and business tools.</span></a></li><li><a href="/salary-tax/paye/"><span class="seo-cluster__item-title">All Africa PAYE calculators</span><span class="seo-cluster__item-reason">Compare Tanzania with KRA, SARS, GRA, MRA, and LRA/RSL routes.</span></a></li></ul></div>
+      </div>
+      <div class="seo-cluster__faq"><details><summary>Why does TRA ask for pay after NSSF or PSSSF?</summary><div class="seo-cluster__faq-body">TRA's official calculator flow starts from monthly pay after employee pension contribution. AfroTools lets you enter gross salary and models the deduction before estimating PAYE.</div></details></div>
+    </div>
+  </div>
+</section>
+<!-- seo-cluster-block:end -->
+<!-- TOOL_VERIFICATION_PANEL_START -->
+<section class="tool-verification-sec" id="sources-verification" data-tool-verification-panel data-tool-id="tz-paye">
+  <!-- AfroTools source confidence -->
+  <div class="container afro-source-meta" data-source-meta-id="paye-tz-source" data-source-meta-compact="true"></div>
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Official evidence</span>
+          <h2 class="tool-verification-title">Sources &amp; verification</h2>
+          <p class="tool-verification-lead">This high-stakes calculator links the authority sources, method notes, test cases, and limitations used to check the numbers shown on this page.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Last verified 2025-07-01</span>
+          <p class="tool-verification-note">Tanzania - high risk - AfroTools source audit</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>Official source links</h3>
+          <ul class="tool-verification-list">
+<li><a href="https://www.tra.go.tz/calculators/paye" target="_blank" rel="noopener">TRA PAYE calculator Official TRA calculator for monthly income tax payable.</a></li>
+<li><a href="https://taxpayersportal.tra.go.tz/ept/main" target="_blank" rel="noopener">TRA taxpayer portal Official portal for taxpayer account actions.</a></li>
+<li><a href="https://tra.go.tz" target="_blank" rel="noopener">tra.go.tz</a></li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Law, regulation, or version</h3>
+          <p class="tool-verification-meta">Last verified: July 2025. Source: TRA PAYE calculator, TRA Pay As You Earn guidance, Income Tax Act 2004, and Finance Act 2024/25 notes captured in AfroTools source review.</p>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Calculation methodology</h3>
+          <p class="tool-verification-meta">The calculator annualizes salary where needed, applies modeled employee statutory deductions, runs taxable income through the country PAYE bands, and derives net pay from gross pay minus modeled PAYE and statutory deductions. Employer-cost lines are informational where the page exposes them.</p>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Known limitations</h3>
+          <ul class="tool-verification-list">
+<li>Informational estimate only. It is not professional tax, legal, payroll, or filing advice.</li>
+<li>Sector-specific, regional, treaty, relief, and special-regime rules may not be fully modeled.</li>
+<li>Confirm filing, registration, and remittance duties with the official authority or a qualified adviser before submission.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Test-case examples</h3>
+<div class="tool-verification-case"><p class="tool-verification-meta"><strong>Input:</strong> Annual gross salary: 0.<br><strong>Expected:</strong> PAYE and statutory deductions should be 0 and net pay should not be negative.<br><strong>Why:</strong> Establishes the zero-income baseline and catches negative liability regressions.</p></div>
+<div class="tool-verification-case"><p class="tool-verification-meta"><strong>Input:</strong> Annual gross salary entered in the page currency.<br><strong>Expected:</strong> Taxable income is processed through the visible country bands and net pay equals gross pay minus modeled deductions.<br><strong>Why:</strong> Confirms the calculator is using the documented methodology rather than an opaque flat estimate.</p></div>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Change history</h3>
+          <ul class="tool-verification-list">
+<li><strong>2026-05-02:</strong> Trust and verification panel added with source links, methodology, limitations, and report-error CTA.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <p class="tool-verification-disclaimer">AfroTools calculators are decision-support tools. Always confirm filing, registration, and remittance duties with the linked authority or a qualified local adviser.</p>
+        <a class="tool-verification-report" href="/contact/?topic=calculation-error&amp;tool=tz-paye">Report calculation error</a>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- TOOL_VERIFICATION_PANEL_END -->
+<afro-related-tools category="financial" current="tz-paye" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Tracker" data-category="financial" data-icon="AA" data-desc="Compare petrol, diesel, and LPG prices across 54 African countries, then estimate generator fuel costs in local currency">AfroFuel — African Fuel Price Tracker</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+// ══════════════════════════════════════════════════════════════════
+//  TANZANIA PAYE CALCULATOR 2025/26
+//  TRA Progressive Monthly Tax · NSSF/PSSSF · SDL · WCF
+//  Source: Income Tax Act 2004 · Finance Act 2024/25 · TRA (tra.go.tz)
+//          NSSF Act 2018 · PSSSF · Skills & Development Levy Act
+// ══════════════════════════════════════════════════════════════════
+
+var RESULT=null;
+let PERIOD       = 'monthly';
+let CHART        = null;
+let CHART_TYPE   = 'donut';
+let CHAT_HISTORY = [];
+let SECTOR       = 'private'; // 'private' | 'public'
+
+const fmt = n => 'TZS\u00A0' + Math.round(Math.abs(n)).toLocaleString('en-TZ');
+const pct = r => { const v = r * 100; return (v % 1 === 0 ? v.toFixed(0) : parseFloat(v.toFixed(2)).toString()) + '%'; };
+
+// ── SECTOR SELECTOR ───────────────────────────────────────────
+function setSector(s, btn) {
+  SECTOR = s;
+  document.querySelectorAll('.sec-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  const nssfTog = document.querySelector('[data-tog="nssf"]');
+  document.getElementById('nssfLabel').textContent = s === 'private' ? 'NSSF (private)' : 'PSSSF (public)';
+  nssfTog.querySelector('.tog-rate').textContent = s === 'private' ? '10% employee — tax-deductible' : '5% employee — tax-deductible';
+}
+
+// ── SLIDER ────────────────────────────────────────────────────
+function onSlider(el) {
+  const v = parseInt(el.value);
+  document.getElementById('grossSalary').value = v;
+  document.getElementById('sliderVal').textContent = fmt(v);
+  updateSliderFill(el);
+  clearTimeout(window._sliderDebounce);
+  window._sliderDebounce = setTimeout(calculate, 280);
+}
+function onInput(el) {
+  const v = Math.min(Math.max(parseInt(el.value) || 0, 100000), 20000000);
+  const s = document.getElementById('salarySlider');
+  s.value = v;
+  document.getElementById('sliderVal').textContent = fmt(parseInt(el.value) || 0);
+  updateSliderFill(s);
+  clearTimeout(window._sliderDebounce);
+  window._sliderDebounce = setTimeout(calculate, 280);
+}
+function updateSliderFill(el) {
+  var p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
+  var c = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent');
+  c = c ? c.trim() : 'var(--color-primary)';
+  el.style.background = 'linear-gradient(to right, ' + c + ' 0%, ' + c + ' ' + p + '%, #e2e8f0 ' + p + '%, #e2e8f0 100%)';
+}
+updateSliderFill(document.getElementById('salarySlider'));
+
+// ── TOGGLES ───────────────────────────────────────────────────
+function togItem(el) { el.classList.toggle('on'); }
+function isOn(tog) { return !!document.querySelector(`[data-tog="${tog}"]`)?.classList.contains('on'); }
+
+// ══════════════════════════════════════════════════════════════
+//  TRA PAYE TAX ENGINE (MONTHLY)
+//  Bands on MONTHLY TAXABLE INCOME (gross minus social security):
+//  0%    on first  TZS 270,000
+//  8%    on next   TZS 250,000  (270,001–520,000)
+//  20%   on next   TZS 240,000  (520,001–760,000) [base TZS 20,000]
+//  25%   on next   TZS 240,000  (760,001–1,000,000) [base TZS 68,000]
+//  30%   above     TZS 1,000,000 [base TZS 128,000]
+// ══════════════════════════════════════════════════════════════
+
+function calcMonthlyPAYE(monthlyTaxableIncome) {
+  const income = Math.max(0, monthlyTaxableIncome);
+  const bandBreakdown = [];
+
+  if (income <= 270000) {
+    bandBreakdown.push({ rate: 0, income, tax: 0 });
+    return { tax: 0, bandBreakdown };
+  }
+
+  let tax = 0;
+
+  // Band 1: 0% on first 270,000
+  bandBreakdown.push({ rate: 0, income: 270000, tax: 0 });
+
+  // Band 2: 8% on 270,001–520,000
+  if (income > 270000) {
+    const chunk = Math.min(income - 270000, 250000);
+    const t = chunk * 0.08;
+    tax += t;
+    bandBreakdown.push({ rate: 0.08, income: chunk, tax: t });
+  }
+
+  // Band 3: 20% on 520,001–760,000
+  if (income > 520000) {
+    const chunk = Math.min(income - 520000, 240000);
+    const t = chunk * 0.20;
+    tax += t;
+    bandBreakdown.push({ rate: 0.20, income: chunk, tax: t });
+  }
+
+  // Band 4: 25% on 760,001–1,000,000
+  if (income > 760000) {
+    const chunk = Math.min(income - 760000, 240000);
+    const t = chunk * 0.25;
+    tax += t;
+    bandBreakdown.push({ rate: 0.25, income: chunk, tax: t });
+  }
+
+  // Band 5: 30% above 1,000,000
+  if (income > 1000000) {
+    const chunk = income - 1000000;
+    const t = chunk * 0.30;
+    tax += t;
+    bandBreakdown.push({ rate: 0.30, income: chunk, tax: t });
+  }
+
+  return { tax, bandBreakdown: bandBreakdown.filter(b => b.income > 0) };
+}
+
+// ── MAIN CALCULATE ────────────────────────────────────────────
+  function setPreset(val, btn) {
+    document.getElementById('grossSalary').value = val;
+    document.getElementById('salarySlider').value = val;
+    onSlider(document.getElementById('salarySlider'));
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+    calculate();
+  }
+
+  function calculate() {
+  const gross = parseFloat(document.getElementById('grossSalary').value) || 0;
+  if (!gross || gross <= 0) {
+    const el = document.getElementById('grossSalary');
+    el.focus(); el.style.borderColor = '#e53e3e';
+    el.setAttribute('placeholder', 'Enter a valid salary');
+    setTimeout(() => { el.style.borderColor = ''; el.removeAttribute('placeholder'); }, 3000);
+    return;
+  }
+
+  const isSecondary = isOn('secondary');
+  const hasNSSF     = isOn('nssf');
+
+  // NSSF / PSSSF calculation
+  const socialRate     = hasNSSF ? (SECTOR === 'private' ? 0.10 : 0.05) : 0;
+  const empSocialRate  = SECTOR === 'private' ? 0.10 : 0.15;
+  const social         = gross * socialRate;
+  const empSocial      = gross * empSocialRate;
+
+  // PAYE
+  let monthlyPAYE = 0;
+  let bandBreakdown = [];
+
+  if (isSecondary) {
+    // Secondary employment: flat 30%, no deductions
+    monthlyPAYE = gross * 0.30;
+    bandBreakdown = [{ rate: 0.30, income: gross, tax: monthlyPAYE, isFlat: true }];
+  } else {
+    const taxableIncome = Math.max(0, gross - social);
+    const result = calcMonthlyPAYE(taxableIncome);
+    monthlyPAYE  = result.tax;
+    bandBreakdown = result.bandBreakdown;
+  }
+
+  // Employer levies (on gross emoluments, employer cost only)
+  const sdl = gross * 0.035;      // 3.5% employer only
+  const wcf = gross * 0.005;      // 0.5% employer only
+
+  // Net pay
+  const totalEmployeeDeductions = social + monthlyPAYE;
+  const netMonthly = gross - totalEmployeeDeductions;
+  const effectiveRate = gross > 0 ? monthlyPAYE / gross : 0;
+
+  // Annual figures
+  const annual = v => v * 12;
+
+  RESULT = {
+    gross, monthly: gross, social, socialRate, empSocial,
+    monthlyPAYE, bandBreakdown, isSecondary, sector: SECTOR,
+    sdl, wcf, empSocial,
+    totalEmployeeDeductions, netMonthly, effectiveRate,
+    annualGross: annual(gross), annualNet: annual(netMonthly),
+    annualTax: annual(monthlyPAYE), annualSocial: annual(social),
+    totalEmployerCostMonthly: gross + empSocial + sdl + wcf,
+  };
+
+  document.getElementById('resAmount').textContent      = fmt(netMonthly);
+  document.getElementById('resGross').textContent       = `Gross: ${fmt(gross)}/month · ${fmt(annual(gross))}/year`;
+  document.getElementById('resContent').innerHTML       = renderRows(RESULT, PERIOD);
+  document.getElementById('effRateDisplay').textContent = pct(effectiveRate);
+  setTimeout(() => { document.getElementById('rateFill').style.width = Math.min(effectiveRate * 200, 100) + '%'; }, 80);
+  document.getElementById('hiddenGross').value = gross;
+
+  const strip = document.getElementById('employerStrip');
+  strip.innerHTML = `<strong>Total Employer Cost: ${fmt(RESULT.totalEmployerCostMonthly)}/month</strong><br>Gross + NSSF ${fmt(empSocial)}/mo + SDL ${fmt(sdl)}/mo + WCF ${fmt(wcf)}/mo.`;
+  strip.classList.add('on');
+
+  document.getElementById('resultsCard').classList.add('on');
+  renderChart(CHART_TYPE);
+  document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  document.getElementById('aiBtn').disabled = false;
+  document.getElementById('aiBtn').textContent = 'Get AI Tax Analysis →';
+  document.getElementById('aiStatus').textContent = `Gross: ${fmt(gross)}/mo · Take-home: ${fmt(netMonthly)}/mo · PAYE: ${fmt(monthlyPAYE)}/mo · Effective: ${pct(effectiveRate)}`;
+}
+
+// ── RENDER ROWS ───────────────────────────────────────────────
+function renderRows(R, period) {
+  const isAnnual = period === 'annual';
+  const d = isAnnual ? 1 : 1; // we always have monthly figures in RESULT
+  const gross  = isAnnual ? R.annualGross   : R.gross;
+  const social = isAnnual ? R.annualSocial  : R.social;
+  const paye   = isAnnual ? R.annualTax     : R.monthlyPAYE;
+  const net    = isAnnual ? R.annualNet     : R.netMonthly;
+  const totalDeductions = isAnnual ? R.annualTax + R.annualSocial : R.totalEmployeeDeductions;
+  const lbl = isAnnual ? '/year' : '/month';
+
+  const row = (l, v, cls='') => `<div class="res-row"><span class="res-row-lbl">${l}</span><span class="res-row-val ${cls}">${v}</span></div>`;
+
+  return `
+    <div class="res-section">
+      <div class="res-section-title">Gross Income</div>
+      ${row(`Annual Gross Salary${lbl}`, fmt(gross))}
+    </div>
+    <div class="res-section">
+      <div class="res-section-title">Deductions</div>
+      ${R.social > 0 ? row(`${R.sector === 'private' ? 'NSSF' : 'PSSSF'} (${pct(R.socialRate)}, no cap)`, fmt(social), 'c-red') : ''}
+      ${R.isSecondary
+        ? `<div style="background:rgba(220,100,0,.06);border:1px solid rgba(220,100,0,.2);border-radius:5px;padding:8px 12px;font-size:.78rem;color:#7a3800;line-height:1.5;margin:6px 0">⚠ Secondary employment: flat 30% applied to full gross — no tax-free band, no NSSF deduction for PAYE purposes.</div>`
+        : row(`Net taxable income${lbl}`, fmt(isAnnual ? R.annualGross - R.annualSocial : R.gross - R.social), 'c-mut')
+      }
+    </div>
+    <div class="res-section">
+      <div class="res-section-title">PAYE (TRA)</div>
+      ${row(`Income tax (PAYE)${lbl}`, fmt(paye), 'c-red')}
+    </div>
+    <div class="res-section">
+      ${row('Total Deductions', fmt(totalDeductions), 'c-red')}
+      <div class="res-row total"><span class="res-row-lbl">Take-Home Pay</span><span class="res-row-val c-grn">${fmt(net)}</span></div>
+    </div>`;
+}
+
+// ── PERIOD ────────────────────────────────────────────────────
+function setPeriod(period, btn) {
+  PERIOD = period;
+  document.querySelectorAll('.per-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  if (RESULT) {
+    // Update hero
+    var isMonthly = period === 'monthly';
+    var net = isMonthly ? RESULT.netMonthly : (RESULT.annualNet || RESULT.netAnnual || RESULT.netMonthly * 12);
+    var gr = isMonthly ? RESULT.gross : (RESULT.annualGross || RESULT.gross * 12);
+    document.getElementById('resAmount').textContent = fmt(net);
+    document.getElementById('resGross').textContent = isMonthly
+      ? 'Gross: ' + fmt(gr) + '/month'
+      : 'Gross: ' + fmt(gr) + '/year';
+    document.getElementById('resContent').innerHTML = renderRows(RESULT, period);
+  }
+}
+
+// ── BANDS TOGGLE ──────────────────────────────────────────────
+function toggleBands(header) {
+  const body = header.nextElementSibling;
+  const arr  = header.querySelector('.tog-arrow');
+  body.classList.toggle('open');
+  arr.classList.toggle('open');
+}
+
+// ── CHARTS ────────────────────────────────────────────────────
+function setChart(type, btn) {
+  CHART_TYPE = type;
+  document.querySelectorAll('.chart-tab').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  renderChart(type);
+}
+
+function renderChart(type) {
+  if (!RESULT) return;
+  const R = RESULT;
+  const canvas = document.getElementById('mainChart');
+  if (CHART) { CHART.destroy(); CHART = null; }
+
+  if (type === 'donut') {
+    CHART = new Chart(canvas, {
+      type: 'doughnut',
+      data: {
+        labels: ['Take-Home', 'PAYE Tax', R.sector === 'private' ? 'NSSF' : 'PSSSF'],
+        datasets: [{ data: [R.netMonthly, R.monthlyPAYE, R.social], backgroundColor: AfroChartColors.doughnut.slice(0, 3), borderWidth: 2, borderColor: '#fff' }]
+      },
+      options: { responsive:true, maintainAspectRatio:false, cutout:'65%', plugins:{ legend:{ position:'bottom', labels:{ usePointStyle:true, pointStyle:'circle', font:{size:11,weight:'600',family:"'Inter',sans-serif"}, padding:14, color:'#64748B' } }, tooltip:{ backgroundColor:AfroChartColors.tooltipBg, titleColor:'#fff', bodyColor:'#fff', cornerRadius:8, padding:12 } } }
+    });
+  } else if (type === 'bar') {
+    const bands = R.bandBreakdown.filter(b => b.tax > 0);
+    if (!bands.length) return;
+    CHART = new Chart(canvas, {
+      type: 'bar',
+      data: {
+        labels: bands.map(b => b.isFlat ? '30% flat' : (b.rate*100)+'%'),
+        datasets: [{ label:'Tax (TZS)', data: bands.map(b=>b.tax), backgroundColor: AfroChartColors.series.slice(0, bands.length), borderRadius:6 }]
+      },
+      options: { responsive:true, maintainAspectRatio:false, indexAxis:'y', plugins:{ legend:{display:false}, tooltip:{ backgroundColor: AfroChartColors.tooltipBg, titleColor:'#fff', bodyColor:'#fff', cornerRadius:8 } }, scales:{ x:{ ticks:{callback:v=>'TZS'+(v/1000).toFixed(0)+'k', color: AfroChartColors.tickText},grid:{ color: AfroChartColors.grid} }, y:{ticks:{ color: AfroChartColors.tickText, font:{size:10}}} } }
+    });
+  } else if (type === 'employer') {
+    CHART = new Chart(canvas, {
+      type: 'bar',
+      data: {
+        labels: ['Take-Home', 'PAYE', R.sector==='private'?'Emp NSSF':'Emp PSSSF', 'Empr Social', 'SDL', 'WCF'],
+        datasets: [{ label:'TZS', data:[R.netMonthly, R.monthlyPAYE, R.social, R.empSocial, R.sdl, R.wcf], backgroundColor: AfroChartColors.doughnut.slice(0, 6), borderRadius:5 }]
+      },
+      options: { responsive:true, maintainAspectRatio:false, indexAxis:'y', plugins:{ legend:{display:false}, tooltip:{ backgroundColor:AfroChartColors.tooltipBg, titleColor:'#fff', bodyColor:'#fff', cornerRadius:8 } }, scales:{ x:{ ticks:{callback:v=>'TZS'+(v/1000).toFixed(0)+'k', color:AfroChartColors.tickText}, grid:{color:AfroChartColors.grid} }, y:{ticks:{ color:AfroChartColors.tickText, font:{size:9}}} } }
+    });
+  }
+}
+
+// ── PDF MODAL ─────────────────────────────────────────────────
+async function downloadPdfSummary(){
+  if(!RESULT || !window.AfroTools?.pdf) return;
+  const R = RESULT;
+  await window.AfroTools.pdf.generate({
+    filename:'afrotools-tz-paye-tanzania-2026-07-03.pdf',
+    title:'Tanzania PAYE Summary',
+    subtitle:'Monthly employment tax estimate',
+    country:'Tanzania',
+    currency:'TZS',
+    summary:[
+      {label:'Take-home',value:fmt(R.netMonthly)},
+      {label:'Gross',value:fmt(R.gross)},
+      {label:'PAYE',value:fmt(R.monthlyPAYE)},
+      {label:'Effective rate',value:pct(R.effectiveRate)}
+    ],
+    sections:[
+      {heading:'Monthly result',rows:[['Gross salary',fmt(R.gross)],['PAYE tax',fmt(R.monthlyPAYE)],['Employee social security',fmt(R.social)],['Take-home pay',fmt(R.netMonthly)]]},
+      {heading:'Annual view',rows:[['Annual gross salary',fmt(R.annualGross)],['Annual PAYE',fmt(R.annualTax)],['Annual social security',fmt(R.annualSocial)],['Annual take-home pay',fmt(R.annualNet)]]},
+      {heading:'Employer view',rows:[['Employer social security',fmt(R.empSocial)],['SDL',fmt(R.sdl)],['WCF',fmt(R.wcf)],['Total employer monthly cost',fmt(R.totalEmployerCostMonthly)]]}
+    ],
+    skipGate:true
+  });
+}
+
+function openPdfModal()  { if(!RESULT) return; document.getElementById('pdfModal').classList.add('on'); document.getElementById('modalForm').style.display='block'; document.getElementById('modalSuccess').style.display='none'; }
+function closePdfModal() { document.getElementById('pdfModal').classList.remove('on'); }
+document.getElementById('pdfModal').addEventListener('click', e => { if(e.target===document.getElementById('pdfModal')) closePdfModal(); });
+
+async function submitPdf(e) {
+  e.preventDefault();
+  const email = document.getElementById('pdfEmail').value;
+  if (!email) return;
+  try {
+    await fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams({'form-name':'pdf-leads',email,country:'Tanzania',country_code:'TZ',tool:'paye',tool_id:'tz-paye',currency:'TZS',gross_salary:RESULT.gross}).toString() });
+  } catch(e){}
+  document.getElementById('modalForm').style.display  = 'none';
+  document.getElementById('modalSuccess').style.display = 'block';
+  generatePdf();
+}
+
+function generatePdf() {
+  if (!RESULT) return;
+  const R      = RESULT;
+  const dateStr= new Date().toLocaleDateString('en-TZ',{day:'numeric',month:'long',year:'numeric'});
+  const refNo  = 'AFT-TZ-PAYE-' + Date.now().toString(36).toUpperCase().slice(-6);
+
+  const bandRows = R.bandBreakdown.filter(b => b.tax > 0).map(b =>
+    `<tr><td style="padding-left:14px;color:#4b5563">${b.isFlat ? 'Flat 30% (secondary employment)' : 'Rate ' + (b.rate*100) + '% on TZS ' + Math.round(b.income).toLocaleString()}</td><td class="num red">(TZS ${Math.round(b.tax).toLocaleString()})</td></tr>`
+  ).join('');
+
+  const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<title>AfroTools Tanzania PAYE — ${refNo}</title>
+<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Inter',Arial,sans-serif;background:#fff;color:#111827;font-size:9pt;line-height:1.5}@page{size:A4;margin:0}
+.cover{background:linear-gradient(135deg,#0a1929 0%,#0d2040 100%);padding:28px 36px 22px;color:#fff}
+.cover-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.brand{font-size:13pt;font-weight:800;color:#fff}.brand b{color:#FCD116}
+.brand-sub{font-size:6pt;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.32);margin-top:2px}
+.ref-label{font-size:6pt;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.32);text-align:right}
+.ref-val{font-size:8pt;font-weight:700;color:rgba(255,255,255,.65);margin-top:2px;text-align:right}
+.doc-title{font-size:18pt;font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1}
+.doc-title span{color:#FCD116}.doc-meta{margin-top:8px;font-size:7.5pt;color:rgba(255,255,255,.4)}
+.badge{display:inline-block;margin-top:10px;padding:3px 10px;border-radius:3px;font-size:7pt;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(37,99,235,.22);color:#93C5FD;border:1px solid rgba(37,99,235,.4)}
+.body{padding:24px 36px 28px}
+.sh{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.shi{text-align:center;flex:1}.sh-lbl{font-size:6pt;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9ca3af;margin-bottom:3px}
+.sh-val{font-size:13pt;font-weight:800;color:#111827}.sh-val.gold{color:#9a7a00}.sh-val.red{color:#c0392b}
+.sh-div{width:1px;height:40px;background:#e5e7eb;flex-shrink:0}
+.sec-head{font-size:6.5pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#9ca3af;padding:0 0 5px;border-bottom:1.5px solid #e5e7eb;margin:16px 0 8px}
+table{width:100%;border-collapse:collapse}tr{border-bottom:1px solid #f3f4f6}td{padding:5.5px 4px;font-size:8.5pt;vertical-align:middle}
+td.num{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.red{color:#c0392b}.green{color:#2563EB}.muted{color:#9ca3af}
+tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-size:9.5pt}
+.src{display:inline-block;padding:2px 7px;background:#f3f4f6;border-radius:3px;font-size:6.5pt;font-weight:600;color:#6b7280;margin-right:4px}
+  <link rel="stylesheet" href="/assets/css/print.css?v=ca13c10a" media="print">
+<meta property="article:modified_time" content="2026-03-28">
+</style><link rel="stylesheet" href="/assets/css/paye-tool.css?v=075c178d">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+</head><body>
+<div class="cover">
+  <div class="cover-top">
+    <div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">Africa's Everything Platform</div></div>
+    <div><div class="ref-label">Reference</div><div class="ref-val">${refNo}</div></div>
+  </div>
+  <div class="doc-title">Tanzania PAYE<br><span>Summary 2025/26</span></div>
+  <div class="doc-meta">Generated ${dateStr} · afrotools.com/tanzania/tz-paye</div>
+  <div class="badge">TRA 2025/26 · Finance Act 2024/25</div>
+</div>
+<div class="body">
+  <div class="sh">
+    <div class="shi"><div class="sh-lbl">Monthly Take-Home</div><div class="sh-val gold">TZS ${Math.round(R.netMonthly).toLocaleString()}</div></div>
+    <div class="sh-div"></div>
+    <div class="shi"><div class="sh-lbl">Monthly Gross</div><div class="sh-val">TZS ${Math.round(R.gross).toLocaleString()}</div></div>
+    <div class="sh-div"></div>
+    <div class="shi"><div class="sh-lbl">Monthly PAYE</div><div class="sh-val red">TZS ${Math.round(R.monthlyPAYE).toLocaleString()}</div></div>
+    <div class="sh-div"></div>
+    <div class="shi"><div class="sh-lbl">Effective Rate</div><div class="sh-val red">${pct(R.effectiveRate)}</div></div>
+  </div>
+
+  <div class="sec-head">Section 1 — Monthly Income &amp; Deductions</div>
+  <table>
+    <tr><td>Monthly Gross Salary</td><td class="num">TZS ${Math.round(R.gross).toLocaleString()}</td></tr>
+    ${R.social > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">${R.sector==='private'?'NSSF':'PSSSF'} employee contribution (${pct(R.socialRate)}, no cap)</td><td class="num red">(TZS ${Math.round(R.social).toLocaleString()})</td></tr>` : ''}
+    ${!R.isSecondary ? `<tr><td style="font-weight:600">Monthly Taxable Income</td><td class="num muted">TZS ${Math.round(R.gross - R.social).toLocaleString()}</td></tr>` : ''}
+  </table>
+
+  <div class="sec-head">Section 2 — PAYE Computation (TRA 2025/26)</div>
+  <table>
+    ${R.isSecondary ? `<tr><td colspan="2" style="color:#7a3800;padding:8px 4px">⚠ Secondary employment — flat 30% applied to gross TZS ${Math.round(R.gross).toLocaleString()}</td></tr>` : ''}
+    ${bandRows || '<tr><td colspan="2" style="color:#94A3B8;padding-left:14px">Income in 0% band — no PAYE due</td></tr>'}
+    <tr class="total"><td>Monthly PAYE</td><td class="num red">TZS ${Math.round(R.monthlyPAYE).toLocaleString()}</td></tr>
+  </table>
+
+  <div class="sec-head">Section 3 — Monthly Net Pay Summary</div>
+  <table>
+    ${R.social > 0 ? `<tr><td>${R.sector==='private'?'NSSF':'PSSSF'} (employee)</td><td class="num red">(TZS ${Math.round(R.social).toLocaleString()})</td></tr>` : ''}
+    <tr><td>PAYE income tax</td><td class="num red">(TZS ${Math.round(R.monthlyPAYE).toLocaleString()})</td></tr>
+    <tr><td style="font-weight:700">Total Monthly Deductions</td><td class="num red">(TZS ${Math.round(R.totalEmployeeDeductions).toLocaleString()})</td></tr>
+    <tr class="total"><td style="color:#2563EB;font-weight:800">Monthly Take-Home Pay</td><td class="num green">TZS ${Math.round(R.netMonthly).toLocaleString()}</td></tr>
+    <tr class="total"><td style="color:#2563EB;font-weight:800">Annual Take-Home Pay</td><td class="num green">TZS ${Math.round(R.annualNet).toLocaleString()}</td></tr>
+  </table>
+
+  <div class="sec-head">Section 4 — Employer Cost (Monthly)</div>
+  <table>
+    <tr><td>Employee gross salary</td><td class="num">TZS ${Math.round(R.gross).toLocaleString()}</td></tr>
+    <tr><td>Employer ${R.sector==='private'?'NSSF (10%)':'PSSSF (15%)'}</td><td class="num red">TZS ${Math.round(R.empSocial).toLocaleString()}</td></tr>
+    <tr><td>Skills Development Levy — SDL (3.5%, employer only)</td><td class="num red">TZS ${Math.round(R.sdl).toLocaleString()}</td></tr>
+    <tr><td>Workers Compensation Fund — WCF (0.5%, employer only)</td><td class="num red">TZS ${Math.round(R.wcf).toLocaleString()}</td></tr>
+    <tr class="total"><td style="font-weight:800">Total Employer Monthly Cost</td><td class="num red">TZS ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}</td></tr>
+  </table>
+
+  <div class="sec-head">Section 5 — Legal Basis &amp; Sources</div>
+  <table>
+    <tr><td style="width:30%"><span class="src">ITA 2004</span>Income Tax Act</td><td style="color:#6b7280;font-size:8pt">Progressive PAYE on employment income. Monthly brackets unchanged in Finance Act 2024/25. NSSF contribution deductible from taxable income.</td></tr>
+    <tr><td><span class="src">NSSF Act 2018</span>NSSF</td><td style="color:#6b7280;font-size:8pt">Total 20% of gross (private sector): 10% employer + 10% employee. No upper cap. Due end of following month via nssf.go.tz portal.</td></tr>
+    <tr><td><span class="src">SDL Act</span>Skills Development Levy</td><td style="color:#6b7280;font-size:8pt">3.5% of gross emoluments, employer only. Organisations with 10+ employees. Due 7th of following month alongside PAYE to TRA.</td></tr>
+  </table>
+</div>
+<div style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:14px 36px">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start">
+    <div>
+      <div style="font-size:7pt;font-weight:700;color:#111827">AFRO<b style="color:#2563EB">TOOLS</b>.COM — Africa's Financial Calculator Platform</div>
+      <div style="font-size:6.5pt;color:#9ca3af;max-width:440px;line-height:1.4;margin-top:4px">Informational only. Not professional tax advice. Verify with TRA (tra.go.tz) or a qualified Tanzanian tax advisor.</div>
+    </div>
+    <div style="text-align:right;font-size:7pt;color:#9ca3af;white-space:nowrap;margin-left:20px">
+      <div>Ref: ${refNo}</div><div style="margin-top:2px">${dateStr}</div><div style="margin-top:2px">afrotools.com</div>
+    </div>
+  </div>
+</div>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+
+</body></html>`;
+
+  const blob = new Blob([html],{type:'text/html;charset=utf-8'});
+  const url  = URL.createObjectURL(blob);
+  const w    = window.open(url,'_blank');
+  if(w){
+    w.addEventListener('load',()=>{setTimeout(()=>{w.print();setTimeout(()=>URL.revokeObjectURL(url),3000)},600)});
+    setTimeout(()=>{try{w.print()}catch(e){}},1200);
+  }
+}
+
+// ── WHATSAPP SHARE ───────────────────────────────────────────
+function whatsappShare() {
+  if (!RESULT) return;
+  AfroTools.shareState.whatsappShare({
+    headline: 'My Take-Home Pay',
+    mainValue: 'TZS ' + Math.round(RESULT.netMonthly).toLocaleString() + '/mo',
+    subValues: [
+      { label: 'Gross', value: 'TZS ' + Math.round(RESULT.gross).toLocaleString() + '/mo' },
+      { label: 'PAYE', value: 'TZS ' + Math.round(RESULT.monthlyPAYE).toLocaleString() + '/mo' },
+      { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }
+    ],
+    toolId: 'tz-paye'
+  });
+}
+
+// ── SHARE ─────────────────────────────────────────────────────
+function shareResult() {
+  if (!RESULT) return;
+  const text = `My Tanzania PAYE breakdown: Gross TZS ${Math.round(RESULT.gross).toLocaleString()}/mo → Take-home TZS ${Math.round(RESULT.netMonthly).toLocaleString()}/mo (${pct(RESULT.effectiveRate)} effective rate). Calculated at afrotools.com/tanzania/tz-paye`;
+  if (navigator.share) {
+    navigator.share({title:'My Tanzania PAYE',text,url:'https://afrotools.com/tanzania/tz-paye'});
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(text);
+    const btn = document.getElementById('tzShareBtn');
+    btn.textContent = '✓ Copied!';
+    setTimeout(()=>btn.innerHTML=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share Result`,2500);
+  }
+}
+
+// ── AI ADVISOR ────────────────────────────────────────────────
+async function getAI() {
+  if (!RESULT) return;
+  const R   = RESULT;
+  const btn = document.getElementById('aiBtn');
+  const respEl = document.getElementById('aiResp');
+
+  btn.disabled = true; btn.textContent = 'Analysing…';
+  respEl.style.display = 'block'; respEl.className = 'ai-response typing'; respEl.textContent = '';
+  document.getElementById('aiStatus').style.display = 'none';
+
+  const prompt = `Tanzania PAYE analysis (2025/26, TRA):
+- Monthly gross: TZS ${Math.round(R.gross).toLocaleString()}
+- Sector: ${R.sector === 'private' ? 'Private (NSSF)' : 'Public (PSSSF)'}
+- ${R.sector==='private'?'NSSF':'PSSSF'} employee (${pct(R.socialRate)}): TZS ${Math.round(R.social).toLocaleString()}/mo
+- Taxable income after social security: TZS ${Math.round(R.gross - R.social).toLocaleString()}/mo
+- Monthly PAYE: TZS ${Math.round(R.monthlyPAYE).toLocaleString()}
+- Monthly take-home: TZS ${Math.round(R.netMonthly).toLocaleString()}
+- Effective tax rate: ${pct(R.effectiveRate)}
+- Secondary employment: ${R.isSecondary ? 'YES — flat 30% applied' : 'No'}
+- Employer SDL (3.5%): TZS ${Math.round(R.sdl).toLocaleString()}/mo
+- Employer WCF (0.5%): TZS ${Math.round(R.wcf).toLocaleString()}/mo
+- Total employer cost: TZS ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}/mo
+
+Give: 1) Plain English summary of PAYE position 2) Two specific legal ways to reduce Tanzania tax liability (NSSF deductibility, approved pension deductions, approved housing benefit) 3) One TRA compliance point to know 4) One thing most Tanzanian employees get wrong about SDL or NSSF. Under 200 words. No markdown, no asterisks, no bullet symbols.`;
+
+  try {
+    const res = await fetch('/.netlify/functions/ai-advisor', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        system:'You are AfroTools AI Tax Advisor specialising in Tanzanian PAYE — TRA progressive tax, NSSF, SDL, WCF, Income Tax Act 2004. Be concise, specific, practical. No markdown, no asterisks.',
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data = await res.json();
+    const text = data.text || 'Unable to generate analysis.';
+    respEl.className = 'ai-response'; respEl.textContent = '';
+    let i = 0;
+    const type = () => {
+      if(i<text.length){respEl.textContent+=text[i++];setTimeout(type,12);}
+      else{document.getElementById('aiChat').classList.add('on');CHAT_HISTORY=[{role:'user',content:prompt},{role:'assistant',content:text}];}
+    };
+    type();
+    btn.textContent = 'Ask a follow-up below ↓';
+  } catch(err) {
+    respEl.className='ai-response';respEl.textContent='AI analysis temporarily unavailable.';
+    btn.disabled=false;btn.textContent='Try Again';
+  }
+}
+
+async function sendChat() {
+  const input = document.getElementById('chatIn');
+  const msg   = input.value.trim();
+  if(!msg||!RESULT) return;
+  input.value = '';
+  const R = RESULT;
+  const msgs = document.getElementById('chatMsgs');
+  msgs.innerHTML += `<div class="msg u">${msg.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;
+  const aiEl = document.createElement('div');
+  aiEl.className = 'msg a'; aiEl.textContent = '…';
+  msgs.appendChild(aiEl); msgs.scrollTop = msgs.scrollHeight;
+  CHAT_HISTORY.push({role:'user',content:msg});
+  try {
+    const res = await fetch('/.netlify/functions/ai-advisor',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        system:`AfroTools AI Tax Advisor, Tanzania. User: ${R.sector} sector, gross TZS ${Math.round(R.gross).toLocaleString()}/mo, take-home TZS ${Math.round(R.netMonthly).toLocaleString()}/mo, effective rate ${pct(R.effectiveRate)}. Concise. No markdown.`,
+        messages:CHAT_HISTORY
+      })
+    });
+    const data = await res.json();
+    const text = data.text || 'Unable to respond.';
+    aiEl.textContent = text;
+    CHAT_HISTORY.push({role:'assistant',content:text});
+    msgs.scrollTop = msgs.scrollHeight;
+  } catch { aiEl.textContent='Network error. Please try again.'; }
+}
+
+document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
+
+// Net-to-Gross: register forward function
+window._grossToNet = function(g) {
+  var isSecondary = isOn('secondary');
+  var hasNSSF = isOn('nssf');
+  var socialRate = hasNSSF ? (SECTOR === 'private' ? 0.10 : 0.05) : 0;
+  var social = g * socialRate;
+  if (isSecondary) return g - (social + g * 0.30);
+  var taxable = Math.max(0, g - social);
+  return g - (social + calcMonthlyPAYE(taxable).tax);
+};
+</script>
+<script>
+window.PAYE_CALC_SYNC_CONFIG = {
+  storageSlug: 'tz-paye',
+  toolSlug: 'tz-paye',
+  toolName: 'Tanzania PAYE Calculator',
+  toolHref: '/tanzania/tz-paye/',
+  currency: 'TZS',
+  countryCode: 'TZ',
+  locale: 'en-TZ'
+};
+
+window.PAYE_TOOL_SAVE_META = {
+  toolId: 'tz-paye',
+  defaultTitle: 'Save this calculator',
+  defaultDesc: 'Bookmark Tanzania PAYE to your personal dashboard for quick access anytime.'
+};
+
+window.PAYE_CALC_SYNC_ADAPTER = (function () {
+  function setToggleState(toggleName, enabled) {
+    var toggle = document.querySelector('[data-tog="' + toggleName + '"]');
+    if (!toggle) return;
+    toggle.classList.toggle('on', !!enabled);
+    toggle.setAttribute('aria-checked', enabled ? 'true' : 'false');
+  }
+
+  function setSectorValue(sector) {
+    var nextSector = sector === 'public' ? 'public' : 'private';
+    var button = nextSector === 'public' ? document.getElementById('btnPublic') : document.getElementById('btnPrivate');
+    if (button && typeof setSector === 'function') {
+      setSector(nextSector, button);
+    }
+  }
+
+  return {
+    hasResult: function () {
+      return !!window.RESULT;
+    },
+    buildPayload: function () {
+      if (!window.RESULT) return null;
+
+      return {
+        version: 2,
+        toolSlug: 'tz-paye',
+        toolName: 'Tanzania PAYE Calculator',
+        countryCode: 'TZ',
+        currency: 'TZS',
+        inputs: {
+          salaryValue: parseFloat(document.getElementById('grossSalary').value) || 0,
+          salaryPeriod: 'monthly',
+          period: window.PERIOD || 'monthly',
+          sector: window.SECTOR || 'private',
+          toggles: {
+            nssf: isOn('nssf'),
+            secondary: isOn('secondary')
+          }
+        },
+        snapshot: {
+          gross: Number(window.RESULT.annualGross) || 0,
+          grossAnnual: Number(window.RESULT.annualGross) || 0,
+          grossMonthly: Number(window.RESULT.gross) || 0,
+          tax: Number(window.RESULT.annualTax) || 0,
+          taxAnnual: Number(window.RESULT.annualTax) || 0,
+          taxMonthly: Number(window.RESULT.monthlyPAYE) || 0,
+          netAnnual: Number(window.RESULT.annualNet) || 0,
+          netMonthly: Number(window.RESULT.netMonthly) || 0,
+          effectiveRate: (Number(window.RESULT.effectiveRate) || 0) * 100,
+          taxableAnnual: (Number(window.RESULT.annualGross) || 0) - (Number(window.RESULT.annualSocial) || 0),
+          taxableMonthly: (Number(window.RESULT.gross) || 0) - (Number(window.RESULT.social) || 0),
+          socialAnnual: Number(window.RESULT.annualSocial) || 0,
+          socialMonthly: Number(window.RESULT.social) || 0,
+          employerCostAnnual: (Number(window.RESULT.totalEmployerCostMonthly) || 0) * 12,
+          employerCostMonthly: Number(window.RESULT.totalEmployerCostMonthly) || 0,
+          sdlAnnual: (Number(window.RESULT.sdl) || 0) * 12,
+          sdlMonthly: Number(window.RESULT.sdl) || 0,
+          wcfAnnual: (Number(window.RESULT.wcf) || 0) * 12,
+          wcfMonthly: Number(window.RESULT.wcf) || 0
+        }
+      };
+    },
+    restorePayload: function (payload, title) {
+      if (!payload || payload.version !== 2 || !payload.inputs) return false;
+
+      var inputs = payload.inputs || {};
+      var toggles = inputs.toggles || {};
+      var salaryValue = Number(inputs.salaryValue || 0);
+      var slider = document.getElementById('salarySlider');
+      var salaryInput = document.getElementById('grossSalary');
+
+      setSectorValue(inputs.sector);
+      salaryInput.value = salaryValue || '';
+      if (slider && salaryValue) {
+        slider.value = Math.min(Math.max(salaryValue, parseInt(slider.min, 10) || salaryValue), parseInt(slider.max, 10) || salaryValue);
+        document.getElementById('sliderVal').textContent = fmt(salaryValue);
+        updateSliderFill(slider);
+      }
+
+      setToggleState('nssf', toggles.nssf !== false);
+      setToggleState('secondary', !!toggles.secondary);
+
+      if (typeof calculate === 'function') calculate();
+
+      var periodButtons = document.querySelectorAll('.per-btn');
+      if (typeof setPeriod === 'function' && periodButtons.length >= 2) {
+        setPeriod(inputs.period === 'annual' ? 'annual' : 'monthly', inputs.period === 'annual' ? periodButtons[1] : periodButtons[0]);
+      }
+
+      if (document.getElementById('calcSaveName')) {
+        document.getElementById('calcSaveName').value = title || '';
+      }
+      return true;
+    }
+  };
+})();
+</script>
+<script src="/assets/js/lib/net-to-gross.js?v=d5e4522e" defer></script>
+<script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
+<script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/lib/workspace-sync.js?v=da7e0c2c" defer></script>
+<script src="/assets/js/lib/paye-calculation-sync.js?v=27be8670" defer></script>
+<script src="/assets/js/lib/paye-report-sync.js?v=f5f8d67c" defer></script>
+<script src="/assets/js/lib/paye-tool-save-cta.js?v=6ed14b79" defer></script>
+
+</body>
+</html>

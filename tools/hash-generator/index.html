@@ -1,0 +1,1633 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hash Generator — MD5, SHA-256, SHA-512, HMAC | AfroTools</title>
+<meta name="description" content="Generate MD5, SHA-1, SHA-256, SHA-512, SHA-3, HMAC and PBKDF2 values in the browser. Hash files, verify checksums, compare digests and copy results safely.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Hash Generator — MD5, SHA-256, SHA-512, HMAC | AfroTools">
+<meta property="og:description" content="Browser-based hash generator with file hashing, checksum verification, HMAC, PBKDF2 and encoding options.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/hash-generator/">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/hash-generator.webp">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Hash Generator — MD5, SHA-256, SHA-512, HMAC | AfroTools">
+<meta name="twitter:description" content="Free browser hash generator with file hashing, HMAC, PBKDF2 and checksum verification.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+  :root {
+    --afro-green: var(--color-primary);
+    --afro-dark: #0f1419;
+    --afro-light: #f5f7fa;
+  }
+
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-hero::after {
+    content: '#';
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8rem;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--afro-green);
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    color: var(--afro-green);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 6px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .b-green {
+    background: rgba(0, 113, 227, 0.18);
+    color: var(--color-primary);
+    border: 1px solid rgba(0, 113, 227, 0.38);
+  }
+
+  .tool-main {
+    padding: 28px 0 72px;
+  }
+
+  .tool-main-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 22px;
+    align-items: start;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #DBEAFE;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .card + .card {
+    margin-top: 18px;
+  }
+
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #EFF6FF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #F5F9FF;
+  }
+
+  .card-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #0a4018;
+  }
+
+  .card-body {
+    padding: 22px;
+  }
+
+  .field {
+    margin-bottom: 18px;
+  }
+
+  .field:last-child {
+    margin-bottom: 0;
+  }
+
+  .f-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .f-label-text {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #0d2813;
+  }
+
+  .f-input, .f-select, .f-textarea {
+    width: 100%;
+    padding: 11px 13px;
+    background: #EFF6FF;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 7px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0d2813;
+    outline: none;
+    transition: border-color 0.18s, box-shadow 0.18s;
+    font-family: 'Courier New', monospace;
+  }
+
+  .f-textarea {
+    resize: vertical;
+    min-height: 120px;
+    line-height: 1.5;
+  }
+
+  .f-select {
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    appearance: auto;
+  }
+
+  .f-input:focus, .f-textarea:focus, .f-select:focus {
+    border-color: var(--afro-green);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+  }
+
+  .calc-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--afro-green);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: all 0.18s;
+    margin-top: 8px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .calc-btn:hover {
+    background: #0059B3;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 113, 227, 0.3);
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid #DBEAFE;
+    margin-bottom: 18px;
+  }
+
+  .tab-btn {
+    padding: 10px 18px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #6B8CAE;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.18s;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.02em;
+  }
+
+  .tab-btn.active {
+    color: var(--afro-green);
+    border-bottom-color: var(--afro-green);
+  }
+
+  .tab-btn:hover {
+    color: var(--afro-green);
+  }
+
+  .tab-panel {
+    display: none;
+  }
+
+  .tab-panel.active {
+    display: block;
+  }
+
+  /* Encoding toggle */
+  .encoding-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .enc-btn {
+    padding: 6px 14px;
+    border: 1.5px solid #BFDBFE;
+    background: #EFF6FF;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #6B8CAE;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .enc-btn.active {
+    background: var(--afro-green);
+    color: #fff;
+    border-color: var(--afro-green);
+  }
+
+  /* Hash results grid */
+  .hash-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .hash-item {
+    background: #F5F9FF;
+    border: 1px solid #DBEAFE;
+    border-radius: 8px;
+    padding: 14px;
+  }
+
+  .hash-item-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .hash-algo {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #0a4018;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .hash-meta {
+    font-size: 0.65rem;
+    color: #6B8CAE;
+    font-weight: 500;
+  }
+
+  .hash-value {
+    font-family: 'Courier New', monospace;
+    font-size: 0.78rem;
+    color: #0d2813;
+    word-break: break-all;
+    line-height: 1.6;
+    background: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #DBEAFE;
+    margin-bottom: 8px;
+    min-height: 38px;
+  }
+
+  .copy-btn {
+    padding: 5px 10px;
+    background: rgba(0, 113, 227, 0.1);
+    border: 1px solid rgba(0, 113, 227, 0.35);
+    color: #1a5c3a;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.65rem;
+    font-weight: 700;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .copy-btn:hover {
+    background: rgba(0, 113, 227, 0.2);
+  }
+
+  .copy-all-btn {
+    width: 100%;
+    padding: 10px;
+    background: rgba(0, 113, 227, 0.1);
+    border: 1px solid rgba(0, 113, 227, 0.35);
+    color: #1a5c3a;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-top: 12px;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .copy-all-btn:hover {
+    background: rgba(0, 113, 227, 0.2);
+  }
+
+  /* HMAC key row */
+  .hmac-row {
+    display: none;
+    margin-top: 12px;
+  }
+
+  .hmac-row.visible {
+    display: block;
+  }
+
+  .hmac-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #0d2813;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .hmac-toggle input {
+    accent-color: var(--afro-green);
+  }
+
+  /* Drop zone */
+  .drop-zone {
+    border: 2px dashed #BFDBFE;
+    border-radius: 10px;
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #F5F9FF;
+  }
+
+  .drop-zone:hover {
+    border-color: var(--afro-green);
+    background: #EFF6FF;
+  }
+
+  .drop-zone.dragover {
+    border-color: var(--afro-green);
+    background: rgba(0, 113, 227, 0.08);
+  }
+
+  .drop-zone-icon {
+    font-size: 2rem;
+    margin-bottom: 8px;
+  }
+
+  .drop-zone-text {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #0d2813;
+  }
+
+  .drop-zone-sub {
+    font-size: 0.7rem;
+    color: #6B8CAE;
+    margin-top: 4px;
+  }
+
+  .file-info {
+    background: #F5F9FF;
+    border: 1px solid #DBEAFE;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 0.8rem;
+    color: #0d2813;
+    display: none;
+  }
+
+  .file-info.visible {
+    display: block;
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    width: 100%;
+    height: 6px;
+    background: #DBEAFE;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 10px;
+    display: none;
+  }
+
+  .progress-bar.visible {
+    display: block;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--afro-green);
+    border-radius: 3px;
+    width: 0%;
+    transition: width 0.3s;
+  }
+
+  /* Compare / Verify */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .verify-result {
+    margin-top: 14px;
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-align: center;
+    display: none;
+  }
+
+  .verify-result.visible {
+    display: block;
+  }
+
+  .verify-result.match {
+    background: rgba(0, 113, 227, 0.1);
+    color: #1a5c3a;
+    border: 1.5px solid rgba(0, 113, 227, 0.3);
+  }
+
+  .verify-result.nomatch {
+    background: rgba(220, 53, 69, 0.1);
+    color: #800000;
+    border: 1.5px solid rgba(220, 53, 69, 0.3);
+  }
+
+  .algo-detected {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: #6B8CAE;
+    margin-top: 6px;
+  }
+
+  /* Local guidance */
+  .security-notes {
+    background: #fff;
+    border: 1px solid #dbe7f3;
+    border-radius: 12px;
+    margin-top: 18px;
+    overflow: hidden;
+  }
+
+  .security-notes .card-head {
+    border-bottom-color: #dbe7f3;
+  }
+
+  .security-list {
+    display: grid;
+    gap: 10px;
+  }
+
+  .security-item {
+    background: #f8fbff;
+    border: 1px solid #e5edf6;
+    border-radius: 10px;
+    padding: 12px;
+  }
+
+  .security-item strong {
+    display: block;
+    color: #0f172a;
+    font-size: 0.82rem;
+    margin-bottom: 4px;
+  }
+
+  .security-item span {
+    color: #475569;
+    display: block;
+    font-size: 0.76rem;
+    line-height: 1.55;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .info-card {
+    background: #F5F9FF;
+    border: 1px solid #DBEAFE;
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .info-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #0a4018;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .info-text {
+    font-size: 0.8rem;
+    color: #244d2c;
+    line-height: 1.6;
+  }
+
+  .ref-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px 0;
+    border-bottom: 1px solid #E3EDFA;
+    font-size: 0.78rem;
+  }
+
+  .ref-row:last-child {
+    border-bottom: none;
+  }
+
+  .ref-algo {
+    font-weight: 600;
+    color: #0d2813;
+  }
+
+  .ref-len {
+    color: var(--afro-green);
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+    font-size: 0.72rem;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #1e293b;
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    animation: toastIn 0.3s ease;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  @keyframes toastIn {
+    from { transform: translateX(120px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+
+  /* FAQ */
+  details[open] summary svg { transform: rotate(180deg); }
+  details summary::-webkit-details-marker { display: none; }
+
+  .loading-spinner {
+    text-align: center;
+    padding: 16px;
+    color: #6B8CAE;
+    font-size: 0.82rem;
+    font-weight: 600;
+    display: none;
+  }
+
+  .loading-spinner.visible {
+    display: block;
+  }
+
+  @media (max-width: 768px) {
+    .tool-main-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .compare-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .hash-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .encoding-row {
+      flex-wrap: wrap;
+    }
+  }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Hash Generator",
+  "description": "Generate MD5, SHA-1, SHA-256, SHA-384, SHA-512, SHA-3, HMAC and PBKDF2 values in the browser. Hash files, verify checksums, compare digests and copy results safely.",
+  "url": "https://afrotools.com/tools/hash-generator/",
+  "inLanguage": "en",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript and a modern browser",
+  "featureList": [
+    "Text hashing with MD5, SHA-1, SHA-2 and SHA-3 options",
+    "File hashing with drag-and-drop input",
+    "Checksum verification and hash comparison",
+    "HMAC-SHA256 and PBKDF2 key derivation helpers",
+    "Hex, Base64 and binary output encodings",
+    "Local browser processing without server upload"
+  ],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/hash-generator.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Hash Generator",
+  "url": "https://afrotools.com/tools/hash-generator/",
+  "description": "Use a browser-based hash generator for text, files, checksum verification, HMAC, PBKDF2 and digest comparison.",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/hash-generator.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to verify a checksum with the AfroTools Hash Generator",
+  "description": "Hash text or a selected file locally, then compare the digest with a trusted expected checksum.",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "Choose input",
+      "text": "Paste text, drop a file, or open the checksum verification tab."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Generate or compare",
+      "text": "Review the generated MD5, SHA-1, SHA-2, SHA-3, HMAC or PBKDF2 output, or compare it against an expected value."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Trust the source",
+      "text": "Use expected checksums from official release pages, package registries, or your own build artifacts."
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between MD5 and SHA-256?","acceptedAnswer":{"@type":"Answer","text":"MD5 produces a 128-bit (32-character) hash and is fast but considered cryptographically broken. SHA-256 produces a 256-bit (64-character) hash and is part of the SHA-2 family, widely used for security applications, digital signatures, and blockchain. For any security-sensitive use case, SHA-256 or higher is recommended."}},{"@type":"Question","name":"Is MD5 still safe to use?","acceptedAnswer":{"@type":"Answer","text":"MD5 is no longer safe for cryptographic purposes like password hashing or digital signatures due to known collision vulnerabilities. However, it is still commonly used for non-security purposes like file integrity checks and data deduplication where collision resistance is not critical."}},{"@type":"Question","name":"What is HMAC and when should I use it?","acceptedAnswer":{"@type":"Answer","text":"HMAC (Hash-based Message Authentication Code) combines a hash function with a secret key to provide both data integrity and authentication. Use HMAC for workflows such as API authentication and webhook verification, and avoid pasting production secrets into shared or untrusted devices."}},{"@type":"Question","name":"How does file hashing work?","acceptedAnswer":{"@type":"Answer","text":"File hashing reads the binary content of a file and processes it through a hash algorithm to produce a fixed-length string. This hash acts as a digital fingerprint. If even one bit of the file changes, the hash will be completely different. It is commonly used to verify file downloads, detect tampering, and compare files."}},{"@type":"Question","name":"What is the difference between SHA-2 and SHA-3?","acceptedAnswer":{"@type":"Answer","text":"SHA-2 (including SHA-256 and SHA-512) and SHA-3 are both secure hash standards published by NIST. SHA-2 is more widely adopted. This tool uses a dedicated in-browser SHA-3 library for SHA3-256 and SHA3-512 because the browser Web Crypto digest API commonly exposes SHA-1 and SHA-2 algorithms, not SHA-3."}}]}
+</script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/hash-generator.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Hash Generator",
+      "item": "https://afrotools.com/tools/hash-generator/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<style>
+  .top-level-page-ui-refresh .tool-main-inner,
+  .top-level-page-ui-refresh .card,
+  .top-level-page-ui-refresh .sidebar,
+  .top-level-page-ui-refresh .hash-item {
+    min-width: 0;
+  }
+
+  .top-level-page-ui-refresh .tab-btn,
+  .top-level-page-ui-refresh .enc-btn,
+  .top-level-page-ui-refresh .calc-btn,
+  .top-level-page-ui-refresh .copy-btn,
+  .top-level-page-ui-refresh .copy-all-btn,
+  .top-level-page-ui-refresh .drop-zone,
+  .top-level-page-ui-refresh summary {
+    min-height: 44px;
+  }
+
+  .top-level-page-ui-refresh .f-input,
+  .top-level-page-ui-refresh .f-select {
+    min-height: 44px;
+  }
+
+  .top-level-page-ui-refresh .hmac-toggle input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 auto;
+  }
+
+  .top-level-page-ui-refresh .hash-value {
+    overflow-wrap: anywhere;
+  }
+
+  .top-level-page-ui-refresh .drop-zone-icon {
+    font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+    letter-spacing: 0;
+  }
+
+  .top-level-page-ui-refresh :is(button, input, select, textarea, summary, .drop-zone):focus-visible {
+    outline: 3px solid rgba(0, 113, 227, 0.35);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 520px) {
+    .top-level-page-ui-refresh .tool-main-inner {
+      padding-inline: 16px;
+    }
+
+    .top-level-page-ui-refresh .tabs,
+    .top-level-page-ui-refresh .encoding-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .top-level-page-ui-refresh .tab-btn,
+    .top-level-page-ui-refresh .enc-btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .top-level-page-ui-refresh #pbkdf2Row > div {
+      flex-wrap: wrap;
+    }
+  }
+</style>
+<link rel="canonical" href="https://afrotools.com/tools/hash-generator/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/hash-generator/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kizalishaji-hash/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/hash-generator/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">AfroTools</a> / <span>Hash Generator</span>
+    </div>
+    <h1>Hash <em>Generator</em></h1>
+    <p class="hero-sub">Generate MD5, SHA-256, SHA-512, SHA-3, HMAC and PBKDF2 values in your browser. Hash files, verify checksums, compare digests and copy results safely.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">10 Algorithms</span>
+      <span class="badge b-green">File Hashing</span>
+      <span class="badge b-green">HMAC</span>
+      <span class="badge b-green">Checksum Verify</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <!-- Tabs -->
+      <div class="tabs">
+        <button type="button" class="tab-btn active" data-tab="text-tab">Text</button>
+        <button type="button" class="tab-btn" data-tab="file-tab">File</button>
+        <button type="button" class="tab-btn" data-tab="verify-tab">Verify</button>
+        <button type="button" class="tab-btn" data-tab="compare-tab">Compare</button>
+      </div>
+
+      <!-- TEXT TAB -->
+      <div id="text-tab" class="tab-panel active">
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title">Text Hash Generator</span>
+            <div class="encoding-row">
+              <button type="button" class="enc-btn active" data-enc="hex">Hex</button>
+              <button type="button" class="enc-btn" data-enc="base64">Base64</button>
+              <button type="button" class="enc-btn" data-enc="binary">Binary</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <label class="f-label" for="textInput"><span class="f-label-text">Enter text to hash</span></label>
+              <textarea class="f-textarea" id="textInput" placeholder="Type or paste text here..."></textarea>
+            </div>
+            <div class="field">
+              <label class="hmac-toggle">
+                <input aria-label="HmacToggle" type="checkbox" id="hmacToggle"> Enable HMAC (secret key)
+              </label>
+              <div class="hmac-row" id="hmacRow">
+                <input aria-label="Enter HMAC secret key" type="password" class="f-input" id="hmacKey" placeholder="Enter HMAC secret key" style="margin-top:8px">
+                <div style="font-size:0.68rem;color:#6B8CAE;margin-top:4px">Used locally for HMAC-SHA256. Avoid production secrets on shared devices.</div>
+              </div>
+              <label class="hmac-toggle" style="margin-top:10px">
+                <input aria-label="Pbkdf2Toggle" type="checkbox" id="pbkdf2Toggle"> Enable PBKDF2 key derivation
+              </label>
+              <div class="hmac-row" id="pbkdf2Row" style="display:none">
+                <input aria-label="Salt (or leave blank for random)" type="text" class="f-input" id="pbkdf2Salt" placeholder="Salt (or leave blank for random)" style="margin-top:8px">
+                <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
+                  <label style="font-size:0.68rem;font-weight:600;color:#0d2813;white-space:nowrap">Iterations:</label>
+                  <input aria-label="Pbkdf2Iters" type="number" class="f-input" id="pbkdf2Iters" value="100000" min="1000" max="1000000" style="max-width:140px">
+                  <label style="font-size:0.68rem;font-weight:600;color:#0d2813;white-space:nowrap">Key size:</label>
+                  <select class="f-select" id="pbkdf2KeySize" style="max-width:100px" aria-label="Pbkdf2Key Size">
+                    <option value="256">256-bit</option>
+                    <option value="512">512-bit</option>
+                    <option value="128">128-bit</option>
+                  </select>
+                </div>
+                <div style="font-size:0.68rem;color:#6B8CAE;margin-top:4px">PBKDF2-SHA256 key derivation (password hashing)</div>
+              </div>
+            </div>
+            <div class="loading-spinner" id="textLoading">Generating hashes...</div>
+            <div id="textResults"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FILE TAB -->
+      <div id="file-tab" class="tab-panel">
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title">File Hash Generator</span>
+          </div>
+          <div class="card-body">
+            <div class="drop-zone" id="dropZone">
+              <div class="drop-zone-icon" aria-hidden="true">#</div>
+              <div class="drop-zone-text">Drop a file here or click to upload</div>
+              <div class="drop-zone-sub">Any file type supported</div>
+            </div>
+            <input aria-label="FileInput" type="file" id="fileInput" style="display:none">
+            <div class="file-info" id="fileInfo"></div>
+            <div class="progress-bar" id="progressBar">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="loading-spinner" id="fileLoading">Processing file...</div>
+            <div id="fileResults"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VERIFY TAB -->
+      <div id="verify-tab" class="tab-panel">
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title">Checksum Verify</span>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <label class="f-label" for="verifyHash"><span class="f-label-text">Known Hash / Checksum</span></label>
+              <input aria-label="Paste the expected hash here" type="text" class="f-input" id="verifyHash" placeholder="Paste the expected hash here...">
+              <div class="algo-detected" id="algoDetected"></div>
+            </div>
+            <div class="field">
+              <label class="f-label" for="verifyText"><span class="f-label-text">Text to Verify</span></label>
+              <textarea class="f-textarea" id="verifyText" placeholder="Enter the text to check against the hash..." style="min-height:80px" aria-label="Enter the text to check against the hash..."></textarea>
+            </div>
+            <button type="button" class="calc-btn" id="verifyBtn">Verify Checksum</button>
+            <div class="verify-result" id="verifyResult"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMPARE TAB -->
+      <div id="compare-tab" class="tab-panel">
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title">Compare Hashes</span>
+          </div>
+          <div class="card-body">
+            <div class="compare-grid">
+              <div class="field">
+                <label class="f-label" for="hash1"><span class="f-label-text">First Hash</span></label>
+                <textarea class="f-textarea" id="hash1" placeholder="Paste first hash..." style="min-height:80px" aria-label="Paste first hash..."></textarea>
+              </div>
+              <div class="field">
+                <label class="f-label" for="hash2"><span class="f-label-text">Second Hash</span></label>
+                <textarea class="f-textarea" id="hash2" placeholder="Paste second hash..." style="min-height:80px" aria-label="Paste second hash..."></textarea>
+              </div>
+            </div>
+            <div class="verify-result" id="compareResult"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="security-notes" aria-labelledby="hash-guidance-title">
+        <div class="card-head">
+          <span class="card-title" id="hash-guidance-title">Algorithm Guidance</span>
+        </div>
+        <div class="card-body">
+          <div class="security-list">
+            <div class="security-item">
+              <strong>Integrity checks</strong>
+              <span>Use SHA-256 or SHA-512 for modern file and text verification. Treat MD5 and SHA-1 as legacy, non-security checks.</span>
+            </div>
+            <div class="security-item">
+              <strong>Secrets stay local</strong>
+              <span>HMAC and PBKDF2 inputs are processed in the browser. Use test secrets unless your security policy allows this device.</span>
+            </div>
+            <div class="security-item">
+              <strong>Trust the expected value</strong>
+              <span>A matching checksum proves byte equality with the expected digest, not that the source is trustworthy.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="info-card">
+        <div class="info-title">Hash Length Reference</div>
+        <div class="ref-row"><span class="ref-algo">MD5</span><span class="ref-len">32 chars</span></div>
+        <div class="ref-row"><span class="ref-algo">SHA-1</span><span class="ref-len">40 chars</span></div>
+        <div class="ref-row"><span class="ref-algo">SHA-256</span><span class="ref-len">64 chars</span></div>
+        <div class="ref-row"><span class="ref-algo">SHA-384</span><span class="ref-len">96 chars</span></div>
+        <div class="ref-row"><span class="ref-algo">SHA-512</span><span class="ref-len">128 chars</span></div>
+        <div class="ref-row"><span class="ref-algo">SHA3-256</span><span class="ref-len">64 chars</span></div>
+        <div class="ref-row"><span class="ref-algo">SHA3-512</span><span class="ref-len">128 chars</span></div>
+        <div class="ref-row"><span class="ref-algo">HMAC-SHA256</span><span class="ref-len">64 chars</span></div>
+        <div class="ref-row"><span class="ref-algo">CRC32</span><span class="ref-len">8 chars</span></div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Common Use Cases</div>
+        <div class="info-text" style="font-size:0.75rem">
+          <div>&#8226; Password verification</div>
+          <div style="margin-top:6px">&#8226; File integrity checks</div>
+          <div style="margin-top:6px">&#8226; Digital signatures</div>
+          <div style="margin-top:6px">&#8226; Data deduplication</div>
+          <div style="margin-top:6px">&#8226; Blockchain &amp; crypto</div>
+          <div style="margin-top:6px">&#8226; API authentication (HMAC)</div>
+          <div style="margin-top:6px">&#8226; Software distribution</div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Output Encodings</div>
+        <div class="info-text" style="font-size:0.75rem">
+          <div><strong>Hex:</strong> 0-9, a-f (default)</div>
+          <div style="margin-top:6px"><strong>Base64:</strong> A-Z, a-z, 0-9, +, /</div>
+          <div style="margin-top:6px"><strong>Binary:</strong> 0s and 1s</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section style="max-width:900px;margin:32px auto;padding:0 20px;">
+  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
+    <p>This hash generator creates cryptographic hashes from text or file input using algorithms including MD5, SHA-1, SHA-256, SHA-384, SHA-512, SHA-3, HMAC-SHA256 and PBKDF2. Hashing is useful for verifying file integrity, generating checksums, comparing content fingerprints and validating data transfers. Paste your text or drop a file, select your algorithm, and get the hash instantly. The tool processes input locally in your browser after the page loads, so your text and selected files are not uploaded to AfroTools.</p>
+  </div>
+</section>
+<!-- FAQ Section -->
+<section style="max-width:1200px;margin:0 auto 48px;padding:0 24px">
+  <h2 style="font-size:1.3rem;font-weight:800;color:#111;margin-bottom:20px;font-family:'DM Sans',sans-serif">Frequently Asked Questions</h2>
+  <div>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        What is the difference between MD5 and SHA-256?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        MD5 produces a 128-bit (32-character) hash and is fast but considered cryptographically broken. SHA-256 produces a 256-bit (64-character) hash and is part of the SHA-2 family, widely used for security applications, digital signatures, and blockchain. For any security-sensitive use case, SHA-256 or higher is recommended.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Is MD5 still safe to use?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        MD5 is no longer safe for cryptographic purposes like password hashing or digital signatures due to known collision vulnerabilities. However, it is still commonly used for non-security purposes like file integrity checks and data deduplication where collision resistance is not critical.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        What is HMAC and when should I use it?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        HMAC (Hash-based Message Authentication Code) combines a hash function with a secret key to provide both data integrity and authentication. Use HMAC for workflows such as API authentication and webhook verification, and avoid pasting production secrets into shared or untrusted devices.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        How does file hashing work?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        File hashing reads the binary content of a file and processes it through a hash algorithm to produce a fixed-length string. This hash acts as a digital fingerprint. If even one bit of the file changes, the hash will be completely different. It is commonly used to verify file downloads, detect tampering, and compare files.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        What is the difference between SHA-2 and SHA-3?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        SHA-2 (including SHA-256 and SHA-512) and SHA-3 are both secure hash standards published by NIST. SHA-2 is more widely adopted. This tool uses a dedicated in-browser SHA-3 library for SHA3-256 and SHA3-512 because the browser Web Crypto digest API commonly exposes SHA-1 and SHA-2 algorithms, not SHA-3.
+      </div>
+    </details>
+  </div>
+</section>
+
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+<section class="tool-verification-sec" data-tool-verification-panel="hash-generator">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Integrity check</span>
+          <h2 class="tool-verification-title">Use hashes for verification, not secret recovery</h2>
+          <p class="tool-verification-lead">Generate text or file hashes locally, compare expected values, verify checksums, and copy results for release or support workflows.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Browser-only hashing</span>
+          <p class="tool-verification-note">Text and selected files stay in the browser during hashing.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>What to check</h3>
+          <ul class="tool-verification-list">
+            <li>Methodology: hash the exact text or file bytes locally, then compare the resulting digest with a trusted expected value.</li>
+            <li>Use SHA-256 or stronger for modern integrity checks; avoid MD5/SHA-1 for security decisions.</li>
+            <li>Compare hashes from trusted release notes, package registries, or official vendor pages before installing files.</li>
+            <li>Use HMAC/PBKDF2 settings only with test secrets unless your security policy says otherwise.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Limitations</h3>
+          <ul class="tool-verification-list">
+            <li>Disclaimer: this is a local utility, not malware scanning, password cracking, or a complete security audit.</li>
+            <li>A matching hash proves byte-for-byte equality to a known value, not that the source itself is trustworthy.</li>
+            <li>Never paste production passwords, API keys, seed phrases, or private signing secrets into shared output.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <a class="tool-verification-report" href="#textResults">Review hash output</a>
+        <p class="tool-verification-disclaimer">Source/reference note: verify expected checksums with official release pages, package registries, or internal build artifacts before trusting a download.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<afro-related-tools category="developer" current="hash-generator" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/json-formatter/" data-related-tool data-id="json-formatter" data-name="JSON Formatter &amp; Validator" data-category="developer" data-icon="JF" data-desc="Format, validate, repair, query and diff JSON or NDJSON. Includes schema, TypeScript and API Tester snippets.">JSON Formatter &amp; Validator</a></li><li><a href="/tools/data-converter/" data-related-tool data-id="data-converter" data-name="Data Format Converter" data-category="developer" data-icon="DF" data-desc="Convert between JSON, CSV, XML, YAML, TOML, TSV. Auto-detect, SQL INSERT generator, preview table.">Data Format Converter</a></li><li><a href="/tools/ussd-simulator/" data-related-tool data-id="ussd-simulator" data-name="USSD Code Simulator" data-category="developer" data-icon="UC" data-desc="Visual USSD menu builder for African fintech developers.">USSD Code Simulator</a></li><li><a href="/tools/api-tester/" data-related-tool data-id="api-tester" data-name="API Tester (Postman Lite)" data-category="developer" data-icon="AT" data-desc="REST API testing in-browser. No install needed. Pre-built Africa fintech collections.">API Tester (Postman Lite)</a></li><li><a href="/tools/base64/" data-related-tool data-id="base64" data-name="Base64 Encoder/Decoder" data-category="developer" data-icon="BE" data-desc="Encode/decode text and files. Image-to-Base64, URL-safe mode, live encoding, stats bar. AI assist.">Base64 Encoder/Decoder</a></li><li><a href="/tools/markdown-editor/" data-related-tool data-id="markdown-editor" data-name="Markdown Editor" data-category="developer" data-icon="ME" data-desc="Live preview, GFM tables, toolbar, scroll sync, fullscreen, word count, export to HTML/MD. AI assist.">Markdown Editor</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<script src="https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/jssha@3.3.2/dist/sha3.min.js" defer></script>
+<script>
+(function() {
+  'use strict';
+
+  // State
+  let currentEncoding = 'hex';
+
+  // Utility: CRC32
+  function crc32(str) {
+    let c = 0 ^ (-1);
+    for (let i = 0; i < str.length; i++) {
+      c = (c >>> 8) ^ ((c ^ str.charCodeAt(i)) & 0xFF);
+      for (let j = 0; j < 8; j++) {
+        c = (c >>> 1) ^ (((c & 1) ? 0xEDB88320 : 0));
+      }
+    }
+    return ((c ^ (-1)) >>> 0).toString(16).padStart(8, '0');
+  }
+
+  // Toast
+  function showToast(msg) {
+    var t = document.createElement('div');
+    t.className = 'toast';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(function() { t.remove(); }, 2000);
+  }
+
+  function safeCopy(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text).then(function() { return true; }).catch(function() {
+        return fallbackCopy(text);
+      });
+    }
+    return Promise.resolve(fallbackCopy(text));
+  }
+
+  function fallbackCopy(text) {
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    var copied = false;
+    try {
+      copied = document.execCommand('copy');
+    } catch (e) {
+      copied = false;
+    }
+    textarea.remove();
+    return copied;
+  }
+
+  function arrayBufferToWordArray(buffer) {
+    var bytes = new Uint8Array(buffer);
+    var words = [];
+    for (var i = 0; i < bytes.length; i++) {
+      words[i >>> 2] |= bytes[i] << (24 - (i % 4) * 8);
+    }
+    return CryptoJS.lib.WordArray.create(words, bytes.length);
+  }
+
+  function sha3Text(input, variant) {
+    if (typeof jsSHA === 'undefined') return null;
+    var shaObj = new jsSHA(variant, 'TEXT', { encoding: 'UTF8' });
+    shaObj.update(input);
+    return shaObj.getHash('HEX');
+  }
+
+  function sha3ArrayBuffer(buffer, variant) {
+    if (typeof jsSHA === 'undefined') return null;
+    var shaObj = new jsSHA(variant, 'ARRAYBUFFER');
+    shaObj.update(buffer);
+    return shaObj.getHash('HEX');
+  }
+
+  // Encoding converters
+  function hexToBase64(hex) {
+    var bytes = hex.match(/.{2}/g).map(function(b) { return parseInt(b, 16); });
+    return btoa(String.fromCharCode.apply(null, bytes));
+  }
+
+  function hexToBinary(hex) {
+    return hex.split('').map(function(c) {
+      return parseInt(c, 16).toString(2).padStart(4, '0');
+    }).join(' ');
+  }
+
+  function encodeHash(hexHash, encoding) {
+    if (encoding === 'base64') return hexToBase64(hexHash);
+    if (encoding === 'binary') return hexToBinary(hexHash);
+    return hexHash;
+  }
+
+  // Generate all hashes from text
+  function generateHashes(input) {
+    if (typeof CryptoJS === 'undefined' || typeof jsSHA === 'undefined') {
+      showToast('Hashing libraries still loading, please try again');
+      return null;
+    }
+    var hmacKey = document.getElementById('hmacKey').value;
+    try {
+      return {
+        'MD5': CryptoJS.MD5(input).toString(),
+        'SHA-1': CryptoJS.SHA1(input).toString(),
+        'SHA-256': CryptoJS.SHA256(input).toString(),
+        'SHA-384': CryptoJS.SHA384(input).toString(),
+        'SHA-512': CryptoJS.SHA512(input).toString(),
+        'SHA3-256': sha3Text(input, 'SHA3-256'),
+        'SHA3-512': sha3Text(input, 'SHA3-512'),
+        'HMAC-SHA256': hmacKey ? CryptoJS.HmacSHA256(input, hmacKey).toString() : null,
+        'CRC32': crc32(input),
+        'PBKDF2': (function() {
+          if (!document.getElementById('pbkdf2Toggle').checked) return null;
+          var salt = document.getElementById('pbkdf2Salt').value || CryptoJS.lib.WordArray.random(16).toString();
+          var iters = parseInt(document.getElementById('pbkdf2Iters').value) || 100000;
+          var keySize = (parseInt(document.getElementById('pbkdf2KeySize').value) || 256) / 32;
+          if (!document.getElementById('pbkdf2Salt').value) document.getElementById('pbkdf2Salt').value = salt;
+          return CryptoJS.PBKDF2(input, salt, {
+            keySize: keySize,
+            iterations: iters,
+            hasher: CryptoJS.algo.SHA256
+          }).toString();
+        })()
+      };
+    } catch (e) {
+      showToast('Error generating hashes');
+      return null;
+    }
+  }
+
+  // Generate file hashes
+  function generateFileHashes(wordArray, buffer) {
+    if (typeof CryptoJS === 'undefined' || typeof jsSHA === 'undefined') return null;
+    try {
+      return {
+        'MD5': CryptoJS.MD5(wordArray).toString(),
+        'SHA-1': CryptoJS.SHA1(wordArray).toString(),
+        'SHA-256': CryptoJS.SHA256(wordArray).toString(),
+        'SHA-384': CryptoJS.SHA384(wordArray).toString(),
+        'SHA-512': CryptoJS.SHA512(wordArray).toString(),
+        'SHA3-256': sha3ArrayBuffer(buffer, 'SHA3-256'),
+        'SHA3-512': sha3ArrayBuffer(buffer, 'SHA3-512')
+      };
+    } catch (e) {
+      showToast('Error hashing file');
+      return null;
+    }
+  }
+
+  // Render hash results grid
+  function renderResults(hashes, containerId, encoding) {
+    var container = document.getElementById(containerId);
+    if (!hashes) { container.innerHTML = ''; return; }
+    var enc = encoding || currentEncoding;
+    var html = '<div class="hash-grid">';
+    var allText = '';
+    var entries = Object.entries(hashes);
+    entries.forEach(function(entry) {
+      var algo = entry[0], hexVal = entry[1];
+      if (hexVal === null) return;
+      var isCrc = algo === 'CRC32';
+      var display = isCrc ? hexVal : encodeHash(hexVal, enc);
+      var charCount = display.replace(/ /g, '').length;
+      html += '<div class="hash-item">';
+      html += '<div class="hash-item-head"><span class="hash-algo">' + algo + '</span><span class="hash-meta">' + charCount + ' chars</span></div>';
+      html += '<div class="hash-value" data-hex="' + hexVal + '">' + display + '</div>';
+      html += '<button type="button" class="copy-btn" data-val="' + display.replace(/"/g, '&quot;') + '">Copy</button>';
+      html += '</div>';
+      allText += algo + ': ' + display + '\n';
+    });
+    html += '</div>';
+    if (allText) {
+      html += '<button type="button" class="copy-all-btn" id="copyAll_' + containerId + '">Copy All Hashes</button>';
+    }
+    container.innerHTML = html;
+
+    // Copy individual
+    container.querySelectorAll('.copy-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        safeCopy(btn.dataset.val).then(function(copied) {
+          btn.textContent = copied ? 'Copied!' : 'Copy failed';
+          showToast(copied ? 'Hash copied!' : 'Copy failed');
+          setTimeout(function() { btn.textContent = 'Copy'; }, 1500);
+        });
+      });
+    });
+
+    // Copy all
+    var copyAllBtn = document.getElementById('copyAll_' + containerId);
+    if (copyAllBtn) {
+      copyAllBtn.addEventListener('click', function() {
+        safeCopy(allText).then(function(copied) {
+          copyAllBtn.textContent = copied ? 'Copied All!' : 'Copy failed';
+          showToast(copied ? 'All hashes copied!' : 'Copy failed');
+          setTimeout(function() { copyAllBtn.textContent = 'Copy All Hashes'; }, 1500);
+        });
+      });
+    }
+  }
+
+  // Re-encode displayed results
+  function reEncodeResults(containerId) {
+    var container = document.getElementById(containerId);
+    container.querySelectorAll('.hash-value').forEach(function(el) {
+      var hexVal = el.dataset.hex;
+      if (!hexVal || el.closest('.hash-item').querySelector('.hash-algo').textContent === 'CRC32') return;
+      var display = encodeHash(hexVal, currentEncoding);
+      el.textContent = display;
+      var copyBtn = el.parentElement.querySelector('.copy-btn');
+      if (copyBtn) copyBtn.dataset.val = display;
+      var meta = el.parentElement.querySelector('.hash-meta');
+      if (meta) meta.textContent = display.replace(/ /g, '').length + ' chars';
+    });
+  }
+
+  // Tab switching
+  document.querySelectorAll('.tab-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+      document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  // Encoding toggle
+  document.querySelectorAll('.enc-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.enc-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      currentEncoding = btn.dataset.enc;
+      reEncodeResults('textResults');
+      reEncodeResults('fileResults');
+    });
+  });
+
+  // HMAC toggle
+  document.getElementById('hmacToggle').addEventListener('change', function() {
+    document.getElementById('hmacRow').classList.toggle('visible', this.checked);
+    var input = document.getElementById('textInput').value;
+    if (input) {
+      var h = generateHashes(input);
+      if (h) renderResults(h, 'textResults');
+    }
+  });
+
+  // PBKDF2 toggle
+  document.getElementById('pbkdf2Toggle').addEventListener('change', function() {
+    document.getElementById('pbkdf2Row').style.display = this.checked ? 'block' : 'none';
+    var input = document.getElementById('textInput').value;
+    if (input) {
+      var h = generateHashes(input);
+      if (h) renderResults(h, 'textResults');
+    }
+  });
+
+  // Text hashing (live)
+  var textTimeout;
+  document.getElementById('textInput').addEventListener('input', function() {
+    clearTimeout(textTimeout);
+    var input = this.value;
+    if (!input) {
+      document.getElementById('textResults').innerHTML = '';
+      return;
+    }
+    document.getElementById('textLoading').classList.add('visible');
+    textTimeout = setTimeout(function() {
+      var h = generateHashes(input);
+      if (h) renderResults(h, 'textResults');
+      document.getElementById('textLoading').classList.remove('visible');
+    }, 150);
+  });
+
+  document.getElementById('hmacKey').addEventListener('input', function() {
+    var input = document.getElementById('textInput').value;
+    if (input) {
+      var h = generateHashes(input);
+      if (h) renderResults(h, 'textResults');
+    }
+  });
+
+  // File hashing with drag-and-drop
+  var dropZone = document.getElementById('dropZone');
+  var fileInput = document.getElementById('fileInput');
+
+  ['dragenter', 'dragover'].forEach(function(evt) {
+    dropZone.addEventListener(evt, function(e) {
+      e.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+  });
+
+  ['dragleave', 'drop'].forEach(function(evt) {
+    dropZone.addEventListener(evt, function(e) {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+    });
+  });
+
+  dropZone.addEventListener('drop', function(e) {
+    var files = e.dataTransfer.files;
+    if (files.length) {
+      fileInput.files = files;
+      handleFile(files[0]);
+    }
+  });
+
+  dropZone.addEventListener('click', function() { fileInput.click(); });
+  fileInput.addEventListener('change', function() {
+    if (this.files.length) handleFile(this.files[0]);
+  });
+
+  function handleFile(file) {
+    var info = document.getElementById('fileInfo');
+    var sizeStr = file.size < 1048576
+      ? (file.size / 1024).toFixed(2) + ' KB'
+      : (file.size / 1048576).toFixed(2) + ' MB';
+    info.innerHTML = '<strong>' + file.name + '</strong> (' + sizeStr + ')';
+    info.classList.add('visible');
+
+    var progressBar = document.getElementById('progressBar');
+    var progressFill = document.getElementById('progressFill');
+    progressBar.classList.add('visible');
+    progressFill.style.width = '0%';
+
+    document.getElementById('fileLoading').classList.add('visible');
+
+    var reader = new FileReader();
+    reader.onprogress = function(e) {
+      if (e.lengthComputable) {
+        var pct = Math.round((e.loaded / e.total) * 100);
+        progressFill.style.width = pct + '%';
+      }
+    };
+    reader.onload = function() {
+      progressFill.style.width = '100%';
+      var wordArray = arrayBufferToWordArray(reader.result);
+      var h = generateFileHashes(wordArray, reader.result);
+      if (h) renderResults(h, 'fileResults');
+      document.getElementById('fileLoading').classList.remove('visible');
+      setTimeout(function() { progressBar.classList.remove('visible'); }, 800);
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  // Checksum verify
+  function detectAlgorithm(hash) {
+    var clean = hash.replace(/\s/g, '').toLowerCase();
+    var len = clean.length;
+    var map = {
+      8: 'CRC32',
+      32: 'MD5',
+      40: 'SHA-1',
+      64: 'SHA-256 / SHA3-256 / HMAC-SHA256',
+      96: 'SHA-384',
+      128: 'SHA-512 / SHA3-512'
+    };
+    return map[len] || null;
+  }
+
+  document.getElementById('verifyHash').addEventListener('input', function() {
+    var hash = this.value.trim();
+    var detected = document.getElementById('algoDetected');
+    if (!hash) { detected.textContent = ''; return; }
+    var algo = detectAlgorithm(hash);
+    detected.textContent = algo ? 'Detected: ' + algo : 'Unknown hash length (' + hash.length + ' chars)';
+  });
+
+  document.getElementById('verifyBtn').addEventListener('click', function() {
+    var knownHash = document.getElementById('verifyHash').value.trim().toLowerCase();
+    var text = document.getElementById('verifyText').value;
+    var result = document.getElementById('verifyResult');
+
+    if (!knownHash || !text) {
+      showToast('Enter both a hash and text to verify');
+      return;
+    }
+
+    if (typeof CryptoJS === 'undefined' || typeof jsSHA === 'undefined') {
+      showToast('Hashing libraries still loading');
+      return;
+    }
+
+    var hashes = generateHashes(text);
+    if (!hashes) return;
+
+    var matched = false;
+    var matchedAlgo = '';
+    Object.entries(hashes).forEach(function(entry) {
+      if (entry[1] && entry[1].toLowerCase() === knownHash) {
+        matched = true;
+        matchedAlgo = entry[0];
+      }
+    });
+
+    result.classList.add('visible');
+    if (matched) {
+      result.className = 'verify-result visible match';
+      result.innerHTML = '&#10003; Checksum Match (' + matchedAlgo + ')';
+    } else {
+      result.className = 'verify-result visible nomatch';
+      result.innerHTML = '&#10007; No Match Found';
+    }
+  });
+
+  // Compare hashes
+  function compareHashes() {
+    var h1 = document.getElementById('hash1').value.trim().toLowerCase();
+    var h2 = document.getElementById('hash2').value.trim().toLowerCase();
+    var result = document.getElementById('compareResult');
+    if (!h1 || !h2) { result.classList.remove('visible'); return; }
+    var match = h1 === h2;
+    result.classList.add('visible');
+    result.className = 'verify-result visible ' + (match ? 'match' : 'nomatch');
+    result.innerHTML = match ? '&#10003; Hashes Match' : '&#10007; Hashes Do Not Match';
+  }
+
+  document.getElementById('hash1').addEventListener('input', compareHashes);
+  document.getElementById('hash2').addEventListener('input', compareHashes);
+
+})();
+</script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
+
+<script>
+// Save/Share buttons — manual placement needed
+(function(){
+  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
+  div.innerHTML = '<share-result-button tool-name="Hash Generator" tool-slug="hash-generator"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

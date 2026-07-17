@@ -1,0 +1,1 @@
+window.AfroState=window.AfroState||{_listeners:{},set:function(t,n){this[t]=n,(this._listeners[t]||[]).forEach(function(t){t(n)})},get:function(t){return this[t]},on:function(t,n){(this._listeners[t]=this._listeners[t]||[]).push(n)}};

@@ -1,0 +1,631 @@
+<!doctype html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pro Settings | AfroTools Pro</title>
+  <meta name="description" content="AfroTools Pro settings workspace for account profile, Pro status, language lane, default country and currency, and data privacy preferences.">
+  <meta name="robots" content="noindex, follow">
+  <meta name="tool-id" content="pro-settings">
+  <meta name="tool-category" content="pro">
+  <meta name="pro-required" content="afrotools-pro">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <script src="/assets/js/afro-auth.js?v=4250956b"></script>
+  <script src="/assets/js/pro-gate.js?v=e4aca7ef"></script>
+  <script src="/assets/js/lib/pro-app-registry.js?v=2e71c13d"></script>
+  <script src="/assets/js/lib/pro-daily-os-registry.js?v=b25cffa7"></script>
+  <script src="/assets/js/lib/pro-home-insights.js?v=dc3dbf48"></script>
+  <script src="/assets/js/components/pro-switcher.js?v=17095027" defer></script>
+  <script src="/assets/js/lib/dark-mode.js?v=5cb64ba3"></script>
+  <style>
+    :root{
+      --ps-bg:var(--color-bg,#f8fafd);
+      --ps-surface:#fff;
+      --ps-soft:#f8fafc;
+      --ps-ink:var(--color-text,#0f172a);
+      --ps-muted:var(--color-text-muted,#64748b);
+      --ps-subtle:var(--color-text-subtle,#94a3b8);
+      --ps-line:var(--color-border,#e2e8f0);
+      --ps-line-strong:var(--color-border-strong,#cbd5e1);
+      --ps-blue:var(--color-primary,#0062cc);
+      --ps-blue-soft:var(--color-primary-pale,rgba(0,98,204,.08));
+      --ps-green:#047857;
+      --ps-green-soft:#ecfdf5;
+      --ps-amber:#92400e;
+      --ps-amber-soft:#fffbeb;
+      --ps-red:#991b1b;
+      --ps-red-soft:#fef2f2;
+      --ps-purple:#5b21b6;
+      --ps-purple-soft:#f5f3ff;
+      --ps-radius:var(--radius-sm,6px);
+    }
+    :root[data-theme="dark"]{
+      --ps-surface:var(--color-bg-card,#131d2e);
+      --ps-soft:var(--color-bg-subtle,#131d2e);
+      --ps-line:var(--color-border,#1e2d40);
+      --ps-line-strong:var(--color-border-strong,#2a3d55);
+      --ps-green-soft:rgba(4,120,87,.16);
+      --ps-amber-soft:rgba(146,64,14,.18);
+      --ps-red-soft:rgba(153,27,27,.18);
+      --ps-purple-soft:rgba(91,33,182,.18);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--ps-bg);color:var(--ps-ink);font-family:var(--font-body,"DM Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif);font-size:14px;line-height:1.45;overflow-x:hidden}
+    a,button,select,input{font:inherit}
+    button{cursor:pointer}
+    a{color:inherit}
+    .ps-shell h1,.ps-shell h2,.ps-shell h3{font-family:var(--font-body,"DM Sans",system-ui,sans-serif);letter-spacing:0}
+    .ps-shell{min-height:100vh;display:grid;grid-template-columns:248px minmax(0,1fr)}
+    .ps-sidebar{position:sticky;top:0;height:100vh;background:#fff;border-right:1px solid var(--ps-line);padding:16px 12px;display:flex;flex-direction:column;gap:16px;z-index:20}
+    .ps-brand{display:flex;align-items:center;gap:10px;padding:8px 8px 10px;border-bottom:1px solid var(--ps-line)}
+    .ps-brand-mark{width:34px;height:34px;border-radius:var(--ps-radius);display:flex;align-items:center;justify-content:center;background:var(--ps-blue);color:#fff;font-size:12px;font-weight:900}
+    .ps-brand-title{font-size:13px;font-weight:900;line-height:1.15}
+    .ps-brand-meta{font-size:11px;color:var(--ps-muted);margin-top:2px}
+    .ps-nav{display:grid;gap:4px}
+    .ps-nav a{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:36px;padding:8px 9px;border-radius:var(--ps-radius);text-decoration:none;color:#334155;font-size:13px;font-weight:800}
+    .ps-nav a:hover,.ps-nav a:focus-visible,.ps-nav a[aria-current="page"]{background:var(--ps-blue-soft);color:var(--ps-blue)}
+    .ps-nav span{font-size:11px;color:var(--ps-subtle);font-weight:800}
+    .ps-side-box{border:1px solid var(--ps-line);border-radius:var(--ps-radius);background:var(--ps-soft);padding:10px;display:grid;gap:7px}
+    .ps-side-box strong{font-size:12px;font-weight:900}
+    .ps-side-box p{font-size:11px;line-height:1.45;color:var(--ps-muted);margin:0}
+    .ps-side-foot{margin-top:auto;display:grid;gap:8px;padding-top:12px;border-top:1px solid var(--ps-line)}
+    .ps-main{min-width:0}
+    .ps-topbar{position:sticky;top:0;z-index:15;min-height:64px;border-bottom:1px solid var(--ps-line);background:rgba(248,250,253,.94);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 18px}
+    .ps-context{display:flex;align-items:center;gap:10px;min-width:0;flex-wrap:wrap}
+    .ps-field{display:grid;gap:3px;min-width:230px}
+    .ps-label{font-size:11px;font-weight:900;color:var(--ps-muted)}
+    .ps-select,.ps-input{height:36px;border:1px solid var(--ps-line-strong);border-radius:var(--ps-radius);background:#fff;color:var(--ps-ink);padding:0 10px;font-size:13px;font-weight:800}
+    .ps-input[readonly]{background:var(--ps-soft);color:var(--ps-muted)}
+    .ps-account{display:flex;align-items:center;gap:8px;min-width:0}
+    .ps-avatar{width:32px;height:32px;border-radius:var(--ps-radius);display:flex;align-items:center;justify-content:center;background:var(--ps-blue-soft);border:1px solid #bfdbfe;color:var(--ps-blue);font-size:11px;font-weight:900;flex:0 0 auto}
+    .ps-account-name{font-size:13px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:300px}
+    .ps-account-note{font-size:11px;color:var(--ps-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:340px}
+    .ps-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+    .ps-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:36px;border:1px solid var(--ps-line-strong);border-radius:var(--ps-radius);background:#fff;color:var(--ps-ink);padding:8px 11px;text-decoration:none;font-size:12px;font-weight:900;line-height:1.1}
+    .ps-btn:hover,.ps-btn:focus-visible{border-color:var(--ps-blue);background:var(--ps-blue-soft);color:var(--ps-blue)}
+    .ps-btn.primary{background:var(--ps-blue);border-color:var(--ps-blue);color:#fff}
+    .ps-btn.primary:hover{background:#004ba0;color:#fff}
+    .ps-content{padding:18px;max-width:1480px;margin:0 auto}
+    .ps-command-grid{display:grid;grid-template-columns:minmax(0,1.55fr) 380px;gap:12px;margin-bottom:12px}
+    .ps-command,.ps-panel,.ps-card,.ps-metric,.ps-row{background:var(--ps-surface);border:1px solid var(--ps-line);border-radius:var(--ps-radius);box-shadow:0 1px 0 rgba(15,23,42,.03)}
+    .ps-command{padding:16px;display:grid;gap:12px}
+    .ps-kicker{font-size:11px;font-weight:900;color:var(--ps-blue);margin-bottom:4px}
+    .ps-title{font-size:28px;line-height:1.1;margin:0 0 6px;font-weight:900}
+    .ps-subtitle{font-size:13px;line-height:1.55;color:var(--ps-muted);max-width:830px;margin:0}
+    .ps-status-card{padding:14px;display:grid;gap:10px;background:var(--ps-surface);border:1px solid var(--ps-line);border-radius:var(--ps-radius)}
+    .ps-status-card h2{font-size:16px;margin:0;font-weight:900}
+    .ps-status-card p{font-size:12px;line-height:1.5;color:var(--ps-muted);margin:0}
+    .ps-pill{display:inline-flex;align-items:center;justify-content:center;min-height:22px;border-radius:999px;padding:4px 8px;border:1px solid var(--ps-line);background:var(--ps-soft);color:#475569;font-size:10px;font-weight:900;white-space:nowrap;text-transform:uppercase;letter-spacing:.04em}
+    .ps-pill.real,.ps-pill.pro,.ps-pill.ready{background:var(--ps-green-soft);border-color:#a7f3d0;color:#065f46}
+    .ps-pill.local,.ps-pill.shell{background:var(--ps-purple-soft);border-color:#ddd6fe;color:var(--ps-purple)}
+    .ps-pill.warn,.ps-pill.schema{background:var(--ps-amber-soft);border-color:#fde68a;color:var(--ps-amber)}
+    .ps-pill.lock,.ps-pill.missing{background:var(--ps-red-soft);border-color:#fecaca;color:var(--ps-red)}
+    .ps-metrics{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:16px}
+    .ps-metric{padding:12px;min-height:86px;display:flex;flex-direction:column;justify-content:space-between}
+    .ps-metric strong{display:block;font-size:23px;line-height:1;font-weight:900}
+    .ps-metric span{display:block;font-size:11px;color:var(--ps-muted);font-weight:900;margin-top:7px}
+    .ps-metric small{display:block;font-size:11px;color:var(--ps-subtle);line-height:1.35;margin-top:4px}
+    .ps-layout{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:12px;align-items:start}
+    .ps-panel{overflow:hidden;margin-bottom:12px}
+    .ps-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:12px 13px;border-bottom:1px solid var(--ps-line);background:#fff}
+    .ps-panel-body{padding:12px 13px}
+    .ps-h2{font-size:17px;font-weight:900;line-height:1.2;margin:0}
+    .ps-note{font-size:12px;line-height:1.45;color:var(--ps-muted);margin:3px 0 0;max-width:780px}
+    .ps-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .ps-card{padding:12px;display:grid;gap:9px;min-height:142px}
+    .ps-card h3{font-size:14px;line-height:1.2;margin:0;font-weight:900}
+    .ps-card p{font-size:11px;line-height:1.42;color:var(--ps-muted);margin:0}
+    .ps-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+    .ps-list{display:grid;gap:8px}
+    .ps-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 11px}
+    .ps-row-title{font-size:13px;font-weight:900;line-height:1.25;margin:0}
+    .ps-row-meta{font-size:11px;color:var(--ps-muted);line-height:1.42;margin-top:3px}
+    .ps-row-actions{display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap}
+    .ps-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .ps-check{display:flex;align-items:flex-start;gap:9px;border:1px solid var(--ps-line);border-radius:var(--ps-radius);background:#fff;padding:10px}
+    .ps-check input{margin-top:3px}
+    .ps-check strong{display:block;font-size:12px;font-weight:900}
+    .ps-check span{display:block;font-size:11px;color:var(--ps-muted);line-height:1.38;margin-top:2px}
+    .ps-code{font-family:var(--font-mono,"JetBrains Mono",Consolas,monospace);font-size:11px;color:#475569;word-break:break-all}
+    .ps-warning{border:1px solid #fde68a;background:var(--ps-amber-soft);color:#78350f;border-radius:var(--ps-radius);padding:10px 11px;font-size:12px;line-height:1.48}
+    :root[data-theme="dark"] .ps-sidebar,
+    :root[data-theme="dark"] .ps-panel-head,
+    :root[data-theme="dark"] .ps-check,
+    :root[data-theme="dark"] .ps-btn,
+    :root[data-theme="dark"] .ps-select,
+    :root[data-theme="dark"] .ps-input{background:var(--ps-surface);color:var(--ps-ink)}
+    :root[data-theme="dark"] .ps-topbar{background:rgba(11,17,32,.94)}
+    :root[data-theme="dark"] .ps-code,
+    :root[data-theme="dark"] .ps-nav a{color:var(--ps-muted)}
+    :root[data-theme="dark"] .ps-warning{border-color:#92400e;color:#fcd34d}
+    @media(max-width:1120px){
+      .ps-shell{grid-template-columns:1fr}
+      .ps-sidebar{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--ps-line)}
+      .ps-nav{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .ps-side-foot{margin-top:0}
+      .ps-command-grid,.ps-layout{grid-template-columns:1fr}
+      .ps-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .ps-topbar{position:relative;align-items:flex-start;flex-direction:column}
+      .ps-actions{justify-content:flex-start}
+    }
+    @media(max-width:720px){
+      .ps-content{padding:12px}
+      .ps-title{font-size:24px}
+      .ps-nav,.ps-grid,.ps-metrics,.ps-form-grid{grid-template-columns:1fr}
+      .ps-field,.ps-btn{min-width:0;width:100%}
+      .ps-row{grid-template-columns:1fr}
+      .ps-row-actions{justify-content:flex-start}
+    }
+  </style>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/pro/settings/">
+</head>
+<body class="top-level-page-ui-refresh">
+  <main class="ps-shell pro-gated-content">
+    <aside class="ps-sidebar" aria-label="Pro settings navigation">
+      <div class="ps-brand">
+        <div class="ps-brand-mark" aria-hidden="true">AT</div>
+        <div>
+          <div class="ps-brand-title">AfroTools Pro</div>
+          <div class="ps-brand-meta">Account settings</div>
+        </div>
+      </div>
+      <nav class="ps-nav">
+        <a href="/pro/workspace/">Control <span>hub</span></a>
+        <a href="/pro/apps/">Apps <span>10</span></a>
+        <a href="/pro/vault/">Vault <span>data</span></a>
+        <a href="/pro/team/">Team <span>roles</span></a>
+        <a href="/pro/settings/" aria-current="page">Settings <span>prefs</span></a>
+        <a href="/dashboard/">Account <span>auth</span></a>
+      </nav>
+      <div class="ps-side-box">
+        <strong>Settings coverage</strong>
+        <p>Shows current account access and saves language, country, currency, and privacy preferences on this device until account sync is available.</p>
+      </div>
+      <div class="ps-side-box">
+        <strong>Preference storage</strong>
+        <p class="ps-code">Saved on this device.</p>
+      </div>
+      <div class="ps-side-foot">
+        <a class="ps-btn primary" href="/pro/workspace/">Pro Control</a>
+        <a class="ps-btn" href="/pro/vault/">Data Vault</a>
+        <a class="ps-btn" href="/pro/team/">Team</a>
+      </div>
+    </aside>
+
+    <section class="ps-main">
+      <header class="ps-topbar">
+        <div class="ps-context">
+          <label class="ps-field">
+            <span class="ps-label">Language lane</span>
+            <select class="ps-select" id="languageLane">
+              <option value="en">English</option>
+              <option value="fr">French</option>
+              <option value="sw">Kiswahili</option>
+              <option value="pt">Portuguese</option>
+              <option value="ar">Arabic</option>
+            </select>
+          </label>
+          <label class="ps-field">
+            <span class="ps-label">Default country</span>
+            <select class="ps-select" id="defaultCountry">
+              <option value="NG">Nigeria</option>
+              <option value="KE">Kenya</option>
+              <option value="GH">Ghana</option>
+              <option value="ZA">South Africa</option>
+              <option value="RW">Rwanda</option>
+              <option value="SN">Senegal</option>
+              <option value="CM">Cameroon</option>
+              <option value="EG">Egypt</option>
+              <option value="PAN">Pan-African</option>
+            </select>
+          </label>
+          <div class="ps-account" id="accountCard">
+            <div class="ps-avatar" aria-hidden="true">PRO</div>
+            <div>
+              <div class="ps-account-name">Checking Pro account...</div>
+              <div class="ps-account-note">Checking account access.</div>
+            </div>
+          </div>
+        </div>
+        <div class="ps-actions">
+          <button class="ps-btn" type="button" id="refreshBtn">Refresh</button>
+          <button class="ps-btn primary" type="button" id="savePrefsBtn">Save preferences</button>
+        </div>
+      </header>
+
+      <div class="ps-content">
+        <section class="ps-command-grid">
+          <div class="ps-command">
+            <div>
+              <div class="ps-kicker">ACCOUNT WORKSPACE</div>
+              <h1 class="ps-title">Settings</h1>
+              <p class="ps-subtitle">Set the default language, country, currency, data labels, and privacy preferences your Pro workspaces should use.</p>
+            </div>
+            <div class="ps-row-actions">
+              <span class="ps-pill local">device preferences</span>
+              <span class="ps-pill schema">account profile</span>
+              <span class="ps-pill pro">Pro gated</span>
+            </div>
+          </div>
+          <aside class="ps-status-card">
+            <div class="ps-card-top">
+              <h2>Account Access</h2>
+              <span class="ps-pill warn" id="statusPill">Checking</span>
+            </div>
+            <p id="statusCopy">Checking the signed-in account.</p>
+            <p class="ps-code" id="statusMeta">status pending</p>
+          </aside>
+        </section>
+
+        <section class="ps-metrics" aria-label="Settings metrics">
+          <div class="ps-metric"><strong id="metricTier">...</strong><span>Plan tier</span><small>Read from account profile</small></div>
+          <div class="ps-metric"><strong id="metricLanguage">EN</strong><span>Language lane</span><small>Device preference only</small></div>
+          <div class="ps-metric"><strong id="metricCountry">NG</strong><span>Default country</span><small>Used by app defaults</small></div>
+          <div class="ps-metric"><strong id="metricCurrency">USD</strong><span>Default currency</span><small>Device preference only</small></div>
+          <div class="ps-metric"><strong>Device</strong><span>Data settings</span><small>Device preferences saved here</small></div>
+        </section>
+
+        <section class="ps-layout">
+          <div>
+            <section class="ps-panel">
+              <div class="ps-panel-head">
+                <div>
+                  <h2 class="ps-h2">Account Profile</h2>
+                  <p class="ps-note">Profile values are read from the signed-in account. Profile editing is not available from this workspace yet.</p>
+                </div>
+                <span class="ps-pill real">profile read</span>
+              </div>
+              <div class="ps-panel-body">
+                <div class="ps-form-grid">
+                  <label class="ps-field">
+                    <span class="ps-label">Name</span>
+                    <input aria-label="ProfileName" class="ps-input" id="profileName" type="text" readonly value="Loading...">
+                  </label>
+                  <label class="ps-field">
+                    <span class="ps-label">Email</span>
+                    <input aria-label="ProfileEmail" class="ps-input" id="profileEmail" type="email" readonly value="Loading...">
+                  </label>
+                  <label class="ps-field">
+                    <span class="ps-label">Tier</span>
+                    <input aria-label="ProfileTier" class="ps-input" id="profileTier" type="text" readonly value="Loading...">
+                  </label>
+                  <label class="ps-field">
+                    <span class="ps-label">Expires</span>
+                    <input aria-label="ProfileExpires" class="ps-input" id="profileExpires" type="text" readonly value="Loading...">
+                  </label>
+                </div>
+              </div>
+            </section>
+
+            <section class="ps-panel">
+              <div class="ps-panel-head">
+                <div>
+                  <h2 class="ps-h2">Defaults</h2>
+                  <p class="ps-note">These controls save preferences on this device while account settings are prepared.</p>
+                </div>
+                <span class="ps-pill local">device saved</span>
+              </div>
+              <div class="ps-panel-body">
+                <div class="ps-form-grid">
+                  <label class="ps-field">
+                    <span class="ps-label">Currency</span>
+                    <select class="ps-select" id="defaultCurrency">
+                      <option value="USD">USD</option>
+                      <option value="NGN">NGN</option>
+                      <option value="KES">KES</option>
+                      <option value="GHS">GHS</option>
+                      <option value="ZAR">ZAR</option>
+                      <option value="RWF">RWF</option>
+                      <option value="XOF">XOF</option>
+                      <option value="XAF">XAF</option>
+                      <option value="EGP">EGP</option>
+                    </select>
+                  </label>
+                  <label class="ps-field">
+                    <span class="ps-label">Workspace label</span>
+                    <input aria-label="Primary Pro workspace" class="ps-input" id="workspaceLabel" type="text" maxlength="80" placeholder="Primary Pro workspace">
+                  </label>
+                  <label class="ps-field">
+                    <span class="ps-label">Packet naming</span>
+                    <select class="ps-select" id="packetNaming">
+                      <option value="client-period-app">Client, period, app</option>
+                      <option value="app-client-date">App, client, date</option>
+                      <option value="date-app-client">Date, app, client</option>
+                    </select>
+                  </label>
+                  <label class="ps-field">
+                    <span class="ps-label">Default data label</span>
+                    <select class="ps-select" id="dataLabel">
+                      <option value="show-origin">Show device/account origin</option>
+                      <option value="warn-local">Warn on device-only records</option>
+                      <option value="compact">Compact labels</option>
+                    </select>
+                  </label>
+                  <label class="ps-field">
+                    <span class="ps-label">Theme mode</span>
+                    <select class="ps-select" id="themeMode">
+                      <option value="auto">Auto from device</option>
+                      <option value="light">Light</option>
+                      <option value="dark">Dark</option>
+                    </select>
+                  </label>
+                </div>
+              </div>
+            </section>
+
+            <section class="ps-panel">
+              <div class="ps-panel-head">
+                <div>
+                  <h2 class="ps-h2">Data &amp; Privacy</h2>
+                  <p class="ps-note">These preferences control workspace labels and export warnings only. They do not change account policy.</p>
+                </div>
+                <span class="ps-pill shell">privacy prefs</span>
+              </div>
+              <div class="ps-panel-body">
+                <div class="ps-grid">
+                  <label class="ps-check">
+                    <input aria-label="ShowCloudLabels" id="showCloudLabels" type="checkbox">
+                    <span><strong>Show account-backed labels</strong><span>Keep device-only versus account-backed badges visible on Pro pages.</span></span>
+                  </label>
+                  <label class="ps-check">
+                    <input aria-label="WarnBeforeExport" id="warnBeforeExport" type="checkbox">
+                    <span><strong>Warn before packet export</strong><span>Ask before downloading device-saved packets that may include sensitive records.</span></span>
+                  </label>
+                  <label class="ps-check">
+                    <input aria-label="HideSensitivePreview" id="hideSensitivePreview" type="checkbox">
+                    <span><strong>Hide sensitive previews</strong><span>Prefer summary counts over names in shared Pro pages.</span></span>
+                  </label>
+                  <label class="ps-check">
+                    <input aria-label="PreferDeviceProof" id="preferDeviceProof" type="checkbox">
+                    <span><strong>Show data origin clearly</strong><span>Show when data comes only from this device or workspace state.</span></span>
+                  </label>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <aside>
+            <section class="ps-panel">
+              <div class="ps-panel-head">
+                <div>
+                  <h2 class="ps-h2">Preference Summary</h2>
+                  <p class="ps-note">Current device settings visible to all Pro workspace pages.</p>
+                </div>
+              </div>
+              <div class="ps-panel-body">
+                <div class="ps-list" id="summaryList"></div>
+              </div>
+            </section>
+
+            <section class="ps-panel">
+              <div class="ps-panel-head">
+                <div>
+                  <h2 class="ps-h2">Account Save Status</h2>
+                  <p class="ps-note">Account-saved settings are coming later, so this page keeps the boundary visible.</p>
+                </div>
+                <span class="ps-pill schema">account save coming</span>
+              </div>
+              <div class="ps-panel-body">
+                <div class="ps-list">
+                  <article class="ps-row"><div><h3 class="ps-row-title">Account profile edits</h3><div class="ps-row-meta">Profile updates need a secure account-edit flow.</div></div><span class="ps-pill missing">coming soon</span></article>
+                  <article class="ps-row"><div><h3 class="ps-row-title">Team settings</h3><div class="ps-row-meta">Team membership settings will appear as shared workspaces come online.</div></div><span class="ps-pill schema">coming soon</span></article>
+                  <article class="ps-row"><div><h3 class="ps-row-title">Vault policy</h3><div class="ps-row-meta">Document vault controls will appear when vault account save is available.</div></div><span class="ps-pill schema">coming soon</span></article>
+                  <article class="ps-row"><div><h3 class="ps-row-title">App defaults</h3><div class="ps-row-meta">Country, currency, language, and packet naming will become account-saved when settings sync is available.</div></div><span class="ps-pill local">device now</span></article>
+                </div>
+              </div>
+            </section>
+
+            <section class="ps-panel">
+              <div class="ps-panel-head">
+                <div>
+                  <h2 class="ps-h2">Actions</h2>
+                  <p class="ps-note">Device preference controls only.</p>
+                </div>
+              </div>
+              <div class="ps-panel-body">
+                <div class="ps-list">
+                  <button class="ps-btn primary" type="button" id="savePrefsBtn2">Save preferences</button>
+                  <button class="ps-btn" type="button" id="resetPrefsBtn">Reset device preferences</button>
+                  <a class="ps-btn" href="/pro/team/">Open Team</a>
+                  <a class="ps-btn" href="/pro/vault/">Open Vault</a>
+                </div>
+                <div class="ps-warning" id="saveNotice">Preferences are stored in this browser only.</div>
+              </div>
+            </section>
+          </aside>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function(){
+      "use strict";
+
+      var PREF_KEY = "afrotools_pro_backbone_preferences_v1";
+      var defaults = {
+        languageLane: "en",
+        defaultCountry: "NG",
+        defaultCurrency: "USD",
+        workspaceLabel: "Primary Pro workspace",
+        packetNaming: "client-period-app",
+        dataLabel: "show-origin",
+        themeMode: "auto",
+        showCloudLabels: true,
+        warnBeforeExport: true,
+        hideSensitivePreview: false,
+        preferDeviceProof: true
+      };
+
+      function byId(id){ return document.getElementById(id); }
+      function create(tag, className, text){
+        var node = document.createElement(tag);
+        if (className) node.className = className;
+        if (text !== undefined && text !== null) node.textContent = String(text);
+        return node;
+      }
+      function clear(node){ if (node) node.textContent = ""; }
+      function pill(label, tone){ return create("span", "ps-pill " + (tone || ""), label); }
+      function readPrefs(){
+        try { return Object.assign({}, defaults, JSON.parse(localStorage.getItem(PREF_KEY) || "{}") || {}); }
+        catch (error) { return Object.assign({}, defaults); }
+      }
+      function savePrefs(prefs){
+        localStorage.setItem(PREF_KEY, JSON.stringify(Object.assign({}, defaults, prefs || {})));
+      }
+      function applyThemePreference(theme){
+        if (window.AfroTools && window.AfroTools.darkMode) {
+          window.AfroTools.darkMode.set(theme || defaults.themeMode);
+        }
+      }
+      function formPrefs(){
+        return {
+          languageLane: byId("languageLane").value,
+          defaultCountry: byId("defaultCountry").value,
+          defaultCurrency: byId("defaultCurrency").value,
+          workspaceLabel: byId("workspaceLabel").value.trim() || defaults.workspaceLabel,
+          packetNaming: byId("packetNaming").value,
+          dataLabel: byId("dataLabel").value,
+          themeMode: byId("themeMode").value,
+          showCloudLabels: byId("showCloudLabels").checked,
+          warnBeforeExport: byId("warnBeforeExport").checked,
+          hideSensitivePreview: byId("hideSensitivePreview").checked,
+          preferDeviceProof: byId("preferDeviceProof").checked
+        };
+      }
+      function applyPrefs(prefs){
+        byId("languageLane").value = prefs.languageLane;
+        byId("defaultCountry").value = prefs.defaultCountry;
+        byId("defaultCurrency").value = prefs.defaultCurrency;
+        byId("workspaceLabel").value = prefs.workspaceLabel;
+        byId("packetNaming").value = prefs.packetNaming;
+        byId("dataLabel").value = prefs.dataLabel;
+        byId("themeMode").value = prefs.themeMode || defaults.themeMode;
+        applyThemePreference(byId("themeMode").value);
+        byId("showCloudLabels").checked = !!prefs.showCloudLabels;
+        byId("warnBeforeExport").checked = !!prefs.warnBeforeExport;
+        byId("hideSensitivePreview").checked = !!prefs.hideSensitivePreview;
+        byId("preferDeviceProof").checked = !!prefs.preferDeviceProof;
+        renderPrefs(prefs);
+      }
+      async function readStatus(){
+        if (!window.AfroProGate || !window.AfroProGate.getStatus) {
+          return { isPro: false, reason: "gate-unavailable", user: null, profile: null };
+        }
+        return window.AfroProGate.getStatus({ fresh: true });
+      }
+      function profile(status){
+        return status.profile || status.user || {};
+      }
+      function text(value, fallback){
+        value = value === undefined || value === null ? "" : String(value).trim();
+        return value || fallback || "";
+      }
+      function profileTier(status){
+        var p = profile(status);
+        return text(p.subscription_tier || p.tier || p.plan, "unknown");
+      }
+      function renderStatus(status){
+        var p = profile(status);
+        var name = text(p.name || p.email, "Signed-in Pro user");
+        var email = text(p.email, "No email available");
+        var tier = profileTier(status);
+        var expires = text(p.subscription_expires_at || p.pro_expires_at || p.expires_at, "Not available");
+
+        var account = byId("accountCard");
+        account.innerHTML = "";
+        account.appendChild(create("div", "ps-avatar", status.isPro ? "PRO" : "AT"));
+        var copy = create("div");
+        copy.appendChild(create("div", "ps-account-name", name));
+        copy.appendChild(create("div", "ps-account-note", "Tier: " + tier + " | Reason: " + (status.reason || "unknown")));
+        account.appendChild(copy);
+
+        byId("statusPill").textContent = status.isPro ? "Pro" : "Locked";
+        byId("statusPill").className = "ps-pill " + (status.isPro ? "pro" : "lock");
+        byId("statusCopy").textContent = status.isPro ? "Settings is reading an active Pro account." : "This account is not reading as active Pro yet.";
+        byId("statusMeta").textContent = "account status: " + (status.reason || "unknown");
+        byId("profileName").value = name;
+        byId("profileEmail").value = email;
+        byId("profileTier").value = tier;
+        byId("profileExpires").value = expires;
+        byId("metricTier").textContent = tier.toUpperCase();
+      }
+      function renderPrefs(prefs){
+        byId("metricLanguage").textContent = prefs.languageLane.toUpperCase();
+        byId("metricCountry").textContent = prefs.defaultCountry;
+        byId("metricCurrency").textContent = prefs.defaultCurrency;
+        var rows = [
+          ["Language lane", prefs.languageLane.toUpperCase(), "local"],
+          ["Default country", prefs.defaultCountry, "local"],
+          ["Default currency", prefs.defaultCurrency, "local"],
+          ["Workspace label", prefs.workspaceLabel, "shell"],
+          ["Packet naming", prefs.packetNaming, "shell"],
+          ["Data label mode", prefs.dataLabel, "shell"],
+          ["Theme mode", prefs.themeMode || "auto", prefs.themeMode && prefs.themeMode !== "auto" ? "pro" : "local"],
+          ["Show account labels", prefs.showCloudLabels ? "Yes" : "No", prefs.showCloudLabels ? "ready" : "warn"],
+          ["Warn before export", prefs.warnBeforeExport ? "Yes" : "No", prefs.warnBeforeExport ? "ready" : "warn"],
+          ["Hide sensitive previews", prefs.hideSensitivePreview ? "Yes" : "No", prefs.hideSensitivePreview ? "ready" : "shell"],
+          ["Show data origin clearly", prefs.preferDeviceProof ? "Yes" : "No", prefs.preferDeviceProof ? "ready" : "warn"]
+        ];
+        var list = byId("summaryList");
+        clear(list);
+        rows.forEach(function(row){
+          var item = create("article", "ps-row");
+          var copy = create("div");
+          copy.appendChild(create("h3", "ps-row-title", row[0]));
+          copy.appendChild(create("div", "ps-row-meta", row[1]));
+          item.appendChild(copy);
+          item.appendChild(pill(row[2] === "local" ? "Device" : row[2] === "ready" ? "On" : row[2], row[2]));
+          list.appendChild(item);
+        });
+      }
+      function saveCurrent(){
+        var prefs = formPrefs();
+        savePrefs(prefs);
+        applyThemePreference(prefs.themeMode);
+        renderPrefs(prefs);
+        byId("saveNotice").textContent = "Preferences saved on this device at " + new Date().toLocaleString() + ".";
+      }
+      function resetPrefs(){
+        if (!window.confirm("Reset Pro preferences saved on this browser?")) return;
+        localStorage.removeItem(PREF_KEY);
+        applyPrefs(Object.assign({}, defaults));
+        byId("saveNotice").textContent = "Device preferences reset.";
+      }
+      async function refresh(){
+        try {
+          renderStatus(await readStatus());
+        } catch (error) {
+          renderStatus({ isPro: false, reason: error.message || "status-error", user: null, profile: null });
+        }
+      }
+      function boot(){
+        applyPrefs(readPrefs());
+        ["languageLane","defaultCountry","defaultCurrency","workspaceLabel","packetNaming","dataLabel","themeMode","showCloudLabels","warnBeforeExport","hideSensitivePreview","preferDeviceProof"].forEach(function(id){
+          byId(id).addEventListener("change", function(){
+            var prefs = formPrefs();
+            if (id === "themeMode") applyThemePreference(prefs.themeMode);
+            renderPrefs(prefs);
+          });
+        });
+        byId("workspaceLabel").addEventListener("input", function(){ renderPrefs(formPrefs()); });
+        byId("savePrefsBtn").addEventListener("click", saveCurrent);
+        byId("savePrefsBtn2").addEventListener("click", saveCurrent);
+        byId("resetPrefsBtn").addEventListener("click", resetPrefs);
+        byId("refreshBtn").addEventListener("click", refresh);
+        window.addEventListener("afro-auth-change", refresh);
+        refresh();
+      }
+      if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+      else boot();
+    }());
+  </script>
+</body>
+</html>

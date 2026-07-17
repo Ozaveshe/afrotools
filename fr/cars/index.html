@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="fr" data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Voitures en Afrique francophone | Prix, import et achat local | AfroTools</title>
+  <meta name="description" content="Point de départ français pour comparer les prix de voitures, les coûts d&#39;importation, les fourchettes locales et les pages utiles avant d&#39;acheter ou d&#39;importer.">
+  <meta name="robots" content="index, follow">
+  <meta name="tool-id" content="car-price-intelligence-fr">
+  <meta property="og:title" content="Voitures en Afrique francophone | Prix, import et achat local | AfroTools">
+  <meta property="og:description" content="Point de départ français pour comparer les prix de voitures, les coûts d&#39;importation, les fourchettes locales et les pages utiles avant d&#39;acheter ou d&#39;importer.">
+  <meta property="og:url" content="https://afrotools.com/fr/cars/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:site_name" content="AfroTools">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/car-price-intelligence.webp">
+  <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Voitures en Afrique francophone | Prix, import et achat local | AfroTools">
+<meta name="twitter:description" content="Point de départ français pour comparer les prix de voitures, les coûts d&amp;#39;importation, les fourchettes locales et les pages utiles avant d&amp;#39;acheter ou d&amp;#39;importer.">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/car-price-intelligence.webp">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <link rel="stylesheet" href="/assets/css/cars-directory.css?v=e91b7b3a">
+  <style>
+    .fr-cars-main{background:#f8fafc;color:#172033}
+    .fr-cars-shell{max-width:1180px;margin:0 auto;padding:0 1.25rem}
+    .fr-cars-hero{background:#111827;color:#fff;padding:4.5rem 0 3.5rem}
+    .fr-cars-hero h1{font-size:clamp(2rem,5vw,4rem);line-height:1.05;margin:.5rem 0 1rem}
+    .fr-cars-hero p{max-width:760px;color:#d1d5db;font-size:1.08rem}
+    .fr-kicker{color:#fbbf24;font-weight:800;text-transform:uppercase;font-size:.78rem;letter-spacing:.08em}
+    .fr-cars-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem;margin:2rem 0}
+    .fr-cars-card{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:1.15rem;box-shadow:0 8px 24px rgba(15,23,42,.06)}
+    .fr-cars-card h2,.fr-cars-card h3{margin:.15rem 0 .55rem;color:#111827}
+    .fr-cars-card p{color:#4b5563}
+    .fr-cars-card a{font-weight:800;color:#0f766e;text-decoration:none}
+    .fr-cars-band{padding:2rem 0}
+    .fr-cars-note{background:#ecfdf5;border-left:4px solid #0f766e;padding:1rem;border-radius:6px;color:#164e43}
+    .fr-cars-table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden}
+    .fr-cars-table th,.fr-cars-table td{padding:.9rem;border-bottom:1px solid #e5e7eb;text-align:left}
+    .fr-cars-actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1rem}
+    .fr-cars-button{display:inline-flex;align-items:center;justify-content:center;padding:.8rem 1rem;border-radius:7px;background:#0f766e;color:#fff;text-decoration:none;font-weight:800}
+    .fr-cars-button.secondary{background:#fff;color:#0f766e;border:1px solid #99f6e4}
+
+    .fr-cars-tool{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(280px,.95fr);gap:1rem;margin:1.25rem 0 2rem}
+    .fr-cars-form{background:#fff;border:1px solid #dbe5f0;border-radius:10px;padding:1rem;box-shadow:0 14px 36px rgba(15,23,42,.08)}
+    .fr-cars-form h2,.fr-cars-output h2{margin:.1rem 0 .4rem;color:#111827}
+    .fr-cars-form p,.fr-cars-output p{color:#4b5563;margin:.2rem 0 .85rem;line-height:1.6}
+    .fr-cars-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}
+    .fr-cars-field{display:grid;gap:.35rem;color:#334155;font-weight:800;font-size:.88rem}
+    .fr-cars-field input,.fr-cars-field select,.fr-cars-field textarea{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:.75rem;font:inherit;color:#111827;background:#fff}
+    .fr-cars-field textarea{min-height:108px;resize:vertical}
+    .fr-cars-output{background:#0f172a;color:#fff;border-radius:10px;padding:1rem;box-shadow:0 18px 44px rgba(15,23,42,.22)}
+    .fr-cars-output h2,.fr-cars-output p{color:#fff}
+    .fr-cars-result-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem;margin:.85rem 0}
+    .fr-cars-metric{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:.75rem}
+    .fr-cars-metric span{display:block;color:#cbd5e1;font-size:.75rem;text-transform:uppercase;letter-spacing:.08em}
+    .fr-cars-metric strong{display:block;font-size:1.05rem;margin-top:.22rem}
+    .fr-cars-output textarea{width:100%;min-height:132px;border:1px solid rgba(255,255,255,.2);border-radius:8px;background:#111827;color:#e5e7eb;padding:.75rem;font:inherit;resize:vertical}
+    .fr-cars-source-list{display:grid;gap:.55rem;margin:0;padding-left:1.1rem}
+    .fr-cars-source-list a{color:#0f766e;font-weight:800}
+    @media(max-width:860px){.fr-cars-tool{grid-template-columns:1fr}.fr-cars-fields{grid-template-columns:1fr}.fr-cars-result-grid{grid-template-columns:1fr}}
+    @media(max-width:720px){.fr-cars-hero{padding:3rem 0}.fr-cars-table{font-size:.92rem}}
+  </style>
+  <script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Voitures en Afrique francophone | Prix, import et achat local | AfroTools",
+    "url": "https://afrotools.com/fr/cars/",
+    "inLanguage": "fr",
+    "description": "Point de départ français pour comparer les prix de voitures, les coûts d'importation, les fourchettes locales et les pages utiles avant d'acheter ou d'importer.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "AfroTools",
+      "url": "https://afrotools.com/"
+    },
+    "image": "https://afrotools.com/assets/img/tools/car-price-intelligence.webp"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": "1",
+        "name": "AfroTools",
+        "item": "https://afrotools.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": "2",
+        "name": "Voitures",
+        "item": "https://afrotools.com/fr/cars/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Ces prix sont-ils des devis officiels ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. Les pages françaises de lancement utilisent les fourchettes AfroTools existantes, le taux de change et les profils de marché disponibles. Elles servent à préparer un budget, pas à remplacer une cotation de douane ou de transitaire."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Pourquoi certains marchés sont-ils en mode estimation ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Les pays sans pack complet de règles douanières restent marqués comme estimation d'annuaire. AfroTools affiche la devise locale et les fourchettes, puis recommande une vérification locale avant paiement."
+        }
+      }
+    ]
+  }
+]
+</script>
+<link rel="canonical" href="https://afrotools.com/fr/cars/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/cars/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/cars/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/cars/">
+</head>
+<body class="cars-page fr-cars-main">
+  <afro-navbar theme="dark" active="transport"></afro-navbar>
+  <main>
+    <section class="fr-cars-hero">
+      <div class="fr-cars-shell">
+        <span class="fr-kicker">Voitures et import</span>
+        <h1>Prix de voitures, import et achat local en Afrique francophone</h1>
+        <p>Une surface française plus utile pour préparer un achat automobile sans prétendre que tout l'annuaire anglais est déjà traduit. Les pages ci-dessous reprennent les données voitures existantes, les devises locales et les modes d'estimation disponibles.</p>
+        <div class="fr-cars-actions">
+          <a class="fr-cars-button" href="/fr/cars/cote-divoire/">Commencer par la Côte d'Ivoire</a>
+          <a class="fr-cars-button secondary" href="/cars/">Annuaire complet en anglais</a>
+        </div>
+      </div>
+    </section>
+    <section class="fr-cars-shell fr-cars-band">
+      <p class="fr-cars-note">Lancement prudent : 20 marchés francophones ou très pertinents en français, 180 pages de marque, 380 pages de modèle et 500 pages année. Aucun lot massif n'est ajouté à la main.</p>
+
+      <section class="fr-cars-tool" aria-label="Estimateur voiture Afrique francophone" data-tool-verification-panel="fr-cars-estimator" data-tool-id="car-price-intelligence-fr">
+        <form class="fr-cars-form" id="frCarsEstimator">
+          <span class="fr-kicker">Estimateur 2026</span>
+          <h2>Comparer achat local et import</h2>
+          <p>Choisissez un marche, une voiture cible et vos hypothèses. Le résultat reste une estimation de planification, pas une cotation officielle.</p>
+          <div class="fr-cars-fields">
+            <label class="fr-cars-field">Marche
+              <select id="fr-car-market" name="market">
+                <option value="ci" data-currency="XOF" data-city="Abidjan" data-factor="1.12" data-duty="0.38">Côte d'Ivoire</option>
+                <option value="sn" data-currency="XOF" data-city="Dakar" data-factor="1.10" data-duty="0.36">Sénégal</option>
+                <option value="cm" data-currency="XAF" data-city="Douala" data-factor="1.16" data-duty="0.42">Cameroun</option>
+                <option value="ma" data-currency="MAD" data-city="Casablanca" data-factor="1.08" data-duty="0.34">Maroc</option>
+                <option value="ng" data-currency="NGN" data-city="Lagos" data-factor="1.18" data-duty="0.45">Nigeria</option>
+                <option value="ke" data-currency="KES" data-city="Nairobi" data-factor="1.14" data-duty="0.40">Kenya</option>
+                <option value="gh" data-currency="GHS" data-city="Accra" data-factor="1.13" data-duty="0.38">Ghana</option>
+              </select>
+            </label>
+            <label class="fr-cars-field">Modèle
+              <select id="fr-car-model" name="model">
+                <option value="Toyota Corolla 2018" data-price="9800" data-risk="Faible" data-resale="Fort">Toyota Corolla 2018</option>
+                <option value="Toyota Prado 2016" data-price="23500" data-risk="Moyen" data-resale="Fort">Toyota Prado 2016</option>
+                <option value="Toyota Hilux 2015" data-price="18500" data-risk="Moyen" data-resale="Fort">Toyota Hilux 2015</option>
+                <option value="Honda CR-V 2016" data-price="14500" data-risk="Moyen" data-resale="Bon">Honda CR-V 2016</option>
+                <option value="Hyundai Elantra 2018" data-price="9200" data-risk="Faible" data-resale="Bon">Hyundai Elantra 2018</option>
+              </select>
+            </label>
+            <label class="fr-cars-field">Budget local
+              <input id="fr-car-budget" name="budget" type="number" inputmode="decimal" min="0" step="1000" value="9500000">
+            </label>
+            <label class="fr-cars-field">Taux FX local pour 1 USD
+              <input id="fr-car-fx" name="fx" type="number" inputmode="decimal" min="1" step="1" value="610">
+            </label>
+            <label class="fr-cars-field">Fret, assurance et port (USD)
+              <input id="fr-car-logistics" name="logistics" type="number" inputmode="decimal" min="0" step="100" value="2400">
+            </label>
+            <label class="fr-cars-field">Frais agent et immatriculation
+              <input id="fr-car-local-fees" name="localFees" type="number" inputmode="decimal" min="0" step="1000" value="450000">
+            </label>
+          </div>
+          <div class="fr-cars-actions">
+            <button class="fr-cars-button" type="submit">Comparer</button>
+            <button class="fr-cars-button secondary" type="button" id="frCarsExample">Exemple</button>
+            <button class="fr-cars-button secondary" type="button" id="frCarsCopy">Copier le résumé</button>
+          </div>
+        </form>
+        <aside class="fr-cars-output" aria-live="polite">
+          <span class="fr-kicker">Résultat</span>
+          <h2 id="frCarsVerdict">Budget à vérifier</h2>
+          <p id="frCarsContext">Comparez le coût rendu, la marge de sécurité et le risque avant de parler a un vendeur ou transitaire.</p>
+          <div class="fr-cars-result-grid">
+            <div class="fr-cars-metric"><span>Coût rendu estime</span><strong id="frCarsLanded">-</strong></div>
+            <div class="fr-cars-metric"><span>Fourchette achat local</span><strong id="frCarsLocal">-</strong></div>
+            <div class="fr-cars-metric"><span>Marge budget</span><strong id="frCarsGap">-</strong></div>
+            <div class="fr-cars-metric"><span>Risque / revente</span><strong id="frCarsRisk">-</strong></div>
+          </div>
+          <label class="fr-cars-field">Résumé acheteur
+            <textarea id="frCarsSummary" readonly>Remplissez le formulaire pour generer un resume.</textarea>
+          </label>
+        </aside>
+      </section>
+      <div class="fr-cars-grid">
+        <article class="fr-cars-card">
+          <h2>Méthode</h2>
+          <p>Nous calculons un coût rendu indicatif avec prix source, fret, assurance, frais portuaires, droit/taxe estime et frais locaux. La fourchette locale applique une prime de marche pour comparer import et achat sur place.</p>
+        </article>
+        <article class="fr-cars-card">
+          <h2>Limites</h2>
+          <p>Avertissement : ce n'est pas un devis officiel, une valuation douaniere, un conseil financier ou une garantie de disponibilité. Confirmez les droits, l'état du véhicule, les restrictions d'age et les frais avec l'autorite ou un agent agree.</p>
+        </article>
+        <article class="fr-cars-card">
+          <h2>Sources et fraîcheur</h2>
+          <ul class="fr-cars-source-list">
+            <li><a href="https://customs.gov.ng/?page_id=3161" rel="nofollow noopener" target="_blank">Nigeria Customs Service</a> - référence officielle, vérification repo 2026-04-10.</li>
+            <li><a href="https://www.kra.go.ke/individual/importing/learn-about-importation/procedures-for-motor-vehicle" rel="nofollow noopener" target="_blank">Kenya Revenue Authority</a> - procédure officielle, vérification repo 2026-04-10.</li>
+            <li><a href="https://gra.gov.gh/customs/vehicle-importation/" rel="nofollow noopener" target="_blank">Ghana Revenue Authority</a> - guide officiel, vérification repo 2026-04-10.</li>
+          </ul>
+        </article>
+      </div>
+      <div class="fr-cars-grid"><article class="fr-cars-card">
+      <h2>Côte d&#39;Ivoire</h2>
+      <p>XOF - Abidjan. Marché en estimation d&#39;annuaire.</p>
+      <a href="/fr/cars/cote-divoire/">Voir les prix voiture</a>
+    </article>
+<article class="fr-cars-card">
+      <h2>Sénégal</h2>
+      <p>XOF - Dakar. Marché en estimation d&#39;annuaire.</p>
+      <a href="/fr/cars/senegal/">Voir les prix voiture</a>
+    </article>
+<article class="fr-cars-card">
+      <h2>Cameroun</h2>
+      <p>XAF - Douala. Marché en estimation d&#39;annuaire.</p>
+      <a href="/fr/cars/cameroun/">Voir les prix voiture</a>
+    </article>
+<article class="fr-cars-card">
+      <h2>Maroc</h2>
+      <p>MAD - Casablanca. Marché en estimation d&#39;annuaire.</p>
+      <a href="/fr/cars/maroc/">Voir les prix voiture</a>
+    </article>
+<article class="fr-cars-card">
+      <h2>Algérie</h2>
+      <p>DZD - Alger. Marché en estimation d&#39;annuaire.</p>
+      <a href="/fr/cars/algerie/">Voir les prix voiture</a>
+    </article>
+<article class="fr-cars-card">
+      <h2>Tunisie</h2>
+      <p>TND - Tunis. Marché en estimation d&#39;annuaire.</p>
+      <a href="/fr/cars/tunisie/">Voir les prix voiture</a>
+    </article>
+<article class="fr-cars-card">
+      <h2>Rwanda</h2>
+      <p>RWF - Kigali. Marché en estimation d&#39;annuaire.</p>
+      <a href="/fr/cars/rwanda/">Voir les prix voiture</a>
+    </article>
+<article class="fr-cars-card">
+      <h2>Nigeria</h2>
+      <p>NGN - Lagos. Marché en règles complètes.</p>
+      <a href="/fr/cars/nigeria/">Voir les prix voiture</a>
+    </article>
+<article class="fr-cars-card">
+      <h2>Ghana</h2>
+      <p>GHS - Accra. Marché en règles complètes.</p>
+      <a href="/fr/cars/ghana/">Voir les prix voiture</a>
+    </article>
+<article class="fr-cars-card">
+      <h2>Kenya</h2>
+      <p>KES - Nairobi. Marché en règles complètes.</p>
+      <a href="/fr/cars/kenya/">Voir les prix voiture</a>
+    </article>
+<article class="fr-cars-card">
+      <h2>Egypte</h2>
+      <p>EGP - Le Caire. Marché en estimation d&#39;annuaire.</p>
+      <a href="/fr/cars/egypte/">Voir les prix voiture</a>
+    </article>
+<article class="fr-cars-card">
+      <h2>Ethiopie</h2>
+      <p>ETB - Addis-Abeba. Marché en estimation d&#39;annuaire.</p>
+      <a href="/fr/cars/ethiopie/">Voir les prix voiture</a>
+    </article>
+<article class="fr-cars-card">
+      <h2>Angola</h2>
+      <p>AOA - Luanda. Marché en estimation d&#39;annuaire.</p>
+      <a href="/fr/cars/angola/">Voir les prix voiture</a>
+    </article>
+<article class="fr-cars-card">
+      <h2>Afrique du Sud</h2>
+      <p>ZAR - Johannesburg. Marché en estimation d&#39;annuaire.</p>
+      <a href="/fr/cars/afrique-du-sud/">Voir les prix voiture</a>
+    </article>
+<article class="fr-cars-card">
+      <h2>Mozambique</h2>
+      <p>MZN - Maputo. Marché en estimation d&#39;annuaire.</p>
+      <a href="/fr/cars/mozambique/">Voir les prix voiture</a>
+    </article>
+<article class="fr-cars-card">
+      <h2>Botswana</h2>
+      <p>BWP - Gaborone. Marché en estimation d&#39;annuaire.</p>
+      <a href="/fr/cars/botswana/">Voir les prix voiture</a>
+    </article>
+<article class="fr-cars-card">
+      <h2>Namibie</h2>
+      <p>NAD - Windhoek. Marché en estimation d&#39;annuaire.</p>
+      <a href="/fr/cars/namibie/">Voir les prix voiture</a>
+    </article>
+<article class="fr-cars-card">
+      <h2>Ouganda</h2>
+      <p>UGX - Kampala. Marché en règles complètes.</p>
+      <a href="/fr/cars/ouganda/">Voir les prix voiture</a>
+    </article>
+<article class="fr-cars-card">
+      <h2>Zambie</h2>
+      <p>ZMW - Lusaka. Marché en règles complètes.</p>
+      <a href="/fr/cars/zambie/">Voir les prix voiture</a>
+    </article>
+<article class="fr-cars-card">
+      <h2>Tanzanie</h2>
+      <p>TZS - Dar es Salaam. Marché en règles complètes.</p>
+      <a href="/fr/cars/tanzanie/">Voir les prix voiture</a>
+    </article></div>
+      <div class="fr-cars-grid">
+        <article class="fr-cars-card">
+          <h2>Pages modèle lancées</h2>
+          <ul><li><a href="/fr/cars/cote-divoire/toyota/corolla/2018/">2018 Toyota Corolla - Côte d&#39;Ivoire</a></li>
+<li><a href="/fr/cars/senegal/toyota/corolla/2018/">2018 Toyota Corolla - Sénégal</a></li>
+<li><a href="/fr/cars/cameroun/toyota/corolla/2018/">2018 Toyota Corolla - Cameroun</a></li>
+<li><a href="/fr/cars/cote-divoire/toyota/prado/2016/">2016 Toyota Prado - Côte d&#39;Ivoire</a></li>
+<li><a href="/fr/cars/cote-divoire/toyota/hilux/2015/">2015 Toyota Hilux - Côte d&#39;Ivoire</a></li>
+<li><a href="/fr/cars/senegal/toyota/prado/2016/">2016 Toyota Prado - Sénégal</a></li>
+<li><a href="/fr/cars/senegal/honda/cr-v/2016/">2016 Honda CR-V - Sénégal</a></li>
+<li><a href="/fr/cars/cameroun/toyota/hilux/2015/">2015 Toyota Hilux - Cameroun</a></li>
+<li><a href="/fr/cars/cameroun/honda/cr-v/2016/">2016 Honda CR-V - Cameroun</a></li>
+<li><a href="/fr/cars/maroc/toyota/corolla/2018/">2018 Toyota Corolla - Maroc</a></li>
+<li><a href="/fr/cars/maroc/toyota/prado/2016/">2016 Toyota Prado - Maroc</a></li>
+<li><a href="/fr/cars/algerie/toyota/corolla/2018/">2018 Toyota Corolla - Algérie</a></li>
+<li><a href="/fr/cars/tunisie/toyota/corolla/2018/">2018 Toyota Corolla - Tunisie</a></li>
+<li><a href="/fr/cars/rwanda/toyota/corolla/2018/">2018 Toyota Corolla - Rwanda</a></li>
+<li><a href="/fr/cars/nigeria/toyota/corolla/2018/">2018 Toyota Corolla - Nigeria</a></li>
+<li><a href="/fr/cars/cote-divoire/honda/cr-v/2020/">2020 Honda CR-V - Côte d&#39;Ivoire</a></li>
+<li><a href="/fr/cars/cote-divoire/toyota/camry/2012/">2012 Toyota Camry - Côte d&#39;Ivoire</a></li>
+<li><a href="/fr/cars/cote-divoire/hyundai/elantra/2018/">2018 Hyundai Elantra - Côte d&#39;Ivoire</a></li>
+<li><a href="/fr/cars/cote-divoire/ford/ranger/2018/">2018 Ford Ranger - Côte d&#39;Ivoire</a></li>
+<li><a href="/fr/cars/senegal/toyota/hilux/2015/">2015 Toyota Hilux - Sénégal</a></li>
+<li><a href="/fr/cars/senegal/hyundai/elantra/2018/">2018 Hyundai Elantra - Sénégal</a></li>
+<li><a href="/fr/cars/senegal/toyota/camry/2012/">2012 Toyota Camry - Sénégal</a></li>
+<li><a href="/fr/cars/senegal/nissan/x-trail/2015/">2015 Nissan X-Trail - Sénégal</a></li>
+<li><a href="/fr/cars/cameroun/toyota/prado/2016/">2016 Toyota Prado - Cameroun</a></li>
+<li><a href="/fr/cars/cameroun/hyundai/elantra/2018/">2018 Hyundai Elantra - Cameroun</a></li>
+<li><a href="/fr/cars/cameroun/ford/ranger/2018/">2018 Ford Ranger - Cameroun</a></li>
+<li><a href="/fr/cars/cameroun/toyota/camry/2012/">2012 Toyota Camry - Cameroun</a></li>
+<li><a href="/fr/cars/maroc/honda/cr-v/2016/">2016 Honda CR-V - Maroc</a></li>
+<li><a href="/fr/cars/maroc/hyundai/elantra/2018/">2018 Hyundai Elantra - Maroc</a></li>
+<li><a href="/fr/cars/maroc/mercedes-benz/c-class/2016/">2016 Mercedes-Benz C-Class - Maroc</a></li>
+<li><a href="/fr/cars/maroc/toyota/hilux/2015/">2015 Toyota Hilux - Maroc</a></li>
+<li><a href="/fr/cars/algerie/toyota/prado/2016/">2016 Toyota Prado - Algérie</a></li>
+<li><a href="/fr/cars/algerie/hyundai/elantra/2018/">2018 Hyundai Elantra - Algérie</a></li>
+<li><a href="/fr/cars/algerie/kia/sportage/2017/">2017 Kia Sportage - Algérie</a></li>
+<li><a href="/fr/cars/tunisie/toyota/prado/2016/">2016 Toyota Prado - Tunisie</a></li>
+<li><a href="/fr/cars/tunisie/hyundai/elantra/2018/">2018 Hyundai Elantra - Tunisie</a></li>
+<li><a href="/fr/cars/tunisie/kia/sportage/2017/">2017 Kia Sportage - Tunisie</a></li>
+<li><a href="/fr/cars/rwanda/toyota/prado/2016/">2016 Toyota Prado - Rwanda</a></li>
+<li><a href="/fr/cars/rwanda/toyota/hilux/2015/">2015 Toyota Hilux - Rwanda</a></li>
+<li><a href="/fr/cars/rwanda/honda/cr-v/2016/">2016 Honda CR-V - Rwanda</a></li>
+<li><a href="/fr/cars/egypte/toyota/corolla/2018/">2018 Toyota Corolla - Egypte</a></li>
+<li><a href="/fr/cars/egypte/toyota/prado/2016/">2016 Toyota Prado - Egypte</a></li>
+<li><a href="/fr/cars/egypte/hyundai/elantra/2018/">2018 Hyundai Elantra - Egypte</a></li>
+<li><a href="/fr/cars/ethiopie/toyota/corolla/2018/">2018 Toyota Corolla - Ethiopie</a></li>
+<li><a href="/fr/cars/ethiopie/toyota/hilux/2015/">2015 Toyota Hilux - Ethiopie</a></li>
+<li><a href="/fr/cars/angola/toyota/hilux/2015/">2015 Toyota Hilux - Angola</a></li>
+<li><a href="/fr/cars/angola/toyota/prado/2016/">2016 Toyota Prado - Angola</a></li>
+<li><a href="/fr/cars/afrique-du-sud/toyota/corolla/2018/">2018 Toyota Corolla - Afrique du Sud</a></li>
+<li><a href="/fr/cars/afrique-du-sud/ford/ranger/2018/">2018 Ford Ranger - Afrique du Sud</a></li>
+<li><a href="/fr/cars/mozambique/toyota/hilux/2015/">2015 Toyota Hilux - Mozambique</a></li>
+<li><a href="/fr/cars/mozambique/toyota/corolla/2018/">2018 Toyota Corolla - Mozambique</a></li>
+<li><a href="/fr/cars/botswana/toyota/hilux/2015/">2015 Toyota Hilux - Botswana</a></li>
+<li><a href="/fr/cars/namibie/toyota/hilux/2015/">2015 Toyota Hilux - Namibie</a></li>
+<li><a href="/fr/cars/ghana/toyota/corolla/2018/">2018 Toyota Corolla - Ghana</a></li>
+<li><a href="/fr/cars/ghana/toyota/prado/2016/">2016 Toyota Prado - Ghana</a></li>
+<li><a href="/fr/cars/ghana/toyota/hilux/2015/">2015 Toyota Hilux - Ghana</a></li>
+<li><a href="/fr/cars/kenya/toyota/corolla/2018/">2018 Toyota Corolla - Kenya</a></li>
+<li><a href="/fr/cars/kenya/toyota/prado/2016/">2016 Toyota Prado - Kenya</a></li>
+<li><a href="/fr/cars/kenya/toyota/hilux/2015/">2015 Toyota Hilux - Kenya</a></li>
+<li><a href="/fr/cars/ouganda/toyota/corolla/2018/">2018 Toyota Corolla - Ouganda</a></li>
+<li><a href="/fr/cars/ouganda/toyota/prado/2016/">2016 Toyota Prado - Ouganda</a></li>
+<li><a href="/fr/cars/ouganda/toyota/hilux/2015/">2015 Toyota Hilux - Ouganda</a></li>
+<li><a href="/fr/cars/zambie/toyota/corolla/2018/">2018 Toyota Corolla - Zambie</a></li>
+<li><a href="/fr/cars/zambie/toyota/prado/2016/">2016 Toyota Prado - Zambie</a></li>
+<li><a href="/fr/cars/zambie/toyota/hilux/2015/">2015 Toyota Hilux - Zambie</a></li>
+<li><a href="/fr/cars/tanzanie/toyota/corolla/2018/">2018 Toyota Corolla - Tanzanie</a></li>
+<li><a href="/fr/cars/tanzanie/toyota/prado/2016/">2016 Toyota Prado - Tanzanie</a></li>
+<li><a href="/fr/cars/tanzanie/toyota/hilux/2015/">2015 Toyota Hilux - Tanzanie</a></li>
+<li><a href="/fr/cars/cote-divoire/honda/cr-v/2016/">2016 Honda CR-V - Côte d&#39;Ivoire</a></li>
+<li><a href="/fr/cars/algerie/toyota/hilux/2015/">2015 Toyota Hilux - Algérie</a></li>
+<li><a href="/fr/cars/algerie/honda/cr-v/2016/">2016 Honda CR-V - Algérie</a></li>
+<li><a href="/fr/cars/tunisie/toyota/hilux/2015/">2015 Toyota Hilux - Tunisie</a></li>
+<li><a href="/fr/cars/tunisie/honda/cr-v/2016/">2016 Honda CR-V - Tunisie</a></li>
+<li><a href="/fr/cars/rwanda/hyundai/elantra/2018/">2018 Hyundai Elantra - Rwanda</a></li>
+<li><a href="/fr/cars/nigeria/toyota/prado/2016/">2016 Toyota Prado - Nigeria</a></li>
+<li><a href="/fr/cars/nigeria/toyota/hilux/2015/">2015 Toyota Hilux - Nigeria</a></li>
+<li><a href="/fr/cars/nigeria/honda/cr-v/2016/">2016 Honda CR-V - Nigeria</a></li>
+<li><a href="/fr/cars/nigeria/hyundai/elantra/2018/">2018 Hyundai Elantra - Nigeria</a></li>
+<li><a href="/fr/cars/ghana/honda/cr-v/2016/">2016 Honda CR-V - Ghana</a></li>
+<li><a href="/fr/cars/ghana/hyundai/elantra/2018/">2018 Hyundai Elantra - Ghana</a></li>
+<li><a href="/fr/cars/kenya/honda/cr-v/2016/">2016 Honda CR-V - Kenya</a></li>
+<li><a href="/fr/cars/kenya/hyundai/elantra/2018/">2018 Hyundai Elantra - Kenya</a></li>
+<li><a href="/fr/cars/egypte/toyota/hilux/2015/">2015 Toyota Hilux - Egypte</a></li>
+<li><a href="/fr/cars/egypte/honda/cr-v/2016/">2016 Honda CR-V - Egypte</a></li>
+<li><a href="/fr/cars/ethiopie/toyota/prado/2016/">2016 Toyota Prado - Ethiopie</a></li>
+<li><a href="/fr/cars/ethiopie/honda/cr-v/2016/">2016 Honda CR-V - Ethiopie</a></li>
+<li><a href="/fr/cars/ethiopie/hyundai/elantra/2018/">2018 Hyundai Elantra - Ethiopie</a></li>
+<li><a href="/fr/cars/angola/toyota/corolla/2018/">2018 Toyota Corolla - Angola</a></li>
+<li><a href="/fr/cars/angola/honda/cr-v/2016/">2016 Honda CR-V - Angola</a></li>
+<li><a href="/fr/cars/angola/hyundai/elantra/2018/">2018 Hyundai Elantra - Angola</a></li>
+<li><a href="/fr/cars/afrique-du-sud/toyota/prado/2016/">2016 Toyota Prado - Afrique du Sud</a></li>
+<li><a href="/fr/cars/afrique-du-sud/toyota/hilux/2015/">2015 Toyota Hilux - Afrique du Sud</a></li>
+<li><a href="/fr/cars/afrique-du-sud/honda/cr-v/2016/">2016 Honda CR-V - Afrique du Sud</a></li>
+<li><a href="/fr/cars/afrique-du-sud/hyundai/elantra/2018/">2018 Hyundai Elantra - Afrique du Sud</a></li>
+<li><a href="/fr/cars/mozambique/toyota/prado/2016/">2016 Toyota Prado - Mozambique</a></li>
+<li><a href="/fr/cars/mozambique/honda/cr-v/2016/">2016 Honda CR-V - Mozambique</a></li>
+<li><a href="/fr/cars/mozambique/hyundai/elantra/2018/">2018 Hyundai Elantra - Mozambique</a></li>
+<li><a href="/fr/cars/botswana/toyota/corolla/2018/">2018 Toyota Corolla - Botswana</a></li>
+<li><a href="/fr/cars/botswana/toyota/prado/2016/">2016 Toyota Prado - Botswana</a></li>
+<li><a href="/fr/cars/botswana/honda/cr-v/2016/">2016 Honda CR-V - Botswana</a></li>
+<li><a href="/fr/cars/botswana/hyundai/elantra/2018/">2018 Hyundai Elantra - Botswana</a></li>
+<li><a href="/fr/cars/namibie/toyota/corolla/2018/">2018 Toyota Corolla - Namibie</a></li>
+<li><a href="/fr/cars/namibie/toyota/prado/2016/">2016 Toyota Prado - Namibie</a></li>
+<li><a href="/fr/cars/namibie/honda/cr-v/2016/">2016 Honda CR-V - Namibie</a></li>
+<li><a href="/fr/cars/namibie/hyundai/elantra/2018/">2018 Hyundai Elantra - Namibie</a></li>
+<li><a href="/fr/cars/ouganda/honda/cr-v/2016/">2016 Honda CR-V - Ouganda</a></li>
+<li><a href="/fr/cars/ouganda/hyundai/elantra/2018/">2018 Hyundai Elantra - Ouganda</a></li>
+<li><a href="/fr/cars/zambie/honda/cr-v/2016/">2016 Honda CR-V - Zambie</a></li>
+<li><a href="/fr/cars/zambie/hyundai/elantra/2018/">2018 Hyundai Elantra - Zambie</a></li>
+<li><a href="/fr/cars/tanzanie/honda/cr-v/2016/">2016 Honda CR-V - Tanzanie</a></li>
+<li><a href="/fr/cars/tanzanie/hyundai/elantra/2018/">2018 Hyundai Elantra - Tanzanie</a></li>
+<li><a href="/fr/cars/cote-divoire/toyota/vitz-yaris/2015/">2015 Toyota Vitz / Yaris - Côte d&#39;Ivoire</a></li>
+<li><a href="/fr/cars/cote-divoire/honda/accord/2014/">2014 Honda Accord - Côte d&#39;Ivoire</a></li>
+<li><a href="/fr/cars/cote-divoire/mazda/demio/2017/">2017 Mazda Demio / Mazda 2 - Côte d&#39;Ivoire</a></li>
+<li><a href="/fr/cars/cote-divoire/nissan/x-trail/2015/">2015 Nissan X-Trail - Côte d&#39;Ivoire</a></li>
+<li><a href="/fr/cars/cote-divoire/kia/sportage/2017/">2017 Kia Sportage - Côte d&#39;Ivoire</a></li>
+<li><a href="/fr/cars/senegal/toyota/vitz-yaris/2015/">2015 Toyota Vitz / Yaris - Sénégal</a></li>
+<li><a href="/fr/cars/senegal/honda/accord/2014/">2014 Honda Accord - Sénégal</a></li>
+<li><a href="/fr/cars/senegal/mazda/demio/2017/">2017 Mazda Demio / Mazda 2 - Sénégal</a></li>
+<li><a href="/fr/cars/senegal/kia/sportage/2017/">2017 Kia Sportage - Sénégal</a></li>
+<li><a href="/fr/cars/cameroun/toyota/vitz-yaris/2015/">2015 Toyota Vitz / Yaris - Cameroun</a></li>
+<li><a href="/fr/cars/cameroun/honda/accord/2014/">2014 Honda Accord - Cameroun</a></li>
+<li><a href="/fr/cars/cameroun/mazda/demio/2017/">2017 Mazda Demio / Mazda 2 - Cameroun</a></li>
+<li><a href="/fr/cars/cameroun/nissan/x-trail/2015/">2015 Nissan X-Trail - Cameroun</a></li>
+<li><a href="/fr/cars/cameroun/kia/sportage/2017/">2017 Kia Sportage - Cameroun</a></li>
+<li><a href="/fr/cars/maroc/toyota/vitz-yaris/2015/">2015 Toyota Vitz / Yaris - Maroc</a></li>
+<li><a href="/fr/cars/maroc/honda/accord/2014/">2014 Honda Accord - Maroc</a></li>
+<li><a href="/fr/cars/maroc/mazda/demio/2017/">2017 Mazda Demio / Mazda 2 - Maroc</a></li>
+<li><a href="/fr/cars/maroc/nissan/x-trail/2015/">2015 Nissan X-Trail - Maroc</a></li>
+<li><a href="/fr/cars/maroc/kia/sportage/2017/">2017 Kia Sportage - Maroc</a></li>
+<li><a href="/fr/cars/algerie/toyota/vitz-yaris/2015/">2015 Toyota Vitz / Yaris - Algérie</a></li>
+<li><a href="/fr/cars/algerie/honda/accord/2014/">2014 Honda Accord - Algérie</a></li>
+<li><a href="/fr/cars/algerie/mazda/demio/2017/">2017 Mazda Demio / Mazda 2 - Algérie</a></li>
+<li><a href="/fr/cars/algerie/nissan/x-trail/2015/">2015 Nissan X-Trail - Algérie</a></li>
+<li><a href="/fr/cars/tunisie/toyota/vitz-yaris/2015/">2015 Toyota Vitz / Yaris - Tunisie</a></li>
+<li><a href="/fr/cars/tunisie/honda/accord/2014/">2014 Honda Accord - Tunisie</a></li>
+<li><a href="/fr/cars/tunisie/mazda/demio/2017/">2017 Mazda Demio / Mazda 2 - Tunisie</a></li>
+<li><a href="/fr/cars/tunisie/nissan/x-trail/2015/">2015 Nissan X-Trail - Tunisie</a></li>
+<li><a href="/fr/cars/rwanda/toyota/vitz-yaris/2015/">2015 Toyota Vitz / Yaris - Rwanda</a></li>
+<li><a href="/fr/cars/rwanda/honda/accord/2014/">2014 Honda Accord - Rwanda</a></li>
+<li><a href="/fr/cars/rwanda/mazda/demio/2017/">2017 Mazda Demio / Mazda 2 - Rwanda</a></li>
+<li><a href="/fr/cars/rwanda/nissan/x-trail/2015/">2015 Nissan X-Trail - Rwanda</a></li>
+<li><a href="/fr/cars/rwanda/kia/sportage/2017/">2017 Kia Sportage - Rwanda</a></li>
+<li><a href="/fr/cars/nigeria/toyota/vitz-yaris/2015/">2015 Toyota Vitz / Yaris - Nigeria</a></li>
+<li><a href="/fr/cars/nigeria/honda/accord/2014/">2014 Honda Accord - Nigeria</a></li>
+<li><a href="/fr/cars/nigeria/mazda/demio/2017/">2017 Mazda Demio / Mazda 2 - Nigeria</a></li>
+<li><a href="/fr/cars/nigeria/nissan/x-trail/2015/">2015 Nissan X-Trail - Nigeria</a></li>
+<li><a href="/fr/cars/nigeria/kia/sportage/2017/">2017 Kia Sportage - Nigeria</a></li>
+<li><a href="/fr/cars/ghana/toyota/vitz-yaris/2015/">2015 Toyota Vitz / Yaris - Ghana</a></li>
+<li><a href="/fr/cars/ghana/honda/accord/2014/">2014 Honda Accord - Ghana</a></li>
+<li><a href="/fr/cars/ghana/mazda/demio/2017/">2017 Mazda Demio / Mazda 2 - Ghana</a></li>
+<li><a href="/fr/cars/ghana/nissan/x-trail/2015/">2015 Nissan X-Trail - Ghana</a></li>
+<li><a href="/fr/cars/ghana/kia/sportage/2017/">2017 Kia Sportage - Ghana</a></li>
+<li><a href="/fr/cars/kenya/toyota/vitz-yaris/2015/">2015 Toyota Vitz / Yaris - Kenya</a></li>
+<li><a href="/fr/cars/kenya/honda/accord/2014/">2014 Honda Accord - Kenya</a></li>
+<li><a href="/fr/cars/kenya/mazda/demio/2017/">2017 Mazda Demio / Mazda 2 - Kenya</a></li>
+<li><a href="/fr/cars/kenya/nissan/x-trail/2015/">2015 Nissan X-Trail - Kenya</a></li>
+<li><a href="/fr/cars/kenya/kia/sportage/2017/">2017 Kia Sportage - Kenya</a></li>
+<li><a href="/fr/cars/egypte/toyota/vitz-yaris/2015/">2015 Toyota Vitz / Yaris - Egypte</a></li>
+<li><a href="/fr/cars/egypte/honda/accord/2014/">2014 Honda Accord - Egypte</a></li>
+<li><a href="/fr/cars/egypte/mazda/demio/2017/">2017 Mazda Demio / Mazda 2 - Egypte</a></li>
+<li><a href="/fr/cars/egypte/nissan/x-trail/2015/">2015 Nissan X-Trail - Egypte</a></li>
+<li><a href="/fr/cars/egypte/kia/sportage/2017/">2017 Kia Sportage - Egypte</a></li>
+<li><a href="/fr/cars/ethiopie/toyota/vitz-yaris/2015/">2015 Toyota Vitz / Yaris - Ethiopie</a></li>
+<li><a href="/fr/cars/ethiopie/honda/accord/2014/">2014 Honda Accord - Ethiopie</a></li>
+<li><a href="/fr/cars/ethiopie/mazda/demio/2017/">2017 Mazda Demio / Mazda 2 - Ethiopie</a></li>
+<li><a href="/fr/cars/ethiopie/nissan/x-trail/2015/">2015 Nissan X-Trail - Ethiopie</a></li>
+<li><a href="/fr/cars/ethiopie/kia/sportage/2017/">2017 Kia Sportage - Ethiopie</a></li>
+<li><a href="/fr/cars/angola/toyota/vitz-yaris/2015/">2015 Toyota Vitz / Yaris - Angola</a></li>
+<li><a href="/fr/cars/angola/honda/accord/2014/">2014 Honda Accord - Angola</a></li>
+<li><a href="/fr/cars/angola/mazda/demio/2017/">2017 Mazda Demio / Mazda 2 - Angola</a></li>
+<li><a href="/fr/cars/angola/nissan/x-trail/2015/">2015 Nissan X-Trail - Angola</a></li>
+<li><a href="/fr/cars/angola/kia/sportage/2017/">2017 Kia Sportage - Angola</a></li>
+<li><a href="/fr/cars/afrique-du-sud/toyota/vitz-yaris/2015/">2015 Toyota Vitz / Yaris - Afrique du Sud</a></li>
+<li><a href="/fr/cars/afrique-du-sud/honda/accord/2014/">2014 Honda Accord - Afrique du Sud</a></li>
+<li><a href="/fr/cars/afrique-du-sud/mazda/demio/2017/">2017 Mazda Demio / Mazda 2 - Afrique du Sud</a></li>
+<li><a href="/fr/cars/afrique-du-sud/nissan/x-trail/2015/">2015 Nissan X-Trail - Afrique du Sud</a></li>
+<li><a href="/fr/cars/afrique-du-sud/kia/sportage/2017/">2017 Kia Sportage - Afrique du Sud</a></li>
+<li><a href="/fr/cars/mozambique/toyota/vitz-yaris/2015/">2015 Toyota Vitz / Yaris - Mozambique</a></li>
+<li><a href="/fr/cars/mozambique/honda/accord/2014/">2014 Honda Accord - Mozambique</a></li>
+<li><a href="/fr/cars/mozambique/mazda/demio/2017/">2017 Mazda Demio / Mazda 2 - Mozambique</a></li>
+<li><a href="/fr/cars/mozambique/nissan/x-trail/2015/">2015 Nissan X-Trail - Mozambique</a></li>
+<li><a href="/fr/cars/mozambique/kia/sportage/2017/">2017 Kia Sportage - Mozambique</a></li>
+<li><a href="/fr/cars/botswana/toyota/vitz-yaris/2015/">2015 Toyota Vitz / Yaris - Botswana</a></li>
+<li><a href="/fr/cars/botswana/honda/accord/2014/">2014 Honda Accord - Botswana</a></li>
+<li><a href="/fr/cars/botswana/mazda/demio/2017/">2017 Mazda Demio / Mazda 2 - Botswana</a></li>
+<li><a href="/fr/cars/botswana/nissan/x-trail/2015/">2015 Nissan X-Trail - Botswana</a></li>
+<li><a href="/fr/cars/botswana/kia/sportage/2017/">2017 Kia Sportage - Botswana</a></li>
+<li><a href="/fr/cars/namibie/toyota/vitz-yaris/2015/">2015 Toyota Vitz / Yaris - Namibie</a></li>
+<li><a href="/fr/cars/namibie/honda/accord/2014/">2014 Honda Accord - Namibie</a></li>
+<li><a href="/fr/cars/namibie/mazda/demio/2017/">2017 Mazda Demio / Mazda 2 - Namibie</a></li>
+<li><a href="/fr/cars/namibie/nissan/x-trail/2015/">2015 Nissan X-Trail - Namibie</a></li>
+<li><a href="/fr/cars/namibie/kia/sportage/2017/">2017 Kia Sportage - Namibie</a></li>
+<li><a href="/fr/cars/ouganda/toyota/vitz-yaris/2015/">2015 Toyota Vitz / Yaris - Ouganda</a></li>
+<li><a href="/fr/cars/ouganda/honda/accord/2014/">2014 Honda Accord - Ouganda</a></li>
+<li><a href="/fr/cars/ouganda/mazda/demio/2017/">2017 Mazda Demio / Mazda 2 - Ouganda</a></li>
+<li><a href="/fr/cars/ouganda/nissan/x-trail/2015/">2015 Nissan X-Trail - Ouganda</a></li>
+<li><a href="/fr/cars/ouganda/kia/sportage/2017/">2017 Kia Sportage - Ouganda</a></li>
+<li><a href="/fr/cars/zambie/toyota/vitz-yaris/2015/">2015 Toyota Vitz / Yaris - Zambie</a></li>
+<li><a href="/fr/cars/zambie/honda/accord/2014/">2014 Honda Accord - Zambie</a></li>
+<li><a href="/fr/cars/zambie/mazda/demio/2017/">2017 Mazda Demio / Mazda 2 - Zambie</a></li>
+<li><a href="/fr/cars/zambie/nissan/x-trail/2015/">2015 Nissan X-Trail - Zambie</a></li>
+<li><a href="/fr/cars/zambie/kia/sportage/2017/">2017 Kia Sportage - Zambie</a></li>
+<li><a href="/fr/cars/tanzanie/toyota/vitz-yaris/2015/">2015 Toyota Vitz / Yaris - Tanzanie</a></li>
+<li><a href="/fr/cars/tanzanie/honda/accord/2014/">2014 Honda Accord - Tanzanie</a></li>
+<li><a href="/fr/cars/tanzanie/mazda/demio/2017/">2017 Mazda Demio / Mazda 2 - Tanzanie</a></li>
+<li><a href="/fr/cars/tanzanie/nissan/x-trail/2015/">2015 Nissan X-Trail - Tanzanie</a></li>
+<li><a href="/fr/cars/tanzanie/kia/sportage/2017/">2017 Kia Sportage - Tanzanie</a></li>
+<li><a href="/fr/cars/cote-divoire/toyota/camry/2005/">2005 Toyota Camry - Côte d&#39;Ivoire</a></li>
+<li><a href="/fr/cars/cote-divoire/toyota/axio/2018/">2018 Toyota Axio - Côte d&#39;Ivoire</a></li>
+<li><a href="/fr/cars/cote-divoire/toyota/axio/2019/">2019 Toyota Axio - Côte d&#39;Ivoire</a></li>
+<li><a href="/fr/cars/cote-divoire/toyota/noah/2014/">2014 Toyota Noah / Voxy - Côte d&#39;Ivoire</a></li>
+<li><a href="/fr/cars/cote-divoire/toyota/noah/2018/">2018 Toyota Noah / Voxy - Côte d&#39;Ivoire</a></li>
+<li><a href="/fr/cars/cote-divoire/toyota/prado/2020/">2020 Toyota Prado - Côte d&#39;Ivoire</a></li>
+<li><a href="/fr/cars/cote-divoire/toyota/hilux/2020/">2020 Toyota Hilux - Côte d&#39;Ivoire</a></li>
+<li><a href="/fr/cars/senegal/toyota/camry/2005/">2005 Toyota Camry - Sénégal</a></li>
+<li><a href="/fr/cars/senegal/toyota/axio/2018/">2018 Toyota Axio - Sénégal</a></li>
+<li><a href="/fr/cars/senegal/toyota/axio/2019/">2019 Toyota Axio - Sénégal</a></li>
+<li><a href="/fr/cars/senegal/toyota/noah/2014/">2014 Toyota Noah / Voxy - Sénégal</a></li>
+<li><a href="/fr/cars/senegal/toyota/noah/2018/">2018 Toyota Noah / Voxy - Sénégal</a></li>
+<li><a href="/fr/cars/senegal/toyota/prado/2020/">2020 Toyota Prado - Sénégal</a></li>
+<li><a href="/fr/cars/senegal/toyota/hilux/2020/">2020 Toyota Hilux - Sénégal</a></li>
+<li><a href="/fr/cars/senegal/honda/cr-v/2020/">2020 Honda CR-V - Sénégal</a></li>
+<li><a href="/fr/cars/cameroun/toyota/camry/2005/">2005 Toyota Camry - Cameroun</a></li>
+<li><a href="/fr/cars/cameroun/toyota/axio/2018/">2018 Toyota Axio - Cameroun</a></li>
+<li><a href="/fr/cars/cameroun/toyota/axio/2019/">2019 Toyota Axio - Cameroun</a></li>
+<li><a href="/fr/cars/cameroun/toyota/noah/2014/">2014 Toyota Noah / Voxy - Cameroun</a></li>
+<li><a href="/fr/cars/cameroun/toyota/noah/2018/">2018 Toyota Noah / Voxy - Cameroun</a></li>
+<li><a href="/fr/cars/cameroun/toyota/prado/2020/">2020 Toyota Prado - Cameroun</a></li>
+<li><a href="/fr/cars/cameroun/toyota/hilux/2020/">2020 Toyota Hilux - Cameroun</a></li>
+<li><a href="/fr/cars/cameroun/honda/cr-v/2020/">2020 Honda CR-V - Cameroun</a></li>
+<li><a href="/fr/cars/maroc/toyota/camry/2005/">2005 Toyota Camry - Maroc</a></li>
+<li><a href="/fr/cars/maroc/toyota/camry/2012/">2012 Toyota Camry - Maroc</a></li>
+<li><a href="/fr/cars/maroc/toyota/axio/2018/">2018 Toyota Axio - Maroc</a></li>
+<li><a href="/fr/cars/maroc/toyota/axio/2019/">2019 Toyota Axio - Maroc</a></li>
+<li><a href="/fr/cars/maroc/toyota/noah/2014/">2014 Toyota Noah / Voxy - Maroc</a></li>
+<li><a href="/fr/cars/maroc/toyota/noah/2018/">2018 Toyota Noah / Voxy - Maroc</a></li>
+<li><a href="/fr/cars/maroc/toyota/prado/2020/">2020 Toyota Prado - Maroc</a></li>
+<li><a href="/fr/cars/maroc/toyota/hilux/2020/">2020 Toyota Hilux - Maroc</a></li>
+<li><a href="/fr/cars/maroc/honda/cr-v/2020/">2020 Honda CR-V - Maroc</a></li>
+<li><a href="/fr/cars/algerie/toyota/camry/2005/">2005 Toyota Camry - Algérie</a></li>
+<li><a href="/fr/cars/algerie/toyota/camry/2012/">2012 Toyota Camry - Algérie</a></li>
+<li><a href="/fr/cars/algerie/toyota/axio/2018/">2018 Toyota Axio - Algérie</a></li>
+<li><a href="/fr/cars/algerie/toyota/axio/2019/">2019 Toyota Axio - Algérie</a></li>
+<li><a href="/fr/cars/algerie/toyota/noah/2014/">2014 Toyota Noah / Voxy - Algérie</a></li>
+<li><a href="/fr/cars/algerie/toyota/noah/2018/">2018 Toyota Noah / Voxy - Algérie</a></li>
+<li><a href="/fr/cars/algerie/toyota/prado/2020/">2020 Toyota Prado - Algérie</a></li>
+<li><a href="/fr/cars/algerie/toyota/hilux/2020/">2020 Toyota Hilux - Algérie</a></li>
+<li><a href="/fr/cars/algerie/honda/cr-v/2020/">2020 Honda CR-V - Algérie</a></li>
+<li><a href="/fr/cars/tunisie/toyota/camry/2005/">2005 Toyota Camry - Tunisie</a></li>
+<li><a href="/fr/cars/tunisie/toyota/camry/2012/">2012 Toyota Camry - Tunisie</a></li>
+<li><a href="/fr/cars/tunisie/toyota/axio/2018/">2018 Toyota Axio - Tunisie</a></li>
+<li><a href="/fr/cars/tunisie/toyota/axio/2019/">2019 Toyota Axio - Tunisie</a></li>
+<li><a href="/fr/cars/tunisie/toyota/noah/2014/">2014 Toyota Noah / Voxy - Tunisie</a></li>
+<li><a href="/fr/cars/tunisie/toyota/noah/2018/">2018 Toyota Noah / Voxy - Tunisie</a></li>
+<li><a href="/fr/cars/tunisie/toyota/prado/2020/">2020 Toyota Prado - Tunisie</a></li>
+<li><a href="/fr/cars/tunisie/toyota/hilux/2020/">2020 Toyota Hilux - Tunisie</a></li>
+<li><a href="/fr/cars/tunisie/honda/cr-v/2020/">2020 Honda CR-V - Tunisie</a></li>
+<li><a href="/fr/cars/rwanda/toyota/camry/2005/">2005 Toyota Camry - Rwanda</a></li>
+<li><a href="/fr/cars/rwanda/toyota/camry/2012/">2012 Toyota Camry - Rwanda</a></li>
+<li><a href="/fr/cars/rwanda/toyota/axio/2018/">2018 Toyota Axio - Rwanda</a></li>
+<li><a href="/fr/cars/rwanda/toyota/axio/2019/">2019 Toyota Axio - Rwanda</a></li>
+<li><a href="/fr/cars/rwanda/toyota/noah/2014/">2014 Toyota Noah / Voxy - Rwanda</a></li>
+<li><a href="/fr/cars/rwanda/toyota/noah/2018/">2018 Toyota Noah / Voxy - Rwanda</a></li>
+<li><a href="/fr/cars/rwanda/toyota/prado/2020/">2020 Toyota Prado - Rwanda</a></li>
+<li><a href="/fr/cars/rwanda/toyota/hilux/2020/">2020 Toyota Hilux - Rwanda</a></li>
+<li><a href="/fr/cars/rwanda/honda/cr-v/2020/">2020 Honda CR-V - Rwanda</a></li>
+<li><a href="/fr/cars/nigeria/toyota/camry/2005/">2005 Toyota Camry - Nigeria</a></li>
+<li><a href="/fr/cars/nigeria/toyota/camry/2012/">2012 Toyota Camry - Nigeria</a></li>
+<li><a href="/fr/cars/nigeria/toyota/axio/2018/">2018 Toyota Axio - Nigeria</a></li>
+<li><a href="/fr/cars/nigeria/toyota/axio/2019/">2019 Toyota Axio - Nigeria</a></li>
+<li><a href="/fr/cars/nigeria/toyota/noah/2014/">2014 Toyota Noah / Voxy - Nigeria</a></li>
+<li><a href="/fr/cars/nigeria/toyota/noah/2018/">2018 Toyota Noah / Voxy - Nigeria</a></li>
+<li><a href="/fr/cars/nigeria/toyota/prado/2020/">2020 Toyota Prado - Nigeria</a></li>
+<li><a href="/fr/cars/nigeria/toyota/hilux/2020/">2020 Toyota Hilux - Nigeria</a></li>
+<li><a href="/fr/cars/nigeria/honda/cr-v/2020/">2020 Honda CR-V - Nigeria</a></li>
+<li><a href="/fr/cars/ghana/toyota/camry/2005/">2005 Toyota Camry - Ghana</a></li>
+<li><a href="/fr/cars/ghana/toyota/camry/2012/">2012 Toyota Camry - Ghana</a></li>
+<li><a href="/fr/cars/ghana/toyota/axio/2018/">2018 Toyota Axio - Ghana</a></li>
+<li><a href="/fr/cars/ghana/toyota/axio/2019/">2019 Toyota Axio - Ghana</a></li>
+<li><a href="/fr/cars/ghana/toyota/noah/2014/">2014 Toyota Noah / Voxy - Ghana</a></li>
+<li><a href="/fr/cars/ghana/toyota/noah/2018/">2018 Toyota Noah / Voxy - Ghana</a></li>
+<li><a href="/fr/cars/ghana/toyota/prado/2020/">2020 Toyota Prado - Ghana</a></li>
+<li><a href="/fr/cars/ghana/toyota/hilux/2020/">2020 Toyota Hilux - Ghana</a></li>
+<li><a href="/fr/cars/ghana/honda/cr-v/2020/">2020 Honda CR-V - Ghana</a></li>
+<li><a href="/fr/cars/kenya/toyota/camry/2005/">2005 Toyota Camry - Kenya</a></li>
+<li><a href="/fr/cars/kenya/toyota/camry/2012/">2012 Toyota Camry - Kenya</a></li>
+<li><a href="/fr/cars/kenya/toyota/axio/2018/">2018 Toyota Axio - Kenya</a></li>
+<li><a href="/fr/cars/kenya/toyota/axio/2019/">2019 Toyota Axio - Kenya</a></li>
+<li><a href="/fr/cars/kenya/toyota/noah/2014/">2014 Toyota Noah / Voxy - Kenya</a></li>
+<li><a href="/fr/cars/kenya/toyota/noah/2018/">2018 Toyota Noah / Voxy - Kenya</a></li>
+<li><a href="/fr/cars/kenya/toyota/prado/2020/">2020 Toyota Prado - Kenya</a></li>
+<li><a href="/fr/cars/kenya/toyota/hilux/2020/">2020 Toyota Hilux - Kenya</a></li>
+<li><a href="/fr/cars/kenya/honda/cr-v/2020/">2020 Honda CR-V - Kenya</a></li>
+<li><a href="/fr/cars/egypte/toyota/camry/2005/">2005 Toyota Camry - Egypte</a></li>
+<li><a href="/fr/cars/egypte/toyota/camry/2012/">2012 Toyota Camry - Egypte</a></li>
+<li><a href="/fr/cars/egypte/toyota/axio/2018/">2018 Toyota Axio - Egypte</a></li>
+<li><a href="/fr/cars/egypte/toyota/axio/2019/">2019 Toyota Axio - Egypte</a></li>
+<li><a href="/fr/cars/egypte/toyota/noah/2014/">2014 Toyota Noah / Voxy - Egypte</a></li>
+<li><a href="/fr/cars/egypte/toyota/noah/2018/">2018 Toyota Noah / Voxy - Egypte</a></li>
+<li><a href="/fr/cars/egypte/toyota/prado/2020/">2020 Toyota Prado - Egypte</a></li>
+<li><a href="/fr/cars/egypte/toyota/hilux/2020/">2020 Toyota Hilux - Egypte</a></li>
+<li><a href="/fr/cars/egypte/honda/cr-v/2020/">2020 Honda CR-V - Egypte</a></li>
+<li><a href="/fr/cars/ethiopie/toyota/camry/2005/">2005 Toyota Camry - Ethiopie</a></li>
+<li><a href="/fr/cars/ethiopie/toyota/camry/2012/">2012 Toyota Camry - Ethiopie</a></li>
+<li><a href="/fr/cars/ethiopie/toyota/axio/2018/">2018 Toyota Axio - Ethiopie</a></li>
+<li><a href="/fr/cars/ethiopie/toyota/axio/2019/">2019 Toyota Axio - Ethiopie</a></li>
+<li><a href="/fr/cars/ethiopie/toyota/noah/2014/">2014 Toyota Noah / Voxy - Ethiopie</a></li>
+<li><a href="/fr/cars/ethiopie/toyota/noah/2018/">2018 Toyota Noah / Voxy - Ethiopie</a></li>
+<li><a href="/fr/cars/ethiopie/toyota/prado/2020/">2020 Toyota Prado - Ethiopie</a></li>
+<li><a href="/fr/cars/ethiopie/toyota/hilux/2020/">2020 Toyota Hilux - Ethiopie</a></li>
+<li><a href="/fr/cars/ethiopie/honda/cr-v/2020/">2020 Honda CR-V - Ethiopie</a></li>
+<li><a href="/fr/cars/angola/toyota/camry/2005/">2005 Toyota Camry - Angola</a></li>
+<li><a href="/fr/cars/angola/toyota/camry/2012/">2012 Toyota Camry - Angola</a></li>
+<li><a href="/fr/cars/angola/toyota/axio/2018/">2018 Toyota Axio - Angola</a></li>
+<li><a href="/fr/cars/angola/toyota/axio/2019/">2019 Toyota Axio - Angola</a></li>
+<li><a href="/fr/cars/angola/toyota/noah/2014/">2014 Toyota Noah / Voxy - Angola</a></li>
+<li><a href="/fr/cars/angola/toyota/noah/2018/">2018 Toyota Noah / Voxy - Angola</a></li>
+<li><a href="/fr/cars/angola/toyota/prado/2020/">2020 Toyota Prado - Angola</a></li>
+<li><a href="/fr/cars/angola/toyota/hilux/2020/">2020 Toyota Hilux - Angola</a></li>
+<li><a href="/fr/cars/angola/honda/cr-v/2020/">2020 Honda CR-V - Angola</a></li>
+<li><a href="/fr/cars/afrique-du-sud/toyota/camry/2005/">2005 Toyota Camry - Afrique du Sud</a></li>
+<li><a href="/fr/cars/afrique-du-sud/toyota/camry/2012/">2012 Toyota Camry - Afrique du Sud</a></li>
+<li><a href="/fr/cars/afrique-du-sud/toyota/axio/2018/">2018 Toyota Axio - Afrique du Sud</a></li>
+<li><a href="/fr/cars/afrique-du-sud/toyota/axio/2019/">2019 Toyota Axio - Afrique du Sud</a></li>
+<li><a href="/fr/cars/afrique-du-sud/toyota/noah/2014/">2014 Toyota Noah / Voxy - Afrique du Sud</a></li>
+<li><a href="/fr/cars/afrique-du-sud/toyota/noah/2018/">2018 Toyota Noah / Voxy - Afrique du Sud</a></li>
+<li><a href="/fr/cars/afrique-du-sud/toyota/prado/2020/">2020 Toyota Prado - Afrique du Sud</a></li>
+<li><a href="/fr/cars/afrique-du-sud/toyota/hilux/2020/">2020 Toyota Hilux - Afrique du Sud</a></li>
+<li><a href="/fr/cars/afrique-du-sud/honda/cr-v/2020/">2020 Honda CR-V - Afrique du Sud</a></li>
+<li><a href="/fr/cars/mozambique/toyota/camry/2005/">2005 Toyota Camry - Mozambique</a></li>
+<li><a href="/fr/cars/mozambique/toyota/camry/2012/">2012 Toyota Camry - Mozambique</a></li>
+<li><a href="/fr/cars/mozambique/toyota/axio/2018/">2018 Toyota Axio - Mozambique</a></li>
+<li><a href="/fr/cars/mozambique/toyota/axio/2019/">2019 Toyota Axio - Mozambique</a></li>
+<li><a href="/fr/cars/mozambique/toyota/noah/2014/">2014 Toyota Noah / Voxy - Mozambique</a></li>
+<li><a href="/fr/cars/mozambique/toyota/noah/2018/">2018 Toyota Noah / Voxy - Mozambique</a></li>
+<li><a href="/fr/cars/mozambique/toyota/prado/2020/">2020 Toyota Prado - Mozambique</a></li>
+<li><a href="/fr/cars/mozambique/toyota/hilux/2020/">2020 Toyota Hilux - Mozambique</a></li>
+<li><a href="/fr/cars/mozambique/honda/cr-v/2020/">2020 Honda CR-V - Mozambique</a></li>
+<li><a href="/fr/cars/botswana/toyota/camry/2005/">2005 Toyota Camry - Botswana</a></li>
+<li><a href="/fr/cars/botswana/toyota/camry/2012/">2012 Toyota Camry - Botswana</a></li>
+<li><a href="/fr/cars/botswana/toyota/axio/2018/">2018 Toyota Axio - Botswana</a></li>
+<li><a href="/fr/cars/botswana/toyota/axio/2019/">2019 Toyota Axio - Botswana</a></li>
+<li><a href="/fr/cars/botswana/toyota/noah/2014/">2014 Toyota Noah / Voxy - Botswana</a></li>
+<li><a href="/fr/cars/botswana/toyota/noah/2018/">2018 Toyota Noah / Voxy - Botswana</a></li>
+<li><a href="/fr/cars/botswana/toyota/prado/2020/">2020 Toyota Prado - Botswana</a></li>
+<li><a href="/fr/cars/botswana/toyota/hilux/2020/">2020 Toyota Hilux - Botswana</a></li>
+<li><a href="/fr/cars/botswana/honda/cr-v/2020/">2020 Honda CR-V - Botswana</a></li>
+<li><a href="/fr/cars/namibie/toyota/camry/2005/">2005 Toyota Camry - Namibie</a></li>
+<li><a href="/fr/cars/namibie/toyota/camry/2012/">2012 Toyota Camry - Namibie</a></li>
+<li><a href="/fr/cars/namibie/toyota/axio/2018/">2018 Toyota Axio - Namibie</a></li>
+<li><a href="/fr/cars/namibie/toyota/axio/2019/">2019 Toyota Axio - Namibie</a></li>
+<li><a href="/fr/cars/namibie/toyota/noah/2014/">2014 Toyota Noah / Voxy - Namibie</a></li>
+<li><a href="/fr/cars/namibie/toyota/noah/2018/">2018 Toyota Noah / Voxy - Namibie</a></li>
+<li><a href="/fr/cars/namibie/toyota/prado/2020/">2020 Toyota Prado - Namibie</a></li>
+<li><a href="/fr/cars/namibie/toyota/hilux/2020/">2020 Toyota Hilux - Namibie</a></li>
+<li><a href="/fr/cars/namibie/honda/cr-v/2020/">2020 Honda CR-V - Namibie</a></li>
+<li><a href="/fr/cars/ouganda/toyota/camry/2005/">2005 Toyota Camry - Ouganda</a></li>
+<li><a href="/fr/cars/ouganda/toyota/camry/2012/">2012 Toyota Camry - Ouganda</a></li>
+<li><a href="/fr/cars/ouganda/toyota/axio/2018/">2018 Toyota Axio - Ouganda</a></li>
+<li><a href="/fr/cars/ouganda/toyota/axio/2019/">2019 Toyota Axio - Ouganda</a></li>
+<li><a href="/fr/cars/ouganda/toyota/noah/2014/">2014 Toyota Noah / Voxy - Ouganda</a></li>
+<li><a href="/fr/cars/ouganda/toyota/noah/2018/">2018 Toyota Noah / Voxy - Ouganda</a></li>
+<li><a href="/fr/cars/ouganda/toyota/prado/2020/">2020 Toyota Prado - Ouganda</a></li>
+<li><a href="/fr/cars/ouganda/toyota/hilux/2020/">2020 Toyota Hilux - Ouganda</a></li>
+<li><a href="/fr/cars/ouganda/honda/cr-v/2020/">2020 Honda CR-V - Ouganda</a></li>
+<li><a href="/fr/cars/zambie/toyota/camry/2005/">2005 Toyota Camry - Zambie</a></li>
+<li><a href="/fr/cars/zambie/toyota/camry/2012/">2012 Toyota Camry - Zambie</a></li>
+<li><a href="/fr/cars/zambie/toyota/axio/2018/">2018 Toyota Axio - Zambie</a></li>
+<li><a href="/fr/cars/zambie/toyota/axio/2019/">2019 Toyota Axio - Zambie</a></li>
+<li><a href="/fr/cars/zambie/toyota/noah/2014/">2014 Toyota Noah / Voxy - Zambie</a></li>
+<li><a href="/fr/cars/zambie/toyota/noah/2018/">2018 Toyota Noah / Voxy - Zambie</a></li>
+<li><a href="/fr/cars/zambie/toyota/prado/2020/">2020 Toyota Prado - Zambie</a></li>
+<li><a href="/fr/cars/zambie/toyota/hilux/2020/">2020 Toyota Hilux - Zambie</a></li>
+<li><a href="/fr/cars/zambie/honda/cr-v/2020/">2020 Honda CR-V - Zambie</a></li>
+<li><a href="/fr/cars/tanzanie/toyota/camry/2005/">2005 Toyota Camry - Tanzanie</a></li>
+<li><a href="/fr/cars/tanzanie/toyota/camry/2012/">2012 Toyota Camry - Tanzanie</a></li>
+<li><a href="/fr/cars/tanzanie/toyota/axio/2018/">2018 Toyota Axio - Tanzanie</a></li>
+<li><a href="/fr/cars/tanzanie/toyota/axio/2019/">2019 Toyota Axio - Tanzanie</a></li>
+<li><a href="/fr/cars/tanzanie/toyota/noah/2014/">2014 Toyota Noah / Voxy - Tanzanie</a></li>
+<li><a href="/fr/cars/tanzanie/toyota/noah/2018/">2018 Toyota Noah / Voxy - Tanzanie</a></li>
+<li><a href="/fr/cars/tanzanie/toyota/prado/2020/">2020 Toyota Prado - Tanzanie</a></li>
+<li><a href="/fr/cars/tanzanie/toyota/hilux/2020/">2020 Toyota Hilux - Tanzanie</a></li>
+<li><a href="/fr/cars/tanzanie/honda/cr-v/2020/">2020 Honda CR-V - Tanzanie</a></li>
+<li><a href="/fr/cars/cote-divoire/mercedes-benz/c-class/2016/">2016 Mercedes-Benz C-Class - Côte d&#39;Ivoire</a></li>
+<li><a href="/fr/cars/cote-divoire/mercedes-benz/e-class/2017/">2017 Mercedes-Benz E-Class - Côte d&#39;Ivoire</a></li>
+<li><a href="/fr/cars/cote-divoire/mercedes-benz/g-wagon/2022/">2022 Mercedes-Benz G-Wagon - Côte d&#39;Ivoire</a></li>
+<li><a href="/fr/cars/cote-divoire/lexus/rx/2017/">2017 Lexus RX - Côte d&#39;Ivoire</a></li>
+<li><a href="/fr/cars/cote-divoire/lexus/es/2016/">2016 Lexus ES - Côte d&#39;Ivoire</a></li>
+<li><a href="/fr/cars/senegal/mercedes-benz/c-class/2016/">2016 Mercedes-Benz C-Class - Sénégal</a></li>
+<li><a href="/fr/cars/senegal/mercedes-benz/e-class/2017/">2017 Mercedes-Benz E-Class - Sénégal</a></li>
+<li><a href="/fr/cars/senegal/mercedes-benz/g-wagon/2022/">2022 Mercedes-Benz G-Wagon - Sénégal</a></li>
+<li><a href="/fr/cars/senegal/lexus/rx/2017/">2017 Lexus RX - Sénégal</a></li>
+<li><a href="/fr/cars/senegal/lexus/es/2016/">2016 Lexus ES - Sénégal</a></li>
+<li><a href="/fr/cars/senegal/ford/ranger/2018/">2018 Ford Ranger - Sénégal</a></li>
+<li><a href="/fr/cars/cameroun/mercedes-benz/c-class/2016/">2016 Mercedes-Benz C-Class - Cameroun</a></li>
+<li><a href="/fr/cars/cameroun/mercedes-benz/e-class/2017/">2017 Mercedes-Benz E-Class - Cameroun</a></li>
+<li><a href="/fr/cars/cameroun/mercedes-benz/g-wagon/2022/">2022 Mercedes-Benz G-Wagon - Cameroun</a></li>
+<li><a href="/fr/cars/cameroun/lexus/rx/2017/">2017 Lexus RX - Cameroun</a></li>
+<li><a href="/fr/cars/cameroun/lexus/es/2016/">2016 Lexus ES - Cameroun</a></li>
+<li><a href="/fr/cars/maroc/mercedes-benz/e-class/2017/">2017 Mercedes-Benz E-Class - Maroc</a></li>
+<li><a href="/fr/cars/maroc/mercedes-benz/g-wagon/2022/">2022 Mercedes-Benz G-Wagon - Maroc</a></li>
+<li><a href="/fr/cars/maroc/lexus/rx/2017/">2017 Lexus RX - Maroc</a></li>
+<li><a href="/fr/cars/maroc/lexus/es/2016/">2016 Lexus ES - Maroc</a></li>
+<li><a href="/fr/cars/maroc/ford/ranger/2018/">2018 Ford Ranger - Maroc</a></li>
+<li><a href="/fr/cars/algerie/mercedes-benz/c-class/2016/">2016 Mercedes-Benz C-Class - Algérie</a></li>
+<li><a href="/fr/cars/algerie/mercedes-benz/e-class/2017/">2017 Mercedes-Benz E-Class - Algérie</a></li>
+<li><a href="/fr/cars/algerie/mercedes-benz/g-wagon/2022/">2022 Mercedes-Benz G-Wagon - Algérie</a></li>
+<li><a href="/fr/cars/algerie/lexus/rx/2017/">2017 Lexus RX - Algérie</a></li>
+<li><a href="/fr/cars/algerie/lexus/es/2016/">2016 Lexus ES - Algérie</a></li>
+<li><a href="/fr/cars/algerie/ford/ranger/2018/">2018 Ford Ranger - Algérie</a></li>
+<li><a href="/fr/cars/tunisie/mercedes-benz/c-class/2016/">2016 Mercedes-Benz C-Class - Tunisie</a></li>
+<li><a href="/fr/cars/tunisie/mercedes-benz/e-class/2017/">2017 Mercedes-Benz E-Class - Tunisie</a></li>
+<li><a href="/fr/cars/tunisie/mercedes-benz/g-wagon/2022/">2022 Mercedes-Benz G-Wagon - Tunisie</a></li>
+<li><a href="/fr/cars/tunisie/lexus/rx/2017/">2017 Lexus RX - Tunisie</a></li>
+<li><a href="/fr/cars/tunisie/lexus/es/2016/">2016 Lexus ES - Tunisie</a></li>
+<li><a href="/fr/cars/tunisie/ford/ranger/2018/">2018 Ford Ranger - Tunisie</a></li>
+<li><a href="/fr/cars/rwanda/mercedes-benz/c-class/2016/">2016 Mercedes-Benz C-Class - Rwanda</a></li>
+<li><a href="/fr/cars/rwanda/mercedes-benz/e-class/2017/">2017 Mercedes-Benz E-Class - Rwanda</a></li>
+<li><a href="/fr/cars/rwanda/mercedes-benz/g-wagon/2022/">2022 Mercedes-Benz G-Wagon - Rwanda</a></li>
+<li><a href="/fr/cars/rwanda/lexus/rx/2017/">2017 Lexus RX - Rwanda</a></li>
+<li><a href="/fr/cars/rwanda/lexus/es/2016/">2016 Lexus ES - Rwanda</a></li>
+<li><a href="/fr/cars/rwanda/ford/ranger/2018/">2018 Ford Ranger - Rwanda</a></li>
+<li><a href="/fr/cars/nigeria/mercedes-benz/c-class/2016/">2016 Mercedes-Benz C-Class - Nigeria</a></li>
+<li><a href="/fr/cars/nigeria/mercedes-benz/e-class/2017/">2017 Mercedes-Benz E-Class - Nigeria</a></li>
+<li><a href="/fr/cars/nigeria/mercedes-benz/g-wagon/2022/">2022 Mercedes-Benz G-Wagon - Nigeria</a></li>
+<li><a href="/fr/cars/nigeria/lexus/rx/2017/">2017 Lexus RX - Nigeria</a></li>
+<li><a href="/fr/cars/nigeria/lexus/es/2016/">2016 Lexus ES - Nigeria</a></li>
+<li><a href="/fr/cars/nigeria/ford/ranger/2018/">2018 Ford Ranger - Nigeria</a></li>
+<li><a href="/fr/cars/ghana/mercedes-benz/c-class/2016/">2016 Mercedes-Benz C-Class - Ghana</a></li>
+<li><a href="/fr/cars/ghana/mercedes-benz/e-class/2017/">2017 Mercedes-Benz E-Class - Ghana</a></li>
+<li><a href="/fr/cars/ghana/mercedes-benz/g-wagon/2022/">2022 Mercedes-Benz G-Wagon - Ghana</a></li>
+<li><a href="/fr/cars/ghana/lexus/rx/2017/">2017 Lexus RX - Ghana</a></li>
+<li><a href="/fr/cars/ghana/lexus/es/2016/">2016 Lexus ES - Ghana</a></li>
+<li><a href="/fr/cars/ghana/ford/ranger/2018/">2018 Ford Ranger - Ghana</a></li>
+<li><a href="/fr/cars/kenya/mercedes-benz/c-class/2016/">2016 Mercedes-Benz C-Class - Kenya</a></li>
+<li><a href="/fr/cars/kenya/mercedes-benz/e-class/2017/">2017 Mercedes-Benz E-Class - Kenya</a></li>
+<li><a href="/fr/cars/kenya/mercedes-benz/g-wagon/2022/">2022 Mercedes-Benz G-Wagon - Kenya</a></li>
+<li><a href="/fr/cars/kenya/lexus/rx/2017/">2017 Lexus RX - Kenya</a></li>
+<li><a href="/fr/cars/kenya/lexus/es/2016/">2016 Lexus ES - Kenya</a></li>
+<li><a href="/fr/cars/kenya/ford/ranger/2018/">2018 Ford Ranger - Kenya</a></li>
+<li><a href="/fr/cars/egypte/mercedes-benz/c-class/2016/">2016 Mercedes-Benz C-Class - Egypte</a></li>
+<li><a href="/fr/cars/egypte/mercedes-benz/e-class/2017/">2017 Mercedes-Benz E-Class - Egypte</a></li>
+<li><a href="/fr/cars/egypte/mercedes-benz/g-wagon/2022/">2022 Mercedes-Benz G-Wagon - Egypte</a></li>
+<li><a href="/fr/cars/egypte/lexus/rx/2017/">2017 Lexus RX - Egypte</a></li>
+<li><a href="/fr/cars/egypte/lexus/es/2016/">2016 Lexus ES - Egypte</a></li>
+<li><a href="/fr/cars/egypte/ford/ranger/2018/">2018 Ford Ranger - Egypte</a></li>
+<li><a href="/fr/cars/ethiopie/mercedes-benz/c-class/2016/">2016 Mercedes-Benz C-Class - Ethiopie</a></li>
+<li><a href="/fr/cars/ethiopie/mercedes-benz/e-class/2017/">2017 Mercedes-Benz E-Class - Ethiopie</a></li>
+<li><a href="/fr/cars/ethiopie/mercedes-benz/g-wagon/2022/">2022 Mercedes-Benz G-Wagon - Ethiopie</a></li>
+<li><a href="/fr/cars/ethiopie/lexus/rx/2017/">2017 Lexus RX - Ethiopie</a></li>
+<li><a href="/fr/cars/ethiopie/lexus/es/2016/">2016 Lexus ES - Ethiopie</a></li>
+<li><a href="/fr/cars/ethiopie/ford/ranger/2018/">2018 Ford Ranger - Ethiopie</a></li>
+<li><a href="/fr/cars/angola/mercedes-benz/c-class/2016/">2016 Mercedes-Benz C-Class - Angola</a></li>
+<li><a href="/fr/cars/angola/mercedes-benz/e-class/2017/">2017 Mercedes-Benz E-Class - Angola</a></li>
+<li><a href="/fr/cars/angola/mercedes-benz/g-wagon/2022/">2022 Mercedes-Benz G-Wagon - Angola</a></li>
+<li><a href="/fr/cars/angola/lexus/rx/2017/">2017 Lexus RX - Angola</a></li>
+<li><a href="/fr/cars/angola/lexus/es/2016/">2016 Lexus ES - Angola</a></li>
+<li><a href="/fr/cars/angola/ford/ranger/2018/">2018 Ford Ranger - Angola</a></li>
+<li><a href="/fr/cars/afrique-du-sud/mercedes-benz/c-class/2016/">2016 Mercedes-Benz C-Class - Afrique du Sud</a></li>
+<li><a href="/fr/cars/afrique-du-sud/mercedes-benz/e-class/2017/">2017 Mercedes-Benz E-Class - Afrique du Sud</a></li>
+<li><a href="/fr/cars/afrique-du-sud/mercedes-benz/g-wagon/2022/">2022 Mercedes-Benz G-Wagon - Afrique du Sud</a></li>
+<li><a href="/fr/cars/afrique-du-sud/lexus/rx/2017/">2017 Lexus RX - Afrique du Sud</a></li>
+<li><a href="/fr/cars/afrique-du-sud/lexus/es/2016/">2016 Lexus ES - Afrique du Sud</a></li>
+<li><a href="/fr/cars/mozambique/mercedes-benz/c-class/2016/">2016 Mercedes-Benz C-Class - Mozambique</a></li>
+<li><a href="/fr/cars/mozambique/mercedes-benz/e-class/2017/">2017 Mercedes-Benz E-Class - Mozambique</a></li>
+<li><a href="/fr/cars/mozambique/mercedes-benz/g-wagon/2022/">2022 Mercedes-Benz G-Wagon - Mozambique</a></li>
+<li><a href="/fr/cars/mozambique/lexus/rx/2017/">2017 Lexus RX - Mozambique</a></li>
+<li><a href="/fr/cars/mozambique/lexus/es/2016/">2016 Lexus ES - Mozambique</a></li>
+<li><a href="/fr/cars/mozambique/ford/ranger/2018/">2018 Ford Ranger - Mozambique</a></li>
+<li><a href="/fr/cars/botswana/mercedes-benz/c-class/2016/">2016 Mercedes-Benz C-Class - Botswana</a></li>
+<li><a href="/fr/cars/botswana/mercedes-benz/e-class/2017/">2017 Mercedes-Benz E-Class - Botswana</a></li>
+<li><a href="/fr/cars/botswana/mercedes-benz/g-wagon/2022/">2022 Mercedes-Benz G-Wagon - Botswana</a></li>
+<li><a href="/fr/cars/botswana/lexus/rx/2017/">2017 Lexus RX - Botswana</a></li>
+<li><a href="/fr/cars/botswana/lexus/es/2016/">2016 Lexus ES - Botswana</a></li>
+<li><a href="/fr/cars/botswana/ford/ranger/2018/">2018 Ford Ranger - Botswana</a></li>
+<li><a href="/fr/cars/namibie/mercedes-benz/c-class/2016/">2016 Mercedes-Benz C-Class - Namibie</a></li>
+<li><a href="/fr/cars/namibie/mercedes-benz/e-class/2017/">2017 Mercedes-Benz E-Class - Namibie</a></li>
+<li><a href="/fr/cars/namibie/mercedes-benz/g-wagon/2022/">2022 Mercedes-Benz G-Wagon - Namibie</a></li>
+<li><a href="/fr/cars/namibie/lexus/rx/2017/">2017 Lexus RX - Namibie</a></li>
+<li><a href="/fr/cars/namibie/lexus/es/2016/">2016 Lexus ES - Namibie</a></li>
+<li><a href="/fr/cars/namibie/ford/ranger/2018/">2018 Ford Ranger - Namibie</a></li>
+<li><a href="/fr/cars/ouganda/mercedes-benz/c-class/2016/">2016 Mercedes-Benz C-Class - Ouganda</a></li>
+<li><a href="/fr/cars/ouganda/mercedes-benz/e-class/2017/">2017 Mercedes-Benz E-Class - Ouganda</a></li>
+<li><a href="/fr/cars/ouganda/mercedes-benz/g-wagon/2022/">2022 Mercedes-Benz G-Wagon - Ouganda</a></li>
+<li><a href="/fr/cars/ouganda/lexus/rx/2017/">2017 Lexus RX - Ouganda</a></li>
+<li><a href="/fr/cars/ouganda/lexus/es/2016/">2016 Lexus ES - Ouganda</a></li>
+<li><a href="/fr/cars/ouganda/ford/ranger/2018/">2018 Ford Ranger - Ouganda</a></li>
+<li><a href="/fr/cars/zambie/mercedes-benz/c-class/2016/">2016 Mercedes-Benz C-Class - Zambie</a></li>
+<li><a href="/fr/cars/zambie/mercedes-benz/e-class/2017/">2017 Mercedes-Benz E-Class - Zambie</a></li>
+<li><a href="/fr/cars/zambie/mercedes-benz/g-wagon/2022/">2022 Mercedes-Benz G-Wagon - Zambie</a></li>
+<li><a href="/fr/cars/zambie/lexus/rx/2017/">2017 Lexus RX - Zambie</a></li>
+<li><a href="/fr/cars/zambie/lexus/es/2016/">2016 Lexus ES - Zambie</a></li>
+<li><a href="/fr/cars/zambie/ford/ranger/2018/">2018 Ford Ranger - Zambie</a></li>
+<li><a href="/fr/cars/tanzanie/mercedes-benz/c-class/2016/">2016 Mercedes-Benz C-Class - Tanzanie</a></li>
+<li><a href="/fr/cars/tanzanie/mercedes-benz/e-class/2017/">2017 Mercedes-Benz E-Class - Tanzanie</a></li>
+<li><a href="/fr/cars/tanzanie/mercedes-benz/g-wagon/2022/">2022 Mercedes-Benz G-Wagon - Tanzanie</a></li>
+<li><a href="/fr/cars/tanzanie/lexus/rx/2017/">2017 Lexus RX - Tanzanie</a></li>
+<li><a href="/fr/cars/tanzanie/lexus/es/2016/">2016 Lexus ES - Tanzanie</a></li>
+<li><a href="/fr/cars/tanzanie/ford/ranger/2018/">2018 Ford Ranger - Tanzanie</a></li></ul>
+        </article>
+        <article class="fr-cars-card">
+          <h2>Outils liés</h2>
+          <ul>
+            <li><a href="/fr/tools/droits-douane/">Droits de douane</a></li>
+            <li><a href="/fr/tools/impact-fx-import/">Impact du change sur l'import</a></li>
+            <li><a href="/fr/tools/pret-automobile/">Prêt automobile</a></li>
+            <li><a href="/fr/tools/car-import-cost/">Calculateur complet d'import voiture en anglais</a></li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  </main>
+  <afro-footer></afro-footer>
+  <script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+
+  <script>
+    (function () {
+      var form = document.getElementById('frCarsEstimator');
+      if (!form) return;
+      var market = document.getElementById('fr-car-market');
+      var model = document.getElementById('fr-car-model');
+      var budget = document.getElementById('fr-car-budget');
+      var fx = document.getElementById('fr-car-fx');
+      var logistics = document.getElementById('fr-car-logistics');
+      var localFees = document.getElementById('fr-car-local-fees');
+      var verdict = document.getElementById('frCarsVerdict');
+      var context = document.getElementById('frCarsContext');
+      var landed = document.getElementById('frCarsLanded');
+      var local = document.getElementById('frCarsLocal');
+      var gap = document.getElementById('frCarsGap');
+      var risk = document.getElementById('frCarsRisk');
+      var summary = document.getElementById('frCarsSummary');
+      function num(el){ return Math.max(0, Number(el.value) || 0); }
+      function selected(el){ return el.options[el.selectedIndex]; }
+      function fmt(value, currency){ return Math.round(value).toLocaleString('fr-FR') + ' ' + currency; }
+      function calculate(){
+        var m = selected(market);
+        var car = selected(model);
+        var currency = m.dataset.currency || '';
+        var baseUsd = Number(car.dataset.price) || 0;
+        var fxRate = num(fx);
+        var duty = Number(m.dataset.duty) || 0;
+        var factor = Number(m.dataset.factor) || 1;
+        var landedLocal = ((baseUsd + num(logistics)) * (1 + duty) * fxRate) + num(localFees);
+        var localLow = landedLocal * factor * 0.92;
+        var localHigh = landedLocal * factor * 1.08;
+        var budgetValue = num(budget);
+        var gapValue = budgetValue - landedLocal;
+        var ok = gapValue >= 0;
+        verdict.textContent = ok ? 'Budget plausible, marge a garder' : 'Budget court, hypothese a revoir';
+        context.textContent = selected(market).text + ' - ' + selected(model).text + '. Comparez ce repere avec un devis vendeur, douane et transitaire avant paiement.';
+        landed.textContent = fmt(landedLocal, currency);
+        local.textContent = fmt(localLow, currency) + ' - ' + fmt(localHigh, currency);
+        gap.textContent = (ok ? '+' : '-') + fmt(Math.abs(gapValue), currency);
+        risk.textContent = (car.dataset.risk || 'Moyen') + ' / revente ' + (car.dataset.resale || 'a verifier');
+        summary.value = 'Marche: ' + selected(market).text + '
+Modele: ' + selected(model).text + '
+Cout rendu estime: ' + landed.textContent + '
+Fourchette locale: ' + local.textContent + '
+Marge budget: ' + gap.textContent + '
+Note: estimation AfroTools, a verifier avec vendeur, transitaire et autorite.';
+      }
+      form.addEventListener('submit', function(event){ event.preventDefault(); calculate(); });
+      ['change','input'].forEach(function(evt){ [market, model, budget, fx, logistics, localFees].forEach(function(el){ el.addEventListener(evt, calculate); }); });
+      document.getElementById('frCarsExample').addEventListener('click', function(){ market.value='ci'; model.value='Toyota Corolla 2018'; budget.value='9500000'; fx.value='610'; logistics.value='2400'; localFees.value='450000'; calculate(); });
+      document.getElementById('frCarsCopy').addEventListener('click', function(){ calculate(); if (navigator.clipboard) navigator.clipboard.writeText(summary.value); });
+      calculate();
+    })();
+  </script>
+</body>
+</html>

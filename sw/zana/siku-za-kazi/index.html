@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Siku za Kazi - hesabu business days | AfroTools</title>
+<meta name="description" content="Hesabu siku za kazi kati ya tarehe mbili ukiondoa weekends na likizo za umma kwa nchi zilizopo kwenye source page.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Siku za Kazi - hesabu business days | AfroTools">
+<meta property="og:description" content="Hesabu siku za kazi kati ya tarehe mbili ukiondoa weekends na likizo za umma kwa nchi zilizopo kwenye source page.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/working-days.webp">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/sw/zana/siku-za-kazi/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
+.tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;position:relative;overflow:hidden}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;position:relative}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:var(--afro-blue)}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+.tool-hero h1 em{color:var(--afro-blue);font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-blue{background:rgba(0,113,227,.18);color:var(--color-primary);border:1px solid rgba(0,113,227,.38)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:900px;margin:0 auto;padding:0 24px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+.field{margin-bottom:16px}
+.f-label{font-size:.75rem;font-weight:700;color:var(--afro-dark);margin-bottom:6px;display:block}
+.f-input,.f-select{width:100%;padding:11px 13px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;font-weight:600;color:var(--afro-dark);outline:none;font-family:'Inter',sans-serif}
+.f-input:focus,.f-select:focus{border-color:var(--afro-blue);box-shadow:0 0 0 3px rgba(0,113,227,.1)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.calc-btn{width:100%;padding:13px;background:linear-gradient(135deg,#0062CC,#0055D4);box-shadow:0 4px 14px rgba(0,98,204,.35);color:#fff;border:none;border-radius:8px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:'Inter',sans-serif}
+.calc-btn:hover{background:#0059B3;transform:translateY(-1px)}
+.result-display{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:12px;padding:28px;text-align:center;margin-top:18px}
+.result-big{font-size:3rem;font-weight:800;color:#38bdf8;line-height:1}
+.result-lbl{font-size:.72rem;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.result-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+.result-sub{padding:12px;background:rgba(255,255,255,.06);border-radius:8px;text-align:center}
+.result-sub-val{font-size:1.2rem;font-weight:800;color:#fff}
+.result-sub-lbl{font-size:.6rem;font-weight:600;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+.holiday-list{margin-top:14px;max-height:200px;overflow-y:auto}
+.hol-item{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;font-size:.78rem}
+.hol-name{color:#334155;font-weight:600}
+.hol-date{color:#64748b}
+@media(max-width:600px){.field-row{grid-template-columns:1fr}.result-row{grid-template-columns:1fr}}
+details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-details-marker{display:none}
+</style>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Siku za Kazi - hesabu business days | AfroTools">
+<meta name="twitter:description" content="Hesabu siku za kazi kati ya tarehe mbili ukiondoa weekends na likizo za umma kwa nchi zilizopo kwenye source page.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/working-days.webp">
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Siku za Kazi",
+  "url": "https://afrotools.com/sw/zana/siku-za-kazi/",
+  "description": "Hesabu siku za kazi kati ya tarehe mbili ukiondoa weekends na likizo za umma kwa nchi zilizopo kwenye source page.",
+  "inLanguage": "sw",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "applicationCategory": "ProductivityApplication",
+  "operatingSystem": "Any",
+  "image": "https://afrotools.com/assets/img/tools/working-days.webp"
+}
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Data na Tija","item":"https://afrotools.com/sw/data-na-tija/"},{"@type":"ListItem","position":4,"name":"Siku za Kazi","item":"https://afrotools.com/sw/zana/siku-za-kazi/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Siku za Kazi hutumia data live?","acceptedAnswer":{"@type":"Answer","text":"Fuata tabia ya source page. Baadhi ya zana hufanya kazi kwenye browser, lakini likizo, time zones, currency au calendar data zinaweza kuhitaji uhakiki kwa vyanzo rasmi."}},{"@type":"Question","name":"Naweza kutumia matokeo haya kama ushauri rasmi?","acceptedAnswer":{"@type":"Answer","text":"Hapana. Matokeo ni makadirio ya planning na productivity. Hakiki dates, likizo, gharama, grades au bajeti kwa chanzo rasmi au mshauri anayefaa."}}]}</script>
+<link rel="stylesheet" href="/assets/css/sw-zana-mobile.css?v=adecdf8a">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/sw/zana/siku-za-kazi/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/working-days/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/jours-ouvrables/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/siku-za-kazi/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/working-days/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="tools"></afro-navbar>
+<div class="tool-hero"><div class="tool-hero-inner">
+  <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/sw/zana-zote/">Zana</a> / <span>Siku za Kazi</span></div>
+  <h1>Siku za Kazi</h1>
+  <p class="hero-sub">Hesabu business days kati ya tarehe mbili. Inaondoa weekends na likizo kwa nchi 6 zilizopo kwenye source.</p>
+  <div class="hero-badges"><span class="badge b-blue">Nchi 6</span><span class="badge b-blue">Likizo za Umma</span><span class="badge b-blue">Haraka</span></div>
+</div></div>
+
+<div class="tool-main"><div class="tool-main-inner">
+  <div class="card">
+    <div class="card-head"><span class="card-title">Hesabu siku za kazi</span></div>
+    <div class="card-body">
+      <div class="field-row">
+        <div class="field"><label class="f-label">Tarehe ya kuanza</label><input aria-label="StartDate" type="date" class="f-input" id="startDate"></div>
+        <div class="field"><label class="f-label">Tarehe ya mwisho</label><input aria-label="EndDate" type="date" class="f-input" id="endDate"></div>
+      </div>
+      <div class="field">
+        <label class="f-label">Nchi (kwa likizo za umma)</label>
+        <select class="f-select" id="country" aria-label="Nchi">
+          <option value="ng">Nigeria</option>
+          <option value="ke">Kenya</option>
+          <option value="za">South Africa</option>
+          <option value="gh">Ghana</option>
+          <option value="ug">Uganda</option>
+          <option value="tz">Tanzania</option>
+          <option value="none">Bila likizo (weekends tu)</option>
+        </select>
+      </div>
+      <button type="button" class="calc-btn" onclick="calculate()">Hesabu</button>
+
+      <div class="result-display" id="results" style="display:none">
+        <div class="result-lbl">Siku za Kazi</div>
+        <div class="result-big" id="workDays">0</div>
+        <div class="result-row">
+          <div class="result-sub"><div class="result-sub-lbl">Siku zote</div><div class="result-sub-val" id="calDays">0</div></div>
+          <div class="result-sub"><div class="result-sub-lbl">Siku za weekend</div><div class="result-sub-val" id="weekendDays">0</div></div>
+          <div class="result-sub"><div class="result-sub-lbl">Likizo za Umma</div><div class="result-sub-val" id="holDays">0</div></div>
+        </div>
+      </div>
+
+      <div class="holiday-list" id="holList"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">Kuhusu zana hii</span></div>
+    <div class="card-body">
+      <h2 style="font-size:1.1rem;font-weight:800;color:#111;margin-bottom:12px">Jinsi kikokotoo cha siku za kazi kinavyofanya kazi</h2>
+      <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
+        Zana hii huhesabu kila siku kati ya tarehe yako ya kuanza na ya mwisho, kisha huondoa <strong>weekends</strong> (Jumamosi na Jumapili) na <strong>public holidays</strong> kwa nchi uliyochagua. Matokeo ni idadi halisi ya siku za kazi (business days).
+      </p>
+      <h3 style="font-size:.95rem;font-weight:700;color:#111;margin-bottom:8px">Matumizi ya kawaida</h3>
+      <ul style="font-size:.85rem;color:#475569;line-height:1.8;padding-left:20px;margin-bottom:12px">
+        <li><strong>Project planning:</strong> Hesabu delivery timelines in business days</li>
+        <li><strong>Leave calculations:</strong> Tambua unahitaji siku ngapi za likizo ya mwaka</li>
+        <li><strong>Payment terms:</strong> Count "net 30 business days" for invoices</li>
+        <li><strong>Legal deadlines:</strong> Mahakama na wasimamizi mara nyingi huhesabu business days</li>
+      </ul>
+      <h3 style="font-size:.95rem;font-weight:700;color:#111;margin-bottom:8px">Wiki ya kazi Afrika</h3>
+      <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
+        Most African countries follow a Monday-Friday working week, though some <strong>North African countries</strong> hufuata wiki ya Jumapili hadi Alhamisi. Nigeria, Kenya, South Africa na Ghana zote hutumia Jumatatu hadi Ijumaa. Kwa mujibu wa <a href="https://www.ilo.org/" target="_blank" rel="noopener" style="color:var(--afro-blue)">International Labour Organization</a>, wiki ya kawaida ya kazi ni saa 40-48 kwenye sehemu kubwa ya Afrika.
+      </p>
+      <p style="font-size:.85rem;color:#475569;line-height:1.7">
+        Kwa zana zinazohusiana, angalia <a href="/tools/age-calculator/" style="color:var(--afro-blue)">Kikokotoo Umri</a> and <a href="/tools/countdown-timer/" style="color:var(--afro-blue)">Countdown ya Tukio</a>.
+      </p>
+    </div>
+  </div>
+
+<section style="max-width:900px;margin:32px auto;padding:0 20px;">
+  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
+    <p>Siku za Kazi huhesabu business days kati ya tarehe mbili, ikiondoa weekends na likizo za umma kwa nchi zilizopo kwenye chanzo kama Nigeria, Kenya, South Africa na Ghana. Weka tarehe ya kuanza na mwisho, chagua nchi, kisha zana itaonyesha idadi ya siku za kazi na mwonekano wa kalenda wa siku zilizoondolewa. Tumia kwa ratiba za miradi, likizo, mikataba na masharti ya malipo yanayotaja business days. Wasimamizi wa HR, wapangaji wa miradi, watunza mishahara na yeyote anayehitaji hesabu sahihi za siku za kazi kwenye masoko ya Afrika atapata zana hii ikiokoa muda na kuzuia makosa ya ratiba.</p>
+  </div>
+</section>
+    <h2 style="font-size:1.15rem;font-weight:800;color:#111;margin-bottom:14px">Maswali ya mara kwa mara</h2>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Siku za kazi huhesabiwaje?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Siku za kazi ni Jumatatu hadi Ijumaa, bila weekends (Jumamosi na Jumapili) na likizo za umma kwa nchi uliyochagua.</div></details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Likizo za nchi gani zinaungwa mkono?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Nigeria, Kenya, South Africa na Ghana. Unaweza pia kuchagua weekends pekee bila likizo za nchi maalumu.</div></details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Likizo za Kiislamu zimejumuishwa?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Likizo kuu za Kiislamu kama Eid al-Fitr na Eid al-Adha zimejumuishwa kwa Nigeria. Kwa kuwa tarehe hizi hubadilika kila mwaka kufuatana na kalenda ya mwezi, tarehe za makadirio hutumika.</div></details>
+  </section>
+</div></div>
+
+<section class="sw-data-productivity-note" style="max-width:1120px;margin:22px auto;padding:0 24px;"><div style="border:1px solid #bfdbfe;background:#eff6ff;color:#1e3a8a;border-radius:12px;padding:18px 20px;line-height:1.65;"><strong>Siku za Kazi kwa Kiswahili.</strong> Hesabu business days kwa leave, project timelines, invoices na deadlines. Hakiki likizo rasmi ikiwa matokeo ni ya kisheria au HR. <span>Matokeo ya zana za muda, likizo, bajeti, alama au gharama ni makadirio. Hakiki official dates, policies, receipts, grades au records kabla ya uamuzi muhimu.</span><div class="sw-data-inline-links" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;"><a href="/sw/data-na-tija/">Data na Tija</a><a href="/sw/zana/pomodoro/">Pomodoro</a><a href="/sw/zana/kubadilisha-vipimo/">Vipimo</a><a href="/sw/zana/mpango-bajeti/">Bajeti</a><a href="/sw/zana/hesabu-siku-za-tukio/">Countdown</a><a href="/sw/zana/kalenda-likizo-za-umma/">Likizo</a><a href="/sw/zana/siku-za-kazi/">Siku za kazi</a><a href="/sw/zana/kifuatiliaji-alama/">Alama/GPA</a><a href="/sw/zana/kigawanya-bili-na-tip/">Bili na tip</a></div></div></section><style>.sw-data-inline-links a{background:#fff;border:1px solid #bfdbfe;color:#1d4ed8;border-radius:999px;padding:7px 10px;font-weight:800;font-size:.82rem;text-decoration:none}</style>
+
+<section class="sw-career-limits-note" style="max-width:1100px;margin:24px auto;padding:0 20px;"><div style="border:1px solid #bbf7d0;background:#f0fdf4;color:#14532d;border-radius:12px;padding:16px 18px;line-height:1.65;"><strong>Mipaka ya kazi na HR:</strong> CV, interview, offer, HR, payslip, overtime, leave na contract ni maneno ya soko la ajira. Zana hizi husaidia kupanga na kuandika rasimu; hazitoi haki rasmi, ushauri wa kisheria, matokeo ya ajira au tafsiri ya sheria ya kazi. Hakiki na mwajiri, HR, wakili au mamlaka husika.</div></section>
+<afro-footer></afro-footer>
+
+<script>
+/* Easter calculation (Anonymous Gregorian algorithm) */
+function easterDate(year){
+  var a=year%19,b=Math.floor(year/100),c=year%100;
+  var d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25);
+  var g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30;
+  var i=Math.floor(c/4),k=c%4;
+  var l=(32+2*e+2*i-h-k)%7;
+  var m=Math.floor((a+11*h+22*l)/451);
+  var month=Math.floor((h+l-7*m+114)/31);
+  var day=((h+l-7*m+114)%31)+1;
+  return new Date(year,month-1,day);
+}
+
+function addDays(d,n){var r=new Date(d);r.setDate(r.getDate()+n);return r;}
+
+/* Approximate Islamic dates */
+function islamicDates(year){
+  var base={eidFitr:[2025,2,30],eidAdha:[2025,5,6],mawlid:[2025,8,5]};
+  var diff=year-2025;
+  function shift(b){
+    var d=new Date(b[0],b[1],b[2]);
+    d.setDate(d.getDate()-Math.round(diff*10.63));
+    while(d.getFullYear()<year)d.setDate(d.getDate()+354);
+    while(d.getFullYear()>year)d.setDate(d.getDate()-354);
+    return d;
+  }
+  return{eidFitr:shift(base.eidFitr),eidAdha:shift(base.eidAdha),mawlid:shift(base.mawlid)};
+}
+
+function getHolidayDates(country,year){
+  var easter=easterDate(year);
+  var goodFri=addDays(easter,-2);
+  var easterMon=addDays(easter,1);
+  var isl=islamicDates(year);
+  var hols=[];
+  function add(d,n){hols.push({date:new Date(d),name:n});}
+  function fixed(m,d,n){add(new Date(year,m-1,d),n);}
+
+  if(country==='ng'){
+    fixed(1,1,"New Year's Day");
+    add(isl.eidFitr,'Eid al-Fitr (est.)');add(addDays(isl.eidFitr,1),'Eid al-Fitr Day 2');
+    add(goodFri,'Good Friday');add(easterMon,'Easter Monday');
+    fixed(5,1,"Workers' Day");
+    add(isl.eidAdha,'Eid al-Adha (est.)');add(addDays(isl.eidAdha,1),'Eid al-Adha Day 2');
+    fixed(6,12,'Democracy Day');add(isl.mawlid,'Mawlid (est.)');
+    fixed(10,1,'Independence Day');fixed(12,25,'Christmas Day');fixed(12,26,'Boxing Day');
+  } else if(country==='ke'){
+    fixed(1,1,"New Year's Day");add(isl.eidFitr,'Eid al-Fitr (est.)');
+    add(goodFri,'Good Friday');add(easterMon,'Easter Monday');
+    fixed(5,1,'Labour Day');fixed(6,1,'Madaraka Day');add(isl.eidAdha,'Eid al-Adha (est.)');
+    fixed(10,10,'Huduma Day');fixed(10,20,'Mashujaa Day');
+    fixed(12,12,'Jamhuri Day');fixed(12,25,'Christmas Day');fixed(12,26,'Boxing Day');
+  } else if(country==='za'){
+    fixed(1,1,"New Year's Day");fixed(3,21,'Human Rights Day');
+    add(goodFri,'Good Friday');add(easterMon,'Family Day');
+    fixed(4,27,'Freedom Day');fixed(5,1,"Workers' Day");fixed(6,16,'Youth Day');
+    fixed(8,9,"National Women's Day");fixed(9,24,'Heritage Day');
+    fixed(12,16,'Day of Reconciliation');fixed(12,25,'Christmas Day');fixed(12,26,'Day of Goodwill');
+  } else if(country==='gh'){
+    fixed(1,1,"New Year's Day");fixed(1,7,'Constitution Day');fixed(3,6,'Independence Day');
+    add(isl.eidFitr,'Eid al-Fitr (est.)');add(goodFri,'Good Friday');add(easterMon,'Easter Monday');
+    fixed(5,1,'May Day');fixed(5,25,'Africa Day');add(isl.eidAdha,'Eid al-Adha (est.)');
+    fixed(7,1,'Republic Day');fixed(8,4,"Founders' Day");fixed(9,21,'Kwame Nkrumah Day');
+    fixed(12,25,'Christmas Day');fixed(12,26,'Boxing Day');
+  } else if(country==='ug'){
+    fixed(1,1,"New Year's Day");fixed(1,26,'NRM Liberation Day');
+    fixed(3,8,"Women's Day");add(goodFri,'Good Friday');add(easterMon,'Easter Monday');
+    fixed(5,1,'Labour Day');fixed(6,3,"Martyrs' Day");fixed(6,9,'National Heroes Day');
+    add(isl.eidFitr,'Eid al-Fitr (est.)');add(isl.eidAdha,'Eid al-Adha (est.)');
+    fixed(10,9,'Independence Day');fixed(12,25,'Christmas Day');fixed(12,26,'Boxing Day');
+  } else if(country==='tz'){
+    fixed(1,1,"New Year's Day");fixed(1,12,'Zanzibar Revolution Day');
+    add(isl.eidFitr,'Eid al-Fitr (est.)');fixed(4,7,'Karume Day');
+    add(goodFri,'Good Friday');add(easterMon,'Easter Monday');
+    fixed(4,26,'Union Day');fixed(5,1,"Workers' Day");add(isl.eidAdha,'Eid al-Adha (est.)');
+    fixed(7,7,'Saba Saba Day');fixed(8,8,'Nane Nane Day');add(isl.mawlid,'Maulid (est.)');
+    fixed(12,9,'Independence Day');fixed(12,25,'Christmas Day');fixed(12,26,'Boxing Day');
+  }
+  return hols;
+}
+
+function isHoliday(date,holidays){
+  const t=date.getTime();
+  return holidays.some(h=>h.date.getTime()===t);
+}
+
+function calculate(){
+  const startStr=document.getElementById('startDate').value;
+  const endStr=document.getElementById('endDate').value;
+  const country=document.getElementById('country').value;
+  if(!startStr||!endStr){alert('Please select both dates');return;}
+
+  const start=new Date(startStr+'T00:00:00');
+  const end=new Date(endStr+'T00:00:00');
+  if(start>end){alert('Start date must be before end date');return;}
+
+  // Get holidays for all years in range
+  const holidays=[];
+  for(let y=start.getFullYear();y<=end.getFullYear();y++){
+    holidays.push(...getHolidayDates(country,y));
+  }
+
+  let calDays=0,weekendDays=0,holDays=0,workDays=0;
+  const matchedHols=[];
+  const d=new Date(start);
+
+  while(d<=end){
+    calDays++;
+    const dow=d.getDay();
+    if(dow===0||dow===6){
+      weekendDays++;
+    } else if(isHoliday(d,holidays)){
+      holDays++;
+      const hol=holidays.find(h=>h.date.getTime()===d.getTime());
+      if(hol) matchedHols.push({date:new Date(d),name:hol.name});
+    } else {
+      workDays++;
+    }
+    d.setDate(d.getDate()+1);
+  }
+
+  document.getElementById('workDays').textContent=workDays;
+  document.getElementById('calDays').textContent=calDays;
+  document.getElementById('weekendDays').textContent=weekendDays;
+  document.getElementById('holDays').textContent=holDays;
+  document.getElementById('results').style.display='block';
+
+  // Show matched holidays
+  const holList=document.getElementById('holList');
+  if(matchedHols.length>0){
+    const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    holList.innerHTML='<div style="font-size:.72rem;font-weight:700;color:var(--afro-dark);letter-spacing:.08em;text-transform:uppercase;margin-top:14px;margin-bottom:8px">Public Holidays in Range</div>'+
+      matchedHols.map(h=>`<div class="hol-item"><span class="hol-name">${esc(h.name)}</span><span class="hol-date">${h.date.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}</span></div>`).join('');
+  } else {
+    holList.innerHTML='';
+  }
+}
+
+// Set defaults: today to 3 months from now
+const today=new Date();
+const future=new Date();future.setMonth(future.getMonth()+3);
+document.getElementById('startDate').value=today.toISOString().split('T')[0];
+document.getElementById('endDate').value=future.toISOString().split('T')[0];
+calculate();
+</script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
+
+<afro-newsletter-cta></afro-newsletter-cta>
+
+<script>
+(function(){
+  var target = document.getElementById('results');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
+  div.innerHTML = '<save-result-button tool-slug="working-days" tool-name="Working Days"></save-result-button><share-result-button tool-name="Working Days" tool-slug="working-days"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script class="sw-data-runtime-localizer">
+(function(){
+  const textMap = new Map([["Home","Nyumbani"],["Tools","Zana"],["Education","Elimu"],["Financial","Fedha"],["Productivity","Tija"],["Business & ROI Tools","Zana za Data na Tija"],["Business & ROI","Data na Tija"],["Redirecting to","Inaelekeza kwenda"],["Pomodoro Timer","Pomodoro"],["Focus sessions, break tracking, and daily goal management","Vipindi vya focus, mapumziko na daily goal"],["Work Session","Kipindi cha kazi"],["Work (25m)","Kazi (dakika 25)"],["Break (5m)","Mapumziko (dakika 5)"],["Long (15m)","Mapumziko marefu (dakika 15)"],["Start","Anza"],["Pause","Sitisha"],["Reset","Weka upya"],["Keyboard: Space = start/pause, R = reset, 1/2/3 = work/break/long","Keyboard: Space = anza/sitisha, R = reset, 1/2/3 = kazi/mapumziko/marefu"],["Auto-start breaks","Anza mapumziko automatically"],["Work (minutes)","Dakika za kazi"],["Break (minutes)","Dakika za mapumziko"],["Long Break (min)","Mapumziko marefu (dakika)"],["Sessions/Long","Sessions kabla ya mapumziko marefu"],["Daily Goal","Lengo la siku"],["pomodoros/day","pomodoros kwa siku"],["Today","Leo"],["This Week","Wiki hii"],["Streak","Mfululizo"],["consecutive days","siku mfululizo"],["Best Day","Siku bora"],["focused","za focus"],["Unit Converter","Kubadilisha Vipimo"],["15 Categories · African Units Included","Categories 15 na vipimo vya Afrika"],["for Africa","kwa Afrika"],["20 categories — length, weight, area, force, torque, flow rate, density, electrical, cooking, fuel, and more. Includes Nigerian plots, SA morgen, Egyptian feddan, Kenyan eighth-acres. Click any result to copy.","Categories 20: urefu, uzito, eneo, nguvu, torque, flow rate, density, umeme, kupika, mafuta na zaidi. Ina vipimo kama Nigerian plots, SA morgen, Egyptian feddan na Kenyan eighth-acres. Bofya matokeo kunakili."],["Length","Urefu"],["Weight","Uzito"],["Temperature","Joto"],["Area & Land","Eneo na Ardhi"],["Volume","Volume"],["Speed","Kasi"],["Fuel","Mafuta"],["Cooking","Kupika"],["Data","Data"],["Energy","Nishati"],["Power","Nguvu"],["Pressure","Pressure"],["Time","Muda"],["Angle","Angle"],["Frequency","Frequency"],["Force","Force"],["Torque","Torque"],["Flow Rate","Flow rate"],["Density","Density"],["Electrical","Umeme"],["From","Kutoka"],["To","Kwenda"],["Budget Planner","Mpango wa Bajeti"],["Budget","Bajeti"],["Planner","Mpangaji"],["Plan your monthly budget, categorise expenses, and track how much you can save. Supports African currencies and the 50/30/20 budgeting rule.","Panga bajeti ya mwezi, panga matumizi kwa makundi na fuatilia akiba. Inasaidia currencies za Afrika na 50/30/20 rule."],["18 African Currencies","Currencies 18 za Afrika"],["50/30/20 Rule","50/30/20 rule"],["Household Presets","Presets za kaya"],["Auto-Save","Auto-save"],["Income","Mapato"],["Currency","Sarafu"],["Quick Preset","Preset ya haraka"],["(fills sample figures)","(hujaza figures za mfano)"],["+ Add Income Source","+ Ongeza chanzo cha mapato"],["Expenses","Matumizi"],["+ Add Expense","+ Ongeza matumizi"],["Calculate Budget","Hesabu Bajeti"],["Budget Summary","Muhtasari wa Bajeti"],["Total Income","Jumla ya mapato"],["Total Expenses","Jumla ya matumizi"],["Remaining (Savings)","Kinachobaki (akiba)"],["Savings Rate","Kiwango cha akiba"],["Needs (50%):","Mahitaji (50%):"],["Wants (30%):","Matakwa (30%):"],["Savings (20%):","Akiba (20%):"],["This is a guideline. In high-cost-of-living African cities, needs may exceed 50%. Adjust to your reality.","Huu ni mwongozo. Katika miji yenye gharama kubwa, mahitaji yanaweza kuzidi 50%. Rekebisha kulingana na hali yako."],["African Budgeting Tips","Vidokezo vya bajeti Afrika"],["Why Budgeting Matters in Africa","Kwa nini bajeti ni muhimu Afrika"],["The 50/30/20 Rule Adapted for Africa","50/30/20 rule kwa mazingira ya Afrika"],["Common African Household Expenses","Matumizi ya kawaida ya kaya Afrika"],["Frequently Asked Questions","Maswali ya mara kwa mara"],["Countdown Timer","Countdown ya Tukio"],["Event","Tukio"],["Countdown","Countdown"],["Timer","Timer"],["Count down the days, hours, minutes and seconds until any event — exams, weddings, holidays, product launches, or personal milestones.","Hesabu siku, saa, dakika na sekunde hadi tukio kama mitihani, harusi, likizo, product launch au milestone binafsi."],["Live Timer","Timer hai"],["Save Events","Hifadhi matukio"],["Presets","Presets"],["Set Your Countdown","Weka countdown yako"],["Event Name","Jina la tukio"],["Event Date","Tarehe ya tukio"],["Time (optional)","Muda (hiari)"],["Start Countdown","Anza Countdown"],["Days","Siku"],["Hours","Saa"],["Minutes","Dakika"],["Seconds","Sekunde"],["This event has arrived!","Tukio limefika!"],["Quick Presets","Presets za haraka"],["Save This Countdown","Hifadhi countdown hii"],["About This Tool","Kuhusu zana hii"],["How the Countdown Timer Works","Jinsi countdown inavyofanya kazi"],["How to Use","Jinsi ya kutumia"],["Common Uses in Africa","Matumizi ya kawaida Afrika"],["Saved Countdowns","Countdowns zilizohifadhiwa"],["No saved countdowns yet","Hakuna countdown iliyohifadhiwa bado"],["Upcoming African Holidays","Likizo zijazo Afrika"],["Time Zone Converter","Kigeuzi Saa za Maeneo"],["Time Zone","Time zone"],["Converter","Kigeuzi"],["Convert between African and world time zones. Live clocks and meeting planner to find the best overlap for calls across continents.","Badilisha muda kati ya time zones za Afrika na dunia. Ona live clocks na meeting planner kwa calls za kimataifa."],["African Cities","Miji ya Afrika"],["Live Clocks","Saa za moja kwa moja"],["Meeting Planner","Mpangaji wa meeting"],["Convert Time","Badilisha muda"],["Date & Time","Tarehe na muda"],["Live World Clocks","Saa za dunia"],["Meeting Planner — Find Overlap","Mpangaji wa meeting - tafuta muda unaokutana"],["Green = working hours (9am-6pm). Red = sleeping hours (11pm-6am). White = free time.","Kijani = saa za kazi (3 asubuhi-12 jioni). Nyekundu = saa za kulala. Nyeupe = muda wazi."],["African Time Zones Explained","Time zones za Afrika kwa ufupi"],["Time Zones by Region","Time zones kwa region"],["Scheduling Across Africa and Beyond","Kupanga ratiba Afrika na nje"],["Public Holidays","Likizo za Umma"],["African Public","Likizo za Umma"],["Holidays","Likizo"],["Complete public holiday calendar for 10 African countries. Plan leave days, see countdowns, and export holidays to your calendar.","Kalenda ya likizo za umma kwa nchi 10 za Afrika. Panga leave, angalia countdowns na export kwenda calendar."],["10 Countries","Nchi 10"],["2025-2027","2025-2027"],["Export to Calendar","Export kwenda calendar"],["Export to Calendar (.ics)","Export kwenda calendar (.ics)"],["Country","Nchi"],["Year","Mwaka"],["Filter","Filter"],["All Holidays","Likizo zote"],["Upcoming Only","Zijazo tu"],["Falls on Weekend","Inaangukia weekend"],["Public Holidays in Africa","Likizo za umma Afrika"],["Working Days","Siku za Kazi"],["Calculator","Kikokotoo"],["Count the number of business days between two dates. Automatically excludes weekends and public holidays for 6 African countries.","Hesabu business days kati ya tarehe mbili. Inaondoa weekends na likizo kwa nchi 6 zilizopo kwenye source."],["6 Countries","Nchi 6"],["Instant","Haraka"],["Calculate Working Days","Hesabu siku za kazi"],["Start Date","Tarehe ya kuanza"],["End Date","Tarehe ya mwisho"],["Country (for public holidays)","Nchi (kwa likizo za umma)"],["No holidays (weekends only)","Bila likizo (weekends tu)"],["Calculate","Hesabu"],["Calendar Days","Siku zote"],["Weekend Days","Siku za weekend"],["How the Working Days Calculator Works","Jinsi kikokotoo cha siku za kazi kinavyofanya kazi"],["Common Uses","Matumizi ya kawaida"],["African Working Week","Wiki ya kazi Afrika"],["Age Calculator","Kikokotoo Umri"],["Age","Umri"],["Calculate your exact age in years, months, days, hours, and minutes. Discover your zodiac sign, generation, and days until your next birthday.","Hesabu umri kwa miaka, miezi, siku, saa na dakika. Ona siku hadi birthday ijayo na milestones."],["Exact Age","Umri kamili"],["Zodiac Sign","Zodiac sign"],["Next Birthday","Birthday ijayo"],["Enter Your Date of Birth","Weka tarehe ya kuzaliwa"],["Date of Birth","Tarehe ya kuzaliwa"],["Calculate At (default: today)","Hesabu hadi (default: leo)"],["Calculate Age","Hesabu umri"],["Years","Miaka"],["Months","Miezi"],["Total Months","Jumla ya miezi"],["Total Weeks","Jumla ya wiki"],["Total Days","Jumla ya siku"],["Total Hours","Jumla ya saa"],["Total Minutes","Jumla ya dakika"],["Generation","Kizazi"],["Life Milestones","Milestones za maisha"],["How the Age Calculator Works","Jinsi kikokotoo umri kinavyofanya kazi"],["Did You Know?","Ulijua?"],["Zodiac Signs","Zodiac signs"],["Student Grade Tracker","Kifuatiliaji Alama"],["Grade Tracker","Kifuatiliaji Alama"],["Calculate your GPA and CGPA using African university grading scales. Track your academic performance across semesters.","Hesabu GPA na CGPA kwa grading scales za vyuo vya Afrika. Fuatilia performance yako kwa semesters."],["Grading System","Mfumo wa grading"],["Grading Scale","Scale ya grading"],["Previous CGPA (optional)","CGPA ya awali (hiari)"],["CA / Exam Split","Mgawanyo wa CA / Mtihani"],["(Nigerian-style: 40% CA + 60% Exam)","(Mfano wa Nigeria: 40% CA + 60% mtihani)"],["Enable CA/Exam split entry","Washa entry ya CA/Exam split"],["Current Semester Courses","Courses za semester hii"],["+ Add Course","+ Ongeza course"],["Calculate GPA","Hesabu GPA"],["Your Results","Matokeo yako"],["Course Breakdown","Breakdown ya courses"],["Grading Scale Reference","Reference ya grading scale"],["What GPA Do I Need?","Ninahitaji GPA gani?"],["Find out what GPA you need next semester to reach your target CGPA.","Jua GPA unayohitaji semester ijayo kufikia target CGPA."],["Target CGPA","Target CGPA"],["Future Credits","Credits zijazo"],["GPA & CGPA Calculator for African Students","Kikokotoo GPA na CGPA kwa wanafunzi Afrika"],["Multiple Grading Systems Supported","Inaunga mkono grading systems kadhaa"],["CGPA Across Semesters","CGPA katika semesters"],["Understanding Degree Classifications","Kuelewa degree classifications"],["Random Picker","Chaguo Nasibu"],["Random","Nasibu"],["Picker","Kichagua"],["Fairly pick random names, numbers, or items. Animated spinner with sound effects. Uses cryptographic randomness for truly unbiased results.","Chagua majina, namba au items kwa nasibu. Inatumia browser randomness; usiitumie kama uthibitisho rasmi wa shindano."],["Crypto Random","Randomness ya browser"],["Animated","Animation"],["No Signup","Hakuna signup"],["Pick Something Random","Chagua kitu kwa nasibu"],["items","items"],["Names","Majina"],["Numbers","Namba"],["Coin Flip","Coin flip"],["Teams","Timu"],["Enter names/items (one per line)","Weka majina/items (moja kwa kila mstari)"],["How many to pick?","Uchague ngapi?"],["Options","Options"],["Remove picked items from list","Ondoa zilizochaguliwa kwenye list"],["Pick Random Name(s)","Chagua jina/majina nasibu"],["Minimum","Minimum"],["Maximum","Maximum"],["How many numbers?","Namba ngapi?"],["Allow duplicates?","Ruhusu kurudiwa?"],["Yes, allow repeats","Ndiyo, ruhusu kurudiwa"],["Generate Random Number(s)","Tengeneza namba nasibu"],["Flip Coin","Tupa coin"],["Enter names (one per line)","Weka majina (moja kwa kila mstari)"],["Number of teams","Idadi ya timu"],["Assign Teams Randomly","Gawa timu kwa nasibu"],["History","Historia"],["Clear","Futa"],["About","Kuhusu"],["How It Works","Jinsi inavyofanya kazi"],["Giveaways:","Giveaways:"],["Classrooms:","Madarasa:"],["Team building:","Team building:"],["Decisions:","Maamuzi:"],["Raffles:","Raffles:"],["Meeting Cost","Gharama ya Mkutano"],["How much do your meetings really cost? Calculate the true expense based on attendees' salaries, duration, and frequency. Includes a live cost ticker.","Meetings zako zinagharimu kiasi gani? Kadiria gharama kwa salaries, muda na frequency ya washiriki. Ina live cost ticker."],["Live Ticker","Ticker hai"],["Multi-Currency","Currencies kadhaa"],["Annual Impact","Athari ya mwaka"],["Calculate Meeting Cost","Hesabu gharama ya mkutano"],["Number of Attendees","Idadi ya washiriki"],["Average Annual Salary per Person","Wastani wa salary ya mwaka kwa mtu"],["Meeting Duration (minutes)","Muda wa meeting (dakika)"],["Overhead Multiplier","Overhead multiplier"],["This Meeting Repeats","Meeting hii hurudiwa"],["One-time","Mara moja"],["Weekly","Kila wiki"],["Bi-weekly","Kila wiki mbili"],["Monthly","Kila mwezi"],["Quarterly","Kila robo mwaka"],["Working Hours/Year","Saa za kazi kwa mwaka"],["This Meeting Costs","Meeting hii inagharimu"],["Cost Per Minute","Gharama kwa dakika"],["Annual Cost","Gharama ya mwaka"],["Hours Lost/Year","Saa zinazopotea kwa mwaka"],["The Hidden Cost of Meetings","Gharama iliyofichika ya meetings"],["How the Calculator Works","Jinsi calculator inavyofanya kazi"],["Live Cost","Gharama ya sasa"],["Tip Calculator","Kigawanya Bili na Tip"],["Tip & Bill","Tip na Bili"],["Splitter","Kigawanya"],["Calculate the perfect tip and split bills among friends. Supports Naira, Rand, Shilling, Cedi, CFA, and more. With tax, rounding, and service quality options.","Hesabu tip na gawanya bili kati ya marafiki. Ina currencies za Afrika, tax/service charge, rounding na service quality options."],["Tax + Round","Tax + rounding"],["Bill Amount","Kiasi cha bili"],["Tax / Service Charge %","Tax / service charge %"],["Split Between","Gawanya kati ya watu"],["Service Quality","Ubora wa huduma"],["Poor","Duni"],["Good","Nzuri"],["Great","Bora"],["Tip Percentage","Asilimia ya tip"],["Custom Tip %","Tip custom %"],["Round Up To","Round up hadi"],["Exact","Exact"],["Nearest 10","Karibu 10"],["Nearest 50","Karibu 50"],["Nearest 100","Karibu 100"],["Total with Tip","Jumla pamoja na tip"],["Bill + Tax","Bili + tax"],["Tip Amount","Kiasi cha tip"],["Per Person","Kwa kila mtu"],["Tip / Person","Tip kwa mtu"],["Tipping Guide","Mwongozo wa tip"],["Africa Tip Norms","Mazoea ya tip Afrika"],["Service charges (5-10%) are often added automatically in upscale restaurants. Check your bill before tipping.","Service charge (5-10%) mara nyingi huongezwa automatically kwenye restaurants kubwa. Angalia bili kabla ya kuongeza tip."],["Tips","Vidokezo"],["Tip on pre-tax amount.","Hesabu tip kabla ya tax."],["Cash is king.","Cash bado ni muhimu."],["Group dining?","Mnakula kama group?"],["Copy","Nakili"],["Copied","Imenakiliwa"],["Download","Pakua"],["Export","Export"],["Import","Import"],["Save","Hifadhi"],["Share","Shiriki"],["Search","Tafuta"],["Result","Matokeo"],["Results","Matokeo"],["Summary","Muhtasari"],["Settings","Mipangilio"],["Select the relevant category (e.g., length), choose your source unit (e.g., kilometres), and your target unit (e.g., miles). Enter a value and the conversion appears instantly. Both metric and imperial units are available in every relevant category.","Chagua category inayofaa, kama urefu, kisha unit ya kuanzia na unit ya mwisho. Weka thamani na conversion itaonekana mara moja. Units za metric na imperial zinapatikana kwenye categories husika."],["Does the cooking converter handle ingredient-specific measurements?","Je, converter ya kupika hushughulikia vipimo vya ingredients?"],["Yes. The cooking category converts between cups, tablespoons, teaspoons, millilitres, fluid ounces, and other common recipe measurements, making it easy to follow recipes from different countries and measurement systems.","Ndiyo. Category ya kupika hubadilisha cups, tablespoons, teaspoons, millilitres, fluid ounces na vipimo vingine vya recipes ili iwe rahisi kufuata mapishi kutoka nchi tofauti."],["Rent, food, transport, utilities, insurance — things you must pay.","Pango, chakula, usafiri, huduma za nyumbani na bima - mambo unayolazimika kulipa."],["Entertainment, dining out, subscriptions, shopping — things you enjoy but could live without.","Burudani, kula nje, subscriptions na shopping - mambo unayofurahia lakini unaweza kupunguza."],["Emergency fund, investments, debt repayment beyond minimums.","Mfuko wa dharura, uwekezaji na kulipa madeni zaidi ya kiwango cha chini."],["How much should I save each month in Africa?","Nihifadhi kiasi gani kila mwezi Afrika?"],["Aim for at least 20% in stable economies (Kenya, South Africa, Ghana). In high-inflation countries like Nigeria or Egypt, aim for 25-30% — and importantly, save in assets that protect value: Treasury Bills, US dollar accounts, money market funds, or stocks. Build a 3-6 month emergency fund first before investing.","Lenga angalau 20% pale hali ya kipato na bei ni tulivu. Katika nchi zenye mfumuko mkubwa wa bei, unaweza kulenga 25-30% ikiwa inawezekana, na uhifadhi kwenye njia zinazolinda thamani kama Treasury Bills, akaunti ya dola, money market funds au hisa. Jenga kwanza mfuko wa dharura wa miezi 3-6 kabla ya kuwekeza."],["Should I include irregular income in my budget?","Niweke mapato yasiyo ya kudumu kwenye bajeti?"],["Use your average monthly income from the past 6 months as your baseline. Bajeti based on your lowest expected month and treat above-average months as surplus for savings or debt repayment.","Tumia wastani wa mapato ya miezi 6 iliyopita kama msingi. Panga bajeti kwa mwezi wa chini unaotarajia, kisha miezi yenye ziada itumike kwa akiba au kulipa madeni."],["What is the 50/30/20 rule and does it work in Africa?","50/30/20 rule ni nini na inafaa Afrika?"],["The 50/30/20 rule allocates 50% of income to needs (rent, food, transport), 30% to wants (entertainment, dining out), and 20% to savings. In many African cities, needs may exceed 50% due to rent and transport costs, so use it as a starting point and adjust realistically.","50/30/20 rule hugawa 50% ya mapato kwa mahitaji, 30% kwa matakwa na 20% kwa akiba. Katika miji mingi ya Afrika, mahitaji yanaweza kuzidi 50% kwa sababu ya pango na usafiri, hivyo tumia kama mwanzo na urekebishe kwa uhalisia."],["What is the best way to automate savings in Africa?","Njia nzuri ya kuendesha akiba kiotomatiki Afrika ni ipi?"],["Set up standing orders or auto-debits on payday where your bank, SACCO, mobile money wallet, or investment app supports it. Keep emergency money accessible and verify fees before choosing a product.","Weka standing order au auto-debit siku ya mshahara pale benki, SACCO, mobile money au app ya uwekezaji inapounga mkono. Weka pesa ya dharura karibu na uhakiki fees kabla ya kuchagua bidhaa."],["Enter a name for your event (e.g., \"WAEC Matokeo\", \"Wedding Day\")","Weka jina la tukio, kwa mfano \"Matokeo ya WAEC\" au \"Siku ya harusi\""],["Select the target date and optionally set a specific time","Chagua tarehe ya tukio na, ukitaka, muda maalum"],["Click \"Anza Countdown\" to begin the live timer","Bofya \"Anza Countdown\" kuanza timer ya moja kwa moja"],["Click \"Hifadhi countdown hii\" to bookmark it in your browser","Bofya \"Hifadhi countdown hii\" kuihifadhi kwenye browser yako"],["Can I save multiple countdowns?","Naweza kuhifadhi countdowns kadhaa?"],["What happens when the countdown reaches zero?","Nini hutokea countdown ikifika sifuri?"],["What is \"Africa time\" and how do I schedule around it?","\"Africa time\" ni nini na nipangeje ratiba bila mkanganyiko?"],["While the stereotype of \"African time\" suggests flexible scheduling, professional environments across Africa increasingly adhere to strict timing. For important meetings, use calendar invites with explicit time zone references (e.g., \"3pm WAT / 2pm GMT\") to avoid confusion.","Ingawa kuna dhana ya ratiba kunyumbulika, mazingira ya kikazi Afrika yanazidi kuzingatia muda. Kwa meetings muhimu, tumia calendar invite yenye time zone wazi, kama \"3pm WAT / 2pm GMT\", ili kuepuka mkanganyiko."],["Why does Nigeria use WAT instead of GMT?","Kwa nini Nigeria hutumia WAT badala ya GMT?"],["Nigeria adopted West Africa Muda (WAT, UTC+1) because it better aligns with the country's geographic longitude. Ghana, which is at a similar longitude, uses GMT (UTC+0) for historical and administrative reasons.","Nigeria hutumia West Africa Time (WAT, UTC+1) kwa sababu inaendana zaidi na eneo lake la kijiografia. Ghana hutumia GMT (UTC+0) kwa sababu za kihistoria na kiutawala."],["Can I export holidays to Google Calendar?","Naweza kupeleka likizo kwenye Google Calendar?"],["Yes. Click the \"Export kwenda calendar\" button to download an .ics file. Import it into Google Calendar, Apple Calendar, Outlook, or any calendar app that supports .ics files.","Ndiyo. Bofya \"Export kwenda calendar\" kupakua faili la .ics. Liingize kwenye Google Calendar, Apple Calendar, Outlook au app yoyote inayotumia .ics."],["What happens when a holiday falls on a weekend?","Nini hutokea likizo ikiangukia weekend?"],["Policies vary. In South Africa, if a public holiday falls on a Sunday, the Monday is observed. In Nigeria, the Federal Government may declare the Monday as a holiday. Kenya follows a similar Monday-substitution rule.","Kanuni hutofautiana. South Africa mara nyingi huhamishia Jumatatu likizo iliyoangukia Jumapili. Nigeria inaweza kutangaza Jumatatu kuwa likizo, na Kenya ina utaratibu unaofanana katika baadhi ya matukio."],["Why are Islamic holiday dates estimated?","Kwa nini tarehe za likizo za Kiislamu ni makadirio?"],["Islamic holidays follow the lunar calendar, so exact dates depend on moon sighting. Dates shown are estimates based on astronomical calculations and may shift by 1-2 days.","Likizo za Kiislamu hufuata kalenda ya mwezi, hivyo tarehe kamili hutegemea kuonekana kwa mwezi. Tarehe zilizoonyeshwa ni makadirio na zinaweza kusogea kwa siku 1-2."],["Siku za Kazi counts business days between two dates, excluding weekends and public holidays kwa Afrikan countries including Nigeria, Kenya, South Africa, and Ghana. Enter your start and end dates, select your country, and the tool shows the exact number of working days along with a calendar view highlighting excluded days. It is essential for calculating project timelines, employee leave, invoice payment terms, and delivery schedules.","Siku za Kazi huhesabu business days kati ya tarehe mbili, ikiondoa weekends na likizo za umma kwa nchi zilizopo kwenye source kama Nigeria, Kenya, South Africa na Ghana. Weka tarehe ya kuanza na mwisho, chagua nchi, kisha zana itaonyesha idadi ya siku za kazi na calendar view ya siku zilizoondolewa. Tumia kwa project timelines, leave, masharti ya invoice na delivery schedules."],["How are working days counted?","Siku za kazi huhesabiwaje?"],["Which countries' holidays are supported?","Likizo za nchi gani zinaungwa mkono?"],["Are Islamic holidays included?","Likizo za Kiislamu zimejumuishwa?"],["Enter your date of birth using the date picker","Weka tarehe yako ya kuzaliwa kwa kutumia date picker"],["Optionally set a \"Hesabu At\" date to find your age at a specific point","Ukitaka, weka tarehe ya \"Hesabu hadi\" kupata umri kwenye siku maalum"],["Click \"Hesabu umri\" to see your detailed age breakdown","Bofya \"Hesabu umri\" kuona breakdown ya umri wako"],["Zodiac signs and Kizazis","Zodiac signs na vizazi"],["This free online age calculator instantly computes your exact age in years, months, weeks, days, hours, and even seconds from your date of birth. It is perfect for filling out official forms, verifying eligibility requirements, celebrating milestones, or simply satisfying curiosity.","Kikokotoo hiki cha umri hukadiria umri wako kwa miaka, miezi, wiki, siku, saa na hata sekunde kutokana na tarehe ya kuzaliwa. Kinafaa kwa kupanga fomu, eligibility, milestones au udadisi, lakini si uthibitisho rasmi wa umri."],["Can I calculate age between two specific dates?","Naweza kuhesabu umri kati ya tarehe mbili maalum?"],["Does it account for leap years?","Je, inazingatia leap years?"],["Yes. The calculator correctly handles leap years when computing the total number of days you have been alive and when calculating your next birthday.","Ndiyo. Calculator huzingatia leap years inapokadiria jumla ya siku na birthday ijayo."],["Can I improve a bad CGPA?","Naweza kuboresha CGPA iliyo chini?"],["Yes! With strategic planning, you can raise your CGPA by performing well in remaining semesters. The more credit hours remaining, the more room you have to improve. Focus on courses with higher credits and consult your academic advisor for official guidance.","Ndiyo, kwa kupanga vizuri unaweza kuinua CGPA kwa kufanya vizuri kwenye semesters zilizobaki. Kadiri credit hours zilizobaki zinavyoongezeka, ndivyo nafasi ya kuboresha inavyoongezeka. Zingatia courses zenye credits nyingi na hakiki na academic advisor."],["What is the Team Assigner?","Team Assigner ni nini?"],["The Team Assigner randomly distributes a list of names into groups. Enter names, choose how many teams, and the tool shuffles and assigns everyone fairly. Bora for group projects, sports, or team-building exercises.","Team Assigner hugawa orodha ya majina kwenye groups kwa nasibu. Weka majina, chagua idadi ya timu, kisha zana itachanganya na kugawa watu. Inafaa kwa group projects, michezo au team-building."],["Can I remove picked items from the list?","Naweza kuondoa items zilizochaguliwa kwenye list?"],["Yes. It uses the Web Crypto API for cryptographically secure random numbers, making results unpredictable and provably fair.","Ndiyo. Inatumia Web Crypto API kwa random numbers zenye nguvu zaidi, lakini kwa mashindano rasmi bado tumia utaratibu wa audit unaofaa."],["Enter the number of meeting attendees","Weka idadi ya washiriki wa meeting"],["Set the average annual salary for attendees","Weka wastani wa salary ya mwaka kwa washiriki"],["Choose meeting duration and overhead multiplier","Chagua muda wa meeting na overhead multiplier"],["Select how often this meeting recurs for annual impact","Chagua meeting hurudiwa mara ngapi ili kuona athari ya mwaka"],["Does it include overhead costs?","Je, inajumuisha overhead costs?"],["How much should I tip in Africa?","Nitoe tip kiasi gani Afrika?"],["Should I tip on pre-tax or post-tax amount?","Nitoe tip kabla au baada ya tax?"],["What does the rounding option do?","Chaguo la rounding hufanya nini?"],["Yes. We support 12 currencies including Nigerian Naira, Kenyan Shilling, South African Rand, Ghanaian Cedi, CFA Franc (West and Central), Ugandan Shilling, Tanzanian Shilling, Ethiopian Birr, US Dollar, British Pound, and Euro.","Ndiyo. Zana inaunga mkono currencies kadhaa kama Naira ya Nigeria, Shilling ya Kenya, Rand ya South Africa, Cedi ya Ghana, CFA Franc, Shilling ya Uganda, Shilling ya Tanzania, Birr ya Ethiopia, dola ya Marekani, pauni ya Uingereza na euro."],["Click ","Bofya "],["Choose ","Chagua "],["This Countdown Timer calculates the precise time remaining between now and your target date. It updates every second in real-time, showing days, hours, minutes, and seconds remaining. The timer runs entirely in your browser — no server calls needed.","Countdown hii hukadiria muda uliobaki kati ya sasa na tarehe ya tukio. Huonyesha siku, saa, dakika na sekunde na husasisha kila sekunde kwenye browser yako."],["Bofya \"Anza Countdown\" to begin the live timer","Bofya \"Anza Countdown\" kuanza timer ya moja kwa moja"],["Bofya \"Hifadhi countdown hii\" to bookmark it in your browser","Bofya \"Hifadhi countdown hii\" kuihifadhi kwenye browser yako"],["Students use countdown timers for WAEC, JAMB, and NECO exam dates. Businesses track product launches, funding deadlines, and campaign dates. Families count down to weddings, birthdays, travel, and religious holidays.","Wanafunzi hutumia countdown kwa tarehe za mitihani kama WAEC, JAMB na NECO. Biashara hufuatilia product launches, deadlines za funding na kampeni. Familia hupanga harusi, birthday, safari na likizo za kidini."],["Yes. Click the \"Export to Calendar\" button to download an .ics file. Import it into Google Calendar, Apple Calendar, Outlook, or any calendar app that supports .ics files.","Ndiyo. Bofya \"Export kwenda calendar\" kupakua faili la .ics. Liingize kwenye Google Calendar, Apple Calendar, Outlook au app yoyote inayotumia .ics."],["Yes. Bofya the \"Export kwenda calendar\" button to download an .ics file. Import it into Google Calendar, Apple Calendar, Outlook, or any calendar app that supports .ics files.","Ndiyo. Bofya \"Export kwenda calendar\" kupakua faili la .ics. Liingize kwenye Google Calendar, Apple Calendar, Outlook au app yoyote inayotumia .ics."],["The Siku za Kazi counts business days between two dates, excluding weekends and public holidays kwa Afrikan countries including Nigeria, Kenya, South Africa, and Ghana. Enter your start and end dates, select your country, and the tool shows the exact number of working days along with a calendar view highlighting excluded days. It is essential for calculating project timelines, employee leave balances, contract durations, and payment terms that reference business days.","Siku za Kazi huhesabu business days kati ya tarehe mbili, ikiondoa weekends na likizo za umma kwa nchi zilizopo kwenye source kama Nigeria, Kenya, South Africa na Ghana. Weka tarehe ya kuanza na mwisho, chagua nchi, kisha zana itaonyesha idadi ya siku za kazi na calendar view ya siku zilizoondolewa. Tumia kwa project timelines, leave, contract durations na masharti ya malipo yanayotaja business days."],["The Working Days Calculator counts business days between two dates, excluding weekends and public holidays for African countries including Nigeria, Kenya, South Africa, and Ghana. Enter your start and end dates, select your country, and the tool shows the exact number of working days along with a calendar view highlighting excluded days. It is essential for calculating project timelines, employee leave balances, contract durations, and payment terms that reference business days.","Siku za Kazi huhesabu business days kati ya tarehe mbili, ikiondoa weekends na likizo za umma kwa nchi zilizopo kwenye source kama Nigeria, Kenya, South Africa na Ghana. Weka tarehe ya kuanza na mwisho, chagua nchi, kisha zana itaonyesha idadi ya siku za kazi na calendar view ya siku zilizoondolewa. Tumia kwa project timelines, leave, contract durations na masharti ya malipo yanayotaja business days."],["HR managers, project planners, payroll administrators, and kazi ya freelancers rely on business day calculations to set realistic deadlines and payment schedules.","Wasimamizi wa HR, project planners, payroll admins na kazi ya freelancers hutumia business day calculations kupanga deadlines na ratiba za malipo kwa uhalisia."],["This free online age calculator instantly computes your exact age","Kikokotoo hiki cha umri hukadiria umri wako"],["from your date of birth. It is perfect for filling out official forms, verifying eligibility requirements, or simply satisfying curiosity about how many days you have been alive.","kutokana na tarehe yako ya kuzaliwa. Kinafaa kwa kupanga fomu, eligibility au kujua siku ulizoishi, lakini si uthibitisho rasmi."],["The tool accounts for leap years and varying month lengths to provide accurate age calculations in years, months, weeks, days, hours, minutes, and seconds.","Zana huzingatia leap years na urefu tofauti wa miezi ili kutoa makadirio ya umri kwa miaka, miezi, wiki, siku, saa, dakika na sekunde."],["How does the age calculator work?","Kikokotoo cha umri hufanyaje kazi?"],["Enter your date of birth and the calculator computes the exact difference between that date and today, broken down into years, months, days, hours, and minutes. It accounts for leap years and varying month lengths.","Weka tarehe yako ya kuzaliwa na kikokotoo kitakadiria tofauti kati ya tarehe hiyo na leo, kwa miaka, miezi, siku, saa na dakika. Huzingatia leap years na urefu tofauti wa miezi."],["Yes. You can optionally set a custom \"Hesabu at\" date to find the age at any specific point in time, not just today.","Ndiyo. Unaweza kuweka tarehe maalum ya \"Hesabu hadi\" kupata umri kwenye siku yoyote, si leo tu."],["Yes. Check the \"Ondoa zilizochaguliwa kwenye list\" option and each picked name will be automatically removed from the textarea, so they cannot be picked again.","Ndiyo. Weka chaguo la \"Ondoa zilizochaguliwa kwenye list\" na kila jina lililochaguliwa litaondolewa kwenye textarea ili lisichaguliwe tena."],["The Gharama ya Mkutano reveals the true financial cost of your meetings by multiplying participant salaries, meeting duration, and overhead factors. Enter the number of attendees, their average annual salary, and the meeting length, and the tool shows you exactly how much that meeting costs your organisation. It supports multiple currencies including Nigerian Naira, South African Rand, and Kenyan Shilling. Use it to justify reducing unnecessary meetings, shortening agendas, or trimming invite lists.","Gharama ya Mkutano hukadiria gharama ya kifedha ya meetings kwa kutumia salaries za washiriki, muda wa meeting na overhead factors. Weka idadi ya washiriki, wastani wa salary ya mwaka na muda wa meeting, kisha zana itaonyesha makadirio ya gharama. Inaunga mkono currencies kadhaa kama Naira ya Nigeria, Rand ya South Africa na Shilling ya Kenya. Tumia kama mwongozo wa kupunguza meetings zisizo muhimu, kufupisha agenda au kupunguza invite list."],["The AfroTools Event Countdown Timer calculates the precise time remaining between now and your target date. It updates ","Countdown ya Tukio hukadiria muda uliobaki kati ya sasa na tarehe ya tukio. Husasisha "],[" in real-time, showing days, hours, minutes, and seconds remaining. The timer runs entirely in your browser — no server calls needed."," moja kwa moja, ikionyesha siku, saa, dakika na sekunde zilizobaki. Timer hufanya kazi kwenye browser yako."],["Enter a name for your event (e.g., \"WAEC Results\", \"Wedding Day\")","Weka jina la tukio, kwa mfano \"Matokeo ya WAEC\" au \"Siku ya harusi\""],["Click \"Start Countdown\" to begin the live timer","Bofya \"Anza Countdown\" kuanza timer ya moja kwa moja"],["Click \"Save This Countdown\" to bookmark it in your browser","Bofya \"Hifadhi countdown hii\" kuihifadhi kwenye browser yako"],["Businesses track product launches, funding deadlines, and fiscal year-end. Families count down to ","Biashara hufuatilia product launches, deadlines za funding na mwisho wa mwaka wa fedha. Familia huhesabu siku hadi "],[" like Eid, Christmas, and Africa Day. According to "," kama Eid, Christmas na Africa Day. Kwa muktadha wa "],[" celebrations, May 25th is observed across the continent.",", tarehe 25 Mei hutambuliwa katika bara."],["Yes. You can optionally set a custom \"Calculate at\" date to find the age at any specific point in time, not just today.","Ndiyo. Unaweza kuweka tarehe maalum ya \"Hesabu hadi\" kupata umri kwenye siku yoyote, si leo tu."],["This free online age calculator instantly computes your exact age in years, months, weeks, days, hours, and even seconds from your date of birth. It is perfect for filling out official forms, verifying eligibility requirements, or simply satisfying curiosity about how many days you have been alive. The tool accounts for leap years and varying month lengths to deliver precise results every time. Students, parents, HR professionals, and anyone who needs accurate age calculations will find this tool invaluable. Just enter your birth date and the calculator does the rest, showing a detailed breakdown of your age in every unit of time.","Kikokotoo hiki cha umri hukadiria umri wako kwa miaka, miezi, wiki, siku, saa na hata sekunde kutokana na tarehe ya kuzaliwa. Kinafaa kwa kupanga fomu, eligibility au kujua siku ulizoishi, lakini si uthibitisho rasmi wa umri. Zana huzingatia leap years na urefu tofauti wa miezi na huonyesha breakdown ya umri kwa vipimo mbalimbali vya muda."],["Africa's median age","Wastani wa umri Afrika"],[" is just 19.7 years — the youngest continent on Earth. Nigeria's median age is 18.1, Kenya's is 20.0, and South Africa's is 27.6."," ni takribani miaka 19.7, moja ya takwimu zinazotajwa kuonyesha bara lenye watu wengi vijana. Takwimu za nchi hutofautiana na hubadilika kwa muda."],["By 2050, Africa will be home to over 2.5 billion people, with 60% under age 25.","Makadirio ya idadi ya watu hubadilika, hivyo tumia sehemu hii kama muktadha wa jumla na hakiki takwimu rasmi unapohitaji usahihi."],["Yes. Check the \"Remove picked items from list\" option and each picked name will be automatically removed from the textarea, so they cannot be picked again.","Ndiyo. Weka chaguo la \"Ondoa zilizochaguliwa kwenye list\" na kila jina lililochaguliwa litaondolewa kwenye textarea ili lisichaguliwe tena."],["The Team Assigner randomly distributes a list of names into groups. Enter names, choose how many teams, and the tool shuffles and assigns everyone fairly. Great for group projects, sports, or team-building exercises.","Team Assigner hugawa orodha ya majina kwenye groups kwa nasibu. Weka majina, chagua idadi ya timu, kisha zana itachanganya na kugawa watu. Inafaa kwa group projects, michezo au team-building."],["The Meeting Cost Calculator reveals the true financial cost of your meetings by multiplying participant salaries, meeting duration, and overhead factors. Enter the number of attendees, their average annual salary, and the meeting length, and the tool shows you exactly how much that meeting costs your organisation. It supports multiple currencies including Nigerian Naira, South African Rand, and Kenyan Shilling. Use it to justify reducing unnecessary meetings, shortening agendas, or trimming invite lists. Managers, team leads, and executives who want to foster a culture of productive, cost-conscious meetings will find this calculator eye-opening and actionable.","Gharama ya Mkutano hukadiria gharama ya kifedha ya meetings kwa kutumia salaries za washiriki, muda wa meeting na overhead factors. Weka idadi ya washiriki, wastani wa salary ya mwaka na muda wa meeting, kisha zana itaonyesha makadirio ya gharama. Inaunga mkono currencies kadhaa kama Naira ya Nigeria, Rand ya South Africa na Shilling ya Kenya. Tumia kama mwongozo wa kupunguza meetings zisizo muhimu, kufupisha agenda au kupunguza invite list."],["The AfroTools Kubadilisha Vipimo is a comprehensive measurement conversion tool spanning 15 categories with special support kwa Afrika units. Convert between length, weight, temperature, area, volume, speed, fuel economy, cooking measurements, data storage, energy, pressure, and time units.","AfroTools Kubadilisha Vipimo ni zana ya kubadilisha vipimo katika categories kadhaa, ikijumuisha units zinazotumika Afrika. Badilisha urefu, uzito, joto, eneo, volume, speed, fuel economy, vipimo vya kupika, data storage, nishati, pressure na muda."],["What sets this converter apart is its inclusion of African-specific units that are commonly used across the continent — acres and plots (used in Nigerian land measurement), morgen (the South African land unit), feddan (used in Egypt and Sudan), and local cooking measurements.","Kinachosaidia hapa ni kuwepo kwa units zinazotumika katika muktadha wa Afrika, kama acres, plots, morgen, feddan na vipimo vya mapishi. Hakiki conversion muhimu kabla ya kutumia kwa nyaraka rasmi."],["The AfroTools Kikokotoo Umri computes the exact difference between your date of birth and today (or any date you choose). Unlike simple age calculators that only show years, our tool breaks down your age into years, months, days, hours, and minutes","AfroTools Kikokotoo Umri hukadiria tofauti kati ya tarehe yako ya kuzaliwa na leo, au tarehe nyingine unayochagua. Badala ya kuonyesha miaka pekee, huonyesha breakdown ya miaka, miezi, siku, saa na dakika"],["It correctly accounts for leap years, varying month lengths (28-31 days), and time zone differences.","Huzingatia leap years, urefu tofauti wa miezi na tofauti za time zone kwa makadirio ya planning."],["Happy Birthday! You were born exactly years ago today.","Hongera kwa birthday! Ulizaliwa miaka kadhaa iliyopita siku kama ya leo."],["What sets this converter apart is its inclusion of African-specific units that are commonly used across the continent — acres and plots (used in Nigerian land measurement), morgen (the South African land unit), and other region-specific measurements that standard converters typically ignore.","Kinachosaidia ni kujumuisha units za muktadha wa Afrika kama acres, plots, morgen na vipimo vingine vya kanda ambavyo converters za kawaida huacha."],["Simply select a category, choose your \"from\" and \"to\" units, enter a value, and get instant results.","Chagua category, chagua unit ya kuanzia na ya mwisho, weka thamani, kisha upate matokeo mara moja."],["The tool handles both metric and imperial systems, making it useful for students, engineers, cooks, traders, land buyers, and professionals across Africa.","Zana inashughulikia metric na imperial systems, hivyo inafaa kwa wanafunzi, wahandisi, wapishi, wafanyabiashara, wanunuzi wa ardhi na professionals Afrika."],["Bofya \"Hesabu umri\" to see your detailed age breakdown","Bofya \"Hesabu umri\" kuona breakdown ya umri wako"],["The calculator also identifies your Western zodiac sign based on your birth date and your generational cohort (Baby Boomer, Gen X, Millennial, Gen Z, or Gen Alpha).","Calculator pia huonyesha zodiac sign na generation cohort kulingana na tarehe ya kuzaliwa, kama Baby Boomer, Gen X, Millennial, Gen Z au Gen Alpha."],["These labels are for fun and cultural context only, not official records.","Labels hizi ni kwa muktadha wa burudani na utamaduni tu, si rekodi rasmi."],["The AfroTools Unit Converter is a comprehensive measurement conversion tool spanning 15 categories with special support for African units. Convert between length, weight, temperature, area, volume, speed, fuel economy, cooking measurements, data storage, energy, pressure, and time units. What sets this converter apart is its inclusion of African-specific units that are commonly used across the continent — acres and plots (used in Nigerian land measurement), morgen (the South African land unit), and other region-specific measurements that standard converters typically ignore. Simply select a category, choose your \"from\" and \"to\" units, enter a value, and get instant results. The tool handles both metric and imperial systems, making it useful for international trade, academic work, cooking, construction, and everyday calculations. The cooking category includes conversions between cups, tablespoons, millilitres, and grams for common ingredients — perfect for following recipes from different countries. All conversions are calculated instantly in your browser with no internet connection required after the page loads. This is a daily-use tool for students, professionals, traders, and anyone working across measurement systems.","AfroTools Kubadilisha Vipimo ni zana ya kubadilisha vipimo katika categories kadhaa, ikijumuisha units zinazotumika Afrika. Badilisha urefu, uzito, joto, eneo, volume, speed, fuel economy, vipimo vya kupika, data storage, nishati, pressure na muda. Ina units za muktadha wa Afrika kama acres, plots na morgen, pamoja na vipimo vingine vya kanda. Chagua category, unit ya kuanzia na ya mwisho, kisha weka thamani upate RESULT. Matokeo ni ya planning, hivyo hakiki vipimo muhimu kabla ya matumizi rasmi."],["The AfroTools Age Calculator computes the exact difference between your date of birth and today (or any date you choose). Unlike simple age calculators that only show years, our tool breaks down your age into ","AfroTools Kikokotoo Umri hukadiria tofauti kati ya tarehe yako ya kuzaliwa na leo, au tarehe nyingine unayochagua. Badala ya kuonyesha miaka pekee, huonyesha breakdown ya "],["years, months, days, hours, and minutes","miaka, miezi, siku, saa na dakika"],[". It correctly accounts for leap years, varying month lengths (28-31 days), and time zone differences.",". Huzingatia leap years, urefu tofauti wa miezi na tofauti za time zone kwa makadirio ya planning."],["Optionally set a \"Calculate At\" date to find your age at a specific point","Ukitaka, weka tarehe ya \"Hesabu hadi\" kupata umri kwenye siku maalum"],["Click \"Calculate Age\" to see your detailed age breakdown","Bofya \"Hesabu umri\" kuona breakdown ya umri wako"],["The calculator also identifies your ","Calculator pia huonyesha "],["Western zodiac sign","zodiac sign"],[" based on your birth date and your "," kulingana na tarehe ya kuzaliwa na "],["generational cohort","generation cohort"],[" (Baby Boomer, Gen X, Millennial, Gen Z, or Gen Alpha). These are commonly referenced in African and global pop culture. According to "," kama Baby Boomer, Gen X, Millennial, Gen Z au Gen Alpha. Labels hizi ni kwa muktadha wa utamaduni tu. Kwa maelezo ya "],[", understanding your cohort can provide cultural context.",", generation cohort inaweza kutoa muktadha wa jumla."],["Loading...","Inapakia..."],["Processing...","Inachakata..."],["No results","Hakuna matokeo"],["No saved events","Hakuna matukio yaliyohifadhiwa"],["Select a country","Chagua nchi"],["Select country","Chagua nchi"],["Enter a date","Weka tarehe"],["Enter event name","Weka jina la tukio"],["Add item","Ongeza item"],["Remove","Ondoa"],["Save Event","Hifadhi tukio"],["Start Timer","Anza timer"],["Stop Timer","Simamisha timer"],["Generate","Tengeneza"],["Copy to clipboard","Nakili kwenye clipboard"],["Export CSV","Export CSV"],["Export .ics","Export .ics"],["Download .ics","Pakua .ics"],["Add Course","Ongeza course"],["Course Name","Jina la course"],["Credits","Credits"],["Grade","Alama"],["Your GPA","GPA yako"],["Your CGPA","CGPA yako"]]);
+  function localizeText(node){
+    const raw = node.textContent || '';
+    const trimmed = raw.trim();
+    if (!trimmed || !textMap.has(trimmed)) return;
+    node.textContent = raw.replace(trimmed, textMap.get(trimmed));
+  }
+  function walk(root){
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node){
+        const parent = node.parentElement;
+        if (!parent || /^(SCRIPT|STYLE|NOSCRIPT)$/i.test(parent.tagName)) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(localizeText);
+    if (root.querySelectorAll) {
+      root.querySelectorAll('[placeholder],[aria-label],[title],input[type="button"],input[type="submit"]').forEach(el => {
+        ['placeholder','aria-label','title','value'].forEach(attr => {
+          const value = el.getAttribute(attr);
+          if (value && textMap.has(value.trim())) el.setAttribute(attr, textMap.get(value.trim()));
+        });
+      });
+    }
+  }
+  function run(){ if (document.body) walk(document.body); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
+  new MutationObserver(mutations => {
+    for (const mutation of mutations) mutation.addedNodes.forEach(node => {
+      if (node.nodeType === Node.TEXT_NODE) localizeText(node);
+      else if (node.nodeType === Node.ELEMENT_NODE) walk(node);
+    });
+  }).observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script>
+  <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
+</body>
+</html>

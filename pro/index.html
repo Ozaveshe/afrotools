@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AfroTools Pro - Payroll Workspace, Vault, and Pro Apps</title>
+  <meta name="description" content="Upgrade to AfroTools Pro for AfroPayroll operations, clean export packets, expanded saved history where supported, Pro Vault labels, and early-access app workspaces.">
+  <meta property="og:title" content="AfroTools Pro - Payroll Workspace, Vault, and Apps">
+<meta property="og:url" content="https://afrotools.com/pro/">
+<meta property="og:type" content="website">
+  <meta property="og:description" content="AfroPayroll operations, clean export packets, Pro Vault labels, and early-access app workspaces with honest local/account data boundaries.">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/afrotools-pro.webp">
+  <meta property="og:site_name" content="AfroTools">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
+
+/* Hero */
+.pro-hero{background:linear-gradient(90deg,rgba(8,20,38,.88),rgba(8,20,38,.62) 48%,rgba(8,20,38,.24)),url('/assets/img/tools/afrotools-pro.webp') center/cover no-repeat;min-height:72vh;padding:96px 24px 68px;text-align:left;position:relative;overflow:hidden;display:flex;align-items:center}
+.pro-hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,0));pointer-events:none}
+.pro-hero-inner{position:relative;z-index:1;max-width:720px;margin:0 auto;width:100%}
+.pro-hero .badge{display:inline-block;background:rgba(255,255,255,.16);color:#fff;font-size:12px;font-weight:700;padding:6px 16px;border-radius:100px;letter-spacing:.08em;margin-bottom:20px;border:1px solid rgba(255,255,255,.28)}
+.pro-hero h1{font-size:clamp(38px,7vw,72px);font-weight:800;color:#fff;margin:0 0 16px;line-height:.98;letter-spacing:0}
+.pro-hero h1 span{color:#F5A623}
+.pro-hero p{font-size:clamp(16px,2vw,20px);color:rgba(255,255,255,.82);max-width:640px;margin:0 0 30px;line-height:1.65}
+.hero-actions{display:flex;align-items:center;justify-content:flex-start;gap:12px;flex-wrap:wrap}
+.hero-cta{display:inline-block;background:#fff;color:var(--color-primary);padding:16px 40px;border-radius:980px;font-weight:700;font-size:17px;text-decoration:none;transition:transform .15s,box-shadow .15s}
+.hero-cta.secondary{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.38)}
+.hero-cta:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.hero-sub{font-size:13px;color:rgba(255,255,255,.5);margin-top:12px}
+
+/* Guarantee strip */
+.guarantee-strip{background:#DBEAFE;padding:16px 24px;text-align:center;font-size:14px;font-weight:600;color:#1e40af;display:flex;align-items:center;justify-content:center;gap:8px}
+.guarantee-strip svg{flex-shrink:0}
+
+/* Pro app lab */
+.pro-lab{max-width:1080px;margin:0 auto;padding:56px 24px 12px}
+.pro-lab-head{max-width:720px;margin-bottom:22px}
+.pro-lab-eyebrow{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--color-primary);margin-bottom:8px}
+.pro-lab h2{font-size:clamp(24px,4vw,34px);font-weight:760;line-height:1.15;margin:0 0 10px;color:#111827;letter-spacing:0}
+.pro-lab p{font-size:15px;line-height:1.65;color:#5f6b7a;margin:0}
+.pro-account-status{display:flex;align-items:center;justify-content:space-between;gap:14px;background:#F8FAFC;border:1px solid #D8E2EE;border-radius:12px;padding:15px;font-size:13px;font-weight:650;color:#334155;margin-bottom:18px}
+.pro-account-status strong{color:#111827}
+.pro-account-status .status-copy{display:grid;gap:10px;min-width:0}
+.pro-account-status .status-actions{display:flex;flex-wrap:wrap;gap:8px}
+.pro-account-status .status-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:8px 12px;border-radius:8px;border:1px solid #C7D7EA;background:#fff;color:#111827;font-size:12px;font-weight:700;text-decoration:none}
+.pro-account-status .status-actions a.primary{background:var(--color-primary);border-color:var(--color-primary);color:#fff}
+.pro-account-status .status-pill{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:5px 10px;background:#E0F2FE;color:#075985;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+.pro-account-status.is-pro{background:#ECFDF5;border-color:#A7F3D0;color:#065F46}
+.pro-account-status.is-free{background:#FFF7ED;border-color:#FDBA74;color:#9A3412}
+.pro-account-status.is-signed-out{background:#EFF6FF;border-color:#BFDBFE;color:#1E3A8A}
+.plan-boundary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:0 0 18px}
+.plan-boundary-card{border:1px solid #D8E2EE;border-radius:12px;background:#fff;padding:16px;display:grid;gap:10px}
+.plan-boundary-card h3{font-size:15px;font-weight:800;line-height:1.2;color:#111827;margin:0;letter-spacing:0}
+.plan-boundary-card p{font-size:12px;line-height:1.5;color:#64748B;margin:0}
+.plan-boundary-card ul{list-style:none;padding:0;margin:0;display:grid;gap:7px}
+.plan-boundary-card li{display:flex;align-items:flex-start;gap:8px;font-size:12px;line-height:1.45;color:#475569}
+.plan-boundary-card li::before{content:"";width:6px;height:6px;border-radius:50%;background:#94A3B8;flex:0 0 auto;margin-top:5px}
+.plan-boundary-card.pro-side{border-color:#93C5FD;background:#EFF6FF}
+.plan-boundary-card.pro-side li::before{background:var(--color-primary)}
+.plan-boundary-kicker{font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:800;color:#64748B}
+.plan-boundary-card.pro-side .plan-boundary-kicker{color:#1D4ED8}
+.pro-lab-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:18px;align-items:stretch}
+.pro-lab-card{border:1px solid #D8E2EE;border-radius:14px;background:#fff;padding:22px;box-shadow:0 10px 28px rgba(15,23,42,.06)}
+.pro-lab-card h3{font-size:18px;line-height:1.25;margin:0 0 8px;color:#111827;font-weight:700}
+.pro-lab-card ul{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:9px}
+.pro-lab-card li{font-size:13px;line-height:1.45;color:#475569;display:flex;gap:9px}
+.pro-lab-card li::before{content:"";width:7px;height:7px;border-radius:50%;background:#0062CC;flex-shrink:0;margin-top:6px}
+.pro-lab-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.pro-lab-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:10px 16px;border-radius:9px;font-size:13px;font-weight:700;text-decoration:none;border:1px solid #D8E2EE;color:#111827;background:#fff}
+.pro-lab-actions a.primary{background:var(--color-primary);border-color:var(--color-primary);color:#fff}
+.pro-lab-small{font-size:12px;line-height:1.55;color:#64748B;margin-top:14px}
+
+/* Sellable product packaging */
+.product-stack{max-width:1080px;margin:0 auto;padding:56px 24px 10px}
+.product-stack-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:18px}
+.product-stack-head h2{font-size:clamp(24px,4vw,34px);font-weight:760;line-height:1.15;margin:0 0 8px;color:#111827;letter-spacing:0}
+.product-stack-head p{font-size:15px;line-height:1.6;color:#5f6b7a;margin:0;max-width:720px}
+.product-stack-head .hero-cta.secondary{background:#fff;color:#111827;border:1px solid #C7D7EA;box-shadow:none}
+.product-stack-head .hero-cta.secondary:hover{border-color:var(--color-primary);color:var(--color-primary);box-shadow:0 6px 20px rgba(15,23,42,.08)}
+.product-stack-grid{display:grid;grid-template-columns:1.18fr .91fr .91fr;gap:14px}
+.product-card{background:#fff;border:1px solid #D8E2EE;border-radius:12px;padding:20px;display:grid;gap:12px;box-shadow:0 10px 26px rgba(15,23,42,.05)}
+.product-card.primary{border-color:#93C5FD;background:#EFF6FF}
+.product-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:900;color:#1D4ED8}
+.product-card h3{font-size:18px;line-height:1.22;margin:0;color:#111827;font-weight:800;letter-spacing:0}
+.product-card p{font-size:13px;line-height:1.55;color:#475569;margin:0}
+.product-card ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.product-card li{font-size:12px;line-height:1.45;color:#475569;display:flex;gap:8px}
+.product-card li::before{content:"";width:6px;height:6px;border-radius:50%;background:#0F766E;flex:0 0 auto;margin-top:5px}
+.product-card .product-note{border:1px solid #FDE68A;background:#FFFBEB;color:#78350F;border-radius:8px;padding:10px;font-size:12px;line-height:1.45}
+.buyer-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;max-width:1080px;margin:0 auto;padding:26px 24px 6px}
+.buyer-card{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:18px}
+.buyer-card strong{display:block;font-size:14px;line-height:1.25;color:#111827;margin-bottom:6px}
+.buyer-card span{display:block;font-size:12px;line-height:1.5;color:#64748B}
+
+/* Pricing cards */
+.pricing-section{max-width:880px;margin:0 auto;padding:80px 24px}
+.pricing-section h2{font-size:clamp(24px,4vw,36px);font-weight:760;text-align:center;margin:0 0 12px;color:#111827;letter-spacing:0}
+.pricing-section .subtitle{text-align:center;font-size:16px;color:#6B7280;margin:0 0 48px;line-height:1.6}
+.pricing-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px}
+.p-card{background:#fff;border-radius:18px;padding:40px 32px;border:1.5px solid #E5E7EB;position:relative}
+.p-card.featured{border-color:var(--color-primary);box-shadow:0 8px 40px rgba(0,98,204,.15)}
+.p-card.featured::before{content:'BEST VALUE';position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--color-primary),#005cc5);color:#fff;font-size:11px;font-weight:800;letter-spacing:.08em;padding:5px 20px;border-radius:100px}
+.p-card-name{font-size:14px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+.p-card .price{font-size:48px;font-weight:800;color:#111827;line-height:1}
+.p-card .price span{font-size:16px;font-weight:500;color:#9CA3AF}
+.p-card .price-detail{font-size:13px;color:#9CA3AF;margin:6px 0 24px}
+.p-card ul{list-style:none;padding:0;margin:0 0 32px}
+.p-card li{font-size:14px;color:#374151;padding:8px 0;display:flex;align-items:flex-start;gap:10px;line-height:1.5}
+.p-card li::before{content:'';flex-shrink:0;width:20px;height:20px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Ccircle cx='10' cy='10' r='10' fill='%23DBEAFE'/%3E%3Cpath d='M6 10l3 3 5-5' stroke='%23007AFF' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat}
+.p-card .card-cta{display:block;width:100%;padding:14px;border:none;border-radius:980px;font-size:15px;font-weight:700;cursor:pointer;text-align:center;text-decoration:none;transition:transform .15s,box-shadow .15s}
+.p-card .card-cta:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.cta-monthly{background:#F3F4F6;color:#374151}
+.cta-annual{background:var(--color-primary);color:#fff}
+
+/* Feature comparison */
+.compare-section{max-width:960px;margin:0 auto;padding:0 24px 80px}
+.compare-section h2{font-size:clamp(24px,4vw,36px);font-weight:760;text-align:center;margin:0 0 48px;color:#111827;letter-spacing:0}
+.compare-table{width:100%;border-collapse:collapse}
+.compare-table th,.compare-table td{padding:14px 20px;text-align:left;border-bottom:1px solid #F3F4F6;font-size:14px}
+.compare-table thead th{font-weight:700;color:#6B7280;background:#F9FAFB;font-size:13px;text-transform:uppercase;letter-spacing:.05em}
+.compare-table th:not(:first-child),.compare-table td:not(:first-child){text-align:center;width:160px}
+.compare-table td.feat{font-weight:500;color:#374151}
+.check{color:var(--color-primary);font-weight:700;font-size:18px}
+.cross{color:#D1D5DB;font-size:18px}
+.compare-table td strong{color:var(--color-primary);font-weight:700}
+
+/* Pro fit */
+.testimonials{background:#F9FAFB;padding:80px 24px}
+.testimonials h2{font-size:clamp(24px,4vw,36px);font-weight:760;text-align:center;margin:0 0 48px;color:#111827;letter-spacing:0}
+.testimonial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:960px;margin:0 auto}
+.testimonial-card{background:#fff;border-radius:18px;padding:28px 24px;border:1.5px solid #E5E7EB}
+.testimonial-card .stars{display:inline-flex;align-items:center;border:1px solid #BFDBFE;background:#EFF6FF;color:#1E40AF;border-radius:999px;padding:4px 10px;font-size:11px;font-weight:800;text-transform:uppercase;margin-bottom:12px;letter-spacing:.04em}
+.testimonial-card p{font-size:14px;color:#374151;line-height:1.7;margin:0 0 16px}
+.testimonial-card .author{font-size:13px;font-weight:600;color:#111827}
+.testimonial-card .author span{font-weight:400;color:#9CA3AF}
+
+/* FAQ */
+.faq-section{max-width:720px;margin:0 auto;padding:80px 24px}
+.faq-section h2{font-size:clamp(24px,4vw,36px);font-weight:760;text-align:center;margin:0 0 48px;color:#111827;letter-spacing:0}
+.faq-item{border:1px solid #E5E7EB;border-radius:12px;margin-bottom:12px;overflow:hidden}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;cursor:pointer;font-size:15px;font-weight:600;color:#111827;background:#fff;border:none;width:100%;text-align:left;font-family:inherit}
+.faq-q:hover{background:#F9FAFB}
+.faq-q .arrow{transition:transform .2s;font-size:18px;color:#9CA3AF}
+.faq-item.open .faq-q .arrow{transform:rotate(180deg)}
+.faq-a{padding:0 20px 18px;font-size:14px;color:#6B7280;line-height:1.7;display:none}
+.faq-item.open .faq-a{display:block}
+
+/* Bottom CTA */
+.bottom-cta{background:linear-gradient(135deg,#0a0f1a,#1a3a6b);padding:80px 24px;text-align:center}
+.bottom-cta h2{font-size:clamp(24px,4vw,36px);font-weight:760;color:#fff;margin:0 0 12px;letter-spacing:0}
+.bottom-cta p{font-size:16px;color:rgba(255,255,255,.6);margin:0 0 32px;line-height:1.6}
+.bottom-cta a{display:inline-block;background:#fff;color:var(--color-primary);padding:16px 40px;border-radius:980px;font-weight:700;font-size:17px;text-decoration:none;transition:transform .15s}
+.bottom-cta a:hover{transform:translateY(-2px)}
+.bottom-cta .cta-sub{font-size:13px;color:rgba(255,255,255,.4);margin-top:12px}
+:root[data-theme="dark"] body{background:var(--color-bg);color:var(--color-text)}
+:root[data-theme="dark"] .pro-lab h2,
+:root[data-theme="dark"] .product-stack-head h2,
+:root[data-theme="dark"] .pricing-section h2,
+:root[data-theme="dark"] .compare-section h2,
+:root[data-theme="dark"] .testimonials h2,
+:root[data-theme="dark"] .faq-section h2,
+:root[data-theme="dark"] .pro-lab-card h3,
+:root[data-theme="dark"] .product-card h3,
+:root[data-theme="dark"] .buyer-card strong,
+:root[data-theme="dark"] .plan-boundary-card h3,
+:root[data-theme="dark"] .p-card .price,
+:root[data-theme="dark"] .compare-table td.feat,
+:root[data-theme="dark"] .faq-q{color:var(--color-text)}
+:root[data-theme="dark"] .pro-lab p,
+:root[data-theme="dark"] .product-stack-head p,
+:root[data-theme="dark"] .product-card p,
+:root[data-theme="dark"] .product-card li,
+:root[data-theme="dark"] .buyer-card span,
+:root[data-theme="dark"] .pro-lab-card li,
+:root[data-theme="dark"] .plan-boundary-card p,
+:root[data-theme="dark"] .plan-boundary-card li,
+:root[data-theme="dark"] .pricing-section .subtitle,
+:root[data-theme="dark"] .p-card li,
+:root[data-theme="dark"] .faq-a{color:var(--color-text-muted)}
+:root[data-theme="dark"] .pro-lab-card,
+:root[data-theme="dark"] .product-card,
+:root[data-theme="dark"] .buyer-card,
+:root[data-theme="dark"] .plan-boundary-card,
+:root[data-theme="dark"] .p-card,
+:root[data-theme="dark"] .faq-item,
+:root[data-theme="dark"] .faq-q{background:var(--color-bg-card);border-color:var(--color-border)}
+:root[data-theme="dark"] .plan-boundary-card.pro-side{background:#0F1A2A;border-color:#1D4ED8}
+:root[data-theme="dark"] .product-card.primary{background:#0F1A2A;border-color:#1D4ED8}
+:root[data-theme="dark"] .product-card .product-note{background:#241A0A;border-color:#92400E;color:#FDE68A}
+:root[data-theme="dark"] .testimonials{background:var(--color-bg-subtle)}
+:root[data-theme="dark"] .testimonial-card,
+:root[data-theme="dark"] .compare-table thead th,
+:root[data-theme="dark"] #currency-select{background:var(--color-bg-card);border-color:var(--color-border);color:var(--color-text)}
+:root[data-theme="dark"] .compare-table th,
+:root[data-theme="dark"] .compare-table td{border-bottom-color:var(--color-border)}
+:root[data-theme="dark"] .pro-hero .hero-cta{background:#fff!important;color:#003f8f!important;border-color:#fff!important;box-shadow:0 16px 36px rgba(0,0,0,.26)}
+:root[data-theme="dark"] .pro-hero .hero-cta.secondary{background:rgba(255,255,255,.1)!important;color:#fff!important;border-color:rgba(255,255,255,.42)!important}
+
+/* Responsive */
+@media(max-width:768px){
+  .pro-hero{min-height:68vh;padding:78px 20px 58px}
+  .pro-lab-grid{grid-template-columns:1fr}
+  .product-stack-head{display:block}
+  .product-stack-grid,.buyer-grid{grid-template-columns:1fr}
+  .pro-account-status{align-items:flex-start;flex-direction:column}
+  .plan-boundary{grid-template-columns:1fr}
+  .pricing-grid{grid-template-columns:1fr;gap:20px}
+  .p-card{padding:32px 24px}
+  .testimonial-grid{grid-template-columns:1fr;gap:16px}
+  .compare-table th,.compare-table td{padding:10px 12px;font-size:13px}
+  .compare-table th:not(:first-child),.compare-table td:not(:first-child){width:100px}
+}
+@media(max-width:480px){
+  .pro-hero h1{font-size:28px}
+  .pro-hero{text-align:left}
+  .p-card .price{font-size:36px}
+}
+</style>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AfroTools Pro - Payroll Workspace, Vault, and Apps">
+<meta name="twitter:description" content="AfroPayroll operations, clean export packets, Pro Vault labels, and early-access app workspaces with honest local/account data boundaries.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/afrotools-pro.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Pro",
+      "item": "https://afrotools.com/pro/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-06-30">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is included in AfroTools Pro today?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "AfroTools Pro includes the Pro workspace, AfroPayroll operating workflows, clean export packets where supported, expanded saved history where supported, Pro Vault labels, Team and Settings routes, and early-access app workspaces that are clearly labelled by readiness."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which Pro app is account-backed now?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "AfroPayroll is the active Pro app with the deepest account-backed lane. Other Pro apps are local previews, review packets, or early-access shells until their account sync and backend models are verified."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Pro replace the free tools?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Free calculators and public discovery stay reachable. Pro adds account-bound operating workflows, cleaner exports, reusable packets, and saved-work convenience on top of the free tools."
+      }
+    }
+  ],
+  "url": "https://afrotools.com/pro/"
+}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/pro/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/pro/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/pro/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/pro/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+
+<!-- Hero -->
+<section class="pro-hero">
+  <div class="pro-hero-inner">
+    <span class="badge">AFROTOOLS PRO</span>
+    <h1>AfroTools Pro</h1>
+    <p>Run African payroll work, export packets, saved histories, and early-access operating workspaces from one account-backed Pro dashboard.</p>
+    <div class="hero-actions">
+      <a href="#pricing" class="hero-cta">Start or manage Pro</a>
+      <a href="/pro/workspace/" class="hero-cta secondary">Open Pro Workspace</a>
+    </div>
+    <div class="hero-sub">AfroPayroll is active today. Other Pro apps stay labelled as local previews until their account data layers are verified.</div>
+  </div>
+</section>
+
+<!-- Account access note -->
+<div class="guarantee-strip">
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="#0062CC"/><path d="M6 10l3 3 5-5" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  Pro checkout, account access, and workspace routes use the same AfroTools sign-in. Free calculators stay public.
+</div>
+
+<!-- Pro App Lab -->
+<section class="pro-lab" aria-labelledby="pro-lab-title">
+  <div class="pro-lab-head">
+    <div class="pro-lab-eyebrow">Paid product map</div>
+    <h2 id="pro-lab-title">A sellable Pro suite without fake readiness</h2>
+    <p>Use the Pro Workspace as the start point for paid work. Payroll is the active operating product; Vault, Team, Settings, and the 20-app directory show what is connected, local-only, sync-pending, or in early access.</p>
+  </div>
+  <div class="pro-account-status" id="pro-account-status">
+    <span>Checking your Pro access...</span>
+    <span class="status-pill">Checking</span>
+  </div>
+  <div class="plan-boundary" aria-label="Free and Pro plan boundaries">
+    <article class="plan-boundary-card">
+      <div class="plan-boundary-kicker">Free</div>
+      <h3>Open tools with clear limits</h3>
+      <p>Free remains useful without pretending it has Pro workflow depth.</p>
+      <ul>
+        <li>AI Advisor: 3 questions per day.</li>
+        <li>Theme follows the device setting automatically.</li>
+        <li>History and exports stay lightweight where supported.</li>
+      </ul>
+    </article>
+    <article class="plan-boundary-card pro-side">
+      <div class="plan-boundary-kicker">Pro</div>
+      <h3>Workspace depth for repeat operators</h3>
+      <p>Pro adds operating surfaces, packets, and labelled saved-work paths without hiding the free calculators.</p>
+      <ul>
+        <li>AI Advisor: unlimited for active Pro accounts.</li>
+        <li>Manual light/dark theme control in Pro Settings.</li>
+        <li>Clean exports, reusable handoff notes, and expanded saved history where supported.</li>
+      </ul>
+    </article>
+  </div>
+  <div class="pro-lab-grid">
+    <article class="pro-lab-card">
+      <h3>AfroPayroll Pro is the anchor product</h3>
+      <p>Built for accountants, small employers, clinics, schools, NGOs, and multi-country operators who need a month-close workflow, not just one calculator.</p>
+      <ul>
+        <li>Browser history plus account-backed payroll data where the AfroPayroll API returns it.</li>
+        <li>Payslip packets, statutory review CSVs, handoff notes, and review warnings.</li>
+        <li>Approval workflow, role views, audit notes, and run dashboard states without pretending salaries or filings were submitted.</li>
+        <li>Country-pack confidence for Nigeria, Kenya, Ghana, South Africa, and next-pack markets.</li>
+      </ul>
+      <div class="pro-lab-actions">
+        <a class="primary" href="/pro/workspace/">Open Pro Workspace</a>
+        <a href="/pro/apps/">Browse Pro Apps</a>
+        <a href="/pro/vault/">Open Pro Vault</a>
+        <a href="/pro/team/">Team</a>
+        <a href="/pro/settings/">Settings</a>
+        <a href="/pro/apps/daily-os/">Explore Daily OS Workspaces</a>
+        <a href="/pro/apps/payroll/">Open AfroPayroll Pro</a>
+        <a href="/tools/payslip-generator/">Start from Payslip Tool</a>
+      </div>
+    </article>
+    <aside class="pro-lab-card">
+      <h3>Why it can sell</h3>
+      <p>The paid layer is not a bigger tool list. It is daily operating software: records, export packets, review queues, WhatsApp-ready notes, team handoff, and affordable vertical workflows.</p>
+      <div class="pro-lab-small">AfroSeller, AfroEvents, and AfroBeauty are the first Daily OS workspaces to deepen because the value can be felt in one working day, even while account sync remains clearly labelled.</div>
+    </aside>
+  </div>
+</section>
+
+<section class="product-stack" aria-labelledby="product-stack-title">
+  <div class="product-stack-head">
+    <div>
+      <div class="pro-lab-eyebrow">Product packaging</div>
+      <h2 id="product-stack-title">What a Pro customer is buying</h2>
+      <p>Pro should feel like a set of products, not a locked brochure. Each product below has a job, a buyer, and a visible data boundary.</p>
+    </div>
+    <a class="hero-cta secondary" href="/business-enquiry/?offer=pro-workspace&amp;source=pro">Discuss team rollout</a>
+  </div>
+  <div class="product-stack-grid">
+    <article class="product-card primary">
+      <div class="product-label">Active product</div>
+      <h3>Payroll month-close workspace</h3>
+      <p>For accountants and employers who need to turn salary rows into a reviewable monthly payroll pack.</p>
+      <ul>
+        <li>Run workspace, employee master, saved runs, review warnings, and export packets.</li>
+        <li>Account-backed payroll data where the AfroPayroll API returns it; browser-local data is labelled as device-only.</li>
+        <li>Country-pack support and source-confidence notes for payroll review.</li>
+      </ul>
+      <div class="product-note">Does not file statutory returns, remit tax, or disburse salaries.</div>
+    </article>
+    <article class="product-card">
+      <div class="product-label">Shared backbone</div>
+      <h3>Vault, Team, and Settings</h3>
+      <p>For repeat operators who need one place to see packets, access state, preferences, and local versus account-backed data labels.</p>
+      <ul>
+        <li>Vault scans known Pro records and shows what is device-only versus cloud-backed.</li>
+        <li>Team shows role models without pretending invites or clients have been created.</li>
+        <li>Settings holds Pro account status and local display preferences.</li>
+      </ul>
+      <div class="product-note">Shared vault sync and team invites stay pending until backed by real APIs.</div>
+    </article>
+    <article class="product-card">
+      <div class="product-label">Early-access modules</div>
+      <h3>Daily OS and control previews</h3>
+      <p>For sellers, service teams, schools, clinics, creators, farms, and operators who want structured local workspaces before full account sync.</p>
+      <ul>
+        <li>AfroSeller, AfroEvents, and AfroBeauty are the priority Daily OS candidates.</li>
+        <li>Tax, Books, HR, Trade, Legal, Grants, Creator, Property, and Stream surfaces stay labelled by readiness.</li>
+        <li>Each preview opens as a workspace, not a fake live integration.</li>
+      </ul>
+      <div class="product-note">Shell apps do not claim bank sync, official filing, legal certification, payment collection, or cloud sync.</div>
+    </article>
+  </div>
+</section>
+
+<section class="buyer-grid" aria-label="Best-fit Pro buyers">
+  <article class="buyer-card"><strong>Accountants and payroll bureaus</strong><span>Use Pro to prepare monthly payroll runs, review warnings, and handoff packets across African clients.</span></article>
+  <article class="buyer-card"><strong>Small employers and NGOs</strong><span>Use Pro to keep payroll, employee readiness, payslip packets, and review notes in one operating flow.</span></article>
+  <article class="buyer-card"><strong>Operators testing a vertical OS</strong><span>Use the Daily OS previews to structure seller, event, beauty, food, school, clinic, farm, or field-service records locally.</span></article>
+</section>
+
+<!-- Pricing Cards -->
+<section class="pricing-section" id="pricing">
+  <h2>Simple Pricing For A Real Workspace</h2>
+  <p class="subtitle">Choose a plan to start checkout, or open the workspace if your signed-in account is already Pro. API and custom business plans are sold separately.</p>
+  <div style="text-align:center;margin-bottom:24px">
+    <label for="currency-select" style="font-size:13px;font-weight:600;color:#6B7280;margin-right:8px">Pay in:</label>
+    <select id="currency-select" style="padding:8px 16px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;background:#fff;color:#111827">
+      <option value="usd">USD</option>
+      <option value="ngn">NGN</option>
+      <option value="kes">KES</option>
+      <option value="zar">ZAR</option>
+      <option value="ghs">GHS</option>
+    </select>
+  </div>
+  <div class="pricing-grid">
+    <!-- Monthly -->
+    <div class="p-card">
+      <div class="p-card-name">Monthly</div>
+      <div class="price"><span data-registry-plan="product:monthly" data-registry-field="title">$5</span> <span data-registry-plan="product:monthly" data-registry-field="suffix">/month</span></div>
+      <p class="price-detail"><span data-registry-plan="product:monthly" data-registry-field="detail">Billed monthly.</span></p>
+      <ul>
+        <li>Everything in Free</li>
+        <li>Unlimited AI Advisor</li>
+        <li>AfroPayroll Pro workspace access</li>
+        <li>Clean PDF and handoff exports where supported</li>
+        <li>Expanded saved history where supported</li>
+        <li>Pro Vault, Team, and Settings routes</li>
+        <li>Early-access local preview workspaces</li>
+        <li>Email support</li>
+      </ul>
+      <a href="/auth/?mode=signup&amp;intent=pro-checkout&amp;next=/pro/" class="card-cta cta-monthly" id="btn-monthly" role="button">Start Pro Checkout</a>
+    </div>
+    <!-- Annual -->
+    <div class="p-card featured">
+      <div class="p-card-name">Annual</div>
+      <div class="price"><span data-registry-plan="product:annual" data-registry-field="title">$30</span> <span data-registry-plan="product:annual" data-registry-field="suffix">/year</span></div>
+      <p class="price-detail"><span data-registry-plan="product:annual" data-registry-field="detail">$2.50/mo - save 50% vs monthly</span></p>
+      <ul>
+        <li>Everything in Monthly</li>
+        <li>Unlimited AI Advisor</li>
+        <li>AfroPayroll Pro workspace access</li>
+        <li>Clean PDF and handoff exports where supported</li>
+        <li>Expanded saved history where supported</li>
+        <li>Pro Vault, Team, and Settings routes</li>
+        <li>Early-access local preview workspaces</li>
+        <li>Priority email support</li>
+      </ul>
+      <a href="/auth/?mode=signup&amp;intent=pro-checkout&amp;next=/pro/" class="card-cta cta-annual" id="btn-annual" role="button">Start Pro Checkout</a>
+    </div>
+  </div>
+</section>
+
+<!-- Feature Comparison -->
+<section class="compare-section">
+  <h2>Free vs Pro - Product Comparison</h2>
+  <table class="compare-table">
+    <thead>
+      <tr><th>Feature</th><th>Free</th><th>Pro (<span data-registry-plan="product:monthly" data-registry-field="title">$5</span><span data-registry-plan="product:monthly" data-registry-field="suffix">/month</span>)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="feat">All public calculators and tools</td><td><span class="check">&#10003;</span></td><td><span class="check">&#10003;</span></td></tr>
+      <tr><td class="feat">Core calculator inputs and results</td><td><span class="check">&#10003;</span></td><td><span class="check">&#10003;</span></td></tr>
+      <tr><td class="feat">AfroPayroll Pro workspace</td><td><span class="cross">&#10007;</span></td><td><strong>Active product</strong></td></tr>
+      <tr><td class="feat">Payroll month-close packets</td><td><span class="cross">&#10007;</span></td><td><strong>Included where supported</strong></td></tr>
+      <tr><td class="feat">AI Advisor</td><td>3 questions/day</td><td><strong>Unlimited</strong></td></tr>
+      <tr><td class="feat">PDF and handoff exports</td><td>Basic where available</td><td><strong>Clean exports where supported</strong></td></tr>
+      <tr><td class="feat">Calculation and workspace history</td><td>Lightweight where supported</td><td><strong>Expanded saved history where supported</strong></td></tr>
+      <tr><td class="feat">Pro Vault data labels</td><td><span class="cross">&#10007;</span></td><td><strong>Device vs account labels</strong></td></tr>
+      <tr><td class="feat">Tax, Books, HR, and Daily OS apps</td><td><span class="cross">&#10007;</span></td><td><strong>Local previews and waitlist modules</strong></td></tr>
+      <tr><td class="feat">Dark/Light Theme</td><td>Auto only</td><td><strong>Manual toggle in Pro Settings</strong></td></tr>
+      <tr><td class="feat">Priority Support</td><td>Community</td><td><strong>Email support</strong></td></tr>
+      <tr><td class="feat">API Plans</td><td><a href="/api/pricing">Free sandbox key</a></td><td><a href="/api/pricing">Growth and Pro sold separately</a></td></tr>
+      <tr><td class="feat">Business rollout</td><td><span class="cross">&#10007;</span></td><td><a href="/business-enquiry/?offer=pro-workspace&amp;source=pro">Team enquiry path</a></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- Pro fit -->
+<section class="testimonials" aria-labelledby="pro-fit-title">
+  <h2 id="pro-fit-title">Where Pro Fits</h2>
+  <div class="testimonial-grid">
+    <div class="testimonial-card">
+      <div class="stars">Payroll operations</div>
+      <p>Use Pro when a one-off calculator is not enough: saved runs, review warnings, month-close packets, support notes, and handoff states.</p>
+      <div class="author">Best for <span>- accountants, employers, NGOs, clinics, schools.</span></div>
+    </div>
+    <div class="testimonial-card">
+      <div class="stars">Backbone workflows</div>
+      <p>Use Pro for cleaner exports, reusable packet naming, account status, theme preference, and device-versus-cloud labels across the workspace.</p>
+      <div class="author">Best for <span>- repeat operators who need proof and handoff discipline.</span></div>
+    </div>
+    <div class="testimonial-card">
+      <div class="stars">Vertical previews</div>
+      <p>Use the app directory to test Tax, Books, HR, Seller, Events, Beauty, and other vertical workflows while readiness labels stay visible.</p>
+      <div class="author">Best for <span>- buyers validating which Pro modules deserve deeper rollout.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <h2>Frequently Asked Questions</h2>
+
+  <div class="faq-item">
+    <button type="button" class="faq-q">What's included in AfroTools Pro?<span class="arrow">&#9660;</span></button>
+    <div class="faq-a">Pro includes the Pro workspace, AfroPayroll operating workflows, clean PDF and handoff exports where supported, expanded saved history where supported, Pro Vault labels, Team and Settings routes, unlimited AI Advisor for active Pro accounts, and early-access app workspaces. API plans are sold separately on the API pricing page.</div>
+  </div>
+
+  <div class="faq-item">
+    <button type="button" class="faq-q">Which app is fully active right now?<span class="arrow">&#9660;</span></button>
+    <div class="faq-a">AfroPayroll is the active Pro app with the deepest account-backed lane. Tax, Books, HR, and the Daily OS modules are useful local previews or waitlist workspaces until their account sync, team records, and backend models are verified.</div>
+  </div>
+
+  <div class="faq-item">
+    <button type="button" class="faq-q">How does checkout activation work?<span class="arrow">&#9660;</span></button>
+    <div class="faq-a">Create a free AfroTools account first, then start checkout. After payment, the success page polls your profile and offers a safe recovery path if Paystack's webhook is delayed.</div>
+  </div>
+
+  <div class="faq-item">
+    <button type="button" class="faq-q">Can I cancel anytime?<span class="arrow">&#9660;</span></button>
+    <div class="faq-a">Billing management belongs in your signed-in account. If automated cancellation is not available for your payment method yet, the support path should say so instead of pretending a completed billing action happened.</div>
+  </div>
+
+  <div class="faq-item">
+    <button type="button" class="faq-q">What payment methods do you accept?<span class="arrow">&#9660;</span></button>
+    <div class="faq-a">Checkout is handled through Paystack where enabled, with local currency options shown before payment. Do not enter payment details unless the checkout page is served by the payment provider or AfroTools account flow.</div>
+  </div>
+
+  <div class="faq-item">
+    <button type="button" class="faq-q">Will free tools ever become paid?<span class="arrow">&#9660;</span></button>
+    <div class="faq-a">Core public calculators and public discovery stay free. Pro adds operating depth on top: payroll workspaces, cleaner exports, saved-work convenience, and labelled app previews. The API has its own free sandbox and paid Growth/Pro path.</div>
+  </div>
+</section>
+
+<!-- Bottom CTA -->
+<section class="bottom-cta">
+  <h2>Ready To Run Pro Work?</h2>
+  <p>Choose a plan for the payroll workspace and Pro app suite, or open the workspace if your account already has Pro.</p>
+  <a href="#pricing">Start or manage Pro</a>
+  <div class="cta-sub"><span data-registry-plan="product:monthly" data-registry-field="title">$5</span><span data-registry-plan="product:monthly" data-registry-field="suffix">/month</span> or <span data-registry-plan="product:annual" data-registry-field="title">$30</span><span data-registry-plan="product:annual" data-registry-field="suffix">/year</span>. Checkout and workspace access use your AfroTools account.</div>
+</section>
+
+<section data-tool-verification-panel aria-labelledby="pro-method-title" style="max-width:820px;margin:0 auto;padding:24px 24px 72px;">
+  <h2 id="pro-method-title" style="font-size:clamp(20px,3vw,28px);font-weight:760;color:#111827;margin:0 0 8px;">How AfroTools Pro works — methodology &amp; data</h2>
+  <div style="font-size:.92rem;line-height:1.7;color:#475569;background:rgba(0,98,204,.04);border:1px solid rgba(0,98,204,.16);border-radius:14px;padding:18px 20px;">
+    <p style="margin:0 0 10px;"><strong>Methodology:</strong> Pro workspaces run the same transparent, source-cited calculation engines as the free AfroTools calculators — every tax band, FX rate, tariff and formula is versioned and shown with its assumptions. Pro adds saved history, multi-scenario comparison, exports and priority data refresh on top of those same engines, so results stay reproducible and auditable.</p>
+    <p style="margin:0;"><strong>Limitations &amp; disclaimer:</strong> Outputs are planning estimates for informational use only and are not tax, legal, or financial advice. Rates and rules change; always verify with the relevant official authority or a licensed professional before filing or committing funds. Billing and workspace access run through your AfroTools account. Last reviewed 2026.</p>
+  </div>
+</section>
+<style>:root[data-theme="dark"] #pro-method-title{color:#f8fafc}:root[data-theme="dark"] [aria-labelledby="pro-method-title"] div{color:#cbd5e1;background:rgba(77,163,255,.08);border-color:rgba(77,163,255,.24)}:root[data-theme="dark"] [aria-labelledby="pro-method-title"] strong{color:#f1f5f9}</style>
+<afro-related-tools data-ssr="1" category="financial" current="afrotools-pro">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Tracker" data-category="financial" data-icon="AA" data-desc="Compare petrol, diesel, and LPG prices across 54 African countries, then estimate generator fuel costs in local currency">AfroFuel — African Fuel Price Tracker</a></li><li><a href="/tools/import-duty/" data-related-tool data-id="import-duty" data-name="Import Duty Calculator" data-category="financial" data-icon="ID" data-desc="Planning import duty and landed-cost estimate with source-confidence labels for rates, levies, FX, and user-entered valu">Import Duty Calculator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<script src="/assets/js/afro-auth.js?v=4250956b"></script>
+<script src="/assets/js/lib/pro-plan.js?v=9db2c402"></script>
+<script src="/assets/js/pro-gate.js?v=e4aca7ef"></script>
+<script src="/assets/js/lib/analytics.js?v=776bf234"></script>
+<script>
+(function(){
+  var statusEl = document.getElementById('pro-account-status');
+
+  function escapeHtml(value) {
+    return String(value || '').replace(/[&<>"']/g, function(ch) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch];
+    });
+  }
+
+  function renderAction(action) {
+    return '<a href="' + escapeHtml(action.href) + '"' + (action.primary ? ' class="primary"' : '') + '>' + escapeHtml(action.label) + '</a>';
+  }
+
+  function setStatus(className, message, pill, actions) {
+    if (!statusEl) return;
+    statusEl.className = 'pro-account-status ' + (className || '');
+    statusEl.innerHTML = '<div class="status-copy"><span data-status-message></span></div><span class="status-pill"></span>';
+    statusEl.querySelector('[data-status-message]').textContent = message;
+    if (actions && actions.length) {
+      statusEl.querySelector('.status-copy').insertAdjacentHTML('beforeend', '<div class="status-actions">' + actions.map(renderAction).join('') + '</div>');
+    }
+    statusEl.querySelector('.status-pill').textContent = pill;
+  }
+
+  async function renderProStatus() {
+    if (!statusEl || !window.AfroProGate) return;
+    try {
+      var status = await window.AfroProGate.getStatus({ fresh: true });
+      var profile = status.profile || status.user || {};
+      var email = profile.email || 'this account';
+      if (status.isPro) {
+        var expires = profile.subscription_expires_at ? ' until ' + profile.subscription_expires_at.slice(0, 10) : '';
+        setStatus('is-pro', 'Signed in as ' + email + '. Pro access is active' + expires + '.', 'Pro active', [
+          { label: 'Open Pro Workspace', href: '/pro/workspace/', primary: true },
+          { label: 'Pro settings', href: '/pro/settings/' },
+          { label: 'Dashboard', href: '/dashboard/' }
+        ]);
+      } else if (status.user) {
+        setStatus('is-free', 'Signed in as ' + email + '. Choose a plan below, then the Pro nav entry will open your workspace directly.', 'Free account', [
+          { label: 'Choose a plan', href: '#pricing', primary: true },
+          { label: 'Dashboard', href: '/dashboard/' }
+        ]);
+      } else {
+        setStatus('is-signed-out', 'Sign in or create a free account to start Pro checkout, manage billing, or open an active Pro workspace.', 'Account needed', [
+          { label: 'Sign in', href: '/auth/?mode=login&intent=pro-checkout&next=/pro/' },
+          { label: 'Create account', href: '/auth/?mode=signup&intent=pro-checkout&next=/pro/', primary: true }
+        ]);
+      }
+    } catch (err) {
+      setStatus('is-free', 'Could not read Pro status yet. Sign in again or choose a plan below.', 'Check failed', [
+        { label: 'Sign in', href: '/auth/?mode=login&intent=pro-checkout&next=/pro/', primary: true }
+      ]);
+    }
+  }
+
+  renderProStatus();
+  window.addEventListener('afro-auth-change', renderProStatus);
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var item = btn.parentElement;
+      var wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(function(i){ i.classList.remove('open'); });
+      if(!wasOpen) item.classList.add('open');
+    });
+  });
+
+  function priceFor(currency, interval) {
+    if (window.AfroProPlan && window.AfroProPlan.getPlanFor) {
+      return window.AfroProPlan.getPlanFor(currency, interval);
+    }
+    return null;
+  }
+
+  var currencySelect = document.getElementById('currency-select');
+  var monthlyPrice = document.querySelector('.p-card:first-child .price');
+  var monthlyDetail = document.querySelector('.p-card:first-child .price-detail');
+  var annualPrice = document.querySelector('.pricing-grid .p-card.featured .price');
+  var annualDetail = document.querySelector('.pricing-grid .p-card.featured .price-detail');
+
+  function updatePricing() {
+    var c = currencySelect.value;
+    var monthly = priceFor(c, 'monthly');
+    var annual = priceFor(c, 'annual');
+    if (!monthly || !annual) return;
+    monthlyPrice.innerHTML = monthly.label + ' <span>' + monthly.suffix + '</span>';
+    monthlyDetail.textContent = monthly.detail;
+    annualPrice.innerHTML = annual.label + ' <span>' + annual.suffix + '</span>';
+    annualDetail.textContent = annual.detail;
+  }
+
+  currencySelect.addEventListener('change', updatePricing);
+  if (window.AfroTools && window.AfroTools.analytics) {
+    window.AfroTools.analytics.trackProPricing('pro-index');
+  }
+
+  // Checkout via Paystack
+  async function startCheckout(interval) {
+    var currency = currencySelect.value;
+    var plan = interval; // 'monthly' or 'annual'
+    if (currency !== 'usd') {
+      plan = interval + '_' + currency; // e.g. 'monthly_ngn'
+    }
+    if (window.AfroTools && window.AfroTools.analytics) {
+      window.AfroTools.analytics.trackProUpgrade(plan, 'pro-index');
+    }
+
+    // Require login to subscribe
+    if (!window.AfroAuth || !window.AfroAuth.isLoggedIn || !window.AfroAuth.isLoggedIn()) {
+      window.location.href = '/auth/?mode=signup&intent=pro-checkout&next=/pro/';
+      return;
+    }
+    var token = window.AfroAuth.getSessionToken ? window.AfroAuth.getSessionToken() : null;
+    if (!token) {
+      window.location.href = '/auth/?mode=signup&intent=pro-checkout&next=/pro/';
+      return;
+    }
+
+    // Disable buttons
+    var btns = document.querySelectorAll('.card-cta');
+    btns.forEach(function(b){ b.style.pointerEvents = 'none'; b.style.opacity = '0.6'; b.textContent = 'Processing...'; });
+
+    try {
+      var res = await fetch('/.netlify/functions/create-subscription', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        body: JSON.stringify({
+          plan: plan,
+          callbackUrl: window.location.origin + '/pro/success/'
+        })
+      });
+
+      var data = await res.json();
+      if (data.authorization_url) {
+        window.location.href = data.authorization_url;
+      } else {
+        alert(data.error || 'Something went wrong. Please try again.');
+        btns.forEach(function(b){ b.style.pointerEvents = ''; b.style.opacity = ''; });
+        document.getElementById('btn-monthly').textContent = 'Start Pro Checkout';
+        document.getElementById('btn-annual').textContent = 'Start Pro Checkout';
+      }
+    } catch (err) {
+      console.error('Checkout error:', err);
+      alert('Connection error. Please check your internet and try again.');
+      btns.forEach(function(b){ b.style.pointerEvents = ''; b.style.opacity = ''; });
+      document.getElementById('btn-monthly').textContent = 'Start Pro Checkout';
+      document.getElementById('btn-annual').textContent = 'Start Pro Checkout';
+    }
+  }
+
+  // Wire up buttons
+  document.getElementById('btn-monthly').addEventListener('click', function(e){
+    e.preventDefault();
+    startCheckout('monthly');
+  });
+  document.getElementById('btn-annual').addEventListener('click', function(e){
+    e.preventDefault();
+    startCheckout('annual');
+  });
+})();
+</script>
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "AfroTools Pro",
+  "description": "Upgrade to AfroTools Pro for AfroPayroll operations, clean export packets, expanded saved history where supported, Pro Vault labels, and early-access app workspaces.",
+  "url": "https://afrotools.com/pro/",
+  "mainEntity": {
+    "@type": "Product",
+    "name": "AfroTools Pro",
+    "description": "AfroPayroll operations, clean export packets, expanded saved history where supported, Pro Vault labels, and early-access app workspaces with honest local/account data boundaries.",
+    "offers": [
+      {
+        "@type": "Offer",
+        "price": "5.00",
+        "priceCurrency": "USD",
+        "priceValidUntil": "2027-12-31",
+        "availability": "https://schema.org/InStock",
+        "description": "Monthly plan"
+      },
+      {
+        "@type": "Offer",
+        "price": "30.00",
+        "priceCurrency": "USD",
+        "priceValidUntil": "2027-12-31",
+        "availability": "https://schema.org/InStock",
+        "description": "Annual plan - save 50%"
+      }
+    ]
+  },
+  "image": "https://afrotools.com/assets/img/tools/afrotools-pro.webp"
+}
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inverter & Battery Sizing Calculator Africa | AfroTools</title>
+<meta name="description" content="Calculate the right battery bank and inverter size for your solar or backup power system in Africa. Supports LiFePO4 and lead-acid batteries.">
+<meta property="og:title" content="Inverter & Battery Sizing Calculator Africa | AfroTools">
+<meta property="og:description" content="Calculate the right battery bank and inverter size for your solar or backup power system in Africa.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/battery-sizing.webp">
+<meta property="og:url" content="https://afrotools.com/tools/battery-sizing/">
+<meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Inverter &amp; Battery Sizing Calculator Africa | AfroTools">
+<meta name="twitter:description" content="Calculate the right battery bank and inverter size for your solar or backup power system in Africa. Supports LiFePO4 and lead-acid batteries.">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb"><link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b"><link rel="stylesheet" href="/assets/css/energy.css?v=d1d794d4"><link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<script src="/assets/js/components/navbar.min.js?v=d8d640ef" defer></script><script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script><script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}.chem-compare{align-self:stretch;padding:18px;border:1px solid #dbe3ef;border-radius:10px;background:#f8fafc}.chem-compare-head{display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;align-items:start}.chem-compare-icon{display:grid;width:44px;height:44px;place-items:center;border:1px solid #bfdbfe;border-radius:10px;background:#eff6ff;color:#0057B8}.chem-compare-icon svg{width:24px;height:24px}.chem-compare-head h3{margin:0 0 4px;font-size:1rem}.chem-compare-head p{margin:0;color:#64748b;font-size:.82rem;line-height:1.5}.chem-context{margin:14px 0 0;padding:12px 14px;border:1px solid #e2e8f0;border-radius:8px;background:#f8fafc;color:#334155;font-size:.8rem;line-height:1.5}.chem-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}.chem-card{padding:14px;border:1px solid #cbd5e1;border-radius:9px;background:#fff}.chem-card.is-selected{border-color:#0057B8;box-shadow:inset 0 0 0 1px #0057B8}.chem-card-head{display:flex;align-items:start;justify-content:space-between;gap:8px;margin-bottom:10px}.chem-card h4{margin:0;font-size:.92rem}.chem-selected{min-height:22px;color:#0057B8;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}.chem-metrics{display:grid;gap:8px;margin:0}.chem-metrics div{display:grid;gap:2px;padding-top:8px;border-top:1px solid #e2e8f0}.chem-metrics dt{color:#64748b;font-size:.7rem;font-weight:750;text-transform:uppercase;letter-spacing:.03em}.chem-metrics dd{margin:0;color:#0f172a;font-size:.84rem;font-weight:750;overflow-wrap:anywhere}.chem-decision{margin:12px 0 0;padding:12px;border:1px solid #fde68a;border-radius:8px;background:#fffbeb;color:#713f12;font-size:.8rem;line-height:1.55}.chem-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}.chem-copy{min-height:44px;padding:9px 14px;border:1px solid #0057B8;border-radius:8px;background:#0057B8;color:#fff;font:inherit;font-size:.86rem;font-weight:750;cursor:pointer}.chem-copy:disabled{border-color:#cbd5e1;background:#e2e8f0;color:#64748b;cursor:not-allowed}.chem-status{min-height:1.3rem;margin:10px 0 0;color:#475569;font-size:.78rem;line-height:1.5}@media(max-width:700px){.chem-compare{padding:14px}.chem-grid{grid-template-columns:1fr}.chem-actions,.chem-copy{width:100%}}</style>
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/battery-sizing.webp">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does LiFePO4 need less nameplate capacity than lead-acid?","acceptedAnswer":{"@type":"Answer","text":"This planning model uses 85% usable depth of discharge for LiFePO4 and 50% for lead-acid. The same backup energy therefore requires a larger lead-acid nameplate bank."}},{"@type":"Question","name":"Why is the inverter recommendation the same for both battery chemistries?","acceptedAnswer":{"@type":"Answer","text":"The inverter is sized from peak load, not battery chemistry. The model adds 30% load headroom and rounds upward to the next 0.5 kVA; an installer must still verify exact motor and compressor surge."}},{"@type":"Question","name":"What is excluded from the battery chemistry comparison?","acceptedAnswer":{"@type":"Answer","text":"It does not model a specific brand, BMS current limit, temperature derating, battery aging, cable loss, warranty terms, replacement labour, financing, or an exact installer quote."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/energy-focus.css?v=ddb6898a">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Inverter & Battery Sizing Calculator Africa",
+  "description": "Calculate the right battery bank and inverter size for your solar or backup power system in Africa. Supports LiFePO4 and lead-acid batteries.",
+  "url": "https://afrotools.com/tools/battery-sizing/",
+  "inLanguage": "en",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/battery-sizing.webp"
+}
+</script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Inverter & Battery Sizing Calculator Africa","item":"https://afrotools.com/tools/battery-sizing/"}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/battery-sizing/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/battery-sizing/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/dimensionnement-batterie-onduleur/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ukubwa-wa-betri-na-inverter/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/battery-sizing/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar theme="dark" active="energy"></afro-navbar>
+<section class="en-tool-hero"><div class="container">
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>›</span> <a href="/energy/">Energy &amp; Utilities</a> <span>›</span> Inverter &amp; Battery Sizing</nav>
+<h1>🔋 <em>Inverter &amp; Battery Sizing Calculator</em></h1>
+<p class="en-tool-hero-sub">Calculate the correct battery bank size and inverter capacity for any backup power or solar system in Africa.</p>
+</div></section>
+<main class="en-main">
+<div class="en-card"><div class="en-card-head" onclick="var b=this.nextElementSibling;b.classList.toggle('collapsed');this.setAttribute('aria-expanded',b.classList.contains('collapsed')?'false':'true')" aria-expanded="true"><span>🔋</span><h2>Enter Your Requirements</h2><span class="en-card-toggle">&#x25BE;</span></div>
+<div class="en-card-body"><div class="en-form-grid">
+<div class="en-field"><label class="en-label" for="countrySelect">Country</label><select class="en-select" id="countrySelect">
+<option value="NG">Nigeria</option><option value="KE">Kenya</option><option value="ZA">South Africa</option><option value="GH">Ghana</option><option value="EG">Egypt</option><option value="ET">Ethiopia</option><option value="TZ">Tanzania</option><option value="UG">Uganda</option><option value="RW">Rwanda</option><option value="CI">Côte d'Ivoire</option><option value="CM">Cameroon</option><option value="SN">Senegal</option><option value="MA">Morocco</option><option value="TN">Tunisia</option><option value="AO">Angola</option><option value="ZM">Zambia</option><option value="ZW">Zimbabwe</option><option value="NA">Namibia</option><option value="BW">Botswana</option>
+</select></div>
+<div class="en-field"><label class="en-label" for="loadWatts">Total Load (Watts)</label><input class="en-input" type="number" id="loadWatts" placeholder="e.g. 1500" inputmode="numeric"></div>
+<div class="en-field"><label class="en-label" for="backupHours">Backup Hours Needed</label><input class="en-input" type="number" id="backupHours" placeholder="e.g. 8" inputmode="numeric"></div>
+<div class="en-field"><label class="en-label" for="batteryType">Battery Type</label><select class="en-select" id="batteryType"><option value="lithium">LiFePO4 (Lithium — recommended)</option><option value="lead">Lead-Acid (AGM/Gel)</option></select></div>
+<div class="en-field"><label class="en-label" for="systemVoltage">System Voltage</label><select class="en-select" id="systemVoltage"><option value="12">12V (small systems)</option><option value="24" selected>24V (medium)</option><option value="48">48V (large / 3kW+)</option></select></div>
+</div>
+<button class="en-btn" id="calcBtn" type="button">Calculate</button></div></div>
+<div class="en-results" id="results">
+<div class="en-res-hero"><div class="en-res-label">Battery Bank Required</div><div class="en-res-amount" id="rAh">—</div><div class="en-res-sub" id="rKwh">Capacity: —</div></div>
+<table class="en-results-table"><thead><tr><th>Component</th><th>Specification</th></tr></thead><tbody>
+<tr><td>Usable Capacity</td><td id="rUsable">—</td></tr>
+<tr><td>Total Capacity Needed</td><td id="rTotal">—</td></tr>
+<tr><td>Battery Config</td><td id="rConfig">—</td></tr>
+<tr><td>Battery Type</td><td id="rType">—</td></tr>
+<tr><td>Inverter Size</td><td id="rInverter">—</td></tr>
+<tr><td>Depth of Discharge</td><td id="rDOD">—</td></tr>
+<tr><td>Expected Cycle Life</td><td id="rCycles">—</td></tr>
+<tr><td>Est. Battery Cost</td><td id="rBattCost">—</td></tr>
+<tr><td>Total System Cost</td><td id="rTotalCost">—</td></tr>
+</tbody></table>
+<div class="en-observations" id="rObs"></div>
+</div>
+<section class="en-seo">
+<h2>Inverter &amp; Battery Sizing for Africa — A Guide</h2>
+<p>The most common solar installation mistake in Africa is undersized batteries. This calculator ensures you have enough storage for overnight use and a cloudy day buffer, accounting for depth of discharge limits on both lithium and lead-acid chemistries.</p>
+<p><strong>Disclaimer:</strong> Cost estimates are indicative. Prices vary by brand and region. Get quotes from certified solar installers.</p>
+</section>
+
+<section class="df-upgrade" data-df-upgrade="battery-sizing">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Chemistry decision</span>
+      <h2>Compare LiFePO4 and lead-acid on the same backup target</h2>
+      <p>One calculation now runs both chemistries against the exact same load, runtime, voltage, country, inverter headroom, and protected formula.</p>
+      <ul class="df-upgrade__bullets"><li><strong>Capacity:</strong> see how 85% versus 50% usable depth of discharge changes the required nameplate bank.</li><li><strong>Ownership context:</strong> compare modeled cycle life and upfront battery/system cost without treating either as a warranty.</li><li><strong>Installer check:</strong> confirm BMS current, startup surge, temperature, cable loss, ventilation, protection, and replacement terms.</li></ul>
+      <p class="df-upgrade__note"><strong>Planning model only.</strong> The comparison uses registered legacy constants, not live brand prices or an installer quote. Nothing is stored automatically.</p>
+    </div>
+    <div class="chem-compare" aria-labelledby="chem-compare-title">
+      <div class="chem-compare-head">
+        <span class="chem-compare-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4h8v2h2v14H5V6h2V4Zm2 6h4m-2-2v4m6 0h2m-1-1v2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <div><h3 id="chem-compare-title">Same-load chemistry comparison</h3><p>Calculate above to compare both banks. The selected chemistry still controls the main result panel.</p></div>
+      </div>
+      <p class="chem-context" id="chemContext">Enter load and backup hours, then calculate to build the comparison.</p>
+      <div class="chem-grid">
+        <article class="chem-card" id="lithiumCard">
+          <div class="chem-card-head"><h4>LiFePO4</h4><span class="chem-selected" id="lithiumSelected"></span></div>
+          <dl class="chem-metrics"><div><dt>Nameplate capacity</dt><dd id="lithiumCapacity">—</dd></div><div><dt>Battery configuration</dt><dd id="lithiumConfig">—</dd></div><div><dt>Usable depth</dt><dd id="lithiumDod">—</dd></div><div><dt>Modeled cycle life</dt><dd id="lithiumCycles">—</dd></div><div><dt>Battery cost</dt><dd id="lithiumBatteryCost">—</dd></div><div><dt>Total system cost</dt><dd id="lithiumTotalCost">—</dd></div><div><dt>Local model conversion</dt><dd id="lithiumLocalCost">—</dd></div></dl>
+        </article>
+        <article class="chem-card" id="leadCard">
+          <div class="chem-card-head"><h4>Lead-acid AGM/Gel</h4><span class="chem-selected" id="leadSelected"></span></div>
+          <dl class="chem-metrics"><div><dt>Nameplate capacity</dt><dd id="leadCapacity">—</dd></div><div><dt>Battery configuration</dt><dd id="leadConfig">—</dd></div><div><dt>Usable depth</dt><dd id="leadDod">—</dd></div><div><dt>Modeled cycle life</dt><dd id="leadCycles">—</dd></div><div><dt>Battery cost</dt><dd id="leadBatteryCost">—</dd></div><div><dt>Total system cost</dt><dd id="leadTotalCost">—</dd></div><div><dt>Local model conversion</dt><dd id="leadLocalCost">—</dd></div></dl>
+        </article>
+      </div>
+      <p class="chem-decision" id="chemDecision">The decision note will explain capacity, cycle, and upfront-cost differences.</p>
+      <div class="chem-actions"><button class="chem-copy" id="copyChemComparison" type="button" disabled>Copy chemistry comparison</button></div>
+      <p class="chem-status" id="chemStatus" role="status" aria-live="polite">No comparison has been copied or stored.</p>
+    </div>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="battery-sizing-faq-title">
+  <h2 id="battery-sizing-faq-title">Battery &amp; Inverter Sizing FAQ</h2>
+  <div class="df-faq__grid"><details><summary>Why does LiFePO4 need less nameplate capacity than lead-acid?</summary><p>This planning model uses 85% usable depth of discharge for LiFePO4 and 50% for lead-acid. The same backup energy therefore requires a larger lead-acid nameplate bank.</p></details><details><summary>Why is the inverter recommendation the same for both battery chemistries?</summary><p>The inverter is sized from peak load, not battery chemistry. The model adds 30% load headroom and rounds upward to the next 0.5 kVA; an installer must still verify exact motor and compressor surge.</p></details><details><summary>What is excluded from the battery chemistry comparison?</summary><p>It does not model a specific brand, BMS current limit, temperature derating, battery aging, cable loss, warranty terms, replacement labour, financing, or an exact installer quote.</p></details></div>
+</section>
+
+<section class="tool-verification-sec" data-tool-verification-panel="battery-sizing">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Backup storage check</span>
+          <h2 class="tool-verification-title">Validate battery capacity and inverter headroom</h2>
+          <p class="tool-verification-lead">Estimate battery Ah/kWh, usable capacity, inverter size, and cost before buying backup-power equipment.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Reviewed 2026</span>
+          <p class="tool-verification-note">Local-first estimate. No live quote or official approval is performed.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>What to check</h3>
+          <ul class="tool-verification-list">
+            <li>Methodology: combine load watts, backup hours, battery chemistry, depth of discharge, voltage, and country cost assumptions.</li>
+            <li>Verify real appliance draw, surge loads, battery age/temperature, cycle life, inverter efficiency, cable size, ventilation, and installer advice.</li>
+            <li>Copy the brief before comparing LiFePO4, AGM, inverter, and installation quotes.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Limitations</h3>
+          <ul class="tool-verification-list">
+            <li>Disclaimer: planning estimate only, not an electrical certificate, warranty, installer quote, or safety sign-off.</li>
+            <li>Runtime can drop with heat, battery age, wiring loss, inverter loss, and loads that cycle or surge.</li>
+            <li>Source/reference note: verify against battery and inverter datasheets, local prices, installer guidance, and safety rules.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <a class="tool-verification-report" href="#results">Review result panel</a>
+        <p class="tool-verification-disclaimer">Privacy note: the calculator runs in your browser. Do not paste account numbers, installer contracts, or private customer data into notes you plan to share.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<afro-business-cta tool-name="Battery and Inverter Sizing" prospect-segment="battery-backup" save-note="Calculate the backup target, then copy the battery and inverter brief before requesting quotes."></afro-business-cta>
+</main>
+<afro-related-tools data-ssr="1" category="energy" current="battery-sizing">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/solar-roi/" data-related-tool data-id="solar-roi" data-name="Solar Panel ROI Calculator" data-category="energy" data-icon="SP" data-desc="Compare solar, battery, generator, outage loss, financing, maintenance, payback, and affordability risk.">Solar Panel ROI Calculator</a></li><li><a href="/tools/generator-fuel/" data-related-tool data-id="generator-fuel" data-name="Generator Fuel Cost Calculator" data-category="energy" data-icon="GF" data-desc="Calculate generator fuel cost across 15 African markets. Daily litres, monthly spend, maintenance, and cost per kWh.">Generator Fuel Cost Calculator</a></li><li><a href="/tools/electricity-tariff/" data-related-tool data-id="electricity-tariff" data-name="Electricity Tariff Calculator" data-category="energy" data-icon="ET" data-desc="Estimate electricity bills for supported African countries. Residential, commercial, industrial, and tiered tariff bands">Electricity Tariff Calculator</a></li><li><a href="/tools/solar-vs-generator/" data-related-tool data-id="solar-vs-generator" data-name="Solar vs Generator" data-category="energy" data-icon="SV" data-desc="Compare solar and generator total ownership across top African energy markets. Fuel, maintenance, battery, and payback.">Solar vs Generator</a></li><li><a href="/tools/prepaid-meter/" data-related-tool data-id="prepaid-meter" data-name="Prepaid Meter Calculator" data-category="energy" data-icon="PM" data-desc="Estimate prepaid electricity units in any African country. Token amount, service charges, account type, and days of supp">Prepaid Meter Calculator</a></li><li><a href="/tools/electricity-bill-verify/" data-related-tool data-id="electricity-bill-verify" data-name="Electricity Bill Verifier" data-category="energy" data-icon="EB" data-desc="Check meter readings against expected tariff charges. Spot overbilling, estimated readings, and unusual variance.">Electricity Bill Verifier</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+<script src="/data/energy/country-energy-index.js?v=5083c43c"></script>
+<script src="/engines/battery-sizing-engine.js?v=4100b36b"></script>
+<script src="/assets/js/energy-tool-assistant.js?v=b5a3b994"></script>
+<script>
+!function(){
+"use strict";
+var E=window.AfroTools.BatterySizingEngine;
+var latestComparison="";
+var comparisonMetricIds=["lithiumCapacity","lithiumConfig","lithiumDod","lithiumCycles","lithiumBatteryCost","lithiumTotalCost","lithiumLocalCost","leadCapacity","leadConfig","leadDod","leadCycles","leadBatteryCost","leadTotalCost","leadLocalCost"];
+function inputValues(){return{
+  loadWatts:parseFloat(document.getElementById("loadWatts").value)||0,
+  backupHours:parseFloat(document.getElementById("backupHours").value)||0,
+  batteryType:document.getElementById("batteryType").value,
+  systemVoltage:document.getElementById("systemVoltage").value,
+  country:document.getElementById("countrySelect").value
+};}
+function chemistryInput(input,type){return{loadWatts:input.loadWatts,backupHours:input.backupHours,batteryType:type,systemVoltage:input.systemVoltage,country:input.country};}
+function moneyNumber(value){var parsed=Number(String(value||"").replace(/[^0-9.-]/g,""));return Number.isFinite(parsed)?parsed:0;}
+function capacityNumber(value){return parseFloat(value)||0;}
+function cycleLabel(value){var match=String(value||"").match(/^(\d+) cycles \((\d+) yrs\)$/);if(!match)return value;var cycles=Number(match[1]);var years=Number(match[2]);return cycles.toLocaleString()+" cycles (about "+years+" "+(years===1?"year":"years")+")";}
+function countryRecord(code){var countries=window.ENERGY_DATA&&window.ENERGY_DATA.countries;return countries&&countries[code]?countries[code]:null;}
+function renderPrimary(result){
+  document.getElementById("rAh").textContent=result.totalAh;
+  document.getElementById("rKwh").textContent="Capacity: "+result.totalCapacityKWh;
+  document.getElementById("rUsable").textContent=result.requiredKWh;
+  document.getElementById("rTotal").textContent=result.totalCapacityKWh;
+  document.getElementById("rConfig").textContent=result.batteryConfig;
+  document.getElementById("rType").textContent=result.batteryType;
+  document.getElementById("rInverter").textContent=result.inverterKVA;
+  document.getElementById("rDOD").textContent=result.dod;
+  document.getElementById("rCycles").textContent=cycleLabel(result.cycleLife);
+  document.getElementById("rBattCost").textContent=result.batteryCostUSD;
+  document.getElementById("rTotalCost").textContent=result.totalCostUSD;
+  var obs=document.getElementById("rObs");
+  if(result.observations&&result.observations.length&&window.AfroEnergyTools&&window.AfroEnergyTools.renderObservations){window.AfroEnergyTools.renderObservations(obs,result.observations,"Calculation Notes");}
+}
+function renderChemistryCard(prefix,result,selected){
+  document.getElementById(prefix+"Capacity").textContent=result.totalCapacityKWh+" / "+result.totalAh;
+  document.getElementById(prefix+"Config").textContent=result.batteryConfig;
+  document.getElementById(prefix+"Dod").textContent=result.dod;
+  document.getElementById(prefix+"Cycles").textContent=cycleLabel(result.cycleLife);
+  document.getElementById(prefix+"BatteryCost").textContent=result.batteryCostUSD;
+  document.getElementById(prefix+"TotalCost").textContent=result.totalCostUSD;
+  document.getElementById(prefix+"LocalCost").textContent=result.totalCostLocal;
+  document.getElementById(prefix+"Selected").textContent=selected?"Selected result":"";
+  document.getElementById(prefix+"Card").classList.toggle("is-selected",selected);
+}
+function decisionText(lithium,lead){
+  var capacitySaving=capacityNumber(lead.totalCapacityKWh)-capacityNumber(lithium.totalCapacityKWh);
+  var cycleMultiple=Math.round(parseInt(lithium.cycleLife,10)/parseInt(lead.cycleLife,10));
+  var premium=moneyNumber(lithium.totalCostUSD)-moneyNumber(lead.totalCostUSD);
+  var costPhrase=premium>=0?"costs $"+Math.round(premium).toLocaleString()+" more upfront":"costs $"+Math.round(Math.abs(premium)).toLocaleString()+" less upfront";
+  return "In this model, LiFePO4 needs "+capacitySaving.toFixed(1)+" kWh less nameplate capacity and provides about "+cycleMultiple+"x the modeled cycles, but "+costPhrase+". Compare usable energy, warranty, replacement frequency, and installation terms—not first price alone.";
+}
+function buildComparison(input,lithium,lead,decision){
+  var country=countryRecord(input.country);
+  var name=country&&country.name?country.name:input.country;
+  var reviewed=window.ENERGY_DATA&&window.ENERGY_DATA.lastUpdated?window.ENERGY_DATA.lastUpdated:"not listed";
+  return [
+    "AfroTools Battery Chemistry Comparison",
+    "Country: "+name+" ("+input.country+")",
+    "Country-energy dataset month: "+reviewed,
+    "Load: "+input.loadWatts+" W",
+    "Backup target: "+input.backupHours+" hours",
+    "System voltage: "+input.systemVoltage+" V",
+    "Selected main result: "+(input.batteryType==="lithium"?"LiFePO4":"Lead-acid AGM/Gel"),
+    "Inverter recommendation for both: "+lithium.inverterKVA,
+    "",
+    "LiFePO4",
+    "- Capacity: "+lithium.totalCapacityKWh+" / "+lithium.totalAh,
+    "- Configuration: "+lithium.batteryConfig,
+    "- Usable depth: "+lithium.dod,
+    "- Modeled cycle life: "+cycleLabel(lithium.cycleLife),
+    "- Battery cost: "+lithium.batteryCostUSD,
+    "- Total system cost: "+lithium.totalCostUSD+" (model conversion: "+lithium.totalCostLocal+")",
+    "",
+    "Lead-acid AGM/Gel",
+    "- Capacity: "+lead.totalCapacityKWh+" / "+lead.totalAh,
+    "- Configuration: "+lead.batteryConfig,
+    "- Usable depth: "+lead.dod,
+    "- Modeled cycle life: "+cycleLabel(lead.cycleLife),
+    "- Battery cost: "+lead.batteryCostUSD,
+    "- Total system cost: "+lead.totalCostUSD+" (model conversion: "+lead.totalCostLocal+")",
+    "",
+    "Decision note: "+decision,
+    "",
+    "Protected model assumptions",
+    "- 90% inverter efficiency before battery depth-of-discharge sizing.",
+    "- 85% usable depth for LiFePO4; 50% for lead-acid.",
+    "- 200 Ah, 12 V battery units; 30% inverter headroom rounded up to 0.5 kVA.",
+    "- 3,000 versus 500 modeled cycles assumes one cycle per day and is not a warranty.",
+    "- Modeled prices are not live quotes and exclude brand, tax, delivery, replacement labour, and finance.",
+    "",
+    "Verify BMS current, exact surge, temperature, cable loss, protection, ventilation, warranty, and installer credentials before purchase.",
+    "Privacy: this comparison is not stored automatically."
+  ].join("\n");
+}
+function renderComparison(input,lithium,lead){
+  var selectedLithium=input.batteryType==="lithium";
+  renderChemistryCard("lithium",lithium,selectedLithium);
+  renderChemistryCard("lead",lead,!selectedLithium);
+  var country=countryRecord(input.country);
+  var name=country&&country.name?country.name:input.country;
+  document.getElementById("chemContext").textContent=name+": "+input.loadWatts+" W for "+input.backupHours+" hours at "+input.systemVoltage+" V. Both options use the same "+lithium.inverterKVA+" inverter recommendation.";
+  var decision=decisionText(lithium,lead);
+  document.getElementById("chemDecision").textContent=decision;
+  latestComparison=buildComparison(input,lithium,lead,decision);
+  document.getElementById("copyChemComparison").disabled=false;
+  document.getElementById("chemStatus").textContent="Comparison ready. Nothing has been copied or stored automatically.";
+}
+function invalidateComparison(){
+  if(!latestComparison)return;
+  latestComparison="";
+  comparisonMetricIds.forEach(function(id){document.getElementById(id).textContent="—";});
+  ["lithium","lead"].forEach(function(prefix){document.getElementById(prefix+"Selected").textContent="";document.getElementById(prefix+"Card").classList.remove("is-selected");});
+  document.getElementById("chemContext").textContent="Inputs changed. Recalculate to refresh the same-load chemistry comparison.";
+  document.getElementById("chemDecision").textContent="The previous comparison is stale.";
+  document.getElementById("copyChemComparison").disabled=true;
+  document.getElementById("chemStatus").textContent="The stale comparison cannot be copied.";
+}
+function copyText(text,done){
+  function fallback(){var area=document.createElement("textarea");area.value=text;area.setAttribute("readonly","");area.style.position="fixed";area.style.left="-9999px";document.body.appendChild(area);area.select();var ok=false;try{ok=document.execCommand("copy");}catch(error){ok=false;}area.remove();done(ok);}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){done(true);}).catch(fallback);}else fallback();
+}
+document.getElementById("calcBtn").addEventListener("click",function(){
+  var input=inputValues();
+  var lithium=E.calculate(chemistryInput(input,"lithium"));
+  if(lithium.error){alert(lithium.error);return;}
+  var lead=E.calculate(chemistryInput(input,"lead"));
+  var selected=input.batteryType==="lead"?lead:lithium;
+  renderPrimary(selected);
+  renderComparison(input,lithium,lead);
+  document.getElementById("results").classList.add("on");
+  document.getElementById("results").scrollIntoView({behavior:"smooth",block:"start"});
+});
+["loadWatts","backupHours","batteryType","systemVoltage","countrySelect"].forEach(function(id){var control=document.getElementById(id);control.addEventListener("input",invalidateComparison);control.addEventListener("change",invalidateComparison);});
+document.getElementById("copyChemComparison").addEventListener("click",function(){if(!latestComparison)return;copyText(latestComparison,function(ok){document.getElementById("chemStatus").textContent=ok?"Battery chemistry comparison copied.":"Copy was blocked by the browser. The comparison remains visible above.";});});
+}();
+</script>
+<script src="/assets/js/pages/energy-focus.js?v=8ad94082" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

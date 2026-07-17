@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AfroPayroll OS — Guided Workflow | AfroTools</title>
+<meta name="description" content="Step-by-step guided payroll workflow. Follow the checklist, mark steps done, and let AfroPayroll OS carry your data between tools automatically.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script>
+<script src="/assets/js/lib/pdf-template.js?v=980345b6" defer></script>
+<style>
+:root{--apo:#1D4ED8;--apo-dk:#1E3A8A;--apo-lt:#3B82F6;--apo-pale:#EFF6FF;--apo-mid:#2563EB;--t:#0f172a;--m:#64748b;--bd:#e2e8f0;--bg:#f8fafc;--green:#059669;--green-pale:#F0FDF4}
+
+/* ── Top bar ── */
+.apo-flow-topbar{background:var(--apo-dk);padding:14px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.apo-flow-back{color:rgba(255,255,255,.55);font-size:.8rem;text-decoration:none;display:flex;align-items:center;gap:5px;flex-shrink:0;transition:color .15s}
+.apo-flow-back:hover{color:#fff}
+.apo-flow-journey-name{font-size:.82rem;font-weight:700;color:#bfdbfe;flex-shrink:0}
+.apo-flow-progress-wrap{flex:1;display:flex;align-items:center;gap:10px}
+.apo-flow-progress-bar{flex:1;height:5px;background:rgba(255,255,255,.15);border-radius:99px;overflow:hidden}
+.apo-flow-progress-fill{height:100%;background:linear-gradient(90deg,#93c5fd,#3b82f6);border-radius:99px;transition:width .4s ease}
+.apo-flow-progress-label{font-size:.75rem;color:rgba(255,255,255,.45);white-space:nowrap}
+
+/* ── Country setup ── */
+.apo-setup{max-width:760px;margin:30px auto 0;padding:0 24px 40px;text-align:center}
+.apo-setup-shell{background:#fff;border:1.5px solid var(--bd);border-radius:24px;padding:28px 32px 22px;box-shadow:0 18px 44px rgba(15,23,42,.05)}
+.apo-setup-icon{font-size:2.6rem;margin-bottom:12px}
+.apo-setup h1{font-size:1.5rem;font-weight:800;color:var(--t);margin-bottom:6px}
+.apo-setup p{font-size:.9rem;color:var(--m);line-height:1.6;margin:0 auto 20px;max-width:520px}
+.apo-setup-fields{display:flex;flex-direction:column;gap:14px;text-align:left}
+.apo-field label{display:block;font-size:.78rem;font-weight:600;color:var(--t);margin-bottom:5px}
+.apo-field select,.apo-field input{width:100%;padding:11px 14px;border:1.5px solid var(--bd);border-radius:10px;font-size:.9rem;color:var(--t);background:#fff;appearance:none;-webkit-appearance:none;font-family:inherit}
+.apo-field select:focus,.apo-field input:focus{outline:none;border-color:var(--apo);box-shadow:0 0 0 3px rgba(29,78,216,.1)}
+.apo-setup-meta{display:grid;gap:10px;margin-top:12px;text-align:left}
+.apo-setup-note,.apo-sync-note{max-width:none;margin:0;font-size:.8rem;line-height:1.6;border-radius:10px;padding:12px 14px;text-align:left}
+.apo-setup-note{background:#eff6ff;border:1px solid #bfdbfe;color:var(--apo-dk)}
+.apo-sync-note{background:#f8fafc;border:1px solid var(--bd);color:var(--m)}
+.apo-sync-note strong{color:var(--t)}
+.apo-setup-start{width:100%;padding:14px;background:var(--apo);color:#fff;border:none;border-radius:10px;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:6px;transition:background .15s;font-family:inherit}
+.apo-setup-start:hover{background:var(--apo-dk)}
+
+/* ── Flow layout ── */
+.apo-flow-layout{max-width:800px;margin:0 auto;padding:36px 24px 80px;display:none}
+
+/* ── Step dots (mobile) / step row (desktop) ── */
+.apo-step-dots{display:flex;gap:8px;justify-content:center;margin-bottom:32px;flex-wrap:wrap}
+.apo-step-dot{width:32px;height:32px;border-radius:50%;border:2px solid var(--bd);background:#fff;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:var(--m);cursor:pointer;transition:all .2s;flex-shrink:0}
+.apo-step-dot.active{border-color:var(--apo);background:var(--apo-pale);color:var(--apo)}
+.apo-step-dot.done{border-color:var(--green);background:var(--green-pale);color:var(--green)}
+.apo-step-dot.skipped{border-color:#e2e8f0;background:#f8fafc;color:#94a3b8}
+
+/* ── Step card ── */
+.apo-step-card{background:#fff;border:1.5px solid var(--bd);border-radius:20px;padding:32px 28px;margin-bottom:20px}
+.apo-step-number{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--m);margin-bottom:10px}
+.apo-step-title{font-size:1.3rem;font-weight:800;color:var(--t);margin-bottom:8px;line-height:1.25}
+.apo-step-desc{font-size:.88rem;color:var(--m);line-height:1.7;margin-bottom:20px}
+.apo-step-prefill{display:none;background:var(--apo-pale);border:1px solid #bfdbfe;border-radius:10px;padding:12px 14px;margin-bottom:18px;font-size:.8rem;color:var(--apo-dk)}
+.apo-step-prefill strong{font-weight:700}
+.apo-step-required{display:inline-flex;align-items:center;gap:5px;font-size:.72rem;font-weight:600;color:#DC2626;background:#FEF2F2;border:1px solid #fecaca;border-radius:99px;padding:3px 10px;margin-bottom:16px}
+.apo-step-optional{display:inline-flex;align-items:center;gap:5px;font-size:.72rem;font-weight:600;color:#64748b;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:99px;padding:3px 10px;margin-bottom:16px}
+.apo-step-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.apo-btn-open{display:inline-flex;align-items:center;gap:8px;background:var(--apo);color:#fff;font-weight:700;font-size:.88rem;padding:13px 20px;border-radius:10px;text-decoration:none;transition:background .15s;border:none;cursor:pointer;font-family:inherit}
+.apo-btn-open:hover{background:var(--apo-dk)}
+.apo-btn-done{display:inline-flex;align-items:center;gap:8px;background:var(--green-pale);border:1.5px solid #6ee7b7;color:var(--green);font-weight:700;font-size:.88rem;padding:12px 20px;border-radius:10px;cursor:pointer;transition:all .15s;font-family:inherit}
+.apo-btn-done:hover{background:#dcfce7}
+.apo-btn-skip{background:none;border:none;color:var(--m);font-size:.8rem;cursor:pointer;padding:8px 12px;border-radius:8px;transition:background .15s;font-family:inherit}
+.apo-btn-skip:hover{background:#f1f5f9}
+
+/* ── Step done state ── */
+.apo-step-card.is-done{border-color:#6ee7b7;background:#f0fdf4}
+.apo-step-card.is-done .apo-step-title{color:var(--green)}
+.apo-step-card.is-skipped{opacity:.6}
+
+/* ── Carry data form ── */
+.apo-carry-form{border-top:1px solid var(--bd);margin-top:20px;padding-top:18px;display:none}
+.apo-carry-form h4{font-size:.8rem;font-weight:700;color:var(--t);margin-bottom:12px}
+.apo-carry-fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.apo-carry-field label{font-size:.72rem;font-weight:600;color:var(--m);display:block;margin-bottom:4px}
+.apo-carry-field input{width:100%;padding:9px 11px;border:1px solid var(--bd);border-radius:8px;font-size:.85rem;color:var(--t);font-family:inherit}
+
+/* ── Navigation ── */
+.apo-flow-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.apo-nav-btn{display:inline-flex;align-items:center;gap:6px;padding:11px 18px;border-radius:10px;font-size:.85rem;font-weight:700;cursor:pointer;border:1.5px solid var(--bd);background:#fff;color:var(--t);font-family:inherit;transition:all .15s}
+.apo-nav-btn:hover{border-color:var(--apo);color:var(--apo)}
+.apo-nav-btn:disabled{opacity:.4;cursor:not-allowed}
+.apo-nav-btn.primary{background:var(--apo);color:#fff;border-color:var(--apo)}
+.apo-nav-btn.primary:hover{background:var(--apo-dk);border-color:var(--apo-dk)}
+
+/* ── Completion screen ── */
+.apo-complete{max-width:600px;margin:0 auto;padding:60px 24px 80px;text-align:center;display:none}
+.apo-complete-icon{font-size:4rem;margin-bottom:20px}
+.apo-complete h2{font-size:1.7rem;font-weight:800;color:var(--t);margin-bottom:10px}
+.apo-complete p{font-size:.92rem;color:var(--m);line-height:1.65;margin-bottom:28px}
+.apo-complete-summary{background:#fff;border:1.5px solid var(--bd);border-radius:16px;padding:24px;text-align:left;margin-bottom:24px}
+.apo-complete-summary h3{font-size:.85rem;font-weight:700;color:var(--t);margin-bottom:14px;text-transform:uppercase;letter-spacing:.06em}
+.apo-summary-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f1f5f9;font-size:.85rem}
+.apo-summary-row:last-child{border-bottom:none}
+.apo-summary-label{color:var(--m)}
+.apo-summary-value{font-weight:700;color:var(--t)}
+.apo-complete-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.apo-complete-btn{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:10px;font-size:.88rem;font-weight:700;text-decoration:none;cursor:pointer;border:none;font-family:inherit;transition:all .15s}
+.apo-complete-btn.primary{background:var(--apo);color:#fff}
+.apo-complete-btn.primary:hover{background:var(--apo-dk)}
+.apo-complete-btn.secondary{background:#fff;border:1.5px solid var(--bd);color:var(--t)}
+.apo-complete-btn.secondary:hover{border-color:var(--apo);color:var(--apo)}
+
+/* ── AI advisor panel ── */
+.apo-ai-panel{background:linear-gradient(135deg,#eff6ff,#dbeafe);border:1.5px solid #bfdbfe;border-radius:16px;padding:20px 22px;margin-top:20px}
+.apo-ai-panel-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.apo-ai-panel-icon{font-size:1.3rem}
+.apo-ai-panel-title{font-size:.88rem;font-weight:700;color:var(--apo-dk)}
+.apo-ai-panel-sub{font-size:.78rem;color:var(--m);margin-bottom:12px}
+.apo-ai-input-row{display:flex;gap:8px}
+.apo-ai-input{flex:1;padding:10px 14px;border:1.5px solid #bfdbfe;border-radius:8px;font-size:.85rem;color:var(--t);background:#fff;font-family:inherit}
+.apo-ai-input:focus{outline:none;border-color:var(--apo)}
+.apo-ai-send{padding:10px 16px;background:var(--apo);color:#fff;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s;flex-shrink:0}
+.apo-ai-send:hover{background:var(--apo-dk)}
+.apo-ai-response{margin-top:10px;font-size:.83rem;color:var(--t);line-height:1.65;display:none}
+.apo-ai-response.loading{color:var(--m);font-style:italic}
+
+@media(max-width:600px){
+  .apo-setup{margin:20px auto 0;padding:0 16px 28px}
+  .apo-setup-shell{padding:22px 18px 18px;border-radius:18px}
+  .apo-setup-icon{font-size:2.4rem}
+  .apo-setup p{margin-bottom:16px}
+  .apo-setup-meta{gap:8px;margin-top:10px}
+  .apo-step-card{padding:22px 18px}
+  .apo-flow-layout{padding:24px 16px 80px}
+  .apo-step-actions{gap:8px}
+  .apo-btn-open,.apo-btn-done{font-size:.82rem;padding:11px 16px}
+  .apo-flow-topbar{gap:10px}
+  .apo-flow-journey-name{display:none}
+}
+</style>
+<meta property="og:url" content="https://afrotools.com/tools/afropayroll-os/flow">
+<link rel="canonical" href="https://afrotools.com/tools/afropayroll-os/flow">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afropayroll-os/flow">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/afropayroll-os/flow">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="afrowork"></afro-navbar>
+
+<!-- Sticky progress topbar -->
+<div class="apo-flow-topbar" id="apo-topbar" style="display:none">
+  <a href="index.html" class="apo-flow-back">← Journeys</a>
+  <span class="apo-flow-journey-name" id="apo-topbar-name"></span>
+  <div class="apo-flow-progress-wrap">
+    <div class="apo-flow-progress-bar">
+      <div class="apo-flow-progress-fill" id="apo-progress-fill" style="width:0%"></div>
+    </div>
+    <span class="apo-flow-progress-label" id="apo-progress-label">0 / 0</span>
+  </div>
+</div>
+
+<!-- Country/role setup screen -->
+<div class="apo-setup" id="apo-setup">
+  <div class="apo-setup-shell">
+    <div class="apo-setup-icon" id="setup-journey-icon">📋</div>
+    <h1 id="setup-journey-title">Setting up your journey</h1>
+    <p id="setup-journey-desc">Tell us a bit about the situation and we'll tailor the steps to your country.</p>
+    <div class="apo-setup-fields">
+      <div class="apo-field">
+        <label for="setup-country">Country</label>
+        <select id="setup-country">
+          <option value="">— Select country —</option>
+          <optgroup label="West Africa">
+            <option value="NG">🇳🇬 Nigeria</option>
+            <option value="GH">🇬🇭 Ghana</option>
+            <option value="CI">🇨🇮 Côte d'Ivoire</option>
+            <option value="SN">🇸🇳 Senegal</option>
+            <option value="CM">🇨🇲 Cameroon</option>
+          </optgroup>
+          <optgroup label="East Africa">
+            <option value="KE">🇰🇪 Kenya</option>
+            <option value="TZ">🇹🇿 Tanzania</option>
+            <option value="UG">🇺🇬 Uganda</option>
+            <option value="RW">🇷🇼 Rwanda</option>
+            <option value="ET">🇪🇹 Ethiopia</option>
+          </optgroup>
+          <optgroup label="Southern Africa">
+            <option value="ZA">🇿🇦 South Africa</option>
+            <option value="ZW">🇿🇼 Zimbabwe</option>
+            <option value="ZM">🇿🇲 Zambia</option>
+            <option value="MZ">🇲🇿 Mozambique</option>
+            <option value="BW">🇧🇼 Botswana</option>
+          </optgroup>
+          <optgroup label="North Africa">
+            <option value="EG">🇪🇬 Egypt</option>
+            <option value="MA">🇲🇦 Morocco</option>
+            <option value="TN">🇹🇳 Tunisia</option>
+            <option value="DZ">🇩🇿 Algeria</option>
+          </optgroup>
+          <optgroup label="Other">
+            <option value="OTHER">Other African country</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="apo-field" id="setup-salary-field">
+        <label for="setup-salary">Salary / Gross Pay <span style="color:var(--m);font-weight:400">(optional — used to pre-fill tools)</span></label>
+        <input type="number" id="setup-salary" placeholder="e.g. 250000" min="0">
+      </div>
+      <div class="apo-field" id="setup-role-field">
+        <label for="setup-role">Job role <span style="color:var(--m);font-weight:400">(optional)</span></label>
+        <input type="text" id="setup-role" placeholder="e.g. Software Engineer">
+      </div>
+    </div>
+    <button type="button" class="apo-setup-start" id="apo-start-btn">Start Journey →</button>
+    <div class="apo-setup-meta">
+      <div class="apo-setup-note">Core workflow support is available across all 54 African countries. Country-specific calculators and guidance appear automatically where AfroTools has localized coverage.</div>
+      <div class="apo-sync-note" id="apo-sync-note">Progress saves in this browser. Sign in to sync your journey across devices.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Main flow layout -->
+<div class="apo-flow-layout" id="apo-flow-layout">
+
+  <!-- Step dots -->
+  <div class="apo-step-dots" id="apo-step-dots"></div>
+
+  <!-- Step card -->
+  <div class="apo-step-card" id="apo-step-card">
+    <div class="apo-step-number" id="apo-step-number"></div>
+    <div id="apo-step-badge"></div>
+    <h2 class="apo-step-title" id="apo-step-title"></h2>
+    <p class="apo-step-desc" id="apo-step-desc"></p>
+    <div class="apo-step-prefill" id="apo-step-prefill"></div>
+    <div class="apo-step-actions">
+      <a href="#" class="apo-btn-open" id="apo-btn-open" target="_blank" rel="noopener">Open Tool ↗</a>
+      <button type="button" class="apo-btn-done" id="apo-btn-done">✓ Mark as done</button>
+      <button type="button" class="apo-btn-skip" id="apo-btn-skip" style="display:none">Skip →</button>
+    </div>
+    <!-- Carry-forward data capture -->
+    <div class="apo-carry-form" id="apo-carry-form">
+      <h4>Capture key outputs from this tool:</h4>
+      <div class="apo-carry-fields" id="apo-carry-fields"></div>
+    </div>
+  </div>
+
+  <!-- AI advisor -->
+  <div class="apo-ai-panel">
+    <div class="apo-ai-panel-top">
+      <span class="apo-ai-panel-icon">🤖</span>
+      <span class="apo-ai-panel-title">AfroPayroll AI Advisor</span>
+    </div>
+    <p class="apo-ai-panel-sub">Ask anything about this step — compliance risks, country-specific rules, what to watch out for.</p>
+    <div class="apo-ai-input-row">
+      <input aria-label="E.g. What pension rate applies in Nigeria?" type="text" class="apo-ai-input" id="apo-ai-input" placeholder="e.g. What pension rate applies in Nigeria?" maxlength="300">
+      <button type="button" class="apo-ai-send" id="apo-ai-send">Ask →</button>
+    </div>
+    <div class="apo-ai-response" id="apo-ai-response"></div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="apo-flow-nav" style="margin-top:20px">
+    <button type="button" class="apo-nav-btn" id="apo-prev-btn">← Previous</button>
+    <button type="button" class="apo-nav-btn primary" id="apo-next-btn">Next step →</button>
+  </div>
+</div>
+
+<!-- Completion screen -->
+<div class="apo-complete" id="apo-complete">
+  <div class="apo-complete-icon">🎉</div>
+  <h2 id="apo-complete-title">Journey Complete!</h2>
+  <p id="apo-complete-desc">You've completed every step. Here's a summary of what you covered.</p>
+  <div class="apo-complete-summary">
+    <h3>Journey Summary</h3>
+    <div id="apo-summary-rows"></div>
+  </div>
+  <div class="apo-complete-actions">
+    <button type="button" class="apo-complete-btn primary" id="apo-share-btn">📤 Share checklist</button>
+    <button type="button" class="apo-complete-btn secondary" id="apo-download-btn">Download summary PDF</button>
+    <a href="index.html" class="apo-complete-btn secondary">Start another journey</a>
+    <a href="/afrowork/" class="apo-complete-btn secondary">AfroWork Suite</a>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+
+<script src="/engines/afropayroll-os-engine.js?v=96b7f079"></script>
+<script>
+(async function () {
+  'use strict';
+
+  var engine = window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.afropayrollOs;
+  if (!engine) { console.warn('AfroPayroll OS engine not loaded'); return; }
+
+  // ── Parse query params ────────────────────────────────
+  var params = new URLSearchParams(window.location.search);
+  var journeyId = params.get('journey') || 'new-hire';
+  var isResume  = params.get('resume') === '1';
+
+  var journey = engine.JOURNEYS[journeyId];
+  if (!journey) { journeyId = 'new-hire'; journey = engine.JOURNEYS['new-hire']; }
+
+  var COUNTRY_GROUPS = {
+    'East Africa': [
+      { code: 'KE', label: 'Kenya' },
+      { code: 'TZ', label: 'Tanzania' },
+      { code: 'UG', label: 'Uganda' },
+      { code: 'RW', label: 'Rwanda' },
+      { code: 'ET', label: 'Ethiopia' },
+      { code: 'DJ', label: 'Djibouti' },
+      { code: 'SO', label: 'Somalia' },
+      { code: 'ER', label: 'Eritrea' }
+    ],
+    'West Africa': [
+      { code: 'NG', label: 'Nigeria' },
+      { code: 'GH', label: 'Ghana' },
+      { code: 'CI', label: 'Cote d\'Ivoire' },
+      { code: 'SN', label: 'Senegal' },
+      { code: 'BJ', label: 'Benin' },
+      { code: 'BF', label: 'Burkina Faso' },
+      { code: 'ML', label: 'Mali' },
+      { code: 'NE', label: 'Niger' },
+      { code: 'TG', label: 'Togo' },
+      { code: 'GN', label: 'Guinea' },
+      { code: 'GW', label: 'Guinea-Bissau' },
+      { code: 'LR', label: 'Liberia' },
+      { code: 'SL', label: 'Sierra Leone' },
+      { code: 'GM', label: 'Gambia' },
+      { code: 'CV', label: 'Cape Verde' }
+    ],
+    'Southern Africa': [
+      { code: 'ZA', label: 'South Africa' },
+      { code: 'BW', label: 'Botswana' },
+      { code: 'NA', label: 'Namibia' },
+      { code: 'ZM', label: 'Zambia' },
+      { code: 'ZW', label: 'Zimbabwe' },
+      { code: 'MZ', label: 'Mozambique' },
+      { code: 'MW', label: 'Malawi' },
+      { code: 'MU', label: 'Mauritius' },
+      { code: 'MG', label: 'Madagascar' },
+      { code: 'SC', label: 'Seychelles' },
+      { code: 'SZ', label: 'Eswatini' },
+      { code: 'LS', label: 'Lesotho' }
+    ],
+    'North Africa': [
+      { code: 'EG', label: 'Egypt' },
+      { code: 'MA', label: 'Morocco' },
+      { code: 'DZ', label: 'Algeria' },
+      { code: 'TN', label: 'Tunisia' },
+      { code: 'LY', label: 'Libya' },
+      { code: 'SD', label: 'Sudan' },
+      { code: 'MR', label: 'Mauritania' }
+    ],
+    'Central Africa': [
+      { code: 'CM', label: 'Cameroon' },
+      { code: 'GA', label: 'Gabon' },
+      { code: 'CG', label: 'Congo' },
+      { code: 'GQ', label: 'Equatorial Guinea' },
+      { code: 'TD', label: 'Chad' },
+      { code: 'CF', label: 'Central African Republic' },
+      { code: 'CD', label: 'DR Congo' },
+      { code: 'AO', label: 'Angola' },
+      { code: 'BI', label: 'Burundi' },
+      { code: 'ST', label: 'Sao Tome and Principe' },
+      { code: 'SS', label: 'South Sudan' },
+      { code: 'KM', label: 'Comoros' }
+    ]
+  };
+
+  function populateCountryOptions() {
+    var select = document.getElementById('setup-country');
+    if (!select) return;
+
+    var currentValue = select.value;
+    select.innerHTML = '';
+
+    var placeholder = document.createElement('option');
+    placeholder.value = '';
+    placeholder.textContent = '-- Select country --';
+    select.appendChild(placeholder);
+
+    Object.keys(COUNTRY_GROUPS).forEach(function (groupName) {
+      var optgroup = document.createElement('optgroup');
+      optgroup.label = groupName;
+
+      COUNTRY_GROUPS[groupName].forEach(function (country) {
+        var option = document.createElement('option');
+        option.value = country.code;
+        option.textContent = country.label;
+        optgroup.appendChild(option);
+      });
+
+      select.appendChild(optgroup);
+    });
+
+    if (currentValue) select.value = currentValue;
+  }
+
+  // ── State ────────────────────────────────────────────
+  var state = {
+    country: '',
+    salary: '',
+    currency: '',
+    role: '',
+    currentStep: 0,
+    stepStatuses: [], // 'pending' | 'done' | 'skipped'
+    carryData: {},
+    steps: [],  // filtered steps for this country
+  };
+
+  // ── Setup screen ──────────────────────────────────────
+  var setupEl  = document.getElementById('apo-setup');
+  var flowEl   = document.getElementById('apo-flow-layout');
+  var completeEl = document.getElementById('apo-complete');
+  var topbar   = document.getElementById('apo-topbar');
+
+  function getCurrentUser() {
+    return window.AfroAuth && typeof window.AfroAuth.getUser === 'function'
+      ? window.AfroAuth.getUser()
+      : null;
+  }
+
+  function updateSyncNote() {
+    var syncNote = document.getElementById('apo-sync-note');
+    if (!syncNote) return;
+
+    var user = getCurrentUser();
+    syncNote.innerHTML = user
+      ? '<strong>Signed in.</strong> Your journey progress now syncs across devices.'
+      : '<strong>Browser-only save.</strong> Sign in to sync your journey across devices.';
+  }
+
+  function buildProgressSnapshot(stepIndex) {
+    return {
+      country: state.country,
+      currentStep: typeof stepIndex === 'number' ? stepIndex : state.currentStep,
+      totalSteps: state.steps.length,
+      carryData: Object.assign({}, state.carryData),
+      stepStatuses: state.stepStatuses.slice()
+    };
+  }
+
+  function persistProgress(stepIndex) {
+    var snapshot = buildProgressSnapshot(stepIndex);
+    engine.saveProgress(journeyId, snapshot.currentStep, snapshot.carryData, snapshot.country, {
+      totalSteps: snapshot.totalSteps,
+      stepStatuses: snapshot.stepStatuses
+    });
+    var user = getCurrentUser();
+    if (user && engine.syncToSupabase) {
+      engine.syncToSupabase(journeyId, user.id, snapshot);
+    }
+    return snapshot;
+  }
+
+  document.getElementById('setup-journey-icon').textContent = journey.icon;
+  document.getElementById('setup-journey-title').textContent = journey.label;
+  document.getElementById('setup-journey-desc').textContent = journey.desc || 'Tell us your country and we\'ll tailor each step.';
+  populateCountryOptions();
+  updateSyncNote();
+  window.addEventListener('afro-auth-change', updateSyncNote);
+
+  var savedProgress = engine.loadProgress(journeyId);
+  if (isResume) {
+    var currentUser = getCurrentUser();
+    if (currentUser && engine.loadProgressFromSupabase) {
+      var remoteProgress = await engine.loadProgressFromSupabase(journeyId, currentUser.id);
+      if (remoteProgress && (!savedProgress || !savedProgress.updatedAt || remoteProgress.updatedAt > savedProgress.updatedAt)) {
+        savedProgress = remoteProgress;
+        engine.saveProgress(journeyId, remoteProgress.currentStep || 0, remoteProgress.carryData || {}, remoteProgress.country, {
+          totalSteps: remoteProgress.totalSteps || 0,
+          stepStatuses: remoteProgress.stepStatuses || []
+        });
+      }
+    }
+  }
+
+  // If resuming, prefill from saved progress
+  if (isResume) {
+    if (savedProgress && savedProgress.country) {
+      document.getElementById('setup-country').value = savedProgress.country;
+      if (savedProgress.carryData) {
+        if (savedProgress.carryData.salary) document.getElementById('setup-salary').value = savedProgress.carryData.salary;
+        if (savedProgress.carryData.role)   document.getElementById('setup-role').value   = savedProgress.carryData.role;
+      }
+    }
+  }
+
+  document.getElementById('apo-start-btn').addEventListener('click', function () {
+    var country = document.getElementById('setup-country').value;
+    var salary  = document.getElementById('setup-salary').value;
+    var role    = document.getElementById('setup-role').value;
+
+    state.country  = country;
+    state.salary   = salary;
+    state.role     = role;
+    state.carryData = { country: country, salary: salary, role: role };
+
+    // Filter steps for this country
+    state.steps = journey.steps.filter(function (s) {
+      return engine.stepAppliesToCountry(s, country);
+    });
+
+    // Init step statuses
+    if (isResume) {
+      var savedP = savedProgress || engine.loadProgress(journeyId);
+      var savedStep = typeof savedP.currentStep === 'number' ? savedP.currentStep : 0;
+      state.currentStep = Math.min(savedStep, Math.max(state.steps.length - 1, 0));
+      if (Array.isArray(savedP.stepStatuses) && savedP.stepStatuses.length === state.steps.length) {
+        state.stepStatuses = savedP.stepStatuses.slice();
+      } else {
+        state.stepStatuses = state.steps.map(function (_, i) {
+          if (i < savedStep) return 'done';
+          return 'pending';
+        });
+      }
+      Object.assign(state.carryData, savedP.carryData || {});
+    } else {
+      state.stepStatuses = state.steps.map(function () { return 'pending'; });
+      state.currentStep = 0;
+    }
+
+    // Transition to flow
+    setupEl.style.display = 'none';
+    document.querySelectorAll('.apo-setup-note, .apo-sync-note').forEach(function (el) {
+      el.style.display = 'none';
+    });
+    flowEl.style.display  = 'block';
+    topbar.style.display  = 'flex';
+    document.getElementById('apo-topbar-name').textContent = journey.icon + ' ' + journey.label;
+    renderStep();
+  });
+
+  // ── Render ────────────────────────────────────────────
+  function renderStep() {
+    var step = state.steps[state.currentStep];
+    if (!step) { showComplete(); return; }
+
+    var toolId = engine.getToolForCountry(step, state.country);
+    var toolUrl = engine.buildPreFillUrl(toolId, state.carryData);
+    if (step.docType) toolUrl += (toolUrl.includes('?') ? '&' : '?') + 'docType=' + encodeURIComponent(step.docType);
+
+    // Persist
+    persistProgress(state.currentStep);
+    engine.setPreFill(state.carryData);
+
+    // Update progress bar
+    var done = state.stepStatuses.filter(function (s) { return s === 'done' || s === 'skipped'; }).length;
+    var pct  = Math.round((done / state.steps.length) * 100);
+    document.getElementById('apo-progress-fill').style.width = pct + '%';
+    document.getElementById('apo-progress-label').textContent = done + ' / ' + state.steps.length;
+
+    // Step dots
+    var dotsEl = document.getElementById('apo-step-dots');
+    dotsEl.innerHTML = state.steps.map(function (s, i) {
+      var cls = 'apo-step-dot';
+      if (i === state.currentStep) cls += ' active';
+      else if (state.stepStatuses[i] === 'done') cls += ' done';
+      else if (state.stepStatuses[i] === 'skipped') cls += ' skipped';
+      var label = state.stepStatuses[i] === 'done' ? '✓' : (i + 1);
+      return '<div class="' + cls + '" data-step="' + i + '">' + label + '</div>';
+    }).join('');
+    dotsEl.querySelectorAll('.apo-step-dot').forEach(function (dot) {
+      dot.addEventListener('click', function () {
+        state.currentStep = parseInt(dot.dataset.step, 10);
+        renderStep();
+      });
+    });
+
+    // Step card
+    var stepCard = document.getElementById('apo-step-card');
+    stepCard.className = 'apo-step-card';
+    if (state.stepStatuses[state.currentStep] === 'done') stepCard.classList.add('is-done');
+    if (state.stepStatuses[state.currentStep] === 'skipped') stepCard.classList.add('is-skipped');
+
+    document.getElementById('apo-step-number').textContent = 'Step ' + (state.currentStep + 1) + ' of ' + state.steps.length;
+    document.getElementById('apo-step-title').textContent = step.label;
+    document.getElementById('apo-step-desc').textContent  = step.desc;
+
+    var badge = document.getElementById('apo-step-badge');
+    badge.innerHTML = step.required
+      ? '<span class="apo-step-required">⚠ Required</span>'
+      : '<span class="apo-step-optional">Optional</span>';
+
+    // Pre-fill notice
+    var prefillEl = document.getElementById('apo-step-prefill');
+    var hints = [];
+    if (state.carryData.country && state.currentStep > 0) hints.push('<strong>Country:</strong> ' + state.carryData.country);
+    if (state.carryData.salary  && state.currentStep > 0) hints.push('<strong>Salary:</strong> ' + Number(state.carryData.salary).toLocaleString());
+    if (hints.length) {
+      prefillEl.innerHTML = '✦ Pre-filled from your answers: ' + hints.join(' · ');
+      prefillEl.style.display = 'block';
+    } else {
+      prefillEl.style.display = 'none';
+    }
+
+    // Open tool button
+    var openBtn = document.getElementById('apo-btn-open');
+    openBtn.href = toolUrl;
+    openBtn.textContent = 'Open ' + step.label + ' ↗';
+    // Mobile: same tab; desktop: new tab
+    openBtn.target = window.innerWidth < 768 ? '_self' : '_blank';
+
+    // Skip button
+    var skipBtn = document.getElementById('apo-btn-skip');
+    skipBtn.style.display = step.required ? 'none' : '';
+
+    // Carry form — show simple salary capture on first step
+    var carryForm = document.getElementById('apo-carry-form');
+    var carryFields = document.getElementById('apo-carry-fields');
+    if (state.currentStep === 0 && !state.carryData.salary) {
+      carryForm.style.display = 'block';
+      carryFields.innerHTML = '<div class="apo-carry-field"><label>Net Salary / Monthly Pay</label><input aria-label="E.g. 250000" type="number" id="carry-salary" placeholder="e.g. 250000" value="' + (state.carryData.salary || '') + '"></div>';
+    } else {
+      carryForm.style.display = 'none';
+    }
+
+    // Nav buttons
+    document.getElementById('apo-prev-btn').disabled = state.currentStep === 0;
+    document.getElementById('apo-next-btn').textContent = state.currentStep === state.steps.length - 1 ? 'Finish journey →' : 'Next step →';
+
+    // AI panel placeholder for this step
+    document.getElementById('apo-ai-input').placeholder = 'Ask about ' + step.label.toLowerCase() + ' in ' + (state.country || 'Africa') + '...';
+    document.getElementById('apo-ai-response').style.display = 'none';
+    document.getElementById('apo-ai-response').textContent = '';
+  }
+
+  // ── Button handlers ───────────────────────────────────
+  document.getElementById('apo-btn-done').addEventListener('click', function () {
+    // Capture any carry data entries
+    var sEl = document.getElementById('carry-salary');
+    if (sEl && sEl.value) { state.carryData.salary = sEl.value; }
+
+    state.stepStatuses[state.currentStep] = 'done';
+    persistProgress(state.currentStep + 1);
+    advanceStep();
+  });
+
+  document.getElementById('apo-btn-skip').addEventListener('click', function () {
+    state.stepStatuses[state.currentStep] = 'skipped';
+    advanceStep();
+  });
+
+  document.getElementById('apo-prev-btn').addEventListener('click', function () {
+    if (state.currentStep > 0) { state.currentStep--; renderStep(); }
+  });
+
+  document.getElementById('apo-next-btn').addEventListener('click', function () {
+    if (state.currentStep >= state.steps.length - 1) { showComplete(); }
+    else { state.currentStep++; renderStep(); }
+  });
+
+  function advanceStep() {
+    if (state.currentStep >= state.steps.length - 1) { showComplete(); }
+    else { state.currentStep++; renderStep(); }
+  }
+
+  // ── Completion ────────────────────────────────────────
+  function showComplete() {
+    flowEl.style.display  = 'none';
+    topbar.style.display  = 'none';
+    completeEl.style.display = 'block';
+
+    var doneCount    = state.stepStatuses.filter(function (s) { return s === 'done'; }).length;
+    var skippedCount = state.stepStatuses.filter(function (s) { return s === 'skipped'; }).length;
+
+    document.getElementById('apo-complete-title').textContent = journey.icon + ' ' + journey.label + ' — Complete!';
+    document.getElementById('apo-complete-desc').textContent =
+      'You\'ve completed ' + doneCount + ' of ' + state.steps.length + ' steps' +
+      (skippedCount ? ' (' + skippedCount + ' skipped).' : '.');
+
+    // Summary rows
+    var rows = [];
+    if (state.country)  rows.push({ label: 'Country', value: state.country });
+    if (state.carryData.salary) rows.push({ label: 'Gross Salary', value: Number(state.carryData.salary).toLocaleString() });
+    if (state.role)     rows.push({ label: 'Role', value: state.role });
+    rows.push({ label: 'Steps completed', value: doneCount + ' / ' + state.steps.length });
+
+    document.getElementById('apo-summary-rows').innerHTML = rows.map(function (r) {
+      return '<div class="apo-summary-row"><span class="apo-summary-label">' + r.label + '</span><span class="apo-summary-value">' + r.value + '</span></div>';
+    }).join('');
+
+    persistProgress(state.steps.length);
+    engine.clearProgress(journeyId);
+    engine.clearPreFill();
+  }
+
+  document.getElementById('apo-download-btn').addEventListener('click', function () {
+    var doneCount = state.stepStatuses.filter(function (status) { return status === 'done'; }).length;
+    var skippedCount = state.stepStatuses.filter(function (status) { return status === 'skipped'; }).length;
+    var rows = [
+      { label: 'Journey', value: journey.label },
+      { label: 'Country', value: state.country || 'Not set' },
+      { label: 'Role', value: state.role || 'Not set' },
+      { label: 'Salary / Gross Pay', value: state.carryData.salary ? Number(state.carryData.salary).toLocaleString() : 'Not set' },
+      { label: 'Completed steps', value: doneCount + ' / ' + state.steps.length },
+      { label: 'Skipped steps', value: String(skippedCount) }
+    ];
+
+    state.steps.forEach(function (step, index) {
+      var status = state.stepStatuses[index] || 'pending';
+      rows.push({
+        label: 'Step ' + (index + 1) + ': ' + step.label,
+        value: status === 'done' ? 'Done' : (status === 'skipped' ? 'Skipped' : 'Pending')
+      });
+    });
+
+    if (window.AfroTools && window.AfroTools.pdf && window.AfroTools.pdf.generate) {
+      window.AfroTools.pdf.generate({
+        title: 'AfroPayroll OS Journey Summary',
+        subtitle: journey.label + ' - ' + (state.country || 'Africa'),
+        country: state.country || 'Africa',
+        toolId: 'afropayroll-os',
+        heroStats: [
+          { label: 'Journey', value: journey.label },
+          { label: 'Completed', value: doneCount + ' / ' + state.steps.length, highlight: true },
+          { label: 'Skipped', value: String(skippedCount) }
+        ],
+        sections: [{
+          title: 'Journey Summary',
+          rows: rows
+        }],
+        source: 'Generated from AfroPayroll OS workflow progress on AfroTools.',
+        disclaimer: 'This checklist summary is informational only and does not replace local payroll, legal, or tax advice.'
+      });
+    } else {
+      window.print();
+    }
+  });
+
+  // Share
+  document.getElementById('apo-share-btn').addEventListener('click', function () {
+    var text = 'I just completed the ' + journey.label + ' on AfroTools AfroPayroll OS!';
+    var url  = 'https://afrotools.com/tools/afropayroll-os/';
+    if (navigator.share) {
+      navigator.share({ title: 'AfroPayroll OS', text: text, url: url });
+    } else {
+      var wa = 'https://wa.me/?text=' + encodeURIComponent(text + ' ' + url);
+      window.open(wa, '_blank');
+    }
+  });
+
+  // ── AI Advisor ─────────────────────────────────────────
+  document.getElementById('apo-ai-send').addEventListener('click', sendAiQuery);
+  document.getElementById('apo-ai-input').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') sendAiQuery();
+  });
+
+  function sendAiQuery() {
+    var input   = document.getElementById('apo-ai-input');
+    var respEl  = document.getElementById('apo-ai-response');
+    var query   = input.value.trim();
+    if (!query) return;
+
+    var step = state.steps[state.currentStep];
+    respEl.textContent = 'Thinking...';
+    respEl.className   = 'apo-ai-response loading';
+    respEl.style.display = 'block';
+
+    var context = 'The user is in the ' + journey.label + ' journey, currently on step: ' + (step ? step.label : 'final step') + '. Country: ' + (state.country || 'not specified') + '.';
+
+    fetch('/.netlify/functions/ai-advisor', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tool: 'afropayroll-os', query: query, context: context })
+    })
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      respEl.textContent = d.answer || d.error || 'No response.';
+      respEl.className   = 'apo-ai-response';
+    })
+    .catch(function () {
+      respEl.textContent = 'Could not reach advisor. Please try again.';
+      respEl.className   = 'apo-ai-response';
+    });
+
+    input.value = '';
+  }
+})();
+</script>
+</body>
+</html>

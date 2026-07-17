@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Landed Cost Calculator Africa 2026 | Import Cost Tool | AfroTools</title>
+<meta name="description" content="Estimate landed cost for selected African import markets. Model FOB to warehouse planning costs, customs duty entered by you, VAT presets, levies, port charges, and clearing fees.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<style>
+:root{--color-brand:var(--color-primary)}
+.t-hero{background:var(--color-bg-dark);padding:40px 0 28px}
+.t-hero .bc{display:flex;gap:6px;align-items:center;font-size:.72rem;color:rgba(255,255,255,.5);margin-bottom:16px}
+.t-hero .bc a{color:rgba(255,255,255,.5);text-decoration:none}.t-hero .bc a:hover{color:#4DA3FF}
+.t-hero h1{font-size:clamp(1.5rem,3vw,2.1rem);font-weight:800;color:#fff;line-height:1.2;margin-bottom:8px}
+.t-hero h1 em{font-style:normal;color:#4DA3FF}
+.t-hero-sub{font-size:.88rem;color:rgba(255,255,255,.55);max-width:600px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:8px}
+.badge{font-size:.68rem;font-weight:700;padding:4px 10px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
+.badge-green{background:rgba(34,197,94,.15);color:#4ade80}.badge-blue{background:rgba(59,130,246,.15);color:#93c5fd}.badge-grey{background:rgba(255,255,255,.08);color:rgba(255,255,255,.5)}.badge-yellow{background:rgba(245,158,11,.15);color:#fbbf24}
+.t-main{background:var(--color-bg,#F8FAFD);padding:28px 0 60px}
+.tabs{display:flex;gap:4px;background:#E8F2FF;padding:4px;border-radius:8px;margin-bottom:20px;overflow-x:auto}
+.tab{flex:1;min-width:110px;padding:9px 12px;font-size:.78rem;font-weight:700;border:none;border-radius:5px;cursor:pointer;background:transparent;color:#64748B;transition:all .15s;white-space:nowrap;font-family:var(--font-body)}
+.tab.on{background:#fff;color:var(--color-primary,#0062CC);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.tab-panel{display:none}.tab-panel.on{display:block}
+.card{background:#fff;border:1px solid #E2E8F0;border-radius:10px;box-shadow:0 1px 8px rgba(0,0,0,.04);margin-bottom:16px}
+.card-head{padding:14px 20px;border-bottom:1px solid #E2E8F0;display:flex;align-items:center;justify-content:space-between}
+.card-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#3D5A80}
+.card-body{padding:20px}
+.f-label{font-size:.72rem;font-weight:700;color:#3D5A80;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:5px;margin-top:10px}
+.f-select,.f-input{width:100%;padding:10px 12px;font-size:.95rem;font-weight:600;font-family:var(--font-body);border:1.5px solid #CBD5E1;border-radius:7px;background:#F4F7FA;outline:none;box-sizing:border-box}
+.f-select:focus,.f-input:focus{border-color:var(--color-primary,#0062CC);background:#fff}
+.f-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:600px){.f-grid{grid-template-columns:1fr}}
+.btn-primary{display:inline-flex;align-items:center;gap:6px;padding:11px 24px;background:var(--color-primary,#0062CC);color:#fff;border:none;border-radius:980px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:var(--font-body);transition:background .15s;margin-top:16px}
+.btn-primary:hover{background:var(--color-primary-dark,#0063D1)}
+/* Results */
+.results{display:none}.results.on{display:block}
+.res-hero{background:var(--color-bg-dark,#0A1628);border-radius:10px;padding:20px;margin-bottom:16px}
+.rh-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.45);margin-bottom:4px}
+.rh-amount{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;color:var(--color-primary-light,#4DA3FF)}
+.rh-sub{font-size:.82rem;color:rgba(255,255,255,.6);margin-top:4px}
+.waterfall{display:flex;flex-direction:column;gap:4px;margin-top:16px}
+.wf-row{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:6px;font-size:.84rem}
+.wf-row.section-head{background:#F4F7FA;font-size:.7rem;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:.06em;margin-top:8px}
+.wf-row.levy{background:#FFFBEB;border-left:3px solid #F59E0B}
+.wf-row.duty{background:#EFF6FF;border-left:3px solid #3B82F6}
+.wf-row.vat{background:#F0FDF4;border-left:3px solid #22C55E}
+.wf-row.total{background:#0A1628;color:#fff;font-weight:800;font-size:1rem;border-radius:8px;margin-top:8px}
+.wf-row.total .wf-val{color:#4DA3FF}
+.wf-label{color:#475569}.wf-label.total{color:#fff}
+.wf-val{font-weight:700;font-family:monospace;font-size:.9rem;tabular-nums:true}
+/* Effective rate badge */
+.eff-rate{display:inline-flex;align-items:center;gap:6px;background:rgba(239,68,68,.12);color:#dc2626;padding:4px 10px;border-radius:980px;font-size:.75rem;font-weight:700;margin-top:8px}
+/* P&L */
+.pnl-result{display:none}.pnl-result.on{display:block}
+/* AI Chat */
+.chat-wrap{display:flex;flex-direction:column;height:380px}
+.chat-messages{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px}
+.msg{max-width:85%;padding:10px 14px;border-radius:10px;font-size:.84rem;line-height:1.55}
+.msg.user{align-self:flex-end;background:var(--color-primary,#0062CC);color:#fff;border-radius:10px 10px 2px 10px}
+.msg.ai{align-self:flex-start;background:#F4F7FA;color:#0f172a;border-radius:10px 10px 10px 2px}
+.msg.ai.loading{color:#94A3B8;font-style:italic}
+.chat-input-row{display:flex;gap:8px;padding:12px;border-top:1px solid #E2E8F0}
+.chat-input{flex:1;padding:9px 12px;border:1.5px solid #CBD5E1;border-radius:7px;font-size:.9rem;font-family:var(--font-body);outline:none;background:#F4F7FA}
+.chat-input:focus{border-color:var(--color-primary,#0062CC);background:#fff}
+.chat-send{padding:9px 16px;background:var(--color-primary,#0062CC);color:#fff;border:none;border-radius:7px;cursor:pointer;font-weight:700;font-family:var(--font-body)}
+.chat-suggestions{display:flex;flex-wrap:wrap;gap:6px;padding:0 12px 10px}
+.chat-sug{font-size:.72rem;padding:5px 10px;background:#EFF6FF;color:var(--color-primary,#0062CC);border:1px solid #BFDBFE;border-radius:980px;cursor:pointer;font-family:var(--font-body)}
+.chat-sug:hover{background:#DBEAFE}
+.premium-badge{background:linear-gradient(135deg,#F5A623,#E8930A);color:#fff;font-size:.65rem;font-weight:800;padding:2px 6px;border-radius:3px;text-transform:uppercase;letter-spacing:.05em}
+@media(prefers-color-scheme:dark){
+  .t-main{background:#0B1120}.card{background:#131D2E;border-color:#1E2D40}.card-head{border-color:#1E2D40}
+  .card-title{color:#93A5BE}.f-select,.f-input{background:#111D30;color:#E2E8F0;border-color:#1E2D40}
+  .tabs{background:#111D30}.tab.on{background:#131D2E}
+  .wf-row.section-head{background:#1E2D40;color:#93A5BE}
+  .wf-row.levy{background:#1c1007;border-color:#f59e0b}
+  .wf-row.duty{background:#172554;border-color:#3B82F6}
+  .wf-row.vat{background:#052e16;border-color:#22c55e}
+  .wf-label{color:#CBD5E1}
+  .msg.ai{background:#1E2D40;color:#E2E8F0}
+  .chat-input{background:#111D30;color:#E2E8F0;border-color:#1E2D40}
+  .chat-input-row{border-color:#1E2D40}
+  .chat-suggestions{} .chat-sug{background:#172554;border-color:#1e3a8a}
+}
+
+.lc-2col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.lc-2col-sm{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.lc-4col{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:640px){
+  .lc-2col,.lc-2col-sm{grid-template-columns:1fr;}
+  .lc-4col{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:400px){
+  .lc-4col{grid-template-columns:1fr;}
+}
+</style>
+<link rel="stylesheet" href="/assets/css/trade-focus.css?v=67d7d132">
+<meta property="og:title" content="Landed Cost Calculator Africa 2026 | Import Cost Tool | AfroTools">
+<meta property="og:description" content="Estimate landed cost for selected African import markets. Model FOB to warehouse planning costs, customs duty entered by you, VAT presets, levies, port charges, and clearing fees.">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script>
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/landed-cost.webp">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/landed-cost.webp">
+<meta property="og:url" content="https://afrotools.com/tools/landed-cost/">
+<link rel="stylesheet" href="/assets/css/trade-toolkit.css?v=2465f40a">
+<link rel="stylesheet" href="/assets/css/import-duty-data-trust.css?v=09a78c9e">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Landed Cost Calculator Africa 2026 | Import Cost Tool | AfroTools">
+<meta name="twitter:description" content="Estimate landed cost for selected African import markets. Model FOB to warehouse planning costs, customs duty entered by you, VAT presets, levies, port charges, and clearing fees.">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Landed Cost Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Landed Cost Calculator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Landed Cost Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Landed Cost Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for Nigeria, Kenya, South Africa and other African markets."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Landed Cost Calculator Africa 2026 | Import Cost Tool",
+  "description": "Estimate landed cost for selected African import markets. Model FOB to warehouse planning costs, customs duty entered by you, VAT presets, levies, port charges, and clearing fees.",
+  "url": "https://afrotools.com/tools/landed-cost/",
+  "inLanguage": "en",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/landed-cost.webp"
+}
+</script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Landed Cost Calculator Africa 2026 | Import Cost Tool","item":"https://afrotools.com/tools/landed-cost/"}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/landed-cost/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/landed-cost/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/cout-rendu/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/gharama-bidhaa/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/landed-cost/">
+</head>
+<body class="tool-page top-level-page-ui-refresh">
+<afro-navbar active="tools"></afro-navbar>
+
+<section class="t-hero">
+  <div class="container">
+    <nav class="bc" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span aria-current="page">Landed Cost Calculator</span></nav>
+    <h1>Landed Cost Calculator —<br><em>FOB to Warehouse 2026</em></h1>
+    <p class="t-hero-sub">A planning import cost calculator from FOB price through duty entered by you, VAT presets, levy estimates, port fee estimates, and clearing cost estimates to landed cost in local currency.</p>
+    <div class="hero-badges">
+      <span class="badge badge-green">10 African Countries</span>
+      <span class="badge badge-blue">Full Cost Waterfall</span>
+
+      <span class="badge badge-grey">P&L View Included</span>
+    </div>
+  </div>
+</section>
+
+<div class="t-main">
+  <div class="container">
+    <div class="tabs" role="tablist">
+      <button type="button" class="tab on" onclick="setTab('calc',this)">🧮 Calculate</button>
+      <button type="button" class="tab" onclick="setTab('compare',this)">↔️ Compare Scenarios</button>
+      <button type="button" class="tab" onclick="setTab('pnl',this)">💹 P&L View</button>
+      <button type="button" class="tab" onclick="setTab('chat',this)">Trade checklist</button>
+    </div>
+
+    <!-- CALCULATE -->
+    <div class="tab-panel on" id="tabCalc">
+      <div class="lc-2col">
+        <div>
+          <!-- Input card -->
+          <div class="card">
+            <div class="card-head"><span class="card-title">Import Details</span></div>
+            <div class="card-body">
+              <div class="f-grid">
+                <div>
+                  <label class="f-label" for="destCountry">Destination Country</label>
+                  <select class="f-select" id="destCountry" onchange="onCountryChange()"></select>
+                </div>
+                <div>
+                  <label class="f-label" for="portSelect">Entry Port</label>
+                  <select class="f-select" id="portSelect"></select>
+                </div>
+              </div>
+              <div class="f-grid">
+                <div>
+                  <label class="f-label" for="fobValue">FOB Value (USD)</label>
+                  <input type="number" class="f-input" id="fobValue" placeholder="e.g. 10000" value="10000" min="0">
+                </div>
+                <div>
+                  <label class="f-label" for="dutyRate">Duty Rate (%)</label>
+                  <input type="number" class="f-input" id="dutyRate" placeholder="e.g. 20" value="20" min="0" max="200" step="0.5">
+                </div>
+              </div>
+              <div class="f-grid">
+                <div>
+                  <label class="f-label" for="freightUSD">Sea Freight (USD)</label>
+                  <input type="number" class="f-input" id="freightUSD" placeholder="e.g. 2000" value="2000" min="0">
+                </div>
+                <div>
+                  <label class="f-label" for="insuranceUSD">Insurance (USD)</label>
+                  <input type="number" class="f-input" id="insuranceUSD" placeholder="auto 0.5%" value="">
+                </div>
+              </div>
+              <div class="f-grid">
+                <div>
+                  <label class="f-label" for="fxRate">Exchange Rate (1 USD =)</label>
+                  <input type="number" class="f-input" id="fxRate" placeholder="e.g. 1660" value="">
+                  <div style="font-size:.68rem;color:#94A3B8;margin-top:4px" id="fxHint"></div>
+                </div>
+                <div>
+                  <label class="f-label" for="quantity">Quantity (units)</label>
+                  <input type="number" class="f-input" id="quantity" placeholder="e.g. 100" value="1" min="1">
+                </div>
+              </div>
+              <div class="f-grid" style="margin-top:10px">
+                <div>
+                  <label class="f-label" for="brokerFee">Customs Broker Fee (local)</label>
+                  <input type="number" class="f-input" id="brokerFee" placeholder="auto-filled" value="">
+                </div>
+                <div>
+                  <label class="f-label" for="handlingFee">Port Handling (local)</label>
+                  <input type="number" class="f-input" id="handlingFee" placeholder="e.g. 75000" value="">
+                </div>
+              </div>
+              <button type="button" class="btn-primary" onclick="doCalculate()">📦 Calculate Landed Cost</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results -->
+        <div>
+          <div class="results" id="calcResults">
+            <div class="res-hero">
+              <div class="lc-2col-sm">
+                <div>
+                  <div class="rh-label">Total Landed Cost</div>
+                  <div class="rh-amount" id="rhTotal">—</div>
+                  <div class="rh-sub" id="rhTotalUSD">—</div>
+                </div>
+                <div>
+                  <div class="rh-label">Per Unit Cost</div>
+                  <div class="rh-amount" style="color:#a78bfa" id="rhPerUnit">—</div>
+                  <div class="rh-sub" id="rhEffRate">—</div>
+                </div>
+              </div>
+            </div>
+            <!-- Waterfall -->
+            <div class="card">
+              <div class="card-head"><span class="card-title">Cost Waterfall Breakdown</span></div>
+              <div class="card-body" style="padding:12px">
+                <div class="waterfall" id="waterfall"></div>
+                <div class="df-actions" style="margin-top:12px">
+                  <button type="button" id="landedCopyBtn">Copy landed-cost brief</button>
+                  <button type="button" id="landedCsvBtn">Download CSV</button>
+                </div>
+                <p id="landedCostStatus" role="status" aria-live="polite" style="margin:.55rem 0 0;color:#64748b;font-size:.86rem"></p>
+              </div>
+            </div>
+          </div>
+          <div style="text-align:center;padding:32px;color:#94A3B8;font-size:.88rem" id="calcEmpty">Fill in the form and calculate to see full cost breakdown</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPARE -->
+    <div class="tab-panel" id="tabCompare">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Compare Two Scenarios</span><span style="font-size:.7rem;color:#94A3B8">Same product, different ports or countries</span></div>
+        <div class="card-body">
+          <div class="lc-2col">
+            <div>
+              <div style="font-size:.78rem;font-weight:800;color:var(--color-primary,#0062CC);text-transform:uppercase;margin-bottom:12px">Scenario A</div>
+              <label class="f-label" for="cmpACountry">Country</label>
+              <select class="f-select" id="cmpACountry" onchange="onCmpCountryChange('A')"></select>
+              <label class="f-label" for="cmpAPort">Port</label>
+              <select class="f-select" id="cmpAPort"></select>
+              <label class="f-label" for="cmpADuty">Duty Rate (%)</label>
+              <input type="number" class="f-input" id="cmpADuty" value="20">
+              <label class="f-label" for="cmpAFX">FX Rate</label>
+              <input type="number" class="f-input" id="cmpAFX" placeholder="1 USD =">
+            </div>
+            <div>
+              <div style="font-size:.78rem;font-weight:800;color:#a78bfa;text-transform:uppercase;margin-bottom:12px">Scenario B</div>
+              <label class="f-label" for="cmpBCountry">Country</label>
+              <select class="f-select" id="cmpBCountry" onchange="onCmpCountryChange('B')"></select>
+              <label class="f-label" for="cmpBPort">Port</label>
+              <select class="f-select" id="cmpBPort"></select>
+              <label class="f-label" for="cmpBDuty">Duty Rate (%)</label>
+              <input type="number" class="f-input" id="cmpBDuty" value="25">
+              <label class="f-label" for="cmpBFX">FX Rate</label>
+              <input type="number" class="f-input" id="cmpBFX" placeholder="1 USD =">
+            </div>
+          </div>
+          <div style="margin-top:14px">
+            <label class="f-label" for="cmpFOB">FOB Value (USD) — same for both</label>
+            <input type="number" class="f-input" id="cmpFOB" value="10000" style="max-width:240px">
+          </div>
+          <button type="button" class="btn-primary" onclick="doCompare()">Compare Scenarios</button>
+        </div>
+      </div>
+      <div id="cmpResults" style="display:none">
+        <div class="card">
+          <div class="card-head"><span class="card-title">Side-by-Side Comparison</span></div>
+          <div class="card-body" style="overflow-x:auto">
+            <table style="width:100%;border-collapse:collapse;font-size:.84rem" id="cmpTable">
+              <thead><tr><th style="padding:8px;text-align:left;border-bottom:2px solid #E2E8F0">Cost Item</th><th style="padding:8px;text-align:right;border-bottom:2px solid #E2E8F0;color:var(--color-primary,#0062CC)">Scenario A</th><th style="padding:8px;text-align:right;border-bottom:2px solid #E2E8F0;color:#a78bfa">Scenario B</th><th style="padding:8px;text-align:right;border-bottom:2px solid #E2E8F0">Difference</th></tr></thead>
+              <tbody id="cmpBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- P&L VIEW -->
+    <div class="tab-panel" id="tabPnl">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Profit &amp; Loss View</span></div>
+        <div class="card-body">
+          <p style="font-size:.85rem;color:#64748B;margin-bottom:16px">Run the main calculation first, then enter your selling price to see profit margin analysis.</p>
+          <div class="f-grid" style="margin-bottom:16px">
+            <div>
+              <label class="f-label" for="sellPriceLocal">Selling Price (local currency per unit)</label>
+              <input type="number" class="f-input" id="sellPriceLocal" placeholder="e.g. 3000000">
+            </div>
+            <div style="display:flex;align-items:flex-end">
+              <button type="button" class="btn-primary" style="margin-top:0" onclick="doPnl()">Calculate P&L</button>
+            </div>
+          </div>
+          <div class="pnl-result" id="pnlResult">
+            <div class="lc-4col">
+              <div style="background:#EFF6FF;border-radius:8px;padding:14px;text-align:center">
+                <div style="font-size:.68rem;color:#64748B;text-transform:uppercase;margin-bottom:4px">Cost / Unit</div>
+                <div style="font-size:1.1rem;font-weight:800;color:#1d4ed8" id="pnlCost">—</div>
+              </div>
+              <div style="background:#F0FDF4;border-radius:8px;padding:14px;text-align:center">
+                <div style="font-size:.68rem;color:#64748B;text-transform:uppercase;margin-bottom:4px">Profit / Unit</div>
+                <div style="font-size:1.1rem;font-weight:800;color:#15803d" id="pnlProfit">—</div>
+              </div>
+              <div style="background:#FEF9C3;border-radius:8px;padding:14px;text-align:center">
+                <div style="font-size:.68rem;color:#64748B;text-transform:uppercase;margin-bottom:4px">Gross Margin</div>
+                <div style="font-size:1.1rem;font-weight:800;color:#b45309" id="pnlMargin">—</div>
+              </div>
+              <div style="background:#FEE2E2;border-radius:8px;padding:14px;text-align:center">
+                <div style="font-size:.68rem;color:#64748B;text-transform:uppercase;margin-bottom:4px">Markup</div>
+                <div style="font-size:1.1rem;font-weight:800;color:#b91c1c" id="pnlMarkup">—</div>
+              </div>
+            </div>
+            <div style="margin-top:12px;font-size:.82rem;color:#64748B" id="pnlBreakeven"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRADE CHECKLIST CHAT -->
+    <div class="tab-panel" id="tabChat">
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Trade Checklist</span>
+        </div>
+        <div class="chat-wrap">
+          <div class="chat-messages" id="chatMessages">
+            <div class="msg ai">Use this local checklist to frame landed-cost questions before you contact a broker, freight forwarder, bank, or customs authority. Ask about duty, VAT, port fees, FX, documents, or resale margin.</div>
+          </div>
+          <div class="chat-suggestions" id="chatSugs">
+            <div class="chat-sug" onclick="sendSug(this)">Is it cheaper to import via Apapa or Tin Can?</div>
+            <div class="chat-sug" onclick="sendSug(this)">What is the duty on HS 8517 in Ghana?</div>
+            <div class="chat-sug" onclick="sendSug(this)">How is VAT calculated on imports in Kenya?</div>
+            <div class="chat-sug" onclick="sendSug(this)">What levies apply on imports in Nigeria?</div>
+            <div class="chat-sug" onclick="sendSug(this)">Compare landed cost: Nigeria vs Ghana for electronics</div>
+          </div>
+          <div class="chat-input-row">
+            <input aria-label="Ask about import costs, duty rates, ports" type="text" class="chat-input" id="chatInput" placeholder="Ask about import costs, duty rates, ports..." onkeydown="if(event.key==='Enter')sendChat()">
+            <button type="button" class="chat-send" onclick="sendChat()">Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<section class="container" aria-label="Fuel and delivery cost planning">
+  <div class="card">
+    <div class="card-head"><span class="card-title">Fuel and inland delivery context</span></div>
+    <div class="card-body">
+      <p style="font-size:.88rem;color:#64748B;line-height:1.7;margin:0">After you estimate CIF, duty, port handling, and broker fees, check <a href="/tools/fuel-tracker/">African petrol and diesel prices in AfroFuel</a> before quoting inland delivery, generator handling, or warehouse backup-power costs.</p>
+    </div>
+  </div>
+</section>
+
+<section class="df-upgrade" data-df-upgrade="landed-cost">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Landed-cost quote brief</span>
+      <h2>Turn an import estimate into a buyer-ready handoff</h2>
+      <p>Not sure how to get the most from the Landed Cost Calculator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for Nigeria, Kenya, South Africa and other African markets.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Landed Cost Calculator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
+    </div>
+    <form class="df-form" data-df-form="landed-cost">
+      <label>Destination country<select name="country" aria-label="Destination country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
+      <label>Supplier invoice USD<input name="invoiceUsd" type="number" value="2500" min="0" step="any" aria-label="Supplier invoice USD"></label>
+      <label>Decision focus<select name="priority" aria-label="Decision focus"><option value="cost">total cost</option><option value="cashflow">cash flow</option><option value="compliance">compliance checks</option><option value="resale">resale price</option></select></label>
+      <label>Import buffer percent<input name="buffer" type="number" value="15" min="0" step="any" aria-label="Import buffer percent"></label>
+      <button type="submit">Create landed-cost brief</button>
+      <output class="df-result" data-df-result="landed-cost" data-df-base="Landed Cost Calculator — enter your details above to see your result." aria-live="polite">Landed Cost Calculator — enter your details above to see your result.</output>
+      <div class="df-actions"><button type="button" data-df-copy="landed-cost">Copy landed-cost brief</button><a class="df-action-link" href="#calcResults">View landed cost</a></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="landed-cost-faq-title">
+  <h2 id="landed-cost-faq-title">Landed Cost Calculator FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the Landed Cost Calculator?</summary><p>Enter your amounts, rates and dates in the fields above. The Landed Cost Calculator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Landed Cost Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Landed Cost Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for Nigeria, Kenya, South Africa and other African markets.</p></details></div>
+</section>
+<section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="landed-cost-verification-title">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Sources &amp; verification</span>
+          <h2 class="tool-verification-title" id="landed-cost-verification-title">Landed-cost assumptions to verify before payment</h2>
+          <p class="tool-verification-lead">The calculator combines your FOB, freight, duty, VAT, port, broker, and FX assumptions into a planning estimate. It is not an official customs assessment or freight quote.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Source-dated planning model</span>
+          <p class="tool-verification-note">Reviewed 2026. Customs, levies, freight, and exchange rates change.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>Methodology</h3>
+          <ul class="tool-verification-list">
+            <li>CIF is derived from FOB, freight, and insurance assumptions before duty and VAT-style charges are applied.</li>
+            <li>Destination fees, broker fees, and handling costs are planning presets that should be replaced with written quotes.</li>
+            <li>Scenario and P&amp;L tabs reuse the same estimate so you can compare ports, countries, and resale margin.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Before acting</h3>
+          <ul class="tool-verification-list">
+            <li>Confirm HS code, Incoterms, valuation basis, duty, VAT, levies, permits, inspection, storage, and port charges.</li>
+            <li>Ask a licensed broker or official customs source to confirm any duty or levy before you pay a supplier.</li>
+            <li>Copy or download the CSV brief for supplier, finance, broker, or customer quote review.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <p class="tool-verification-disclaimer">Disclaimer: estimate only. AfroTools does not file customs declarations, guarantee clearance, or provide legal, tax, or freight advice.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<afro-business-cta tool-name="Landed Cost Calculator" prospect-segment="trade-import" save-note="Calculate the landed cost, then copy the brief or download CSV for supplier, broker, bank, or customer quote review."></afro-business-cta>
+<afro-related-tools data-ssr="1" category="trade" current="landed-cost">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/afcfta-tracker/" data-related-tool data-id="afcfta-tracker" data-name="AfCFTA Tariff Tracker" data-category="trade" data-icon="AT" data-desc="Live AfCFTA duty schedule. Check duty-free status for any item between 54 African countries. Phase I &amp; II schedules.">AfCFTA Tariff Tracker</a></li><li><a href="/tools/incoterms-calculator/" data-related-tool data-id="incoterms-calculator" data-name="Incoterms 2020 Calculator" data-category="trade" data-icon="I2" data-desc="All 11 Incoterms 2020 explained with cost-split calculator, comparison tool, and Africa-specific trade guide.">Incoterms 2020 Calculator</a></li><li><a href="/tools/shipping-estimator/" data-related-tool data-id="shipping-estimator" data-name="Shipping Cost Estimator" data-category="trade" data-icon="SC" data-desc="Estimate sea freight, air freight and road haulage costs for Africa trade corridors. 16 ports, 8 airlines, 8 trucking ro">Shipping Cost Estimator</a></li><li><a href="/tools/export-docs/" data-related-tool data-id="export-docs-trade" data-name="Export Documentation Checklist" data-category="trade" data-icon="ED" data-desc="Country-specific checklist for every document needed to export from Africa. 17 origin countries, 8 destinations includin">Export Documentation Checklist</a></li><li><a href="/tools/fx-import-impact/" data-related-tool data-id="fx-import-impact" data-name="FX Import Cost Impact" data-category="trade" data-icon="FI" data-desc="Calculate how currency depreciation affects import costs. Model FX scenarios for 15 African currencies.">FX Import Cost Impact</a></li><li><a href="/tools/proforma-invoice/" data-related-tool data-id="proforma-invoice" data-name="Proforma Invoice Generator" data-category="trade" data-icon="PI" data-desc="Generate professional proforma invoices for international trade. HS codes, Incoterms, FOB/CIF pricing. Required for LC o">Proforma Invoice Generator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+<script src="/data/trade/country-duty-rates.js?v=97e9772d"></script>
+<script src="/data/trade/landed-cost-data.js?v=148eb3d4"></script>
+<script src="/data/trade/fx-history.js?v=21864088"></script>
+<script src="/engines/landed-cost-engine.js?v=330437e1"></script>
+<script src="/assets/js/lib/import-duty-data-trust.js?v=a2ab3304"></script>
+<script>
+var lastResult = null;
+var latestLandedCost = null;
+
+// Init
+(function init(){
+  var countries = LandedCostEngine.getAllCountries();
+  var opts = countries.map(function(c){ return '<option value="'+c.code+'">'+(c.flag||'')+' '+c.name+' ('+c.currency+')</option>'; }).join('');
+  document.getElementById('destCountry').innerHTML = opts;
+  document.getElementById('cmpACountry').innerHTML = opts;
+  document.getElementById('cmpBCountry').innerHTML = opts;
+  onCountryChange();
+  onCmpCountryChange('A'); onCmpCountryChange('B');
+})();
+
+function setTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('on')});
+  document.querySelectorAll('.tab').forEach(function(b){b.classList.remove('on')});
+  var map={calc:'tabCalc',compare:'tabCompare',pnl:'tabPnl',chat:'tabChat'};
+  document.getElementById(map[id]).classList.add('on'); btn.classList.add('on');
+}
+
+function onCountryChange(){
+  var cc = document.getElementById('destCountry').value;
+  var ports = LandedCostEngine.getCountryPorts(cc);
+  var pSel = document.getElementById('portSelect');
+  pSel.innerHTML = ports.map(function(p){ return '<option value="'+p.code+'">'+p.name+' ('+p.type+')</option>'; }).join('');
+  // Auto-fill FX rate
+  if(FX_HISTORY[cc]){
+    var months = Object.keys(FX_HISTORY[cc].monthlyAverages).sort();
+    var rate = FX_HISTORY[cc].monthlyAverages[months[months.length-1]];
+    document.getElementById('fxRate').value = rate;
+    document.getElementById('fxHint').textContent = '1 USD ≈ '+rate+' '+FX_HISTORY[cc].currency+' (March 2026)';
+  }
+  // Auto-fill broker fee
+  var fee = LandedCostEngine.getDefaultBrokerFee(cc);
+  if(fee) document.getElementById('brokerFee').value = fee;
+}
+
+function onCmpCountryChange(ab){
+  var cc = document.getElementById('cmp'+ab+'Country').value;
+  var ports = LandedCostEngine.getCountryPorts(cc);
+  var pSel = document.getElementById('cmp'+ab+'Port');
+  pSel.innerHTML = ports.map(function(p){ return '<option value="'+p.code+'">'+p.name+'</option>'; }).join('');
+  if(FX_HISTORY[cc]){
+    var months=Object.keys(FX_HISTORY[cc].monthlyAverages).sort();
+    document.getElementById('cmp'+ab+'FX').value = FX_HISTORY[cc].monthlyAverages[months[months.length-1]];
+  }
+}
+
+function fmtUSD(v){ return '$'+parseFloat(v).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function fmtLocal(v, sym){ return (sym||'')+Math.round(v).toLocaleString(); }
+function escHtml(v){ return String(v == null ? '' : v).replace(/[&<>"']/g, function(ch){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[ch]; }); }
+function trust(){ return window.AfroImportDutyDataTrust || null; }
+function trustMeta(field){ return trust() && field ? trust().renderMeta(field) : ''; }
+function trustDisclaimer(){ return trust() ? trust().DISCLAIMER : 'Import costs can change. AfroTools provides planning estimates only. Always confirm final customs duty, taxes, levies, port charges, exchange rates, and clearing costs with official authorities or licensed professionals before making financial decisions.'; }
+
+function doCalculate(){
+  var params = {
+    fobUSD: document.getElementById('fobValue').value,
+    freightUSD: document.getElementById('freightUSD').value,
+    insuranceUSD: document.getElementById('insuranceUSD').value,
+    destCountry: document.getElementById('destCountry').value,
+    dutyRate: document.getElementById('dutyRate').value,
+    portCode: document.getElementById('portSelect').value,
+    quantity: document.getElementById('quantity').value,
+    fxRate: document.getElementById('fxRate').value,
+    brokerFeeLocal: document.getElementById('brokerFee').value,
+    handlingLocal: document.getElementById('handlingFee').value,
+    haulageLocal: 0
+  };
+  var r = LandedCostEngine.calculate(params);
+  if(!r){alert('Could not calculate — check inputs');return;}
+  lastResult = r;
+  var countrySelect = document.getElementById('destCountry');
+  var portSelect = document.getElementById('portSelect');
+  latestLandedCost = {
+    params: params,
+    result: r,
+    country: countrySelect.options[countrySelect.selectedIndex] ? countrySelect.options[countrySelect.selectedIndex].text : params.destCountry,
+    port: portSelect.options[portSelect.selectedIndex] ? portSelect.options[portSelect.selectedIndex].text : params.portCode
+  };
+  var trustFields = trust() ? trust().landedCostResultFields(r, params) : {};
+  var sym = r.symbol||r.currency;
+  // Hero
+  document.getElementById('rhTotal').textContent = fmtLocal(r.totalLandedLocal, sym);
+  document.getElementById('rhTotalUSD').textContent = fmtUSD(r.totalLandedUSD)+' USD';
+  document.getElementById('rhPerUnit').textContent = fmtLocal(r.perUnitLocal, sym);
+  document.getElementById('rhEffRate').textContent = 'Effective tax rate: '+r.effectiveTaxRate+'%';
+  // Waterfall
+  var wf = '';
+  wf += wfRow('', 'FOB Value (Goods)', r.fobUSD, 'USD', '', trustFields.fob);
+  wf += wfRow('section-head', 'FREIGHT & INSURANCE', '', '', '');
+  wf += wfRow('', 'Sea Freight', r.freightUSD, 'USD', '', trustFields.freight);
+  wf += wfRow('', 'Insurance', r.insuranceUSD, 'USD', '', trustFields.insurance);
+  wf += wfRow('duty', 'CIF Value', r.cifUSD, 'USD', '', trustFields.cif);
+  wf += wfRow('section-head', 'IMPORT DUTY', '', '', '');
+  wf += wfRow('duty', 'Import Duty ('+r.dutyRate+'%)', r.importDutyUSD, 'USD', '', trustFields.duty);
+  if(r.levyBreakdown.length){
+    wf += wfRow('section-head', 'ADDITIONAL LEVIES', '', '', '');
+    r.levyBreakdown.forEach(function(l, i){ wf += wfRow('levy', l.name+' ('+l.rate+'% on '+l.base+')', l.amountUSD, 'USD', '', trustFields.levies && trustFields.levies[i]); });
+  }
+  wf += wfRow('section-head', 'VAT', '', '', '');
+  wf += wfRow('vat', 'VAT ('+r.vatRate+'%)', r.vatUSD, 'USD', '', trustFields.vat);
+  if(r.localChargesUSD > 0){
+    wf += wfRow('section-head', 'PORT & CLEARING (converted to USD)', '', '', '');
+    if(r.brokerFeeUSD>0) wf += wfRow('', 'Customs Broker Fee', r.brokerFeeUSD, 'USD', '', trustFields.broker);
+    if(r.handlingUSD>0) wf += wfRow('', 'Terminal Handling', r.handlingUSD, 'USD', '', trustFields.handling);
+  }
+  wf += wfRow('total', 'Estimated landed cost', r.totalLandedUSD, 'USD (= '+fmtLocal(r.totalLandedLocal,sym)+')', 'total', trustFields.total);
+  if(trust()) wf += trust().renderPanel([trustFields.fob, trustFields.freight, trustFields.insurance, trustFields.cif, trustFields.duty, trustFields.vat, trustFields.broker, trustFields.handling, trustFields.total].concat(trustFields.levies || []));
+  wf += '<p class="trust-disclaimer">'+escHtml(trustDisclaimer())+'</p>';
+  document.getElementById('waterfall').innerHTML = wf;
+  document.getElementById('calcEmpty').style.display = 'none';
+  document.getElementById('calcResults').classList.add('on');
+}
+
+function wfRow(cls, label, val, suffix, extraCls, trustField){
+  if(cls==='section-head') return '<div class="wf-row section-head">'+label+'</div>';
+  var fmtVal = typeof val==='number' ? fmtUSD(val)+(suffix?' '+suffix:'') : '';
+  return '<div class="wf-row '+cls+'"><span class="wf-label '+(extraCls||'')+'">'+label+' '+trustMeta(trustField)+'</span><span class="wf-val">'+fmtVal+'</span></div>';
+}
+
+function ensureLandedCost(){
+  if(!latestLandedCost) doCalculate();
+  return latestLandedCost;
+}
+
+function landedCostSummary(){
+  var data = ensureLandedCost();
+  if(!data) return '';
+  var r = data.result;
+  var sym = r.symbol||r.currency;
+  return [
+    'AfroTools landed-cost brief',
+    'Destination: '+data.country+' via '+data.port,
+    'FOB value: '+fmtUSD(r.fobUSD),
+    'Freight: '+fmtUSD(r.freightUSD),
+    'Insurance: '+fmtUSD(r.insuranceUSD),
+    'CIF value: '+fmtUSD(r.cifUSD),
+    'Import duty: '+fmtUSD(r.importDutyUSD)+' at '+r.dutyRate+'%',
+    'Levies: '+fmtUSD(r.totalLeviesUSD),
+    'VAT: '+fmtUSD(r.vatUSD)+' at '+r.vatRate+'%',
+    'Estimated landed cost: '+fmtUSD(r.totalLandedUSD)+' / '+fmtLocal(r.totalLandedLocal, sym),
+    'Estimated per unit: '+fmtLocal(r.perUnitLocal, sym),
+    'Planning note: verify HS code, duty rate, levies, VAT, exchange rate, port charges, broker fees, and customs authority guidance before pricing.'
+  ].join('\n');
+}
+
+function copyLandedCostBrief(){
+  var text = landedCostSummary();
+  var status = document.getElementById('landedCostStatus');
+  if(!text) return;
+  navigator.clipboard.writeText(text).then(function(){
+    status.textContent = 'Landed-cost brief copied. Your inputs stayed in this browser.';
+  }).catch(function(){
+    status.textContent = 'Copy failed. You can select the result text manually.';
+  });
+}
+
+function downloadLandedCostCsv(){
+  var data = ensureLandedCost();
+  var status = document.getElementById('landedCostStatus');
+  if(!data) return;
+  var r = data.result;
+  var rows = [
+    ['field','value'],
+    ['destination', data.country],
+    ['port', data.port],
+    ['fob_usd', r.fobUSD],
+    ['freight_usd', r.freightUSD],
+    ['insurance_usd', r.insuranceUSD],
+    ['cif_usd', r.cifUSD],
+    ['import_duty_usd', r.importDutyUSD],
+    ['total_levies_usd', r.totalLeviesUSD],
+    ['vat_usd', r.vatUSD],
+    ['broker_fee_usd', r.brokerFeeUSD || 0],
+    ['handling_usd', r.handlingUSD || 0],
+    ['total_landed_usd', r.totalLandedUSD],
+    ['total_landed_local', r.totalLandedLocal],
+    ['per_unit_local', r.perUnitLocal],
+    ['effective_tax_rate_percent', r.effectiveTaxRate],
+    ['planning_note', 'Verify HS code, rates, levies, VAT, FX, port charges, and customs guidance before acting.']
+  ];
+  if(r.levyBreakdown && r.levyBreakdown.length){
+    r.levyBreakdown.forEach(function(levy){
+      rows.push(['levy_'+levy.name, levy.amountUSD]);
+    });
+  }
+  var csv = rows.map(function(row){
+    return row.map(function(cell){ return '"' + String(cell == null ? '' : cell).replace(/"/g,'""') + '"'; }).join(',');
+  }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'afrotools-landed-cost-estimate.csv';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  status.textContent = 'CSV downloaded for offline review.';
+}
+
+document.getElementById('landedCopyBtn').addEventListener('click', copyLandedCostBrief);
+document.getElementById('landedCsvBtn').addEventListener('click', downloadLandedCostCsv);
+
+function doCompare(){
+  var fob = parseFloat(document.getElementById('cmpFOB').value)||10000;
+  var make = function(ab){
+    var cc = document.getElementById('cmp'+ab+'Country').value;
+    return LandedCostEngine.calculate({
+      fobUSD: fob, freightUSD: 2000, destCountry: cc,
+      dutyRate: document.getElementById('cmp'+ab+'Duty').value,
+      quantity:1,
+      fxRate: document.getElementById('cmp'+ab+'FX').value,
+      portCode: document.getElementById('cmp'+ab+'Port').value,
+      brokerFeeLocal:0, handlingLocal:0
+    });
+  };
+  var A=make('A'), B=make('B');
+  if(!A||!B){alert('Error calculating');return;}
+  var rows=[
+    ['FOB Value', A.fobUSD, B.fobUSD, '$'],
+    ['Freight', A.freightUSD, B.freightUSD, '$'],
+    ['CIF', A.cifUSD, B.cifUSD, '$'],
+    ['Import Duty', A.importDutyUSD, B.importDutyUSD, '$'],
+    ['Total Levies', A.totalLeviesUSD, B.totalLeviesUSD, '$'],
+    ['VAT', A.vatUSD, B.vatUSD, '$'],
+    ['Total Landed (USD)', A.totalLandedUSD, B.totalLandedUSD, '$'],
+    ['Effective Tax Rate', parseFloat(A.effectiveTaxRate), parseFloat(B.effectiveTaxRate), '', '%']
+  ];
+  var html = rows.map(function(r){
+    var diff = r[1]-r[2];
+    var aStr = r[3]==='$' ? '$'+Math.round(r[1]).toLocaleString()+(r[4]||'') : r[1].toLocaleString()+'%';
+    var bStr = r[3]==='$' ? '$'+Math.round(r[2]).toLocaleString()+(r[4]||'') : r[2].toLocaleString()+'%';
+    var dStr = (diff>0?'+':'')+( r[3]==='$' ? '$'+Math.round(Math.abs(diff)).toLocaleString() : Math.abs(diff).toFixed(1)+'%');
+    var dColor = diff>0 ? '#dc2626' : (diff<0?'#16a34a':'#94A3B8');
+    return '<tr><td style="padding:9px 10px;border-bottom:1px solid #F1F5F9">'+r[0]+'</td>' +
+      '<td style="padding:9px 10px;border-bottom:1px solid #F1F5F9;text-align:right;font-weight:700;color:var(--color-primary,#0062CC)">'+aStr+'</td>' +
+      '<td style="padding:9px 10px;border-bottom:1px solid #F1F5F9;text-align:right;font-weight:700;color:#a78bfa">'+bStr+'</td>' +
+      '<td style="padding:9px 10px;border-bottom:1px solid #F1F5F9;text-align:right;font-weight:700;color:'+dColor+'">'+dStr+'</td></tr>';
+  }).join('');
+  document.getElementById('cmpBody').innerHTML = html;
+  document.getElementById('cmpResults').style.display = 'block';
+}
+
+function doPnl(){
+  if(!lastResult){alert('Please run the main calculation first');return;}
+  var sp = parseFloat(document.getElementById('sellPriceLocal').value)||0;
+  if(!sp){alert('Please enter a selling price');return;}
+  var analysis = lastResult.getMarginAnalysis(sp);
+  var sym = lastResult.symbol||lastResult.currency;
+  document.getElementById('pnlCost').textContent = fmtLocal(analysis.costPerUnit, sym);
+  document.getElementById('pnlProfit').textContent = fmtLocal(analysis.profit, sym);
+  document.getElementById('pnlMargin').textContent = analysis.margin+'%';
+  document.getElementById('pnlMarkup').textContent = analysis.markup+'%';
+  document.getElementById('pnlBreakeven').textContent = 'Breakeven selling price: '+fmtLocal(analysis.breakeven, sym)+' per unit. '+(analysis.profit>0?'✅ Profitable at this price.':'❌ Loss — raise price or reduce costs.');
+  document.getElementById('pnlResult').classList.add('on');
+}
+
+// Local checklist chat
+var chatCtx = [];
+function sendSug(el){ document.getElementById('chatInput').value=el.textContent; sendChat(); }
+function sendChat(){
+  var input = document.getElementById('chatInput');
+  var msg = input.value.trim();
+  if(!msg) return;
+  addMsg('user', msg);
+  input.value = '';
+  var context = lastResult ? 'User has calculated: FOB $'+lastResult.fobUSD+', Country: '+lastResult.currency+', Total landed $'+lastResult.totalLandedUSD.toFixed(2)+', Effective tax rate '+lastResult.effectiveTaxRate+'%.' : '';
+  var aiDiv = addMsg('ai loading', '...');
+  window.setTimeout(function(){
+    aiDiv.classList.remove('loading');
+    aiDiv.textContent = localTradeChecklistReply(msg, context);
+  }, 120);
+}
+function addMsg(cls, text){
+  var div=document.createElement('div'); div.className='msg '+cls; div.textContent=text;
+  var msgs=document.getElementById('chatMessages'); msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight;
+  return div;
+}
+function localTradeChecklistReply(msg, ctx){
+  var text = String(msg || '').toLowerCase();
+  var base = ctx ? 'Using your latest landed-cost estimate, ' : 'Before you act, ';
+  if(text.indexOf('duty') >= 0 || text.indexOf('hs') >= 0) return base + 'verify the HS code, customs valuation basis, duty rate, surcharge, and any preferential trade treatment with an official customs source or licensed broker.';
+  if(text.indexOf('vat') >= 0 || text.indexOf('levy') >= 0) return base + 'separate VAT, port levy, inspection, destination charges, and storage. These are often calculated on different bases, so ask for the exact formula in writing.';
+  if(text.indexOf('port') >= 0 || text.indexOf('apapa') >= 0 || text.indexOf('tin can') >= 0) return base + 'compare port handling, congestion, storage days, inland delivery, and broker experience. A cheaper duty estimate can be outweighed by port delay costs.';
+  if(text.indexOf('ghana') >= 0 || text.indexOf('kenya') >= 0 || text.indexOf('nigeria') >= 0) return base + 'replace presets with the current customs tariff, exchange rate, broker quote, and destination charge list for that country before quoting a customer.';
+  return base + 'copy the landed-cost brief, then confirm HS code, Incoterms, FX rate, freight, insurance, duty, VAT, port fees, permits, and broker fees before paying the supplier.';
+}
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/trade-toolkit.js?v=748d8913" defer></script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/pages/trade-focus.js?v=50a063e9" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

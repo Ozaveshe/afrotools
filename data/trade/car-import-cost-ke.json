@@ -1,0 +1,94 @@
+{
+  "countryCode": "KE",
+  "countryName": "Kenya",
+  "slug": "kenya",
+  "flagLabel": "KE",
+  "currency": "KES",
+  "effectiveFrom": "2023-07-01",
+  "effectiveTo": null,
+  "status": "estimate-pack",
+  "confidence": "official-plus-estimate",
+  "valuationMethod": "KRA CRSP / valuation-template style workflow with fallback user FOB/CIF and valuation seeds.",
+  "ageRules": {
+    "basis": "firstRegistration",
+    "maxYearsExclusive": 8,
+    "message": "Kenya allows used vehicles less than 8 years old from first registration."
+  },
+  "steeringRules": {
+    "required": "right",
+    "message": "Kenya requires imported vehicles to be right-hand drive unless an official exemption applies."
+  },
+  "inspectionRules": {
+    "required": true,
+    "label": "KEBS pre-shipment roadworthiness inspection",
+    "message": "Pre-shipment roadworthiness inspection certificate is required."
+  },
+  "customsBasisRules": {
+    "basis": "customsValue",
+    "insuranceRate": 0.012,
+    "freightFallbackUsd": 1050,
+    "valuationPackRequired": true
+  },
+  "ports": [
+    { "code": "KEMBA", "label": "Mombasa Port", "city": "Mombasa", "terminalHandlingUsd": 155, "shippingLineChargesUsd": 130, "freeStorageDays": 4, "dailyStorageUsd": 22, "dailyDemurrageUsd": 45 }
+  ],
+  "cities": [
+    { "id": "mombasa", "label": "Mombasa", "inlandUsd": 80 },
+    { "id": "nairobi", "label": "Nairobi", "inlandUsd": 360 },
+    { "id": "kisumu", "label": "Kisumu", "inlandUsd": 610 },
+    { "id": "eldoret", "label": "Eldoret", "inlandUsd": 560 }
+  ],
+  "practicalCostPresets": {
+    "terminalHandlingUsd": 155,
+    "shippingLineChargesUsd": 130,
+    "inspectionUsd": 250,
+    "clearingAgentUsd": 320,
+    "diyClearingUsd": 150,
+    "registrationUsd": 210,
+    "tradePlateUsd": 60,
+    "bufferRate": 0.06
+  },
+  "taxComponents": [
+    { "id": "ke-import-duty", "label": "Import duty", "type": "percentage", "base": "customsValue", "rateOrFormula": 0.25, "displayOrder": 10, "official": true, "group": "officialTaxes" },
+    { "id": "ke-excise", "label": "Excise duty", "type": "engine-based", "base": "customsValuePlusPriorOfficialTaxes", "displayOrder": 20, "official": true, "group": "officialTaxes", "tiers": [
+      { "maxCc": 0, "rate": 0.1, "conditions": { "fuelTypes": ["ev"] }, "label": "EV estimate" },
+      { "maxCc": 1500, "rate": 0.2, "label": "Up to 1500cc" },
+      { "minCc": 1501, "maxCc": 2500, "rate": 0.25, "label": "1501-2500cc" },
+      { "minCc": 2501, "rate": 0.35, "label": "Above 2500cc" }
+    ] },
+    { "id": "ke-vat", "label": "VAT", "type": "percentage", "base": "customsValuePlusPriorOfficialTaxes", "rateOrFormula": 0.16, "displayOrder": 30, "official": true, "group": "officialTaxes" },
+    { "id": "ke-idf", "label": "Import Declaration Fee", "type": "percentage", "base": "customsValue", "rateOrFormula": 0.035, "displayOrder": 40, "official": true, "group": "officialFees" },
+    { "id": "ke-rdl", "label": "Railway Development Levy", "type": "percentage", "base": "customsValue", "rateOrFormula": 0.02, "displayOrder": 50, "official": true, "group": "officialFees" }
+  ],
+  "registrationComponents": [
+    { "id": "ke-ntsa-registration", "label": "Registration and plates estimate", "type": "fixed", "amountUsd": 210, "displayOrder": 10, "official": false, "group": "registration" }
+  ],
+  "optionalComponents": [
+    { "id": "ke-kra-valuation-gap", "label": "Valuation-table adjustment buffer", "type": "percentage", "base": "customsValue", "rateOrFormula": 0.04, "official": false }
+  ],
+  "documents": [
+    "Commercial invoice",
+    "Cancelled original logbook",
+    "Bill of lading",
+    "Pre-shipment inspection certificate",
+    "PIN / company documents",
+    "Import Declaration Form",
+    "KRA valuation / CRSP support documents"
+  ],
+  "sourceNotes": [
+    { "name": "KRA motor vehicle import procedure", "url": "https://www.kra.go.ke/individual/importing/learn-about-importation/procedures-for-motor-vehicle", "lastVerified": "2026-04-10", "confidence": "official", "note": "Used for age, RHD, KEBS, and headline tax stack." },
+    { "name": "KRA Motor Vehicle Valuation Template", "url": "https://kra.go.ke/images/publications/NEW-Motor-Vehicle-Valuation-Template--Effective--1st-July-2023-final.xls", "lastVerified": "2026-04-10", "confidence": "official", "note": "Architecture supports importing this valuation pack without runtime scraping." }
+  ],
+  "disclaimers": [
+    "KRA valuation can differ from invoice price. Treat this as an estimate unless the current valuation pack has been imported.",
+    "Age and steering compliance failures can block importation regardless of the calculated tax."
+  ],
+  "faqs": [
+    { "question": "What is the Japan to Mombasa happy path?", "answer": "Use Japan as the source market, Mombasa as the port, Nairobi or another city as destination, and right-hand drive as the steering side. The calculator will add KEBS inspection and KRA-style taxes." },
+    { "question": "What if I do not know the CRSP value?", "answer": "Use make, model, and year. The result is labelled as an estimate based on the current valuation pack or fallback seed until the exact KRA value is uploaded." }
+  ],
+  "copy": {
+    "intro": "Estimate a Kenya car import from source price or make/model/year through Mombasa, including KRA taxes, KEBS inspection, inland delivery, and registration.",
+    "hiddenCosts": "The biggest misses are valuation uplift versus invoice, KEBS inspection, IDF, RDL, storage, and inland delivery to Nairobi, Kisumu, or Eldoret."
+  }
+}

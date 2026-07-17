@@ -1,0 +1,32 @@
+!function() {
+  "use strict";
+  function t(t) {
+    return null == t ? "N/A" : Number(t).toFixed(2) + "%";
+  }
+  function e(t) {
+    return t && t.inflation && "number" == typeof t.inflation.headline ? t.inflation.headline : null;
+  }
+  function n(n) {
+    var a = null !== n.policy_rate && void 0 !== n.policy_rate && null !== e(n) ? n.policy_rate - e(n) : null;
+    return "<tr><td><strong>" + n.name + "</strong><br><span>" + (n.central_bank || "") + "</span></td><td>" + t(n.policy_rate) + "</td><td>" + t(e(n)) + "</td><td>" + t(a) + "</td><td>" + (n.last_updated || n.policy_rate_source_date || "N/A") + "</td></tr>";
+  }
+  fetch("/data/rates/latest.json", {
+    cache: "no-cache"
+  }).then(function(t) {
+    if (!t.ok) {
+      throw new Error(t.status);
+    }
+    return t.json();
+  }).then(function(t) {
+    var e = document.getElementById("ratesData");
+    if (e) {
+      var a = (t && t.countries || []).slice().sort(function(t, e) {
+        return (e.policy_rate || -1) - (t.policy_rate || -1);
+      });
+      e.innerHTML = '<div style="overflow:auto;border:1px solid #e2e8f0;border-radius:12px;background:#fff"><table style="width:100%;border-collapse:collapse;font-size:.9rem"><thead><tr style="background:#f8fafc;text-align:left"><th style="padding:12px">Pays</th><th style="padding:12px">Taux directeur</th><th style="padding:12px">Inflation</th><th style="padding:12px">Taux reel</th><th style="padding:12px">Mise a jour</th></tr></thead><tbody>' + a.map(n).join("") + '</tbody></table></div><p style="margin-top:10px;color:#64748b;font-size:.85rem">Donnees indicatives issues du dernier instantane AfroTools. Verifiez la publication de la banque centrale avant toute decision.</p>';
+    }
+  }).catch(function() {
+    var t = document.getElementById("ratesData");
+    t && (t.innerHTML = '<p style="color:#64748b">Les donnees de taux sont temporairement indisponibles.</p>');
+  });
+}();

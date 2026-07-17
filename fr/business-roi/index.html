@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculateur de retour sur investissement (ROI) | AfroTools</title>
+<meta name="description" content="Calculez le retour sur investissement (ROI), la marge, les factures, le stock et les décisions pratiques de votre entreprise.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="apple-touch-icon" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Calculateur de ROI — Retour sur investissement">
+<meta property="og:description" content="Pilotez ROI, marge, factures, stock, budget et décisions business avec les outils français AfroTools.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://afrotools.com/fr/business-roi/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Outils business et ROI — AfroTools","description":"Outils en français pour ROI, marge, factures, stock, budget et décisions business pratiques en Afrique.","url":"https://afrotools.com/fr/business-roi/","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/fr/"},{"@type":"ListItem","position":2,"name":"Business et ROI","item":"https://afrotools.com/fr/business-roi/"}]}}</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"ItemList","name":"Outils business et ROI — AfroTools","numberOfItems":7,"itemListElement":[{"@type":"ListItem","position":1,"name":"Planificateur d'entreprise","url":"https://afrotools.com/fr/tools/planificateur-entreprise/"},{"@type":"ListItem","position":2,"name":"Minuteur Pomodoro","url":"https://afrotools.com/fr/tools/minuteur-pomodoro/"},{"@type":"ListItem","position":3,"name":"Convertisseur d'unités","url":"https://afrotools.com/fr/tools/convertisseur-unites/"},{"@type":"ListItem","position":4,"name":"Planificateur de budget","url":"https://afrotools.com/fr/tools/planificateur-budget/"},{"@type":"ListItem","position":5,"name":"Compte à rebours","url":"https://afrotools.com/fr/tools/compte-a-rebours/"},{"@type":"ListItem","position":6,"name":"Coût de réunion","url":"https://afrotools.com/fr/tools/cout-reunion/"},{"@type":"ListItem","position":7,"name":"Jours fériés africains","url":"https://afrotools.com/fr/tools/jours-feries/"}]}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/tool-registry.min.js?v=ea618462" defer></script>
+<script src="/assets/js/components/category-cards.js?v=c011c712" defer></script>
+<script src="/assets/js/components/category-hub-card-images.js?v=12b677fb" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+  body{font-family:'DM Sans',sans-serif;background:var(--color-bg);color:var(--color-text);margin:0;-webkit-font-smoothing:antialiased}
+  a{text-decoration:none;color:inherit}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+  .bc{font-size:.72rem;font-weight:500;color:#9ca3af;letter-spacing:.06em;padding:14px 0}
+  .bc a{color:#9ca3af;transition:color .15s}
+  .bc a:hover{color:var(--color-primary)}
+  .bc .cur{color:#374151}
+
+  /* Hero */
+  .hero{background:linear-gradient(135deg,#0A1628 0%,#0f2847 50%,#1a3a5c 100%);padding:56px 0 48px;position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 50%,rgba(0,98,204,.1) 0%,transparent 50%),radial-gradient(circle at 70% 30%,rgba(77,163,255,.06) 0%,transparent 40%);animation:heroGlow 8s ease-in-out infinite alternate;pointer-events:none}
+  .hero::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background-image:radial-gradient(2px 2px at 20% 30%,rgba(255,255,255,.08),transparent),radial-gradient(2px 2px at 60% 70%,rgba(255,255,255,.05),transparent),radial-gradient(1px 1px at 80% 20%,rgba(255,255,255,.06),transparent),radial-gradient(1px 1px at 40% 80%,rgba(255,255,255,.04),transparent);animation:heroDots 12s linear infinite;pointer-events:none}
+  @keyframes heroGlow{0%{transform:translate(0,0) rotate(0deg)}100%{transform:translate(2%,-2%) rotate(3deg)}}
+  @keyframes heroDots{0%{transform:translateY(0)}100%{transform:translateY(-20px)}}
+  .hero-z{position:relative;z-index:1}
+  .hero-ey{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:rgba(0,98,204,.1);border:1px solid rgba(0,98,204,.2);border-radius:6px;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:16px}
+  .hero h1{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;color:#fff;line-height:1.08;letter-spacing:-.025em;margin-bottom:12px}
+  .hero h1 b{color:#4DA3FF}
+  .hero-sub{font-size:.95rem;color:rgba(255,255,255,.65);line-height:1.6;max-width:520px;margin-bottom:24px}
+  .hero-stats{display:flex;gap:32px}
+  .hs-n{font-size:2.2rem;font-weight:800;color:var(--color-primary);line-height:1}
+  .hs-l{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:4px}
+
+  /* Content */
+  .quote{font-size:1rem;color:#334155;line-height:1.8;max-width:720px;border-left:3px solid var(--color-primary);padding-left:18px;margin:32px 0}
+  .content{font-size:.92rem;color:#374151;line-height:1.8;max-width:720px;margin-bottom:28px}
+  .sec{padding:48px 0}
+  .sec-alt{background:#f3f4f6}
+  .ey{display:inline-flex;align-items:center;gap:7px;font-size:.65rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--color-primary);margin-bottom:8px}
+
+  .st{font-size:clamp(1.4rem,2.5vw,1.75rem);font-weight:800;color:#111827;letter-spacing:-.025em;line-height:1.15;margin-bottom:6px}
+  .ss{font-size:.88rem;color:#6b7280;line-height:1.7;max-width:520px;margin-bottom:28px}
+
+  /* Tool grid */
+  #tool-grid{min-height:120px}
+  .search-bar{position:relative;margin-bottom:28px}
+  .search-bar svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);pointer-events:none;color:#9ca3af}
+  .search-bar input{width:100%;padding:12px 14px 12px 42px;border:1.5px solid #e5e7eb;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.92rem;color:#111827;background:#fff;outline:none;transition:border-color .18s,box-shadow .18s;box-sizing:border-box}
+  .search-bar input:focus{border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(0,98,204,.1)}
+  .search-bar input::placeholder{color:#9ca3af}
+  .search-results-label{font-size:.78rem;color:#6b7280;margin-bottom:16px}
+  .no-results{text-align:center;padding:40px 20px;color:#9ca3af;font-size:.9rem}
+
+  /* CTA */
+  .cta{background:var(--color-primary);border-radius:14px;padding:36px 32px;color:#fff;text-align:center;margin-top:32px}
+  .cta h3{font-size:1.15rem;font-weight:800;margin-bottom:8px}
+  .cta p{font-size:.88rem;color:rgba(255,255,255,.8);margin-bottom:16px}
+  .cta a{display:inline-block;padding:11px 24px;background:#fff;color:var(--color-primary);border-radius:8px;font-weight:700;font-size:.88rem;transition:transform .15s}
+  .cta a:hover{transform:translateY(-2px)}
+
+  /* Feature highlights */
+  .highlights{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin:28px 0 0}
+  .hl-card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:20px;text-align:center;transition:border-color .2s,box-shadow .2s}
+  .hl-card:hover{border-color:var(--color-primary);box-shadow:0 4px 16px rgba(0,98,204,.08)}
+  .hl-icon{font-size:28px;margin-bottom:10px}
+  .hl-title{font-size:.82rem;font-weight:700;color:#111827;margin-bottom:4px}
+  .hl-desc{font-size:.75rem;color:#6b7280;line-height:1.5}
+  .decision-panel{margin:30px auto 4px;border:1px solid #dbeafe;background:#fff;border-radius:12px;padding:22px;box-shadow:0 10px 26px rgba(15,23,42,.06);box-sizing:border-box}
+  .decision-panel h2{font-size:1.2rem;line-height:1.2;margin:0 0 6px;color:#111827;font-weight:800}
+  .decision-panel p{margin:0 0 16px;color:#64748b;line-height:1.6}
+  .decision-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .decision-grid label{display:grid;gap:6px;font-size:.78rem;font-weight:800;color:#374151}
+  .decision-grid select,.decision-grid input{width:100%;min-height:44px;border:1.5px solid #cbd5e1;border-radius:8px;background:#f8fafc;color:#111827;padding:10px 12px;font:inherit;box-sizing:border-box}
+  .decision-output{display:block;margin-top:14px;border:1px solid #e2e8f0;border-left:4px solid var(--color-primary);border-radius:0 10px 10px 0;background:#f8fafc;color:#334155;padding:14px;line-height:1.6;white-space:pre-line}
+  .decision-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
+  .decision-actions button{border:0;border-radius:999px;background:#0f172a;color:#fff;font-weight:800;padding:10px 14px;cursor:pointer}
+  .decision-status{font-size:.82rem;color:#64748b}
+  .decision-trust{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+  .decision-trust div{border:1px solid #dbeafe;background:#eff6ff;border-radius:10px;padding:10px;color:#334155;line-height:1.45}
+  .decision-trust strong{display:block;color:#0f172a;margin-bottom:3px}
+
+  @media(max-width:640px){.hero-stats{gap:20px}.hs-n{font-size:1.6rem}.highlights{grid-template-columns:1fr 1fr}.decision-grid,.decision-trust{grid-template-columns:1fr}}
+</style>
+<meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:title" content="Calculateur de ROI — Retour sur investissement">
+<meta name="twitter:description" content="Pilotez ROI, marge, factures, stock, budget et décisions business avec les outils français AfroTools.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="article:modified_time" content="2026-03-28">
+<meta name="content-language" content="fr">
+<script src="/assets/js/i18n-detect.js?v=8515a010" defer></script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/fr/business-roi/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/business-roi/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/business-roi/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/business-roi/">
+</head>
+<script>
+window.addEventListener('load', function() {
+  // Override share library copy toast text for French pages
+  if (window.AfroTools) {
+    var _origToast = window.AfroTools.toast;
+    if (_origToast && _origToast.success) {
+      var _origSuccess = _origToast.success.bind(_origToast);
+      _origToast.success = function(msg) {
+        if (msg === 'Link copied to clipboard') msg = 'Lien copié !';
+        return _origSuccess(msg);
+      };
+    }
+    if (typeof _origToast === 'function') {
+      window.AfroTools.toast = function(msg, type) {
+        if (msg === 'Link copied!' || msg === 'Link copied to clipboard') msg = 'Lien copié !';
+        return _origToast(msg, type);
+      };
+    }
+  }
+  // Patch window.open to replace WhatsApp share CTA text for French pages
+  var _origOpen = window.open;
+  window.open = function(url, target) {
+    if (url && typeof url === 'string' && url.startsWith('https://wa.me/?text=')) {
+      url = url.replace(encodeURIComponent('Calculate yours FREE 👇'),
+                        encodeURIComponent('Calculez le vôtre GRATUITEMENT 👇'));
+      url = url.replace(encodeURIComponent('My Result'), encodeURIComponent('Mon résultat'));
+    }
+    return _origOpen.apply(this, arguments);
+  };
+});
+</script>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<div class="wrap"><nav class="bc"><a href="/fr/">AfroTools</a> › <a href="/fr/categories/">Catégories</a> › <span class="cur">Business et ROI</span></nav></div>
+
+<section class="hero">
+  <div class="wrap hero-z">
+    <div class="hero-ey"><span>📊</span> BUSINESS ET ROI</div>
+    <h1>Calculateur de retour sur investissement (ROI)</h1>
+    <p class="hero-sub">Plans d'affaires, factures, proforma, stock, marges, ROI et outils de productivité pensés pour les entrepreneurs et équipes africaines.</p>
+    <div class="hero-stats">
+      <div><div class="hs-n" id="s-total">12</div><div class="hs-l">Outils</div></div>
+      <div><div class="hs-n" id="s-live">12</div><div class="hs-l">Disponibles</div></div>
+      <div><div class="hs-n" id="s-pipe">0</div><div class="hs-l">Bientôt</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <p class="quote">Gérer une entreprise en Afrique signifie composer avec des coûts, devises et marchés très différents selon les pays. Ces outils gardent ce contexte au centre des calculs.</p>
+  <p class="content">Les entrepreneurs africains travaillent souvent avec plusieurs devises, des frais mobile money, des niveaux d'inflation variables et des coûts d'importation à vérifier localement. Du commerçant indépendant à Accra à la startup de Cape Town, cette sélection aide à prendre des décisions avec des repères plus proches du terrain.</p>
+
+  <div class="highlights">
+    <div class="hl-card"><div class="hl-icon">💰</div><div class="hl-title">Multi-devises</div><div class="hl-desc">NGN, KES, ZAR, GHS et autres devises africaines</div></div>
+    <div class="hl-card"><div class="hl-icon">📱</div><div class="hl-title">Utilisable hors ligne</div><div class="hl-desc">Les outils tournent dans le navigateur après le chargement</div></div>
+    <div class="hl-card"><div class="hl-icon">🔒</div><div class="hl-title">Privé</div><div class="hl-desc">Vos données restent sur votre appareil, sans envoi serveur</div></div>
+    <div class="hl-card"><div class="hl-icon">🆓</div><div class="hl-title">Gratuit</div><div class="hl-desc">Sans inscription, abonnement ni frais cachés</div></div>
+  </div>
+</div>
+
+<section class="wrap decision-panel" data-business-brief data-tool-verification-panel aria-labelledby="business-brief-title">
+  <h2 id="business-brief-title">Préparer la bonne décision business</h2>
+  <p>Choisissez votre problème, votre marché et votre urgence. AfroTools prépare un brief local-first pour ouvrir le bon outil avec les bonnes vérifications.</p>
+  <div class="decision-grid">
+    <label>Besoin principal<select id="businessNeed"><option value="marge">Marge et prix de vente</option><option value="facture">Facture, proforma ou devis</option><option value="stock">Stock et réapprovisionnement</option><option value="roi">ROI ou faisabilité</option><option value="budget">Budget et cash-flow</option></select></label>
+    <label>Marché<input id="businessMarket" autocomplete="off" placeholder="Ex: Côte d'Ivoire, Sénégal, Maroc"></label>
+    <label>Urgence<select id="businessUrgency"><option>Cette semaine</option><option>Ce mois-ci</option><option>Avant un financement</option><option>Avant une importation</option></select></label>
+  </div>
+  <output id="businessBriefOutput" class="decision-output" aria-live="polite"></output>
+  <div class="decision-actions"><button type="button" id="copyBusinessBrief">Copier le brief</button><button type="button" id="downloadBusinessBrief">Télécharger TXT</button><span id="businessBriefStatus" class="decision-status" aria-live="polite"></span></div>
+  <div class="decision-trust"><div><strong>Méthode</strong>Transforme le besoin en prochaines actions et outil recommandé.</div><div><strong>Source</strong>Les montants, taux, frais et règles doivent être vérifiés dans l'outil ou auprès d'une source locale.</div><div><strong>Confidentialité</strong>Le brief reste dans le navigateur; aucun contenu métier n'est envoyé.</div></div>
+</section>
+
+<section class="sec"><div class="wrap">
+  <div class="ey">Tous les outils</div>
+  <h2 class="st">Outils business et ROI</h2>
+  <p class="ss">Parcourez les outils business déjà disponibles en français, puis recherchez par besoin ou par nom.</p>
+  <div class="search-bar">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input aria-label="Rechercher des outils — ex. facture, marge, stock" type="text" id="tool-search" placeholder="Rechercher des outils — ex. facture, marge, stock..." autocomplete="off" spellcheck="false">
+  </div>
+  <div id="search-label" class="search-results-label" style="display:none"></div>
+  <div id="tool-grid"></div>
+</div></section>
+
+<section class="sec sec-alt"><div class="wrap">
+  <div class="cta"><h3>Vous cherchez un outil manquant ?</h3><p>Dites-nous ce dont vous avez besoin : les demandes récurrentes passent en priorité.</p><a href="/fr/contact/">Proposer un outil →</a></div>
+</div></section>
+
+<afro-footer></afro-footer>
+
+<script>
+function _initBusinessBrief(){
+  var output=document.getElementById('businessBriefOutput');
+  if(!output)return;
+  var status=document.getElementById('businessBriefStatus');
+  var map={
+    marge:{tool:'Calculateur de marge',action:'Comparez coût d’achat, frais, taxes, livraison et prix final avant de publier votre tarif.'},
+    facture:{tool:'Générateur de facture ou proforma',action:'Préparez client, lignes, devise, échéance et conditions de paiement.'},
+    stock:{tool:'Gestion de stock',action:'Vérifiez rotation, seuil de réapprovisionnement, délai fournisseur et coût de rupture.'},
+    roi:{tool:'Calculateur ROI ou faisabilité',action:'Séparez investissement initial, revenus attendus, coûts récurrents et scénario prudent.'},
+    budget:{tool:'Planificateur de budget',action:'Classez charges fixes, charges variables, trésorerie disponible et marge de sécurité.'}
+  };
+  function value(id){var el=document.getElementById(id);return el&&el.value?el.value.trim():'';}
+  function brief(){
+    var need=value('businessNeed')||'marge';
+    var item=map[need]||map.marge;
+    return ['Brief business AfroTools','Marché: '+(value('businessMarket')||'à préciser'),'Urgence: '+value('businessUrgency'),'Outil recommandé: '+item.tool,'Action: '+item.action,'Vérifications: devise, frais locaux, taxes applicables, date des hypothèses, source de prix.'].join('\n');
+  }
+  function render(){output.textContent=brief();if(status)status.textContent='';}
+  ['businessNeed','businessMarket','businessUrgency'].forEach(function(id){var el=document.getElementById(id);if(el)el.addEventListener('input',render);});
+  var copy=document.getElementById('copyBusinessBrief');
+  if(copy)copy.addEventListener('click',function(){var text=brief();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Brief copié.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});
+  var download=document.getElementById('downloadBusinessBrief');
+  if(download)download.addEventListener('click',function(){var blob=new Blob([brief()],{type:'text/plain;charset=utf-8'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='brief-business-roi.txt';a.click();URL.revokeObjectURL(a.href);if(status)status.textContent='TXT téléchargé.';});
+  render();
+}
+document.addEventListener('DOMContentLoaded',_initBusinessBrief);
+function _initBusinessRoi(){
+  var operatorCategories = {
+    'data-productivity': true,
+    'ecommerce': true,
+    'small-business': true,
+    'document-pdf': true,
+    'trade': true
+  };
+  var operatorToolIds = {
+    'generateur-business-plan-fr': true,
+    'plan-affaires-fr': true,
+    'planificateur-entreprise-fr': true,
+    'generateur-factures-fr': true,
+    'facture-proforma-fr': true,
+    'gestion-stocks-fr': true,
+    'marge-beneficiaire-fr': true,
+    'calculateur-marge-fr': true,
+    'etude-faisabilite-fr': true,
+    'generateur-nom-entreprise-fr': true
+  };
+  var allTools=AFRO_TOOLS.filter(function(t){
+    if (t.id === 'business-roi-fr') return false;
+    if (!(t.lang === 'fr' || /^\/fr\//.test(t.href || ''))) return false;
+    return operatorToolIds[t.id] || operatorCategories[t.category];
+  });
+  var live=allTools.filter(function(t){return t.status==='live'||t.status==='new';});
+  var pipe=allTools.filter(function(t){return t.status==='queued'||t.status==='planned';});
+  var plannedCount=pipe.length;
+  var e;
+  e=document.getElementById('s-total');if(e)e.textContent=allTools.length;
+  e=document.getElementById('s-live');if(e)e.textContent=live.length;
+  e=document.getElementById('s-pipe');if(e)e.textContent=plannedCount;
+
+  var container=document.getElementById('tool-grid');if(!container)return;
+
+  function renderGrid(filteredLive,filteredPipe,query){
+    var html='';
+    var label=document.getElementById('search-label');
+    if(query){
+      var total=filteredLive.length+filteredPipe.length;
+      label.style.display='block';
+      label.textContent=total+' résultat'+(total>1?'s':'')+' pour "'+query+'"';
+    } else {
+      label.style.display='none';
+    }
+    if(filteredLive.length){
+      html+='<h2 style="font-size:18px;font-weight:800;color:#111;margin:0 0 14px;display:flex;align-items:center;gap:10px;font-family:DM Sans,sans-serif"><span style="width:8px;height:8px;border-radius:50%;background:var(--color-primary);flex-shrink:0"></span> Disponibles maintenant <span style="font-size:13px;font-weight:500;color:#6b7280;">('+filteredLive.length+')</span></h2>';
+      html+='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:32px">';
+      filteredLive.forEach(function(t){html+=afroCard(t,true);});html+='</div>';
+    }
+    if(filteredPipe.length){
+      html+='<h2 style="font-size:18px;font-weight:800;color:#111;margin:0 0 14px;display:flex;align-items:center;gap:10px;font-family:DM Sans,sans-serif"><span style="width:8px;height:8px;border-radius:50%;background:#d1d5db;flex-shrink:0"></span> Bientôt <span style="font-size:13px;font-weight:500;color:#6b7280;">('+filteredPipe.length+')</span></h2>';
+      html+='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px">';
+      filteredPipe.forEach(function(t){html+=afroCard(t,false);});html+='</div>';
+    }
+    if(!filteredLive.length&&!filteredPipe.length){
+      html='<div class="no-results">Aucun outil trouvé pour <strong>"'+query+'"</strong>.<br>Essayez un autre mot-clé.</div>';
+    }
+    container.innerHTML=html;
+    localizeCards(container);
+  }
+
+  function localizeCards(root){
+    root.querySelectorAll('.tc-badge').forEach(function(el){
+      if(el.textContent==='New') el.textContent='Nouveau';
+      else if(el.textContent==='Live') el.textContent='En ligne';
+      else if(el.textContent==='Coming Soon') el.textContent='Bientôt';
+    });
+    root.querySelectorAll('.tc-cta').forEach(function(el){ el.textContent='Ouvrir →'; });
+  }
+
+  renderGrid(live,pipe,'');
+
+  var searchInput=document.getElementById('tool-search');
+  if(searchInput){
+    searchInput.addEventListener('input',function(){
+      var q=this.value.trim().toLowerCase();
+      if(!q){renderGrid(live,pipe,'');return;}
+      function match(t){
+        return (t.name||'').toLowerCase().includes(q)||(t.desc||'').toLowerCase().includes(q)||(t.id||'').toLowerCase().includes(q);
+      }
+      renderGrid(live.filter(match),pipe.filter(match),q);
+    });
+  }
+}
+if (typeof onRegistryReady === 'function') { onRegistryReady(_initBusinessRoi); }
+else { document.addEventListener('DOMContentLoaded', function(){ if(typeof AFRO_TOOLS!=='undefined') _initBusinessRoi(); else document.addEventListener('afrotools:registry-ready', _initBusinessRoi); }); }
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+</body>
+</html>

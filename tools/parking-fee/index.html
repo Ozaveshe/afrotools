@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Parking Fee Calculator Africa — Lagos, Nairobi, Accra | AfroTools</title>
+<meta name="description" content="Calculate daily, monthly, and annual parking costs in major African cities. Compare CBD vs suburbs, Lagos, Nairobi, Accra, Cape Town parking rates and ride-hailing alternatives.">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Parking Fee Calculator Africa | AfroTools">
+<meta property="og:description" content="Calculate daily, monthly, and annual parking costs in major African cities. Compare CBD vs suburbs, Lagos, Nairobi, Accra, Cape Town parking rates and ride-hailing alternatives.">
+<meta property="og:url" content="https://afrotools.com/tools/parking-fee/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Parking Fee Calculator Africa — Lagos, Nairobi, Accra | AfroTools">
+<meta name="twitter:description" content="Calculate daily, monthly, and annual parking costs in major African cities. Compare CBD vs suburbs, Lagos, Nairobi, Accra, Cape Town parking rates and ride-hailing alternatives.">
+<meta name="tool-id" content="parking-fee">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+.tool-hero{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);color:#fff;padding:44px 0 52px}
+.tool-hero .container{max-width:900px;margin:0 auto;padding:0 1.5rem}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.65);margin-bottom:1rem}
+.breadcrumb a{color:rgba(255,255,255,.65)}
+.breadcrumb a:hover{color:#fff}
+.breadcrumb span{margin:0 6px;opacity:.5}
+.tool-hero h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;line-height:1.2;margin:.5rem 0 .75rem}
+.tool-hero h1 em{font-style:normal;color:#f59e0b}
+.tool-hero-sub{font-size:.95rem;color:rgba(255,255,255,.82);max-width:580px;line-height:1.6}
+.tool-pills{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;background:rgba(255,255,255,.12);border-radius:100px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.85)}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1.25rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.field{display:flex;flex-direction:column;gap:4px}
+label{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#374151}
+.hint{font-size:.72rem;color:#9ca3af;margin-top:-2px}
+input[type=number],select{width:100%;padding:10px 12px;border:1.5px solid #d1d5db;border-radius:10px;font-size:.9rem;font-family:inherit;background:#fff;color:#1a1a2e;transition:border-color .2s}
+input:focus,select:focus{outline:none;border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(0,98,204,.12)}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239ca3af' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+.btn-calc{display:block;width:100%;padding:14px;border:none;border-radius:12px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;transition:background .2s;margin-top:.5rem}
+.btn-calc:hover{background:#0059B3}
+.results{display:none;margin-top:1.25rem}
+.results.on{display:block;animation:fadeUp .4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.park-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.25rem}
+.park-box{background:linear-gradient(135deg,#0f1419,#1a1f2e);border-radius:12px;padding:1.25rem;text-align:center}
+.park-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.6);margin-bottom:.25rem}
+.park-val{font-size:1.35rem;font-weight:800;color:#fff}
+.compare-box{background:#f8fafc;border:1.5px solid #e5e7eb;border-radius:12px;padding:1.25rem;margin-top:1rem}
+.compare-title{font-size:.88rem;font-weight:700;margin-bottom:.75rem;color:#374151}
+.compare-row{display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid #f1f5f9;font-size:.85rem}
+.compare-row:last-child{border-bottom:none}
+.compare-row-label{color:#6b7280}
+.compare-row-val{font-weight:700;color:#1a1a2e}
+.tip-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:1rem 1.25rem;font-size:.85rem;color:#1e40af;line-height:1.6;margin-top:1rem}
+.faq-section{margin-top:2.5rem}
+.faq-section h2{font-size:1.25rem;font-weight:700;margin-bottom:1rem}
+details{border:1px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+summary{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
+details[open] summary::after{content:'\2212'}
+.faq-body{padding:0 1.25rem 1rem;font-size:.85rem;color:#4b5563;line-height:1.65}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr}.park-metrics{grid-template-columns:1fr 1fr}}
+</style>
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/parking-fee.webp">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/parking-fee.webp">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Parking Fee Calculator Africa?","acceptedAnswer":{"@type":"Answer","text":"Enter your route, distance and costs in the fields above. The Parking Fee Calculator Africa then gives you a cost or income estimate you can plan around you can use straight away."}},{"@type":"Question","name":"How accurate is the Parking Fee Calculator Africa?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current fuel prices, fares and local charges before you rely on it."}},{"@type":"Question","name":"Is the Parking Fee Calculator Africa free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"Is it cheaper to park or use ride-hailing in Lagos?","acceptedAnswer":{"@type":"Answer","text":"In Lagos CBD, parking can cost ₦500-2,000/hour, amounting to ₦4,000-16,000/day for a typical workday — that's ₦88,000-352,000/month. A 10km Uber ride costs roughly ₦1,500-2,500 each way, totalling ₦66,000-110,000/month for daily commuting. For CBD workers, ride-hailing is often cheaper than parking, with the added benefit of no fuel, maintenance, or traffic stress."}},{"@type":"Question","name":"Are there monthly parking permits in African cities?","acceptedAnswer":{"@type":"Answer","text":"Yes. Most African city CBDs offer monthly parking permits at discounted rates. In Nairobi CBD, monthly permits in council-managed parking bays cost KSh 3,000-5,000/month vs KSh 200-500/hour pay-as-you-go. Cape Town parking garages offer monthly contracts at R800-1,500 vs R15-30/hour. Always ask about monthly rates — they can save 30-50% for regular parkers."}},{"@type":"Question","name":"How do I avoid parking problems in African CBDs?","acceptedAnswer":{"@type":"Answer","text":"Tips: (1) Use parking apps where available (ParkMe in South Africa, iParkit in Nairobi). (2) Arrive early — CBD parking fills up by 8:30am in Lagos, Nairobi, and Accra. (3) Consider park-and-ride options at transit nodes. (4) Mall parking is usually free for 2-3 hours with purchase validation. (5) Some office buildings include parking — negotiate this in lease agreements. (6) Consider electric vehicles which often get preferential parking."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/lib/source-confidence.js?v=e7c3ebe4" defer></script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Parking Fee Calculator Africa — Lagos, Nairobi, Accra",
+  "description": "Calculate daily, monthly, and annual parking costs in major African cities. Compare CBD vs suburbs, Lagos, Nairobi, Accra, Cape Town parking rates and ride-hailing alternatives.",
+  "url": "https://afrotools.com/tools/parking-fee/",
+  "inLanguage": "en",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/parking-fee.webp"
+}
+</script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Parking Fee Calculator Africa — Lagos, Nairobi, Accra","item":"https://afrotools.com/tools/parking-fee/"}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/parking-fee/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/parking-fee/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/frais-parking/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ada-za-maegesho/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/parking-fee/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar theme="dark" active="transport"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb">
+      <a href="/">AfroTools</a><span>›</span>
+      <a href="/transport/">Transport &amp; Logistics</a><span>›</span>
+      Parking Fee Calculator
+    </nav>
+    <h1>Parking Fee <em>Calculator</em></h1>
+    <p class="tool-hero-sub">Calculate daily, monthly, and annual parking costs in major African cities. Compare CBD vs suburb parking rates, and see whether ride-hailing is cheaper than parking.</p>
+    <div class="tool-pills">
+      <span class="pill">&#x1f17f;&#xfe0f; 15 Countries</span>
+      <span class="pill">&#x1f4b0; Free</span>
+      <span class="pill">&#x1f695; vs Ride-Hailing</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="card">
+    <h2>&#x1f17f;&#xfe0f; Parking Details</h2>
+    <div class="form-grid">
+      <div class="field">
+        <label for="parkCountry">Country</label>
+        <select id="parkCountry" onchange="updateParkCity()">
+          <option value="nigeria">Nigeria</option>
+          <option value="kenya">Kenya</option>
+          <option value="southafrica">South Africa</option>
+          <option value="ghana">Ghana</option>
+          <option value="egypt">Egypt</option>
+          <option value="ethiopia">Ethiopia</option>
+          <option value="tanzania">Tanzania</option>
+          <option value="senegal">Senegal</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>City / Area Type</label>
+        <select id="parkArea" aria-label="Park Area">
+          <option value="cbd">CBD / City Centre</option>
+          <option value="suburb">Suburbs</option>
+          <option value="mall">Shopping Mall</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Hours Parked per Day</label>
+        <input aria-label="ParkHours" type="number" id="parkHours" value="8" min="1" max="24">
+        <span class="hint">Typical workday: 8-9 hours</span>
+      </div>
+      <div class="field">
+        <label>Days per Month</label>
+        <input aria-label="ParkDays" type="number" id="parkDays" value="22" min="1" max="31">
+      </div>
+      <div class="field">
+        <label>Monthly Permit Available?</label>
+        <select id="parkPermit" aria-label="Park Permit">
+          <option value="yes">Yes — use monthly permit rate</option>
+          <option value="no">No — hourly only</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>One-Way Commute Distance (km)</label>
+        <input aria-label="ParkRideKm" type="number" id="parkRideKm" value="10" min="1">
+        <span class="hint">For ride-hailing comparison</span>
+      </div>
+    </div>
+    <button type="button" class="btn-calc" onclick="calcParkingFee()">Calculate Parking Cost</button>
+
+    <div class="results" id="parkResults">
+      <div class="park-metrics">
+        <div class="park-box"><div class="park-label">Daily</div><div class="park-val" id="parkDaily">0</div></div>
+        <div class="park-box"><div class="park-label">Monthly</div><div class="park-val" id="parkMonthly">0</div></div>
+        <div class="park-box"><div class="park-label">Annual</div><div class="park-val" id="parkAnnual">0</div></div>
+        <div class="park-box"><div class="park-label">Cost/Hour</div><div class="park-val" id="parkPerHr">0</div></div>
+      </div>
+      <div class="compare-box">
+        <div class="compare-title">&#x1f695; Parking vs Ride-Hailing Comparison (monthly)</div>
+        <div id="parkCompareRows"></div>
+      </div>
+      <div class="tip-box" id="parkTip"></div>
+    </div>
+  </div>
+
+<section class="df-upgrade" data-df-upgrade="parking-fee">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Practical workflow</span>
+      <h2>Parking Fee Calculator Africa: quick guide</h2>
+      <p>Not sure how to get the most from the Parking Fee Calculator Africa? Enter your route, distance and costs and it returns a cost or income estimate you can plan around — built for all 54 African countries.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a cost or income estimate you can plan around, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Parking Fee Calculator Africa takes your route, distance and costs and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current fuel prices, fares and local charges before you rely on the result.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current fuel prices, fares and local charges before acting.</p>
+    </div>
+    <form class="df-form" data-df-form="parking-fee">
+      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
+      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
+      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
+      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="parking-fee" data-df-base="Parking Fee Calculator Africa — enter your details above to see your result." aria-live="polite">Parking Fee Calculator Africa — enter your details above to see your result.</output>
+      <div class="df-actions"><button type="button" data-df-copy="parking-fee">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="parking-fee-faq-title">
+  <h2 id="parking-fee-faq-title">Parking Fee Calculator Africa — Lagos, Nairobi, Accra FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the Parking Fee Calculator Africa?</summary><p>Enter your route, distance and costs in the fields above. The Parking Fee Calculator Africa then gives you a cost or income estimate you can plan around you can use straight away.</p></details><details><summary>How accurate is the Parking Fee Calculator Africa?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current fuel prices, fares and local charges before you rely on it.</p></details><details><summary>Is the Parking Fee Calculator Africa free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
+</section>
+  <div class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <details><summary>Is it cheaper to park or use ride-hailing in Lagos?</summary><div class="faq-body">In Lagos CBD, parking can cost ₦500-2,000/hour, amounting to ₦4,000-16,000/day for a typical workday — that's ₦88,000-352,000/month. A 10km Uber ride costs roughly ₦1,500-2,500 each way, totalling ₦66,000-110,000/month for daily commuting. For CBD workers, ride-hailing is often cheaper than parking, with the added benefit of no fuel, maintenance, or traffic stress.</div></details>
+    <details><summary>Are there monthly parking permits in African cities?</summary><div class="faq-body">Yes. Most African city CBDs offer monthly parking permits at discounted rates. In Nairobi CBD, monthly permits in council-managed parking bays cost KSh 3,000-5,000/month vs KSh 200-500/hour pay-as-you-go. Cape Town parking garages offer monthly contracts at R800-1,500 vs R15-30/hour. Always ask about monthly rates — they can save 30-50% for regular parkers.</div></details>
+    <details><summary>How do I avoid parking problems in African CBDs?</summary><div class="faq-body">Tips: (1) Use parking apps where available (ParkMe in South Africa, iParkit in Nairobi). (2) Arrive early — CBD parking fills up by 8:30am in Lagos, Nairobi, and Accra. (3) Consider park-and-ride options at transit nodes. (4) Mall parking is usually free for 2-3 hours with purchase validation. (5) Some office buildings include parking — negotiate this in lease agreements. (6) Consider electric vehicles which often get preferential parking.</div></details>
+  </div>
+</div>
+<afro-related-tools data-ssr="1" category="transport" current="parking-fee">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/cars/" data-related-tool data-id="car-price-intelligence" data-name="African Car Price Directory" data-category="transport" data-icon="AC" data-desc="Search popular imported cars with source-market price ranges, landed-cost ranges, local asking ranges, and import-vs-loc">African Car Price Directory</a></li><li><a href="/tools/car-import-cost/" data-related-tool data-id="car-import-cost" data-name="African Car Landed Cost Calculator" data-category="transport" data-icon="AC" data-desc="Estimate true car import landed and on-road cost across Nigeria, Kenya, Ghana, Uganda, Zambia, and Tanzania. Customs, po">African Car Landed Cost Calculator</a></li><li><a href="/tools/ride-fare/" data-related-tool data-id="ride-fare" data-name="Ride-Hailing Fare Estimator" data-category="transport" data-icon="RH" data-desc="Estimate Uber, Bolt, InDrive, Little fares across 20 African cities. Compare ride types, surge pricing awareness.">Ride-Hailing Fare Estimator</a></li><li><a href="/tools/matatu-fare/" data-related-tool data-id="matatu-fare" data-name="Matatu/Danfo Route Fare Calc" data-category="transport" data-icon="MD" data-desc="Calculate public transport fares for matatu (Kenya), danfo (Nigeria), trotro (Ghana) routes by distance and zone.">Matatu/Danfo Route Fare Calc</a></li><li><a href="/tools/boda-income/" data-related-tool data-id="boda-income" data-name="Boda-Boda/Okada Income Calc" data-category="transport" data-icon="BB" data-desc="Calculate daily/monthly income for motorcycle taxi riders in East and West Africa. Fuel, maintenance, net earnings.">Boda-Boda/Okada Income Calc</a></li><li><a href="/tools/delivery-cost/" data-related-tool data-id="delivery-cost" data-name="Delivery Cost Estimator" data-category="transport" data-icon="DC" data-desc="Estimate last-mile delivery costs for African e-commerce and logistics. Weight, distance, mtoa shipping comparison.">Delivery Cost Estimator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+<script>
+var PARK_DATA = {
+  nigeria: {
+    currency:'₦',
+    rates:{cbd:{hrly:1000, monthly:40000}, suburb:{hrly:200, monthly:8000}, mall:{hrly:100, monthly:0}},
+    rideFare:{base:200, perKm:35}
+  },
+  kenya: {
+    currency:'KSh',
+    rates:{cbd:{hrly:300, monthly:4000}, suburb:{hrly:80, monthly:1500}, mall:{hrly:50, monthly:0}},
+    rideFare:{base:80, perKm:30}
+  },
+  southafrica: {
+    currency:'R',
+    rates:{cbd:{hrly:22, monthly:1200}, suburb:{hrly:6, monthly:300}, mall:{hrly:0, monthly:0}},
+    rideFare:{base:8, perKm:8}
+  },
+  ghana: {
+    currency:'GH₵',
+    rates:{cbd:{hrly:15, monthly:400}, suburb:{hrly:4, monthly:100}, mall:{hrly:2, monthly:0}},
+    rideFare:{base:4, perKm:2}
+  },
+  egypt: {
+    currency:'EGP',
+    rates:{cbd:{hrly:12, monthly:500}, suburb:{hrly:3, monthly:120}, mall:{hrly:0, monthly:0}},
+    rideFare:{base:10, perKm:5}
+  },
+  ethiopia: {
+    currency:'ETB',
+    rates:{cbd:{hrly:20, monthly:600}, suburb:{hrly:5, monthly:150}, mall:{hrly:0, monthly:0}},
+    rideFare:{base:30, perKm:15}
+  },
+  tanzania: {
+    currency:'TZS',
+    rates:{cbd:{hrly:2000, monthly:60000}, suburb:{hrly:500, monthly:15000}, mall:{hrly:0, monthly:0}},
+    rideFare:{base:2000, perKm:500}
+  },
+  senegal: {
+    currency:'FCFA',
+    rates:{cbd:{hrly:500, monthly:20000}, suburb:{hrly:100, monthly:4000}, mall:{hrly:0, monthly:0}},
+    rideFare:{base:500, perKm:200}
+  }
+};
+
+function calcParkingFee() {
+  var country = document.getElementById('parkCountry').value;
+  var area = document.getElementById('parkArea').value;
+  var hours = parseFloat(document.getElementById('parkHours').value) || 8;
+  var days = parseFloat(document.getElementById('parkDays').value) || 22;
+  var usePermit = document.getElementById('parkPermit').value === 'yes';
+  var rideKm = parseFloat(document.getElementById('parkRideKm').value) || 10;
+
+  var data = PARK_DATA[country];
+  if (!data) return;
+
+  var rates = data.rates[area];
+  var currency = data.currency;
+  var fmt = function(n){ return currency + ' ' + Math.round(n).toLocaleString(); };
+
+  var hourlyDaily = rates.hrly * hours;
+  var monthlyPark = usePermit && rates.monthly > 0 ? rates.monthly : hourlyDaily * days;
+  var annualPark = monthlyPark * 12;
+  var perHr = rates.hrly;
+
+  document.getElementById('parkDaily').textContent = fmt(hourlyDaily);
+  document.getElementById('parkMonthly').textContent = fmt(monthlyPark);
+  document.getElementById('parkAnnual').textContent = fmt(annualPark);
+  document.getElementById('parkPerHr').textContent = fmt(perHr) + '/hr';
+
+  // Ride-hailing comparison
+  var rideOneway = data.rideFare.base + data.rideFare.perKm * rideKm;
+  var rideReturn = rideOneway * 2;
+  var rideMonthly = rideReturn * days;
+
+  var rows = [
+    {label: 'Monthly Parking Cost', val: fmt(monthlyPark)},
+    {label: 'Monthly Ride-Hailing (2 trips × ' + days + ' days)', val: fmt(rideMonthly)},
+    {label: 'Difference', val: fmt(Math.abs(monthlyPark - rideMonthly))},
+    {label: 'Cheaper Option', val: monthlyPark < rideMonthly ? '&#x1f17f;&#xfe0f; Parking' : '&#x1f695; Ride-Hailing'}
+  ];
+
+  document.getElementById('parkCompareRows').innerHTML = rows.map(function(r){
+    return '<div class="compare-row"><span class="compare-row-label">' + r.label + '</span><span class="compare-row-val">' + r.val + '</span></div>';
+  }).join('');
+
+  var saving = Math.abs(monthlyPark - rideMonthly);
+  var tip = monthlyPark < rideMonthly
+    ? 'Parking is cheaper for you by ' + fmt(saving) + '/month. This calculation excludes fuel, maintenance, and vehicle depreciation costs of driving to work — which may change the calculation.'
+    : 'Ride-hailing is cheaper by ' + fmt(saving) + '/month in your scenario. You also save on fuel, maintenance, and parking search time. Consider switching to ride-hailing for your daily commute.';
+  document.getElementById('parkTip').textContent = tip;
+
+  document.getElementById('parkResults').classList.add('on');
+}
+</script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+
+  <!-- AfroTools source confidence -->
+  <div class="container afro-source-meta" data-source-meta-id="ledger-tool-parking-fee" data-source-meta-compact="true"></div>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>African Property Tax Calculator | AfroTools</title>
+<meta name="description" content="Calculate property tax, stamp duty, transfer costs, rental income & capital gains tax across 15+ African countries — Nigeria, Kenya, South Africa & more.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="African Property Tax Calculator | AfroTools">
+<meta property="og:description" content="Calculate property tax, buyer costs, rental income tax, and capital gains tax across 15+ African countries.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/property-tax.webp">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/property-tax/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="African Property Tax Calculator | AfroTools">
+<meta name="twitter:description" content="Property tax, stamp duty, transfer costs, rental tax & CGT across 15+ African countries.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+<style>
+:root{--pt-primary:#059669;--pt-primary-dark:#047857;--pt-primary-darker:#064e3b;--pt-accent:#a7f3d0;--pt-dark:#0f172a;--pt-bg:#f8fafc;--pt-border:#e2e8f0;--pt-muted:#64748b;--pt-red:#ef4444;--pt-amber:#f59e0b;--pt-blue:#3b82f6;--pt-purple:#8b5cf6;--pt-radius:10px}
+*,*::before,*::after{box-sizing:border-box}
+
+/* HERO */
+.pt-hero{background:linear-gradient(135deg,#0c1a10 0%,#0f2918 60%,#0c1a10 100%);padding:52px 0 40px;position:relative;overflow:hidden}
+.pt-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 70% 30%,rgba(5,150,105,.18),transparent),radial-gradient(ellipse 40% 40% at 20% 70%,rgba(167,243,208,.08),transparent);pointer-events:none}
+.pt-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+.pt-breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.pt-breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none;transition:color .15s}.pt-breadcrumb a:hover{color:rgba(255,255,255,.6)}
+.pt-breadcrumb span{color:var(--pt-accent)}
+h1{font-size:clamp(1.6rem,4vw,2.6rem);font-weight:900;color:#fff;letter-spacing:-.025em;line-height:1.1;margin-bottom:10px}
+h1 em{color:var(--pt-accent);font-style:normal}
+.pt-hero-sub{font-size:.9rem;color:rgba(255,255,255,.5);line-height:1.6;max-width:620px;margin-bottom:16px}
+.pt-badges{display:flex;flex-wrap:wrap;gap:7px}
+.pt-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:100px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.pt-badge-g{background:rgba(5,150,105,.18);color:var(--pt-accent);border:1px solid rgba(5,150,105,.35)}
+.pt-badge-w{background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.12)}
+
+/* TABS */
+.pt-tabs-wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+.pt-tabs{display:flex;gap:0;border-bottom:2px solid var(--pt-border);margin-top:-1px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.pt-tab{padding:14px 20px;font-size:.78rem;font-weight:700;color:var(--pt-muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:inherit;letter-spacing:.02em}
+.pt-tab:hover{color:var(--pt-dark)}
+.pt-tab.active{color:var(--pt-primary);border-bottom-color:var(--pt-primary)}
+.pt-tab-panel{display:none}
+.pt-tab-panel.active{display:block}
+
+/* MAIN */
+.pt-main{padding:28px 0 72px;background:var(--color-bg,#FAFAF8)}
+.pt-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 380px;gap:24px;align-items:start}
+
+/* CARDS */
+.pt-card{background:#fff;border:1px solid var(--pt-border);border-radius:var(--pt-radius);overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.04)}
+.pt-card+.pt-card{margin-top:18px}
+.pt-card-head{padding:14px 22px;border-bottom:1px solid #f1f5f9;background:var(--pt-bg);display:flex;align-items:center;gap:8px}
+.pt-card-title{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--pt-dark)}
+.pt-card-body{padding:20px 22px}
+
+/* FORM */
+.pt-field{margin-bottom:16px}
+.pt-label{font-size:.75rem;font-weight:700;color:var(--pt-dark);margin-bottom:6px;display:block}
+.pt-hint{font-size:.68rem;color:#94a3b8;margin-top:3px}
+.pt-input,.pt-select{width:100%;padding:11px 14px;background:var(--pt-bg);border:1.5px solid #cbd5e1;border-radius:8px;font-size:1rem;font-weight:600;color:var(--pt-dark);outline:none;font-family:'DM Sans',sans-serif;box-sizing:border-box;transition:border-color .15s,box-shadow .15s}
+.pt-input:focus,.pt-select:focus{border-color:var(--pt-primary);box-shadow:0 0 0 3px rgba(5,150,105,.12)}
+.pt-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pt-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+
+/* BUTTON */
+.pt-btn{width:100%;padding:14px;background:var(--pt-primary);color:#fff;border:none;border-radius:8px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif}
+.pt-btn:hover{background:#047857;transform:translateY(-1px);box-shadow:0 6px 24px rgba(5,150,105,.3)}
+
+/* RESULTS */
+.pt-results{display:none}
+.pt-result-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.pt-result-box{background:var(--pt-bg);border:1px solid var(--pt-border);border-radius:8px;padding:16px;text-align:center}
+.pt-result-box.wide{grid-column:1/-1}
+.pt-rl{font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--pt-muted);margin-bottom:4px}
+.pt-rv{font-size:1.3rem;font-weight:800;color:var(--pt-dark)}
+.pt-rv.green{color:var(--pt-primary)}
+.pt-rv.red{color:var(--pt-red)}
+.pt-rv.amber{color:var(--pt-amber)}
+.pt-rv.blue{color:var(--pt-blue)}
+
+/* DONUT CHART */
+.pt-donut-wrap{display:flex;flex-direction:column;align-items:center;margin:20px 0}
+.pt-donut{position:relative;width:200px;height:200px}
+.pt-donut svg{width:100%;height:100%;transform:rotate(-90deg)}
+.pt-donut-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.pt-donut-center .pt-dc-val{font-size:1.4rem;font-weight:800;color:var(--pt-dark)}
+.pt-donut-center .pt-dc-lbl{font-size:.68rem;color:var(--pt-muted);font-weight:600}
+.pt-legend{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:center;margin-top:14px;font-size:.72rem;font-weight:600;color:var(--pt-dark)}
+.pt-legend-item{display:flex;align-items:center;gap:5px}
+.pt-legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
+/* TABLE */
+.pt-table{width:100%;border-collapse:collapse;font-size:.8rem;margin-top:18px}
+.pt-table th{background:#f1f5f9;padding:10px 12px;text-align:left;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--pt-muted);border-bottom:1px solid var(--pt-border)}
+.pt-table th:last-child{text-align:right}
+.pt-table td{padding:10px 12px;border-bottom:1px solid #f1f5f9;color:var(--pt-dark);font-weight:500}
+.pt-table td:last-child{text-align:right;font-weight:700;white-space:nowrap}
+.pt-table tr.pt-total{background:linear-gradient(90deg,rgba(5,150,105,.06),rgba(5,150,105,.02))}
+.pt-table tr.pt-total td{border-top:2px solid var(--pt-primary);font-weight:800;color:var(--pt-primary)}
+
+/* BAR CHART (compare) */
+.pt-bar-group{margin-bottom:20px}
+.pt-bar-label{font-size:.75rem;font-weight:700;color:var(--pt-dark);margin-bottom:6px}
+.pt-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.pt-bar-country{width:60px;font-size:.7rem;font-weight:600;color:var(--pt-muted);text-align:right;flex-shrink:0}
+.pt-bar-track{flex:1;height:28px;background:#f1f5f9;border-radius:6px;overflow:hidden;position:relative}
+.pt-bar-fill{height:100%;border-radius:6px;display:flex;align-items:center;padding:0 10px;font-size:.72rem;font-weight:700;color:#fff;transition:width .6s ease}
+.pt-bar-val{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:.72rem;font-weight:700;color:var(--pt-dark)}
+
+/* TAX HAVEN CARDS */
+.pt-haven-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:14px}
+.pt-haven-card{background:linear-gradient(135deg,#ecfdf5,#f0fdf4);border:1px solid #a7f3d0;border-radius:8px;padding:16px;text-align:center}
+.pt-haven-card .pt-hc-flag{font-size:1.8rem;margin-bottom:6px}
+.pt-haven-card .pt-hc-name{font-size:.82rem;font-weight:700;color:var(--pt-dark)}
+.pt-haven-card .pt-hc-rate{font-size:1.1rem;font-weight:800;color:var(--pt-primary);margin-top:4px}
+.pt-haven-card .pt-hc-note{font-size:.68rem;color:var(--pt-muted);margin-top:4px}
+
+/* COLOR INDICATOR */
+.pt-tax-low{color:var(--pt-primary)}
+.pt-tax-med{color:var(--pt-amber)}
+.pt-tax-high{color:var(--pt-red)}
+
+/* SIDEBAR */
+.pt-sidebar .pt-card-body{font-size:.82rem;color:#475569;line-height:1.7}
+.pt-sidebar .pt-card-body p+p{margin-top:8px}
+.pt-sidebar .pt-card-body strong{color:var(--pt-dark)}
+.pt-info-note{font-size:.72rem;color:#94a3b8;margin-top:12px;padding-top:10px;border-top:1px solid #f1f5f9}
+.pt-info-card{background:#ecfdf5;border:1px solid #a7f3d0;border-radius:8px;padding:16px;margin-top:14px}
+.pt-info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--pt-primary-dark);margin-bottom:8px}
+.pt-info-card p,.pt-info-card li{font-size:.78rem;color:var(--pt-primary-dark);line-height:1.6}
+.pt-info-card ul{padding-left:16px;margin:6px 0}
+
+/* SLIDER */
+.pt-slider{-webkit-appearance:none;width:100%;height:6px;border-radius:3px;background:#e2e8f0;outline:none;margin:8px 0}
+.pt-slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--pt-primary);cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+.pt-slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--pt-primary);cursor:pointer;border:none}
+.pt-slider-val{font-size:.82rem;font-weight:700;color:var(--pt-primary);text-align:right;margin-top:2px}
+
+/* SEO */
+.pt-seo{max-width:800px;margin:0 auto;padding:48px 24px}
+.pt-seo h2{font-size:1.35rem;font-weight:800;color:var(--pt-dark);margin:36px 0 12px}
+.pt-seo h2:first-child{margin-top:0}
+.pt-seo p,.pt-seo li{font-size:.92rem;color:#475569;line-height:1.8}
+.pt-seo ul{padding-left:20px}
+.pt-faq details{border:1px solid var(--pt-border);border-radius:8px;margin-bottom:10px;overflow:hidden}
+.pt-faq summary{padding:14px 18px;font-weight:700;font-size:.88rem;cursor:pointer;background:var(--pt-bg);color:var(--pt-dark);list-style:none}
+.pt-faq summary::before{content:'';display:inline-block;width:6px;height:6px;border-right:2px solid var(--pt-primary);border-bottom:2px solid var(--pt-primary);transform:rotate(-45deg);margin-right:10px;transition:transform .2s}
+.pt-faq details[open] summary::before{transform:rotate(45deg)}
+.pt-faq details[open] summary{border-bottom:1px solid var(--pt-border)}
+.pt-faq details div{padding:14px 18px;font-size:.85rem;color:#475569;line-height:1.7}
+
+/* RESPONSIVE */
+@media(max-width:900px){.pt-main-inner{grid-template-columns:1fr}.pt-sidebar{order:-1}}
+@media(max-width:600px){.pt-row,.pt-row-3{grid-template-columns:1fr}.pt-result-grid{grid-template-columns:1fr 1fr}.pt-haven-grid{grid-template-columns:1fr 1fr}.pt-tab{padding:12px 14px;font-size:.72rem}}
+@media(max-width:400px){.pt-result-grid{grid-template-columns:1fr}.pt-haven-grid{grid-template-columns:1fr}}
+
+/* AI Advisor sidebar */
+.ai-advisor-card{background:#fff;border-radius:16px;border:1px solid #DBEAFE;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05);margin-bottom:16px}
+.ai-advisor-head{padding:14px 18px;border-bottom:1px solid #EFF6FF;display:flex;align-items:center;gap:9px}
+.ai-dot{width:8px;height:8px;border-radius:50%;background:#0062CC;animation:aiPulse 2s infinite;flex-shrink:0}
+@keyframes aiPulse{0%,100%{opacity:1}50%{opacity:.3}}
+.ai-title{font-size:.72rem;font-weight:700;letter-spacing:.06em;color:#0f172a}
+.ai-by{font-size:.62rem;color:#6B8CAE;margin-left:auto}
+.ai-advisor-body{padding:14px 18px}
+.ai-status{font-size:.78rem;color:#0f172a;line-height:1.6;margin-bottom:10px}
+.ai-msgs{max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.ai-msg-u{font-size:.76rem;padding:7px 10px;background:#0062CC;color:#fff;border-radius:6px;align-self:flex-end;max-width:90%;word-wrap:break-word}
+.ai-msg-a{font-size:.76rem;padding:7px 10px;background:#EFF6FF;color:#0f172a;border-radius:6px;align-self:flex-start;max-width:90%;line-height:1.55;word-wrap:break-word}
+.ai-thinking{font-size:.72rem;color:#9ca3af;font-style:italic;padding:4px 0}
+.ai-input-row{display:flex;gap:6px}
+.ai-input{flex:1;padding:9px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.8rem;outline:none;background:#fafafa}
+.ai-input:focus{border-color:#0062CC;background:#fff}
+.ai-send{padding:9px 14px;background:#0062CC;color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer}
+.ai-send:disabled{opacity:.5;cursor:not-allowed}
+
+/* AI Advisor floating section */
+.ai-advisor-section{max-width:480px;margin:24px auto 32px;padding:0 20px}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "African Property Tax Calculator",
+  "description": "Calculate property tax, stamp duty, transfer costs, rental income tax, and capital gains tax across 15+ African countries.",
+  "url": "https://afrotools.com/tools/property-tax/",
+  "inLanguage": "en",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/property-tax.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "African Property Tax Calculator",
+  "url": "https://afrotools.com/tools/property-tax/",
+  "description": "Calculate property tax, stamp duty, transfer costs, rental income tax, and capital gains tax across 15+ African countries.",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/property-tax.webp"
+}
+</script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/property-tax.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "African Property Tax Calculator",
+      "item": "https://afrotools.com/tools/property-tax/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="stylesheet" href="/assets/css/legal-enhancements.css?v=faefe7bf">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Which African country has the lowest property tax?","acceptedAnswer":{"@type":"Answer","text":"Mauritius has no annual property tax at all, making it highly attractive for property investors. Nigeria (Lagos) has very low rates at 0.0394% for owner-occupied residential property, and Rwanda charges just 0.1% of market value. However, low annual tax may be offset by higher transfer costs at purchase."}},{"@type":"Question","name":"How is Lagos Land Use Charge (LUC) calculated?","acceptedAnswer":{"@type":"Answer","text":"Lagos LUC is calculated on the assessed property value. Rates are 0.0394% for owner-occupied residential, 0.0789% for rental residential, and 0.132% for commercial properties. Properties valued under NGN 4 million are exempt, and pensioners receive a 50% discount."}},{"@type":"Question","name":"Do I pay capital gains tax when selling property in Africa?","acceptedAnswer":{"@type":"Answer","text":"Most African countries impose CGT on property sales. South Africa charges 18% (individuals) on 40% of the gain with a R2M primary residence exclusion. Kenya charges 15% CGT. Nigeria charges 10% CGT. Some countries offer exemptions for primary residences or properties held for long periods."}},{"@type":"Question","name":"What are the transfer costs when buying property in South Africa?","acceptedAnswer":{"@type":"Answer","text":"South Africa has a progressive transfer duty scale: 0% for properties under R1.1 million, scaling up to 13% for portions above R11 million. Add 1-2% for conveyancing fees, plus potential bond registration costs. Total buyer costs typically range from 5-15% of the purchase price."}},{"@type":"Question","name":"Is rental income taxed in African countries?","acceptedAnswer":{"@type":"Answer","text":"Yes, most African countries tax rental income. In Nigeria, rental income is taxed at personal income tax rates (up to 24%). Kenya applies a simplified 7.5% tax on gross rent (or standard rates). South Africa taxes net rental income at marginal rates (up to 45%). Egypt charges 10% of rental value after deductions."}},{"@type":"Question","name":"Are there property tax exemptions for the African diaspora?","acceptedAnswer":{"@type":"Answer","text":"Most countries do not offer specific diaspora exemptions. However, some countries like Rwanda and Mauritius actively encourage foreign property investment with favorable tax regimes. Non-residents may face different withholding tax rates on rental income and may not qualify for primary residence CGT exemptions."}}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/property-tax/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/property-tax/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/taxe-fonciere/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kodi-mali/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/property-tax/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+
+<section class="pt-hero">
+<div class="pt-hero-inner">
+<div class="pt-breadcrumb"><a href="/">Home</a> / <a href="/mortgage-property/">Mortgage &amp; Property</a> / <span>Property Tax</span></div>
+<h1>African Property <em>Tax Calculator</em></h1>
+<p class="pt-hero-sub">Calculate annual property tax, total buyer costs, rental income tax, and capital gains tax across 15+ African countries. Covers Nigeria (Lagos LUC), Kenya, South Africa, Ghana, Egypt, Morocco, and more.</p>
+<div class="pt-badges">
+<span class="pt-badge pt-badge-g">15+ Countries</span>
+<span class="pt-badge pt-badge-g">2025/2026 Rates</span>
+<span class="pt-badge pt-badge-w">Buyer Costs + Charts</span>
+<span class="pt-badge pt-badge-w">Rental &amp; CGT</span>
+</div>
+</div>
+</section>
+
+<div class="pt-tabs-wrap" style="background:#fff;border-bottom:1px solid var(--pt-border)">
+<div class="pt-tabs" id="tabNav">
+<button type="button" class="pt-tab active" data-tab="annual">Annual Tax</button>
+<button type="button" class="pt-tab" data-tab="buyer">Buyer Costs</button>
+<button type="button" class="pt-tab" data-tab="rental">Rental Tax</button>
+<button type="button" class="pt-tab" data-tab="cgt">Capital Gains</button>
+<button type="button" class="pt-tab" data-tab="compare">Compare</button>
+</div>
+</div>
+
+<section class="pt-main">
+<div class="pt-main-inner">
+<div class="pt-calculator">
+
+<!-- ============ TAB 1: ANNUAL TAX ============ -->
+<div class="pt-tab-panel active" id="panel-annual">
+<div class="pt-card">
+<div class="pt-card-head"><span class="pt-card-title">Annual Property Tax</span></div>
+<div class="pt-card-body">
+<div class="pt-row" style="margin-bottom:16px">
+<div class="pt-field"><label class="pt-label" for="at-country">Country</label>
+<select class="pt-select" id="at-country" onchange="AT.updateCity()">
+<option value="NG">Nigeria</option>
+<option value="KE">Kenya</option>
+<option value="ZA">South Africa</option>
+<option value="GH">Ghana</option>
+<option value="EG">Egypt</option>
+<option value="TZ">Tanzania</option>
+<option value="MA">Morocco</option>
+<option value="UG">Uganda</option>
+<option value="RW">Rwanda</option>
+<option value="MU">Mauritius</option>
+<option value="BW">Botswana</option>
+<option value="ZM">Zambia</option>
+<option value="SN">Senegal</option>
+<option value="ET">Ethiopia</option>
+<option value="CI">Cote d'Ivoire</option>
+</select></div>
+<div class="pt-field"><label class="pt-label">City / Region</label>
+<select class="pt-select" id="at-city" aria-label="At City"></select></div>
+</div>
+<div class="pt-row" style="margin-bottom:16px">
+<div class="pt-field"><label class="pt-label">Property Use</label>
+<select class="pt-select" id="at-use" aria-label="At Use">
+<option value="residential">Residential (Owner-occupied)</option>
+<option value="rental">Residential (Rental/Investment)</option>
+<option value="commercial">Commercial</option>
+<option value="industrial">Industrial</option>
+</select></div>
+<div class="pt-field"><label class="pt-label">Property Value</label>
+<input aria-label="At value" class="pt-input" type="number" id="at-value" value="50000000" min="0" step="1000000">
+<p class="pt-hint">Market value in local currency</p></div>
+</div>
+<div class="pt-field">
+<label class="pt-label">Property Value Slider</label>
+<input aria-label="At slider" type="range" class="pt-slider" id="at-slider" min="1000000" max="500000000" step="1000000" value="50000000" oninput="document.getElementById('at-value').value=this.value;document.getElementById('at-slider-val').textContent=AT.fmtShort(this.value)">
+<div class="pt-slider-val" id="at-slider-val">50M</div>
+</div>
+<button type="button" class="pt-btn" onclick="AT.calculate()">Calculate Annual Tax</button>
+</div></div>
+
+<div class="pt-card pt-results" id="at-results">
+<div class="pt-card-head"><span class="pt-card-title">Annual Tax Estimate</span></div>
+<div class="pt-card-body">
+<div class="pt-result-grid" id="at-result-grid"></div>
+<table class="pt-table" id="at-table"></table>
+<p class="pt-info-note">* Estimates only. Actual rates vary by municipality and assessment method. Consult your local tax authority for precise figures.</p>
+</div></div>
+</div>
+
+<!-- ============ TAB 2: BUYER COSTS ============ -->
+<div class="pt-tab-panel" id="panel-buyer">
+<div class="pt-card">
+<div class="pt-card-head"><span class="pt-card-title">Total Acquisition Cost Calculator</span></div>
+<div class="pt-card-body">
+<div class="pt-row" style="margin-bottom:16px">
+<div class="pt-field"><label class="pt-label" for="bc-country">Country</label>
+<select class="pt-select" id="bc-country">
+<option value="NG">Nigeria</option>
+<option value="KE">Kenya</option>
+<option value="ZA">South Africa</option>
+<option value="GH">Ghana</option>
+<option value="EG">Egypt</option>
+<option value="TZ">Tanzania</option>
+<option value="MA">Morocco</option>
+<option value="UG">Uganda</option>
+<option value="RW">Rwanda</option>
+<option value="MU">Mauritius</option>
+<option value="BW">Botswana</option>
+<option value="ZM">Zambia</option>
+<option value="SN">Senegal</option>
+<option value="ET">Ethiopia</option>
+<option value="CI">Cote d'Ivoire</option>
+</select></div>
+<div class="pt-field"><label class="pt-label">Property Location</label>
+<select class="pt-select" id="bc-location" aria-label="Bc Location">
+<option value="urban">Urban</option>
+<option value="rural">Rural</option>
+</select></div>
+</div>
+<div class="pt-row" style="margin-bottom:16px">
+<div class="pt-field"><label class="pt-label">Purchase Price</label>
+<input aria-label="Bc price" class="pt-input" type="number" id="bc-price" value="50000000" min="0" step="1000000"></div>
+<div class="pt-field"><label class="pt-label">Property Type</label>
+<select class="pt-select" id="bc-type" aria-label="Bc Type">
+<option value="residential">Residential</option>
+<option value="commercial">Commercial</option>
+</select></div>
+</div>
+<div class="pt-row" style="margin-bottom:16px">
+<div class="pt-field"><label class="pt-label">Legal / Conveyancing Fee (%)</label>
+<input aria-label="Bc legal" class="pt-input" type="number" id="bc-legal" value="1.5" min="0" max="10" step="0.1">
+<p class="pt-hint">Typically 1-2.5% of purchase price</p></div>
+<div class="pt-field"><label class="pt-label">Agent / Broker Commission (%)</label>
+<input aria-label="Bc agent" class="pt-input" type="number" id="bc-agent" value="5" min="0" max="15" step="0.5">
+<p class="pt-hint">Typically 3-10% depending on country</p></div>
+</div>
+<button type="button" class="pt-btn" onclick="BC.calculate()">Calculate Total Buyer Costs</button>
+</div></div>
+
+<div class="pt-card pt-results" id="bc-results">
+<div class="pt-card-head"><span class="pt-card-title">Acquisition Cost Breakdown</span></div>
+<div class="pt-card-body">
+<div class="pt-result-grid" id="bc-result-grid"></div>
+<div class="pt-donut-wrap">
+<div class="pt-donut" id="bc-donut"></div>
+<div class="pt-legend" id="bc-legend"></div>
+</div>
+<table class="pt-table" id="bc-table"></table>
+<p class="pt-info-note">* Transfer taxes and fees are approximations. Confirm exact rates with a local conveyancer or property lawyer.</p>
+</div></div>
+</div>
+
+<!-- ============ TAB 3: RENTAL TAX ============ -->
+<div class="pt-tab-panel" id="panel-rental">
+<div class="pt-card">
+<div class="pt-card-head"><span class="pt-card-title">Rental Income Tax Calculator</span></div>
+<div class="pt-card-body">
+<div class="pt-row" style="margin-bottom:16px">
+<div class="pt-field"><label class="pt-label" for="rt-country">Country</label>
+<select class="pt-select" id="rt-country">
+<option value="NG">Nigeria</option>
+<option value="KE">Kenya</option>
+<option value="ZA">South Africa</option>
+<option value="GH">Ghana</option>
+<option value="EG">Egypt</option>
+<option value="TZ">Tanzania</option>
+<option value="MA">Morocco</option>
+<option value="UG">Uganda</option>
+<option value="RW">Rwanda</option>
+<option value="MU">Mauritius</option>
+<option value="BW">Botswana</option>
+<option value="ZM">Zambia</option>
+<option value="SN">Senegal</option>
+<option value="ET">Ethiopia</option>
+<option value="CI">Cote d'Ivoire</option>
+</select></div>
+<div class="pt-field"><label class="pt-label">Property Type</label>
+<select class="pt-select" id="rt-type" aria-label="Rt Type">
+<option value="residential">Residential</option>
+<option value="commercial">Commercial</option>
+</select></div>
+</div>
+<div class="pt-row" style="margin-bottom:16px">
+<div class="pt-field"><label class="pt-label">Monthly Rent</label>
+<input aria-label="Rt rent" class="pt-input" type="number" id="rt-rent" value="500000" min="0" step="10000">
+<p class="pt-hint">Monthly rental income in local currency</p></div>
+<div class="pt-field"><label class="pt-label">Property Value</label>
+<input aria-label="Rt propval" class="pt-input" type="number" id="rt-propval" value="50000000" min="0" step="1000000">
+<p class="pt-hint">For yield calculation</p></div>
+</div>
+<div class="pt-row" style="margin-bottom:16px">
+<div class="pt-field"><label class="pt-label">Annual Maintenance Costs</label>
+<input aria-label="Rt maintenance" class="pt-input" type="number" id="rt-maintenance" value="200000" min="0" step="10000"></div>
+<div class="pt-field"><label class="pt-label">Annual Insurance</label>
+<input aria-label="Rt insurance" class="pt-input" type="number" id="rt-insurance" value="100000" min="0" step="10000"></div>
+</div>
+<div class="pt-field"><label class="pt-label">Annual Mortgage Interest</label>
+<input aria-label="Rt mortgage" class="pt-input" type="number" id="rt-mortgage" value="0" min="0" step="10000">
+<p class="pt-hint">Interest portion only (if applicable)</p></div>
+<button type="button" class="pt-btn" onclick="RT.calculate()">Calculate Rental Tax</button>
+</div></div>
+
+<div class="pt-card pt-results" id="rt-results">
+<div class="pt-card-head"><span class="pt-card-title">Rental Income Tax Breakdown</span></div>
+<div class="pt-card-body">
+<div class="pt-result-grid" id="rt-result-grid"></div>
+<table class="pt-table" id="rt-table"></table>
+<p class="pt-info-note">* Tax calculations are simplified estimates. Actual tax depends on your total income, filing status, and applicable deductions.</p>
+</div></div>
+</div>
+
+<!-- ============ TAB 4: CGT ============ -->
+<div class="pt-tab-panel" id="panel-cgt">
+<div class="pt-card">
+<div class="pt-card-head"><span class="pt-card-title">Capital Gains Tax Calculator</span></div>
+<div class="pt-card-body">
+<div class="pt-row" style="margin-bottom:16px">
+<div class="pt-field"><label class="pt-label" for="cg-country">Country</label>
+<select class="pt-select" id="cg-country">
+<option value="NG">Nigeria</option>
+<option value="KE">Kenya</option>
+<option value="ZA">South Africa</option>
+<option value="GH">Ghana</option>
+<option value="EG">Egypt</option>
+<option value="TZ">Tanzania</option>
+<option value="MA">Morocco</option>
+<option value="UG">Uganda</option>
+<option value="RW">Rwanda</option>
+<option value="MU">Mauritius</option>
+<option value="BW">Botswana</option>
+<option value="ZM">Zambia</option>
+<option value="SN">Senegal</option>
+<option value="ET">Ethiopia</option>
+<option value="CI">Cote d'Ivoire</option>
+</select></div>
+<div class="pt-field"><label class="pt-label">Property Type</label>
+<select class="pt-select" id="cg-type" aria-label="Cg Type">
+<option value="residential">Residential</option>
+<option value="commercial">Commercial</option>
+</select></div>
+</div>
+<div class="pt-row" style="margin-bottom:16px">
+<div class="pt-field"><label class="pt-label">Purchase Price (Original Cost)</label>
+<input aria-label="Cg purchase" class="pt-input" type="number" id="cg-purchase" value="30000000" min="0" step="1000000"></div>
+<div class="pt-field"><label class="pt-label">Sale Price</label>
+<input aria-label="Cg sale" class="pt-input" type="number" id="cg-sale" value="50000000" min="0" step="1000000"></div>
+</div>
+<div class="pt-row" style="margin-bottom:16px">
+<div class="pt-field"><label class="pt-label">Improvement Costs</label>
+<input aria-label="Cg improvements" class="pt-input" type="number" id="cg-improvements" value="2000000" min="0" step="100000">
+<p class="pt-hint">Renovations, additions, etc.</p></div>
+<div class="pt-field"><label class="pt-label">Selling Costs</label>
+<input aria-label="Cg selling" class="pt-input" type="number" id="cg-selling" value="1500000" min="0" step="100000">
+<p class="pt-hint">Agent fees, legal fees, etc.</p></div>
+</div>
+<div class="pt-row">
+<div class="pt-field"><label class="pt-label">Holding Period (Years)</label>
+<input aria-label="Cg years" class="pt-input" type="number" id="cg-years" value="5" min="0" max="50" step="1"></div>
+<div class="pt-field"><label class="pt-label">Primary Residence?</label>
+<select class="pt-select" id="cg-primary" aria-label="Cg Primary">
+<option value="no">No (Investment Property)</option>
+<option value="yes">Yes (Primary Residence)</option>
+</select></div>
+</div>
+<button type="button" class="pt-btn" onclick="CG.calculate()">Calculate Capital Gains Tax</button>
+</div></div>
+
+<div class="pt-card pt-results" id="cg-results">
+<div class="pt-card-head"><span class="pt-card-title">Capital Gains Tax Estimate</span></div>
+<div class="pt-card-body">
+<div class="pt-result-grid" id="cg-result-grid"></div>
+<table class="pt-table" id="cg-table"></table>
+<p class="pt-info-note">* CGT calculations are estimates. Some countries offer inflation indexation or exemptions for primary residences. Consult a tax professional.</p>
+</div></div>
+</div>
+
+<!-- ============ TAB 5: COMPARE ============ -->
+<div class="pt-tab-panel" id="panel-compare">
+<div class="pt-card">
+<div class="pt-card-head"><span class="pt-card-title">Country Comparison</span></div>
+<div class="pt-card-body">
+<div class="pt-field"><label class="pt-label">Property Value (USD equivalent for comparison)</label>
+<input aria-label="Cmp value" class="pt-input" type="number" id="cmp-value" value="100000" min="1000" step="10000">
+<p class="pt-hint">Enter value in USD for fair cross-country comparison</p></div>
+<div class="pt-field"><label class="pt-label">Property Use</label>
+<select class="pt-select" id="cmp-use" aria-label="Cmp Use">
+<option value="residential">Residential</option>
+<option value="commercial">Commercial</option>
+</select></div>
+<div class="pt-row" style="margin-bottom:16px">
+<div class="pt-field"><label class="pt-label">Compare Country 1</label>
+<select class="pt-select" id="cmp-c1" aria-label="Cmp C1">
+<option value="NG">Nigeria</option>
+<option value="KE">Kenya</option>
+<option value="ZA" selected>South Africa</option>
+<option value="GH">Ghana</option>
+<option value="EG">Egypt</option>
+<option value="TZ">Tanzania</option>
+<option value="MA">Morocco</option>
+<option value="UG">Uganda</option>
+<option value="RW">Rwanda</option>
+<option value="MU">Mauritius</option>
+<option value="BW">Botswana</option>
+<option value="ZM">Zambia</option>
+<option value="SN">Senegal</option>
+<option value="ET">Ethiopia</option>
+<option value="CI">Cote d'Ivoire</option>
+</select></div>
+<div class="pt-field"><label class="pt-label">Compare Country 2</label>
+<select class="pt-select" id="cmp-c2" aria-label="Cmp C2">
+<option value="NG">Nigeria</option>
+<option value="KE" selected>Kenya</option>
+<option value="ZA">South Africa</option>
+<option value="GH">Ghana</option>
+<option value="EG">Egypt</option>
+<option value="TZ">Tanzania</option>
+<option value="MA">Morocco</option>
+<option value="UG">Uganda</option>
+<option value="RW">Rwanda</option>
+<option value="MU">Mauritius</option>
+<option value="BW">Botswana</option>
+<option value="ZM">Zambia</option>
+<option value="SN">Senegal</option>
+<option value="ET">Ethiopia</option>
+<option value="CI">Cote d'Ivoire</option>
+</select></div>
+</div>
+<div class="pt-field"><label class="pt-label">Compare Country 3 (Optional)</label>
+<select class="pt-select" id="cmp-c3" aria-label="Cmp C3">
+<option value="">-- None --</option>
+<option value="NG">Nigeria</option>
+<option value="KE">Kenya</option>
+<option value="ZA">South Africa</option>
+<option value="GH">Ghana</option>
+<option value="EG">Egypt</option>
+<option value="TZ">Tanzania</option>
+<option value="MA">Morocco</option>
+<option value="UG">Uganda</option>
+<option value="RW" selected>Rwanda</option>
+<option value="MU">Mauritius</option>
+<option value="BW">Botswana</option>
+<option value="ZM">Zambia</option>
+<option value="SN">Senegal</option>
+<option value="ET">Ethiopia</option>
+<option value="CI">Cote d'Ivoire</option>
+</select></div>
+<button type="button" class="pt-btn" onclick="CMP.calculate()">Compare Countries</button>
+</div></div>
+
+<div class="pt-card pt-results" id="cmp-results">
+<div class="pt-card-head"><span class="pt-card-title">Tax Comparison</span></div>
+<div class="pt-card-body" id="cmp-body"></div>
+</div>
+
+<div class="pt-card" style="margin-top:18px">
+<div class="pt-card-head"><span class="pt-card-title">Low-Tax Property Destinations</span></div>
+<div class="pt-card-body">
+<p style="font-size:.82rem;color:#475569;margin-bottom:12px">African countries with the lowest property tax burden for investors:</p>
+<div class="pt-haven-grid">
+<div class="pt-haven-card"><div class="pt-hc-flag">&#127474;&#127482;</div><div class="pt-hc-name">Mauritius</div><div class="pt-hc-rate">0%</div><div class="pt-hc-note">No annual property tax</div></div>
+<div class="pt-haven-card"><div class="pt-hc-flag">&#127479;&#127484;</div><div class="pt-hc-name">Rwanda</div><div class="pt-hc-rate">0.1%</div><div class="pt-hc-note">Of market value</div></div>
+<div class="pt-haven-card"><div class="pt-hc-flag">&#127463;&#127484;</div><div class="pt-hc-name">Botswana</div><div class="pt-hc-rate">0.25%</div><div class="pt-hc-note">Of improved value</div></div>
+<div class="pt-haven-card"><div class="pt-hc-flag">&#127475;&#127468;</div><div class="pt-hc-name">Nigeria</div><div class="pt-hc-rate">0.04%</div><div class="pt-hc-note">Lagos owner-occupied</div></div>
+<div class="pt-haven-card"><div class="pt-hc-flag">&#127481;&#127487;</div><div class="pt-hc-name">Tanzania</div><div class="pt-hc-rate">0.15%</div><div class="pt-hc-note">Urban property</div></div>
+<div class="pt-haven-card"><div class="pt-hc-flag">&#127466;&#127481;</div><div class="pt-hc-name">Ethiopia</div><div class="pt-hc-rate">0.5%</div><div class="pt-hc-note">Of market value</div></div>
+</div>
+</div></div>
+</div>
+
+</div><!-- /calculator -->
+
+<!-- SIDEBAR -->
+<div class="pt-sidebar">
+<div class="pt-card">
+<div class="pt-card-head"><span class="pt-card-title">Property Tax Rates</span></div>
+<div class="pt-card-body" id="sidebar-rates">
+<p><strong>Nigeria (Lagos):</strong> Land Use Charge = 0.0394% (owner-occupied) to 0.132% (commercial) of assessed value. Properties under NGN 4M are exempt.</p>
+<p><strong>Kenya:</strong> Land rates vary by county. Nairobi ~0.5-2.5% of unimproved site value. 4% stamp duty on urban transfers.</p>
+<p><strong>South Africa:</strong> Municipal rates 0.5-1.5% of market value. Transfer duty from 0% (under R1.1M) up to 13%.</p>
+<p><strong>Ghana:</strong> Property rate 0.5-1% of rateable value. Stamp duty 0.25-0.5% on transfers.</p>
+<p><strong>Egypt:</strong> 10% of annual rental value minus 30% deduction for residential, 32% for commercial.</p>
+<p><strong>Morocco:</strong> Annual tax 10-30% of rental value. 4% stamp duty + 1% registration on purchases.</p>
+<p><strong>Mauritius:</strong> No annual property tax. 5% registration duty on purchases.</p>
+</div></div>
+
+<div class="pt-info-card">
+<h4>Key Differences</h4>
+<ul>
+<li><strong>Assessment basis</strong> varies: market value, rental value, or unimproved site value</li>
+<li><strong>Transfer costs</strong> range from under 1% (Rwanda) to over 10% (South Africa for high-value)</li>
+<li><strong>CGT exemptions</strong> exist for primary residences in ZA, KE, and others</li>
+<li>Some countries (MU, NG) have very low or zero annual property tax</li>
+</ul>
+</div>
+
+<div class="pt-info-card" style="margin-top:14px">
+<h4>Diaspora Tip</h4>
+<p>If investing from abroad, consider: annual holding costs, transfer taxes at acquisition, CGT on eventual sale, and rental income tax. Compare total burden, not just one metric.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- SEO CONTENT -->
+<section class="pt-seo">
+<h2>Understanding Property Tax Across Africa</h2>
+<p>Property taxation in Africa varies dramatically between countries and even between cities within the same country. Some nations like Nigeria charge very low annual rates (under 0.1% in Lagos for owner-occupied homes), while others like Uganda can charge up to 6% of rateable value. Understanding these differences is essential for property investors, diaspora buyers, and anyone considering real estate across the continent.</p>
+
+<h2>How African Property Tax Works</h2>
+<p>African property tax systems generally fall into three categories based on what they tax:</p>
+<ul>
+<li><strong>Market value based:</strong> South Africa, Rwanda, Botswana, Ethiopia, and Zambia assess tax on the current market or improved value of the property.</li>
+<li><strong>Rental value based:</strong> Egypt, Morocco, Senegal, and Cote d'Ivoire calculate tax as a percentage of the annual rental value (actual or imputed).</li>
+<li><strong>Unimproved site value:</strong> Kenya primarily taxes the unimproved land value, excluding buildings and improvements.</li>
+</ul>
+
+<h2>Transfer Costs When Buying Property in Africa</h2>
+<p>Beyond the purchase price, buyers face significant transfer costs that vary by country. These include stamp duty, registration fees, legal costs, and agent commissions. In some markets, total acquisition costs can add 8-15% to the purchase price, making it crucial to factor these into your investment calculations.</p>
+
+<h2>Frequently Asked Questions</h2>
+
+<div class="pt-faq">
+<details><summary>Which African country has the lowest property tax?</summary><div><p>Mauritius has no annual property tax at all, making it highly attractive for property investors. Nigeria (Lagos) has very low rates at 0.0394% for owner-occupied residential property, and Rwanda charges just 0.1% of market value. However, low annual tax may be offset by higher transfer costs at purchase.</p></div></details>
+<details><summary>How is Lagos Land Use Charge (LUC) calculated?</summary><div><p>Lagos LUC is calculated on the assessed property value. Rates are 0.0394% for owner-occupied residential, 0.0789% for rental residential, and 0.132% for commercial properties. Properties valued under NGN 4 million are exempt, and pensioners receive a 50% discount.</p></div></details>
+<details><summary>Do I pay capital gains tax when selling property in Africa?</summary><div><p>Most African countries impose CGT on property sales. South Africa charges 18% (individuals) on 40% of the gain with a R2M primary residence exclusion. Kenya charges 15% CGT. Nigeria charges 10% CGT. Some countries offer exemptions for primary residences or properties held for long periods.</p></div></details>
+<details><summary>What are the transfer costs when buying property in South Africa?</summary><div><p>South Africa has a progressive transfer duty scale: 0% for properties under R1.1 million, scaling up to 13% for portions above R11 million. Add 1-2% for conveyancing fees, plus potential bond registration costs. Total buyer costs typically range from 5-15% of the purchase price.</p></div></details>
+<details><summary>Is rental income taxed in African countries?</summary><div><p>Yes, most African countries tax rental income. In Nigeria, rental income is taxed at personal income tax rates (up to 24%). Kenya applies a simplified 7.5% tax on gross rent (or standard rates). South Africa taxes net rental income at marginal rates (up to 45%). Egypt charges 10% of rental value after deductions.</p></div></details>
+<details><summary>Are there property tax exemptions for the African diaspora?</summary><div><p>Most countries do not offer specific diaspora exemptions. However, some countries like Rwanda and Mauritius actively encourage foreign property investment with favorable tax regimes. Non-residents may face different withholding tax rates on rental income and may not qualify for primary residence CGT exemptions.</p></div></details>
+</div>
+</section>
+
+<div class="ai-advisor-section">
+  <div class="ai-advisor-card" id="aiCard">
+    <div class="ai-advisor-head">
+      <span class="ai-dot"></span>
+      <span class="ai-title">AI Property Tax Advisor</span>
+      <span class="ai-by">Optional AI · provider required</span>
+    </div>
+    <div class="ai-advisor-body">
+      <div class="ai-status" id="aiStatus">Ask me anything about this tool &mdash; I can help explain results, suggest strategies, and answer questions.</div>
+      <div class="ai-chat" id="aiChat">
+        <div class="ai-msgs" id="aiMsgs"></div>
+        <div class="ai-input-row">
+          <input aria-label="Ask a question" type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" onkeydown="if(event.key==='Enter')sendAI()">
+          <button type="button" class="ai-send" id="aiSend" onclick="sendAI()">&#x2192;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- LEGAL-WORKFLOW-COPILOT:START -->
+<section class="leg-workflow-copilot" aria-labelledby="legal-workflow-heading">
+  <script type="application/json" class="leg-workflow-data">{"slug":"property-tax","title":"African Property Tax Calculator","workflowTitle":"Property tax exposure map","coverage":"Property tax model","decision":"Which taxes apply on acquisition, ownership, rental and sale","evidence":["Separate buyer costs, annual owner costs, rental taxes and sale taxes","Check municipality, state and national taxes because more than one layer may apply","Keep valuation, receipts and rental records for future dispute or sale"],"redFlags":["Only budgeting for purchase price and legal fees","No allowance for municipal arrears or service charges","Selling property without checking CGT, withholding or clearance requirements"],"related":[{"label":"Stamp Duty Calculator","href":"/tools/stamp-duty/"},{"label":"Property CGT Calculator","href":"/tools/property-cgt/"},{"label":"Rental Yield Calculator","href":"/tools/rental-yield/"}],"competitor":{"group":"property","label":"Rentometer, AirDNA, Zillow Rental Manager and BuildZoom","patterns":["Property tools improve trust by showing comparable evidence, market assumptions, inspection or permit data and a dated report trail.","Rental platforms connect screening, lease, payments, deposit evidence and renewal steps instead of stopping at a calculator result.","Investment tools separate gross numbers from operating cost, vacancy, tax, permit and title risk so the user can defend the decision."],"implemented":["This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.","The app-specific checklist is not generic: it starts with \"Separate buyer costs, annual owner costs, rental taxes and sale taxes\".","Saved workflows can be resumed from the dashboard and handed off to Stamp Duty Calculator when the matter naturally continues.","The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report."]}}</script>
+  <div class="leg-workflow-head">
+    <span class="leg-action-kicker">Case workspace</span>
+    <h2 id="legal-workflow-heading">Build, save and export this legal workflow</h2>
+    <p>This workspace turns the property tax exposure map result into a reusable matter note, dashboard item and gated PDF checklist. Use the app first, then save the evidence trail.</p>
+  </div>
+  <div class="leg-workflow-grid">
+    <label class="leg-field"><span class="leg-f-label">Matter or project</span><input aria-label="E.g. Supplier DPA review" class="leg-f-input" data-workflow-field="matter" type="text" placeholder="e.g. Supplier DPA review"></label>
+    <label class="leg-field"><span class="leg-f-label">Country or regime</span><input aria-label="E.g. Kenya, NDPA, Lagos" class="leg-f-input" data-workflow-field="country" type="text" placeholder="e.g. Kenya, NDPA, Lagos"></label>
+    <label class="leg-field"><span class="leg-f-label">Target date</span><input aria-label="Leg f input" class="leg-f-input" data-workflow-field="date" type="date"></label>
+    <label class="leg-field"><span class="leg-f-label">Status</span><select class="leg-f-select" data-workflow-field="status"><option>Checking evidence</option><option>Ready to verify</option><option>Waiting on official source</option><option>Escalate before action</option></select></label>
+  </div>
+  <div class="leg-workflow-columns">
+    <div>
+      <h3 class="leg-mini-heading">Evidence checked</h3>
+      <div class="leg-workflow-checklist" data-workflow-evidence-list></div>
+    </div>
+    <div>
+      <h3 class="leg-mini-heading">Risk flags</h3>
+      <div class="leg-workflow-checklist warning" data-workflow-risk-list></div>
+    </div>
+  </div>
+  <label class="leg-field full"><span class="leg-f-label">Private notes</span><textarea class="leg-f-textarea" data-workflow-field="note" placeholder="Add facts, missing documents, portal references, lawyer comments, or next actions."></textarea></label>
+  <div class="leg-workflow-summary" data-workflow-summary></div>
+  <div class="leg-workflow-actions">
+    <button type="button" class="leg-copy-btn" data-workflow-build>Build handoff note</button>
+    <button type="button" class="leg-secondary-btn" data-workflow-save>Save to dashboard</button>
+    <button type="button" class="leg-secondary-btn" data-workflow-load>Load saved</button>
+    <a class="leg-secondary-btn" href="/dashboard/">Open dashboard</a>
+  </div>
+  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly aria-label="Text entry"></textarea>
+  <form class="leg-pdf-gate" data-workflow-gate novalidate>
+    <div>
+      <span class="leg-action-kicker">PDF gate</span>
+      <h3>Email the checklist and unlock print/PDF</h3>
+      <p>The core tool stays free. The deeper PDF pack captures email only when the user wants a portable report, checklist and dashboard reminder.</p>
+    </div>
+    <label class="leg-field"><span class="leg-f-label">Email</span><input aria-label="You@example.com" class="leg-f-input" data-workflow-field="email" data-workflow-email type="email" autocomplete="email" placeholder="you@example.com"></label>
+    <label class="leg-workflow-optin"><input type="checkbox" data-workflow-optin checked><span>Send me occasional AfroTools legal checklist updates.</span></label>
+    <div class="leg-workflow-actions compact">
+      <button type="submit" class="leg-copy-btn" data-workflow-pdf-gate>Email checklist + unlock PDF</button>
+      <button type="button" class="leg-secondary-btn" data-workflow-print>Print or save PDF</button>
+      <button type="button" class="leg-secondary-btn" data-workflow-copy>Copy handoff note</button>
+    </div>
+    <div class="leg-gate-status" data-workflow-gate-status></div>
+  </form>
+  <div class="leg-workflow-next">
+    <span>Continue workflow</span>
+    <div><a href="/tools/stamp-duty/">Stamp Duty Calculator</a><a href="/tools/property-cgt/">Property CGT Calculator</a><a href="/tools/rental-yield/">Rental Yield Calculator</a></div>
+  </div>
+</section>
+<!-- LEGAL-WORKFLOW-COPILOT:END -->
+<!-- LEGAL-COMPETITOR-CHECK:START -->
+<section class="leg-competitor" aria-labelledby="legal-competitor-heading">
+  <div class="leg-action-kicker">Competitor check - 28 April 2026</div>
+  <div class="leg-competitor-head">
+    <h2 id="legal-competitor-heading">What stronger tools teach this app</h2>
+    <p>Benchmarked against Rentometer, AirDNA, Zillow Rental Manager and BuildZoom. The goal is not to copy them; it is to bring the useful workflow pattern into an Africa-first tool with official-source caution and local evidence capture.</p>
+  </div>
+  <div class="leg-competitor-grid">
+    <div>
+      <h3>Observed feature pattern</h3>
+      <ul><li>Property tools improve trust by showing comparable evidence, market assumptions, inspection or permit data and a dated report trail.</li><li>Rental platforms connect screening, lease, payments, deposit evidence and renewal steps instead of stopping at a calculator result.</li><li>Investment tools separate gross numbers from operating cost, vacancy, tax, permit and title risk so the user can defend the decision.</li></ul>
+    </div>
+    <div>
+      <h3>Implemented on this app</h3>
+      <ul><li>This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.</li><li>The app-specific checklist is not generic: it starts with &quot;Separate buyer costs, annual owner costs, rental taxes and sale taxes&quot;.</li><li>Saved workflows can be resumed from the dashboard and handed off to Stamp Duty Calculator when the matter naturally continues.</li><li>The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report.</li></ul>
+    </div>
+    <div>
+      <h3>Best next move</h3>
+      <ul><li>Which taxes apply on acquisition, ownership, rental and sale</li><li>Separate buyer costs, annual owner costs, rental taxes and sale taxes</li><li>Only budgeting for purchase price and legal fees</li></ul>
+    </div>
+  </div>
+</section>
+<!-- LEGAL-COMPETITOR-CHECK:END -->
+<!-- LEGAL-DEEP-IMPROVEMENT:START -->
+<section class="leg-upgrade" aria-labelledby="legal-upgrade-heading">
+  <div class="leg-upgrade-kicker">Reviewed 28 April 2026 · Property tax model</div>
+  <h2 id="legal-upgrade-heading">Property tax exposure map</h2>
+  <p>Property taxes are not just annual rates. Buyers and owners may face transfer duty, stamp duty, land-use charge, rental income tax, withholding tax, CGT and municipal service fees.</p>
+  <div class="leg-upgrade-grid">
+    <div class="leg-upgrade-block">
+      <h3>Decisions this clarifies</h3>
+      <ul><li>Which taxes apply on acquisition, ownership, rental and sale</li><li>Whether the base is market value, annual rental value, sale price, gain or assessed rateable value</li><li>Which owner type changes the tax result, such as individual, company, trust or non-resident</li></ul>
+    </div>
+    <div class="leg-upgrade-block">
+      <h3>Before you rely on it</h3>
+      <ul><li>Separate buyer costs, annual owner costs, rental taxes and sale taxes</li><li>Check municipality, state and national taxes because more than one layer may apply</li><li>Keep valuation, receipts and rental records for future dispute or sale</li></ul>
+    </div>
+    <div class="leg-upgrade-block warning">
+      <h3>Red flags</h3>
+      <ul><li>Only budgeting for purchase price and legal fees</li><li>No allowance for municipal arrears or service charges</li><li>Selling property without checking CGT, withholding or clearance requirements</li></ul>
+    </div>
+  </div>
+  <div class="leg-source-row">
+    <div>
+      <span>Primary checks</span>
+      <div class="leg-source-links"><a href="https://www.sars.gov.za/tax-rates/other-taxes/" target="_blank" rel="noopener">SARS other taxes</a><a href="https://www.gov.za/services/services-residents/place-live/get-deeds-registry-information" target="_blank" rel="noopener">South Africa deeds registry information</a><a href="https://www.lc.gov.gh/services/registration-title/" target="_blank" rel="noopener">Ghana Lands Commission title registration</a></div>
+    </div>
+    <div>
+      <span>Next best tools</span>
+      <div class="leg-source-links internal"><a href="/tools/stamp-duty/">Stamp Duty Calculator</a><a href="/tools/property-cgt/">Property CGT Calculator</a><a href="/tools/rental-yield/">Rental Yield Calculator</a></div>
+    </div>
+  </div>
+</section>
+<!-- LEGAL-DEEP-IMPROVEMENT:END -->
+<!-- LEGAL-ACTION-PACK:START -->
+<section class="leg-action-pack" aria-labelledby="legal-action-pack-heading">
+  <div class="leg-action-head">
+    <span class="leg-action-kicker">Review pack</span>
+    <h2 id="legal-action-pack-heading">Save the property tax exposure map trail</h2>
+    <p>Before filing, signing, publishing, or sending anything, keep a short record that links the app result to evidence and official-source checks.</p>
+  </div>
+  <div class="leg-action-grid">
+    <div>
+      <h3>Capture</h3>
+      <p>Save the country or regime, parties, dates, amounts, selected options, and final output. Add why this matters: Which taxes apply on acquisition, ownership, rental and sale.</p>
+    </div>
+    <div>
+      <h3>Attach</h3>
+      <p>Separate buyer costs, annual owner costs, rental taxes and sale taxes. Also keep the strongest supporting document, receipt, portal reference, ID, contract, policy, or court file beside the generated result.</p>
+    </div>
+    <div>
+      <h3>Escalate</h3>
+      <p>If you see this risk, pause and get qualified help: Only budgeting for purchase price and legal fees.</p>
+    </div>
+  </div>
+  <label class="leg-action-copy-label">Copyable review note</label>
+  <textarea class="leg-action-copy-text" readonly aria-label="Text entry">Property tax exposure map action pack
+Tool: property-tax
+Coverage: Property tax model
+
+Result to save:
+- Country or regime selected, parties involved, dates, amounts, and the generated output from the app.
+- The reason this output was prepared: Which taxes apply on acquisition, ownership, rental and sale.
+
+Evidence to attach:
+- Separate buyer costs, annual owner costs, rental taxes and sale taxes
+- Check municipality, state and national taxes because more than one layer may apply
+- Keep valuation, receipts and rental records for future dispute or sale
+
+Escalate before filing or signing if:
+- Only budgeting for purchase price and legal fees
+- No allowance for municipal arrears or service charges
+- Selling property without checking CGT, withholding or clearance requirements
+
+Primary checks:
+- SARS other taxes: https://www.sars.gov.za/tax-rates/other-taxes/
+- South Africa deeds registry information: https://www.gov.za/services/services-residents/place-live/get-deeds-registry-information
+- Ghana Lands Commission title registration: https://www.lc.gov.gh/services/registration-title/
+
+Reviewed by AfroTools workflow on 28 April 2026. Informational only, not legal advice.</textarea>
+  <div class="leg-action-copy-row">
+    <button type="button" class="leg-action-copy-btn" data-legal-copy-action>Copy review pack</button>
+    <span>Paste this into your matter file, compliance folder, board pack, or lawyer handoff.</span>
+  </div>
+</section>
+<!-- LEGAL-ACTION-PACK:END -->
+<afro-related-tools category="legal" current="property-tax" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/business-registration/" data-related-tool data-id="business-registration" data-name="Business Registration Checklist" data-category="legal" data-icon="BR" data-desc="Step-by-step business registration checklist for 16 African countries. Documents, fees, timelines, regulatory bodies.">Business Registration Checklist</a></li><li><a href="/tools/nda-generator/" data-related-tool data-id="nda-generator" data-name="NDA Generator" data-category="legal" data-icon="NG" data-desc="Generate Non-Disclosure Agreements for African jurisdictions. Mutual and unilateral NDAs compliant with local contract l">NDA Generator</a></li><li><a href="/tools/rent-intelligence/" data-related-tool data-id="rent-intelligence" data-name="Rent Intelligence" data-category="legal" data-icon="RI" data-desc="Track rent asks, lease terms, deposits, and vacancy signals by neighborhood with moderated contributor data.">Rent Intelligence</a></li><li><a href="/tools/company-type-selector/" data-related-tool data-id="company-type-selector" data-name="Company Type Selector" data-category="legal" data-icon="CT" data-desc="Choose the right business structure for Africa — Sole Trader, LLC, PLC, Partnership. Tax, liability, compliance comparis">Company Type Selector</a></li><li><a href="/tools/land-title-check/" data-related-tool data-id="land-title-check" data-name="Land Title Verification Checklist" data-category="legal" data-icon="LT" data-desc="Verify land titles before buying property in Africa. Country-specific checklists for Nigeria (C of O), Kenya (Title Deed">Land Title Verification Checklist</a></li><li><a href="/tools/lease-risk-check/" data-related-tool data-id="lease-risk-check" data-name="Lease Risk Check" data-category="legal" data-icon="LR" data-desc="Nigeria-first lease scam and risky listing checker powered by contributor reports and reviewer approval.">Lease Risk Check</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+/* ================================================================
+   AFRICAN PROPERTY TAX CALCULATOR - FULL DATA & ENGINE
+   ================================================================ */
+
+/* ── COUNTRY DATA ── */
+const COUNTRIES = {
+  NG: {
+    name: 'Nigeria', currency: 'NGN', flag: '\u{1F1F3}\u{1F1EC}',
+    cities: {
+      lagos: { name: 'Lagos', rates: { residential: 0.000394, rental: 0.000789, commercial: 0.00132, industrial: 0.00132 }},
+      abuja: { name: 'Abuja (FCT)', rates: { residential: 0.0005, rental: 0.001, commercial: 0.0015, industrial: 0.0015 }},
+      rivers: { name: 'Rivers', rates: { residential: 0.0004, rental: 0.0008, commercial: 0.0012, industrial: 0.0012 }},
+      ogun: { name: 'Ogun', rates: { residential: 0.0003, rental: 0.0007, commercial: 0.001, industrial: 0.001 }}
+    },
+    transfer: { stampDuty: 0.005, consentFee: 0.03, registration: 0.005, vat: 0 },
+    rentalTax: { method: 'progressive', rates: [{ limit: 300000, rate: 0.07 }, { limit: 600000, rate: 0.11 }, { limit: 1100000, rate: 0.15 }, { limit: 1600000, rate: 0.19 }, { limit: 3200000, rate: 0.21 }, { limit: Infinity, rate: 0.24 }], deductionPct: 0.20, note: 'Progressive income tax rates apply' },
+    cgt: { rate: 0.10, primaryExempt: false, exclusion: 0, note: '10% flat CGT on property disposal gains' }
+  },
+  KE: {
+    name: 'Kenya', currency: 'KES', flag: '\u{1F1F0}\u{1F1EA}',
+    cities: {
+      nairobi: { name: 'Nairobi', rates: { residential: 0.01, rental: 0.015, commercial: 0.025, industrial: 0.02 }},
+      mombasa: { name: 'Mombasa', rates: { residential: 0.008, rental: 0.012, commercial: 0.02, industrial: 0.018 }},
+      kisumu: { name: 'Kisumu', rates: { residential: 0.005, rental: 0.008, commercial: 0.015, industrial: 0.012 }}
+    },
+    transfer: { stampDuty: 0.04, stampDutyRural: 0.02, registration: 0.002, vat: 0 },
+    rentalTax: { method: 'flat', rate: 0.075, threshold: 288000, deductionPct: 0, note: '7.5% simplified rental tax on gross rent (if annual rent between KES 288K-15M)' },
+    cgt: { rate: 0.15, primaryExempt: true, exclusion: 3000000, note: '15% CGT. Primary residence exempt. First KES 3M gain exempt.' }
+  },
+  ZA: {
+    name: 'South Africa', currency: 'ZAR', flag: '\u{1F1FF}\u{1F1E6}',
+    cities: {
+      johannesburg: { name: 'Johannesburg', rates: { residential: 0.008, rental: 0.01, commercial: 0.015, industrial: 0.012 }},
+      capetown: { name: 'Cape Town', rates: { residential: 0.007, rental: 0.009, commercial: 0.013, industrial: 0.011 }},
+      durban: { name: 'Durban (eThekwini)', rates: { residential: 0.009, rental: 0.011, commercial: 0.014, industrial: 0.012 }},
+      pretoria: { name: 'Pretoria (Tshwane)', rates: { residential: 0.008, rental: 0.01, commercial: 0.013, industrial: 0.011 }}
+    },
+    transfer: { method: 'progressive', brackets: [
+      { limit: 1100000, rate: 0 }, { limit: 1512500, rate: 0.03 }, { limit: 2117500, rate: 0.06 },
+      { limit: 2722500, rate: 0.08 }, { limit: 12100000, rate: 0.11 }, { limit: Infinity, rate: 0.13 }
+    ], registration: 0.005, vat: 0 },
+    rentalTax: { method: 'marginal', topRate: 0.45, deductionPct: 1.0, note: 'Net rental income added to taxable income. All legitimate expenses deductible.' },
+    cgt: { rate: 0.18, inclusionRate: 0.40, primaryExempt: true, exclusion: 2000000, note: '18% on 40% of gain (eff. 7.2%). R2M primary residence exclusion.' }
+  },
+  GH: {
+    name: 'Ghana', currency: 'GHS', flag: '\u{1F1EC}\u{1F1ED}',
+    cities: {
+      accra: { name: 'Accra', rates: { residential: 0.005, rental: 0.008, commercial: 0.01, industrial: 0.01 }},
+      kumasi: { name: 'Kumasi', rates: { residential: 0.005, rental: 0.007, commercial: 0.009, industrial: 0.009 }}
+    },
+    transfer: { stampDuty: 0.005, registration: 0.005, vat: 0 },
+    rentalTax: { method: 'flat', rate: 0.08, threshold: 0, deductionPct: 0.30, note: '8% withholding tax on gross rent. 30% standard deduction available.' },
+    cgt: { rate: 0.15, primaryExempt: false, exclusion: 0, note: '15% CGT on gains from property disposal' }
+  },
+  EG: {
+    name: 'Egypt', currency: 'EGP', flag: '\u{1F1EA}\u{1F1EC}',
+    cities: {
+      cairo: { name: 'Cairo', rates: { residential: 0.007, rental: 0.007, commercial: 0.0068, industrial: 0.0068 }},
+      alexandria: { name: 'Alexandria', rates: { residential: 0.006, rental: 0.006, commercial: 0.0058, industrial: 0.0058 }}
+    },
+    transfer: { stampDuty: 0, registration: 0.025, vat: 0 },
+    rentalTax: { method: 'rental_value', rate: 0.10, residentialDeduction: 0.30, commercialDeduction: 0.32, note: '10% tax on annual rental value after 30% deduction (residential) or 32% (commercial).' },
+    cgt: { rate: 0.025, primaryExempt: false, exclusion: 0, note: '2.5% tax on total sale price (not gain). Flat rate.' }
+  },
+  TZ: {
+    name: 'Tanzania', currency: 'TZS', flag: '\u{1F1F9}\u{1F1FF}',
+    cities: {
+      daressalaam: { name: 'Dar es Salaam', rates: { residential: 0.0015, rental: 0.002, commercial: 0.003, industrial: 0.003 }},
+      dodoma: { name: 'Dodoma', rates: { residential: 0.001, rental: 0.0015, commercial: 0.002, industrial: 0.002 }},
+      rural: { name: 'Rural Areas', rates: { residential: 0.0005, rental: 0.0008, commercial: 0.001, industrial: 0.001 }}
+    },
+    transfer: { stampDuty: 0.01, registration: 0.005, vat: 0 },
+    rentalTax: { method: 'flat', rate: 0.10, threshold: 0, deductionPct: 0.30, note: '10% withholding tax on gross rental income.' },
+    cgt: { rate: 0.10, primaryExempt: true, exclusion: 0, note: '10% CGT. Primary residence exempt.' }
+  },
+  MA: {
+    name: 'Morocco', currency: 'MAD', flag: '\u{1F1F2}\u{1F1E6}',
+    cities: {
+      casablanca: { name: 'Casablanca', rates: { residential: 0.015, rental: 0.02, commercial: 0.03, industrial: 0.03 }},
+      rabat: { name: 'Rabat', rates: { residential: 0.012, rental: 0.018, commercial: 0.025, industrial: 0.025 }},
+      marrakech: { name: 'Marrakech', rates: { residential: 0.01, rental: 0.015, commercial: 0.02, industrial: 0.02 }}
+    },
+    transfer: { stampDuty: 0.04, registration: 0.01, vat: 0 },
+    rentalTax: { method: 'progressive', rates: [{ limit: 30000, rate: 0.10 }, { limit: 50000, rate: 0.20 }, { limit: 80000, rate: 0.30 }, { limit: 180000, rate: 0.34 }, { limit: Infinity, rate: 0.38 }], deductionPct: 0.40, note: 'Progressive rates on net rental income after 40% standard deduction.' },
+    cgt: { rate: 0.20, primaryExempt: true, exclusion: 0, minTax: 0.03, note: '20% CGT (min 3% of sale price). Primary residence exempt after 6 years.' }
+  },
+  UG: {
+    name: 'Uganda', currency: 'UGX', flag: '\u{1F1FA}\u{1F1EC}',
+    cities: {
+      kampala: { name: 'Kampala', rates: { residential: 0.06, rental: 0.06, commercial: 0.06, industrial: 0.06 }},
+      entebbe: { name: 'Entebbe', rates: { residential: 0.04, rental: 0.04, commercial: 0.05, industrial: 0.05 }}
+    },
+    transfer: { stampDuty: 0.01, registration: 0.005, vat: 0 },
+    rentalTax: { method: 'flat', rate: 0.20, threshold: 2820000, deductionPct: 0.20, note: '20% on net rental income (after 20% standard deduction). First UGX 2.82M exempt.' },
+    cgt: { rate: 0.30, primaryExempt: true, exclusion: 0, note: '30% CGT on gains (added to income). Primary residence exempt.' }
+  },
+  RW: {
+    name: 'Rwanda', currency: 'RWF', flag: '\u{1F1F7}\u{1F1FC}',
+    cities: {
+      kigali: { name: 'Kigali', rates: { residential: 0.001, rental: 0.003, commercial: 0.005, industrial: 0.005 }},
+      other: { name: 'Other Districts', rates: { residential: 0.001, rental: 0.002, commercial: 0.003, industrial: 0.003 }}
+    },
+    transfer: { stampDuty: 0, registration: 0.0006, vat: 0 },
+    rentalTax: { method: 'flat', rate: 0.15, threshold: 0, deductionPct: 0.50, note: '15% on net rental income after 50% standard deduction.' },
+    cgt: { rate: 0.05, primaryExempt: false, exclusion: 0, note: '5% CGT on property disposal gains.' }
+  },
+  MU: {
+    name: 'Mauritius', currency: 'MUR', flag: '\u{1F1F2}\u{1F1FA}',
+    cities: {
+      portlouis: { name: 'Port Louis', rates: { residential: 0, rental: 0, commercial: 0, industrial: 0 }},
+      other: { name: 'Other', rates: { residential: 0, rental: 0, commercial: 0, industrial: 0 }}
+    },
+    transfer: { stampDuty: 0.05, registration: 0.005, vat: 0 },
+    rentalTax: { method: 'flat', rate: 0.15, threshold: 0, deductionPct: 0.30, note: '15% flat income tax on net rental income.' },
+    cgt: { rate: 0, primaryExempt: false, exclusion: 0, note: 'No capital gains tax in Mauritius.' }
+  },
+  BW: {
+    name: 'Botswana', currency: 'BWP', flag: '\u{1F1E7}\u{1F1FC}',
+    cities: {
+      gaborone: { name: 'Gaborone', rates: { residential: 0.005, rental: 0.007, commercial: 0.01, industrial: 0.01 }},
+      francistown: { name: 'Francistown', rates: { residential: 0.004, rental: 0.006, commercial: 0.008, industrial: 0.008 }}
+    },
+    transfer: { stampDuty: 0.05, registration: 0.005, vat: 0 },
+    rentalTax: { method: 'progressive', rates: [{ limit: 48000, rate: 0 }, { limit: 96000, rate: 0.05 }, { limit: 144000, rate: 0.125 }, { limit: 192000, rate: 0.19 }, { limit: Infinity, rate: 0.25 }], deductionPct: 0.30, note: 'Progressive rates on net rental income after expenses.' },
+    cgt: { rate: 0.22, inclusionRate: 0.75, primaryExempt: true, exclusion: 0, note: '22% on 75% of gain. Primary residence exempt.' }
+  },
+  ZM: {
+    name: 'Zambia', currency: 'ZMW', flag: '\u{1F1FF}\u{1F1F2}',
+    cities: {
+      lusaka: { name: 'Lusaka', rates: { residential: 0.01, rental: 0.015, commercial: 0.02, industrial: 0.02 }},
+      ndola: { name: 'Ndola', rates: { residential: 0.008, rental: 0.012, commercial: 0.015, industrial: 0.015 }}
+    },
+    transfer: { stampDuty: 0.03, registration: 0.005, vat: 0 },
+    rentalTax: { method: 'flat', rate: 0.125, threshold: 0, deductionPct: 0.20, note: '12.5% withholding tax on gross rental income for individuals.' },
+    cgt: { rate: 0.05, primaryExempt: false, exclusion: 0, note: '5% property transfer tax on sale value.' }
+  },
+  SN: {
+    name: 'Senegal', currency: 'XOF', flag: '\u{1F1F8}\u{1F1F3}',
+    cities: {
+      dakar: { name: 'Dakar', rates: { residential: 0.05, rental: 0.075, commercial: 0.075, industrial: 0.075 }},
+      other: { name: 'Other', rates: { residential: 0.05, rental: 0.06, commercial: 0.06, industrial: 0.06 }}
+    },
+    transfer: { stampDuty: 0.05, registration: 0.01, vat: 0 },
+    rentalTax: { method: 'flat_rental_value', rate: 0.20, deductionPct: 0.30, note: '20% on net rental income after 30% deduction.' },
+    cgt: { rate: 0.10, primaryExempt: true, exclusion: 0, note: '10% CGT on property gains. Primary residence exempt.' }
+  },
+  ET: {
+    name: 'Ethiopia', currency: 'ETB', flag: '\u{1F1EA}\u{1F1F9}',
+    cities: {
+      addisababa: { name: 'Addis Ababa', rates: { residential: 0.01, rental: 0.015, commercial: 0.015, industrial: 0.015 }},
+      other: { name: 'Other Cities', rates: { residential: 0.005, rental: 0.008, commercial: 0.01, industrial: 0.01 }}
+    },
+    transfer: { stampDuty: 0.02, registration: 0.005, vat: 0 },
+    rentalTax: { method: 'progressive', rates: [{ limit: 7200, rate: 0.10 }, { limit: 19800, rate: 0.15 }, { limit: 38400, rate: 0.20 }, { limit: 63000, rate: 0.25 }, { limit: 93600, rate: 0.30 }, { limit: Infinity, rate: 0.35 }], deductionPct: 0.20, note: 'Progressive rates on net rental income.' },
+    cgt: { rate: 0.15, primaryExempt: false, exclusion: 0, note: '15% CGT on property disposal gains.' }
+  },
+  CI: {
+    name: "Cote d'Ivoire", currency: 'XOF', flag: '\u{1F1E8}\u{1F1EE}',
+    cities: {
+      abidjan: { name: 'Abidjan', rates: { residential: 0.015, rental: 0.015, commercial: 0.015, industrial: 0.015 }},
+      other: { name: 'Other', rates: { residential: 0.012, rental: 0.012, commercial: 0.012, industrial: 0.012 }}
+    },
+    transfer: { stampDuty: 0.015, registration: 0.01, vat: 0 },
+    rentalTax: { method: 'flat_rental_value', rate: 0.15, deductionPct: 0.40, note: 'Foncier tax: 15% of rental value. 40% deduction for expenses.' },
+    cgt: { rate: 0.10, primaryExempt: false, exclusion: 0, note: '10% CGT on property gains.' }
+  }
+};
+
+/* ── HELPERS ── */
+function fmt(currency, n) {
+  return currency + ' ' + Math.round(n).toLocaleString('en');
+}
+function fmtPct(n) { return (n * 100).toFixed(2) + '%'; }
+
+function createDonut(containerId, segments, centerText, centerLabel) {
+  const container = document.getElementById(containerId);
+  const total = segments.reduce((s, seg) => s + seg.value, 0);
+  if (total === 0) { container.innerHTML = ''; return; }
+
+  const r = 70, cx = 100, cy = 100, strokeWidth = 28;
+  const circumference = 2 * Math.PI * r;
+  let offset = 0;
+  let circles = '';
+
+  segments.forEach(seg => {
+    const pct = seg.value / total;
+    const dashLen = pct * circumference;
+    const dashGap = circumference - dashLen;
+    circles += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${seg.color}" stroke-width="${strokeWidth}" stroke-dasharray="${dashLen} ${dashGap}" stroke-dashoffset="${-offset}" />`;
+    offset += dashLen;
+  });
+
+  container.innerHTML = `
+    <svg viewBox="0 0 200 200">${circles}</svg>
+    <div class="pt-donut-center">
+      <div class="pt-dc-val">${centerText}</div>
+      <div class="pt-dc-lbl">${centerLabel}</div>
+    </div>`;
+}
+
+function createLegend(legendId, segments) {
+  const el = document.getElementById(legendId);
+  el.innerHTML = segments.map(s =>
+    `<div class="pt-legend-item"><span class="pt-legend-dot" style="background:${s.color}"></span>${s.label}</div>`
+  ).join('');
+}
+
+function getFirstCityKey(countryCode) {
+  return Object.keys(COUNTRIES[countryCode].cities)[0];
+}
+
+/* ── TAB NAVIGATION ── */
+document.getElementById('tabNav').addEventListener('click', function(e) {
+  if (!e.target.classList.contains('pt-tab')) return;
+  document.querySelectorAll('.pt-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.pt-tab-panel').forEach(p => p.classList.remove('active'));
+  e.target.classList.add('active');
+  document.getElementById('panel-' + e.target.dataset.tab).classList.add('active');
+});
+
+/* ================================================================
+   TAB 1: ANNUAL TAX
+   ================================================================ */
+const AT = {
+  fmtShort(n) {
+    n = +n;
+    if (n >= 1e9) return (n / 1e9).toFixed(1) + 'B';
+    if (n >= 1e6) return (n / 1e6).toFixed(1) + 'M';
+    if (n >= 1e3) return (n / 1e3).toFixed(0) + 'K';
+    return n.toString();
+  },
+  updateCity() {
+    const cc = document.getElementById('at-country').value;
+    const sel = document.getElementById('at-city');
+    sel.innerHTML = '';
+    const cities = COUNTRIES[cc].cities;
+    for (const key in cities) {
+      sel.innerHTML += `<option value="${key}">${cities[key].name}</option>`;
+    }
+  },
+  calculate() {
+    const cc = document.getElementById('at-country').value;
+    const cityKey = document.getElementById('at-city').value;
+    const use = document.getElementById('at-use').value;
+    const value = +document.getElementById('at-value').value;
+    const c = COUNTRIES[cc];
+    const city = c.cities[cityKey];
+    const rate = city.rates[use] || city.rates.residential;
+    const annualTax = value * rate;
+    const monthlyTax = annualTax / 12;
+    const effectiveRate = rate;
+
+    const grid = document.getElementById('at-result-grid');
+    grid.innerHTML = `
+      <div class="pt-result-box"><div class="pt-rl">Annual Tax</div><div class="pt-rv green">${fmt(c.currency, annualTax)}</div></div>
+      <div class="pt-result-box"><div class="pt-rl">Monthly Equivalent</div><div class="pt-rv">${fmt(c.currency, monthlyTax)}</div></div>
+      <div class="pt-result-box"><div class="pt-rl">Effective Rate</div><div class="pt-rv ${effectiveRate < 0.005 ? 'green' : effectiveRate < 0.015 ? 'amber' : 'red'}">${fmtPct(effectiveRate)}</div></div>
+      <div class="pt-result-box"><div class="pt-rl">Property Value</div><div class="pt-rv">${fmt(c.currency, value)}</div></div>`;
+
+    const table = document.getElementById('at-table');
+    table.innerHTML = `
+      <tr><th>Component</th><th>Amount</th></tr>
+      <tr><td>Property Value</td><td>${fmt(c.currency, value)}</td></tr>
+      <tr><td>Country</td><td>${c.name}</td></tr>
+      <tr><td>City/Region</td><td>${city.name}</td></tr>
+      <tr><td>Property Use</td><td>${use.charAt(0).toUpperCase() + use.slice(1)}</td></tr>
+      <tr><td>Tax Rate</td><td>${fmtPct(rate)}</td></tr>
+      <tr class="pt-total"><td>Annual Property Tax</td><td>${fmt(c.currency, annualTax)}</td></tr>`;
+
+    const res = document.getElementById('at-results');
+    res.style.display = 'block';
+    res.scrollIntoView({ behavior: 'smooth' });
+  }
+};
+AT.updateCity();
+document.getElementById('at-value').addEventListener('input', function() {
+  document.getElementById('at-slider').value = this.value;
+  document.getElementById('at-slider-val').textContent = AT.fmtShort(this.value);
+});
+
+/* ================================================================
+   TAB 2: BUYER COSTS
+   ================================================================ */
+const BC = {
+  calculate() {
+    const cc = document.getElementById('bc-country').value;
+    const location = document.getElementById('bc-location').value;
+    const price = +document.getElementById('bc-price').value;
+    const type = document.getElementById('bc-type').value;
+    const legalPct = +document.getElementById('bc-legal').value / 100;
+    const agentPct = +document.getElementById('bc-agent').value / 100;
+    const c = COUNTRIES[cc];
+
+    let transferTax = 0;
+    let stampDuty = 0;
+    let registration = 0;
+    let vat = 0;
+    let otherFees = 0;
+    let transferLabel = 'Transfer Tax / Stamp Duty';
+
+    if (cc === 'ZA') {
+      /* Progressive transfer duty */
+      const brackets = c.transfer.brackets;
+      let remaining = price;
+      let prev = 0;
+      for (const b of brackets) {
+        const slice = Math.min(remaining, b.limit - prev);
+        if (slice > 0) transferTax += slice * b.rate;
+        remaining -= slice;
+        prev = b.limit;
+        if (remaining <= 0) break;
+      }
+      transferLabel = 'Transfer Duty';
+      registration = price * c.transfer.registration;
+    } else if (cc === 'NG') {
+      stampDuty = price * c.transfer.stampDuty;
+      otherFees = price * c.transfer.consentFee;
+      registration = price * c.transfer.registration;
+      transferTax = stampDuty;
+      transferLabel = 'Stamp Duty';
+    } else if (cc === 'KE') {
+      const sdRate = location === 'rural' ? c.transfer.stampDutyRural : c.transfer.stampDuty;
+      transferTax = price * sdRate;
+      registration = price * c.transfer.registration;
+      transferLabel = 'Stamp Duty (' + (location === 'rural' ? '2%' : '4%') + ')';
+    } else {
+      transferTax = price * (c.transfer.stampDuty || 0);
+      registration = price * (c.transfer.registration || 0);
+    }
+
+    const legalFee = price * legalPct;
+    const agentFee = price * agentPct;
+    const totalCosts = transferTax + otherFees + registration + legalFee + agentFee + vat;
+    const totalPrice = price + totalCosts;
+    const costPct = totalCosts / price;
+
+    const grid = document.getElementById('bc-result-grid');
+    grid.innerHTML = `
+      <div class="pt-result-box wide"><div class="pt-rl">Total Acquisition Cost</div><div class="pt-rv green" style="font-size:1.6rem">${fmt(c.currency, totalPrice)}</div></div>
+      <div class="pt-result-box"><div class="pt-rl">Purchase Price</div><div class="pt-rv">${fmt(c.currency, price)}</div></div>
+      <div class="pt-result-box"><div class="pt-rl">Additional Costs</div><div class="pt-rv red">${fmt(c.currency, totalCosts)}</div></div>
+      <div class="pt-result-box"><div class="pt-rl">Cost as % of Price</div><div class="pt-rv ${costPct < 0.05 ? 'green' : costPct < 0.10 ? 'amber' : 'red'}">${(costPct * 100).toFixed(1)}%</div></div>
+      <div class="pt-result-box"><div class="pt-rl">Country</div><div class="pt-rv" style="font-size:1rem">${c.flag} ${c.name}</div></div>`;
+
+    const COLORS = ['#059669','#047857','#0ea5e9','#8b5cf6','#f59e0b','#ef4444','#64748b'];
+    const items = [
+      { label: transferLabel, value: transferTax, color: COLORS[0] }
+    ];
+    if (cc === 'NG') items.push({ label: "Governor's Consent (3%)", value: otherFees, color: COLORS[1] });
+    items.push(
+      { label: 'Registration Fees', value: registration, color: COLORS[2] },
+      { label: 'Legal / Conveyancing', value: legalFee, color: COLORS[3] },
+      { label: 'Agent Commission', value: agentFee, color: COLORS[4] }
+    );
+
+    createDonut('bc-donut', items, (costPct * 100).toFixed(1) + '%', 'of price');
+    createLegend('bc-legend', items);
+
+    let tableHtml = '<tr><th>Cost Item</th><th>Amount</th></tr>';
+    items.forEach(item => {
+      tableHtml += `<tr><td>${item.label}</td><td>${fmt(c.currency, item.value)}</td></tr>`;
+    });
+    tableHtml += `<tr class="pt-total"><td>Total Costs</td><td>${fmt(c.currency, totalCosts)}</td></tr>`;
+    tableHtml += `<tr class="pt-total"><td>Total Acquisition Cost</td><td>${fmt(c.currency, totalPrice)}</td></tr>`;
+    document.getElementById('bc-table').innerHTML = tableHtml;
+
+    const res = document.getElementById('bc-results');
+    res.style.display = 'block';
+    res.scrollIntoView({ behavior: 'smooth' });
+  }
+};
+
+/* ================================================================
+   TAB 3: RENTAL TAX
+   ================================================================ */
+const RT = {
+  calculate() {
+    const cc = document.getElementById('rt-country').value;
+    const type = document.getElementById('rt-type').value;
+    const monthlyRent = +document.getElementById('rt-rent').value;
+    const propVal = +document.getElementById('rt-propval').value;
+    const maintenance = +document.getElementById('rt-maintenance').value;
+    const insurance = +document.getElementById('rt-insurance').value;
+    const mortgage = +document.getElementById('rt-mortgage').value;
+    const c = COUNTRIES[cc];
+    const annualRent = monthlyRent * 12;
+    const totalExpenses = maintenance + insurance + mortgage;
+
+    let taxableIncome = 0;
+    let tax = 0;
+    let deductions = 0;
+    let method = '';
+
+    const rt = c.rentalTax;
+
+    if (rt.method === 'flat' || rt.method === 'flat_rental_value') {
+      deductions = annualRent * rt.deductionPct;
+      if (rt.deductionPct >= 1) {
+        deductions = totalExpenses;
+      }
+      taxableIncome = Math.max(0, annualRent - deductions);
+      if (rt.threshold && annualRent < rt.threshold) {
+        tax = 0;
+        method = 'Below threshold - no tax';
+      } else {
+        tax = taxableIncome * rt.rate;
+        method = `Flat rate: ${(rt.rate * 100).toFixed(1)}%`;
+      }
+    } else if (rt.method === 'progressive') {
+      deductions = annualRent * rt.deductionPct;
+      taxableIncome = Math.max(0, annualRent - deductions);
+      let remaining = taxableIncome;
+      let prev = 0;
+      for (const bracket of rt.rates) {
+        const slice = Math.min(remaining, bracket.limit - prev);
+        if (slice > 0) tax += slice * bracket.rate;
+        remaining -= slice;
+        prev = bracket.limit;
+        if (remaining <= 0) break;
+      }
+      method = 'Progressive rates';
+    } else if (rt.method === 'marginal') {
+      deductions = totalExpenses;
+      taxableIncome = Math.max(0, annualRent - deductions);
+      tax = taxableIncome * rt.topRate;
+      method = `Marginal rate (est. top rate ${(rt.topRate * 100).toFixed(0)}%)`;
+    } else if (rt.method === 'rental_value') {
+      const deductPct = type === 'commercial' ? rt.commercialDeduction : rt.residentialDeduction;
+      deductions = annualRent * deductPct;
+      taxableIncome = Math.max(0, annualRent - deductions);
+      tax = taxableIncome * rt.rate;
+      method = `${(rt.rate * 100).toFixed(0)}% of rental value after ${(deductPct * 100).toFixed(0)}% deduction`;
+    }
+
+    const netIncome = annualRent - tax - totalExpenses;
+    const grossYield = propVal > 0 ? (annualRent / propVal) : 0;
+    const netYield = propVal > 0 ? (netIncome / propVal) : 0;
+    const effectiveRate = annualRent > 0 ? (tax / annualRent) : 0;
+
+    const grid = document.getElementById('rt-result-grid');
+    grid.innerHTML = `
+      <div class="pt-result-box"><div class="pt-rl">Annual Rental Tax</div><div class="pt-rv red">${fmt(c.currency, tax)}</div></div>
+      <div class="pt-result-box"><div class="pt-rl">Net Annual Income</div><div class="pt-rv green">${fmt(c.currency, netIncome)}</div></div>
+      <div class="pt-result-box"><div class="pt-rl">Effective Tax Rate</div><div class="pt-rv ${effectiveRate < 0.10 ? 'green' : effectiveRate < 0.20 ? 'amber' : 'red'}">${(effectiveRate * 100).toFixed(1)}%</div></div>
+      <div class="pt-result-box"><div class="pt-rl">Gross Yield</div><div class="pt-rv">${(grossYield * 100).toFixed(1)}%</div></div>
+      <div class="pt-result-box"><div class="pt-rl">Net Yield (After Tax)</div><div class="pt-rv ${netYield > 0.05 ? 'green' : netYield > 0.02 ? 'amber' : 'red'}">${(netYield * 100).toFixed(1)}%</div></div>
+      <div class="pt-result-box"><div class="pt-rl">Monthly Net Income</div><div class="pt-rv green">${fmt(c.currency, netIncome / 12)}</div></div>`;
+
+    const table = document.getElementById('rt-table');
+    table.innerHTML = `
+      <tr><th>Component</th><th>Amount</th></tr>
+      <tr><td>Annual Gross Rent</td><td>${fmt(c.currency, annualRent)}</td></tr>
+      <tr><td>Standard Deduction</td><td>- ${fmt(c.currency, deductions)}</td></tr>
+      <tr><td>Taxable Rental Income</td><td>${fmt(c.currency, taxableIncome)}</td></tr>
+      <tr><td>Tax Method</td><td>${method}</td></tr>
+      <tr><td>Rental Income Tax</td><td style="color:var(--pt-red)">- ${fmt(c.currency, tax)}</td></tr>
+      <tr><td>Maintenance</td><td>- ${fmt(c.currency, maintenance)}</td></tr>
+      <tr><td>Insurance</td><td>- ${fmt(c.currency, insurance)}</td></tr>
+      <tr><td>Mortgage Interest</td><td>- ${fmt(c.currency, mortgage)}</td></tr>
+      <tr class="pt-total"><td>Net Annual Income</td><td>${fmt(c.currency, netIncome)}</td></tr>`;
+
+    const note = c.rentalTax.note;
+    table.innerHTML += `<tr><td colspan="2" style="font-size:.72rem;color:#94a3b8;padding-top:10px">${note}</td></tr>`;
+
+    const res = document.getElementById('rt-results');
+    res.style.display = 'block';
+    res.scrollIntoView({ behavior: 'smooth' });
+  }
+};
+
+/* ================================================================
+   TAB 4: CAPITAL GAINS TAX
+   ================================================================ */
+const CG = {
+  calculate() {
+    const cc = document.getElementById('cg-country').value;
+    const type = document.getElementById('cg-type').value;
+    const purchase = +document.getElementById('cg-purchase').value;
+    const sale = +document.getElementById('cg-sale').value;
+    const improvements = +document.getElementById('cg-improvements').value;
+    const sellingCosts = +document.getElementById('cg-selling').value;
+    const years = +document.getElementById('cg-years').value;
+    const isPrimary = document.getElementById('cg-primary').value === 'yes';
+    const c = COUNTRIES[cc];
+    const cgt = c.cgt;
+
+    const totalCost = purchase + improvements + sellingCosts;
+    let gain = sale - totalCost;
+    let taxableGain = gain;
+    let tax = 0;
+    let exempted = false;
+    let notes = [];
+
+    /* Primary residence exemption */
+    if (isPrimary && cgt.primaryExempt) {
+      exempted = true;
+      notes.push('Primary residence is exempt from CGT in ' + c.name);
+      tax = 0;
+      taxableGain = 0;
+    } else {
+      /* Apply exclusion */
+      if (cgt.exclusion > 0) {
+        taxableGain = Math.max(0, gain - cgt.exclusion);
+        notes.push(`Exclusion of ${fmt(c.currency, cgt.exclusion)} applied`);
+      }
+
+      /* Inclusion rate (ZA, BW) */
+      if (cgt.inclusionRate) {
+        taxableGain = taxableGain * cgt.inclusionRate;
+        notes.push(`Inclusion rate: ${(cgt.inclusionRate * 100).toFixed(0)}% of gain is taxable`);
+      }
+
+      /* Egypt special: tax on sale price not gain */
+      if (cc === 'EG') {
+        tax = sale * cgt.rate;
+        taxableGain = sale;
+        notes.push('Egypt charges ' + (cgt.rate * 100).toFixed(1) + '% on total sale price (not gain)');
+      }
+      /* Zambia: transfer tax on sale value */
+      else if (cc === 'ZM') {
+        tax = sale * cgt.rate;
+        taxableGain = sale;
+        notes.push('Zambia charges property transfer tax on sale value');
+      }
+      /* Morocco: minimum tax */
+      else if (cc === 'MA' && !exempted) {
+        tax = Math.max(taxableGain * cgt.rate, sale * (cgt.minTax || 0));
+        if (sale * (cgt.minTax || 0) > taxableGain * cgt.rate) {
+          notes.push('Minimum tax (3% of sale price) applied');
+        }
+      } else {
+        tax = Math.max(0, taxableGain * cgt.rate);
+      }
+    }
+
+    if (gain < 0) {
+      tax = 0;
+      taxableGain = 0;
+      notes.push('No gain realized - no CGT payable');
+    }
+
+    const effectiveRate = sale > purchase ? (tax / (sale - purchase)) : 0;
+    const netProceeds = sale - sellingCosts - tax;
+    const annualReturn = years > 0 ? (Math.pow(sale / purchase, 1 / years) - 1) : 0;
+
+    const grid = document.getElementById('cg-result-grid');
+    grid.innerHTML = `
+      <div class="pt-result-box"><div class="pt-rl">Capital Gains Tax</div><div class="pt-rv ${exempted ? 'green' : 'red'}">${exempted ? 'EXEMPT' : fmt(c.currency, tax)}</div></div>
+      <div class="pt-result-box"><div class="pt-rl">Net Proceeds</div><div class="pt-rv green">${fmt(c.currency, netProceeds)}</div></div>
+      <div class="pt-result-box"><div class="pt-rl">Total Gain</div><div class="pt-rv ${gain > 0 ? 'green' : 'red'}">${fmt(c.currency, gain)}</div></div>
+      <div class="pt-result-box"><div class="pt-rl">Effective CGT Rate</div><div class="pt-rv ${effectiveRate < 0.05 ? 'green' : effectiveRate < 0.15 ? 'amber' : 'red'}">${(effectiveRate * 100).toFixed(1)}%</div></div>
+      <div class="pt-result-box"><div class="pt-rl">Annualised Return</div><div class="pt-rv">${(annualReturn * 100).toFixed(1)}%</div></div>
+      <div class="pt-result-box"><div class="pt-rl">Holding Period</div><div class="pt-rv">${years} year${years !== 1 ? 's' : ''}</div></div>`;
+
+    const table = document.getElementById('cg-table');
+    let tableHtml = `
+      <tr><th>Component</th><th>Amount</th></tr>
+      <tr><td>Sale Price</td><td>${fmt(c.currency, sale)}</td></tr>
+      <tr><td>Purchase Price</td><td>- ${fmt(c.currency, purchase)}</td></tr>
+      <tr><td>Improvement Costs</td><td>- ${fmt(c.currency, improvements)}</td></tr>
+      <tr><td>Selling Costs</td><td>- ${fmt(c.currency, sellingCosts)}</td></tr>
+      <tr><td>Total Gain</td><td>${fmt(c.currency, gain)}</td></tr>`;
+    if (cgt.exclusion > 0 && !exempted) {
+      tableHtml += `<tr><td>Exclusion</td><td>- ${fmt(c.currency, cgt.exclusion)}</td></tr>`;
+    }
+    if (cgt.inclusionRate && !exempted) {
+      tableHtml += `<tr><td>Inclusion Rate (${(cgt.inclusionRate * 100).toFixed(0)}%)</td><td>${fmt(c.currency, taxableGain)}</td></tr>`;
+    }
+    tableHtml += `<tr><td>CGT Rate</td><td>${(cgt.rate * 100).toFixed(1)}%</td></tr>`;
+    tableHtml += `<tr class="pt-total"><td>Capital Gains Tax</td><td>${exempted ? 'EXEMPT' : fmt(c.currency, tax)}</td></tr>`;
+    tableHtml += `<tr class="pt-total"><td>Net Proceeds After Tax</td><td>${fmt(c.currency, netProceeds)}</td></tr>`;
+
+    if (notes.length > 0) {
+      tableHtml += `<tr><td colspan="2" style="font-size:.72rem;color:#94a3b8;padding-top:10px">${notes.join('. ')}.</td></tr>`;
+    }
+    tableHtml += `<tr><td colspan="2" style="font-size:.72rem;color:#94a3b8">${cgt.note}</td></tr>`;
+    table.innerHTML = tableHtml;
+
+    const res = document.getElementById('cg-results');
+    res.style.display = 'block';
+    res.scrollIntoView({ behavior: 'smooth' });
+  }
+};
+
+/* ================================================================
+   TAB 5: COMPARE
+   ================================================================ */
+const CMP = {
+  getAnnualRate(cc, use) {
+    const c = COUNTRIES[cc];
+    const cityKey = getFirstCityKey(cc);
+    return c.cities[cityKey].rates[use] || c.cities[cityKey].rates.residential;
+  },
+  getTransferPct(cc, price) {
+    const c = COUNTRIES[cc];
+    if (cc === 'ZA') {
+      let tax = 0;
+      let prev = 0;
+      for (const b of c.transfer.brackets) {
+        const slice = Math.min(Math.max(0, price - prev), b.limit - prev);
+        tax += slice * b.rate;
+        prev = b.limit;
+      }
+      return (tax + price * c.transfer.registration) / price;
+    }
+    if (cc === 'NG') {
+      return (c.transfer.stampDuty || 0) + (c.transfer.consentFee || 0) + (c.transfer.registration || 0);
+    }
+    return (c.transfer.stampDuty || 0) + (c.transfer.registration || 0);
+  },
+  calculate() {
+    const val = +document.getElementById('cmp-value').value;
+    const use = document.getElementById('cmp-use').value;
+    const codes = [
+      document.getElementById('cmp-c1').value,
+      document.getElementById('cmp-c2').value
+    ];
+    const c3 = document.getElementById('cmp-c3').value;
+    if (c3) codes.push(c3);
+
+    const COLORS = ['#059669', '#0ea5e9', '#8b5cf6'];
+    const data = codes.map((cc, i) => {
+      const c = COUNTRIES[cc];
+      const annualRate = CMP.getAnnualRate(cc, use);
+      const transferPct = CMP.getTransferPct(cc, val);
+      const cgtRate = c.cgt.rate;
+      return {
+        code: cc, name: c.name, flag: c.flag, color: COLORS[i],
+        annualRate, annualTax: val * annualRate,
+        transferPct, transferCost: val * transferPct,
+        cgtRate
+      };
+    });
+
+    const maxAnnual = Math.max(...data.map(d => d.annualRate));
+    const maxTransfer = Math.max(...data.map(d => d.transferPct));
+    const maxCgt = Math.max(...data.map(d => d.cgtRate));
+
+    let html = '<p style="font-size:.82rem;color:#475569;margin-bottom:20px">Comparing property tax burden on a <strong>$' + val.toLocaleString('en') + '</strong> ' + use + ' property:</p>';
+
+    /* Annual tax bars */
+    html += '<div class="pt-bar-group"><div class="pt-bar-label">Annual Property Tax Rate</div>';
+    data.forEach(d => {
+      const pct = maxAnnual > 0 ? (d.annualRate / maxAnnual * 100) : 0;
+      html += `<div class="pt-bar-row">
+        <div class="pt-bar-country">${d.flag} ${d.name}</div>
+        <div class="pt-bar-track"><div class="pt-bar-fill" style="width:${Math.max(pct, 4)}%;background:${d.color}">${fmtPct(d.annualRate)}</div></div>
+      </div>`;
+    });
+    html += '</div>';
+
+    /* Transfer cost bars */
+    html += '<div class="pt-bar-group"><div class="pt-bar-label">Total Transfer / Buyer Costs</div>';
+    data.forEach(d => {
+      const pct = maxTransfer > 0 ? (d.transferPct / maxTransfer * 100) : 0;
+      html += `<div class="pt-bar-row">
+        <div class="pt-bar-country">${d.flag} ${d.name}</div>
+        <div class="pt-bar-track"><div class="pt-bar-fill" style="width:${Math.max(pct, 4)}%;background:${d.color}">${(d.transferPct * 100).toFixed(1)}%</div></div>
+      </div>`;
+    });
+    html += '</div>';
+
+    /* CGT bars */
+    html += '<div class="pt-bar-group"><div class="pt-bar-label">Capital Gains Tax Rate</div>';
+    data.forEach(d => {
+      const pct = maxCgt > 0 ? (d.cgtRate / maxCgt * 100) : 0;
+      html += `<div class="pt-bar-row">
+        <div class="pt-bar-country">${d.flag} ${d.name}</div>
+        <div class="pt-bar-track"><div class="pt-bar-fill" style="width:${Math.max(pct, 4)}%;background:${d.color}">${(d.cgtRate * 100).toFixed(1)}%</div></div>
+      </div>`;
+    });
+    html += '</div>';
+
+    /* Summary table */
+    html += '<table class="pt-table"><tr><th>Metric</th>';
+    data.forEach(d => { html += `<th style="text-align:right">${d.flag} ${d.name}</th>`; });
+    html += '</tr>';
+    html += '<tr><td>Annual Tax</td>';
+    data.forEach(d => { html += `<td style="text-align:right">$${Math.round(d.annualTax).toLocaleString('en')}</td>`; });
+    html += '</tr>';
+    html += '<tr><td>Transfer Cost</td>';
+    data.forEach(d => { html += `<td style="text-align:right">${(d.transferPct * 100).toFixed(1)}%</td>`; });
+    html += '</tr>';
+    html += '<tr><td>CGT Rate</td>';
+    data.forEach(d => { html += `<td style="text-align:right">${(d.cgtRate * 100).toFixed(1)}%</td>`; });
+    html += '</tr>';
+
+    /* 5-year total cost */
+    html += '<tr class="pt-total"><td>5-Year Holding Cost</td>';
+    data.forEach(d => {
+      const fiveYear = d.annualTax * 5 + d.transferCost;
+      html += `<td style="text-align:right">$${Math.round(fiveYear).toLocaleString('en')}</td>`;
+    });
+    html += '</tr></table>';
+
+    html += '<p style="font-size:.72rem;color:#94a3b8;margin-top:12px">* Comparison uses USD-equivalent values. Actual costs depend on exchange rates and local currency amounts. Transfer costs exclude legal and agent fees.</p>';
+
+    document.getElementById('cmp-body').innerHTML = html;
+    const res = document.getElementById('cmp-results');
+    res.style.display = 'block';
+    res.scrollIntoView({ behavior: 'smooth' });
+  }
+};
+</script>
+
+<script>
+// Save/Share buttons — manual placement needed
+(function(){
+  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
+  div.innerHTML = '<save-result-button tool-slug="property-tax" tool-name="Property Tax"></save-result-button><share-result-button tool-name="Property Tax" tool-slug="property-tax"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
+
+<script>
+var AI_MSGS=[];
+async function sendAI(){
+  var input=document.getElementById('aiInput');
+  var msgsEl=document.getElementById('aiMsgs');
+  var sendBtn=document.getElementById('aiSend');
+  var q=input.value.trim();
+  if(!q)return;
+  AI_MSGS.push({role:'user',content:q});
+  msgsEl.innerHTML+='<div class="ai-msg-u">'+q.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</div>';
+  input.value='';sendBtn.disabled=true;
+  var thinkEl=document.createElement('div');thinkEl.className='ai-thinking';thinkEl.textContent='Thinking\u2026';
+  msgsEl.appendChild(thinkEl);msgsEl.scrollTop=msgsEl.scrollHeight;
+  try{
+    var res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'property-tax',messages:AI_MSGS.slice(-6),context:''})});
+    var data=await res.json();
+    if(thinkEl.parentNode)thinkEl.remove();
+    var reply=data.reply||data.error||'Sorry, I could not get a response.';
+    AI_MSGS.push({role:'assistant',content:reply});
+    msgsEl.innerHTML+='<div class="ai-msg-a">'+reply.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')+'</div>';
+  }catch(e){
+    if(thinkEl.parentNode)thinkEl.remove();
+    msgsEl.innerHTML+='<div class="ai-msg-a">Sorry, the AI advisor is temporarily unavailable.</div>';
+  }
+  sendBtn.disabled=false;msgsEl.scrollTop=msgsEl.scrollHeight;input.focus();
+}
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script id="legal-action-copy-script">
+(function(){
+  document.addEventListener('click', function(event) {
+    var button = event.target.closest('[data-legal-copy-action]');
+    if (!button) return;
+    var section = button.closest('.leg-action-pack');
+    var area = section && section.querySelector('.leg-action-copy-text');
+    if (!area) return;
+    var original = button.textContent;
+    var done = function(){ button.textContent = "Copied"; setTimeout(function(){ button.textContent = original; }, 1800); };
+    var fallback = function(){ area.focus(); area.select(); try { document.execCommand("copy"); done(); } catch (err) { button.textContent = "Select text manually"; } };
+    if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(area.value).then(done).catch(fallback); } else { fallback(); }
+  });
+}());
+</script>
+<script src="/assets/js/legal-workflow-copilot.js?v=20da8404" defer></script>
+</body>
+</html>

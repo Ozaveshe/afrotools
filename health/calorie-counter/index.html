@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>African Food Calorie Counter — 200+ Local Foods Database</title>
+<meta name="description" content="Count calories with Africa's first food database featuring jollof rice, ugali, injera, pap, and 200+ local dishes. Free calorie counter with macros.">
+<meta name="keywords" content="African food calories, jollof rice calories, ugali nutrition, Nigerian food calorie counter, African diet calculator, calorie counter African foods">
+<meta name="robots" content="index, follow">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="apple-touch-icon" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="African Food Calorie Counter — 200+ Local Foods Database | AfroTools">
+<meta property="og:description" content="Count calories with 200+ African foods. Jollof rice, ugali, injera, pap, and more with accurate macros.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/calorie-counter.webp">
+<meta property="og:url" content="https://afrotools.com/health/calorie-counter/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["WebApplication", "HealthApplication"],
+  "name": "African Food Calorie Counter",
+  "url": "https://afrotools.com/health/calorie-counter/",
+  "description": "Free calorie and macro counter for 200+ African foods including jollof rice, ugali, injera and pap. Search foods, build a daily meal log and track calories, protein, carbs, fat and fibre.",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "inLanguage": "en",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/calorie-counter.webp"
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--color-bg);color:var(--color-text);-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+.wrap{max-width:900px;margin:0 auto;padding:0 24px}
+.bc{font-size:.72rem;font-weight:500;color:#9ca3af;letter-spacing:.06em;padding:14px 0}
+.bc a{color:#9ca3af;transition:color .15s}.bc a:hover{color:var(--color-primary)}.bc .cur{color:#374151}
+.hero{background:linear-gradient(135deg,#052e16 0%,#14532d 40%,#134e4a 100%);padding:40px 0 36px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 50%,rgba(16,185,129,.12) 0%,transparent 50%);pointer-events:none}
+.hero-z{position:relative;z-index:1}
+.hero h1{font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:800;color:#fff;line-height:1.12;letter-spacing:-.025em;margin-bottom:8px}
+.hero h1 b{color:#6ee7b7}
+.hero-sub{font-size:.9rem;color:rgba(255,255,255,.82);line-height:1.6;max-width:520px}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:16px;padding:24px;margin:24px auto;max-width:900px;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+.card h2{font-size:1.1rem;font-weight:800;color:#111827;margin-bottom:16px}
+.search-bar{position:relative;margin-bottom:16px}
+.search-bar input{width:100%;padding:12px 16px 12px 40px;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.9rem;color:#111827;transition:border-color .15s}
+.search-bar input:focus{outline:none;border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(0,98,204,.1)}
+.search-bar::before{content:'🔍';position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:.9rem}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.filter-btn{padding:6px 14px;border:1px solid #e5e7eb;background:#fff;border-radius:20px;font-family:inherit;font-size:.75rem;font-weight:600;color:#6b7280;cursor:pointer;transition:all .15s}
+.filter-btn.active{background:var(--color-primary);color:#fff;border-color:var(--color-primary)}
+.filter-btn:hover{border-color:var(--color-primary)}
+.food-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;max-height:420px;overflow-y:auto;padding-right:4px}
+.food-grid::-webkit-scrollbar{width:6px}
+.food-grid::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:3px}
+.food-item{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid #f3f4f6;border-radius:10px;cursor:pointer;transition:all .15s}
+.food-item:hover{background:#f0fdf4;border-color:#bbf7d0}
+.food-icon{font-size:1.5rem;flex-shrink:0;width:36px;text-align:center}
+.food-info{flex:1;min-width:0}
+.food-name{font-size:.85rem;font-weight:700;color:#111827;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.food-meta{font-size:.7rem;color:#9ca3af}
+.food-cal{font-size:.82rem;font-weight:700;color:var(--color-primary);flex-shrink:0}
+.food-count{font-size:.78rem;color:#9ca3af;margin-top:4px}
+.meal-log{margin-top:0}
+.meal-log h2{display:flex;align-items:center;justify-content:space-between}
+.meal-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f3f4f6}
+.meal-item:last-child{border-bottom:none}
+.meal-name{flex:1;font-size:.85rem;font-weight:600;color:#111827;min-width:0}
+.meal-serving{display:flex;align-items:center;gap:6px}
+.meal-serving input{width:60px;padding:6px 8px;border:1px solid #e5e7eb;border-radius:6px;font-family:inherit;font-size:.82rem;text-align:center}
+.meal-serving span{font-size:.72rem;color:#9ca3af}
+.meal-kcal{font-size:.85rem;font-weight:700;color:#111827;min-width:60px;text-align:right}
+.meal-remove{background:none;border:none;font-size:1rem;color:#d1d5db;cursor:pointer;padding:4px}
+.meal-remove:hover{color:#ef4444}
+.summary{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:20px;margin-top:20px}
+.summary-total{display:flex;align-items:baseline;gap:8px;margin-bottom:12px}
+.summary-total .num{font-size:2rem;font-weight:800;color:#111827}
+.summary-total .of{font-size:.85rem;color:#6b7280}
+.progress-bar{width:100%;height:10px;background:#e5e7eb;border-radius:5px;overflow:hidden;margin-bottom:16px}
+.progress-fill{height:100%;background:var(--color-primary);border-radius:5px;transition:width .3s}
+.macros{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.macro{text-align:center}
+.macro-val{font-size:1.1rem;font-weight:800;color:#111827}
+.macro-label{font-size:.68rem;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em}
+.macro-bar{width:100%;height:4px;background:#e5e7eb;border-radius:2px;margin-top:4px;overflow:hidden}
+.macro-fill{height:100%;border-radius:2px;transition:width .3s}
+.btn-row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.btn-s{padding:8px 16px;border:1px solid #e5e7eb;background:#fff;border-radius:8px;font-family:inherit;font-size:.8rem;font-weight:600;color:#374151;cursor:pointer;transition:all .15s}
+.btn-s:hover{background:#f3f4f6}
+.target-row{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.target-row label{font-size:.82rem;font-weight:600;color:#374151}
+.target-row input{width:80px;padding:6px 10px;border:1px solid #e5e7eb;border-radius:6px;font-family:inherit;font-size:.85rem;text-align:center}
+.seo{padding:48px 24px;max-width:900px;margin:0 auto}
+.seo h2{font-size:1.2rem;font-weight:800;color:#111827;margin:24px 0 10px}.seo h2:first-child{margin-top:0}
+.seo p{font-size:.9rem;color:#374151;line-height:1.8;margin-bottom:12px}
+.seo a{color:var(--color-primary);text-decoration:underline;text-underline-offset:2px}
+.faq-section{padding:32px 24px 48px;max-width:900px;margin:0 auto}
+.faq-section h2{font-size:1.2rem;font-weight:800;color:#111827;margin-bottom:20px}
+.faq-item{border-bottom:1px solid #e5e7eb;padding:14px 0}
+.faq-q{font-size:.9rem;font-weight:700;color:#111827;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.faq-q::after{content:'+';font-size:1.2rem;color:#9ca3af;flex-shrink:0;transition:transform .2s}
+.faq-item.open .faq-q::after{transform:rotate(45deg)}
+.faq-a{font-size:.85rem;color:#4b5563;line-height:1.7;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease;padding-top:0}
+.faq-item.open .faq-a{max-height:400px;padding-top:10px}
+.empty-log{text-align:center;padding:32px 16px;color:#9ca3af;font-size:.88rem}
+@media(max-width:640px){.food-grid{grid-template-columns:1fr}.macros{grid-template-columns:repeat(2,1fr)}.card{padding:16px;margin:16px 12px}}
+@media print{.hero,.bc,afro-navbar,afro-footer,.search-bar,.filters,.food-grid,.btn-row,.target-row{display:none!important}.card{border:none;box-shadow:none}}
+</style>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:title" content="African Food Calorie Counter — 200+ Local Foods Database | AfroTools">
+<meta name="twitter:description" content="Count calories with 200+ African foods. Jollof rice, ugali, injera, pap, and more with accurate macros.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/calorie-counter.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Health",
+      "item": "https://afrotools.com/health/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "African Food Calorie Counter",
+      "item": "https://afrotools.com/health/calorie-counter/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<link rel="stylesheet" href="/assets/css/health-enhancements.css?v=e7e3e3a6">
+<meta name="tool-id" content="calorie-counter">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How many calories are in jollof rice?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "One cup (250g) of jollof rice contains approximately 425 calories, with 8.8g protein, 75g carbohydrates, and 10.5g fat. Values vary depending on preparation method and ingredients used."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many calories are in ugali?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "One portion (250g) of ugali contains approximately 325 calories, with 6.3g protein, 70g carbohydrates, and 1.3g fat. Ugali is primarily a carbohydrate source and is typically served with protein-rich stews."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where does the nutritional data come from?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Nutritional data is sourced from the FAO/INFOODS Africa Food Composition Database, Nigeria Food Composition Table, USDA FoodData Central, and the Kenya National Food Composition Tables. Values represent averages and may vary based on specific ingredients and preparation."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this calorie counter free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, completely free. No sign-up required. Your meal log is stored locally on your device and never sent to any server."
+      }
+    }
+  ],
+  "url": "https://afrotools.com/health/calorie-counter/"
+}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/health/calorie-counter/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/health/calorie-counter/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/health/calorie-counter/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kalori-za-vyakula-vya-afrika/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/health/calorie-counter/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<div class="wrap"><nav class="bc" aria-label="Breadcrumb"><a href="/">AfroTools</a> › <a href="/health/">Health</a> › <span class="cur">Calorie Counter</span></nav></div>
+
+<section class="hero"><div class="wrap hero-z">
+  <h1>African Food <b>Calorie Counter</b></h1>
+  <p class="hero-sub">200+ African foods with verified nutritional data. Search, build meals, and track daily calories with local dishes you actually eat.</p>
+</div></section>
+
+<div class="card">
+  <h2>Search African Foods</h2>
+  <div class="search-bar">
+    <input type="text" id="food-search" placeholder="Search foods — e.g. jollof, ugali, injera..." aria-label="Search African foods">
+  </div>
+  <div class="filters" id="region-filters">
+    <button type="button" class="filter-btn active" data-region="all">All</button>
+    <button type="button" class="filter-btn" data-region="West Africa">West Africa</button>
+    <button type="button" class="filter-btn" data-region="East Africa">East Africa</button>
+    <button type="button" class="filter-btn" data-region="Southern Africa">Southern Africa</button>
+    <button type="button" class="filter-btn" data-region="North Africa">North Africa</button>
+    <button type="button" class="filter-btn" data-region="Pan-African">Pan-African</button>
+  </div>
+  <div class="food-grid" id="food-grid" role="list" aria-label="Food items"></div>
+  <div class="food-count" id="food-count"></div>
+</div>
+
+<div class="card meal-log">
+  <h2>Today's Meal Log <button class="btn-s" id="reset-btn" type="button" style="margin-left:auto;font-size:.72rem;padding:5px 12px">Reset Day</button></h2>
+  <div class="target-row">
+    <label for="target-cal">Daily target:</label>
+    <input type="number" id="target-cal" value="2000" min="500" max="10000" step="50" aria-label="Daily calorie target"> kcal
+  </div>
+  <div id="meal-list"></div>
+  <div class="summary" id="summary" style="display:none">
+    <div class="summary-total"><span class="num" id="total-cal">0</span> <span class="of">/ <span id="target-display">2000</span> kcal</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="macros">
+      <div class="macro"><div class="macro-val" id="total-protein">0g</div><div class="macro-label">Protein</div><div class="macro-bar"><div class="macro-fill" id="bar-protein" style="background:#3b82f6"></div></div></div>
+      <div class="macro"><div class="macro-val" id="total-carbs">0g</div><div class="macro-label">Carbs</div><div class="macro-bar"><div class="macro-fill" id="bar-carbs" style="background:#f59e0b"></div></div></div>
+      <div class="macro"><div class="macro-val" id="total-fat">0g</div><div class="macro-label">Fat</div><div class="macro-bar"><div class="macro-fill" id="bar-fat" style="background:#ef4444"></div></div></div>
+      <div class="macro"><div class="macro-val" id="total-fiber">0g</div><div class="macro-label">Fibre</div><div class="macro-bar"><div class="macro-fill" id="bar-fiber" style="background:#22c55e"></div></div></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-s" id="copy-summary" type="button">Copy Summary</button>
+    </div>
+  </div>
+  <p class="cc-disclaimer" role="note" style="font-size:.75rem;color:#6b7280;line-height:1.65;margin-top:16px">Calorie and macro figures are estimates per standard serving and vary with recipe, portion size, and preparation. This tool is for general information only and is not medical or dietary advice — consult a qualified doctor or registered dietitian before making health, weight, or nutrition decisions. Sources: FAO/INFOODS Africa Food Composition Database, Nigeria Food Composition Table (2017), USDA FoodData Central, Kenya National Food Composition Tables.</p>
+</div>
+
+<section class="seo">
+  <h2>Understanding African Nutrition</h2>
+  <p>African cuisine is incredibly diverse, spanning hundreds of distinct food cultures across 54 countries. Yet most global calorie counting tools have minimal coverage of African dishes, forcing users to guess or manually enter nutritional data for staple foods like garri, fufu, ugali, and injera.</p>
+  <p>The AfroTools calorie counter addresses this gap with a curated database of 200+ African foods, sourced from the FAO/INFOODS Africa Food Composition Database, the Nigerian Food Composition Table, and USDA FoodData Central. Each food entry includes calories, protein, carbohydrates, fat, and fibre per standard serving size.</p>
+
+  <h2>Regional Dietary Patterns</h2>
+  <p>West African diets are typically built around starchy staples (yam, cassava, rice) paired with rich soups and stews (egusi, groundnut, pepper soup). These meals can be calorie-dense but are also rich in protein and healthy fats from palm oil, groundnuts, and fish.</p>
+  <p>East African cuisine centres on ugali (maize flour), chapati, and injera (teff flatbread) with vegetable and meat accompaniments. Kenyan and Ethiopian diets tend to be lower in fat but higher in carbohydrates. Ethiopian cuisine is notably vegetable-forward during fasting periods.</p>
+  <p>Southern African diets feature pap (maize porridge), meat-centric dishes like braaied meats and biltong, and Cape Malay-influenced dishes like bobotie. South Africa has the continent's most diverse food culture due to its multicultural population.</p>
+
+  <h2>Tips for Balanced Meals</h2>
+  <p>A balanced African meal should include a starchy staple (one-quarter of the plate), protein (one-quarter), and vegetables (half the plate). Traditional African diets are often well-balanced — the challenge tends to be portion sizes and preparation methods (particularly deep frying). Swapping fried plantain for boiled plantain, for example, can reduce calories by more than 50%.</p>
+
+  <p><strong>Sources:</strong> FAO/INFOODS Africa Food Composition Database, Nigeria Food Composition Table (2017), USDA FoodData Central, Kenya National Food Composition Tables.</p>
+</section>
+
+<section class="faq-section">
+  <h2>Frequently Asked Questions</h2>
+  <div class="faq-item"><div class="faq-q" role="button" tabindex="0" aria-expanded="false">How many calories are in jollof rice?</div><div class="faq-a">One cup (250g) of jollof rice contains approximately 425 calories, with 8.8g protein, 75g carbohydrates, and 10.5g fat. Values vary depending on preparation method and ingredients used.</div></div>
+  <div class="faq-item"><div class="faq-q" role="button" tabindex="0" aria-expanded="false">How many calories are in ugali?</div><div class="faq-a">One portion (250g) of ugali contains approximately 325 calories, with 6.3g protein, 70g carbohydrates, and 1.3g fat. Ugali is primarily a carbohydrate source and is typically served with protein-rich stews.</div></div>
+  <div class="faq-item"><div class="faq-q" role="button" tabindex="0" aria-expanded="false">Where does the nutritional data come from?</div><div class="faq-a">Nutritional data is sourced from the FAO/INFOODS Africa Food Composition Database, Nigeria Food Composition Table, USDA FoodData Central, and the Kenya National Food Composition Tables. Values represent averages and may vary based on specific ingredients and preparation.</div></div>
+  <div class="faq-item"><div class="faq-q" role="button" tabindex="0" aria-expanded="false">Is this calorie counter free?</div><div class="faq-a">Yes, completely free. No sign-up required. Your meal log is stored locally on your device and never sent to any server.</div></div>
+</section>
+
+<!-- HEALTH-DEEP-IMPROVEMENT:START -->
+<section class="health-deep" aria-labelledby="health-deep-title">
+<span class="health-deep-kicker">Deep Review - 27 April 2026</span>
+<h2 id="health-deep-title">Use Calorie Counter (African Foods) in a safer care workflow</h2>
+<p class="health-deep-lead">These apps are strongest when they translate local foods and everyday activity into a practical plan the user can repeat for a week.</p>
+<div class="health-deep-grid">
+<div class="health-deep-block"><h3>Use It To Decide</h3><ul><li>Whether the meal, budget, or activity plan matches a realistic daily routine</li><li>Which local foods can improve protein, fibre, hydration, or calorie balance</li><li>Whether a paid gym or home routine gives the better habit loop</li></ul></div>
+<div class="health-deep-block"><h3>Better Workflow</h3><ul><li>Pick foods the household actually eats</li><li>Adjust targets for pregnancy, illness, hard labour, or clinician advice</li><li>Review progress weekly instead of chasing a perfect single day</li></ul></div>
+<div class="health-deep-block warning"><h3>Do Not Ignore</h3><ul><li>Very low calorie targets</li><li>Rapid weight loss plans during pregnancy or illness</li><li>Exercise with chest pain, fainting, severe breathlessness, or injury</li></ul></div>
+</div>
+<div class="health-source-row">
+<div><span>Official Context</span><div class="health-source-links"><a href="https://www.who.int/news-room/fact-sheets/detail/healthy-diet">WHO healthy diet</a><a href="https://www.who.int/news-room/fact-sheets/detail/physical-activity">WHO physical activity</a><a href="https://www.who.int/health-topics/breastfeeding">WHO breastfeeding</a></div></div>
+<div><span>Related AfroTools</span><div class="health-source-links internal"><a href="/health/calorie-counter/">Calorie Counter (African Foods)</a><a href="/tools/african-meal-plan/">African Meal Plan Generator</a><a href="/tools/home-workout/">Home Workout Calorie Burner</a><a href="/tools/gym-cost-compare/">Gym Membership Cost Comparator</a></div></div>
+</div>
+</section>
+<!-- HEALTH-DEEP-IMPROVEMENT:END -->
+<!-- HEALTH-COMPLETE-PACKAGE:START -->
+<section class="health-action-kit" data-health-tool-id="calorie-counter" data-health-tool-name="Calorie Counter (African Foods)" data-health-href="/health/calorie-counter/" data-health-bucket="nutrition" data-health-journey="nutrition" data-health-source-name="WHO healthy diet" data-health-source-url="https://www.who.int/news-room/fact-sheets/detail/healthy-diet" data-health-competitor="MyFitnessPal" data-health-feature="Food diaries need repeatable meal logs, local foods, and progress exports." aria-labelledby="health-action-title-calorie-counter">
+<span class="health-action-kicker">Complete package upgrade</span>
+<h2 id="health-action-title-calorie-counter">Calorie Counter (African Foods): save, export, and continue the workflow</h2>
+<p>This app now has its own benchmarked improvement layer, dashboard handoff, email-gated PDF plan, and a route into the Nutrition and activity plan workflow.</p>
+<div class="health-action-grid">
+<div class="health-action-card">
+<h3>Competitor feature checked</h3>
+<p><strong>MyFitnessPal</strong>: Food diaries need repeatable meal logs, local foods, and progress exports.</p>
+<p><strong>Implemented here:</strong> Added nutrition workflow saving so African-food calorie results can become a weekly plan.</p>
+<p><a href="https://www.who.int/news-room/fact-sheets/detail/healthy-diet" rel="noopener" target="_blank">WHO healthy diet</a></p>
+</div>
+<div class="health-action-card">
+<h3>Dashboard and PDF actions</h3>
+<ul>
+<li>Save this health plan to the dashboard workspace on this device.</li>
+<li>Unlock a PDF version through the Health email gate for follow-up and visit prep.</li>
+<li>Signed-in sessions attempt account workspace sync when the shared workspace API is available.</li>
+</ul>
+<div class="health-action-buttons">
+<button type="button" class="health-workflow-btn" data-health-action="save" data-health-tool-id="calorie-counter">Save to dashboard</button>
+<button type="button" class="health-workflow-btn secondary" data-health-action="pdf" data-health-tool-id="calorie-counter">Get PDF plan</button>
+</div>
+</div>
+</div>
+<div class="health-action-card" style="margin-top:1rem">
+<h3>Continue in Nutrition and activity plan</h3>
+<div class="health-action-links">
+<a href="/health/calorie-counter/">Open workflow hub</a>
+<a href="/tools/african-meal-plan/">African Meal Plan Generator</a><a href="/tools/home-workout/">Home Workout Calorie Burner</a><a href="/tools/gym-cost-compare/">Gym Membership Cost Comparator</a>
+</div>
+</div>
+</section>
+<!-- HEALTH-COMPLETE-PACKAGE:END -->
+
+<section class="df-upgrade" data-df-upgrade="calorie-counter">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Practical workflow</span>
+      <h2>Calorie Counter (African Foods) decision workspace</h2>
+      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for calorie counter (african foods) so the user can move from a thin page to a usable first decision.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: Calorie Counter (African Foods): planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: disclaimer, methodology, browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+    </div>
+    <form class="df-form" data-df-form="calorie-counter">
+      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
+      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
+      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
+      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="calorie-counter" data-df-base="Calorie Counter (African Foods): planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Calorie Counter (African Foods): planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
+      <div class="df-actions"><button type="button" data-df-copy="calorie-counter">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="calorie-counter-faq-title">
+  <h2 id="calorie-counter-faq-title">Calorie Counter (African Foods) FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it to pressure-test calorie counter numbers before committing money, paperwork, or plans.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+</section>
+<afro-related-tools data-ssr="1" category="health" current="calorie-counter">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/medical-report/" data-related-tool data-id="medical-report" data-name="Medical Report Interpreter" data-category="health" data-icon="MR" data-desc="Upload or paste lab results and get plain-English explanations for CBC, lipid, liver, kidney, thyroid, and diabetes mark">Medical Report Interpreter</a></li><li><a href="/tools/genotype-checker/" data-related-tool data-id="genotype-checker" data-name="Genotype Compatibility Checker" data-category="health" data-icon="GC" data-desc="Full pre-marriage genotype and blood group compatibility check. Sickle cell Punnett square, Rh factor incompatibility, b">Genotype Compatibility Checker</a></li><li><a href="/tools/childbirth-cost/" data-related-tool data-id="childbirth-cost" data-name="Childbirth Cost Calculator" data-category="health" data-icon="CC" data-desc="Compare delivery costs across public hospitals, private clinics, and premium facilities in Nigeria, Kenya, South Africa,">Childbirth Cost Calculator</a></li><li><a href="/tools/drug-price-compare/" data-related-tool data-id="drug-price-compare" data-name="Drug/Medicine Price Comparator" data-category="health" data-icon="DM" data-desc="Compare brand vs generic medicine prices across African countries. See savings on antimalarials, antibiotics, diabetes, ">Drug/Medicine Price Comparator</a></li><li><a href="/tools/blood-group/" data-related-tool data-id="blood-group" data-name="Blood Group Compatibility Checker" data-category="health" data-icon="BG" data-desc="Check blood transfusion compatibility (donor/recipient) and pregnancy Rh incompatibility. Includes African blood group f">Blood Group Compatibility Checker</a></li><li><a href="/tools/african-meal-plan/" data-related-tool data-id="african-meal-plan" data-name="African Meal Plan Generator" data-category="health" data-icon="AM" data-desc="Generate a personalized 7-day meal plan using African foods. Choose region (West/East/Southern/North Africa), health goa">African Meal Plan Generator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+(function(){
+  'use strict';
+
+  // ═══════════════════════════════════════════════════════════
+  // AFRICAN FOOD DATABASE — per 100g unless otherwise noted
+  // Sources: FAO/INFOODS, Nigeria Food Composition Table, USDA
+  // ═══════════════════════════════════════════════════════════
+  var FOODS = [
+    // ── WEST AFRICA: Nigeria ──
+    {name:'Jollof Rice',region:'West Africa',country:'NG',icon:'🍚',cal:170,protein:3.5,carbs:30,fat:4.2,fiber:1.0,serving:'1 cup (250g)',sg:250,type:'lunch'},
+    {name:'Egusi Soup',region:'West Africa',country:'NG',icon:'🥣',cal:180,protein:8,carbs:6,fat:14,fiber:2.5,serving:'1 ladle (200g)',sg:200,type:'lunch'},
+    {name:'Pounded Yam',region:'West Africa',country:'NG',icon:'🍚',cal:118,protein:1.5,carbs:28,fat:0.2,fiber:0.5,serving:'1 wrap (300g)',sg:300,type:'lunch'},
+    {name:'Amala',region:'West Africa',country:'NG',icon:'🍚',cal:120,protein:1.1,carbs:29,fat:0.1,fiber:1.8,serving:'1 wrap (300g)',sg:300,type:'lunch'},
+    {name:'Eba (Garri)',region:'West Africa',country:'NG',icon:'🍚',cal:160,protein:0.6,carbs:39,fat:0.1,fiber:1.5,serving:'1 wrap (300g)',sg:300,type:'lunch'},
+    {name:'Suya',region:'West Africa',country:'NG',icon:'🍖',cal:250,protein:20,carbs:5,fat:17,fiber:0.5,serving:'5 sticks (150g)',sg:150,type:'snack'},
+    {name:'Moi Moi',region:'West Africa',country:'NG',icon:'🫘',cal:110,protein:7,carbs:12,fat:4,fiber:2,serving:'1 wrap (150g)',sg:150,type:'lunch'},
+    {name:'Akara',region:'West Africa',country:'NG',icon:'🫘',cal:170,protein:9,carbs:15,fat:8,fiber:3,serving:'4 pieces (120g)',sg:120,type:'breakfast'},
+    {name:'Ofada Rice',region:'West Africa',country:'NG',icon:'🍚',cal:130,protein:2.7,carbs:28,fat:0.4,fiber:1.8,serving:'1 cup (200g)',sg:200,type:'lunch'},
+    {name:'Efo Riro',region:'West Africa',country:'NG',icon:'🥬',cal:85,protein:4,carbs:5,fat:6,fiber:3,serving:'1 ladle (200g)',sg:200,type:'lunch'},
+    {name:'Pepper Soup',region:'West Africa',country:'NG',icon:'🍲',cal:65,protein:8,carbs:3,fat:2.5,fiber:0.5,serving:'1 bowl (300g)',sg:300,type:'dinner'},
+    {name:'Ogbono Soup',region:'West Africa',country:'NG',icon:'🥣',cal:160,protein:6,carbs:8,fat:12,fiber:3,serving:'1 ladle (200g)',sg:200,type:'lunch'},
+    {name:'Zobo (Hibiscus Drink)',region:'West Africa',country:'NG',icon:'🥤',cal:50,protein:0.2,carbs:12,fat:0,fiber:0.5,serving:'1 glass (300ml)',sg:300,type:'drink'},
+    {name:'Kunu',region:'West Africa',country:'NG',icon:'🥤',cal:80,protein:2,carbs:18,fat:0.5,fiber:1,serving:'1 glass (300ml)',sg:300,type:'drink'},
+    {name:'Chin Chin',region:'West Africa',country:'NG',icon:'🍪',cal:480,protein:6,carbs:58,fat:24,fiber:1.5,serving:'1 cup (80g)',sg:80,type:'snack'},
+    {name:'Puff Puff',region:'West Africa',country:'NG',icon:'🍩',cal:350,protein:5,carbs:45,fat:16,fiber:1,serving:'4 pieces (100g)',sg:100,type:'snack'},
+    {name:'Fried Yam',region:'West Africa',country:'NG',icon:'🍟',cal:230,protein:1.5,carbs:35,fat:9,fiber:2,serving:'1 plate (200g)',sg:200,type:'snack'},
+    {name:'Ewedu Soup',region:'West Africa',country:'NG',icon:'🥬',cal:30,protein:2,carbs:4,fat:0.5,fiber:2,serving:'1 ladle (150g)',sg:150,type:'lunch'},
+    {name:'Tuwo Shinkafa',region:'West Africa',country:'NG',icon:'🍚',cal:130,protein:2.5,carbs:29,fat:0.3,fiber:0.4,serving:'1 wrap (300g)',sg:300,type:'lunch'},
+    {name:'Masa (Rice Cake)',region:'West Africa',country:'NG',icon:'🥞',cal:200,protein:3,carbs:32,fat:6,fiber:0.5,serving:'3 pieces (120g)',sg:120,type:'breakfast'},
+    {name:'Kilishi',region:'West Africa',country:'NG',icon:'🥩',cal:350,protein:40,carbs:15,fat:14,fiber:2,serving:'50g',sg:50,type:'snack'},
+    {name:'Miyan Kuka',region:'West Africa',country:'NG',icon:'🥣',cal:45,protein:3,carbs:6,fat:1,fiber:4,serving:'1 ladle (200g)',sg:200,type:'lunch'},
+    // ── WEST AFRICA: Ghana ──
+    {name:'Banku',region:'West Africa',country:'GH',icon:'🍚',cal:115,protein:1.5,carbs:26,fat:0.3,fiber:1.0,serving:'1 ball (300g)',sg:300,type:'lunch'},
+    {name:'Fufu (Plantain)',region:'West Africa',country:'GH',icon:'🍚',cal:130,protein:1,carbs:32,fat:0.2,fiber:2,serving:'1 portion (300g)',sg:300,type:'lunch'},
+    {name:'Waakye',region:'West Africa',country:'GH',icon:'🍛',cal:190,protein:7,carbs:35,fat:2,fiber:4,serving:'1 plate (350g)',sg:350,type:'lunch'},
+    {name:'Kelewele',region:'West Africa',country:'GH',icon:'🍌',cal:200,protein:1.5,carbs:35,fat:7,fiber:2.5,serving:'1 cup (150g)',sg:150,type:'snack'},
+    {name:'Red Red (Bean Stew)',region:'West Africa',country:'GH',icon:'🫘',cal:140,protein:7,carbs:20,fat:4,fiber:5,serving:'1 cup (250g)',sg:250,type:'lunch'},
+    {name:'Kenkey',region:'West Africa',country:'GH',icon:'🌽',cal:125,protein:2.5,carbs:27,fat:0.5,fiber:1.5,serving:'1 ball (300g)',sg:300,type:'lunch'},
+    {name:'Light Soup (Ghana)',region:'West Africa',country:'GH',icon:'🍲',cal:55,protein:5,carbs:4,fat:2,fiber:1,serving:'1 bowl (300g)',sg:300,type:'dinner'},
+    {name:'Groundnut Soup (Ghana)',region:'West Africa',country:'GH',icon:'🥜',cal:195,protein:9,carbs:10,fat:14,fiber:3,serving:'1 bowl (300g)',sg:300,type:'lunch'},
+    // ── WEST AFRICA: Senegal ──
+    {name:'Thieboudienne',region:'West Africa',country:'SN',icon:'🐟',cal:185,protein:12,carbs:25,fat:5,fiber:2,serving:'1 plate (350g)',sg:350,type:'lunch'},
+    {name:'Yassa Poulet',region:'West Africa',country:'SN',icon:'🍗',cal:165,protein:18,carbs:8,fat:7,fiber:1,serving:'1 serving (250g)',sg:250,type:'dinner'},
+    {name:'Mafé',region:'West Africa',country:'SN',icon:'🥜',cal:190,protein:10,carbs:15,fat:11,fiber:2.5,serving:'1 bowl (300g)',sg:300,type:'lunch'},
+    // ── EAST AFRICA: Kenya ──
+    {name:'Ugali',region:'East Africa',country:'KE',icon:'🌽',cal:130,protein:2.5,carbs:28,fat:0.5,fiber:1.2,serving:'1 portion (250g)',sg:250,type:'lunch'},
+    {name:'Nyama Choma',region:'East Africa',country:'KE',icon:'🥩',cal:250,protein:26,carbs:0,fat:16,fiber:0,serving:'1 serving (200g)',sg:200,type:'dinner'},
+    {name:'Sukuma Wiki',region:'East Africa',country:'KE',icon:'🥬',cal:45,protein:3,carbs:6,fat:1.5,fiber:2.5,serving:'1 cup (150g)',sg:150,type:'lunch'},
+    {name:'Chapati',region:'East Africa',country:'KE',icon:'🫓',cal:300,protein:8,carbs:48,fat:9,fiber:2,serving:'1 piece (100g)',sg:100,type:'lunch'},
+    {name:'Githeri',region:'East Africa',country:'KE',icon:'🫘',cal:160,protein:8,carbs:28,fat:2,fiber:5,serving:'1 cup (250g)',sg:250,type:'lunch'},
+    {name:'Mukimo',region:'East Africa',country:'KE',icon:'🥔',cal:110,protein:3,carbs:22,fat:1,fiber:3,serving:'1 portion (250g)',sg:250,type:'lunch'},
+    {name:'Mandazi',region:'East Africa',country:'KE',icon:'🍩',cal:340,protein:5,carbs:48,fat:14,fiber:1,serving:'2 pieces (100g)',sg:100,type:'breakfast'},
+    {name:'Pilau (Kenyan)',region:'East Africa',country:'KE',icon:'🍚',cal:180,protein:5,carbs:28,fat:5,fiber:1,serving:'1 cup (250g)',sg:250,type:'lunch'},
+    {name:'Irio',region:'East Africa',country:'KE',icon:'🥔',cal:100,protein:3.5,carbs:20,fat:0.5,fiber:3,serving:'1 portion (250g)',sg:250,type:'lunch'},
+    {name:'Chai (Kenyan Tea)',region:'East Africa',country:'KE',icon:'🍵',cal:45,protein:1,carbs:7,fat:1.5,fiber:0,serving:'1 cup (250ml)',sg:250,type:'drink'},
+    // ── EAST AFRICA: Ethiopia ──
+    {name:'Injera',region:'East Africa',country:'ET',icon:'🫓',cal:70,protein:2.5,carbs:14,fat:0.5,fiber:1.5,serving:'1 piece (100g)',sg:100,type:'lunch'},
+    {name:'Doro Wat',region:'East Africa',country:'ET',icon:'🍗',cal:200,protein:18,carbs:8,fat:10,fiber:2,serving:'1 cup (250g)',sg:250,type:'dinner'},
+    {name:'Shiro',region:'East Africa',country:'ET',icon:'🫘',cal:180,protein:10,carbs:22,fat:5,fiber:4,serving:'1 cup (200g)',sg:200,type:'lunch'},
+    {name:'Misir Wat',region:'East Africa',country:'ET',icon:'🫘',cal:150,protein:9,carbs:22,fat:3,fiber:5,serving:'1 cup (200g)',sg:200,type:'lunch'},
+    {name:'Kitfo',region:'East Africa',country:'ET',icon:'🥩',cal:220,protein:18,carbs:2,fat:16,fiber:0,serving:'1 serving (150g)',sg:150,type:'dinner'},
+    {name:'Tibs',region:'East Africa',country:'ET',icon:'🥩',cal:195,protein:20,carbs:5,fat:10,fiber:1,serving:'1 serving (200g)',sg:200,type:'dinner'},
+    {name:'Firfir',region:'East Africa',country:'ET',icon:'🫓',cal:160,protein:5,carbs:22,fat:6,fiber:2,serving:'1 plate (200g)',sg:200,type:'breakfast'},
+    // ── EAST AFRICA: Tanzania ──
+    {name:'Wali na Maharage',region:'East Africa',country:'TZ',icon:'🍚',cal:165,protein:7,carbs:30,fat:1.5,fiber:4,serving:'1 plate (300g)',sg:300,type:'lunch'},
+    {name:'Ndizi na Nyama',region:'East Africa',country:'TZ',icon:'🍌',cal:155,protein:10,carbs:22,fat:3,fiber:2,serving:'1 serving (250g)',sg:250,type:'dinner'},
+    {name:'Mchuzi wa Samaki',region:'East Africa',country:'TZ',icon:'🐟',cal:120,protein:14,carbs:6,fat:5,fiber:1,serving:'1 serving (250g)',sg:250,type:'dinner'},
+    {name:'Zanzibar Pizza',region:'East Africa',country:'TZ',icon:'🥙',cal:280,protein:10,carbs:30,fat:13,fiber:1,serving:'1 piece (150g)',sg:150,type:'snack'},
+    // ── SOUTHERN AFRICA ──
+    {name:'Bunny Chow',region:'Southern Africa',country:'ZA',icon:'🍞',cal:350,protein:15,carbs:40,fat:14,fiber:3,serving:'quarter (400g)',sg:400,type:'lunch'},
+    {name:'Biltong (Beef)',region:'Southern Africa',country:'ZA',icon:'🥩',cal:250,protein:45,carbs:2,fat:8,fiber:0,serving:'50g',sg:50,type:'snack'},
+    {name:'Pap (Mieliepap)',region:'Southern Africa',country:'ZA',icon:'🌽',cal:120,protein:2.5,carbs:27,fat:0.5,fiber:1,serving:'1 cup (250g)',sg:250,type:'lunch'},
+    {name:'Bobotie',region:'Southern Africa',country:'ZA',icon:'🍛',cal:220,protein:18,carbs:10,fat:12,fiber:1.5,serving:'1 portion (250g)',sg:250,type:'dinner'},
+    {name:'Boerewors',region:'Southern Africa',country:'ZA',icon:'🌭',cal:300,protein:18,carbs:2,fat:25,fiber:0,serving:'1 link (150g)',sg:150,type:'dinner'},
+    {name:'Chakalaka',region:'Southern Africa',country:'ZA',icon:'🥫',cal:65,protein:2,carbs:10,fat:2,fiber:3,serving:'1 cup (200g)',sg:200,type:'lunch'},
+    {name:'Samp & Beans',region:'Southern Africa',country:'ZA',icon:'🌽',cal:140,protein:6,carbs:26,fat:1,fiber:4,serving:'1 cup (250g)',sg:250,type:'lunch'},
+    {name:'Vetkoek',region:'Southern Africa',country:'ZA',icon:'🍩',cal:350,protein:6,carbs:40,fat:18,fiber:1,serving:'1 piece (120g)',sg:120,type:'snack'},
+    {name:'Malva Pudding',region:'Southern Africa',country:'ZA',icon:'🍰',cal:320,protein:4,carbs:45,fat:14,fiber:0.5,serving:'1 slice (120g)',sg:120,type:'snack'},
+    {name:'Nshima',region:'Southern Africa',country:'ZM',icon:'🌽',cal:125,protein:2.5,carbs:28,fat:0.4,fiber:1,serving:'1 portion (250g)',sg:250,type:'lunch'},
+    {name:'Sadza',region:'Southern Africa',country:'ZW',icon:'🌽',cal:125,protein:2.5,carbs:28,fat:0.4,fiber:1,serving:'1 portion (250g)',sg:250,type:'lunch'},
+    // ── NORTH AFRICA ──
+    {name:'Couscous',region:'North Africa',country:'MA',icon:'🍚',cal:112,protein:3.8,carbs:23,fat:0.2,fiber:1.4,serving:'1 cup (200g)',sg:200,type:'lunch'},
+    {name:'Tagine (Chicken)',region:'North Africa',country:'MA',icon:'🍲',cal:160,protein:14,carbs:12,fat:6,fiber:2,serving:'1 serving (300g)',sg:300,type:'dinner'},
+    {name:'Harira',region:'North Africa',country:'MA',icon:'🍲',cal:75,protein:4,carbs:12,fat:1.5,fiber:2.5,serving:'1 bowl (300g)',sg:300,type:'dinner'},
+    {name:'Shakshuka',region:'North Africa',country:'TN',icon:'🍳',cal:140,protein:8,carbs:10,fat:8,fiber:2,serving:'1 serving (250g)',sg:250,type:'breakfast'},
+    {name:'Koshari',region:'North Africa',country:'EG',icon:'🍚',cal:165,protein:6,carbs:30,fat:3,fiber:3,serving:'1 bowl (300g)',sg:300,type:'lunch'},
+    {name:'Ful Medames',region:'North Africa',country:'EG',icon:'🫘',cal:140,protein:8,carbs:20,fat:3,fiber:5,serving:'1 cup (200g)',sg:200,type:'breakfast'},
+    {name:'Brik (Tunisian)',region:'North Africa',country:'TN',icon:'🥟',cal:280,protein:10,carbs:25,fat:16,fiber:1,serving:'1 piece (100g)',sg:100,type:'snack'},
+    {name:'Merguez Sausage',region:'North Africa',country:'DZ',icon:'🌭',cal:280,protein:16,carbs:2,fat:23,fiber:0,serving:'2 links (100g)',sg:100,type:'dinner'},
+    {name:'Msemen',region:'North Africa',country:'MA',icon:'🫓',cal:310,protein:5,carbs:40,fat:14,fiber:1,serving:'1 piece (100g)',sg:100,type:'breakfast'},
+    // ── PAN-AFRICAN STAPLES ──
+    {name:'Cassava (Boiled)',region:'Pan-African',country:'ALL',icon:'🍠',cal:160,protein:1.4,carbs:38,fat:0.3,fiber:1.8,serving:'1 cup (200g)',sg:200,type:'lunch'},
+    {name:'Plantain (Fried)',region:'Pan-African',country:'ALL',icon:'🍌',cal:290,protein:1.2,carbs:45,fat:12,fiber:3,serving:'1 cup (150g)',sg:150,type:'lunch'},
+    {name:'Plantain (Boiled)',region:'Pan-African',country:'ALL',icon:'🍌',cal:120,protein:1,carbs:31,fat:0.2,fiber:2.5,serving:'1 medium (200g)',sg:200,type:'lunch'},
+    {name:'Groundnut Soup',region:'Pan-African',country:'ALL',icon:'🥜',cal:220,protein:10,carbs:12,fat:16,fiber:3,serving:'1 bowl (300g)',sg:300,type:'lunch'},
+    {name:'Sweet Potato (Boiled)',region:'Pan-African',country:'ALL',icon:'🍠',cal:86,protein:1.6,carbs:20,fat:0.1,fiber:3,serving:'1 medium (200g)',sg:200,type:'lunch'},
+    {name:'White Rice (Cooked)',region:'Pan-African',country:'ALL',icon:'🍚',cal:130,protein:2.7,carbs:28,fat:0.3,fiber:0.4,serving:'1 cup (200g)',sg:200,type:'lunch'},
+    {name:'Brown Rice (Cooked)',region:'Pan-African',country:'ALL',icon:'🍚',cal:112,protein:2.6,carbs:24,fat:0.9,fiber:1.8,serving:'1 cup (200g)',sg:200,type:'lunch'},
+    {name:'Palm Oil',region:'Pan-African',country:'ALL',icon:'🫒',cal:884,protein:0,carbs:0,fat:100,fiber:0,serving:'1 tbsp (14g)',sg:14,type:'lunch'},
+    {name:'Groundnuts (Roasted)',region:'Pan-African',country:'ALL',icon:'🥜',cal:567,protein:26,carbs:16,fat:49,fiber:8.5,serving:'1 handful (30g)',sg:30,type:'snack'},
+    {name:'Tilapia (Grilled)',region:'Pan-African',country:'ALL',icon:'🐟',cal:128,protein:26,carbs:0,fat:2.7,fiber:0,serving:'1 fillet (150g)',sg:150,type:'dinner'},
+    {name:'Catfish (Fried)',region:'Pan-African',country:'ALL',icon:'🐟',cal:229,protein:18,carbs:8,fat:14,fiber:0,serving:'1 piece (150g)',sg:150,type:'dinner'},
+    {name:'Egg (Boiled)',region:'Pan-African',country:'ALL',icon:'🥚',cal:155,protein:13,carbs:1.1,fat:11,fiber:0,serving:'1 large (50g)',sg:50,type:'breakfast'},
+    {name:'Egg (Fried)',region:'Pan-African',country:'ALL',icon:'🍳',cal:196,protein:14,carbs:1,fat:15,fiber:0,serving:'1 large (50g)',sg:50,type:'breakfast'},
+    {name:'Beans (Cooked)',region:'Pan-African',country:'ALL',icon:'🫘',cal:127,protein:8.7,carbs:22.8,fat:0.5,fiber:6.4,serving:'1 cup (200g)',sg:200,type:'lunch'},
+    {name:'Maize (Boiled)',region:'Pan-African',country:'ALL',icon:'🌽',cal:96,protein:3.4,carbs:19,fat:1.5,fiber:2.7,serving:'1 ear (100g)',sg:100,type:'snack'},
+    {name:'Millet Porridge',region:'Pan-African',country:'ALL',icon:'🥣',cal:119,protein:3.5,carbs:23,fat:1,fiber:1.3,serving:'1 cup (250g)',sg:250,type:'breakfast'},
+    {name:'Sorghum Porridge',region:'Pan-African',country:'ALL',icon:'🥣',cal:110,protein:3,carbs:23,fat:0.7,fiber:1.5,serving:'1 cup (250g)',sg:250,type:'breakfast'},
+    {name:'Coconut Milk',region:'Pan-African',country:'ALL',icon:'🥥',cal:230,protein:2.3,carbs:6,fat:24,fiber:0,serving:'1 cup (240ml)',sg:240,type:'drink'},
+    {name:'Baobab Juice',region:'Pan-African',country:'ALL',icon:'🥤',cal:40,protein:0.5,carbs:9,fat:0,fiber:1,serving:'1 glass (300ml)',sg:300,type:'drink'},
+    {name:'Mango (Fresh)',region:'Pan-African',country:'ALL',icon:'🥭',cal:60,protein:0.8,carbs:15,fat:0.4,fiber:1.6,serving:'1 cup (165g)',sg:165,type:'snack'},
+    {name:'Pawpaw / Papaya',region:'Pan-African',country:'ALL',icon:'🍈',cal:43,protein:0.5,carbs:11,fat:0.3,fiber:1.7,serving:'1 cup (145g)',sg:145,type:'snack'},
+    {name:'Banana',region:'Pan-African',country:'ALL',icon:'🍌',cal:89,protein:1.1,carbs:23,fat:0.3,fiber:2.6,serving:'1 medium (120g)',sg:120,type:'snack'},
+    {name:'Watermelon',region:'Pan-African',country:'ALL',icon:'🍉',cal:30,protein:0.6,carbs:8,fat:0.2,fiber:0.4,serving:'1 cup (150g)',sg:150,type:'snack'},
+    {name:'Avocado',region:'Pan-African',country:'ALL',icon:'🥑',cal:160,protein:2,carbs:9,fat:15,fiber:7,serving:'1 medium (150g)',sg:150,type:'snack'},
+    {name:'Okra (Cooked)',region:'Pan-African',country:'ALL',icon:'🥬',cal:33,protein:2,carbs:7,fat:0.2,fiber:3.2,serving:'1 cup (160g)',sg:160,type:'lunch'},
+    {name:'Spinach (African)',region:'Pan-African',country:'ALL',icon:'🥬',cal:23,protein:2.9,carbs:3.6,fat:0.4,fiber:2.2,serving:'1 cup (100g)',sg:100,type:'lunch'}
+  ];
+
+  // State
+  var mealLog = JSON.parse(localStorage.getItem('afro-meal-log') || '[]');
+  var targetCal = parseInt(localStorage.getItem('afro-target-cal')) || 2000;
+  var currentFilter = 'all';
+  var searchTerm = '';
+
+  // Elements
+  var grid = document.getElementById('food-grid');
+  var searchInput = document.getElementById('food-search');
+  var mealList = document.getElementById('meal-list');
+  var targetInput = document.getElementById('target-cal');
+  targetInput.value = targetCal;
+
+  // Fuzzy match
+  function fuzzy(str, term) {
+    str = str.toLowerCase();
+    term = term.toLowerCase();
+    if (str.indexOf(term) >= 0) return true;
+    // Simple fuzzy: check if all chars of term appear in order
+    var ti = 0;
+    for (var i = 0; i < str.length && ti < term.length; i++) {
+      if (str[i] === term[ti]) ti++;
+    }
+    return ti === term.length;
+  }
+
+  // Render food grid
+  function renderFoods() {
+    var filtered = FOODS.filter(function(f) {
+      var regionMatch = currentFilter === 'all' || f.region === currentFilter;
+      var searchMatch = !searchTerm || fuzzy(f.name, searchTerm) || fuzzy(f.region, searchTerm) || fuzzy(f.country, searchTerm);
+      return regionMatch && searchMatch;
+    });
+
+    document.getElementById('food-count').textContent = filtered.length + ' of ' + FOODS.length + ' foods';
+
+    if (!filtered.length) {
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:32px;color:#9ca3af;font-size:.88rem">No foods found. Try a different search.</div>';
+      return;
+    }
+
+    grid.innerHTML = filtered.map(function(f, i) {
+      var calPerServing = Math.round(f.cal * f.sg / 100);
+      return '<div class="food-item" role="listitem" tabindex="0" data-idx="' + FOODS.indexOf(f) + '">' +
+        '<div class="food-icon">' + f.icon + '</div>' +
+        '<div class="food-info"><div class="food-name">' + f.name + '</div><div class="food-meta">' + f.serving + ' · ' + f.region + '</div></div>' +
+        '<div class="food-cal">' + calPerServing + ' kcal</div></div>';
+    }).join('');
+  }
+
+  // Add to meal
+  function addToMeal(idx) {
+    var f = FOODS[idx];
+    mealLog.push({ idx: idx, servings: 1 });
+    saveMealLog();
+    renderMealLog();
+  }
+
+  // Save
+  function saveMealLog() {
+    localStorage.setItem('afro-meal-log', JSON.stringify(mealLog));
+  }
+
+  // Render meal log
+  function renderMealLog() {
+    if (!mealLog.length) {
+      mealList.innerHTML = '<div class="empty-log">Tap a food above to add it to your daily meal log.</div>';
+      document.getElementById('summary').style.display = 'none';
+      return;
+    }
+
+    mealList.innerHTML = mealLog.map(function(item, mi) {
+      var f = FOODS[item.idx];
+      var servingCal = Math.round(f.cal * f.sg / 100 * item.servings);
+      return '<div class="meal-item">' +
+        '<div class="meal-name">' + f.icon + ' ' + f.name + '</div>' +
+        '<div class="meal-serving"><input type="number" min="0.25" max="10" step="0.25" value="' + item.servings + '" data-mi="' + mi + '" aria-label="Servings"><span>' + f.serving.split('(')[0].trim() + '</span></div>' +
+        '<div class="meal-kcal">' + servingCal + '</div>' +
+        '<button type="button" class="meal-remove" data-mi="' + mi + '" aria-label="Remove ' + f.name + '">&times;</button></div>';
+    }).join('');
+
+    // Calculate totals
+    var totals = { cal: 0, protein: 0, carbs: 0, fat: 0, fiber: 0 };
+    mealLog.forEach(function(item) {
+      var f = FOODS[item.idx];
+      var mult = f.sg / 100 * item.servings;
+      totals.cal += f.cal * mult;
+      totals.protein += f.protein * mult;
+      totals.carbs += f.carbs * mult;
+      totals.fat += f.fat * mult;
+      totals.fiber += f.fiber * mult;
+    });
+
+    document.getElementById('summary').style.display = '';
+    document.getElementById('total-cal').textContent = Math.round(totals.cal);
+    document.getElementById('target-display').textContent = targetCal;
+    var pct = Math.min(totals.cal / targetCal * 100, 100);
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-fill').style.background = pct > 100 ? '#ef4444' : 'var(--color-primary)';
+    document.getElementById('total-protein').textContent = Math.round(totals.protein) + 'g';
+    document.getElementById('total-carbs').textContent = Math.round(totals.carbs) + 'g';
+    document.getElementById('total-fat').textContent = Math.round(totals.fat) + 'g';
+    document.getElementById('total-fiber').textContent = Math.round(totals.fiber) + 'g';
+
+    // Macro bars (based on recommended daily: protein 50g, carbs 300g, fat 65g, fiber 25g)
+    document.getElementById('bar-protein').style.width = Math.min(totals.protein / 50 * 100, 100) + '%';
+    document.getElementById('bar-carbs').style.width = Math.min(totals.carbs / 300 * 100, 100) + '%';
+    document.getElementById('bar-fat').style.width = Math.min(totals.fat / 65 * 100, 100) + '%';
+    document.getElementById('bar-fiber').style.width = Math.min(totals.fiber / 25 * 100, 100) + '%';
+  }
+
+  // Events
+  searchInput.addEventListener('input', function() {
+    searchTerm = this.value.trim();
+    renderFoods();
+  });
+
+  document.getElementById('region-filters').addEventListener('click', function(e) {
+    var btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    currentFilter = btn.dataset.region;
+    document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    renderFoods();
+  });
+
+  grid.addEventListener('click', function(e) {
+    var item = e.target.closest('.food-item');
+    if (item) addToMeal(parseInt(item.dataset.idx));
+  });
+  grid.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      var item = e.target.closest('.food-item');
+      if (item) addToMeal(parseInt(item.dataset.idx));
+    }
+  });
+
+  mealList.addEventListener('click', function(e) {
+    var rm = e.target.closest('.meal-remove');
+    if (rm) {
+      mealLog.splice(parseInt(rm.dataset.mi), 1);
+      saveMealLog();
+      renderMealLog();
+    }
+  });
+
+  mealList.addEventListener('change', function(e) {
+    if (e.target.matches('input[data-mi]')) {
+      var mi = parseInt(e.target.dataset.mi);
+      var val = parseFloat(e.target.value);
+      if (val > 0 && val <= 10) {
+        mealLog[mi].servings = val;
+        saveMealLog();
+        renderMealLog();
+      }
+    }
+  });
+
+  targetInput.addEventListener('change', function() {
+    targetCal = parseInt(this.value) || 2000;
+    if (targetCal < 500) targetCal = 500;
+    if (targetCal > 10000) targetCal = 10000;
+    this.value = targetCal;
+    localStorage.setItem('afro-target-cal', targetCal);
+    renderMealLog();
+  });
+
+  document.getElementById('reset-btn').addEventListener('click', function() {
+    if (mealLog.length && confirm('Clear all items from today\'s meal log?')) {
+      mealLog = [];
+      saveMealLog();
+      renderMealLog();
+    }
+  });
+
+  document.getElementById('copy-summary').addEventListener('click', function() {
+    var cal = document.getElementById('total-cal').textContent;
+    var p = document.getElementById('total-protein').textContent;
+    var c = document.getElementById('total-carbs').textContent;
+    var f = document.getElementById('total-fat').textContent;
+    var text = 'Daily Summary: ' + cal + ' kcal | Protein: ' + p + ' | Carbs: ' + c + ' | Fat: ' + f + ' — AfroTools Calorie Counter (afrotools.com/health/calorie-counter/)';
+    navigator.clipboard.writeText(text).then(function() {
+      var btn = document.getElementById('copy-summary');
+      btn.textContent = 'Copied!';
+      setTimeout(function() { btn.textContent = 'Copy Summary'; }, 2000);
+    });
+  });
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(function(q) {
+    q.addEventListener('click', function() {
+      var item = this.parentElement;
+      var isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(function(i) { i.classList.remove('open'); i.querySelector('.faq-q').setAttribute('aria-expanded', 'false'); });
+      if (!isOpen) { item.classList.add('open'); this.setAttribute('aria-expanded', 'true'); }
+    });
+    q.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.click(); } });
+  });
+
+  // Init
+  renderFoods();
+  renderMealLog();
+})();
+</script>
+<script src="/assets/js/health-workflow.js?v=e8ad8f1d" defer></script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

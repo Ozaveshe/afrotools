@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Calculateur rendement culture 2026 | AfroTools</title>
+<meta name="description" content="Estimez rendement par hectare, production vendable, écart de rendement, besoin de surface et pertes post-recolte avec méthode FAO et export local.">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="Calculateur rendement culture 2026 | AfroTools">
+<meta property="og:description" content="Estimez rendement par hectare, production vendable, écart de rendement, besoin de surface et pertes post-recolte avec méthode FAO et export local.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/crop-yield.webp">
+<meta property="og:url" content="https://afrotools.com/fr/tools/rendement-culture/">
+<meta property="og:type" content="website">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/crop-yield.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Calculateur rendement culture 2026 | AfroTools">
+<meta name="twitter:description" content="Estimez rendement par hectare, production vendable, écart de rendement, besoin de surface et pertes post-recolte avec méthode FAO et export local.">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+<style>
+  .yield-page{--ink:#101828;--muted:#667085;--line:#d6dde8;--blue:#1d4ed8;--green:#137a5b;--amber:#a15c07;background:#f6f8fb;color:var(--ink)}
+  .yield-page *,.yield-page *:before,.yield-page *:after{box-sizing:border-box}
+  .yield-wrap{max-width:1180px;margin:0 auto;padding:clamp(1rem,3vw,2rem)}
+  .yield-hero{background:#fff;border-bottom:1px solid var(--line)}
+  .yield-hero-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr);gap:1.5rem;align-items:center}
+  .yield-kicker{margin:0 0 .75rem;color:var(--blue);font-size:.78rem;font-weight:900;letter-spacing:.11em;text-transform:uppercase}
+  .yield-hero h1{margin:0;max-width:780px;font-size:clamp(2rem,5vw,3.8rem);line-height:1.04;letter-spacing:0}
+  .yield-lead{max-width:760px;margin:1rem 0 0;color:var(--muted);font-size:1.05rem;line-height:1.7}
+  .yield-card{background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:0 10px 28px rgba(16,24,40,.07);min-width:0;padding:clamp(1rem,2.2vw,1.5rem)}
+  .yield-hero-card strong{display:block;font-size:2.25rem;line-height:1;color:var(--green)}
+  .yield-hero-card span{display:block;margin-top:.5rem;color:var(--muted);line-height:1.5}
+  .yield-badges{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.25rem}
+  .yield-badge{border:1px solid #c7d7fe;background:#eff4ff;border-radius:999px;color:#1e3a8a;font-size:.84rem;font-weight:800;padding:.45rem .72rem}
+  .yield-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,.82fr);gap:1rem}
+  .yield-form,.yield-results{display:grid;gap:1rem}
+  .yield-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.9rem}
+  .yield-field{display:grid;gap:.35rem;min-width:0}
+  .yield-field label{font-size:.9rem;font-weight:900;color:#263548}
+  .yield-field input,.yield-field select,.yield-field textarea{width:100%;min-height:44px;border:1px solid #c9d4e4;border-radius:6px;padding:.72rem .8rem;color:var(--ink);font:inherit}
+  .yield-field textarea{min-height:84px;resize:vertical}
+  .yield-help{color:var(--muted);font-size:.82rem;line-height:1.45}
+  .yield-actions{display:flex;flex-wrap:wrap;gap:.7rem}
+  .yield-btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;border:1px solid #b8c5d8;border-radius:6px;background:#fff;color:var(--ink);cursor:pointer;font:inherit;font-weight:900;padding:.7rem 1rem}
+  .yield-btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+  .yield-btn:focus-visible,.yield-field input:focus-visible,.yield-field select:focus-visible,.yield-field textarea:focus-visible{outline:3px solid rgba(29,78,216,.22);outline-offset:2px}
+  .yield-status{display:inline-flex;border-radius:999px;padding:.42rem .72rem;font-size:.82rem;font-weight:900}
+  .yield-status.good{background:#dcfce7;color:var(--green)}
+  .yield-status.watch{background:#fef3c7;color:var(--amber)}
+  .yield-status.gap{background:#fee4e2;color:#b42318}
+  .yield-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem}
+  .yield-metric{background:#f8fbff;border:1px solid var(--line);border-radius:8px;padding:.8rem}
+  .yield-metric strong{display:block;font-size:1.24rem;overflow-wrap:anywhere}
+  .yield-metric span{display:block;margin-top:.25rem;color:var(--muted);font-size:.78rem;font-weight:900;text-transform:uppercase}
+  .yield-list{display:grid;gap:.5rem;margin:.5rem 0 0;padding:0}
+  .yield-list li{list-style:none;background:#f8fbff;border:1px solid var(--line);border-radius:6px;line-height:1.45;padding:.65rem .75rem}
+  .yield-info{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+  .yield-note{background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;color:#733b12;line-height:1.55;padding:.85rem 1rem}
+  .yield-source-list li{margin-bottom:.55rem}
+  .yield-source-list a,.yield-related a{color:var(--blue);font-weight:900}
+  .yield-related{display:flex;flex-wrap:wrap;gap:.65rem}
+  .yield-related a{background:#eff4ff;border:1px solid #c7d7fe;border-radius:999px;padding:.55rem .8rem;text-decoration:none}
+  .yield-faq details{border-top:1px solid var(--line);padding:.9rem 0}
+  .yield-faq summary{cursor:pointer;font-weight:900}
+  .yield-line{min-height:1.4rem;color:var(--muted);font-size:.9rem}
+  @media(max-width:880px){.yield-hero-grid,.yield-grid,.yield-info{grid-template-columns:1fr}}
+  @media(max-width:620px){.yield-fields,.yield-metrics{grid-template-columns:1fr}.yield-actions .yield-btn{width:100%}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Calculateur rendement culture 2026","applicationCategory":"BusinessApplication","operatingSystem":"Web","url":"https://afrotools.com/fr/tools/rendement-culture/","description":"Outil local pour estimer rendement, production vendable, écart de rendement, besoin de surface et pertes post-recolte.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"image":"https://afrotools.com/assets/img/tools/crop-yield.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Comment calculer un rendement agricole ?","acceptedAnswer":{"@type":"Answer","text":"Le rendement est la production recoltee divisee par la surface recoltee. L'outil utilise tonnes par hectare et applique ensuite une perte post-recolte pour estimer la production vendable."}},{"@type":"Question","name":"Ce calcul remplace-t-il une mesure de terrain ?","acceptedAnswer":{"@type":"Answer","text":"Non. Il s agit d'une estimation de planification. Les rendements doivent être vérifiés par pesee, coupe d'echantillon, conseiller agricole ou données locales."}},{"@type":"Question","name":"Qu'est-ce qu'un écart de rendement ?","acceptedAnswer":{"@type":"Answer","text":"C'est la différence entre le rendement actuel estime et un rendement cible ou potentiel saisi par l'utilisateur."}}]}</script>
+<link rel="canonical" href="https://afrotools.com/fr/tools/rendement-culture/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/rendement-culture/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/fr/tools/rendement-culture/">
+</head>
+<body class="yield-page top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<main id="main-content">
+  <section class="yield-hero">
+    <div class="yield-wrap yield-hero-grid">
+      <div>
+        <p class="yield-kicker">Rendement et production 2026</p>
+        <h1>Estimez combien votre champ peut produire, vendre et manquer.</h1>
+        <p class="yield-lead">Entrez surface recoltable, rendement attendu, rendement cible, pertes et objectif de production. AfroTools calcule production brute, production vendable, écart de rendement, besoin de surface et rendement minimum.</p>
+        <div class="yield-badges" aria-label="Fonctions">
+          <span class="yield-badge">Tonnes par hectare</span>
+          <span class="yield-badge">Yield gap</span>
+          <span class="yield-badge">Surface requise</span>
+          <span class="yield-badge">Export TXT local</span>
+        </div>
+      </div>
+      <aside class="yield-card yield-hero-card">
+        <strong>t/ha</strong>
+        <span>Le calcul se fait dans votre navigateur. Utilisez-le pour préparer une discussion avec un conseiller agricole, une cooperative ou un acheteur.</span>
+        <p class="yield-note">Planning estimate only: pas de meteo live, pas de données officielles automatiques, pas de garantie de récolte.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="yield-wrap yield-grid" aria-label="Calculateur rendement culture">
+    <article class="yield-card">
+      <h2>Hypothèses de champ</h2>
+      <form class="yield-form" id="yieldForm">
+        <div class="yield-fields">
+          <div class="yield-field">
+            <label for="crop">Culture</label>
+            <select id="crop"><option>Mais</option><option>Riz</option><option>Mil</option><option>Sorgho</option><option>Manioc</option><option>Soja</option><option>Tomate</option><option>Cacao</option></select>
+          </div>
+          <div class="yield-field">
+            <label for="unit">Unite de sortie</label>
+            <select id="unit"><option value="tonnes">Tonnes</option><option value="kg">Kilogrammes</option></select>
+          </div>
+          <div class="yield-field">
+            <label for="area">Surface recoltable (ha)</label>
+            <input id="area" type="number" min="0.01" step="0.01" value="3.5">
+          </div>
+          <div class="yield-field">
+            <label for="expectedYield">Rendement attendu (t/ha)</label>
+            <input id="expectedYield" type="number" min="0" step="0.1" value="2.8">
+          </div>
+          <div class="yield-field">
+            <label for="targetYield">Rendement cible ou potentiel (t/ha)</label>
+            <input id="targetYield" type="number" min="0" step="0.1" value="4.2">
+          </div>
+          <div class="yield-field">
+            <label for="loss">Perte post-recolte (%)</label>
+            <input id="loss" type="number" min="0" max="80" step="0.5" value="10">
+          </div>
+          <div class="yield-field">
+            <label for="targetProduction">Objectif de production vendable</label>
+            <input id="targetProduction" type="number" min="0" step="0.1" value="12">
+            <span class="yield-help">Dans l'unite choisie ci-dessus.</span>
+          </div>
+          <div class="yield-field">
+            <label for="confidence">Confiance dans l'estimation</label>
+            <select id="confidence"><option value="high">Pesage ou historique fiable</option><option value="medium" selected>Estimation du producteur</option><option value="low">Première saison ou forte incertitude</option></select>
+          </div>
+        </div>
+        <div class="yield-field">
+          <label for="notes">Notes sur sol, pluie, semences ou intrants</label>
+          <textarea id="notes">Vérifier le rendement avec pesee, coupe echantillon ou données locales avant engagement commercial.</textarea>
+        </div>
+        <div class="yield-actions">
+          <button class="yield-btn primary" type="submit">Calculer le rendement</button>
+          <button class="yield-btn" id="copyYield" type="button">Copier</button>
+          <button class="yield-btn" id="downloadYield" type="button">Télécharger TXT</button>
+          <button class="yield-btn" id="saveYield" type="button">Sauver localement</button>
+        </div>
+        <p class="yield-line" id="yieldLine" role="status" aria-live="polite"></p>
+      </form>
+    </article>
+
+    <aside class="yield-card yield-results" aria-label="Résultats rendement">
+      <div>
+        <span class="yield-status watch" id="yieldStatus">Écart à suivre</span>
+        <h2 id="yieldTitle">Le rendement cible reste atteignable mais l'écart est visible.</h2>
+        <p class="yield-help" id="yieldSummary">Modifiez la surface, le rendement ou les pertes pour voir l'effet sur la production vendable.</p>
+      </div>
+      <div class="yield-metrics">
+        <div class="yield-metric"><strong id="grossOutput">0</strong><span>Production brute</span></div>
+        <div class="yield-metric"><strong id="marketableOutput">0</strong><span>Production vendable</span></div>
+        <div class="yield-metric"><strong id="gapValue">0</strong><span>Écart rendement</span></div>
+        <div class="yield-metric"><strong id="extraOutput">0</strong><span>Production manquante</span></div>
+        <div class="yield-metric"><strong id="requiredArea">0</strong><span>Surface requise</span></div>
+        <div class="yield-metric"><strong id="requiredYield">0</strong><span>Rendement minimum</span></div>
+      </div>
+      <section>
+        <h3>Breakdown</h3>
+        <ul class="yield-list" id="yieldBreakdown"></ul>
+      </section>
+      <section>
+        <h3>Actions</h3>
+        <ul class="yield-list" id="yieldActions"></ul>
+      </section>
+    </aside>
+  </section>
+
+  <section class="yield-wrap yield-info" data-tool-verification-panel aria-label="Sources et vérification">
+    <article class="yield-card">
+      <h2>Sources et fraîcheur</h2>
+      <p>Sources reviewed June 2026. Verify with crop cuts, official statistics, extension agents, buyers or cooperative records before contracting.</p>
+      <ul class="yield-source-list">
+        <li><a href="https://www.fao.org/faostat/en/" target="_blank" rel="noopener">FAOSTAT - crop, livestock and forestry statistics</a></li>
+        <li><a href="https://databank.worldbank.org/metadataglossary/world-development-indicators/series/AG.YLD.CREL.KG" target="_blank" rel="noopener">World Bank WDI - cereal yield definition</a></li>
+        <li><a href="https://yieldgap.com/" target="_blank" rel="noopener">Yield Potential and Yield Gap Atlas</a></li>
+        <li><a href="https://www.fao.org/fileadmin/templates/ess/ess_test_folder/World_Census_Agriculture/Publications/FAO_ESDP/ESDP_22_Engv2.pdf" target="_blank" rel="noopener">FAO - crop area and yield estimation</a></li>
+      </ul>
+    </article>
+    <article class="yield-card">
+      <h2>Methodology</h2>
+      <p>Yield = production / harvested area. Production brute = surface x rendement attendu. Production vendable = production brute x (1 - perte). Yield gap = rendement cible - rendement attendu. Surface requise = objectif vendable / rendement attendu après pertes.</p>
+      <p class="yield-note">Disclaimer: ce calcul ne remplace pas une mesure agronomique, une prévision officielle, une assurance récolte ou une garantie de prix.</p>
+    </article>
+    <article class="yield-card">
+      <h2>Related tools</h2>
+      <div class="yield-related">
+        <a href="/fr/tools/profit-agricole/">Profit agricole</a>
+        <a href="/fr/tools/calculateur-engrais/">Engrais</a>
+        <a href="/agriculture/crop-yield/">Crop yield</a>
+        <a href="/agriculture/fertilizer/">Fertilizer</a>
+        <a href="/agriculture/irrigation/">Irrigation</a>
+        <a href="/agriculture/">Agriculture hub</a>
+      </div>
+    </article>
+  </section>
+
+  <section class="yield-wrap yield-card yield-faq" aria-label="Questions fréquentes">
+    <h2>Questions fréquentes</h2>
+    <details><summary>Quelle surface faut-il saisir ?</summary><p>Saisissez la surface recoltable, pas seulement la surface plantee. Les zones perdues, non germinees ou non recoltees doivent être exclues ou traitees comme risque.</p></details>
+    <details><summary>Pourquoi separer production brute et vendable ?</summary><p>La production brute estime ce qui sort du champ. La production vendable retire les pertes post-recolte, ce qui aide à planifier les ventes, le transport et le stockage.</p></details>
+    <details><summary>Comment utiliser l'écart de rendement ?</summary><p>Un écart eleve signale qu'il faut vérifier les semences, nutriments, eau, maladies, densite, calendrier ou pratiques de récolte avec un conseiller agricole.</p></details>
+  </section>
+
+  <afro-business-cta tool-name="Calculateur rendement culture" prospect-segment="agriculture" save-note="Sauvez le scenario local, exportez le TXT, puis demandez un widget rendement pour cooperative, agritech, ONG ou media agricole."></afro-business-cta>
+</main>
+<afro-footer></afro-footer>
+<script>
+(function(){
+  "use strict";
+  var ids=["crop","unit","area","expectedYield","targetYield","loss","targetProduction","confidence","notes"];
+  var f={}; ids.forEach(function(id){f[id]=document.getElementById(id);});
+  var out={
+    status:document.getElementById("yieldStatus"),title:document.getElementById("yieldTitle"),summary:document.getElementById("yieldSummary"),
+    gross:document.getElementById("grossOutput"),market:document.getElementById("marketableOutput"),gap:document.getElementById("gapValue"),
+    extra:document.getElementById("extraOutput"),area:document.getElementById("requiredArea"),yieldNeed:document.getElementById("requiredYield"),
+    breakdown:document.getElementById("yieldBreakdown"),actions:document.getElementById("yieldActions"),line:document.getElementById("yieldLine")
+  };
+  var lastSummary="";
+  function n(id){var v=Number(f[id].value);return Number.isFinite(v)?v:0;}
+  function q(v){var value=f.unit.value==="kg"?v*1000:v;return new Intl.NumberFormat("fr-FR",{maximumFractionDigits:value>=100?0:2}).format(value)+" "+f.unit.value;}
+  function t(v){return new Intl.NumberFormat("fr-FR",{maximumFractionDigits:2}).format(v)+" t/ha";}
+  function list(node,items){node.innerHTML="";items.forEach(function(text){var li=document.createElement("li");li.textContent=text;node.appendChild(li);});}
+  function calc(){
+    var area=Math.max(.01,n("area"));
+    var expected=Math.max(0,n("expectedYield"));
+    var target=Math.max(0,n("targetYield"));
+    var loss=Math.min(80,Math.max(0,n("loss")))/100;
+    var goal=f.unit.value==="kg"?n("targetProduction")/1000:n("targetProduction");
+    var gross=area*expected;
+    var market=gross*(1-loss);
+    var gap=Math.max(0,target-expected);
+    var targetMarket=area*target*(1-loss);
+    var missing=Math.max(0,targetMarket-market);
+    var requiredArea=expected>0?(goal/(expected*(1-loss))):0;
+    var requiredYield=area>0&&loss<1?(goal/(area*(1-loss))):0;
+    var gapRatio=target>0?gap/target:0;
+    var cls=gapRatio<=.15?"good":gapRatio<=.35?"watch":"gap";
+    var label=cls==="good"?"Ecart faible":cls==="watch"?"Ecart a suivre":"Ecart eleve";
+    var actions=[];
+    if(gapRatio>.35)actions.push("Verifier semences, fertilite, eau, maladies, densite et calendrier avec un conseiller.");
+    if(loss>.12)actions.push("Tester stockage, sechage, tri ou transport plus rapide pour reduire les pertes post-recolte.");
+    if(f.confidence.value==="low")actions.push("Faire une coupe echantillon ou peser une parcelle temoin avant vente ou credit.");
+    if(requiredArea>area)actions.push("L objectif vendable demande plus de surface ou un rendement superieur au scenario actuel.");
+    if(!actions.length)actions.push("Sauver ce scenario et comparer une hypothese prudente avec une hypothese cible.");
+    actions.push("Verifier les chiffres avec donnees locales, cooperative, acheteur ou service d extension.");
+    out.status.textContent=label; out.status.className="yield-status "+cls;
+    out.title.textContent=cls==="good"?"Le rendement attendu est proche du rendement cible.":cls==="watch"?"Le rendement cible reste atteignable mais l ecart est visible.":"Le rendement cible est loin du scenario actuel.";
+    out.summary.textContent=f.crop.value+": "+area.toFixed(2)+" ha, "+t(expected)+" attendu, "+q(market)+" vendable apres pertes.";
+    out.gross.textContent=q(gross); out.market.textContent=q(market); out.gap.textContent=t(gap); out.extra.textContent=q(missing); out.area.textContent=requiredArea.toFixed(2)+" ha"; out.yieldNeed.textContent=t(requiredYield);
+    list(out.breakdown,[
+      "Production brute = surface recoltable x rendement attendu.",
+      "Production vendable = production brute moins "+Math.round(loss*100)+"% de pertes post-recolte.",
+      "Ecart de rendement = rendement cible moins rendement attendu.",
+      "Production manquante = difference entre rendement cible et scenario actuel sur la meme surface.",
+      "Surface requise = objectif vendable divise par rendement attendu apres pertes.",
+      "Rendement minimum = objectif vendable divise par surface et pertes."
+    ]);
+    list(out.actions,actions);
+    lastSummary=[
+      "Calculateur rendement culture - AfroTools",
+      "Culture: "+f.crop.value,
+      "Surface: "+area.toFixed(2)+" ha",
+      "Rendement attendu: "+t(expected),
+      "Rendement cible: "+t(target),
+      "Production brute: "+q(gross),
+      "Production vendable: "+q(market),
+      "Ecart rendement: "+t(gap),
+      "Surface requise pour objectif: "+requiredArea.toFixed(2)+" ha",
+      "Methodology: yield = production / harvested area; marketable output removes post-harvest loss.",
+      "Disclaimer: planning estimate only; verify with crop cuts, extension agents, market/buyer records."
+    ].join("\\n");
+  }
+  function line(text){out.line.textContent=text;}
+  document.getElementById("yieldForm").addEventListener("submit",function(e){e.preventDefault();calc();line("Rendement mis a jour.");});
+  document.getElementById("copyYield").addEventListener("click",function(){calc();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(lastSummary).then(function(){line("Resume copie.");},function(){line("Copie impossible; utilisez le TXT.");});}else{line("Copie non disponible.");}});
+  document.getElementById("downloadYield").addEventListener("click",function(){calc();var blob=new Blob([lastSummary],{type:"text/plain;charset=utf-8"});var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="rendement-culture-afrotools.txt";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href);},800);line("Export TXT prepare.");});
+  document.getElementById("saveYield").addEventListener("click",function(){calc();try{localStorage.setItem("afrotools:rendement-culture-fr:last",JSON.stringify({savedAt:new Date().toISOString(),summary:lastSummary}));line("Scenario sauvegarde dans localStorage.");}catch(e){line("Sauvegarde locale indisponible.");}});
+  ids.forEach(function(id){f[id].addEventListener("input",calc);f[id].addEventListener("change",calc);});
+  calc();
+})();
+</script>
+</body>
+</html>

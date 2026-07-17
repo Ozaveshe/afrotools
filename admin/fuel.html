@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Fuel Prices — AfroTools Admin</title>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', -apple-system, sans-serif; background: #F5F9FF; color: #1a2e22; line-height: 1.6; }
+  .dash { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+  .dash-header { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
+  .dash-header h1 { font-size: 1.4rem; font-weight: 800; }
+  .dash-header .badge { background: #fef3cd; color: #92400e; font-size: .65rem; font-weight: 700; padding: 3px 10px; border-radius: 12px; text-transform: uppercase; }
+  .back-link { font-size: .82rem; color: #0062CC; text-decoration: none; margin-bottom: 16px; display: inline-block; }
+  .back-link:hover { text-decoration: underline; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .stat-card { background: #fff; border: 1px solid #E8F0FE; border-radius: 12px; padding: 16px; text-align: center; }
+  .stat-value { font-size: 1.6rem; font-weight: 800; color: #0062CC; }
+  .stat-value.warn { color: #d97706; }
+  .stat-label { font-size: .72rem; color: #6B7F99; margin-top: 2px; }
+  .section { background: #fff; border: 1px solid #E8F0FE; border-radius: 12px; padding: 24px; margin-bottom: 20px; overflow-x: auto; }
+  .section h2 { font-size: 1rem; font-weight: 700; margin-bottom: 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: .8rem; min-width: 800px; }
+  th { text-align: left; font-weight: 600; color: #6B7F99; padding: 8px 8px; border-bottom: 2px solid #E8F0FE; white-space: nowrap; }
+  td { padding: 6px 8px; border-bottom: 1px solid #EFF6FF; }
+  tr:hover td { background: #F5F9FF; }
+  td input { width: 80px; padding: 4px 6px; border: 1.5px solid #E5E7EB; border-radius: 6px; font-family: inherit; font-size: .8rem; text-align: right; }
+  td input:focus { border-color: #0062CC; outline: none; }
+  td select { padding: 4px 6px; border: 1.5px solid #E5E7EB; border-radius: 6px; font-family: inherit; font-size: .78rem; }
+  .btn { padding: 6px 14px; border: none; border-radius: 6px; font-family: inherit; font-size: .78rem; font-weight: 600; cursor: pointer; }
+  .btn-primary { background: #0062CC; color: #fff; }
+  .btn-primary:hover { background: #0063D1; }
+  .btn-save { background: #059669; color: #fff; }
+  .btn-save:hover { background: #047857; }
+  .stale { background: #FEF2F2; }
+  .stale-badge { font-size: .6rem; font-weight: 700; background: #FEE2E2; color: #991B1B; padding: 2px 6px; border-radius: 4px; }
+  .fresh-badge { font-size: .6rem; font-weight: 700; background: #ECFDF5; color: #059669; padding: 2px 6px; border-radius: 4px; }
+  .toast { position: fixed; top: 20px; right: 20px; padding: 12px 20px; border-radius: 8px; color: #fff; font-size: .85rem; font-weight: 500; z-index: 999; transform: translateY(-20px); opacity: 0; transition: all .3s; }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { background: #059669; }
+  .toast.error { background: #dc2626; }
+  .source-note { font-size: .72rem; color: #94a3b8; margin-top: 12px; }
+</style>
+<link rel="alternate" hreflang="en" href="https://afrotools.com/admin/fuel" />
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/admin/fuel" />
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Fuel Prices — AfroTools Admin">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="article:modified_time" content="2026-03-28">
+<link rel="canonical" href="https://afrotools.com/admin/fuel">
+<meta property="og:url" content="https://afrotools.com/admin/fuel">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c4853917">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/lib/dark-mode.js?v=5cb64ba3" defer></script>
+</head>
+<body class="top-level-page-ui-refresh">
+<div class="dash">
+  <a href="/admin/dashboard" class="back-link">&larr; Admin Dashboard</a>
+  <div class="dash-header">
+    <h1>Fuel Prices</h1>
+    <span class="badge">Admin</span>
+  </div>
+
+  <div class="stats" id="fuelStats"></div>
+
+  <div class="section">
+    <h2>All Countries — Click to edit, then Save</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Country</th>
+          <th>Petrol (USD/L)</th>
+          <th>Diesel (USD/L)</th>
+          <th>LPG (USD/kg)</th>
+          <th>Petrol Change</th>
+          <th>Regulated</th>
+          <th>Last Updated</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="fuelTable">
+        <tr><td colspan="9" style="text-align:center;color:#94a3b8;">Loading fuel data...</td></tr>
+      </tbody>
+    </table>
+    <div class="source-note">Data source: Admin manual entry. Prices in USD per unit. Edit values inline and click Save.</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var adminKey = sessionStorage.getItem('admin_key');
+if (!adminKey) {
+  adminKey = prompt('Enter admin password:');
+  if (adminKey) sessionStorage.setItem('admin_key', adminKey);
+}
+
+var SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
+var fuelData = [];
+
+function showToast(msg, type) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + (type || 'success');
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 3000);
+}
+
+function timeAgo(dateStr) {
+  if (!dateStr) return 'Never';
+  var days = Math.floor((Date.now() - new Date(dateStr).getTime()) / 86400000);
+  if (days === 0) return 'Today';
+  if (days === 1) return 'Yesterday';
+  if (days < 30) return days + 'd ago';
+  return Math.floor(days / 30) + 'mo ago';
+}
+
+async function loadFuelData() {
+  // Load from /api/fuel (static data)
+  try {
+    var res = await fetch('/api/fuel');
+    var data = await res.json();
+    fuelData = (data.countries || []).map(function(c) {
+      return {
+        country_code: c.code,
+        country_name: c.name,
+        petrol_usd: c.petrol ? c.petrol.usd : null,
+        diesel_usd: c.diesel ? c.diesel.usd : null,
+        lpg_usd: c.lpg ? c.lpg.usd : null,
+        petrol_change: c.petrol ? c.petrol.change : 'stable',
+        regulated: c.regulated || false,
+        updated_at: c.updated || data.timestamp,
+      };
+    });
+  } catch (e) {
+    fuelData = [];
+  }
+
+  // Also try Supabase for fresher data
+  try {
+    var sbRes = await fetch(SUPABASE_URL + '/rest/v1/fuel_prices?select=*&order=country_name.asc', {
+      headers: { apikey: adminKey, Authorization: 'Bearer ' + adminKey }
+    });
+    if (sbRes.ok) {
+      var sbData = await sbRes.json();
+      if (sbData.length > 0) {
+        // Merge: Supabase data overrides static
+        var sbMap = {};
+        sbData.forEach(function(r) { sbMap[r.country_code] = r; });
+        fuelData = fuelData.map(function(c) {
+          return sbMap[c.country_code] ? Object.assign({}, c, sbMap[c.country_code]) : c;
+        });
+      }
+    }
+  } catch (e) { /* Supabase not set up yet, use static */ }
+
+  renderTable();
+  renderStats();
+}
+
+function renderStats() {
+  var total = fuelData.length;
+  var staleCount = fuelData.filter(function(c) {
+    return !c.updated_at || (Date.now() - new Date(c.updated_at).getTime()) > 30 * 86400000;
+  }).length;
+  var freshCount = total - staleCount;
+  var avgPetrol = fuelData.reduce(function(sum, c) { return sum + (c.petrol_usd || 0); }, 0) / (total || 1);
+
+  document.getElementById('fuelStats').innerHTML =
+    '<div class="stat-card"><div class="stat-value">' + total + '</div><div class="stat-label">Countries</div></div>' +
+    '<div class="stat-card"><div class="stat-value">' + freshCount + '</div><div class="stat-label">Up to Date</div></div>' +
+    '<div class="stat-card"><div class="stat-value' + (staleCount > 0 ? ' warn' : '') + '">' + staleCount + '</div><div class="stat-label">Stale (>30d)</div></div>' +
+    '<div class="stat-card"><div class="stat-value">$' + avgPetrol.toFixed(2) + '</div><div class="stat-label">Avg Petrol/L</div></div>';
+}
+
+function renderTable() {
+  var tbody = document.getElementById('fuelTable');
+  tbody.innerHTML = fuelData.map(function(c, i) {
+    var isStale = !c.updated_at || (Date.now() - new Date(c.updated_at).getTime()) > 30 * 86400000;
+    return '<tr class="' + (isStale ? 'stale' : '') + '" data-idx="' + i + '">' +
+      '<td><strong>' + c.country_code + '</strong> ' + c.country_name + '</td>' +
+      '<td><input aria-label="Petrol usd" type="number" step="0.01" value="' + (c.petrol_usd || '') + '" data-field="petrol_usd"></td>' +
+      '<td><input aria-label="Diesel usd" type="number" step="0.01" value="' + (c.diesel_usd || '') + '" data-field="diesel_usd"></td>' +
+      '<td><input aria-label="Lpg usd" type="number" step="0.01" value="' + (c.lpg_usd || '') + '" data-field="lpg_usd"></td>' +
+      '<td><select data-field="petrol_change" aria-label="Select option"><option value="stable"' + (c.petrol_change === 'stable' ? ' selected' : '') + '>Stable</option><option value="up"' + (c.petrol_change === 'up' ? ' selected' : '') + '>Up</option><option value="down"' + (c.petrol_change === 'down' ? ' selected' : '') + '>Down</option></select></td>' +
+      '<td><input aria-label="Regulated" type="checkbox" data-field="regulated"' + (c.regulated ? ' checked' : '') + '></td>' +
+      '<td>' + timeAgo(c.updated_at) + '</td>' +
+      '<td>' + (isStale ? '<span class="stale-badge">STALE</span>' : '<span class="fresh-badge">OK</span>') + '</td>' +
+      '<td><button type="button" class="btn btn-save" onclick="saveRow(' + i + ')">Save</button></td>' +
+    '</tr>';
+  }).join('');
+}
+
+async function saveRow(idx) {
+  var c = fuelData[idx];
+  var row = document.querySelector('tr[data-idx="' + idx + '"]');
+  var petrol = parseFloat(row.querySelector('[data-field="petrol_usd"]').value) || null;
+  var diesel = parseFloat(row.querySelector('[data-field="diesel_usd"]').value) || null;
+  var lpg = parseFloat(row.querySelector('[data-field="lpg_usd"]').value) || null;
+  var change = row.querySelector('[data-field="petrol_change"]').value;
+  var regulated = row.querySelector('[data-field="regulated"]').checked;
+
+  var payload = {
+    country_code: c.country_code,
+    country_name: c.country_name,
+    petrol_usd: petrol,
+    diesel_usd: diesel,
+    lpg_usd: lpg,
+    petrol_change: change,
+    diesel_change: 'stable',
+    regulated: regulated,
+    updated_at: new Date().toISOString(),
+    updated_by: 'admin'
+  };
+
+  try {
+    // Upsert to Supabase
+    var res = await fetch(SUPABASE_URL + '/rest/v1/fuel_prices', {
+      method: 'POST',
+      headers: {
+        apikey: adminKey,
+        Authorization: 'Bearer ' + adminKey,
+        'Content-Type': 'application/json',
+        Prefer: 'resolution=merge-duplicates,return=representation'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (res.ok) {
+      fuelData[idx] = Object.assign(c, payload);
+      showToast(c.country_name + ' updated');
+      renderTable();
+      renderStats();
+    } else {
+      var err = await res.text();
+      showToast('Save failed: ' + err, 'error');
+    }
+  } catch (e) {
+    showToast('Network error: ' + e.message, 'error');
+  }
+}
+
+loadFuelData();
+</script>
+</body>
+</html>

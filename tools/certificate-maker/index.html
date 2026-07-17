@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Certificate Generator | Free Award &amp; Completion Certificates for Africa</title>
+<meta name="description" content="Free certificate generator for African schools, churches, and community groups. Add names and dates to award or completion templates, then export as PNG or PDF.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Certificate Generator | AfroTools">
+<meta property="og:description" content="Create professional digital certificates instantly.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/certificate-maker/">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/certificate-maker.webp">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Certificate Generator | AfroTools">
+<meta name="twitter:description" content="Create professional digital certificates instantly.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/image-design-workflow.css?v=0c4f7205">
+<link rel="stylesheet" href="/assets/css/image-design-tool-focus.css?v=6f9baf9f">
+<script src="/assets/js/pages/image-design-tool-focus.js?v=257c735f" defer></script>
+<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<style>
+  :root {
+    --afro-blue: var(--color-primary);
+    --afro-dark: #0f1419;
+  }
+
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-hero::after {
+    content: '🏆';
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8rem;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--afro-blue);
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    color: var(--afro-blue);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .b-green {
+    background: rgba(0, 113, 227, 0.18);
+    color: var(--color-primary);
+    border: 1px solid rgba(0, 113, 227, 0.38);
+  }
+
+  .tool-main {
+    padding: 28px 0 72px;
+  }
+
+  .tool-main-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 22px;
+    align-items: start;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #DBEAFE;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .card + .card {
+    margin-top: 18px;
+  }
+
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #EFF6FF;
+    background: #F5F9FF;
+  }
+
+  .card-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #0a4018;
+  }
+
+  .card-body {
+    padding: 22px;
+  }
+
+  .field {
+    margin-bottom: 18px;
+  }
+
+  .field:last-child {
+    margin-bottom: 0;
+  }
+
+  .f-label-text {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #0d2813;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .f-input {
+    width: 100%;
+    padding: 11px 13px;
+    background: #EFF6FF;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 7px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0d2813;
+    outline: none;
+    transition: border-color 0.18s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .f-input:focus {
+    border-color: var(--afro-blue);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+  }
+
+  .template-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
+  .template-btn {
+    padding: 10px 12px;
+    background: #EFF6FF;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #244d2c;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .template-btn:hover {
+    border-color: var(--afro-blue);
+  }
+
+  .template-btn.active {
+    border-color: var(--afro-blue);
+    background: var(--afro-blue);
+    color: #fff;
+  }
+
+  .calc-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--afro-blue);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: all 0.18s;
+    margin-top: 8px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .calc-btn:hover {
+    background: #0059B3;
+  }
+
+  .preview {
+    background: linear-gradient(135deg, #f5e6d3 0%, #ffe8c9 100%);
+    border: 3px solid #d4a574;
+    border-radius: 10px;
+    padding: 30px;
+    text-align: center;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .preview-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: #8b4513;
+    margin: 0 0 10px 0;
+    font-weight: 700;
+  }
+
+  .preview-text {
+    color: #654321;
+    margin: 8px 0;
+    font-size: 0.9rem;
+  }
+
+  .action-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .act-btn {
+    padding: 10px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: 1.5px solid rgba(0, 113, 227, 0.35);
+    background: rgba(0, 113, 227, 0.1);
+    color: #1a5c3a;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .act-btn:hover {
+    background: rgba(0, 113, 227, 0.2);
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .info-card {
+    background: #F5F9FF;
+    border: 1px solid #DBEAFE;
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .info-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #0a4018;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .info-text {
+    font-size: 0.8rem;
+    color: #244d2c;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 768px) {
+    .tool-main-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .template-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .action-row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Certificate Generator",
+  "description": "Free browser-based certificate generator for African schools, churches, bootcamps, and community groups. Fill in recipient names and dates on award, completion, service, and appreciation templates, then download as PNG or PDF.",
+  "url": "https://afrotools.com/tools/certificate-maker/",
+  "inLanguage": "en",
+  "applicationCategory": "DesignApplication",
+  "featureList": [
+    "School award, bootcamp, church service, and community templates",
+    "Custom recipient, course, date, and organisation fields",
+    "Live certificate preview",
+    "PNG and PDF export in the browser"
+  ],
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/certificate-maker.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Certificate Generator",
+  "url": "https://afrotools.com/tools/certificate-maker/",
+  "description": "Create and download professional certificates for African schools, churches, bootcamps, and community organisations, free and in your browser.",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/certificate-maker.webp"
+}
+</script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/certificate-maker.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Certificate Generator",
+      "item": "https://afrotools.com/tools/certificate-maker/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What types of certificates can I create?","acceptedAnswer":{"@type":"Answer","text":"You can create certificates of achievement, completion, appreciation, participation, and excellence. Each template is professionally designed with elegant borders, typography, and layout."}},{"@type":"Question","name":"Can I customise the certificate text?","acceptedAnswer":{"@type":"Answer","text":"Yes, every text field is customisable — recipient name, certificate title, description, organisation name, signatory name, and date. The live preview updates instantly as you make changes."}},{"@type":"Question","name":"What format is the certificate downloaded in?","acceptedAnswer":{"@type":"Answer","text":"Certificates are exported as high-resolution PNG images suitable for both digital sharing and professional printing at standard paper sizes."}},{"@type":"Question","name":"Can I create certificates in bulk?","acceptedAnswer":{"@type":"Answer","text":"Currently the tool generates one certificate at a time. However, you can quickly change the recipient name and download multiple certificates in succession. The template and other details stay the same between downloads."}},{"@type":"Question","name":"Do I need design skills to use this tool?","acceptedAnswer":{"@type":"Answer","text":"Not at all. The templates are pre-designed with professional layouts, fonts, and styling. You simply fill in the details and download — the tool handles all the design work for you."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/certificate-maker/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/certificate-maker/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/createur-certificat/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kitengeneza-cheti/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/certificate-maker/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">AfroTools</a> / <span>Tools</span>
+    </div>
+    <h1>Free Certificate <em>Generator</em> for African Schools &amp; Organisations</h1>
+    <p class="hero-sub">Create professional digital certificates for achievements, completion, and appreciation. Download as PNG or PDF.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">4 Templates</span>
+      <span class="badge b-green">Custom Text</span>
+      <span class="badge b-green">PNG & PDF</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main" id="main-content" role="main">
+  <div class="tool-main-inner">
+    <div>
+      <!-- Template Selection -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Template</span>
+        </div>
+        <div class="card-body">
+          <div class="template-grid">
+            <button type="button" class="template-btn active" data-template="school-award" aria-pressed="true">School Award</button>
+            <button type="button" class="template-btn" data-template="bootcamp" aria-pressed="false">Bootcamp</button>
+            <button type="button" class="template-btn" data-template="church-service" aria-pressed="false">Church Service</button>
+            <button type="button" class="template-btn" data-template="community" aria-pressed="false">Community</button>
+          </div>
+          <p style="font-size:0.78rem;color:#64748b;line-height:1.6;">Use the starter templates for schools, churches, community organisations, and training cohorts instead of starting from a blank certificate every time.</p>
+        </div>
+      </div>
+
+      <!-- Certificate Details -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Certificate Details</span>
+        </div>
+        <div class="card-body">
+          <div class="field">
+            <label class="f-label-text" for="recipientName">Recipient Name</label>
+            <input type="text" class="f-input" id="recipientName" placeholder="e.g., Amina Bello" value="Amina Bello">
+          </div>
+
+          <div class="field">
+            <label class="f-label-text" for="courseName">Course/Event</label>
+            <input type="text" class="f-input" id="courseName" placeholder="e.g., Digital Skills Cohort" value="Digital Skills Cohort">
+          </div>
+
+          <div class="field">
+            <label class="f-label-text" for="certDate">Date</label>
+            <input type="date" class="f-input" id="certDate">
+          </div>
+
+          <div class="field">
+            <label class="f-label-text" for="organization">Organization</label>
+            <input type="text" class="f-input" id="organization" placeholder="e.g., AfroTools Academy" value="AfroTools Academy">
+          </div>
+
+          <button type="button" class="calc-btn" id="generateBtn">Generate Certificate</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Preview</span>
+        </div>
+        <div class="card-body">
+          <div class="preview" aria-live="polite">
+            <div class="preview-title" id="previewTitle">Certificate of Achievement</div>
+            <div class="preview-text" id="previewIntro" style="margin-top:20px;font-style:italic;">This is to certify that</div>
+            <div class="preview-text" style="font-size:1.1rem;font-weight:700;"><span id="previewName">John Doe</span></div>
+            <div class="preview-text" id="previewAction">has successfully completed</div>
+            <div class="preview-text" style="font-weight:700;"><span id="previewCourse">Web Development</span></div>
+            <div class="preview-text" id="previewOrg" style="margin-top:18px;font-size:0.84rem;opacity:0.82;">Issued by AfroTools Academy</div>
+          </div>
+          <div class="action-row">
+            <button type="button" class="act-btn" id="downloadPngBtn" aria-label="Download certificate as PNG">📥 PNG</button>
+            <button type="button" class="act-btn" id="downloadPdfBtn" aria-label="Download certificate as PDF">📥 PDF</button>
+          </div>
+<div class="result-actions" style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
+  <share-result-button
+    tool-name="Certificate Maker"
+    tool-slug="certificate-maker">
+  </share-result-button>
+</div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Features</div>
+        <div class="info-text">
+          <ul style="margin:0;padding-left:16px;">
+            <li>✓ 4 templates</li>
+            <li>✓ Custom fields</li>
+            <li>✓ PNG & PDF</li>
+            <li>✓ Print ready</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<afro-related-tools category="image-design" current="certificate-maker" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/image-compress/" data-related-tool data-id="image-compress" data-name="Image Compressor Studio" data-category="image-design" data-icon="IC" data-desc="Batch compress, resize, convert, compare, and target file-size limits locally in the browser.">Image Compressor Studio</a></li><li><a href="/tools/flyer-maker/" data-related-tool data-id="flyer-maker" data-name="AI Flyer &amp; Poster Studio" data-category="image-design" data-icon="AF" data-desc="Prompt your way to WhatsApp, Instagram, story, and print flyers with brand kits, uploads, checks, and local exports.">AI Flyer &amp; Poster Studio</a></li><li><a href="/tools/background-remover/" data-related-tool data-id="background-remover" data-name="Background Remover Studio" data-category="image-design" data-icon="BR" data-desc="Remove or replace backgrounds with AI person cutout, color key, brush refine, and local exports.">Background Remover Studio</a></li><li><a href="/tools/image-resize/" data-related-tool data-id="image-resize" data-name="Image Resizer Studio" data-category="image-design" data-icon="IR" data-desc="Batch resize, crop, pad, convert, compare, and export multiple social or web sizes locally.">Image Resizer Studio</a></li><li><a href="/tools/passport-photo/" data-related-tool data-id="passport-photo" data-name="Passport Photo Studio" data-category="image-design" data-icon="PP" data-desc="Create source-backed passport and visa photos with African specs, face guides, and print sheets.">Passport Photo Studio</a></li><li><a href="/tools/qr-generator/" data-related-tool data-id="qr-generator" data-name="QR Code Generator" data-category="image-design" data-icon="QC" data-desc="Generate QR codes for M-Pesa links, WhatsApp, WiFi, URLs. Download as PNG/SVG.">QR Code Generator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+
+<section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
+  <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Certificate Generator: How It Works</h2>
+  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
+    <p>The AfroTools Certificate Generator lets you create professional digital certificates in minutes. Choose from elegant templates for achievement awards, course completion, employee appreciation, and more. Customise every detail including the recipient name, date, issuing organisation, authorised signatory, and certificate description. The live preview updates as you type, so you can see exactly how the finished certificate will look before downloading. Export your certificate as a high-resolution image ready for printing or digital distribution. This tool is perfect for schools, training institutions, churches, community organisations, and businesses that need to issue certificates without paying for expensive design software. Whether you are running a workshop, recognising top performers, or completing a training programme, the Certificate Generator gives you polished, professional results with zero design skills required. All processing happens in your browser — no account needed and no data is sent to external servers.</p>
+  </div>
+  <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Frequently Asked Questions</h3>
+
+<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="certificate-maker" aria-labelledby="certificate-maker-verification-title">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Certificate issue check</span>
+          <h2 class="tool-verification-title" id="certificate-maker-verification-title">Verify names, authority, and print output before issuing</h2>
+          <p class="tool-verification-lead">Create a certificate locally, review the live preview, then export PNG or PDF only after the recipient and organisation details are correct.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Reviewed 2026</span>
+          <p class="tool-verification-note">Local document workflow. No account or server submission is required.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>What to check</h3>
+          <ul class="tool-verification-list">
+            <li>Methodology: template, recipient name, course or event, date, organisation, and generated preview create the export.</li>
+            <li>Check spelling, dates, issuer name, event title, signature authority, and whether the certificate should be official or informal.</li>
+            <li>Use PNG for image sharing and PDF for print or email handoff.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Limitations</h3>
+          <ul class="tool-verification-list">
+            <li>Not an accreditation, credential verification, school records, exam result, or legal certificate system.</li>
+            <li>Only issue certificates when your organisation has authority to recognise the achievement.</li>
+            <li>Privacy note: entered names and certificate details stay in the browser unless you share the downloaded file.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <a class="tool-verification-report" href="#downloadPngBtn">Review certificate downloads</a>
+        <p class="tool-verification-disclaimer">Source/freshness note: professional, academic, and regulatory certificate rules vary; verify the issuing authority before presenting a certificate as official.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<afro-business-cta tool-name="Certificate Maker" prospect-segment="document-workflows" save-note="Generate locally, verify recipient and issuer details, then download PNG or PDF."></afro-business-cta>
+  <div class="landing-faq" style="display:flex;flex-direction:column;gap:8px;">
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">What types of certificates can I create?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">You can create certificates of achievement, completion, appreciation, participation, and excellence. Each template is professionally designed with elegant borders, typography, and layout.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Can I customise the certificate text?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Yes, every text field is customisable — recipient name, certificate title, description, organisation name, signatory name, and date. The live preview updates instantly as you make changes.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">What format is the certificate downloaded in?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Certificates are exported as high-resolution PNG images suitable for both digital sharing and professional printing at standard paper sizes.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Can I create certificates in bulk?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Currently the tool generates one certificate at a time. However, you can quickly change the recipient name and download multiple certificates in succession. The template and other details stay the same between downloads.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Do I need design skills to use this tool?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Not at all. The templates are pre-designed with professional layouts, fonts, and styling. You simply fill in the details and download — the tool handles all the design work for you.</p>
+    </details>
+  </div>
+</section>
+
+<section style="background:#f8fafc;padding:40px 24px;border-top:1px solid #e2e8f0"><div style="max-width:900px;margin:0 auto">
+<h2 style="font-size:1.15rem;font-weight:800;color:#111827;margin-bottom:14px">Related Image Tools</h2>
+<div style="display:flex;flex-wrap:wrap;gap:10px"><a href="/tools/flyer-maker/" style="padding:10px 16px;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#1e293b;text-decoration:none;transition:all .2s">Flyer & Poster Maker</a><a href="/tools/social-card/" style="padding:10px 16px;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#1e293b;text-decoration:none;transition:all .2s">Social Media Card</a><a href="/tools/logo-maker/" style="padding:10px 16px;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#1e293b;text-decoration:none;transition:all .2s">Logo Maker</a>
+<a href="/image-design/" style="padding:10px 16px;background:#f3f4f6;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#6b7280;text-decoration:none;transition:all .2s">View All Image Tools</a>
+</div>
+</div></section>
+<afro-footer></afro-footer>
+
+<script>
+  const recipientName = document.getElementById('recipientName');
+  const courseName = document.getElementById('courseName');
+  const certDate = document.getElementById('certDate');
+  const organization = document.getElementById('organization');
+  const generateBtn = document.getElementById('generateBtn');
+  const previewTitle = document.getElementById('previewTitle');
+  const previewIntro = document.getElementById('previewIntro');
+  const previewName = document.getElementById('previewName');
+  const previewAction = document.getElementById('previewAction');
+  const previewCourse = document.getElementById('previewCourse');
+  const previewOrg = document.getElementById('previewOrg');
+  const downloadPngBtn = document.getElementById('downloadPngBtn');
+  const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+  const templateButtons = document.querySelectorAll('.template-btn');
+  const templateConfigs = {
+    'school-award': {
+      title: 'Certificate of Excellence',
+      intro: 'This award is proudly presented to',
+      action: 'for outstanding performance in',
+      course: 'Senior Secondary Achievement Awards',
+      organization: 'Community Secondary School'
+    },
+    bootcamp: {
+      title: 'Certificate of Completion',
+      intro: 'This is to certify that',
+      action: 'has successfully completed',
+      course: 'Digital Skills Cohort',
+      organization: 'AfroTools Academy'
+    },
+    'church-service': {
+      title: 'Certificate of Service',
+      intro: 'This certificate recognises',
+      action: 'for faithful service in',
+      course: 'Youth Leadership and Ministry Training',
+      organization: 'Grace Revival Centre'
+    },
+    community: {
+      title: 'Certificate of Appreciation',
+      intro: 'We honour and appreciate',
+      action: 'for contributions to',
+      course: 'Community Development Initiative',
+      organization: 'Neighbourhood Impact Network'
+    }
+  };
+
+  // Set today's date
+  certDate.valueAsDate = new Date();
+
+  function updatePreview() {
+    previewName.textContent = recipientName.value || 'Name';
+    previewCourse.textContent = courseName.value || 'Course';
+    previewOrg.textContent = 'Issued by ' + (organization.value || 'Your organisation');
+  }
+
+  templateButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      templateButtons.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
+      btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
+      const config = templateConfigs[btn.dataset.template];
+      if (!config) return;
+      previewTitle.textContent = config.title;
+      previewIntro.textContent = config.intro;
+      previewAction.textContent = config.action;
+      if (!courseName.value || courseName.value === 'Digital Skills Cohort' || courseName.value === 'Web Development') {
+        courseName.value = config.course;
+      }
+      if (!organization.value || organization.value === 'AfroTools Academy') {
+        organization.value = config.organization;
+      }
+      updatePreview();
+    });
+  });
+
+  recipientName.addEventListener('input', updatePreview);
+  courseName.addEventListener('input', updatePreview);
+  organization.addEventListener('input', updatePreview);
+  generateBtn.addEventListener('click', updatePreview);
+
+  updatePreview();
+
+  downloadPngBtn.addEventListener('click', async () => {
+    try {
+      const preview = document.querySelector('.preview');
+      const canvas = await html2canvas(preview, { scale: 2 });
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL('image/png');
+      link.download = 'certificate.png';
+      link.click();
+    } catch (err) {
+      alert('Error generating PNG: ' + err.message);
+    }
+  });
+
+  downloadPdfBtn.addEventListener('click', async () => {
+    try {
+      const preview = document.querySelector('.preview');
+      const canvas = await html2canvas(preview, { scale: 2 });
+      const imgData = canvas.toDataURL('image/png');
+      const imgBytes = await fetch(imgData).then(r => r.arrayBuffer());
+      const pdfDoc = await PDFLib.PDFDocument.create();
+      const image = await pdfDoc.embedPng(imgBytes);
+      const page = pdfDoc.addPage([canvas.width, canvas.height]);
+      page.drawImage(image, { x: 0, y: 0, width: canvas.width, height: canvas.height });
+      const pdfBytes = await pdfDoc.save();
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(new Blob([pdfBytes], { type: 'application/pdf' }));
+      link.href = url;
+      link.download = 'certificate.pdf';
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+    } catch (err) {
+      alert('Error generating PDF: ' + err.message);
+    }
+  });
+</script>
+<script src="/assets/js/lib/image-design-workflow.js?v=f9b20b1b" defer></script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

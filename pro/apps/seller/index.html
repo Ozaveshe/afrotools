@@ -1,0 +1,914 @@
+<!doctype html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AfroSeller Social Commerce OS | AfroTools Pro</title>
+  <meta name="description" content="AfroSeller is a Pro shop desk for setup, products, orders, customers, payment records, delivery notes, receipts, and WhatsApp copy.">
+  <meta name="robots" content="noindex, follow">
+  <meta name="tool-id" content="pro-daily-seller">
+  <meta name="tool-category" content="pro">
+  <meta name="pro-required" content="afrotools-pro">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <script src="/assets/js/afro-auth.js?v=4250956b"></script>
+  <script src="/assets/js/pro-gate.js?v=e4aca7ef"></script>
+  <script src="/assets/js/lib/pro-app-registry.js?v=2e71c13d"></script>
+  <script src="/assets/js/lib/pro-daily-os-registry.js?v=b25cffa7"></script>
+  <script src="/assets/js/lib/pro-home-insights.js?v=dc3dbf48"></script>
+  <script src="/assets/js/components/pro-switcher.js?v=17095027" defer></script>
+  <script src="/assets/js/lib/afroseller-sync.js?v=75c2ad51"></script>
+  <style>
+    :root{--as-bg:#f6f8fb;--as-card:#fff;--as-soft:#f8fafc;--as-ink:#102033;--as-muted:#607086;--as-line:#d9e2ee;--as-line-strong:#c5d1df;--as-blue:#1455b8;--as-blue-soft:#eaf2ff;--as-green:#047857;--as-green-soft:#e8f8ef;--as-amber:#a16207;--as-amber-soft:#fff7df;--as-red:#b42318;--as-red-soft:#fff0ed;--as-violet:#6d28d9;--as-violet-soft:#f3edff;--as-radius:8px;--as-shadow:0 1px 2px rgba(16,32,51,.05)}
+    *{box-sizing:border-box}html{background:var(--as-bg)}body{margin:0;background:var(--as-bg);color:var(--as-ink);font-family:var(--font-body,"DM Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif);font-size:14px;line-height:1.45;overflow-x:hidden}button,input,select,textarea{font:inherit}button{cursor:pointer}a{color:inherit}.seller-shell{min-height:100vh;display:grid;grid-template-columns:1fr;background:var(--as-bg)}.seller-side{border-bottom:1px solid var(--as-line);background:var(--as-card);padding:12px;display:grid;gap:10px}.seller-brand{display:flex;align-items:center;gap:10px}.seller-mark{width:36px;height:36px;border-radius:var(--as-radius);background:var(--as-blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900}.seller-brand strong{display:block;font-size:14px;font-weight:900;line-height:1.15}.seller-brand span{display:block;color:var(--as-muted);font-size:11px;margin-top:2px}.seller-nav{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}.seller-nav a{min-height:36px;display:inline-flex;align-items:center;border:1px solid var(--as-line);border-radius:var(--as-radius);padding:8px 10px;text-decoration:none;white-space:nowrap;font-size:12px;font-weight:900;background:var(--as-soft);color:#334155}.seller-nav a:hover,.seller-nav a:focus-visible{border-color:var(--as-blue);background:var(--as-blue-soft);color:var(--as-blue);outline:none}.seller-main{min-width:0}.seller-topbar{position:sticky;top:0;z-index:8;display:grid;gap:10px;padding:12px;border-bottom:1px solid var(--as-line);background:rgba(246,248,251,.96);backdrop-filter:blur(12px)}.seller-eyebrow{margin:0 0 2px;color:var(--as-blue);font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}.seller-title{margin:0;font-size:22px;line-height:1.1;font-weight:900;letter-spacing:0}.seller-subtitle{margin:3px 0 0;color:var(--as-muted);font-size:12px;line-height:1.45;max-width:860px}.seller-actions,.btn-row{display:flex;flex-wrap:wrap;gap:7px}.seller-content{max-width:1480px;margin:0 auto;padding:12px}.seller-grid,.seller-split,.seller-form,.seller-list{display:grid;grid-template-columns:1fr;gap:12px}.seller-panel,.seller-metric,.seller-note,.seller-row{background:var(--as-card);border:1px solid var(--as-line);border-radius:var(--as-radius);box-shadow:var(--as-shadow)}.seller-panel{overflow:hidden}.seller-panel-head{padding:12px;border-bottom:1px solid var(--as-line);display:flex;justify-content:space-between;gap:10px;align-items:flex-start;background:var(--as-card)}.seller-panel-head h2{margin:0;font-size:16px;line-height:1.2;font-weight:900}.seller-panel-head p,.seller-note{color:var(--as-muted);font-size:12px;line-height:1.45}.seller-panel-head p{margin:3px 0 0;max-width:740px}.seller-panel-body{padding:12px}.seller-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:12px}.seller-metric{min-height:84px;padding:11px;display:grid;align-content:space-between;gap:8px}.seller-metric strong{display:block;font-size:23px;line-height:1;font-weight:900}.seller-metric span{display:block;color:var(--as-muted);font-size:11px;line-height:1.25;font-weight:900}.field{display:grid;gap:5px}.field label{color:#334155;font-size:11px;font-weight:900}.field input,.field select,.field textarea{width:100%;min-height:40px;border:1px solid var(--as-line-strong);border-radius:var(--as-radius);background:#fff;color:var(--as-ink);padding:9px 10px;outline:none}.field textarea{min-height:168px;resize:vertical;line-height:1.45}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--as-blue);box-shadow:0 0 0 3px rgba(20,85,184,.13)}.field select[multiple]{min-height:118px}.field input[type=color]{min-height:40px;padding:4px}.field-help{color:var(--as-muted);font-size:11px;line-height:1.35}.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px;border:1px solid var(--as-line-strong);border-radius:var(--as-radius);background:#fff;color:var(--as-ink);padding:9px 12px;text-decoration:none;font-size:12px;font-weight:900;line-height:1.1;transition:background .16s ease,border-color .16s ease,color .16s ease}.btn:hover,.btn:focus-visible{border-color:var(--as-blue);background:var(--as-blue-soft);color:var(--as-blue);outline:none}.btn.primary{border-color:var(--as-blue);background:var(--as-blue);color:#fff}.btn.primary:hover,.btn.primary:focus-visible{background:#0f4395;color:#fff}.btn.danger{border-color:#fecaca;color:var(--as-red);background:var(--as-red-soft)}.btn:disabled{cursor:not-allowed;opacity:.55;background:#f1f5f9;color:#94a3b8;border-color:var(--as-line)}.btn:disabled:hover{background:#f1f5f9;color:#94a3b8;border-color:var(--as-line)}.pill{display:inline-flex;align-items:center;justify-content:center;min-height:22px;border:1px solid var(--as-line);border-radius:999px;background:var(--as-soft);color:#475569;padding:4px 8px;font-size:10px;font-weight:900;line-height:1;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}.pill.ready,.pill.delivered,.pill.paid,.pill.confirmed,.pill.cash,.pill.pos{background:var(--as-green-soft);border-color:#b6ecd0;color:#065f46}.pill.low,.pill.packed,.pill.follow,.pill.bank,.pill.mobile{background:var(--as-amber-soft);border-color:#fde68a;color:#92400e}.pill.out,.pill.draft,.pill.overdue,.pill.cancelled,.pill.unpaid,.pill.negative{background:var(--as-red-soft);border-color:#fecaca;color:#991b1b}.pill.local,.pill.template,.pill.vip,.pill.wholesale{background:var(--as-violet-soft);border-color:#ddd6fe;color:#5b21b6}.table-wrap{max-width:100%;overflow-x:auto;border:1px solid var(--as-line);border-radius:var(--as-radius);background:#fff}table{width:100%;border-collapse:collapse;min-width:720px}.wide-table{min-width:1040px}th,td{padding:9px 10px;border-bottom:1px solid var(--as-line);text-align:left;vertical-align:top;font-size:12px}th{background:var(--as-soft);color:#475569;font-size:11px;font-weight:900;white-space:nowrap}tr:last-child td{border-bottom:0}.row-title{display:block;font-weight:900;color:var(--as-ink)}.row-sub{display:block;color:var(--as-muted);font-size:11px;margin-top:2px}.table-actions{display:flex;flex-wrap:wrap;gap:6px;min-width:150px}.table-actions .btn{min-height:32px;padding:7px 9px}.seller-row{padding:10px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:start}.seller-row strong{display:block;font-size:13px;line-height:1.2;font-weight:900}.seller-row span{display:block;color:var(--as-muted);font-size:11px;line-height:1.35;margin-top:3px}.label-stack{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}.seller-note{padding:10px;background:var(--as-soft)}.seller-note.warn{border-color:#fde68a;background:var(--as-amber-soft);color:#78350f}.template-output{font-family:Consolas,"SFMono-Regular",monospace;font-size:12px;line-height:1.5}.daily-close-list,.setup-score-list,.workflow-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.daily-close-list div,.setup-score-list div,.workflow-list a{border:1px solid var(--as-line);border-radius:var(--as-radius);padding:9px;background:#fff;text-decoration:none}.daily-close-list strong,.setup-score-list strong,.workflow-list strong{display:block;font-size:16px;font-weight:900}.daily-close-list span,.setup-score-list span,.workflow-list span{display:block;color:var(--as-muted);font-size:11px;font-weight:900}.cloud-sync-grid{display:grid;grid-template-columns:1fr;gap:10px}.cloud-status-line{display:flex;flex-wrap:wrap;align-items:center;gap:8px}.save-status{color:var(--as-muted);font-size:12px;line-height:1.4;min-height:18px}.inventory-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.inventory-summary div{border:1px solid var(--as-line);border-radius:var(--as-radius);background:var(--as-soft);padding:10px}.inventory-summary strong{display:block;font-size:18px;font-weight:900}.inventory-summary span{display:block;color:var(--as-muted);font-size:11px;font-weight:900}.inventory-alerts{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.inventory-alert{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--as-line);border-radius:999px;background:#fff;padding:5px 8px;color:#475569;font-size:11px;font-weight:900}.inventory-alert.out,.inventory-alert.negative{border-color:#fecaca;background:var(--as-red-soft);color:#991b1b}.inventory-alert.low,.inventory-alert.price{border-color:#fde68a;background:var(--as-amber-soft);color:#92400e}.photo-chip{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border:1px solid var(--as-line);border-radius:var(--as-radius);background:var(--as-soft);color:var(--as-blue);font-size:10px;font-weight:900;margin-right:7px;vertical-align:top}.product-cell{display:flex;gap:0;align-items:flex-start}
+    .seller-grid>*,.seller-split>*,.seller-form>*,.seller-list>*{min-width:0}
+    .fulfillment-board{display:grid;grid-template-columns:1fr;gap:10px}.fulfillment-lane{border:1px solid var(--as-line);border-radius:var(--as-radius);background:var(--as-soft);min-width:0}.fulfillment-lane-head{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:10px;border-bottom:1px solid var(--as-line)}.fulfillment-lane-head strong{font-size:13px;font-weight:900}.fulfillment-lane-body{display:grid;gap:8px;padding:10px}.fulfillment-card{border:1px solid var(--as-line);border-radius:var(--as-radius);background:#fff;padding:10px}.fulfillment-card strong{display:block;font-size:13px;line-height:1.25}.fulfillment-card span{display:block;color:var(--as-muted);font-size:11px;line-height:1.35;margin-top:3px}.fulfillment-warnings,.catalog-warnings{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}.fulfillment-warning,.catalog-warning{display:inline-flex;align-items:center;border:1px solid #fde68a;border-radius:999px;background:var(--as-amber-soft);color:#92400e;padding:5px 8px;font-size:11px;font-weight:900}.fulfillment-warning.out,.catalog-warning.out{border-color:#fecaca;background:var(--as-red-soft);color:#991b1b}.dispatch-checklist{display:grid;gap:3px;margin-top:6px}.dispatch-checklist span{color:#334155;font-weight:800}.catalog-preview-grid{display:grid;grid-template-columns:1fr;gap:10px}.catalog-preview-card{border:1px solid var(--as-line);border-radius:var(--as-radius);background:#fff;overflow:hidden;display:grid}.catalog-image{min-height:116px;background:linear-gradient(135deg,var(--as-blue-soft),var(--as-soft));display:flex;align-items:center;justify-content:center;color:var(--as-blue);font-size:12px;font-weight:900;text-align:center;padding:12px}.catalog-image img{width:100%;height:150px;object-fit:cover;display:block}.catalog-preview-body{padding:10px;display:grid;gap:7px}.catalog-preview-body h3{margin:0;font-size:14px;line-height:1.2}.catalog-preview-body p{margin:0;color:var(--as-muted);font-size:12px;line-height:1.35}.catalog-color-dot{width:18px;height:18px;border-radius:999px;border:1px solid var(--as-line);display:inline-block;vertical-align:middle}.close-checklist{display:grid;gap:7px}.close-checklist label{display:flex;gap:8px;align-items:flex-start;border:1px solid var(--as-line);border-radius:var(--as-radius);background:#fff;padding:8px;color:#334155;font-size:12px;font-weight:800}.close-checklist input{width:auto;min-height:auto;margin-top:2px}.payment-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.payment-summary div{border:1px solid var(--as-line);border-radius:var(--as-radius);background:#fff;padding:9px}.payment-summary strong{display:block;font-size:16px;font-weight:900}.payment-summary span{display:block;color:var(--as-muted);font-size:11px;font-weight:900}.close-history-list{display:grid;gap:8px}.close-history-list article{border:1px solid var(--as-line);border-radius:var(--as-radius);background:#fff;padding:9px}
+    @media (min-width:760px){.seller-topbar{grid-template-columns:minmax(0,1fr) auto;align-items:center}.seller-form.two{grid-template-columns:repeat(2,minmax(0,1fr))}.seller-form.three{grid-template-columns:repeat(3,minmax(0,1fr))}.seller-metrics{grid-template-columns:repeat(5,minmax(0,1fr))}.fulfillment-board{grid-template-columns:repeat(2,minmax(0,1fr))}.catalog-preview-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (min-width:1320px){.fulfillment-board{grid-template-columns:repeat(5,minmax(0,1fr))}}
+    @media (min-width:1120px){.seller-shell{grid-template-columns:246px minmax(0,1fr)}.seller-side{position:sticky;top:0;height:100vh;border-bottom:0;border-right:1px solid var(--as-line);align-content:start}.seller-nav{display:grid;overflow:visible}.seller-grid{grid-template-columns:minmax(0,1fr) 380px}.seller-split{grid-template-columns:repeat(2,minmax(0,1fr))}.seller-content{padding:16px}}
+    @media (max-width:520px){.seller-title{font-size:20px}.seller-metrics{grid-template-columns:1fr}.seller-row{grid-template-columns:1fr}.seller-panel-head{flex-direction:column}.seller-actions>.btn,.seller-actions>a,.seller-list>.btn{width:100%}.table-actions .btn{width:auto}}
+  </style>
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c4853917">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/lib/dark-mode.js?v=5cb64ba3" defer></script>
+<link rel="canonical" href="https://afrotools.com/pro/apps/seller/">
+</head>
+<body class="top-level-page-ui-refresh">
+  <main class="seller-shell pro-gated-content">
+  <div data-pro-waitlist-host data-app-label="Seller" data-source-route="/pro/apps/seller/"></div>
+
+    <aside class="seller-side" aria-label="AfroSeller navigation">
+      <div class="seller-brand">
+        <div class="seller-mark">SL</div>
+        <div><strong>AfroSeller</strong><span>Shop setup, orders, and receipts</span></div>
+      </div>
+      <nav class="seller-nav" aria-label="Workspace sections">
+        <a href="#setup">Setup</a>
+        <a href="#account-save">Save</a>
+        <a href="#catalog">Products</a>
+        <a href="#catalog-preview">Catalog draft</a>
+        <a href="#orders">Orders</a>
+        <a href="#payments">Payments</a>
+        <a href="#fulfillment">Delivery</a>
+        <a href="#customers">Customers</a>
+        <a href="#daily-close">Daily close</a>
+        <a href="#templates">WhatsApp</a>
+        <a href="#exports">Receipts</a>
+        <a href="/pro/apps/">Pro apps</a>
+        <a href="/pro/workspace/">Pro control</a>
+      </nav>
+      <div class="seller-note warn">AfroSeller saves work on this device first. It does not publish a live storefront, send WhatsApp API messages, collect payments, book deliveries, or collect checkout payments.</div>
+    </aside>
+
+    <section class="seller-main" aria-label="AfroSeller workspace">
+      <header class="seller-topbar">
+        <div>
+          <p class="seller-eyebrow">Pro shop workspace</p>
+          <h1 class="seller-title">AfroSeller selling desk</h1>
+          <p class="seller-subtitle">Set up your shop, add products, create orders, record payments, prepare delivery notes, and copy receipt messages for WhatsApp or Instagram buyers.</p>
+        </div>
+        <div class="seller-actions">
+          <button class="btn" type="button" id="saveNowBtn">Save on this device</button>
+          <button class="btn" type="button" id="resetDemoBtn">Load starter shop</button>
+          <a class="btn primary" href="#setup">Start shop setup</a>
+        </div>
+      </header>
+
+      <div class="seller-content">
+        <section class="seller-metrics" aria-label="Dashboard metrics">
+          <article class="seller-metric"><strong id="metricGrossSales">0</strong><span>Today sales</span></article>
+          <article class="seller-metric"><strong id="metricReadyDelivery">0</strong><span>Orders needing action</span></article>
+          <article class="seller-metric"><strong id="metricUnpaid">0</strong><span>Unpaid balance</span></article>
+          <article class="seller-metric"><strong id="metricLowStock">0</strong><span>Low-stock items</span></article>
+          <article class="seller-metric"><strong id="metricTodayOrders">Open</strong><span>Close status</span></article>
+        </section>
+
+        <div class="seller-grid">
+          <div>
+            <section class="seller-panel" id="setup">
+              <div class="seller-panel-head">
+                <div><p class="seller-eyebrow">Shop setup</p><h2>Seller profile</h2><p>Start with the shop details used on products, orders, receipts, payment records, and delivery notes.</p></div>
+                <span class="pill local">Saved on this device</span>
+              </div>
+              <div class="seller-panel-body">
+                <form class="seller-form three" id="businessForm">
+                  <div class="field"><label for="businessName">Business name</label><input id="businessName" name="businessName" autocomplete="organization"></div>
+                  <div class="field"><label for="businessCountry">Country</label><select id="businessCountry" name="businessCountry"><option>Nigeria</option><option>Ghana</option><option>Kenya</option><option>South Africa</option><option>Tanzania</option><option>Uganda</option><option>Rwanda</option><option>Cameroon</option><option>Senegal</option><option>Cote d'Ivoire</option></select></div>
+                  <div class="field"><label for="businessCurrency">Currency</label><select id="businessCurrency" name="businessCurrency"><option value="NGN">NGN</option><option value="GHS">GHS</option><option value="KES">KES</option><option value="ZAR">ZAR</option><option value="TZS">TZS</option><option value="UGX">UGX</option><option value="RWF">RWF</option><option value="XAF">XAF</option><option value="XOF">XOF</option><option value="USD">USD</option></select></div>
+                  <div class="field"><label for="languageLane">Language lane</label><select id="languageLane" name="languageLane"><option>English</option><option>French</option><option>Kiswahili</option><option>Pidgin</option></select></div>
+                  <div class="field"><label for="sellerChannel">Seller channel</label><select id="sellerChannel" name="sellerChannel"><option>WhatsApp</option><option>Instagram</option><option>Shop</option><option>Market</option><option>Mixed</option></select></div>
+                  <div class="field"><label for="sellerPhone">Phone or WhatsApp</label><input id="sellerPhone" name="sellerPhone" inputmode="tel" placeholder="+234..."></div>
+                  <div class="field"><label for="businessCategory">Business category</label><select id="businessCategory" name="businessCategory"><option>Fashion and boutique</option><option>Cosmetics and beauty</option><option>Phones and accessories</option><option>Food and baking</option><option>Groceries and provisions</option><option>Home goods</option><option>Market trader</option><option>Mixed retail</option></select></div>
+                  <div class="field"><label for="defaultDeliveryArea">Default delivery area</label><input id="defaultDeliveryArea" name="defaultDeliveryArea" placeholder="Yaba, Eastlands, Osu, Sandton"></div>
+                  <div class="field"><label for="receiptBrandName">Receipt name</label><input id="receiptBrandName" name="receiptBrandName" placeholder="Name shown on receipts"></div>
+                  <div class="field"><label for="receiptBrandColor">Receipt brand color</label><input id="receiptBrandColor" name="receiptBrandColor" type="color" value="#1455b8"></div>
+                  <div class="field"><label for="paymentMethodsAccepted">Payment methods accepted</label><select id="paymentMethodsAccepted" name="paymentMethodsAccepted" multiple><option>Cash</option><option>Bank transfer</option><option>Mobile money</option><option>Card/POS</option><option>Pay on pickup</option><option>Other</option></select><span class="field-help">These are payment records only. AfroSeller does not collect money.</span></div>
+                </form>
+                <div class="setup-score-list" id="setupScoreSteps" style="margin-top:12px" aria-label="Setup completion"></div>
+                <div class="save-status" id="saveStatus" role="status" aria-live="polite"></div>
+              </div>
+            </section>
+
+            <section class="seller-panel" id="account-save">
+              <div class="seller-panel-head">
+                <div><p class="seller-eyebrow">Account save</p><h2>Saved on this device or account</h2><p>Save this shop to your signed-in Pro account, or load an existing account shop back onto this device.</p></div>
+                <span class="pill local" id="cloudStatusPill">Saved on this device</span>
+              </div>
+              <div class="seller-panel-body">
+                <div class="cloud-sync-grid">
+                  <div class="cloud-status-line">
+                    <strong id="cloudStatusText">Saved on this device. Sign in with Pro when you are ready to save to account.</strong>
+                    <span class="row-sub" id="lastSyncedAt">Last account save: never</span>
+                  </div>
+                  <div class="seller-form two">
+                    <div class="field"><label for="cloudBusinessSelect">Account shop</label><select id="cloudBusinessSelect" name="cloudBusinessSelect"></select><span class="field-help">Only shops your signed-in account can access appear here.</span></div>
+                    <div class="field"><label>&nbsp;</label><div class="btn-row"><button class="btn primary" type="button" id="importLocalBtn">Save to account</button><button class="btn" type="button" id="pullCloudBtn">Load from account</button></div></div>
+                  </div>
+                  <div class="seller-note warn">Account save can store shop, product, order, customer, delivery note, payment record, and stock rows. Product photos, proof images, live payment collection, storefront publishing, WhatsApp API sending, and delivery booking are coming later.</div>
+                </div>
+              </div>
+            </section>
+
+            <section class="seller-panel" id="start-selling">
+              <div class="seller-panel-head"><div><p class="seller-eyebrow">Start selling workflow</p><h2>What to do first</h2><p>Follow these steps to go from setup to a receipt without guessing where to click next.</p></div><span class="pill" id="setupScorePill">0% ready</span></div>
+              <div class="seller-panel-body">
+                <div class="workflow-list" id="workflowSteps" aria-label="Start selling workflow"></div>
+              </div>
+            </section>
+
+            <div class="seller-split">
+              <section class="seller-panel" id="catalog">
+                <div class="seller-panel-head"><div><p class="seller-eyebrow">Product catalog</p><h2 id="productFormTitle">Add stock item</h2><p>Track SKU, variants, supplier, location, photo link, prices, and stock status.</p></div></div>
+                <div class="seller-panel-body">
+                  <form class="seller-form two" id="productForm">
+                    <div class="field"><label for="productName">Product name</label><input id="productName" name="productName" placeholder="Lagos satin bonnet"></div>
+                    <div class="field"><label for="productSku">SKU</label><input id="productSku" name="productSku" placeholder="SL-BONNET-BLK"></div>
+                    <div class="field"><label for="productCategory">Category</label><select id="productCategory" name="productCategory"><option>Fashion</option><option>Cosmetics</option><option>Phones and accessories</option><option>Food and baking</option><option>Groceries</option><option>Home goods</option><option>Other</option></select></div>
+                    <div class="field"><label for="productVariant">Size/color/variant</label><input id="productVariant" name="productVariant" placeholder="Black, medium, 3-pack"></div>
+                    <div class="field"><label for="productSupplier">Supplier</label><input id="productSupplier" name="productSupplier" placeholder="Balogun Market supplier"></div>
+                    <div class="field"><label for="stockLocation">Location/bin</label><input id="stockLocation" name="stockLocation" placeholder="Shop shelf, home store, rider bag"></div>
+                    <div class="field"><label for="photoUrl">Product photo placeholder</label><input id="photoUrl" name="photoUrl" type="url" placeholder="https://..."><span class="field-help">Paste an image link for now. Photo upload is coming later.</span></div>
+                    <div class="field"><label for="costPrice">Cost price</label><input id="costPrice" name="costPrice" type="number" min="0" step="0.01"></div>
+                    <div class="field"><label for="sellingPrice">Selling price</label><input id="sellingPrice" name="sellingPrice" type="number" min="0" step="0.01"></div>
+                    <div class="field"><label for="stockOnHand">Stock on hand</label><input id="stockOnHand" name="stockOnHand" type="number" min="0" step="1"></div>
+                    <div class="field"><label for="reorderLevel">Reorder level</label><input id="reorderLevel" name="reorderLevel" type="number" min="0" step="1"></div>
+                    <div class="field"><label for="productStatus">Status</label><select id="productStatus" name="productStatus"><option value="ready">Ready</option><option value="low stock">Low stock</option><option value="out of stock">Out of stock</option></select><span class="field-help">Stock count can automatically downgrade this when saved.</span></div>
+                    <div class="field"><label>&nbsp;</label><div class="btn-row"><button class="btn primary" type="submit" id="productSubmitBtn">Add product</button><button class="btn" type="button" id="productCancelBtn" disabled>Cancel edit</button></div></div>
+                  </form>
+                </div>
+              </section>
+
+              <section class="seller-panel" id="orders">
+                <div class="seller-panel-head"><div><p class="seller-eyebrow">Order book</p><h2 id="orderFormTitle">Add customer order</h2><p>Capture payment method, delivery note, dispatch checklist, rider handoff, fee, expected date, and proof note.</p></div></div>
+                <div class="seller-panel-body">
+                  <form class="seller-form two" id="orderForm">
+                    <div class="field"><label for="orderCustomer">Customer</label><input id="orderCustomer" name="orderCustomer" placeholder="Mariam Ade"></div>
+                    <div class="field"><label for="orderProduct">Product</label><select id="orderProduct" name="orderProduct"></select></div>
+                    <div class="field"><label for="orderQuantity">Quantity</label><input aria-label="Line item quantity" id="orderQuantity" name="orderQuantity" type="number" min="1" step="1" value="1"></div>
+                    <div class="field"><label for="orderAmount">Order amount</label><input id="orderAmount" name="orderAmount" type="number" min="0" step="0.01"></div>
+                    <div class="field"><label for="discountAmount">Discount</label><input id="discountAmount" name="discountAmount" type="number" min="0" step="0.01" value="0"></div>
+                    <div class="field"><label for="refundAmount">Refund/cancellation</label><input id="refundAmount" name="refundAmount" type="number" min="0" step="0.01" value="0"></div>
+                    <div class="field"><label for="amountPaid">Amount paid</label><input id="amountPaid" name="amountPaid" type="number" min="0" step="0.01"></div>
+                    <div class="field"><label for="paymentMethod">Payment method</label><select id="paymentMethod" name="paymentMethod"><option value="cash">Cash</option><option value="bank transfer">Bank transfer</option><option value="mobile money">Mobile money</option><option value="POS">Card/POS</option><option value="unpaid">Credit/unpaid</option></select></div>
+                    <div class="field"><label for="paymentProofNote">Payment proof note</label><input id="paymentProofNote" name="paymentProofNote" placeholder="Transfer screenshot checked by Aisha"></div>
+                    <div class="field"><label for="deliveryMethod">Delivery method</label><select id="deliveryMethod" name="deliveryMethod"><option>Local courier</option><option>Rider</option><option>Pickup</option><option>Bus park</option><option>Market pickup</option><option>Customer collection</option></select></div>
+                    <div class="field"><label for="orderDeliveryArea">Delivery area</label><input id="orderDeliveryArea" name="orderDeliveryArea" placeholder="Yaba, Eastlands, Osu, Sandton"></div>
+                    <div class="field"><label for="customerAddress">Delivery address/note</label><input id="customerAddress" name="customerAddress" placeholder="Area, street, landmark, pickup point"></div>
+                    <div class="field"><label for="deliveryFee">Delivery fee</label><input id="deliveryFee" name="deliveryFee" type="number" min="0" step="0.01"></div>
+                    <div class="field"><label for="riderName">Rider/courier name</label><input id="riderName" name="riderName" placeholder="Tunde rider, bus driver, shop assistant"></div>
+                    <div class="field"><label for="riderPhone">Rider phone</label><input id="riderPhone" name="riderPhone" inputmode="tel" placeholder="+234..."></div>
+                    <input id="riderContact" name="riderContact" type="hidden">
+                    <div class="field"><label for="expectedDeliveryDate">Expected date</label><input id="expectedDeliveryDate" name="expectedDeliveryDate" type="date"></div>
+                    <div class="field"><label for="dispatchNote">Dispatch checklist</label><input id="dispatchNote" name="dispatchNote" placeholder="Packed, receipt inside, balance checked"></div>
+                    <div class="field"><label for="podNote">Proof note</label><input id="podNote" name="podNote" placeholder="Customer confirmed by call, photo, signature, or chat"></div>
+                    <div class="field"><label for="deliveryStatus">Fulfillment status</label><select id="deliveryStatus" name="deliveryStatus"><option>not packed</option><option>packed</option><option>ready for pickup</option><option>assigned to rider</option><option>out for delivery</option><option>delivered</option><option>failed delivery</option><option>returned</option></select></div>
+                    <div class="field"><label for="orderStatus">Order status</label><select id="orderStatus" name="orderStatus"><option value="draft">Draft</option><option value="confirmed">Confirmed</option><option value="packed">Packed</option><option value="delivered">Delivered</option><option value="paid">Paid</option><option value="cancelled">Cancelled and restocked</option></select></div>
+                    <div class="field"><label>&nbsp;</label><div class="btn-row"><button class="btn primary" type="submit" id="orderSubmitBtn">Add order</button><button class="btn" type="button" id="orderCancelBtn" disabled>Cancel edit</button></div></div>
+                  </form>
+                </div>
+              </section>
+            </div>
+
+            <section class="seller-panel">
+              <div class="seller-panel-head"><div><p class="seller-eyebrow">Catalog table</p><h2>Products and stock status</h2><p>Use this as the inventory sheet before posting on WhatsApp status, Instagram, or market-day lists.</p></div><div class="btn-row"><button class="btn" type="button" id="exportProductsBtn">Product catalog CSV</button><button class="btn" type="button" id="exportInventoryValueBtn">Inventory value CSV</button><button class="btn" type="button" id="exportReorderListBtn">Reorder list CSV</button></div></div>
+              <div class="seller-panel-body">
+                <div class="inventory-summary" aria-label="Inventory health">
+                  <div><strong id="inventoryValuation">0</strong><span>Stock value at cost</span></div>
+                  <div><strong id="inventoryRiskCount">0</strong><span>Inventory alerts</span></div>
+                </div>
+                <div class="inventory-alerts" id="inventoryAlerts" aria-label="Inventory alerts"></div>
+                <div class="table-wrap" style="margin-top:10px"><table class="wide-table"><thead><tr><th>Product</th><th>SKU/variant</th><th>Supplier/bin</th><th>Price and margin</th><th>Stock</th><th>Alerts</th><th>Action</th></tr></thead><tbody id="productRows"></tbody></table></div>
+              </div>
+            </section>
+
+            <section class="seller-panel" id="catalog-preview">
+              <div class="seller-panel-head"><div><p class="seller-eyebrow">Catalog preview</p><h2>Shareable catalog draft</h2><p>Prepare a customer-facing product list from saved products. This is a draft and export area, not a hosted storefront or checkout.</p></div><div class="btn-row"><button class="btn" type="button" id="exportCatalogMarkdownBtn">Catalog Markdown</button><button class="btn" type="button" id="exportCatalogCsvBtn">Customer catalog CSV</button><button class="btn" type="button" id="exportCatalogHtmlBtn">Printable catalog HTML</button><button class="btn" type="button" id="copyCatalogMessageBtn">WhatsApp catalog message</button></div></div>
+              <div class="seller-panel-body">
+                <form class="seller-form three" id="catalogSettingsForm">
+                  <div class="field"><label for="catalogShopName">Shop name</label><input id="catalogShopName" name="catalogShopName" placeholder="Name customers should see"></div>
+                  <div class="field"><label for="catalogShopPhone">Shop phone/WhatsApp</label><input id="catalogShopPhone" name="catalogShopPhone" inputmode="tel" placeholder="+234..."></div>
+                  <div class="field"><label for="catalogCountry">Country</label><input id="catalogCountry" name="catalogCountry" placeholder="Nigeria"></div>
+                  <div class="field"><label for="catalogCurrency">Currency</label><input id="catalogCurrency" name="catalogCurrency" placeholder="NGN"></div>
+                  <div class="field"><label for="catalogBrandColor">Brand color</label><input id="catalogBrandColor" name="catalogBrandColor" type="color" value="#1455b8"><span class="field-help"><span class="catalog-color-dot" id="catalogColorDot"></span> Used in printable catalog export.</span></div>
+                  <div class="field"><label for="catalogShowPrices">Show prices</label><select id="catalogShowPrices" name="catalogShowPrices"><option value="yes">Show prices</option><option value="no">Hide prices</option></select></div>
+                  <div class="field"><label for="catalogShowStock">Show stock</label><select id="catalogShowStock" name="catalogShowStock"><option value="availability">Show availability only</option><option value="quantity">Show stock quantity</option><option value="hidden">Hide stock</option></select></div>
+                  <div class="field"><label for="catalogCategories">Categories to include</label><select id="catalogCategories" name="catalogCategories" multiple><option>Fashion</option><option>Cosmetics</option><option>Phones and accessories</option><option>Food and baking</option><option>Groceries</option><option>Home goods</option><option>Other</option></select><span class="field-help">Leave all selected for a full customer catalog export.</span></div>
+                </form>
+                <div class="catalog-warnings" id="catalogWarnings" aria-label="Catalog preview warnings" style="margin-top:12px"></div>
+                <div class="catalog-preview-grid" id="catalogPreviewGrid" aria-label="Product catalog preview"></div>
+                <div class="seller-note warn" style="margin-top:10px">Customer catalog export is a shareable catalog draft. Customers can view product details you export or copy, but AfroSeller does not host a public storefront, collect checkout payments, or submit customer orders from this preview.</div>
+              </div>
+            </section>
+
+            <section class="seller-panel">
+              <div class="seller-panel-head"><div><p class="seller-eyebrow">Order table</p><h2>Orders, balances, and delivery</h2><p>Use Cancel/restock when a customer cancels so stock is put back. Use Edit to correct product, quantity, paid amount, or status.</p></div><button class="btn" type="button" id="exportOrdersBtn">Order summary CSV</button></div>
+              <div class="seller-panel-body"><div class="table-wrap"><table class="wide-table"><thead><tr><th>Customer</th><th>Product</th><th>Qty</th><th>Order amount</th><th>Paid</th><th>Balance due</th><th>Payment</th><th>Delivery</th><th>Status</th><th>Action</th></tr></thead><tbody id="orderRows"></tbody></table></div></div>
+            </section>
+
+            <section class="seller-panel" id="fulfillment">
+              <div class="seller-panel-head"><div><p class="seller-eyebrow">Fulfillment board</p><h2>Delivery notes, dispatch checklist, and rider handoff</h2><p>Manage local courier, rider, pickup, bus park, market pickup, and customer collection orders without booking a courier or showing live route tracking.</p></div><div class="btn-row"><button class="btn" type="button" id="exportPackingListBtn">Packing list CSV</button><button class="btn" type="button" id="exportRiderHandoffBtn">Rider handoff CSV</button><button class="btn" type="button" id="exportFailedDeliveryBtn">Failed delivery CSV</button></div></div>
+              <div class="seller-panel-body">
+                <div class="fulfillment-warnings" id="fulfillmentWarnings" aria-label="Delivery warnings"></div>
+                <div class="fulfillment-board" id="fulfillmentBoard" aria-label="Fulfillment board"></div>
+              </div>
+            </section>
+
+            <section class="seller-panel" id="stock-ledger">
+              <div class="seller-panel-head"><div><p class="seller-eyebrow">Stock movement ledger</p><h2>Sales, restocks, adjustments, damage, and returns</h2><p>Record why stock changed. Orders add sale movements automatically; manual rows are for stockroom corrections.</p></div><button class="btn" type="button" id="exportStockMovementsBtn">Stock movement CSV</button></div>
+              <div class="seller-panel-body">
+                <form class="seller-form three" id="movementForm">
+                  <div class="field"><label for="movementProduct">Product</label><select id="movementProduct" name="movementProduct"></select></div>
+                  <div class="field"><label for="movementType">Movement type</label><select id="movementType" name="movementType"><option value="restock">Stock in</option><option value="sale">Stock out</option><option value="adjustment">Adjustment</option><option value="damage">Damaged/lost</option><option value="return">Return to stock</option></select></div>
+                  <div class="field"><label for="movementQuantity">Quantity</label><input aria-label="Line item quantity" id="movementQuantity" name="movementQuantity" type="number" step="1" value="1"><span class="field-help">Use a signed number only for adjustment rows.</span></div>
+                  <div class="field"><label for="movementOrder">Linked order</label><select id="movementOrder" name="movementOrder"></select><span class="field-help">Optional. Use it when a movement belongs to an order.</span></div>
+                  <div class="field"><label for="movementNote">Reason</label><input id="movementNote" name="movementNote" placeholder="Supplier refill, damaged item, customer return"></div>
+                  <div class="field"><label>&nbsp;</label><button class="btn primary" type="submit" id="movementSubmitBtn">Log movement</button></div>
+                </form>
+                <div class="table-wrap" style="margin-top:10px"><table class="wide-table"><thead><tr><th>Date</th><th>Product/variant</th><th>Movement</th><th>Qty</th><th>Reason</th><th>Linked order</th><th>Balance after</th></tr></thead><tbody id="movementRows"></tbody></table></div>
+              </div>
+            </section>
+          </div>
+
+          <aside>
+            <section class="seller-panel" id="daily-close">
+              <div class="seller-panel-head"><div><p class="seller-eyebrow">Daily close</p><h2>Today at a glance</h2><p>End-of-day view for cash count, payment records, unpaid follow-up, profit preview, low stock, and finance handoff.</p></div><div class="btn-row"><button class="btn" type="button" id="saveDailyCloseBtn">Save close</button><button class="btn" type="button" id="exportDailyCloseBtn">Daily close CSV</button><button class="btn" type="button" id="exportDailyCloseMarkdownBtn">Daily close Markdown</button></div></div>
+              <div class="seller-panel-body">
+                <div class="daily-close-list" id="dailyCloseRows"></div>
+                <h3 class="row-title" style="margin:12px 0 8px">Payment method summary</h3>
+                <div class="payment-summary" id="paymentSummaryRows" aria-label="Payment method summary"></div>
+                <h3 class="row-title" style="margin:12px 0 8px">Close checklist</h3>
+                <div class="close-checklist" id="closeChecklistRows" aria-label="Daily close checklist"></div>
+                <h3 class="row-title" style="margin:12px 0 8px">Finance handoff</h3>
+                <form class="seller-form" id="financeCloseForm">
+                  <div class="field"><label for="cashCount">Cash count</label><input id="cashCount" name="cashCount" type="number" min="0" step="0.01"></div>
+                  <div class="field"><label for="cashDifferenceNote">Difference note</label><input id="cashDifferenceNote" name="cashDifferenceNote" placeholder="Explain over/short cash, missing proof, or owner decision"></div>
+                  <div class="field"><label for="ownerReviewNote">Owner review note</label><input id="ownerReviewNote" name="ownerReviewNote" placeholder="What owner should review tomorrow"></div>
+                  <div class="field"><label for="accountantSummaryNote">Accountant summary note</label><textarea id="accountantSummaryNote" name="accountantSummaryNote" placeholder="Draft finance handoff note for accountant or bookkeeper"></textarea></div>
+                </form>
+                <div class="seller-note warn" style="margin-top:10px">Daily close uses saved payment records for review. It is not bank reconciliation, verified payment settlement, or tax compliance.</div>
+                <h3 class="row-title" style="margin:12px 0 8px">Saved close history</h3>
+                <div class="close-history-list" id="closeHistoryRows"></div>
+                <div class="seller-note" id="dailyCloseEmpty" style="margin-top:10px"></div>
+              </div>
+            </section>
+
+            <section class="seller-panel" id="customers">
+              <div class="seller-panel-head"><div><p class="seller-eyebrow">Customers</p><h2 id="customerFormTitle">Customer balances</h2><p>Keep phone, last order, open balance, and follow-up status close to the order desk.</p></div></div>
+              <div class="seller-panel-body">
+                <form class="seller-form" id="customerForm">
+                  <div class="field"><label for="customerName">Customer name</label><input id="customerName" name="customerName"></div>
+                  <div class="field"><label for="customerPhone">Phone or WhatsApp</label><input id="customerPhone" name="customerPhone" inputmode="tel" placeholder="+254..."></div>
+                  <div class="field"><label for="customerLastOrder">Last order</label><input id="customerLastOrder" name="customerLastOrder" placeholder="Rose body oil"></div>
+                  <div class="field"><label for="customerBalance">Total balance</label><input id="customerBalance" name="customerBalance" type="number" min="0" step="0.01"></div>
+                  <div class="field"><label for="customerLabels">Customer labels</label><select id="customerLabels" name="customerLabels" multiple><option>VIP</option><option>Repeat buyer</option><option>Owes balance</option><option>Wholesale</option><option>Delivery issue</option></select><span class="field-help">Hold Ctrl or Cmd to select more than one label.</span></div>
+                  <div class="field"><label for="followStatus">Follow-up status</label><select id="followStatus" name="followStatus"><option>New lead</option><option>Send payment reminder</option><option>Confirm delivery address</option><option>Ready for repeat order</option><option>Closed</option></select></div>
+                  <div class="btn-row"><button class="btn primary" type="submit" id="customerSubmitBtn">Add customer</button><button class="btn" type="button" id="customerCancelBtn" disabled>Cancel edit</button></div>
+                </form>
+                <div class="seller-list" id="customerRows" style="margin-top:10px"></div>
+                <div class="btn-row" style="margin-top:10px"><button class="btn" type="button" id="exportCustomersBtn">Customer balances CSV</button></div>
+              </div>
+            </section>
+
+            <section class="seller-panel" id="payments">
+              <div class="seller-panel-head"><div><p class="seller-eyebrow">Payments</p><h2>Payment records</h2><p>Track payment method, amount paid, balance due, and proof notes. AfroSeller records payments; it does not collect money.</p></div></div>
+              <div class="seller-panel-body">
+                <div class="seller-list" id="paymentRows"></div>
+              </div>
+            </section>
+
+            <section class="seller-panel" id="templates">
+              <div class="seller-panel-head"><div><p class="seller-eyebrow">WhatsApp templates</p><h2>Copy text only</h2><p>Generate seller-ready messages for manual copy or share. AfroSeller does not send WhatsApp API messages.</p></div><span class="pill template">No sending</span></div>
+              <div class="seller-panel-body">
+                <form class="seller-form" id="templateForm">
+                  <div class="field"><label for="templateType">Template</label><select id="templateType" name="templateType"><option value="confirmation">Order confirmation</option><option value="payment">Payment reminder</option><option value="order-ready">Order ready</option><option value="rider-assigned">Rider assigned</option><option value="out-for-delivery">Out for delivery</option><option value="delivery-failed">Delivery failed</option><option value="delivered-thanks">Delivered thank-you</option><option value="delivery">Delivery update</option><option value="catalog-inquiry">Customer inquiry message</option><option value="restock">Low-stock restock message</option></select></div>
+                  <div class="field"><label for="templateOrder">Order context</label><select id="templateOrder" name="templateOrder"></select></div>
+                  <div class="field"><label for="templateProduct">Product context</label><select id="templateProduct" name="templateProduct"></select></div>
+                  <div class="field"><label for="templateOutput">Message text</label><textarea class="template-output" id="templateOutput" readonly></textarea></div>
+                  <div class="field"><label for="waLinkOutput">wa.me link</label><input id="waLinkOutput" name="waLinkOutput" readonly><span class="field-help">This opens WhatsApp with prefilled text only. It is not WhatsApp API sending.</span></div>
+                  <div class="btn-row"><button class="btn primary" type="button" id="copyTemplateBtn">Copy template</button><button class="btn" type="button" id="copyWaLinkBtn">Copy wa.me link</button><a class="btn" id="openWaLinkBtn" href="#" target="_blank" rel="noopener">Open wa.me</a><button class="btn" type="button" id="refreshTemplateBtn">Refresh text</button></div>
+                </form>
+              </div>
+            </section>
+
+            <section class="seller-panel" id="exports">
+              <div class="seller-panel-head"><div><p class="seller-eyebrow">Receipts</p><h2>Receipts and downloads</h2><p>Download CSV files and a Markdown receipt or handoff note from the shop saved on this device.</p></div></div>
+              <div class="seller-panel-body">
+                <div class="field"><label for="handoffOrder">Receipt or handoff order</label><select id="handoffOrder" name="handoffOrder"></select><span class="field-help">Pick the exact order before exporting the Markdown note.</span></div>
+                <div class="seller-list" style="margin-top:10px">
+                  <button class="btn" type="button" id="exportProductsBtnSide">Product catalog CSV</button>
+                  <button class="btn" type="button" id="exportOrdersBtnSide">Order summary CSV</button>
+                  <button class="btn" type="button" id="exportCustomersBtnSide">Customer balances CSV</button>
+                  <button class="btn" type="button" id="exportStockMovementsBtnSide">Stock movement CSV</button>
+                  <button class="btn" type="button" id="exportInventoryValueBtnSide">Inventory valuation CSV</button>
+                  <button class="btn" type="button" id="exportReorderListBtnSide">Reorder list CSV</button>
+                  <button class="btn" type="button" id="exportCatalogMarkdownBtnSide">Catalog preview .md</button>
+                  <button class="btn" type="button" id="exportCatalogCsvBtnSide">Customer catalog CSV</button>
+                  <button class="btn" type="button" id="exportCatalogHtmlBtnSide">Printable catalog HTML</button>
+                  <button class="btn" type="button" id="copyCatalogMessageBtnSide">WhatsApp catalog message</button>
+                  <button class="btn" type="button" id="exportPackingListBtnSide">Packing list CSV</button>
+                  <button class="btn" type="button" id="exportRiderHandoffBtnSide">Rider handoff CSV</button>
+                  <button class="btn" type="button" id="exportDeliveryNoteBtn">Delivery note .md</button>
+                  <button class="btn" type="button" id="exportFailedDeliveryBtnSide">Failed delivery CSV</button>
+                  <button class="btn" type="button" id="exportDailyCloseBtnSide">Daily close CSV</button>
+                  <button class="btn" type="button" id="exportDailyCloseMarkdownBtnSide">Daily close Markdown</button>
+                  <button class="btn" type="button" id="exportSalesByProductBtnSide">Sales by product CSV</button>
+                  <button class="btn" type="button" id="exportSalesByCustomerBtnSide">Sales by customer CSV</button>
+                  <button class="btn" type="button" id="exportUnpaidBalancesBtnSide">Unpaid balances CSV</button>
+                  <button class="btn" type="button" id="exportInventoryMovementBtnSide">Inventory movement CSV</button>
+                  <button class="btn primary" type="button" id="exportHandoffBtn">Branded receipt .md</button>
+                </div>
+                <div class="seller-note" style="margin-top:10px">Saved on this device. Use Load starter shop only when you want example shop records on this device.</div>
+              </div>
+            </section>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      "use strict";
+      var STORAGE_KEY = "afroseller_social_commerce_os_v1";
+      var state = null;
+      var els = {};
+      var editingProductId = null;
+      var editingOrderId = null;
+      var editingCustomerId = null;
+      var cloudBusinesses = [];
+
+      function $(id) { return document.getElementById(id); }
+      function todayKey() { return new Date().toISOString().slice(0, 10); }
+      function addDaysKey(days) { var d = new Date(); d.setDate(d.getDate() + days); return d.toISOString().slice(0, 10); }
+      function clone(value) { return JSON.parse(JSON.stringify(value)); }
+      function uid(prefix) { return prefix + "-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 7); }
+      function number(value) { var parsed = Number(value); return Number.isFinite(parsed) ? parsed : 0; }
+      function escapeHtml(value) { return String(value == null ? "" : value).replace(/[&<>"']/g, function (char) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]; }); }
+      function slug(value) { return String(value || "afroseller").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "afroseller"; }
+      function currentCurrency() { return state && state.business && state.business.currency ? state.business.currency : "NGN"; }
+      function money(value) { var amount = number(value); try { return new Intl.NumberFormat(undefined, { style: "currency", currency: currentCurrency(), maximumFractionDigits: 0 }).format(amount); } catch (err) { return currentCurrency() + " " + amount.toLocaleString(); } }
+      function moneyIn(value, currency) { var amount = number(value); var code = currency || currentCurrency(); try { return new Intl.NumberFormat(undefined, { style: "currency", currency: code, maximumFractionDigits: 0 }).format(amount); } catch (err) { return code + " " + amount.toLocaleString(); } }
+      function productStatus(product) { if (number(product.stock) < 0) return "negative stock"; if (number(product.stock) === 0) return "out of stock"; if (number(product.stock) <= number(product.reorderLevel)) return "low stock"; return product.status || "ready"; }
+      function productSaveStatus(product) { var status = productStatus(product); return status === "negative stock" ? "out of stock" : status; }
+      function statusClass(value) { var v = String(value || "").toLowerCase(); if (v.indexOf("vip") >= 0) return "vip"; if (v.indexOf("wholesale") >= 0) return "wholesale"; if (v.indexOf("cash") >= 0 || v.indexOf("pos") >= 0) return "cash"; if (v.indexOf("bank") >= 0) return "bank"; if (v.indexOf("mobile") >= 0) return "mobile"; if (v.indexOf("unpaid") >= 0 || v.indexOf("owes") >= 0) return "unpaid"; if (v.indexOf("cancel") >= 0 || v.indexOf("returned") >= 0) return "cancelled"; if (v.indexOf("negative") >= 0) return "negative"; if (v.indexOf("failed") >= 0 || v.indexOf("out") >= 0 || v === "draft" || v === "overdue" || v === "sale" || v === "damage") return "out"; if (v.indexOf("low") >= 0 || v.indexOf("price") >= 0 || v.indexOf("margin") >= 0 || v === "packed" || v.indexOf("reminder") >= 0 || v.indexOf("issue") >= 0 || v === "adjustment") return "low"; if (v === "paid" || v === "delivered" || v === "confirmed" || v === "ready" || v === "restock" || v === "return" || v.indexOf("repeat") >= 0) return "ready"; return "local"; }
+      function productMargin(product) { return number(product.sellingPrice) - number(product.costPrice); }
+      function orderGrossMargin(order) { var product = findProduct(order.productId); return number(order.orderAmount) - (product ? number(product.costPrice) * number(order.quantity) : 0); }
+      function orderDiscount(order) { return number(order.discountAmount); }
+      function orderRefund(order) { return number(order.refundAmount); }
+      function orderTotal(order) { return Math.max(0, number(order.orderAmount) + number(order.deliveryFee) - orderDiscount(order) - orderRefund(order)); }
+      function productVariantLabel(product) { return product && product.variant ? product.variant : "Default variant"; }
+      function movementLabel(type) { return { restock: "Stock in", sale: "Stock out", adjustment: "Adjustment", damage: "Damaged/lost", return: "Return to stock" }[type] || type || "Movement"; }
+      function movementOrderLabel(orderId) { var order = findOrder(orderId); return order ? order.customer + " - " + order.productName : orderId ? orderId : "No linked order"; }
+      function productAlerts(product) {
+        var alerts = [];
+        var stock = number(product.stock);
+        if (stock < 0) alerts.push({ label: "Negative stock", level: "negative" });
+        else if (stock === 0) alerts.push({ label: "Out of stock", level: "out" });
+        else if (stock <= number(product.reorderLevel)) alerts.push({ label: "Low stock", level: "low" });
+        if (number(product.costPrice) <= 0) alerts.push({ label: "No cost price", level: "price" });
+        if (number(product.sellingPrice) <= 0) alerts.push({ label: "No selling price", level: "price" });
+        else if (number(product.costPrice) > 0 && productMargin(product) <= 0) alerts.push({ label: "Margin warning", level: "price" });
+        return alerts;
+      }
+      function defaultCatalogSettings() { return { shopName: "", shopPhone: "", country: "Nigeria", currency: "NGN", brandColor: "#1455b8", showPrices: true, showStock: "availability", categories: ["Fashion", "Cosmetics", "Phones and accessories", "Food and baking", "Groceries", "Home goods", "Other"] }; }
+      function catalogSettings() { return Object.assign(defaultCatalogSettings(), state.catalogSettings || {}); }
+      function catalogShopName() { var settings = catalogSettings(); return settings.shopName || state.business.receiptName || state.business.name || ""; }
+      function catalogShopPhone() { var settings = catalogSettings(); return settings.shopPhone || state.business.phone || ""; }
+      function catalogCurrency() { return catalogSettings().currency || state.business.currency || currentCurrency(); }
+      function catalogPrice(product) { var settings = catalogSettings(); return settings.showPrices ? moneyIn(product.sellingPrice, catalogCurrency()) : "Ask for price"; }
+      function catalogAvailability(product) { var settings = catalogSettings(); var stock = number(product.stock); if (settings.showStock === "hidden") return "Ask for availability"; if (settings.showStock === "quantity") return stock + " available"; if (stock <= 0) return "Out of stock"; if (stock <= number(product.reorderLevel)) return "Low stock"; return "Available"; }
+      function selectedCatalogProducts() { var settings = catalogSettings(); var categories = settings.categories && settings.categories.length ? settings.categories : defaultCatalogSettings().categories; return state.products.filter(function (product) { return categories.indexOf(product.category || "Other") >= 0; }); }
+      function catalogWarnings() {
+        var warnings = [];
+        var products = selectedCatalogProducts();
+        if (!catalogShopName()) warnings.push({ label: "Missing shop name", level: "out" });
+        if (!catalogShopPhone()) warnings.push({ label: "Missing WhatsApp/contact", level: "out" });
+        products.forEach(function (product) {
+          if (number(product.sellingPrice) <= 0) warnings.push({ label: product.name + ": no price", level: "low" });
+          if (number(product.stock) <= 0) warnings.push({ label: product.name + ": out of stock", level: "out" });
+        });
+        return warnings;
+      }
+      function fulfillmentStatus(value) {
+        var raw = String(value || "").toLowerCase();
+        var map = { "pickup pending": "not packed", "ready for dispatch": "ready for pickup", "rider assigned": "assigned to rider", "in transit": "out for delivery", "cancelled": "returned" };
+        var normalized = map[raw] || raw || "not packed";
+        return ["not packed", "packed", "ready for pickup", "assigned to rider", "out for delivery", "delivered", "failed delivery", "returned"].indexOf(normalized) >= 0 ? normalized : "not packed";
+      }
+      function isFulfilled(order) { return fulfillmentStatus(order.deliveryStatus) === "delivered"; }
+      function riderContactFor(order) { return [order.riderName, order.riderPhone].filter(Boolean).join(" "); }
+      function deliveryAreaFor(order) { return order.deliveryArea || state.business.deliveryArea || ""; }
+      function deliveryMethodFor(order) { return order.deliveryMethod || "Local courier"; }
+      function fulfillmentLane(order) { var status = fulfillmentStatus(order.deliveryStatus); if (status === "out for delivery" || status === "assigned to rider") return "out"; if (status === "delivered") return "delivered"; if (status === "failed delivery" || status === "returned") return "failed"; if (order.date === todayKey() || order.expectedDate === todayKey()) return "today"; return "pending"; }
+      function fulfillmentWarningsFor(order) {
+        var warnings = [];
+        var status = fulfillmentStatus(order.deliveryStatus);
+        var paid = number(order.amountPaid) >= number(order.orderAmount) + number(order.deliveryFee) && number(order.orderAmount) > 0;
+        var hasRider = !!(order.riderName || order.riderPhone || order.riderContact);
+        var methodNeedsAddress = !/pickup|collection/i.test(deliveryMethodFor(order));
+        var methodNeedsRider = /courier|rider|bus/i.test(deliveryMethodFor(order)) || status === "assigned to rider" || status === "out for delivery";
+        if (paid && !isFulfilled(order) && order.orderStatus !== "cancelled") warnings.push({ label: "Paid but not fulfilled", level: "low" });
+        if (isFulfilled(order) && orderBalance(order) > 0) warnings.push({ label: "Fulfilled but unpaid", level: "out" });
+        if (methodNeedsAddress && !order.customerAddress) warnings.push({ label: "Missing address", level: "low" });
+        if (methodNeedsRider && !hasRider) warnings.push({ label: "Missing rider contact", level: "low" });
+        if (status === "failed delivery") warnings.push({ label: "Failed delivery needs follow-up", level: "out" });
+        return warnings;
+      }
+      function orderBalance(order) { return Math.max(0, orderTotal(order) - number(order.amountPaid)); }
+      function findProduct(id) { return state.products.find(function (product) { return product.id === id; }) || null; }
+      function findOrder(id) { return state.orders.find(function (order) { return order.id === id; }) || null; }
+      function findCustomer(id) { return state.customers.find(function (customer) { return customer.id === id; }) || null; }
+      function orderUsesStock(order) { return order && order.orderStatus !== "cancelled"; }
+      function orderLabel(order) { return order ? order.customer + " - " + order.productName + " - " + money(order.orderAmount) : ""; }
+      function selectedValues(select) { return Array.prototype.slice.call(select.selectedOptions || []).map(function (option) { return option.value; }); }
+      function setSelectedValues(select, values) { var lookup = {}; (values || []).forEach(function (value) { lookup[String(value).toLowerCase()] = true; }); Array.prototype.slice.call(select.options || []).forEach(function (option) { option.selected = !!lookup[String(option.value).toLowerCase()]; }); }
+      function addUnique(values, value) { var list = Array.isArray(values) ? values.slice() : []; if (value && !list.some(function (item) { return item.toLowerCase() === value.toLowerCase(); })) list.push(value); return list; }
+
+      var blankState = {
+        business: { name: "", country: "Nigeria", currency: "NGN", language: "English", channel: "WhatsApp", phone: "", category: "Fashion and boutique", deliveryArea: "", receiptName: "", receiptColor: "#1455b8", paymentMethods: [] },
+        catalogSettings: defaultCatalogSettings(),
+        dailyCloseDraft: { cashCount: 0, differenceNote: "", ownerReviewNote: "", accountantSummaryNote: "", checklist: {} },
+        closeHistory: [],
+        exportRecords: [],
+        products: [],
+        orders: [],
+        customers: [],
+        stockMovements: [],
+        updatedAt: new Date().toISOString()
+      };
+
+      var demoState = {
+        business: { name: "Amina Weekend Store", country: "Nigeria", currency: "NGN", language: "English", channel: "WhatsApp", phone: "+234 800 000 0000", category: "Fashion and boutique", deliveryArea: "Yaba and Lagos mainland", receiptName: "Amina Weekend Store", receiptColor: "#1455b8", paymentMethods: ["Cash", "Bank transfer", "Mobile money"] },
+        catalogSettings: { shopName: "Amina Weekend Store", shopPhone: "+234 800 000 0000", country: "Nigeria", currency: "NGN", brandColor: "#1455b8", showPrices: true, showStock: "availability", categories: ["Fashion", "Cosmetics", "Food and baking"] },
+        dailyCloseDraft: { cashCount: 6000, differenceNote: "Cash count is a draft for owner review.", ownerReviewNote: "Follow up unpaid balances before restocking.", accountantSummaryNote: "Review bank transfer and mobile money payment records against owner statements.", checklist: { orderStatusReviewed: true, paymentReferencesAdded: false, deliveriesUpdated: true, stockExceptionsReviewed: true, unpaidBalancesNoted: true, exportsDownloaded: false } },
+        closeHistory: [],
+        exportRecords: [],
+        products: [
+          { id: "p-bonnet", name: "Satin bonnet pack", sku: "SL-BON-BLK", category: "Fashion", variant: "Black, 2-pack", supplier: "Balogun Market supplier", stockLocation: "Shop shelf A", photoUrl: "https://example.com/bonnet-photo", costPrice: 2500, sellingPrice: 5000, stock: 18, reorderLevel: 6, status: "ready" },
+          { id: "p-oil", name: "Glow body oil", sku: "GL-OIL-250", category: "Cosmetics", variant: "250ml vanilla", supplier: "Eastlands beauty wholesaler", stockLocation: "Cosmetics box", photoUrl: "", costPrice: 1800, sellingPrice: 3500, stock: 4, reorderLevel: 5, status: "low stock" },
+          { id: "p-charger", name: "Fast charger type-C", sku: "TC-FAST-20W", category: "Phones and accessories", variant: "White 20W", supplier: "Computer Village contact", stockLocation: "Back drawer", photoUrl: "", costPrice: 4200, sellingPrice: 6500, stock: 0, reorderLevel: 3, status: "out of stock" },
+          { id: "p-cake", name: "Mini chin-chin jar", sku: "CC-JAR-MINI", category: "Food and baking", variant: "Small jar", supplier: "In-house kitchen", stockLocation: "Bakery crate", photoUrl: "", costPrice: 900, sellingPrice: 1800, stock: 22, reorderLevel: 8, status: "ready" }
+        ],
+        orders: [
+          { id: "o-1001", date: todayKey(), customer: "Mariam Ade", productId: "p-bonnet", productName: "Satin bonnet pack", quantity: 2, orderAmount: 10000, amountPaid: 6000, paymentMethod: "bank transfer", paymentProofNote: "Part payment screenshot saved in chat", deliveryMethod: "Rider", deliveryArea: "Yaba", customerAddress: "Yaba, Lagos - call at bus stop", deliveryFee: 1500, riderName: "Tunde rider", riderPhone: "+234 809 111 2222", riderContact: "Tunde rider +234 809 111 2222", expectedDate: todayKey(), dispatchNote: "Pack bonnet, receipt, and balance reminder", podNote: "", deliveryStatus: "ready for pickup", orderStatus: "packed" },
+          { id: "o-1002", date: todayKey(), customer: "Njeri Wanjiku", productId: "p-oil", productName: "Glow body oil", quantity: 1, orderAmount: 3500, amountPaid: 4200, paymentMethod: "mobile money", paymentProofNote: "M-Pesa confirmation noted", deliveryMethod: "Local courier", deliveryArea: "Kilimani", customerAddress: "Kilimani, Nairobi", deliveryFee: 700, riderName: "Boda rider John", riderPhone: "", riderContact: "Boda rider John", expectedDate: todayKey(), dispatchNote: "Delivered before 6pm", podNote: "Customer confirmed delivery", deliveryStatus: "delivered", orderStatus: "paid" },
+          { id: "o-1003", date: addDaysKey(-1), customer: "Kojo Mensah", productId: "p-cake", productName: "Mini chin-chin jar", quantity: 5, orderAmount: 9000, amountPaid: 0, paymentMethod: "unpaid", paymentProofNote: "Awaiting payment", deliveryMethod: "Customer collection", deliveryArea: "Osu", customerAddress: "Osu market pickup", deliveryFee: 0, riderName: "", riderPhone: "", riderContact: "", expectedDate: addDaysKey(1), dispatchNote: "Pickup only after payment", podNote: "", deliveryStatus: "not packed", orderStatus: "confirmed" }
+        ],
+        customers: [
+          { id: "c-mariam", name: "Mariam Ade", phone: "+234 801 222 3344", lastOrder: "Satin bonnet pack", totalBalance: 5500, labels: ["VIP", "Owes balance"], followStatus: "Send payment reminder" },
+          { id: "c-njeri", name: "Njeri Wanjiku", phone: "+254 700 111 222", lastOrder: "Glow body oil", totalBalance: 0, labels: ["Repeat buyer"], followStatus: "Ready for repeat order" },
+          { id: "c-kojo", name: "Kojo Mensah", phone: "+233 24 000 1111", lastOrder: "Mini chin-chin jar", totalBalance: 9000, labels: ["Wholesale", "Owes balance"], followStatus: "Confirm delivery address" }
+        ],
+        stockMovements: [
+          { id: "m-1001", date: todayKey(), type: "sale", productId: "p-bonnet", productName: "Satin bonnet pack", quantity: -2, stockAfter: 18, note: "Order o-1001 reserved stock" },
+          { id: "m-1002", date: todayKey(), type: "sale", productId: "p-oil", productName: "Glow body oil", quantity: -1, stockAfter: 4, note: "Order o-1002 completed" },
+          { id: "m-1003", date: addDaysKey(-1), type: "restock", productId: "p-cake", productName: "Mini chin-chin jar", quantity: 30, stockAfter: 27, note: "Kitchen batch restock" }
+        ],
+        updatedAt: new Date().toISOString()
+      };
+
+      function normalizeProduct(product) {
+        product.sku = product.sku || product.id || "";
+        product.variant = product.variant || "";
+        product.supplier = product.supplier || "";
+        product.stockLocation = product.stockLocation || "";
+        product.photoUrl = product.photoUrl || "";
+        product.costPrice = number(product.costPrice);
+        product.sellingPrice = number(product.sellingPrice);
+        product.stock = number(product.stock);
+        product.reorderLevel = number(product.reorderLevel);
+        product.status = productSaveStatus(product);
+        return product;
+      }
+      function normalizeOrder(order) {
+        order.paymentMethod = order.paymentMethod || (number(order.amountPaid) > 0 ? "cash" : "unpaid");
+        order.paymentProofNote = order.paymentProofNote || "";
+        order.discountAmount = number(order.discountAmount);
+        order.refundAmount = number(order.refundAmount);
+        order.customerAddress = order.customerAddress || "";
+        order.deliveryFee = number(order.deliveryFee);
+        var defaultDeliveryArea = state && state.business ? state.business.deliveryArea || "" : "";
+        order.deliveryMethod = order.deliveryMethod || (/pickup/i.test(order.customerAddress || "") ? "Pickup" : "Local courier");
+        order.deliveryArea = order.deliveryArea || defaultDeliveryArea;
+        order.riderName = order.riderName || "";
+        order.riderPhone = order.riderPhone || "";
+        order.riderContact = order.riderContact || riderContactFor(order);
+        order.expectedDate = order.expectedDate || "";
+        order.dispatchNote = order.dispatchNote || "";
+        order.podNote = order.podNote || "";
+        order.deliveryStatus = fulfillmentStatus(order.deliveryStatus);
+        return order;
+      }
+      function normalizeCustomer(customer) {
+        customer.labels = Array.isArray(customer.labels) ? customer.labels : [];
+        if (number(customer.totalBalance) > 0) customer.labels = addUnique(customer.labels, "Owes balance");
+        return customer;
+      }
+      function normalizeMovement(movement) {
+        movement.date = movement.date || todayKey();
+        movement.type = movement.type || "adjustment";
+        movement.productName = movement.productName || (findProduct(movement.productId) || {}).name || "";
+        movement.variantName = movement.variantName || (findProduct(movement.productId) || {}).variant || "";
+        movement.quantity = number(movement.quantity);
+        movement.stockAfter = number(movement.stockAfter);
+        movement.note = movement.note || "";
+        movement.orderId = movement.orderId || movement.linkedOrderId || "";
+        return movement;
+      }
+      function normalizeState(data) {
+        data.business = Object.assign(clone(blankState.business), data.business || {});
+        data.business.paymentMethods = Array.isArray(data.business.paymentMethods) ? data.business.paymentMethods : [];
+        data.catalogSettings = Object.assign(defaultCatalogSettings(), data.catalogSettings || {});
+        data.catalogSettings.showPrices = data.catalogSettings.showPrices !== false;
+        data.catalogSettings.showStock = ["availability", "quantity", "hidden"].indexOf(data.catalogSettings.showStock) >= 0 ? data.catalogSettings.showStock : "availability";
+        data.catalogSettings.categories = Array.isArray(data.catalogSettings.categories) && data.catalogSettings.categories.length ? data.catalogSettings.categories : defaultCatalogSettings().categories;
+        data.dailyCloseDraft = Object.assign(clone(blankState.dailyCloseDraft), data.dailyCloseDraft || {});
+        data.dailyCloseDraft.checklist = Object.assign({}, blankState.dailyCloseDraft.checklist, data.dailyCloseDraft.checklist || {});
+        data.closeHistory = Array.isArray(data.closeHistory) ? data.closeHistory : [];
+        data.exportRecords = Array.isArray(data.exportRecords) ? data.exportRecords : [];
+        data.products = Array.isArray(data.products) ? data.products.map(normalizeProduct) : [];
+        data.orders = Array.isArray(data.orders) ? data.orders.map(normalizeOrder) : [];
+        data.customers = Array.isArray(data.customers) ? data.customers.map(normalizeCustomer) : [];
+        data.stockMovements = Array.isArray(data.stockMovements) ? data.stockMovements.map(normalizeMovement) : [];
+        return data;
+      }
+      function loadState() { try { var raw = localStorage.getItem(STORAGE_KEY); if (raw) { var parsed = normalizeState(JSON.parse(raw)); if (parsed && Array.isArray(parsed.products) && Array.isArray(parsed.orders) && Array.isArray(parsed.customers)) return parsed; } } catch (err) {} var fresh = normalizeState(clone(blankState)); saveState(fresh, false); return fresh; }
+      function saveState(nextState, announce) { var data = nextState || state; if (!data) return; data.updatedAt = new Date().toISOString(); try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); if (announce !== false) setStatus("Saved on this device at " + new Date().toLocaleTimeString() + "."); } catch (err) { setStatus("Device save failed. Your browser may be blocking storage."); } }
+      function setStatus(message) { if (els.saveStatus) els.saveStatus.textContent = message || ""; }
+      function setDisabled(el, disabled, title) { if (!el) return; el.disabled = !!disabled; el.title = disabled ? title || "Add data first." : ""; el.setAttribute("aria-disabled", disabled ? "true" : "false"); if (el.tagName === "A") { if (disabled) { el.setAttribute("tabindex", "-1"); el.setAttribute("href", "#"); } else { el.removeAttribute("tabindex"); } } }
+      function syncBusinessForm() { els.businessName.value = state.business.name || ""; els.businessCountry.value = state.business.country || "Nigeria"; els.businessCurrency.value = state.business.currency || "NGN"; els.languageLane.value = state.business.language || "English"; els.sellerChannel.value = state.business.channel || "WhatsApp"; els.sellerPhone.value = state.business.phone || ""; els.businessCategory.value = state.business.category || "Fashion and boutique"; els.defaultDeliveryArea.value = state.business.deliveryArea || ""; els.receiptBrandName.value = state.business.receiptName || state.business.name || ""; els.receiptBrandColor.value = state.business.receiptColor || "#1455b8"; setSelectedValues(els.paymentMethodsAccepted, state.business.paymentMethods || []); }
+      function readBusinessForm() { state.business.name = els.businessName.value.trim(); state.business.country = els.businessCountry.value; state.business.currency = els.businessCurrency.value; state.business.language = els.languageLane.value; state.business.channel = els.sellerChannel.value; state.business.phone = els.sellerPhone.value.trim(); state.business.category = els.businessCategory.value; state.business.deliveryArea = els.defaultDeliveryArea.value.trim(); state.business.receiptName = els.receiptBrandName.value.trim(); state.business.receiptColor = els.receiptBrandColor.value || "#1455b8"; state.business.paymentMethods = selectedValues(els.paymentMethodsAccepted); }
+      function syncCatalogSettingsForm() { var settings = catalogSettings(); els.catalogShopName.value = settings.shopName || state.business.receiptName || state.business.name || ""; els.catalogShopPhone.value = settings.shopPhone || state.business.phone || ""; els.catalogCountry.value = settings.country || state.business.country || "Nigeria"; els.catalogCurrency.value = settings.currency || state.business.currency || "NGN"; els.catalogBrandColor.value = settings.brandColor || state.business.receiptColor || "#1455b8"; els.catalogShowPrices.value = settings.showPrices ? "yes" : "no"; els.catalogShowStock.value = settings.showStock || "availability"; setSelectedValues(els.catalogCategories, settings.categories || defaultCatalogSettings().categories); }
+      function readCatalogSettingsForm() { state.catalogSettings = { shopName: els.catalogShopName.value.trim(), shopPhone: els.catalogShopPhone.value.trim(), country: els.catalogCountry.value.trim() || state.business.country || "Nigeria", currency: (els.catalogCurrency.value.trim() || state.business.currency || "NGN").toUpperCase(), brandColor: els.catalogBrandColor.value || state.business.receiptColor || "#1455b8", showPrices: els.catalogShowPrices.value === "yes", showStock: els.catalogShowStock.value || "availability", categories: selectedValues(els.catalogCategories) }; }
+      function syncFinanceCloseForm() { var draft = state.dailyCloseDraft || blankState.dailyCloseDraft; els.cashCount.value = number(draft.cashCount) || ""; els.cashDifferenceNote.value = draft.differenceNote || ""; els.ownerReviewNote.value = draft.ownerReviewNote || ""; els.accountantSummaryNote.value = draft.accountantSummaryNote || ""; }
+      function readFinanceCloseForm() { state.dailyCloseDraft = state.dailyCloseDraft || clone(blankState.dailyCloseDraft); state.dailyCloseDraft.cashCount = number(els.cashCount.value); state.dailyCloseDraft.differenceNote = els.cashDifferenceNote.value.trim(); state.dailyCloseDraft.ownerReviewNote = els.ownerReviewNote.value.trim(); state.dailyCloseDraft.accountantSummaryNote = els.accountantSummaryNote.value.trim(); state.dailyCloseDraft.checklist = state.dailyCloseDraft.checklist || {}; }
+      function resetProductForm() { editingProductId = null; els.productForm.reset(); els.productFormTitle.textContent = "Add stock item"; els.productSubmitBtn.textContent = "Add product"; setDisabled(els.productCancelBtn, true, "No product edit is active."); }
+      function resetOrderForm() { editingOrderId = null; els.orderForm.reset(); els.orderQuantity.value = "1"; els.discountAmount.value = "0"; els.refundAmount.value = "0"; els.paymentMethod.value = "cash"; els.deliveryMethod.value = "Local courier"; els.deliveryFee.value = "0"; els.deliveryStatus.value = "not packed"; els.orderDeliveryArea.value = state && state.business ? state.business.deliveryArea || "" : ""; els.orderFormTitle.textContent = "Add customer order"; els.orderSubmitBtn.textContent = "Add order"; setDisabled(els.orderCancelBtn, true, "No order edit is active."); }
+      function resetCustomerForm() { editingCustomerId = null; els.customerForm.reset(); setSelectedValues(els.customerLabels, []); els.customerFormTitle.textContent = "Customer balances"; els.customerSubmitBtn.textContent = "Add customer"; setDisabled(els.customerCancelBtn, true, "No customer edit is active."); }
+      function syncCustomerBalances() { state.customers.forEach(function (customer) { var orders = state.orders.filter(function (order) { return order.customer.toLowerCase() === customer.name.toLowerCase(); }); if (!orders.length) return; customer.lastOrder = orders[0].productName; customer.totalBalance = orders.reduce(function (sum, order) { return order.orderStatus === "cancelled" ? sum : sum + orderBalance(order); }, 0); if (customer.totalBalance > 0) { customer.labels = addUnique(customer.labels, "Owes balance"); if (customer.followStatus === "Closed") customer.followStatus = "Send payment reminder"; } }); }
+      function stockDeltaFor(type, quantity) { var qty = Math.abs(number(quantity)); if (type === "sale" || type === "damage") return -qty; if (type === "adjustment") return number(quantity); return qty; }
+      function adjustStock(productId, delta) { var product = findProduct(productId); if (!product) return null; product.stock = number(product.stock) + number(delta); product.status = productSaveStatus(product); return product; }
+      function recordStockMovement(productId, type, quantity, note, applyStock, orderId) { var product = findProduct(productId); if (!product) return null; var delta = stockDeltaFor(type, quantity); if (applyStock) product = adjustStock(productId, delta) || product; state.stockMovements.unshift({ id: uid("m"), date: todayKey(), type: type, productId: product.id, productName: product.name, variantName: product.variant || "", quantity: delta, stockAfter: number(product.stock), note: note || "", orderId: orderId || "" }); return product; }
+      function restoreOrderStock(order, note) { if (orderUsesStock(order)) recordStockMovement(order.productId, "return", number(order.quantity), note || "Order stock returned", true, order.id); }
+      function reserveOrderStock(order, note) { if (orderUsesStock(order)) recordStockMovement(order.productId, "sale", number(order.quantity), note || "Order stock reserved", true, order.id); }
+
+      function dailyClose() {
+        var today = todayKey();
+        var todayAllOrders = state.orders.filter(function (order) { return order.date === today; });
+        var todaysOrders = todayAllOrders.filter(function (order) { return order.orderStatus !== "cancelled"; });
+        var cancelledOrders = todayAllOrders.filter(function (order) { return order.orderStatus === "cancelled"; });
+        var salesToday = todaysOrders.reduce(function (sum, order) { return sum + Math.max(0, number(order.orderAmount) - orderDiscount(order)); }, 0);
+        var deliveryFees = todaysOrders.reduce(function (sum, order) { return sum + number(order.deliveryFee); }, 0);
+        var discounts = todaysOrders.reduce(function (sum, order) { return sum + orderDiscount(order); }, 0);
+        var refunds = todayAllOrders.reduce(function (sum, order) { return sum + orderRefund(order); }, 0);
+        var cancellations = cancelledOrders.reduce(function (sum, order) { return sum + orderTotal(order); }, 0);
+        var grossSales = todaysOrders.reduce(function (sum, order) { return sum + orderTotal(order); }, 0);
+        var amountPaid = todaysOrders.reduce(function (sum, order) { return sum + number(order.amountPaid); }, 0);
+        var unpaid = todaysOrders.reduce(function (sum, order) { return sum + orderBalance(order); }, 0);
+        var stockSold = todaysOrders.reduce(function (sum, order) { return sum + number(order.quantity); }, 0);
+        var profit = todaysOrders.reduce(function (sum, order) { var product = findProduct(order.productId); return sum + (Math.max(0, number(order.orderAmount) - orderDiscount(order) - orderRefund(order)) - (product ? number(product.costPrice) * number(order.quantity) : 0)); }, 0);
+        var lowStock = state.products.filter(function (product) { return productStatus(product) !== "ready"; });
+        var completed = todaysOrders.filter(function (order) { return order.orderStatus === "paid" || order.orderStatus === "delivered"; }).length;
+        return { today: today, allOrders: todayAllOrders, orders: todaysOrders, cancelledOrders: cancelledOrders, salesToday: salesToday, grossSales: grossSales, amountPaid: amountPaid, unpaid: unpaid, deliveryFees: deliveryFees, discounts: discounts, refunds: refunds, cancellations: cancellations, stockSold: stockSold, profit: profit, lowStock: lowStock, completed: completed, orderCount: todaysOrders.length, totalOrderCount: todayAllOrders.length };
+      }
+      function paymentMethodBucket(method) { var value = String(method || "other").toLowerCase(); if (value.indexOf("cash") >= 0) return "cash"; if (value.indexOf("mobile") >= 0) return "mobileMoney"; if (value.indexOf("bank") >= 0) return "bankTransfer"; if (value.indexOf("pos") >= 0 || value.indexOf("card") >= 0) return "cardPos"; if (value.indexOf("unpaid") >= 0 || value.indexOf("credit") >= 0) return "creditUnpaid"; return "other"; }
+      function paymentMethodSummary(close) { var summary = { cash: 0, mobileMoney: 0, bankTransfer: 0, cardPos: 0, creditUnpaid: 0, other: 0 }; close.orders.forEach(function (order) { var bucket = paymentMethodBucket(order.paymentMethod); if (bucket !== "creditUnpaid") summary[bucket] += number(order.amountPaid); summary.creditUnpaid += orderBalance(order); }); return summary; }
+      function closeChecklistItems() { return [
+        ["orderStatusReviewed", "All orders status reviewed"],
+        ["paymentReferencesAdded", "Payment references added"],
+        ["deliveriesUpdated", "Deliveries updated"],
+        ["stockExceptionsReviewed", "Stock exceptions reviewed"],
+        ["unpaidBalancesNoted", "Unpaid balances noted"],
+        ["exportsDownloaded", "Exports downloaded"]
+      ]; }
+      function closeStatus(close) { var checklist = (state.dailyCloseDraft && state.dailyCloseDraft.checklist) || {}; var done = closeChecklistItems().filter(function (item) { return checklist[item[0]]; }).length; if (!close.totalOrderCount) return "No orders"; return done === closeChecklistItems().length ? "Closed" : done ? "In review" : "Open"; }
+      function ordersNeedingAction() { return state.orders.filter(function (order) { return order.orderStatus !== "cancelled" && (orderBalance(order) > 0 || fulfillmentWarningsFor(order).length || fulfillmentStatus(order.deliveryStatus) === "failed delivery"); }); }
+      function cashDifference(close) { return number((state.dailyCloseDraft || {}).cashCount) - paymentMethodSummary(close).cash; }
+      function markExportDownloaded(kind) { state.dailyCloseDraft = state.dailyCloseDraft || clone(blankState.dailyCloseDraft); state.dailyCloseDraft.checklist = state.dailyCloseDraft.checklist || {}; state.dailyCloseDraft.checklist.exportsDownloaded = true; var meta = cloudMeta(); state.exportRecords.unshift({ id: uid("ex"), date: todayKey(), kind: kind, createdAt: new Date().toISOString(), accountBusinessId: meta.businessId || "", accountLastSavedAt: meta.lastSyncedAt || "" }); state.exportRecords = state.exportRecords.slice(0, 30); saveState(state, false); }
+      function setupChecks() {
+        var paymentRecords = state.orders.filter(function (order) { return number(order.amountPaid) > 0 || order.paymentMethod !== "unpaid"; });
+        var hasDelivery = !!state.business.deliveryArea || state.orders.some(function (order) { return !!order.customerAddress || /ready|assigned|out|delivered|pickup|returned/i.test(fulfillmentStatus(order.deliveryStatus)); });
+        var profileReady = !!(state.business.name && state.business.country && state.business.currency && state.business.phone && state.business.category);
+        return [
+          { label: "Shop profile", done: profileReady, next: "Add shop name, country, currency, category, and seller phone.", href: "#setup" },
+          { label: "First product", done: state.products.length > 0, next: "Add your first product with price and stock.", href: "#catalog" },
+          { label: "First customer", done: state.customers.length > 0, next: "Add a customer or create one from an order.", href: "#customers" },
+          { label: "First order", done: state.orders.length > 0, next: "Create an order after adding a product.", href: "#orders" },
+          { label: "Payment method", done: (state.business.paymentMethods || []).length > 0 || paymentRecords.length > 0, next: "Choose accepted payment methods or record a payment.", href: "#payments" },
+          { label: "Delivery option", done: hasDelivery, next: "Add a default delivery area or delivery note.", href: "#setup" }
+        ];
+      }
+      function renderSetupScore() {
+        var checks = setupChecks();
+        var paymentRecords = state.orders.filter(function (order) { return number(order.amountPaid) > 0 || order.paymentMethod !== "unpaid"; });
+        var hasDelivery = !!state.business.deliveryArea || state.orders.some(function (order) { return !!order.customerAddress || /ready|assigned|out|delivered|pickup|returned/i.test(fulfillmentStatus(order.deliveryStatus)); });
+        var done = checks.filter(function (item) { return item.done; }).length;
+        var score = Math.round(done / checks.length * 100);
+        if (els.setupScorePill) {
+          els.setupScorePill.textContent = score + "% ready";
+          els.setupScorePill.className = "pill " + (score >= 100 ? "ready" : score >= 50 ? "low" : "local");
+        }
+        els.setupScoreSteps.innerHTML = checks.map(function (item) { return "<div><strong>" + escapeHtml(item.done ? "Done" : "Next") + "</strong><span>" + escapeHtml(item.label + " - " + (item.done ? "ready" : item.next)) + "</span></div>"; }).join("");
+        els.workflowSteps.innerHTML = [
+          ["Add product", "#catalog", state.products.length > 0],
+          ["Add customer", "#customers", state.customers.length > 0],
+          ["Create order", "#orders", state.orders.length > 0],
+          ["Record payment", "#payments", paymentRecords.length > 0],
+          ["Prepare delivery", "#orders", hasDelivery],
+          ["Share receipt", "#exports", state.orders.length > 0]
+        ].map(function (item) { return "<a href=\"" + item[1] + "\"><strong>" + escapeHtml(item[2] ? "Ready" : "Next") + "</strong><span>" + escapeHtml(item[0]) + "</span></a>"; }).join("");
+      }
+      function renderMetrics() { var close = dailyClose(); els.metricGrossSales.textContent = money(close.salesToday); els.metricReadyDelivery.textContent = ordersNeedingAction().length; els.metricUnpaid.textContent = money(state.orders.reduce(function (sum, order) { return order.orderStatus === "cancelled" ? sum : sum + orderBalance(order); }, 0)); els.metricLowStock.textContent = close.lowStock.length; els.metricTodayOrders.textContent = closeStatus(close); }
+      function renderDailyClose() {
+        var close = dailyClose();
+        var summary = paymentMethodSummary(close);
+        els.dailyCloseRows.innerHTML = [["Sales today", money(close.salesToday)], ["Payments received", money(close.amountPaid)], ["Unpaid balances", money(close.unpaid)], ["Delivery fees", money(close.deliveryFees)], ["Discounts", money(close.discounts)], ["Refunds/cancellations", money(close.refunds + close.cancellations)], ["Stock sold", close.stockSold], ["Low stock", close.lowStock.length], ["Estimated gross margin", money(close.profit)]].map(function (item) { return "<div><strong>" + escapeHtml(item[1]) + "</strong><span>" + escapeHtml(item[0]) + "</span></div>"; }).join("");
+        els.paymentSummaryRows.innerHTML = [["Cash", summary.cash], ["Mobile money", summary.mobileMoney], ["Bank transfer", summary.bankTransfer], ["Card/POS", summary.cardPos], ["Credit/unpaid", summary.creditUnpaid], ["Other", summary.other]].map(function (item) { return "<div><strong>" + escapeHtml(money(item[1])) + "</strong><span>" + escapeHtml(item[0]) + "</span></div>"; }).join("");
+        var checklist = (state.dailyCloseDraft && state.dailyCloseDraft.checklist) || {};
+        els.closeChecklistRows.innerHTML = closeChecklistItems().map(function (item) { return "<label><input type=\"checkbox\" data-close-check=\"" + escapeHtml(item[0]) + "\"" + (checklist[item[0]] ? " checked" : "") + "> <span>" + escapeHtml(item[1]) + "</span></label>"; }).join("");
+        renderCloseHistory();
+        var difference = cashDifference(close);
+        els.dailyCloseEmpty.textContent = close.totalOrderCount ? "Daily close is a draft review record. Cash difference: " + money(difference) + ". Payment records are not verified settlement, and this is not bank reconciliation or tax compliance." : "No orders recorded for today yet. Add an order to fill the daily close panel.";
+      }
+      function renderCloseHistory() {
+        var rows = (state.closeHistory || []).slice(0, 5);
+        els.closeHistoryRows.innerHTML = rows.map(function (row) { return "<article><strong>" + escapeHtml(row.date) + " - " + escapeHtml(row.status) + "</strong><span class=\"row-sub\">Sales: " + escapeHtml(money(row.salesToday)) + " | Payments: " + escapeHtml(money(row.amountPaid)) + " | Unpaid: " + escapeHtml(money(row.unpaid)) + "</span><span class=\"row-sub\">Finance handoff: " + escapeHtml(row.accountantSummaryNote || "No note saved") + "</span><span class=\"row-sub\">Account export record: " + escapeHtml(row.accountBusinessId ? "Prepared from account-saved shop " + row.accountBusinessId : "Not linked to account save") + "</span></article>"; }).join("") || "<p class=\"seller-note\">No saved close history yet. Save a daily close after reviewing orders, payment records, stock, and handoff notes.</p>";
+      }
+      function renderInventorySummary() {
+        var stockValue = state.products.reduce(function (sum, product) { return sum + number(product.costPrice) * number(product.stock); }, 0);
+        var alertRows = [];
+        state.products.forEach(function (product) { productAlerts(product).forEach(function (alert) { alertRows.push({ product: product, alert: alert }); }); });
+        els.inventoryValuation.textContent = money(stockValue);
+        els.inventoryRiskCount.textContent = alertRows.length;
+        els.inventoryAlerts.innerHTML = alertRows.map(function (row) { return "<span class=\"inventory-alert " + escapeHtml(row.alert.level) + "\">" + escapeHtml(row.product.name) + ": " + escapeHtml(row.alert.label) + "</span>"; }).join("") || "<span class=\"inventory-alert\">No inventory alerts right now</span>";
+      }
+      function renderProducts() { els.productRows.innerHTML = state.products.map(function (product) { var status = productStatus(product); var hasOrders = state.orders.some(function (order) { return order.productId === product.id; }); var alerts = productAlerts(product); var alertHtml = alerts.map(function (alert) { return "<span class=\"pill " + statusClass(alert.label) + "\">" + escapeHtml(alert.label) + "</span>"; }).join(" "); var margin = productMargin(product); var photo = product.photoUrl ? "IMG" : "NO"; return "<tr><td><div class=\"product-cell\"><span class=\"photo-chip\">" + escapeHtml(photo) + "</span><div><span class=\"row-title\">" + escapeHtml(product.name) + "</span><span class=\"row-sub\">" + escapeHtml(product.category) + (product.photoUrl ? " | photo link saved" : " | photo placeholder empty") + "</span></div></div></td><td><span class=\"row-title\">" + escapeHtml(product.sku || product.id) + "</span><span class=\"row-sub\">" + escapeHtml(productVariantLabel(product)) + "</span></td><td><span class=\"row-title\">" + escapeHtml(product.supplier || "Supplier not saved") + "</span><span class=\"row-sub\">" + escapeHtml(product.stockLocation || "Location/bin not saved") + "</span></td><td><span class=\"row-title\">" + escapeHtml(money(product.sellingPrice)) + "</span><span class=\"row-sub\">Cost: " + escapeHtml(money(product.costPrice)) + " | Margin: " + escapeHtml(money(margin)) + "</span></td><td><span class=\"row-title\">" + escapeHtml(product.stock) + " on hand</span><span class=\"row-sub\">Reorder at " + escapeHtml(product.reorderLevel) + "</span><span class=\"pill " + statusClass(status) + "\">" + escapeHtml(status) + "</span></td><td><div class=\"label-stack\">" + (alertHtml || "<span class=\"pill ready\">Clear</span>") + "</div></td><td><div class=\"table-actions\"><button class=\"btn\" type=\"button\" data-edit-product=\"" + escapeHtml(product.id) + "\">Edit</button><button class=\"btn danger\" type=\"button\" data-remove-product=\"" + escapeHtml(product.id) + "\"" + (hasOrders ? " disabled title=\"Orders still reference this product. Edit stock/status instead.\"" : "") + ">Remove</button></div></td></tr>"; }).join("") || "<tr><td colspan=\"7\"><span class=\"row-title\">No products yet.</span><span class=\"row-sub\">Add your first SKU, variant, supplier, location/bin, cost price, selling price, stock quantity, and reorder level before taking orders or exporting.</span></td></tr>"; }
+      function renderCatalogPreview() {
+        var settings = catalogSettings();
+        if (els.catalogColorDot) els.catalogColorDot.style.background = settings.brandColor || "#1455b8";
+        var warnings = catalogWarnings();
+        els.catalogWarnings.innerHTML = warnings.map(function (warning) { return "<span class=\"catalog-warning " + statusClass(warning.label) + "\">" + escapeHtml(warning.label) + "</span>"; }).join("") || "<span class=\"catalog-warning\">Catalog draft is ready for preview.</span>";
+        var products = selectedCatalogProducts();
+        els.catalogPreviewGrid.innerHTML = products.map(function (product) {
+          var image = product.photoUrl ? "<div class=\"catalog-image\"><img src=\"" + escapeHtml(product.photoUrl) + "\" alt=\"\"></div>" : "<div class=\"catalog-image\">Product image placeholder</div>";
+          var cta = catalogShopPhone() ? "Ask on WhatsApp" : "Add WhatsApp contact";
+          return "<article class=\"catalog-preview-card\">" + image + "<div class=\"catalog-preview-body\"><h3>" + escapeHtml(product.name) + "</h3><p>" + escapeHtml(product.category || "Uncategorised") + " | " + escapeHtml(productVariantLabel(product)) + "</p><p><strong>" + escapeHtml(catalogPrice(product)) + "</strong></p><p>" + escapeHtml(catalogAvailability(product)) + "</p><button class=\"btn\" type=\"button\" data-copy-catalog-inquiry=\"" + escapeHtml(product.id) + "\">" + escapeHtml(cta) + "</button></div></article>";
+        }).join("") || "<p class=\"seller-note\">No products match the selected catalog categories yet. Add products or adjust the categories to prepare a customer catalog export.</p>";
+      }
+      function renderOrders() { els.orderRows.innerHTML = state.orders.map(function (order) { var status = fulfillmentStatus(order.deliveryStatus); var warnings = fulfillmentWarningsFor(order).map(function (warning) { return warning.label; }).join("; "); return "<tr><td><span class=\"row-title\">" + escapeHtml(order.customer) + "</span><span class=\"row-sub\">" + escapeHtml(order.date) + "</span></td><td>" + escapeHtml(order.productName) + "</td><td>" + escapeHtml(order.quantity) + "</td><td>" + escapeHtml(money(orderTotal(order))) + "<span class=\"row-sub\">Item: " + escapeHtml(money(order.orderAmount)) + " | Delivery: " + escapeHtml(money(order.deliveryFee)) + "</span><span class=\"row-sub\">Discount: " + escapeHtml(money(orderDiscount(order))) + " | Refund/cancel: " + escapeHtml(money(orderRefund(order))) + "</span><span class=\"row-sub\">Gross margin preview: " + escapeHtml(money(orderGrossMargin(order) - orderDiscount(order) - orderRefund(order))) + "</span></td><td>" + escapeHtml(money(order.amountPaid)) + "</td><td>" + escapeHtml(money(orderBalance(order))) + "</td><td><span class=\"pill " + statusClass(order.paymentMethod) + "\">" + escapeHtml(order.paymentMethod) + "</span><span class=\"row-sub\">" + escapeHtml(order.paymentProofNote || "No proof note") + "</span></td><td><span class=\"pill " + statusClass(status) + "\">" + escapeHtml(status) + "</span><span class=\"row-sub\">" + escapeHtml(deliveryMethodFor(order)) + " | " + escapeHtml(deliveryAreaFor(order) || "No area") + "</span><span class=\"row-sub\">" + escapeHtml(order.customerAddress || "No delivery note") + "</span><span class=\"row-sub\">Rider handoff: " + escapeHtml(riderContactFor(order) || order.riderContact || "Not saved") + "</span><span class=\"row-sub\">Expected: " + escapeHtml(order.expectedDate || "Not saved") + "</span>" + (warnings ? "<span class=\"row-sub\">" + escapeHtml(warnings) + "</span>" : "") + "</td><td><span class=\"pill " + statusClass(order.orderStatus) + "\">" + escapeHtml(order.orderStatus) + "</span></td><td><div class=\"table-actions\"><button class=\"btn\" type=\"button\" data-edit-order=\"" + escapeHtml(order.id) + "\">Edit</button><button class=\"btn danger\" type=\"button\" data-cancel-order=\"" + escapeHtml(order.id) + "\"" + (order.orderStatus === "cancelled" ? " disabled title=\"Already cancelled and restocked.\"" : "") + ">Cancel/restock</button></div></td></tr>"; }).join("") || "<tr><td colspan=\"10\"><span class=\"row-title\">No orders yet.</span><span class=\"row-sub\">Add an order after creating at least one product. Payment, delivery, gross margin, and stock movement details will appear here.</span></td></tr>"; }
+      function renderFulfillmentBoard() {
+        var lanes = [
+          { id: "today", label: "Today" },
+          { id: "pending", label: "Pending" },
+          { id: "out", label: "Out for delivery" },
+          { id: "delivered", label: "Delivered" },
+          { id: "failed", label: "Failed/returned" }
+        ];
+        var activeOrders = state.orders.filter(function (order) { return order.orderStatus !== "cancelled"; });
+        var warningRows = [];
+        activeOrders.forEach(function (order) { fulfillmentWarningsFor(order).forEach(function (warning) { warningRows.push({ order: order, warning: warning }); }); });
+        els.fulfillmentWarnings.innerHTML = warningRows.map(function (row) { return "<span class=\"fulfillment-warning " + statusClass(row.warning.label) + "\">" + escapeHtml(row.order.customer) + ": " + escapeHtml(row.warning.label) + "</span>"; }).join("") || "<span class=\"fulfillment-warning\">No delivery warnings right now</span>";
+        els.fulfillmentBoard.innerHTML = lanes.map(function (lane) {
+          var orders = activeOrders.filter(function (order) { return fulfillmentLane(order) === lane.id; });
+          var cards = orders.map(function (order) { return "<article class=\"fulfillment-card\"><strong>" + escapeHtml(order.customer) + " - " + escapeHtml(order.productName) + "</strong><span>" + escapeHtml(fulfillmentStatus(order.deliveryStatus)) + " | " + escapeHtml(deliveryMethodFor(order)) + "</span><span>Delivery note: " + escapeHtml(order.customerAddress || "Not saved") + "</span><span>Rider handoff: " + escapeHtml(riderContactFor(order) || order.riderContact || "Not saved") + "</span><span>Expected: " + escapeHtml(order.expectedDate || "Not saved") + "</span><div class=\"dispatch-checklist\"><span>Pack item: " + escapeHtml(order.quantity) + "</span><span>Dispatch checklist: " + escapeHtml(order.dispatchNote || "Not saved") + "</span><span>Proof note: " + escapeHtml(order.podNote || "Not saved") + "</span></div></article>"; }).join("") || "<article class=\"fulfillment-card\"><strong>No orders</strong><span>No delivery note in this lane yet.</span></article>";
+          return "<section class=\"fulfillment-lane\"><div class=\"fulfillment-lane-head\"><strong>" + escapeHtml(lane.label) + "</strong><span class=\"pill local\">" + orders.length + "</span></div><div class=\"fulfillment-lane-body\">" + cards + "</div></section>";
+        }).join("");
+      }
+      function renderPayments() { els.paymentRows.innerHTML = state.orders.filter(function (order) { return number(order.amountPaid) > 0 || order.paymentMethod !== "unpaid" || order.paymentProofNote; }).map(function (order) { return "<article class=\"seller-row\"><div><strong>" + escapeHtml(order.customer) + " - " + escapeHtml(order.productName) + "</strong><span>Payment record: " + escapeHtml(money(order.amountPaid)) + " by " + escapeHtml(order.paymentMethod) + "</span><span>Balance due: " + escapeHtml(money(orderBalance(order))) + "</span><span>Proof note: " + escapeHtml(order.paymentProofNote || "Not saved") + "</span></div><span class=\"pill " + statusClass(orderBalance(order) > 0 ? "unpaid" : "paid") + "\">" + escapeHtml(orderBalance(order) > 0 ? "Balance due" : "Paid") + "</span></article>"; }).join("") || "<p class=\"seller-note\">No payment records yet. Create an order, choose a payment method, and save the amount paid. AfroSeller records payments only; it does not collect money.</p>"; }
+      function renderMovements() { els.movementRows.innerHTML = state.stockMovements.map(function (movement) { return "<tr><td>" + escapeHtml(movement.date) + "</td><td><span class=\"row-title\">" + escapeHtml(movement.productName || "Product not saved") + "</span><span class=\"row-sub\">" + escapeHtml(movement.variantName || "Default variant") + "</span></td><td><span class=\"pill " + statusClass(movement.type) + "\">" + escapeHtml(movementLabel(movement.type)) + "</span></td><td>" + escapeHtml(movement.quantity) + "</td><td>" + escapeHtml(movement.note || "No reason saved") + "</td><td>" + escapeHtml(movementOrderLabel(movement.orderId)) + "</td><td>" + escapeHtml(movement.stockAfter) + "</td></tr>"; }).join("") || "<tr><td colspan=\"7\"><span class=\"row-title\">No stock movement yet.</span><span class=\"row-sub\">Stock in, stock out, adjustments, damaged/lost items, returns, and cancel/restock rows will show here with balance after movement.</span></td></tr>"; }
+      function renderCustomers() { syncCustomerBalances(); els.customerRows.innerHTML = state.customers.map(function (customer) { var labels = (customer.labels || []).map(function (label) { return "<span class=\"pill " + statusClass(label) + "\">" + escapeHtml(label) + "</span>"; }).join(""); return "<article class=\"seller-row\"><div><strong>" + escapeHtml(customer.name) + "</strong><span>" + escapeHtml(customer.phone || "No phone saved") + "</span><span>Last order: " + escapeHtml(customer.lastOrder || "No order yet") + "</span><span>Balance: " + escapeHtml(money(customer.totalBalance)) + "</span><div class=\"label-stack\">" + labels + "</div></div><div><span class=\"pill " + statusClass(customer.followStatus) + "\">" + escapeHtml(customer.followStatus || "New lead") + "</span><div class=\"table-actions\" style=\"margin-top:8px\"><button class=\"btn\" type=\"button\" data-edit-customer=\"" + escapeHtml(customer.id) + "\">Edit</button><button class=\"btn danger\" type=\"button\" data-remove-customer=\"" + escapeHtml(customer.id) + "\">Remove</button></div></div></article>"; }).join("") || "<p class=\"seller-note\">No customers yet. Customers can be added here or created automatically from an order.</p>"; }
+      function renderSelects() { var productOptions = state.products.map(function (product) { return "<option value=\"" + escapeHtml(product.id) + "\">" + escapeHtml(product.name) + " - " + escapeHtml(product.sku || product.id) + " - " + escapeHtml(money(product.sellingPrice)) + "</option>"; }).join(""); var orderOptions = state.orders.map(function (order) { return "<option value=\"" + escapeHtml(order.id) + "\">" + escapeHtml(orderLabel(order)) + "</option>"; }).join(""); els.orderProduct.innerHTML = productOptions || "<option value=\"\">Add a product first</option>"; els.movementProduct.innerHTML = productOptions || "<option value=\"\">Add a product first</option>"; els.movementOrder.innerHTML = "<option value=\"\">No linked order</option>" + orderOptions; els.templateProduct.innerHTML = productOptions || "<option value=\"\">Add a product first</option>"; els.templateOrder.innerHTML = orderOptions || "<option value=\"\">Add an order first</option>"; els.handoffOrder.innerHTML = orderOptions || "<option value=\"\">Add an order first</option>"; }
+      function phoneForOrder(order) { var customer = order ? state.customers.find(function (item) { return item.name.toLowerCase() === order.customer.toLowerCase(); }) : null; return customer && customer.phone ? customer.phone : state.business.phone; }
+      function waLink(phone, text) { var digits = String(phone || "").replace(/\D/g, ""); return digits && text ? "https://wa.me/" + digits + "?text=" + encodeURIComponent(text) : ""; }
+      function renderTemplate() {
+        var type = els.templateType.value;
+        var needsOrder = type !== "restock" && type !== "catalog-inquiry";
+        var order = findOrder(els.templateOrder.value) || state.orders[0] || null;
+        var product = findProduct(els.templateProduct.value) || (order ? findProduct(order.productId) : null) || state.products[0] || null;
+        var business = state.business.receiptName || state.business.name || "your shop";
+        var text = "";
+        if (needsOrder && !order) text = "Add an order first, then generate this message.";
+        else if ((type === "restock" || type === "catalog-inquiry") && !product) text = "Add a product first, then generate this message.";
+        else if (type === "confirmation") text = ["Hello " + order.customer + ", thanks for your order from " + business + ".", "Order: " + order.quantity + " x " + order.productName + ".", "Total including delivery: " + money(number(order.orderAmount) + number(order.deliveryFee)) + ". Paid: " + money(order.amountPaid) + ". Balance: " + money(orderBalance(order)) + ".", "Payment method noted: " + order.paymentMethod + ". Proof note: " + (order.paymentProofNote || "not saved yet") + ".", "Delivery note: " + (order.customerAddress || "please send your delivery address") + "."].join("\n");
+        else if (type === "payment") text = ["Hello " + order.customer + ", gentle reminder from " + business + ".", "Your balance for " + order.productName + " is " + money(orderBalance(order)) + ".", "Payment method on the order is " + order.paymentMethod + ". Please send proof here when paid so I can update your payment record."].join("\n");
+        else if (type === "order-ready") text = ["Hello " + order.customer + ", your order from " + business + " is ready.", "Order: " + order.quantity + " x " + order.productName + ".", "Delivery method: " + deliveryMethodFor(order) + ". Expected date: " + (order.expectedDate || "to be confirmed") + ".", "Delivery note: " + (order.customerAddress || "please confirm pickup or delivery details") + "."].join("\n");
+        else if (type === "rider-assigned") text = ["Hello " + order.customer + ", rider handoff is ready for your order from " + business + ".", "Order: " + order.productName + ".", "Rider/courier: " + (riderContactFor(order) || order.riderContact || "to be shared soon") + ".", "Delivery note: " + (order.customerAddress || "not saved yet") + "."].join("\n");
+        else if (type === "out-for-delivery") text = ["Hello " + order.customer + ", your order from " + business + " is out for delivery.", "Rider handoff: " + (riderContactFor(order) || order.riderContact || "not saved yet") + ".", "Delivery area: " + (deliveryAreaFor(order) || "not saved") + ". Proof note will be saved after delivery."].join("\n");
+        else if (type === "delivery-failed") text = ["Hello " + order.customer + ", delivery for your " + business + " order was not completed.", "Order: " + order.productName + ".", "Delivery note: " + (order.customerAddress || "not saved") + ".", "Please confirm the best follow-up, pickup, or return option."].join("\n");
+        else if (type === "delivered-thanks") text = ["Hello " + order.customer + ", thank you. Your " + business + " order has been marked delivered.", "Order: " + order.productName + ".", "Proof note: " + (order.podNote || "saved by the seller") + ".", "We appreciate your purchase."].join("\n");
+        else if (type === "delivery") text = ["Hello " + order.customer + ", delivery update from " + business + ".", "Your order, " + order.productName + ", is now: " + fulfillmentStatus(order.deliveryStatus) + ".", "Delivery note: " + (order.customerAddress || "not saved") + ". Rider handoff: " + (riderContactFor(order) || order.riderContact || "not assigned") + ".", "Dispatch checklist: " + (order.dispatchNote || "none") + "."].join("\n");
+        else if (type === "catalog-inquiry") text = ["Hello " + (catalogShopName() || business) + ", I want to ask about this product from your catalog preview.", "Product: " + product.name + ".", "Variant: " + productVariantLabel(product) + ".", "Price: " + catalogPrice(product) + ".", "Availability: " + catalogAvailability(product) + ".", "Please confirm details and how I can pay or collect."].join("\n");
+        else text = ["Restock note for " + business + ":", product.name + " (" + (product.sku || product.id) + ") is now at " + product.stock + " left.", "Variant: " + (product.variant || "not saved") + ". Supplier: " + (product.supplier || "not saved") + ".", "Reorder level: " + product.reorderLevel + ". Location: " + (product.stockLocation || "not saved") + "."].join("\n");
+        els.templateOutput.value = text;
+        var link = waLink(type === "catalog-inquiry" ? catalogShopPhone() : needsOrder ? phoneForOrder(order) : state.business.phone, text);
+        els.waLinkOutput.value = link || "Add a saved phone number to generate a wa.me link.";
+        if (link) els.openWaLinkBtn.href = link;
+        updateDisabledStates();
+      }
+      function cloudMeta() { return window.AfroSellerSync && window.AfroSellerSync.getCloudMeta ? window.AfroSellerSync.getCloudMeta() : {}; }
+      function setCloudUi(status, message) { if (!els.cloudStatusPill || !els.cloudStatusText) return; var label = status === "synced" ? "Saved to account" : status === "signed-in" ? "Signed in" : status === "failed" ? "Account save failed" : status === "busy" ? "Saving" : "Saved on this device"; var cls = status === "synced" ? "ready" : status === "failed" ? "out" : status === "busy" ? "low" : "local"; els.cloudStatusPill.textContent = label; els.cloudStatusPill.className = "pill " + cls; els.cloudStatusText.textContent = message || ""; var meta = cloudMeta(); els.lastSyncedAt.textContent = meta.lastSyncedAt ? "Last account save: " + new Date(meta.lastSyncedAt).toLocaleString() : meta.lastPulledAt ? "Last account load: " + new Date(meta.lastPulledAt).toLocaleString() : "Last account save: never"; }
+      function renderCloudBusinesses() { if (!els.cloudBusinessSelect) return; var meta = cloudMeta(); var options = cloudBusinesses.map(function (business) { return "<option value=\"" + escapeHtml(business.id) + "\">" + escapeHtml(business.name || "Seller business") + " - " + escapeHtml(business.country || "No country") + "</option>"; }).join(""); els.cloudBusinessSelect.innerHTML = options || "<option value=\"\">No account workspace yet</option>"; if (meta.businessId && cloudBusinesses.some(function (business) { return business.id === meta.businessId; })) els.cloudBusinessSelect.value = meta.businessId; setDisabled(els.pullCloudBtn, !cloudBusinesses.length, "Import this workspace first or sign in to an account with Seller data."); }
+      async function refreshCloudStatus() { if (!window.AfroSellerSync) { setCloudUi("local", "Saved on this device. Account save is not available in this browser."); return; } setDisabled(els.importLocalBtn, true, "Checking account state."); setDisabled(els.pullCloudBtn, true, "Checking account state."); try { var available = await window.AfroSellerSync.isCloudAvailable(); if (!available) { cloudBusinesses = []; renderCloudBusinesses(); setDisabled(els.importLocalBtn, true, "Sign in with an AfroTools Pro account first."); setCloudUi("local", "Saved on this device. Sign in with Pro when you are ready to save to account."); return; } cloudBusinesses = await window.AfroSellerSync.loadBusinesses(); renderCloudBusinesses(); setDisabled(els.importLocalBtn, false); setCloudUi(cloudMeta().lastSyncedAt ? "synced" : "signed-in", cloudBusinesses.length ? "Signed in. You can save this shop to account or load an account shop." : "Signed in. No account shop found yet."); } catch (err) { setCloudUi("failed", err.message || "Account save check failed."); setDisabled(els.importLocalBtn, true, "Account save check failed."); setDisabled(els.pullCloudBtn, true, "Account save check failed."); } }
+      async function importLocalWorkspace() { if (!window.AfroSellerSync) return setStatus("Saved on this device. Account save is not available in this browser."); readBusinessForm(); saveState(state, false); var businessId = els.cloudBusinessSelect.value || cloudMeta().businessId || ""; if (businessId && !window.confirm("Save to account will replace the account product, order, customer, payment record, delivery note, and stock rows for this Seller shop with the version saved on this device. Continue?")) return; setCloudUi("busy", "Saving this shop to your account..."); setDisabled(els.importLocalBtn, true, "Account save in progress."); try { var result = await window.AfroSellerSync.syncLocalSnapshot(state, businessId); await refreshCloudStatus(); setStatus("Saved to account. The device copy remains available."); setCloudUi("synced", "Saved " + result.counts.products + " products, " + result.counts.orders + " orders, and " + result.counts.customers + " customers to account."); } catch (err) { setCloudUi("failed", err.message || "Account save failed."); setStatus("Account save failed. Your shop is still saved on this device."); } finally { setDisabled(els.importLocalBtn, false); } }
+      async function pullCloudWorkspace() { if (!window.AfroSellerSync) return setStatus("Saved on this device. Account load is not available in this browser."); var businessId = els.cloudBusinessSelect.value || cloudMeta().businessId || ""; if (!businessId) return setStatus("Choose an account shop before loading account data."); if (!window.confirm("Load from account will replace the current shop saved on this device. Continue?")) return; setCloudUi("busy", "Loading account shop to this device..."); setDisabled(els.pullCloudBtn, true, "Account load in progress."); try { state = normalizeState(await window.AfroSellerSync.loadBusinessSnapshot(businessId)); resetProductForm(); resetOrderForm(); resetCustomerForm(); saveState(state, false); syncBusinessForm(); syncCatalogSettingsForm(); syncFinanceCloseForm(); renderAll(); await refreshCloudStatus(); setStatus("Loaded account shop to this device. Downloads still use the device copy."); } catch (err) { setCloudUi("failed", err.message || "Account load failed."); setStatus("Account load failed. The shop saved on this device was not replaced."); } finally { setDisabled(els.pullCloudBtn, false); } }
+      function updateDisabledStates() {
+        var hasProducts = state.products.length > 0;
+        var hasCatalogProducts = selectedCatalogProducts().length > 0;
+        var hasOrders = state.orders.length > 0;
+        var hasCustomers = state.customers.length > 0;
+        var hasMovements = state.stockMovements.length > 0;
+        var hasDailyClose = dailyClose().orderCount > 0;
+        var hasFailedDelivery = state.orders.some(function (order) { var status = fulfillmentStatus(order.deliveryStatus); return status === "failed delivery" || status === "returned"; });
+        var templateType = els.templateType.value;
+        var templateNeedsOrder = templateType !== "restock" && templateType !== "catalog-inquiry";
+        var templateNeedsProduct = templateType === "restock" || templateType === "catalog-inquiry";
+        var hasWaLink = /^https:\/\/wa\.me\//.test(els.waLinkOutput.value || "");
+        setDisabled(els.orderSubmitBtn, !hasProducts, "Add a product before recording an order.");
+        setDisabled(els.orderProduct, !hasProducts, "Add a product before recording an order.");
+        setDisabled(els.movementSubmitBtn, !hasProducts, "Add a product before logging stock movements.");
+        setDisabled(els.movementProduct, !hasProducts, "Add a product before logging stock movements.");
+        setDisabled(els.movementOrder, !hasOrders, "Add an order before linking stock movement to an order.");
+        [els.exportProductsBtn, els.exportProductsBtnSide, els.exportInventoryValueBtn, els.exportInventoryValueBtnSide, els.exportReorderListBtn, els.exportReorderListBtnSide].forEach(function (button) { setDisabled(button, !hasProducts, "Add a product before exporting."); });
+        [els.exportCatalogMarkdownBtn, els.exportCatalogMarkdownBtnSide, els.exportCatalogCsvBtn, els.exportCatalogCsvBtnSide, els.exportCatalogHtmlBtn, els.exportCatalogHtmlBtnSide, els.copyCatalogMessageBtn, els.copyCatalogMessageBtnSide].forEach(function (button) { setDisabled(button, !hasCatalogProducts, "Add catalog products before exporting."); });
+        setDisabled(els.exportOrdersBtn, !hasOrders, "Add an order before exporting.");
+        setDisabled(els.exportOrdersBtnSide, !hasOrders, "Add an order before exporting.");
+        setDisabled(els.exportPackingListBtn, !hasOrders, "Add an order before exporting a packing list.");
+        setDisabled(els.exportPackingListBtnSide, !hasOrders, "Add an order before exporting a packing list.");
+        setDisabled(els.exportRiderHandoffBtn, !hasOrders, "Add an order before exporting rider handoff.");
+        setDisabled(els.exportRiderHandoffBtnSide, !hasOrders, "Add an order before exporting rider handoff.");
+        setDisabled(els.exportDeliveryNoteBtn, !hasOrders, "Add an order before exporting a delivery note.");
+        setDisabled(els.exportFailedDeliveryBtn, !hasFailedDelivery, "Mark an order failed or returned before exporting.");
+        setDisabled(els.exportFailedDeliveryBtnSide, !hasFailedDelivery, "Mark an order failed or returned before exporting.");
+        setDisabled(els.exportCustomersBtn, !hasCustomers, "Add a customer before exporting.");
+        setDisabled(els.exportCustomersBtnSide, !hasCustomers, "Add a customer before exporting.");
+        setDisabled(els.exportStockMovementsBtn, !hasMovements, "Log stock movement before exporting.");
+        setDisabled(els.exportStockMovementsBtnSide, !hasMovements, "Log stock movement before exporting.");
+        setDisabled(els.exportDailyCloseBtn, !hasDailyClose, "Add today's order before exporting a daily close.");
+        setDisabled(els.exportDailyCloseBtnSide, !hasDailyClose, "Add today's order before exporting a daily close.");
+        setDisabled(els.exportDailyCloseMarkdownBtn, !hasDailyClose, "Add today's order before exporting a daily close.");
+        setDisabled(els.exportDailyCloseMarkdownBtnSide, !hasDailyClose, "Add today's order before exporting a daily close.");
+        setDisabled(els.exportSalesByProductBtnSide, !hasDailyClose, "Add today's order before exporting sales by product.");
+        setDisabled(els.exportSalesByCustomerBtnSide, !hasDailyClose, "Add today's order before exporting sales by customer.");
+        setDisabled(els.exportInventoryMovementBtnSide, !hasMovements, "Log stock movement before exporting inventory movement.");
+        setDisabled(els.exportUnpaidBalancesBtnSide, !state.orders.some(function (order) { return order.orderStatus !== "cancelled" && orderBalance(order) > 0; }), "No unpaid balances to export.");
+        setDisabled(els.saveDailyCloseBtn, !hasDailyClose, "Add today's order before saving daily close.");
+        setDisabled(els.templateOrder, !hasOrders, "Add an order before using order templates.");
+        setDisabled(els.handoffOrder, !hasOrders, "Add an order before exporting a receipt.");
+        setDisabled(els.templateProduct, !hasProducts, "Add a product before using product templates.");
+        setDisabled(els.copyTemplateBtn, templateNeedsOrder ? !hasOrders : templateNeedsProduct ? !hasProducts : false, "Add the matching record before copying a template.");
+        setDisabled(els.copyWaLinkBtn, !hasWaLink, "Add a saved phone number before copying a wa.me link.");
+        setDisabled(els.openWaLinkBtn, !hasWaLink, "Add a saved phone number before opening a wa.me link.");
+        setDisabled(els.refreshTemplateBtn, templateNeedsOrder ? !hasOrders : templateNeedsProduct ? !hasProducts : false, "Add the matching record before refreshing a template.");
+        setDisabled(els.exportHandoffBtn, !hasOrders, "Add an order before exporting a receipt.");
+      }
+      function renderAll() { readBusinessForm(); readCatalogSettingsForm(); readFinanceCloseForm(); renderMetrics(); renderDailyClose(); renderInventorySummary(); renderProducts(); renderCatalogPreview(); renderOrders(); renderFulfillmentBoard(); renderPayments(); renderMovements(); renderSelects(); renderCustomers(); renderTemplate(); renderSetupScore(); updateDisabledStates(); }
+
+      function readProductForm(existingId) { var product = { id: existingId || uid("p"), name: els.productName.value.trim(), sku: els.productSku.value.trim(), category: els.productCategory.value, variant: els.productVariant.value.trim(), supplier: els.productSupplier.value.trim(), stockLocation: els.stockLocation.value.trim(), photoUrl: els.photoUrl.value.trim(), costPrice: number(els.costPrice.value), sellingPrice: number(els.sellingPrice.value), stock: number(els.stockOnHand.value), reorderLevel: number(els.reorderLevel.value), status: els.productStatus.value }; product.status = productSaveStatus(product); return product; }
+      function addProduct(event) { event.preventDefault(); var product = readProductForm(editingProductId); if (!product.name) return setStatus("Add a product name first."); if (!product.sku) product.sku = product.id.toUpperCase(); if (editingProductId) { var existing = findProduct(editingProductId); if (!existing) return resetProductForm(); var oldName = existing.name; Object.assign(existing, product); state.orders.forEach(function (order) { if (order.productId === existing.id && order.productName === oldName) order.productName = existing.name; }); state.stockMovements.forEach(function (movement) { if (movement.productId === existing.id) movement.productName = existing.name; }); setStatus("Product updated and saved on this device."); } else { state.products.unshift(product); recordStockMovement(product.id, "restock", product.stock, "Opening stock entered from product form", false); setStatus("Product added with opening stock movement."); } resetProductForm(); saveState(); renderAll(); }
+      function editProduct(id) { var product = findProduct(id); if (!product) return; editingProductId = id; els.productName.value = product.name || ""; els.productSku.value = product.sku || ""; els.productCategory.value = product.category || "Other"; els.productVariant.value = product.variant || ""; els.productSupplier.value = product.supplier || ""; els.stockLocation.value = product.stockLocation || ""; els.photoUrl.value = product.photoUrl || ""; els.costPrice.value = number(product.costPrice); els.sellingPrice.value = number(product.sellingPrice); els.stockOnHand.value = number(product.stock); els.reorderLevel.value = number(product.reorderLevel); els.productStatus.value = productSaveStatus(product); els.productFormTitle.textContent = "Edit stock item"; els.productSubmitBtn.textContent = "Save product"; setDisabled(els.productCancelBtn, false); location.hash = "catalog"; setStatus("Editing " + product.name + "."); }
+      function removeProduct(id) { var hasOrders = state.orders.some(function (order) { return order.productId === id; }); if (hasOrders) return setStatus("This product is used by orders. Edit stock/status instead of removing it."); state.products = state.products.filter(function (product) { return product.id !== id; }); saveState(); renderAll(); }
+      function upsertCustomerFromOrder(order) { var existing = state.customers.find(function (customer) { return customer.name.toLowerCase() === order.customer.toLowerCase(); }); if (!existing) { state.customers.unshift(normalizeCustomer({ id: uid("c"), name: order.customer, phone: "", lastOrder: order.productName, totalBalance: orderBalance(order), labels: orderBalance(order) > 0 ? ["Owes balance"] : ["Repeat buyer"], followStatus: orderBalance(order) > 0 ? "Send payment reminder" : "Ready for repeat order" })); return; } existing.lastOrder = order.productName; existing.totalBalance = state.orders.filter(function (item) { return item.customer.toLowerCase() === existing.name.toLowerCase(); }).reduce(function (sum, item) { return item.orderStatus === "cancelled" ? sum : sum + orderBalance(item); }, 0); existing.labels = existing.totalBalance > 0 ? addUnique(existing.labels, "Owes balance") : existing.labels; existing.followStatus = existing.totalBalance > 0 ? "Send payment reminder" : "Ready for repeat order"; }
+      function readOrderForm(existingId, oldOrder) { var product = findProduct(els.orderProduct.value); var method = els.paymentMethod.value; var paid = method === "unpaid" ? 0 : number(els.amountPaid.value); var riderName = els.riderName.value.trim(); var riderPhone = els.riderPhone.value.trim(); var riderContact = [riderName, riderPhone].filter(Boolean).join(" "); return { id: existingId || uid("o"), date: oldOrder && oldOrder.date ? oldOrder.date : todayKey(), customer: els.orderCustomer.value.trim(), productId: product ? product.id : "", productName: product ? product.name : "", quantity: Math.max(1, number(els.orderQuantity.value)), orderAmount: number(els.orderAmount.value) || (product ? Math.max(1, number(els.orderQuantity.value)) * number(product.sellingPrice) : 0), discountAmount: number(els.discountAmount.value), refundAmount: number(els.refundAmount.value), amountPaid: paid, paymentMethod: method, paymentProofNote: els.paymentProofNote.value.trim(), deliveryMethod: els.deliveryMethod.value, deliveryArea: els.orderDeliveryArea.value.trim(), customerAddress: els.customerAddress.value.trim(), deliveryFee: number(els.deliveryFee.value), riderName: riderName, riderPhone: riderPhone, riderContact: riderContact, expectedDate: els.expectedDeliveryDate.value, dispatchNote: els.dispatchNote.value.trim(), podNote: els.podNote.value.trim(), deliveryStatus: fulfillmentStatus(els.deliveryStatus.value), orderStatus: els.orderStatus.value }; }
+      function addOrder(event) { event.preventDefault(); var oldOrder = editingOrderId ? findOrder(editingOrderId) : null; var order = readOrderForm(editingOrderId, oldOrder); var product = findProduct(order.productId); if (!order.customer || !product) return setStatus("Add a customer and product before saving an order."); if (oldOrder) { restoreOrderStock(oldOrder, "Order edit reversed old stock for " + oldOrder.customer); Object.assign(oldOrder, order); reserveOrderStock(oldOrder, "Order edit reserved stock for " + oldOrder.customer); upsertCustomerFromOrder(oldOrder); setStatus(order.orderStatus === "cancelled" ? "Order updated and stock restored." : "Order updated and saved on this device."); } else { state.orders.unshift(order); reserveOrderStock(order, "Sale for order " + order.id + " - " + order.customer); upsertCustomerFromOrder(order); setStatus(order.orderStatus === "cancelled" ? "Cancelled order saved without reserving stock." : "Order added with payment, delivery, and stock details."); } resetOrderForm(); saveState(); renderAll(); }
+      function editOrder(id) { var order = findOrder(id); if (!order) return; editingOrderId = id; els.orderCustomer.value = order.customer || ""; els.orderProduct.value = order.productId || ""; els.orderQuantity.value = number(order.quantity) || 1; els.orderAmount.value = number(order.orderAmount); els.discountAmount.value = number(order.discountAmount); els.refundAmount.value = number(order.refundAmount); els.amountPaid.value = number(order.amountPaid); els.paymentMethod.value = order.paymentMethod || "cash"; els.paymentProofNote.value = order.paymentProofNote || ""; els.deliveryMethod.value = order.deliveryMethod || "Local courier"; els.orderDeliveryArea.value = deliveryAreaFor(order); els.customerAddress.value = order.customerAddress || ""; els.deliveryFee.value = number(order.deliveryFee); els.riderName.value = order.riderName || ""; els.riderPhone.value = order.riderPhone || ""; els.riderContact.value = riderContactFor(order) || order.riderContact || ""; els.expectedDeliveryDate.value = order.expectedDate || ""; els.dispatchNote.value = order.dispatchNote || ""; els.podNote.value = order.podNote || ""; els.deliveryStatus.value = fulfillmentStatus(order.deliveryStatus); els.orderStatus.value = order.orderStatus || "draft"; els.orderFormTitle.textContent = "Edit order"; els.orderSubmitBtn.textContent = "Save order"; setDisabled(els.orderCancelBtn, false); location.hash = "orders"; setStatus("Editing order for " + order.customer + "."); }
+      function cancelOrder(id) { var order = findOrder(id); if (!order || order.orderStatus === "cancelled") return; restoreOrderStock(order, "Cancel/restock for " + order.customer); order.orderStatus = "cancelled"; order.deliveryStatus = "returned"; order.amountPaid = 0; order.paymentMethod = "unpaid"; upsertCustomerFromOrder(order); saveState(); renderAll(); setStatus("Order cancelled and " + order.quantity + " item(s) returned to stock."); }
+      function addMovement(event) { event.preventDefault(); var product = findProduct(els.movementProduct.value); if (!product) return setStatus("Add a product before logging stock movement."); var quantity = number(els.movementQuantity.value); if (!quantity) return setStatus("Enter a quantity for the stock movement."); var type = els.movementType.value; recordStockMovement(product.id, type, quantity, els.movementNote.value.trim(), true, els.movementOrder.value); els.movementForm.reset(); els.movementQuantity.value = "1"; saveState(); renderAll(); setStatus(movementLabel(type) + " saved on this device."); }
+      function addCustomer(event) { event.preventDefault(); var name = els.customerName.value.trim(); if (!name) return setStatus("Add a customer name first."); var labels = selectedValues(els.customerLabels); if (number(els.customerBalance.value) > 0) labels = addUnique(labels, "Owes balance"); if (editingCustomerId) { var existing = findCustomer(editingCustomerId); if (!existing) return resetCustomerForm(); var oldName = existing.name; existing.name = name; existing.phone = els.customerPhone.value.trim(); existing.lastOrder = els.customerLastOrder.value.trim(); existing.totalBalance = number(els.customerBalance.value); existing.labels = labels; existing.followStatus = els.followStatus.value; state.orders.forEach(function (order) { if (order.customer.toLowerCase() === oldName.toLowerCase()) order.customer = name; }); setStatus("Customer updated and saved on this device."); } else { state.customers.unshift(normalizeCustomer({ id: uid("c"), name: name, phone: els.customerPhone.value.trim(), lastOrder: els.customerLastOrder.value.trim(), totalBalance: number(els.customerBalance.value), labels: labels, followStatus: els.followStatus.value })); setStatus("Customer added and saved on this device."); } resetCustomerForm(); saveState(); renderAll(); }
+      function editCustomer(id) { var customer = findCustomer(id); if (!customer) return; editingCustomerId = id; els.customerName.value = customer.name || ""; els.customerPhone.value = customer.phone || ""; els.customerLastOrder.value = customer.lastOrder || ""; els.customerBalance.value = number(customer.totalBalance); setSelectedValues(els.customerLabels, customer.labels || []); els.followStatus.value = customer.followStatus || "New lead"; els.customerFormTitle.textContent = "Edit customer"; els.customerSubmitBtn.textContent = "Save customer"; setDisabled(els.customerCancelBtn, false); location.hash = "customers"; setStatus("Editing " + customer.name + "."); }
+      function removeCustomer(id) { state.customers = state.customers.filter(function (customer) { return customer.id !== id; }); saveState(); renderAll(); }
+      function updateOrderAmount() { var product = findProduct(els.orderProduct.value); var quantity = Math.max(1, number(els.orderQuantity.value)); if (product && (!els.orderAmount.value || document.activeElement !== els.orderAmount)) els.orderAmount.value = String(quantity * number(product.sellingPrice)); }
+      function csvEscape(value) { return '"' + String(value == null ? "" : value).replace(/"/g, '""') + '"'; }
+      function toCsv(headers, rows) { return [headers.map(csvEscape).join(",")].concat(rows.map(function (row) { return row.map(csvEscape).join(","); })).join("\n"); }
+      function downloadFile(filename, content, type) { var blob = new Blob([content], { type: type || "text/plain;charset=utf-8" }); var url = URL.createObjectURL(blob); var link = document.createElement("a"); link.href = url; link.download = filename; document.body.appendChild(link); link.click(); link.remove(); URL.revokeObjectURL(url); }
+      function exportProducts() { if (!state.products.length) return setStatus("Add products before exporting the catalog."); var csv = toCsv(["product_name", "sku", "category", "variant", "supplier", "location_bin", "photo_placeholder", "cost_price", "selling_price", "margin_per_unit", "stock_on_hand", "reorder_level", "status", "alerts"], state.products.map(function (p) { return [p.name, p.sku, p.category, p.variant, p.supplier, p.stockLocation, p.photoUrl, p.costPrice, p.sellingPrice, productMargin(p), p.stock, p.reorderLevel, productStatus(p), productAlerts(p).map(function (alert) { return alert.label; }).join("; ")]; })); downloadFile("afroseller-product-catalog-" + slug(state.business.name) + ".csv", csv, "text/csv;charset=utf-8"); }
+      function catalogMarkdownLines() { var products = selectedCatalogProducts(); var settings = catalogSettings(); var lines = ["# " + (catalogShopName() || "Shop catalog preview"), "", "**Country:** " + (settings.country || state.business.country || "Not saved"), "**Currency:** " + catalogCurrency(), "**Contact:** " + (catalogShopPhone() || "Not saved"), "", "This is a shareable catalog draft. It is not a hosted storefront, checkout, payment collection page, or delivery quote engine.", ""]; products.forEach(function (product) { lines.push("## " + product.name, "- Category: " + (product.category || "Not saved"), "- Variant: " + productVariantLabel(product), "- Price: " + catalogPrice(product), "- Availability: " + catalogAvailability(product), "- Inquiry: contact " + (catalogShopPhone() || "the seller") + " to confirm details.", ""); }); return lines; }
+      function exportCatalogMarkdown() { if (!selectedCatalogProducts().length) return setStatus("Add products before exporting a catalog preview."); downloadFile("afroseller-catalog-preview-" + slug(catalogShopName() || state.business.name) + ".md", catalogMarkdownLines().join("\n"), "text/markdown;charset=utf-8"); }
+      function exportCatalogCsv() { var products = selectedCatalogProducts(); if (!products.length) return setStatus("Add products before exporting a customer catalog."); var csv = toCsv(["shop_name", "shop_phone_whatsapp", "country", "currency", "product_name", "category", "variant", "price", "availability", "inquiry_cta"], products.map(function (p) { return [catalogShopName(), catalogShopPhone(), catalogSettings().country, catalogCurrency(), p.name, p.category, productVariantLabel(p), catalogPrice(p), catalogAvailability(p), catalogShopPhone() ? "Ask on WhatsApp" : "Contact seller"]; })); downloadFile("afroseller-customer-catalog-" + slug(catalogShopName() || state.business.name) + ".csv", csv, "text/csv;charset=utf-8"); }
+      function printableCatalogHtml() { var settings = catalogSettings(); var brand = settings.brandColor || "#1455b8"; var cards = selectedCatalogProducts().map(function (product) { var image = product.photoUrl ? "<img src=\"" + escapeHtml(product.photoUrl) + "\" alt=\"\" style=\"width:100%;height:150px;object-fit:cover;border-radius:8px\">" : "<div style=\"height:150px;border:1px solid #d9e2ee;border-radius:8px;background:#f8fafc;display:flex;align-items:center;justify-content:center;color:" + escapeHtml(brand) + ";font-weight:800\">Product image placeholder</div>"; return "<article style=\"border:1px solid #d9e2ee;border-radius:8px;padding:12px;break-inside:avoid\">" + image + "<h2 style=\"font-size:18px;margin:12px 0 4px\">" + escapeHtml(product.name) + "</h2><p style=\"margin:0 0 6px;color:#607086\">" + escapeHtml(product.category || "Uncategorised") + " | " + escapeHtml(productVariantLabel(product)) + "</p><p style=\"font-weight:800;margin:0 0 6px\">" + escapeHtml(catalogPrice(product)) + "</p><p style=\"margin:0;color:#607086\">" + escapeHtml(catalogAvailability(product)) + "</p></article>"; }).join(""); return "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><meta name=\"robots\" content=\"noindex,nofollow\"><title>" + escapeHtml(catalogShopName() || "Catalog preview") + "</title></head><body style=\"font-family:Arial,sans-serif;margin:24px;color:#102033\"><header style=\"border-bottom:4px solid " + escapeHtml(brand) + ";padding-bottom:12px;margin-bottom:18px\"><h1 style=\"margin:0\">" + escapeHtml(catalogShopName() || "Shop catalog preview") + "</h1><p style=\"margin:6px 0 0;color:#607086\">" + escapeHtml(settings.country || state.business.country || "Country not saved") + " | " + escapeHtml(catalogCurrency()) + " | " + escapeHtml(catalogShopPhone() || "Contact not saved") + "</p><p style=\"margin:6px 0 0;color:#607086\">Customer catalog export only. No hosted storefront, checkout, payment collection, or delivery quote engine.</p></header><main style=\"display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px\">" + cards + "</main></body></html>"; }
+      function exportCatalogHtml() { if (!selectedCatalogProducts().length) return setStatus("Add products before exporting printable catalog HTML."); downloadFile("afroseller-printable-catalog-" + slug(catalogShopName() || state.business.name) + ".html", printableCatalogHtml(), "text/html;charset=utf-8"); }
+      function catalogWhatsAppMessage() { var products = selectedCatalogProducts(); var lines = [(catalogShopName() || "Shop") + " catalog preview", "Contact: " + (catalogShopPhone() || "Not saved"), ""]; products.slice(0, 12).forEach(function (product, index) { lines.push((index + 1) + ". " + product.name + " - " + catalogPrice(product) + " - " + catalogAvailability(product) + " - " + productVariantLabel(product)); }); lines.push("", "Reply with the product name to ask questions. This catalog draft does not collect checkout payments or submit orders automatically."); return lines.join("\n"); }
+      function copyCatalogMessage() { if (!selectedCatalogProducts().length) return setStatus("Add products before copying a catalog message."); copyText(catalogWhatsAppMessage(), "WhatsApp catalog message copied. Paste it manually where you want to share it."); }
+      function copyCatalogInquiry(productId) { var product = findProduct(productId); if (!product) return; var text = ["Hello " + (catalogShopName() || state.business.name || "shop") + ", I want to ask about this product from your catalog preview.", "Product: " + product.name + ".", "Variant: " + productVariantLabel(product) + ".", "Price: " + catalogPrice(product) + ".", "Availability: " + catalogAvailability(product) + ".", "Please confirm details and how I can pay or collect."].join("\n"); copyText(text, "Customer inquiry message copied. Paste it manually into WhatsApp or Instagram."); }
+      function exportOrders() { if (!state.orders.length) return setStatus("Add orders before exporting the order summary."); var csv = toCsv(["date", "customer", "product", "quantity", "order_amount", "delivery_fee", "discount", "refund_cancellation", "total_after_adjustments", "amount_paid", "balance_due", "payment_method", "payment_proof_note", "delivery_method", "delivery_area", "delivery_address_note", "rider_courier_name", "rider_phone", "rider_contact", "expected_date", "dispatch_checklist", "proof_note", "fulfillment_status", "order_status"], state.orders.map(function (o) { return [o.date, o.customer, o.productName, o.quantity, o.orderAmount, o.deliveryFee, orderDiscount(o), orderRefund(o), orderTotal(o), o.amountPaid, orderBalance(o), o.paymentMethod, o.paymentProofNote, deliveryMethodFor(o), deliveryAreaFor(o), o.customerAddress, o.riderName, o.riderPhone, riderContactFor(o) || o.riderContact, o.expectedDate, o.dispatchNote, o.podNote, fulfillmentStatus(o.deliveryStatus), o.orderStatus]; })); downloadFile("afroseller-order-summary-" + slug(state.business.name) + ".csv", csv, "text/csv;charset=utf-8"); }
+      function exportCustomers() { syncCustomerBalances(); if (!state.customers.length) return setStatus("Add customers before exporting balances."); var csv = toCsv(["customer_name", "phone_whatsapp", "last_order", "total_balance", "customer_labels", "follow_up_status"], state.customers.map(function (c) { return [c.name, c.phone, c.lastOrder, c.totalBalance, (c.labels || []).join("; "), c.followStatus]; })); downloadFile("afroseller-customer-balances-" + slug(state.business.name) + ".csv", csv, "text/csv;charset=utf-8"); }
+      function exportStockMovements() { if (!state.stockMovements.length) return setStatus("Log stock movement before exporting."); var csv = toCsv(["date", "movement_type", "product", "variant", "quantity_delta", "reason", "linked_order", "balance_after_movement"], state.stockMovements.map(function (m) { return [m.date, movementLabel(m.type), m.productName, m.variantName, m.quantity, m.note, movementOrderLabel(m.orderId), m.stockAfter]; })); downloadFile("afroseller-stock-movements-" + slug(state.business.name) + ".csv", csv, "text/csv;charset=utf-8"); }
+      function exportInventoryValue() { if (!state.products.length) return setStatus("Add products before exporting inventory value."); var csv = toCsv(["product_name", "sku", "variant", "supplier", "location_bin", "stock_on_hand", "cost_price", "selling_price", "stock_value_at_cost", "potential_retail_value", "margin_per_unit", "alerts"], state.products.map(function (p) { return [p.name, p.sku, p.variant, p.supplier, p.stockLocation, p.stock, p.costPrice, p.sellingPrice, number(p.stock) * number(p.costPrice), number(p.stock) * number(p.sellingPrice), productMargin(p), productAlerts(p).map(function (alert) { return alert.label; }).join("; ")]; })); downloadFile("afroseller-inventory-valuation-" + slug(state.business.name) + ".csv", csv, "text/csv;charset=utf-8"); }
+      function exportReorderList() { if (!state.products.length) return setStatus("Add products before exporting a reorder list."); var risky = state.products.filter(function (p) { return productAlerts(p).some(function (alert) { return alert.level === "negative" || alert.level === "out" || alert.level === "low"; }); }); var csv = toCsv(["product_name", "sku", "variant", "supplier", "location_bin", "stock_on_hand", "reorder_level", "status", "suggested_action"], risky.map(function (p) { return [p.name, p.sku, p.variant, p.supplier, p.stockLocation, p.stock, p.reorderLevel, productStatus(p), number(p.stock) < 0 ? "Correct stock count and restock" : number(p.stock) === 0 ? "Restock before selling" : "Reorder soon"]; })); downloadFile("afroseller-reorder-list-" + slug(state.business.name) + ".csv", csv, "text/csv;charset=utf-8"); setStatus(risky.length ? "Reorder list exported from products with stock risk." : "Reorder list exported. No stock-risk products are currently saved."); }
+      function exportPackingList() { var rows = state.orders.filter(function (o) { return o.orderStatus !== "cancelled" && fulfillmentStatus(o.deliveryStatus) !== "delivered"; }); if (!rows.length) return setStatus("No open orders for a packing list yet."); var csv = toCsv(["order_id", "expected_date", "customer", "product", "sku", "variant", "quantity", "fulfillment_status", "dispatch_checklist"], rows.map(function (o) { var p = findProduct(o.productId) || {}; return [o.id, o.expectedDate, o.customer, o.productName, p.sku || "", p.variant || "", o.quantity, fulfillmentStatus(o.deliveryStatus), o.dispatchNote]; })); downloadFile("afroseller-packing-list-" + slug(state.business.name) + ".csv", csv, "text/csv;charset=utf-8"); }
+      function exportRiderHandoff() { var rows = state.orders.filter(function (o) { var status = fulfillmentStatus(o.deliveryStatus); return o.orderStatus !== "cancelled" && (status === "ready for pickup" || status === "assigned to rider" || status === "out for delivery"); }); if (!rows.length) return setStatus("No rider handoff rows ready yet."); var csv = toCsv(["order_id", "customer", "customer_phone", "delivery_method", "delivery_area", "delivery_address_note", "delivery_fee", "rider_courier_name", "rider_phone", "expected_date", "proof_note"], rows.map(function (o) { return [o.id, o.customer, phoneForOrder(o), deliveryMethodFor(o), deliveryAreaFor(o), o.customerAddress, o.deliveryFee, o.riderName, o.riderPhone, o.expectedDate, o.podNote]; })); downloadFile("afroseller-rider-handoff-" + slug(state.business.name) + ".csv", csv, "text/csv;charset=utf-8"); }
+      function deliveryNoteLines(order) { var customer = state.customers.find(function (item) { return item.name.toLowerCase() === order.customer.toLowerCase(); }) || null; return ["# Delivery Note - " + (state.business.receiptName || state.business.name || "AfroSeller"), "", "**Order:** " + order.id, "**Customer:** " + order.customer, "**Customer phone:** " + (customer && customer.phone ? customer.phone : "Not saved"), "**Product:** " + order.quantity + " x " + order.productName, "**Fulfillment status:** " + fulfillmentStatus(order.deliveryStatus), "**Delivery method:** " + deliveryMethodFor(order), "**Delivery area:** " + (deliveryAreaFor(order) || "Not saved"), "**Delivery address/note:** " + (order.customerAddress || "Not saved"), "**Delivery fee:** " + money(order.deliveryFee), "**Expected date:** " + (order.expectedDate || "Not saved"), "**Rider/courier name:** " + (order.riderName || "Not saved"), "**Rider phone:** " + (order.riderPhone || "Not saved"), "", "## Dispatch Checklist", order.dispatchNote || "Not saved", "", "## Rider Handoff", riderContactFor(order) || order.riderContact || "Not saved", "", "## Proof Note", order.podNote || "Not saved", "", "## Limits", "This is a seller delivery note. It does not book a courier, show live route tracking, or send messages automatically."]; }
+      function exportDeliveryNote() { var order = findOrder(els.handoffOrder.value); if (!order) return setStatus("Pick an order before exporting a delivery note."); downloadFile("afroseller-delivery-note-" + slug(state.business.name) + "-" + slug(order.customer) + ".md", deliveryNoteLines(order).join("\n"), "text/markdown;charset=utf-8"); }
+      function exportFailedDeliveryReport() { var rows = state.orders.filter(function (o) { var status = fulfillmentStatus(o.deliveryStatus); return status === "failed delivery" || status === "returned"; }); if (!rows.length) return setStatus("No failed or returned delivery rows yet."); var csv = toCsv(["order_id", "customer", "product", "delivery_method", "delivery_area", "delivery_address_note", "rider_contact", "expected_date", "status", "proof_note", "follow_up_needed"], rows.map(function (o) { return [o.id, o.customer, o.productName, deliveryMethodFor(o), deliveryAreaFor(o), o.customerAddress, riderContactFor(o) || o.riderContact, o.expectedDate, fulfillmentStatus(o.deliveryStatus), o.podNote, "Yes"]; })); downloadFile("afroseller-failed-deliveries-" + slug(state.business.name) + ".csv", csv, "text/csv;charset=utf-8"); }
+      function dailyCloseRow(close) { return [close.today, close.salesToday, close.amountPaid, close.unpaid, close.deliveryFees, close.discounts, close.refunds + close.cancellations, close.stockSold, close.lowStock.length, close.profit, number(state.dailyCloseDraft.cashCount), cashDifference(close), closeStatus(close), state.dailyCloseDraft.differenceNote || "", state.dailyCloseDraft.ownerReviewNote || "", state.dailyCloseDraft.accountantSummaryNote || ""]; }
+      function exportDailyClose() { var close = dailyClose(); if (!close.totalOrderCount) return setStatus("Add today's order before exporting daily close."); markExportDownloaded("daily close CSV"); var csv = toCsv(["date", "sales_today", "payments_received", "unpaid_balances", "delivery_fees", "discounts", "refunds_cancellations", "stock_sold", "low_stock_items", "estimated_gross_margin", "cash_count", "cash_difference", "close_status", "difference_note", "owner_review_note", "accountant_summary_note"], [dailyCloseRow(close)]); downloadFile("afroseller-daily-close-" + slug(state.business.name) + "-" + close.today + ".csv", csv, "text/csv;charset=utf-8"); renderAll(); }
+      function dailyCloseMarkdownLines() { var close = dailyClose(); var summary = paymentMethodSummary(close); return ["# Daily Close - " + (state.business.receiptName || state.business.name || "AfroSeller"), "", "**Date:** " + close.today, "**Close status:** " + closeStatus(close), "", "## Sales Summary", "- Sales today: " + money(close.salesToday), "- Payments received: " + money(close.amountPaid), "- Unpaid balances: " + money(close.unpaid), "- Delivery fees: " + money(close.deliveryFees), "- Discounts: " + money(close.discounts), "- Refunds/cancellations: " + money(close.refunds + close.cancellations), "- Stock sold: " + close.stockSold, "- Low-stock items: " + close.lowStock.length, "- Estimated gross margin: " + money(close.profit), "", "## Payment Method Summary", "- Cash: " + money(summary.cash), "- Mobile money: " + money(summary.mobileMoney), "- Bank transfer: " + money(summary.bankTransfer), "- Card/POS: " + money(summary.cardPos), "- Credit/unpaid: " + money(summary.creditUnpaid), "- Other: " + money(summary.other), "", "## Finance Handoff", "- Cash count: " + money(state.dailyCloseDraft.cashCount), "- Cash difference: " + money(cashDifference(close)), "- Difference note: " + (state.dailyCloseDraft.differenceNote || "Not saved"), "- Owner review note: " + (state.dailyCloseDraft.ownerReviewNote || "Not saved"), "- Accountant summary note: " + (state.dailyCloseDraft.accountantSummaryNote || "Not saved"), "", "## Limits", "This is a draft finance handoff from saved payment records. It is not bank reconciliation, verified payment settlement, or tax compliance."]; }
+      function exportDailyCloseMarkdown() { var close = dailyClose(); if (!close.totalOrderCount) return setStatus("Add today's order before exporting daily close."); markExportDownloaded("daily close Markdown"); downloadFile("afroseller-daily-close-" + slug(state.business.name) + "-" + close.today + ".md", dailyCloseMarkdownLines().join("\n"), "text/markdown;charset=utf-8"); renderAll(); }
+      function exportSalesByProduct() { var close = dailyClose(); if (!close.totalOrderCount) return setStatus("Add today's order before exporting sales by product."); var rows = {}; close.orders.forEach(function (order) { var key = order.productId || order.productName; rows[key] = rows[key] || { product: order.productName, quantity: 0, sales: 0, paid: 0, margin: 0 }; rows[key].quantity += number(order.quantity); rows[key].sales += orderTotal(order); rows[key].paid += number(order.amountPaid); rows[key].margin += orderGrossMargin(order) - orderDiscount(order) - orderRefund(order); }); markExportDownloaded("sales by product CSV"); var csv = toCsv(["product", "quantity_sold", "sales_total", "payments_received", "estimated_gross_margin"], Object.keys(rows).map(function (key) { var row = rows[key]; return [row.product, row.quantity, row.sales, row.paid, row.margin]; })); downloadFile("afroseller-sales-by-product-" + slug(state.business.name) + "-" + close.today + ".csv", csv, "text/csv;charset=utf-8"); renderAll(); }
+      function exportSalesByCustomer() { var close = dailyClose(); if (!close.totalOrderCount) return setStatus("Add today's order before exporting sales by customer."); var rows = {}; close.orders.forEach(function (order) { var key = order.customer.toLowerCase(); rows[key] = rows[key] || { customer: order.customer, orders: 0, sales: 0, paid: 0, unpaid: 0 }; rows[key].orders += 1; rows[key].sales += orderTotal(order); rows[key].paid += number(order.amountPaid); rows[key].unpaid += orderBalance(order); }); markExportDownloaded("sales by customer CSV"); var csv = toCsv(["customer", "orders", "sales_total", "payments_received", "unpaid_balance"], Object.keys(rows).map(function (key) { var row = rows[key]; return [row.customer, row.orders, row.sales, row.paid, row.unpaid]; })); downloadFile("afroseller-sales-by-customer-" + slug(state.business.name) + "-" + close.today + ".csv", csv, "text/csv;charset=utf-8"); renderAll(); }
+      function exportUnpaidBalances() { var rows = state.orders.filter(function (order) { return order.orderStatus !== "cancelled" && orderBalance(order) > 0; }); if (!rows.length) return setStatus("No unpaid balances to export."); markExportDownloaded("unpaid balances CSV"); var csv = toCsv(["date", "customer", "product", "total_after_adjustments", "amount_paid", "unpaid_balance", "payment_method", "payment_record_note"], rows.map(function (order) { return [order.date, order.customer, order.productName, orderTotal(order), order.amountPaid, orderBalance(order), order.paymentMethod, order.paymentProofNote]; })); downloadFile("afroseller-unpaid-balances-" + slug(state.business.name) + ".csv", csv, "text/csv;charset=utf-8"); renderAll(); }
+      function exportInventoryMovement() { if (!state.stockMovements.length) return setStatus("Log stock movement before exporting inventory movement."); markExportDownloaded("inventory movement CSV"); exportStockMovements(); renderAll(); }
+      function saveDailyCloseRecord() { var close = dailyClose(); if (!close.totalOrderCount) return setStatus("Add today's order before saving daily close."); readFinanceCloseForm(); var meta = cloudMeta(); var record = { id: uid("close"), date: close.today, savedAt: new Date().toISOString(), status: closeStatus(close), salesToday: close.salesToday, amountPaid: close.amountPaid, unpaid: close.unpaid, deliveryFees: close.deliveryFees, discounts: close.discounts, refundsCancellations: close.refunds + close.cancellations, stockSold: close.stockSold, lowStock: close.lowStock.length, estimatedGrossMargin: close.profit, cashCount: number(state.dailyCloseDraft.cashCount), cashDifference: cashDifference(close), checklist: Object.assign({}, state.dailyCloseDraft.checklist || {}), differenceNote: state.dailyCloseDraft.differenceNote || "", ownerReviewNote: state.dailyCloseDraft.ownerReviewNote || "", accountantSummaryNote: state.dailyCloseDraft.accountantSummaryNote || "", accountBusinessId: meta.businessId || "", accountLastSavedAt: meta.lastSyncedAt || "" }; state.closeHistory = (state.closeHistory || []).filter(function (row) { return row.date !== close.today; }); state.closeHistory.unshift(record); state.closeHistory = state.closeHistory.slice(0, 30); saveState(); renderAll(); setStatus("Daily close saved on this device as a draft finance handoff."); }
+      function exportHandoff() { syncCustomerBalances(); var order = findOrder(els.handoffOrder.value); if (!order) return setStatus("Pick an order before exporting a branded receipt."); var customer = state.customers.find(function (item) { return item.name.toLowerCase() === order.customer.toLowerCase(); }) || null; var product = findProduct(order.productId); var close = dailyClose(); var lowStock = state.products.filter(function (item) { return productStatus(item) !== "ready"; }); var brandName = state.business.receiptName || state.business.name || "AfroSeller Receipt"; var lines = ["# " + brandName + " - AfroSeller Receipt", "", "**Receipt number:** " + order.id, "**Generated:** " + new Date().toLocaleString(), "**Country:** " + state.business.country, "**Currency:** " + state.business.currency, "**Seller channel:** " + state.business.channel, "**Seller phone:** " + (state.business.phone || "Not saved"), "**Business category:** " + (state.business.category || "Not saved"), "**Delivery area:** " + (state.business.deliveryArea || "Not saved"), "**Receipt brand color:** " + (state.business.receiptColor || "Not saved"), "**Accepted payment methods:** " + ((state.business.paymentMethods || []).join(", ") || "Not saved"), "", "## Customer", "- Name: " + order.customer, "- Phone or WhatsApp: " + (customer && customer.phone ? customer.phone : "Not saved"), "- Labels: " + (customer && customer.labels && customer.labels.length ? customer.labels.join(", ") : "None saved"), "- Address: " + (order.customerAddress || "Not saved"), "", "## Order", "- Product: " + order.productName, "- SKU: " + (product && product.sku ? product.sku : "Not saved"), "- Variant: " + (product && product.variant ? product.variant : "Not saved"), "- Quantity: " + order.quantity, "- Item amount: " + money(order.orderAmount), "- Delivery fee: " + money(order.deliveryFee), "- Amount paid: " + money(order.amountPaid), "- Balance due: " + money(orderBalance(order)), "- Payment method: " + order.paymentMethod, "- Payment proof note: " + (order.paymentProofNote || "Not saved"), "- Delivery status: " + order.deliveryStatus, "- Rider/contact: " + (order.riderContact || "Not saved"), "- Dispatch note: " + (order.dispatchNote || "Not saved"), "- Proof-of-delivery note: " + (order.podNote || "Not saved"), "", "## Daily Close Snapshot", "- Gross sales today: " + money(close.grossSales), "- Amount paid today: " + money(close.amountPaid), "- Unpaid balance today: " + money(close.unpaid), "- Gross profit preview: " + money(close.profit), "- Orders completed today: " + close.completed, "", "## Low-Stock Restock List"]; if (lowStock.length) lowStock.forEach(function (item) { lines.push("- " + item.name + ": " + item.stock + " left, reorder at " + item.reorderLevel + ", supplier " + (item.supplier || "not saved")); }); else lines.push("No low-stock item in the current catalog."); lines = lines.concat(["", "## Honest Limits", "- This receipt is generated from the shop saved on this device.", "- It is not a connected payment provider receipt.", "- It does not confirm live storefront publishing, delivery booking, or WhatsApp API sending."]); downloadFile("afroseller-receipt-" + slug(state.business.name) + "-" + slug(order.customer) + ".md", lines.join("\n"), "text/markdown;charset=utf-8"); }
+      function copyText(text, success) { if (!text) return; if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(text).then(function () { setStatus(success); }).catch(function () { setStatus("Copy failed. Select the text manually."); }); } else { setStatus("Copy not available in this browser. Select the text manually."); } }
+      function copyTemplate() { if (!els.copyTemplateBtn.disabled) copyText(els.templateOutput.value, "Template copied. Paste it manually where you want to send it."); }
+      function copyWaLink() { if (!els.copyWaLinkBtn.disabled) copyText(els.waLinkOutput.value, "wa.me link copied. It opens a prefilled WhatsApp message; AfroSeller does not send it."); }
+      function bindEvents() {
+        els.businessForm.addEventListener("input", function () { readBusinessForm(); saveState(state, false); renderAll(); });
+        els.catalogSettingsForm.addEventListener("input", function () { readCatalogSettingsForm(); saveState(state, false); renderAll(); });
+        els.financeCloseForm.addEventListener("input", function () { readFinanceCloseForm(); saveState(state, false); renderAll(); });
+        els.closeChecklistRows.addEventListener("change", function (event) { var target = event.target; var closeCheck = target && target.getAttribute("data-close-check"); if (!closeCheck) return; state.dailyCloseDraft.checklist[closeCheck] = target.checked; saveState(state, false); renderAll(); });
+        els.productForm.addEventListener("submit", addProduct);
+        els.orderForm.addEventListener("submit", addOrder);
+        els.movementForm.addEventListener("submit", addMovement);
+        els.customerForm.addEventListener("submit", addCustomer);
+        els.productCancelBtn.addEventListener("click", function () { resetProductForm(); setStatus("Product edit cancelled."); });
+        els.orderCancelBtn.addEventListener("click", function () { resetOrderForm(); setStatus("Order edit cancelled."); });
+        els.customerCancelBtn.addEventListener("click", function () { resetCustomerForm(); setStatus("Customer edit cancelled."); });
+        els.orderProduct.addEventListener("change", updateOrderAmount);
+        els.orderQuantity.addEventListener("input", updateOrderAmount);
+        els.paymentMethod.addEventListener("change", function () { if (els.paymentMethod.value === "unpaid") els.amountPaid.value = "0"; });
+        els.templateForm.addEventListener("change", renderTemplate);
+        els.refreshTemplateBtn.addEventListener("click", renderTemplate);
+        els.copyTemplateBtn.addEventListener("click", copyTemplate);
+        els.copyWaLinkBtn.addEventListener("click", copyWaLink);
+        els.importLocalBtn.addEventListener("click", importLocalWorkspace);
+        els.pullCloudBtn.addEventListener("click", pullCloudWorkspace);
+        els.openWaLinkBtn.addEventListener("click", function (event) { if (els.openWaLinkBtn.getAttribute("aria-disabled") === "true") event.preventDefault(); });
+        els.saveNowBtn.addEventListener("click", function () { readBusinessForm(); readCatalogSettingsForm(); saveState(); renderAll(); });
+        els.resetDemoBtn.addEventListener("click", function () { state = normalizeState(clone(demoState)); resetProductForm(); resetOrderForm(); resetCustomerForm(); saveState(); syncBusinessForm(); syncCatalogSettingsForm(); syncFinanceCloseForm(); renderAll(); setStatus("Starter workspace reset and saved on this device."); });
+        [els.exportProductsBtn, els.exportProductsBtnSide].forEach(function (button) { button.addEventListener("click", exportProducts); });
+        [els.exportInventoryValueBtn, els.exportInventoryValueBtnSide].forEach(function (button) { button.addEventListener("click", exportInventoryValue); });
+        [els.exportReorderListBtn, els.exportReorderListBtnSide].forEach(function (button) { button.addEventListener("click", exportReorderList); });
+        [els.exportCatalogMarkdownBtn, els.exportCatalogMarkdownBtnSide].forEach(function (button) { button.addEventListener("click", exportCatalogMarkdown); });
+        [els.exportCatalogCsvBtn, els.exportCatalogCsvBtnSide].forEach(function (button) { button.addEventListener("click", exportCatalogCsv); });
+        [els.exportCatalogHtmlBtn, els.exportCatalogHtmlBtnSide].forEach(function (button) { button.addEventListener("click", exportCatalogHtml); });
+        [els.copyCatalogMessageBtn, els.copyCatalogMessageBtnSide].forEach(function (button) { button.addEventListener("click", copyCatalogMessage); });
+        [els.exportOrdersBtn, els.exportOrdersBtnSide].forEach(function (button) { button.addEventListener("click", exportOrders); });
+        [els.exportPackingListBtn, els.exportPackingListBtnSide].forEach(function (button) { button.addEventListener("click", exportPackingList); });
+        [els.exportRiderHandoffBtn, els.exportRiderHandoffBtnSide].forEach(function (button) { button.addEventListener("click", exportRiderHandoff); });
+        [els.exportFailedDeliveryBtn, els.exportFailedDeliveryBtnSide].forEach(function (button) { button.addEventListener("click", exportFailedDeliveryReport); });
+        els.exportDeliveryNoteBtn.addEventListener("click", exportDeliveryNote);
+        [els.exportCustomersBtn, els.exportCustomersBtnSide].forEach(function (button) { button.addEventListener("click", exportCustomers); });
+        [els.exportStockMovementsBtn, els.exportStockMovementsBtnSide].forEach(function (button) { button.addEventListener("click", exportStockMovements); });
+        [els.exportDailyCloseBtn, els.exportDailyCloseBtnSide].forEach(function (button) { button.addEventListener("click", exportDailyClose); });
+        [els.exportDailyCloseMarkdownBtn, els.exportDailyCloseMarkdownBtnSide].forEach(function (button) { button.addEventListener("click", exportDailyCloseMarkdown); });
+        els.exportSalesByProductBtnSide.addEventListener("click", exportSalesByProduct);
+        els.exportSalesByCustomerBtnSide.addEventListener("click", exportSalesByCustomer);
+        els.exportUnpaidBalancesBtnSide.addEventListener("click", exportUnpaidBalances);
+        els.exportInventoryMovementBtnSide.addEventListener("click", exportInventoryMovement);
+        els.saveDailyCloseBtn.addEventListener("click", saveDailyCloseRecord);
+        els.exportHandoffBtn.addEventListener("click", exportHandoff);
+        window.addEventListener("afro-auth-change", refreshCloudStatus);
+        document.addEventListener("click", function (event) {
+          var target = event.target.closest("button");
+          if (!target) return;
+          var productId = target.getAttribute("data-edit-product");
+          var productRemoveId = target.getAttribute("data-remove-product");
+          var orderId = target.getAttribute("data-edit-order");
+          var orderCancelId = target.getAttribute("data-cancel-order");
+          var customerId = target.getAttribute("data-edit-customer");
+          var customerRemoveId = target.getAttribute("data-remove-customer");
+          var catalogProductId = target.getAttribute("data-copy-catalog-inquiry");
+          var closeCheck = target.getAttribute("data-close-check");
+          if (productId) editProduct(productId);
+          if (productRemoveId) removeProduct(productRemoveId);
+          if (orderId) editOrder(orderId);
+          if (orderCancelId) cancelOrder(orderCancelId);
+          if (customerId) editCustomer(customerId);
+          if (customerRemoveId) removeCustomer(customerRemoveId);
+          if (catalogProductId) copyCatalogInquiry(catalogProductId);
+          if (closeCheck) { state.dailyCloseDraft.checklist[closeCheck] = target.checked; saveState(state, false); renderAll(); }
+        });
+      }
+      function cacheElements() { ["businessForm","businessName","businessCountry","businessCurrency","languageLane","sellerChannel","sellerPhone","businessCategory","defaultDeliveryArea","receiptBrandName","receiptBrandColor","paymentMethodsAccepted","catalogSettingsForm","catalogShopName","catalogShopPhone","catalogCountry","catalogCurrency","catalogBrandColor","catalogColorDot","catalogShowPrices","catalogShowStock","catalogCategories","catalogWarnings","catalogPreviewGrid","setupScorePill","setupScoreSteps","workflowSteps","cloudStatusPill","cloudStatusText","lastSyncedAt","cloudBusinessSelect","importLocalBtn","pullCloudBtn","productForm","productFormTitle","productName","productSku","productCategory","productVariant","productSupplier","stockLocation","photoUrl","costPrice","sellingPrice","stockOnHand","reorderLevel","productStatus","productSubmitBtn","productCancelBtn","orderForm","orderFormTitle","orderCustomer","orderProduct","orderQuantity","orderAmount","discountAmount","refundAmount","amountPaid","paymentMethod","paymentProofNote","deliveryMethod","orderDeliveryArea","customerAddress","deliveryFee","riderName","riderPhone","riderContact","expectedDeliveryDate","dispatchNote","podNote","deliveryStatus","orderStatus","orderSubmitBtn","orderCancelBtn","movementForm","movementProduct","movementType","movementQuantity","movementOrder","movementNote","movementSubmitBtn","customerForm","customerFormTitle","customerName","customerPhone","customerLastOrder","customerBalance","customerLabels","followStatus","customerSubmitBtn","customerCancelBtn","templateForm","templateType","templateOrder","templateProduct","templateOutput","waLinkOutput","copyTemplateBtn","copyWaLinkBtn","openWaLinkBtn","refreshTemplateBtn","handoffOrder","productRows","orderRows","fulfillmentWarnings","fulfillmentBoard","paymentRows","movementRows","customerRows","dailyCloseRows","paymentSummaryRows","closeChecklistRows","financeCloseForm","cashCount","cashDifferenceNote","ownerReviewNote","accountantSummaryNote","closeHistoryRows","dailyCloseEmpty","inventoryAlerts","inventoryValuation","inventoryRiskCount","saveStatus","metricTodayOrders","metricUnpaid","metricLowStock","metricReadyDelivery","metricGrossSales","saveNowBtn","resetDemoBtn","saveDailyCloseBtn","exportProductsBtn","exportInventoryValueBtn","exportReorderListBtn","exportCatalogMarkdownBtn","exportCatalogCsvBtn","exportCatalogHtmlBtn","copyCatalogMessageBtn","exportOrdersBtn","exportPackingListBtn","exportRiderHandoffBtn","exportFailedDeliveryBtn","exportCustomersBtn","exportStockMovementsBtn","exportDailyCloseBtn","exportDailyCloseMarkdownBtn","exportProductsBtnSide","exportInventoryValueBtnSide","exportReorderListBtnSide","exportCatalogMarkdownBtnSide","exportCatalogCsvBtnSide","exportCatalogHtmlBtnSide","copyCatalogMessageBtnSide","exportOrdersBtnSide","exportPackingListBtnSide","exportRiderHandoffBtnSide","exportDeliveryNoteBtn","exportFailedDeliveryBtnSide","exportCustomersBtnSide","exportStockMovementsBtnSide","exportDailyCloseBtnSide","exportDailyCloseMarkdownBtnSide","exportSalesByProductBtnSide","exportSalesByCustomerBtnSide","exportUnpaidBalancesBtnSide","exportInventoryMovementBtnSide","exportHandoffBtn"].forEach(function (id) { els[id] = $(id); }); }
+      function init() { cacheElements(); state = loadState(); syncBusinessForm(); syncCatalogSettingsForm(); syncFinanceCloseForm(); bindEvents(); renderAll(); setCloudUi("local", "Checking signed-in account state..."); refreshCloudStatus(); setStatus(state.business.name ? "Shop saved on this device." : "Start with shop setup, then add a product, customer, and order."); }
+      if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
+    })();
+  </script>
+</body>
+</html>

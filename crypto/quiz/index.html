@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crypto Knowledge Quiz — Test Your Crypto IQ | AfroTools</title>
+<meta name="description" content="Test your crypto knowledge with Africa-specific questions on Bitcoin, stablecoins, DeFi and rules in Nigeria, Kenya & South Africa. Free, 3 levels.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Crypto Knowledge Quiz — Test Your Crypto IQ | AfroTools">
+<meta property="og:description" content="Test your crypto knowledge with Africa-specific questions. 3 difficulty levels. Share your score!">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/crypto-quiz.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/crypto/quiz/">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="index, follow">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Crypto Knowledge Quiz",
+  "description": "Test your crypto knowledge with beginner, intermediate, and advanced questions tailored to African crypto users.",
+  "url": "https://afrotools.com/crypto/quiz/",
+  "inLanguage": "en",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/crypto-quiz.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Crypto Knowledge Quiz",
+  "url": "https://afrotools.com/crypto/quiz/",
+  "description": "Test your crypto knowledge with beginner, intermediate, and advanced questions tailored to African crypto users.",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/crypto-quiz.webp"
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/crypto.css?v=7107dd8f">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/lib/recent-tools.js?v=78dbe87f" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@nicedoc/twemoji@14/dist/twemoji.min.js" crossorigin="anonymous" defer></script>
+
+<style>
+/* ── Quiz Styles ──────────────────────────────── */
+.quiz-container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 24px 48px;
+}
+
+/* Start screen */
+.quiz-start {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 36px;
+  text-align: center;
+}
+.quiz-start h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 8px;
+  color: var(--color-text);
+}
+.quiz-start p {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  margin: 0 0 28px;
+  line-height: 1.5;
+}
+.difficulty-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 600px) {
+  .difficulty-grid { grid-template-columns: 1fr; }
+}
+.diff-card {
+  background: var(--color-bg-subtle);
+  border: 2px solid var(--color-border);
+  border-radius: 14px;
+  padding: 24px 16px;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+.diff-card:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+.diff-card .diff-icon {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+.diff-card .diff-name {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 6px;
+}
+.diff-card .diff-meta {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+
+/* Quiz active */
+.quiz-active {
+  display: none;
+}
+
+/* Progress bar */
+.quiz-progress {
+  margin-bottom: 20px;
+}
+.quiz-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+.quiz-progress-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--color-bg-subtle);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.quiz-progress-fill {
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+/* Score display */
+.quiz-score-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.quiz-score-bar .score-text { color: var(--color-primary); }
+
+/* Timer */
+.quiz-timer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.timer-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 3px solid var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text);
+  transition: border-color 0.3s;
+}
+.timer-circle.warning { border-color: #FFC107; color: #FFC107; }
+.timer-circle.danger { border-color: #DC3545; color: #DC3545; }
+
+/* Question card */
+.question-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 32px;
+}
+.question-number {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+.question-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+/* Options */
+.options-grid {
+  display: grid;
+  gap: 10px;
+}
+.option-btn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 14px 18px;
+  border: 2px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-bg);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, transform 0.1s;
+  line-height: 1.4;
+}
+.option-btn:hover:not(.disabled) {
+  border-color: var(--color-primary);
+  background: var(--color-bg-subtle);
+  transform: translateX(4px);
+}
+.option-btn.correct {
+  border-color: #28A745;
+  background: #D4EDDA;
+  color: #155724;
+}
+.option-btn.wrong {
+  border-color: #DC3545;
+  background: #F8D7DA;
+  color: #842029;
+}
+@media (prefers-color-scheme: dark) {
+  .option-btn.correct {
+    background: #0D3320;
+    color: #75D99B;
+  }
+  .option-btn.wrong {
+    background: #3D1319;
+    color: #F5C2C7;
+  }
+}
+.option-btn.disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+.option-btn .opt-label {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-bg-subtle);
+  text-align: center;
+  line-height: 28px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+/* Explanation */
+.explanation-box {
+  margin-top: 16px;
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.5;
+  display: none;
+}
+.explanation-box.correct-exp {
+  background: #D4EDDA;
+  border: 1px solid #C3E6CB;
+  color: #155724;
+}
+.explanation-box.wrong-exp {
+  background: #F8D7DA;
+  border: 1px solid #F5C2C7;
+  color: #842029;
+}
+@media (prefers-color-scheme: dark) {
+  .explanation-box.correct-exp {
+    background: #0D3320;
+    border-color: #1B5E33;
+    color: #75D99B;
+  }
+  .explanation-box.wrong-exp {
+    background: #3D1319;
+    border-color: #5C1D26;
+    color: #F5C2C7;
+  }
+}
+
+.next-btn {
+  display: none;
+  width: 100%;
+  padding: 14px;
+  margin-top: 16px;
+  border: none;
+  border-radius: 12px;
+  background: var(--color-primary);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.next-btn:hover { background: #0066d6; }
+
+/* Results screen */
+.quiz-results {
+  display: none;
+  text-align: center;
+}
+.results-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 40px 32px;
+}
+.result-badge-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+}
+.result-grade {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--color-text);
+  margin-bottom: 8px;
+}
+.result-score {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-primary);
+  margin-bottom: 4px;
+}
+.result-pct {
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--color-primary);
+  margin-bottom: 8px;
+}
+.result-time {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  margin-bottom: 4px;
+}
+.result-best {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-bottom: 24px;
+}
+.result-best strong { color: var(--color-primary); }
+
+/* Share */
+.share-section {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-border);
+}
+.share-section h3 {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0 0 12px;
+  color: var(--color-text);
+}
+.share-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-bg-subtle);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.share-btn:hover { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
+.share-btn.twitter { background: #1DA1F2; color: #fff; border-color: #1DA1F2; }
+.share-btn.twitter:hover { background: #0D8BD9; }
+.share-btn.whatsapp { background: #25D366; color: #fff; border-color: #25D366; }
+.share-btn.whatsapp:hover { background: #1EBF5A; }
+
+.action-btns {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 24px;
+}
+.action-btn {
+  padding: 14px 28px;
+  border: 2px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-bg);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+.action-btn:hover { border-color: var(--color-primary); color: var(--color-primary); }
+.action-btn.primary {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+.action-btn.primary:hover { background: #0066d6; }
+
+/* Copied toast */
+.copied-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(60px);
+  background: #333;
+  color: #fff;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0;
+  transition: transform 0.3s, opacity 0.3s;
+  z-index: 9999;
+  pointer-events: none;
+}
+.copied-toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+</style>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:title" content="Crypto Knowledge Quiz — Test Your Crypto IQ | AfroTools">
+<meta name="twitter:description" content="Test your crypto knowledge with Africa-specific questions. 3 difficulty levels. Share your score!">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/crypto-quiz.webp">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Crypto","item":"https://afrotools.com/crypto/"},{"@type":"ListItem","position":3,"name":"Crypto Knowledge Quiz","item":"https://afrotools.com/crypto/quiz/"}]}</script>
+<meta property="article:modified_time" content="2026-03-28">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Crypto Knowledge Quiz?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Crypto Knowledge Quiz then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Crypto Knowledge Quiz?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Crypto Knowledge Quiz free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/crypto/quiz/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/crypto/quiz/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/crypto/quiz/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/crypto/quiz/">
+</head>
+<body class="top-level-page-ui-refresh">
+
+<afro-navbar></afro-navbar>
+
+<!-- Hero -->
+<section class="crypto-hero">
+  <span class="crypto-badge">Crypto Quiz</span>
+  <h1>Crypto Knowledge Quiz</h1>
+  <p>Test your crypto knowledge with Africa-specific questions. 3 difficulty levels. Share your score!</p>
+</section>
+
+<!-- Quiz -->
+<div class="quiz-container">
+
+  <!-- Start Screen -->
+  <div class="quiz-start" id="quizStart">
+    <h2>Choose Your Level</h2>
+    <p>Select a difficulty to begin the quiz. Questions cover crypto basics, African regulations, DeFi concepts, and more.</p>
+    <div class="difficulty-grid">
+      <div class="diff-card" data-level="beginner">
+        <div class="diff-icon">&#127793;</div>
+        <div class="diff-name">Beginner</div>
+        <div class="diff-meta">10 questions<br>30 seconds each</div>
+      </div>
+      <div class="diff-card" data-level="intermediate">
+        <div class="diff-icon">&#128293;</div>
+        <div class="diff-name">Intermediate</div>
+        <div class="diff-meta">15 questions<br>25 seconds each</div>
+      </div>
+      <div class="diff-card" data-level="advanced">
+        <div class="diff-icon">&#9889;</div>
+        <div class="diff-name">Advanced</div>
+        <div class="diff-meta">20 questions<br>20 seconds each</div>
+      </div>
+    </div>
+    <p class="quiz-disclaimer" style="font-size:12px;color:var(--color-text-muted);margin:24px 0 0;line-height:1.5;">For education only. This quiz builds crypto literacy and is not investment or financial advice. Always verify current regulations and prices for your country.</p>
+  </div>
+
+  <!-- Active Quiz -->
+  <div class="quiz-active" id="quizActive">
+    <div class="quiz-progress">
+      <div class="quiz-progress-header">
+        <span id="progressLabel">Question 1 of 10</span>
+        <span id="diffLabel">Beginner</span>
+      </div>
+      <div class="quiz-progress-bar">
+        <div class="quiz-progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="quiz-score-bar">
+      <span>Score: <span class="score-text" id="scoreDisplay">0</span></span>
+      <div class="quiz-timer">
+        <div class="timer-circle" id="timerCircle">30</div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <div class="question-number" id="questionNumber">Question 1</div>
+      <div class="question-text" id="questionText" aria-live="polite"></div>
+      <div class="options-grid" id="optionsGrid" role="group" aria-label="Answer options"></div>
+      <div class="explanation-box" id="explanationBox"></div>
+      <button type="button" class="next-btn" id="nextBtn">Next Question</button>
+    </div>
+  </div>
+
+  <!-- Results Screen -->
+  <div class="quiz-results" id="quizResults">
+    <div class="results-card">
+      <div class="result-badge-icon" id="resultBadge">&#127942;</div>
+      <div class="result-grade" id="resultGrade">Crypto Expert</div>
+      <div class="result-pct" id="resultPct">85%</div>
+      <div class="result-score" id="resultScore">17/20 correct</div>
+      <div class="result-time" id="resultTime">Completed in 4m 32s</div>
+      <div class="result-best" id="resultBest"></div>
+
+      <div class="share-section">
+        <h3>Share Your Score</h3>
+        <div class="share-btns">
+          <button type="button" class="share-btn" id="shareCopy">Copy Result</button>
+          <button type="button" class="share-btn twitter" id="shareTwitter">Share on X</button>
+          <button type="button" class="share-btn whatsapp" id="shareWhatsApp">WhatsApp</button>
+        </div>
+      </div>
+
+      <div class="action-btns">
+        <button type="button" class="action-btn" id="tryAgainBtn">Try Again</button>
+        <button type="button" class="action-btn primary" id="tryHarderBtn">Try Harder Level</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Copied toast -->
+<div class="copied-toast" id="copiedToast">Copied to clipboard!</div>
+
+<!-- SEO Content -->
+<section class="crypto-content">
+  <h2>Crypto Education in Africa: Why Knowledge Matters</h2>
+
+  <p>Africa is one of the fastest-growing cryptocurrency markets in the world, with countries like Nigeria, Kenya, South Africa, Ghana, and Egypt leading adoption on the continent. According to industry reports, Africa's share of global crypto transaction volume has grown steadily year over year, driven by a young, tech-savvy population seeking alternatives to traditional banking systems that often fail to serve them. Peer-to-peer trading platforms have seen explosive growth, with stablecoins like USDT becoming essential tools for cross-border commerce, remittances, and protection against local currency depreciation.</p>
+
+  <p>Despite this rapid adoption, crypto education in Africa remains uneven. Many new users enter the market through social media recommendations or community groups without understanding fundamental concepts like private key security, the difference between custodial and non-custodial wallets, or how to evaluate a token before investing. This knowledge gap makes African crypto users disproportionately vulnerable to scams, rug pulls, and phishing attacks. Industry estimates suggest that billions of dollars have been lost to crypto fraud across the continent, with West Africa and East Africa being particularly affected by Ponzi schemes and fake investment platforms.</p>
+
+  <p>Regulatory frameworks across Africa are evolving rapidly. Nigeria, which initially restricted banks from processing crypto transactions in 2021, has since reversed course and is now working on a comprehensive regulatory framework. South Africa has implemented licensing requirements for crypto asset service providers through the Financial Sector Conduct Authority (FSCA), including capital gains tax obligations. Kenya introduced a Digital Asset Tax of 3% on transfer value. Understanding these regulations is crucial for compliance and for protecting your investments.</p>
+
+  <p>This quiz is designed to test and improve your crypto knowledge with a specific focus on the African context. The questions cover not only universal crypto concepts but also Africa-specific topics like local regulations, popular trading platforms and patterns, currency-specific considerations, and regional scam awareness. Whether you are a complete beginner learning what Bitcoin is, or an advanced user navigating DeFi protocols and tax obligations, this quiz will help identify gaps in your knowledge and provide educational explanations for every answer. Share your results with friends to encourage crypto literacy across the continent. Financial literacy is the best protection against fraud, and in the world of cryptocurrency, knowledge truly is power.</p>
+</section>
+
+
+<section class="df-upgrade" data-df-upgrade="crypto-quiz">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Practical workflow</span>
+      <h2>Crypto Knowledge Quiz: quick guide</h2>
+      <p>Not sure how to get the most from the Crypto Knowledge Quiz? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Crypto Knowledge Quiz takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
+    </div>
+    <form class="df-form" data-df-form="crypto-quiz">
+      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
+      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
+      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
+      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="crypto-quiz" data-df-base="Crypto Knowledge Quiz — enter your details above to see your result." aria-live="polite">Crypto Knowledge Quiz — enter your details above to see your result.</output>
+      <div class="df-actions"><button type="button" data-df-copy="crypto-quiz">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="crypto-quiz-faq-title">
+  <h2 id="crypto-quiz-faq-title">Crypto Knowledge Quiz FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How do I use the Crypto Knowledge Quiz?</summary><p>Enter your amounts, rates and dates in the fields above. The Crypto Knowledge Quiz then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Crypto Knowledge Quiz?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Crypto Knowledge Quiz free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
+</section>
+<afro-related-tools data-ssr="1" category="financial" current="crypto-quiz">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Tracker" data-category="financial" data-icon="AA" data-desc="Compare petrol, diesel, and LPG prices across 54 African countries, then estimate generator fuel costs in local currency">AfroFuel — African Fuel Price Tracker</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ── Question Bank ──────────────────────────────── */
+  var QUESTIONS = {
+    beginner: [
+      { q: 'What is Bitcoin?', opts: ['A digital currency', 'A bank', 'A stock', 'A mobile app'], ans: 0, exp: 'Bitcoin is a decentralized digital currency created in 2009 by the pseudonymous Satoshi Nakamoto. It operates without a central bank or single administrator.' },
+      { q: 'What is a crypto wallet?', opts: ['A physical wallet', 'Software to store crypto keys', 'A bank account', 'A trading platform'], ans: 1, exp: 'A crypto wallet is software (or hardware) that stores your private and public keys, allowing you to send, receive, and manage your cryptocurrency.' },
+      { q: 'What should you NEVER share with anyone?', opts: ['Your wallet address', 'Your seed phrase', 'Your email', 'Your username'], ans: 1, exp: 'Your seed phrase (also called recovery phrase) gives complete access to your wallet. Anyone with it can steal all your funds. Never share it, not even with support staff.' },
+      { q: 'What does P2P mean in crypto trading?', opts: ['Pay-to-Pay', 'Peer-to-Peer', 'Platform-to-Platform', 'Price-to-Price'], ans: 1, exp: 'P2P (Peer-to-Peer) trading means buying and selling crypto directly between users without an intermediary. It is very popular in Africa through platforms like Binance P2P and Paxful.' },
+      { q: 'What is USDT?', opts: ['A volatile coin', 'A stablecoin pegged to USD', 'A Nigerian coin', 'A mining reward'], ans: 1, exp: 'USDT (Tether) is a stablecoin designed to maintain a 1:1 peg with the US dollar. It is the most widely used cryptocurrency in Africa for trading and remittances.' },
+      { q: 'Which country has the highest crypto adoption in Africa?', opts: ['South Africa', 'Kenya', 'Nigeria', 'Egypt'], ans: 2, exp: 'Nigeria consistently ranks as the top African country for crypto adoption, driven by high P2P trading volume, currency depreciation, and a large young population.' },
+      { q: 'True or False: You can lose all your crypto if someone gets your seed phrase.', opts: ['True', 'False'], ans: 0, tf: true, exp: 'True. Your seed phrase is the master key to your wallet. Anyone who has it can access and transfer all your funds immediately and irreversibly.' },
+      { q: 'What is a blockchain?', opts: ['A chain of blocks', 'A distributed ledger', 'A database', 'All of the above'], ans: 3, exp: 'A blockchain is all of the above: a distributed ledger technology that records transactions in blocks linked together in a chain, forming an immutable database.' },
+      { q: 'True or False: Bitcoin was created by Elon Musk.', opts: ['True', 'False'], ans: 1, tf: true, exp: 'False. Bitcoin was created by the pseudonymous Satoshi Nakamoto in 2009. Elon Musk is a vocal supporter of cryptocurrency but did not create Bitcoin.' },
+      { q: 'What is the safest way to store large amounts of crypto?', opts: ['On an exchange', 'In a hot wallet', 'In a hardware/cold wallet', 'In a text file'], ans: 2, exp: 'Hardware wallets (cold wallets) like Ledger or Trezor store your keys offline, making them immune to online hacking. This is the gold standard for securing large crypto holdings.' }
+    ],
+    intermediate: [
+      { q: 'What is the current crypto capital gains tax rate in Nigeria?', opts: ['0%', '5%', '10%', '25%'], ans: 2, exp: 'Nigeria imposes a 10% capital gains tax on profits from the disposal of digital assets, as part of the Finance Act provisions.' },
+      { q: 'Which country banned banks from crypto in 2021 then reversed it?', opts: ['Kenya', 'Nigeria', 'South Africa', 'Ghana'], ans: 1, exp: 'In February 2021, the Central Bank of Nigeria (CBN) directed banks to close accounts linked to crypto. This was later relaxed as Nigeria moved toward regulating rather than banning crypto.' },
+      { q: 'What is a rug pull?', opts: ['A cleaning service', 'Developers abandoning project and taking funds', 'A trading strategy', 'A type of mining'], ans: 1, exp: 'A rug pull is a scam where developers create a token, attract investment, then drain the liquidity pool and disappear with investors\u2019 funds. It is the most common crypto scam in Africa.' },
+      { q: 'What does DCA stand for?', opts: ['Digital Currency Account', 'Dollar Cost Averaging', 'Decentralized Crypto Asset', 'Daily Crypto Alert'], ans: 1, exp: 'Dollar Cost Averaging (DCA) is an investment strategy where you buy a fixed amount of crypto at regular intervals, regardless of price. This reduces the impact of volatility.' },
+      { q: 'What happened to Kenya\'s 3% Digital Asset Tax in 2025?', opts: ['It increased to 5%', 'It was repealed from 1 July 2025', 'It was replaced by VAT only', 'It became 15% on gains'], ans: 1, exp: 'Kenya\'s Finance Act, 2025 repealed the 3% Digital Asset Tax from 1 July 2025. Crypto tax treatment remains an evolving area, so investors should still check current KRA guidance.' },
+      { q: 'True or False: Stablecoins always maintain exactly $1 value.', opts: ['True', 'False'], ans: 1, tf: true, exp: 'False. While stablecoins aim to maintain a $1 peg, they can and do deviate. TerraUST collapsed in 2022, losing its peg entirely. Even USDT and USDC have experienced minor depegging events.' },
+      { q: 'What is 2FA?', opts: ['Two-factor authentication', 'Two-field analysis', 'Token for Africa', 'Trading fee adjustment'], ans: 0, exp: 'Two-factor authentication (2FA) adds an extra layer of security beyond your password. It typically requires a code from an authenticator app or SMS. Always enable 2FA on your crypto accounts.' },
+      { q: 'What percentage of Nigerian retail crypto transactions are stablecoins?', opts: ['10%', '25%', '43%', '70%'], ans: 2, exp: 'Approximately 43% of Nigerian retail crypto transactions involve stablecoins, reflecting their use for cross-border payments, remittances, and hedging against naira depreciation.' },
+      { q: 'True or False: All crypto transactions are completely anonymous.', opts: ['True', 'False'], ans: 1, tf: true, exp: 'False. Most blockchain transactions are pseudonymous, not anonymous. Transactions are publicly visible on the blockchain and can often be traced back to real identities through exchanges with KYC requirements.' },
+      { q: 'What is a DEX?', opts: ['A centralized exchange', 'A decentralized exchange', 'A digital expert', 'A deposit exchange'], ans: 1, exp: 'A DEX (Decentralized Exchange) allows users to trade crypto directly from their wallets without a central intermediary. Examples include Uniswap, PancakeSwap, and SushiSwap.' }
+    ],
+    advanced: [
+      { q: 'What is the South Africa annual CGT exclusion for crypto?', opts: ['R0', 'R20,000', 'R40,000', 'R100,000'], ans: 2, exp: 'South Africa provides an annual capital gains tax exclusion of R40,000 for individuals. Gains above this threshold from crypto disposal are included in taxable income at the applicable inclusion rate.' },
+      { q: 'What is impermanent loss?', opts: ['Losing your password', 'Loss from providing liquidity in AMM pools', 'A temporary dip', 'Exchange downtime'], ans: 1, exp: 'Impermanent loss occurs when you provide liquidity to an AMM (Automated Market Maker) pool and the price ratio of the paired tokens changes. The loss becomes permanent if you withdraw at an unfavorable ratio.' },
+      { q: 'What is the maximum BTC supply?', opts: ['21 million', '100 million', 'Unlimited', '1 billion'], ans: 0, exp: 'Bitcoin has a hard cap of 21 million coins. This scarcity is built into the protocol and is a key factor in Bitcoin\u2019s value proposition as "digital gold."' },
+      { q: 'What is a honeypot in crypto?', opts: ['A sweet deal', 'A token you can buy but not sell', 'A mining reward', 'A staking pool'], ans: 1, exp: 'A honeypot is a malicious smart contract designed to trap funds. Users can buy the token but the contract prevents selling, effectively stealing the buyer\u2019s investment.' },
+      { q: 'What consensus mechanism does Ethereum use?', opts: ['Proof of Work', 'Proof of Stake', 'Proof of Authority', 'Delegated PoS'], ans: 1, exp: 'Since "The Merge" in September 2022, Ethereum uses Proof of Stake (PoS), where validators stake ETH to secure the network, replacing the energy-intensive Proof of Work mechanism.' }
+    ]
+  };
+
+  /* ── Difficulty config ──────────────────────────── */
+  var DIFF_CONFIG = {
+    beginner: { count: 10, time: 30, label: 'Beginner' },
+    intermediate: { count: 15, time: 25, label: 'Intermediate' },
+    advanced: { count: 20, time: 20, label: 'Advanced' }
+  };
+
+  /* ── Grade mapping ──────────────────────────────── */
+  function getGrade(pct) {
+    if (pct >= 81) return { label: 'Crypto Expert', icon: '&#127942;' };
+    if (pct >= 61) return { label: 'Crypto Confident', icon: '&#128170;' };
+    if (pct >= 41) return { label: 'Crypto Learner', icon: '&#128218;' };
+    return { label: 'Crypto Novice', icon: '&#127793;' };
+  }
+
+  /* ── State ──────────────────────────────────────── */
+  var currentLevel = null;
+  var questions = [];
+  var currentIdx = 0;
+  var score = 0;
+  var timer = null;
+  var timeLeft = 0;
+  var startTime = 0;
+  var answered = false;
+
+  /* ── DOM refs ───────────────────────────────────── */
+  var $start = document.getElementById('quizStart');
+  var $active = document.getElementById('quizActive');
+  var $results = document.getElementById('quizResults');
+  var $progressLabel = document.getElementById('progressLabel');
+  var $diffLabel = document.getElementById('diffLabel');
+  var $progressFill = document.getElementById('progressFill');
+  var $scoreDisplay = document.getElementById('scoreDisplay');
+  var $timerCircle = document.getElementById('timerCircle');
+  var $questionNumber = document.getElementById('questionNumber');
+  var $questionText = document.getElementById('questionText');
+  var $optionsGrid = document.getElementById('optionsGrid');
+  var $explanationBox = document.getElementById('explanationBox');
+  var $nextBtn = document.getElementById('nextBtn');
+
+  /* ── Shuffle array ──────────────────────────────── */
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  /* ── Build question set ─────────────────────────── */
+  function buildQuestions(level) {
+    var config = DIFF_CONFIG[level];
+    var pool = [];
+
+    if (level === 'beginner') {
+      pool = QUESTIONS.beginner.slice();
+    } else if (level === 'intermediate') {
+      pool = QUESTIONS.beginner.concat(QUESTIONS.intermediate);
+    } else {
+      pool = QUESTIONS.beginner.concat(QUESTIONS.intermediate).concat(QUESTIONS.advanced);
+    }
+
+    pool = shuffle(pool);
+    return pool.slice(0, config.count);
+  }
+
+  /* ── Start quiz ─────────────────────────────────── */
+  function startQuiz(level) {
+    currentLevel = level;
+    questions = buildQuestions(level);
+    currentIdx = 0;
+    score = 0;
+    startTime = Date.now();
+
+    $start.style.display = 'none';
+    $results.style.display = 'none';
+    $active.style.display = 'block';
+
+    $diffLabel.textContent = DIFF_CONFIG[level].label;
+    $scoreDisplay.textContent = '0';
+
+    showQuestion();
+  }
+
+  /* ── Show question ──────────────────────────────── */
+  function showQuestion() {
+    answered = false;
+    var q = questions[currentIdx];
+    var config = DIFF_CONFIG[currentLevel];
+    var total = config.count;
+
+    $progressLabel.textContent = 'Question ' + (currentIdx + 1) + ' of ' + total;
+    $progressFill.style.width = ((currentIdx / total) * 100) + '%';
+    $questionNumber.textContent = 'Question ' + (currentIdx + 1);
+    $questionText.textContent = q.q;
+
+    /* Build options */
+    var html = '';
+    var labels = q.tf ? ['', ''] : ['A', 'B', 'C', 'D'];
+    for (var i = 0; i < q.opts.length; i++) {
+      var aria = (labels[i] ? labels[i] + ': ' : '') + q.opts[i];
+      html += '<button type="button" class="option-btn" data-idx="' + i + '" aria-label="' + aria.replace(/"/g, '&quot;') + '">';
+      if (!q.tf) html += '<span class="opt-label" aria-hidden="true">' + labels[i] + '</span>';
+      html += q.opts[i];
+      html += '</button>';
+    }
+    $optionsGrid.innerHTML = html;
+    $optionsGrid.setAttribute('aria-label', 'Answer options for question ' + (currentIdx + 1));
+
+    /* Hide explanation and next */
+    $explanationBox.style.display = 'none';
+    $explanationBox.className = 'explanation-box';
+    $nextBtn.style.display = 'none';
+
+    /* Bind option clicks */
+    var btns = $optionsGrid.querySelectorAll('.option-btn');
+    btns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (answered) return;
+        handleAnswer(parseInt(btn.getAttribute('data-idx')));
+      });
+    });
+
+    /* Start timer */
+    startTimer(config.time);
+  }
+
+  /* ── Timer ──────────────────────────────────────── */
+  function startTimer(seconds) {
+    clearInterval(timer);
+    timeLeft = seconds;
+    updateTimerDisplay();
+    timer = setInterval(function () {
+      timeLeft--;
+      updateTimerDisplay();
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        handleAnswer(-1); /* Time's up */
+      }
+    }, 1000);
+  }
+
+  function updateTimerDisplay() {
+    $timerCircle.textContent = timeLeft;
+    $timerCircle.className = 'timer-circle';
+    if (timeLeft <= 5) $timerCircle.classList.add('danger');
+    else if (timeLeft <= 10) $timerCircle.classList.add('warning');
+  }
+
+  /* ── Handle answer ──────────────────────────────── */
+  function handleAnswer(selectedIdx) {
+    if (answered) return;
+    answered = true;
+    clearInterval(timer);
+
+    var q = questions[currentIdx];
+    var correct = selectedIdx === q.ans;
+    if (correct) score++;
+
+    $scoreDisplay.textContent = score;
+
+    /* Highlight options */
+    var btns = $optionsGrid.querySelectorAll('.option-btn');
+    btns.forEach(function (btn) {
+      var idx = parseInt(btn.getAttribute('data-idx'));
+      btn.classList.add('disabled');
+      if (idx === q.ans) btn.classList.add('correct');
+      if (idx === selectedIdx && !correct) btn.classList.add('wrong');
+    });
+
+    /* Show explanation */
+    if (correct) {
+      $explanationBox.className = 'explanation-box correct-exp';
+      $explanationBox.innerHTML = '<strong>Correct!</strong> ' + q.exp;
+    } else if (selectedIdx === -1) {
+      $explanationBox.className = 'explanation-box wrong-exp';
+      $explanationBox.innerHTML = '<strong>Time\'s up!</strong> The correct answer was: <strong>' + q.opts[q.ans] + '</strong>. ' + q.exp;
+    } else {
+      $explanationBox.className = 'explanation-box wrong-exp';
+      $explanationBox.innerHTML = '<strong>Incorrect.</strong> The correct answer was: <strong>' + q.opts[q.ans] + '</strong>. ' + q.exp;
+    }
+    $explanationBox.style.display = 'block';
+
+    /* Show next button */
+    if (currentIdx < questions.length - 1) {
+      $nextBtn.textContent = 'Next Question';
+    } else {
+      $nextBtn.textContent = 'See Results';
+    }
+    $nextBtn.style.display = 'block';
+  }
+
+  /* ── Next question ──────────────────────────────── */
+  $nextBtn.addEventListener('click', function () {
+    currentIdx++;
+    if (currentIdx >= questions.length) {
+      showResults();
+    } else {
+      showQuestion();
+    }
+  });
+
+  /* ── Show results ───────────────────────────────── */
+  function showResults() {
+    $active.style.display = 'none';
+    $results.style.display = 'block';
+
+    var total = questions.length;
+    var pct = Math.round((score / total) * 100);
+    var elapsed = Math.round((Date.now() - startTime) / 1000);
+    var mins = Math.floor(elapsed / 60);
+    var secs = elapsed % 60;
+    var grade = getGrade(pct);
+
+    document.getElementById('resultBadge').innerHTML = grade.icon;
+    document.getElementById('resultGrade').textContent = grade.label;
+    document.getElementById('resultPct').textContent = pct + '%';
+    document.getElementById('resultScore').textContent = score + '/' + total + ' correct';
+    document.getElementById('resultTime').textContent = 'Completed in ' + mins + 'm ' + (secs < 10 ? '0' : '') + secs + 's';
+
+    /* Personal best */
+    var bestKey = 'afro_quiz_best_' + currentLevel;
+    var prevBest = parseInt(localStorage.getItem(bestKey)) || 0;
+    if (pct > prevBest) {
+      localStorage.setItem(bestKey, pct);
+      document.getElementById('resultBest').innerHTML = 'New personal best! <strong>' + pct + '%</strong>';
+    } else {
+      document.getElementById('resultBest').innerHTML = 'Personal best: <strong>' + prevBest + '%</strong>';
+    }
+
+    /* Update progress bar to 100% */
+    $progressFill.style.width = '100%';
+
+    /* Show/hide harder button */
+    var harderBtn = document.getElementById('tryHarderBtn');
+    if (currentLevel === 'beginner') {
+      harderBtn.style.display = '';
+      harderBtn.textContent = 'Try Intermediate';
+      harderBtn.setAttribute('data-next', 'intermediate');
+    } else if (currentLevel === 'intermediate') {
+      harderBtn.style.display = '';
+      harderBtn.textContent = 'Try Advanced';
+      harderBtn.setAttribute('data-next', 'advanced');
+    } else {
+      harderBtn.style.display = 'none';
+    }
+  }
+
+  /* ── Share functions ────────────────────────────── */
+  function getShareText() {
+    var total = questions.length;
+    var pct = Math.round((score / total) * 100);
+    return 'I scored ' + pct + '% on the AfroCrypto Quiz (' + DIFF_CONFIG[currentLevel].label + ' level)! Test your crypto knowledge: https://afrotools.com/crypto/quiz';
+  }
+
+  document.getElementById('shareCopy').addEventListener('click', function () {
+    var text = getShareText();
+    navigator.clipboard.writeText(text).then(function () {
+      var toast = document.getElementById('copiedToast');
+      toast.classList.add('show');
+      setTimeout(function () { toast.classList.remove('show'); }, 2000);
+    });
+  });
+
+  document.getElementById('shareTwitter').addEventListener('click', function () {
+    var text = encodeURIComponent(getShareText());
+    window.open('https://twitter.com/intent/tweet?text=' + text, '_blank');
+  });
+
+  document.getElementById('shareWhatsApp').addEventListener('click', function () {
+    var text = encodeURIComponent(getShareText());
+    window.open('https://wa.me/?text=' + text, '_blank');
+  });
+
+  /* ── Try again / harder ─────────────────────────── */
+  document.getElementById('tryAgainBtn').addEventListener('click', function () {
+    startQuiz(currentLevel);
+  });
+
+  document.getElementById('tryHarderBtn').addEventListener('click', function () {
+    var next = this.getAttribute('data-next');
+    if (next) startQuiz(next);
+  });
+
+  /* ── Difficulty card clicks ─────────────────────── */
+  document.querySelectorAll('.diff-card').forEach(function (card) {
+    card.addEventListener('click', function () {
+      startQuiz(card.getAttribute('data-level'));
+    });
+  });
+
+})();
+</script>
+
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

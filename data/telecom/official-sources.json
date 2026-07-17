@@ -1,0 +1,192 @@
+{
+  "version": 1,
+  "category": "telecom",
+  "name": "Telecom & Mobile official sources",
+  "reviewCadenceDays": 90,
+  "highRiskCadenceDays": 30,
+  "notes": [
+    "Telecom is the most price-perishable category on the site. Operator tariffs, roaming rates, pay-TV packages and SMS gateway pricing all move faster than the review cadence, and NGN/GHS/ETB inflation compounds it.",
+    "data/telecom/country-telecom-index.js carries a single lastUpdated stamp for all 12 markets. That is a floor, not a per-figure date: a market can be re-checked without the stamp moving, and the stamp can move without every market being re-checked. Treat any price older than highRiskCadenceDays as planning-grade.",
+    "SIM registration and number portability encode legal deadlines and penalties. Per the government rule, that class of claim must never be published without an official-source link. Those two datasets are the highest-risk entries in this ledger and currently have the weakest source coverage.",
+    "Never update a fee, tariff, deadline or penalty because a URL's content hash changed. Open the page and read it, exactly as .claude/rules/government.md requires.",
+    "Several sources below are commercial or aggregator pages, not regulators. They are recorded as sourceType secondary-aggregator or vendor-pricing so they are never mistaken for authority. A regulator source always outranks them."
+  ],
+  "tools": [
+    "telecom-data-plan-compare",
+    "telecom-roaming-cost",
+    "telecom-starlink-compare",
+    "telecom-tv-compare",
+    "telecom-internet-compare",
+    "telecom-business-internet",
+    "telecom-bulk-sms-pricing",
+    "telecom-whatsapp-vs-sms",
+    "telecom-airtime-value",
+    "telecom-sim-registration",
+    "telecom-number-portability",
+    "telecom-ussd-directory",
+    "telecom-data-usage-calc",
+    "telecom-fiber-lte-5g"
+  ],
+  "sources": [
+    {
+      "id": "gsma-mobile-economy-ssa",
+      "country": "ALL",
+      "authority": "GSMA",
+      "title": "Mobile Economy, Sub-Saharan Africa",
+      "url": "https://www.gsma.com/mobileeconomy/sub-saharan-africa/",
+      "sourceType": "industry-research",
+      "watch": "availability-and-content",
+      "fields": ["market-context", "subscribers"],
+      "tools": ["telecom-data-plan-compare"],
+      "notes": "Context and subscriber scale only. Does not evidence any per-operator price in the dataset."
+    },
+    {
+      "id": "whatsapp-business-pricing",
+      "country": "ALL",
+      "authority": "Meta / WhatsApp Business",
+      "title": "WhatsApp Business Platform pricing",
+      "url": "https://business.whatsapp.com/products/platform-pricing",
+      "sourceType": "vendor-pricing",
+      "watch": "availability-and-content",
+      "fields": ["whatsappBusiness.perConversation"],
+      "tools": ["telecom-whatsapp-vs-sms"],
+      "notes": "Authoritative for WhatsApp conversation rates. Only NG, KE, ZA, GH carry whatsappBusiness data; the other 8 markets are unpriced and the tool now filters them out rather than rendering them as free."
+    },
+    {
+      "id": "starlink-availability-map",
+      "country": "ALL",
+      "authority": "SpaceX / Starlink",
+      "title": "Starlink availability map",
+      "url": "https://www.starlink.com/map/",
+      "sourceType": "vendor-availability",
+      "watch": "availability-and-content",
+      "fields": ["starlinkAvailable", "starlinkPrice"],
+      "tools": ["telecom-starlink-compare"],
+      "notes": "HIGH PRIORITY. The dataset's starlinkAvailable flags are stale by inspection - several markets are marked false that have had commercial service for some time. Verify every flag against this map before the next release. Pricing exists for NG, KE, ZA only."
+    },
+    {
+      "id": "dstv-packages-ng",
+      "country": "NG",
+      "authority": "MultiChoice / DStv",
+      "title": "DStv Nigeria package comparison",
+      "url": "https://www.dstv.com/en-ng/buy/compare-packages",
+      "sourceType": "vendor-pricing",
+      "watch": "availability-and-content",
+      "fields": ["tvProviders.packages"],
+      "tools": ["telecom-tv-compare"],
+      "notes": "Pay-TV reprices at least annually and DStv Nigeria has repriced since the dataset stamp. Only the NG storefront is bound here; KE, ZA and GH package prices have no source."
+    },
+    {
+      "id": "twilio-sms-pricing",
+      "country": "ALL",
+      "authority": "Twilio",
+      "title": "Twilio SMS pricing",
+      "url": "https://www.twilio.com/en-us/sms/pricing/us",
+      "sourceType": "vendor-pricing",
+      "watch": "availability-and-content",
+      "fields": ["bulkSMS.avgCostPerSMS"],
+      "tools": ["telecom-bulk-sms-pricing", "telecom-whatsapp-vs-sms"],
+      "notes": "The linked page is the US price list. It does not evidence African per-SMS rates. Replace with the per-country Twilio pricing page before treating bulkSMS as sourced."
+    },
+    {
+      "id": "africastalking-sms",
+      "country": "ALL",
+      "authority": "Africa's Talking",
+      "title": "Africa's Talking SMS documentation",
+      "url": "https://help.africastalking.com/en/collections/150764-sms",
+      "sourceType": "vendor-docs",
+      "watch": "availability-and-content",
+      "fields": ["bulkSMS.providers", "bulkSMS.avgCostPerSMS"],
+      "tools": ["telecom-bulk-sms-pricing"],
+      "notes": "Documentation collection, not a rate card. Locate the per-country pricing page to evidence the rates."
+    },
+    {
+      "id": "airalo-africa-esim",
+      "country": "ALL",
+      "authority": "Airalo",
+      "title": "Africa eSIM plans",
+      "url": "https://www.airalo.com/africa-esim",
+      "sourceType": "vendor-pricing",
+      "watch": "availability-and-content",
+      "fields": ["roaming-alternative"],
+      "tools": ["telecom-roaming-cost"],
+      "notes": "Supports the eSIM guidance in the roaming tips only. Does not evidence any operator roaming rate."
+    },
+    {
+      "id": "worldwide-data-pricing",
+      "country": "ALL",
+      "authority": "bestbroadbanddeals.co.uk",
+      "title": "Worldwide mobile data pricing index",
+      "url": "https://bestbroadbanddeals.co.uk/mobiles/worldwide-data-pricing/",
+      "sourceType": "secondary-aggregator",
+      "watch": "availability-and-content",
+      "fields": ["avgDataCostPerGB"],
+      "tools": ["telecom-data-plan-compare", "telecom-roaming-cost"],
+      "notes": "Third-party aggregator, not an operator or regulator. Acceptable for a cross-market sanity check on avgDataCostPerGB; not acceptable as the basis of a published price. Never cite as official."
+    },
+    {
+      "id": "icasa-numbering-za",
+      "country": "ZA",
+      "authority": "ICASA",
+      "title": "Numbering and number portability",
+      "url": "https://www.icasa.org.za/pages/numbering",
+      "sourceType": "regulator",
+      "watch": "availability-and-content",
+      "fields": ["numberPortability.process", "numberPortability.timeline"],
+      "tools": ["telecom-number-portability"],
+      "notes": "Regulator source. Outranks any vendor page for South African portability rules."
+    },
+    {
+      "id": "ca-kenya-repository",
+      "country": "KE",
+      "authority": "Communications Authority of Kenya",
+      "title": "CA Kenya document repository",
+      "url": "https://repository.ca.go.ke/items/abf5f83d-a36c-47e1-9e13-a70f1aa52208/full",
+      "sourceType": "regulator",
+      "watch": "availability-and-content",
+      "fields": ["numberPortability", "simRegistration"],
+      "tools": ["telecom-number-portability", "telecom-sim-registration"],
+      "notes": "Deep link to a single repository item. Verify it still resolves and still covers the claim before relying on it; repository item URLs are fragile."
+    },
+    {
+      "id": "nca-ghana-registration",
+      "country": "GH",
+      "authority": "National Communications Authority, Ghana",
+      "title": "SIM registration process",
+      "url": "https://nca.org.gh/registration-process/",
+      "sourceType": "regulator",
+      "watch": "availability-and-content",
+      "fields": ["simRegistration.process", "simRegistration.deadline", "simRegistration.penalty"],
+      "tools": ["telecom-sim-registration"],
+      "notes": "Regulator source for Ghana SIM registration."
+    }
+  ],
+  "gaps": {
+    "notes": "Recorded deliberately. These are claims the site publishes with no source bound to them. A gap is a known liability, not an oversight - do not delete an entry here without either finding the source or removing the claim.",
+    "regulatorsWithoutUrl": [
+      { "country": "NG", "authority": "NCC (Nigerian Communications Commission)", "needs": ["simRegistration", "numberPortability"] },
+      { "country": "TZ", "authority": "TCRA", "needs": ["simRegistration", "numberPortability"] },
+      { "country": "UG", "authority": "UCC", "needs": ["simRegistration", "numberPortability"] },
+      { "country": "EG", "authority": "NTRA", "needs": ["simRegistration", "numberPortability"] },
+      { "country": "RW", "authority": "RURA", "needs": ["simRegistration", "numberPortability"] },
+      { "country": "ET", "authority": "ECA", "needs": ["simRegistration", "numberPortability"] },
+      { "country": "CI", "authority": "ARTCI", "needs": ["simRegistration", "numberPortability"] },
+      { "country": "SN", "authority": "ARTP", "needs": ["simRegistration", "numberPortability"] },
+      { "country": "MA", "authority": "ANRT", "needs": ["simRegistration", "numberPortability"] }
+    ],
+    "unsourcedClaims": [
+      { "field": "operators[].dataBundles[].price", "tools": ["telecom-data-plan-compare"], "why": "Every bundle price across all 12 markets is hardcoded with no per-operator source. The page's own FAQ previously claimed prices were 'sourced from official operator websites and updated regularly', which the codebase could not support; that copy has been corrected to state the real review date." },
+      { "field": "roaming.*", "tools": ["telecom-roaming-cost"], "why": "Voice/SMS/data roaming rates for NG, KE, ZA, GH have no operator source. The other 8 markets have no roaming data at all and are now filtered out of the home-country selector." },
+      { "field": "isp.*", "tools": ["telecom-internet-compare", "telecom-business-internet"], "why": "ISP speeds and prices for 4 of 12 markets, unsourced and undated." },
+      { "field": "airtime resale rate 70-85%", "tools": ["telecom-airtime-value"], "why": "Stated as fact in the meta description. This is an informal secondary-market rate with no regulator and no source. Either attribute it or soften it to a modelled assumption." },
+      { "field": "bulkSMS volume discount tiers", "tools": ["telecom-bulk-sms-pricing"], "why": "Tiers (5/10/15/25%) are hardcoded inline in the page with no provider attribution." },
+      { "field": "ussdCodes", "tools": ["telecom-ussd-directory"], "why": "Undated. Low perishability, but RW and ET are missing entirely despite both appearing in operators." }
+    ]
+  },
+  "manualReviewRules": [
+    "Blocked or unreachable regulator portals go to a manual-review queue. Do not infer that a rule is unchanged because its page did not load.",
+    "A vendor or aggregator page never overrides a regulator page for the same claim.",
+    "SIM-registration deadlines and portability penalties require a regulator source. If there is no regulator URL for a market, the page must not state the deadline as fact.",
+    "If a price is older than highRiskCadenceDays, the surface that renders it must show its review date rather than presenting it as current."
+  ]
+}

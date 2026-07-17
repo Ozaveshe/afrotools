@@ -1,0 +1,193 @@
+{
+  "schemaVersion": "1.0.0",
+  "siteOrigin": "https://afrotools.com",
+  "canonicalDecisions": [
+    {
+      "id": "english-tool-directory",
+      "source": "/all-tools/",
+      "destination": "/tools/",
+      "statusCode": 301,
+      "force": true,
+      "preserveEquity": true,
+      "rationale": "The generated English directory at /tools/ owns complete canonical discovery and registry integration."
+    },
+    {
+      "id": "terms-short-route",
+      "source": "/terms-of-use",
+      "destination": "/terms/",
+      "statusCode": 301,
+      "force": true,
+      "preserveEquity": true,
+      "rationale": "The maintained legal page and existing link equity use /terms/."
+    },
+    {
+      "id": "terms-html-route",
+      "source": "/terms-of-use.html",
+      "destination": "/terms/",
+      "statusCode": 301,
+      "force": true,
+      "preserveEquity": true,
+      "rationale": "The legacy flat HTML route must bypass the obsolete intermediate alias."
+    },
+    {
+      "id": "french-tool-directory",
+      "source": "/fr/tools/",
+      "destination": "/fr/all-tools/",
+      "statusCode": 301,
+      "force": true,
+      "preserveEquity": true,
+      "rationale": "A genuine French all-tools directory exists and is preferable to the former English fallback."
+    },
+    {
+      "id": "french-terms-short-route",
+      "source": "/fr/terms/",
+      "destination": "/fr/terms-of-use/",
+      "statusCode": 301,
+      "force": true,
+      "preserveEquity": true,
+      "rationale": "The fully localized French terms page owns the legal contract; the shorter legacy route redirects in one hop."
+    },
+    {
+      "id": "french-privacy-policy-route",
+      "source": "/fr/privacy-policy/",
+      "destination": "/fr/privacy/",
+      "statusCode": 301,
+      "force": true,
+      "preserveEquity": true,
+      "rationale": "The maintained French privacy page owns the policy; the duplicate policy slug redirects in one hop."
+    },
+    {
+      "id": "privacy-short-route",
+      "source": "/privacy-policy",
+      "destination": "/privacy/",
+      "statusCode": 301,
+      "force": true,
+      "preserveEquity": true,
+      "rationale": "The maintained privacy policy lives at /privacy/."
+    },
+    {
+      "id": "privacy-html-route",
+      "source": "/privacy-policy.html",
+      "destination": "/privacy/",
+      "statusCode": 301,
+      "force": true,
+      "preserveEquity": true,
+      "rationale": "The legacy flat HTML route must resolve directly to the maintained policy."
+    },
+    {
+      "id": "french-embed-directory",
+      "source": "/fr/embed/",
+      "destination": "/widgets/demo/",
+      "statusCode": 301,
+      "force": true,
+      "preserveEquity": true,
+      "rationale": "There is no native French embed library; preserve the legacy URL as an explicit English product fallback."
+    }
+  ],
+  "equivalenceGroups": [
+    {
+      "id": "directory:all-tools",
+      "routes": {
+        "en": "/tools/",
+        "fr": "/fr/all-tools/",
+        "sw": "/sw/zana-zote/",
+        "yo": "/yo/awon-ise/",
+        "ha": "/ha/kayan-aiki/"
+      },
+      "xDefault": "/tools/"
+    },
+    {
+      "id": "category:document-pdf",
+      "routes": {
+        "en": "/document-pdf/",
+        "fr": "/fr/document-pdf/"
+      },
+      "xDefault": "/document-pdf/"
+    },
+    {
+      "id": "legal:privacy",
+      "routes": {
+        "en": "/privacy/",
+        "fr": "/fr/privacy/"
+      },
+      "xDefault": "/privacy/"
+    }
+  ],
+  "localeHomes": {
+    "en": "/",
+    "fr": "/fr/",
+    "sw": "/sw/",
+    "yo": "/yo/",
+    "ha": "/ha/"
+  },
+  "fallbackLabels": {
+    "en": "English fallback",
+    "fr": "Version française indisponible — English fallback",
+    "sw": "Kiswahili hakipatikani — English fallback",
+    "yo": "Èdè Yorùbá kò sí — English fallback",
+    "ha": "Babu Hausa — English fallback"
+  },
+  "routeNormalization": {
+    "lowercaseCanonical": true,
+    "stripQueryFromCanonical": true,
+    "stripFragmentFromCanonical": true,
+    "directoryRoutesUseTrailingSlash": true,
+    "flatHtmlRoutesDropExtension": true,
+    "slashOwner": "netlify-pretty-urls"
+  },
+  "pageTypeRules": [
+    { "id": "tool", "pattern": "^/(?:fr/|sw/|yo/|ha/)?tools/", "pageType": "tool" },
+    { "id": "widget", "pattern": "^/(?:fr/)?widgets/", "pageType": "widget" },
+    { "id": "article", "pattern": "^/(?:fr/|sw/|yo/|ha/)?blog/", "pageType": "article" },
+    { "id": "auth", "pattern": "^/(?:fr/|sw/|yo/|ha/)?auth(?:/|$)", "pageType": "auth" },
+    { "id": "legal", "pattern": "^/(?:fr/|sw/|yo/|ha/)?(?:privacy|terms)(?:/|$)", "pageType": "legal" },
+    { "id": "api", "pattern": "^/(?:api|\\.netlify/functions)(?:/|$)", "pageType": "api" },
+    { "id": "category", "pattern": "^/(?:categories|salary-tax|document-pdf|developer-tools|agriculture|education|health|legal|trade|telecom|energy|image-design|language|small-business|personal-finance|data-productivity)(?:/|$)", "pageType": "category" },
+    { "id": "country", "pattern": "^/(?:fr/|sw/|yo/|ha/)?[a-z0-9-]+/(?:[a-z]{2}-(?:paye|vat)|calculateur-|kikokotoo-)", "pageType": "country-tool" },
+    { "id": "default", "pattern": ".*", "pageType": "page" }
+  ],
+  "sitemapRules": {
+    "en": "sitemap-misc.xml",
+    "fr": "sitemap-fr.xml",
+    "sw": "sitemap-sw.xml",
+    "yo": "sitemap-yo.xml",
+    "ha": "sitemap-ha.xml"
+  },
+  "excludedDirectories": [
+    ".agents",
+    ".claude",
+    ".codex",
+    ".git",
+    ".github",
+    ".netlify",
+    "admin",
+    "afrotools-sentinel",
+    "artifacts",
+    "assets",
+    "audit-results",
+    "data",
+    "dist",
+    "docs",
+    "lang",
+    "netlify",
+    "node_modules",
+    "output",
+    "playwright-report",
+    "prompts",
+    "reports",
+    "scripts",
+    "supabase",
+    "test-results",
+    "tests",
+    "tmp"
+  ],
+  "excludedHtmlFiles": [
+    "404.html",
+    "afrotools-mission-control.html",
+    "fr/widgets/iframe/template.html",
+    "mc-7a2f9x.html",
+    "style-guide.html",
+    "tools/afrostream/admin.html",
+    "widgets/iframe/template.html"
+  ]
+}

@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JWT Decoder and Security Inspector | AfroTools</title>
+<meta name="description" content="Decode JWTs locally, inspect claims, check expiration, review JOSE header risks, and verify or generate HS256 test tokens without uploading tokens to a server.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="JWT Decoder and Security Inspector | AfroTools">
+<meta property="og:description" content="Decode JWTs locally, inspect claims, verify HS signatures, and catch common JWT security mistakes.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/jwt-decoder/">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/jwt-decoder.webp">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="JWT Decoder and Security Inspector | AfroTools">
+<meta name="twitter:description" content="Local JWT decoding, claim timing and security checks for developers.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/jwt-decoder.webp">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "JWT Decoder and Security Inspector",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "url": "https://afrotools.com/tools/jwt-decoder/",
+  "description": "Decode JWTs locally, inspect claims, check expiration, review JOSE header risks, and verify or generate HS256 test tokens without uploading tokens to a server.",
+  "browserRequirements": "Requires JavaScript and Web Crypto support for HS signature checks",
+  "featureList": [
+    "Local JWT header and payload decode",
+    "Claim timeline for exp, nbf and iat",
+    "JOSE header and JWT risk review",
+    "HS256, HS384 and HS512 signature verification",
+    "Local HS256 test-token generator",
+    "Redacted debug summary copy action"
+  ],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "image": "https://afrotools.com/assets/img/tools/jwt-decoder.webp"
+}
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Developer Tools","item":"https://afrotools.com/developer-tools/"},{"@type":"ListItem","position":3,"name":"JWT Decoder","item":"https://afrotools.com/tools/jwt-decoder/"}]}</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to inspect a JWT safely with AfroTools",
+  "description": "Decode a JWT locally, review claim timing and risk signals, then copy a redacted debugging summary.",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "Paste a test or redacted token",
+      "text": "Paste a compact JWT into the local decoder. Avoid production bearer or refresh tokens on shared devices."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Review claims and risks",
+      "text": "Check the decoded JOSE header, payload, expiration, not-before, issuer, audience, key id and algorithm warnings."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Verify before trusting",
+      "text": "Use HS verification only for development HMAC tokens, then validate signature, issuer, audience and app rules in the relying backend."
+    }
+  ]
+}
+</script>
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+  :root{
+    --ink:#111827;
+    --muted:#5e6b7d;
+    --line:#d8e2ee;
+    --soft:#f4f8fc;
+    --panel:#fff;
+    --blue:#0b66d8;
+    --green:#087443;
+    --amber:#a15c07;
+    --red:#b42318;
+    --pink:#c2185b;
+    --violet:#6f35d3;
+    --cyan:#087ea4;
+    --mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#edf3f8;color:var(--ink);font-family:"DM Sans",system-ui,sans-serif}
+  .hero{background:#101828;color:#fff;padding:44px 0 38px}
+  .wrap{width:min(1200px,calc(100% - 32px));margin:0 auto}
+  .crumb{font-size:13px;color:#c5d0df;margin-bottom:16px}
+  .crumb a{color:#dce6f3;text-decoration:none}
+  .hero h1{font-size:42px;line-height:1.08;margin:0 0 14px;font-weight:800;color:#fff;max-width:850px}
+  .lead{font-size:18px;line-height:1.55;color:#d5deea;max-width:850px;margin:0 0 22px}
+  .chips{display:flex;flex-wrap:wrap;gap:10px}
+  .chip{border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);color:#fff;border-radius:999px;padding:8px 12px;font-size:13px;font-weight:800}
+  .main{padding:26px 0 64px}
+  .grid{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:16px;align-items:start}
+  .stack{display:grid;gap:16px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden;box-shadow:0 12px 30px rgba(16,24,40,.07)}
+  .panel-head{padding:16px 18px;border-bottom:1px solid var(--line);background:#f9fbfd;display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+  .panel-title{font-size:17px;font-weight:800;margin:0}
+  .panel-sub{font-size:13px;color:var(--muted);margin-top:4px}
+  .panel-body{padding:18px}
+  label{display:grid;gap:6px;font-size:13px;font-weight:800;color:#344054}
+  textarea,input,select{width:100%;border:1px solid #cfd9e6;border-radius:8px;background:#fff;color:var(--ink);font:inherit;padding:10px 11px;outline:none}
+  textarea:focus,input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(11,102,216,.13)}
+  textarea{min-height:190px;resize:vertical;font-family:var(--mono);font-size:13px;line-height:1.5}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  button{border:1px solid #cfd9e6;background:#fff;border-radius:8px;padding:10px 12px;font-weight:800;color:#21324a;cursor:pointer}
+  button:hover{border-color:var(--blue);color:var(--blue)}
+  .primary{background:var(--blue);border-color:var(--blue);color:#fff}
+  .primary:hover{background:#0755b7;color:#fff}
+  .danger{background:#fef3f2;border-color:#fecdca;color:#b42318}
+  .good{background:#ecfdf3;color:#067647;border-color:#abefc6}
+  .warn{background:#fffaeb;color:#93370d;border-color:#fedf89}
+  .bad{background:#fef3f2;color:#b42318;border-color:#fecdca}
+  .pill{display:inline-flex;align-items:center;border-radius:999px;border:1px solid var(--line);padding:6px 10px;font-size:12px;font-weight:800}
+  .token-line{font-family:var(--mono);font-size:13px;line-height:1.7;word-break:break-all;background:#111827;color:#eef4ff;border-radius:8px;padding:14px}
+  .part-h{color:#ff5c93}.part-p{color:#c084fc}.part-s{color:#38bdf8}.dot{color:#fff}
+  .json-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  pre{white-space:pre-wrap;word-break:break-word;margin:0;font-family:var(--mono);font-size:13px;line-height:1.5}
+  .codebox{background:#101828;color:#eef4ff;border-radius:8px;padding:14px;overflow:auto;min-height:180px}
+  .jsonbox{background:#fbfdff;border:1px solid #e4eaf2;border-radius:8px;padding:14px;min-height:180px}
+  .claim-table{display:grid;gap:8px}
+  .claim{display:grid;grid-template-columns:110px 1fr;gap:10px;border:1px solid #e4eaf2;border-radius:8px;background:#fbfdff;padding:10px}
+  .claim b{font-family:var(--mono);font-size:13px}
+  .claim span{font-size:13px;color:var(--muted);word-break:break-word}
+  .messages{display:grid;gap:8px}
+  .message{border-radius:8px;border:1px solid var(--line);padding:10px 12px;font-size:13px;line-height:1.45}
+  .kv{display:grid;grid-template-columns:150px 1fr;gap:8px;font-size:13px;border-bottom:1px solid #edf1f6;padding:8px 0}
+  .kv:last-child{border-bottom:0}
+  .kv b{color:#344054}.kv span{font-family:var(--mono);word-break:break-all}
+  .field-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .source-list{display:grid;gap:10px}
+  .source-row{display:grid;grid-template-columns:1fr auto;gap:10px;border:1px solid #e4eaf2;border-radius:8px;padding:11px;background:#fbfdff}
+  .source-row a{color:#0b66d8;font-weight:800}
+  .source-row span{font-size:12px;color:var(--muted)}
+  .source-row div span{display:block;margin-top:4px}
+  .source-row > span{white-space:nowrap}
+  .mini{font-size:12px;color:var(--muted);line-height:1.5}
+  .faq{width:min(900px,calc(100% - 32px));margin:18px auto 0;display:grid;gap:8px}
+  details{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px}
+  summary{font-weight:800;cursor:pointer}
+  details p{color:var(--muted);line-height:1.6;margin:10px 0 0}
+  @media(max-width:940px){
+    .grid{grid-template-columns:1fr}
+    .json-grid{grid-template-columns:1fr}
+  }
+  @media(max-width:560px){
+    .wrap{width:min(100% - 20px,1200px)}
+    .hero{padding:30px 0}
+    .hero h1{font-size:30px}
+    .lead{font-size:16px}
+    .field-grid,.claim{grid-template-columns:1fr}
+    .panel-head{display:block}
+    .kv{grid-template-columns:1fr}
+  }
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does decoding a JWT prove it is valid?","acceptedAnswer":{"@type":"Answer","text":"No. Decoding only base64url-decodes JSON. A token is trustworthy only after the signature, issuer, audience, expiration and application-specific rules are validated by the relying application."}},{"@type":"Question","name":"Why does this tool refuse to fetch jku or x5u URLs?","acceptedAnswer":{"@type":"Answer","text":"JWT headers can contain arbitrary URLs. Blindly following them can create server-side request forgery and key-confusion problems. This page surfaces those URLs as risk signals instead of fetching them."}},{"@type":"Question","name":"Can I verify RS256 or ES256 here?","acceptedAnswer":{"@type":"Answer","text":"This page verifies HMAC-based HS tokens only. Public-key algorithms should be verified with the issuer public key or trusted JWKS in your backend or a dedicated local security workflow."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<style>
+  .top-level-page-ui-refresh .grid,
+  .top-level-page-ui-refresh .panel,
+  .top-level-page-ui-refresh .stack,
+  .top-level-page-ui-refresh .json-grid,
+  .top-level-page-ui-refresh .field-grid {
+    min-width: 0;
+  }
+
+  .top-level-page-ui-refresh button,
+  .top-level-page-ui-refresh input,
+  .top-level-page-ui-refresh select,
+  .top-level-page-ui-refresh summary {
+    min-height: 44px;
+  }
+
+  .top-level-page-ui-refresh textarea {
+    overflow-wrap: anywhere;
+  }
+
+  .top-level-page-ui-refresh :is(button, input, select, textarea, summary):focus-visible {
+    outline: 3px solid rgba(11, 102, 216, 0.32);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 560px) {
+    .top-level-page-ui-refresh .row > button {
+      width: 100%;
+    }
+  }
+</style>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "JWT Decoder and Security Inspector",
+  "description": "Decode JWTs locally, inspect claims, check expiration, review JOSE header risks, and verify or generate HS256 test tokens without uploading tokens to a server.",
+  "url": "https://afrotools.com/tools/jwt-decoder/",
+  "inLanguage": "en",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/jwt-decoder.webp"
+}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/jwt-decoder/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/jwt-decoder/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/decodeur-jwt/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kisimbuzi-jwt/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/jwt-decoder/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="crumb"><a href="/">AfroTools</a> / <a href="/developer-tools/">Developer Tools</a> / JWT Decoder</div>
+    <h1>Decode JWTs locally and catch the dangerous parts.</h1>
+    <p class="lead">Paste a compact JWT to inspect header, payload, timing claims, JOSE risk signals and signature status. Nothing is uploaded, and this page never follows token header URLs.</p>
+    <div class="chips" aria-label="Tool capabilities">
+      <span class="chip">Local decoding</span>
+      <span class="chip">Claim timeline</span>
+      <span class="chip">HS signature verify</span>
+      <span class="chip">Security checklist</span>
+    </div>
+  </div>
+</section>
+
+<main class="main">
+  <div class="wrap grid">
+    <section class="stack" aria-label="JWT decoder">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Token Input</h2>
+            <div class="panel-sub">Client-side only. Do not paste production secrets into shared machines.</div>
+          </div>
+          <div class="row" id="statusLine"></div>
+        </div>
+        <div class="panel-body stack">
+          <label for="jwtInput">JWT compact token</label>
+          <textarea id="jwtInput" spellcheck="false" autocomplete="off" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."></textarea>
+          <div class="row">
+            <button class="primary" id="loadSample" type="button">Load HS256 Sample</button>
+            <button id="copyToken" type="button">Copy Token</button>
+            <button id="copyDebugSummary" type="button">Copy Redacted Summary</button>
+            <button id="clearToken" type="button">Clear</button>
+            <button id="sendApiTester" type="button">Save Bearer Header Locally</button>
+          </div>
+          <div class="token-line" id="tokenDisplay"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Decoded JSON</h2>
+            <div class="panel-sub">Decode is not verification. Use the signature panel before trusting claims.</div>
+          </div>
+        </div>
+        <div class="panel-body json-grid">
+          <div>
+            <div class="row" style="justify-content:space-between;margin-bottom:8px">
+              <strong>Header</strong>
+              <button id="copyHeader" type="button">Copy</button>
+            </div>
+            <pre class="jsonbox" id="headerJson"></pre>
+          </div>
+          <div>
+            <div class="row" style="justify-content:space-between;margin-bottom:8px">
+              <strong>Payload</strong>
+              <button id="copyPayload" type="button">Copy</button>
+            </div>
+            <pre class="jsonbox" id="payloadJson"></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">HS Signature Verification</h2>
+            <div class="panel-sub">Supports HS256, HS384 and HS512 with a pasted shared secret. RS, ES and EdDSA need public key verification in your app.</div>
+          </div>
+        </div>
+        <div class="panel-body stack">
+          <div class="field-grid">
+            <label for="secretInput">HMAC secret
+              <input id="secretInput" type="password" autocomplete="off" placeholder="Paste dev secret for HS tokens only">
+            </label>
+            <label for="claimLeeway">Clock skew leeway seconds
+              <input id="claimLeeway" type="number" min="0" step="1" value="60">
+            </label>
+            <label for="expectedIssuer">Expected issuer
+              <input id="expectedIssuer" placeholder="https://issuer.example">
+            </label>
+            <label for="expectedAudience">Expected audience
+              <input id="expectedAudience" placeholder="api://default">
+            </label>
+          </div>
+          <div class="row">
+            <button class="primary" id="verifyBtn" type="button">Verify HS Signature</button>
+            <button id="copyVerifySnippet" type="button">Copy Verify Snippet</button>
+          </div>
+          <div class="messages" id="verifyOutput"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Local HS256 Test Token Generator</h2>
+            <div class="panel-sub">For local development only. It signs in the browser with the secret you enter.</div>
+          </div>
+        </div>
+        <div class="panel-body stack">
+          <div class="field-grid">
+            <label for="buildSecret">Secret
+              <input id="buildSecret" type="password" value="afrotools-demo-secret">
+            </label>
+            <label for="buildTtl">TTL minutes
+              <input id="buildTtl" type="number" value="15" min="1">
+            </label>
+            <label for="buildIss">Issuer
+              <input id="buildIss" value="https://auth.afrotools.local">
+            </label>
+            <label for="buildAud">Audience
+              <input id="buildAud" value="api://afrotools-dev">
+            </label>
+            <label for="buildSub">Subject
+              <input id="buildSub" value="developer-123">
+            </label>
+            <label for="buildRole">Role claim
+              <input id="buildRole" value="tester">
+            </label>
+          </div>
+          <div class="row">
+            <button class="primary" id="generateToken" type="button">Generate and Load Token</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="stack" aria-label="JWT analysis">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Claim Timeline</h2>
+            <div class="panel-sub">Expiration, issued-at and not-before state.</div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="messages" id="timelineOutput"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Registered Claims</h2>
+            <div class="panel-sub">RFC 7519 names with short explanations.</div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="claim-table" id="claimsOutput"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Security Review</h2>
+            <div class="panel-sub">Best-practice checks from RFC 8725 and OWASP guidance.</div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="messages" id="riskOutput"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Token Anatomy</h2>
+            <div class="panel-sub">Compact serialization details.</div>
+          </div>
+        </div>
+        <div class="panel-body" id="anatomyOutput"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Reference Sources</h2>
+            <div class="panel-sub">Specs and security references used for the checks.</div>
+          </div>
+        </div>
+        <div class="panel-body source-list">
+          <div class="source-row"><div><a href="https://www.rfc-editor.org/rfc/rfc7519" target="_blank" rel="noopener">RFC 7519 JWT</a><span>JWT compact parts, registered claims and NumericDate timing claims.</span></div><span>IETF RFC</span></div>
+          <div class="source-row"><div><a href="https://datatracker.ietf.org/doc/html/rfc7515" target="_blank" rel="noopener">RFC 7515 JWS</a><span>JOSE headers, base64url signing input and compact signature structure.</span></div><span>IETF RFC</span></div>
+          <div class="source-row"><div><a href="https://www.ietf.org/rfc/rfc8725.html" target="_blank" rel="noopener">RFC 8725 JWT BCP</a><span>Algorithm verification, issuer/audience validation, kid/jku/x5u risks and explicit typing.</span></div><span>Best Current Practice</span></div>
+          <div class="source-row"><div><a href="https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_for_Java_Cheat_Sheet.html" target="_blank" rel="noopener">OWASP JWT cheat sheet</a><span>Common implementation failures including none algorithm and token storage risks.</span></div><span>OWASP</span></div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+<section class="tool-verification-sec" data-tool-verification-panel="jwt-decoder">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Token debug check</span>
+          <h2 class="tool-verification-title">Decoding is not the same as validation</h2>
+          <p class="tool-verification-lead">Decode header and payload locally, inspect registered claims, review timeline status, and copy safe debugging notes without sharing raw tokens.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Local decode</span>
+          <p class="tool-verification-note">A pasted token is not sent by the decoder itself.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>What to check</h3>
+          <ul class="tool-verification-list">
+            <li>Methodology: split the token locally, base64url-decode header and payload, then compare claim timing and expectations before backend validation.</li>
+            <li>Verify issuer, audience, expiry, not-before, algorithm, key id, scopes, and server-side signature validation.</li>
+            <li>Use only redacted or test tokens in screenshots, support tickets, documentation, and chat.</li>
+            <li>Confirm backend validation behavior with the real auth provider or API gateway before trusting claims.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Limitations</h3>
+          <ul class="tool-verification-list">
+            <li>Disclaimer: local debug utility only. Decoded payload text is not proof that a token is valid or authorized.</li>
+            <li>HS signature checks need the exact development secret and do not cover asymmetric JWKS workflows.</li>
+            <li>Never paste production bearer tokens, refresh tokens, client secrets, or private keys into shared output.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <a class="tool-verification-report" href="#timelineOutput">Review claim timeline</a>
+        <p class="tool-verification-disclaimer">Source/reference note: verify auth behavior against current identity-provider docs, JWKS metadata, API gateway rules, and backend tests.</p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<afro-related-tools category="developer" current="jwt-decoder" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/json-formatter/" data-related-tool data-id="json-formatter" data-name="JSON Formatter &amp; Validator" data-category="developer" data-icon="JF" data-desc="Format, validate, repair, query and diff JSON or NDJSON. Includes schema, TypeScript and API Tester snippets.">JSON Formatter &amp; Validator</a></li><li><a href="/tools/data-converter/" data-related-tool data-id="data-converter" data-name="Data Format Converter" data-category="developer" data-icon="DF" data-desc="Convert between JSON, CSV, XML, YAML, TOML, TSV. Auto-detect, SQL INSERT generator, preview table.">Data Format Converter</a></li><li><a href="/tools/ussd-simulator/" data-related-tool data-id="ussd-simulator" data-name="USSD Code Simulator" data-category="developer" data-icon="UC" data-desc="Visual USSD menu builder for African fintech developers.">USSD Code Simulator</a></li><li><a href="/tools/api-tester/" data-related-tool data-id="api-tester" data-name="API Tester (Postman Lite)" data-category="developer" data-icon="AT" data-desc="REST API testing in-browser. No install needed. Pre-built Africa fintech collections.">API Tester (Postman Lite)</a></li><li><a href="/tools/base64/" data-related-tool data-id="base64" data-name="Base64 Encoder/Decoder" data-category="developer" data-icon="BE" data-desc="Encode/decode text and files. Image-to-Base64, URL-safe mode, live encoding, stats bar. AI assist.">Base64 Encoder/Decoder</a></li><li><a href="/tools/hash-generator/" data-related-tool data-id="hash-generator" data-name="Hash Generator" data-category="developer" data-icon="HG" data-desc="MD5, SHA-1, SHA-256, SHA-512, SHA-3, HMAC, CRC32. All-at-once grid, checksum verify, file hashing.">Hash Generator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+
+<section class="faq">
+  <details>
+    <summary>Does decoding a JWT prove it is valid?</summary>
+    <p>No. Decoding only base64url-decodes JSON. A token is trustworthy only after the signature, issuer, audience, expiration and application-specific rules are validated by the relying application.</p>
+  </details>
+  <details>
+    <summary>Why does this tool refuse to fetch jku or x5u URLs?</summary>
+    <p>JWT headers can contain arbitrary URLs. Blindly following them can create server-side request forgery and key-confusion problems. This page surfaces those URLs as risk signals instead of fetching them.</p>
+  </details>
+  <details>
+    <summary>Can I verify RS256 or ES256 here?</summary>
+    <p>This page verifies HMAC-based HS tokens only. Public-key algorithms should be verified with the issuer public key or trusted JWKS in your backend or a dedicated local security workflow.</p>
+  </details>
+</section>
+
+<afro-footer></afro-footer>
+
+<script>
+(function(){
+  var apiTesterKey = 'afrotools.apiTester.saved.v1';
+  var lastDecoded = null;
+  var claimNotes = {
+    iss:'Issuer. Validate this against the trusted identity provider.',
+    sub:'Subject. Treat it as scoped to the issuer, not globally unique by itself.',
+    aud:'Audience. Validate that this token was issued for your API or app.',
+    exp:'Expiration time. The token must not be accepted after this time.',
+    nbf:'Not before. The token must not be accepted before this time.',
+    iat:'Issued at. Useful for age checks, rotation windows and debugging.',
+    jti:'JWT ID. Often used for replay detection or deny lists.'
+  };
+  function $(id){ return document.getElementById(id); }
+  function esc(value){
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function(ch){
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[ch];
+    });
+  }
+  function b64urlToBytes(input){
+    var clean = String(input || '').replace(/-/g, '+').replace(/_/g, '/');
+    while (clean.length % 4) clean += '=';
+    var binary = atob(clean);
+    var bytes = new Uint8Array(binary.length);
+    for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    return bytes;
+  }
+  function bytesToB64url(bytes){
+    var binary = '';
+    bytes = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes);
+    bytes.forEach(function(byte){ binary += String.fromCharCode(byte); });
+    return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
+  }
+  function textToB64url(text){
+    return bytesToB64url(new TextEncoder().encode(text));
+  }
+  function decodeJsonPart(part){
+    var text = new TextDecoder().decode(b64urlToBytes(part));
+    return JSON.parse(text);
+  }
+  function pretty(value){
+    return value ? JSON.stringify(value, null, 2) : '';
+  }
+  function tokenParts(token){
+    return String(token || '').trim().replace(/^Bearer\s+/i, '').split('.');
+  }
+  function formatToken(parts){
+    if (parts.length < 2) return '';
+    var out = '<span class="part-h">' + esc(parts[0]) + '</span>';
+    if (parts[1] != null) out += '<span class="dot">.</span><span class="part-p">' + esc(parts[1]) + '</span>';
+    if (parts[2] != null) out += '<span class="dot">.</span><span class="part-s">' + esc(parts[2]) + '</span>';
+    if (parts.length > 3) out += '<span class="dot">.</span>' + parts.slice(3).map(esc).join('<span class="dot">.</span>');
+    return out;
+  }
+  function algBits(alg){
+    if (alg === 'HS256') return { name:'HMAC', hash:'SHA-256' };
+    if (alg === 'HS384') return { name:'HMAC', hash:'SHA-384' };
+    if (alg === 'HS512') return { name:'HMAC', hash:'SHA-512' };
+    return null;
+  }
+  async function signHs(alg, secret, signingInput){
+    var spec = algBits(alg);
+    if (!spec) throw new Error('Only HS256, HS384 and HS512 are supported here.');
+    var key = await crypto.subtle.importKey('raw', new TextEncoder().encode(secret), spec, false, ['sign']);
+    var sig = await crypto.subtle.sign(spec, key, new TextEncoder().encode(signingInput));
+    return bytesToB64url(new Uint8Array(sig));
+  }
+  function unixDate(value){
+    if (typeof value !== 'number') return null;
+    return new Date(value * 1000);
+  }
+  function humanDate(date){
+    return date ? date.toLocaleString() : 'not present';
+  }
+  function relativeMs(ms){
+    var abs = Math.abs(ms);
+    var days = Math.floor(abs / 86400000);
+    var hours = Math.floor((abs % 86400000) / 3600000);
+    var mins = Math.floor((abs % 3600000) / 60000);
+    if (days) return days + 'd ' + hours + 'h';
+    if (hours) return hours + 'h ' + mins + 'm';
+    return mins + 'm';
+  }
+  function showStatus(kind, text){
+    $('statusLine').innerHTML = '<span class="pill ' + kind + '">' + esc(text) + '</span>';
+  }
+  function decodeToken(){
+    var token = $('jwtInput').value.trim();
+    $('verifyOutput').innerHTML = '';
+    if (!token) {
+      lastDecoded = null;
+      showStatus('warn', 'Waiting for token');
+      ['tokenDisplay','headerJson','payloadJson','timelineOutput','claimsOutput','riskOutput','anatomyOutput'].forEach(function(id){ $(id).innerHTML = ''; });
+      return;
+    }
+    var parts = tokenParts(token);
+    $('tokenDisplay').innerHTML = formatToken(parts);
+    try {
+      if (parts.length === 5) {
+        lastDecoded = { type:'jwe', parts:parts, header:decodeJsonPart(parts[0]), payload:null, token:token };
+        renderAll();
+        return;
+      }
+      if (parts.length !== 3) throw new Error('JWT/JWS compact tokens have 3 parts. JWE compact tokens have 5 parts.');
+      var header = decodeJsonPart(parts[0]);
+      var payload = decodeJsonPart(parts[1]);
+      lastDecoded = { type:'jws', parts:parts, header:header, payload:payload, signature:parts[2], token:token.replace(/^Bearer\s+/i, '') };
+      renderAll();
+    } catch(err) {
+      lastDecoded = null;
+      showStatus('bad', 'Invalid token');
+      $('headerJson').textContent = '';
+      $('payloadJson').textContent = '';
+      $('timelineOutput').innerHTML = '<div class="message bad">' + esc(err.message) + '</div>';
+      $('claimsOutput').innerHTML = '';
+      $('riskOutput').innerHTML = '';
+      $('anatomyOutput').innerHTML = '';
+    }
+  }
+  function renderAll(){
+    if (!lastDecoded) return;
+    showStatus(lastDecoded.type === 'jwe' ? 'warn' : 'good', lastDecoded.type === 'jwe' ? 'JWE detected' : 'Decoded locally');
+    $('headerJson').textContent = pretty(lastDecoded.header);
+    $('payloadJson').textContent = pretty(lastDecoded.payload);
+    renderTimeline();
+    renderClaims();
+    renderRisks();
+    renderAnatomy();
+  }
+  function renderTimeline(){
+    if (!lastDecoded || !lastDecoded.payload) {
+      $('timelineOutput').innerHTML = '<div class="message warn">This looks like JWE compact serialization. The payload is encrypted, so timing claims are not visible here.</div>';
+      return;
+    }
+    var payload = lastDecoded.payload;
+    var leeway = Number($('claimLeeway').value || 0);
+    var now = Date.now();
+    var html = [];
+    if (typeof payload.exp === 'number') {
+      var exp = unixDate(payload.exp);
+      var until = exp.getTime() - now;
+      html.push('<div class="message ' + (until + leeway * 1000 < 0 ? 'bad' : 'good') + '"><strong>exp</strong>: ' + esc(humanDate(exp)) + ' (' + esc(until < 0 ? relativeMs(until) + ' ago' : 'in ' + relativeMs(until)) + ')</div>');
+    } else {
+      html.push('<div class="message warn"><strong>exp</strong>: missing. Long-lived bearer tokens are harder to revoke safely.</div>');
+    }
+    if (typeof payload.nbf === 'number') {
+      var nbf = unixDate(payload.nbf);
+      html.push('<div class="message ' + (nbf.getTime() - leeway * 1000 > now ? 'warn' : 'good') + '"><strong>nbf</strong>: ' + esc(humanDate(nbf)) + '</div>');
+    }
+    if (typeof payload.iat === 'number') {
+      var iat = unixDate(payload.iat);
+      html.push('<div class="message"><strong>iat</strong>: ' + esc(humanDate(iat)) + '</div>');
+    }
+    $('timelineOutput').innerHTML = html.join('');
+  }
+  function renderClaims(){
+    if (!lastDecoded || !lastDecoded.payload) {
+      $('claimsOutput').innerHTML = '<div class="message warn">No visible claims to inspect.</div>';
+      return;
+    }
+    var payload = lastDecoded.payload;
+    var keys = Object.keys(payload);
+    if (!keys.length) {
+      $('claimsOutput').innerHTML = '<div class="message warn">Payload is empty.</div>';
+      return;
+    }
+    $('claimsOutput').innerHTML = keys.map(function(key){
+      var value = payload[key];
+      var display = typeof value === 'object' ? JSON.stringify(value) : String(value);
+      var note = claimNotes[key] || 'Private or application-specific claim. Trust only after validation.';
+      return '<div class="claim"><b>' + esc(key) + '</b><span>' + esc(display) + '<br><small>' + esc(note) + '</small></span></div>';
+    }).join('');
+  }
+  function renderRisks(){
+    if (!lastDecoded) return;
+    var header = lastDecoded.header || {};
+    var payload = lastDecoded.payload || {};
+    var risks = [];
+    var alg = String(header.alg || '').toUpperCase();
+    if (!header.alg) risks.push(['bad','Missing alg header. A verifier should reject tokens without an expected algorithm.']);
+    if (alg === 'NONE') risks.push(['bad','alg is none. Never accept unsigned bearer tokens in production.']);
+    if (/^HS/.test(alg)) risks.push(['warn','HMAC token. The verifier and issuer share the same secret, so protect it like a password.']);
+    if (/^(RS|PS|ES|ED)/.test(alg)) risks.push(['warn','Public-key token. Decode is not verification. Validate with the issuer public key or trusted JWKS.']);
+    if (!header.typ) risks.push(['warn','typ is missing. RFC 8725 recommends explicit typing where token confusion is possible.']);
+    ['kid','jku','x5u'].forEach(function(name){
+      if (header[name]) risks.push(['warn', name + ' header is present. Validate or whitelist it before key lookup. Never blindly fetch header URLs.']);
+    });
+    if (header.crit) risks.push(['bad','crit header is present. Reject unless your verifier explicitly understands every listed extension.']);
+    if (lastDecoded.type === 'jwe') risks.push(['warn','JWE detected. This page cannot decrypt or validate encrypted JWTs.']);
+    if (lastDecoded.type === 'jws') {
+      if (!payload.exp) risks.push(['warn','exp claim is missing. Prefer short-lived access tokens.']);
+      if (!payload.aud) risks.push(['warn','aud claim is missing. Validate audience when one issuer can serve multiple apps.']);
+      if (!payload.iss) risks.push(['warn','iss claim is missing. Verifiers should know which issuer and keys are trusted.']);
+      if (payload.role || payload.roles || payload.admin) risks.push(['warn','Authorization-looking claims are present. Do not trust them until signature, issuer and audience checks pass.']);
+      if (payload.exp && payload.iat && typeof payload.exp === 'number' && typeof payload.iat === 'number' && payload.exp - payload.iat > 86400) risks.push(['warn','Token lifetime is longer than 24 hours. Make sure revocation and rotation are handled.']);
+    }
+    if (!risks.length) risks.push(['good','No obvious JWT structure risks found. Still verify signature, issuer, audience and app rules server-side.']);
+    $('riskOutput').innerHTML = risks.map(function(item){ return '<div class="message ' + item[0] + '">' + esc(item[1]) + '</div>'; }).join('');
+  }
+  function renderAnatomy(){
+    if (!lastDecoded) return;
+    var header = lastDecoded.header || {};
+    var rows = [
+      ['Format', lastDecoded.type === 'jwe' ? 'JWE compact, 5 parts' : 'JWS compact, 3 parts'],
+      ['Algorithm', header.alg || 'missing'],
+      ['Type', header.typ || 'missing'],
+      ['Header bytes', String(b64urlToBytes(lastDecoded.parts[0]).length)],
+      ['Payload visible', lastDecoded.payload ? 'yes' : 'encrypted or unavailable'],
+      ['Signature chars', lastDecoded.signature ? String(lastDecoded.signature.length) : 'n/a']
+    ];
+    $('anatomyOutput').innerHTML = rows.map(function(row){ return '<div class="kv"><b>' + esc(row[0]) + '</b><span>' + esc(row[1]) + '</span></div>'; }).join('');
+  }
+  async function verifySignature(){
+    if (!lastDecoded || lastDecoded.type !== 'jws') {
+      $('verifyOutput').innerHTML = '<div class="message bad">Load a three-part JWS token first.</div>';
+      return;
+    }
+    var secret = $('secretInput').value;
+    var alg = String(lastDecoded.header.alg || '').toUpperCase();
+    if (!algBits(alg)) {
+      $('verifyOutput').innerHTML = '<div class="message warn">This verifier only supports HS256, HS384 and HS512. Use a trusted public-key verifier for ' + esc(alg || 'this algorithm') + '.</div>';
+      return;
+    }
+    if (!secret) {
+      $('verifyOutput').innerHTML = '<div class="message warn">Enter the HMAC secret used to sign this token.</div>';
+      return;
+    }
+    try {
+      var expected = await signHs(alg, secret, lastDecoded.parts[0] + '.' + lastDecoded.parts[1]);
+      var ok = expected === lastDecoded.signature;
+      var checks = [];
+      checks.push('<div class="message ' + (ok ? 'good' : 'bad') + '">' + (ok ? 'Signature matches the HMAC secret.' : 'Signature does not match this secret.') + '</div>');
+      var issuer = $('expectedIssuer').value.trim();
+      var audience = $('expectedAudience').value.trim();
+      if (issuer) checks.push('<div class="message ' + (lastDecoded.payload.iss === issuer ? 'good' : 'bad') + '">Issuer ' + (lastDecoded.payload.iss === issuer ? 'matches.' : 'does not match expected value.') + '</div>');
+      if (audience) {
+        var aud = lastDecoded.payload.aud;
+        var audOk = Array.isArray(aud) ? aud.indexOf(audience) !== -1 : aud === audience;
+        checks.push('<div class="message ' + (audOk ? 'good' : 'bad') + '">Audience ' + (audOk ? 'matches.' : 'does not match expected value.') + '</div>');
+      }
+      $('verifyOutput').innerHTML = checks.join('');
+    } catch(err) {
+      $('verifyOutput').innerHTML = '<div class="message bad">' + esc(err.message) + '</div>';
+    }
+  }
+  function verifySnippet(){
+    return "import { jwtVerify } from 'jose';\n\nconst token = request.headers.authorization?.replace(/^Bearer\\s+/i, '');\nconst secret = new TextEncoder().encode(process.env.JWT_SECRET);\n\nconst { payload, protectedHeader } = await jwtVerify(token, secret, {\n  issuer: 'https://issuer.example',\n  audience: 'api://default',\n  algorithms: ['HS256']\n});\n\n// Apply app-specific authorization after signature, issuer and audience checks.\nconsole.log(protectedHeader.alg, payload.sub);";
+  }
+  function shortValue(value){
+    if (value == null || value === '') return 'missing';
+    var text = Array.isArray(value) ? value.join(', ') : String(value);
+    return text.length > 48 ? text.slice(0, 18) + '...' + text.slice(-10) : text;
+  }
+  function redactedDebugSummary(){
+    if (!lastDecoded) return 'JWT debug summary: no token decoded.';
+    var header = lastDecoded.header || {};
+    var payload = lastDecoded.payload || {};
+    var lines = [
+      'JWT debug summary (redacted - raw token omitted)',
+      'Format: ' + (lastDecoded.type === 'jwe' ? 'JWE compact, encrypted payload' : 'JWS compact'),
+      'Algorithm: ' + shortValue(header.alg),
+      'Type: ' + shortValue(header.typ),
+      'Key id present: ' + (header.kid ? 'yes' : 'no'),
+      'Issuer: ' + shortValue(payload.iss),
+      'Audience: ' + shortValue(payload.aud),
+      'Subject present: ' + (payload.sub ? 'yes' : 'no'),
+      'Expires: ' + humanDate(unixDate(payload.exp)),
+      'Not before: ' + humanDate(unixDate(payload.nbf)),
+      'Issued at: ' + humanDate(unixDate(payload.iat)),
+      'Backend reminder: validate signature, issuer, audience, expiry, scopes and app-specific authorization before trusting claims.'
+    ];
+    return lines.join('\n');
+  }
+  async function generateSample(){
+    var now = Math.floor(Date.now() / 1000);
+    var ttl = Math.max(1, Number($('buildTtl').value || 15));
+    var header = { alg:'HS256', typ:'JWT' };
+    var payload = {
+      iss:$('buildIss').value.trim() || 'https://auth.afrotools.local',
+      sub:$('buildSub').value.trim() || 'developer-123',
+      aud:$('buildAud').value.trim() || 'api://afrotools-dev',
+      iat:now,
+      nbf:now - 5,
+      exp:now + ttl * 60,
+      role:$('buildRole').value.trim() || 'tester'
+    };
+    var signingInput = textToB64url(JSON.stringify(header)) + '.' + textToB64url(JSON.stringify(payload));
+    var sig = await signHs('HS256', $('buildSecret').value || 'afrotools-demo-secret', signingInput);
+    $('jwtInput').value = signingInput + '.' + sig;
+    $('secretInput').value = $('buildSecret').value || 'afrotools-demo-secret';
+    $('expectedIssuer').value = payload.iss;
+    $('expectedAudience').value = payload.aud;
+    decodeToken();
+    await verifySignature();
+  }
+  function copyText(text, button){
+    function done(copied) {
+      var original = button.textContent;
+      button.textContent = copied ? 'Copied' : 'Copy failed';
+      setTimeout(function(){ button.textContent = original; }, 1200);
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text || '').then(function(){ done(true); }).catch(function(){ done(fallbackCopy(text || '')); });
+      return;
+    }
+    done(fallbackCopy(text || ''));
+  }
+  function fallbackCopy(text){
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    var copied = false;
+    try { copied = document.execCommand('copy'); } catch(_) { copied = false; }
+    textarea.remove();
+    return copied;
+  }
+  function saveBearerHeader(){
+    if (!lastDecoded || !lastDecoded.token) return;
+    var saved = [];
+    try { saved = JSON.parse(localStorage.getItem(apiTesterKey) || '[]'); } catch(_) {}
+    saved.unshift({
+      id:'jwt-' + Date.now(),
+      name:'Bearer JWT from JWT Decoder',
+      method:'GET',
+      url:'https://api.example.com/me',
+      headers:{ Authorization:'Bearer ' + lastDecoded.token },
+      body:'',
+      createdAt:new Date().toISOString()
+    });
+    localStorage.setItem(apiTesterKey, JSON.stringify(saved.slice(0, 20)));
+    $('statusLine').innerHTML = '<span class="pill good">Saved locally for API Tester</span>';
+  }
+  $('jwtInput').addEventListener('input', decodeToken);
+  ['claimLeeway','expectedIssuer','expectedAudience'].forEach(function(id){ $(id).addEventListener('input', function(){ if (lastDecoded) renderAll(); }); });
+  $('loadSample').addEventListener('click', generateSample);
+  $('generateToken').addEventListener('click', generateSample);
+  $('verifyBtn').addEventListener('click', verifySignature);
+  $('copyToken').addEventListener('click', function(){ copyText($('jwtInput').value.trim(), this); });
+  $('copyDebugSummary').addEventListener('click', function(){ copyText(redactedDebugSummary(), this); });
+  $('copyHeader').addEventListener('click', function(){ copyText(lastDecoded ? pretty(lastDecoded.header) : '', this); });
+  $('copyPayload').addEventListener('click', function(){ copyText(lastDecoded ? pretty(lastDecoded.payload) : '', this); });
+  $('copyVerifySnippet').addEventListener('click', function(){ copyText(verifySnippet(), this); });
+  $('clearToken').addEventListener('click', function(){ $('jwtInput').value = ''; decodeToken(); });
+  $('sendApiTester').addEventListener('click', saveBearerHeader);
+  decodeToken();
+  generateSample();
+})();
+</script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

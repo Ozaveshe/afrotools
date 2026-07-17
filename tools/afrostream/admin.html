@@ -1,0 +1,2092 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>AfroStream — AfroTools Admin</title>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', -apple-system, sans-serif; background: #F5F9FF; color: #1a2e22; line-height: 1.6; }
+  .dash { max-width: 960px; margin: 0 auto; padding: 32px 24px; }
+  .dash-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .dash-header h1 { font-size: 1.4rem; font-weight: 800; }
+  .dash-header .badge { background: #D6E8FF; color: #0063CC; font-size: .65rem; font-weight: 700; padding: 3px 10px; border-radius: 12px; text-transform: uppercase; }
+  .back-link { font-size: .82rem; color: #0062CC; text-decoration: none; margin-bottom: 16px; display: inline-block; }
+  .back-link:hover { text-decoration: underline; }
+  /* Gate */
+  .gate { position: fixed; inset: 0; z-index: 200; background: #F5F9FF; display: flex; align-items: center; justify-content: center; }
+  .gate-card { background: #fff; border: 1px solid #E8F0FE; border-radius: 16px; padding: 40px 32px; text-align: center; max-width: 380px; width: 90%; box-shadow: 0 4px 24px rgba(0,0,0,.06); }
+  .gate-card h1 { font-size: 1.3rem; font-weight: 800; margin-bottom: 4px; }
+  .gate-card p { font-size: .85rem; color: #6B7F99; margin-bottom: 20px; }
+  .gate-error { font-size: .8rem; color: #dc2626; margin-top: 10px; }
+  /* Stats */
+  .stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .stat-card { background: #fff; border: 1px solid #E8F0FE; border-radius: 12px; padding: 16px; text-align: center; }
+  .stat-value { font-size: 1.6rem; font-weight: 800; color: #0063CC; }
+  .stat-label { font-size: .72rem; color: #6B7F99; margin-top: 2px; }
+  /* Tabs */
+  .tabs { display: flex; gap: 0; border-bottom: 2px solid #E8F0FE; margin-bottom: 24px; overflow-x: auto; }
+  .tab { padding: 10px 20px; border: none; background: none; color: #6B7F99; font-size: .82rem; font-weight: 600; font-family: inherit; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color .15s, border-color .15s; white-space: nowrap; }
+  .tab:hover { color: #1a2e22; }
+  .tab.active { color: #0063CC; border-bottom-color: #0063CC; }
+  /* Section */
+  .section { background: #fff; border: 1px solid #E8F0FE; border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+  .section h2 { font-size: 1rem; font-weight: 700; margin-bottom: 16px; }
+  .section h3 { font-size: .9rem; font-weight: 700; margin-bottom: 12px; color: #374151; }
+  .muted { font-size: .82rem; color: #6B7F99; margin-bottom: 12px; }
+  .group-label { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #94a3b8; margin: 20px 0 10px; padding-top: 16px; border-top: 1px solid #E8F0FE; }
+  .group-label:first-child { border-top: none; margin-top: 0; padding-top: 0; }
+  /* Forms */
+  .form-row { display: flex; gap: 14px; margin-bottom: 14px; flex-wrap: wrap; }
+  .form-group { flex: 1; min-width: 140px; margin-bottom: 14px; }
+  .form-grow { flex: 2; }
+  .form-group label { display: block; font-size: .78rem; font-weight: 600; color: #6B7F99; margin-bottom: 5px; }
+  .input { width: 100%; padding: 9px 12px; border: 1.5px solid #E5E7EB; border-radius: 8px; font-family: inherit; font-size: .85rem; color: #1a2e22; background: #fff; outline: none; transition: border-color .15s; }
+  .input:focus { border-color: #0063CC; box-shadow: 0 0 0 3px rgba(0,98,204,.08); }
+  .input::placeholder { color: #94a3b8; }
+  select.input { cursor: pointer; }
+  textarea.input { resize: vertical; min-height: 100px; }
+  .input:disabled { background: #F5F9FF; color: #94a3b8; }
+  /* Buttons */
+  .btn { padding: 8px 18px; border: none; border-radius: 8px; font-family: inherit; font-size: .82rem; font-weight: 600; cursor: pointer; transition: all .15s; display: inline-flex; align-items: center; gap: 6px; }
+  .btn-primary { background: #0063CC; color: #fff; }
+  .btn-primary:hover { background: #0063CC; }
+  .btn-outline { background: #fff; color: #374151; border: 1.5px solid #E5E7EB; }
+  .btn-outline:hover { border-color: #0063CC; color: #0063CC; }
+  .btn-ghost { background: none; color: #6B7F99; }
+  .btn-ghost:hover { color: #1a2e22; }
+  .btn-sm { padding: 5px 12px; font-size: .75rem; }
+  .btn-danger { color: #dc2626; }
+  .btn-danger:hover { color: #b91c1c; }
+  .form-actions { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+  /* List items */
+  .admin-list { display: flex; flex-direction: column; gap: 10px; }
+  .admin-list:empty::after { content: 'No items yet.'; display: block; color: #94a3b8; font-size: .85rem; padding: 12px 0; }
+  /* Preview */
+  .admin-preview { margin-top: 20px; padding: 20px; background: #F5F9FF; border: 1px solid #E8F0FE; border-radius: 10px; }
+  .admin-preview h3 { font-size: .85rem; font-weight: 600; margin-bottom: 10px; color: #6B7F99; }
+  .stream-thumb-preview { display: none; margin-top: 6px; padding: 14px; border-radius: 12px; border: 1px dashed #D7E3F4; background: #F8FBFF; }
+  .stream-thumb-preview img { display: block; width: 100%; max-width: 240px; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 10px; background: #E8F0FE; }
+  .stream-thumb-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .stream-thumb-chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 9px; border-radius: 999px; font-size: .7rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; background: #DCEBFF; color: #0063CC; }
+  .stream-thumb-hint { font-size: .76rem; color: #6B7F99; margin-top: 10px; line-height: 1.5; word-break: break-word; }
+  .stream-thumb-preview.is-warning { display: block; border-color: #FDBA74; background: #FFF7ED; }
+  .stream-thumb-preview.is-warning .stream-thumb-chip { background: #FED7AA; color: #9A3412; }
+  .stream-thumb-preview.is-warning .stream-thumb-hint { color: #9A3412; margin-top: 0; }
+  /* Settings grid */
+  .settings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  /* Toggle */
+  .toggle-label { display: flex; align-items: center; gap: 10px; font-size: .85rem; cursor: pointer; }
+  .toggle-label input[type="checkbox"] { width: 18px; height: 18px; accent-color: #0063CC; }
+  /* Toast */
+  .toast { position: fixed; top: 20px; right: 20px; padding: 12px 20px; border-radius: 8px; color: #fff; font-size: .85rem; font-weight: 500; z-index: 999; transform: translateY(-20px); opacity: 0; transition: all .3s; }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { background: #059669; }
+  .toast.error { background: #dc2626; }
+  /* Submission cards */
+  .sub-card { background: #FAFBFC; border: 1.5px solid #E8F0FE; border-radius: 10px; padding: 16px; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+  .sub-card:hover { border-color: #0063CC; box-shadow: 0 2px 12px rgba(0,98,204,.08); }
+  .sub-card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 8px; flex-wrap: wrap; }
+  .sub-type { font-size: .65rem; font-weight: 700; padding: 2px 8px; border-radius: 8px; text-transform: uppercase; letter-spacing: .04em; }
+  .sub-type-creator { background: #DBEAFE; color: #1D4ED8; }
+  .sub-type-stream { background: #FCE7F3; color: #BE185D; }
+  .sub-type-news_tip { background: #FEF3C7; color: #92400E; }
+  .sub-type-correction { background: #FEE2E2; color: #991B1B; }
+  .sub-status { font-size: .65rem; font-weight: 600; padding: 2px 8px; border-radius: 8px; }
+  .sub-status-pending { background: #FEF3C7; color: #92400E; }
+  .sub-status-approved { background: #D1FAE5; color: #065F46; }
+  .sub-status-rejected { background: #FEE2E2; color: #991B1B; }
+  .sub-card-title { font-size: .9rem; font-weight: 700; color: #1a2e22; }
+  .sub-card-meta { font-size: .75rem; color: #6B7F99; margin-top: 4px; }
+  .sub-filter.active { border-color: #0063CC !important; background: #E8F2FF !important; color: #0063CC !important; }
+  /* Review modal detail rows */
+  .review-row { display: flex; gap: 8px; margin-bottom: 8px; font-size: .85rem; }
+  .review-label { font-weight: 600; color: #6B7F99; min-width: 100px; }
+  .review-value { color: #1a2e22; word-break: break-word; }
+  /* Responsive */
+  @media (max-width: 640px) {
+    .dash { padding: 20px 16px; }
+    .form-row { flex-direction: column; }
+    .form-group, .form-grow { flex: none; min-width: 0; }
+    .tab { padding: 8px 14px; font-size: .75rem; }
+    .gate-card { padding: 28px 20px; }
+  }
+</style>
+<link rel="canonical" href="https://afrotools.com/tools/afrostream/admin">
+<meta property="og:url" content="https://afrotools.com/tools/afrostream/admin">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c4853917">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/lib/dark-mode.js?v=5cb64ba3" defer></script>
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afrostream/admin" />
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/afrostream/admin" />
+</head>
+<body class="top-level-page-ui-refresh">
+
+<!-- ── PASSWORD GATE ───────────────────────────────────── -->
+<div class="gate" id="passwordGate">
+  <div class="gate-card">
+    <h1>AfroStream Admin</h1>
+    <p>Enter the admin password to continue.</p>
+    <input aria-label="Password" type="password" id="gatePassword" class="input" placeholder="Password" autofocus>
+    <button type="button" class="btn btn-primary" id="gateSubmit" style="margin-top:12px;width:100%">Unlock</button>
+    <p class="gate-error" id="gateError" style="display:none">Incorrect password. Try again.</p>
+  </div>
+</div>
+
+<!-- ── ADMIN PANEL (hidden until auth) ─────────────────── -->
+<div class="dash" id="adminPanel" style="display:none">
+  <a href="/mc-7a2f9x" class="back-link">&larr; Mission Control</a>
+  <div class="dash-header">
+    <h2>AfroStream</h2>
+    <span class="badge">Admin</span>
+    <button type="button" class="btn btn-ghost btn-sm" id="logoutBtn" style="margin-left:auto">Logout</button>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs" id="adminTabs">
+    <button type="button" class="tab active" data-tab="news">News</button>
+    <button type="button" class="tab" data-tab="streams">Streams</button>
+    <button type="button" class="tab" data-tab="featured">Featured</button>
+    <button type="button" class="tab" data-tab="creators">Creators</button>
+    <button type="button" class="tab" data-tab="submissions">Submissions <span id="pendingBadge" style="background:#ef4444;color:#fff;font-size:.6rem;padding:1px 6px;border-radius:10px;margin-left:4px;display:none">0</span></button>
+    <button type="button" class="tab" data-tab="ops">Ops</button>
+    <button type="button" class="tab" data-tab="sync">Sync</button>
+    <button type="button" class="tab" data-tab="settings">Settings</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       TAB: NEWS
+       ═══════════════════════════════════════════════════ -->
+  <section class="section" id="tab-news">
+    <h2 class="section-title">Post New Article</h2>
+    <form class="admin-form" id="newsForm">
+      <div class="form-row">
+        <div class="form-group form-grow">
+          <label>Title</label>
+          <input aria-label="Article headline" type="text" name="title" class="input" required placeholder="Article headline...">
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select name="category" class="input" required aria-label="Category">
+            <option value="milestones">Milestones</option>
+            <option value="platform">Platform Updates</option>
+            <option value="collabs">Collabs</option>
+            <option value="drama">Drama</option>
+            <option value="business">Business</option>
+            <option value="rising">Rising Stars</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group form-grow">
+          <label>Image URL</label>
+          <input aria-label="Https://" type="url" name="imageUrl" class="input" placeholder="https://...">
+        </div>
+        <div class="form-group">
+          <label>Author</label>
+          <input aria-label="Author" type="text" name="author" class="input" value="AfroStream Team">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Excerpt (1-2 sentences)</label>
+        <input aria-label="Short summary" type="text" name="excerpt" class="input" required placeholder="Short summary...">
+      </div>
+      <div class="form-group">
+        <label>Full Body (HTML allowed)</label>
+        <textarea name="body" class="input" rows="8" required placeholder="Write the article body. HTML is allowed."></textarea>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-outline" id="previewNewsBtn">Preview</button>
+        <button type="submit" class="btn btn-primary">Publish Article</button>
+      </div>
+    </form>
+
+    <!-- Preview -->
+    <div class="admin-preview" id="newsPreview" style="display:none">
+      <h3>Preview</h3>
+      <div id="newsPreviewContent"></div>
+    </div>
+
+    <!-- Published Articles -->
+    <h2 class="section-title" style="margin-top:40px">Published Articles</h2>
+    <div id="newsList" class="admin-list"></div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       TAB: STREAMS
+       ═══════════════════════════════════════════════════ -->
+  <section class="section" id="tab-streams" style="display:none">
+    <h2 class="section-title">Add Stream</h2>
+    <form class="admin-form" id="streamForm">
+      <div class="form-row">
+        <div class="form-group form-grow">
+          <label>Creator Name</label>
+          <input aria-label="Creator name" type="text" name="creator" class="input" required placeholder="Creator name...">
+        </div>
+        <div class="form-group form-grow">
+          <label>Stream Title</label>
+          <input aria-label="Stream title" type="text" name="title" class="input" required placeholder="Stream title...">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Platform</label>
+          <select name="platform" class="input" required aria-label="Platform">
+            <option value="youtube">YouTube</option>
+            <option value="twitch">Twitch</option>
+            <option value="tiktok">TikTok</option>
+            <option value="instagram">Instagram</option>
+            <option value="kick">Kick</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select name="category" class="input" required aria-label="Category">
+            <option value="gaming">Gaming</option>
+            <option value="music">Music</option>
+            <option value="comedy">Comedy</option>
+            <option value="tech">Tech</option>
+            <option value="fashion">Fashion</option>
+            <option value="food">Food</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Country</label>
+          <select name="country" class="input" required aria-label="Country">
+            <option value="Nigeria">Nigeria</option>
+            <option value="Kenya">Kenya</option>
+            <option value="Ghana">Ghana</option>
+            <option value="South Africa">South Africa</option>
+            <option value="Egypt">Egypt</option>
+            <option value="Tanzania">Tanzania</option>
+            <option value="Cameroon">Cameroon</option>
+            <option value="Ethiopia">Ethiopia</option>
+            <option value="Senegal">Senegal</option>
+            <option value="Rwanda">Rwanda</option>
+            <option value="Uganda">Uganda</option>
+            <option value="Morocco">Morocco</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Date &amp; Time</label>
+          <input aria-label="Datetime" type="datetime-local" name="datetime" class="input" required>
+        </div>
+        <div class="form-group form-grow">
+          <label>Stream URL</label>
+          <input aria-label="Https://youtube.com/live/" type="url" name="url" class="input" placeholder="https://youtube.com/live/...">
+        </div>
+        <div class="form-group">
+          <label>Thumbnail URL</label>
+          <input aria-label="Https://" type="url" name="thumbnail" class="input" placeholder="https://...">
+        </div>
+      </div>
+      <div id="streamThumbnailPreview" class="stream-thumb-preview" aria-live="polite"></div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Add Stream</button>
+      </div>
+    </form>
+
+    <h2 class="section-title" style="margin-top:40px">Upcoming Streams</h2>
+    <div id="streamList" class="admin-list"></div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       TAB: FEATURED
+       ═══════════════════════════════════════════════════ -->
+  <section class="section" id="tab-featured" style="display:none">
+    <h2 class="section-title">Featured Creators</h2>
+    <p class="muted">Select creators to feature on the homepage. Drag to reorder.</p>
+
+    <div class="form-group" style="margin-top:16px">
+      <label for="creatorOfWeek">Creator of the Week</label>
+      <select class="input" id="creatorOfWeek">
+        <option value="">-- Select --</option>
+      </select>
+      <button type="button" class="btn btn-primary btn-sm" id="saveCreatorOfWeek" style="margin-top:8px">Save</button>
+    </div>
+
+    <h3 style="margin-top:32px">Featured List</h3>
+    <div id="featuredList" class="admin-list"></div>
+
+    <div class="form-group" style="margin-top:16px">
+      <label>Add to Featured</label>
+      <select class="input" id="addFeaturedSelect" aria-label="Add Featured Select">
+        <option value="">-- Select Creator --</option>
+      </select>
+      <button type="button" class="btn btn-outline btn-sm" id="addFeaturedBtn" style="margin-top:8px">Add</button>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       TAB: CREATORS
+       ═══════════════════════════════════════════════════ -->
+  <section class="section" id="tab-creators" style="display:none">
+    <h2 class="section-title">Creator Management</h2>
+    <form class="admin-form" id="creatorForm">
+      <input type="hidden" name="editId" value="">
+
+      <!-- Basic Info -->
+      <p class="group-label">Basic Info</p>
+      <div class="form-row">
+        <div class="form-group form-grow">
+          <label>Name</label>
+          <input aria-label="Creator name" type="text" name="name" class="input" required placeholder="Creator name...">
+        </div>
+        <div class="form-group">
+          <label>Country</label>
+          <select name="country" class="input" required aria-label="Country">
+            <option value="Nigeria">Nigeria</option>
+            <option value="Kenya">Kenya</option>
+            <option value="Ghana">Ghana</option>
+            <option value="South Africa">South Africa</option>
+            <option value="Egypt">Egypt</option>
+            <option value="Tanzania">Tanzania</option>
+            <option value="Cameroon">Cameroon</option>
+            <option value="Ethiopia">Ethiopia</option>
+            <option value="Senegal">Senegal</option>
+            <option value="Rwanda">Rwanda</option>
+            <option value="Uganda">Uganda</option>
+            <option value="Morocco">Morocco</option>
+            <option value="Angola">Angola</option>
+            <option value="Algeria">Algeria</option>
+            <option value="Tunisia">Tunisia</option>
+            <option value="Cote d'Ivoire">Cote d'Ivoire</option>
+            <option value="DR Congo">DR Congo</option>
+            <option value="Mozambique">Mozambique</option>
+            <option value="Zimbabwe">Zimbabwe</option>
+            <option value="Zambia">Zambia</option>
+            <option value="Botswana">Botswana</option>
+            <option value="Namibia">Namibia</option>
+            <option value="Mauritius">Mauritius</option>
+            <option value="Libya">Libya</option>
+            <option value="Gabon">Gabon</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Primary Platform</label>
+          <select name="primaryPlatform" class="input" aria-label="Primary Platform">
+            <option value="youtube">YouTube</option>
+            <option value="twitch">Twitch</option>
+            <option value="tiktok">TikTok</option>
+            <option value="instagram">Instagram</option>
+            <option value="kick">Kick</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Bio</label>
+        <textarea name="bio" class="input" rows="3" placeholder="Short bio..." aria-label="Short bio..."></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group form-grow">
+          <label>Categories</label>
+          <input aria-label="Gaming, tech, comedy, music" type="text" name="categories" class="input" placeholder="gaming, tech, comedy, music">
+        </div>
+        <div class="form-group">
+          <label>Languages</label>
+          <input aria-label="English, Yoruba, French" type="text" name="languages" class="input" placeholder="English, Yoruba, French">
+        </div>
+        <div class="form-group">
+          <label>Tags</label>
+          <input aria-label="IRL, Just Chatting, Afrobeats" type="text" name="tags" class="input" placeholder="IRL, Just Chatting, Afrobeats">
+        </div>
+      </div>
+
+      <!-- Platform Links -->
+      <p class="group-label" style="margin-top:24px">Platform Links</p>
+      <div class="form-row">
+        <div class="form-group form-grow">
+          <label>YouTube</label>
+          <input aria-label="Https://youtube.com/@name" type="url" name="youtubeUrl" class="input" placeholder="https://youtube.com/@name">
+        </div>
+        <div class="form-group form-grow">
+          <label>Twitch</label>
+          <input aria-label="Https://twitch.tv/name" type="url" name="twitchUrl" class="input" placeholder="https://twitch.tv/name">
+        </div>
+        <div class="form-group form-grow">
+          <label>TikTok</label>
+          <input aria-label="Https://tiktok.com/@name" type="url" name="tiktokUrl" class="input" placeholder="https://tiktok.com/@name">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group form-grow">
+          <label>Instagram</label>
+          <input aria-label="Https://instagram.com/name" type="url" name="instagramUrl" class="input" placeholder="https://instagram.com/name">
+        </div>
+        <div class="form-group form-grow">
+          <label>X / Twitter</label>
+          <input aria-label="Https://x.com/name" type="url" name="twitterUrl" class="input" placeholder="https://x.com/name">
+        </div>
+        <div class="form-group form-grow">
+          <label>Kick</label>
+          <input aria-label="Https://kick.com/name" type="url" name="kickUrl" class="input" placeholder="https://kick.com/name">
+        </div>
+      </div>
+
+      <!-- Media -->
+      <p class="group-label" style="margin-top:24px">Media</p>
+      <div class="form-row">
+        <div class="form-group form-grow">
+          <label>Avatar URL</label>
+          <input aria-label="Https://" type="url" name="avatar" class="input" placeholder="https://...">
+        </div>
+        <div class="form-group form-grow">
+          <label>Cover URL</label>
+          <input aria-label="Https://" type="url" name="cover" class="input" placeholder="https://...">
+        </div>
+      </div>
+
+      <!-- Stats & Numbers -->
+      <p class="group-label" style="margin-top:24px">Stats &amp; Numbers</p>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Subscribers / Followers</label>
+          <input aria-label="Subscribers" type="number" name="subscribers" class="input" placeholder="150000">
+        </div>
+        <div class="form-group">
+          <label>Total Views</label>
+          <input aria-label="TotalViews" type="number" name="totalViews" class="input" placeholder="5000000">
+        </div>
+        <div class="form-group">
+          <label>Peak Viewers</label>
+          <input aria-label="PeakViewers" type="number" name="peakViewers" class="input" placeholder="25000">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Avg Stream Duration</label>
+          <input aria-label="2h 30m" type="text" name="avgDuration" class="input" placeholder="2h 30m">
+        </div>
+        <div class="form-group">
+          <label>Stream Frequency</label>
+          <select name="frequency" class="input" aria-label="Frequency">
+            <option value="">-- Select --</option>
+            <option value="Daily">Daily</option>
+            <option value="3-5x/week">3-5x/week</option>
+            <option value="2-3x/week">2-3x/week</option>
+            <option value="Weekly">Weekly</option>
+            <option value="Bi-weekly">Bi-weekly</option>
+            <option value="Monthly">Monthly</option>
+            <option value="Irregular">Irregular</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Growth Rate</label>
+          <input aria-label="GrowthRate" type="text" name="growthRate" class="input" placeholder="+15%">
+        </div>
+      </div>
+
+      <!-- Financials -->
+      <p class="group-label" style="margin-top:24px">Financials</p>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Est. Net Worth</label>
+          <input aria-label="NetWorth" type="text" name="netWorth" class="input" placeholder="$50,000">
+        </div>
+        <div class="form-group">
+          <label>Gift Revenue (est.)</label>
+          <input aria-label="GiftRevenue" type="text" name="giftRevenue" class="input" placeholder="$12,000">
+        </div>
+        <div class="form-group">
+          <label>Streaming Since</label>
+          <input aria-label="2021 or March 2022" type="text" name="streamingSince" class="input" placeholder="2021 or March 2022">
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" id="creatorSubmitBtn">Add Creator</button>
+        <button type="button" class="btn btn-ghost" id="cancelEditCreator" style="display:none">Cancel Edit</button>
+      </div>
+    </form>
+
+    <h2 class="section-title" style="margin-top:40px">All Creators</h2>
+    <div id="creatorList" class="admin-list"></div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       TAB: SETTINGS
+       ═══════════════════════════════════════════════════ -->
+  <!-- ═══════════════════════════════════════════════════
+       TAB: SUBMISSIONS (community review queue)
+       ═══════════════════════════════════════════════════ -->
+  <section class="section" id="tab-submissions" style="display:none">
+    <h2 class="section-title">Community Submissions</h2>
+    <p class="muted">Review user-submitted creators, streams, and news tips. Nothing goes live until you approve it.</p>
+
+    <!-- Filter pills -->
+    <div style="display:flex;gap:8px;margin:16px 0;flex-wrap:wrap">
+      <button type="button" class="btn btn-sm sub-filter active" data-filter="pending" style="background:#FEF3C7;color:#92400E;border:1.5px solid #F59E0B">⏳ Pending</button>
+      <button type="button" class="btn btn-sm sub-filter" data-filter="approved" style="border:1.5px solid #E5E7EB">✅ Approved</button>
+      <button type="button" class="btn btn-sm sub-filter" data-filter="rejected" style="border:1.5px solid #E5E7EB">❌ Rejected</button>
+    </div>
+
+    <!-- Submissions list -->
+    <div id="submissionsList" class="admin-list"></div>
+
+    <!-- Review modal (hidden) -->
+    <div id="reviewModal" style="display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center">
+      <div style="background:#fff;border-radius:16px;padding:32px 28px;max-width:600px;width:92%;max-height:80vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+          <h3 style="font-size:1.1rem;font-weight:800">Review Submission</h3>
+          <button type="button" class="btn btn-ghost btn-sm" id="closeReviewModal">&times;</button>
+        </div>
+        <div id="reviewDetails" style="margin-bottom:20px"></div>
+        <div class="form-group">
+          <label for="reviewNote">Admin Note (optional)</label>
+          <textarea id="reviewNote" class="input" rows="3" placeholder="Reason for approve/reject..."></textarea>
+        </div>
+        <div class="form-actions" style="margin-top:16px">
+          <button type="button" class="btn btn-primary" id="approveSubmissionBtn">✅ Approve & Publish</button>
+          <button type="button" class="btn btn-outline btn-danger" id="rejectSubmissionBtn">❌ Reject</button>
+          <button type="button" class="btn btn-ghost btn-danger btn-sm" id="deleteSubmissionBtn">🗑 Delete</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       TAB: SYNC
+       ═══════════════════════════════════════════════════ -->
+  <section class="section" id="tab-ops" style="display:none">
+    <h2 class="section-title">AfroStream Ops</h2>
+    <p class="muted">Manage verified RSS sources, attach real supporter evidence, and run the news monitor without leaving the admin panel.</p>
+
+    <div class="form-actions" style="margin-bottom:24px">
+      <button type="button" class="btn btn-primary" id="runNewsMonitorBtn">Run News Monitor</button>
+    </div>
+    <div id="opsLog" style="display:none;margin-bottom:24px">
+      <pre id="opsLogContent" style="background:#0f172a;color:#e2e8f0;padding:16px;border-radius:8px;font-size:.75rem;max-height:320px;overflow-y:auto;white-space:pre-wrap;word-break:break-word"></pre>
+    </div>
+
+    <h3>News Sources</h3>
+    <form id="newsSourceForm" class="admin-form" style="margin-bottom:20px">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Source Name</label>
+          <input aria-label="TechCabal" type="text" name="name" class="input" required placeholder="TechCabal">
+        </div>
+        <div class="form-group form-grow">
+          <label>Feed URL</label>
+          <input aria-label="Https://example.com/feed/" type="url" name="feed_url" class="input" required placeholder="https://example.com/feed/">
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <input aria-label="Category" type="text" name="category" class="input" value="creator-news" required>
+        </div>
+      </div>
+      <div class="form-actions">
+        <label class="toggle-label">
+          <input aria-label="Is active" type="checkbox" name="is_active" checked>
+          <span>Active source</span>
+        </label>
+        <button type="submit" class="btn btn-primary">Add Source</button>
+      </div>
+    </form>
+    <div id="newsSourcesList" class="admin-list"></div>
+
+    <h3 style="margin-top:32px">Verified Supporters</h3>
+    <form id="supporterForm" class="admin-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Creator</label>
+          <select name="creator_id" id="supporterCreator" class="input" required aria-label="Creator Id">
+            <option value="">-- Select Creator --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Supporter Name</label>
+          <input aria-label="Verified supporter name" type="text" name="supporter_name" class="input" required placeholder="Verified supporter name">
+        </div>
+        <div class="form-group">
+          <label>Platform</label>
+          <input aria-label="YouTube, Twitch, TikTok" type="text" name="platform" class="input" placeholder="YouTube, Twitch, TikTok">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Amount</label>
+          <input aria-label="Amount" type="number" min="0" step="0.01" name="amount" class="input" required placeholder="250">
+        </div>
+        <div class="form-group">
+          <label>Currency</label>
+          <input aria-label="Currency" type="text" name="currency" class="input" value="USD" required>
+        </div>
+        <div class="form-group">
+          <label>Event Date</label>
+          <input aria-label="Event date" type="date" name="event_date" class="input">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Source Label</label>
+          <input aria-label="YouTube live, article, platform post" type="text" name="source_label" class="input" placeholder="YouTube live, article, platform post">
+        </div>
+        <div class="form-group form-grow">
+          <label>Source URL</label>
+          <input aria-label="Https://" type="url" name="source_url" class="input" placeholder="https://...">
+        </div>
+      </div>
+      <div class="form-actions">
+        <label class="toggle-label">
+          <input aria-label="Is verified" type="checkbox" name="is_verified" checked>
+          <span>Verified</span>
+        </label>
+        <label class="toggle-label">
+          <input aria-label="Is published" type="checkbox" name="is_published" checked>
+          <span>Published</span>
+        </label>
+        <button type="submit" class="btn btn-primary">Add Supporter Row</button>
+      </div>
+    </form>
+    <div id="supportersList" class="admin-list" style="margin-top:20px"></div>
+  </section>
+
+  <section class="section" id="tab-sync" style="display:none">
+    <h2>API Data Sync</h2>
+    <p class="muted">Trigger a manual sync of creator data from Twitch, Kick, and YouTube APIs. The full sync runs automatically every 2 hours, and live checks run every 30 minutes.</p>
+
+    <div class="settings-grid stats" style="margin:20px 0">
+      <div class="stat-card">
+        <span class="stat-value" id="syncLastRun">—</span>
+        <span class="stat-label">Last Sync</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="syncTwitchCount">—</span>
+        <span class="stat-label">Twitch Synced</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="syncKickCount">—</span>
+        <span class="stat-label">Kick Synced</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="syncYtCount">—</span>
+        <span class="stat-label">YouTube Synced</span>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn btn-primary" id="syncNowBtn" onclick="triggerSync()">Sync Now</button>
+    </div>
+
+    <div id="syncLog" style="margin-top:20px;display:none">
+      <h3 style="font-size:.85rem;margin-bottom:8px">Sync Log</h3>
+      <pre id="syncLogContent" style="background:#0f172a;color:#e2e8f0;padding:16px;border-radius:8px;font-size:.75rem;max-height:400px;overflow-y:auto;white-space:pre-wrap;word-break:break-word"></pre>
+    </div>
+  </section>
+
+  <section class="section" id="tab-settings" style="display:none">
+    <h2 class="section-title">Settings</h2>
+
+    <div class="settings-grid stats">
+      <div class="stat-card">
+        <span class="stat-value" id="statArticles">0</span>
+        <span class="stat-label">Published Articles</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="statStreams">0</span>
+        <span class="stat-label">Scheduled Streams</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="statCreators">0</span>
+        <span class="stat-label">Creators</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="statFeatured">0</span>
+        <span class="stat-label">Featured</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="statPending" style="color:#f59e0b">0</span>
+        <span class="stat-label">Pending Submissions</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="statSources">0</span>
+        <span class="stat-label">Active RSS Sources</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="statSupporters">0</span>
+        <span class="stat-label">Verified Supporters</span>
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-top:32px">
+      <label class="toggle-label">
+        <input aria-label="AfroPointsToggle" type="checkbox" id="afroPointsToggle">
+        <span>Enable AfroPoints integration</span>
+      </label>
+    </div>
+
+    <div class="form-group" style="margin-top:16px">
+      <label>YouTube API Key (future)</label>
+      <input aria-label="Not configured" type="text" class="input" placeholder="Not configured" disabled>
+    </div>
+    <div class="form-group">
+      <label>Twitch Client ID (future)</label>
+      <input aria-label="Not configured" type="text" class="input" placeholder="Not configured" disabled>
+    </div>
+    <div class="form-group">
+      <label>TikTok API Key (future)</label>
+      <input aria-label="Not configured" type="text" class="input" placeholder="Not configured" disabled>
+    </div>
+
+    <div class="form-actions" style="margin-top:24px">
+      <button type="button" class="btn btn-outline" id="exportDataBtn">Export All Data (JSON)</button>
+      <button type="button" class="btn btn-ghost" id="clearDataBtn" style="color:#ef4444">Clear All Data</button>
+    </div>
+  </section>
+
+</div><!-- /dash -->
+
+<script>
+/* ================================================================
+   AfroStream — Admin Panel
+   Supabase-first, localStorage fallback
+   ================================================================ */
+(function() {
+  'use strict';
+
+  var API = '/api/admin/afrostream';
+  var MC_TOKEN = localStorage.getItem('afrostream_admin_token') || sessionStorage.getItem('admin_key');
+  var TOKEN = MC_TOKEN || ''; // set on login via sessionStorage or Mission Control
+  var LS_KEY = {
+    auth: 'as_admin_auth',
+    token: 'as_admin_token',
+    news: 'as_news',
+    streams: 'as_streams',
+    creators: 'as_creators',
+    featured: 'as_featured',
+    cotw: 'as_creator_of_week',
+    points: 'as_afropoints'
+  };
+
+  // In-memory cache (populated from Supabase or localStorage)
+  var DATA = { news: [], streams: [], creators: [], featured: [], newsSources: [], supporters: [] };
+  var SB_OK = false; // tracks whether Supabase is reachable
+
+  /* ── LOCAL STORAGE HELPERS ─────────────────────────── */
+  function lsLoad(key) {
+    try { return JSON.parse(localStorage.getItem(key)) || []; } catch(e) { return []; }
+  }
+  function lsSave(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
+  function lsVal(key) { return localStorage.getItem(key) || ''; }
+  function lsSaveVal(key, v) { localStorage.setItem(key, v); }
+
+  async function validateAdminToken(token) {
+    if (!token) return false;
+    try {
+      var res = await fetch('/api/admin-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-key': token
+        },
+        body: JSON.stringify({ source: 'afrostream-admin' })
+      });
+      return res.ok;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /* ── API HELPERS ───────────────────────────────────── */
+  async function api(method, path, body) {
+    var opts = {
+      method: method,
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN }
+    };
+    if (body) opts.body = JSON.stringify(body);
+    var res = await fetch(API + '/' + path, opts);
+    var json = await res.json();
+    if (!res.ok) throw new Error(json.error || 'API error ' + res.status);
+    return json.data;
+  }
+
+  function toast(msg, isError) {
+    var el = document.createElement('div');
+    el.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:9999;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:600;color:#fff;background:' + (isError ? '#ef4444' : '#22c55e') + ';box-shadow:0 4px 20px rgba(0,0,0,.3);animation:fadeIn .3s';
+    el.textContent = msg;
+    document.body.appendChild(el);
+    setTimeout(function() { el.remove(); }, 3000);
+  }
+
+  function escapeHtml(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function escapeAttr(value) {
+    return escapeHtml(value);
+  }
+
+  function decodeHtmlBits(value) {
+    return String(value == null ? '' : value)
+      .replace(/\\u0026/g, '&')
+      .replace(/\\\//g, '/')
+      .replace(/&amp;/g, '&')
+      .replace(/&#39;/g, "'")
+      .replace(/&quot;/g, '"');
+  }
+
+  function extractYouTubeVideoId(value) {
+    if (!value) return '';
+    var str = decodeHtmlBits(value).trim();
+    if (!str) return '';
+    if (/^[A-Za-z0-9_-]{11}$/.test(str)) return str;
+    var patterns = [
+      /[?&]v=([A-Za-z0-9_-]{11})/i,
+      /youtu\.be\/([A-Za-z0-9_-]{11})/i,
+      /youtube\.com\/(?:live|shorts|embed)\/([A-Za-z0-9_-]{11})/i
+    ];
+    for (var i = 0; i < patterns.length; i++) {
+      var match = str.match(patterns[i]);
+      if (match) return match[1];
+    }
+    return '';
+  }
+
+  function normalizeThumbnailInput(value) {
+    if (!value) return '';
+
+    if (Array.isArray(value)) {
+      for (var ai = 0; ai < value.length; ai++) {
+        var arrUrl = normalizeThumbnailInput(value[ai]);
+        if (arrUrl) return arrUrl;
+      }
+      return '';
+    }
+
+    if (typeof value === 'object') {
+      var keys = ['url', 'src', 'secure_url', 'thumbnail_url', 'thumbnailUrl', 'image', 'thumbnail', 'poster', 'original', 'large', 'medium', 'small', 'sm'];
+      for (var ki = 0; ki < keys.length; ki++) {
+        var next = normalizeThumbnailInput(value[keys[ki]]);
+        if (next) return next;
+      }
+      return '';
+    }
+
+    var str = String(value).trim();
+    if (!str || str === 'null' || str === 'undefined' || str === '[object Object]') return '';
+
+    if ((str.charAt(0) === '{' || str.charAt(0) === '[') && str.indexOf('http') !== 0) {
+      try {
+        return normalizeThumbnailInput(JSON.parse(str));
+      } catch (e) {}
+    }
+
+    str = decodeHtmlBits(str)
+      .replace(/^\/\//, 'https://')
+      .replace(/^http:\/\//i, 'https://')
+      .replace(/\{width\}/g, '440')
+      .replace(/\{height\}/g, '248');
+
+    var youtubeId = extractYouTubeVideoId(str);
+    if (youtubeId) return 'https://img.youtube.com/vi/' + youtubeId + '/hqdefault.jpg';
+
+    return /^https?:\/\//i.test(str) ? str : '';
+  }
+
+  function resolveStreamThumbnailInput(thumbnailValue, streamUrl) {
+    return normalizeThumbnailInput(thumbnailValue) || normalizeThumbnailInput(streamUrl);
+  }
+
+  function renderStreamThumbnailPreview() {
+    var form = document.getElementById('streamForm');
+    var preview = document.getElementById('streamThumbnailPreview');
+    if (!form || !preview) return;
+
+    var rawThumb = form.querySelector('[name="thumbnail"]').value;
+    var streamUrl = form.querySelector('[name="url"]').value;
+    var resolved = resolveStreamThumbnailInput(rawThumb, streamUrl);
+    var sourceLabel = rawThumb ? 'Thumbnail field' : 'Derived from stream URL';
+
+    if (!resolved && !rawThumb && !streamUrl) {
+      preview.style.display = 'none';
+      preview.className = 'stream-thumb-preview';
+      preview.innerHTML = '';
+      return;
+    }
+
+    if (!resolved) {
+      preview.style.display = 'block';
+      preview.className = 'stream-thumb-preview is-warning';
+      preview.innerHTML =
+        '<div class="stream-thumb-meta">' +
+          '<span class="stream-thumb-chip">Needs image</span>' +
+        '</div>' +
+        '<div class="stream-thumb-hint">Paste a direct image URL, or use a YouTube watch, live, share, or short link and AfroStream will derive the thumbnail automatically.</div>';
+      return;
+    }
+
+    preview.style.display = 'block';
+    preview.className = 'stream-thumb-preview';
+    preview.innerHTML =
+      '<div class="stream-thumb-meta">' +
+        '<span class="stream-thumb-chip">' + escapeHtml(sourceLabel) + '</span>' +
+      '</div>' +
+      '<img src="' + escapeAttr(resolved) + '" alt="Resolved stream thumbnail preview" loading="lazy" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
+      '<div style="display:none;align-items:center;justify-content:center;max-width:240px;aspect-ratio:16 / 9;border-radius:10px;background:#E2E8F0;color:#475569;font-size:.78rem;font-weight:600">Preview unavailable</div>' +
+      '<div class="stream-thumb-hint">' + escapeHtml(resolved) + '</div>';
+  }
+
+  /* ── SYNC: Load from Supabase, cache to localStorage ── */
+  async function syncFromSupabase() {
+    try {
+      var results = await Promise.all([
+        api('GET', 'creators'),
+        api('GET', 'streams'),
+        api('GET', 'news'),
+        api('GET', 'featured'),
+        api('GET', 'news-sources'),
+        api('GET', 'supporters')
+      ]);
+      DATA.creators = results[0] || [];
+      DATA.streams = results[1] || [];
+      DATA.news = results[2] || [];
+      DATA.featured = results[3] || [];
+      DATA.newsSources = results[4] || [];
+      DATA.supporters = results[5] || [];
+      // Cache to localStorage as backup
+      lsSave(LS_KEY.creators, DATA.creators);
+      lsSave(LS_KEY.streams, DATA.streams);
+      lsSave(LS_KEY.news, DATA.news);
+      lsSave(LS_KEY.featured, DATA.featured);
+      SB_OK = true;
+      console.log('[AfroStream] Synced from Supabase');
+    } catch(e) {
+      console.warn('[AfroStream] Supabase unavailable, using localStorage:', e.message);
+      DATA.creators = lsLoad(LS_KEY.creators);
+      DATA.streams = lsLoad(LS_KEY.streams);
+      DATA.news = lsLoad(LS_KEY.news);
+      DATA.featured = lsLoad(LS_KEY.featured);
+      DATA.newsSources = [];
+      DATA.supporters = [];
+      SB_OK = false;
+    }
+  }
+
+  /* ── AUTH ───────────────────────────────────────────── */
+  var gate = document.getElementById('passwordGate');
+  var panel = document.getElementById('adminPanel');
+  var gateErr = document.getElementById('gateError');
+
+  async function checkAuth() {
+    var saved = lsVal(LS_KEY.token) || MC_TOKEN;
+    if (saved && await validateAdminToken(saved)) {
+      TOKEN = saved;
+      gate.style.display = 'none';
+      panel.style.display = '';
+      initAdmin();
+      return;
+    }
+    localStorage.removeItem(LS_KEY.token);
+    localStorage.removeItem(LS_KEY.auth);
+    gate.style.display = '';
+    panel.style.display = 'none';
+  }
+
+  document.getElementById('gateSubmit').addEventListener('click', tryLogin);
+  document.getElementById('gatePassword').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') tryLogin();
+  });
+
+  async function tryLogin() {
+    var pw = document.getElementById('gatePassword').value;
+    if (await validateAdminToken(pw)) {
+      TOKEN = pw;
+      lsSaveVal(LS_KEY.token, pw);
+      lsSaveVal(LS_KEY.auth, 'true');
+      gate.style.display = 'none';
+      panel.style.display = '';
+      gateErr.style.display = 'none';
+      initAdmin();
+    } else {
+      TOKEN = '';
+      gateErr.style.display = '';
+    }
+  }
+
+  document.getElementById('logoutBtn').addEventListener('click', function() {
+    localStorage.removeItem(LS_KEY.auth);
+    localStorage.removeItem(LS_KEY.token);
+    TOKEN = '';
+    gate.style.display = '';
+    panel.style.display = 'none';
+    document.getElementById('gatePassword').value = '';
+    gateErr.style.display = 'none';
+  });
+
+  /* ── TABS ──────────────────────────────────────────── */
+  document.getElementById('adminTabs').addEventListener('click', function(e) {
+    var tab = e.target.closest('.tab');
+    if (!tab) return;
+    this.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+    tab.classList.add('active');
+    document.querySelectorAll('.section').forEach(function(s) { s.style.display = 'none'; });
+    document.getElementById('tab-' + tab.dataset.tab).style.display = '';
+  });
+
+  function activateTabFromHash() {
+    var hash = window.location.hash.replace('#', '');
+    if (hash) {
+      var tabBtn = document.querySelector('.tab[data-tab="' + hash + '"]');
+      if (tabBtn) tabBtn.click();
+    }
+  }
+
+  /* ── INIT ADMIN ────────────────────────────────────── */
+  async function initAdmin() {
+    // Show loading state
+    ['newsList','streamList','creatorList','featuredList','submissionsList','newsSourcesList','supportersList'].forEach(function(id) {
+      document.getElementById(id).innerHTML = '<p class="muted">Loading from Supabase...</p>';
+    });
+    await syncFromSupabase();
+    if (!SB_OK) toast('Supabase offline — using local backup', true);
+    renderAll();
+    loadSubmissions();
+    updatePendingBadge();
+    activateTabFromHash();
+
+    // Load settings
+    try {
+      var settings = await api('GET', 'settings');
+      if (settings) {
+        settings.forEach(function(s) {
+          if (s.key === 'afropoints_enabled') document.getElementById('afroPointsToggle').checked = s.value === 'true';
+        });
+      }
+    } catch(e) {
+      document.getElementById('afroPointsToggle').checked = lsVal(LS_KEY.points) === 'true';
+    }
+  }
+
+  function renderAll() {
+    renderNewsList();
+    renderStreamList();
+    renderCreatorList();
+    renderFeaturedList();
+    renderNewsSourcesList();
+    renderSupportersList();
+    updateSupporterCreatorDropdown();
+    updateStats();
+  }
+
+  function updateSupporterCreatorDropdown() {
+    var select = document.getElementById('supporterCreator');
+    if (!select) return;
+    var current = select.value;
+    var options = '<option value="">-- Select Creator --</option>' + DATA.creators.map(function(c) {
+      return '<option value="' + c.id + '">' + escapeHtml(c.name + ' (' + c.country + ')') + '</option>';
+    }).join('');
+    select.innerHTML = options;
+    if (current) select.value = current;
+  }
+
+  function renderNewsSourcesList() {
+    var el = document.getElementById('newsSourcesList');
+    if (!el) return;
+    if (!DATA.newsSources.length) {
+      el.innerHTML = '<p class="as-empty-state">No RSS sources configured yet.</p>';
+      return;
+    }
+    el.innerHTML = DATA.newsSources.map(function(source) {
+      return '<div class="as-admin-list-item">' +
+        '<div class="as-admin-list-info">' +
+          '<strong>' + escapeHtml(source.name) + '</strong>' +
+          '<span class="muted" style="margin-left:8px">' + escapeHtml(source.category || 'creator-news') + '</span>' +
+          '<div class="muted" style="margin-top:6px">' + escapeHtml(source.feed_url) + '</div>' +
+        '</div>' +
+        '<div class="as-admin-list-actions">' +
+          '<button type="button" class="as-btn as-btn-outline as-btn-xs" onclick="window._asToggleSource(' + source.id + ',' + (source.is_active ? 'false' : 'true') + ')">' + (source.is_active ? 'Disable' : 'Enable') + '</button>' +
+          '<button type="button" class="as-btn as-btn-ghost as-btn-xs" style="color:#ef4444" onclick="window._asDeleteSource(' + source.id + ')">Delete</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function renderSupportersList() {
+    var el = document.getElementById('supportersList');
+    if (!el) return;
+    if (!DATA.supporters.length) {
+      el.innerHTML = '<p class="as-empty-state">No verified supporter rows yet.</p>';
+      return;
+    }
+    el.innerHTML = DATA.supporters.map(function(row) {
+      var creator = DATA.creators.find(function(c) { return String(c.id) === String(row.creator_id); });
+      var creatorName = creator ? creator.name : ('Creator #' + row.creator_id);
+      return '<div class="as-admin-list-item">' +
+        '<div class="as-admin-list-info">' +
+          '<strong>' + escapeHtml(row.supporter_name) + '</strong>' +
+          '<span class="muted" style="margin-left:8px">' + escapeHtml(creatorName) + '</span>' +
+          '<span class="muted" style="margin-left:8px">' + escapeHtml((row.currency || 'USD') + ' ' + row.amount) + '</span>' +
+          (row.platform ? '<span class="muted" style="margin-left:8px">' + escapeHtml(row.platform) + '</span>' : '') +
+          '<div class="muted" style="margin-top:6px">' + escapeHtml(row.source_label || 'Verified source') + (row.event_date ? ' · ' + escapeHtml(row.event_date) : '') + '</div>' +
+        '</div>' +
+        '<div class="as-admin-list-actions">' +
+          '<button type="button" class="as-btn as-btn-ghost as-btn-xs" style="color:#ef4444" onclick="window._asDeleteSupporter(' + row.id + ')">Delete</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  document.getElementById('newsSourceForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    var fd = new FormData(this);
+    var payload = {
+      name: fd.get('name'),
+      feed_url: fd.get('feed_url'),
+      category: fd.get('category'),
+      is_active: fd.get('is_active') === 'on'
+    };
+    var created = await api('POST', 'news-sources', payload);
+    if (created && created[0]) DATA.newsSources.unshift(created[0]);
+    this.reset();
+    this.querySelector('[name="category"]').value = 'creator-news';
+    this.querySelector('[name="is_active"]').checked = true;
+    renderNewsSourcesList();
+    toast('News source added.');
+  });
+
+  document.getElementById('supporterForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    var fd = new FormData(this);
+    var payload = {
+      creator_id: parseInt(fd.get('creator_id'), 10),
+      supporter_name: fd.get('supporter_name'),
+      platform: fd.get('platform'),
+      amount: parseFloat(fd.get('amount')),
+      currency: fd.get('currency'),
+      source_label: fd.get('source_label'),
+      source_url: fd.get('source_url'),
+      event_date: fd.get('event_date') || null,
+      is_verified: fd.get('is_verified') === 'on',
+      is_published: fd.get('is_published') === 'on'
+    };
+    var created = await api('POST', 'supporters', payload);
+    if (created && created[0]) DATA.supporters.unshift(created[0]);
+    this.reset();
+    this.querySelector('[name="currency"]').value = 'USD';
+    this.querySelector('[name="is_verified"]').checked = true;
+    this.querySelector('[name="is_published"]').checked = true;
+    renderSupportersList();
+    toast('Verified supporter row added.');
+  });
+
+  document.getElementById('runNewsMonitorBtn').addEventListener('click', async function() {
+    var btn = this;
+    var log = document.getElementById('opsLog');
+    var content = document.getElementById('opsLogContent');
+    btn.disabled = true;
+    btn.textContent = 'Running...';
+    log.style.display = 'block';
+    content.textContent = '[' + new Date().toISOString() + '] Running news monitor...\n';
+    try {
+      var result = await api('POST', 'ops/news-monitor', {});
+      content.textContent += JSON.stringify(result, null, 2) + '\n';
+      await syncFromSupabase();
+      renderAll();
+      toast('News monitor finished.');
+    } catch (err) {
+      content.textContent += '[ERROR] ' + err.message + '\n';
+      toast('News monitor failed.', true);
+    }
+    btn.disabled = false;
+    btn.textContent = 'Run News Monitor';
+  });
+
+  window._asToggleSource = async function(id, nextState) {
+    var updated = await api('PUT', 'news-sources/' + id, { is_active: nextState === true || nextState === 'true' });
+    if (updated && updated[0]) {
+      DATA.newsSources = DATA.newsSources.map(function(row) { return row.id === id ? updated[0] : row; });
+    }
+    renderNewsSourcesList();
+  };
+
+  window._asDeleteSource = async function(id) {
+    if (!confirm('Delete this RSS source?')) return;
+    await api('DELETE', 'news-sources/' + id);
+    DATA.newsSources = DATA.newsSources.filter(function(row) { return row.id !== id; });
+    renderNewsSourcesList();
+  };
+
+  window._asDeleteSupporter = async function(id) {
+    if (!confirm('Delete this supporter row?')) return;
+    await api('DELETE', 'supporters/' + id);
+    DATA.supporters = DATA.supporters.filter(function(row) { return row.id !== id; });
+    renderSupportersList();
+  };
+
+  /* ═══════════════════════════════════════════════════════
+     NEWS MANAGEMENT
+     ═══════════════════════════════════════════════════════ */
+  var CAT_LABELS = {
+    milestones: 'Milestones', platform: 'Platform Updates', collabs: 'Collabs',
+    drama: 'Drama', business: 'Business', rising: 'Rising Stars'
+  };
+
+  document.getElementById('newsForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    var fd = new FormData(this);
+    var btn = this.querySelector('[type="submit"]');
+    btn.disabled = true; btn.textContent = 'Publishing...';
+
+    var article = {
+      title: fd.get('title'),
+      category: fd.get('category'),
+      image_url: fd.get('imageUrl'),
+      author: fd.get('author'),
+      excerpt: fd.get('excerpt'),
+      body: fd.get('body')
+    };
+
+    try {
+      var created = await api('POST', 'news', article);
+      DATA.news = (created || []).concat(DATA.news);
+      lsSave(LS_KEY.news, DATA.news);
+      toast('Article published!');
+    } catch(err) {
+      // Fallback: save locally
+      article.id = Date.now();
+      article.published_at = new Date().toISOString();
+      article.is_published = true;
+      article.is_featured = false;
+      DATA.news.unshift(article);
+      lsSave(LS_KEY.news, DATA.news);
+      toast('Saved locally (Supabase offline)', true);
+    }
+    this.reset();
+    btn.disabled = false; btn.textContent = 'Publish Article';
+    renderNewsList();
+    updateStats();
+  });
+
+  document.getElementById('previewNewsBtn').addEventListener('click', function() {
+    var form = document.getElementById('newsForm');
+    var fd = new FormData(form);
+    var prev = document.getElementById('newsPreview');
+    var content = document.getElementById('newsPreviewContent');
+    content.innerHTML =
+      '<span class="as-cat-badge" style="background:#0062CC">' + (CAT_LABELS[fd.get('category')] || fd.get('category')) + '</span>' +
+      '<h2 style="margin:12px 0 8px">' + (fd.get('title') || 'Untitled') + '</h2>' +
+      '<p style="color:rgba(255,255,255,0.5)">' + (fd.get('author') || 'Author') + ' &middot; Just now</p>' +
+      '<p style="margin:12px 0;color:rgba(255,255,255,0.7)">' + (fd.get('excerpt') || '') + '</p>' +
+      '<div style="margin-top:16px;border-top:1px solid rgba(255,255,255,0.1);padding-top:16px">' + (fd.get('body') || '') + '</div>';
+    prev.style.display = '';
+  });
+
+  function renderNewsList() {
+    var articles = DATA.news;
+    var el = document.getElementById('newsList');
+    if (!articles.length) {
+      el.innerHTML = '<p class="as-empty-state">No articles published yet.</p>';
+      return;
+    }
+    el.innerHTML = articles.map(function(a) {
+      var dateStr = a.published_at || a.date || a.created_at;
+      return '<div class="as-admin-list-item">' +
+        '<div class="as-admin-list-info">' +
+          '<strong>' + a.title + '</strong>' +
+          '<span class="as-cat-badge as-badge-sm" style="background:#0062CC;margin-left:8px">' + (CAT_LABELS[a.category] || a.category) + '</span>' +
+          '<span class="muted" style="margin-left:8px">' + new Date(dateStr).toLocaleDateString() + '</span>' +
+          (a.is_featured ? ' <span style="color:#F59E0B;margin-left:4px">&#9733;</span>' : '') +
+        '</div>' +
+        '<div class="as-admin-list-actions">' +
+          '<button type="button" class="as-btn as-btn-outline as-btn-xs" onclick="window._asEditNews(' + a.id + ')">Edit</button>' +
+          '<button type="button" class="as-btn as-btn-ghost as-btn-xs" style="color:#ef4444" onclick="window._asDeleteNews(' + a.id + ')">Delete</button>' +
+          '<button type="button" class="as-btn as-btn-outline as-btn-xs" onclick="window._asFeatureNews(' + a.id + ')">' + (a.is_featured ? 'Unfeature' : 'Feature') + '</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  window._asDeleteNews = async function(id) {
+    if (!confirm('Delete this article?')) return;
+    try { await api('DELETE', 'news/' + id); } catch(e) {}
+    DATA.news = DATA.news.filter(function(a) { return a.id !== id; });
+    lsSave(LS_KEY.news, DATA.news);
+    renderNewsList();
+    updateStats();
+  };
+
+  window._asFeatureNews = async function(id) {
+    var a = DATA.news.find(function(x) { return x.id === id; });
+    if (!a) return;
+    var newVal = !a.is_featured;
+    try { await api('PUT', 'news/' + id, { is_featured: newVal }); } catch(e) {}
+    a.is_featured = newVal;
+    lsSave(LS_KEY.news, DATA.news);
+    renderNewsList();
+  };
+
+  window._asEditNews = function(id) {
+    var a = DATA.news.find(function(x) { return x.id === id; });
+    if (!a) return;
+    var form = document.getElementById('newsForm');
+    form.querySelector('[name="title"]').value = a.title;
+    form.querySelector('[name="category"]').value = a.category;
+    form.querySelector('[name="imageUrl"]').value = a.image_url || a.imageUrl || '';
+    form.querySelector('[name="author"]').value = a.author || 'AfroStream Team';
+    form.querySelector('[name="excerpt"]').value = a.excerpt;
+    form.querySelector('[name="body"]').value = a.body;
+    // Set edit mode — delete old, form submit creates new
+    DATA.news = DATA.news.filter(function(x) { return x.id !== id; });
+    lsSave(LS_KEY.news, DATA.news);
+    try { api('DELETE', 'news/' + id); } catch(e) {}
+    renderNewsList();
+    updateStats();
+    form.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  /* ═══════════════════════════════════════════════════════
+     STREAM MANAGEMENT
+     ═══════════════════════════════════════════════════════ */
+  var streamForm = document.getElementById('streamForm');
+  var streamThumbInput = streamForm.querySelector('[name="thumbnail"]');
+  var streamUrlInput = streamForm.querySelector('[name="url"]');
+
+  [streamThumbInput, streamUrlInput].forEach(function(input) {
+    input.addEventListener('input', renderStreamThumbnailPreview);
+    input.addEventListener('change', renderStreamThumbnailPreview);
+  });
+  renderStreamThumbnailPreview();
+
+  streamForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    var fd = new FormData(this);
+    var btn = this.querySelector('[type="submit"]');
+    btn.disabled = true; btn.textContent = 'Adding...';
+    var resolvedThumbnail = resolveStreamThumbnailInput(fd.get('thumbnail'), fd.get('url'));
+
+    var stream = {
+      creator_name: fd.get('creator'),
+      title: fd.get('title'),
+      platform: fd.get('platform'),
+      category: fd.get('category'),
+      country: fd.get('country'),
+      stream_date: new Date(fd.get('datetime')).toISOString(),
+      url: fd.get('url'),
+      is_live: false
+    };
+    if (resolvedThumbnail) stream.thumbnail = resolvedThumbnail;
+
+    try {
+      var created = await api('POST', 'streams', stream);
+      if (created && created[0]) DATA.streams.unshift(created[0]);
+      else DATA.streams.unshift(Object.assign({ id: Date.now() }, stream));
+      lsSave(LS_KEY.streams, DATA.streams);
+      toast('Stream added!');
+    } catch(err) {
+      stream.id = Date.now();
+      DATA.streams.unshift(stream);
+      lsSave(LS_KEY.streams, DATA.streams);
+      toast('Saved locally (Supabase offline)', true);
+    }
+    this.reset();
+    renderStreamThumbnailPreview();
+    btn.disabled = false; btn.textContent = 'Add Stream';
+    renderStreamList();
+    updateStats();
+  });
+
+  var PLAT_COLORS = { youtube:'#FF0000', twitch:'#9146FF', tiktok:'#06D6A0', instagram:'#E1306C', kick:'#53FC18' };
+  var PLAT_LABELS = { youtube:'YouTube', twitch:'Twitch', tiktok:'TikTok', instagram:'Instagram', kick:'Kick' };
+
+  function renderStreamList() {
+    var streams = DATA.streams.slice();
+    var el = document.getElementById('streamList');
+    if (!streams.length) {
+      el.innerHTML = '<p class="as-empty-state">No streams scheduled.</p>';
+      return;
+    }
+    streams.sort(function(a, b) {
+      return new Date(a.stream_date || a.datetime) - new Date(b.stream_date || b.datetime);
+    });
+    el.innerHTML = streams.map(function(s) {
+      var dt = new Date(s.stream_date || s.datetime);
+      var isLive = s.is_live || s.live;
+      var liveCls = isLive ? ' as-live-indicator' : '';
+      var name = s.creator_name || s.creator;
+      var thumbUrl = resolveStreamThumbnailInput(
+        s.thumbnail || s.thumbnail_url || s.thumbnailUrl || s.image || s.poster,
+        s.url
+      );
+      var initial = escapeHtml((name || '?').charAt(0).toUpperCase());
+      var thumbMarkup = thumbUrl
+        ? '<div style="width:72px;min-width:72px;aspect-ratio:16 / 9;border-radius:10px;overflow:hidden;background:#E8F0FE;box-shadow:0 2px 8px rgba(15,23,42,.08)">' +
+            '<img src="' + escapeAttr(thumbUrl) + '" alt="' + escapeAttr((name || 'Creator') + ' thumbnail') + '" loading="lazy" style="display:block;width:100%;height:100%;object-fit:cover" onerror="this.parentNode.innerHTML=\'' + initial + '\';this.parentNode.style.display=\'grid\';this.parentNode.style.placeItems=\'center\';this.parentNode.style.fontWeight=\'800\';this.parentNode.style.color=\'#0f172a\';this.parentNode.style.background=\'linear-gradient(135deg,#dbeafe,#bfdbfe)\'">' +
+          '</div>'
+        : '<div style="width:72px;min-width:72px;aspect-ratio:16 / 9;border-radius:10px;display:grid;place-items:center;font-weight:800;color:#0f172a;background:linear-gradient(135deg,#dbeafe,#bfdbfe)">' + initial + '</div>';
+      return '<div class="as-admin-list-item' + liveCls + '">' +
+        '<div style="display:flex;align-items:center;gap:12px;min-width:0;flex:1">' +
+          thumbMarkup +
+          '<div class="as-admin-list-info">' +
+          '<span class="as-platform-badge" style="background:' + (PLAT_COLORS[s.platform] || '#0062CC') + ';font-size:11px;padding:2px 8px;border-radius:20px;color:#fff;margin-right:8px">' + (PLAT_LABELS[s.platform] || s.platform) + '</span>' +
+          '<strong>' + name + '</strong> — ' + s.title +
+          '<span class="muted" style="margin-left:8px">' + dt.toLocaleDateString() + ' ' + dt.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) + '</span>' +
+          (isLive ? ' <span style="color:#22C55E;font-weight:700;margin-left:8px">LIVE</span>' : '') +
+          (thumbUrl ? '<div class="muted" style="margin:6px 0 0;font-size:.74rem">Thumbnail ready</div>' : '<div class="muted" style="margin:6px 0 0;font-size:.74rem;color:#b45309">No thumbnail resolved yet</div>') +
+        '</div>' +
+        '</div>' +
+        '<div class="as-admin-list-actions">' +
+          '<button type="button" class="as-btn as-btn-outline as-btn-xs" onclick="window._asToggleLive(' + s.id + ')">' + (isLive ? 'End Live' : 'Go Live') + '</button>' +
+          '<button type="button" class="as-btn as-btn-ghost as-btn-xs" style="color:#ef4444" onclick="window._asDeleteStream(' + s.id + ')">Delete</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  window._asDeleteStream = async function(id) {
+    if (!confirm('Delete this stream?')) return;
+    try { await api('DELETE', 'streams/' + id); } catch(e) {}
+    DATA.streams = DATA.streams.filter(function(s) { return s.id !== id; });
+    lsSave(LS_KEY.streams, DATA.streams);
+    renderStreamList();
+    updateStats();
+  };
+
+  window._asToggleLive = async function(id) {
+    var s = DATA.streams.find(function(x) { return x.id === id; });
+    if (!s) return;
+    var newLive = !(s.is_live || s.live);
+    try { await api('PUT', 'streams/' + id, { is_live: newLive }); } catch(e) {}
+    s.is_live = newLive;
+    s.live = newLive;
+    lsSave(LS_KEY.streams, DATA.streams);
+    renderStreamList();
+  };
+
+  /* ═══════════════════════════════════════════════════════
+     CREATOR MANAGEMENT
+     ═══════════════════════════════════════════════════════ */
+  var _editingCreatorId = null;
+
+  document.getElementById('creatorForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    var fd = new FormData(this);
+    var btn = document.getElementById('creatorSubmitBtn');
+    btn.disabled = true; btn.textContent = _editingCreatorId ? 'Updating...' : 'Adding...';
+
+    var creator = {
+      name: fd.get('name'),
+      country: fd.get('country'),
+      bio: fd.get('bio'),
+      categories: fd.get('categories'),
+      avatar: fd.get('avatar'),
+      cover: fd.get('cover'),
+      net_worth: fd.get('netWorth'),
+      primary_platform: fd.get('primaryPlatform'),
+      languages: fd.get('languages'),
+      tags: fd.get('tags'),
+      youtube_url: fd.get('youtubeUrl'),
+      twitch_url: fd.get('twitchUrl'),
+      tiktok_url: fd.get('tiktokUrl'),
+      instagram_url: fd.get('instagramUrl'),
+      twitter_url: fd.get('twitterUrl'),
+      kick_url: fd.get('kickUrl'),
+      subscribers: parseInt(fd.get('subscribers')) || 0,
+      total_views: parseInt(fd.get('totalViews')) || 0,
+      peak_viewers: parseInt(fd.get('peakViewers')) || 0,
+      avg_duration: fd.get('avgDuration'),
+      frequency: fd.get('frequency'),
+      growth_rate: fd.get('growthRate'),
+      gift_revenue: fd.get('giftRevenue'),
+      streaming_since: fd.get('streamingSince'),
+      verified: false,
+      flagged: false,
+      is_published: true
+    };
+    // Build legacy platforms field from individual URLs
+    var pUrls = [creator.youtube_url, creator.twitch_url, creator.tiktok_url, creator.instagram_url, creator.twitter_url, creator.kick_url].filter(Boolean);
+    creator.platforms = pUrls.join(', ');
+
+    if (_editingCreatorId) {
+      // Update
+      try {
+        await api('PUT', 'creators/' + _editingCreatorId, creator);
+        var idx = DATA.creators.findIndex(function(c) { return c.id === _editingCreatorId; });
+        if (idx !== -1) Object.assign(DATA.creators[idx], creator);
+        toast('Creator updated!');
+      } catch(err) {
+        var idx2 = DATA.creators.findIndex(function(c) { return c.id === _editingCreatorId; });
+        if (idx2 !== -1) Object.assign(DATA.creators[idx2], creator);
+        toast('Saved locally (Supabase offline)', true);
+      }
+      _editingCreatorId = null;
+      document.getElementById('cancelEditCreator').style.display = 'none';
+      btn.textContent = 'Add Creator';
+    } else {
+      // Create
+      try {
+        var created = await api('POST', 'creators', creator);
+        if (created && created[0]) DATA.creators.unshift(created[0]);
+        else { creator.id = Date.now(); DATA.creators.unshift(creator); }
+        toast('Creator added!');
+      } catch(err) {
+        creator.id = Date.now();
+        DATA.creators.unshift(creator);
+        toast('Saved locally (Supabase offline)', true);
+      }
+    }
+
+    lsSave(LS_KEY.creators, DATA.creators);
+    this.reset();
+    this.querySelector('[name="editId"]').value = '';
+    btn.disabled = false; btn.textContent = 'Add Creator';
+    renderCreatorList();
+    updateFeaturedDropdowns();
+    updateStats();
+  });
+
+  document.getElementById('cancelEditCreator').addEventListener('click', function() {
+    _editingCreatorId = null;
+    document.getElementById('creatorForm').reset();
+    document.getElementById('creatorForm').querySelector('[name="editId"]').value = '';
+    this.style.display = 'none';
+    document.getElementById('creatorSubmitBtn').textContent = 'Add Creator';
+  });
+
+  function renderCreatorList() {
+    var creators = DATA.creators;
+    var el = document.getElementById('creatorList');
+    if (!creators.length) {
+      el.innerHTML = '<p class="as-empty-state">No creators added yet.</p>';
+      return;
+    }
+    var PLAT_ICON = { youtube:'YT', twitch:'TW', tiktok:'TT', instagram:'IG', kick:'KK' };
+    var PLAT_CLR = { youtube:'#FF0000', twitch:'#9146FF', tiktok:'#06D6A0', instagram:'#E1306C', kick:'#53FC18' };
+    el.innerHTML = creators.map(function(c) {
+      var nw = c.net_worth || c.netWorth || '';
+      var pp = c.primary_platform || 'youtube';
+      var subs = c.subscribers ? (c.subscribers >= 1e6 ? (c.subscribers/1e6).toFixed(1)+'M' : c.subscribers >= 1e3 ? (c.subscribers/1e3).toFixed(0)+'K' : c.subscribers) : '';
+      return '<div class="as-admin-list-item">' +
+        '<div class="as-admin-list-info">' +
+          '<span style="background:' + (PLAT_CLR[pp]||'#0062CC') + ';color:#fff;font-size:10px;padding:2px 6px;border-radius:4px;margin-right:6px;font-weight:700">' + (PLAT_ICON[pp]||pp) + '</span>' +
+          '<strong>' + c.name + '</strong>' +
+          '<span class="muted" style="margin-left:8px">' + c.country + '</span>' +
+          (c.verified ? ' <span style="color:#22C55E;margin-left:4px" title="Verified">&#10003;</span>' : '') +
+          (c.flagged ? ' <span style="color:#ef4444;margin-left:4px" title="Flagged">&#9888;</span>' : '') +
+          (subs ? ' <span class="muted" style="margin-left:8px">' + subs + ' subs</span>' : '') +
+          (nw ? ' <span class="muted" style="margin-left:6px">~' + nw + '</span>' : '') +
+          (c.categories ? ' <span class="muted" style="margin-left:6px;font-size:11px">' + c.categories + '</span>' : '') +
+        '</div>' +
+        '<div class="as-admin-list-actions">' +
+          '<button type="button" class="as-btn as-btn-outline as-btn-xs" onclick="window._asEditCreator(' + c.id + ')">Edit</button>' +
+          '<button type="button" class="as-btn as-btn-outline as-btn-xs" onclick="window._asVerifyCreator(' + c.id + ')">' + (c.verified ? 'Unverify' : 'Verify') + '</button>' +
+          '<button type="button" class="as-btn as-btn-outline as-btn-xs" onclick="window._asFlagCreator(' + c.id + ')">' + (c.flagged ? 'Unflag' : 'Flag') + '</button>' +
+          '<button type="button" class="as-btn as-btn-ghost as-btn-xs" style="color:#ef4444" onclick="window._asDeleteCreator(' + c.id + ')">Delete</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  window._asEditCreator = function(id) {
+    var c = DATA.creators.find(function(x) { return x.id === id; });
+    if (!c) return;
+    _editingCreatorId = id;
+    var form = document.getElementById('creatorForm');
+    form.querySelector('[name="editId"]').value = c.id;
+    form.querySelector('[name="name"]').value = c.name;
+    form.querySelector('[name="country"]').value = c.country;
+    form.querySelector('[name="bio"]').value = c.bio || '';
+    form.querySelector('[name="categories"]').value = c.categories || '';
+    form.querySelector('[name="avatar"]').value = c.avatar || '';
+    form.querySelector('[name="cover"]').value = c.cover || '';
+    form.querySelector('[name="netWorth"]').value = c.net_worth || c.netWorth || '';
+    form.querySelector('[name="primaryPlatform"]').value = c.primary_platform || 'youtube';
+    form.querySelector('[name="languages"]').value = c.languages || '';
+    form.querySelector('[name="tags"]').value = c.tags || '';
+    form.querySelector('[name="youtubeUrl"]').value = c.youtube_url || '';
+    form.querySelector('[name="twitchUrl"]').value = c.twitch_url || '';
+    form.querySelector('[name="tiktokUrl"]').value = c.tiktok_url || '';
+    form.querySelector('[name="instagramUrl"]').value = c.instagram_url || '';
+    form.querySelector('[name="twitterUrl"]').value = c.twitter_url || '';
+    form.querySelector('[name="kickUrl"]').value = c.kick_url || '';
+    form.querySelector('[name="subscribers"]').value = c.subscribers || '';
+    form.querySelector('[name="totalViews"]').value = c.total_views || '';
+    form.querySelector('[name="peakViewers"]').value = c.peak_viewers || '';
+    form.querySelector('[name="avgDuration"]').value = c.avg_duration || '';
+    form.querySelector('[name="frequency"]').value = c.frequency || '';
+    form.querySelector('[name="growthRate"]').value = c.growth_rate || '';
+    form.querySelector('[name="giftRevenue"]').value = c.gift_revenue || '';
+    form.querySelector('[name="streamingSince"]').value = c.streaming_since || '';
+    document.getElementById('cancelEditCreator').style.display = '';
+    document.getElementById('creatorSubmitBtn').textContent = 'Update Creator';
+    form.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  window._asDeleteCreator = async function(id) {
+    if (!confirm('Delete this creator?')) return;
+    try { await api('DELETE', 'creators/' + id); } catch(e) {}
+    DATA.creators = DATA.creators.filter(function(c) { return c.id !== id; });
+    lsSave(LS_KEY.creators, DATA.creators);
+    renderCreatorList();
+    updateFeaturedDropdowns();
+    updateStats();
+  };
+
+  window._asVerifyCreator = async function(id) {
+    var c = DATA.creators.find(function(x) { return x.id === id; });
+    if (!c) return;
+    var newVal = !c.verified;
+    try { await api('PUT', 'creators/' + id, { verified: newVal }); } catch(e) {}
+    c.verified = newVal;
+    lsSave(LS_KEY.creators, DATA.creators);
+    renderCreatorList();
+  };
+
+  window._asFlagCreator = async function(id) {
+    var c = DATA.creators.find(function(x) { return x.id === id; });
+    if (!c) return;
+    var newVal = !c.flagged;
+    try { await api('PUT', 'creators/' + id, { flagged: newVal }); } catch(e) {}
+    c.flagged = newVal;
+    lsSave(LS_KEY.creators, DATA.creators);
+    renderCreatorList();
+  };
+
+  /* ═══════════════════════════════════════════════════════
+     FEATURED MANAGEMENT
+     ═══════════════════════════════════════════════════════ */
+  function updateFeaturedDropdowns() {
+    var creators = DATA.creators;
+    var options = '<option value="">-- Select Creator --</option>' + creators.map(function(c) {
+      return '<option value="' + c.id + '">' + c.name + ' (' + c.country + ')</option>';
+    }).join('');
+    document.getElementById('addFeaturedSelect').innerHTML = options;
+    document.getElementById('creatorOfWeek').innerHTML = options;
+
+    var cotw = lsVal(LS_KEY.cotw);
+    if (cotw) document.getElementById('creatorOfWeek').value = cotw;
+  }
+
+  function renderFeaturedList() {
+    var featured = DATA.featured;
+    var creators = DATA.creators;
+    var el = document.getElementById('featuredList');
+    if (!featured.length) {
+      el.innerHTML = '<p class="as-empty-state">No featured creators yet. Add creators first, then feature them.</p>';
+      return;
+    }
+    el.innerHTML = featured.map(function(f, idx) {
+      var cid = f.creator_id || f;
+      var c = creators.find(function(x) { return x.id === cid; });
+      if (!c) return '';
+      var fid = f.id || idx;
+      return '<div class="as-admin-list-item">' +
+        '<div class="as-admin-list-info">' +
+          '<span class="muted" style="margin-right:8px">#' + (idx + 1) + '</span>' +
+          '<strong>' + c.name + '</strong>' +
+          '<span class="muted" style="margin-left:8px">' + c.country + '</span>' +
+          (f.is_cotw ? ' <span style="color:#F59E0B;margin-left:4px">&#9733; COTW</span>' : '') +
+        '</div>' +
+        '<div class="as-admin-list-actions">' +
+          (idx > 0 ? '<button type="button" class="as-btn as-btn-ghost as-btn-xs" onclick="window._asMoveUp(' + idx + ')">&#9650;</button>' : '') +
+          (idx < featured.length - 1 ? '<button type="button" class="as-btn as-btn-ghost as-btn-xs" onclick="window._asMoveDown(' + idx + ')">&#9660;</button>' : '') +
+          '<button type="button" class="as-btn as-btn-ghost as-btn-xs" style="color:#ef4444" onclick="window._asRemoveFeatured(' + fid + ')">Remove</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  document.getElementById('addFeaturedBtn').addEventListener('click', async function() {
+    var sel = document.getElementById('addFeaturedSelect');
+    var cid = parseInt(sel.value, 10);
+    if (!cid) return;
+    // Check if already featured
+    var exists = DATA.featured.some(function(f) { return (f.creator_id || f) === cid; });
+    if (exists) return;
+
+    try {
+      var created = await api('POST', 'featured', { creator_id: cid, sort_order: DATA.featured.length });
+      if (created && created[0]) DATA.featured.push(created[0]);
+      else DATA.featured.push({ id: Date.now(), creator_id: cid, sort_order: DATA.featured.length });
+      toast('Added to featured!');
+    } catch(e) {
+      DATA.featured.push({ id: Date.now(), creator_id: cid, sort_order: DATA.featured.length });
+      toast('Saved locally', true);
+    }
+    lsSave(LS_KEY.featured, DATA.featured);
+    renderFeaturedList();
+    updateStats();
+  });
+
+  document.getElementById('saveCreatorOfWeek').addEventListener('click', async function() {
+    var val = document.getElementById('creatorOfWeek').value;
+    lsSaveVal(LS_KEY.cotw, val);
+    try {
+      await api('PUT', 'settings', { key: 'creator_of_week', value: val });
+      // Mark as COTW in featured
+      DATA.featured.forEach(function(f) { f.is_cotw = false; });
+      var match = DATA.featured.find(function(f) { return String(f.creator_id || f) === val; });
+      if (match) {
+        match.is_cotw = true;
+        try { await api('PUT', 'featured/' + match.id, { is_cotw: true }); } catch(e) {}
+      }
+      toast('Creator of the Week saved!');
+    } catch(e) {
+      toast('Saved locally', true);
+    }
+    renderFeaturedList();
+  });
+
+  window._asRemoveFeatured = async function(fid) {
+    try { await api('DELETE', 'featured/' + fid); } catch(e) {}
+    DATA.featured = DATA.featured.filter(function(f) { return (f.id || f) !== fid; });
+    lsSave(LS_KEY.featured, DATA.featured);
+    renderFeaturedList();
+    updateStats();
+  };
+
+  window._asMoveUp = async function(idx) {
+    if (idx <= 0) return;
+    var tmp = DATA.featured[idx];
+    DATA.featured[idx] = DATA.featured[idx - 1];
+    DATA.featured[idx - 1] = tmp;
+    // Update sort orders in Supabase
+    try {
+      await api('PUT', 'featured/' + DATA.featured[idx].id, { sort_order: idx });
+      await api('PUT', 'featured/' + DATA.featured[idx - 1].id, { sort_order: idx - 1 });
+    } catch(e) {}
+    lsSave(LS_KEY.featured, DATA.featured);
+    renderFeaturedList();
+  };
+
+  window._asMoveDown = async function(idx) {
+    if (idx >= DATA.featured.length - 1) return;
+    var tmp = DATA.featured[idx];
+    DATA.featured[idx] = DATA.featured[idx + 1];
+    DATA.featured[idx + 1] = tmp;
+    try {
+      await api('PUT', 'featured/' + DATA.featured[idx].id, { sort_order: idx });
+      await api('PUT', 'featured/' + DATA.featured[idx + 1].id, { sort_order: idx + 1 });
+    } catch(e) {}
+    lsSave(LS_KEY.featured, DATA.featured);
+    renderFeaturedList();
+  };
+
+  /* ═══════════════════════════════════════════════════════
+     SUBMISSIONS (community review queue)
+     ═══════════════════════════════════════════════════════ */
+  var SUBS = { items: [], filter: 'pending', reviewId: null };
+
+  // Filter buttons
+  document.querySelectorAll('.sub-filter').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.sub-filter').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      SUBS.filter = btn.dataset.filter;
+      loadSubmissions();
+    });
+  });
+
+  async function loadSubmissions() {
+    var list = document.getElementById('submissionsList');
+    list.innerHTML = '<p class="muted">Loading submissions...</p>';
+    try {
+      SUBS.items = await api('GET', 'submissions?status=' + SUBS.filter);
+      renderSubmissions();
+    } catch(e) {
+      list.innerHTML = '<p class="muted">Could not load submissions: ' + e.message + '</p>';
+    }
+  }
+
+  function renderSubmissions() {
+    var list = document.getElementById('submissionsList');
+    if (!SUBS.items || SUBS.items.length === 0) {
+      list.innerHTML = '<p class="muted">No ' + SUBS.filter + ' submissions.</p>';
+      return;
+    }
+    var html = '';
+    SUBS.items.forEach(function(s) {
+      var p = s.payload || {};
+      var title = p.name || p.title || p.description || 'Untitled';
+      var date = new Date(s.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+      html += '<div class="sub-card" data-sub-id="' + s.id + '">';
+      html += '<div class="sub-card-head">';
+      html += '<span class="sub-type sub-type-' + s.type + '">' + s.type.replace('_', ' ') + '</span>';
+      html += '<span class="sub-status sub-status-' + s.status + '">' + s.status + '</span>';
+      html += '</div>';
+      html += '<div class="sub-card-title">' + escHtml(title) + '</div>';
+      html += '<div class="sub-card-meta">by ' + escHtml(s.user_name || 'Anonymous') + (s.user_email ? ' (' + escHtml(s.user_email) + ')' : '') + ' &middot; ' + date + '</div>';
+      if (s.admin_note) html += '<div class="sub-card-meta" style="margin-top:4px;color:#0063CC"><strong>Note:</strong> ' + escHtml(s.admin_note) + '</div>';
+      html += '</div>';
+    });
+    list.innerHTML = html;
+
+    // Click to review
+    list.querySelectorAll('.sub-card').forEach(function(card) {
+      card.addEventListener('click', function() {
+        var id = parseInt(card.dataset.subId);
+        openReviewModal(id);
+      });
+    });
+  }
+
+  function escHtml(str) {
+    var div = document.createElement('div');
+    div.textContent = str || '';
+    return div.innerHTML;
+  }
+
+  function openReviewModal(id) {
+    var sub = SUBS.items.find(function(s) { return s.id === id; });
+    if (!sub) return;
+    SUBS.reviewId = id;
+
+    var details = document.getElementById('reviewDetails');
+    var p = sub.payload || {};
+    var rows = '';
+
+    rows += '<div class="review-row"><span class="review-label">Type</span><span class="review-value"><span class="sub-type sub-type-' + sub.type + '">' + sub.type.replace('_', ' ') + '</span></span></div>';
+    rows += '<div class="review-row"><span class="review-label">Submitted by</span><span class="review-value">' + escHtml(sub.user_name || 'Anonymous') + (sub.user_email ? ' (' + escHtml(sub.user_email) + ')' : '') + '</span></div>';
+    rows += '<div class="review-row"><span class="review-label">Date</span><span class="review-value">' + new Date(sub.created_at).toLocaleString() + '</span></div>';
+
+    // Show all payload fields
+    Object.keys(p).forEach(function(key) {
+      var val = p[key];
+      if (val === null || val === undefined || val === '') return;
+      var label = key.replace(/_/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+      var display = typeof val === 'string' ? escHtml(val) : JSON.stringify(val);
+      // Truncate long values
+      if (display.length > 300) display = display.substring(0, 300) + '...';
+      rows += '<div class="review-row"><span class="review-label">' + label + '</span><span class="review-value">' + display + '</span></div>';
+    });
+
+    if (sub.admin_note) {
+      rows += '<div class="review-row"><span class="review-label" style="color:#0063CC">Admin Note</span><span class="review-value">' + escHtml(sub.admin_note) + '</span></div>';
+    }
+
+    details.innerHTML = rows;
+    document.getElementById('reviewNote').value = '';
+
+    // Show/hide action buttons based on status
+    var canAct = sub.status === 'pending';
+    document.getElementById('approveSubmissionBtn').style.display = canAct ? '' : 'none';
+    document.getElementById('rejectSubmissionBtn').style.display = canAct ? '' : 'none';
+
+    var modal = document.getElementById('reviewModal');
+    modal.style.display = 'flex';
+  }
+
+  document.getElementById('closeReviewModal').addEventListener('click', function() {
+    document.getElementById('reviewModal').style.display = 'none';
+    SUBS.reviewId = null;
+  });
+
+  // Close on backdrop click
+  document.getElementById('reviewModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+      this.style.display = 'none';
+      SUBS.reviewId = null;
+    }
+  });
+
+  document.getElementById('approveSubmissionBtn').addEventListener('click', async function() {
+    if (!SUBS.reviewId) return;
+    var btn = this;
+    btn.disabled = true; btn.textContent = 'Approving...';
+    try {
+      await api('PUT', 'submissions/' + SUBS.reviewId + '/approve', {
+        admin_note: document.getElementById('reviewNote').value
+      });
+      toast('Submission approved & published!');
+      document.getElementById('reviewModal').style.display = 'none';
+      SUBS.reviewId = null;
+      await loadSubmissions();
+      await syncFromSupabase();
+      renderAll();
+    } catch(e) {
+      toast('Error: ' + e.message, true);
+    }
+    btn.disabled = false; btn.textContent = '✅ Approve & Publish';
+  });
+
+  document.getElementById('rejectSubmissionBtn').addEventListener('click', async function() {
+    if (!SUBS.reviewId) return;
+    var note = document.getElementById('reviewNote').value;
+    if (!note) { toast('Please add a reason for rejection', true); return; }
+    var btn = this;
+    btn.disabled = true; btn.textContent = 'Rejecting...';
+    try {
+      await api('PUT', 'submissions/' + SUBS.reviewId + '/reject', { admin_note: note });
+      toast('Submission rejected');
+      document.getElementById('reviewModal').style.display = 'none';
+      SUBS.reviewId = null;
+      await loadSubmissions();
+    } catch(e) {
+      toast('Error: ' + e.message, true);
+    }
+    btn.disabled = false; btn.textContent = '❌ Reject';
+  });
+
+  document.getElementById('deleteSubmissionBtn').addEventListener('click', async function() {
+    if (!SUBS.reviewId) return;
+    if (!confirm('Permanently delete this submission?')) return;
+    try {
+      await api('DELETE', 'submissions/' + SUBS.reviewId);
+      toast('Submission deleted');
+      document.getElementById('reviewModal').style.display = 'none';
+      SUBS.reviewId = null;
+      await loadSubmissions();
+    } catch(e) {
+      toast('Error: ' + e.message, true);
+    }
+  });
+
+  // Update pending badge count
+  async function updatePendingBadge() {
+    try {
+      var pending = await api('GET', 'submissions?status=pending');
+      var badge = document.getElementById('pendingBadge');
+      if (pending && pending.length > 0) {
+        badge.textContent = pending.length;
+        badge.style.display = 'inline';
+      } else {
+        badge.style.display = 'none';
+      }
+    } catch(e) {}
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     SETTINGS
+     ═══════════════════════════════════════════════════════ */
+  async function updateStats() {
+    if (SB_OK) {
+      try {
+        var stats = await api('GET', 'stats');
+        document.getElementById('statArticles').textContent = stats.news || 0;
+        document.getElementById('statStreams').textContent = stats.streams || 0;
+        document.getElementById('statCreators').textContent = stats.creators || 0;
+        document.getElementById('statFeatured').textContent = stats.featured || 0;
+        document.getElementById('statPending').textContent = stats.pending_submissions || 0;
+        var sourceEl = document.getElementById('statSources');
+        var supporterEl = document.getElementById('statSupporters');
+        if (sourceEl) sourceEl.textContent = stats.active_sources || 0;
+        if (supporterEl) supporterEl.textContent = stats.supporters || 0;
+        return;
+      } catch(e) {}
+    }
+    document.getElementById('statArticles').textContent = DATA.news.length;
+    document.getElementById('statStreams').textContent = DATA.streams.length;
+    document.getElementById('statCreators').textContent = DATA.creators.length;
+    document.getElementById('statFeatured').textContent = DATA.featured.length;
+    var sourceEl2 = document.getElementById('statSources');
+    var supporterEl2 = document.getElementById('statSupporters');
+    if (sourceEl2) sourceEl2.textContent = DATA.newsSources.length;
+    if (supporterEl2) supporterEl2.textContent = DATA.supporters.length;
+  }
+
+  document.getElementById('afroPointsToggle').addEventListener('change', async function() {
+    var val = this.checked ? 'true' : 'false';
+    lsSaveVal(LS_KEY.points, val);
+    try { await api('PUT', 'settings', { key: 'afropoints_enabled', value: val }); } catch(e) {}
+  });
+
+  document.getElementById('exportDataBtn').addEventListener('click', function() {
+    var data = {
+      news: DATA.news,
+      streams: DATA.streams,
+      creators: DATA.creators,
+      featured: DATA.featured,
+      newsSources: DATA.newsSources,
+      supporters: DATA.supporters,
+      creatorOfWeek: lsVal(LS_KEY.cotw),
+      exportedAt: new Date().toISOString(),
+      source: SB_OK ? 'supabase' : 'localStorage'
+    };
+    var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'afrostream-data-' + new Date().toISOString().slice(0, 10) + '.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  document.getElementById('clearDataBtn').addEventListener('click', async function() {
+    if (!confirm('This will delete ALL AfroStream data from Supabase AND local. Are you sure?')) return;
+    if (!confirm('Really? This cannot be undone.')) return;
+    // Note: we don't actually mass-delete from Supabase here (dangerous).
+    // Just clear local cache. Admin can use Supabase dashboard for full wipe.
+    Object.keys(LS_KEY).forEach(function(k) {
+      if (k !== 'auth' && k !== 'token') localStorage.removeItem(LS_KEY[k]);
+    });
+    DATA = { news: [], streams: [], creators: [], featured: [], newsSources: [], supporters: [] };
+    renderAll();
+    toast('Local data cleared. Use Supabase dashboard to clear DB.');
+  });
+
+  /* ── INIT ──────────────────────────────────────────── */
+  checkAuth();
+
+})();
+
+/* ── SYNC TAB (outside IIFE — onclick calls this) ─── */
+async function triggerSync() {
+  var btn = document.getElementById('syncNowBtn');
+  var log = document.getElementById('syncLog');
+  var logContent = document.getElementById('syncLogContent');
+  btn.disabled = true;
+  btn.textContent = 'Syncing...';
+  log.style.display = 'block';
+  logContent.textContent = '[' + new Date().toISOString() + '] Starting sync...\n';
+
+  try {
+    var token = localStorage.getItem('afrostream_admin_token') || sessionStorage.getItem('admin_key') || '';
+    var res = await fetch('/api/afrostream/sync', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }
+    });
+    var json = await res.json();
+    logContent.textContent += '[' + new Date().toISOString() + '] Status: ' + res.status + '\n';
+    logContent.textContent += JSON.stringify(json, null, 2) + '\n';
+
+    var d = json.data || json;
+    if (res.status === 202 || json.accepted) {
+      document.getElementById('syncLastRun').textContent = 'Background sync started ' + new Date().toLocaleString();
+      localStorage.setItem('as_last_sync', new Date().toISOString());
+      logContent.textContent += '\n[' + new Date().toISOString() + '] Background sync accepted. Refresh this panel in a minute for updated counts.\n';
+    } else if (d.twitch) {
+      document.getElementById('syncTwitchCount').textContent = (d.twitch.creators_synced || 0) + ' synced';
+    }
+    if (d.kick) {
+      document.getElementById('syncKickCount').textContent = (d.kick.creators_synced || 0) + ' synced';
+    }
+    if (d.youtube && !d.youtube.errors.some(function(e){ return e.indexOf('not configured') > -1; })) {
+      document.getElementById('syncYtCount').textContent = (d.youtube.creators_synced || 0) + ' synced';
+    } else {
+      document.getElementById('syncYtCount').textContent = 'No API key';
+    }
+    if (res.status !== 202 && !json.accepted) {
+      document.getElementById('syncLastRun').textContent = new Date().toLocaleString();
+      localStorage.setItem('as_last_sync', new Date().toISOString());
+    }
+
+    logContent.textContent += '\n[' + new Date().toISOString() + '] Sync complete.\n';
+  } catch (e) {
+    logContent.textContent += '[ERROR] ' + e.message + '\n';
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Sync Now';
+}
+
+/* Restore last sync time on load */
+(function() {
+  var lastSync = localStorage.getItem('as_last_sync');
+  if (lastSync) {
+    var el = document.getElementById('syncLastRun');
+    if (el) el.textContent = new Date(lastSync).toLocaleString();
+  }
+})();
+</script>
+</body>
+</html>

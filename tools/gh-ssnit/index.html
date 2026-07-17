@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ghana SSNIT Calculator — 3-Tier Pension | AfroTools</title>
+<meta name="description" content="Calculate Ghana SSNIT pension across all 3 tiers. 36-month best salary finder, retire at 55 vs 60 comparison, invalidity benefit, Tier 3 tax advantage, Tier 2 fund manager performance, and early exit lump sum.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Ghana SSNIT Calculator — 3-Tier Pension | AfroTools">
+<meta property="og:description" content="Three tiers. One calculator. Full picture. SSNIT contributions, 36-month pension, retire at 55 vs 60, invalidity benefit, Tier 3 tax advantage.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/gh-ssnit.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/gh-ssnit/">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ghana SSNIT Calculator | AfroTools">
+<meta name="twitter:description" content="Three tiers. One calculator. Full SSNIT picture for Ghana workers.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/gh-ssnit.webp">
+<meta property="article:modified_time" content="2026-04-04">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script>
+<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},
+    {"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},
+    {"@type":"ListItem","position":3,"name":"Ghana SSNIT Calculator","item":"https://afrotools.com/tools/gh-ssnit/"}
+  ]
+}
+</script>
+<style>
+/* ── Utilities ────────────────────────────────────────────────────────────── */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ── Base ─────────────────────────────────────────────────────────────────── */
+:root{--accent:#b45309;--accent-dark:#78350f;--accent-mid:#d97706;--accent-pale:#fffbeb;--accent-light:#fef3c7;--accent-border:#fcd34d;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;--bg:#f8fafc}
+*,*::before,*::after{box-sizing:border-box}
+html,body{max-width:100%;overflow-x:hidden}
+
+/* ── Hero ─────────────────────────────────────────────────────────────────── */
+.ssnit-hero{background:linear-gradient(135deg,#78350f 0%,#d97706 55%,#b45309 100%);padding:44px 0 34px}
+.ssnit-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.ssnit-breadcrumb{font-size:.7rem;font-weight:500;color:rgba(255,255,255,.75);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.ssnit-breadcrumb a{color:rgba(255,255,255,.75);text-decoration:none}
+.ssnit-breadcrumb a:hover{color:#fff}
+.ssnit-breadcrumb span{color:#fde68a}
+.ssnit-hero h1{font-size:clamp(1.55rem,4vw,2.35rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin:0 0 10px}
+.ssnit-hero h1 em{color:#fde68a;font-style:normal}
+.ssnit-hero-sub{font-size:.87rem;color:rgba(255,255,255,.87);line-height:1.65;max-width:560px;margin-bottom:14px}
+.ssnit-badges{display:flex;flex-wrap:wrap;gap:7px}
+.ssnit-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.67rem;font-weight:700;letter-spacing:.05em;background:rgba(253,230,138,.18);color:#fde68a;border:1px solid rgba(253,230,138,.35)}
+
+/* ── Section nav (sticky tab strip) ──────────────────────────────────────── */
+.ssnit-nav-wrap{background:#78350f;position:sticky;top:0;z-index:40;border-bottom:2px solid #92400e}
+.ssnit-nav{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.ssnit-nav::-webkit-scrollbar{display:none}
+.ssnit-nav-link{flex-shrink:0;padding:10px 14px;font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:rgba(255,255,255,.78);text-decoration:none;border-bottom:2px solid transparent;white-space:nowrap;transition:color .15s,border-color .15s;margin-bottom:-2px;min-height:44px;display:inline-flex;align-items:center}
+.ssnit-nav-link:hover{color:#fde68a}
+.ssnit-nav-link:focus-visible{outline:2px solid #fde68a;outline-offset:-2px;border-radius:2px}
+.ssnit-nav-link.active{color:#fde68a;border-bottom-color:#fde68a}
+
+/* ── Layout ───────────────────────────────────────────────────────────────── */
+.ssnit-main{padding:26px 0 72px;background:var(--bg)}
+.ssnit-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 330px;gap:22px;align-items:start}
+@media(max-width:900px){.ssnit-inner{grid-template-columns:1fr}}
+
+/* ── Cards ────────────────────────────────────────────────────────────────── */
+.ssnit-card{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,.05);margin-bottom:18px;scroll-margin-top:52px}
+.ssnit-card-head{padding:13px 20px;border-bottom:1px solid #f1f5f9;background:#f8fafc;display:flex;align-items:center;gap:10px}
+.ssnit-card-icon{display:inline-flex;align-items:center;justify-content:center;color:var(--accent);flex-shrink:0}
+.ssnit-card-title{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text)}
+.ssnit-card-body{padding:20px}
+
+/* ── Form controls ────────────────────────────────────────────────────────── */
+label{display:block;font-size:.7rem;font-weight:600;color:var(--muted);letter-spacing:.04em;margin-bottom:5px}
+input[type=number],input[type=text],select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit}
+input[type=number]:focus,input[type=text]:focus,select:focus{outline:none;border-color:var(--accent-mid);box-shadow:0 0 0 3px rgba(217,119,6,.15)}
+.ssnit-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ssnit-field{margin-bottom:14px}
+.ssnit-field-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media(max-width:520px){.ssnit-row,.ssnit-field-3{grid-template-columns:1fr}}
+.ssnit-btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity .15s,box-shadow .15s;min-height:44px}
+.ssnit-btn-primary{background:linear-gradient(135deg,#92400e,#b45309);color:#fff;margin-top:16px}
+.ssnit-btn-primary:hover{opacity:.9;box-shadow:0 3px 10px rgba(146,64,14,.35)}
+.ssnit-btn-primary:focus-visible{outline:3px solid #fcd34d;outline-offset:2px;opacity:.95}
+.ssnit-btn-secondary{background:#f1f5f9;color:#374151;border:1.5px solid #e2e8f0;margin-top:10px}
+.ssnit-btn-secondary:hover{background:#e9eef5}
+.ssnit-btn-secondary:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* ── Result boxes ─────────────────────────────────────────────────────────── */
+.ssnit-result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.ssnit-result-box{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center}
+.ssnit-result-box .num{font-size:1.3rem;font-weight:800;color:var(--accent-mid)}
+.ssnit-result-box .lbl{font-size:.65rem;color:var(--muted);font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
+.ssnit-result-box.hi{background:linear-gradient(135deg,var(--accent-pale),var(--accent-light));border-color:var(--accent-border);grid-column:1/-1}
+.ssnit-result-box.hi .num{font-size:1.75rem;color:var(--accent-dark)}
+.ssnit-result-box.hi .lbl{color:var(--accent)}
+
+/* ── Breakdown table ──────────────────────────────────────────────────────── */
+.ssnit-table{width:100%;border-collapse:collapse;font-size:.78rem;margin-top:14px}
+.ssnit-table th,.ssnit-table td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--border)}
+.ssnit-table th{font-weight:700;background:var(--bg);font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.ssnit-table td:last-child{text-align:right;font-weight:600}
+.ssnit-table tr.total-row td{font-weight:800;border-top:2px solid var(--accent-border);background:var(--accent-pale);color:var(--accent-dark)}
+
+/* ── Alert/info boxes ─────────────────────────────────────────────────────── */
+.ssnit-alert{border-radius:8px;padding:13px 16px;font-size:.8rem;line-height:1.65;margin-bottom:14px}
+.ssnit-alert-amber{background:var(--accent-pale);border:1px solid var(--accent-border);color:var(--accent-dark)}
+.ssnit-alert-blue{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af}
+.ssnit-alert-green{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
+.ssnit-alert-red{background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
+.ssnit-alert strong{font-weight:700}
+
+/* ── Compare card (55 vs 60) ──────────────────────────────────────────────── */
+.ssnit-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.ssnit-compare-col{border-radius:9px;padding:16px;text-align:center}
+.ssnit-compare-col.early{background:#fef2f2;border:2px solid #fecaca}
+.ssnit-compare-col.full{background:#f0fdf4;border:2px solid #bbf7d0}
+.ssnit-compare-col .col-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.ssnit-compare-col.early .col-label{color:#b91c1c}
+.ssnit-compare-col.full  .col-label{color:#15803d}
+.ssnit-compare-col .col-num{font-size:1.5rem;font-weight:800;margin-bottom:4px}
+.ssnit-compare-col.early .col-num{color:#dc2626}
+.ssnit-compare-col.full  .col-num{color:#16a34a}
+.ssnit-compare-col .col-sub{font-size:.72rem;color:#64748b}
+.ssnit-lifetime{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.ssnit-lifetime-box{background:#f8fafc;border:1px solid var(--border);border-radius:7px;padding:12px;text-align:center;font-size:.75rem}
+.ssnit-lifetime-box strong{display:block;font-size:1rem;font-weight:800;color:var(--text);margin-bottom:2px}
+@media(max-width:520px){.ssnit-compare,.ssnit-lifetime{grid-template-columns:1fr}}
+
+/* ── Slider ───────────────────────────────────────────────────────────────── */
+.ssnit-slider-wrap{margin-bottom:14px}
+.ssnit-slider-row{display:flex;align-items:center;gap:12px;margin-top:6px}
+.ssnit-slider{flex:1;-webkit-appearance:none;height:6px;border-radius:3px;background:linear-gradient(to right,var(--accent-mid) 0%,var(--accent-mid) var(--pct,0%),#e2e8f0 var(--pct,0%),#e2e8f0 100%);outline:none}
+.ssnit-slider::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--accent);cursor:pointer;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.ssnit-slider::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--accent);cursor:pointer;border:2px solid #fff}
+.ssnit-slider-val{font-size:.88rem;font-weight:800;color:var(--accent);min-width:50px;text-align:right}
+
+/* ── Fund manager table ───────────────────────────────────────────────────── */
+.ssnit-fund-table{width:100%;border-collapse:collapse;font-size:.78rem;margin-top:10px}
+.ssnit-fund-table th{padding:8px 10px;background:#f8fafc;font-size:.66rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700;border-bottom:2px solid var(--border);text-align:left}
+.ssnit-fund-table th:not(:first-child){text-align:right}
+.ssnit-fund-table td{padding:9px 10px;border-bottom:1px solid var(--border)}
+.ssnit-fund-table td:not(:first-child){text-align:right}
+.ssnit-fund-table tr:first-child td{font-weight:700;color:var(--accent-dark);background:var(--accent-pale)}
+.ssnit-fund-bar{display:inline-block;height:6px;border-radius:3px;background:var(--accent-mid);vertical-align:middle;margin-right:6px}
+
+/* ── Non-citizen toggle ───────────────────────────────────────────────────── */
+.ssnit-toggle-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.ssnit-toggle{position:relative;width:44px;height:24px;flex-shrink:0}
+.ssnit-toggle input{opacity:0;width:0;height:0}
+.ssnit-toggle-track{position:absolute;inset:0;background:#cbd5e1;border-radius:12px;cursor:pointer;transition:background .2s}
+.ssnit-toggle input:checked+.ssnit-toggle-track{background:var(--accent-mid)}
+.ssnit-toggle-track::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.ssnit-toggle input:checked+.ssnit-toggle-track::after{transform:translateX(20px)}
+.ssnit-nc-panel{display:none;animation:fadeIn .2s}
+.ssnit-nc-panel.visible{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.ssnit-nc-tabs{display:flex;gap:8px;margin-bottom:14px}
+.ssnit-nc-tab{padding:7px 14px;border-radius:6px;font-size:.75rem;font-weight:600;border:1.5px solid var(--border);cursor:pointer;background:#fff;color:var(--muted);transition:all .15s}
+.ssnit-nc-tab.active{background:var(--accent-pale);border-color:var(--accent-border);color:var(--accent-dark)}
+.ssnit-nc-content{display:none}
+.ssnit-nc-content.visible{display:block}
+
+/* ── Salary history table ─────────────────────────────────────────────────── */
+.ssnit-history-table{width:100%;border-collapse:collapse;font-size:.8rem;margin-bottom:14px}
+.ssnit-history-table th{padding:7px 10px;background:var(--bg);font-size:.67rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700;border-bottom:1px solid var(--border);text-align:left}
+.ssnit-history-table td{padding:5px 8px;border-bottom:1px solid #f1f5f9}
+.ssnit-history-table input{padding:6px 9px;font-size:.8rem;border:1.5px solid #cbd5e1;border-radius:5px;background:#f8fafc;width:100%;max-width:140px}
+.ssnit-history-table td:first-child{font-weight:600;color:var(--muted);width:70px}
+.ssnit-best-window{background:var(--accent-pale);border:1px solid var(--accent-border);border-radius:7px;padding:12px 14px;font-size:.8rem;color:var(--accent-dark);margin:10px 0}
+.ssnit-best-window strong{font-weight:800}
+
+/* ── Sidebar ──────────────────────────────────────────────────────────────── */
+.ssnit-sidebar{position:sticky;top:58px}
+@media(max-width:900px){.ssnit-sidebar{position:static}}
+.ssnit-info-card{background:var(--accent-pale);border:1px solid var(--accent-border);border-radius:9px;padding:16px;margin-bottom:14px}
+.ssnit-info-card h4{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--accent-dark);margin:0 0 8px}
+.ssnit-info-card p,.ssnit-info-card li{font-size:.78rem;color:#78350f;line-height:1.65}
+.ssnit-info-card ul{padding-left:16px;margin:4px 0 0}
+.ssnit-info-card li{margin-bottom:3px}
+.ssnit-deadline-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(120,53,15,.15);font-size:.78rem;color:#78350f}
+.ssnit-deadline-row:last-child{border:none}
+.ssnit-deadline-row .ssnit-tag{background:#fcd34d;color:#78350f;font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:3px}
+
+/* ── AI Advisor ───────────────────────────────────────────────────────────── */
+.ssnit-ai-card{background:#fff;border-radius:10px;border:1px solid #dbeafe;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05);margin-bottom:14px}
+.ssnit-ai-head{padding:13px 17px;border-bottom:1px solid #eff6ff;display:flex;align-items:center;gap:9px}
+.ssnit-ai-dot{width:8px;height:8px;border-radius:50%;background:#0062CC;animation:aiPulse 2s infinite;flex-shrink:0}
+@keyframes aiPulse{0%,100%{opacity:1}50%{opacity:.3}}
+.ssnit-ai-title{font-size:.7rem;font-weight:700;letter-spacing:.06em;color:var(--text)}
+.ssnit-ai-by{font-size:.62rem;color:#6b8cae;margin-left:auto}
+.ssnit-ai-body{padding:13px 17px}
+.ssnit-ai-status{font-size:.78rem;color:var(--text);line-height:1.6;margin-bottom:10px}
+.ai-msgs{max-height:260px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.ai-msg-u{background:#eff6ff;color:#1e40af;border-radius:8px;padding:8px 12px;font-size:.78rem;align-self:flex-end;max-width:85%}
+.ai-msg-a{background:#f8fafc;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:.78rem;align-self:flex-start;max-width:90%;line-height:1.6}
+.ai-thinking{font-size:.78rem;color:var(--muted);font-style:italic;padding:6px 0}
+.ai-input-row{display:flex;gap:8px}
+.ai-input{flex:1;padding:8px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.8rem;font-family:inherit}
+.ai-input:focus{outline:none;border-color:#0062CC;box-shadow:0 0 0 3px rgba(0,98,204,.12)}
+.ai-send{padding:8px 14px;background:#0062CC;color:#fff;border:none;border-radius:7px;font-size:.8rem;font-weight:700;cursor:pointer}
+.ai-send:disabled{opacity:.5;cursor:default}
+
+/* ── SEO section ──────────────────────────────────────────────────────────── */
+.ssnit-seo{max-width:800px;margin:0 auto;padding:48px 24px}
+.ssnit-seo h2{font-size:1.25rem;font-weight:800;margin:0 0 12px;color:var(--text)}
+.ssnit-seo p{font-size:.88rem;color:#475569;line-height:1.78;margin-bottom:14px}
+.ssnit-faq{border-bottom:1px solid var(--border);padding:14px 0}
+.ssnit-faq summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--text)}
+.ssnit-faq p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.72}
+
+/* ── Misc ─────────────────────────────────────────────────────────────────── */
+.ssnit-section-label{font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.ssnit-section-label::after{content:'';flex:1;height:1px;background:var(--accent-border)}
+.ssnit-result-actions{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.ssnit-hidden{display:none}
+
+/* ── Card hover & focus ───────────────────────────────────────────────────── */
+.ssnit-card{transition:box-shadow .2s}
+.ssnit-card:hover{box-shadow:0 4px 18px rgba(0,0,0,.09)}
+input[type=number]:focus-visible,input[type=text]:focus-visible,select:focus-visible{outline:none;border-color:var(--accent-mid);box-shadow:0 0 0 3px rgba(217,119,6,.15)}
+.ssnit-slider:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:3px}
+.ssnit-nc-tab:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.ai-send:focus-visible,.ai-input:focus-visible{outline:3px solid #0062CC;outline-offset:2px}
+.ssnit-fund-table tbody tr{transition:background .12s;cursor:default}
+.ssnit-fund-table tbody tr:hover{background:var(--accent-pale)}
+
+/* ── Inline errors ────────────────────────────────────────────────────────── */
+.ssnit-err{font-size:.72rem;color:#b91c1c;margin-top:4px;padding:4px 8px;background:#fef2f2;border-radius:4px;border:1px solid #dc2626;display:none}
+.ssnit-err.show{display:block}
+
+/* ── Reduced motion ───────────────────────────────────────────────────────── */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .ssnit-nc-panel{animation:none}
+}
+</style>
+<script src="/assets/js/lib/auto-email-gate.js?v=fa3f2d98" defer></script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Ghana SSNIT Calculator — 3-Tier Pension",
+  "description": "Calculate Ghana SSNIT pension across all 3 tiers. 36-month best salary finder, retire at 55 vs 60 comparison, invalidity benefit, Tier 3 tax advantage, Tier 2 fund manager performance, and early exit lump sum.",
+  "url": "https://afrotools.com/tools/gh-ssnit/",
+  "inLanguage": "en",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/gh-ssnit.webp"
+}
+</script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How is my SSNIT pension actually calculated?","acceptedAnswer":{"@type":"Answer","text":"Your SSNIT monthly pension = (Best 36-month average salary) × (Accrual rate). The accrual rate is 37.5% for the first 15 years, plus 1.125% for each year above 15, with a maximum of 60% after 35 years. So at 20 years: 37.5 + (5 × 1.125) = 43.125% of your best 36-month average salary. The minimum pension is GH₵300/month."}},{"@type":"Question","name":"What happens if I retire at 55 instead of 60?","acceptedAnswer":{"@type":"Answer","text":"Early retirement at 55 is permitted, but your pension is permanently reduced by 4% for each year before the normal retirement age of 60. Retiring 5 years early at 55 reduces your pension by 20% — for the rest of your life. Our break-even analysis shows that in most cases, retiring at 60 gives more total money if you live beyond the Ghana average life expectancy of 65 (men) or 67 (women)."}},{"@type":"Question","name":"Can I get SSNIT benefits if I become permanently disabled?","acceptedAnswer":{"@type":"Answer","text":"Yes. SSNIT provides an invalidity pension if you become permanently disabled before retirement age, provided you have at least 12 months of contributions and the disability is certified by the SSNIT Medical Board. The benefit is calculated similarly to the retirement pension, but contributions below 15 years are prorated. The minimum invalidity pension is GH₵300/month."}},{"@type":"Question","name":"What if I leave my job before completing 15 years?","acceptedAnswer":{"@type":"Answer","text":"If you leave formal employment with fewer than 180 months (15 years) of SSNIT contributions, you receive a lump sum rather than a monthly pension. This lump sum is your employee contributions (5.5% monthly) compounded with SSNIT's nominal interest rate. It is typically far less valuable than the lifetime income of a full pension — which is why preserving your SSNIT contributions to retirement is strongly recommended."}},{"@type":"Question","name":"Can I change my Tier 2 fund manager?","acceptedAnswer":{"@type":"Answer","text":"Your Tier 2 fund manager is selected by your employer, not the employee. However, workers can advocate for better-performing fund managers through their employers or HR departments. There is currently no individual employee right to unilaterally change a Tier 2 fund manager under Act 766. Tier 3 is different — you have full control over which NPRA-licensed provider manages your voluntary contributions."}},{"@type":"Question","name":"Is SSNIT available to non-Ghanaian workers?","acceptedAnswer":{"@type":"Answer","text":"All formal sector workers in Ghana — regardless of nationality — are required to contribute to SSNIT. ECOWAS citizens have portability rights under the ECOWAS social security framework and can in principle transfer contributions to their home country's pension system. Non-ECOWAS nationals from countries without a bilateral social security agreement with Ghana are entitled to a lump sum refund of their contributions (with interest) when they permanently leave Ghana."}}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/gh-ssnit/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/gh-ssnit/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/gh-ssnit/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/gh-ssnit/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+
+<!-- ── Hero ──────────────────────────────────────────────────────────────── -->
+<section class="ssnit-hero">
+  <div class="ssnit-hero-inner">
+    <div class="ssnit-breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Ghana SSNIT</span></div>
+    <h1>Ghana <em>SSNIT Calculator</em></h1>
+    <p class="ssnit-hero-sub">Three tiers. One calculator. Full picture. Calculate contributions, find your best 36 months, compare retiring at 55 vs 60, and unlock Tier 3 tax savings.</p>
+    <div class="ssnit-badges">
+      <span class="ssnit-badge">3-Tier System</span>
+      <span class="ssnit-badge">NPRA Compliant</span>
+      <span class="ssnit-badge">Ghana</span>
+      <span class="ssnit-badge">36-Month Pension</span>
+      <span class="ssnit-badge">Tier 3 Tax Advantage</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── Section nav ───────────────────────────────────────────────────────── -->
+<nav class="ssnit-nav-wrap" aria-label="SSNIT sections">
+  <div class="ssnit-nav">
+    <a class="ssnit-nav-link active" href="#basic-calc"   onclick="ssnitNav(event,'basic-calc')">Contributions</a>
+    <a class="ssnit-nav-link"        href="#best-36"      onclick="ssnitNav(event,'best-36')">36-Month Pension</a>
+    <a class="ssnit-nav-link"        href="#age-compare"  onclick="ssnitNav(event,'age-compare')">55 vs 60</a>
+    <a class="ssnit-nav-link"        href="#invalidity"   onclick="ssnitNav(event,'invalidity')">Invalidity</a>
+    <a class="ssnit-nav-link"        href="#tier2-funds"  onclick="ssnitNav(event,'tier2-funds')">Tier 2 Funds</a>
+    <a class="ssnit-nav-link"        href="#tier3-tax"    onclick="ssnitNav(event,'tier3-tax')">Tier 3 Tax</a>
+    <a class="ssnit-nav-link"        href="#non-citizen"  onclick="ssnitNav(event,'non-citizen')">Non-Citizens</a>
+    <a class="ssnit-nav-link"        href="#early-exit"   onclick="ssnitNav(event,'early-exit')">Early Exit</a>
+  </div>
+</nav>
+
+<!-- ── Main ──────────────────────────────────────────────────────────────── -->
+<main class="ssnit-main" id="main-content">
+<div class="ssnit-inner">
+
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<!-- LEFT COLUMN                                                             -->
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<div class="ssnit-calculator-col">
+
+<!-- ─── Section 1: Contributions ────────────────────────────────────────── -->
+<div class="ssnit-card" id="basic-calc">
+  <div class="ssnit-card-head"><span class="ssnit-card-icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></span><span class="ssnit-card-title" role="heading" aria-level="2">Monthly Contributions &amp; Pension Estimate</span></div>
+  <div class="ssnit-card-body">
+    <div class="ssnit-alert ssnit-alert-amber">
+      <strong>Important:</strong> Ghana's SSNIT pension is <strong>not</strong> based on your final salary. It's calculated from your <strong>highest 36 consecutive months</strong> of contribution salary. Use the "36-Month Pension" section below for a more accurate projection.
+    </div>
+    <div class="ssnit-row ssnit-field">
+      <div><label for="s1Basic">Monthly Basic Salary (GH₵)</label><input type="number" id="s1Basic" value="5000" min="0" step="100" inputmode="decimal"></div>
+      <div><label for="s1Years">Years of SSNIT Contribution</label><input type="number" id="s1Years" value="20" min="0" max="40" inputmode="numeric"></div>
+    </div>
+    <div class="ssnit-row ssnit-field">
+      <div><label for="s1Age">Current Age</label><input type="number" id="s1Age" value="40" min="18" max="65" inputmode="numeric"></div>
+      <div><label for="s1RetireAge">Retirement Age</label>
+        <select id="s1RetireAge">
+          <option value="60" selected>60 — Normal retirement</option>
+          <option value="55">55 — Early retirement (reduced)</option>
+        </select>
+      </div>
+    </div>
+    <div class="ssnit-field">
+      <label for="s1Tier3">Tier 3 Voluntary Contribution</label>
+      <select id="s1Tier3">
+        <option value="0" selected>None</option>
+        <option value="0.05">5% of basic salary</option>
+        <option value="0.10">10% of basic salary</option>
+        <option value="0.165">16.5% — Maximum tax-free</option>
+      </select>
+    </div>
+    <button type="button" class="ssnit-btn ssnit-btn-primary" onclick="calcS1()">Calculate Contributions &amp; Pension</button>
+    <div class="ssnit-err" id="s1Err"></div>
+  </div>
+</div>
+
+<div class="ssnit-card ssnit-hidden" id="s1ResultCard">
+  <div class="ssnit-card-head"><span class="ssnit-card-icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg></span><span class="ssnit-card-title" role="heading" aria-level="2">Contribution Breakdown</span></div>
+  <div class="ssnit-card-body">
+    <table class="ssnit-table" id="s1BreakdownTable" aria-label="Contribution breakdown by tier"></table>
+    <div class="ssnit-result-grid" id="s1ResultGrid" aria-live="polite" aria-atomic="true"></div>
+    <div class="ssnit-result-actions">
+      <button type="button" class="ssnit-btn ssnit-btn-secondary" id="ssnit-copy-summary">Copy summary</button>
+    </div>
+    <div id="ssnit-export-status" role="status" aria-live="polite" style="min-height:1.2em;margin-top:8px;font-size:.8rem;color:#64748b"></div>
+  </div>
+</div>
+
+<!-- ─── Section 2: 36 Best Months ────────────────────────────────────────── -->
+<div class="ssnit-card" id="best-36">
+  <div class="ssnit-card-head"><span class="ssnit-card-icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span><span class="ssnit-card-title" role="heading" aria-level="2">The "36 Best Months" Pension Calculator</span></div>
+  <div class="ssnit-card-body">
+    <div class="ssnit-alert ssnit-alert-blue">
+      <strong>Ghana's SSNIT pension is NOT based on your final salary.</strong> It's based on the average of your highest 36 <em>consecutive</em> months of contribution salary. If you're expecting a big raise in your final 3 years, it may <strong>not</strong> boost your pension — you need 36 consecutive peak months to count.
+    </div>
+    <p class="ssnit-section-label">Enter your monthly salary for each year (last 10 years)</p>
+    <table class="ssnit-history-table" id="salaryHistoryTable" aria-label="Salary history by year">
+      <thead><tr><th scope="col">Year</th><th scope="col">Monthly Basic (GH₵)</th><th scope="col"><span class="sr-only">Unit</span></th></tr></thead>
+      <tbody id="salaryHistoryBody"></tbody>
+    </table>
+    <div class="ssnit-row">
+      <div>
+        <label for="s2Years">Total Years Contributed to SSNIT</label>
+        <input type="number" id="s2Years" value="20" min="0" max="40" inputmode="numeric">
+      </div>
+      <div style="display:flex;align-items:flex-end">
+        <button type="button" class="ssnit-btn ssnit-btn-primary" style="margin-top:0" onclick="calcS2()">Find Best 36 Months</button>
+      </div>
+    </div>
+    <div class="ssnit-err" id="s2Err"></div>
+  </div>
+</div>
+
+<div class="ssnit-card ssnit-hidden" id="s2ResultCard">
+  <div class="ssnit-card-head"><span class="ssnit-card-icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></span><span class="ssnit-card-title" role="heading" aria-level="2">Your Best 36-Month Window</span></div>
+  <div class="ssnit-card-body" id="s2ResultBody" aria-live="polite" aria-atomic="true"></div>
+</div>
+
+<!-- ─── Section 3: 55 vs 60 ───────────────────────────────────────────────── -->
+<div class="ssnit-card" id="age-compare">
+  <div class="ssnit-card-head"><span class="ssnit-card-icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v19"/><path d="m2 7 10-4 10 4"/><path d="m2 7 4 6H-2l4-6Z" transform="translate(2,0)"/><path d="M16 7l4 6h-8l4-6Z"/><line x1="8" y1="21" x2="16" y2="21"/></svg></span><span class="ssnit-card-title" role="heading" aria-level="2">Retire at 55 vs 60 — Full Comparison</span></div>
+  <div class="ssnit-card-body">
+    <div class="ssnit-alert ssnit-alert-amber">
+      Retiring at 55 is allowed under SSNIT, but your pension is <strong>permanently reduced by 4% for each year</strong> before the normal retirement age of 60. Retiring 5 years early costs you 20% of your full pension — for life.
+    </div>
+    <div class="ssnit-row ssnit-field">
+      <div><label for="s3Salary">Monthly Salary / Best 36-Month Average (GH₵)</label><input type="number" id="s3Salary" value="5000" min="0" step="100" inputmode="decimal"></div>
+      <div><label for="s3Years">Total Years of SSNIT Contribution</label><input type="number" id="s3Years" value="20" min="15" max="40" inputmode="numeric"></div>
+    </div>
+    <button type="button" class="ssnit-btn ssnit-btn-primary" onclick="calcS3()">Compare Retirement Ages</button>
+    <div class="ssnit-err" id="s3Err"></div>
+  </div>
+</div>
+
+<div class="ssnit-card ssnit-hidden" id="s3ResultCard">
+  <div class="ssnit-card-head"><span class="ssnit-card-icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg></span><span class="ssnit-card-title" role="heading" aria-level="2">55 vs 60 — Monthly &amp; Lifetime Difference</span></div>
+  <div class="ssnit-card-body" id="s3ResultBody" aria-live="polite" aria-atomic="true"></div>
+</div>
+
+<!-- ─── Section 4: Invalidity ──────────────────────────────────────────────── -->
+<div class="ssnit-card" id="invalidity">
+  <div class="ssnit-card-head"><span class="ssnit-card-icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect x="2" y="6" width="20" height="16" rx="2"/><path d="M12 11v6"/><path d="M9 14h6"/></svg></span><span class="ssnit-card-title" role="heading" aria-level="2">Invalidity Benefit Calculator</span></div>
+  <div class="ssnit-card-body">
+    <div class="ssnit-alert ssnit-alert-blue">
+      If you become permanently disabled before retirement, SSNIT pays a monthly <strong>invalidity pension</strong> — provided you have at least <strong>12 months of contributions</strong> and the disability is certified by the SSNIT medical board. You don't need 15 years to qualify.
+    </div>
+    <div class="ssnit-row ssnit-field">
+      <div><label for="s4Salary">Average Monthly Basic Salary (GH₵)</label><input type="number" id="s4Salary" value="5000" min="0" step="100" inputmode="decimal"></div>
+      <div><label for="s4Months">Months Contributed to SSNIT</label><input type="number" id="s4Months" value="60" min="12" max="480" inputmode="numeric"></div>
+    </div>
+    <button type="button" class="ssnit-btn ssnit-btn-primary" onclick="calcS4()">Calculate Invalidity Benefit</button>
+    <div class="ssnit-err" id="s4Err"></div>
+    <div class="ssnit-alert ssnit-alert-amber" style="margin-top:14px">
+      <strong>How to claim:</strong> Visit your nearest SSNIT District Office with your SSNIT card, medical report from a certified doctor, proof of permanent invalidity, and employment records. The SSNIT Medical Board will conduct an independent assessment.
+    </div>
+  </div>
+</div>
+
+<div class="ssnit-card ssnit-hidden" id="s4ResultCard">
+  <div class="ssnit-card-head"><span class="ssnit-card-icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg></span><span class="ssnit-card-title" role="heading" aria-level="2">Your Invalidity Benefit Estimate</span></div>
+  <div class="ssnit-card-body" id="s4ResultBody" aria-live="polite" aria-atomic="true"></div>
+</div>
+
+<!-- ─── Section 5: Tier 2 Fund Managers ────────────────────────────────────── -->
+<div class="ssnit-card" id="tier2-funds">
+  <div class="ssnit-card-head"><span class="ssnit-card-icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="2"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="6"/></svg></span><span class="ssnit-card-title" role="heading" aria-level="2">Tier 2 Fund Manager Performance</span></div>
+  <div class="ssnit-card-body">
+    <div class="ssnit-alert ssnit-alert-blue">
+      Your Tier 2 contributions (5% of basic salary, employer-funded) go to a private NPRA-licensed trustee. <strong>Your employer chooses which fund manager</strong> — but knowing the returns helps you advocate for a better-performing fund. A 1% return difference over 20 years on a GH₵200,000 balance can mean over GH₵55,000 more at retirement.
+    </div>
+    <p class="ssnit-section-label">NPRA-Licensed Tier 2 Fund Managers (Indicative Returns)</p>
+    <div style="overflow-x:auto">
+    <table class="ssnit-fund-table" id="fundTable"></table>
+    </div>
+    <div style="margin-top:16px">
+      <p class="ssnit-section-label">Impact Calculator — 1% Return Difference</p>
+      <div class="ssnit-row ssnit-field">
+        <div><label for="s5Salary">Monthly Basic Salary (GH₵)</label><input type="number" id="s5Salary" value="5000" min="0" step="100" inputmode="decimal"></div>
+        <div><label for="s5Years">Years to Retirement</label><input type="number" id="s5Years" value="20" min="1" max="40" inputmode="numeric"></div>
+      </div>
+      <button type="button" class="ssnit-btn ssnit-btn-primary" onclick="calcS5()">Show Fund Manager Impact</button>
+      <div class="ssnit-err" id="s5Err"></div>
+    </div>
+    <div class="ssnit-hidden" id="s5ResultBody" style="margin-top:14px" aria-live="polite" aria-atomic="true"></div>
+  </div>
+</div>
+
+<!-- ─── Section 6: Tier 3 Tax Advantage ────────────────────────────────────── -->
+<div class="ssnit-card" id="tier3-tax">
+  <div class="ssnit-card-head"><span class="ssnit-card-icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><line x1="12" y1="6" x2="12" y2="8"/><line x1="12" y1="16" x2="12" y2="18"/></svg></span><span class="ssnit-card-title" role="heading" aria-level="2">Tier 3 Tax Advantage Calculator</span></div>
+  <div class="ssnit-card-body">
+    <div class="ssnit-alert ssnit-alert-green">
+      <strong>Almost nobody uses this.</strong> Voluntary Tier 3 contributions are deducted from your taxable income before PAYE is calculated — up to 16.5% of basic salary. At the 25% tax band, contributing GH₵1,000/month to Tier 3 saves you GH₵250 in PAYE. Your net cost is only GH₵750. The rest grows tax-sheltered in a fund you control.
+    </div>
+    <div class="ssnit-row ssnit-field">
+      <div><label for="s6Salary">Monthly Basic Salary (GH₵)</label><input type="number" id="s6Salary" value="5000" min="0" step="100" oninput="updateTier3Slider()" inputmode="decimal"></div>
+      <div style="display:flex;flex-direction:column;justify-content:flex-end">
+        <span id="s6TaxBand" style="font-size:.78rem;color:var(--muted);padding-bottom:4px"></span>
+      </div>
+    </div>
+    <div class="ssnit-slider-wrap">
+      <label for="s6Slider">Monthly Tier 3 Contribution: <span id="s6SliderLabel" style="color:var(--accent);font-weight:800">GH₵0</span></label>
+      <div class="ssnit-slider-row">
+        <input type="range" class="ssnit-slider" id="s6Slider" min="0" max="165" step="5" value="0" oninput="updateTier3Slider()" style="--pct:0%" aria-valuetext="0% of basic salary">
+        <span class="ssnit-slider-val" id="s6SliderPct" aria-hidden="true">0%</span>
+      </div>
+      <div style="font-size:.68rem;color:var(--muted);margin-top:3px">Slide to see your PAYE savings in real time · Max tax-free: 16.5% of basic salary</div>
+    </div>
+    <button type="button" class="ssnit-btn ssnit-btn-primary" onclick="calcS6()">Calculate Tier 3 Advantage</button>
+    <div class="ssnit-err" id="s6Err"></div>
+  </div>
+</div>
+
+<div class="ssnit-card ssnit-hidden" id="s6ResultCard">
+  <div class="ssnit-card-head"><span class="ssnit-card-icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></span><span class="ssnit-card-title" role="heading" aria-level="2">Your Tier 3 Tax Savings &amp; Growth</span></div>
+  <div class="ssnit-card-body" id="s6ResultBody" aria-live="polite" aria-atomic="true"></div>
+</div>
+
+<!-- ─── Section 7: Non-Citizen Guide ─────────────────────────────────────── -->
+<div class="ssnit-card" id="non-citizen">
+  <div class="ssnit-card-head"><span class="ssnit-card-icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span><span class="ssnit-card-title" role="heading" aria-level="2">Non-Citizen Contributor Guide</span></div>
+  <div class="ssnit-card-body">
+    <div class="ssnit-alert ssnit-alert-blue">
+      Many West African nationals work in Ghana under ECOWAS free movement. All formal sector workers in Ghana — regardless of nationality — must contribute to SSNIT. What happens to your contributions when you leave depends on your citizenship.
+    </div>
+    <div class="ssnit-toggle-row">
+      <label class="ssnit-toggle" for="ncToggle">
+        <input type="checkbox" id="ncToggle" onchange="toggleNonCitizen()" aria-controls="ncPanel">
+        <span class="ssnit-toggle-track" aria-hidden="true"></span>
+      </label>
+      <label for="ncToggle" style="font-size:.85rem;font-weight:600;color:var(--text);cursor:pointer">I am not a Ghanaian citizen</label>
+    </div>
+    <div class="ssnit-nc-panel" id="ncPanel" aria-hidden="true">
+      <div class="ssnit-nc-tabs" role="tablist" aria-label="Citizenship type">
+        <button type="button" class="ssnit-nc-tab active" role="tab" id="tab-ecowas" aria-selected="true" aria-controls="nc-ecowas" onclick="ncTab(event,'ecowas')">ECOWAS Citizen</button>
+        <button type="button" class="ssnit-nc-tab" role="tab" id="tab-non-ecowas" aria-selected="false" aria-controls="nc-non-ecowas" onclick="ncTab(event,'non-ecowas')">Non-ECOWAS Citizen</button>
+      </div>
+      <div class="ssnit-nc-content visible" id="nc-ecowas" role="tabpanel" aria-labelledby="tab-ecowas">
+        <div class="ssnit-alert ssnit-alert-green">
+          <strong>ECOWAS Social Security Portability Agreement</strong><br>
+          As a citizen of an ECOWAS member state, you are covered under the ECOWAS social security portability framework. Your SSNIT contributions can in principle be transferred or counted towards your home country's pension system.
+        </div>
+        <p style="font-size:.82rem;color:#475569;line-height:1.7;margin-bottom:10px"><strong>ECOWAS member states:</strong> Benin, Burkina Faso, Cabo Verde, Côte d'Ivoire, The Gambia, Guinea, Guinea-Bissau, Liberia, Mali, Mauritania, Niger, Nigeria, Senegal, Sierra Leone, Togo.</p>
+        <p style="font-size:.82rem;color:#475569;line-height:1.7;margin-bottom:10px"><strong>On leaving Ghana:</strong> You can request a transfer of your Tier 1 SSNIT contributions to the social security authority in your home country, subject to a bilateral agreement being in force. Contact your home country's social security office and the SSNIT International Department.</p>
+        <div class="ssnit-alert ssnit-alert-amber"><strong>Tip:</strong> Keep all your SSNIT contribution records (Form SSN 1 and annual statements). These are required to initiate any transfer or benefit claim.</div>
+      </div>
+      <div class="ssnit-nc-content" id="nc-non-ecowas" role="tabpanel" aria-labelledby="tab-non-ecowas">
+        <div class="ssnit-alert ssnit-alert-amber">
+          <strong>Lump Sum Benefit for Non-ECOWAS Nationals</strong><br>
+          If you are a national of a country outside ECOWAS with no bilateral social security agreement with Ghana, you are entitled to a lump sum refund of your SSNIT contributions (with interest) when you permanently leave Ghana's formal sector.
+        </div>
+        <div id="ncBilateralTable" style="margin-bottom:10px"></div>
+        <p style="font-size:.82rem;color:#475569;line-height:1.7;margin-bottom:10px"><strong>How to claim your lump sum:</strong></p>
+        <ol style="font-size:.82rem;color:#475569;line-height:1.8;padding-left:18px;margin-bottom:10px">
+          <li>Submit a Lump Sum Benefit Application Form at any SSNIT district office.</li>
+          <li>Provide your SSNIT card, passport, employment termination letter, and proof of departure from Ghana.</li>
+          <li>SSNIT will calculate total contributions plus accrued interest.</li>
+          <li>Payment is made by bank transfer (typically 4–8 weeks processing).</li>
+        </ol>
+        <div class="ssnit-alert ssnit-alert-blue"><strong>Note:</strong> Tier 2 and Tier 3 benefits are held by private trustees and are separate from the SSNIT lump sum claim. Contact your Tier 2 trustee directly for those funds.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── Section 8: Early Exit ──────────────────────────────────────────────── -->
+<div class="ssnit-card" id="early-exit">
+  <div class="ssnit-card-head"><span class="ssnit-card-icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span><span class="ssnit-card-title" role="heading" aria-level="2">Leaving Formal Employment Before Retirement</span></div>
+  <div class="ssnit-card-body">
+    <div class="ssnit-alert ssnit-alert-amber">
+      <strong>Critical:</strong> If you leave the formal sector with fewer than <strong>180 months (15 years)</strong> of SSNIT contributions, you receive a lump sum instead of a monthly pension. This lump sum is typically far less than the lifetime value of a pension. <strong>Every month you stay in the formal sector counts.</strong>
+    </div>
+    <div class="ssnit-row ssnit-field">
+      <div><label for="s8Salary">Average Monthly Basic Salary (GH₵)</label><input type="number" id="s8Salary" value="5000" min="0" step="100" inputmode="decimal"></div>
+      <div><label for="s8Months">Months Contributed to SSNIT</label><input type="number" id="s8Months" value="60" min="1" max="480" inputmode="numeric"></div>
+    </div>
+    <button type="button" class="ssnit-btn ssnit-btn-primary" onclick="calcS8()">Calculate Lump Sum vs Pension</button>
+    <div class="ssnit-err" id="s8Err"></div>
+  </div>
+</div>
+
+<div class="ssnit-card ssnit-hidden" id="s8ResultCard">
+  <div class="ssnit-card-head"><span class="ssnit-card-icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="2"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="11" y2="18"/></svg></span><span class="ssnit-card-title" role="heading" aria-level="2">Lump Sum vs Lifetime Pension</span></div>
+  <div class="ssnit-card-body" id="s8ResultBody" aria-live="polite" aria-atomic="true"></div>
+</div>
+
+</div><!-- end calculator col -->
+
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<!-- RIGHT SIDEBAR                                                          -->
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<div class="ssnit-sidebar">
+
+  <!-- AI Advisor -->
+  <div class="ssnit-ai-card">
+    <div class="ssnit-ai-head">
+      <span class="ssnit-ai-dot"></span>
+      <span class="ssnit-ai-title">AI SSNIT Advisor</span>
+      <span class="ssnit-ai-by">Optional AI · provider required</span>
+    </div>
+    <div class="ssnit-ai-body">
+      <div class="ssnit-ai-status" id="aiStatus" aria-live="polite">Ask me anything about SSNIT — 36-month pension, Tier 3 tax savings, early retirement, or invalidity benefits.</div>
+      <div class="ai-msgs" id="aiMsgs" aria-live="polite" aria-label="Conversation history"></div>
+      <div class="ai-input-row">
+        <input type="text" class="ai-input" id="aiInput" placeholder="e.g. How is my pension calculated?" maxlength="300" onkeydown="if(event.key==='Enter')sendAI()" aria-label="Ask the SSNIT AI advisor">
+        <button type="button" class="ai-send" id="aiSend" onclick="sendAI()" aria-label="Send message">&#x2192;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pension formula card -->
+  <div class="ssnit-info-card">
+    <h4>SSNIT Pension Formula</h4>
+    <p style="margin-bottom:7px"><strong>Monthly Pension = Best 36-Month Average × Accrual Rate</strong></p>
+    <ul>
+      <li>First 15 years: <strong>37.5%</strong> replacement</li>
+      <li>Each year above 15: <strong>+1.125%</strong></li>
+      <li>Maximum: <strong>60%</strong> (after 35 years)</li>
+      <li>Early at 55: <strong>−4%</strong> per year before 60</li>
+      <li>Minimum pension: <strong>GH₵300/month</strong></li>
+    </ul>
+  </div>
+
+  <!-- Filing deadlines -->
+  <div class="ssnit-info-card">
+    <h4>Filing Deadlines</h4>
+    <div class="ssnit-deadline-row"><span>Tier 1 + Tier 2 due</span><span class="ssnit-tag">14th of month</span></div>
+    <div class="ssnit-deadline-row"><span>Late payment penalty</span><span style="font-size:.78rem;font-weight:700;color:#b91c1c">3.5%/month</span></div>
+    <div class="ssnit-deadline-row"><span>Employer registration</span><span style="font-size:.78rem;color:#78350f">Before first employee</span></div>
+    <div class="ssnit-deadline-row"><span>Annual SSNIT statement</span><span style="font-size:.78rem;color:#78350f">Request anytime</span></div>
+  </div>
+
+  <!-- Contribution summary -->
+  <div class="ssnit-info-card">
+    <h4>Who Pays What</h4>
+    <ul>
+      <li><strong>Employee → SSNIT Tier 1:</strong> 5.5%</li>
+      <li><strong>Employer → SSNIT Tier 1:</strong> 8.0%</li>
+      <li><strong>Employer → NHIA (health):</strong> 2.5%</li>
+      <li><strong>Employer → Tier 2 trustee:</strong> 5.0%</li>
+      <li><strong>You → Tier 3 (voluntary):</strong> up to 16.5%</li>
+    </ul>
+    <p style="margin-top:8px;font-size:.75rem">Total mandatory: <strong>21%</strong> of basic salary (5.5% emp + 15.5% er)</p>
+  </div>
+
+  <!-- NPRA Tier 3 providers -->
+  <div class="ssnit-info-card">
+    <h4>NPRA-Licensed Tier 3 Providers</h4>
+    <ul>
+      <li>Enterprise Group Provident Fund</li>
+      <li>Databank Pensions Trust</li>
+      <li>Old Mutual Personal Pension Plan</li>
+      <li>Stanbic Personal Retirement Fund</li>
+      <li>Fidelity Pensions Trust</li>
+      <li>GLICO Pensions</li>
+      <li>Prudential Provident Trust</li>
+    </ul>
+    <p style="margin-top:6px;font-size:.73rem">Visit <strong>npra.gov.gh</strong> for the full register and latest fund returns.</p>
+  </div>
+
+</div><!-- end sidebar -->
+
+</div><!-- end inner -->
+</main>
+
+<!-- ── SEO Content ────────────────────────────────────────────────────────── -->
+<section class="ssnit-seo">
+  <h2>Understanding Ghana's SSNIT 3-Tier Pension System</h2>
+  <p>Ghana's pension system was fundamentally reformed by the National Pensions Act (Act 766) in 2008, creating a three-tier structure designed to provide comprehensive retirement security for all formal sector workers. The Social Security and National Insurance Trust (SSNIT) manages the mandatory Tier 1 basic national scheme, while the National Pensions Regulatory Authority (NPRA) oversees the entire system including private-sector Tier 2 and voluntary Tier 3 schemes.</p>
+  <p>Under the current structure, employers contribute a total of 15.5% of an employee's basic salary, distributed as follows: 8% goes to SSNIT for Tier 1 benefits, 2.5% goes to the National Health Insurance Authority (NHIA), and 5% goes to a private NPRA-licensed trustee for Tier 2 occupational benefits. Employees contribute an additional 5.5% to SSNIT. The combined Tier 1 contribution is 13.5%, giving employees a defined benefit pension at retirement.</p>
+  <p>The SSNIT pension formula is based on the <strong>best 36 consecutive months</strong> of contribution salary — not the final salary. This catches many Ghanaian workers by surprise at retirement. The accrual rate starts at 37.5% for the first 15 years (180 months) and increases by 1.125% for each additional year, up to a maximum of 60% after 35 years of service. To receive any monthly pension, a minimum of 180 months (15 years) of contributions is required.</p>
+  <p>Voluntary Tier 3 contributions represent one of the most underutilised tax advantages in Ghana. Up to 16.5% of basic salary can be contributed to an NPRA-licensed Tier 3 fund and deducted from taxable income before PAYE is calculated. At a 25% marginal tax rate, contributing GH₵1,000 per month saves GH₵250 in income tax — effectively reducing the net cost of the contribution to GH₵750 while the full GH₵1,000 is invested and growing.</p>
+
+  <h2>Frequently Asked Questions</h2>
+  <details class="ssnit-faq"><summary>How is my SSNIT pension actually calculated?</summary><p>Your SSNIT monthly pension = (Best 36-month average salary) × (Accrual rate). The accrual rate is 37.5% for the first 15 years, plus 1.125% for each year above 15, with a maximum of 60% after 35 years. So at 20 years: 37.5 + (5 × 1.125) = 43.125% of your best 36-month average salary. The minimum pension is GH₵300/month.</p></details>
+  <details class="ssnit-faq"><summary>What happens if I retire at 55 instead of 60?</summary><p>Early retirement at 55 is permitted, but your pension is permanently reduced by 4% for each year before the normal retirement age of 60. Retiring 5 years early at 55 reduces your pension by 20% — for the rest of your life. Our break-even analysis shows that in most cases, retiring at 60 gives more total money if you live beyond the Ghana average life expectancy of 65 (men) or 67 (women).</p></details>
+  <details class="ssnit-faq"><summary>Can I get SSNIT benefits if I become permanently disabled?</summary><p>Yes. SSNIT provides an invalidity pension if you become permanently disabled before retirement age, provided you have at least 12 months of contributions and the disability is certified by the SSNIT Medical Board. The benefit is calculated similarly to the retirement pension, but contributions below 15 years are prorated. The minimum invalidity pension is GH₵300/month.</p></details>
+  <details class="ssnit-faq"><summary>What if I leave my job before completing 15 years?</summary><p>If you leave formal employment with fewer than 180 months (15 years) of SSNIT contributions, you receive a lump sum rather than a monthly pension. This lump sum is your employee contributions (5.5% monthly) compounded with SSNIT's nominal interest rate. It is typically far less valuable than the lifetime income of a full pension — which is why preserving your SSNIT contributions to retirement is strongly recommended.</p></details>
+  <details class="ssnit-faq"><summary>Can I change my Tier 2 fund manager?</summary><p>Your Tier 2 fund manager is selected by your employer, not the employee. However, workers can advocate for better-performing fund managers through their employers or HR departments. There is currently no individual employee right to unilaterally change a Tier 2 fund manager under Act 766. Tier 3 is different — you have full control over which NPRA-licensed provider manages your voluntary contributions.</p></details>
+  <details class="ssnit-faq"><summary>Is SSNIT available to non-Ghanaian workers?</summary><p>All formal sector workers in Ghana — regardless of nationality — are required to contribute to SSNIT. ECOWAS citizens have portability rights under the ECOWAS social security framework and can in principle transfer contributions to their home country's pension system. Non-ECOWAS nationals from countries without a bilateral social security agreement with Ghana are entitled to a lump sum refund of their contributions (with interest) when they permanently leave Ghana.</p></details>
+</section>
+
+<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="gh-ssnit">
+  <div class="tool-verification-card">
+    <span class="tool-verification-kicker">SSNIT and pension source check</span>
+    <h2>Use calculator results beside your SSNIT statement and trustee records</h2>
+    <ul class="tool-verification-list">
+      <li><strong>Inputs:</strong> basic salary, years contributed, current age, retirement age, and optional Tier 3 contribution.</li>
+      <li><strong>Method:</strong> applies the embedded Ghana pension engine to split mandatory contributions and estimate monthly pension eligibility.</li>
+      <li><strong>Verify before acting:</strong> SSNIT statement, NPRA or trustee records, employer remittance, capped earnings, best 36 months, age, and current contribution rules.</li>
+      <li><strong>Privacy:</strong> salary and pension scenarios run locally. Copy only the summary you choose.</li>
+    </ul>
+    <p class="tool-verification-note"><strong>Reviewed 2026.</strong> Planning estimate only. It is not an official SSNIT statement, legal advice, tax advice, or a trustee quote.</p>
+  </div>
+</section>
+<afro-business-cta tool-name="Ghana SSNIT Calculator" prospect-segment="payroll-benefits" headline="Need SSNIT checks in a payroll review workflow?" subhead="AfroPayroll Pro helps teams keep contribution assumptions, employer remittance notes, and accountant handoff files together before payroll close."></afro-business-cta>
+<afro-related-tools category="financial" current="gh-ssnit" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Tracker" data-category="financial" data-icon="AA" data-desc="Compare petrol, diesel, and LPG prices across 54 African countries, then estimate generator fuel costs in local currency">AfroFuel — African Fuel Price Tracker</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<!-- Scripts                                                                -->
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<script src="/engines/gh-ssnit-engine.js?v=d11633bb"></script>
+<script>
+// ── Global state (shared across sections) ─────────────────────────────────
+var ssnitState = { basic: 5000, years: 20, age: 40 };
+var E; // shorthand for SSNITEngine (set on DOMContentLoaded)
+
+function fmt(n){ return 'GH\u20B5' + Math.round(n).toLocaleString('en-GH'); }
+function pct(n){ return (Math.round(n * 10) / 10) + '%'; }
+
+// ── Inline error helpers ───────────────────────────────────────────────────
+function showErr(id, msg) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = msg; el.classList.add('show');
+  el.setAttribute('role', 'alert');
+}
+function clearErr(id) {
+  var el = document.getElementById(id);
+  if (el) { el.textContent = ''; el.classList.remove('show'); el.removeAttribute('role'); }
+}
+
+// ── Section nav ────────────────────────────────────────────────────────────
+function ssnitNav(e, id) {
+  e.preventDefault();
+  var el = document.getElementById(id);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth' });
+    // Move focus to the section for screen readers
+    el.setAttribute('tabindex', '-1');
+    setTimeout(function() { el.focus({ preventScroll: true }); }, 320);
+  }
+  document.querySelectorAll('.ssnit-nav-link').forEach(function(a) { a.classList.remove('active'); });
+  e.currentTarget.classList.add('active');
+}
+
+// Highlight active nav link on scroll
+(function() {
+  var sections = ['basic-calc','best-36','age-compare','invalidity','tier2-funds','tier3-tax','non-citizen','early-exit'];
+  window.addEventListener('scroll', function() {
+    var scrollY = window.scrollY + 80;
+    var current = sections[0];
+    sections.forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el && el.offsetTop <= scrollY) current = id;
+    });
+    document.querySelectorAll('.ssnit-nav-link').forEach(function(a) {
+      var href = a.getAttribute('href').replace('#','');
+      a.classList.toggle('active', href === current);
+    });
+  }, { passive: true });
+})();
+
+// ── Section 1: Basic Contributions ────────────────────────────────────────
+function calcS1() {
+  var basic      = +document.getElementById('s1Basic').value;
+  var years      = +document.getElementById('s1Years').value;
+  var age        = +document.getElementById('s1Age').value;
+  var retireAge  = +document.getElementById('s1RetireAge').value;
+  var tier3Pct   = +document.getElementById('s1Tier3').value;
+
+  clearErr('s1Err');
+  if (basic <= 0) return showErr('s1Err', 'Enter a positive basic salary.');
+  if (years < 0 || years > 40) return showErr('s1Err', 'Enter valid years of contribution (0–40).');
+
+  // Sync global state and pre-fill other sections
+  ssnitState.basic = basic;
+  ssnitState.years = years;
+  ssnitState.age   = age;
+  document.getElementById('s3Salary').value = basic;
+  document.getElementById('s3Years').value  = years;
+  document.getElementById('s4Salary').value = basic;
+  document.getElementById('s4Months').value = Math.round(years * 12);
+  document.getElementById('s5Salary').value = basic;
+  document.getElementById('s5Years').value  = Math.max(1, retireAge - age);
+  document.getElementById('s6Salary').value = basic;
+  document.getElementById('s8Salary').value = basic;
+  document.getElementById('s8Months').value = Math.round(years * 12);
+  document.getElementById('s2Years').value  = years;
+  updateTier3Slider();
+
+  var c = E.calcContributions(basic, tier3Pct);
+  var p = E.calcPension(basic, years, retireAge);
+  var yearsToRetire = Math.max(0, retireAge - age);
+
+  // Breakdown table
+  var rows = '<tr><th>Tier</th><th>Employee</th><th>Employer</th><th>Total / Month</th></tr>';
+  rows += '<tr><td>Tier 1 (SSNIT)</td><td>' + fmt(c.t1Emp) + '</td><td>' + fmt(c.t1Er) + '</td><td>' + fmt(c.t1Total) + '</td></tr>';
+  rows += '<tr><td>NHIA (Health)</td><td>—</td><td>' + fmt(c.nhia) + '</td><td>' + fmt(c.nhia) + '</td></tr>';
+  rows += '<tr><td>Tier 2 (Occupational)</td><td>—</td><td>' + fmt(c.tier2) + '</td><td>' + fmt(c.tier2) + '</td></tr>';
+  if (c.tier3 > 0) rows += '<tr><td>Tier 3 (Voluntary)</td><td>' + fmt(c.tier3) + '</td><td>—</td><td>' + fmt(c.tier3) + '</td></tr>';
+  rows += '<tr class="total-row"><td>Total</td><td>' + fmt(c.totalEmployee) + '</td><td>' + fmt(c.totalEmployer) + '</td><td>' + fmt(c.grandTotal) + '</td></tr>';
+  document.getElementById('s1BreakdownTable').innerHTML = rows;
+
+  var html = '';
+  if (p.qualifies) {
+    html += '<div class="ssnit-result-box hi"><div class="num">' + fmt(p.monthly) + '/mo</div><div class="lbl">Estimated Monthly SSNIT Pension</div></div>';
+  } else {
+    html += '<div class="ssnit-result-box hi"><div class="num" style="font-size:1.1rem;color:#b91c1c">Need ' + (15 - years) + ' more years</div><div class="lbl">Not yet qualified for monthly pension</div></div>';
+  }
+  html += '<div class="ssnit-result-box"><div class="num">' + pct(p.accrual) + '</div><div class="lbl">Accrual Rate</div></div>';
+  html += '<div class="ssnit-result-box"><div class="num">' + fmt(c.totalEmployee) + '/mo</div><div class="lbl">Your Monthly Outlay</div></div>';
+  html += '<div class="ssnit-result-box"><div class="num">' + fmt(c.totalEmployer) + '/mo</div><div class="lbl">Employer Contribution</div></div>';
+  html += '<div class="ssnit-result-box"><div class="num">' + fmt(c.grandTotal * 12) + '/yr</div><div class="lbl">Total Annual Contributions</div></div>';
+  html += '<div class="ssnit-result-box"><div class="num">' + yearsToRetire + ' yrs</div><div class="lbl">Years to Retirement</div></div>';
+  document.getElementById('s1ResultGrid').innerHTML = html;
+
+  document.getElementById('s1ResultCard').classList.remove('ssnit-hidden');
+  document.getElementById('s1ResultCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function buildSsnitSummary() {
+  if (document.getElementById('s1ResultCard').classList.contains('ssnit-hidden')) {
+    calcS1();
+  }
+  var resultBoxes = Array.prototype.map.call(document.querySelectorAll('#s1ResultGrid .ssnit-result-box'), function (box) {
+    return box.textContent.replace(/\s+/g, ' ').trim();
+  });
+  var breakdown = Array.prototype.map.call(document.querySelectorAll('#s1BreakdownTable tr'), function (row) {
+    return row.textContent.replace(/\s+/g, ' ').trim();
+  });
+  return [
+    'Ghana SSNIT estimate summary',
+    'Basic salary input: GHc ' + document.getElementById('s1Basic').value,
+    'Years contributed: ' + document.getElementById('s1Years').value,
+    'Current age: ' + document.getElementById('s1Age').value,
+    'Retirement age: ' + document.getElementById('s1RetireAge').value,
+    'Results: ' + (resultBoxes.length ? resultBoxes.join(' | ') : 'Run the calculator to generate results'),
+    'Contribution breakdown: ' + (breakdown.length ? breakdown.join(' | ') : 'No contribution rows available'),
+    'Note: planning estimate only. Verify SSNIT statement, NPRA or trustee records, employer remittance, capped earnings, best 36 months, age, and current contribution rules before acting.'
+  ].join('\n');
+}
+
+function setSsnitExportStatus(message) {
+  var status = document.getElementById('ssnit-export-status');
+  if (status) status.textContent = message;
+}
+
+function copySsnitTextFallback(text) {
+  var textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.setAttribute('readonly', '');
+  textarea.style.position = 'fixed';
+  textarea.style.left = '-9999px';
+  textarea.style.top = '0';
+  document.body.appendChild(textarea);
+  textarea.focus();
+  textarea.select();
+  var copied = false;
+  try {
+    copied = document.execCommand('copy');
+  } catch (err) {
+    copied = false;
+  }
+  textarea.remove();
+  return copied;
+}
+
+function copySsnitSummary() {
+  var text = buildSsnitSummary();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function () {
+      setSsnitExportStatus('SSNIT summary copied.');
+    }).catch(function () {
+      setSsnitExportStatus(copySsnitTextFallback(text) ? 'SSNIT summary copied.' : 'Copy failed. Select and copy the summary manually.');
+    });
+    return;
+  }
+  setSsnitExportStatus(copySsnitTextFallback(text) ? 'SSNIT summary copied.' : 'Copy failed. Select and copy the summary manually.');
+}
+
+document.getElementById('ssnit-copy-summary').addEventListener('click', copySsnitSummary);
+
+// ── Section 2: 36 Best Months ─────────────────────────────────────────────
+function buildSalaryHistoryTable() {
+  var curYear = 2025;
+  var basic   = ssnitState.basic || 5000;
+  var tbody   = document.getElementById('salaryHistoryBody');
+  var rows    = '';
+  for (var i = 9; i >= 0; i--) {
+    var yr  = curYear - i;
+    var val = Math.round(basic * Math.pow(0.92, i)); // estimate past salaries at ~8% annual growth
+    rows += '<tr><td>' + yr + '</td><td><input type="number" id="hist_' + yr + '" value="' + val + '" min="0" step="100" inputmode="decimal" aria-label="Monthly salary for ' + yr + '"></td><td style="font-size:.7rem;color:#94a3b8">/month</td></tr>';
+  }
+  tbody.innerHTML = rows;
+}
+
+function calcS2() {
+  var years = +document.getElementById('s2Years').value;
+  var history = [];
+  for (var i = 9; i >= 0; i--) {
+    var yr  = 2025 - i;
+    var el  = document.getElementById('hist_' + yr);
+    var val = el ? +el.value : 0;
+    history.push({ year: yr, monthly: val });
+  }
+
+  var result = E.findBest36Months(history);
+  if (!result) {
+    return showErr('s2Err', 'Please fill in at least 3 years of salary history (36 months needed).');
+  }
+  clearErr('s2Err');
+
+  var p  = E.calcPension(result.avgSalary, years, 60);
+  var pE = E.calcPension(result.avgSalary, years, 55);
+
+  var html = '<div class="ssnit-best-window">Your highest 36 consecutive months were from <strong>' + result.startYear + '</strong> to <strong>' + result.endYear + '</strong> — average salary <strong>' + fmt(result.avgSalary) + '/month</strong>.</div>';
+
+  html += '<div class="ssnit-result-grid">';
+  html += '<div class="ssnit-result-box hi"><div class="num">' + fmt(result.avgSalary) + '/mo</div><div class="lbl">Best 36-Month Average Salary</div></div>';
+  if (p.qualifies) {
+    html += '<div class="ssnit-result-box"><div class="num">' + fmt(p.monthly) + '/mo</div><div class="lbl">Projected Pension (retire at 60)</div></div>';
+    html += '<div class="ssnit-result-box"><div class="num">' + fmt(pE.monthly) + '/mo</div><div class="lbl">Projected Pension (retire at 55)</div></div>';
+  } else {
+    html += '<div class="ssnit-result-box"><div class="num" style="font-size:1rem;color:#b91c1c">Need ' + (15 - years) + ' more years</div><div class="lbl">Not yet qualified for pension</div></div>';
+  }
+  html += '<div class="ssnit-result-box"><div class="num">' + pct(p.accrual) + '</div><div class="lbl">Accrual Rate (' + years + ' years)</div></div>';
+  html += '</div>';
+
+  // Show insight if best window is NOT recent years
+  if (result.endYear < 2024) {
+    html += '<div class="ssnit-alert ssnit-alert-amber" style="margin-top:14px"><strong>Insight:</strong> Your peak salary period was ' + result.startYear + '–' + result.endYear + ', not your most recent years. Your SSNIT pension is locked to that average. If you expect a significant pay rise in the next few years, you need 36 consecutive months at the higher salary to improve your pension estimate.</div>';
+  } else {
+    html += '<div class="ssnit-alert ssnit-alert-green" style="margin-top:14px"><strong>Great:</strong> Your best 36-month window includes your most recent salary years. Your current salary is directly feeding into your SSNIT pension calculation.</div>';
+  }
+
+  document.getElementById('s2ResultBody').innerHTML = html;
+  document.getElementById('s2ResultCard').classList.remove('ssnit-hidden');
+
+  // Auto-fill Section 3 with the 36-month average
+  document.getElementById('s3Salary').value = Math.round(result.avgSalary);
+  document.getElementById('s3Years').value  = years;
+}
+
+// ── Section 3: 55 vs 60 ───────────────────────────────────────────────────
+function calcS3() {
+  var salary = +document.getElementById('s3Salary').value;
+  var years  = +document.getElementById('s3Years').value;
+  clearErr('s3Err');
+  if (salary <= 0) return showErr('s3Err', 'Enter a positive salary.');
+  if (years < 15)  return showErr('s3Err', 'Need at least 15 years of contributions to compare retirement ages.');
+
+  var comp = E.compareRetirementAges(salary, years);
+  if (!comp) return showErr('s3Err', 'Could not compute comparison. Check inputs.');
+
+  var html = '';
+  html += '<div class="ssnit-compare">';
+  html += '<div class="ssnit-compare-col early">';
+  html += '<div class="col-label">Retire at 55 (Early)</div>';
+  html += '<div class="col-num">' + fmt(comp.at55.monthly) + '</div>';
+  html += '<div class="col-sub">per month · ' + pct(comp.at55.accrual) + ' accrual</div>';
+  html += '<div class="col-sub" style="margin-top:5px;font-size:.72rem;color:#dc2626">−' + comp.at55.earlyReduction + '% early retirement reduction</div>';
+  html += '</div>';
+  html += '<div class="ssnit-compare-col full">';
+  html += '<div class="col-label">Retire at 60 (Normal)</div>';
+  html += '<div class="col-num">' + fmt(comp.at60.monthly) + '</div>';
+  html += '<div class="col-sub">per month · ' + pct(comp.at60.accrual) + ' accrual</div>';
+  html += '<div class="col-sub" style="margin-top:5px;font-size:.72rem;color:#16a34a">Full pension — no reduction</div>';
+  html += '</div>';
+  html += '</div>';
+
+  html += '<div class="ssnit-alert ' + (comp.breakEvenAge <= 65 ? 'ssnit-alert-amber' : 'ssnit-alert-green') + '">';
+  html += '<strong>Monthly difference: ' + fmt(comp.monthlyDiff) + '/month more at 60.</strong> ';
+  if (comp.breakEvenAge > 90) {
+    html += 'Retiring at 55 gives more total money in almost all scenarios given Ghana\'s life expectancy.';
+  } else {
+    html += 'If you live past age <strong>' + comp.breakEvenAge + '</strong>, retiring at 60 gives you more total money. Ghana average life expectancy: 65 (men), 67 (women).';
+  }
+  html += '</div>';
+
+  html += '<p class="ssnit-section-label">Lifetime Pension Totals (by gender)</p>';
+  html += '<div class="ssnit-lifetime">';
+  html += '<div class="ssnit-lifetime-box"><strong>' + fmt(comp.totalAt55Male) + '</strong>Retire 55 — Male (to age 65)</div>';
+  html += '<div class="ssnit-lifetime-box"><strong>' + fmt(comp.totalAt60Male) + '</strong>Retire 60 — Male (to age 65)</div>';
+  html += '<div class="ssnit-lifetime-box"><strong>' + fmt(comp.totalAt55Female) + '</strong>Retire 55 — Female (to age 67)</div>';
+  html += '<div class="ssnit-lifetime-box"><strong>' + fmt(comp.totalAt60Female) + '</strong>Retire 60 — Female (to age 67)</div>';
+  html += '</div>';
+
+  // Verdict
+  var menBetter60 = comp.totalAt60Male > comp.totalAt55Male;
+  var womenBetter60 = comp.totalAt60Female > comp.totalAt55Female;
+  if (menBetter60 && womenBetter60) {
+    html += '<div class="ssnit-alert ssnit-alert-green" style="margin-top:12px"><strong>Verdict:</strong> Based on Ghana\'s average life expectancy, <strong>retiring at 60 yields more total pension for both men and women</strong> at this salary and contribution level.</div>';
+  } else {
+    html += '<div class="ssnit-alert ssnit-alert-amber" style="margin-top:12px"><strong>Verdict:</strong> At Ghana\'s average life expectancy, the extra 5 years of pension collected at 55 outweighs the lower monthly rate. Personal health, family obligations, and alternative income sources should guide your decision.</div>';
+  }
+
+  document.getElementById('s3ResultBody').innerHTML = html;
+  document.getElementById('s3ResultCard').classList.remove('ssnit-hidden');
+}
+
+// ── Section 4: Invalidity ─────────────────────────────────────────────────
+function calcS4() {
+  var salary = +document.getElementById('s4Salary').value;
+  var months = +document.getElementById('s4Months').value;
+  clearErr('s4Err');
+  if (salary <= 0) return showErr('s4Err', 'Enter a positive salary.');
+  if (months < 12) return showErr('s4Err', 'Minimum 12 months of contributions required for invalidity benefit.');
+
+  var inv = E.calcInvalidityBenefit(salary, months);
+  if (!inv) return showErr('s4Err', 'Minimum 12 months of contributions required.');
+
+  var html = '<div class="ssnit-result-grid">';
+  html += '<div class="ssnit-result-box hi"><div class="num">' + fmt(inv.monthly) + '/mo</div><div class="lbl">Estimated Monthly Invalidity Pension</div></div>';
+  html += '<div class="ssnit-result-box"><div class="num">' + pct(inv.accrual) + '</div><div class="lbl">Accrual Rate</div></div>';
+  html += '<div class="ssnit-result-box"><div class="num">' + months + ' months</div><div class="lbl">Contributions Used</div></div>';
+  html += '<div class="ssnit-result-box"><div class="num">' + fmt(inv.monthly * 12) + '/yr</div><div class="lbl">Annual Invalidity Benefit</div></div>';
+  html += '</div>';
+
+  if (months < 180) {
+    html += '<div class="ssnit-alert ssnit-alert-amber" style="margin-top:12px"><strong>Note:</strong> Because you have fewer than 180 months (15 years), the invalidity pension is prorated. With a full 15-year qualifying period, the accrual rate starts at 37.5%. Your rate of ' + pct(inv.accrual) + ' reflects ' + Math.round(months/12 * 10)/10 + ' years of contributions.</div>';
+  } else {
+    html += '<div class="ssnit-alert ssnit-alert-green" style="margin-top:12px"><strong>You have qualified for the full invalidity pension scale.</strong> Your accrual rate of ' + pct(inv.accrual) + ' is based on ' + Math.round(months/12 * 10)/10 + ' years of contributions.</div>';
+  }
+
+  document.getElementById('s4ResultBody').innerHTML = html;
+  document.getElementById('s4ResultCard').classList.remove('ssnit-hidden');
+}
+
+// ── Section 5: Tier 2 Funds ───────────────────────────────────────────────
+function buildFundTable() {
+  var funds = E.TIER2_FUNDS;
+  var maxRate = funds.reduce(function(m, f) { return Math.max(m, f.avg3yr); }, 0);
+  var html = '<thead><tr><th>Fund Manager</th><th>3-Yr Avg Return</th><th>5-Yr Avg Return</th><th>Performance</th></tr></thead><tbody>';
+  funds.forEach(function(f) {
+    var barW = Math.round((f.avg3yr / maxRate) * 100);
+    html += '<tr><td>' + f.name + '</td>';
+    html += '<td style="text-align:right;font-weight:700;color:var(--accent-dark)">' + f.avg3yr.toFixed(1) + '%</td>';
+    html += '<td style="text-align:right">' + f.avg5yr.toFixed(1) + '%</td>';
+    html += '<td><span class="ssnit-fund-bar" style="width:' + barW + 'px"></span></td>';
+    html += '</tr>';
+  });
+  html += '</tbody>';
+  document.getElementById('fundTable').innerHTML = html;
+}
+
+function calcS5() {
+  var salary = +document.getElementById('s5Salary').value;
+  var years  = +document.getElementById('s5Years').value;
+  clearErr('s5Err');
+  if (salary <= 0 || years <= 0) return showErr('s5Err', 'Enter valid salary and years.');
+
+  var monthlyTier2 = salary * E.RATES.tier2; // 5% employer
+
+  var best  = E.TIER2_FUNDS[0];
+  var worst = E.TIER2_FUNDS[E.TIER2_FUNDS.length - 1];
+  var impactBestVsWorst = E.tier2FundImpact(monthlyTier2, years, best.avg3yr, worst.avg3yr);
+  var impactPerOnePercent = E.tier2FundImpact(monthlyTier2, years, best.avg3yr, best.avg3yr - 1);
+
+  var html = '<div class="ssnit-result-grid">';
+  html += '<div class="ssnit-result-box hi"><div class="num">' + fmt(impactBestVsWorst.diff) + '</div><div class="lbl">Best vs Worst Fund Difference (' + years + ' yrs)</div></div>';
+  html += '<div class="ssnit-result-box"><div class="num">' + fmt(impactBestVsWorst.fvHigh) + '</div><div class="lbl">At Best Fund (' + best.avg3yr + '% avg)</div></div>';
+  html += '<div class="ssnit-result-box"><div class="num">' + fmt(impactBestVsWorst.fvLow) + '</div><div class="lbl">At Worst Fund (' + worst.avg3yr + '% avg)</div></div>';
+  html += '<div class="ssnit-result-box"><div class="num">' + fmt(impactPerOnePercent.diff) + '</div><div class="lbl">1% Return Difference Over ' + years + ' Years</div></div>';
+  html += '</div>';
+  html += '<div class="ssnit-alert ssnit-alert-amber" style="margin-top:12px">Your monthly Tier 2 contribution: <strong>' + fmt(monthlyTier2) + '</strong> (5% of salary, fully employer-funded). The difference between the best and worst fund manager compounds to <strong>' + fmt(impactBestVsWorst.diff) + '</strong> over ' + years + ' years. Ask your HR department which trustee manages your Tier 2 fund.</div>';
+  document.getElementById('s5ResultBody').innerHTML = html;
+  document.getElementById('s5ResultBody').classList.remove('ssnit-hidden');
+}
+
+// ── Section 6: Tier 3 Tax Advantage ──────────────────────────────────────
+function updateTier3Slider() {
+  var salary = +document.getElementById('s6Salary').value || 5000;
+  var sliderVal = +document.getElementById('s6Slider').value; // 0–165 representing 0%–16.5%
+  var pctVal = sliderVal / 10; // e.g. 165 → 16.5
+  var tier3Monthly = salary * pctVal / 100;
+  document.getElementById('s6SliderLabel').textContent = fmt(tier3Monthly) + ' (' + pctVal.toFixed(1) + '%)';
+  document.getElementById('s6SliderPct').textContent = pctVal.toFixed(1) + '%';
+  // Update slider background gradient + accessible value
+  var pctFill = (sliderVal / 165 * 100).toFixed(1) + '%';
+  var sliderEl = document.getElementById('s6Slider');
+  sliderEl.style.setProperty('--pct', pctFill);
+  sliderEl.setAttribute('aria-valuetext', pctVal.toFixed(1) + '% of basic salary — ' + fmt(tier3Monthly) + '/month');
+  // Show current tax band
+  var ssnitDed = salary * 0.055;
+  var taxable  = salary - ssnitDed;
+  var rate     = E.topMarginalRate(taxable);
+  document.getElementById('s6TaxBand').textContent = 'Your marginal PAYE rate: ' + Math.round(rate * 100) + '%';
+}
+
+function calcS6() {
+  var salary   = +document.getElementById('s6Salary').value;
+  var sliderVal = +document.getElementById('s6Slider').value;
+  var pctVal   = sliderVal / 10 / 100; // fraction e.g. 0.10
+  clearErr('s6Err');
+  if (salary <= 0)    return showErr('s6Err', 'Enter a positive salary.');
+  if (sliderVal <= 0) return showErr('s6Err', 'Set a Tier 3 contribution amount with the slider.');
+
+  var r = E.calcTier3Advantage(salary, pctVal);
+
+  var html = '<div class="ssnit-result-grid">';
+  html += '<div class="ssnit-result-box hi"><div class="num">' + fmt(r.taxSaved) + '/mo</div><div class="lbl">PAYE Saved Each Month</div></div>';
+  html += '<div class="ssnit-result-box"><div class="num">' + fmt(r.tier3Monthly) + '/mo</div><div class="lbl">Gross Tier 3 Contribution</div></div>';
+  html += '<div class="ssnit-result-box"><div class="num">' + fmt(r.netCost) + '/mo</div><div class="lbl">Net Cost to You (after tax saving)</div></div>';
+  html += '<div class="ssnit-result-box"><div class="num">' + r.savingsRatePct + '%</div><div class="lbl">Tax Saving Rate</div></div>';
+  html += '<div class="ssnit-result-box"><div class="num">' + fmt(r.fv20) + '</div><div class="lbl">Tier 3 Fund Value in 20 Years</div></div>';
+  html += '<div class="ssnit-result-box"><div class="num">' + fmt(r.taxSaved * 12) + '/yr</div><div class="lbl">Annual PAYE Saved</div></div>';
+  html += '</div>';
+
+  html += '<div class="ssnit-alert ssnit-alert-green" style="margin-top:12px">For every <strong>' + fmt(r.tier3Monthly) + '</strong> you contribute to Tier 3, the government covers <strong>' + fmt(r.taxSaved) + '</strong> through PAYE savings. Your real out-of-pocket cost is only <strong>' + fmt(r.netCost) + '</strong> — and the full ' + fmt(r.tier3Monthly) + ' is growing in your fund.</div>';
+
+  html += '<div class="ssnit-alert ssnit-alert-blue" style="margin-top:10px"><strong>Why Tier 3?</strong> Unlike Tier 1 (defined benefit, locked to SSNIT) and Tier 2 (employer-controlled), Tier 3 has flexible withdrawal rules, is managed by an NPRA-licensed provider of your choice, and can be accessed before retirement in certain circumstances. It\'s the pension savings you fully control.</div>';
+
+  document.getElementById('s6ResultBody').innerHTML = html;
+  document.getElementById('s6ResultCard').classList.remove('ssnit-hidden');
+}
+
+// ── Section 7: Non-Citizen ────────────────────────────────────────────────
+function toggleNonCitizen() {
+  var checked = document.getElementById('ncToggle').checked;
+  var panel = document.getElementById('ncPanel');
+  panel.classList.toggle('visible', checked);
+  panel.setAttribute('aria-hidden', checked ? 'false' : 'true');
+}
+
+function ncTab(e, id) {
+  document.querySelectorAll('.ssnit-nc-tab').forEach(function(b) {
+    b.classList.remove('active');
+    b.setAttribute('aria-selected', 'false');
+  });
+  e.currentTarget.classList.add('active');
+  e.currentTarget.setAttribute('aria-selected', 'true');
+  document.querySelectorAll('.ssnit-nc-content').forEach(function(c) { c.classList.remove('visible'); });
+  document.getElementById('nc-' + id).classList.add('visible');
+}
+
+// ── Section 8: Early Exit ─────────────────────────────────────────────────
+function calcS8() {
+  var salary = +document.getElementById('s8Salary').value;
+  var months = +document.getElementById('s8Months').value;
+  clearErr('s8Err');
+  if (salary <= 0 || months <= 0) return showErr('s8Err', 'Enter valid salary and months contributed.');
+
+  var r = E.calcEarlyExitLumpSum(salary, months);
+  var years = Math.round(months / 12 * 10) / 10;
+
+  var html = '<div class="ssnit-result-grid">';
+  html += '<div class="ssnit-result-box hi"><div class="num">' + fmt(r.lumpSum) + '</div><div class="lbl">Estimated SSNIT Lump Sum on Exit</div></div>';
+  html += '<div class="ssnit-result-box"><div class="num">' + fmt(r.totalEmpContrib) + '</div><div class="lbl">Your Total Contributions</div></div>';
+  html += '<div class="ssnit-result-box"><div class="num">' + months + ' months</div><div class="lbl">(' + years + ' years contributed)</div></div>';
+  if (r.qualifiesForPension) {
+    html += '<div class="ssnit-result-box"><div class="num" style="color:#16a34a">✓ Qualifies</div><div class="lbl">For Monthly Pension (15+ years)</div></div>';
+    html += '<div class="ssnit-result-box"><div class="num">' + fmt(r.lifetimePension) + '</div><div class="lbl">Est. Lifetime Pension Value (15 yr collect)</div></div>';
+  } else {
+    html += '<div class="ssnit-result-box"><div class="num" style="color:#b91c1c">✗ Lump Sum Only</div><div class="lbl">Need ' + Math.abs(r.monthsNeeded) + ' more months for pension</div></div>';
+  }
+  html += '</div>';
+
+  if (r.qualifiesForPension) {
+    if (r.betterToWait) {
+      html += '<div class="ssnit-alert ssnit-alert-green" style="margin-top:12px"><strong>Recommendation: Preserve your pension.</strong> Your estimated lifetime pension value (' + fmt(r.lifetimePension) + ') is significantly greater than the lump sum (' + fmt(r.lumpSum) + '). If you can remain in the formal sector until retirement, the monthly pension is far more valuable over the long term.</div>';
+    } else {
+      html += '<div class="ssnit-alert ssnit-alert-amber" style="margin-top:12px">Your lump sum (' + fmt(r.lumpSum) + ') and estimated pension value (' + fmt(r.lifetimePension) + ') are comparable in this scenario. Consider your health, life expectancy, and alternative investments before deciding.</div>';
+    }
+  } else {
+    html += '<div class="ssnit-alert ssnit-alert-red" style="margin-top:12px"><strong>You do not qualify for a monthly pension yet.</strong> You need <strong>' + Math.abs(r.monthsNeeded) + ' more months</strong> (' + Math.round(Math.abs(r.monthsNeeded)/12 * 10)/10 + ' years) of formal sector employment to unlock a lifetime pension. If there is any way to reach 15 years, the monthly pension is almost always worth more than the lump sum.</div>';
+  }
+
+  document.getElementById('s8ResultBody').innerHTML = html;
+  document.getElementById('s8ResultCard').classList.remove('ssnit-hidden');
+}
+
+// ── AI Advisor ────────────────────────────────────────────────────────────
+var AI_MSGS = [];
+async function sendAI() {
+  var input   = document.getElementById('aiInput');
+  var msgsEl  = document.getElementById('aiMsgs');
+  var sendBtn = document.getElementById('aiSend');
+  var q       = input.value.trim();
+  if (!q) return;
+  AI_MSGS.push({ role: 'user', content: q });
+  msgsEl.innerHTML += '<div class="ai-msg-u">' + q.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>';
+  input.value = ''; sendBtn.disabled = true;
+  var thinkEl = document.createElement('div');
+  thinkEl.className = 'ai-thinking'; thinkEl.textContent = 'Thinking\u2026';
+  msgsEl.appendChild(thinkEl); msgsEl.scrollTop = msgsEl.scrollHeight;
+  try {
+    var ctx = 'Basic: GH\u20B5' + (ssnitState.basic||0) + '/mo, ' + (ssnitState.years||0) + ' years contributed, age ' + (ssnitState.age||0) + '.';
+    var res  = await fetch('/.netlify/functions/ai-advisor', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tool: 'gh-ssnit', messages: AI_MSGS.slice(-6), context: ctx })
+    });
+    var data = await res.json();
+    if (thinkEl.parentNode) thinkEl.remove();
+    var reply = data.reply || data.error || 'Sorry, I could not get a response.';
+    AI_MSGS.push({ role: 'assistant', content: reply });
+    msgsEl.innerHTML += '<div class="ai-msg-a">' + reply.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>') + '</div>';
+  } catch(err) {
+    if (thinkEl.parentNode) thinkEl.remove();
+    msgsEl.innerHTML += '<div class="ai-msg-a">Sorry, the AI advisor is temporarily unavailable.</div>';
+  }
+  sendBtn.disabled = false; msgsEl.scrollTop = msgsEl.scrollHeight; input.focus();
+}
+
+// ── Initialise ────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  E = window.SSNITEngine;
+  if (!E) { console.error('SSNITEngine not loaded'); return; }
+  buildSalaryHistoryTable();
+  buildFundTable();
+  updateTier3Slider();
+  // Auto-run section 1 with default values
+  calcS1();
+});
+</script>
+
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script>
+(function () {
+  "use strict";
+
+  function updateCopy() {
+    Array.from(document.querySelectorAll('li')).forEach(function (item) {
+      if (item.textContent.indexOf('NHIA (health)') !== -1) {
+        item.remove();
+      }
+    });
+
+    Array.from(document.querySelectorAll('p')).forEach(function (p) {
+      if (p.textContent.indexOf('Total mandatory:') !== -1) {
+        p.innerHTML = 'Total mandatory: <strong>18.5%</strong> of capped basic salary (5.5% employee + 13% employer). NHIA is carved out of the 13.5% first-tier remittance, not added on top.';
+      }
+      if (p.textContent.indexOf('Under the current structure, employers contribute a total of 15.5%') !== -1) {
+        p.textContent = 'Under the current structure, employees contribute 5.5% of basic salary and employers contribute 13%. The first-tier remittance totals 13.5% (5.5% employee + 8% employer), from which SSNIT allocates 2.5% to NHIA internally. Employers also remit 5% of capped basic salary to a private NPRA-licensed trustee for Tier 2 occupational benefits. Total mandatory contributions are therefore 18.5%, with the employer bearing 13% in total.';
+      }
+    });
+  }
+
+  var originalCalcS1 = window.calcS1;
+  window.calcS1 = function () {
+    originalCalcS1();
+    var table = document.getElementById('s1BreakdownTable');
+    var body = document.getElementById('s1ResultBody');
+
+    if (table) {
+      table.innerHTML = table.innerHTML
+        .replace('Tier 1 (SSNIT)', 'Tier 1 (SSNIT First Tier)')
+        .replace(/<tr><td>NHIA \(Health\)<\/td><td>[^]*?<\/tr>/, '');
+    }
+
+    if (body && !document.getElementById('s1NhiaNote')) {
+      var note = document.createElement('div');
+      note.id = 's1NhiaNote';
+      note.className = 'ssnit-alert ssnit-alert-blue';
+      note.style.marginTop = '12px';
+      note.innerHTML = '<strong>NHIA note:</strong> The 2.5% NHIA amount is carved out of the first-tier remittance administered by SSNIT. It is not an extra employer cost on top of the statutory 13% employer contribution.';
+      body.appendChild(note);
+    }
+  };
+
+  window.calcS5 = function () {
+    var salary = +document.getElementById('s5Salary').value;
+    var years = +document.getElementById('s5Years').value;
+    clearErr('s5Err');
+    if (salary <= 0 || years <= 0) return showErr('s5Err', 'Enter valid salary and years.');
+
+    var monthlyTier2 = Math.min(salary, (window.SSNITEngine && window.SSNITEngine.MAX_INSURABLE_EARNINGS) || 69000) * E.RATES.tier2;
+    var best = E.TIER2_FUNDS[0];
+    var worst = E.TIER2_FUNDS[E.TIER2_FUNDS.length - 1];
+    var impactBestVsWorst = E.tier2FundImpact(monthlyTier2, years, best.avg3yr, worst.avg3yr);
+    var impactPerOnePercent = E.tier2FundImpact(monthlyTier2, years, best.avg3yr, best.avg3yr - 1);
+
+    var html = '<div class="ssnit-result-grid">';
+    html += '<div class="ssnit-result-box hi"><div class="num">' + fmt(impactBestVsWorst.diff) + '</div><div class="lbl">Best vs Worst Fund Difference (' + years + ' yrs)</div></div>';
+    html += '<div class="ssnit-result-box"><div class="num">' + fmt(impactBestVsWorst.fvHigh) + '</div><div class="lbl">At Best Fund (' + best.avg3yr + '% avg)</div></div>';
+    html += '<div class="ssnit-result-box"><div class="num">' + fmt(impactBestVsWorst.fvLow) + '</div><div class="lbl">At Worst Fund (' + worst.avg3yr + '% avg)</div></div>';
+    html += '<div class="ssnit-result-box"><div class="num">' + fmt(impactPerOnePercent.diff) + '</div><div class="lbl">1% Return Difference Over ' + years + ' Years</div></div>';
+    html += '</div>';
+    html += '<div class="ssnit-alert ssnit-alert-amber" style="margin-top:12px">Your monthly Tier 2 contribution: <strong>' + fmt(monthlyTier2) + '</strong> (5% of capped basic salary, employer-funded). The difference between the best and worst fund manager compounds to <strong>' + fmt(impactBestVsWorst.diff) + '</strong> over ' + years + ' years. Ask your HR department which trustee manages your Tier 2 fund.</div>';
+    document.getElementById('s5ResultBody').innerHTML = html;
+    document.getElementById('s5ResultBody').classList.remove('ssnit-hidden');
+  };
+
+  document.addEventListener('DOMContentLoaded', function () {
+    updateCopy();
+    if (typeof window.calcS1 === 'function') {
+      window.calcS1();
+    }
+  });
+}());
+</script>
+</body>
+</html>

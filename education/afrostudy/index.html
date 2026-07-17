@@ -1,0 +1,2391 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AfroStudy — Free KCSE Practice MVP | AfroTools</title>
+<meta name="description" content="Free KCSE practice MVP for Kenyan students. Work through starter questions, timed mini exams, flashcards, and local progress reports. No signup required.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="AfroStudy — Free KCSE Practice MVP">
+<meta property="og:description" content="Practice starter KCSE questions with worked explanations, timed mini exams, flashcards, and local progress reports.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://afrotools.com/education/afrostudy/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700;9..40,800&display=swap"></noscript>
+<script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/education-ecosystem-strip.css?v=cf587ae3">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+/* ── TOKENS ─────────────────────────────────────────── */
+:root{
+  --primary:#0062CC;--primary-dark:#0063D1;--primary-light:#4DA3FF;
+  --primary-pale:rgba(0,98,204,.08);--gold:#F5A623;
+  --bg:#F8FAFD;--bg-dark:#0A1628;--bg-card:#fff;
+  --text:#1E293B;--text-muted:#64748B;--text-subtle:#94A3B8;
+  --border:#E5E7EB;--border-strong:#CBD5E1;
+  --red:#EF4444;--green:#22c55e;--purple:#8B5CF6;
+  --radius:18px;--pill:980px;
+  --shadow:0 2px 8px rgba(0,0,0,.06);--shadow-lg:0 8px 30px rgba(0,0,0,.10);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+img{max-width:100%}
+
+/* ── LAYOUT ─────────────────────────────────────────── */
+.wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+.section{padding:56px 0}
+
+/* ── HERO ───────────────────────────────────────────── */
+.hero{background:var(--bg-dark);padding:0 0 56px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40%;left:-20%;width:80%;height:120%;background:radial-gradient(circle,rgba(0,98,204,.12) 0%,transparent 60%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-30%;right:-10%;width:60%;height:100%;background:radial-gradient(circle,rgba(0,98,204,.08) 0%,transparent 55%);pointer-events:none}
+.hero .wrap{position:relative;z-index:1}
+
+/* breadcrumb */
+.bc{font-size:.72rem;font-weight:500;color:#6b7a8d;letter-spacing:.06em;padding:18px 0 16px}
+.bc a{color:#6b7a8d;transition:color .15s}.bc a:hover{color:var(--primary)}
+.bc .sep{margin:0 6px;opacity:.5}
+
+/* badges */
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:6px;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.82)}
+.badge.ai{border-color:rgba(245,166,35,.25);color:var(--gold)}
+
+/* hero text */
+.hero h1{font-family:'DM Sans',sans-serif;font-weight:800;letter-spacing:-.02em;color:#fff;font-size:clamp(1.5rem,5.5vw,2.75rem);line-height:1.12;margin-bottom:16px}
+.hero-sub{color:#94a3af;font-size:1.05rem;line-height:1.6;max-width:600px;margin-bottom:32px}
+
+/* stat counters */
+.hero-stats{display:flex;flex-wrap:wrap;gap:32px;margin-bottom:32px}
+.hero-stat .num{font-size:1.5rem;font-weight:800;color:#fff}
+.hero-stat .lbl{font-size:.72rem;color:#94a3af;text-transform:uppercase;letter-spacing:.08em;margin-top:2px}
+
+/* CTA row */
+.cta-row{display:flex;flex-wrap:wrap;gap:12px}
+
+/* ── BUTTONS ────────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:var(--pill);font-family:'DM Sans',sans-serif;font-size:.875rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border:none;cursor:pointer;transition:all .2s}
+.btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary-dark);transform:translateY(-1px)}
+.btn-ghost{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.2)}.btn-ghost:hover{background:rgba(255,255,255,.14)}
+.btn-outline{background:transparent;color:var(--primary);border:1.5px solid var(--primary)}.btn-outline:hover{background:var(--primary-pale)}
+.btn-sm{padding:9px 20px;font-size:.78rem}
+.btn-disabled{opacity:.45;cursor:not-allowed;pointer-events:none}
+
+/* ── QUICK START CARDS ──────────────────────────────── */
+.qs-section{padding:56px 0}
+.qs-ey{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-subtle);margin-bottom:24px;display:flex;align-items:center;gap:12px}
+.qs-ey::before,.qs-ey::after{content:'';flex:0 0 24px;height:1.5px;background:var(--border-strong)}
+.qs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.qs-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius);padding:32px 24px;text-align:center;transition:all .25s}
+.qs-card:hover{border-color:var(--primary);box-shadow:var(--shadow-lg);transform:translateY(-3px)}
+.qs-card .icon{font-size:2.2rem;margin-bottom:14px}
+.qs-card h3{font-family:'DM Sans',sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.02em;font-size:.95rem;margin-bottom:8px;color:var(--text)}
+.qs-card p{font-size:.85rem;color:var(--text-muted);line-height:1.55;margin-bottom:18px}
+
+/* ── STATS ROW ──────────────────────────────────────── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:0 0 56px}
+.stat-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius);padding:24px 16px;text-align:center}
+.stat-card .val{font-size:1.35rem;font-weight:800;color:var(--primary)}
+.stat-card .lbl{font-size:.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
+
+/* ── TAB NAV ────────────────────────────────────────── */
+.tab-nav{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:90;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tab-nav::-webkit-scrollbar{display:none}
+.tab-nav .wrap{display:flex;gap:0}
+.tab-btn{padding:14px 20px;font-size:.875rem;font-weight:500;color:var(--text-muted);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s;font-family:'DM Sans',sans-serif}
+.tab-btn:hover{color:var(--primary)}
+.tab-btn.active{color:var(--primary);border-bottom-color:var(--primary);font-weight:700}
+
+/* ── TAB PANELS ─────────────────────────────────────── */
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* ── SUBJECT FILTER ─────────────────────────────────── */
+.filter-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;padding-top:32px}
+.filter-btn{padding:8px 20px;border-radius:var(--pill);font-size:.8rem;font-weight:600;border:1.5px solid var(--border);background:#fff;color:var(--text-muted);cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+.filter-btn:hover{border-color:var(--primary);color:var(--primary)}
+.filter-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+/* ── SUBJECT CARDS ──────────────────────────────────── */
+.subj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;padding-bottom:48px}
+.subject-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:all .25s}
+.subject-card:hover{border-color:var(--primary);box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.subject-card.coming-soon{opacity:.55;pointer-events:auto}
+.subject-card.coming-soon:hover{transform:none;box-shadow:none;border-color:var(--border)}
+.sc-band{height:4px;width:100%}
+.sc-body{padding:20px;flex:1;display:flex;flex-direction:column}
+.sc-icon{font-size:1.8rem;margin-bottom:10px}
+.sc-name{font-family:'DM Sans',sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.02em;font-size:.9rem;margin-bottom:6px}
+.sc-meta{font-size:.75rem;color:var(--text-muted);margin-bottom:4px}
+.sc-badge{display:inline-block;padding:3px 10px;border-radius:var(--pill);font-size:.65rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-top:8px;margin-bottom:auto}
+.sc-badge.soon{background:#f1f5f9;color:#94a3b8}
+.sc-btns{display:flex;gap:8px;margin-top:16px}
+
+/* ── PRACTICE MODE ──────────────────────────────────── */
+.prac-setup{padding:40px 0 56px}
+.prac-ey{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-subtle);margin-bottom:8px;display:flex;align-items:center;gap:12px}
+.prac-ey::before{content:'';flex:0 0 24px;height:1.5px;background:var(--border-strong)}
+.prac-setup h2{font-family:'DM Sans',sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.02em;font-size:1.35rem;margin-bottom:6px}
+.prac-setup .subtitle{color:var(--text-muted);font-size:.95rem;margin-bottom:28px}
+
+.prac-step{margin-bottom:24px}
+.prac-step-label{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:10px}
+.prac-pills{display:flex;flex-wrap:wrap;gap:8px}
+.prac-pill{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--pill);font-size:.82rem;font-weight:600;border:1.5px solid var(--border);background:#fff;color:var(--text);cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+.prac-pill:hover{border-color:var(--primary);color:var(--primary)}
+.prac-pill.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.prac-pill .p-icon{font-size:1.1rem}
+.prac-pill.disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
+.prac-start-btn{margin-top:16px}
+
+/* practice session */
+.prac-session{display:none;padding:32px 0 56px}
+.prac-session.visible{display:block}
+.session-progress{margin-bottom:24px}
+.session-meta{font-size:.78rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
+.progress-track{height:6px;background:var(--border);border-radius:20px;overflow:hidden}
+.progress-fill{height:100%;background:var(--primary);border-radius:20px;transition:width .3s}
+.progress-label{font-size:.75rem;color:var(--text-muted);margin-top:6px;text-align:right}
+
+/* question card */
+.question-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:24px}
+.q-header{margin-bottom:16px}
+.q-meta{font-size:.72rem;color:var(--text-muted);margin-bottom:8px}
+.q-badges{display:flex;flex-wrap:wrap;gap:6px}
+.q-badges .badge{background:var(--primary-pale);color:var(--primary);border:none;font-size:.62rem;padding:3px 10px;border-radius:var(--pill)}
+.q-badges .badge-topic{background:#f0fdf4;color:#16a34a}
+.q-badges .badge-difficulty{background:#fefce8;color:#a16207}
+.q-badges .badge-difficulty.easy{background:#f0fdf4;color:#16a34a}
+.q-badges .badge-difficulty.hard{background:#fef2f2;color:#dc2626}
+.q-text{font-size:1.05rem;line-height:1.7;color:var(--text);margin-bottom:20px;font-weight:500}
+
+/* options */
+.q-option{display:flex;align-items:center;gap:14px;padding:14px 18px;border:1.5px solid var(--border);border-radius:12px;cursor:pointer;transition:all .15s;background:#fff;margin-bottom:10px}
+.q-option:hover:not(.locked){border-color:var(--primary);background:#DBEAFE}
+.q-option.correct{border-color:var(--green);background:#DCFCE7}
+.q-option.correct .opt-letter{background:var(--green);color:#fff}
+.q-option.correct::after{content:'\2713';margin-left:auto;color:var(--green);font-weight:700}
+.q-option.wrong{border-color:var(--red);background:#FEE2E2}
+.q-option.wrong .opt-letter{background:var(--red);color:#fff}
+.q-option.wrong::after{content:'\2717';margin-left:auto;color:var(--red);font-weight:700}
+.q-option.locked{cursor:not-allowed;pointer-events:none}
+.opt-letter{width:28px;height:28px;border-radius:50%;background:#F1F5F9;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0}
+.opt-text{font-size:.92rem;line-height:1.45}
+
+/* AI explanation */
+.ai-explanation{border-left:3px solid var(--gold);background:#FFFBEB;border-radius:0 12px 12px 0;padding:16px 20px;margin-top:16px;animation:fadeSlide .3s ease}
+.ai-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);margin-bottom:8px}
+.ai-text{font-size:.9rem;line-height:1.7;color:#0f172a}
+.ai-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.btn-ghost-light{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:var(--pill);font-size:.72rem;font-weight:600;border:1px solid var(--border);background:#fff;color:var(--text-muted);cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+.btn-ghost-light:hover{border-color:var(--primary);color:var(--primary)}
+
+/* question nav */
+.q-nav{display:flex;align-items:center;justify-content:space-between;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
+.q-counter{font-size:.82rem;color:var(--text-muted);font-weight:500}
+.q-nav .btn-primary:disabled,.q-nav .btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* session summary */
+.session-summary{padding:40px 0 56px}
+.summary-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius);padding:32px 28px;max-width:640px;margin:0 auto}
+.summary-header{text-align:center;margin-bottom:24px}
+.summary-header h2{font-family:'DM Sans',sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.02em;font-size:1.3rem;margin-bottom:4px}
+.summary-header .sub{font-size:.85rem;color:var(--text-muted)}
+.summary-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px}
+.summary-stat{text-align:center;padding:16px 8px;background:var(--bg);border-radius:12px}
+.summary-stat .val{font-size:1.5rem;font-weight:800;color:var(--primary)}
+.summary-stat .lbl{font-size:.68rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.topic-breakdown{margin-bottom:24px}
+.topic-breakdown h3{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:12px}
+.topic-row{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.topic-name{font-size:.82rem;font-weight:600;width:140px;flex-shrink:0}
+.topic-bar{flex:1;height:8px;background:var(--border);border-radius:20px;overflow:hidden}
+.topic-bar-fill{height:100%;border-radius:20px;transition:width .5s}
+.topic-pct{font-size:.75rem;font-weight:600;width:70px;text-align:right}
+.topic-pct.weak{color:var(--red)}
+.summary-actions{display:flex;flex-direction:column;gap:8px;align-items:center}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:480px){
+  .summary-stats{grid-template-columns:1fr}
+  .topic-name{width:100px}
+  .q-nav{flex-wrap:wrap;gap:8px}
+}
+
+/* ── FOOTER CTA ─────────────────────────────────────── */
+.footer-cta{background:linear-gradient(135deg,#0055CC 0%,var(--primary) 50%,#339DFF 100%);padding:56px 0;text-align:center;color:#fff}
+.footer-cta h2{font-family:'DM Sans',sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.02em;font-size:clamp(1.4rem,3vw,2rem);margin-bottom:12px}
+.footer-cta p{color:rgba(255,255,255,.8);font-size:1rem;max-width:520px;margin:0 auto 28px;line-height:1.6}
+.footer-cta .cta-row{justify-content:center}
+.footer-cta .btn-ghost{border-color:rgba(255,255,255,.35)}
+
+/* ── EXAM SIMULATION ────────────────────────────────── */
+.exam-screen{display:none}.exam-screen.active{display:block}
+.exam-setup-wrap{padding:40px 0 56px}
+.setup-label{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:10px;display:block}
+.setup-step{margin-bottom:24px}
+.subject-pills{display:flex;flex-wrap:wrap;gap:8px}
+.subject-pill{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--pill);font-size:.82rem;font-weight:600;border:1.5px solid var(--border);background:#fff;color:var(--text);cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+.subject-pill:hover{border-color:var(--primary);color:var(--primary)}
+.subject-pill.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.radio-group{display:flex;flex-wrap:wrap;gap:8px}
+.radio-option{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--pill);font-size:.82rem;font-weight:600;border:1.5px solid var(--border);background:#fff;color:var(--text);cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+.radio-option:hover{border-color:var(--primary);color:var(--primary)}
+.radio-option.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.radio-option input{display:none}
+.setup-select{padding:10px 16px;border-radius:12px;border:1.5px solid var(--border);font-size:.9rem;font-family:'DM Sans',sans-serif;background:#fff;color:var(--text);min-width:200px;cursor:pointer}
+.setup-select:focus{outline:none;border-color:var(--primary)}
+.exam-info-card{background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:20px}
+.exam-info-row{display:flex;justify-content:space-between;padding:6px 0;font-size:.88rem}
+.exam-info-row span{color:var(--text-muted)}
+.exam-info-row strong{color:var(--text)}
+.rules-box{background:#FFFBEB;border:1.5px solid #FDE68A;border-radius:var(--radius);padding:20px 24px;margin-bottom:24px}
+.rules-title{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#92400e;margin-bottom:10px}
+.rules-box ul{list-style:none;padding:0}.rules-box li{font-size:.85rem;color:#78350f;padding:4px 0;padding-left:20px;position:relative;line-height:1.5}
+.rules-box li::before{content:'\2022';position:absolute;left:4px;color:#F5A623}
+.btn-lg{padding:16px 36px;font-size:.95rem}
+
+/* exam header (live exam) */
+.exam-header{position:sticky;top:48px;background:#fff;border-bottom:1px solid var(--border);padding:12px 24px;z-index:100}
+.exam-title-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;max-width:1100px;margin-left:auto;margin-right:auto}
+.exam-subject-label{font-size:.82rem;font-weight:600;color:var(--text-muted)}
+.exam-timer{font-family:'DM Sans',monospace;font-size:1.5rem;font-weight:700;color:var(--primary);display:flex;align-items:center;gap:8px}
+.exam-timer.timer-warning{color:#F5A623}
+.exam-timer.timer-danger{color:var(--red);animation:pulse 1s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+.exam-status-bar{display:flex;align-items:center;gap:16px;font-size:.78rem;color:var(--text-muted);font-weight:500;max-width:1100px;margin:0 auto}
+.btn-danger-outline{display:inline-flex;align-items:center;gap:6px;padding:7px 18px;border-radius:var(--pill);font-size:.75rem;font-weight:700;border:1.5px solid var(--red);background:#fff;color:var(--red);cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;margin-left:auto;text-transform:uppercase;letter-spacing:.04em}
+.btn-danger-outline:hover{background:#FEE2E2}
+
+/* exam body grid */
+.exam-body{display:grid;grid-template-columns:1fr 240px;gap:24px;max-width:1100px;margin:0 auto;padding:24px}
+.exam-question-area{min-width:0}
+.exam-q-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+.exam-q-num{font-size:.88rem;font-weight:700;color:var(--text)}
+.flag-btn{display:inline-flex;align-items:center;gap:4px;padding:6px 14px;border-radius:var(--pill);font-size:.75rem;font-weight:600;border:1.5px solid #FDE68A;background:#FFFBEB;color:#92400e;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+.flag-btn:hover{background:#FEF3C7}
+.flag-btn.flagged{background:#F5A623;color:#fff;border-color:#F5A623}
+.exam-q-text{font-size:1.05rem;line-height:1.7;color:var(--text);margin-bottom:20px;font-weight:500}
+.exam-option.selected{border-color:var(--primary);background:#DBEAFE}
+.exam-option.selected .opt-letter{background:var(--primary);color:#fff}
+.exam-q-nav{display:flex;justify-content:space-between;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
+
+/* navigator sidebar */
+.exam-navigator{position:sticky;top:160px;align-self:start}
+.nav-title{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:12px}
+.nav-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:16px}
+.nav-btn{aspect-ratio:1;border:1.5px solid var(--border);border-radius:6px;background:#fff;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center}
+.nav-btn:hover{border-color:var(--primary)}
+.nav-btn.current{border-color:var(--primary);background:#DBEAFE}
+.nav-btn.answered{background:var(--primary);color:#fff;border-color:var(--primary)}
+.nav-btn.flagged{background:#FEF3C7;border-color:#F5A623;color:#92400e}
+.nav-legend{display:flex;flex-direction:column;gap:6px}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:.68rem;color:var(--text-muted)}
+.legend-dot{width:12px;height:12px;border-radius:3px;border:1.5px solid var(--border);flex-shrink:0}
+.legend-dot.blue-outline{border-color:var(--primary);background:#DBEAFE}
+.legend-dot.blue-filled{background:var(--primary);border-color:var(--primary)}
+.legend-dot.orange{background:#FEF3C7;border-color:#F5A623}
+
+/* results */
+.results-wrap{padding:40px 0 56px}
+.results-header{text-align:center;margin-bottom:28px}
+.results-header h2{font-family:'DM Sans',sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.02em;font-size:1.1rem;color:var(--text)}
+.results-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+.result-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px 12px;text-align:center}
+.result-num{font-size:1.6rem;font-weight:800;color:var(--primary)}
+.result-label{font-size:.68rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
+.result-grade{font-size:2.5rem;font-weight:800}
+.grade-card{border-color:var(--primary)}
+
+.grade-scale-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:28px}
+.grade-scale-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:12px}
+.grade-scale-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.grade-cell{text-align:center;padding:10px 6px;border-radius:8px;border:1.5px solid var(--border);background:#fff}
+.grade-cell.active{background:var(--primary);border-color:var(--primary);color:#fff;transform:scale(1.05)}
+.grade-letter{font-weight:800;font-size:.92rem}
+.grade-range{font-size:.6rem;opacity:.7;margin-top:2px}
+
+.topic-performance{margin-bottom:28px}
+.topic-performance h3{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:14px}
+.topic-bar-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.topic-bar-label{font-size:.82rem;font-weight:600;width:140px;flex-shrink:0;text-transform:capitalize}
+.topic-bar-track{flex:1;height:8px;background:var(--border);border-radius:20px;overflow:hidden}
+.topic-bar-pct{font-size:.75rem;font-weight:600;width:90px;text-align:right}
+
+.answer-review-section{margin-bottom:28px}
+.answer-review-section h3{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:8px}
+.answer-review-section .text-small{font-size:.82rem;color:var(--text-muted);margin-bottom:16px}
+.review-item{border-radius:12px;padding:16px;margin-bottom:12px;border-left:4px solid}
+.review-correct{background:#F0FDF4;border-color:var(--green)}
+.review-wrong{background:#FEF2F2;border-color:var(--red)}
+.review-num{font-size:.78rem;font-weight:800;margin-bottom:6px}
+.review-correct .review-num{color:var(--green)}
+.review-wrong .review-num{color:var(--red)}
+.review-text{font-size:.9rem;font-weight:500;line-height:1.5;margin-bottom:6px}
+.review-answer{font-size:.8rem;color:var(--text-muted);margin-bottom:6px}
+.review-explanation{font-size:.82rem;color:var(--text-muted);line-height:1.6;font-style:italic}
+.results-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;padding-top:8px}
+
+/* submit modal overlay */
+.exam-submit-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center}
+.exam-submit-modal.visible{display:flex}
+.submit-modal-box{background:#fff;border-radius:var(--radius);padding:32px 28px;max-width:420px;text-align:center}
+.submit-modal-box h3{font-size:1.1rem;font-weight:800;margin-bottom:8px}
+.submit-modal-box p{font-size:.9rem;color:var(--text-muted);margin-bottom:20px;line-height:1.5}
+.submit-modal-btns{display:flex;gap:10px;justify-content:center}
+
+/* ── FLASHCARDS ─────────────────────────────────────── */
+.flashcard-setup{padding:40px 0 56px}
+.flashcard-setup .section-eyebrow{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-subtle);margin-bottom:8px}
+.flashcard-setup h2{font-family:'DM Sans',sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.02em;font-size:1.35rem;margin-bottom:6px}
+.flashcard-setup .text-body-lg{color:var(--text-muted);font-size:.95rem;margin-bottom:28px}
+.deck-selector{max-width:640px}
+.topic-pill-list{display:flex;flex-wrap:wrap;gap:8px}
+
+.flashcard-active{padding:32px 0 56px;max-width:640px;margin:0 auto}
+.fc-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px}
+.fc-deck-label{font-size:.88rem;font-weight:700;color:var(--text);text-transform:capitalize}
+.fc-counter{font-size:.78rem;color:var(--text-muted);font-weight:500}
+
+.fc-scene{width:100%;max-width:560px;height:200px;margin:24px auto;perspective:1000px;cursor:pointer}
+.fc-card{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .45s cubic-bezier(.4,0,.2,1);border-radius:18px}
+.fc-card.flipped{transform:rotateY(180deg)}
+.fc-front,.fc-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;text-align:center;border:1.5px solid #E5E7EB}
+.fc-front{background:white}
+.fc-back{background:#DBEAFE;border-color:#0062CC;transform:rotateY(180deg)}
+.fc-hint{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:#94a3af;margin-bottom:12px}
+.fc-question{font-size:1.1rem;font-weight:500;color:#0f172a;line-height:1.5}
+.fc-answer{font-size:.95rem;color:#1D4ED8;line-height:1.6;font-weight:500}
+
+.fc-nav{display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap}
+.btn-success-outline{background:transparent;border:1.5px solid #22c55e;color:#22c55e;border-radius:980px;padding:10px 20px;font-weight:600;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;font-size:.82rem}
+.btn-success-outline:hover{background:#22c55e;color:white}
+
+.fc-dots{display:flex;gap:6px;justify-content:center;margin:12px 0;flex-wrap:wrap}
+.fc-dot{width:8px;height:8px;border-radius:50%;background:#E5E7EB;transition:background .2s}
+.fc-dot.active{background:#0062CC}
+.fc-dot.mastered{background:#22c55e}
+.fc-dot.learning{background:#EF4444}
+
+.fc-progress-section{margin-top:28px;text-align:center}
+.fc-progress-label{font-size:.82rem;color:var(--text-muted);margin-bottom:8px}
+.fc-actions{display:flex;gap:8px;justify-content:center;margin-top:12px}
+
+/* ── PROGRESS TAB ──────────────────────────────────── */
+.progress-stats-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:40px}
+.stat-card-lg{background:white;border:1.5px solid #E5E7EB;border-radius:18px;padding:20px 16px;text-align:center}
+.stat-num{font-size:1.75rem;font-weight:800}
+.stat-num.blue{color:#0062CC}
+.stat-label{font-size:.75rem;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:.04em}
+
+.progress-section{margin-bottom:48px}
+.progress-section h3{font-size:.875rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#0062CC;margin-bottom:16px}
+
+.subject-bar-row{display:grid;grid-template-columns:140px 1fr 80px 120px;align-items:center;gap:16px;margin-bottom:12px}
+.subject-bar-name{font-size:.88rem;font-weight:600;text-transform:capitalize}
+
+.heatmap-grid{display:grid;grid-template-columns:repeat(28,1fr);gap:3px;margin-bottom:8px}
+.heatmap-cell{aspect-ratio:1;border-radius:3px;background:#F1F5F9}
+.heatmap-legend{display:flex;gap:16px;font-size:.75rem;color:#64748b;align-items:center;flex-wrap:wrap}
+.heatmap-key{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:4px}
+
+.ai-insight-card{border-left:3px solid #F5A623;background:#FFFBEB;border-radius:0 12px 12px 0;padding:16px 20px}
+.progress-export-actions{display:flex;gap:10px;flex-wrap:wrap}
+.progress-save-status{color:#64748b;font-size:.82rem;margin-top:10px;min-height:20px}
+
+.exam-history-row{display:grid;grid-template-columns:120px 120px 80px 80px 60px 80px;gap:16px;align-items:center;padding:12px 0;border-bottom:1px solid #F1F5F9;font-size:.875rem}
+
+.empty-state{text-align:center;color:#94a3af;padding:32px;font-size:.9rem;background:#F8FAFD;border-radius:12px;border:1.5px dashed #E5E7EB}
+
+/* ── SCROLL REVEAL ──────────────────────────────────── */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .5s,transform .5s}
+.rv.visible{opacity:1;transform:translateY(0)}
+
+/* ── RESPONSIVE ─────────────────────────────────────── */
+@media(max-width:768px){
+  .qs-grid{grid-template-columns:1fr}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .subj-grid{grid-template-columns:repeat(2,1fr)}
+  .hero-stats{gap:20px}
+  .hero h1{font-size:1.65rem}
+  .exam-body{grid-template-columns:1fr}
+  .exam-navigator{order:-1;position:static}
+  .nav-grid{grid-template-columns:repeat(8,1fr)}
+  .grade-scale-grid{grid-template-columns:repeat(4,1fr)}
+  .results-stats{grid-template-columns:repeat(2,1fr)}
+  .topic-bar-label{width:100px}
+}
+@media(max-width:768px){
+  .progress-stats-grid{grid-template-columns:repeat(2,1fr)}
+  .subject-bar-row{grid-template-columns:1fr 60px}
+  .subject-bar-row .subject-bar-track{display:none}
+  .heatmap-grid{grid-template-columns:repeat(14,1fr)}
+  .exam-history-row{grid-template-columns:1fr 1fr 60px}
+}
+@media(max-width:480px){
+  .subj-grid{grid-template-columns:1fr}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .hero-stats{flex-direction:column;gap:12px}
+  .cta-row{flex-direction:column}
+  .cta-row .btn{width:100%;justify-content:center}
+  .progress-stats-grid{grid-template-columns:1fr}
+}
+</style>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:title" content="AfroStudy — Free KCSE Practice MVP">
+<meta name="twitter:description" content="Practice starter KCSE questions with worked explanations, timed mini exams, flashcards, and local progress reports.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Education",
+      "item": "https://afrotools.com/education/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "AfroStudy",
+      "item": "https://afrotools.com/education/afrostudy/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/education/afrostudy/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/education/afrostudy/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/education/afrostudy/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/education/afrostudy/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar theme="dark"></afro-navbar>
+
+<div class="edu-ecosystem">
+  <div class="edu-ecosystem-card">
+    <div class="edu-ecosystem-copy">
+      <div class="edu-ecosystem-label">AfroTools Education System</div>
+      <p>AfroStudy is the KCSE-focused exam prep product in the AfroTools education ecosystem. Use the main education hub for the full taxonomy, and Education Hub when you want a profile-led route across scholarships and study tools.</p>
+    </div>
+    <div class="edu-ecosystem-links">
+      <a href="/education/">Education category</a>
+      <a href="/tools/education-hub/">Education Hub</a>
+      <a href="/jamb/">AfroJAMB</a>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     HERO
+     ════════════════════════════════════════════════════ -->
+<section class="hero">
+<div class="wrap">
+  <div class="bc">
+    <a href="/">AfroTools</a><span class="sep">›</span>
+    <a href="/education/">Education</a><span class="sep">›</span>
+    <span style="color:#94a3af">AfroStudy</span>
+  </div>
+
+  <div class="badges">
+    <span class="badge">&#x1F1F0;&#x1F1EA; KENYA KCSE</span>
+    <span class="badge ai">&#x2726; WORKED EXPLANATIONS</span>
+    <span class="badge">7 PRACTICE SUBJECTS</span>
+    <span class="badge">FREE</span>
+  </div>
+
+  <h1>Practise KCSE Questions. Track Your Weak Spots.</h1>
+
+  <p class="hero-sub">Start with seeded KCSE-style questions, worked explanations, timed mini exams, flashcards, and local progress tracking. Built as a practical first version for Kenyan students. No signup required.</p>
+
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num" data-count="55">0</div><div class="lbl">Starter Questions</div></div>
+    <div class="hero-stat"><div class="num" data-count="7">0</div><div class="lbl">Practice Subjects</div></div>
+    <div class="hero-stat"><div class="num">Timed</div><div class="lbl">Mini Exams</div></div>
+    <div class="hero-stat"><div class="num">Local</div><div class="lbl">Progress Report</div></div>
+  </div>
+
+  <div class="cta-row">
+    <button type="button" class="btn btn-primary" onclick="switchTab('practice')">START PRACTISING &rarr;</button>
+    <button type="button" class="btn btn-ghost" onclick="switchTab('exam')">SIMULATE AN EXAM &rarr;</button>
+  </div>
+</div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     TAB NAVIGATION
+     ════════════════════════════════════════════════════ -->
+<nav class="tab-nav">
+<div class="wrap">
+  <button type="button" class="tab-btn active" data-tab="home" onclick="switchTab('home')">Home</button>
+  <button type="button" class="tab-btn" data-tab="subjects" onclick="switchTab('subjects')">Subjects</button>
+  <button type="button" class="tab-btn" data-tab="practice" onclick="switchTab('practice')">Practice</button>
+  <button type="button" class="tab-btn" data-tab="exam" onclick="switchTab('exam')">Exam Simulation</button>
+  <button type="button" class="tab-btn" data-tab="flashcards" onclick="switchTab('flashcards')">Flashcards</button>
+  <button type="button" class="tab-btn" data-tab="progress" onclick="switchTab('progress')">Progress</button>
+</div>
+</nav>
+
+<!-- ════════════════════════════════════════════════════
+     TAB 1 — HOME
+     ════════════════════════════════════════════════════ -->
+<div class="tab-panel active" id="panel-home">
+
+  <!-- Quick Start -->
+  <section class="qs-section">
+  <div class="wrap">
+    <div class="qs-ey rv">HOW IT WORKS</div>
+    <div class="qs-grid">
+      <div class="qs-card rv">
+        <div class="icon">&#x1F4DD;</div>
+        <h3>TOPIC PRACTICE</h3>
+        <p>Pick a seeded subject and practise questions one by one with worked explanations after each answer.</p>
+        <button type="button" class="btn btn-primary btn-sm" onclick="switchTab('practice')">START PRACTISING &rarr;</button>
+      </div>
+      <div class="qs-card rv">
+        <div class="icon">&#x23F1;&#xFE0F;</div>
+        <h3>LIVE EXAM SIMULATION</h3>
+        <p>Run a timed mini exam from the same question pool, submit, score, and review weak topics.</p>
+        <button type="button" class="btn btn-primary btn-sm" onclick="switchTab('exam')">SIMULATE EXAM &rarr;</button>
+      </div>
+      <div class="qs-card rv">
+        <div class="icon">&#x1F0CF;</div>
+        <h3>FLASHCARD DRILL</h3>
+        <p>Rapid-fire topic review. Flip cards to test recall. Master topics before the exam.</p>
+        <button type="button" class="btn btn-primary btn-sm" onclick="switchTab('flashcards')">START DRILLING &rarr;</button>
+      </div>
+    </div>
+  </div>
+  </section>
+
+  <!-- Stats Row -->
+  <section class="wrap">
+    <div class="stats-row">
+      <div class="stat-card rv"><div class="val">1.2M</div><div class="lbl">Students Sat KCSE 2024</div></div>
+      <div class="stat-card rv"><div class="val">7</div><div class="lbl">Seeded Subjects</div></div>
+      <div class="stat-card rv"><div class="val">55+</div><div class="lbl">Starter Questions</div></div>
+      <div class="stat-card rv"><div class="val">TXT</div><div class="lbl">Study Report Export</div></div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     TAB 2 — SUBJECTS
+     ════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="panel-subjects">
+<div class="wrap">
+
+  <!-- Filter buttons -->
+  <div class="filter-row">
+    <button type="button" class="filter-btn active" data-filter="all" onclick="filterSubjects('all')">All</button>
+    <button type="button" class="filter-btn" data-filter="sciences" onclick="filterSubjects('sciences')">Sciences</button>
+    <button type="button" class="filter-btn" data-filter="languages" onclick="filterSubjects('languages')">Languages</button>
+    <button type="button" class="filter-btn" data-filter="humanities" onclick="filterSubjects('humanities')">Humanities</button>
+    <button type="button" class="filter-btn" data-filter="technical" onclick="filterSubjects('technical')">Technical</button>
+  </div>
+
+  <!-- Subject cards grid — JS generated -->
+  <div class="subj-grid" id="subj-grid"></div>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     TAB 3 — PRACTICE
+     ════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="panel-practice">
+
+  <!-- ── PRACTICE SETUP ──────────────────────────────── -->
+  <div class="prac-setup" id="prac-setup">
+  <div class="wrap">
+    <div class="prac-ey">PRACTICE MODE</div>
+    <h2>Choose Your Practice Session</h2>
+    <p class="subtitle">Build your skills topic by topic. Get a worked explanation after every answer.</p>
+
+    <!-- Step 1: Subject -->
+    <div class="prac-step" id="prac-step-1">
+      <div class="prac-step-label">Step 1: Select Subject</div>
+      <div class="prac-pills" id="prac-subjects"></div>
+    </div>
+
+    <!-- Step 2: Paper (hidden until subject chosen) -->
+    <div class="prac-step" id="prac-step-2" style="display:none">
+      <div class="prac-step-label">Step 2: Select Paper</div>
+      <div class="prac-pills" id="prac-papers"></div>
+    </div>
+
+    <!-- Step 3: Mode (hidden until paper chosen) -->
+    <div class="prac-step" id="prac-step-3" style="display:none">
+      <div class="prac-step-label">Step 3: Select Mode</div>
+      <div class="prac-pills">
+        <button type="button" class="prac-pill active" data-mode="random" onclick="selectPracMode('random')">Random Mix</button>
+        <button type="button" class="prac-pill" data-mode="topic" onclick="selectPracMode('topic')">By Topic</button>
+        <button type="button" class="prac-pill" data-mode="year" onclick="selectPracMode('year')">By Year</button>
+        <button type="button" class="prac-pill" data-mode="weak" onclick="selectPracMode('weak')">Weak Topics</button>
+      </div>
+    </div>
+
+    <!-- Step 4: Question count (hidden until mode chosen) -->
+    <div class="prac-step" id="prac-step-4" style="display:none">
+      <div class="prac-step-label">Step 4: Number of Questions</div>
+      <div class="prac-pills">
+        <button type="button" class="prac-pill active" data-count="10" onclick="selectPracCount(10)">10</button>
+        <button type="button" class="prac-pill" data-count="20" onclick="selectPracCount(20)">20</button>
+        <button type="button" class="prac-pill" data-count="40" onclick="selectPracCount(40)">40</button>
+        <button type="button" class="prac-pill" data-count="all" onclick="selectPracCount('all')">All</button>
+      </div>
+    </div>
+
+    <button type="button" class="btn btn-primary prac-start-btn" id="prac-start-btn" style="display:none" onclick="startPractice()">START PRACTICE SESSION &rarr;</button>
+  </div>
+  </div>
+
+  <!-- ── ACTIVE SESSION ──────────────────────────────── -->
+  <div class="prac-session" id="prac-session">
+  <div class="wrap">
+
+    <div class="session-progress">
+      <div class="session-meta" id="session-meta">Mathematics Paper 1 &middot; Random Mix</div>
+      <div class="progress-track"><div class="progress-fill" id="prac-progress-fill" style="width:0%"></div></div>
+      <div class="progress-label" id="prac-progress-label">0 / 0</div>
+    </div>
+
+    <div class="question-card" id="question-card">
+      <div class="q-header">
+        <div class="q-meta" id="q-meta"></div>
+        <div class="q-badges" id="q-badges"></div>
+      </div>
+      <div class="q-text" id="q-text"></div>
+      <div class="q-options" id="q-options">
+        <div class="q-option" data-option="A"><span class="opt-letter">A</span><span class="opt-text"></span></div>
+        <div class="q-option" data-option="B"><span class="opt-letter">B</span><span class="opt-text"></span></div>
+        <div class="q-option" data-option="C"><span class="opt-letter">C</span><span class="opt-text"></span></div>
+        <div class="q-option" data-option="D"><span class="opt-letter">D</span><span class="opt-text"></span></div>
+      </div>
+      <div class="ai-explanation" id="ai-explanation" style="display:none">
+        <div class="ai-label">&#x2726; WORKED EXPLANATION</div>
+        <div class="ai-text" id="ai-text"></div>
+        <div class="ai-actions">
+          <button type="button" class="btn-ghost-light" onclick="markDifficult()">&#x1F6A9; Mark as Difficult</button>
+          <button type="button" class="btn-ghost-light" onclick="addToFlashcards()">&#x1F0CF; Add to Flashcards</button>
+        </div>
+      </div>
+      <div class="q-nav">
+        <button type="button" class="btn btn-outline btn-sm" id="prev-btn" onclick="prevQuestion()">&larr; Previous</button>
+        <span class="q-counter" id="q-counter">Question 1 of 20</span>
+        <button type="button" class="btn btn-primary btn-sm" id="next-btn" onclick="nextQuestion()" disabled>Next &rarr;</button>
+      </div>
+    </div>
+
+  </div>
+  </div>
+
+  <!-- ── SESSION SUMMARY ─────────────────────────────── -->
+  <div class="session-summary" id="prac-summary" style="display:none">
+  <div class="wrap">
+    <div class="summary-card">
+      <div class="summary-header">
+        <h2>Session Complete &#x2713;</h2>
+        <div class="sub" id="summary-sub"></div>
+      </div>
+      <div class="summary-stats">
+        <div class="summary-stat"><div class="val" id="summary-score">0/0</div><div class="lbl">Score</div></div>
+        <div class="summary-stat"><div class="val" id="summary-accuracy">0%</div><div class="lbl">Accuracy</div></div>
+        <div class="summary-stat"><div class="val" id="summary-time">0 min</div><div class="lbl">Time</div></div>
+      </div>
+      <div class="topic-breakdown" id="topic-breakdown">
+        <h3>Topic Breakdown</h3>
+        <div id="topic-rows"></div>
+      </div>
+      <div class="summary-actions">
+        <button type="button" class="btn btn-primary" onclick="retryWrong()">RETRY WRONG QUESTIONS</button>
+        <button type="button" class="btn btn-outline" onclick="resetPractice()">NEW PRACTICE SESSION</button>
+        <button type="button" class="btn btn-outline" onclick="switchTab('subjects')">BACK TO SUBJECTS</button>
+      </div>
+    </div>
+  </div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     TAB 4 — EXAM SIMULATION
+     ════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="panel-exam">
+
+  <!-- ── SCREEN 1: EXAM SETUP ────────────────────────── -->
+  <div id="exam-setup" class="exam-screen active">
+  <div class="wrap exam-setup-wrap">
+    <div class="prac-ey">EXAM SIMULATION</div>
+    <h2 style="font-family:'DM Sans',sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.02em;font-size:1.35rem;margin-bottom:6px">Simulate A KCSE Exam</h2>
+    <p class="subtitle" style="color:var(--text-muted);font-size:.95rem;margin-bottom:28px">Run a timed KCSE-style mini exam from the seeded practice pool, then review your score and weak topics.</p>
+
+    <div class="setup-step">
+      <label class="setup-label" for="exam-year-picker">Step 1: Select Subject</label>
+      <div class="subject-pills" id="exam-subject-picker"></div>
+    </div>
+
+    <div class="setup-step" id="exam-paper-step" style="display:none">
+      <label class="setup-label">Step 2: Select Paper</label>
+      <div class="radio-group" id="exam-paper-picker"></div>
+    </div>
+
+    <div class="setup-step" id="exam-year-step" style="display:none">
+      <label class="setup-label">Step 3: Select Year</label>
+      <select id="exam-year-picker" class="setup-select">
+        <option value="random">Random Year</option>
+        <option value="2024">2024</option><option value="2023">2023</option>
+        <option value="2022">2022</option><option value="2021">2021</option>
+        <option value="2020">2020</option><option value="2019">2019</option>
+        <option value="2018">2018</option><option value="2017">2017</option>
+        <option value="2016">2016</option><option value="2015">2015</option>
+      </select>
+    </div>
+
+    <div class="exam-info-card" id="exam-info" style="display:none">
+      <div class="exam-info-row"><span>Duration:</span><strong id="info-duration">2 hours 30 minutes</strong></div>
+      <div class="exam-info-row"><span>Questions:</span><strong id="info-questions">40 Questions</strong></div>
+      <div class="exam-info-row"><span>Total Marks:</span><strong id="info-marks">100</strong></div>
+    </div>
+
+    <div class="rules-box" id="rules-box" style="display:none">
+      <div class="rules-title">&#x26A0;&#xFE0F; EXAM RULES</div>
+      <ul>
+        <li>Timer counts down from the selected mini-exam duration</li>
+        <li>You cannot pause the exam once started</li>
+        <li>You can navigate freely between questions</li>
+        <li>Flag questions for review before submitting</li>
+        <li>Worked explanations shown only after submission</li>
+        <li>Auto-submits when time expires</li>
+      </ul>
+    </div>
+
+    <button type="button" class="btn btn-primary btn-lg" id="begin-exam-btn" style="display:none" onclick="beginExam()">BEGIN EXAM &rarr;</button>
+  </div>
+  </div>
+
+  <!-- ── SCREEN 2: LIVE EXAM ─────────────────────────── -->
+  <div id="exam-active" class="exam-screen">
+    <div class="exam-header">
+      <div class="exam-title-bar">
+        <span class="exam-subject-label" id="exam-label"></span>
+        <div class="exam-timer" id="exam-timer">
+          <span>&#x23F1;&#xFE0F;</span>
+          <span id="timer-display">00:00:00</span>
+        </div>
+      </div>
+      <div class="exam-status-bar">
+        <span id="answered-count">Answered: 0/0</span>
+        <span id="flagged-count">Flagged: 0</span>
+        <button type="button" class="btn-danger-outline" onclick="confirmSubmit()">SUBMIT EXAM</button>
+      </div>
+    </div>
+
+    <div class="exam-body">
+      <div class="exam-question-area">
+        <div class="exam-q-header">
+          <span class="exam-q-num" id="exam-q-num">Question 1</span>
+          <button type="button" class="flag-btn" id="flag-btn" onclick="toggleFlag()">&#x1F6A9; Flag for Review</button>
+        </div>
+        <div class="exam-q-text" id="exam-q-text"></div>
+        <div id="exam-options"></div>
+        <div class="exam-q-nav">
+          <button type="button" class="btn btn-outline btn-sm" onclick="examPrev()">&larr; Previous</button>
+          <button type="button" class="btn btn-primary btn-sm" onclick="examNext()">Next &rarr;</button>
+        </div>
+      </div>
+
+      <div class="exam-navigator">
+        <div class="nav-title">QUESTION NAVIGATOR</div>
+        <div class="nav-grid" id="nav-grid"></div>
+        <div class="nav-legend">
+          <span class="legend-item"><span class="legend-dot white"></span> Not visited</span>
+          <span class="legend-item"><span class="legend-dot blue-outline"></span> Visited</span>
+          <span class="legend-item"><span class="legend-dot blue-filled"></span> Answered</span>
+          <span class="legend-item"><span class="legend-dot orange"></span> Flagged</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SCREEN 3: RESULTS ───────────────────────────── -->
+  <div id="exam-results" class="exam-screen">
+  <div class="wrap results-wrap">
+    <div class="results-header">
+      <div class="prac-ey">EXAM COMPLETE</div>
+      <h2 id="results-title"></h2>
+    </div>
+
+    <div class="results-stats">
+      <div class="result-card"><div class="result-num" id="result-score">0/0</div><div class="result-label">Score</div></div>
+      <div class="result-card"><div class="result-num" id="result-pct">0%</div><div class="result-label">Accuracy</div></div>
+      <div class="result-card"><div class="result-num" id="result-time">00:00</div><div class="result-label">Time Taken</div></div>
+      <div class="result-card grade-card"><div class="result-grade" id="result-grade">-</div><div class="result-label" id="result-grade-label">Grade</div></div>
+    </div>
+
+    <div class="grade-scale-card">
+      <div class="grade-scale-title">LOCAL SCORE BAND</div>
+      <div class="grade-scale-grid" id="grade-scale-display"></div>
+    </div>
+
+    <div class="topic-performance">
+      <h3>TOPIC PERFORMANCE</h3>
+      <div id="exam-topic-bars"></div>
+    </div>
+
+    <div class="answer-review-section">
+      <h3>ANSWER REVIEW</h3>
+      <p class="text-small">Review every question with worked explanations.</p>
+      <div id="answer-review-list"></div>
+    </div>
+
+    <div class="results-actions">
+      <button type="button" class="btn btn-primary" onclick="retakeExam()">SIMULATE AGAIN</button>
+      <button type="button" class="btn btn-outline" onclick="switchTab('practice')">PRACTISE WEAK TOPICS</button>
+      <button type="button" class="btn btn-outline" onclick="switchTab('subjects')">BACK TO SUBJECTS</button>
+    </div>
+  </div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     TAB 5 — FLASHCARDS
+     ════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="panel-flashcards">
+<div class="wrap">
+
+  <!-- Flashcard Setup -->
+  <div class="flashcard-setup" id="flashcard-setup">
+    <div class="section-eyebrow">&#x2500;&#x2500; FLASHCARD DRILL</div>
+    <h2>CHOOSE YOUR DECK</h2>
+    <p class="text-body-lg">Rapid-fire topic review. Flip cards to test recall.</p>
+
+    <div class="deck-selector">
+      <div class="setup-step">
+        <label class="setup-label">SELECT SUBJECT</label>
+        <div class="subject-pills" id="fc-subject-picker">
+          <button type="button" class="subject-pill" onclick="selectFCSubject(this,'mathematics')">&#x1F9EE; Mathematics</button>
+          <button type="button" class="subject-pill" onclick="selectFCSubject(this,'biology')">&#x1F52C; Biology</button>
+          <button type="button" class="subject-pill" onclick="selectFCSubject(this,'chemistry')">&#x2697;&#xFE0F; Chemistry</button>
+          <button type="button" class="subject-pill" onclick="selectFCSubject(this,'physics')">&#x26A1; Physics</button>
+          <button type="button" class="subject-pill" onclick="selectFCSubject(this,'history')">&#x1F3DB;&#xFE0F; History</button>
+          <button type="button" class="subject-pill" onclick="selectFCSubject(this,'geography')">&#x1F30D; Geography</button>
+        </div>
+      </div>
+
+      <div class="setup-step" id="fc-topic-step" style="display:none">
+        <label class="setup-label">SELECT TOPIC</label>
+        <div id="fc-topic-list" class="topic-pill-list"></div>
+      </div>
+
+      <button type="button" class="btn btn-primary" id="start-fc-btn" onclick="startFlashcards()" style="display:none">
+        START DRILLING &rarr;
+      </button>
+    </div>
+  </div>
+
+  <!-- Active Flashcard UI -->
+  <div class="flashcard-active" id="flashcard-active" style="display:none">
+
+    <div class="fc-header">
+      <div class="fc-deck-label" id="fc-deck-label">&#x1F52C; Biology &middot; Cell Biology</div>
+      <div class="fc-counter" id="fc-counter">Card 1 of 12</div>
+    </div>
+
+    <div class="fc-dots" id="fc-dots"></div>
+
+    <div class="fc-scene" onclick="flipCard()">
+      <div class="fc-card" id="fc-card">
+        <div class="fc-front">
+          <div class="fc-hint">Tap to reveal answer</div>
+          <div class="fc-question" id="fc-question-text">
+            What is the powerhouse of the cell?
+          </div>
+        </div>
+        <div class="fc-back">
+          <div class="fc-answer" id="fc-answer-text">
+            The mitochondria. It produces ATP through cellular respiration, powering all cell activities.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fc-nav">
+      <button type="button" class="btn-danger-outline" onclick="markStillLearning()">&#x2717; Still Learning</button>
+      <button type="button" class="btn-ghost-light" onclick="fcPrev()">&larr; Prev</button>
+      <button type="button" class="btn-ghost-light" onclick="fcNext()">Next &rarr;</button>
+      <button type="button" class="btn-success-outline" onclick="markMastered()">&#x2713; Mastered</button>
+    </div>
+
+    <div class="fc-progress-section">
+      <div class="fc-progress-label">
+        <span>Mastered: <strong id="fc-mastered-count">0</strong> / <span id="fc-total-count">12</span></span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="fc-progress-fill" style="width:0%"></div>
+      </div>
+      <div class="fc-actions">
+        <button type="button" class="btn-ghost-light btn-sm" onclick="restartDeck()">Restart Deck</button>
+        <button type="button" class="btn-ghost-light btn-sm" onclick="practiceWeakOnly()">Practise Weak Only</button>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     TAB 6 — PROGRESS
+     ════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="panel-progress">
+<div class="wrap" style="padding-top:32px;padding-bottom:56px">
+
+  <div class="section-eyebrow" style="font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-subtle);margin-bottom:8px">&#x2500;&#x2500; MY PROGRESS</div>
+  <h2 style="font-family:'DM Sans',sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.02em;font-size:1.35rem;margin-bottom:28px">YOUR STUDY DASHBOARD</h2>
+
+  <!-- Stats row -->
+  <div class="progress-stats-grid">
+    <div class="stat-card-lg">
+      <div class="stat-num blue" id="prog-total">0</div>
+      <div class="stat-label">Questions Answered</div>
+    </div>
+    <div class="stat-card-lg">
+      <div class="stat-num blue" id="prog-accuracy">&mdash;</div>
+      <div class="stat-label">Overall Accuracy</div>
+    </div>
+    <div class="stat-card-lg">
+      <div class="stat-num blue" id="prog-streak">0</div>
+      <div class="stat-label">Day Streak</div>
+    </div>
+    <div class="stat-card-lg">
+      <div class="stat-num blue" id="prog-exams">0</div>
+      <div class="stat-label">Exams Simulated</div>
+    </div>
+    <div class="stat-card-lg">
+      <div class="stat-num blue" id="prog-subjects">0</div>
+      <div class="stat-label">Subjects Active</div>
+    </div>
+  </div>
+
+  <!-- Subject performance -->
+  <div class="progress-section">
+    <h3>SUBJECT PERFORMANCE</h3>
+    <div id="subject-performance-bars">
+      <div class="empty-state">No practice sessions yet. Start practising to see your progress here.</div>
+    </div>
+  </div>
+
+  <!-- Exam history -->
+  <div class="progress-section">
+    <h3>EXAM SIMULATION HISTORY</h3>
+    <div id="exam-history-table">
+      <div class="empty-state">No exams simulated yet.</div>
+    </div>
+  </div>
+
+  <!-- Activity heatmap -->
+  <div class="progress-section">
+    <h3>STUDY ACTIVITY &mdash; LAST 4 WEEKS</h3>
+    <div class="heatmap-grid" id="heatmap"></div>
+    <div class="heatmap-legend">
+      <span style="background:#F1F5F9" class="heatmap-key"></span> None
+      <span style="background:#BFDBFE" class="heatmap-key"></span> 1&ndash;5
+      <span style="background:#93C5FD" class="heatmap-key"></span> 6&ndash;15
+      <span style="background:#3B82F6" class="heatmap-key"></span> 16&ndash;30
+      <span style="background:#1D4ED8" class="heatmap-key"></span> 30+
+    </div>
+  </div>
+
+  <!-- Study Insight -->
+  <div class="progress-section">
+    <h3>STUDY INSIGHT</h3>
+    <div class="ai-insight-card">
+      <div class="ai-label">&#x2726; STUDY INSIGHT</div>
+      <div id="ai-insight-text" class="ai-text">
+        Complete at least 20 practice questions to receive personalised study insights.
+      </div>
+    </div>
+  </div>
+
+  <div class="progress-section">
+    <h3>EXPORT STUDY REPORT</h3>
+    <div class="progress-export-actions">
+      <button type="button" class="btn btn-primary btn-sm" onclick="copyStudyReport()">Copy Report</button>
+      <button type="button" class="btn btn-outline btn-sm" onclick="downloadStudyReport()">Download TXT</button>
+    </div>
+    <div id="study-report-status" class="progress-save-status" role="status" aria-live="polite"></div>
+  </div>
+
+  <!-- Reset button -->
+  <div class="progress-section">
+    <button type="button" class="btn-ghost-light btn-sm" onclick="if(confirm('Reset all progress?')) resetProgress()">
+      Reset All Progress
+    </button>
+  </div>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     FOOTER CTA
+     ════════════════════════════════════════════════════ -->
+<section class="footer-cta">
+<div class="wrap">
+  <h2>Study Smarter. Score Higher.</h2>
+  <p>Free KCSE-style practice for Kenyan students. Practise seeded subjects, run timed mini exams, review explanations, and export your progress report.</p>
+  <div class="cta-row">
+    <button type="button" class="btn btn-primary" onclick="switchTab('practice')" style="background:#fff;color:var(--primary)">START PRACTISING &rarr;</button>
+    <a href="/" class="btn btn-ghost">BROWSE ALL TOOLS</a>
+  </div>
+</div>
+</section>
+
+<afro-footer></afro-footer>
+
+<script>
+/* ════════════════════════════════════════════════════
+   AFROSTUDY — MAIN APP JS (Part 1: Shell, Tabs, Subjects)
+   ════════════════════════════════════════════════════ */
+(function(){
+'use strict';
+
+/* ── TAB SWITCHING ─────────────────────────────────── */
+window.switchTab = function(name){
+  document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
+  var panel = document.getElementById('panel-'+name);
+  var btn = document.querySelector('[data-tab="'+name+'"]');
+  if(panel) panel.classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(name === 'progress' && typeof loadProgress === 'function') loadProgress();
+  var nav = document.querySelector('.tab-nav');
+  if(nav) window.scrollTo({top: nav.offsetTop - 10, behavior:'smooth'});
+};
+
+/* ── SUBJECT DATA ──────────────────────────────────── */
+var SUBJECTS = [
+  {id:'mathematics',  name:'Mathematics',       icon:'\u{1F9EE}', color:'#0062CC', papers:'P1 starter',    qcount:'10', group:'sciences', active:true},
+  {id:'biology',      name:'Biology',           icon:'\u{1F52C}', color:'#22c55e', papers:'P1 starter',    qcount:'10', group:'sciences', active:true},
+  {id:'chemistry',    name:'Chemistry',         icon:'\u2697\uFE0F', color:'#F5A623', papers:'P1 starter', qcount:'10', group:'sciences', active:true},
+  {id:'physics',      name:'Physics',           icon:'\u26A1',    color:'#8B5CF6', papers:'P1 starter',    qcount:'10', group:'sciences', active:true},
+  {id:'english',      name:'English',           icon:'\u{1F4D6}', color:'#EF4444', papers:'P1 starter',    qcount:'5', group:'languages', active:true},
+  {id:'history',      name:'History & Govt',    icon:'\u{1F3DB}\uFE0F', color:'#F97316', papers:'P1 starter', qcount:'5', group:'humanities', active:true},
+  {id:'geography',    name:'Geography',         icon:'\u{1F30D}', color:'#14B8A6', papers:'P1 starter',    qcount:'5', group:'humanities', active:true},
+  {id:'kiswahili',    name:'Kiswahili',         icon:'\u{1F5E3}\uFE0F', color:'#94A3B8', papers:'P1, P2, P3', qcount:'--', group:'languages', active:false},
+  {id:'business-studies', name:'Business Studies', icon:'\u{1F4BC}', color:'#94A3B8', papers:'P1, P2', qcount:'--', group:'humanities', active:false},
+  {id:'agriculture',  name:'Agriculture',       icon:'\u{1F33E}', color:'#94A3B8', papers:'P1, P2', qcount:'--', group:'humanities', active:false},
+  {id:'cre',          name:'CRE',               icon:'\u271D\uFE0F', color:'#94A3B8', papers:'P1, P2', qcount:'--', group:'humanities', active:false},
+  {id:'computer-studies', name:'Computer Studies', icon:'\u{1F4BB}', color:'#94A3B8', papers:'P1, P2', qcount:'--', group:'technical', active:false},
+  {id:'ire',          name:'IRE',               icon:'\u2622\uFE0F', color:'#94A3B8', papers:'P1, P2', qcount:'--', group:'humanities', active:false},
+  {id:'home-science', name:'Home Science',      icon:'\u{1F3E0}', color:'#94A3B8', papers:'P1, P2', qcount:'--', group:'technical', active:false},
+  {id:'art-design',   name:'Art & Design',      icon:'\u{1F3A8}', color:'#94A3B8', papers:'P1, P2', qcount:'--', group:'technical', active:false},
+  {id:'music',        name:'Music',             icon:'\u{1F3B5}', color:'#94A3B8', papers:'P1, P2', qcount:'--', group:'technical', active:false},
+  {id:'woodwork',     name:'Woodwork',          icon:'\u{1FAB5}', color:'#94A3B8', papers:'P1, P2', qcount:'--', group:'technical', active:false},
+  {id:'metalwork',    name:'Metalwork',         icon:'\u2692\uFE0F', color:'#94A3B8', papers:'P1, P2', qcount:'--', group:'technical', active:false},
+  {id:'building-construction', name:'Building Construction', icon:'\u{1F3D7}\uFE0F', color:'#94A3B8', papers:'P1, P2', qcount:'--', group:'technical', active:false},
+  {id:'electricity',  name:'Electricity',       icon:'\u{1F50C}', color:'#94A3B8', papers:'P1, P2', qcount:'--', group:'technical', active:false},
+  {id:'power-mechanics', name:'Power Mechanics', icon:'\u2699\uFE0F', color:'#94A3B8', papers:'P1, P2', qcount:'--', group:'technical', active:false},
+  {id:'drawing-design', name:'Drawing & Design', icon:'\u{1F4D0}', color:'#94A3B8', papers:'P1, P2', qcount:'--', group:'technical', active:false},
+  {id:'aviation-technology', name:'Aviation Technology', icon:'\u2708\uFE0F', color:'#94A3B8', papers:'P1, P2', qcount:'--', group:'technical', active:false},
+  {id:'french',       name:'French',            icon:'\u{1F1EB}\u{1F1F7}', color:'#94A3B8', papers:'P1, P2', qcount:'--', group:'languages', active:false},
+  {id:'german',       name:'German',            icon:'\u{1F1E9}\u{1F1EA}', color:'#94A3B8', papers:'P1, P2', qcount:'--', group:'languages', active:false},
+  {id:'arabic',       name:'Arabic',            icon:'\u{1F54C}', color:'#94A3B8', papers:'P1, P2', qcount:'--', group:'languages', active:false},
+  {id:'sign-language', name:'Sign Language',    icon:'\u{1F91F}', color:'#94A3B8', papers:'P1, P2', qcount:'--', group:'languages', active:false}
+];
+
+var subjectFilters = {
+  sciences: ['mathematics','biology','chemistry','physics'],
+  languages: ['english','kiswahili','french','german','arabic','sign-language'],
+  humanities: ['history','geography','cre','ire','business-studies','agriculture'],
+  technical: ['computer-studies','home-science','art-design','music','woodwork','metalwork','building-construction','electricity','power-mechanics','drawing-design','aviation-technology']
+};
+
+/* ── BUILD SUBJECT CARDS ───────────────────────────── */
+function buildSubjectGrid(){
+  var grid = document.getElementById('subj-grid');
+  if(!grid) return;
+  var html = '';
+  SUBJECTS.forEach(function(s){
+    if(!s.active) return;
+    var cs = s.active ? '' : ' coming-soon';
+    var bandColor = s.color;
+    html += '<div class="subject-card'+cs+'" data-subject="'+s.id+'">';
+    html += '<div class="sc-band" style="background:'+bandColor+'"></div>';
+    html += '<div class="sc-body">';
+    html += '<div class="sc-icon">'+s.icon+'</div>';
+    html += '<div class="sc-name">'+s.name+'</div>';
+    html += '<div class="sc-meta">'+s.papers+'</div>';
+    html += '<div class="sc-meta">'+s.qcount+' seeded questions</div>';
+    html += '<div class="sc-btns">';
+    html += '<button type="button" class="btn btn-primary btn-sm" onclick="selectPracSubject(\''+s.id+'\');switchTab(\'practice\')">PRACTICE</button>';
+    html += '<button type="button" class="btn btn-outline btn-sm" onclick="selectExamSubjectById(\''+s.id+'\');switchTab(\'exam\')">SIMULATE</button>';
+    html += '</div></div></div>';
+  });
+  grid.innerHTML = html;
+  if(typeof twemoji !== 'undefined') twemoji.parse(grid);
+}
+
+/* ── SUBJECT FILTER ────────────────────────────────── */
+window.filterSubjects = function(group){
+  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active')});
+  var btn = document.querySelector('[data-filter="'+group+'"]');
+  if(btn) btn.classList.add('active');
+  document.querySelectorAll('.subject-card').forEach(function(card){
+    var sid = card.dataset.subject;
+    if(group === 'all' || (subjectFilters[group] && subjectFilters[group].indexOf(sid) !== -1)){
+      card.style.display = 'flex';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+};
+
+/* ── SCROLL REVEAL ─────────────────────────────────── */
+function initReveal(){
+  var els = document.querySelectorAll('.rv');
+  if(!els.length) return;
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}
+    });
+  },{threshold:0.15});
+  els.forEach(function(el){obs.observe(el)});
+}
+
+/* ── ANIMATED COUNTERS ─────────────────────────────── */
+function animateCounters(){
+  document.querySelectorAll('.hero-stat .num[data-count]').forEach(function(el){
+    var target = parseInt(el.dataset.count,10);
+    var dur = 1200, start = 0, step = Math.ceil(target/60);
+    var iv = setInterval(function(){
+      start += step;
+      if(start >= target){start = target; clearInterval(iv)}
+      el.textContent = start.toLocaleString() + (target >= 1000 ? '+' : '');
+    }, dur/60);
+  });
+}
+
+/* ── TWEMOJI PARSE ─────────────────────────────────── */
+function parseTwemoji(){
+  if(typeof twemoji !== 'undefined'){
+    twemoji.parse(document.querySelector('.hero'), {folder:'svg',ext:'.svg'});
+    twemoji.parse(document.querySelector('#panel-home'), {folder:'svg',ext:'.svg'});
+  }
+}
+
+/* ── INIT ──────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', function(){
+  buildSubjectGrid();
+  initReveal();
+  animateCounters();
+  parseTwemoji();
+});
+
+/* expose SUBJECTS for other parts */
+window.AFROSTUDY_SUBJECTS = SUBJECTS;
+
+/* ════════════════════════════════════════════════════
+   PART 2 — PRACTICE MODE
+   ════════════════════════════════════════════════════ */
+
+/* ── Practice state ────────────────────────────────── */
+var practiceState = {
+  subject: '', paper: 1, mode: 'random', count: 10,
+  questions: [], currentIndex: 0, answers: {}, startTime: null
+};
+
+/* subjects with P3 */
+var P3_SUBJECTS = [];
+
+/* ── Build subject pills ───────────────────────────── */
+function buildPracSubjects(){
+  var el = document.getElementById('prac-subjects');
+  if(!el) return;
+  var html = '';
+  SUBJECTS.forEach(function(s){
+    if(!s.active) return;
+    html += '<button type="button" class="prac-pill" data-subj="'+s.id+'" onclick="selectPracSubject(\''+s.id+'\')"><span class="p-icon">'+s.icon+'</span>'+s.name+'</button>';
+  });
+  el.innerHTML = html;
+  if(typeof twemoji !== 'undefined') twemoji.parse(el);
+}
+
+/* ── Step handlers ─────────────────────────────────── */
+window.selectPracSubject = function(id){
+  practiceState.subject = id;
+  document.querySelectorAll('#prac-subjects .prac-pill').forEach(function(b){b.classList.toggle('active', b.dataset.subj===id)});
+  /* build paper pills */
+  var papersHtml = '<button type="button" class="prac-pill active" data-paper="1" onclick="selectPracPaper(1)">Paper 1 starter</button>';
+  var hasP3 = P3_SUBJECTS.indexOf(id) !== -1;
+  if(hasP3) papersHtml += '<button type="button" class="prac-pill" data-paper="3" onclick="selectPracPaper(3)">Paper 3</button>';
+  document.getElementById('prac-papers').innerHTML = papersHtml;
+  practiceState.paper = 1;
+  document.getElementById('prac-step-2').style.display = '';
+  document.getElementById('prac-step-3').style.display = '';
+  document.getElementById('prac-step-4').style.display = '';
+  document.getElementById('prac-start-btn').style.display = '';
+};
+
+window.selectPracPaper = function(p){
+  practiceState.paper = p;
+  document.querySelectorAll('#prac-papers .prac-pill').forEach(function(b){b.classList.toggle('active', parseInt(b.dataset.paper)===p)});
+};
+
+window.selectPracMode = function(m){
+  practiceState.mode = m;
+  document.querySelectorAll('#prac-step-3 .prac-pill').forEach(function(b){b.classList.toggle('active', b.dataset.mode===m)});
+};
+
+window.selectPracCount = function(c){
+  practiceState.count = c;
+  document.querySelectorAll('#prac-step-4 .prac-pill').forEach(function(b){
+    var v = b.dataset.count === 'all' ? 'all' : parseInt(b.dataset.count);
+    b.classList.toggle('active', v === c);
+  });
+};
+
+/* ── Start practice ────────────────────────────────── */
+window.startPractice = function(){
+  var pool = (window.AFROSTUDY_QUESTIONS || []).filter(function(q){
+    return q.subject === practiceState.subject && q.paper === practiceState.paper;
+  });
+  /* shuffle */
+  pool.sort(function(){return Math.random() - 0.5});
+  if(pool.length === 0) pool = getSampleQuestions(practiceState.subject, practiceState.paper);
+  var cnt = practiceState.count === 'all' ? pool.length : Math.min(practiceState.count, pool.length);
+  practiceState.questions = pool.slice(0, cnt);
+  if(practiceState.questions.length === 0){
+    alert('This subject is not seeded yet. Choose one of the starter subjects shown in the Subjects tab.');
+    return;
+  }
+  practiceState.currentIndex = 0;
+  practiceState.answers = {};
+  practiceState.startTime = Date.now();
+  /* find subject name */
+  var subj = SUBJECTS.filter(function(s){return s.id===practiceState.subject})[0];
+  document.getElementById('session-meta').textContent = (subj ? subj.name : practiceState.subject) + ' Paper ' + practiceState.paper + ' \u00B7 ' + practiceState.mode;
+  /* show session, hide setup */
+  document.getElementById('prac-setup').style.display = 'none';
+  document.getElementById('prac-session').classList.add('visible');
+  document.getElementById('prac-summary').style.display = 'none';
+  renderQuestion(0);
+};
+
+/* ── Sample questions fallback ─────────────────────── */
+function getSampleQuestions(subject, paper){
+  var samples = {
+    mathematics:[
+      {id:'m1',subject:'mathematics',paper:1,year:2023,number:1,topic:'algebra',type:'mcq',text:'If the mean of five numbers 5, 4, 2, 7 and x is 5, find the value of x.',options:{A:'6',B:'5',C:'7',D:'8'},correctAnswer:'C',marks:2,explanation:'Mean = sum \u00F7 count. Target total = 5 \u00D7 5 = 25. Existing sum = 5+4+2+7 = 18. Therefore x = 25 \u2212 18 = 7.',difficulty:'easy'},
+      {id:'m2',subject:'mathematics',paper:1,year:2022,number:2,topic:'logarithms',type:'mcq',text:'Evaluate: log\u2082(64)',options:{A:'4',B:'5',C:'6',D:'8'},correctAnswer:'C',marks:2,explanation:'log\u2082(64) means 2 to what power = 64? 2\u2076 = 64, so the answer is 6.',difficulty:'easy'},
+      {id:'m3',subject:'mathematics',paper:1,year:2021,number:3,topic:'quadratic-equations',type:'mcq',text:'Solve: x\u00B2 \u2212 5x + 6 = 0',options:{A:'x = 2 or x = 3',B:'x = \u22122 or x = \u22123',C:'x = 1 or x = 6',D:'x = 2 or x = \u22123'},correctAnswer:'A',marks:2,explanation:'Factorise: find two numbers that multiply to 6 and add to \u22125. Those are \u22122 and \u22123. So (x\u22122)(x\u22123)=0. Therefore x=2 or x=3.',difficulty:'medium'},
+      {id:'m4',subject:'mathematics',paper:1,year:2023,number:4,topic:'trigonometry',type:'mcq',text:'What is sin(30\u00B0)?',options:{A:'0',B:'\u00BD',C:'\u221A3/2',D:'1'},correctAnswer:'B',marks:1,explanation:'sin(30\u00B0) = \u00BD. This is one of the standard trigonometric values from the unit circle.',difficulty:'easy'},
+      {id:'m5',subject:'mathematics',paper:1,year:2022,number:5,topic:'algebra',type:'mcq',text:'Simplify: 3(2x + 4) \u2212 2(x \u2212 1)',options:{A:'4x + 14',B:'4x + 10',C:'8x + 14',D:'4x + 12'},correctAnswer:'A',marks:2,explanation:'3(2x+4) = 6x+12. 2(x\u22121) = 2x\u22122. So 6x+12\u22122x+2 = 4x+14.',difficulty:'easy'},
+      {id:'m6',subject:'mathematics',paper:1,year:2021,number:6,topic:'statistics',type:'mcq',text:'Find the median of: 3, 7, 1, 9, 5',options:{A:'3',B:'5',C:'7',D:'9'},correctAnswer:'B',marks:1,explanation:'Arrange in order: 1, 3, 5, 7, 9. The middle value is 5.',difficulty:'easy'},
+      {id:'m7',subject:'mathematics',paper:1,year:2023,number:7,topic:'matrices',type:'mcq',text:'If A = [[2,3],[1,4]], find |A| (determinant).',options:{A:'5',B:'11',C:'8',D:'\u22121'},correctAnswer:'A',marks:2,explanation:'|A| = (2)(4) \u2212 (3)(1) = 8 \u2212 3 = 5.',difficulty:'medium'},
+      {id:'m8',subject:'mathematics',paper:1,year:2022,number:8,topic:'sequences',type:'mcq',text:'Find the 10th term of the arithmetic sequence: 3, 7, 11, 15, ...',options:{A:'39',B:'43',C:'35',D:'41'},correctAnswer:'A',marks:2,explanation:'a = 3, d = 4. T\u2081\u2080 = a + (n\u22121)d = 3 + 9(4) = 3 + 36 = 39.',difficulty:'medium'},
+      {id:'m9',subject:'mathematics',paper:1,year:2021,number:9,topic:'geometry',type:'mcq',text:'The angles of a triangle are 2x\u00B0, 3x\u00B0 and 4x\u00B0. Find x.',options:{A:'20',B:'30',C:'40',D:'60'},correctAnswer:'A',marks:2,explanation:'Sum of angles in a triangle = 180\u00B0. 2x + 3x + 4x = 180. 9x = 180. x = 20.',difficulty:'easy'},
+      {id:'m10',subject:'mathematics',paper:1,year:2023,number:10,topic:'algebra',type:'mcq',text:'Solve for y: 2y + 7 = 3y \u2212 5',options:{A:'12',B:'\u221212',C:'2',D:'\u22122'},correctAnswer:'A',marks:1,explanation:'2y + 7 = 3y \u2212 5. Move terms: 7 + 5 = 3y \u2212 2y. 12 = y.',difficulty:'easy'}
+    ],
+    biology:[
+      {id:'b1',subject:'biology',paper:1,year:2023,number:1,topic:'cell-biology',type:'mcq',text:'Which organelle is known as the powerhouse of the cell?',options:{A:'Nucleus',B:'Ribosome',C:'Mitochondria',D:'Golgi apparatus'},correctAnswer:'C',marks:1,explanation:'Mitochondria produce ATP through cellular respiration, providing energy for cell activities.',difficulty:'easy'},
+      {id:'b2',subject:'biology',paper:1,year:2022,number:2,topic:'cell-biology',type:'mcq',text:'What is osmosis?',options:{A:'Movement of solute from high to low concentration',B:'Movement of water from high to low water potential through a semi-permeable membrane',C:'Active transport of ions',D:'Diffusion of gases'},correctAnswer:'B',marks:2,explanation:'Osmosis is the net movement of water molecules from a region of high water potential to low water potential through a semi-permeable membrane.',difficulty:'easy'},
+      {id:'b3',subject:'biology',paper:1,year:2021,number:3,topic:'nutrition',type:'mcq',text:'Which enzyme breaks down starch into maltose?',options:{A:'Pepsin',B:'Lipase',C:'Amylase',D:'Trypsin'},correctAnswer:'C',marks:1,explanation:'Amylase (found in saliva and pancreatic juice) catalyses the hydrolysis of starch into maltose.',difficulty:'easy'},
+      {id:'b4',subject:'biology',paper:1,year:2023,number:4,topic:'genetics',type:'mcq',text:'In a monohybrid cross Tt x Tt, what fraction of offspring are homozygous recessive?',options:{A:'1/4',B:'1/2',C:'3/4',D:'1'},correctAnswer:'A',marks:2,explanation:'Punnett square: TT, Tt, Tt, tt. Only tt (1 out of 4) is homozygous recessive = 1/4.',difficulty:'medium'},
+      {id:'b5',subject:'biology',paper:1,year:2022,number:5,topic:'ecology',type:'mcq',text:'In a food chain, energy transfer between trophic levels is approximately:',options:{A:'100%',B:'50%',C:'10%',D:'1%'},correctAnswer:'C',marks:1,explanation:'Only about 10% of energy is transferred between trophic levels. The rest is lost as heat through respiration.',difficulty:'easy'},
+      {id:'b6',subject:'biology',paper:1,year:2021,number:6,topic:'gaseous-exchange',type:'mcq',text:'Which structure in the lungs increases surface area for gas exchange?',options:{A:'Bronchi',B:'Trachea',C:'Alveoli',D:'Bronchioles'},correctAnswer:'C',marks:1,explanation:'Alveoli are tiny air sacs with large combined surface area, thin walls, and rich blood supply \u2014 ideal for gas exchange.',difficulty:'easy'},
+      {id:'b7',subject:'biology',paper:1,year:2023,number:7,topic:'reproduction',type:'mcq',text:'Where does fertilisation typically occur in humans?',options:{A:'Uterus',B:'Ovary',C:'Fallopian tube',D:'Cervix'},correctAnswer:'C',marks:1,explanation:'Fertilisation (fusion of sperm and egg) normally occurs in the fallopian tube (oviduct).',difficulty:'easy'},
+      {id:'b8',subject:'biology',paper:1,year:2022,number:8,topic:'cell-biology',type:'mcq',text:'Which cell structure is found in plant cells but NOT in animal cells?',options:{A:'Cell membrane',B:'Nucleus',C:'Cell wall',D:'Mitochondria'},correctAnswer:'C',marks:1,explanation:'Plant cells have a rigid cell wall made of cellulose. Animal cells lack this structure.',difficulty:'easy'},
+      {id:'b9',subject:'biology',paper:1,year:2021,number:9,topic:'transport',type:'mcq',text:'What carries oxygenated blood from the lungs to the heart?',options:{A:'Pulmonary artery',B:'Aorta',C:'Vena cava',D:'Pulmonary vein'},correctAnswer:'D',marks:1,explanation:'The pulmonary vein carries oxygenated blood from the lungs back to the left atrium of the heart.',difficulty:'medium'},
+      {id:'b10',subject:'biology',paper:1,year:2023,number:10,topic:'genetics',type:'mcq',text:'DNA replication is described as semi-conservative because:',options:{A:'Both strands are entirely new',B:'One strand is old and one is new in each daughter molecule',C:'Only half the DNA replicates',D:'Replication only occurs in half the cells'},correctAnswer:'B',marks:2,explanation:'Each new DNA molecule consists of one original (parent) strand and one newly synthesised strand.',difficulty:'medium'}
+    ],
+    chemistry:[
+      {id:'c1',subject:'chemistry',paper:1,year:2023,number:1,topic:'atomic-structure',type:'mcq',text:'What is the atomic number of an element?',options:{A:'Number of neutrons',B:'Number of protons',C:'Number of electrons and neutrons',D:'Mass number'},correctAnswer:'B',marks:1,explanation:'The atomic number = number of protons in the nucleus. It defines the element.',difficulty:'easy'},
+      {id:'c2',subject:'chemistry',paper:1,year:2022,number:2,topic:'bonding',type:'mcq',text:'NaCl is formed by which type of bonding?',options:{A:'Covalent',B:'Metallic',C:'Ionic',D:'Hydrogen'},correctAnswer:'C',marks:1,explanation:'Na (metal) transfers an electron to Cl (non-metal), forming Na\u207A and Cl\u207B ions held by electrostatic attraction = ionic bonding.',difficulty:'easy'},
+      {id:'c3',subject:'chemistry',paper:1,year:2021,number:3,topic:'acids-bases',type:'mcq',text:'What is the pH of a neutral solution?',options:{A:'0',B:'7',C:'14',D:'1'},correctAnswer:'B',marks:1,explanation:'pH 7 is neutral. Below 7 is acidic, above 7 is alkaline/basic.',difficulty:'easy'},
+      {id:'c4',subject:'chemistry',paper:1,year:2023,number:4,topic:'organic-chemistry',type:'mcq',text:'What is the general formula for alkanes?',options:{A:'C\u2099H\u2082\u2099',B:'C\u2099H\u2082\u2099\u208A\u2082',C:'C\u2099H\u2082\u2099\u208B\u2082',D:'C\u2099H\u2099'},correctAnswer:'B',marks:1,explanation:'Alkanes are saturated hydrocarbons with the general formula C\u2099H\u2082\u2099\u208A\u2082. E.g. methane CH\u2084 (n=1, 2(1)+2=4).',difficulty:'easy'},
+      {id:'c5',subject:'chemistry',paper:1,year:2022,number:5,topic:'electrochemistry',type:'mcq',text:'During electrolysis, cations migrate to the:',options:{A:'Anode',B:'Cathode',C:'Salt bridge',D:'Electrolyte'},correctAnswer:'B',marks:1,explanation:'Cations (positive ions) are attracted to the cathode (negative electrode) where they gain electrons (reduction).',difficulty:'medium'},
+      {id:'c6',subject:'chemistry',paper:1,year:2021,number:6,topic:'rates-of-reaction',type:'mcq',text:'Which factor does NOT affect the rate of a chemical reaction?',options:{A:'Temperature',B:'Catalyst',C:'Colour of reactants',D:'Concentration'},correctAnswer:'C',marks:1,explanation:'Rate is affected by temperature, concentration, surface area, catalyst, and pressure (for gases). Colour is a physical property that doesn\'t affect rate.',difficulty:'easy'},
+      {id:'c7',subject:'chemistry',paper:1,year:2023,number:7,topic:'energy-changes',type:'mcq',text:'An exothermic reaction:',options:{A:'Absorbs heat from surroundings',B:'Releases heat to surroundings',C:'Has no energy change',D:'Always needs a catalyst'},correctAnswer:'B',marks:1,explanation:'Exothermic reactions release energy (heat) to the surroundings. The products have less energy than the reactants.',difficulty:'easy'},
+      {id:'c8',subject:'chemistry',paper:1,year:2022,number:8,topic:'bonding',type:'mcq',text:'Diamond has a very high melting point because:',options:{A:'It has weak van der Waals forces',B:'Each carbon is bonded to 4 others in a giant covalent structure',C:'It has metallic bonding',D:'It is an ionic compound'},correctAnswer:'B',marks:2,explanation:'Diamond is a giant covalent structure where each C atom is bonded to 4 others by strong covalent bonds in a tetrahedral lattice. Breaking these requires enormous energy.',difficulty:'medium'},
+      {id:'c9',subject:'chemistry',paper:1,year:2021,number:9,topic:'atomic-structure',type:'mcq',text:'An isotope of carbon-12 has:',options:{A:'6 protons, 6 neutrons',B:'6 protons, 8 neutrons',C:'8 protons, 6 neutrons',D:'12 protons, 12 neutrons'},correctAnswer:'A',marks:1,explanation:'Carbon always has 6 protons (atomic number 6). Carbon-12 has mass number 12, so neutrons = 12 \u2212 6 = 6.',difficulty:'easy'},
+      {id:'c10',subject:'chemistry',paper:1,year:2023,number:10,topic:'acids-bases',type:'mcq',text:'Which is a strong acid?',options:{A:'Ethanoic acid',B:'Citric acid',C:'Hydrochloric acid',D:'Carbonic acid'},correctAnswer:'C',marks:1,explanation:'HCl is a strong acid \u2014 it fully dissociates in water. Ethanoic, citric, and carbonic acids are weak acids (partially dissociate).',difficulty:'easy'}
+    ],
+    physics:[
+      {id:'p1',subject:'physics',paper:1,year:2023,number:1,topic:'mechanics',type:'mcq',text:'A body moving at constant velocity has:',options:{A:'Zero acceleration',B:'Increasing acceleration',C:'Decreasing acceleration',D:'Constant non-zero acceleration'},correctAnswer:'A',marks:1,explanation:'Constant velocity means no change in speed or direction, therefore acceleration = 0 (Newton\'s First Law).',difficulty:'easy'},
+      {id:'p2',subject:'physics',paper:1,year:2022,number:2,topic:'electricity',type:'mcq',text:'What is the SI unit of electric current?',options:{A:'Volt',B:'Ohm',C:'Ampere',D:'Watt'},correctAnswer:'C',marks:1,explanation:'The ampere (A) is the SI unit of electric current. Volt = potential difference, Ohm = resistance, Watt = power.',difficulty:'easy'},
+      {id:'p3',subject:'physics',paper:1,year:2021,number:3,topic:'waves',type:'mcq',text:'The speed of a wave is given by:',options:{A:'v = f + \u03BB',B:'v = f \u00D7 \u03BB',C:'v = f / \u03BB',D:'v = \u03BB / f'},correctAnswer:'B',marks:1,explanation:'Wave speed = frequency \u00D7 wavelength (v = f\u03BB). This is the fundamental wave equation.',difficulty:'easy'},
+      {id:'p4',subject:'physics',paper:1,year:2023,number:4,topic:'heat',type:'mcq',text:'Heat transfer through a vacuum occurs by:',options:{A:'Conduction',B:'Convection',C:'Radiation',D:'All three'},correctAnswer:'C',marks:1,explanation:'Only radiation can transfer heat through a vacuum. Conduction and convection require a medium (matter).',difficulty:'easy'},
+      {id:'p5',subject:'physics',paper:1,year:2022,number:5,topic:'mechanics',type:'mcq',text:'A car accelerates uniformly from 10 m/s to 30 m/s in 5 s. The acceleration is:',options:{A:'2 m/s\u00B2',B:'4 m/s\u00B2',C:'6 m/s\u00B2',D:'8 m/s\u00B2'},correctAnswer:'B',marks:2,explanation:'a = (v \u2212 u) / t = (30 \u2212 10) / 5 = 20/5 = 4 m/s\u00B2.',difficulty:'medium'},
+      {id:'p6',subject:'physics',paper:1,year:2021,number:6,topic:'optics',type:'mcq',text:'The image formed by a plane mirror is:',options:{A:'Real and inverted',B:'Virtual and laterally inverted',C:'Real and magnified',D:'Virtual and diminished'},correctAnswer:'B',marks:1,explanation:'A plane mirror produces a virtual, upright, laterally inverted image the same size as the object.',difficulty:'easy'},
+      {id:'p7',subject:'physics',paper:1,year:2023,number:7,topic:'magnetism',type:'mcq',text:'Like magnetic poles:',options:{A:'Attract each other',B:'Repel each other',C:'Have no effect on each other',D:'Cancel each other'},correctAnswer:'B',marks:1,explanation:'Like poles (N-N or S-S) repel. Unlike poles (N-S) attract. This is a fundamental law of magnetism.',difficulty:'easy'},
+      {id:'p8',subject:'physics',paper:1,year:2022,number:8,topic:'electricity',type:'mcq',text:'In Ohm\'s law, V = IR. If R doubles and I stays the same, V will:',options:{A:'Halve',B:'Stay the same',C:'Double',D:'Quadruple'},correctAnswer:'C',marks:2,explanation:'V = IR. If R doubles (2R) and I is constant: V = I(2R) = 2IR = 2V. Voltage doubles.',difficulty:'medium'},
+      {id:'p9',subject:'physics',paper:1,year:2021,number:9,topic:'mechanics',type:'mcq',text:'The SI unit of force is:',options:{A:'Joule',B:'Newton',C:'Pascal',D:'Watt'},correctAnswer:'B',marks:1,explanation:'The newton (N) is the SI unit of force. 1 N = 1 kg\u00B7m/s\u00B2. Joule = energy, Pascal = pressure, Watt = power.',difficulty:'easy'},
+      {id:'p10',subject:'physics',paper:1,year:2023,number:10,topic:'waves',type:'mcq',text:'A sound wave is an example of a:',options:{A:'Transverse wave',B:'Longitudinal wave',C:'Electromagnetic wave',D:'Standing wave'},correctAnswer:'B',marks:1,explanation:'Sound waves are longitudinal waves \u2014 particles vibrate parallel to the direction of wave travel, creating compressions and rarefactions.',difficulty:'easy'}
+    ],
+    english:[
+      {id:'e1',subject:'english',paper:1,year:2023,number:1,topic:'grammar',type:'mcq',text:'Choose the correct sentence:',options:{A:'He don\'t know the answer.',B:'He doesn\'t know the answer.',C:'He doesn\'t knows the answer.',D:'He don\'t knows the answer.'},correctAnswer:'B',marks:1,explanation:'"Doesn\'t" is the correct negative form for third person singular (he/she/it). The main verb stays in base form.',difficulty:'easy'},
+      {id:'e2',subject:'english',paper:1,year:2022,number:2,topic:'vocabulary',type:'mcq',text:'What is the meaning of "benevolent"?',options:{A:'Cruel',B:'Generous and kind',C:'Lazy',D:'Dishonest'},correctAnswer:'B',marks:1,explanation:'Benevolent means well-meaning, generous, and kind. From Latin "bene" (well) + "volent" (wishing).',difficulty:'easy'},
+      {id:'e3',subject:'english',paper:1,year:2021,number:3,topic:'grammar',type:'mcq',text:'Identify the passive voice sentence:',options:{A:'The dog chased the cat.',B:'The cat was chased by the dog.',C:'The dog is chasing the cat.',D:'The dog will chase the cat.'},correctAnswer:'B',marks:2,explanation:'In passive voice, the subject receives the action. "The cat was chased" \u2014 the cat (subject) receives the action of being chased.',difficulty:'easy'},
+      {id:'e4',subject:'english',paper:1,year:2023,number:4,topic:'grammar',type:'mcq',text:'Which word is an adverb in: "She sings beautifully."',options:{A:'She',B:'sings',C:'beautifully',D:'None'},correctAnswer:'C',marks:1,explanation:'"Beautifully" is an adverb modifying the verb "sings". It tells us HOW she sings.',difficulty:'easy'},
+      {id:'e5',subject:'english',paper:1,year:2022,number:5,topic:'vocabulary',type:'mcq',text:'Choose the synonym of "abundant":',options:{A:'Scarce',B:'Plentiful',C:'Tiny',D:'Expensive'},correctAnswer:'B',marks:1,explanation:'"Abundant" means existing in large quantities. "Plentiful" is the closest synonym. "Scarce" is the antonym.',difficulty:'easy'}
+    ],
+    history:[
+      {id:'h1',subject:'history',paper:1,year:2023,number:1,topic:'pre-colonial',type:'mcq',text:'The Great Zimbabwe was a major centre of which civilisation?',options:{A:'Zulu Kingdom',B:'Shona Kingdom',C:'Buganda Kingdom',D:'Ashanti Empire'},correctAnswer:'B',marks:1,explanation:'Great Zimbabwe was the capital of the Shona Kingdom (c. 1100\u20131450 AD) in southern Africa, known for its impressive stone walls.',difficulty:'easy'},
+      {id:'h2',subject:'history',paper:1,year:2022,number:2,topic:'colonial-period',type:'mcq',text:'The Berlin Conference of 1884\u20131885 resulted in:',options:{A:'End of slave trade',B:'Partition of Africa among European powers',C:'African independence',D:'Formation of the AU'},correctAnswer:'B',marks:2,explanation:'The Berlin Conference formalised the "Scramble for Africa" by setting rules for European colonisation and partition of the continent.',difficulty:'medium'},
+      {id:'h3',subject:'history',paper:1,year:2021,number:3,topic:'independence',type:'mcq',text:'Kenya gained independence from Britain in:',options:{A:'1960',B:'1963',C:'1957',D:'1970'},correctAnswer:'B',marks:1,explanation:'Kenya gained independence on 12 December 1963, with Jomo Kenyatta as the first Prime Minister.',difficulty:'easy'},
+      {id:'h4',subject:'history',paper:1,year:2023,number:4,topic:'east-african-coast',type:'mcq',text:'The Swahili language is a blend of:',options:{A:'Arabic and English',B:'Bantu and Arabic',C:'French and Bantu',D:'Portuguese and Arabic'},correctAnswer:'B',marks:1,explanation:'Kiswahili evolved from Bantu languages with significant Arabic vocabulary due to centuries of trade along the East African coast.',difficulty:'easy'},
+      {id:'h5',subject:'history',paper:1,year:2022,number:5,topic:'pre-colonial',type:'mcq',text:'Mansa Musa was the ruler of which empire?',options:{A:'Songhai',B:'Ghana',C:'Mali',D:'Benin'},correctAnswer:'C',marks:1,explanation:'Mansa Musa (r. 1312\u20131337) was emperor of the Mali Empire, famous for his 1324 pilgrimage to Mecca and immense wealth from gold.',difficulty:'easy'}
+    ],
+    geography:[
+      {id:'g1',subject:'geography',paper:1,year:2023,number:1,topic:'physical-geography',type:'mcq',text:'What is the difference between weathering and erosion?',options:{A:'They are the same thing',B:'Weathering breaks rocks in place; erosion involves transport',C:'Erosion breaks rocks; weathering transports them',D:'Weathering only affects soil'},correctAnswer:'B',marks:2,explanation:'Weathering = breakdown of rocks in situ (in place). Erosion = breakdown AND transport of material by agents like water, wind, ice.',difficulty:'easy'},
+      {id:'g2',subject:'geography',paper:1,year:2022,number:2,topic:'climatology',type:'mcq',text:'The rain shadow effect occurs on the:',options:{A:'Windward side of a mountain',B:'Leeward side of a mountain',C:'Peak of a mountain',D:'Base of a mountain'},correctAnswer:'B',marks:1,explanation:'The leeward (sheltered) side receives less rainfall as air descends, warms, and becomes drier after rising over the mountain.',difficulty:'easy'},
+      {id:'g3',subject:'geography',paper:1,year:2021,number:3,topic:'physical-geography',type:'mcq',text:'The Great Rift Valley stretches approximately:',options:{A:'1,000 km',B:'3,000 km',C:'6,000 km',D:'10,000 km'},correctAnswer:'C',marks:1,explanation:'The Great Rift Valley extends about 6,000 km from Jordan in the Middle East to Mozambique in southeast Africa.',difficulty:'medium'},
+      {id:'g4',subject:'geography',paper:1,year:2023,number:4,topic:'population',type:'mcq',text:'Kenya\'s population is concentrated in areas with:',options:{A:'Low rainfall',B:'High altitude and adequate rainfall',C:'Desert conditions',D:'Coastal lowlands only'},correctAnswer:'B',marks:1,explanation:'Kenya\'s population clusters in the highlands (central Kenya, around Nairobi) and Lake Victoria basin \u2014 areas with good rainfall and fertile soil.',difficulty:'easy'},
+      {id:'g5',subject:'geography',paper:1,year:2022,number:5,topic:'soils',type:'mcq',text:'Laterite soils are typical of:',options:{A:'Desert regions',B:'Tropical regions with heavy rainfall',C:'Temperate forests',D:'Arctic tundra'},correctAnswer:'B',marks:1,explanation:'Laterite soils form in tropical regions with high rainfall and temperature. They are rich in iron/aluminium oxides, giving them a reddish colour.',difficulty:'medium'}
+    ]
+  };
+  /* return for subject or default maths */
+  return samples[subject] || [];
+}
+
+/* ── Render question ───────────────────────────────── */
+function renderQuestion(idx){
+  var q = practiceState.questions[idx];
+  if(!q) return;
+  var total = practiceState.questions.length;
+  var pct = (idx / total) * 100;
+  document.getElementById('prac-progress-fill').style.width = pct + '%';
+  document.getElementById('prac-progress-label').textContent = (idx+1) + ' / ' + total;
+
+  /* capitalise subject */
+  var subName = q.subject.charAt(0).toUpperCase() + q.subject.slice(1);
+  document.getElementById('q-meta').textContent = '\u{1F1F0}\u{1F1EA} KCSE ' + subName + ' Paper ' + q.paper + ' \u00B7 ' + q.year + ' \u00B7 Q' + q.number;
+  if(typeof twemoji !== 'undefined') twemoji.parse(document.getElementById('q-meta'));
+
+  /* badges */
+  var diff = q.difficulty || 'medium';
+  document.getElementById('q-badges').innerHTML =
+    '<span class="badge badge-subject">' + subName + '</span>' +
+    '<span class="badge badge-topic">' + (q.topic||'').replace(/-/g,' ') + '</span>' +
+    '<span class="badge badge-difficulty ' + diff + '">' + diff + '</span>';
+
+  document.getElementById('q-text').textContent = q.text;
+
+  /* options */
+  var letters = ['A','B','C','D'];
+  var opts = document.querySelectorAll('#q-options .q-option');
+  opts.forEach(function(opt, i){
+    var L = letters[i];
+    opt.className = 'q-option';
+    opt.dataset.option = L;
+    opt.querySelector('.opt-letter').textContent = L;
+    opt.querySelector('.opt-text').textContent = q.options[L] || '';
+    opt.onclick = function(){ selectOption(opt, L); };
+  });
+
+  /* if already answered, restore state */
+  var prev = practiceState.answers[q.id];
+  if(prev){
+    opts.forEach(function(opt){
+      opt.classList.add('locked');
+      if(opt.dataset.option === q.correctAnswer) opt.classList.add('correct');
+      if(opt.dataset.option === prev.selected && prev.selected !== q.correctAnswer) opt.classList.add('wrong');
+    });
+    document.getElementById('ai-text').textContent = q.explanation;
+    document.getElementById('ai-explanation').style.display = 'block';
+    document.getElementById('next-btn').disabled = false;
+  } else {
+    document.getElementById('ai-explanation').style.display = 'none';
+    document.getElementById('next-btn').disabled = true;
+  }
+
+  document.getElementById('q-counter').textContent = 'Question ' + (idx+1) + ' of ' + total;
+  document.getElementById('prev-btn').disabled = idx === 0;
+}
+
+/* ── Select option ─────────────────────────────────── */
+function selectOption(el, selected){
+  var q = practiceState.questions[practiceState.currentIndex];
+  if(!q || practiceState.answers[q.id]) return;
+  document.querySelectorAll('#q-options .q-option').forEach(function(o){o.classList.add('locked')});
+  var isCorrect = selected === q.correctAnswer;
+  if(isCorrect){
+    el.classList.add('correct');
+  } else {
+    el.classList.add('wrong');
+    document.querySelector('#q-options [data-option="'+q.correctAnswer+'"]').classList.add('correct');
+  }
+  practiceState.answers[q.id] = {selected: selected, correct: isCorrect};
+  document.getElementById('ai-text').textContent = q.explanation;
+  document.getElementById('ai-explanation').style.display = 'block';
+  document.getElementById('next-btn').disabled = false;
+  /* save to localStorage */
+  saveProgress(q.id, isCorrect, q.subject, q.topic);
+}
+
+/* ── Navigation ────────────────────────────────────── */
+window.nextQuestion = function(){
+  practiceState.currentIndex++;
+  if(practiceState.currentIndex >= practiceState.questions.length){
+    showSessionSummary();
+  } else {
+    renderQuestion(practiceState.currentIndex);
+  }
+};
+
+window.prevQuestion = function(){
+  if(practiceState.currentIndex > 0){
+    practiceState.currentIndex--;
+    renderQuestion(practiceState.currentIndex);
+  }
+};
+
+/* ── Session summary ───────────────────────────────── */
+function showSessionSummary(){
+  document.getElementById('prac-session').classList.remove('visible');
+  document.getElementById('prac-summary').style.display = 'block';
+  var qs = practiceState.questions;
+  var ans = practiceState.answers;
+  var correct = 0, total = qs.length;
+  var topics = {};
+  qs.forEach(function(q){
+    var a = ans[q.id];
+    var t = q.topic || 'general';
+    if(!topics[t]) topics[t] = {correct:0, total:0};
+    topics[t].total++;
+    if(a && a.correct){ correct++; topics[t].correct++; }
+  });
+  var pct = total ? Math.round(correct/total*100) : 0;
+  var elapsed = practiceState.startTime ? Math.round((Date.now() - practiceState.startTime)/60000) : 0;
+  var subj = SUBJECTS.filter(function(s){return s.id===practiceState.subject})[0];
+  document.getElementById('summary-sub').textContent = (subj?subj.name:'') + ' Paper ' + practiceState.paper + ' \u00B7 ' + practiceState.mode;
+  document.getElementById('summary-score').textContent = correct + '/' + total;
+  document.getElementById('summary-accuracy').textContent = pct + '%';
+  document.getElementById('summary-time').textContent = elapsed + ' min';
+  /* topic breakdown */
+  var html = '';
+  Object.keys(topics).forEach(function(t){
+    var d = topics[t];
+    var p = d.total ? Math.round(d.correct/d.total*100) : 0;
+    var color = p >= 80 ? 'var(--green)' : p >= 50 ? 'var(--primary)' : 'var(--red)';
+    var weak = p < 50 ? ' weak' : '';
+    html += '<div class="topic-row">';
+    html += '<div class="topic-name">' + t.replace(/-/g,' ') + '</div>';
+    html += '<div class="topic-bar"><div class="topic-bar-fill" style="width:'+p+'%;background:'+color+'"></div></div>';
+    html += '<div class="topic-pct'+weak+'">' + p + '% ('+d.correct+'/'+d.total+')</div>';
+    html += '</div>';
+  });
+  document.getElementById('topic-rows').innerHTML = html;
+}
+
+/* ── Retry / Reset ─────────────────────────────────── */
+window.retryWrong = function(){
+  var wrong = practiceState.questions.filter(function(q){
+    var a = practiceState.answers[q.id];
+    return !a || !a.correct;
+  });
+  if(!wrong.length){ alert('No wrong answers to retry!'); return; }
+  practiceState.questions = wrong;
+  practiceState.currentIndex = 0;
+  practiceState.answers = {};
+  practiceState.startTime = Date.now();
+  document.getElementById('prac-summary').style.display = 'none';
+  document.getElementById('prac-session').classList.add('visible');
+  renderQuestion(0);
+};
+
+window.resetPractice = function(){
+  document.getElementById('prac-summary').style.display = 'none';
+  document.getElementById('prac-session').classList.remove('visible');
+  document.getElementById('prac-setup').style.display = '';
+};
+
+/* ── Save progress to localStorage ─────────────────── */
+function saveProgress(questionId, isCorrect, subject, topic){
+  try {
+    var p = JSON.parse(localStorage.getItem('afrostudy_progress') || '{}');
+    if(!p.bySubject) p.bySubject = {};
+    if(!p.bySubject[subject]) p.bySubject[subject] = {answered:0, correct:0};
+    p.bySubject[subject].answered++;
+    if(isCorrect) p.bySubject[subject].correct++;
+    p.totalAnswered = (p.totalAnswered||0) + 1;
+    if(isCorrect) p.totalCorrect = (p.totalCorrect||0) + 1;
+    /* daily activity */
+    var today = new Date().toISOString().slice(0,10);
+    if(!p.daily) p.daily = {};
+    p.daily[today] = (p.daily[today]||0) + 1;
+    localStorage.setItem('afrostudy_progress', JSON.stringify(p));
+  } catch(e){}
+}
+
+/* ── Utility stubs ─────────────────────────────────── */
+window.markDifficult = function(){
+  var q = practiceState.questions[practiceState.currentIndex];
+  if(q){ try { var d = JSON.parse(localStorage.getItem('afrostudy_difficult')||'[]'); d.push(q.id); localStorage.setItem('afrostudy_difficult',JSON.stringify(d)); } catch(e){} }
+  alert('Marked as difficult!');
+};
+window.addToFlashcards = function(){
+  var q = practiceState.questions[practiceState.currentIndex];
+  if(q){ try { var f = JSON.parse(localStorage.getItem('afrostudy_custom_cards')||'[]'); f.push({q:q.text,a:q.explanation,subject:q.subject,topic:q.topic}); localStorage.setItem('afrostudy_custom_cards',JSON.stringify(f)); } catch(e){} }
+  alert('Added to flashcards!');
+};
+
+/* ── Init practice subjects ────────────────────────── */
+buildPracSubjects();
+
+/* ════════════════════════════════════════════════════
+   PART 3 — EXAM SIMULATION
+   ════════════════════════════════════════════════════ */
+
+var EXAM_CONFIG = {
+  mathematics: {p1:{duration:20,questions:10,marks:10}},
+  biology:     {p1:{duration:20,questions:10,marks:10}},
+  chemistry:   {p1:{duration:20,questions:10,marks:10}},
+  physics:     {p1:{duration:20,questions:10,marks:10}},
+  english:     {p1:{duration:12,questions:5,marks:5}},
+  history:     {p1:{duration:12,questions:5,marks:5}},
+  geography:   {p1:{duration:12,questions:5,marks:5}}
+};
+
+var examState = {
+  subject:'',paper:1,year:'random',duration:0,
+  questions:[],answers:{},flagged:{},visited:{},
+  currentIndex:0,startTime:null,timerInterval:null,remainingSeconds:0,submitted:false
+};
+
+/* ── Build exam subject pills ──────────────────────── */
+function buildExamSubjects(){
+  var el = document.getElementById('exam-subject-picker');
+  if(!el) return;
+  var html = '';
+  SUBJECTS.forEach(function(s){
+    if(!s.active) return;
+    html += '<button type="button" class="subject-pill" data-subject="'+s.id+'" onclick="selectExamSubject(this)"><span class="p-icon">'+s.icon+'</span>'+s.name+'</button>';
+  });
+  el.innerHTML = html;
+  if(typeof twemoji !== 'undefined') twemoji.parse(el);
+}
+
+window.selectExamSubject = function(btn){
+  document.querySelectorAll('#exam-subject-picker .subject-pill').forEach(function(b){b.classList.remove('active')});
+  btn.classList.add('active');
+  examState.subject = btn.dataset.subject;
+  /* build paper pills */
+  var html = '<label class="radio-option active" onclick="selectExamPaper(1,this)"><input aria-label="Exam paper" type="radio" name="exam-paper" value="1" checked> Paper 1 starter</label>';
+  document.getElementById('exam-paper-picker').innerHTML = html;
+  examState.paper = 1;
+  document.getElementById('exam-paper-step').style.display = '';
+  document.getElementById('exam-year-step').style.display = '';
+  document.getElementById('exam-info').style.display = '';
+  document.getElementById('rules-box').style.display = '';
+  document.getElementById('begin-exam-btn').style.display = '';
+  updateExamInfo();
+};
+
+window.selectExamSubjectById = function(id){
+  var btn = document.querySelector('#exam-subject-picker .subject-pill[data-subject="'+id+'"]');
+  if(btn) window.selectExamSubject(btn);
+};
+
+window.selectExamPaper = function(p, el){
+  examState.paper = p;
+  document.querySelectorAll('#exam-paper-picker .radio-option').forEach(function(b){b.classList.remove('active')});
+  if(el) el.classList.add('active');
+  updateExamInfo();
+};
+
+function updateExamInfo(){
+  var cfg = EXAM_CONFIG[examState.subject];
+  var pc = cfg ? cfg['p'+examState.paper] : null;
+  if(!pc) return;
+  var h = Math.floor(pc.duration/60), m = pc.duration%60;
+  document.getElementById('info-duration').textContent = (h>0 ? h+' hour'+(h>1?'s':'') : '') + (m>0 ? ' '+m+' minutes' : '');
+  document.getElementById('info-questions').textContent = pc.questions + ' Questions';
+  document.getElementById('info-marks').textContent = pc.marks;
+}
+
+/* ── Begin Exam ────────────────────────────────────── */
+window.beginExam = function(){
+  var cfg = EXAM_CONFIG[examState.subject];
+  var pc = cfg ? cfg['p'+examState.paper] : null;
+  if(!pc) return;
+  examState.year = document.getElementById('exam-year-picker').value;
+  examState.duration = pc.duration;
+  examState.remainingSeconds = pc.duration * 60;
+  examState.answers = {};
+  examState.flagged = {};
+  examState.visited = {};
+  examState.currentIndex = 0;
+  examState.submitted = false;
+  examState.startTime = Date.now();
+  /* get questions */
+  var pool = (window.AFROSTUDY_QUESTIONS || []).filter(function(q){
+    return q.subject === examState.subject && q.paper === examState.paper;
+  });
+  if(examState.year !== 'random') pool = pool.filter(function(q){return q.year == examState.year});
+  pool.sort(function(){return Math.random()-0.5});
+  pool = pool.slice(0, pc.questions);
+  if(pool.length === 0) pool = getSampleQuestions(examState.subject).slice(0, Math.min(10, pc.questions));
+  if(pool.length === 0){
+    alert('This subject is not seeded yet. Choose one of the starter subjects shown in the Subjects tab.');
+    return;
+  }
+  examState.questions = pool;
+  /* show exam */
+  document.getElementById('exam-setup').style.display = 'none';
+  document.getElementById('exam-active').style.display = 'block';
+  document.getElementById('exam-results').style.display = 'none';
+  /* label */
+  var subj = SUBJECTS.filter(function(s){return s.id===examState.subject})[0];
+  var sn = subj ? subj.name : examState.subject;
+  document.getElementById('exam-label').textContent = '\u{1F1F0}\u{1F1EA} KCSE ' + sn + ' Paper ' + examState.paper + ' \u00B7 ' + (examState.year==='random'?'Mixed':examState.year);
+  if(typeof twemoji !== 'undefined') twemoji.parse(document.getElementById('exam-label'));
+  buildNavigator();
+  startExamTimer();
+  renderExamQuestion(0);
+};
+
+/* ── Timer ─────────────────────────────────────────── */
+function startExamTimer(){
+  updateTimerDisplay();
+  examState.timerInterval = setInterval(function(){
+    examState.remainingSeconds--;
+    updateTimerDisplay();
+    if(examState.remainingSeconds <= 0){
+      clearInterval(examState.timerInterval);
+      autoSubmit();
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay(){
+  var s = examState.remainingSeconds;
+  var h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sec = s%60;
+  var display = String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');
+  document.getElementById('timer-display').textContent = display;
+  var tp = document.getElementById('exam-timer');
+  tp.classList.remove('timer-warning','timer-danger');
+  if(s <= 600) tp.classList.add('timer-danger');
+  else if(s <= 1800) tp.classList.add('timer-warning');
+}
+
+/* ── Navigator ─────────────────────────────────────── */
+function buildNavigator(){
+  var grid = document.getElementById('nav-grid');
+  grid.innerHTML = '';
+  examState.questions.forEach(function(q, i){
+    var btn = document.createElement('button');
+    btn.className = 'nav-btn';
+    btn.textContent = i+1;
+    btn.id = 'nav-btn-'+i;
+    btn.onclick = function(){renderExamQuestion(i)};
+    grid.appendChild(btn);
+  });
+}
+
+function updateNavigator(){
+  var answered = 0, flaggedN = 0;
+  examState.questions.forEach(function(q, i){
+    var btn = document.getElementById('nav-btn-'+i);
+    if(!btn) return;
+    btn.className = 'nav-btn';
+    if(examState.flagged[i]) { btn.classList.add('flagged'); flaggedN++; }
+    else if(examState.answers[i] !== undefined) { btn.classList.add('answered'); }
+    else if(examState.visited[i]) btn.classList.add('current');
+    if(examState.answers[i] !== undefined) answered++;
+    if(i === examState.currentIndex && !examState.answers[i]) btn.classList.add('current');
+  });
+  document.getElementById('answered-count').textContent = 'Answered: ' + answered + '/' + examState.questions.length;
+  document.getElementById('flagged-count').textContent = 'Flagged: ' + flaggedN;
+}
+
+/* ── Render exam question ──────────────────────────── */
+function renderExamQuestion(idx){
+  examState.currentIndex = idx;
+  examState.visited[idx] = true;
+  var q = examState.questions[idx];
+  if(!q) return;
+  document.getElementById('exam-q-num').textContent = 'Question '+(idx+1)+' of '+examState.questions.length;
+  document.getElementById('exam-q-text').textContent = q.text;
+  /* options */
+  var container = document.getElementById('exam-options');
+  container.innerHTML = '';
+  ['A','B','C','D'].forEach(function(L){
+    var opt = document.createElement('div');
+    opt.className = 'q-option exam-option';
+    opt.dataset.option = L;
+    opt.innerHTML = '<span class="opt-letter">'+L+'</span><span class="opt-text">'+(q.options[L]||'')+'</span>';
+    if(examState.answers[idx] === L) opt.classList.add('selected');
+    opt.onclick = function(){
+      document.querySelectorAll('.exam-option').forEach(function(o){o.classList.remove('selected')});
+      opt.classList.add('selected');
+      examState.answers[idx] = L;
+      updateNavigator();
+    };
+    container.appendChild(opt);
+  });
+  /* flag */
+  var fb = document.getElementById('flag-btn');
+  if(examState.flagged[idx]){
+    fb.textContent = '\u{1F6A9} Unflag';
+    fb.classList.add('flagged');
+  } else {
+    fb.textContent = '\u{1F6A9} Flag for Review';
+    fb.classList.remove('flagged');
+  }
+  if(typeof twemoji !== 'undefined') twemoji.parse(fb);
+  updateNavigator();
+}
+
+window.toggleFlag = function(){
+  var i = examState.currentIndex;
+  if(examState.flagged[i]) delete examState.flagged[i];
+  else examState.flagged[i] = true;
+  renderExamQuestion(i);
+};
+
+window.examPrev = function(){
+  if(examState.currentIndex > 0) renderExamQuestion(examState.currentIndex-1);
+};
+window.examNext = function(){
+  if(examState.currentIndex < examState.questions.length-1) renderExamQuestion(examState.currentIndex+1);
+};
+
+/* ── Submit ─────────────────────────────────────────── */
+window.confirmSubmit = function(){
+  var unanswered = examState.questions.length - Object.keys(examState.answers).length;
+  var msg = unanswered > 0
+    ? 'You have '+unanswered+' unanswered question'+(unanswered>1?'s':'')+'. Are you sure you want to submit?'
+    : 'Are you sure you want to submit your exam?';
+  if(confirm(msg)) submitExam();
+};
+
+function autoSubmit(){
+  alert('Time is up! Your exam has been automatically submitted.');
+  submitExam();
+}
+
+function submitExam(){
+  clearInterval(examState.timerInterval);
+  examState.submitted = true;
+  var timeTaken = Math.floor((Date.now() - examState.startTime)/1000);
+  var results = calculateExamResults(timeTaken);
+  showExamResults(results);
+}
+
+/* ── Calculate ──────────────────────────────────────── */
+function calculateExamResults(timeTaken){
+  var correct = 0, topicScores = {}, reviewItems = [];
+  examState.questions.forEach(function(q, i){
+    var ua = examState.answers[i];
+    var ic = ua === q.correctAnswer;
+    if(ic) correct++;
+    var t = q.topic || 'general';
+    if(!topicScores[t]) topicScores[t] = {correct:0, total:0};
+    topicScores[t].total++;
+    if(ic) topicScores[t].correct++;
+    reviewItems.push({q:q, userAnswer:ua, isCorrect:ic});
+  });
+  var total = examState.questions.length;
+  var score = total ? Math.round(correct/total*100) : 0;
+  var grade = getKCSEGrade(score);
+  var th = Math.floor(timeTaken/3600), tm = Math.floor((timeTaken%3600)/60), ts = timeTaken%60;
+  var timeStr = String(th).padStart(2,'0')+':'+String(tm).padStart(2,'0')+':'+String(ts).padStart(2,'0');
+  return {correct:correct,total:total,score:score,grade:grade,topicScores:topicScores,reviewItems:reviewItems,timeStr:timeStr};
+}
+
+function getKCSEGrade(score){
+  if(score>=75) return {grade:'A',label:'Excellent',color:'#22c55e'};
+  if(score>=70) return {grade:'A-',label:'Very Good',color:'#22c55e'};
+  if(score>=65) return {grade:'B+',label:'Good',color:'#0062CC'};
+  if(score>=60) return {grade:'B',label:'Good',color:'#0062CC'};
+  if(score>=55) return {grade:'B-',label:'Above Average',color:'#0062CC'};
+  if(score>=50) return {grade:'C+',label:'Average',color:'#F5A623'};
+  if(score>=45) return {grade:'C',label:'Average',color:'#F5A623'};
+  if(score>=40) return {grade:'C-',label:'Below Average',color:'#F5A623'};
+  if(score>=35) return {grade:'D+',label:'Weak',color:'#EF4444'};
+  if(score>=30) return {grade:'D',label:'Weak',color:'#EF4444'};
+  if(score>=25) return {grade:'D-',label:'Very Weak',color:'#EF4444'};
+  return {grade:'E',label:'Fail',color:'#EF4444'};
+}
+
+/* ── Show Results ──────────────────────────────────── */
+function showExamResults(results){
+  document.getElementById('exam-active').style.display = 'none';
+  document.getElementById('exam-results').style.display = 'block';
+  var subj = SUBJECTS.filter(function(s){return s.id===examState.subject})[0];
+  var sn = subj ? subj.name : examState.subject;
+  document.getElementById('results-title').textContent = 'KCSE '+sn+' Paper '+examState.paper+' \u00B7 '+(examState.year==='random'?'Mixed':examState.year);
+  document.getElementById('result-score').textContent = results.correct+'/'+results.total;
+  document.getElementById('result-pct').textContent = results.score+'%';
+  document.getElementById('result-time').textContent = results.timeStr;
+  document.getElementById('result-grade').textContent = results.grade.grade;
+  document.getElementById('result-grade').style.color = results.grade.color;
+  document.getElementById('result-grade-label').textContent = results.grade.label;
+  renderGradeScale(results.score);
+  renderExamTopicBars(results.topicScores);
+  renderAnswerReview(results.reviewItems);
+  saveExamToProgress(results);
+  window.scrollTo(0, document.querySelector('.tab-nav').offsetTop - 10);
+}
+
+function renderGradeScale(userScore){
+  var grades = [
+    {grade:'A',min:75,max:100},{grade:'A-',min:70,max:74},{grade:'B+',min:65,max:69},{grade:'B',min:60,max:64},
+    {grade:'B-',min:55,max:59},{grade:'C+',min:50,max:54},{grade:'C',min:45,max:49},{grade:'C-',min:40,max:44},
+    {grade:'D+',min:35,max:39},{grade:'D',min:30,max:34},{grade:'D-',min:25,max:29},{grade:'E',min:0,max:24}
+  ];
+  var c = document.getElementById('grade-scale-display');
+  c.innerHTML = '';
+  grades.forEach(function(g){
+    var active = userScore >= g.min && userScore <= g.max;
+    var cell = document.createElement('div');
+    cell.className = 'grade-cell'+(active?' active':'');
+    cell.innerHTML = '<div class="grade-letter">'+g.grade+'</div><div class="grade-range">'+g.min+'\u2013'+g.max+'</div>';
+    c.appendChild(cell);
+  });
+}
+
+function renderExamTopicBars(topicScores){
+  var c = document.getElementById('exam-topic-bars');
+  c.innerHTML = '';
+  Object.keys(topicScores).forEach(function(t){
+    var d = topicScores[t];
+    var pct = d.total ? Math.round(d.correct/d.total*100) : 0;
+    var color = pct>=70?'#22c55e':pct>=50?'#0062CC':pct>=40?'#F5A623':'#EF4444';
+    c.innerHTML += '<div class="topic-bar-row"><div class="topic-bar-label">'+t.replace(/-/g,' ')+'</div><div class="topic-bar-track"><div class="topic-bar-fill" style="width:'+pct+'%;background:'+color+'"></div></div><div class="topic-bar-pct">'+pct+'% ('+d.correct+'/'+d.total+')</div></div>';
+  });
+}
+
+function renderAnswerReview(items){
+  var c = document.getElementById('answer-review-list');
+  c.innerHTML = '';
+  items.forEach(function(item, i){
+    var cls = item.isCorrect ? 'review-correct' : 'review-wrong';
+    var mark = item.isCorrect ? '\u2713' : '\u2717';
+    c.innerHTML += '<div class="review-item '+cls+'"><div class="review-num">Q'+(i+1)+' '+mark+'</div><div class="review-text">'+item.q.text+'</div><div class="review-answer">Your answer: <strong>'+(item.userAnswer||'Not answered')+'</strong> \u00B7 Correct: <strong>'+item.q.correctAnswer+'</strong></div><div class="review-explanation">'+item.q.explanation+'</div></div>';
+  });
+}
+
+function saveExamToProgress(results){
+  try {
+    var p = JSON.parse(localStorage.getItem('afrostudy_progress') || '{}');
+    if(!p.exams) p.exams = [];
+    p.exams.unshift({date:new Date().toISOString(),subject:examState.subject,paper:examState.paper,year:examState.year,score:results.score,grade:results.grade.grade,correct:results.correct,total:results.total});
+    if(p.exams.length > 20) p.exams = p.exams.slice(0,20);
+    localStorage.setItem('afrostudy_progress', JSON.stringify(p));
+  } catch(e){}
+}
+
+window.retakeExam = function(){
+  document.getElementById('exam-results').style.display = 'none';
+  document.getElementById('exam-setup').style.display = 'block';
+};
+
+/* ── Init exam subjects ────────────────────────────── */
+buildExamSubjects();
+
+/* ════════════════════════════════════════════════════
+   PART 4 — FLASHCARDS + PROGRESS
+   ════════════════════════════════════════════════════ */
+
+/* ── Flashcard Deck Data ──────────────────────────── */
+var FC_DECKS = {
+  mathematics: {
+    'quadratic-equations': [
+      { q: 'State the quadratic formula for ax\u00B2 + bx + c = 0', a: 'x = (-b \u00B1 \u221A(b\u00B2\u22124ac)) / 2a. Used when the equation cannot be factorised easily.' },
+      { q: 'What is the discriminant and what does it tell you?', a: 'Discriminant = b\u00B2\u22124ac. If >0: two real roots. If =0: one repeated root. If <0: no real roots.' },
+      { q: 'Factorise x\u00B2 + 7x + 12', a: '(x+3)(x+4). Find two numbers that multiply to 12 and add to 7: those are 3 and 4.' },
+      { q: 'Solve x\u00B2 \u2212 9 = 0', a: 'x = \u00B13. This is a difference of squares: (x+3)(x\u22123) = 0.' },
+      { q: 'What is the vertex of a parabola?', a: 'The maximum point (if a<0) or minimum point (if a>0) of the quadratic curve y = ax\u00B2 + bx + c.' },
+      { q: 'Complete the square for x\u00B2 + 8x', a: '(x+4)\u00B2 \u2212 16. Add (8\u00F72)\u00B2 = 16 inside, subtract 16 outside to balance.' },
+      { q: 'What is the sum of roots of ax\u00B2 + bx + c = 0?', a: '\u2212b/a. This comes from Vieta\'s formulas: if roots are p and q, then p+q = \u2212b/a.' },
+      { q: 'What is the product of roots of ax\u00B2 + bx + c = 0?', a: 'c/a. From Vieta\'s formulas: if roots are p and q, then p\u00D7q = c/a.' },
+      { q: 'Solve 2x\u00B2 \u2212 8 = 0', a: 'x = \u00B12. Divide by 2: x\u00B2 = 4. Take square root: x = \u00B12.' },
+      { q: 'How many x-intercepts does a parabola have if discriminant < 0?', a: 'Zero x-intercepts. The parabola does not cross the x-axis.' },
+      { q: 'Factorise 3x\u00B2 + 10x + 3', a: '(3x+1)(x+3). Use the AC method: multiply 3\u00D73=9, find factors of 9 that add to 10: 1 and 9.' },
+      { q: 'What does "completing the square" help you find?', a: 'The vertex of the parabola and the solutions to the quadratic equation without using the quadratic formula.' }
+    ],
+    'logarithms': [
+      { q: 'What does log_a(b) = c mean?', a: 'It means a^c = b. The logarithm is the exponent. Example: log\u2082(8) = 3 because 2\u00B3 = 8.' },
+      { q: 'State the product rule for logarithms', a: 'log(xy) = log x + log y. Example: log(20) = log(4) + log(5).' },
+      { q: 'State the quotient rule for logarithms', a: 'log(x/y) = log x \u2212 log y. Example: log(5) = log(10) \u2212 log(2).' },
+      { q: 'State the power rule for logarithms', a: 'log(x\u207F) = n\u00B7log(x). Example: log(8) = 3\u00B7log(2).' },
+      { q: 'Evaluate log\u2081\u2080(1000)', a: '3. Because 10\u00B3 = 1000. log\u2081\u2080(10\u207F) = n.' },
+      { q: 'Evaluate log\u2082(32)', a: '5. Because 2\u2075 = 32.' },
+      { q: 'What is log_a(1) for any base a?', a: '0. Because a\u2070 = 1 for any non-zero a.' },
+      { q: 'What is log_a(a) for any base a?', a: '1. Because a\u00B9 = a.' }
+    ]
+  },
+  biology: {
+    'cell-biology': [
+      { q: 'What is the powerhouse of the cell?', a: 'The mitochondria. It produces ATP through cellular respiration, supplying energy for all cell activities.' },
+      { q: 'What is osmosis?', a: 'Movement of water molecules from a region of low solute concentration (high water potential) to high solute concentration through a semi-permeable membrane.' },
+      { q: 'What is the function of the nucleus?', a: 'Contains DNA (genetic material) that controls all cell activities and is responsible for heredity.' },
+      { q: 'What do ribosomes do?', a: 'They are the sites of protein synthesis \u2014 they translate mRNA into polypeptide chains (proteins).' },
+      { q: 'What is active transport?', a: 'Movement of substances against a concentration gradient (from low to high concentration) using energy (ATP). Requires carrier proteins.' },
+      { q: 'What is the function of the Golgi apparatus?', a: 'Packages and secretes proteins that have been made by ribosomes. Often called the "post office" of the cell.' },
+      { q: 'What is turgidity in plant cells?', a: 'When a plant cell is full of water and the cytoplasm presses against the cell wall. This gives plants their rigidity.' },
+      { q: 'What is plasmolysis?', a: 'When a plant cell loses water to a hypertonic solution and the cell membrane pulls away from the cell wall.' },
+      { q: 'Function of chloroplasts?', a: 'Site of photosynthesis. Contains chlorophyll which absorbs light energy to convert CO\u2082 and water into glucose.' },
+      { q: 'Two differences between plant and animal cells?', a: 'Plant cells have: cell wall (made of cellulose), chloroplasts, large permanent vacuole. Animal cells have: centrioles, no cell wall.' },
+      { q: 'What is diffusion?', a: 'Movement of molecules from a region of high concentration to low concentration (down a concentration gradient). Does not require energy.' },
+      { q: 'What is the cell membrane made of?', a: 'A phospholipid bilayer with embedded proteins. It is selectively permeable \u2014 controls what enters and exits the cell.' }
+    ],
+    'photosynthesis': [
+      { q: 'Write the overall equation for photosynthesis', a: '6CO\u2082 + 6H\u2082O + light energy \u2192 C\u2086H\u2081\u2082O\u2086 + 6O\u2082. Carbon dioxide and water are converted to glucose and oxygen using light.' },
+      { q: 'Where does the light stage of photosynthesis occur?', a: 'In the thylakoid membranes (grana) of the chloroplast. Light energy is used to split water and produce ATP and NADPH.' },
+      { q: 'Where does the dark stage (Calvin cycle) occur?', a: 'In the stroma of the chloroplast. CO\u2082 is fixed into glucose using ATP and NADPH from the light stage.' },
+      { q: 'Name 3 factors that affect the rate of photosynthesis', a: 'Light intensity, CO\u2082 concentration, and temperature. Each can be a limiting factor.' },
+      { q: 'What is the role of chlorophyll?', a: 'Absorbs light energy (mainly red and blue wavelengths) to power the light reactions of photosynthesis.' },
+      { q: 'What is the compensation point?', a: 'The light intensity at which the rate of photosynthesis equals the rate of respiration \u2014 no net gas exchange.' }
+    ]
+  },
+  chemistry: {
+    'chemical-bonding': [
+      { q: 'What is ionic bonding?', a: 'Transfer of electrons from a metal to a non-metal, forming oppositely charged ions that attract each other.' },
+      { q: 'What is covalent bonding?', a: 'Sharing of electron pairs between non-metal atoms to achieve a stable electron configuration.' },
+      { q: 'Why is NaCl a solid at room temperature?', a: 'Strong electrostatic forces between Na\u207A and Cl\u207B ions in a giant ionic lattice require large amounts of energy to break.' },
+      { q: 'What is electronegativity?', a: 'The ability of an atom to attract electrons in a covalent bond. Fluorine is most electronegative.' },
+      { q: 'What is metallic bonding?', a: 'A sea of delocalised electrons surrounding a lattice of positive metal ions. This explains conductivity and malleability.' },
+      { q: 'Why does diamond have an extremely high melting point?', a: 'Giant covalent structure \u2014 each carbon bonded to 4 others in a strong 3D network. Thousands of covalent bonds must be broken.' },
+      { q: 'What is a hydrogen bond?', a: 'A weak electrostatic attraction between a \u03B4+ hydrogen atom and an electronegative atom (N, O, or F) on another molecule.' },
+      { q: 'Why is water a liquid at room temperature despite low molecular mass?', a: 'Hydrogen bonding between water molecules requires extra energy to break, raising the boiling point above what would be expected.' },
+      { q: 'What is a dative (coordinate) bond?', a: 'A covalent bond where both electrons come from one atom only. Example: in the ammonium ion NH\u2084\u207A.' },
+      { q: 'Why are ionic compounds soluble in water?', a: 'Water is polar \u2014 its \u03B4+ and \u03B4- ends attract and surround the ions, pulling them away from the lattice into solution.' }
+    ]
+  },
+  history: {
+    'pre-colonial-africa': [
+      { q: 'What was the Great Zimbabwe?', a: 'A massive stone-walled city in present-day Zimbabwe, capital of the Shona Kingdom (c.1100\u20131450 AD), centre of gold trade.' },
+      { q: 'Name two important trans-Saharan trade goods', a: 'Gold (from West Africa southward) and salt (from Saharan mines northward). These made Mali and Ghana wealthy.' },
+      { q: 'What was the Swahili Coast?', a: 'A string of trading city-states on East Africa\'s coast (Mombasa, Kilwa, Zanzibar) prospering from Indian Ocean trade with Arabia and India.' },
+      { q: 'Who was Mansa Musa and why is he significant?', a: 'Emperor of Mali (1280\u20131337). Famous for his 1324 pilgrimage to Mecca with vast amounts of gold, demonstrating Mali\'s immense wealth.' },
+      { q: 'What was the significance of Timbuktu?', a: 'Centre of Islamic scholarship (Sankore University) and trans-Saharan trade. A major intellectual and commercial hub in West Africa.' },
+      { q: 'What caused the decline of Great Zimbabwe?', a: 'Overpopulation, deforestation, depletion of local gold and ivory. Trade routes shifted to the coast.' },
+      { q: 'What was the Aksum Empire?', a: 'A powerful trading kingdom in present-day Ethiopia and Eritrea (1st\u20137th century AD). One of the world\'s earliest Christian kingdoms.' },
+      { q: 'Why was iron important in pre-colonial Africa?', a: 'Iron tools improved agriculture; iron weapons increased military power; iron became a valuable trade commodity.' },
+      { q: 'What were the Bantu migrations?', a: 'Large-scale movement of Bantu-speaking peoples from West/Central Africa across Sub-Saharan Africa over centuries, spreading farming and ironworking.' },
+      { q: 'Name two East African city-states on the Swahili Coast', a: 'Kilwa (Tanzania), Mombasa (Kenya), Malindi, Zanzibar, Pate. All prospered through Indian Ocean trade.' }
+    ]
+  },
+  geography: {
+    'physical-geography': [
+      { q: 'What is weathering?', a: 'The breakdown of rocks in situ (in place) by physical, chemical, or biological processes. No transportation involved.' },
+      { q: 'Difference between weathering and erosion?', a: 'Weathering = breakdown in place. Erosion = breakdown AND removal/transportation of material by agents like water, wind, ice.' },
+      { q: 'What causes limestone caves?', a: 'Chemical weathering by slightly acidic rainwater (carbonic acid) slowly dissolving calcium carbonate in limestone rock.' },
+      { q: 'What is a watershed?', a: 'A ridge or high ground that separates two different drainage basins (river systems). Rain on each side flows to different rivers.' },
+      { q: 'What is the rain shadow effect?', a: 'The dry area on the leeward side of a mountain. Moist air rises, cools, rains on windward side. On leeward side, air descends and warms \u2014 little rain.' },
+      { q: 'What is the Great Rift Valley?', a: 'A geological fault system stretching ~6,000km from Jordan to Mozambique, formed by tectonic plates pulling apart. Contains Kenya\'s Rift Valley.' },
+      { q: 'What is a delta?', a: 'Triangular landform at a river\'s mouth where sediment is deposited as the river slows entering a sea or lake. Example: Nile Delta.' },
+      { q: 'What causes ocean currents?', a: 'Wind patterns, temperature differences (warm water expands, moves), salinity differences, and Earth\'s rotation (Coriolis effect).' },
+      { q: 'What is an escarpment?', a: 'A long steep slope or cliff at the edge of a plateau or ridge. Often formed by erosion or faulting. Example: Rift Valley escarpments in Kenya.' },
+      { q: 'Why does Kenya have two rainy seasons?', a: 'Kenya\'s position near the equator means the Intertropical Convergence Zone (ITCZ) passes over it twice a year \u2014 around March-May and October-December.' }
+    ]
+  }
+};
+
+/* ── Flashcard State ──────────────────────────────── */
+var fcState = {
+  subject: '',
+  topic: '',
+  cards: [],
+  currentIndex: 0,
+  mastered: {},
+  learning: {},
+  flipped: false
+};
+
+/* helpers for Set-like behavior with plain objects (var-safe) */
+function fcSetAdd(obj, k){ obj[k] = true; }
+function fcSetDel(obj, k){ delete obj[k]; }
+function fcSetHas(obj, k){ return obj.hasOwnProperty(k); }
+function fcSetSize(obj){ return Object.keys(obj).length; }
+
+window.selectFCSubject = function(btn, subject){
+  document.querySelectorAll('#fc-subject-picker .subject-pill').forEach(function(b){ b.classList.remove('active') });
+  btn.classList.add('active');
+  fcState.subject = subject;
+
+  var topicList = document.getElementById('fc-topic-list');
+  var decks = FC_DECKS[subject] || {};
+  var topics = Object.keys(decks);
+  topicList.innerHTML = topics.map(function(t){
+    return '<button type="button" class="subject-pill" onclick="selectFCTopic(this,\''+t+'\')">'+t.replace(/-/g,' ')+'</button>';
+  }).join('');
+  document.getElementById('fc-topic-step').style.display = 'block';
+  document.getElementById('start-fc-btn').style.display = 'none';
+  if(typeof twemoji !== 'undefined') twemoji.parse(document.getElementById('fc-subject-picker'));
+};
+
+window.selectFCTopic = function(btn, topic){
+  document.querySelectorAll('#fc-topic-list .subject-pill').forEach(function(b){ b.classList.remove('active') });
+  btn.classList.add('active');
+  fcState.topic = topic;
+  document.getElementById('start-fc-btn').style.display = 'inline-flex';
+};
+
+window.startFlashcards = function(){
+  fcState.cards = (FC_DECKS[fcState.subject] && FC_DECKS[fcState.subject][fcState.topic]) || [];
+  if(fcState.cards.length === 0){ alert('No cards for this topic yet.'); return; }
+  fcState.currentIndex = 0;
+  fcState.mastered = {};
+  fcState.learning = {};
+  fcState.flipped = false;
+
+  document.getElementById('flashcard-setup').style.display = 'none';
+  document.getElementById('flashcard-active').style.display = 'block';
+
+  document.getElementById('fc-deck-label').textContent = fcState.subject + ' \u00B7 ' + fcState.topic.replace(/-/g,' ');
+  document.getElementById('fc-total-count').textContent = fcState.cards.length;
+
+  buildFCDots();
+  renderFCCard(0);
+};
+
+function buildFCDots(){
+  var dots = document.getElementById('fc-dots');
+  var html = '';
+  for(var i = 0; i < fcState.cards.length; i++){
+    html += '<div class="fc-dot '+(i===0?'active':'')+'" id="fc-dot-'+i+'"></div>';
+  }
+  dots.innerHTML = html;
+}
+
+function renderFCCard(index){
+  fcState.flipped = false;
+  var card = fcState.cards[index];
+  document.getElementById('fc-question-text').textContent = card.q;
+  document.getElementById('fc-answer-text').textContent = card.a;
+  document.getElementById('fc-card').classList.remove('flipped');
+  document.getElementById('fc-counter').textContent = 'Card '+(index+1)+' of '+fcState.cards.length;
+
+  /* Update dots */
+  var allDots = document.querySelectorAll('.fc-dot');
+  for(var i = 0; i < allDots.length; i++){
+    allDots[i].className = 'fc-dot';
+    if(i === index) allDots[i].classList.add('active');
+    else if(fcSetHas(fcState.mastered, i)) allDots[i].classList.add('mastered');
+    else if(fcSetHas(fcState.learning, i)) allDots[i].classList.add('learning');
+  }
+
+  /* Update progress */
+  var masteredCount = fcSetSize(fcState.mastered);
+  document.getElementById('fc-mastered-count').textContent = masteredCount;
+  document.getElementById('fc-progress-fill').style.width = Math.round((masteredCount / fcState.cards.length) * 100) + '%';
+}
+
+window.flipCard = function(){
+  fcState.flipped = !fcState.flipped;
+  var el = document.getElementById('fc-card');
+  if(fcState.flipped) el.classList.add('flipped');
+  else el.classList.remove('flipped');
+};
+
+window.fcNext = function(){
+  var next = (fcState.currentIndex + 1) % fcState.cards.length;
+  fcState.currentIndex = next;
+  renderFCCard(next);
+};
+
+window.fcPrev = function(){
+  var prev = (fcState.currentIndex - 1 + fcState.cards.length) % fcState.cards.length;
+  fcState.currentIndex = prev;
+  renderFCCard(prev);
+};
+
+window.markMastered = function(){
+  fcSetAdd(fcState.mastered, fcState.currentIndex);
+  fcSetDel(fcState.learning, fcState.currentIndex);
+  renderFCCard(fcState.currentIndex);
+  if(fcSetSize(fcState.mastered) === fcState.cards.length){
+    setTimeout(function(){ alert('\uD83C\uDF89 You mastered all cards in this deck!'); }, 300);
+  } else {
+    window.fcNext();
+  }
+};
+
+window.markStillLearning = function(){
+  fcSetAdd(fcState.learning, fcState.currentIndex);
+  fcSetDel(fcState.mastered, fcState.currentIndex);
+  renderFCCard(fcState.currentIndex);
+  window.fcNext();
+};
+
+window.restartDeck = function(){
+  fcState.mastered = {};
+  fcState.learning = {};
+  fcState.currentIndex = 0;
+  buildFCDots();
+  renderFCCard(0);
+};
+
+window.practiceWeakOnly = function(){
+  var weakCards = [];
+  for(var i = 0; i < fcState.cards.length; i++){
+    if(fcSetHas(fcState.learning, i)) weakCards.push(fcState.cards[i]);
+  }
+  if(weakCards.length === 0){ alert('No weak cards marked yet.'); return; }
+  fcState.cards = weakCards;
+  fcState.currentIndex = 0;
+  fcState.mastered = {};
+  fcState.learning = {};
+  document.getElementById('fc-total-count').textContent = fcState.cards.length;
+  buildFCDots();
+  renderFCCard(0);
+};
+
+/* ── Progress Tab JS ──────────────────────────────── */
+var loadProgress = function(){
+  var progress = {};
+  try { progress = JSON.parse(localStorage.getItem('afrostudy_progress') || '{}'); } catch(e){}
+
+  /* Stats */
+  document.getElementById('prog-total').textContent = (progress.totalAnswered || 0).toLocaleString();
+
+  var bySubject = progress.bySubject || {};
+  var subjects = Object.keys(bySubject);
+  document.getElementById('prog-subjects').textContent = subjects.length;
+  document.getElementById('prog-exams').textContent = (progress.exams || []).length;
+  document.getElementById('prog-streak').textContent = progress.streak || 0;
+
+  /* Overall accuracy */
+  var totalCorrect = 0, totalAnswered = 0;
+  subjects.forEach(function(s){
+    totalCorrect += (bySubject[s].correct || 0);
+    totalAnswered += (bySubject[s].answered || 0);
+  });
+  document.getElementById('prog-accuracy').textContent =
+    totalAnswered > 0 ? Math.round((totalCorrect/totalAnswered)*100) + '%' : '\u2014';
+
+  /* Subject bars */
+  renderSubjectBars(bySubject);
+
+  /* Exam history */
+  renderExamHistoryTab(progress.exams || []);
+
+  /* Heatmap */
+  renderHeatmap({});
+
+  /* AI Insight */
+  renderAIInsight(progress);
+};
+
+function renderSubjectBars(bySubject){
+  var container = document.getElementById('subject-performance-bars');
+  if(Object.keys(bySubject).length === 0){
+    container.innerHTML = '<div class="empty-state">No practice sessions yet. Start practising to see your progress here.</div>';
+    return;
+  }
+  container.innerHTML = '';
+  var entries = [];
+  for(var s in bySubject){ if(bySubject.hasOwnProperty(s)) entries.push([s, bySubject[s]]); }
+  entries.sort(function(a,b){ return (b[1].answered||0) - (a[1].answered||0); });
+  entries.forEach(function(entry){
+    var subject = entry[0], data = entry[1];
+    var pct = Math.round((data.correct / data.answered) * 100);
+    var color = pct >= 80 ? '#22c55e' : pct >= 60 ? '#0062CC' : pct >= 40 ? '#F5A623' : '#EF4444';
+    container.innerHTML += '<div class="subject-bar-row"><div class="subject-bar-name">'+subject.charAt(0).toUpperCase()+subject.slice(1)+'</div><div class="progress-track subject-bar-track"><div class="progress-fill" style="width:'+pct+'%;background:'+color+'"></div></div><div style="color:'+color+';font-weight:700">'+pct+'%</div><button type="button" class="btn-ghost-light btn-sm" onclick="switchTab(\'practice\')">PRACTISE</button></div>';
+  });
+}
+
+function renderExamHistoryTab(exams){
+  var container = document.getElementById('exam-history-table');
+  if(exams.length === 0){
+    container.innerHTML = '<div class="empty-state">No exams simulated yet.</div>';
+    return;
+  }
+  var html = '<div class="exam-history-row" style="font-weight:700;font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;color:#64748b"><span>Date</span><span>Subject</span><span>Paper</span><span>Score</span><span>Grade</span><span>Action</span></div>';
+  exams.forEach(function(e){
+    var d = new Date(e.date);
+    var date = d.getDate()+' '+ ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()]+' '+d.getFullYear();
+    var gradeData = getKCSEGrade(e.score || 0);
+    html += '<div class="exam-history-row"><span>'+date+'</span><span>'+e.subject.charAt(0).toUpperCase()+e.subject.slice(1)+'</span><span>P'+e.paper+(e.year !== 'random' ? ' '+e.year : '')+'</span><span>'+e.correct+'/'+e.total+'</span><span style="color:'+gradeData.color+';font-weight:700">'+(e.grade||gradeData.grade)+'</span><button type="button" class="btn-ghost-light btn-sm" onclick="switchTab(\'exam\')">RETAKE</button></div>';
+  });
+  container.innerHTML = html;
+}
+
+function renderHeatmap(activityData){
+  var grid = document.getElementById('heatmap');
+  grid.innerHTML = '';
+  for(var i = 0; i < 28; i++){
+    var count = activityData[i] || 0;
+    var cell = document.createElement('div');
+    cell.className = 'heatmap-cell';
+    cell.style.background = count === 0 ? '#F1F5F9' :
+      count <= 5 ? '#BFDBFE' :
+      count <= 15 ? '#93C5FD' :
+      count <= 30 ? '#3B82F6' : '#1D4ED8';
+    cell.title = count + ' questions';
+    grid.appendChild(cell);
+  }
+}
+
+function renderAIInsight(progress){
+  var total = progress.totalAnswered || 0;
+  var container = document.getElementById('ai-insight-text');
+
+  if(total < 20){
+    container.textContent = 'Complete at least 20 practice questions to receive personalised study insights.';
+    return;
+  }
+
+  var bySubject = progress.bySubject || {};
+  var weakest = null, lowestPct = 100;
+  for(var s in bySubject){
+    if(!bySubject.hasOwnProperty(s)) continue;
+    var d = bySubject[s];
+    var pct = (d.correct / d.answered) * 100;
+    if(pct < lowestPct){ lowestPct = pct; weakest = s; }
+  }
+
+  if(weakest){
+    container.textContent = 'Your weakest subject is ' + weakest + ' at ' + Math.round(lowestPct) + '% accuracy. Focus your practice sessions there \u2014 use the flashcard drill first, then attempt 10 questions by topic to identify specific gaps.';
+  }
+}
+
+function getAfroStudyProgress(){
+  try { return JSON.parse(localStorage.getItem('afrostudy_progress') || '{}'); } catch(e){ return {}; }
+}
+
+function subjectLabel(id){
+  var subject = SUBJECTS.filter(function(s){ return s.id === id; })[0];
+  return subject ? subject.name : id;
+}
+
+function buildStudyReport(){
+  var progress = getAfroStudyProgress();
+  var bySubject = progress.bySubject || {};
+  var subjects = Object.keys(bySubject);
+  var totalAnswered = progress.totalAnswered || 0;
+  var totalCorrect = 0;
+  subjects.forEach(function(s){ totalCorrect += bySubject[s].correct || 0; });
+  var accuracy = totalAnswered ? Math.round((totalCorrect / totalAnswered) * 100) + '%' : 'No practice yet';
+  var lines = [
+    'AfroStudy KCSE Practice Report',
+    'Generated: ' + new Date().toLocaleString(),
+    '',
+    'Summary',
+    '- Questions answered: ' + totalAnswered,
+    '- Overall accuracy: ' + accuracy,
+    '- Subjects active: ' + subjects.length,
+    '- Exams simulated: ' + ((progress.exams || []).length),
+    '',
+    'Subject performance'
+  ];
+
+  if(subjects.length){
+    subjects.sort(function(a,b){ return (bySubject[b].answered || 0) - (bySubject[a].answered || 0); });
+    subjects.forEach(function(s){
+      var d = bySubject[s];
+      var pct = d.answered ? Math.round((d.correct / d.answered) * 100) : 0;
+      lines.push('- ' + subjectLabel(s) + ': ' + pct + '% (' + (d.correct || 0) + '/' + (d.answered || 0) + ')');
+    });
+  } else {
+    lines.push('- No practice sessions yet.');
+  }
+
+  lines.push('', 'Next study actions');
+  if(subjects.length){
+    var weakest = subjects.slice().sort(function(a,b){
+      var ap = (bySubject[a].correct || 0) / Math.max(1, bySubject[a].answered || 0);
+      var bp = (bySubject[b].correct || 0) / Math.max(1, bySubject[b].answered || 0);
+      return ap - bp;
+    })[0];
+    lines.push('- Review ' + subjectLabel(weakest) + ' first.');
+    lines.push('- Run one 10-question practice session.');
+    lines.push('- Drill flashcards for the weakest topic before the next timed mini exam.');
+  } else {
+    lines.push('- Start with Mathematics, Biology, Chemistry, or Physics.');
+    lines.push('- Answer at least 10 questions, then return to Progress.');
+  }
+
+  return lines.join('\n');
+}
+
+window.copyStudyReport = function(){
+  var text = buildStudyReport();
+  var status = document.getElementById('study-report-status');
+  function done(){ if(status) status.textContent = 'Study report copied.'; }
+  function fallbackCopy(){
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      document.execCommand('copy');
+      done();
+    } catch(e) {
+      if(status) status.textContent = 'Copy unavailable. Download the TXT report instead.';
+    }
+    textarea.remove();
+  }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(fallbackCopy);
+  } else {
+    fallbackCopy();
+  }
+};
+
+window.downloadStudyReport = function(){
+  var text = buildStudyReport();
+  var blob = new Blob([text], {type:'text/plain;charset=utf-8'});
+  var url = URL.createObjectURL(blob);
+  var link = document.createElement('a');
+  link.href = url;
+  link.download = 'afrostudy-kcse-practice-report.txt';
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+  var status = document.getElementById('study-report-status');
+  if(status) status.textContent = 'Study report downloaded.';
+};
+
+window.resetProgress = function(){
+  localStorage.removeItem('afrostudy_progress');
+  loadProgress();
+};
+
+/* Twemoji parse flashcard setup */
+document.addEventListener('DOMContentLoaded', function(){
+  if(typeof twemoji !== 'undefined'){
+    var fcPicker = document.getElementById('fc-subject-picker');
+    if(fcPicker) twemoji.parse(fcPicker);
+  }
+});
+
+/* expose SUBJECTS for other parts */
+window.AFROSTUDY_SUBJECTS = SUBJECTS;
+
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+</body>
+</html>

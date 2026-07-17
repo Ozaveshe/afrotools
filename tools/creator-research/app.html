@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CreatorResearch Workspace | AfroTools</title>
+  <meta name="robots" content="noindex, follow">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <link rel="stylesheet" href="style.css?v=c5937540">
+  <style>
+    .crh-loading-status{text-align:center;padding:10px 0 2px;min-height:28px}
+    .crh-loading-status:empty{display:none}
+    .crh-loading-status .crh-status-text{font-size:13px;color:var(--blue,#0062CC);font-family:'DM Sans',sans-serif;font-weight:500}
+    .crh-loading-status .crh-status-dots{display:inline-block;min-width:18px;text-align:left}
+    .crh-loading-status .crh-status-dots::after{content:'';animation:crh-dots 1.4s steps(4,end) infinite}
+    @keyframes crh-dots{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}}
+  </style>
+  <script src="/assets/js/supabase-auth.js?v=0c644f2e" defer></script>
+  <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
+<meta property="og:url" content="https://afrotools.com/tools/creator-research/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c4853917">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/lib/dark-mode.js?v=5cb64ba3" defer></script>
+<link rel="canonical" href="https://afrotools.com/tools/creator-research/app">
+</head>
+<body class="crh-app top-level-page-ui-refresh">
+
+  <!-- HEADER -->
+  <header class="crh-app-header">
+    <a href="index.html" class="crh-app-logo">
+      <span>&#128270;</span> CreatorResearch
+    </a>
+    <div class="crh-header-actions">
+      <button type="button" class="crh-btn-icon" id="newChatBtn" title="New Chat">&#10133;</button>
+      <button type="button" class="crh-btn-icon" id="libraryBtn" title="Library">&#128218;</button>
+      <button type="button" class="crh-btn-icon desktop-only" id="sidebarToggleBtn" title="Toggle Panel">&#9776;</button>
+    </div>
+  </header>
+
+  <!-- WORKSPACE -->
+  <div class="crh-workspace">
+
+    <!-- SIDEBAR -->
+    <aside class="crh-sidebar" id="sidebar">
+
+      <!-- TRENDING TOPICS -->
+      <div class="crh-sidebar-section">
+        <div class="crh-sidebar-title"><span>&#128293;</span> Trending Topics</div>
+        <div class="crh-trending-cats" id="trendingCats">
+          <span class="crh-trending-cat active" data-cat="all">All</span>
+          <span class="crh-trending-cat" data-cat="tech">Tech</span>
+          <span class="crh-trending-cat" data-cat="culture">Culture</span>
+          <span class="crh-trending-cat" data-cat="business">Business</span>
+          <span class="crh-trending-cat" data-cat="entertainment">Entertainment</span>
+          <span class="crh-trending-cat" data-cat="politics">Politics</span>
+          <span class="crh-trending-cat" data-cat="lifestyle">Lifestyle</span>
+        </div>
+        <div class="crh-trending-list" id="trendingList"></div>
+      </div>
+
+      <!-- CONVERSATION HISTORY -->
+      <div class="crh-sidebar-section" style="flex:1;overflow-y:auto;">
+        <div class="crh-sidebar-title"><span>&#128336;</span> History</div>
+        <input aria-label="Search conversations" type="text" class="crh-history-search" id="historySearch" placeholder="Search conversations...">
+        <div id="historyList"></div>
+      </div>
+    </aside>
+
+    <!-- MAIN CHAT -->
+    <div class="crh-main">
+
+      <!-- OUTPUT MODE BAR -->
+      <div class="crh-mode-bar" id="modeBar">
+        <button type="button" class="crh-mode-pill active" data-mode="talking-points">&#127908; Talking Points</button>
+        <button type="button" class="crh-mode-pill" data-mode="content-brief">&#128203; Content Brief</button>
+        <button type="button" class="crh-mode-pill" data-mode="thread-carousel">&#128241; Thread / Carousel</button>
+        <button type="button" class="crh-mode-pill" data-mode="deep-dive">&#128214; Deep Dive</button>
+        <button type="button" class="crh-mode-pill" data-mode="fact-check">&#9989; Fact Check</button>
+        <button type="button" class="crh-mode-pill" data-mode="comparison">&#9878; Compare</button>
+        <button type="button" class="crh-mode-pill" data-mode="swot">&#128202; SWOT</button>
+        <button type="button" class="crh-mode-pill" data-mode="script">&#127908; Script</button>
+      </div>
+
+      <!-- CHAT AREA -->
+      <div class="crh-chat" id="chatArea">
+        <div class="crh-empty">
+          <div class="crh-empty-icon">&#128270;</div>
+          <div class="crh-empty-title">Ask anything. Get structured research.</div>
+          <div class="crh-empty-desc">Pick an output mode above, type your question below, and get research with African context built in.</div>
+        </div>
+      </div>
+
+      <!-- INPUT BAR -->
+      <div class="crh-input-bar">
+        <div class="crh-input-row">
+          <textarea class="crh-input" id="chatInput" placeholder="Ask a research question..." rows="1" aria-label="Ask a research question..."></textarea>
+          <button type="button" class="crh-send-btn" id="sendBtn"><span class="crh-spinner"></span>Send</button>
+        </div>
+        <div class="crh-loading-status" id="loadingStatus"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOBILE SIDEBAR OVERLAY -->
+  <div class="crh-mobile-sidebar" id="mobileSidebar">
+    <aside class="crh-sidebar" id="mobileSidebarInner"></aside>
+  </div>
+
+  <!-- TOPIC LIBRARY MODAL -->
+  <div class="crh-library-overlay" id="libraryOverlay">
+    <div class="crh-library-modal">
+      <div class="crh-library-header">
+        <h3>&#128218; Topic Library</h3>
+        <button type="button" class="crh-library-close" id="libraryClose">&times;</button>
+      </div>
+      <div class="crh-library-toolbar">
+        <input aria-label="Search saved topics" type="text" class="crh-library-search" id="librarySearch" placeholder="Search saved topics...">
+        <button type="button" class="crh-library-export" id="libraryExport">&#128229; Export</button>
+      </div>
+      <div class="crh-library-tags" id="libraryTags"></div>
+      <div class="crh-library-body" id="libraryBody"></div>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="crh-bottom-nav">
+    <a href="app.html" class="active"><span class="crh-bnav-icon">&#128270;</span>Research</a>
+    <a href="#" id="mobileLibraryBtn"><span class="crh-bnav-icon">&#128218;</span>Library</a>
+    <a href="#" id="mobileSidebarBtn"><span class="crh-bnav-icon">&#128293;</span>Trending</a>
+    <a href="index.html"><span class="crh-bnav-icon">&#8505;&#65039;</span>About</a>
+  </nav>
+
+  <!-- TOAST -->
+  <div class="crh-toast" id="toast"></div>
+
+<script>
+!function() {
+  "use strict";
+
+  var API = '/.netlify/functions/ai-advisor';
+  var TOOL_KEY = 'creator-research';
+  var STORAGE_HISTORY = 'crh-history';
+  var STORAGE_LIBRARY = 'crh-library';
+  var MAX_HISTORY = 20;
+
+  // -- STATE --
+  var currentMode = 'talking-points';
+  var conversation = []; // { role: 'user'|'ai', content, mode, html, ts }
+  var currentConversationId = null;
+
+  // -- TRENDING TOPICS DATA --
+  var TRENDING = [
+    { title: "Africa's AI startup boom in 2026", cat: "tech" },
+    { title: "Why Nollywood is outselling Hollywood in Africa", cat: "entertainment" },
+    { title: "The CFA franc debate: should West Africa drop it?", cat: "politics" },
+    { title: "Remote work visas for African countries", cat: "lifestyle" },
+    { title: "Nigeria's Dangote Refinery impact on fuel prices", cat: "business" },
+    { title: "Afrobeats going global: cultural export economics", cat: "culture" },
+    { title: "Kenya's M-Pesa vs Nigeria's fintech apps", cat: "tech" },
+    { title: "Is Africa's population really doubling by 2050?", cat: "politics" },
+    { title: "Top African podcasters monetization strategies", cat: "business" },
+    { title: "Jollof rice economics: Ghana vs Nigeria", cat: "culture" },
+    { title: "Electric vehicles in Africa: reality check", cat: "tech" },
+    { title: "African fashion week revenue and global reach", cat: "entertainment" },
+    { title: "Youth unemployment solutions across Africa", cat: "politics" },
+    { title: "Digital nomad hotspots in Africa 2026", cat: "lifestyle" },
+    { title: "Crypto adoption rates in Sub-Saharan Africa", cat: "tech" },
+    { title: "Brideprice inflation: economics and culture", cat: "culture" },
+    { title: "AfCFTA trade impact after 3 years", cat: "business" },
+    { title: "African language preservation and AI", cat: "tech" },
+    { title: "Stokvel and Ajo: informal savings revolution", cat: "business" },
+    { title: "Mental health awareness in African workplaces", cat: "lifestyle" }
+  ];
+
+  // -- VERB SPINNER --
+  var ACTION_VERBS = [
+    "Researching your topic",
+    "Scanning trending content",
+    "Analyzing competitor strategies",
+    "Mining audience insights",
+    "Gathering market data",
+    "Mapping content gaps",
+    "Discovering opportunities",
+    "Compiling key findings",
+    "Evaluating engagement patterns",
+    "Synthesizing research data",
+    "Identifying growth angles",
+    "Cross-referencing sources",
+    "Building your research brief",
+    "Extracting actionable insights",
+    "Benchmarking performance",
+    "Finalizing recommendations"
+  ];
+  var verbInterval = null;
+  var verbIndex = 0;
+
+  function startVerbCycling() {
+    verbIndex = 0;
+    var el = document.getElementById('loadingStatus');
+    el.innerHTML = '<span class="crh-status-text">' + ACTION_VERBS[0] + '<span class="crh-status-dots"></span></span>';
+    verbInterval = setInterval(function() {
+      verbIndex = (verbIndex + 1) % ACTION_VERBS.length;
+      el.innerHTML = '<span class="crh-status-text">' + ACTION_VERBS[verbIndex] + '<span class="crh-status-dots"></span></span>';
+    }, 2200);
+  }
+
+  function stopVerbCycling() {
+    if (verbInterval) { clearInterval(verbInterval); verbInterval = null; }
+    var el = document.getElementById('loadingStatus');
+    el.innerHTML = '';
+  }
+
+  // -- MOCK RESPONSES --
+  var MOCK_RESPONSES = {
+    'talking-points': {
+      mode: 'Talking Points',
+      sections: [
+        {
+          heading: 'Key Talking Points',
+          bullets: [
+            '<strong>The scale of the issue:</strong> Over 600 million Africans lack reliable electricity access, making it the largest energy gap globally.',
+            '<strong>Mobile leapfrogging:</strong> Just as Africa skipped landlines for mobile phones, solar micro-grids are bypassing traditional power infrastructure.',
+            '<strong>Investment surge:</strong> African clean energy attracted $3.2 billion in VC funding in 2025, up 47% year-over-year.',
+            '<strong>Job creation angle:</strong> The renewable energy sector could create 2 million jobs across Africa by 2030, according to IRENA estimates.',
+            '<strong>The China factor:</strong> Chinese companies supply 70% of solar panels used in African markets, creating both opportunity and dependency.'
+          ]
+        }
+      ],
+      africanContext: 'Nigeria alone spends $14 billion annually on diesel generators. Kenya leads East Africa with 93% clean energy in its grid mix. South Africa\'s load-shedding crisis has made solar adoption a survival strategy, not just environmental policy.',
+      sources: ['IRENA Africa Energy Outlook 2025', 'Bloomberg NEF — Africa Clean Energy Report', 'African Development Bank — Energy Statistics']
+    },
+    'content-brief': {
+      mode: 'Content Brief',
+      title_suggestions: ['The Quiet Energy Revolution Africa Isn\'t Talking About', 'Why Your Next Power Source Won\'t Come from a Grid', 'Africa\'s $3.2B Bet on Clean Energy'],
+      outline: [
+        { h2: 'The Problem', points: ['600M without reliable power', 'Diesel generator dependency costs', 'Economic drag from unreliable electricity'] },
+        { h2: 'The Leapfrog Moment', points: ['Solar micro-grid economics', 'Pay-as-you-go models', 'M-KOPA and d.light case studies'] },
+        { h2: 'The Investment Picture', points: ['VC funding trends', 'Key players and deals', 'Government policy enablers'] },
+        { h2: 'What It Means for Creators', points: ['Content angles', 'Audience interest data', 'Monetization opportunities'] }
+      ],
+      hooks: ['Did you know Africa spends more on diesel generators than some countries spend on their entire military?', 'The biggest energy revolution in history is happening — and nobody is covering it.', 'While the West argues about EVs, Africa is quietly building the future of energy.'],
+      key_stats: ['600M lack reliable electricity', '$3.2B VC funding in 2025', '2M potential jobs by 2030', '93% clean energy in Kenya\'s grid'],
+      cta_suggestions: ['Follow for more African business insights', 'Save this for your next energy content', 'Tag a creator who should cover this topic'],
+      africanContext: 'Pay-as-you-go solar companies like M-KOPA have connected 3 million homes in East Africa. In Nigeria, solar is now cheaper per kWh than diesel generators in most states. South Africa added more rooftop solar in 2025 than in the previous 5 years combined.'
+    },
+    'thread-carousel': {
+      mode: 'Thread / Carousel',
+      slides: [
+        { num: 1, text: '600 million Africans don\'t have reliable electricity.\n\nBut the solution isn\'t what you think.\n\nHere\'s the energy revolution nobody is talking about: &#9889;&#127757;' },
+        { num: 2, text: 'Africa skipped landlines and went straight to mobile phones.\n\nNow it\'s happening again with energy.\n\nSolar micro-grids are bypassing traditional power infrastructure entirely.' },
+        { num: 3, text: 'The numbers are wild:\n\n&#8226; $3.2B in clean energy VC funding in 2025\n&#8226; 47% increase year-over-year\n&#8226; 2 million potential jobs by 2030\n\nThis isn\'t charity. It\'s business.' },
+        { num: 4, text: 'Kenya already runs 93% of its grid on clean energy.\n\nNigeria spends $14B/year on diesel generators.\n\nThe opportunity gap is massive. &#128200;' },
+        { num: 5, text: 'Companies like M-KOPA have connected 3 million East African homes to solar.\n\nPay-as-you-go model. No grid needed. No diesel smell.\n\nThis is the future.' },
+        { num: 6, text: 'The question isn\'t whether Africa will go clean energy.\n\nIt\'s who will build it, who will fund it, and who will tell the story.\n\nFollow for more African business insights. &#127757;' }
+      ],
+      africanContext: 'Thread/carousel content about African energy performs 3x better when it includes specific country comparisons. Nigerian and South African audiences engage most with content showing cost savings over generators.'
+    },
+    'deep-dive': {
+      mode: 'Deep Dive',
+      sections: [
+        {
+          heading: 'The Scale of Africa\'s Energy Gap',
+          content: 'Sub-Saharan Africa has the lowest electricity access rate in the world. Over 600 million people lack reliable power, and the gap is widest in rural areas where grid extension is economically unviable. This isn\'t just inconvenience — it\'s an economic brake affecting healthcare, education, agriculture, and digital connectivity.',
+          subsections: [
+            { heading: 'Country-level breakdown', content: 'Nigeria (85M without access), DR Congo (70M), Tanzania (35M), and Ethiopia (55M) account for the largest absolute numbers. In percentage terms, South Sudan (5%), Burundi (11%), and Chad (11%) have the lowest access rates.' },
+            { heading: 'Economic impact', content: 'The World Bank estimates that power outages cost African businesses 2-4% of GDP annually. Nigerian businesses alone lose an estimated $29 billion per year to unreliable power.' }
+          ]
+        },
+        {
+          heading: 'The Decentralized Energy Revolution',
+          content: 'Rather than replicating the centralized grid model of developed nations, African energy is increasingly following a distributed path. Solar home systems, mini-grids, and pay-as-you-go models are creating access without massive infrastructure investment.',
+          subsections: [
+            { heading: 'Pay-as-you-go solar', content: 'Companies like M-KOPA, d.light, and Bboxx have proven that low-income households will pay for solar if financing is flexible. M-KOPA alone has connected over 3 million homes using mobile money payments.' },
+            { heading: 'Mini-grid economics', content: 'Mini-grids serving 100-10,000 customers are becoming cost-competitive with diesel generation. Husk Power Systems in Nigeria and PowerGen in East Africa are leading this model.' }
+          ]
+        },
+        {
+          heading: 'Investment and Policy Landscape',
+          content: 'Clean energy investment in Africa reached $3.2 billion in 2025, driven by both climate commitments and commercial opportunity. However, this represents less than 2% of global clean energy investment despite Africa having 60% of the world\'s best solar resources.',
+          subsections: [
+            { heading: 'Key deals and players', content: 'Major deals include Sun King\'s $260M raise, d.light\'s Series E, and several mini-grid companies attracting growth-stage capital. Development finance institutions (DFIs) remain crucial co-investors.' },
+            { heading: 'Policy enablers', content: 'Kenya\'s feed-in tariff, Nigeria\'s Solar Power Naija program, and South Africa\'s REIPPPP have created frameworks for private investment. Rwanda\'s universal electrification target is driving mini-grid deployment.' }
+          ]
+        }
+      ],
+      africanContext: 'The narrative around African energy is shifting from "aid" to "opportunity." African-led companies now represent 40% of the solar home system market, up from 15% five years ago. Local manufacturing of solar components is growing in Kenya, South Africa, and Nigeria.',
+      sources: ['IEA Africa Energy Outlook 2025', 'IRENA Renewable Energy Statistics', 'Bloomberg NEF', 'World Bank Electrification Database', 'GOGLA Off-Grid Solar Market Report']
+    },
+    'fact-check': {
+      mode: 'Fact Check',
+      verdict: 'partial',
+      verdict_text: 'Partially True',
+      claim: 'Africa has more mobile money accounts than the rest of the world combined.',
+      explanation: 'Sub-Saharan Africa does lead the world in mobile money adoption with over 763 million registered accounts as of 2024 (GSMA). However, the "more than the rest of the world combined" claim is no longer accurate. While Africa had more than half of global accounts in 2020, rapid adoption in South and Southeast Asia has shifted the balance. Africa now represents approximately 48% of global mobile money accounts.',
+      nuance: 'The claim was accurate around 2019-2020 but has become outdated due to rapid growth in other regions. Africa still leads in active usage rates and transaction volumes relative to GDP.',
+      sources: ['GSMA State of the Industry Report on Mobile Money 2024', 'World Bank Global Findex Database', 'Central Bank of Kenya — Mobile Money Statistics'],
+      africanContext: 'Mobile money remains transformative in Africa in ways it isn\'t elsewhere. In Kenya, mobile money transactions equal 87% of GDP. In West Africa, mobile money is filling gaps left by limited banking infrastructure. Nigeria\'s approach differs — bank-led fintech (Opay, Moniepoint) has outpaced telco-led mobile money.'
+    },
+    'comparison': {
+      mode: 'Compare',
+      sections: [
+        {
+          heading: 'Overview',
+          bullets: [
+            '<strong>Side A:</strong> Represents the established approach with proven track record in traditional markets.',
+            '<strong>Side B:</strong> Represents the emerging alternative with higher growth potential but less certainty.'
+          ]
+        },
+        {
+          heading: 'Comparison',
+          bullets: [
+            '<strong>Market Size:</strong> Side A dominates current market (65% share) vs Side B growing at 40% YoY',
+            '<strong>Accessibility:</strong> Side A requires infrastructure vs Side B works with mobile-first approach',
+            '<strong>Cost:</strong> Side A has higher upfront but lower ongoing vs Side B has low entry but variable costs',
+            '<strong>Trust:</strong> Side A has regulatory backing vs Side B relies on peer-to-peer trust',
+            '<strong>Scalability:</strong> Side A limited by physical infrastructure vs Side B scales digitally'
+          ]
+        }
+      ],
+      africanContext: 'In African markets, the comparison often comes down to infrastructure availability. Mobile-first solutions consistently outperform infrastructure-dependent ones across the continent.',
+      sources: ['Industry comparison reports', 'Market analysis data']
+    },
+    'swot': {
+      mode: 'SWOT Analysis',
+      sections: [
+        {
+          heading: 'Strengths',
+          bullets: [
+            '<strong>Large addressable market:</strong> 1.4 billion people across 54 countries',
+            '<strong>Young demographic:</strong> Median age of 19 years drives digital adoption',
+            '<strong>Mobile penetration:</strong> 495 million unique mobile subscribers',
+            '<strong>Cultural richness:</strong> Unique content angles that stand out globally'
+          ]
+        },
+        {
+          heading: 'Weaknesses',
+          bullets: [
+            '<strong>Infrastructure gaps:</strong> Internet penetration still at 43% continent-wide',
+            '<strong>Payment friction:</strong> Cross-border payments remain complex',
+            '<strong>Talent retention:</strong> Brain drain to Western markets continues',
+            '<strong>Fragmented markets:</strong> 54 countries with different regulations'
+          ]
+        },
+        {
+          heading: 'Opportunities',
+          bullets: [
+            '<strong>Untapped audiences:</strong> Millions coming online for the first time',
+            '<strong>Creator economy growth:</strong> African creator market growing 3x faster than global average',
+            '<strong>Diaspora engagement:</strong> 170M African diaspora seeking local content',
+            '<strong>AI tools:</strong> Lowering barriers to professional content creation'
+          ]
+        },
+        {
+          heading: 'Threats',
+          bullets: [
+            '<strong>Platform dependency:</strong> Reliance on Western social platforms for distribution',
+            '<strong>Currency volatility:</strong> Monetization eroded by exchange rate fluctuations',
+            '<strong>Regulation:</strong> Increasing social media taxes and content regulations',
+            '<strong>Competition:</strong> Global creators entering African content spaces'
+          ]
+        }
+      ],
+      africanContext: 'SWOT analysis for African content markets must account for the continent\'s diversity. What works in Nigeria may not apply to Kenya or South Africa. Regional strategies consistently outperform continent-wide approaches.',
+      sources: ['GSMA Mobile Economy Africa 2025', 'African Development Bank Reports', 'Creator Economy Research']
+    },
+    'script': {
+      mode: 'Script',
+      slides: [
+        { num: 1, text: '[HOOK - First 3 seconds]\n"Did you know that..." + surprising stat\n[GRAPHIC: Bold stat on screen]' },
+        { num: 2, text: '[INTRO - 10 seconds]\nIntroduce the topic and why it matters right now.\nSet up the "journey" you\'re taking the viewer on.\n[B-ROLL: Relevant visuals]' },
+        { num: 3, text: '[SECTION 1 - The Problem]\nExplain the core issue with specific examples.\nUse data to establish credibility.\n[GRAPHIC: Key stat or comparison]' },
+        { num: 4, text: '[SECTION 2 - The Solution/Insight]\nReveal the key insight or solution.\nInclude a relatable analogy or story.\n[B-ROLL: Real-world examples]' },
+        { num: 5, text: '[SECTION 3 - The Evidence]\nBack up your point with 2-3 specific data points.\nInclude African-specific examples.\n[GRAPHIC: Data visualization]' },
+        { num: 6, text: '[CTA - Final 10 seconds]\n"If you found this valuable, follow for more African business insights."\nAsk a question to drive comments.\n[GRAPHIC: Follow + subscribe]' }
+      ],
+      africanContext: 'Video scripts targeting African audiences perform best when they include local examples within the first 10 seconds. Engagement data shows that scripts mentioning specific African cities or countries get 2.5x more shares.',
+      sources: ['Content performance analytics', 'African creator engagement data']
+    }
+  };
+
+  // -- AUTH --
+  function getToken() {
+    try {
+      var raw = localStorage.getItem('sb-zpclagtgczsygrgztlts-auth-token');
+      if (raw) { var d = JSON.parse(raw); return d.access_token || ''; }
+    } catch(e) {}
+    return '';
+  }
+
+  function authHeaders() {
+    var t = getToken();
+    return { 'Content-Type': 'application/json', 'Authorization': t ? 'Bearer ' + t : '' };
+  }
+
+  // -- TOAST --
+  function toast(msg) {
+    var el = document.getElementById('toast');
+    el.textContent = msg; el.classList.add('show');
+    setTimeout(function() { el.classList.remove('show'); }, 2500);
+  }
+
+  // -- HELPERS --
+  function escapeHtml(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+
+  function formatTime(ts) {
+    var d = new Date(ts);
+    var now = new Date();
+    var diff = now - d;
+    if (diff < 60000) return 'Just now';
+    if (diff < 3600000) return Math.floor(diff / 60000) + 'm ago';
+    if (diff < 86400000) return Math.floor(diff / 3600000) + 'h ago';
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+  }
+
+  // -- MODE SWITCHING --
+  document.querySelectorAll('.crh-mode-pill').forEach(function(pill) {
+    pill.onclick = function() {
+      document.querySelectorAll('.crh-mode-pill').forEach(function(p) { p.classList.remove('active'); });
+      pill.classList.add('active');
+      currentMode = pill.getAttribute('data-mode');
+    };
+  });
+
+  // -- TRENDING TOPICS --
+  function renderTrending(cat) {
+    var list = document.getElementById('trendingList');
+    var filtered = cat === 'all' ? TRENDING : TRENDING.filter(function(t) { return t.cat === cat; });
+    list.innerHTML = '';
+    filtered.forEach(function(topic) {
+      var el = document.createElement('div');
+      el.className = 'crh-trending-item';
+      el.innerHTML = '<div class="crh-trending-item-title">' + escapeHtml(topic.title) + '</div>' +
+        '<div class="crh-trending-item-cat">' + topic.cat + '</div>';
+      el.onclick = function() {
+        document.getElementById('chatInput').value = topic.title;
+        document.getElementById('chatInput').focus();
+        closeMobileSidebar();
+      };
+      list.appendChild(el);
+    });
+  }
+
+  document.getElementById('trendingCats').addEventListener('click', function(e) {
+    var cat = e.target.getAttribute('data-cat');
+    if (!cat) return;
+    document.querySelectorAll('.crh-trending-cat').forEach(function(c) { c.classList.remove('active'); });
+    e.target.classList.add('active');
+    renderTrending(cat);
+  });
+
+  renderTrending('all');
+
+  // -- CONVERSATION HISTORY --
+  function getHistory() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_HISTORY) || '[]'); } catch(e) { return []; }
+  }
+
+  function saveHistory() {
+    var all = getHistory();
+    var idx = all.findIndex(function(c) { return c.id === currentConversationId; });
+    var entry = {
+      id: currentConversationId,
+      firstQuery: conversation.length > 0 ? conversation[0].content : '',
+      mode: conversation.length > 0 ? conversation[0].mode : currentMode,
+      messages: conversation.length,
+      updatedAt: Date.now()
+    };
+    if (idx >= 0) { all[idx] = entry; } else { all.unshift(entry); }
+    if (all.length > MAX_HISTORY) all = all.slice(0, MAX_HISTORY);
+    localStorage.setItem(STORAGE_HISTORY, JSON.stringify(all));
+    // Save conversation messages
+    localStorage.setItem('crh-conv-' + currentConversationId, JSON.stringify(conversation));
+    renderHistory();
+  }
+
+  function renderHistory(filter) {
+    var all = getHistory();
+    var list = document.getElementById('historyList');
+    if (!filter) filter = '';
+    filter = filter.toLowerCase();
+    list.innerHTML = '';
+    var filtered = all.filter(function(c) { return !filter || (c.firstQuery || '').toLowerCase().indexOf(filter) >= 0; });
+    if (!filtered.length) {
+      list.innerHTML = '<div style="text-align:center;padding:20px;color:rgba(255,255,255,.3);font-size:12px;">No conversations yet</div>';
+      return;
+    }
+    filtered.forEach(function(c) {
+      var el = document.createElement('div');
+      el.className = 'crh-history-item';
+      el.innerHTML = '<div class="crh-history-item-q">' + escapeHtml(c.firstQuery || 'Untitled') + '</div>' +
+        '<div class="crh-history-item-meta"><span>' + c.messages + ' msgs</span><span>' + formatTime(c.updatedAt) + '</span></div>';
+      el.onclick = function() { loadConversation(c.id); closeMobileSidebar(); };
+      list.appendChild(el);
+    });
+  }
+
+  function loadConversation(id) {
+    try {
+      var msgs = JSON.parse(localStorage.getItem('crh-conv-' + id) || '[]');
+      conversation = msgs;
+      currentConversationId = id;
+      replayConversation();
+    } catch(e) {
+      toast('Could not load conversation');
+    }
+  }
+
+  function replayConversation() {
+    var chat = document.getElementById('chatArea');
+    chat.innerHTML = '';
+    conversation.forEach(function(msg) {
+      if (msg.role === 'user') {
+        appendUserMessage(msg.content, false);
+      } else if (msg.html) {
+        var div = document.createElement('div');
+        div.className = 'crh-msg crh-msg-ai';
+        div.innerHTML = msg.html;
+        chat.appendChild(div);
+      }
+    });
+    wireResponseActions();
+    scrollToBottom();
+  }
+
+  document.getElementById('historySearch').addEventListener('input', function() {
+    renderHistory(this.value);
+  });
+
+  renderHistory();
+
+  // -- TOPIC LIBRARY --
+  function getLibrary() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_LIBRARY) || '[]'); } catch(e) { return []; }
+  }
+
+  function saveToLibrary(topic, content, tags) {
+    var lib = getLibrary();
+    lib.unshift({ id: uid(), topic: topic, content: content, tags: tags || [], savedAt: Date.now() });
+    localStorage.setItem(STORAGE_LIBRARY, JSON.stringify(lib));
+    toast('Saved to Library');
+  }
+
+  function deleteFromLibrary(id) {
+    var lib = getLibrary().filter(function(item) { return item.id !== id; });
+    localStorage.setItem(STORAGE_LIBRARY, JSON.stringify(lib));
+    renderLibrary();
+  }
+
+  function renderLibrary(filter, tagFilter) {
+    var lib = getLibrary();
+    var body = document.getElementById('libraryBody');
+    var tagsEl = document.getElementById('libraryTags');
+    filter = (filter || '').toLowerCase();
+    tagFilter = tagFilter || '';
+
+    // Collect all tags
+    var allTags = {};
+    lib.forEach(function(item) { (item.tags || []).forEach(function(t) { allTags[t] = (allTags[t] || 0) + 1; }); });
+
+    tagsEl.innerHTML = '<span class="crh-library-tag' + (!tagFilter ? ' active' : '') + '" data-tag="">All</span>';
+    Object.keys(allTags).forEach(function(tag) {
+      tagsEl.innerHTML += '<span class="crh-library-tag' + (tagFilter === tag ? ' active' : '') + '" data-tag="' + tag + '">' + tag + ' (' + allTags[tag] + ')</span>';
+    });
+
+    // Wire tag clicks
+    tagsEl.querySelectorAll('.crh-library-tag').forEach(function(el) {
+      el.onclick = function() { renderLibrary(document.getElementById('librarySearch').value, el.getAttribute('data-tag')); };
+    });
+
+    var filtered = lib.filter(function(item) {
+      var matchFilter = !filter || (item.topic || '').toLowerCase().indexOf(filter) >= 0 || (item.content || '').toLowerCase().indexOf(filter) >= 0;
+      var matchTag = !tagFilter || (item.tags || []).indexOf(tagFilter) >= 0;
+      return matchFilter && matchTag;
+    });
+
+    if (!filtered.length) {
+      body.innerHTML = '<div class="crh-library-empty">No saved topics yet. Research something and click "Save to Library".</div>';
+      return;
+    }
+
+    body.innerHTML = '';
+    filtered.forEach(function(item) {
+      var el = document.createElement('div');
+      el.className = 'crh-library-item';
+      var tagsHtml = (item.tags || []).map(function(t) { return '<span class="crh-library-item-tag">' + t + '</span>'; }).join('');
+      el.innerHTML = '<button type="button" class="crh-library-item-delete" data-id="' + item.id + '">&times;</button>' +
+        '<div class="crh-library-item-title">' + escapeHtml(item.topic) + '</div>' +
+        '<div class="crh-library-item-preview">' + escapeHtml((item.content || '').slice(0, 120)) + '</div>' +
+        (tagsHtml ? '<div class="crh-library-item-tags">' + tagsHtml + '</div>' : '');
+      body.appendChild(el);
+    });
+
+    body.querySelectorAll('.crh-library-item-delete').forEach(function(btn) {
+      btn.onclick = function(e) { e.stopPropagation(); deleteFromLibrary(btn.getAttribute('data-id')); };
+    });
+  }
+
+  // Library modal
+  document.getElementById('libraryBtn').onclick = function() { openLibrary(); };
+  document.getElementById('mobileLibraryBtn').onclick = function(e) { e.preventDefault(); openLibrary(); };
+  document.getElementById('libraryClose').onclick = function() { document.getElementById('libraryOverlay').classList.remove('open'); };
+  document.getElementById('libraryOverlay').onclick = function(e) { if (e.target === this) this.classList.remove('open'); };
+  document.getElementById('librarySearch').addEventListener('input', function() { renderLibrary(this.value); });
+
+  function openLibrary() {
+    document.getElementById('libraryOverlay').classList.add('open');
+    renderLibrary();
+  }
+
+  // Library export
+  document.getElementById('libraryExport').onclick = function() {
+    var lib = getLibrary();
+    if (!lib.length) { toast('Nothing to export'); return; }
+    var text = lib.map(function(item) {
+      return '## ' + item.topic + '\n' + (item.tags.length ? 'Tags: ' + item.tags.join(', ') + '\n' : '') + '\n' + item.content + '\n\n---\n';
+    }).join('\n');
+    var blob = new Blob([text], { type: 'text/plain' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = 'creator-research-library.txt'; a.click();
+    URL.revokeObjectURL(url);
+    toast('Library exported');
+  };
+
+  // -- MOBILE SIDEBAR --
+  document.getElementById('mobileSidebarBtn').onclick = function(e) {
+    e.preventDefault();
+    var overlay = document.getElementById('mobileSidebar');
+    var inner = document.getElementById('mobileSidebarInner');
+    inner.innerHTML = document.getElementById('sidebar').innerHTML;
+    overlay.classList.add('open');
+    // Re-wire events in cloned sidebar
+    inner.querySelectorAll('.crh-trending-item').forEach(function(el) {
+      var title = el.querySelector('.crh-trending-item-title');
+      if (title) {
+        el.onclick = function() {
+          document.getElementById('chatInput').value = title.textContent;
+          document.getElementById('chatInput').focus();
+          closeMobileSidebar();
+        };
+      }
+    });
+  };
+
+  document.getElementById('mobileSidebar').onclick = function(e) {
+    if (e.target === this) closeMobileSidebar();
+  };
+
+  function closeMobileSidebar() {
+    document.getElementById('mobileSidebar').classList.remove('open');
+  }
+
+  // Desktop sidebar toggle
+  document.getElementById('sidebarToggleBtn').onclick = function() {
+    var sb = document.getElementById('sidebar');
+    sb.style.display = sb.style.display === 'none' ? '' : 'none';
+  };
+
+  // -- CHAT RENDERING --
+  function appendUserMessage(text, animate) {
+    var chat = document.getElementById('chatArea');
+    // Remove empty state
+    var empty = chat.querySelector('.crh-empty');
+    if (empty) empty.remove();
+
+    var el = document.createElement('div');
+    el.className = 'crh-msg crh-msg-user';
+    if (animate === false) el.style.animation = 'none';
+    el.textContent = text;
+    chat.appendChild(el);
+  }
+
+  function appendShimmer() {
+    var chat = document.getElementById('chatArea');
+    var el = document.createElement('div');
+    el.className = 'crh-shimmer-card';
+    el.id = 'loadingShimmer';
+    el.innerHTML = '<div class="crh-shimmer-line" style="width:80%"></div><div class="crh-shimmer-line" style="width:60%"></div><div class="crh-shimmer-line" style="width:90%"></div><div class="crh-shimmer-line" style="width:45%"></div>';
+    chat.appendChild(el);
+    scrollToBottom();
+  }
+
+  function removeShimmer() {
+    var el = document.getElementById('loadingShimmer');
+    if (el) el.remove();
+  }
+
+  function scrollToBottom() {
+    var chat = document.getElementById('chatArea');
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  // -- RENDER AI RESPONSE --
+  function renderResponse(data, mode, query) {
+    var html = '';
+
+    html += '<div class="crh-resp-header">';
+    html += '<div class="crh-resp-avatar">&#128270;</div>';
+    html += '<div class="crh-resp-label">CreatorResearch</div>';
+    html += '<div class="crh-resp-mode">' + escapeHtml(data.mode || mode) + '</div>';
+    html += '</div>';
+
+    html += '<div class="crh-resp-body">';
+
+    switch (mode) {
+      case 'talking-points':
+        html += renderTalkingPoints(data);
+        break;
+      case 'content-brief':
+        html += renderContentBrief(data);
+        break;
+      case 'thread-carousel':
+        html += renderThreadCarousel(data);
+        break;
+      case 'deep-dive':
+        html += renderDeepDive(data);
+        break;
+      case 'fact-check':
+        html += renderFactCheck(data);
+        break;
+      case 'comparison':
+      case 'swot':
+        html += renderTalkingPoints(data); // reuse sections format
+        break;
+      case 'script':
+        html += renderThreadCarousel(data); // reuse slides format
+        break;
+      default:
+        html += renderTalkingPoints(data);
+    }
+
+    // African Context callout
+    if (data.africanContext) {
+      html += '<div class="crh-african-context">';
+      html += '<div class="crh-african-context-label">&#127757; African Context</div>';
+      html += '<p>' + data.africanContext + '</p>';
+      html += '</div>';
+    }
+
+    // Sources
+    if (data.sources && data.sources.length) {
+      html += '<h3>Suggested Sources</h3><ul>';
+      data.sources.forEach(function(s) { html += '<li>' + s + '</li>'; });
+      html += '</ul>';
+    }
+
+    html += '</div>';
+
+    // Actions
+    html += '<div class="crh-resp-actions">';
+    html += '<button type="button" class="crh-action-btn" data-action="copy">&#128203; Copy</button>';
+    html += '<button type="button" class="crh-action-btn" data-action="save">&#128218; Save to Library</button>';
+    html += '<button type="button" class="crh-action-btn" data-action="calendar">&#128197; Send to Calendar</button>';
+    html += '</div>';
+
+    // Store plain text for copying
+    var plainText = extractPlainText(data, mode);
+
+    var chat = document.getElementById('chatArea');
+    var el = document.createElement('div');
+    el.className = 'crh-msg crh-msg-ai';
+    el.innerHTML = html;
+    el.setAttribute('data-plain', plainText);
+    el.setAttribute('data-query', query);
+    el.setAttribute('data-mode', mode);
+    chat.appendChild(el);
+
+    wireResponseActions();
+    scrollToBottom();
+
+    return html;
+  }
+
+  function renderTalkingPoints(data) {
+    var html = '';
+    if (data.sections) {
+      data.sections.forEach(function(sec) {
+        if (sec.heading) html += '<h3>' + sec.heading + '</h3>';
+        if (sec.bullets) {
+          html += '<ol>';
+          sec.bullets.forEach(function(b) { html += '<li>' + b + '</li>'; });
+          html += '</ol>';
+        }
+      });
+    }
+    return html;
+  }
+
+  function renderContentBrief(data) {
+    var html = '';
+    if (data.title_suggestions) {
+      html += '<h3>Title Suggestions</h3><ul>';
+      data.title_suggestions.forEach(function(t) { html += '<li><strong>' + t + '</strong></li>'; });
+      html += '</ul>';
+    }
+    if (data.outline) {
+      html += '<div class="crh-brief-cards">';
+      data.outline.forEach(function(section) {
+        html += '<div class="crh-brief-card"><div class="crh-brief-card-title">' + section.h2 + '</div><ul>';
+        section.points.forEach(function(p) { html += '<li>' + p + '</li>'; });
+        html += '</ul></div>';
+      });
+      html += '</div>';
+    }
+    if (data.hooks) {
+      html += '<h3>Hook Ideas</h3><ul>';
+      data.hooks.forEach(function(h) { html += '<li>"' + h + '"</li>'; });
+      html += '</ul>';
+    }
+    if (data.key_stats) {
+      html += '<h3>Key Stats</h3><ul>';
+      data.key_stats.forEach(function(s) { html += '<li><strong>' + s + '</strong></li>'; });
+      html += '</ul>';
+    }
+    if (data.cta_suggestions) {
+      html += '<h3>CTA Suggestions</h3><ul>';
+      data.cta_suggestions.forEach(function(c) { html += '<li>' + c + '</li>'; });
+      html += '</ul>';
+    }
+    return html;
+  }
+
+  function renderThreadCarousel(data) {
+    var html = '';
+    if (data.slides) {
+      html += '<div class="crh-slides">';
+      data.slides.forEach(function(slide) {
+        html += '<div class="crh-slide">';
+        html += '<div class="crh-slide-num">' + slide.num + '</div>';
+        html += '<div class="crh-slide-text">' + slide.text.replace(/\n/g, '<br>') + '</div>';
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+    return html;
+  }
+
+  function renderDeepDive(data) {
+    var html = '';
+    if (data.sections) {
+      data.sections.forEach(function(sec, i) {
+        html += '<div class="crh-deep-section">';
+        html += '<button type="button" class="crh-deep-toggle' + (i === 0 ? ' open' : '') + '">' + sec.heading + '</button>';
+        html += '<div class="crh-deep-content' + (i === 0 ? ' open' : '') + '">';
+        html += '<p>' + sec.content + '</p>';
+        if (sec.subsections) {
+          sec.subsections.forEach(function(sub) {
+            html += '<h3>' + sub.heading + '</h3>';
+            html += '<p>' + sub.content + '</p>';
+          });
+        }
+        html += '</div></div>';
+      });
+    }
+    return html;
+  }
+
+  function renderFactCheck(data) {
+    var html = '';
+    var verdictClass = { 'true': 'true', 'partial': 'partial', 'false': 'false', 'unknown': 'unknown' };
+    var vc = verdictClass[data.verdict] || 'unknown';
+    html += '<div class="crh-verdict crh-verdict-' + vc + '">' + (data.verdict_text || data.verdict) + '</div>';
+    if (data.claim) html += '<h3>Claim</h3><p>"' + data.claim + '"</p>';
+    if (data.explanation) html += '<h3>Analysis</h3><p>' + data.explanation + '</p>';
+    if (data.nuance) html += '<h3>Nuance</h3><p>' + data.nuance + '</p>';
+    return html;
+  }
+
+  function extractPlainText(data, mode) {
+    var lines = [];
+    if (mode === 'talking-points' && data.sections) {
+      data.sections.forEach(function(sec) {
+        if (sec.heading) lines.push(sec.heading);
+        if (sec.bullets) sec.bullets.forEach(function(b, i) { lines.push((i + 1) + '. ' + b.replace(/<[^>]*>/g, '')); });
+      });
+    } else if (mode === 'content-brief') {
+      if (data.title_suggestions) lines.push('TITLES: ' + data.title_suggestions.join(' | '));
+      if (data.outline) data.outline.forEach(function(s) { lines.push('\n' + s.h2 + '\n' + s.points.join('\n')); });
+      if (data.hooks) { lines.push('\nHOOKS:'); data.hooks.forEach(function(h) { lines.push('- ' + h); }); }
+      if (data.key_stats) { lines.push('\nKEY STATS:'); data.key_stats.forEach(function(s) { lines.push('- ' + s); }); }
+    } else if (mode === 'thread-carousel' && data.slides) {
+      data.slides.forEach(function(s) { lines.push('Slide ' + s.num + ':\n' + s.text); });
+    } else if (mode === 'deep-dive' && data.sections) {
+      data.sections.forEach(function(sec) {
+        lines.push('\n## ' + sec.heading + '\n' + sec.content);
+        if (sec.subsections) sec.subsections.forEach(function(sub) { lines.push('\n### ' + sub.heading + '\n' + sub.content); });
+      });
+    } else if (mode === 'fact-check') {
+      lines.push('VERDICT: ' + (data.verdict_text || data.verdict));
+      if (data.claim) lines.push('CLAIM: ' + data.claim);
+      if (data.explanation) lines.push('ANALYSIS: ' + data.explanation);
+      if (data.nuance) lines.push('NUANCE: ' + data.nuance);
+    }
+    if (data.africanContext) lines.push('\nAFRICAN CONTEXT: ' + data.africanContext);
+    if (data.sources) lines.push('\nSOURCES: ' + data.sources.join(', '));
+    return lines.join('\n');
+  }
+
+  // -- WIRE RESPONSE ACTION BUTTONS --
+  function wireResponseActions() {
+    document.querySelectorAll('.crh-msg-ai .crh-action-btn').forEach(function(btn) {
+      if (btn._wired) return;
+      btn._wired = true;
+      btn.onclick = function() {
+        var card = btn.closest('.crh-msg-ai');
+        var plain = card.getAttribute('data-plain') || '';
+        var query = card.getAttribute('data-query') || '';
+        var mode = card.getAttribute('data-mode') || '';
+        var action = btn.getAttribute('data-action');
+
+        switch (action) {
+          case 'copy':
+            navigator.clipboard.writeText(plain).then(function() { toast('Copied to clipboard'); });
+            break;
+          case 'save':
+            var tags = [mode.replace(/-/g, ' ')];
+            saveToLibrary(query, plain, tags);
+            break;
+          case 'calendar':
+            // Save for cross-tool pickup by CreatorCalendar
+            var calendarData = JSON.parse(localStorage.getItem('crh-to-calendar') || '[]');
+            calendarData.push({ topic: query, content: plain, mode: mode, createdAt: Date.now() });
+            localStorage.setItem('crh-to-calendar', JSON.stringify(calendarData));
+            toast('Sent to CreatorCalendar');
+            break;
+        }
+      };
+    });
+
+    // Wire deep-dive toggles
+    document.querySelectorAll('.crh-deep-toggle').forEach(function(tog) {
+      if (tog._wired) return;
+      tog._wired = true;
+      tog.onclick = function() {
+        tog.classList.toggle('open');
+        var content = tog.nextElementSibling;
+        if (content) content.classList.toggle('open');
+      };
+    });
+  }
+
+  // -- SEND MESSAGE --
+  function sendMessage() {
+    var input = document.getElementById('chatInput');
+    var query = input.value.trim();
+    if (!query) return;
+
+    if (!currentConversationId) currentConversationId = uid();
+
+    // Add user message
+    appendUserMessage(query, true);
+    conversation.push({ role: 'user', content: query, mode: currentMode, ts: Date.now() });
+    input.value = '';
+    input.style.height = 'auto';
+
+    var btn = document.getElementById('sendBtn');
+    btn.classList.add('loading');
+    btn.disabled = true;
+    appendShimmer();
+    startVerbCycling();
+
+    // Build AI prompt
+    var modeLabel = currentMode.replace(/-/g, ' ');
+    var systemPrompt = 'You are CreatorResearch, an AI research assistant for African content creators. Output mode: ' + modeLabel +
+      '. Always include an "African Context" section with region-specific data and examples. ';
+
+    switch (currentMode) {
+      case 'talking-points':
+        systemPrompt += 'Provide 4-6 numbered talking points with bold key phrases. Each point should be a self-contained insight ready for a video or podcast.';
+        break;
+      case 'content-brief':
+        systemPrompt += 'Provide: 3 title suggestions, an outline with H2 sections and bullet points, 3 hook ideas, 4-5 key stats, and 3 CTA suggestions.';
+        break;
+      case 'thread-carousel':
+        systemPrompt += 'Provide 5-7 numbered slides/tweets. Each should be self-contained with a hook. First slide should grab attention. Last slide should have a CTA.';
+        break;
+      case 'deep-dive':
+        systemPrompt += 'Provide 3-4 major sections, each with an overview paragraph and 2-3 subsections with deeper analysis. Include specific data points and examples.';
+        break;
+      case 'fact-check':
+        systemPrompt += 'Provide a verdict (true/partially true/false/unverifiable), the claim restated, detailed analysis, nuance notes, and 3+ suggested verification sources.';
+        break;
+      case 'comparison':
+        systemPrompt += 'Provide a structured comparison with: overview of both sides, a comparison table with 5-6 criteria, pros/cons for each, and a balanced conclusion. Format with clear headings.';
+        break;
+      case 'swot':
+        systemPrompt += 'Provide a SWOT analysis with: 4-5 Strengths, 4-5 Weaknesses, 4-5 Opportunities, and 4-5 Threats. Each point should be specific and data-driven where possible.';
+        break;
+      case 'script':
+        systemPrompt += 'Provide a video/podcast script with: an attention-grabbing intro (first 5 seconds hook), 3-4 main sections with transitions, key stats to show on screen, and a strong CTA ending. Include [B-ROLL] and [GRAPHIC] cues.';
+        break;
+    }
+
+    // Try API call, fall back to mock
+    fetch(API, {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ tool: TOOL_KEY, message: query, context: systemPrompt })
+    })
+    .then(function(r) {
+      if (!r.ok) throw new Error('API error');
+      return r.json();
+    })
+    .then(function(res) {
+      btn.classList.remove('loading'); btn.disabled = false;
+      removeShimmer();
+      stopVerbCycling();
+
+      // Try to parse structured response from AI
+      var data;
+      try {
+        var text = res.response || res.output || '';
+        data = parseAIResponse(text, currentMode);
+      } catch(e) {
+        data = getMockResponse(currentMode);
+      }
+
+      var responseHtml = renderResponse(data, currentMode, query);
+      conversation.push({ role: 'ai', content: extractPlainText(data, currentMode), mode: currentMode, html: responseHtml, ts: Date.now() });
+      saveHistory();
+    })
+    .catch(function() {
+      btn.classList.remove('loading'); btn.disabled = false;
+      removeShimmer();
+      stopVerbCycling();
+
+      // Use mock response
+      var data = getMockResponse(currentMode);
+      var responseHtml = renderResponse(data, currentMode, query);
+      conversation.push({ role: 'ai', content: extractPlainText(data, currentMode), mode: currentMode, html: responseHtml, ts: Date.now() });
+      saveHistory();
+    });
+  }
+
+  function getMockResponse(mode) {
+    return MOCK_RESPONSES[mode] || MOCK_RESPONSES['talking-points'];
+  }
+
+  function parseAIResponse(text, mode) {
+    // Attempt to extract JSON from the AI response
+    try {
+      var jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        var parsed = JSON.parse(jsonMatch[0]);
+        if (parsed.sections || parsed.slides || parsed.verdict || parsed.outline) return parsed;
+      }
+    } catch(e) {}
+
+    // Fall back: wrap raw text into a talking-points-style response
+    var lines = text.split('\n').filter(function(l) { return l.trim(); });
+    var bullets = lines.map(function(l) { return l.replace(/^\d+[\.\)]\s*/, '').replace(/^[-*]\s*/, ''); });
+
+    // Extract African context if present
+    var africanContext = '';
+    var contextIdx = text.toLowerCase().indexOf('african context');
+    if (contextIdx >= 0) {
+      africanContext = text.slice(contextIdx).split('\n').slice(1).join(' ').trim().slice(0, 500);
+    }
+
+    if (mode === 'fact-check') {
+      var verdictMatch = text.match(/verdict[:\s]*(true|false|partially true|unverifiable)/i);
+      return {
+        mode: 'Fact Check',
+        verdict: verdictMatch ? (verdictMatch[1].toLowerCase().indexOf('partial') >= 0 ? 'partial' : verdictMatch[1].toLowerCase()) : 'unknown',
+        verdict_text: verdictMatch ? verdictMatch[1] : 'Unverifiable',
+        claim: lines[0] || '',
+        explanation: lines.slice(1, 4).join(' '),
+        nuance: lines.slice(4, 6).join(' '),
+        africanContext: africanContext || 'This topic has specific implications for African markets and demographics that should be considered.',
+        sources: ['Verify with primary sources']
+      };
+    }
+
+    return {
+      mode: mode.replace(/-/g, ' '),
+      sections: [{ heading: 'Research Results', bullets: bullets.slice(0, 6) }],
+      africanContext: africanContext || 'This topic has specific implications for African creators and audiences. Consider local market dynamics, cultural context, and regional variations when using this research.',
+      sources: ['AI-generated research — verify with primary sources']
+    };
+  }
+
+  // -- SEND BUTTON / ENTER KEY --
+  document.getElementById('sendBtn').onclick = sendMessage;
+  document.getElementById('chatInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+
+  // Auto-resize textarea
+  document.getElementById('chatInput').addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+  });
+
+  // -- NEW CONVERSATION on empty input focus --
+  // If user starts typing after loading old conversation, that's fine — it continues the thread.
+
+  // -- NEW CHAT --
+  document.getElementById('newChatBtn').onclick = function() {
+    conversation = [];
+    currentConversationId = null;
+    var chat = document.getElementById('chatArea');
+    chat.innerHTML = '<div class="crh-empty"><div class="crh-empty-icon">&#128270;</div><div class="crh-empty-title">Ask anything. Get structured research.</div><div class="crh-empty-desc">Pick an output mode above, type your question below, and get research with African context built in.</div></div>';
+    document.getElementById('chatInput').value = '';
+    document.getElementById('chatInput').focus();
+    toast('New conversation started');
+  };
+
+}();
+</script>
+</body>
+</html>

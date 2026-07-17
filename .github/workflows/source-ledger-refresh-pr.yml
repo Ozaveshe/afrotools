@@ -1,0 +1,81 @@
+name: Source Ledger Refresh PR
+
+on:
+  schedule:
+    - cron: '43 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh-source-ledgers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Refresh government source ledger
+        run: npm run government:sources
+
+      - name: Refresh transport source ledger
+        run: npm run transport:sources
+
+      - name: Detect source ledger changes
+        id: changes
+        shell: bash
+        run: |
+          git status --short \
+            data/government/source-status.json \
+            data/transport/source-status.json \
+            reports/government-source-ledger.md \
+            reports/transport-source-ledger.md \
+            government/index.html \
+            transport/index.html
+          if [ -n "$(git status --short data/government/source-status.json data/transport/source-status.json reports/government-source-ledger.md reports/transport-source-ledger.md government/index.html transport/index.html)" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            git diff --patch -- \
+              data/government/source-status.json \
+              data/transport/source-status.json \
+              reports/government-source-ledger.md \
+              reports/transport-source-ledger.md \
+              government/index.html \
+              transport/index.html > "$RUNNER_TEMP/source-ledger-refresh.patch"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Upload source ledger refresh evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-ledger-refresh-evidence
+          if-no-files-found: ignore
+          path: |
+            data/government/source-status.json
+            data/transport/source-status.json
+            reports/government-source-ledger.md
+            reports/transport-source-ledger.md
+            ${{ runner.temp }}/source-ledger-refresh.patch
+
+      - name: Open source ledger refresh PR
+        if: steps.changes.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: automation/source-ledger-refresh
+          delete-branch: true
+          title: "chore: refresh government and transport source ledgers"
+          commit-message: "chore: refresh government and transport source ledgers"
+          body: |
+            Weekly official-source ledger refresh.
+
+            This PR updates generated source status, reports, and hub source-summary timestamps for government and transport ledgers. Changed hashes are review signals only. Review blocked, broken, manual-review, or changed rows before updating public fees, eligibility, documents, timelines, duties, tariffs, fares, or rates.

@@ -1,0 +1,162 @@
+## ═══════════════════════════════════════════════════
+## AFROTOOLS — Netlify HTTP Headers
+## Security · Caching · CORS
+## Last updated: July 2026
+## ═══════════════════════════════════════════════════
+
+## ── Security headers — all pages ──
+/*
+  # Prevent clickjacking
+  X-Frame-Options: SAMEORIGIN
+  # Prevent MIME-type sniffing
+  X-Content-Type-Options: nosniff
+  # Control referrer information
+  Referrer-Policy: strict-origin-when-cross-origin
+  # HSTS — force HTTPS for 1 year (includeSubDomains, preload-ready)
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  # Permissions policy — restrict sensitive APIs
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), bluetooth=(), interest-cohort=()
+  # Cross-Origin Opener Policy — prevents cross-origin window attacks
+  Cross-Origin-Opener-Policy: same-origin-allow-popups
+  # Cross-Origin Resource Policy — only same-site can load our resources
+  Cross-Origin-Resource-Policy: same-site
+  # X-XSS-Protection — disabled (modern browsers use CSP; old IE mode=block can cause issues)
+  X-XSS-Protection: 0
+  # Content Security Policy — consolidated (single source of truth)
+  Content-Security-Policy: default-src 'self' https://*.clarity.ms https://c.bing.com; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com https://www.googletagmanager.com https://www.google-analytics.com https://tagmanager.google.com https://js.stripe.com https://*.supabase.co https://connect.facebook.net https://www.clarity.ms https://*.clarity.ms; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://www.google-analytics.com https://www.googletagmanager.com https://lh3.googleusercontent.com https://cdn.jsdelivr.net https://twemoji.maxcdn.com https://*.googleapis.com https://*.supabase.co https://www.facebook.com https://connect.facebook.net https://unpkg.com https://*.basemaps.cartocdn.com https://i.ytimg.com https://img.youtube.com https://yt3.ggpht.com https://*.ggpht.com https://static-cdn.jtvnw.net https://static-cdn.kick.com https://files.kick.com https://kick.com https://*.clarity.ms https://c.bing.com; connect-src 'self' https://*.netlify.app https://*.netlify.com https://www.google-analytics.com https://region1.google-analytics.com https://analytics.google.com https://www.google.com https://fonts.googleapis.com https://fonts.gstatic.com https://open.er-api.com https://api.frankfurter.app https://cdn.jsdelivr.net https://api.coingecko.com https://api.coincap.io https://zpclagtgczsygrgztlts.supabase.co https://*.supabase.co wss://*.supabase.co https://api.anthropic.com https://*.googleapis.com https://www.facebook.com https://connect.facebook.net https://www.clarity.ms https://*.clarity.ms https://c.bing.com; worker-src 'self' blob:; frame-src https://js.stripe.com; object-src 'none'; base-uri 'self'; form-action 'self' https://formspree.io; upgrade-insecure-requests
+
+## ── Embeddable widget iframes — allow cross-origin framing ──
+## These pages are a public embed product: any publisher may <iframe> them.
+## We relax framing to `frame-ancestors *` here ONLY, and override the inherited
+## `X-Frame-Options: SAMEORIGIN`. Browsers ignore X-Frame-Options whenever a CSP
+## `frame-ancestors` directive is present (CSP2 precedence), so frame-ancestors is
+## authoritative; the X-Frame-Options override is defense in depth for the replace
+## case. The full CSP is repeated so this works whether Netlify replaces or merges
+## same-named headers. Keep in sync with the /* CSP above (only `frame-ancestors *`
+## differs). Widget pages are static calculators — no auth, no PII — so allowing
+## any embedder is intentional.
+/widgets/iframe/*
+  Content-Security-Policy: default-src 'self' https://*.clarity.ms https://c.bing.com; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com https://www.googletagmanager.com https://www.google-analytics.com https://tagmanager.google.com https://js.stripe.com https://*.supabase.co https://connect.facebook.net https://www.clarity.ms https://*.clarity.ms; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://www.google-analytics.com https://www.googletagmanager.com https://lh3.googleusercontent.com https://cdn.jsdelivr.net https://twemoji.maxcdn.com https://*.googleapis.com https://*.supabase.co https://www.facebook.com https://connect.facebook.net https://unpkg.com https://*.basemaps.cartocdn.com https://i.ytimg.com https://img.youtube.com https://yt3.ggpht.com https://*.ggpht.com https://static-cdn.jtvnw.net https://static-cdn.kick.com https://files.kick.com https://kick.com https://*.clarity.ms https://c.bing.com; connect-src 'self' https://*.netlify.app https://*.netlify.com https://www.google-analytics.com https://region1.google-analytics.com https://analytics.google.com https://www.google.com https://fonts.googleapis.com https://fonts.gstatic.com https://open.er-api.com https://api.frankfurter.app https://cdn.jsdelivr.net https://api.coingecko.com https://api.coincap.io https://zpclagtgczsygrgztlts.supabase.co https://*.supabase.co wss://*.supabase.co https://api.anthropic.com https://*.googleapis.com https://www.facebook.com https://connect.facebook.net https://www.clarity.ms https://*.clarity.ms https://c.bing.com; worker-src 'self' blob:; frame-src https://js.stripe.com; object-src 'none'; base-uri 'self'; frame-ancestors *; form-action 'self' https://formspree.io; upgrade-insecure-requests
+  X-Frame-Options: ALLOWALL
+
+/fr/widgets/iframe/*
+  Content-Security-Policy: default-src 'self' https://*.clarity.ms https://c.bing.com; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com https://www.googletagmanager.com https://www.google-analytics.com https://tagmanager.google.com https://js.stripe.com https://*.supabase.co https://connect.facebook.net https://www.clarity.ms https://*.clarity.ms; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://www.google-analytics.com https://www.googletagmanager.com https://lh3.googleusercontent.com https://cdn.jsdelivr.net https://twemoji.maxcdn.com https://*.googleapis.com https://*.supabase.co https://www.facebook.com https://connect.facebook.net https://unpkg.com https://*.basemaps.cartocdn.com https://i.ytimg.com https://img.youtube.com https://yt3.ggpht.com https://*.ggpht.com https://static-cdn.jtvnw.net https://static-cdn.kick.com https://files.kick.com https://kick.com https://*.clarity.ms https://c.bing.com; connect-src 'self' https://*.netlify.app https://*.netlify.com https://www.google-analytics.com https://region1.google-analytics.com https://analytics.google.com https://www.google.com https://fonts.googleapis.com https://fonts.gstatic.com https://open.er-api.com https://api.frankfurter.app https://cdn.jsdelivr.net https://api.coingecko.com https://api.coincap.io https://zpclagtgczsygrgztlts.supabase.co https://*.supabase.co wss://*.supabase.co https://api.anthropic.com https://*.googleapis.com https://www.facebook.com https://connect.facebook.net https://www.clarity.ms https://*.clarity.ms https://c.bing.com; worker-src 'self' blob:; frame-src https://js.stripe.com; object-src 'none'; base-uri 'self'; frame-ancestors *; form-action 'self' https://formspree.io; upgrade-insecure-requests
+  X-Frame-Options: ALLOWALL
+
+## ── Cache static assets aggressively (1 year, immutable) ──
+/assets/css/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/js/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/img/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/images/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+
+## ── Service worker & manifest ──
+/manifest.json
+  Cache-Control: public, max-age=86400
+
+/service-worker.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+## ── Tool pages — 1 hour browser, 24 hours CDN ──
+/tools/*
+  Cache-Control: public, max-age=3600, s-maxage=86400
+
+/engineering/*
+  Cache-Control: public, max-age=3600, s-maxage=86400
+
+## ── Country pages — 1 hour browser, 24 hours CDN ──
+/nigeria/*
+  Cache-Control: public, max-age=3600, s-maxage=86400
+
+/kenya/*
+  Cache-Control: public, max-age=3600, s-maxage=86400
+
+/ghana/*
+  Cache-Control: public, max-age=3600, s-maxage=86400
+
+/south-africa/*
+  Cache-Control: public, max-age=3600, s-maxage=86400
+
+## ── HTML pages — always revalidate ──
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+## Internal/source paths denied by redirects. These headers are defense in depth
+## for accidental root-publish or stale deploy configuration.
+/package.json
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, noarchive
+
+/package-lock.json
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, noarchive
+
+/AGENTS.md
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, noarchive
+
+/*.md
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, noarchive
+
+/netlify/*
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, noarchive
+
+/supabase/*
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, noarchive
+
+/scripts/*
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, noarchive
+
+/tests/*
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, noarchive
+
+/docs/*
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, noarchive
+
+/prompts/*
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, noarchive
+
+## ── Netlify functions — no cache ──
+/.netlify/functions/*
+  Cache-Control: no-store, no-cache, must-revalidate
+  # Restrict to own origin only — prevents third-party abuse of private endpoints
+  Access-Control-Allow-Origin: https://afrotools.com
+  Access-Control-Allow-Methods: POST, GET, OPTIONS
+  Access-Control-Allow-Headers: Content-Type, Authorization, x-api-key
+  Access-Control-Max-Age: 86400
+
+## ── CORS for public API ──
+/api/v1/*
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: POST, GET, OPTIONS
+  Access-Control-Allow-Headers: Content-Type, x-api-key
+  Access-Control-Max-Age: 86400
+
+/assets/js/*
+  X-Robots-Tag: noindex, nofollow
+
+/assets/vendor/*
+  X-Robots-Tag: noindex, nofollow
+
+/fr/api/*
+  X-Robots-Tag: noindex, nofollow
+
+/api/*
+  X-Robots-Tag: noindex, nofollow

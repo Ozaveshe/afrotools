@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diabetes Risk Calculator for Africa | AfroTools</title>
+<meta name="description" content="Assess your Type 2 diabetes risk with this African-contextualized calculator. Based on FINDRISC scoring adapted for African populations with higher genetic risk factors.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Diabetes Risk Calculator | AfroTools">
+<meta property="og:description" content="Assess your Type 2 diabetes risk with African-specific risk factors.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/diabetes-risk.webp">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/diabetes-risk/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+:root{--afro-dark:#0f1419;--accent:#dc2626}
+.tool-hero{background:linear-gradient(135deg,#7f1d1d 0%,#dc2626 50%,#ef4444 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#fecaca}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#fecaca;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-em{background:rgba(254,202,202,.2);color:#fecaca;border:1px solid rgba(254,202,202,.4)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+select,input{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
+select:focus,input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(220,38,38,.15)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{margin-bottom:14px}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px}
+.btn-primary{background:linear-gradient(135deg,#b91c1c,#dc2626);color:#fff}
+.risk-result{text-align:center;padding:24px;margin-top:14px}
+.risk-score{font-size:3rem;font-weight:800;line-height:1}
+.risk-label{font-size:1rem;font-weight:700;margin-top:8px}
+.risk-desc{font-size:.82rem;color:#475569;margin-top:8px;line-height:1.6;max-width:400px;margin-left:auto;margin-right:auto}
+.risk-bar{height:12px;border-radius:6px;background:linear-gradient(90deg,#22c55e 0%,#eab308 33%,#f97316 66%,#dc2626 100%);margin:18px 0 6px;position:relative}
+.risk-marker{width:4px;height:20px;background:#0f1419;border-radius:2px;position:absolute;top:-4px;transition:left .4s}
+.risk-labels{display:flex;justify-content:space-between;font-size:.65rem;color:#64748b;font-weight:600}
+.advice-list{margin-top:18px;padding:0;list-style:none}
+.advice-list li{padding:8px 0;border-bottom:1px solid #f1f5f9;font-size:.8rem;color:#475569;line-height:1.5;display:flex;gap:8px}
+.advice-list li::before{content:'';flex-shrink:0;width:6px;height:6px;background:var(--accent);border-radius:50%;margin-top:6px}
+.disclaimer{background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:14px;margin-top:18px;font-size:.74rem;color:#7f1d1d;line-height:1.6}
+.sidebar .info-card{background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#7f1d1d;margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:#7f1d1d;line-height:1.6}
+.info-card ul{padding-left:16px;margin:6px 0}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
+</style>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Diabetes Risk Calculator | AfroTools">
+<meta name="twitter:description" content="Assess your Type 2 diabetes risk with African-specific risk factors.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/diabetes-risk.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Diabetes Risk Calculator",
+      "item": "https://afrotools.com/tools/diabetes-risk/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="stylesheet" href="/assets/css/health-enhancements.css?v=e7e3e3a6">
+<meta name="tool-id" content="diabetes-risk">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Diabetes Risk Calculator for Africa",
+  "description": "Assess your Type 2 diabetes risk with this African-contextualized calculator. Based on FINDRISC scoring adapted for African populations with higher genetic risk factors.",
+  "url": "https://afrotools.com/tools/diabetes-risk/",
+  "inLanguage": "en",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/diabetes-risk.webp"
+}
+</script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How accurate is this risk calculator?","acceptedAnswer":{"@type":"Answer","text":"This calculator is based on the FINDRISC (Finnish Diabetes Risk Score), which has been validated in multiple populations and adapted for African contexts. It provides a risk estimate, not a diagnosis. A score of moderate or higher should prompt clinical screening with blood glucose or HbA1c testing."}},{"@type":"Question","name":"Can Type 2 diabetes be prevented?","acceptedAnswer":{"@type":"Answer","text":"Yes! Research shows that 58% of Type 2 diabetes cases can be prevented through lifestyle changes — moderate weight loss (5-7% of body weight), regular physical activity (150 min/week), and a healthy diet. Even small changes make a significant difference."}},{"@type":"Question","name":"What blood tests should I get?","acceptedAnswer":{"@type":"Answer","text":"Ask your doctor for a fasting blood glucose test (normal: below 5.6 mmol/L) or an HbA1c test (normal: below 5.7%). These tests can detect both diabetes and pre-diabetes, giving you the opportunity to act early."}},{"@type":"Question","name":"Does gestational diabetes increase future diabetes risk?","acceptedAnswer":{"@type":"Answer","text":"Yes, significantly. Women who had gestational diabetes (diabetes during pregnancy) have a 7-10 times higher risk of developing Type 2 diabetes later in life compared to women without this history. In Africa, gestational diabetes is often under-screened and under-diagnosed. If you had gestational diabetes, you should get an HbA1c or fasting glucose test every 1-2 years and make lifestyle changes to delay or prevent progression. Your children also have a higher risk of developing diabetes."}},{"@type":"Question","name":"Is diabetes different in African vs. European populations?","acceptedAnswer":{"@type":"Answer","text":"Research shows that people of sub-Saharan African descent tend to develop Type 2 diabetes at lower BMI thresholds compared to Europeans. The typical Western \"obese\" BMI cutoff of 30 kg/m² may not fully apply — African populations can develop diabetes at BMIs as low as 24-27 kg/m². Central (abdominal) obesity is a particularly strong predictor in African populations. Additionally, conditions common in Africa like malnutrition-related diabetes, tropical chronic pancreatitis, and fibrocalculous pancreatic diabetes represent unique forms of the disease not commonly seen elsewhere."}},{"@type":"Question","name":"What traditional African foods help prevent diabetes?","acceptedAnswer":{"@type":"Answer","text":"Traditional African diets are generally protective against diabetes. Foods like bitter leaf (Vernonia amygdalina), garden egg (African eggplant), okra, moringa, millet, sorghum, plantain (unripe), cowpeas/beans, and African yam all have low glycaemic indices or demonstrated blood-sugar lowering properties. Studies have shown that Nigerian and Ghanaian populations who maintain traditional diets have significantly lower rates of obesity and Type 2 diabetes than those who switch to westernised diets. Reducing fizzy drinks, white bread, and ultra-processed foods is the single biggest dietary change you can make."}}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/diabetes-risk/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/diabetes-risk/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/risque-diabete/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/hatari-ya-kisukari/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/diabetes-risk/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Diabetes Risk</span></div>
+<h1>Type 2 <em>Diabetes Risk</em> Calculator</h1>
+<p class="hero-sub">Assess your risk of developing Type 2 diabetes based on key risk factors. Adapted for African populations with context-specific guidance on prevention.</p>
+<div class="hero-badges"><span class="badge b-em">FINDRISC Adapted</span><span class="badge b-em">African Context</span><span class="badge b-em">Free Screening</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calculator">
+<div class="card">
+<div class="card-head"><span class="card-title">Your Risk Factors</span></div>
+<div class="card-body">
+<div class="row field">
+<div><label for="age">Age</label>
+<select id="age">
+<option value="0">Under 35</option>
+<option value="1">35 - 44</option>
+<option value="2" selected>45 - 54</option>
+<option value="3">55 - 64</option>
+<option value="4">65+</option>
+</select></div>
+<div><label>Sex</label>
+<select id="sex" aria-label="Sex">
+<option value="male">Male</option>
+<option value="female">Female</option>
+</select></div>
+</div>
+<div class="row field">
+<div><label>BMI (kg/m²)</label>
+<select id="bmi" aria-label="Bmi">
+<option value="0">Under 25 (Normal)</option>
+<option value="1" selected>25 - 30 (Overweight)</option>
+<option value="3">Over 30 (Obese)</option>
+</select></div>
+<div><label>Waist Circumference</label>
+<select id="waist" aria-label="Waist">
+<option value="0">Normal (M&lt;94cm / F&lt;80cm)</option>
+<option value="3">High (M 94-102cm / F 80-88cm)</option>
+<option value="4">Very High (M&gt;102cm / F&gt;88cm)</option>
+</select></div>
+</div>
+<div class="row field">
+<div><label>Physical Activity</label>
+<select id="activity" aria-label="Activity">
+<option value="0">Active (30+ min/day)</option>
+<option value="2" selected>Sedentary / Low Activity</option>
+</select></div>
+<div><label>Daily Fruit/Vegetable Intake</label>
+<select id="diet" aria-label="Diet">
+<option value="0">Every day</option>
+<option value="1" selected>Not every day</option>
+</select></div>
+</div>
+<div class="row field">
+<div><label>History of High Blood Sugar</label>
+<select id="bloodSugar" aria-label="Blood Sugar">
+<option value="0" selected>No</option>
+<option value="5">Yes (during illness, pregnancy, etc.)</option>
+</select></div>
+<div><label>Family History of Diabetes</label>
+<select id="family" aria-label="Family">
+<option value="0">No</option>
+<option value="3">Yes — grandparent, uncle, aunt, cousin</option>
+<option value="5" selected>Yes — parent, sibling, or child</option>
+</select></div>
+</div>
+<div class="row field">
+<div><label>Blood Pressure Medication</label>
+<select id="bpMeds" aria-label="Bp Meds">
+<option value="0">No</option>
+<option value="2">Yes</option>
+</select></div>
+<div><label>Gestational Diabetes History (women)</label>
+<select id="gestDiab" aria-label="Gest Diab">
+<option value="0">No / Not applicable</option>
+<option value="4">Yes — had diabetes during pregnancy</option>
+</select></div>
+</div>
+<button type="button" class="btn btn-primary" onclick="calculate()">Assess My Risk</button>
+</div></div>
+
+<div class="card" id="resultCard" style="display:none">
+<div class="card-head"><span class="card-title">Your Diabetes Risk Assessment</span></div>
+<div class="card-body">
+<div class="risk-result" id="riskResult"></div>
+<div class="risk-bar"><div class="risk-marker" id="riskMarker"></div></div>
+<div class="risk-labels"><span>Low</span><span>Slightly Elevated</span><span>Moderate</span><span>High</span><span>Very High</span></div>
+<ul class="advice-list" id="adviceList"></ul>
+<div class="disclaimer"><strong>Medical Disclaimer:</strong> This tool provides a risk estimate only and is NOT a medical diagnosis. It does not replace blood glucose testing or clinical assessment. If you score moderate or higher, please consult a healthcare provider for proper screening (fasting blood glucose or HbA1c test). Early detection saves lives.</div>
+</div></div>
+</div>
+
+<div class="sidebar">
+<div class="card">
+<div class="card-head"><span class="card-title">Diabetes in Africa</span></div>
+<div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
+<p><strong>24 million</strong> adults in Africa have diabetes (IDF 2021), expected to reach <strong>55 million by 2045</strong> — the highest projected increase of any region.</p>
+<p style="margin-top:6px"><strong>54%</strong> of cases are undiagnosed in Africa, the highest rate globally. Many people only discover they have diabetes when complications appear.</p>
+<p style="margin-top:6px"><strong>Urbanization</strong> and changing diets are key drivers. Traditional African diets are being replaced by processed foods high in sugar and refined carbs.</p>
+</div></div>
+<div class="info-card">
+<h4>Key Risk Factors</h4>
+<ul>
+<li>Family history (genetics)</li>
+<li>Overweight / obesity (BMI ≥25)</li>
+<li>Central obesity (large waist)</li>
+<li>Physical inactivity</li>
+<li>Age over 45</li>
+<li>History of gestational diabetes</li>
+<li>High blood pressure</li>
+<li>Poor diet (low fibre, high sugar)</li>
+</ul>
+</div>
+<div class="info-card" style="margin-top:10px">
+<h4>Prevention Works</h4>
+<p>Studies show <strong>58% reduction</strong> in Type 2 diabetes risk through moderate weight loss (5-7%) and 150 min/week of physical activity. Diet changes — more vegetables, whole grains, and traditional foods — significantly reduce risk.</p>
+</div>
+<div class="info-card" style="margin-top:10px">
+<h4>💉 Blood Test Costs in Africa</h4>
+<ul>
+<li><strong>Nigeria:</strong> HbA1c ₦4,000-8,000 | Fasting glucose ₦1,000-2,500</li>
+<li><strong>Kenya:</strong> HbA1c KES 1,500-3,000 | Fasting glucose KES 500-1,000</li>
+<li><strong>Ghana:</strong> HbA1c GH₵80-150 | Fasting glucose GH₵20-40</li>
+<li><strong>South Africa:</strong> HbA1c R200-400 | Fasting glucose R80-150</li>
+<li><strong>Tanzania:</strong> HbA1c TSh 30,000-60,000 | Fasting glucose TSh 10,000-20,000</li>
+</ul>
+<p style="margin-top:6px;font-size:.72rem">Many government hospitals offer free diabetes screening during health campaigns.</p>
+</div>
+</div>
+</div></section>
+
+<section class="seo-section">
+<h2>Understanding Type 2 Diabetes Risk in Africa</h2>
+<p>Type 2 diabetes is rapidly becoming one of Africa's most serious health challenges. The International Diabetes Federation (IDF) estimates that 24 million adults in sub-Saharan Africa have diabetes, with the number projected to increase by 129% to reach 55 million by 2045 — the highest percentage increase of any world region. What makes this crisis particularly dangerous is that an estimated 54% of cases remain undiagnosed.</p>
+<p>Several factors are driving this epidemic across the continent. Rapid urbanization is changing lifestyles and diets — traditional African foods rich in fibre, vegetables, and complex carbohydrates are being replaced by processed foods, sugary beverages, and refined grains. Physical activity levels are declining as more people move to cities and take up sedentary occupations. These lifestyle changes, combined with genetic predisposition, create a perfect storm for diabetes.</p>
+<p>African populations face some unique risk factors. Research shows that people of African descent tend to develop diabetes at lower BMI thresholds compared to European populations. Central (abdominal) obesity is a particularly strong predictor of diabetes risk in African populations. Additionally, conditions like sickle cell trait, which is common in Africa, can affect HbA1c readings and complicate diagnosis.</p>
+<p>The good news is that Type 2 diabetes is largely preventable. The landmark Diabetes Prevention Program (DPP) study showed that lifestyle interventions — modest weight loss of 5-7% of body weight combined with 150 minutes per week of moderate physical activity — reduced the risk of developing Type 2 diabetes by 58%. In African populations, returning to traditional diets rich in vegetables, legumes, whole grains, and lean proteins can significantly reduce risk.</p>
+<p>Early screening is crucial. If you score moderate or higher on this risk assessment, you should get a fasting blood glucose test or HbA1c test from your healthcare provider. A fasting glucose of 7.0 mmol/L or higher, or an HbA1c of 6.5% or higher, indicates diabetes. Values in the "pre-diabetes" range (fasting glucose 5.6-6.9, HbA1c 5.7-6.4%) mean you can still prevent progression to full diabetes through lifestyle changes.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>How accurate is this risk calculator?</summary><p>This calculator is based on the FINDRISC (Finnish Diabetes Risk Score), which has been validated in multiple populations and adapted for African contexts. It provides a risk estimate, not a diagnosis. A score of moderate or higher should prompt clinical screening with blood glucose or HbA1c testing.</p></details>
+<details class="faq-item"><summary>Can Type 2 diabetes be prevented?</summary><p>Yes! Research shows that 58% of Type 2 diabetes cases can be prevented through lifestyle changes — moderate weight loss (5-7% of body weight), regular physical activity (150 min/week), and a healthy diet. Even small changes make a significant difference.</p></details>
+<details class="faq-item"><summary>What blood tests should I get?</summary><p>Ask your doctor for a fasting blood glucose test (normal: below 5.6 mmol/L) or an HbA1c test (normal: below 5.7%). These tests can detect both diabetes and pre-diabetes, giving you the opportunity to act early.</p></details>
+<details class="faq-item"><summary>Does gestational diabetes increase future diabetes risk?</summary><p>Yes, significantly. Women who had gestational diabetes (diabetes during pregnancy) have a 7-10 times higher risk of developing Type 2 diabetes later in life compared to women without this history. In Africa, gestational diabetes is often under-screened and under-diagnosed. If you had gestational diabetes, you should get an HbA1c or fasting glucose test every 1-2 years and make lifestyle changes to delay or prevent progression. Your children also have a higher risk of developing diabetes.</p></details>
+<details class="faq-item"><summary>Is diabetes different in African vs. European populations?</summary><p>Research shows that people of sub-Saharan African descent tend to develop Type 2 diabetes at lower BMI thresholds compared to Europeans. The typical Western "obese" BMI cutoff of 30 kg/m² may not fully apply — African populations can develop diabetes at BMIs as low as 24-27 kg/m². Central (abdominal) obesity is a particularly strong predictor in African populations. Additionally, conditions common in Africa like malnutrition-related diabetes, tropical chronic pancreatitis, and fibrocalculous pancreatic diabetes represent unique forms of the disease not commonly seen elsewhere.</p></details>
+<details class="faq-item"><summary>What traditional African foods help prevent diabetes?</summary><p>Traditional African diets are generally protective against diabetes. Foods like bitter leaf (Vernonia amygdalina), garden egg (African eggplant), okra, moringa, millet, sorghum, plantain (unripe), cowpeas/beans, and African yam all have low glycaemic indices or demonstrated blood-sugar lowering properties. Studies have shown that Nigerian and Ghanaian populations who maintain traditional diets have significantly lower rates of obesity and Type 2 diabetes than those who switch to westernised diets. Reducing fizzy drinks, white bread, and ultra-processed foods is the single biggest dietary change you can make.</p></details>
+</section>
+
+
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+<afro-related-tools category="health" current="diabetes-risk" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/medical-report/" data-related-tool data-id="medical-report" data-name="Medical Report Interpreter" data-category="health" data-icon="MR" data-desc="Upload or paste lab results and get plain-English explanations for CBC, lipid, liver, kidney, thyroid, and diabetes mark">Medical Report Interpreter</a></li><li><a href="/tools/genotype-checker/" data-related-tool data-id="genotype-checker" data-name="Genotype Compatibility Checker" data-category="health" data-icon="GC" data-desc="Full pre-marriage genotype and blood group compatibility check. Sickle cell Punnett square, Rh factor incompatibility, b">Genotype Compatibility Checker</a></li><li><a href="/tools/childbirth-cost/" data-related-tool data-id="childbirth-cost" data-name="Childbirth Cost Calculator" data-category="health" data-icon="CC" data-desc="Compare delivery costs across public hospitals, private clinics, and premium facilities in Nigeria, Kenya, South Africa,">Childbirth Cost Calculator</a></li><li><a href="/tools/drug-price-compare/" data-related-tool data-id="drug-price-compare" data-name="Drug/Medicine Price Comparator" data-category="health" data-icon="DM" data-desc="Compare brand vs generic medicine prices across African countries. See savings on antimalarials, antibiotics, diabetes, ">Drug/Medicine Price Comparator</a></li><li><a href="/tools/blood-group/" data-related-tool data-id="blood-group" data-name="Blood Group Compatibility Checker" data-category="health" data-icon="BG" data-desc="Check blood transfusion compatibility (donor/recipient) and pregnancy Rh incompatibility. Includes African blood group f">Blood Group Compatibility Checker</a></li><li><a href="/tools/african-meal-plan/" data-related-tool data-id="african-meal-plan" data-name="African Meal Plan Generator" data-category="health" data-icon="AM" data-desc="Generate a personalized 7-day meal plan using African foods. Choose region (West/East/Southern/North Africa), health goa">African Meal Plan Generator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<!-- HEALTH-DEEP-IMPROVEMENT:START -->
+<section class="health-deep" aria-labelledby="health-deep-title">
+<span class="health-deep-kicker">Deep Review - 27 April 2026</span>
+<h2 id="health-deep-title">Use Diabetes Risk Calculator in a safer care workflow</h2>
+<p class="health-deep-lead">Use this as a screening and trend tool, not a diagnosis. The useful output is a number, a context band, and a clear next step for a clinic conversation.</p>
+<div class="health-deep-grid">
+<div class="health-deep-block"><h3>Use It To Decide</h3><ul><li>Whether the reading is worth tracking over time</li><li>Which lifestyle or follow-up question to raise with a clinician</li><li>Whether another health tool should be opened next</li></ul></div>
+<div class="health-deep-block"><h3>Better Workflow</h3><ul><li>Enter recent measurements and repeat them under similar conditions</li><li>Save the result with date, units, and context such as activity or illness</li><li>Use the result to prepare better questions for a health worker</li></ul></div>
+<div class="health-deep-block warning"><h3>Do Not Ignore</h3><ul><li>Severe symptoms with an abnormal reading</li><li>Repeated high or low readings without follow-up</li><li>Using one calculator result to start, stop, or change treatment</li></ul></div>
+</div>
+<div class="health-source-row">
+<div><span>Official Context</span><div class="health-source-links"><a href="https://www.cdc.gov/bmi/adult-calculator/bmi-categories.html">CDC BMI categories</a><a href="https://www.who.int/news-room/fact-sheets/detail/hypertension">WHO hypertension</a><a href="https://www.who.int/news-room/fact-sheets/detail/diabetes">WHO diabetes</a><a href="https://www.who.int/news-room/fact-sheets/detail/physical-activity">WHO physical activity</a></div></div>
+<div><span>Related AfroTools</span><div class="health-source-links internal"><a href="/health/bmi-calculator/">BMI Calculator for Africans</a><a href="/tools/blood-pressure/">Blood Pressure Tracker</a><a href="/tools/diabetes-risk/">Diabetes Risk Calculator</a><a href="/tools/waist-hip-ratio/">Waist-Hip Ratio Calculator</a></div></div>
+</div>
+</section>
+<!-- HEALTH-DEEP-IMPROVEMENT:END -->
+<!-- HEALTH-COMPLETE-PACKAGE:START -->
+<section class="health-action-kit" data-health-tool-id="diabetes-risk" data-health-tool-name="Diabetes Risk Calculator" data-health-href="/tools/diabetes-risk/" data-health-bucket="vitals" data-health-journey="vitals" data-health-source-name="ADA 60-second diabetes risk test" data-health-source-url="https://diabetes.org/diabetes-risk-test" data-health-competitor="ADA diabetes risk test" data-health-feature="Risk tests should be short, scored, and paired with next steps." aria-labelledby="health-action-title-diabetes-risk">
+<span class="health-action-kicker">Complete package upgrade</span>
+<h2 id="health-action-title-diabetes-risk">Diabetes Risk Calculator: save, export, and continue the workflow</h2>
+<p>This app now has its own benchmarked improvement layer, dashboard handoff, email-gated PDF plan, and a route into the Vitals checkup workflow.</p>
+<div class="health-action-grid">
+<div class="health-action-card">
+<h3>Competitor feature checked</h3>
+<p><strong>ADA diabetes risk test</strong>: Risk tests should be short, scored, and paired with next steps.</p>
+<p><strong>Implemented here:</strong> Added ADA-style benchmark framing plus vitals workflow dashboard/PDF actions.</p>
+<p><a href="https://diabetes.org/diabetes-risk-test" rel="noopener" target="_blank">ADA 60-second diabetes risk test</a></p>
+</div>
+<div class="health-action-card">
+<h3>Dashboard and PDF actions</h3>
+<ul>
+<li>Save this health plan to the dashboard workspace on this device.</li>
+<li>Unlock a PDF version through the Health email gate for follow-up and visit prep.</li>
+<li>Signed-in sessions attempt account workspace sync when the shared workspace API is available.</li>
+</ul>
+<div class="health-action-buttons">
+<button type="button" class="health-workflow-btn" data-health-action="save" data-health-tool-id="diabetes-risk">Save to dashboard</button>
+<button type="button" class="health-workflow-btn secondary" data-health-action="pdf" data-health-tool-id="diabetes-risk">Get PDF plan</button>
+</div>
+</div>
+</div>
+<div class="health-action-card" style="margin-top:1rem">
+<h3>Continue in Vitals checkup</h3>
+<div class="health-action-links">
+<a href="/health/bmi-calculator/">Open workflow hub</a>
+<a href="/health/bmi-calculator/">BMI Calculator for Africans</a><a href="/tools/waist-hip-ratio/">Waist-Hip Ratio Calculator</a><a href="/tools/blood-pressure/">Blood Pressure Tracker</a><a href="/tools/water-intake/">Water Intake Calculator</a>
+</div>
+</div>
+</section>
+<!-- HEALTH-COMPLETE-PACKAGE:END -->
+<afro-footer></afro-footer>
+
+<script>
+function calculate(){
+  const score=[
+    +document.getElementById('age').value,
+    +document.getElementById('bmi').value,
+    +document.getElementById('waist').value,
+    +document.getElementById('activity').value,
+    +document.getElementById('diet').value,
+    +document.getElementById('bloodSugar').value,
+    +document.getElementById('family').value,
+    +document.getElementById('bpMeds').value,
+    +document.getElementById('gestDiab').value
+  ].reduce((a,b)=>a+b,0);
+
+  let level,color,pct,desc,advice=[];
+
+  if(score<7){
+    level='Low Risk';color='#22c55e';pct=10;
+    desc='Your estimated 10-year risk of developing Type 2 diabetes is approximately 1 in 100 (1%). Keep up your healthy lifestyle!';
+    advice=['Maintain a healthy weight','Stay physically active (150+ min/week)','Continue eating a balanced diet rich in vegetables and whole grains','Get screened every 3-5 years after age 45'];
+  }else if(score<12){
+    level='Slightly Elevated';color='#eab308';pct=30;
+    desc='Your estimated 10-year risk is approximately 1 in 25 (4%). Small lifestyle changes can significantly reduce your risk.';
+    advice=['Aim to lose 3-5% of body weight if overweight','Increase physical activity to 30 min/day','Reduce sugary drinks and processed foods','Eat more vegetables, legumes, and traditional whole foods','Get screened every 2-3 years'];
+  }else if(score<15){
+    level='Moderate Risk';color='#f97316';pct=55;
+    desc='Your estimated 10-year risk is approximately 1 in 6 (17%). We recommend getting a blood glucose test from your doctor.';
+    advice=['Get a fasting blood glucose or HbA1c test soon','Target 5-7% weight loss if overweight','Exercise at least 150 minutes per week','Reduce refined carbohydrates and sugar','Consider consulting a dietitian','Monitor blood pressure regularly'];
+  }else if(score<20){
+    level='High Risk';color='#ef4444';pct=75;
+    desc='Your estimated 10-year risk is approximately 1 in 3 (33%). Please see a healthcare provider for blood glucose testing as soon as possible.';
+    advice=['See a doctor for blood glucose screening urgently','Discuss a diabetes prevention programme','Make immediate dietary changes — reduce sugar, increase fibre','Start regular exercise, even 10-minute walks help','Monitor your blood pressure','Check your blood sugar annually'];
+  }else{
+    level='Very High Risk';color='#dc2626';pct=95;
+    desc='Your estimated 10-year risk is approximately 1 in 2 (50%). Urgent medical screening is strongly recommended.';
+    advice=['Seek medical screening as soon as possible','You may already have undiagnosed diabetes or pre-diabetes','Discuss metformin or other preventive medication with your doctor','Adopt a structured diet and exercise programme immediately','Get regular HbA1c monitoring','Join a diabetes support group'];
+  }
+
+  document.getElementById('riskResult').innerHTML=`<div class="risk-score" style="color:${color}">${score}/30</div><div class="risk-label" style="color:${color}">${level}</div><div class="risk-desc">${desc}</div>`;
+  document.getElementById('riskMarker').style.left=`${pct}%`;
+
+  document.getElementById('adviceList').innerHTML=advice.map(a=>`<li>${a}</li>`).join('');
+
+  document.getElementById('resultCard').style.display='block';
+
+  if (window.AfroHealthWorkflow && typeof window.AfroHealthWorkflow.recordSnapshot === 'function') {
+    window.AfroHealthWorkflow.recordSnapshot({
+      toolId: 'diabetes-risk',
+      headline: level + ' - score ' + score + '/30',
+      resultText: desc,
+      fields: [
+        { label: 'Risk score', value: score + '/30' },
+        { label: 'Risk band', value: level }
+      ],
+      markers: [
+        { label: 'Diabetes risk band', value: level, unit: 'screening band', status: score >= 12 ? 'follow-up' : 'monitor' }
+      ],
+      clinicianQuestions: [
+        'Should I get fasting glucose or HbA1c screening based on this risk profile?',
+        'How often should I repeat screening if my risk factors change?'
+      ],
+      nextSteps: [
+        'Use this as a screening prompt, not a diagnosis.',
+        'Discuss moderate or higher risk with a qualified health worker.'
+      ],
+      sourceNotes: ['FINDRISC-style diabetes risk screening adapted for planning conversations.']
+    });
+  }
+
+  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
+}
+</script>
+
+<script>
+(function(){
+  var target = document.getElementById('resultCard');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
+  div.innerHTML = '<save-result-button tool-slug="diabetes-risk" tool-name="Diabetes Risk"></save-result-button><share-result-button tool-name="Diabetes Risk" tool-slug="diabetes-risk"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
+<script src="/assets/js/health-workflow.js?v=e8ad8f1d" defer></script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

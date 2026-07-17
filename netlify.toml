@@ -1,0 +1,1179 @@
+[build]
+  publish = "dist"
+  functions = "netlify/functions"
+  edge_functions = "netlify/edge-functions"
+  command = "node scripts/verify-deploy-channel.js && npm run build:deploy && (node scripts/indexnow.js --git || true)"
+
+[[edge_functions]]
+  function = "og-image"
+  path = "/og-image"
+
+[[edge_functions]]
+  function = "trailing-slash"
+  path = "/*"
+
+[functions]
+  node_bundler = "esbuild"
+
+# --- Staging & Preview Environments ---
+# Branch deploys: push to any branch -> auto-deploys at branch-name--afrotools.netlify.app
+# Deploy previews: every PR gets a unique preview URL
+
+[context.deploy-preview]
+  command = "node scripts/verify-deploy-channel.js && npm run build:deploy"
+
+[context.deploy-preview.environment]
+  CONTEXT = "deploy-preview"
+
+[context.branch-deploy]
+  command = "node scripts/verify-deploy-channel.js && npm run build:deploy"
+
+[context.branch-deploy.environment]
+  CONTEXT = "branch-deploy"
+
+# Staging branch gets same build as production
+[context.staging]
+  command = "node scripts/verify-deploy-channel.js && npm run build:deploy"
+
+[context.staging.environment]
+  CONTEXT = "staging"
+
+# --- Live Monitoring Scheduled Functions ---
+
+[functions."scheduled-fetch-forex-rates"]
+  schedule = "7,22,37,52 * * * *"
+
+[functions."scheduled-fetch-fuel-prices"]
+  schedule = "13 */6 * * *"
+
+[functions."scheduled-fetch-central-bank-rates"]
+  schedule = "28 */12 * * *"
+
+[functions."scrape-fx-rates"]
+  schedule = "43 6 * * *"
+
+[functions."send-monthly-digest"]
+  schedule = "9 8 1 * *"
+
+[functions."send-weekly-newsletter"]
+  schedule = "19 8 * * 1"
+
+[functions."send-signin-reminders"]
+  schedule = "29 9 * * 3"
+
+[functions."send-onboarding-nudges"]
+  schedule = "11 10 * * *"
+
+[functions."send-activity-milestones"]
+  schedule = "23 11 * * *"
+
+[functions."send-lead-followups"]
+  schedule = "37 12 * * *"
+
+[functions."scheduled-send-jamb-daily"]
+  schedule = "8 * * * *"
+
+[functions."scheduled-verify-scholarships"]
+  schedule = "34 */6 * * *"
+
+[functions."scheduled-discover-scholarships"]
+  schedule = "49 */6 * * *"
+
+[functions."scheduled-reconcile-scholarship-deadlines"]
+  schedule = "18 */2 * * *"
+
+[functions."scheduled-send-scholarship-reminders"]
+  schedule = "43 * * * *"
+
+[functions."afrostream-sync"]
+  schedule = "16 */2 * * *"
+
+[functions."afrostream-livecheck"]
+  schedule = "4,34 * * * *"
+
+[functions."afrostream-news-monitor"]
+  schedule = "46 */6 * * *"
+
+[functions."conflict-sync"]
+  schedule = "12 3 * * *"
+
+[functions."scheduled-fetch-commodity-prices"]
+  schedule = "21 2 * * *"
+
+[functions."scheduled-fetch-electricity-tariffs"]
+  schedule = "33 3 * * *"
+
+[functions."scheduled-fetch-telecom-plans"]
+  schedule = "47 */12 * * *"
+
+[functions."scheduled-detect-changes"]
+  schedule = "26 */6 * * *"
+
+[functions."scheduled-fetch-insurance"]
+  schedule = "41 3 * * 1"
+
+[functions."scheduled-fetch-property"]
+  schedule = "44 3 * * 3"
+
+[functions."scheduled-fetch-salaries"]
+  schedule = "47 3 * * 5"
+
+[functions."scheduled-fetch-stocks"]
+  schedule = "11 * * * 1-5"
+
+[functions."scheduled-fetch-shipping"]
+  schedule = "52 4 * * *"
+
+[functions."scheduled-scan-gazette"]
+  schedule = "58 5 * * *"
+
+[functions."scheduled-cleanup-scraper-runs"]
+  schedule = "53 6 1 * *"
+
+[functions."scheduled-fetch-agri-inputs"]
+  schedule = "19 3 * * 4"
+
+# Crypto spot prices are persisted by scheduled-fetch-crypto. P2P rates stay
+# request-scoped in crypto-p2p.js because that handler only warms in-memory
+# cache and does not write a durable live-data key for scheduled refreshes.
+[functions."scheduled-fetch-crypto"]
+  schedule = "27 * * * *"
+
+[functions."scheduled-refresh-market-data"]
+  schedule = "39 */6 * * *"
+
+[functions."scheduled-source-health-watchdog"]
+  schedule = "57 */2 * * *"
+
+# --- Live Monitoring API Redirects ---
+
+# --- Static Source Denylist ---
+# Defense in depth: the deploy artifact excludes these paths, and these forced
+# 404s protect any accidental root-publish or stale deploy configuration.
+
+[[redirects]]
+  from = "/package.json"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/package-lock.json"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/AGENTS.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/admin"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/admin/"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/admin/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/afrotools-mission-control"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/afrotools-mission-control.html"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/mc-7a2f9x"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/mc-7a2f9x.html"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/tools/afrostream/admin"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/tools/afrostream/admin.html"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/widgets/iframe/template"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/widgets/iframe/template.html"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/fr/widgets/iframe/template"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/fr/widgets/iframe/template.html"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/*.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/netlify/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/supabase/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/scripts/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/tests/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/docs/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/fr/docs/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/prompts/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/reports/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/.codex/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/.agents/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/.github/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/.claude/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/.env*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/api/forex"
+  to = "/.netlify/functions/api-forex"
+  status = 200
+
+[[redirects]]
+  from = "/api/fuel"
+  to = "/.netlify/functions/api-fuel"
+  status = 200
+
+[[redirects]]
+  from = "/api/fuel/"
+  to = "/.netlify/functions/api-fuel"
+  status = 200
+
+[[redirects]]
+  from = "/api/fuel-prices"
+  to = "/.netlify/functions/api-fuel"
+  status = 200
+
+[[redirects]]
+  from = "/api/fuel-prices/"
+  to = "/.netlify/functions/api-fuel"
+  status = 200
+
+[[redirects]]
+  from = "/api/transport-fares"
+  to = "/.netlify/functions/api-transport-fares"
+  status = 200
+
+[[redirects]]
+  from = "/api/transport-fares/"
+  to = "/.netlify/functions/api-transport-fares"
+  status = 200
+
+[[redirects]]
+  from = "/api/rates"
+  to = "/.netlify/functions/api-rates"
+  status = 200
+
+[[redirects]]
+  from = "/api/translate"
+  to = "/.netlify/functions/translate"
+  status = 200
+
+[[redirects]]
+  from = "/api/ai/route-intent"
+  to = "/.netlify/functions/ai-route-intent"
+  status = 200
+
+[[redirects]]
+  from = "/api/ai/route-intent/"
+  to = "/.netlify/functions/ai-route-intent"
+  status = 200
+
+[[redirects]]
+  from = "/api/commodity-prices"
+  to = "/.netlify/functions/api-commodity-prices"
+  status = 200
+
+[[redirects]]
+  from = "/api/clinic-costs"
+  to = "/.netlify/functions/api-clinic-costs"
+  status = 200
+
+[[redirects]]
+  from = "/api/clinic-costs/"
+  to = "/.netlify/functions/api-clinic-costs"
+  status = 200
+
+[[redirects]]
+  from = "/api/pharmacy-prices"
+  to = "/.netlify/functions/api-pharmacy-prices"
+  status = 200
+
+[[redirects]]
+  from = "/api/pharmacy-prices/"
+  to = "/.netlify/functions/api-pharmacy-prices"
+  status = 200
+
+[[redirects]]
+  from = "/api/electricity"
+  to = "/.netlify/functions/api-electricity"
+  status = 200
+
+[[redirects]]
+  from = "/api/telecom"
+  to = "/.netlify/functions/api-telecom"
+  status = 200
+
+[[redirects]]
+  from = "/api/data-freshness"
+  to = "/.netlify/functions/api-data-freshness"
+  status = 200
+
+[[redirects]]
+  from = "/api/scraper-health"
+  to = "/.netlify/functions/api-scraper-health"
+  status = 200
+
+[[redirects]]
+  from = "/api/gazette-review"
+  to = "/.netlify/functions/api-gazette-review"
+  status = 200
+
+[[redirects]]
+  from = "/api/fintech-fees"
+  to = "/.netlify/functions/api-fintech-fees"
+  status = 200
+
+[[redirects]]
+  from = "/api/fintech-fees/"
+  to = "/.netlify/functions/api-fintech-fees"
+  status = 200
+
+[[redirects]]
+  from = "/api/fx-spreads"
+  to = "/.netlify/functions/api-fx-spreads"
+  status = 200
+
+[[redirects]]
+  from = "/api/fx-spreads/"
+  to = "/.netlify/functions/api-fx-spreads"
+  status = 200
+
+[[redirects]]
+  from = "/api/staple-baskets"
+  to = "/.netlify/functions/api-staple-baskets"
+  status = 200
+
+[[redirects]]
+  from = "/api/staple-baskets/"
+  to = "/.netlify/functions/api-staple-baskets"
+  status = 200
+
+[[redirects]]
+  from = "/api/backup-power-costs"
+  to = "/.netlify/functions/api-backup-power-costs"
+  status = 200
+
+[[redirects]]
+  from = "/api/backup-power-costs/"
+  to = "/.netlify/functions/api-backup-power-costs"
+  status = 200
+
+[[redirects]]
+  from = "/api/wholesale-retail-spreads"
+  to = "/.netlify/functions/api-wholesale-retail-spreads"
+  status = 200
+
+[[redirects]]
+  from = "/api/wholesale-retail-spreads/"
+  to = "/.netlify/functions/api-wholesale-retail-spreads"
+  status = 200
+
+[[redirects]]
+  from = "/api/rent-intelligence"
+  to = "/.netlify/functions/api-rent-intelligence"
+  status = 200
+
+[[redirects]]
+  from = "/api/rent-intelligence/"
+  to = "/.netlify/functions/api-rent-intelligence"
+  status = 200
+
+[[redirects]]
+  from = "/api/lease-risk"
+  to = "/.netlify/functions/api-lease-risk"
+  status = 200
+
+[[redirects]]
+  from = "/api/lease-risk/"
+  to = "/.netlify/functions/api-lease-risk"
+  status = 200
+
+[[redirects]]
+  from = "/api/remittance-quotes"
+  to = "/.netlify/functions/api-remittance-quotes"
+  status = 200
+
+[[redirects]]
+  from = "/api/market-data-ingest"
+  to = "/.netlify/functions/api-market-data-ingest"
+  status = 200
+
+[[redirects]]
+  from = "/api/market-data-refresh"
+  to = "/.netlify/functions/scheduled-refresh-market-data"
+  status = 200
+
+# Public AfroData API v1
+[[redirects]]
+  from = "/api/status"
+  to = "/.netlify/functions/api-status"
+  status = 200
+
+[[redirects]]
+  from = "/api/status/"
+  to = "/.netlify/functions/api-status"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/calculate"
+  to = "/.netlify/functions/api-gateway"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/calculate/"
+  to = "/.netlify/functions/api-gateway"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/tax/paye"
+  to = "/.netlify/functions/api-tax"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/tax/paye/"
+  to = "/.netlify/functions/api-tax"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/tax/rates"
+  to = "/.netlify/functions/api-tax-rates"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/tax/rates/"
+  to = "/.netlify/functions/api-tax-rates"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/tax/*"
+  to = "/.netlify/functions/api-tax"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/fx/rates"
+  to = "/.netlify/functions/api-fx-rates"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/fx/rates/"
+  to = "/.netlify/functions/api-fx-rates"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/fuel/prices"
+  to = "/.netlify/functions/api-fuel"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/fuel/prices/"
+  to = "/.netlify/functions/api-fuel"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/rates/central-bank"
+  to = "/.netlify/functions/api-rates"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/rates/central-bank/"
+  to = "/.netlify/functions/api-rates"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/vat/calculate"
+  to = "/.netlify/functions/api-vat"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/vat/calculate/"
+  to = "/.netlify/functions/api-vat"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/countries"
+  to = "/.netlify/functions/api-countries"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/countries/"
+  to = "/.netlify/functions/api-countries"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/ai/route"
+  to = "/.netlify/functions/api-v1-ai-route"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/ai/route/"
+  to = "/.netlify/functions/api-v1-ai-route"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/career/offer-compare"
+  to = "/.netlify/functions/api-career"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/career/offer-compare/"
+  to = "/.netlify/functions/api-career"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/career/job-scam-check"
+  to = "/.netlify/functions/api-career"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/career/job-scam-check/"
+  to = "/.netlify/functions/api-career"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/catalog/tools"
+  to = "/.netlify/functions/api-tool-catalog"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/catalog/tools/"
+  to = "/.netlify/functions/api-tool-catalog"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/catalog/health"
+  to = "/.netlify/functions/api-tool-catalog"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/catalog/health/"
+  to = "/.netlify/functions/api-tool-catalog"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/*"
+  to = "/.netlify/functions/api-v1"
+  status = 200
+
+# --- Tax API Redirects ---
+
+[[redirects]]
+  from = "/api/tax"
+  to = "/.netlify/functions/api-tax"
+  status = 200
+
+[[redirects]]
+  from = "/api/tax/*"
+  to = "/.netlify/functions/api-tax"
+  status = 200
+
+# --- VAT API Redirects ---
+
+[[redirects]]
+  from = "/api/vat"
+  to = "/.netlify/functions/api-vat"
+  status = 200
+
+[[redirects]]
+  from = "/api/vat/*"
+  to = "/.netlify/functions/api-vat"
+  status = 200
+
+# --- API Keys Redirects ---
+
+[[redirects]]
+  from = "/api/get-key"
+  to = "/.netlify/functions/api-keys-create"
+  status = 200
+
+[[redirects]]
+  from = "/api/get-key/"
+  to = "/.netlify/functions/api-keys-create"
+  status = 200
+
+[[redirects]]
+  from = "/api/keys/create"
+  to = "/.netlify/functions/api-keys-create"
+  status = 200
+
+[[redirects]]
+  from = "/api/keys/create/"
+  to = "/.netlify/functions/api-keys-create"
+  status = 200
+
+[[redirects]]
+  from = "/api/keys"
+  to = "/.netlify/functions/api-keys"
+  status = 200
+
+[[redirects]]
+  from = "/api/keys/*"
+  to = "/.netlify/functions/api-keys"
+  status = 200
+
+# --- B2B Lead Capture ---
+
+[[redirects]]
+  from = "/api/b2b-enquiry"
+  to = "/.netlify/functions/capture-b2b-lead"
+  status = 200
+
+[[redirects]]
+  from = "/api/b2b-enquiry/"
+  to = "/.netlify/functions/capture-b2b-lead"
+  status = 200
+
+# --- Profile API ---
+
+[[redirects]]
+  from = "/api/profile"
+  to = "/.netlify/functions/api-profile"
+  status = 200
+
+# --- Alerts API ---
+
+[[redirects]]
+  from = "/api/alerts"
+  to = "/.netlify/functions/api-alerts"
+  status = 200
+
+# Country-specific climate pages are generated incrementally. Keep planned
+# country cards from landing on 404s until their per-country calculators exist.
+[[redirects]]
+  from = "/tools/air-quality/:country/"
+  to = "/tools/air-quality/"
+  status = 302
+
+[[redirects]]
+  from = "/tools/carbon-credit/:country/"
+  to = "/tools/carbon-credit/"
+  status = 302
+
+[[redirects]]
+  from = "/tools/flood-risk/:country/"
+  to = "/tools/flood-risk/"
+  status = 302
+
+# --- Scholarships API ---
+
+[[redirects]]
+  from = "/api/scholarships"
+  to = "/.netlify/functions/api-scholarships"
+  status = 200
+
+
+[[redirects]]
+  from = "/api/scholarship-values"
+  to = "/.netlify/functions/api-scholarship-values"
+  status = 200
+
+[[redirects]]
+  from = "/api/scholarship-saves"
+  to = "/.netlify/functions/api-scholarship-saves"
+  status = 200
+
+[[redirects]]
+  from = "/api/scholarship-reminders"
+  to = "/.netlify/functions/api-scholarship-reminders"
+  status = 200
+
+# --- Calculation History API ---
+
+[[redirects]]
+  from = "/api/history"
+  to = "/.netlify/functions/api-history"
+  status = 200
+
+# --- Workspace API ---
+
+[[redirects]]
+  from = "/api/workspace"
+  to = "/.netlify/functions/api-workspace"
+  status = 200
+
+# --- AfroPayroll Pro API ---
+
+[[redirects]]
+  from = "/api/afropayroll"
+  to = "/.netlify/functions/api-afropayroll"
+  status = 200
+
+# --- Favorites API ---
+
+[[redirects]]
+  from = "/api/favorites"
+  to = "/.netlify/functions/api-favorites"
+  status = 200
+
+# --- Crypto API Redirects ---
+
+[[redirects]]
+  from = "/api/crypto/prices"
+  to = "/.netlify/functions/crypto-prices"
+  status = 200
+
+[[redirects]]
+  from = "/api/crypto/p2p"
+  to = "/.netlify/functions/crypto-p2p"
+  status = 200
+
+[[redirects]]
+  from = "/api/crypto"
+  to = "/.netlify/functions/api-crypto"
+  status = 200
+
+[[redirects]]
+  from = "/api/crypto/*"
+  to = "/.netlify/functions/api-crypto"
+  status = 200
+
+# --- Audit Fix Redirects (2026-03-21) ---
+
+# Fix: Homepage links to /nigeria/ng-paye which doesn't exist
+[[redirects]]
+  from = "/nigeria/ng-paye"
+  to = "/nigeria/ng-salary-tax"
+  status = 301
+
+# Fix: Every PAYE tool links to /tools/paye-calculator/ which doesn't exist
+[[redirects]]
+  from = "/tools/paye-calculator/"
+  to = "/salary-tax/"
+  status = 301
+
+[[redirects]]
+  from = "/tools/paye-calculator/*"
+  to = "/salary-tax/"
+  status = 301
+
+# Fix: French CÃƒÂ´te d'Ivoire hub doesn't exist
+[[redirects]]
+  from = "/fr/cote-divoire/"
+  to = "/cote-divoire/"
+  status = 302
+
+# Fix: /categories/financial/ doesn't exist
+[[redirects]]
+  from = "/categories/financial/"
+  to = "/salary-tax/"
+  status = 301
+
+[[redirects]]
+  from = "/categories/financial/*"
+  to = "/salary-tax/"
+  status = 301
+
+# Fix: favicon.ico 404
+[[redirects]]
+  from = "/favicon.ico"
+  to = "/assets/img/logo-mark.svg"
+  status = 200
+
+[[redirects]]
+  from = "/assets/img/favicon.ico"
+  to = "/assets/img/logo-mark.svg"
+  status = 200
+
+# Fix: Duplicate privacy/terms pages Ã¢â‚¬â€ canonical is /privacy/ and /terms/
+[[redirects]]
+  from = "/privacy-policy"
+  to = "/privacy/"
+  status = 301
+
+[[redirects]]
+  from = "/privacy-policy.html"
+  to = "/privacy/"
+  status = 301
+
+[[redirects]]
+  from = "/terms-of-use"
+  to = "/terms/"
+  status = 301
+
+[[redirects]]
+  from = "/terms-of-use.html"
+  to = "/terms/"
+  status = 301
+
+# Fix: /developer/ doesn't exist, category page is at /developer-tools/
+[[redirects]]
+  from = "/developer/"
+  to = "/developer-tools/"
+  status = 301
+
+[[redirects]]
+  from = "/developer/*"
+  to = "/developer-tools/"
+  status = 301
+
+# Additional SEO alias cleanup (2026-04-10)
+
+[[redirects]]
+  from = "/kenya/ke-salary-tax"
+  to = "/kenya/ke-paye"
+  status = 301
+
+[[redirects]]
+  from = "/south-africa/za-salary-tax"
+  to = "/south-africa/za-paye"
+  status = 301
+
+[[redirects]]
+  from = "/blog/import-duty-kenya-2026/"
+  to = "/blog/import-duty-calculator-kenya-2026/"
+  status = 301
+
+[[redirects]]
+  from = "/tools/salary-tax/"
+  to = "/salary-tax/"
+  status = 301
+
+[[redirects]]
+  from = "/tools/salary-calculator/"
+  to = "/salary-tax/"
+  status = 301
+
+[[redirects]]
+  from = "/auth/"
+  to = "/pricing/"
+  status = 302
+
+[[redirects]]
+  from = "/auth/login.html"
+  to = "/pricing/"
+  status = 302
+
+[[redirects]]
+  from = "/signup/"
+  to = "/pricing/"
+  status = 302
+
+[[redirects]]
+  from = "/login"
+  to = "/pricing/"
+  status = 302
+
+[[redirects]]
+  from = "/fr/tools/paye-calculator/"
+  to = "/fr/tools/calculateur-paye/"
+  status = 301
+
+[[redirects]]
+  from = "/fr/tools/vat-calculator/"
+  to = "/fr/tools/calculateur-tva/"
+  status = 301
+
+[[redirects]]
+  from = "/fr/tools/vat-calculator/vat-calc"
+  to = "/fr/tools/calculateur-tva/"
+  status = 301
+
+[[redirects]]
+  from = "/fr/tools/import-duty/"
+  to = "/fr/tools/droits-douane/"
+  status = 301
+
+[[redirects]]
+  from = "/fr/tools/mobile-money-fees/"
+  to = "/fr/tools/frais-mobile-money/"
+  status = 301
+
+[[redirects]]
+  from = "/fr/tools/remittance-compare/"
+  to = "/fr/tools/transfert-argent/"
+  status = 301
+
+[[redirects]]
+  from = "/fr/tools/remittance-v2/"
+  to = "/fr/tools/transfert-v2/"
+  status = 301
+
+[[redirects]]
+  from = "/fr/tools/japa-calculator/"
+  to = "/fr/tools/calculateur-japa/"
+  status = 301
+
+[[redirects]]
+  from = "/fr/tools/cv-builder/"
+  to = "/fr/tools/generateur-cv/"
+  status = 301
+
+[[redirects]]
+  from = "/fr/tools/pdf-workspace/"
+  to = "/fr/tools/espace-pdf/"
+  status = 301
+
+[[redirects]]
+  from = "/fr/tools/waec-calculator/"
+  to = "/fr/tools/calculateur-waec/"
+  status = 301
+
+[[redirects]]
+  from = "/fr/tools/education-hub/"
+  to = "/fr/tools/hub-education/"
+  status = 301
+
+[[redirects]]
+  from = "/fr/tools/gpa-calculator/"
+  to = "/fr/tools/calculateur-gpa/"
+  status = 301
+
+[[redirects]]
+  from = "/fr/tools/jamb-aggregate/"
+  to = "/fr/tools/calculateur-jamb/"
+  status = 301
+
+[[redirects]]
+  from = "/fr/tools/ielts-calculator/"
+  to = "/fr/tools/calculateur-ielts/"
+  status = 301
+
+[[redirects]]
+  from = "/fr/tools/scholarship-finder/"
+  to = "/fr/tools/recherche-bourses/"
+  status = 301
+
+[[redirects]]
+  from = "/fr/tools/study-planner/"
+  to = "/fr/tools/planificateur-etudes/"
+  status = 301
+
+[[redirects]]
+  from = "/fr/tools/fuel-tracker/"
+  to = "/fr/tools/suivi-carburant/"
+  status = 301
+
+[[redirects]]
+  from = "/fr/tools/afrorates/"
+  to = "/fr/tools/afrotaux/"
+  status = 301
+
+# --- Caching Headers ---
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/assets/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Tool-specific CSS/JS (cache-busted via ?v=hash query strings)
+[[headers]]
+  for = "/tools/*/style.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/tools/*/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/engines/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# --- Static Data File Caching ---
+
+[[headers]]
+  for = "/data/forex/*"
+  [headers.values]
+    Cache-Control = "public, max-age=600, stale-while-revalidate=900"
+
+[[headers]]
+  for = "/data/fuel/*"
+  [headers.values]
+    Cache-Control = "public, max-age=7200, stale-while-revalidate=10800"
+
+[[headers]]
+  for = "/data/rates/*"
+  [headers.values]
+    Cache-Control = "public, max-age=21600, stale-while-revalidate=32400"
+
+# --- Security headers managed in _headers file (single source of truth) ---
+# Do NOT add security headers here Ã¢â‚¬â€ they conflict with _headers.
+# See _headers for CSP, X-Frame-Options, HSTS, etc.
+
+# --- i18n Language-Based Redirects ---
+# Netlify reads Accept-Language header at CDN edge (302 = temporary, user may change preference)
+
+[[redirects]]
+  from = "/"
+  to = "/fr/"
+  status = 302
+  conditions = {Language = ["fr"]}
+
+[[redirects]]
+  from = "/"
+  to = "/sw/"
+  status = 302
+  conditions = {Language = ["sw"]}
+
+[[redirects]]
+  from = "/"
+  to = "/yo/"
+  status = 302
+  conditions = {Language = ["yo"]}
+
+[[redirects]]
+  from = "/"
+  to = "/ha/"
+  status = 302
+  conditions = {Language = ["ha"]}
+
+# --- i18n Content-Language Headers ---
+
+[[headers]]
+  for = "/fr/*"
+  [headers.values]
+    Content-Language = "fr"
+
+[[headers]]
+  for = "/sw/*"
+  [headers.values]
+    Content-Language = "sw"
+
+[[headers]]
+  for = "/yo/*"
+  [headers.values]
+    Content-Language = "yo"
+
+[[headers]]
+  for = "/ha/*"
+  [headers.values]
+    Content-Language = "ha"

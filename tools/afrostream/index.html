@@ -1,0 +1,1852 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AfroStream | African Creator Rankings and Live Streamers | AfroTools</title>
+<meta name="description" content="Track African creators by cross-platform reach, follow live streamers by recent activity, and discover live African streams across YouTube, Twitch, TikTok, Kick, Rumble and Instagram Live.">
+<meta name="keywords" content="african creators, african streamers, live streaming africa, creator rankings, net worth tracker, african youtube, african twitch, tiktok africa, rumble africa, kick africa">
+<link rel="alternate" type="application/rss+xml" title="AfroStream News RSS" href="/tools/afrostream/feed.xml">
+<!-- OG -->
+<meta property="og:title" content="AfroStream | African Creator Rankings and Live Streamers">
+<meta property="og:description" content="Creator reach rankings, live streamer activity, live-now discovery, and African creator news in one hub.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/afrostream/">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/afrostream.webp">
+<meta property="og:site_name" content="AfroTools">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AfroStream | African Creator Rankings and Live Streamers">
+<meta name="twitter:description" content="Creator reach rankings, live streamer activity, live-now discovery, and African creator news in one hub.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/afrostream.webp">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap" rel="stylesheet">
+
+<!-- CSS -->
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="style.css?v=780e4d2b">
+
+<!-- Components -->
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/engines/afrostream-engine.js?v=5a125dcd" defer></script>
+
+<!-- JSON-LD -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"AfroStream","description":"African creator reach rankings, live streamer activity, live-now discovery, and creator news across YouTube, Twitch, TikTok, Kick, Rumble and Instagram Live.","url":"https://afrotools.com/tools/afrostream/","applicationCategory":"Entertainment","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/afrostream.webp"}</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "How does AfroStream work?", "acceptedAnswer": { "@type": "Answer", "text": "AfroStream is a discovery hub, not a streaming platform. We aggregate live streams, creator rankings, and news from YouTube, Twitch, TikTok, Instagram Live, Kick, and Rumble so you can discover African creators in one place." } },
+    { "@type": "Question", "name": "How are creator rankings calculated?", "acceptedAnswer": { "@type": "Answer", "text": "Creator Reach uses AfroScore: cross-platform followers, total views, growth, consistency, engagement, and multi-platform presence. Live Streamers is a separate leaderboard based on stream activity, live status, peak viewers, and live-platform focus. The public method is documented at /tools/afrostream/afroscore/." } },
+    { "@type": "Question", "name": "How is net worth estimated?", "acceptedAnswer": { "@type": "Answer", "text": "Net worth estimates combine publicly available data (gift totals, follower counts, known sponsorship deals) with AI-assisted projections. These are estimates only." } },
+    { "@type": "Question", "name": "Can I add my stream to AfroStream?", "acceptedAnswer": { "@type": "Answer", "text": "Yes! Submit your creator profile through our form. Once verified, your streams appear in the live feed and you become eligible for rankings." } },
+    { "@type": "Question", "name": "Is it free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, AfroStream is 100% free. Part of the AfroTools suite of 2,606+ free tools for Africa." } },
+    { "@type": "Question", "name": "What platforms are supported?", "acceptedAnswer": { "@type": "Answer", "text": "YouTube, Twitch, TikTok Live, Instagram Live, Kick, and Rumble. More platforms coming." } }
+  ]
+}
+</script>
+
+<!-- ═══ LIGHT THEME OVERRIDES ═══ -->
+<style>
+img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!important;vertical-align:-.1em!important;display:inline!important}
+.as-page{
+  --as-bg:#F8FAFD;
+  --as-bg-card:#fff;
+  --as-bg-card-hover:#f1f5f9;
+  --as-bg-elevated:#fff;
+  --as-text:#0f172a;
+  --as-muted:#64748b;
+  --as-border:#e5e7eb;
+  --as-border-strong:#cbd5e1;
+  --as-glass:rgba(0,0,0,.02);
+  --as-glass-border:#e5e7eb;
+  background:var(--as-bg);color:var(--as-text);
+}
+
+/* ═══ SKELETON LOADING ═══ */
+.as-skeleton{background:#e5e7eb;border-radius:8px;position:relative;overflow:hidden}
+.as-skeleton::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);animation:as-shimmer 1.5s infinite}
+@keyframes as-shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.as-skel-card{height:200px;border-radius:12px}
+.as-skel-row{height:48px;border-radius:8px;margin-bottom:8px}
+.as-skel-text{height:14px;border-radius:4px;margin-bottom:8px}
+.as-skel-text.w-60{width:60%}.as-skel-text.w-40{width:40%}.as-skel-text.w-80{width:80%}
+
+/* Subnav links — light */
+.as-subnav-links a{color:#64748b;text-decoration:none;transition:background .2s,color .2s}
+.as-subnav-links a:hover{background:rgba(0,98,204,.08);color:#0062CC}
+.as-subnav-links a.active{background:rgba(0,98,204,.08);color:#0062CC}
+
+/* Hero — gradient stays dark for contrast */
+.as-hero{background:linear-gradient(160deg,#000B1A 0%,#001233 35%,#001845 55%,#000B1A 100%);color:#fff}
+.as-hero::before{background:radial-gradient(ellipse 80% 60% at 50% 20%,rgba(0,98,204,.15),transparent),radial-gradient(ellipse 60% 50% at 80% 80%,rgba(52,170,255,.15),transparent),linear-gradient(160deg,#000B1A 0%,#001233 35%,#001845 55%,#000B1A 100%)}
+.as-hero h1{color:#fff}
+.as-hero h1 span{-webkit-text-fill-color:unset;background:linear-gradient(135deg,#4DA3FF,#34AAFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.as-hero-sub{color:rgba(255,255,255,.65)}
+.as-hero-stat-val{-webkit-text-fill-color:unset;background:linear-gradient(135deg,#4DA3FF,#34AAFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.as-hero-stat-label{color:rgba(255,255,255,.5)}
+
+/* Sections — light */
+.as-section{background:var(--as-bg)}
+.as-section:nth-child(even){background:#fff}
+.as-section-title{color:#0f172a}
+
+/* Live cards — light */
+.as-live-card{background:#fff;border:1px solid #e5e7eb;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.as-live-card:hover{border-color:var(--as-primary-border);box-shadow:0 4px 20px rgba(0,98,204,.12);transform:translateY(-2px)}
+.as-live-name{color:#0f172a}
+.as-live-meta{color:#64748b}
+
+/* Creator cards — light */
+.as-creator-card{background:#fff;border:1px solid #e5e7eb;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.as-creator-card:hover{box-shadow:0 6px 24px rgba(0,98,204,.12);border-color:var(--as-primary-border)}
+.as-creator-name{color:#0f172a}
+.as-creator-country{color:#64748b}
+.as-creator-stat-val{color:#0f172a;display:block;margin-bottom:2px}
+.as-creator-stat-label{color:#94a3b8;display:block;font-size:.6rem;margin-top:2px}
+
+/* Table — light */
+.as-rank-table-wrap{border:1px solid #e5e7eb;background:#fff;overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px}
+.as-rank-table{min-width:700px}
+.as-rank-table th{background:#f8fafd;color:#64748b;border-bottom:1px solid #e5e7eb;cursor:pointer;user-select:none;transition:background .15s,color .15s;white-space:nowrap}
+.as-rank-table th:hover{background:#eef2f7;color:#0f172a}
+.as-rank-table th.sorted{color:var(--as-primary)}
+.as-rank-table th .sort-arrow{display:inline-block;margin-left:4px;font-size:.6rem;opacity:.4;transition:opacity .15s}
+.as-rank-table th.sorted .sort-arrow{opacity:1;color:var(--as-primary)}
+.as-rank-table td{border-bottom:1px solid #f1f5f9;color:#0f172a}
+.as-rank-table tr:hover td{background:#f8fafd}
+.as-table-user-name{color:#0f172a}
+
+/* News — light */
+.as-news-card{background:#fff;border:1px solid #e5e7eb;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.as-news-card:hover{border-color:var(--as-primary-border);box-shadow:0 4px 16px rgba(0,98,204,.1);transform:translateY(-2px)}
+.as-news-title{color:#0f172a}
+.as-news-excerpt{color:#64748b}
+
+/* Calendar — light */
+.as-cal-card{background:#fff;border:1px solid #e5e7eb;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.as-cal-card:hover{border-color:var(--as-primary-border);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,98,204,.08)}
+.as-cal-title{color:#0f172a}
+.as-cal-date{background:#E8F2FF}
+.as-cal-date-month{color:var(--as-primary)}
+.as-cal-date-day{color:#0f172a}
+
+/* Explain/feature — light */
+.as-feature-card{background:#fff;border:1px solid #e5e7eb;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.as-feature-card:hover{border-color:var(--as-primary-border);box-shadow:0 4px 16px rgba(0,98,204,.1);transform:translateY(-2px)}
+.as-feature-title{color:#0f172a}
+.as-feature-desc{color:#64748b}
+.as-explain-title{color:#0f172a;font-family:var(--as-font-body)}
+.as-explain-sub{color:#64748b}
+
+/* Feature icon — SVG container */
+.as-feature-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;flex-shrink:0}
+.as-feature-icon svg{width:24px;height:24px}
+
+/* FAQ — light */
+.as-faq-item{border-bottom:1px solid #e5e7eb}
+button.as-faq-q{background:none;border:none;width:100%;text-align:left;font-family:inherit;font-size:inherit;padding:inherit;margin:0}
+.as-faq-q{color:#0f172a}
+.as-faq-q::after{color:#94a3b8}
+.as-faq-a{color:#64748b}
+
+/* Filter chips — light */
+.as-chip{background:#f1f5f9;border:1px solid #e5e7eb;color:#64748b;cursor:pointer;min-height:36px;display:inline-flex;align-items:center}
+.as-chip:hover{border-color:var(--as-primary-border);color:#0f172a}
+.as-chip.active{background:var(--as-primary);border-color:var(--as-primary);color:#fff}
+
+/* Category pill — light */
+.as-category{background:#f1f5f9;border:1px solid #e5e7eb;color:#64748b}
+
+/* Platform badges — with SVG icons */
+.as-platform{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:6px;font-size:.72rem;font-weight:600;white-space:nowrap}
+.as-platform svg{flex-shrink:0;vertical-align:middle}
+.as-platform-yt{background:rgba(255,0,0,.08);color:#dc2626}
+.as-platform-twitch{background:rgba(145,70,255,.1);color:#9146FF}
+.as-platform-tiktok{background:rgba(0,0,0,.06);color:#0f172a}
+.as-platform-ig{background:linear-gradient(135deg,rgba(131,58,180,.08),rgba(253,29,29,.08),rgba(252,176,69,.08));color:#c13584}
+.as-platform-kick{background:rgba(83,252,24,.1);color:#16a34a}
+.as-platform-rumble{background:rgba(133,208,69,.1);color:#558b2f}
+
+/* Stat cards in hero — keep glassmorphism */
+.as-hero-stat-val{font-size:1.5rem}
+
+/* Outline button — light variant */
+.as-btn-outline{border-color:#cbd5e1;color:#0f172a}
+.as-btn-outline:hover{border-color:var(--as-primary);color:var(--as-primary)}
+
+/* Footer override for light bg */
+.as-page afro-footer{--color-bg-dark:#0f172a}
+
+/* ═══ Creator profile cards — richer info ═══ */
+.as-creator-card .as-creator-subs{font-size:.75rem;color:var(--as-primary);font-weight:700;margin-bottom:4px}
+.as-creator-card .as-creator-type{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;background:#f1f5f9;color:#64748b;padding:2px 8px;border-radius:6px;display:inline-block;margin-bottom:12px}
+.as-creator-card .as-creator-links{display:flex;gap:6px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+.as-creator-card .as-creator-links a{display:inline-flex;align-items:center;gap:4px;font-size:.68rem;font-weight:600;padding:4px 10px;border-radius:980px;border:1px solid #e5e7eb;color:#64748b;transition:all .15s}
+.as-creator-card .as-creator-links a:hover{border-color:var(--as-primary);color:var(--as-primary)}
+.as-profile-btn:hover{box-shadow:0 4px 16px rgba(0,98,204,.35);transform:translateY(-1px)}
+.as-profile-btn:hover span{transform:translateX(3px)}
+
+/* ═══ Rank table subs column ═══ */
+.as-rank-table .as-subs-cell{font-weight:600;color:var(--as-primary)}
+
+/* Product lanes and streamer board */
+.as-lane-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.as-lane-card{display:flex;flex-direction:column;gap:12px;padding:18px;border:1px solid #e5e7eb;border-radius:12px;background:#fff;box-shadow:0 1px 3px rgba(15,23,42,.06);text-decoration:none;color:inherit;min-height:172px;transition:border-color .15s,box-shadow .15s,transform .15s}
+.as-lane-card:hover{border-color:var(--as-primary-border);box-shadow:0 8px 24px rgba(0,98,204,.1);transform:translateY(-2px)}
+.as-lane-kicker{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--as-primary)}
+.as-lane-title{font-size:1.05rem;font-weight:800;color:#0f172a}
+.as-lane-desc{font-size:.82rem;line-height:1.55;color:#64748b}
+.as-lane-cta{margin-top:auto;font-size:.78rem;font-weight:800;color:var(--as-primary)}
+.as-streamer-board{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.as-streamer-row{display:grid;grid-template-columns:auto auto 1fr auto;align-items:center;gap:12px;padding:14px;border:1px solid #e5e7eb;border-radius:12px;background:#fff;box-shadow:0 1px 3px rgba(15,23,42,.05);text-decoration:none;color:inherit;transition:border-color .15s,box-shadow .15s,transform .15s}
+.as-streamer-row:hover{border-color:var(--as-primary-border);box-shadow:0 6px 20px rgba(0,98,204,.1);transform:translateY(-1px)}
+.as-streamer-rank{width:34px;height:34px;border-radius:10px;background:#f1f5f9;color:#0f172a;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:.8rem}
+.as-streamer-avatar{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;color:#fff;font-weight:800;border:1px solid #e5e7eb;background-size:cover;background-position:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.5)}
+.as-streamer-name{font-weight:800;color:#0f172a;margin-bottom:3px}
+.as-streamer-meta{display:flex;gap:8px;flex-wrap:wrap;color:#64748b;font-size:.76rem}
+.as-streamer-score{text-align:right}
+.as-streamer-score strong{display:block;color:var(--as-primary);font-size:1.05rem}
+.as-streamer-score span{display:block;color:#94a3b8;font-size:.68rem;text-transform:uppercase;letter-spacing:.04em}
+.as-empty-card{grid-column:1/-1;text-align:center;padding:34px 24px;color:#64748b;background:#fff;border:1px dashed #cbd5e1;border-radius:14px}
+.as-empty-card strong{display:block;color:#0f172a;font-size:1rem;margin-bottom:6px}
+.as-empty-card p{margin:0 auto 14px;max-width:520px;font-size:.86rem;line-height:1.55}
+.as-empty-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.as-empty-actions button,.as-empty-actions a{border:1px solid #cbd5e1;background:#f8fafc;color:#0f172a;border-radius:999px;padding:7px 14px;font:inherit;font-size:.78rem;font-weight:700;cursor:pointer;text-decoration:none}
+.as-empty-actions button:hover,.as-empty-actions a:hover{border-color:var(--as-primary);color:var(--as-primary)}
+
+/* ═══ AfroScore & Tier badges ═══ */
+.as-afro-score{display:flex;align-items:center;justify-content:center;gap:8px;margin:12px 0 8px;padding:8px 0;border-top:1px solid #f1f5f9;border-bottom:1px solid #f1f5f9}
+.as-score-num{font-size:1.25rem;font-weight:800;background:linear-gradient(135deg,#0062CC,#34AAFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.as-score-label{font-size:.6rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em}
+.as-score-badge{font-weight:700;color:var(--as-primary)}
+.as-tier{display:inline-block;padding:2px 8px;border-radius:100px;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.as-tier-legend{background:rgba(234,179,8,.12);color:#b45309}
+.as-tier-elite{background:rgba(139,92,246,.1);color:#7c3aed}
+.as-tier-established{background:rgba(0,98,204,.08);color:#0062CC}
+.as-tier-trending{background:rgba(16,185,129,.1);color:#059669}
+.as-tier-rising{background:rgba(148,163,184,.1);color:#64748b}
+
+/* ═══ Emoji sizing — prevent twemoji from breaking layout ═══ */
+.as-chip img.emoji,.as-filter-row img.emoji,.as-live-meta img.emoji,.as-creator-card img.emoji,
+.as-platform img.emoji,.as-category img.emoji,.as-cal-meta img.emoji{
+  height:.85em!important;width:.85em!important;vertical-align:-.1em!important;margin:0 2px 0 0!important;display:inline!important
+}
+.as-live-thumb img.emoji,.as-news-thumb img.emoji,.as-avatar img.emoji,.as-feature-icon img.emoji{
+  height:1.5em!important;width:1.5em!important;vertical-align:middle!important;display:inline!important
+}
+
+/* ═══ ACCESSIBILITY — focus-visible states ═══ */
+.as-live-card:focus-visible,.as-creator-card:focus-visible,.as-news-card:focus-visible,
+.as-cal-card:focus-visible,.as-feature-card:focus-visible,.as-chip:focus-visible,
+.as-btn:focus-visible,.as-faq-q:focus-visible,.as-profile-btn:focus-visible,
+.as-subnav-links a:focus-visible,.as-section-link:focus-visible{
+  outline:2px solid var(--as-primary);outline-offset:2px;box-shadow:0 0 0 4px rgba(0,98,204,.15)
+}
+.as-rank-table tr:focus-visible td{outline:2px solid var(--as-primary);outline-offset:-2px}
+.as-faq-q{cursor:pointer}
+.as-chip{cursor:pointer}
+
+/* ═══ prefers-reduced-motion ═══ */
+@media(prefers-reduced-motion:reduce){
+  .as-hero::after{animation:none!important}
+  .as-live-badge::before{animation:none!important}
+  .as-pulse-dot{animation:none!important}
+  .as-animate-in{animation:none!important;opacity:1!important}
+  .as-live-card,.as-creator-card,.as-news-card,.as-cal-card,.as-feature-card,.as-btn,.as-chip,.as-profile-btn{transition:none!important}
+  .as-skeleton::after{animation:none!important}
+}
+
+@media(max-width:900px){
+  .as-lane-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .as-streamer-board{grid-template-columns:1fr}
+}
+
+/* ═══ Responsive tweaks for light mode ═══ */
+@media(max-width:640px){
+  .as-header{background:rgba(255,255,255,.96)}
+  /* Hero grid animation off on mobile for perf */
+  .as-hero::after{animation:none}
+  /* Subnav scroll */
+  .as-subnav{overflow:visible!important}
+  .as-subnav-inner{gap:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-right:12px}
+  .as-subnav-inner::-webkit-scrollbar{display:none}
+  .as-subnav-links{display:flex!important;flex-shrink:0}
+  .as-subnav-links a{padding:6px 12px;font-size:.75rem}
+  .as-subnav .as-subnav-logo{font-size:1.05rem}
+  .as-subnav-inner>div:last-child{display:none!important}
+  /* Filter rows — ensure scroll works */
+  .as-filters{overflow:visible}
+  .as-filter-row{-ms-overflow-style:none}
+  .as-chip{padding:4px 10px;font-size:.72rem;min-height:32px}
+  /* Section containers — prevent horizontal page overflow */
+  .as-section{overflow-x:hidden}
+  .as-container{overflow-x:visible}
+  /* Platform badges in cards — compact */
+  .as-platform{font-size:.65rem!important;padding:2px 6px}
+  .as-category{font-size:.65rem!important;padding:2px 6px}
+  /* Live cards — prevent overflow */
+  .as-live-grid{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:8px;scroll-snap-type:x mandatory}
+  .as-live-grid::-webkit-scrollbar{display:none}
+  .as-live-card{min-width:260px;scroll-snap-align:start}
+  /* Creator cards — single column */
+  .as-creator-featured-grid{grid-template-columns:1fr!important}
+  /* Rank table — scrollable + smaller text */
+  .as-rank-table{font-size:.72rem}
+  .as-rank-table th,.as-rank-table td{padding:8px 6px}
+  .as-rank-table-wrap{margin-left:-20px;margin-right:-20px;border-radius:0;border-left:0;border-right:0}
+  .as-lane-grid{grid-template-columns:1fr}
+  .as-streamer-row{grid-template-columns:auto auto 1fr}
+  .as-streamer-score{grid-column:3;text-align:left}
+}
+.as-source-rail{max-width:960px;margin:22px auto 0;padding:14px 16px;border:1px solid rgba(255,255,255,.14);border-radius:12px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.82);display:flex;flex-direction:column;align-items:stretch;gap:12px;font-size:.84rem}
+.as-source-summary{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;text-align:center}
+.as-source-summary strong{color:#fff;font-weight:800}
+.as-source-summary span:last-child{color:rgba(255,255,255,.68)}
+.as-source-dot{width:9px;height:9px;border-radius:50%;background:#94a3b8;box-shadow:0 0 0 4px rgba(148,163,184,.16);flex:0 0 auto}
+.as-source-rail.live .as-source-dot,.as-source-pill.live::before{background:#22c55e;box-shadow:0 0 0 4px rgba(34,197,94,.18)}
+.as-source-rail.preview .as-source-dot,.as-source-pill.preview::before{background:#f59e0b;box-shadow:0 0 0 4px rgba(245,158,11,.18)}
+.as-source-rail.stale .as-source-dot,.as-source-pill.stale::before{background:#f97316;box-shadow:0 0 0 4px rgba(249,115,22,.18)}
+.as-source-rail.blocked .as-source-dot,.as-source-pill.blocked::before{background:#ef4444;box-shadow:0 0 0 4px rgba(239,68,68,.18)}
+.as-source-rail.unavailable .as-source-dot,.as-source-pill.unavailable::before{background:#64748b;box-shadow:0 0 0 4px rgba(100,116,139,.22)}
+.as-source-lanes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.as-source-pill{position:relative;display:flex;flex-direction:column;gap:3px;min-height:72px;padding:10px 10px 10px 26px;border:1px solid rgba(255,255,255,.12);border-radius:10px;background:rgba(15,23,42,.28);text-align:left}
+.as-source-pill::before{content:'';position:absolute;left:10px;top:14px;width:7px;height:7px;border-radius:50%;background:#94a3b8}
+.as-source-pill strong{color:#fff;font-size:.78rem;font-weight:800}
+.as-source-pill span{color:rgba(255,255,255,.64);font-size:.72rem;line-height:1.35}
+.as-source-pill em{font-style:normal;text-transform:uppercase;letter-spacing:.05em;font-size:.64rem;font-weight:800}
+.as-source-pill.live em{color:#86efac}.as-source-pill.preview em{color:#fcd34d}.as-source-pill.stale em{color:#fdba74}.as-source-pill.blocked em{color:#fca5a5}.as-source-pill.unavailable em{color:#cbd5e1}
+.as-brief-action{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:34px;padding:7px 12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#0f172a;font:700 .72rem var(--as-font-body);cursor:pointer;text-decoration:none;transition:border-color .15s,color .15s,background .15s}
+.as-brief-action:hover{border-color:var(--as-primary);color:var(--as-primary);background:#f8fbff}
+.as-brief-action:focus-visible{outline:3px solid rgba(0,98,204,.28);outline-offset:2px}
+.as-brief-action.copied{border-color:#16a34a;color:#15803d;background:#f0fdf4}
+.as-card-actions{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.as-live-actions{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:12px;flex-wrap:wrap}
+.as-live-open{color:var(--as-primary);font-weight:800;font-size:.76rem;text-decoration:none}
+.as-live-open:hover{text-decoration:underline}
+.as-copy-status{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:760px){.as-source-lanes{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:420px){.as-source-lanes{grid-template-columns:1fr}.as-source-rail{padding:12px}}
+</style>
+<link rel="stylesheet" href="/tools/afrostream/subnav.css?v=d9e1e45b">
+<script src="/tools/afrostream/subnav.js?v=bdc266a0" defer></script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"AfroStream | African Creator Rankings and Live Streamers","item":"https://afrotools.com/tools/afrostream/"}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/afrostream/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afrostream/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/afrostream-afrique-s-createur-streaming-hub/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/afrostream/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/afrostream/">
+</head>
+
+<body class="as-page top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<div id="asCopyStatus" class="as-copy-status" role="status" aria-live="polite"></div>
+
+<!-- ===== Sub-Nav ===== -->
+<nav class="as-subnav" aria-label="AfroStream navigation">
+  <div class="as-subnav-inner">
+    <a href="/tools/afrostream/" class="as-subnav-logo" data-as-nav-logo><span class="as-logo-icon">&#9655;</span> AfroStream</a>
+        <div class="as-subnav-links">
+      <a href="/tools/afrostream/#live" data-as-nav="live">Live Now</a>
+      <a href="/tools/afrostream/rankings" data-as-nav="rankings">Creator Rankings</a>
+      <a href="/tools/afrostream/rankings?mode=streamers&amp;period=month" data-as-nav="streamers">Live Streamers</a>
+      <a href="/tools/afrostream/news" data-as-nav="news">News</a>
+      <a href="/tools/afrostream/calendar" data-as-nav="calendar">Calendar</a>
+      <a href="/tools/afrostream/methodology/" data-as-nav="methodology">Methodology</a>
+      <a href="/tools/afrostream/university/" data-as-nav="university">University</a>
+      <a href="/tools/afrostream/community" data-as-nav="submit">Submit</a>
+    </div>
+    <div class="as-subnav-actions">
+      <div class="as-subnav-search">
+        <svg class="as-search-icon" viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="m13 13 4 4"/></svg>
+        <input type="search" id="asSearch" placeholder="Search creators..." autocomplete="off" aria-label="Search creators">
+      </div>
+      <a href="/tools/afrostream/community" class="as-btn as-btn-sm as-btn-outline">Submit Tip</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== Hero — stays dark for contrast ===== -->
+<section class="as-hero">
+  <div class="as-hero-content as-container">
+    <h1><span>African Creators</span><br>and Live Streams</h1>
+    <p class="as-hero-sub">Track African creators by cross-platform reach, follow live streamers by recent activity, and open real live streams without mixing the two leaderboards.</p>
+    <div class="as-hero-stats" id="heroStats"></div>
+    <div class="as-source-rail preview" id="asSourceRail" role="status" aria-live="polite">
+      <div class="as-source-summary">
+        <span class="as-source-dot" aria-hidden="true"></span>
+        <strong>Checking for the latest updates</strong>
+        <span>Getting fresh data from across Africa…</span>
+      </div>
+      <div class="as-source-lanes" aria-label="How recently each section was updated">
+        <span class="as-source-pill preview"><strong>Live streams</strong><em>Preview</em><span>Checking…</span></span>
+        <span class="as-source-pill preview"><strong>Creator rankings</strong><em>Preview</em><span>Checking…</span></span>
+        <span class="as-source-pill preview"><strong>News</strong><em>Preview</em><span>Checking…</span></span>
+        <span class="as-source-pill preview"><strong>Calendar</strong><em>Preview</em><span>Checking…</span></span>
+      </div>
+    </div>
+    <div class="as-hero-ctas">
+      <a href="#live" class="as-btn as-btn-primary">Watch Live &#8594;</a>
+      <a href="rankings.html" class="as-btn as-btn-outline" style="border-color:rgba(255,255,255,.25);color:#fff">Creator Rankings</a>
+      <a href="rankings.html?mode=streamers&period=month" class="as-btn as-btn-outline" style="border-color:rgba(255,255,255,.25);color:#fff">Live Streamers</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Product Lanes ===== -->
+<section class="as-section" id="lanes">
+  <div class="as-container">
+    <div class="as-lane-grid" aria-label="AfroStream product lanes">
+      <a class="as-lane-card" href="rankings.html">
+        <span class="as-lane-kicker">Creator Reach</span>
+        <span class="as-lane-title">Cross-platform ranking</span>
+        <span class="as-lane-desc">Creators ranked by AfroScore, followers, views, growth, consistency, engagement, and platform presence.</span>
+        <span class="as-lane-cta">Open creator ranking</span>
+      </a>
+      <a class="as-lane-card" href="rankings.html?mode=streamers&period=month">
+        <span class="as-lane-kicker">Live Streamers</span>
+        <span class="as-lane-title">Recent stream activity</span>
+        <span class="as-lane-desc">Streamer-first leaderboard using stream count, live status, peak viewers, and live-platform focus.</span>
+        <span class="as-lane-cta">Open streamer ranking</span>
+      </a>
+      <a class="as-lane-card" href="#live">
+        <span class="as-lane-kicker">Live Now</span>
+        <span class="as-lane-title">Watch active streams</span>
+        <span class="as-lane-desc">Open current African live streams from Twitch, Kick, YouTube, TikTok, Instagram Live, and Rumble.</span>
+        <span class="as-lane-cta">Jump to live feed</span>
+      </a>
+      <a class="as-lane-card" href="news.html">
+        <span class="as-lane-kicker">Creator News</span>
+        <span class="as-lane-title">Follow the scene</span>
+        <span class="as-lane-desc">Milestones, platform moves, creator business updates, collaborations, and rising African talent.</span>
+        <span class="as-lane-cta">Read AfroStream news</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Live Now ===== -->
+<section class="as-section" id="live">
+  <div class="as-container">
+    <div class="as-section-header">
+      <h2 class="as-section-title"><span class="as-pulse-dot"></span> Live Now <span id="liveCount" style="font-size:.875rem;color:var(--as-muted);font-family:var(--as-font-body);font-weight:500"></span></h2>
+      <a href="rankings.html?mode=streamers&period=month" class="as-section-link">Streamer Ranking <svg viewBox="0 0 20 20" width="14" height="14" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 0 1 .02-1.06L11.168 10 7.23 6.29a.75.75 0 1 1 1.04-1.08l4.5 4.25a.75.75 0 0 1 0 1.08l-4.5 4.25a.75.75 0 0 1-1.06-.02z"/></svg></a>
+    </div>
+    <div class="as-live-grid" id="liveGrid">
+      <div class="as-skeleton as-skel-card" style="flex:0 0 280px"></div>
+      <div class="as-skeleton as-skel-card" style="flex:0 0 280px"></div>
+      <div class="as-skeleton as-skel-card" style="flex:0 0 280px"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Top Creators ===== -->
+<section class="as-section" id="rankings">
+  <div class="as-container">
+    <div class="as-section-header">
+      <h2 class="as-section-title">Top Creator Reach</h2>
+      <a href="rankings.html" class="as-section-link">Full Creator Ranking <svg viewBox="0 0 20 20" width="14" height="14" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 0 1 .02-1.06L11.168 10 7.23 6.29a.75.75 0 1 1 1.04-1.08l4.5 4.25a.75.75 0 0 1 0 1.08l-4.5 4.25a.75.75 0 0 1-1.06-.02z"/></svg></a>
+    </div>
+
+    <!-- Filters -->
+    <div class="as-filters" role="group" aria-label="Filter creators">
+      <div class="as-filter-row" id="timeFilter" role="radiogroup" aria-label="Time period"></div>
+      <div class="as-filter-row" id="catFilter" role="radiogroup" aria-label="Category"></div>
+      <div class="as-filter-row" id="countryFilter" role="radiogroup" aria-label="Country"></div>
+    </div>
+
+    <!-- Top 3 Featured -->
+    <div class="as-creator-featured-grid" id="topThree">
+      <div class="as-skeleton as-skel-card" style="height:320px"></div>
+      <div class="as-skeleton as-skel-card" style="height:320px"></div>
+      <div class="as-skeleton as-skel-card" style="height:320px"></div>
+    </div>
+
+    <!-- Ranked Table #4-20 -->
+    <div class="as-rank-table-wrap">
+      <table class="as-rank-table" id="rankTable" role="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Creator</th>
+            <th scope="col">Country</th>
+            <th scope="col">Platform</th>
+            <th scope="col">Type</th>
+            <th scope="col" data-sort="score">Score <span class="sort-arrow" aria-hidden="true">&#9660;</span></th>
+            <th scope="col" data-sort="followers">Followers <span class="sort-arrow" aria-hidden="true">&#9660;</span></th>
+            <th scope="col" data-sort="views">Views <span class="sort-arrow" aria-hidden="true">&#9660;</span></th>
+            <th scope="col" data-sort="nw">Est. Net Worth <span class="sort-arrow" aria-hidden="true">&#9660;</span></th>
+          </tr>
+        </thead>
+        <tbody id="rankBody">
+          <tr><td colspan="9"><div class="as-skeleton as-skel-row"></div><div class="as-skeleton as-skel-row"></div><div class="as-skeleton as-skel-row"></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Live Streamer Leaders ===== -->
+<section class="as-section" id="streamers">
+  <div class="as-container">
+    <div class="as-section-header">
+      <h2 class="as-section-title">Live Streamer Leaders</h2>
+      <a href="rankings.html?mode=streamers&period=month" class="as-section-link">Full Streamer Ranking <svg viewBox="0 0 20 20" width="14" height="14" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 0 1 .02-1.06L11.168 10 7.23 6.29a.75.75 0 1 1 1.04-1.08l4.5 4.25a.75.75 0 0 1 0 1.08l-4.5 4.25a.75.75 0 0 1-1.06-.02z"/></svg></a>
+    </div>
+    <div class="as-streamer-board" id="streamerBoard">
+      <div class="as-skeleton as-skel-row" style="height:72px"></div>
+      <div class="as-skeleton as-skel-row" style="height:72px"></div>
+      <div class="as-skeleton as-skel-row" style="height:72px"></div>
+      <div class="as-skeleton as-skel-row" style="height:72px"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Latest News ===== -->
+<section class="as-section" id="news">
+  <div class="as-container">
+    <div class="as-section-header">
+      <h2 class="as-section-title">Creator News</h2>
+      <a href="news.html" class="as-section-link">All News <svg viewBox="0 0 20 20" width="14" height="14" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 0 1 .02-1.06L11.168 10 7.23 6.29a.75.75 0 1 1 1.04-1.08l4.5 4.25a.75.75 0 0 1 0 1.08l-4.5 4.25a.75.75 0 0 1-1.06-.02z"/></svg></a>
+    </div>
+    <div class="as-news-grid" id="newsGrid">
+      <div class="as-skeleton as-skel-card"></div>
+      <div class="as-skeleton as-skel-card"></div>
+      <div class="as-skeleton as-skel-card"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Upcoming Streams ===== -->
+<section class="as-section" id="calendar">
+  <div class="as-container">
+    <div class="as-section-header">
+      <h2 class="as-section-title">Coming Up</h2>
+      <a href="calendar.html" class="as-section-link">Full Calendar <svg viewBox="0 0 20 20" width="14" height="14" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 0 1 .02-1.06L11.168 10 7.23 6.29a.75.75 0 1 1 1.04-1.08l4.5 4.25a.75.75 0 0 1 0 1.08l-4.5 4.25a.75.75 0 0 1-1.06-.02z"/></svg></a>
+    </div>
+    <div class="as-calendar-grid" id="calGrid">
+      <div class="as-skeleton as-skel-row" style="height:72px"></div>
+      <div class="as-skeleton as-skel-row" style="height:72px"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== What is AfroStream ===== -->
+<section class="as-section">
+  <div class="as-container as-explain">
+    <h2 class="as-explain-title">What is AfroStream?</h2>
+    <p class="as-explain-sub">AfroStream is a free discovery hub for African creators and live streamers. We do not host streams; we help you find creators, live activity, rankings, and news across major platforms.</p>
+    <div class="as-landing-features" id="featureCards"></div>
+    <p style="color:var(--as-muted);font-size:.8125rem;margin-top:32px">Powered by <a href="/" style="color:var(--as-primary)">AfroTools</a> &mdash; 2,606+ free tools for Africa</p>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="as-section">
+  <div class="as-container">
+    <h2 class="as-section-title" style="justify-content:center;margin-bottom:32px">Frequently Asked Questions</h2>
+    <div class="as-faq" id="faqList"></div>
+  </div>
+</section>
+
+
+<afro-related-tools data-ssr="1" category="creative" current="afrostream">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/african-palette/" data-related-tool data-id="african-palette" data-name="African Color Palette Generator — Kente, Invoice, Savanna" data-category="creative" data-icon="AC" data-desc="Generate African-inspired color palettes. Kente, Invoice, Savanna, Desert, Night Market, Ubuntu, Afrobeats, Nollywood. E">African Color Palette Generator — Kente, Invoice, Savanna</a></li><li><a href="/tools/art-commission/" data-related-tool data-id="art-commission" data-name="Art Commission Price Calculator — Africa" data-category="creative" data-icon="AC" data-desc="Price your art commissions fairly in Africa. Digital, oil, watercolour, portrait — personal vs commercial rights. NGN, K">Art Commission Price Calculator — Africa</a></li><li><a href="/tools/creator-bios/" data-related-tool data-id="creator-bios" data-name="BioForge — One Tap, Every Platform Bio" data-category="creative" data-icon="BO" data-desc="Generate platform-perfect bios for Instagram, TikTok, X, LinkedIn, YouTube, Threads &amp; more — all at once. Tailored chara">BioForge — One Tap, Every Platform Bio</a></li><li><a href="/tools/book-publishing-cost/" data-related-tool data-id="book-publishing-cost" data-name="Book Publishing Cost Calculator — Africa" data-category="creative" data-icon="BP" data-desc="Calculate self-publishing vs traditional publishing costs for African authors. Editing, cover, print, distribution. Brea">Book Publishing Cost Calculator — Africa</a></li><li><a href="/tools/creator-captions/" data-related-tool data-id="creator-captions" data-name="CaptionCraft" data-category="creative" data-icon="C" data-desc="Write captions for Instagram, X, LinkedIn, TikTok, and Facebook. Get three versions, then copy and post.">CaptionCraft</a></li><li><a href="/tools/creator-carousel/" data-related-tool data-id="creator-carousel" data-name="CarouselStudio — Carousel Maker for Instagram, TikTok, LinkedIn &amp; More" data-category="creative" data-icon="CC" data-desc="Create carousels for Instagram, TikTok, LinkedIn, Facebook, Pinterest &amp; more. 14 Afrocentric templates, 8 platform sizes">CarouselStudio — Carousel Maker for Instagram, TikTok, LinkedIn &amp; More</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+
+<!-- seo-internal-links -->
+<nav class="seo-links" aria-label="Afrostream — All Pages">
+<h2 class="seo-links-title">Afrostream — All Pages</h2>
+<ul class="seo-links-list"><li><a href="/tools/afrostream/article">Afrostream — Article</a></li><li><a href="/tools/afrostream/calendar">Afrostream — Calendar</a></li><li><a href="/tools/afrostream/community">Afrostream — Community</a></li><li><a href="/tools/afrostream/creator">Afrostream — Creator</a></li><li><a href="/tools/afrostream/news">Afrostream — News</a></li><li><a href="/tools/afrostream/rankings">Afrostream — Rankings</a></li><li><a href="/tools/afrostream/submit">Afrostream — Submit</a></li></ul>
+</nav>
+<!-- seo-internal-links -->
+<afro-footer></afro-footer>
+
+<script src="/tools/afrostream/news-utils.js?v=3a1a65c4"></script>
+<script>
+/* =================================================================
+   AfroStream — Inline JS (demo data + interactivity)
+   Light theme, richer creator profiles
+   ================================================================= */
+
+/* ---------- PLATFORMS (6 platforms now) ---------- */
+
+var PLATFORM_SVG = {
+  yt: '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.5 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>',
+  twitch: '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M11.6 11.2V7h1.6v4.2h-1.6zm4.4 0V7H17.6v4.2H16zM4.8 1 2 4.6v15.2h5.2V23l3.6-3.2h2.8L21.2 12V1H4.8zm14.8 10.2-3.2 3.2h-3.2L10.8 17v-2.6H6.4V2.6h13.2v8.6z"/></svg>',
+  tiktok: '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M19.3 5.7A4.5 4.5 0 0 1 16.5 1h-3.4v14.1a2.8 2.8 0 1 1-1.9-2.6V9a6.3 6.3 0 1 0 5.3 6.2V9.4a7.9 7.9 0 0 0 4.5 1.4V7.4a4.5 4.5 0 0 1-1.7-1.7z"/></svg>',
+  ig: '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 2.2c2.7 0 3 0 4.1.1 1 0 1.5.2 1.9.4.5.2.8.4 1.1.7.3.3.5.7.7 1.1.1.4.3.9.4 1.9 0 1 .1 1.4.1 4.1s0 3-.1 4.1c0 1-.2 1.5-.4 1.9-.2.5-.4.8-.7 1.1-.3.3-.7.5-1.1.7-.4.1-.9.3-1.9.4-1 0-1.4.1-4.1.1s-3 0-4.1-.1c-1 0-1.5-.2-1.9-.4a3.2 3.2 0 0 1-1.1-.7 3.2 3.2 0 0 1-.7-1.1c-.1-.4-.3-.9-.4-1.9 0-1-.1-1.4-.1-4.1s0-3 .1-4.1c0-1 .2-1.5.4-1.9.2-.5.4-.8.7-1.1.3-.3.7-.5 1.1-.7.4-.1.9-.3 1.9-.4 1 0 1.4-.1 4.1-.1zM12 0C9.3 0 8.9 0 7.8.1 6.7.1 6 .3 5.4.5c-.7.3-1.3.6-1.8 1.2-.6.5-.9 1.1-1.2 1.8C2.1 4 2 4.7 1.9 5.8 1.8 6.9 1.8 7.3 1.8 12s0 5.1.1 6.2c.1 1.1.3 1.8.5 2.4.3.7.6 1.3 1.2 1.8.5.6 1.1.9 1.8 1.2.6.2 1.3.4 2.4.5 1.1 0 1.5.1 6.2.1s5.1 0 6.2-.1c1.1-.1 1.8-.3 2.4-.5.7-.3 1.3-.6 1.8-1.2.6-.5.9-1.1 1.2-1.8.2-.6.4-1.3.5-2.4 0-1.1.1-1.5.1-6.2s0-5.1-.1-6.2c-.1-1.1-.3-1.8-.5-2.4-.3-.7-.6-1.3-1.2-1.8-.5-.6-1.1-.9-1.8-1.2C18 .3 17.3.1 16.2.1 15.1 0 14.7 0 12 0zm0 5.8a6.2 6.2 0 1 0 0 12.4 6.2 6.2 0 0 0 0-12.4zM12 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm6.4-7.5a1.4 1.4 0 1 0 0-2.9 1.4 1.4 0 0 0 0 2.9z"/></svg>',
+  kick: '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M1.2 0h7.2v7.2L12 3.6h7.2l-6 6 6 6H12l-3.6-3.6V24H1.2z"/></svg>',
+  rumble: '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M18.2 10.8c2.4 1.4 2.4 4.8 0 6.2l-9 5.2c-2.4 1.4-5.4-.3-5.4-3.1V5.1c0-2.8 3-4.5 5.4-3.1l9 5.2z"/><circle cx="17.5" cy="6" r="3.5"/></svg>'
+};
+var PLATFORMS = {
+  yt:      { name: 'YouTube',   cls: 'as-platform-yt',      icon: PLATFORM_SVG.yt      },
+  twitch:  { name: 'Twitch',    cls: 'as-platform-twitch',   icon: PLATFORM_SVG.twitch  },
+  tiktok:  { name: 'TikTok',    cls: 'as-platform-tiktok',   icon: PLATFORM_SVG.tiktok  },
+  ig:      { name: 'Instagram', cls: 'as-platform-ig',       icon: PLATFORM_SVG.ig      },
+  kick:    { name: 'Kick',      cls: 'as-platform-kick',     icon: PLATFORM_SVG.kick    },
+  rumble:  { name: 'Rumble',    cls: 'as-platform-rumble',   icon: PLATFORM_SVG.rumble  }
+};
+
+var CATEGORIES = ['Gaming','Music','Comedy','Tech','Fashion','Food','Education','Lifestyle','IRL','Just Chatting'];
+var CAT_ICONS  = ['&#127918;','&#127925;','&#128514;','&#128187;','&#128087;','&#127834;','&#127891;','&#9728;','&#127908;','&#128172;'];
+
+var COUNTRIES = [
+  { code:'NG', flag:'\u{1F1F3}\u{1F1EC}', name:'Nigeria' },
+  { code:'KE', flag:'\u{1F1F0}\u{1F1EA}', name:'Kenya' },
+  { code:'ZA', flag:'\u{1F1FF}\u{1F1E6}', name:'South Africa' },
+  { code:'GH', flag:'\u{1F1EC}\u{1F1ED}', name:'Ghana' },
+  { code:'EG', flag:'\u{1F1EA}\u{1F1EC}', name:'Egypt' },
+  { code:'TZ', flag:'\u{1F1F9}\u{1F1FF}', name:'Tanzania' },
+  { code:'UG', flag:'\u{1F1FA}\u{1F1EC}', name:'Uganda' },
+  { code:'SN', flag:'\u{1F1F8}\u{1F1F3}', name:'Senegal' },
+  { code:'CM', flag:'\u{1F1E8}\u{1F1F2}', name:'Cameroon' },
+  { code:'ET', flag:'\u{1F1EA}\u{1F1F9}', name:'Ethiopia' },
+  { code:'MA', flag:'\u{1F1F2}\u{1F1E6}', name:'Morocco' },
+  { code:'RW', flag:'\u{1F1F7}\u{1F1FC}', name:'Rwanda' },
+  { code:'DZ', flag:'\u{1F1E9}\u{1F1FF}', name:'Algeria' },
+  { code:'CD', flag:'\u{1F1E8}\u{1F1E9}', name:'DR Congo' },
+  { code:'CI', flag:'\u{1F1E8}\u{1F1EE}', name:"C\u00f4te d'Ivoire" },
+  { code:'TN', flag:'\u{1F1F9}\u{1F1F3}', name:'Tunisia' }
+];
+var COUNTRY_FALLBACK = { code:'--', flag:'\u{1F30D}', name:'Africa' };
+
+function randInt(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+function fmtK(n){ return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(n>=1e4?0:1)+'K':n.toString(); }
+function fmtUSD(n){ return '$'+fmtK(n); }
+function gradClass(i){ return 'as-grad-'+((i%8)+1); }
+function platformBadges(cr){
+  var list = cr.platforms || [cr.platform];
+  return list.map(function(key){
+    var p = PLATFORMS[key] || PLATFORMS.yt;
+    return '<span class="as-platform '+p.cls+'" style="font-size:.65rem;padding:2px 8px">'+p.icon+' '+p.name+'</span>';
+  }).join(' ');
+}
+
+function platformIconStrip(cr){
+  var list = cr.platforms || [cr.platform];
+  return list.map(function(key){
+    var p = PLATFORMS[key] || PLATFORMS.yt;
+    return '<span class="as-platform '+p.cls+'" title="'+p.name+'" aria-label="'+p.name+'" style="padding:4px 8px;min-width:28px;justify-content:center">'+p.icon+'</span>';
+  }).join(' ');
+}
+
+function parseNum(value){
+  if(typeof value === 'number' && isFinite(value)) return value;
+  if(!value) return 0;
+  var parsed = parseFloat(String(value).replace(/[^0-9.\-]/g,''));
+  return isFinite(parsed) ? parsed : 0;
+}
+
+function normalizeName(value){
+  return String(value || '').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+}
+
+function platformKey(value){
+  var raw = String(value || '').toLowerCase().trim();
+  if(raw === 'youtube') return 'yt';
+  if(raw === 'instagram') return 'ig';
+  return raw || 'yt';
+}
+
+function creatorSlug(cr){
+  return cr.slug || String(cr.name || '').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+}
+
+function hydrateCreatorRuntimeMetrics(cr){
+  var raw = cr && cr._raw || {};
+  cr.followers = Math.max(parseNum(raw.total_followers), parseNum(raw.subscribers), parseNum(cr.followers), parseNum(cr.subs));
+  cr.subs = cr.followers;
+  cr.views = Math.max(parseNum(raw.total_views), parseNum(raw.yt_views), parseNum(cr.views));
+  cr.peak = Math.max(parseNum(raw.peak_viewers), parseNum(raw.current_viewers), parseNum(cr.peak));
+  return cr;
+}
+
+function hydrateLiveStreamRuntimeMetrics(stream){
+  var key = normalizeName(stream.name);
+  var creator = CREATORS.filter(function(cr){ return normalizeName(cr.name) === key; })[0];
+  if(creator){
+    stream.subs = Math.max(parseNum(stream.subs), parseNum(creator.followers), parseNum(creator.subs));
+    stream.avatar = stream.avatar || creator.avatar || '';
+    stream.cover = stream.cover || creator.cover || '';
+    stream.country = stream.country || creator.country;
+  }
+  stream.viewers = Math.max(parseNum(stream.viewers), parseNum(stream._raw && stream._raw.viewer_count));
+  return stream;
+}
+
+function isLivePlatformCreator(cr){
+  var raw = cr._raw || {};
+  var primary = platformKey(raw.primary_platform || cr.platform);
+  var platforms = cr.platforms || [cr.platform];
+  return primary === 'twitch' || primary === 'kick' || platforms.indexOf('twitch') !== -1 || platforms.indexOf('kick') !== -1;
+}
+
+function mapStreamHistoryRow(row){
+  return {
+    creatorId: row.creator_id || '',
+    name: row.creator_name || row.name || 'Unknown Streamer',
+    platform: platformKey(row.platform),
+    date: row.stream_date || row.started_at || row.created_at || '',
+    isLive: row.is_live === true || row.is_live === 'true',
+    viewers: parseNum(row.viewer_count || row.viewers || row.peak_viewers),
+    peak: parseNum(row.peak_viewers || row.viewer_count || row.viewers),
+    url: row.url || row.stream_url || ''
+  };
+}
+
+async function loadStreamHistory(){
+  if(isStaticPreviewHost()){
+    return LIVE_STREAMS.map(function(s){
+      return {
+        creatorId: s._raw && s._raw.creator_id || '',
+        name: s.name,
+        platform: s.platform,
+        date: s.date || s._raw && s._raw.stream_date || '',
+        isLive: true,
+        viewers: s.viewers || 0,
+        peak: s.viewers || 0,
+        url: s.url || ''
+      };
+    });
+  }
+  var urls = ['/api/afrostream/streams?limit=500'];
+  for(var i=0;i<urls.length;i++){
+    try{
+      var res = await fetch(urls[i], { credentials:'same-origin' });
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      var json = await res.json();
+      if(json && Array.isArray(json.data)) return json.data.map(mapStreamHistoryRow);
+    }catch(e){}
+  }
+  return LIVE_STREAMS.map(function(s){
+    return {
+      creatorId: s._raw && s._raw.creator_id || '',
+      name: s.name,
+      platform: s.platform,
+      date: s.date || s._raw && s._raw.stream_date || '',
+      isLive: true,
+      viewers: s.viewers || 0,
+      peak: s.viewers || 0,
+      url: s.url || ''
+    };
+  });
+}
+
+function buildStreamerStats(){
+  var byId = {};
+  var byName = {};
+  STREAM_HISTORY.forEach(function(stream){
+    var keys = [];
+    if(stream.creatorId) keys.push({ map:byId, key:String(stream.creatorId) });
+    var nameKey = normalizeName(stream.name);
+    if(nameKey) keys.push({ map:byName, key:nameKey });
+    keys.forEach(function(entry){
+      var stats = entry.map[entry.key] || { count:0, peak:0, live:false, platforms:{}, lastDate:'', url:'' };
+      stats.count += 1;
+      stats.peak = Math.max(stats.peak, stream.peak || stream.viewers || 0);
+      stats.live = stats.live || stream.isLive;
+      stats.url = stats.url || stream.url;
+      if(stream.platform) stats.platforms[stream.platform] = true;
+      if(!stats.lastDate || (stream.date && stream.date > stats.lastDate)) stats.lastDate = stream.date;
+      entry.map[entry.key] = stats;
+    });
+  });
+  return { byId:byId, byName:byName };
+}
+
+function buildStreamerLeaders(){
+  var stats = buildStreamerStats();
+  var leaders = [];
+  CREATORS.forEach(function(cr){
+    var id = cr._raw && cr._raw.id ? String(cr._raw.id) : '';
+    var byCreatorId = id ? stats.byId[id] : null;
+    var byCreatorName = stats.byName[normalizeName(cr.name)];
+    var own = {
+      count: Math.max(byCreatorId && byCreatorId.count || 0, byCreatorName && byCreatorName.count || 0),
+      peak: Math.max(byCreatorId && byCreatorId.peak || 0, byCreatorName && byCreatorName.peak || 0),
+      live: (byCreatorId && byCreatorId.live) || (byCreatorName && byCreatorName.live) || false,
+      url: byCreatorId && byCreatorId.url || byCreatorName && byCreatorName.url || '',
+      platforms: Object.assign({}, byCreatorId && byCreatorId.platforms || {}, byCreatorName && byCreatorName.platforms || {})
+    };
+    if(!own.count && !isLivePlatformCreator(cr)) return;
+    var score = Math.min(100, Math.round((own.live ? 18 : 0) + Math.min(32, own.count * 8) + Math.min(24, own.peak / 120) + Math.min(18, (cr.followers || 0) / 50000) + (isLivePlatformCreator(cr) ? 8 : 0)));
+    leaders.push({
+      creator: cr,
+      count: own.count,
+      peak: own.peak,
+      live: own.live,
+      url: own.url,
+      score: Math.max(1, score),
+      platforms: Object.keys(own.platforms).length ? Object.keys(own.platforms) : (cr.platforms || [cr.platform])
+    });
+  });
+  leaders.sort(function(a,b){
+    return b.score - a.score || b.count - a.count || b.peak - a.peak || (b.creator.followers || 0) - (a.creator.followers || 0);
+  });
+  return leaders;
+}
+
+/* ---------- DATA — populated from Supabase API, no demo fallback ---------- */
+
+var LIVE_STREAMS = [];
+var STREAM_HISTORY = [];
+var CREATORS = [];
+var NEWS = [];
+var UPCOMING = [];
+
+var FEATURE_SVGS = {
+  live: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/></svg>',
+  trophy: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6m12 5h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20 7 22m7-7.34V17c0 .55.47.98.97 1.21C16.15 18.75 17 20 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>',
+  dollar: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
+  calendar: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+  user: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+  grid: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>'
+};
+var FEATURE_COLORS = ['#EF4444','#EAB308','#10B981','#0062CC','#8B5CF6','#06B6D4'];
+var FEATURES = [
+  { icon:'live',     bg:'rgba(239,68,68,.1)',  title:'Live Discovery',     desc:'Find who\'s streaming right now across YouTube, Twitch, TikTok, Instagram Live, Kick, and Rumble.' },
+  { icon:'trophy',   bg:'rgba(234,179,8,.1)',  title:'Creator Rankings',   desc:'See who\'s rising with AfroScore: followers, views, growth, consistency, engagement, and multi-platform presence.' },
+  { icon:'dollar',   bg:'rgba(16,185,129,.1)', title:'Net Worth Tracker',  desc:'Estimated earnings from streams, sponsorships, and brand deals. Crowdsourced + AI-powered.' },
+  { icon:'calendar', bg:'rgba(0,98,204,.1)',  title:'Stream Calendar',    desc:'Never miss a stream. See upcoming schedules from your favorite African creators.' },
+  { icon:'user',     bg:'rgba(139,92,246,.1)', title:'Creator Profiles',   desc:'Detailed profiles with follower counts, channel type, streaming frequency, platform links, and growth stats.' },
+  { icon:'grid',     bg:'rgba(6,182,212,.1)',  title:'6 Platforms',         desc:'YouTube, Twitch, TikTok, Instagram Live, Kick, and Rumble. All in one discovery hub.' }
+];
+
+var FAQS = [
+  { q:'How does AfroStream work?', a:'AfroStream is a discovery hub, not a streaming platform. We aggregate live streams, creator rankings, and news from YouTube, Twitch, TikTok, Instagram Live, Kick, and Rumble so you can discover African creators in one place.' },
+  { q:'How are rankings calculated?', a:'Creator Reach uses AfroScore across followers, views, growth, consistency, engagement, and multi-platform presence. Live Streamers is separate and uses stream count, live status, peak viewers, and live-platform focus. Read the public methodology at /tools/afrostream/afroscore/.' },
+  { q:'How is net worth estimated?', a:'Net worth estimates combine publicly available data (gift totals, follower counts, known sponsorship deals) with AI-assisted projections. These are estimates and may not reflect actual earnings.' },
+  { q:'Can I add my stream?', a:'Yes! Submit your creator profile through our form. Once verified, your streams appear in the live feed and you become eligible for rankings.' },
+  { q:'Is it free?', a:'Yes, AfroStream is 100% free. It\'s part of the AfroTools suite of 2,606+ free tools for Africa.' },
+  { q:'What platforms are supported?', a:'YouTube, Twitch, TikTok Live, Instagram Live, Kick, and Rumble. More platforms coming soon.' }
+];
+
+function escapeHtml(value){
+  return String(value == null ? '' : value)
+    .replace(/\\u0026/g, '&')
+    .replace(/&amp;/g, '&')
+    .replace(/&#39;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function escapeAttr(value){
+  return escapeHtml(value);
+}
+
+function extractYouTubeVideoId(value){
+  if(!value) return '';
+  var str = String(value).trim();
+  if(!str) return '';
+  if(/^[A-Za-z0-9_-]{11}$/.test(str)) return str;
+  var patterns = [
+    /[?&]v=([A-Za-z0-9_-]{11})/i,
+    /youtu\.be\/([A-Za-z0-9_-]{11})/i,
+    /youtube\.com\/(?:live|shorts|embed)\/([A-Za-z0-9_-]{11})/i
+  ];
+  for(var i=0;i<patterns.length;i++){
+    var match = str.match(patterns[i]);
+    if(match) return match[1];
+  }
+  return '';
+}
+
+function normalizeThumbnailUrl(value){
+  if(!value) return '';
+  if(Array.isArray(value)){
+    for(var i=0;i<value.length;i++){
+      var arrUrl = normalizeThumbnailUrl(value[i]);
+      if(arrUrl) return arrUrl;
+    }
+    return '';
+  }
+  if(typeof value === 'object'){
+    var keys = ['url','src','secure_url','thumbnail_url','thumbnailUrl','image','thumbnail','poster','original','large','medium','small','sm'];
+    for(var k=0;k<keys.length;k++){
+      var objUrl = normalizeThumbnailUrl(value[keys[k]]);
+      if(objUrl) return objUrl;
+    }
+    return '';
+  }
+  var str = String(value).trim();
+  if(!str || str==='null' || str==='undefined' || str==='[object Object]') return '';
+  if((str.charAt(0)==='{' || str.charAt(0)==='[') && str.indexOf('http')!==0){
+    try { return normalizeThumbnailUrl(JSON.parse(str)); } catch(e) {}
+  }
+  str = str
+    .replace(/\\u0026/g,'&')
+    .replace(/\\\//g,'/')
+    .replace(/&amp;/g,'&')
+    .replace(/^\/\//,'https://')
+    .replace(/^http:\/\//i,'https://')
+    .replace(/\{width\}/g,'440')
+    .replace(/\{height\}/g,'248');
+  return /^https?:\/\//i.test(str) ? str : '';
+}
+
+function isAllowedMediaUrl(value){
+  if(!value) return false;
+  try {
+    var url = new URL(value, location.href);
+    var host = url.hostname.toLowerCase();
+    if(url.origin === location.origin) return true;
+    return host === 'yt3.ggpht.com' ||
+      host.endsWith('.ggpht.com') ||
+      host === 'static-cdn.jtvnw.net' ||
+      host === 'static-cdn.kick.com' ||
+      host === 'files.kick.com' ||
+      host === 'kick.com' ||
+      host === 'cdn.jsdelivr.net' ||
+      host === 'lh3.googleusercontent.com' ||
+      host.endsWith('.supabase.co');
+  } catch(e) {
+    return false;
+  }
+}
+
+function resolveLiveThumbnail(stream){
+  if(!stream) return '';
+  var direct = [
+    stream.thumbnail,
+    stream.thumbnail_url,
+    stream.thumbnailUrl,
+    stream.image,
+    stream.poster,
+    stream.cover,
+    stream.creator_cover,
+    stream.cover_url,
+    stream.avatar,
+    stream.creator_avatar,
+    stream.avatar_url
+  ];
+  for(var i=0;i<direct.length;i++){
+    var next = normalizeThumbnailUrl(direct[i]);
+    if(next && isAllowedMediaUrl(next)) return next;
+  }
+  if(stream._raw){
+    var raw = stream._raw;
+    var rawValues = [
+      raw.thumbnail,
+      raw.thumbnail_url,
+      raw.thumbnailUrl,
+      raw.image,
+      raw.image_url,
+      raw.imageUrl,
+      raw.poster,
+      raw.cover,
+      raw.creator_cover,
+      raw.cover_url,
+      raw.avatar,
+      raw.creator_avatar,
+      raw.avatar_url,
+      raw.profile_image,
+      raw.banner_image
+    ];
+    for(var j=0;j<rawValues.length;j++){
+      var rawNext = normalizeThumbnailUrl(rawValues[j]);
+      if(rawNext && isAllowedMediaUrl(rawNext)) return rawNext;
+    }
+  }
+  return '';
+}
+
+
+/* ---------- RENDER FUNCTIONS ---------- */
+
+function renderHeroStats(){
+  var el = document.getElementById('heroStats');
+  var stats = [
+    { val:'2,606+', label:'Creators' },
+    { val: LIVE_STREAMS.length+'', label:'Live Now' },
+    { val:'6', label:'Platforms' },
+    { val:'12', label:'Countries' }
+  ];
+  el.innerHTML = stats.map(function(s){
+    return '<div class="as-hero-stat"><span class="as-hero-stat-val">'+s.val+'</span><span class="as-hero-stat-label">'+s.label+'</span></div>';
+  }).join('');
+}
+
+function isStaticPreviewHost(){
+  return /^(localhost|127\.0\.0\.1|\[?::1\]?)$/i.test(location.hostname || '');
+}
+
+var SOURCE_LANES = [
+  { key:'streams', label:'Live streams' },
+  { key:'rankings', label:'Creator rankings' },
+  { key:'news', label:'News' },
+  { key:'calendar', label:'Calendar' }
+];
+var SOURCE_STATUS_LABELS = {
+  live:'Live',
+  preview:'Preview',
+  stale:'Stale',
+  blocked:'Blocked',
+  unavailable:'Unavailable'
+};
+
+function laneHealth(status, detail){
+  return { status: status || 'unavailable', detail: detail || 'We couldn’t check this just now.' };
+}
+
+function sourceHoursAgo(value){
+  if(!value) return null;
+  var date = new Date(value);
+  if(isNaN(date.getTime())) return null;
+  return Math.max(0, Math.round((Date.now() - date.getTime()) / 36e5 * 10) / 10);
+}
+
+function sourceDaysAgo(value){
+  if(!value) return null;
+  var date = new Date(value + 'T00:00:00Z');
+  if(isNaN(date.getTime())) return null;
+  var now = new Date();
+  var today = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+  var then = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+  return Math.max(0, Math.round((today - then) / 864e5));
+}
+
+function isBlockedRun(run){
+  if(!run) return false;
+  var status = String(run.status || '').toLowerCase();
+  return /blocked|error|failed|fail|timeout/.test(status);
+}
+
+function formatAge(hours){
+  if(hours == null) return '';
+  if(hours < 1) return 'under 1h ago';
+  if(hours < 48) return hours + 'h ago';
+  return Math.round(hours / 24) + 'd ago';
+}
+
+function summarizeSourceHealth(lanes){
+  var statuses = SOURCE_LANES.map(function(lane){
+    return lanes[lane.key] && lanes[lane.key].status || 'unavailable';
+  });
+  var order = ['blocked','unavailable','stale','preview','live'];
+  var state = 'live';
+  for(var i=0;i<order.length;i++){
+    if(statuses.indexOf(order[i]) !== -1){
+      state = order[i];
+      break;
+    }
+  }
+  if(state === 'live') return { state:state, title:'Live data', detail:'Streams, rankings, and news all updated recently.' };
+  if(state === 'preview') return { state:state, title:'Preview mode', detail:'Showing sample data on this preview.' };
+  if(state === 'stale') return { state:state, title:'Some data may be delayed', detail:'Most feeds loaded; we are double-checking how fresh a few of them are.' };
+  if(state === 'blocked') return { state:state, title:'Some data unavailable', detail:'One or more feeds could not be reached right now.' };
+  return { state:state, title:'Data status unknown', detail:'We could not confirm how fresh some feeds are right now.' };
+}
+
+function renderSourceRail(mode, meta){
+  var rail = document.getElementById('asSourceRail');
+  if(!rail) return;
+  meta = meta || {};
+  var lanes = meta.lanes || {};
+  SOURCE_LANES.forEach(function(lane){
+    if(!lanes[lane.key]){
+      lanes[lane.key] = mode === 'preview'
+        ? laneHealth('preview', 'Showing sample data on this preview.')
+        : laneHealth(mode === 'live' ? 'live' : 'unavailable', meta.message || 'Data status could not be confirmed.');
+    }
+  });
+  var summary = summarizeSourceHealth(lanes);
+  rail.className = 'as-source-rail ' + summary.state;
+  rail.innerHTML = '<div class="as-source-summary">' +
+      '<span class="as-source-dot" aria-hidden="true"></span>' +
+      '<strong>'+escapeHtml(summary.title)+'</strong>' +
+      '<span>'+escapeHtml(summary.detail)+'</span>' +
+    '</div>' +
+    '<div class="as-source-lanes" aria-label="AfroStream source health by lane">' +
+      SOURCE_LANES.map(function(lane){
+        var item = lanes[lane.key] || laneHealth('unavailable');
+        var status = SOURCE_STATUS_LABELS[item.status] ? item.status : 'unavailable';
+        return '<span class="as-source-pill '+status+'" data-source-lane="'+escapeAttr(lane.key)+'" data-source-status="'+escapeAttr(status)+'">' +
+          '<strong>'+escapeHtml(lane.label)+'</strong>' +
+          '<em>'+escapeHtml(SOURCE_STATUS_LABELS[status])+'</em>' +
+          '<span>'+escapeHtml(item.detail)+'</span>' +
+        '</span>';
+      }).join('') +
+    '</div>';
+}
+
+async function loadSourceHealth(){
+  if(isStaticPreviewHost()) return null;
+  var res = await fetch('/api/afrostream/health', { credentials:'same-origin' });
+  if(!res.ok) throw new Error('Health API ' + res.status);
+  var json = await res.json();
+  if(json && json.success && json.data) return json.data;
+  throw new Error('Health API response unavailable');
+}
+
+function buildSourceLanes(data, health, healthError){
+  if(isStaticPreviewHost()){
+    return {
+      streams: laneHealth('preview', 'Showing sample streams on this preview.'),
+      rankings: laneHealth('preview', 'Showing sample rankings on this preview.'),
+      news: laneHealth('preview', 'Showing sample news on this preview.'),
+      calendar: laneHealth('preview', 'Showing sample schedule on this preview.')
+    };
+  }
+
+  data = data || {};
+  var streamsLoaded = !!(data.streams && Array.isArray(data.streams.live));
+  var calendarLoaded = !!(data.streams && Array.isArray(data.streams.upcoming));
+  var creatorsLoaded = Array.isArray(data.creators);
+  var newsLoaded = Array.isArray(data.news);
+  var lanes = {
+    streams: streamsLoaded
+      ? laneHealth('live', (data.streams.live.length || 0) + ' live streams loaded.')
+      : laneHealth('unavailable', 'Live streams could not be loaded right now.'),
+    rankings: creatorsLoaded && data.creators.length
+      ? laneHealth('live', data.creators.length + ' creators loaded.')
+      : laneHealth('unavailable', 'Creator rankings could not be loaded right now.'),
+    news: newsLoaded
+      ? laneHealth(data.news.length ? 'live' : 'stale', data.news.length ? data.news.length + ' news items loaded.' : 'No news to show yet.')
+      : laneHealth('unavailable', 'News could not be loaded right now.'),
+    calendar: calendarLoaded
+      ? laneHealth('live', (data.streams.upcoming.length || 0) + ' upcoming streams loaded.')
+      : laneHealth('unavailable', 'The schedule could not be loaded right now.')
+  };
+
+  if(healthError || !health){
+    Object.keys(lanes).forEach(function(key){
+      if(lanes[key].status === 'live'){
+        lanes[key] = laneHealth('unavailable', 'Data loaded, but we could not confirm how fresh it is.');
+      }
+    });
+    return lanes;
+  }
+
+  var syncRun = health.automation && health.automation.sync;
+  var liveRun = health.automation && health.automation.livecheck;
+  var newsRun = health.automation && health.automation.news_monitor;
+  var snapshotAge = health.snapshots && (health.snapshots.age_days != null ? health.snapshots.age_days : sourceDaysAgo(health.snapshots.latest_snapshot_date));
+  var syncAge = sourceHoursAgo(syncRun && syncRun.fetched_at);
+  var liveRunAge = sourceHoursAgo(liveRun && liveRun.fetched_at);
+  var latestStreamAge = health.streams && (health.streams.latest_updated_age_hours != null ? health.streams.latest_updated_age_hours : sourceHoursAgo(health.streams.latest_updated_at));
+  var latestNewsAge = health.news && (health.news.latest_age_hours != null ? health.news.latest_age_hours : sourceHoursAgo(health.news.latest_published_at));
+
+  if(isBlockedRun(syncRun)){
+    lanes.rankings = laneHealth('blocked', 'Latest creator sync reported a failed source run.');
+  } else if(creatorsLoaded && data.creators.length && (snapshotAge == null || snapshotAge > 2 || syncAge == null || syncAge > 6)){
+    lanes.rankings = laneHealth('stale', 'Latest ranking snapshot is ' + (snapshotAge == null ? 'not dated' : snapshotAge + 'd old') + '.');
+  } else if(creatorsLoaded && data.creators.length && health.creators && health.creators.published){
+    lanes.rankings = laneHealth('live', health.creators.published + ' published creators; ranking source refreshed recently.');
+  }
+
+  if(isBlockedRun(liveRun)){
+    lanes.streams = laneHealth('blocked', 'Latest live stream check reported a failed source run.');
+  } else if(streamsLoaded && (liveRunAge == null || liveRunAge > 1.5 || latestStreamAge == null || latestStreamAge > 3)){
+    lanes.streams = laneHealth('stale', 'Live stream source last refreshed ' + (formatAge(liveRunAge || latestStreamAge) || 'outside the freshness window') + '.');
+  } else if(streamsLoaded && health.streams){
+    lanes.streams = laneHealth('live', (health.streams.live_now || 0) + ' live now; ' + (health.streams.last_24h || 0) + ' stream rows in 24h.');
+  }
+
+  if(isBlockedRun(newsRun)){
+    lanes.news = laneHealth('blocked', 'Latest news monitor reported a failed source run.');
+  } else if(newsLoaded && health.sources && (health.sources.stale_over_7d || 0) > 0 && !(health.sources.success_last_24h || 0)){
+    lanes.news = laneHealth('stale', 'No source success in 24h; ' + health.sources.stale_over_7d + ' news sources are stale.');
+  } else if(newsLoaded && latestNewsAge != null && latestNewsAge > 168){
+    lanes.news = laneHealth('stale', 'Latest published news is ' + formatAge(latestNewsAge) + '.');
+  } else if(newsLoaded && health.news){
+    lanes.news = laneHealth('live', (health.news.total_published || data.news.length || 0) + ' published news items checked.');
+  }
+
+  if(isBlockedRun(liveRun)){
+    lanes.calendar = laneHealth('blocked', 'Calendar uses the stream source, and the latest live check failed.');
+  } else if(calendarLoaded && (latestStreamAge == null || latestStreamAge > 24)){
+    lanes.calendar = laneHealth('stale', 'Calendar stream source last updated ' + (formatAge(latestStreamAge) || 'outside the freshness window') + '.');
+  } else if(calendarLoaded){
+    lanes.calendar = laneHealth('live', (data.streams.upcoming.length || 0) + ' upcoming rows; stream source checked ' + (formatAge(latestStreamAge) || 'recently') + '.');
+  }
+
+  return lanes;
+}
+
+function sourceNoteForBrief(laneKey){
+  var pill = document.querySelector('[data-source-lane="'+laneKey+'"]');
+  if(!pill) return { status:'Unavailable', detail:'Source status not visible.' };
+  var status = pill.getAttribute('data-source-status') || 'unavailable';
+  var detailEl = pill.querySelector('span:last-child');
+  return {
+    status: SOURCE_STATUS_LABELS[status] || status,
+    detail: detailEl ? detailEl.textContent.trim() : ''
+  };
+}
+
+function creatorBriefText(data){
+  data = data || {};
+  var source = sourceNoteForBrief(data.sourceLane || 'rankings');
+  var lines = [
+    'AfroStream creator brief',
+    'Creator: ' + (data.name || 'Unknown creator')
+  ];
+  if(data.platform) lines.push('Platform: ' + data.platform);
+  if(data.category) lines.push('Category: ' + data.category);
+  if(data.country) lines.push('Country: ' + data.country);
+  if(data.status) lines.push('Current status: ' + data.status);
+  lines.push('Source status: ' + source.status);
+  if(source.detail) lines.push('Source date/status note: ' + source.detail);
+  lines.push('');
+  lines.push('Sponsor note template: Consider ' + (data.name || 'this creator') + ' for a brand-fit review. Confirm current audience fit, deliverables, usage rights, availability, and rates directly with the creator before outreach.');
+  return lines.join('\n');
+}
+
+function setCopyFeedback(message, button){
+  var status = document.getElementById('asCopyStatus');
+  if(status) status.textContent = message;
+  if(button){
+    var original = button.getAttribute('data-original-label') || button.textContent;
+    button.setAttribute('data-original-label', original);
+    button.classList.add('copied');
+    button.textContent = message.indexOf('Copied') === 0 ? 'Copied' : original;
+    window.setTimeout(function(){
+      button.classList.remove('copied');
+      button.textContent = original;
+    }, 1800);
+  }
+}
+
+function copyTextToClipboard(text){
+  if(navigator.clipboard && window.isSecureContext){
+    return navigator.clipboard.writeText(text);
+  }
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.setAttribute('readonly', '');
+  ta.style.position = 'fixed';
+  ta.style.top = '-999px';
+  document.body.appendChild(ta);
+  ta.select();
+  var ok = document.execCommand('copy');
+  document.body.removeChild(ta);
+  return ok ? Promise.resolve() : Promise.reject(new Error('Copy command unavailable'));
+}
+
+function copyCreatorBrief(button){
+  var data = {
+    name: button.getAttribute('data-brief-name') || '',
+    platform: button.getAttribute('data-brief-platform') || '',
+    category: button.getAttribute('data-brief-category') || '',
+    country: button.getAttribute('data-brief-country') || '',
+    status: button.getAttribute('data-brief-status') || '',
+    sourceLane: button.getAttribute('data-source-lane-ref') || 'rankings'
+  };
+  var text = creatorBriefText(data);
+  return copyTextToClipboard(text).then(function(){
+    setCopyFeedback('Copied creator brief for ' + (data.name || 'creator') + '.', button);
+    return text;
+  }).catch(function(){
+    setCopyFeedback('Copy unavailable. Select and copy the generated note manually.', button);
+    return text;
+  });
+}
+
+function briefButton(label, data){
+  data = data || {};
+  return '<button type="button" class="as-brief-action" onclick="event.preventDefault();event.stopPropagation();copyCreatorBrief(this)"' +
+    ' data-brief-name="'+escapeAttr(data.name || '')+'"' +
+    ' data-brief-platform="'+escapeAttr(data.platform || '')+'"' +
+    ' data-brief-category="'+escapeAttr(data.category || '')+'"' +
+    ' data-brief-country="'+escapeAttr(data.country || '')+'"' +
+    ' data-brief-status="'+escapeAttr(data.status || '')+'"' +
+    ' data-source-lane-ref="'+escapeAttr(data.sourceLane || 'rankings')+'">' +
+    escapeHtml(label || 'Copy media kit note') +
+    '</button>';
+}
+
+function renderLive(streams){
+  var el = document.getElementById('liveGrid');
+  document.getElementById('liveCount').textContent = '('+streams.length+')';
+  if(!streams.length){
+    el.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px 20px;color:var(--as-muted)">' +
+      '<div style="font-size:2.5rem;margin-bottom:12px">&#128308;</div>' +
+      '<div style="font-size:1rem;font-weight:600;color:var(--as-text);margin-bottom:4px">No one is live right now</div>' +
+      '<div style="font-size:.85rem">Check back soon or browse the <a href="calendar.html" style="color:var(--as-primary);text-decoration:underline">upcoming schedule</a></div>' +
+    '</div>';
+    return;
+  }
+  el.innerHTML = streams.map(function(s,i){
+    var p = PLATFORMS[s.platform] || PLATFORMS.yt;
+    var c = COUNTRIES[s.country] || COUNTRY_FALLBACK;
+    var href = s.url || '#';
+    var target = s.url ? ' target="_blank" rel="noopener"' : '';
+    var thumbUrl = resolveLiveThumbnail(s);
+    var hasThumb = !!thumbUrl;
+    var thumbCls = 'as-live-thumb' + (hasThumb ? '' : ' '+gradClass(i));
+    var initial = escapeHtml((s.name || '?').charAt(0).toUpperCase());
+    var thumbInner = '<span aria-hidden="true">'+initial+'</span>' +
+      (hasThumb
+        ? '<img src="'+escapeAttr(thumbUrl)+'" alt="'+escapeAttr((s.name || 'Creator')+' live stream')+'" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.remove()">'
+        : '');
+    return '<div class="as-live-card">' +
+      '<div class="'+thumbCls+'">' +
+        thumbInner +
+        '<span class="as-live-badge">LIVE</span>' +
+        '<span class="as-live-viewers">'+fmtK(s.viewers)+' watching</span>' +
+      '</div>' +
+      '<div class="as-live-info">' +
+        '<div class="as-live-name">'+escapeHtml(s.name || 'Unknown Creator')+'</div>' +
+        (s.title ? '<div style="font-size:.72rem;color:var(--as-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px">'+escapeHtml(s.title)+'</div>' : '') +
+        '<div class="as-live-meta">' +
+          '<span class="as-platform '+p.cls+'">'+p.icon+' '+p.name+'</span>' +
+          '<span class="as-category">'+(CATEGORIES[s.cat]||'Creator')+'</span>' +
+          '<span>'+c.flag+'</span>' +
+          '<span style="color:var(--as-primary);font-weight:600;font-size:.7rem">'+fmtK(s.subs)+' followers</span>' +
+        '</div>' +
+        '<div class="as-live-actions">' +
+          (s.url ? '<a href="'+escapeAttr(href)+'"'+target+' class="as-live-open">Open stream</a>' : '<span></span>') +
+          briefButton('Copy media kit note', {
+            name: s.name || 'Unknown Creator',
+            platform: p.name,
+            category: CATEGORIES[s.cat] || 'Creator',
+            country: c.name,
+            status: 'Live now',
+            sourceLane: 'streams'
+          }) +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function renderTopThree(creators){
+  var el = document.getElementById('topThree');
+  if(!creators.length){
+    var countryText = activeCountry === 'All' ? 'all countries' : activeCountry;
+    var categoryText = activeCat === 'All' ? 'all categories' : activeCat;
+    el.innerHTML = '<div class="as-empty-card">' +
+      '<strong>No creators match '+escapeHtml(categoryText)+' in '+escapeHtml(countryText)+'.</strong>' +
+      '<p>Try clearing the filters, or jump to the live-streamer ranking where recent activity can still surface creators outside this reach view.</p>' +
+      '<div class="as-empty-actions">' +
+        '<button type="button" onclick="clearCreatorFilters()">Clear filters</button>' +
+        '<a href="/tools/afrostream/rankings?mode=streamers&amp;period=month">Live streamer ranking</a>' +
+      '</div>' +
+    '</div>';
+    return;
+  }
+  var medals = ['gold','silver','bronze'];
+  el.innerHTML = creators.slice(0,3).map(function(cr,i){
+    var c = COUNTRIES[cr.country] || COUNTRY_FALLBACK;
+    var p = PLATFORMS[cr.platform] || PLATFORMS.yt;
+    return '<div class="as-creator-card as-rank-'+(i+1)+' as-animate-in" style="animation-delay:'+(i*0.1)+'s">' +
+      '<span class="as-rank-badge '+medals[i]+'">#'+(i+1)+'</span>' +
+      (cr.avatar && !cr.avatar.includes('ui-avatars.com')
+        ? '<img src="'+cr.avatar+'" alt="'+cr.name+'" class="as-avatar" loading="lazy" style="object-fit:cover">'
+        : '<div class="as-avatar '+gradClass(i)+'">'+cr.name.charAt(0)+'</div>') +
+      '<div class="as-creator-name">'+cr.name+'</div>' +
+      '<div class="as-creator-subs">'+fmtK(cr.followers)+' followers</div>' +
+      '<div class="as-creator-type">'+cr.type+'</div>' +
+      '<div class="as-creator-country">'+c.flag+' '+c.name+'</div>' +
+      (cr.score ? '<div class="as-afro-score" title="AfroScore: weighted ranking across followers, views, growth, consistency, engagement &amp; multi-platform presence"><span class="as-score-num">'+cr.score+'</span><span class="as-score-label">AfroScore</span><span class="as-tier as-tier-'+cr.tier+'">'+cr.tier+'</span></div>' : '') +
+      '<div class="as-creator-stats">' +
+        '<div class="as-creator-stat"><span class="as-creator-stat-val">'+fmtK(cr.followers)+'</span><span class="as-creator-stat-label">Followers</span></div>' +
+        '<div class="as-creator-stat"><span class="as-creator-stat-val">'+fmtUSD(cr.gifts)+'</span><span class="as-creator-stat-label">Gifts</span></div>' +
+        '<div class="as-creator-stat"><span class="as-creator-stat-val">'+fmtK(cr.views)+'</span><span class="as-creator-stat-label">Views</span></div>' +
+      '</div>' +
+      '<div style="margin-top:8px;padding-top:8px;border-top:1px solid #f1f5f9;text-align:center">' +
+        '<span style="font-size:1.1rem;font-weight:700;color:#0f172a">'+fmtUSD(cr.nw)+'</span>' +
+        '<span style="font-size:.6rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-left:6px">Est. Net Worth</span>' +
+      '</div>' +
+      '<div class="as-creator-links">' +
+        platformBadges(cr) +
+      '</div>' +
+      '<div class="as-card-actions">' +
+        '<a href="creator.html?id='+(cr.slug || cr.name.toLowerCase().replace(/\s+/g,'-'))+'" class="as-profile-btn" style="display:inline-flex;align-items:center;gap:6px;padding:8px 20px;border-radius:980px;background:linear-gradient(135deg,#0062CC,#0063D1);color:#fff;font-size:.78rem;font-weight:600;text-decoration:none;letter-spacing:.02em;transition:all .2s;box-shadow:0 2px 8px rgba(0,98,204,.25)">View Profile <span style="font-size:.7rem;transition:transform .2s">&rarr;</span></a>' +
+        briefButton('Save creator brief', {
+          name: cr.name,
+          platform: p.name,
+          category: cr.type || CATEGORIES[cr.cat] || 'Creator',
+          country: c.name,
+          status: 'Creator ranking #' + (i + 1),
+          sourceLane: 'rankings'
+        }) +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function renderRankTable(creators){
+  var el = document.getElementById('rankBody');
+  if(creators.length <= 3){
+    el.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--as-muted);padding:28px">No additional matching creators.</td></tr>';
+    return;
+  }
+  el.innerHTML = creators.slice(3,22).map(function(cr,i){
+    var rank = i+4;
+    var c = COUNTRIES[cr.country] || COUNTRY_FALLBACK;
+    var p = PLATFORMS[cr.platform] || PLATFORMS.yt;
+    var slug = cr.slug || cr.name.toLowerCase().replace(/\s+/g,'-');
+    var avatarHtml = cr.avatar && !cr.avatar.includes('ui-avatars.com')
+      ? '<img src="'+cr.avatar+'" alt="" loading="lazy" style="width:32px;height:32px;border-radius:50%;object-fit:cover;flex-shrink:0">'
+      : '<div class="as-avatar as-avatar-sm '+gradClass(i)+'" style="width:32px;height:32px;min-width:32px;font-size:.75rem;line-height:32px;text-align:center">'+cr.name.charAt(0)+'</div>';
+    return '<tr tabindex="0" role="link" aria-label="View '+cr.name+' profile" onclick="window.location.href=\'creator.html?id='+slug+'\'" onkeydown="if(event.key===\'Enter\')window.location.href=\'creator.html?id='+slug+'\'" style="cursor:pointer">' +
+      '<td class="as-rank-num">'+rank+'</td>' +
+      '<td><div style="display:inline-flex;align-items:center;gap:10px">'+avatarHtml+'<span class="as-table-user-name">'+cr.name+'</span></div></td>' +
+      '<td>'+c.flag+' '+c.name+'</td>' +
+      '<td><div style="display:flex;gap:4px;flex-wrap:wrap">'+platformIconStrip(cr)+'</div></td>' +
+      '<td style="font-size:.75rem;color:#64748b">'+cr.type+'</td>' +
+      '<td><span class="as-score-badge" title="AfroScore">'+(cr.score||'\u2014')+'</span>'+(cr.tier?' <span class="as-tier as-tier-'+cr.tier+'" style="font-size:.6rem">'+cr.tier+'</span>':'')+'</td>' +
+      '<td class="as-subs-cell">'+fmtK(cr.followers)+'</td>' +
+      '<td>'+fmtK(cr.views)+'</td>' +
+      '<td>'+fmtUSD(cr.nw)+'</td>' +
+    '</tr>';
+  }).join('');
+}
+
+function renderStreamerBoard(searchQuery){
+  var el = document.getElementById('streamerBoard');
+  if(!el) return;
+  var q = String(searchQuery || '').toLowerCase().trim();
+  var leaders = buildStreamerLeaders().filter(function(item){
+    var cr = item.creator;
+    if(activeCat!=='All' && (CATEGORIES[cr.cat]||'')!==activeCat) return false;
+    if(activeCountry!=='All' && (COUNTRIES[cr.country]||COUNTRY_FALLBACK).name!==activeCountry) return false;
+    if(q && cr.name.toLowerCase().indexOf(q) === -1 && (CATEGORIES[cr.cat]||'').toLowerCase().indexOf(q) === -1) return false;
+    return true;
+  }).slice(0,8);
+  if(!leaders.length){
+    el.innerHTML = '<div class="as-empty-card">' +
+      '<strong>No live-streamer matches for these filters.</strong>' +
+      '<p>Recent stream activity exists, but this category or country filter is too narrow for the current live-streamer view.</p>' +
+      '<div class="as-empty-actions">' +
+        '<button type="button" onclick="clearCreatorFilters()">Clear filters</button>' +
+        '<a href="/tools/afrostream/rankings?mode=streamers&amp;period=month">Open full ranking</a>' +
+      '</div>' +
+    '</div>';
+    return;
+  }
+  el.innerHTML = leaders.map(function(item, index){
+    var cr = item.creator;
+    var c = COUNTRIES[cr.country] || COUNTRY_FALLBACK;
+    var href = 'creator.html?id=' + creatorSlug(cr);
+    var avatarStyle = cr.avatar && !cr.avatar.includes('ui-avatars.com')
+      ? ' style="background-image:url(\''+escapeAttr(cr.avatar)+'\')"'
+      : '';
+    var avatarText = avatarStyle ? '' : escapeHtml((cr.name || 'AS').split(/\s+/).map(function(part){ return part.charAt(0); }).join('').slice(0,2).toUpperCase() || 'AS');
+    var platformList = (item.platforms || []).slice(0,3).map(function(key){
+      var p = PLATFORMS[key] || PLATFORMS.yt;
+      return p.name;
+    }).join(', ');
+    return '<a class="as-streamer-row" href="'+escapeAttr(href)+'">' +
+      '<span class="as-streamer-rank">#'+(index+1)+'</span>' +
+      '<span class="as-streamer-avatar '+(!avatarStyle ? gradClass(index) : '')+'"'+avatarStyle+'>'+avatarText+'</span>' +
+      '<span>' +
+        '<span class="as-streamer-name">'+escapeHtml(cr.name)+'</span>' +
+        '<span class="as-streamer-meta">' +
+          '<span>'+c.flag+' '+escapeHtml(c.name)+'</span>' +
+          '<span>'+escapeHtml(platformList || 'Live')+'</span>' +
+          '<span>'+fmtK(item.count)+' streams</span>' +
+          '<span>Peak '+fmtK(item.peak)+'</span>' +
+          (item.live ? '<span style="color:#dc2626;font-weight:800">Live now</span>' : '') +
+        '</span>' +
+      '</span>' +
+      '<span class="as-streamer-score"><strong>'+item.score+'</strong><span>Activity</span></span>' +
+    '</a>';
+  }).join('');
+}
+
+function renderNews(){
+  var el = document.getElementById('newsGrid');
+  if(!NEWS.length){
+    el.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px 20px;color:var(--as-muted)">' +
+      '<div style="font-size:2.5rem;margin-bottom:12px">&#128240;</div>' +
+      '<div style="font-size:1rem;font-weight:600;color:var(--as-text);margin-bottom:4px">No news yet</div>' +
+      '<div style="font-size:.85rem">Creator news and updates coming soon</div>' +
+    '</div>';
+    return;
+  }
+  var catGrads = {
+    'Milestone':'linear-gradient(135deg,#0062CC,#0063CC)',
+    'milestones':'linear-gradient(135deg,#0062CC,#0063CC)',
+    'Industry':'linear-gradient(135deg,#06B6D4,#0891B2)',
+    'platform':'linear-gradient(135deg,#06B6D4,#0891B2)',
+    'Platform':'linear-gradient(135deg,#06B6D4,#0891B2)',
+    'Deals':'linear-gradient(135deg,#F97316,#EA580C)',
+    'business':'linear-gradient(135deg,#F97316,#EA580C)',
+    'Business':'linear-gradient(135deg,#F97316,#EA580C)',
+    'Data':'linear-gradient(135deg,#10B981,#059669)',
+    'rising':'linear-gradient(135deg,#10B981,#059669)',
+    'collabs':'linear-gradient(135deg,#EC4899,#DB2777)',
+    'drama':'linear-gradient(135deg,#EF4444,#DC2626)'
+  };
+  var shown = NEWS.slice(0,6);
+  el.innerHTML = shown.map(function(n,i){
+    var href = n.slug && window.AfroStreamNewsUtils ? window.AfroStreamNewsUtils.articleHref(n.slug) : (n.slug ? '/tools/afrostream/article.html?slug='+encodeURIComponent(n.slug) : 'news.html');
+    var imgUrl = normalizeThumbnailUrl(n._raw && n._raw.image_url ? n._raw.image_url : '');
+    if(imgUrl && !isAllowedMediaUrl(imgUrl)) imgUrl = '';
+    var bg = catGrads[n.cat] || '';
+    var thumbCls = 'as-news-thumb' + (!imgUrl && !bg ? ' '+gradClass(i) : '');
+    var thumbSty = '';
+    if (imgUrl && (!window.AfroStreamNewsUtils || !window.AfroStreamNewsUtils.isPlaceholderImage(imgUrl))) {
+      thumbSty = ' style="background-image:url(\''+imgUrl+'\');background-size:cover;background-position:center;background-color:#e5e7eb"';
+    } else if (bg) {
+      thumbSty = ' style="background:'+bg+'"';
+    }
+    return '<a href="'+href+'" class="as-news-card as-animate-in" style="animation-delay:'+(i*0.08)+'s;text-decoration:none;color:inherit">' +
+      '<div class="'+thumbCls+'"'+thumbSty+'></div>' +
+      '<div class="as-news-body">' +
+        '<div class="as-news-meta"><span class="as-category">'+n.cat+'</span><span>'+n.date+'</span></div>' +
+        '<div class="as-news-title">'+n.title+'</div>' +
+        '<div class="as-news-excerpt">'+n.excerpt+'</div>' +
+      '</div>' +
+    '</a>';
+  }).join('');
+}
+
+function renderCalendar(){
+  var el = document.getElementById('calGrid');
+  if(!UPCOMING.length){
+    el.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px 20px;color:var(--as-muted)">' +
+      '<div style="font-size:2.5rem;margin-bottom:12px">&#128197;</div>' +
+      '<div style="font-size:1rem;font-weight:600;color:var(--as-text);margin-bottom:4px">No upcoming streams</div>' +
+      '<div style="font-size:.85rem">Scheduled streams will appear here. <a href="community.html" style="color:var(--as-primary);text-decoration:underline">Submit a creator or stream</a> to grow the directory</div>' +
+    '</div>';
+    return;
+  }
+  el.innerHTML = UPCOMING.map(function(u,i){
+    var parts = u.date.split(' ');
+    var p = PLATFORMS[u.platform] || PLATFORMS.yt;
+    var c = COUNTRIES[u.country] || COUNTRY_FALLBACK;
+    return '<div class="as-cal-card as-animate-in" style="animation-delay:'+(i*0.06)+'s">' +
+      '<div class="as-cal-date"><div class="as-cal-date-month">'+parts[0]+'</div><div class="as-cal-date-day">'+parts[1]+'</div></div>' +
+      '<div class="as-cal-info">' +
+        '<div class="as-cal-title">'+u.title+'</div>' +
+        '<div class="as-cal-meta">' +
+          '<span class="as-platform '+p.cls+'">'+p.icon+' '+p.name+'</span>' +
+          '<span>'+c.flag+' '+u.name+'</span>' +
+          '<span>'+u.time+'</span>' +
+        '</div>' +
+        '<div class="as-cal-actions"><button type="button" class="as-btn as-btn-sm as-btn-outline" onclick="remindMe(this)">Remind Me</button></div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function renderFeatures(){
+  var el = document.getElementById('featureCards');
+  el.innerHTML = FEATURES.map(function(f,i){
+    var color = FEATURE_COLORS[i] || '#0062CC';
+    return '<div class="as-feature-card as-animate-in" style="animation-delay:'+(i*0.08)+'s">' +
+      '<div class="as-feature-icon" style="background:'+f.bg+';color:'+color+'" aria-hidden="true">'+(FEATURE_SVGS[f.icon]||'')+'</div>' +
+      '<div class="as-feature-title">'+f.title+'</div>' +
+      '<div class="as-feature-desc">'+f.desc+'</div>' +
+    '</div>';
+  }).join('');
+}
+
+function renderFAQ(){
+  var el = document.getElementById('faqList');
+  el.innerHTML = FAQS.map(function(f){
+    return '<div class="as-faq-item">' +
+      '<button type="button" class="as-faq-q" onclick="toggleFaq(this)" aria-expanded="false">'+f.q+'</button>' +
+      '<div class="as-faq-a" role="region">'+f.a+'</div>' +
+    '</div>';
+  }).join('');
+}
+
+
+/* ---------- FILTERS ---------- */
+
+var activeTime = 'All-Time Reach';
+var activeCat  = 'All';
+var activeCountry = 'All';
+
+function renderFilters(){
+  var times = ['All-Time Reach'];
+  document.getElementById('timeFilter').innerHTML = times.map(function(t){
+    var isActive = activeTime===t;
+    return '<button type="button" class="as-chip'+(isActive?' active':'')+'" data-filter="time" data-val="'+t+'" role="radio" aria-checked="'+(isActive?'true':'false')+'">'+t+'</button>';
+  }).join('');
+
+  var cats = ['All'].concat(CATEGORIES);
+  document.getElementById('catFilter').innerHTML = cats.map(function(c,i){
+    var icon = i>0 ? CAT_ICONS[i-1]+' ' : '';
+    var isActive = activeCat===c;
+    return '<button type="button" class="as-chip'+(isActive?' active':'')+'" data-filter="cat" data-val="'+c+'" role="radio" aria-checked="'+(isActive?'true':'false')+'">'+icon+c+'</button>';
+  }).join('');
+
+  var isAllCountry = activeCountry==='All';
+  var html = '<button type="button" class="as-chip'+(isAllCountry?' active':'')+'" data-filter="country" data-val="All" role="radio" aria-checked="'+(isAllCountry?'true':'false')+'">All Countries</button>';
+  COUNTRIES.forEach(function(c){
+    var isActive = activeCountry===c.name;
+    html += '<button type="button" class="as-chip'+(isActive?' active':'')+'" data-filter="country" data-val="'+c.name+'" role="radio" aria-checked="'+(isActive?'true':'false')+'">'+c.flag+' '+c.name+'</button>';
+  });
+  document.getElementById('countryFilter').innerHTML = html;
+
+  document.querySelectorAll('.as-chip').forEach(function(chip){
+    chip.addEventListener('click', function(){
+      var type = this.dataset.filter;
+      var val  = this.dataset.val;
+      if(type==='time')    activeTime = val;
+      if(type==='cat')     activeCat = val;
+      if(type==='country') activeCountry = val;
+      applyFilters();
+      renderFilters();
+    });
+  });
+}
+
+function applyFilters(){
+  var filtered = CREATORS.filter(function(cr){
+    if(activeCat!=='All' && (CATEGORIES[cr.cat]||'')!==activeCat) return false;
+    if(activeCountry!=='All' && (COUNTRIES[cr.country]||COUNTRY_FALLBACK).name!==activeCountry) return false;
+    return true;
+  });
+  renderTopThree(filtered);
+  renderRankTable(filtered);
+  renderStreamerBoard();
+}
+
+function clearCreatorFilters(){
+  activeTime = 'All-Time Reach';
+  activeCat = 'All';
+  activeCountry = 'All';
+  var search = document.getElementById('asSearch');
+  if(search) search.value = '';
+  renderFilters();
+  renderLive(LIVE_STREAMS);
+  applyFilters();
+}
+
+
+/* ---------- SEARCH ---------- */
+
+document.getElementById('asSearch').addEventListener('input', function(){
+  var q = this.value.toLowerCase().trim();
+  if(!q){
+    renderLive(LIVE_STREAMS);
+    applyFilters();
+    return;
+  }
+  var filteredLive = LIVE_STREAMS.filter(function(s){
+    return s.name.toLowerCase().indexOf(q)!==-1 ||
+           (CATEGORIES[s.cat]||'').toLowerCase().indexOf(q)!==-1 ||
+           (COUNTRIES[s.country]||COUNTRY_FALLBACK).name.toLowerCase().indexOf(q)!==-1;
+  });
+  renderLive(filteredLive);
+
+  var filteredCreators = CREATORS.filter(function(cr){
+    return cr.name.toLowerCase().indexOf(q)!==-1 ||
+           (CATEGORIES[cr.cat]||'').toLowerCase().indexOf(q)!==-1 ||
+           (COUNTRIES[cr.country]||COUNTRY_FALLBACK).name.toLowerCase().indexOf(q)!==-1 ||
+           (cr.type && cr.type.toLowerCase().indexOf(q)!==-1);
+  });
+  renderTopThree(filteredCreators);
+  renderRankTable(filteredCreators);
+  renderStreamerBoard(q);
+});
+
+
+/* ---------- FAQ TOGGLE ---------- */
+
+function toggleFaq(el){
+  var item = el.parentElement;
+  var isOpen = item.classList.toggle('open');
+  el.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+}
+
+
+/* ---------- REMIND ME ---------- */
+
+function remindMe(btn){
+  btn.textContent = 'Reminded!';
+  btn.style.borderColor = 'var(--as-primary)';
+  btn.style.color = 'var(--as-primary)';
+  btn.disabled = true;
+}
+
+
+/* ---------- SMOOTH SCROLL ---------- */
+
+document.querySelectorAll('.as-subnav-links a, .as-hero-ctas a').forEach(function(a){
+  a.addEventListener('click', function(e){
+    var href = this.getAttribute('href');
+    if(href && href.charAt(0)==='#'){
+      e.preventDefault();
+      var target = document.querySelector(href);
+      if(target){
+        var offset = (parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-height'))||62) + 56 + 16;
+        window.scrollTo({ top: target.offsetTop - offset, behavior:'smooth' });
+      }
+      document.querySelectorAll('.as-subnav-links a').forEach(function(n){ n.classList.remove('active'); });
+      if(this.closest('.as-subnav-links')) this.classList.add('active');
+    }
+  });
+});
+
+
+/* ---------- TABLE SORT ---------- */
+
+(function(){
+  var headers = document.querySelectorAll('.as-rank-table th');
+  var sortCol = -1, sortAsc = false;
+  var colKeys = [null,null,null,null,null,'score','followers','views','nw'];
+
+  headers.forEach(function(th, idx){
+    if(!colKeys[idx]) return;
+    th.style.cursor = 'pointer';
+    th.setAttribute('aria-sort', 'none');
+    th.addEventListener('click', function(){
+      var key = colKeys[idx];
+      if(sortCol===idx){ sortAsc=!sortAsc; } else { sortCol=idx; sortAsc=false; }
+      // Update visual indicators
+      headers.forEach(function(h){ h.classList.remove('sorted'); h.setAttribute('aria-sort','none'); var arr=h.querySelector('.sort-arrow'); if(arr) arr.innerHTML='&#9660;'; });
+      this.classList.add('sorted');
+      this.setAttribute('aria-sort', sortAsc ? 'ascending' : 'descending');
+      var arrow = this.querySelector('.sort-arrow');
+      if(arrow) arrow.innerHTML = sortAsc ? '&#9650;' : '&#9660;';
+      var sorted = CREATORS.filter(function(cr){
+        if(activeCat!=='All' && (CATEGORIES[cr.cat]||'')!==activeCat) return false;
+        if(activeCountry!=='All' && (COUNTRIES[cr.country]||COUNTRY_FALLBACK).name!==activeCountry) return false;
+        return true;
+      }).sort(function(a,b){
+        return sortAsc ? a[key]-b[key] : b[key]-a[key];
+      });
+      renderTopThree(sorted);
+      renderRankTable(sorted);
+      renderStreamerBoard();
+    });
+  });
+})();
+
+
+/* ---------- ASYNC DATA LOADING ---------- */
+
+async function init() {
+  renderHeroStats();
+  renderFeatures();
+  renderFAQ();
+  renderSourceRail('preview');
+
+  var loadedData = null;
+  var sourceHealth = null;
+  var sourceHealthError = null;
+
+  // Try loading from the deployed public APIs; localhost keeps a static preview.
+  if (window.AfroStreamEngine && !isStaticPreviewHost()) {
+    try {
+      var data = await AfroStreamEngine.loadAll();
+      loadedData = data;
+
+      if (data.creators && data.creators.length) {
+        CREATORS.length = 0;
+        data.creators.forEach(function(c){ CREATORS.push(hydrateCreatorRuntimeMetrics(c)); });
+      }
+      if (data.streams) {
+        if (data.streams.live && data.streams.live.length) {
+          LIVE_STREAMS.length = 0;
+          data.streams.live.forEach(function(s){ LIVE_STREAMS.push(hydrateLiveStreamRuntimeMetrics(s)); });
+        }
+        if (data.streams.upcoming && data.streams.upcoming.length) {
+          UPCOMING.length = 0;
+          data.streams.upcoming.forEach(function(u){ UPCOMING.push(u); });
+        }
+      }
+      if (data.news && data.news.length) {
+        NEWS.length = 0;
+        data.news.forEach(function(n){ NEWS.push(n); });
+      }
+
+      // Update hero stats with real count
+      if (data.creators) {
+        var statsEl = document.getElementById('heroStats');
+        var stats = [
+          { val: data.creators.length + '', label:'Creators' },
+          { val: LIVE_STREAMS.length + '', label:'Live Now' },
+          { val:'6', label:'Platforms' },
+          { val: Object.keys(data.creators.reduce(function(m,c){ var k=c._raw?c._raw.country:''; if(k)m[k]=1; return m; },{})).length + '', label:'Countries' }
+        ];
+        statsEl.innerHTML = stats.map(function(s){
+          return '<div class="as-hero-stat"><span class="as-hero-stat-val">'+s.val+'</span><span class="as-hero-stat-label">'+s.label+'</span></div>';
+        }).join('');
+      }
+
+      console.log('[AfroStream] Loaded from Supabase — ' + CREATORS.length + ' creators, ' + LIVE_STREAMS.length + ' live, ' + NEWS.length + ' news');
+    } catch(e) {
+      loadedData = {};
+    }
+
+    try {
+      sourceHealth = await loadSourceHealth();
+    } catch(e) {
+      sourceHealthError = e;
+    }
+  }
+  renderSourceRail(isStaticPreviewHost() ? 'preview' : 'live', { lanes: buildSourceLanes(loadedData, sourceHealth, sourceHealthError) });
+
+  STREAM_HISTORY.length = 0;
+  try {
+    var streamHistory = await loadStreamHistory();
+    streamHistory.forEach(function(s){ STREAM_HISTORY.push(s); });
+  } catch(e) {
+    LIVE_STREAMS.forEach(function(s){
+      STREAM_HISTORY.push({
+        creatorId: s._raw && s._raw.creator_id || '',
+        name: s.name,
+        platform: s.platform,
+        date: s.date || s._raw && s._raw.stream_date || '',
+        isLive: true,
+        viewers: s.viewers || 0,
+        peak: s.viewers || 0,
+        url: s.url || ''
+      });
+    });
+  }
+
+  if (CREATORS.length) {
+    var refreshedStatsEl = document.getElementById('heroStats');
+    var countryCount = Object.keys(CREATORS.reduce(function(map, cr){
+      var c = COUNTRIES[cr.country] || COUNTRY_FALLBACK;
+      if (c && c.name) map[c.name] = true;
+      return map;
+    }, {})).length;
+    var refreshedStats = [
+      { val: CREATORS.length + '', label:'Creators' },
+      { val: LIVE_STREAMS.length + '', label:'Live Now' },
+      { val: buildStreamerLeaders().length + '', label:'Streamers' },
+      { val: countryCount + '', label:'Countries' }
+    ];
+    refreshedStatsEl.innerHTML = refreshedStats.map(function(s){
+      return '<div class="as-hero-stat"><span class="as-hero-stat-val">'+s.val+'</span><span class="as-hero-stat-label">'+s.label+'</span></div>';
+    }).join('');
+  }
+
+  renderLive(LIVE_STREAMS);
+  renderFilters();
+  applyFilters();
+  renderNews();
+  renderCalendar();
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
+<script>if(window.twemoji){setTimeout(function(){twemoji.parse(document.body,{folder:'svg',ext:'.svg'})},2000)}</script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

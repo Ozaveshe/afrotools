@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EAC CET Lookup: Common External Tariff Rates by HS Code</title>
+<meta name="description" content="Search EAC Common External Tariff rates by product or HS code, including mobile phones, vehicles, rice, cement and landed-cost planning for East Africa.">
+<meta property="og:title" content="EAC CET Lookup: Common External Tariff Rates by HS Code">
+<meta property="og:description" content="Search EAC Common External Tariff rates by product or HS code, including mobile phones, vehicles, rice, cement and landed-cost planning for East Africa.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/eac-cet.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/eac-cet/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="EAC CET Lookup: Common External Tariff Rates by HS Code">
+<meta name="twitter:description" content="Search EAC Common External Tariff rates by product or HS code, including mobile phones, vehicles, rice, cement and landed-cost planning for East Africa.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/eac-cet.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<style>
+:root{--color-brand:var(--color-primary)}
+
+/* ── Hero ── */
+.t-hero{background:linear-gradient(135deg,#0a1628,#0f2044);padding:40px 0 28px}
+.t-hero .bc{display:flex;gap:6px;align-items:center;font-size:.72rem;color:rgba(255,255,255,.5);margin-bottom:16px}
+.t-hero .bc a{color:rgba(255,255,255,.5);text-decoration:none}.t-hero .bc a:hover{color:#4DA3FF}
+.t-hero h1{font-size:clamp(1.5rem,3vw,2.1rem);font-weight:800;color:#fff;line-height:1.2;margin-bottom:8px}
+.t-hero h1 em{font-style:normal;color:#4DA3FF}
+.t-hero-sub{font-size:.88rem;color:rgba(255,255,255,.55);max-width:620px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:8px}
+.badge{font-size:.68rem;font-weight:700;padding:4px 10px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
+.badge-green{background:rgba(52,199,89,.15);color:#34C759}
+.badge-blue{background:rgba(0,98,204,.2);color:#4DA3FF}
+.badge-orange{background:rgba(255,159,10,.15);color:#FF9F0A}
+.badge-grey{background:rgba(255,255,255,.08);color:rgba(255,255,255,.5)}
+.badge-red{background:rgba(255,59,48,.15);color:#FF6B6B}
+.hero-answer{margin-top:16px;max-width:720px;border:1px solid rgba(147,197,253,.26);background:rgba(255,255,255,.07);border-radius:12px;padding:14px 16px;color:rgba(255,255,255,.72)}
+.hero-answer strong{display:block;color:#fff;font-size:.88rem;margin-bottom:4px}
+.hero-answer p{margin:0;font-size:.82rem;line-height:1.55}
+
+/* ── Main layout ── */
+.t-main{background:var(--color-bg,#F8FAFD);padding:28px 0 60px}
+
+/* ── Tabs ── */
+.tabs{display:flex;gap:4px;background:#E8F2FF;padding:4px;border-radius:10px;margin-bottom:20px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab{flex:1;min-width:140px;padding:9px 14px;font-size:.78rem;font-weight:700;border:none;border-radius:7px;cursor:pointer;background:transparent;color:#64748B;transition:all .15s;white-space:nowrap;font-family:var(--font-body,'DM Sans',sans-serif)}
+.tab.on{background:#fff;color:var(--color-primary,#0062CC);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.tab-panel{display:none}.tab-panel.on{display:block}
+
+/* ── Cards ── */
+.card{background:#fff;border:1px solid #E2E8F0;border-radius:18px;box-shadow:0 1px 8px rgba(0,0,0,.04);margin-bottom:16px}
+.card-head{padding:14px 20px;border-bottom:1px solid #E2E8F0;display:flex;align-items:center;justify-content:space-between}
+.card-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#3D5A80}
+.card-body{padding:20px}
+
+/* ── Form elements ── */
+.f-label{font-size:.72rem;font-weight:700;color:#3D5A80;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:5px}
+.f-input,.f-select{width:100%;padding:10px 12px;font-size:.95rem;font-weight:600;font-family:var(--font-body,'DM Sans',sans-serif);border:1.5px solid #CBD5E1;border-radius:9px;background:#F4F7FA;outline:none;box-sizing:border-box;transition:border-color .15s}
+.f-input:focus,.f-select:focus{border-color:var(--color-primary,#0062CC);background:#fff}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+@media(max-width:540px){.f-row{grid-template-columns:1fr}}
+
+/* ── Buttons ── */
+.btn-primary{display:inline-flex;align-items:center;gap:6px;padding:11px 22px;background:var(--color-primary,#0062CC);color:#fff;border:none;border-radius:980px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:var(--font-body,'DM Sans',sans-serif);transition:background .15s}
+.btn-primary:hover{background:var(--color-primary-dark,#0063D1)}
+.btn-secondary{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:#F1F5F9;color:#3D5A80;border:1.5px solid #CBD5E1;border-radius:980px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:var(--font-body,'DM Sans',sans-serif);transition:all .15s}
+.btn-secondary:hover{background:#E8F2FF;border-color:#93C5FD}
+
+/* ── Search section ── */
+.search-wrap{position:relative;margin-bottom:14px}
+.search-wrap .f-input{padding-left:38px;font-size:.9rem}
+.search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:#94A3B8;pointer-events:none}
+.search-results{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;max-height:340px;overflow-y:auto}
+.sr-item{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border:1.5px solid #E2E8F0;border-radius:10px;cursor:pointer;transition:all .15s;background:#fff}
+.sr-item:hover,.sr-item.selected{border-color:var(--color-primary,#0062CC);background:#EFF6FF}
+.sr-left{display:flex;align-items:center;gap:10px}
+.sr-name{font-size:.88rem;font-weight:700;color:#0f172a}
+.sr-meta{font-size:.72rem;color:#64748B;margin-top:2px}
+.sr-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.no-results{text-align:center;padding:24px;color:#94A3B8;font-size:.85rem}
+
+/* ── Band badges ── */
+.band-badge{font-size:.65rem;font-weight:800;padding:3px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+.band-0{background:#DCFCE7;color:#15803d}
+.band-10{background:#DBEAFE;color:#1d4ed8}
+.band-25{background:#FEF3C7;color:#b45309}
+.band-35{background:#FEE2E2;color:#b91c1c}
+.band-60{background:#7f1d1d;color:#fca5a5}
+.band-75{background:#450a0a;color:#fca5a5}
+.band-100{background:#1c0404;color:#ff6b6b;border:1px solid #7f1d1d}
+.hs-pill{font-size:.68rem;font-weight:700;background:#F1F5F9;color:#475569;padding:2px 7px;border-radius:4px;font-family:monospace}
+
+/* ── Calculate section ── */
+.calc-section{margin-top:20px}
+.calc-divider{border:none;border-top:1.5px dashed #E2E8F0;margin:20px 0}
+.selected-product-bar{background:#EFF6FF;border:1.5px solid #93C5FD;border-radius:10px;padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.spb-name{font-size:.9rem;font-weight:700;color:#1d4ed8}
+.spb-meta{font-size:.75rem;color:#3b82f6;margin-top:2px}
+
+/* ── Result hero ── */
+.result-hero{background:linear-gradient(135deg,#0a1628,#0f2044);border-radius:14px;padding:20px 24px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.rh-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.55);margin-bottom:4px}
+.rh-value{font-size:2rem;font-weight:800;color:#fff;line-height:1}
+.rh-sub{font-size:.75rem;color:rgba(255,255,255,.45);margin-top:4px}
+.rh-effective{text-align:right}
+.rh-rate{font-size:1.4rem;font-weight:800;color:#4DA3FF}
+
+/* ── Breakdown table ── */
+.breakdown-table{width:100%;border-collapse:collapse;font-size:.85rem}
+.breakdown-table th{text-align:left;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#64748B;padding:8px 10px;border-bottom:2px solid #E2E8F0}
+.breakdown-table td{padding:10px;border-bottom:1px solid #F1F5F9;vertical-align:top}
+.breakdown-table tr:last-child td{border-bottom:none;font-weight:800;font-size:.9rem;background:#F8FAFD}
+.breakdown-table .td-name{color:#0f172a;font-weight:600}
+.breakdown-table .td-note{color:#94A3B8;font-size:.72rem}
+.breakdown-table .td-amount{text-align:right;font-weight:700;color:#0f172a;white-space:nowrap}
+.breakdown-table .td-cif{color:#64748B}
+
+/* ── Compare table ── */
+.compare-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.compare-table{width:100%;min-width:600px;border-collapse:collapse;font-size:.83rem}
+.compare-table th{padding:10px 12px;text-align:center;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#3D5A80;border-bottom:2px solid #E2E8F0;white-space:nowrap}
+.compare-table th:first-child{text-align:left}
+.compare-table td{padding:10px 12px;text-align:center;border-bottom:1px solid #F1F5F9;vertical-align:middle}
+.compare-table td:first-child{text-align:left;font-weight:700;color:#475569;font-size:.8rem}
+.compare-table .country-head{font-size:.9rem;text-align:center}
+.compare-table .flag-cell{font-size:1.3rem;display:block;line-height:1}
+.compare-table .country-name{font-size:.75rem;font-weight:700}
+.compare-table .total-row td{font-weight:800;font-size:.88rem;background:#F8FAFD;border-top:2px solid #E2E8F0}
+.compare-table .cheapest{background:#DCFCE7 !important;color:#15803d !important;border-radius:6px}
+.compare-table .rate-cell{font-size:.78rem;color:#64748B}
+.compare-note{font-size:.75rem;color:#64748B;margin-top:8px;padding:8px 12px;background:#F8FAFD;border-radius:8px}
+
+/* ── Sensitive items grid ── */
+.si-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.si-card{border-radius:16px;border:2px solid;padding:18px;transition:box-shadow .15s}
+.si-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.si-card.rate-high{background:#FFF1F2;border-color:#FECDD3}
+.si-card.rate-extreme{background:#FEE2E2;border-color:#FCA5A5}
+.si-card.rate-max{background:#450a0a;border-color:#7f1d1d}
+.si-card.rate-med{background:#FFF7ED;border-color:#FED7AA}
+.si-card.rate-low{background:#EFF6FF;border-color:#BFDBFE}
+.si-cat{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.si-card.rate-high .si-cat{color:#be123c}
+.si-card.rate-extreme .si-cat{color:#b91c1c}
+.si-card.rate-max .si-cat{color:#fca5a5}
+.si-card.rate-med .si-cat{color:#b45309}
+.si-card.rate-low .si-cat{color:#1d4ed8}
+.si-rate-badge{font-size:2rem;font-weight:900;line-height:1;margin-bottom:8px}
+.si-card.rate-high .si-rate-badge{color:#e11d48}
+.si-card.rate-extreme .si-rate-badge{color:#dc2626}
+.si-card.rate-max .si-rate-badge{color:#ff6b6b}
+.si-card.rate-med .si-rate-badge{color:#d97706}
+.si-card.rate-low .si-rate-badge{color:#2563eb}
+.si-hs{font-size:.72rem;font-family:monospace;font-weight:700;opacity:.7;margin-bottom:8px}
+.si-desc{font-size:.8rem;line-height:1.5;margin-bottom:8px}
+.si-card.rate-max .si-desc{color:#fca5a5}
+.si-note{font-size:.75rem;font-style:italic;opacity:.75;margin-bottom:8px;line-height:1.45}
+.si-examples{display:flex;flex-wrap:wrap;gap:4px}
+.si-example-tag{font-size:.65rem;font-weight:600;padding:2px 8px;border-radius:4px;background:rgba(0,0,0,.06)}
+.si-card.rate-max .si-example-tag{background:rgba(255,255,255,.1);color:#fca5a5}
+
+/* ── Duty remission ── */
+.dr-explainer{background:linear-gradient(135deg,#EFF6FF,#DBEAFE);border:1.5px solid #93C5FD;border-radius:16px;padding:20px 24px;margin-bottom:20px}
+.dr-title{font-size:1rem;font-weight:800;color:#1d4ed8;margin-bottom:8px}
+.dr-desc{font-size:.85rem;color:#1e40af;line-height:1.6;margin-bottom:6px}
+.dr-legal{font-size:.72rem;color:#3b82f6;font-style:italic}
+.dr-cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-bottom:20px}
+.dr-cat-card{background:#fff;border:1.5px solid #E2E8F0;border-radius:14px;padding:16px}
+.dr-cat-name{font-size:.82rem;font-weight:800;color:#0f172a;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.dr-cat-rate{font-size:.72rem;font-weight:700;background:#DCFCE7;color:#15803d;padding:2px 8px;border-radius:4px}
+.dr-cat-eligible{font-size:.78rem;color:#475569;margin-bottom:6px;line-height:1.45}
+.dr-cat-condition{font-size:.72rem;color:#94A3B8;line-height:1.4}
+.process-steps{display:flex;flex-direction:column;gap:12px;margin-bottom:20px}
+.ps-item{display:flex;align-items:flex-start;gap:14px}
+.ps-num{width:32px;height:32px;border-radius:50%;background:var(--color-primary,#0062CC);color:#fff;font-size:.82rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ps-content{flex:1}
+.ps-title{font-size:.85rem;font-weight:700;color:#0f172a;margin-bottom:3px}
+.ps-detail{font-size:.78rem;color:#64748B;line-height:1.5}
+.coo-card{background:linear-gradient(135deg,#0a1628,#0f2044);border-radius:16px;padding:20px 24px;color:#fff;margin-top:4px}
+.coo-title{font-size:1rem;font-weight:800;color:#4DA3FF;margin-bottom:8px}
+.coo-desc{font-size:.85rem;color:rgba(255,255,255,.7);line-height:1.6;margin-bottom:14px}
+.coo-criteria{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.coo-criteria li{font-size:.8rem;color:rgba(255,255,255,.75);padding:8px 12px;background:rgba(255,255,255,.07);border-radius:8px;line-height:1.45;display:flex;gap:8px;align-items:flex-start}
+.coo-criteria li::before{content:'✓';color:#34C759;font-weight:800;flex-shrink:0}
+.coo-meta{display:flex;flex-wrap:wrap;gap:10px}
+.coo-meta-item{font-size:.75rem;background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);padding:6px 12px;border-radius:8px}
+.coo-meta-item strong{color:#fff}
+.coo-benefit{background:rgba(52,199,89,.15);border:1px solid rgba(52,199,89,.3);border-radius:10px;padding:10px 14px;margin-top:12px;font-size:.82rem;color:#34C759;font-weight:700}
+
+/* ── Member states bar ── */
+.members-bar{margin-top:24px}
+.members-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#64748B;margin-bottom:12px}
+.members-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.member-card{background:#fff;border:1.5px solid #E2E8F0;border-radius:14px;padding:12px;text-align:center;transition:box-shadow .15s}
+.member-card:hover{box-shadow:0 2px 10px rgba(0,0,0,.08);border-color:#93C5FD}
+.mc-flag{font-size:1.6rem;line-height:1;margin-bottom:4px}
+.mc-name{font-size:.78rem;font-weight:700;color:#0f172a;margin-bottom:2px}
+.mc-joined{font-size:.65rem;color:#94A3B8}
+.mc-authority{font-size:.65rem;font-weight:700;color:#0062CC;background:#EFF6FF;padding:2px 6px;border-radius:4px;margin-top:4px;display:inline-block}
+.mc-note{font-size:.6rem;color:#f59e0b;margin-top:3px;line-height:1.3}
+
+/* ── Stats row ── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+@media(max-width:600px){.stats-row{grid-template-columns:1fr 1fr}}
+.stat-card{background:#fff;border:1px solid #E2E8F0;border-radius:14px;padding:14px;text-align:center}
+.stat-num{font-size:1.7rem;font-weight:800;color:var(--color-primary,#0062CC);line-height:1}
+.stat-lbl{font-size:.68rem;color:#64748B;margin-top:4px}
+
+/* ── Band grid ── */
+.band-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:20px}
+.band-card{border-radius:14px;padding:16px;border:2px solid transparent}
+.band-card.b0{background:#DCFCE7;border-color:#86EFAC}
+.band-card.b10{background:#DBEAFE;border-color:#93C5FD}
+.band-card.b25{background:#FEF3C7;border-color:#FDE68A}
+.band-card.b35{background:#FEE2E2;border-color:#FCA5A5}
+.bc-rate{font-size:2.2rem;font-weight:900;line-height:1}
+.band-card.b0 .bc-rate{color:#15803d}
+.band-card.b10 .bc-rate{color:#1d4ed8}
+.band-card.b25 .bc-rate{color:#b45309}
+.band-card.b35 .bc-rate{color:#b91c1c}
+.bc-label{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.band-card.b0 .bc-label{color:#15803d}
+.band-card.b10 .bc-label{color:#1d4ed8}
+.band-card.b25 .bc-label{color:#b45309}
+.band-card.b35 .bc-label{color:#b91c1c}
+.bc-desc{font-size:.75rem;line-height:1.5;margin-top:6px}
+.bc-examples{margin-top:8px;display:flex;flex-wrap:wrap;gap:4px}
+.bc-example{font-size:.65rem;padding:2px 7px;border-radius:4px;background:rgba(0,0,0,.07);font-weight:600}
+
+/* ── Info alert ── */
+.info-alert{background:#EFF6FF;border:1.5px solid #93C5FD;border-radius:10px;padding:12px 16px;font-size:.8rem;color:#1d4ed8;margin-bottom:16px;line-height:1.5}
+.info-alert strong{color:#1e40af}
+.warn-alert{background:#FFF7ED;border:1.5px solid #FED7AA;border-radius:10px;padding:12px 16px;font-size:.8rem;color:#b45309;margin-bottom:16px;line-height:1.5}
+
+/* ── Hidden ── */
+.hidden{display:none!important}
+.result-block{display:none}
+.result-block.on{display:block}
+.compare-result{display:none}
+.compare-result.on{display:block}
+
+/* ── Dark mode ── */
+@media(prefers-color-scheme:dark){
+  .t-main{background:#0B1120}
+  .card{background:#131D2E;border-color:#1E2D40}
+  .card-head{border-color:#1E2D40}
+  .card-title{color:#93A5BE}
+  .f-input,.f-select{background:#111D30;color:#E2E8F0;border-color:#1E2D40}
+  .f-input:focus,.f-select:focus{background:#0D1826}
+  .tabs{background:#111D30}
+  .tab.on{background:#131D2E}
+  .stat-card{background:#131D2E;border-color:#1E2D40}
+  .stat-lbl{color:#93A5BE}
+  .sr-item{background:#131D2E;border-color:#1E2D40;color:#E2E8F0}
+  .sr-name{color:#E2E8F0}
+  .sr-item:hover,.sr-item.selected{background:#0D2347;border-color:#3b82f6}
+  .dr-cat-card{background:#131D2E;border-color:#1E2D40}
+  .member-card{background:#131D2E;border-color:#1E2D40}
+  .mc-name{color:#E2E8F0}
+  .breakdown-table td{border-color:#1E2D40}
+  .breakdown-table tr:last-child td{background:#0D1826}
+  .breakdown-table .td-name{color:#E2E8F0}
+  .compare-table th,.compare-table td{border-color:#1E2D40}
+  .compare-table .total-row td{background:#0D1826}
+  .si-card.rate-high{background:#1c0a14;border-color:#9f1239}
+  .si-card.rate-med{background:#1c1007;border-color:#92400e}
+  .si-card.rate-low{background:#0D2347;border-color:#1d4ed8}
+  .band-card.b0{background:#052e16;border-color:#166534}
+  .band-card.b10{background:#0D2347;border-color:#1d4ed8}
+  .band-card.b25{background:#1c1007;border-color:#92400e}
+  .band-card.b35{background:#1c0a0a;border-color:#7f1d1d}
+  .selected-product-bar{background:#0D2347;border-color:#1d4ed8}
+  .compare-note{background:#111D30;color:#93A5BE}
+  .dr-explainer{background:linear-gradient(135deg,#0D2347,#0a1628);border-color:#1d4ed8}
+  .dr-desc,.dr-legal{color:#93C5FD}
+  .ps-detail{color:#93A5BE}
+  .ps-title{color:#E2E8F0}
+  .info-alert{background:#0D2347;border-color:#1d4ed8;color:#93C5FD}
+  .warn-alert{background:#1c1007;border-color:#92400e;color:#fbbf24}
+  .dr-cat-eligible{color:#93A5BE}
+  .dr-cat-condition{color:#64748B}
+}
+</style>
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "EAC CET Lookup",
+  "description": "Search EAC Common External Tariff rates by product or HS code and model landed-cost planning assumptions for East Africa.",
+  "url": "https://afrotools.com/tools/eac-cet/",
+  "inLanguage": "en",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/eac-cet.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "EAC CET Lookup: Common External Tariff Rates by HS Code",
+  "url": "https://afrotools.com/tools/eac-cet/",
+  "description": "Search EAC Common External Tariff rates by product or HS code, including mobile phones, vehicles, rice, cement and landed-cost planning for East Africa.",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/eac-cet.webp"
+}
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"EAC CET Lookup","item":"https://afrotools.com/tools/eac-cet/"}]}</script>
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="stylesheet" href="/assets/css/trade-toolkit.css?v=2465f40a">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/eac-cet/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/eac-cet/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ushuru-wa-pamoja-wa-eac/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/eac-cet/">
+</head>
+<body class="tool-page top-level-page-ui-refresh">
+<afro-navbar active="trade"></afro-navbar>
+
+<!-- Hero -->
+<section class="t-hero">
+  <div class="container">
+    <nav class="bc" aria-label="Breadcrumb">
+      <a href="/">Home</a><span>/</span>
+      <a href="/tools/">Tools</a><span>/</span>
+      <span aria-current="page">EAC CET Lookup</span>
+    </nav>
+    <h1>EAC Common External Tariff<br><em>Rates by HS Code</em></h1>
+    <p class="t-hero-sub">Search EAC CET planning rates and model landed-cost assumptions across Kenya, Tanzania, Uganda, Rwanda and Burundi. Verify national levies, VAT and gazette notices before filing.</p>
+    <div class="hero-badges">
+      <span class="badge badge-green">7 EAC Members</span>
+      <span class="badge badge-blue">4 Tariff Bands</span>
+      <span class="badge badge-orange">0–35% CET Base</span>
+      <span class="badge badge-grey">2022 CET Base</span>
+      <span class="badge badge-red">Sensitive Items Vary</span>
+    </div>
+    <div class="hero-answer">
+      <strong>Quick answer</strong>
+      <p>Use this EAC CET lookup to search by product name or HS code, then carry the planning rate into the landed-cost calculator. Mobile phones appear under HS 8517 with a 25% CET planning rate in this local dataset; always confirm current VAT, national levies and gazette notices before filing.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Main -->
+<div class="t-main">
+  <div class="container">
+
+    <!-- Stats row -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num">4</div>
+        <div class="stat-lbl">Tariff Bands<br>(0–35%)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">7</div>
+        <div class="stat-lbl">EAC Member<br>States</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">100%</div>
+        <div class="stat-lbl">Special / Sensitive<br>Planning Rate</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">0%</div>
+        <div class="stat-lbl">Intra-EAC<br>Duty (COO)</div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs" role="tablist">
+      <button type="button" class="tab on" role="tab" aria-selected="true"  data-tab="search">Search &amp; Rate</button>
+      <button type="button" class="tab"    role="tab" aria-selected="false" data-tab="compare">Country Compare</button>
+      <button type="button" class="tab"    role="tab" aria-selected="false" data-tab="sensitive">Sensitive Items</button>
+      <button type="button" class="tab"    role="tab" aria-selected="false" data-tab="remission">Duty Remission</button>
+    </div>
+
+    <!-- ══════════ TAB 1 — Search & Rate ══════════ -->
+    <div class="tab-panel on" id="panel-search">
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Search Product / HS Code</span>
+        </div>
+        <div class="card-body">
+          <div class="search-wrap">
+            <svg class="search-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input aria-label="E.g. cement, rice, HS 8703, smartphone" type="text" class="f-input" id="searchInput" placeholder="e.g. cement, rice, HS 8703, smartphone…" autocomplete="off">
+          </div>
+          <ul class="search-results" id="searchResults" aria-label="Search results"></ul>
+        </div>
+      </div>
+
+      <!-- Calculate section -->
+      <div class="card calc-section" id="calcCard">
+        <div class="card-head">
+          <span class="card-title">Calculate Landed Cost</span>
+        </div>
+        <div class="card-body">
+          <div id="selectedProductBar" class="selected-product-bar hidden">
+            <div>
+              <div class="spb-name" id="spbName">—</div>
+              <div class="spb-meta" id="spbMeta"></div>
+            </div>
+            <button type="button" class="btn-secondary" id="clearProduct" style="flex-shrink:0">Clear</button>
+          </div>
+          <div class="f-row">
+            <div>
+              <label class="f-label" for="cifValue">CIF Value (USD)</label>
+              <input type="number" class="f-input" id="cifValue" placeholder="e.g. 10000" min="0" step="100">
+            </div>
+            <div>
+              <label class="f-label" for="cetRateInput">CET Rate (%)</label>
+              <input type="number" class="f-input" id="cetRateInput" placeholder="e.g. 25" min="0" max="150" step="0.5">
+            </div>
+          </div>
+          <div style="margin-bottom:14px">
+            <label class="f-label" for="countrySelect">Country</label>
+            <select class="f-select" id="countrySelect">
+              <option value="KE">🇰🇪 Kenya (KRA) — IDF 3.5%, RDL 2.5%, VAT 16%</option>
+              <option value="TZ">🇹🇿 Tanzania (TRA) — IDF 1%, RDL 1.5%, VAT 18%</option>
+              <option value="UG">🇺🇬 Uganda (URA) — IDF 2%, Infra 1.5%, WHT 6%, VAT 18%</option>
+              <option value="RW">🇷🇼 Rwanda (RRA) — IDS 1.5%, AU Levy 0.2%, VAT 18%</option>
+              <option value="BI">🇧🇮 Burundi (OBR) — Transaction Tax 1%, VAT 18%</option>
+            </select>
+            <p class="compare-note" style="margin:8px 0 0">National levy defaults are planning assumptions. Confirm current customs, VAT, IDF, RDL, IDS and remission treatment before submitting an entry.</p>
+          </div>
+          <button type="button" class="btn-primary" id="calcBtn">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 7h6M9 11h6M9 15h4"/></svg>
+            Calculate Landed Cost
+          </button>
+
+          <!-- Result -->
+          <div class="result-block" id="resultBlock">
+            <hr class="calc-divider">
+            <div class="result-hero">
+              <div>
+                <div class="rh-label">Total Landed Cost</div>
+                <div class="rh-value" id="rhLanded">—</div>
+                <div class="rh-sub" id="rhSub"></div>
+              </div>
+              <div class="rh-effective">
+                <div class="rh-label">Effective Import Cost Rate</div>
+                <div class="rh-rate" id="rhRate">—</div>
+                <div class="rh-sub">above CIF value</div>
+              </div>
+            </div>
+            <div class="card" style="margin-bottom:0">
+              <div class="card-head"><span class="card-title">Charge Breakdown</span></div>
+              <div class="card-body" style="padding:0">
+                <table class="breakdown-table" id="breakdownTable">
+                  <thead>
+                    <tr>
+                      <th>Charge</th>
+                      <th style="text-align:right">Amount (USD)</th>
+                    </tr>
+                  </thead>
+                  <tbody id="breakdownBody"></tbody>
+                </table>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
+              <button type="button" class="btn-secondary" id="copyBriefBtn">Copy landed-cost brief</button>
+              <button type="button" class="btn-secondary" id="downloadCsvBtn">Download CSV</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tariff Bands reference -->
+      <div class="card">
+        <div class="card-head"><span class="card-title">EAC Tariff Bands — At a Glance</span></div>
+        <div class="card-body">
+          <div class="band-grid" id="bandGrid"></div>
+        </div>
+      </div>
+
+      <!-- Member States -->
+      <div class="members-bar">
+        <div class="members-title">EAC Member States</div>
+        <div class="members-grid" id="membersGrid"></div>
+      </div>
+
+    </div><!-- /panel-search -->
+
+    <!-- ══════════ TAB 2 — Country Compare ══════════ -->
+    <div class="tab-panel" id="panel-compare">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Compare All EAC Countries</span></div>
+        <div class="card-body">
+          <div class="f-row">
+            <div>
+              <label class="f-label" for="compareProduct">Select Product</label>
+              <select class="f-select" id="compareProduct">
+                <option value="">— Select a product —</option>
+              </select>
+            </div>
+            <div>
+              <label class="f-label" for="compareCif">CIF Value (USD)</label>
+              <input type="number" class="f-input" id="compareCif" placeholder="e.g. 10000" min="0" step="100">
+            </div>
+          </div>
+          <div style="margin-bottom:14px">
+            <label class="f-label" for="compareCetRate">CET Rate (%) — auto-filled from product</label>
+            <input type="number" class="f-input" id="compareCetRate" placeholder="0–100" min="0" max="150" step="0.5">
+          </div>
+          <button type="button" class="btn-primary" id="compareBtn">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+            Compare All EAC Countries
+          </button>
+
+          <div class="compare-result" id="compareResult">
+            <hr class="calc-divider">
+            <div class="compare-wrap">
+              <table class="compare-table" id="compareTable">
+                <thead id="compareHead"></thead>
+                <tbody id="compareBody"></tbody>
+              </table>
+            </div>
+            <p class="compare-note" id="compareNote"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-alert">
+        <strong>Note:</strong> This comparison shows the base CET + standard national levies for commercial importers. Individual circumstances may vary — bonded warehouse regimes, duty remission schemes, or specific exemptions can significantly alter the final cost. Always verify with the relevant customs authority.
+      </div>
+    </div><!-- /panel-compare -->
+
+    <!-- ══════════ TAB 3 — Sensitive Items ══════════ -->
+    <div class="tab-panel" id="panel-sensitive">
+      <div class="warn-alert">
+        <strong>Sensitive items</strong> are products the EAC has designated for extra protection through higher tariffs, specific duties, or import restrictions. Rates shown are planning references from the local dataset and should be verified against the current gazette before filing.
+      </div>
+      <div class="si-grid" id="siGrid"></div>
+    </div><!-- /panel-sensitive -->
+
+    <!-- ══════════ TAB 4 — Duty Remission ══════════ -->
+    <div class="tab-panel" id="panel-remission">
+      <div id="drContent"></div>
+    </div><!-- /panel-remission -->
+
+  </div><!-- /container -->
+</div><!-- /t-main -->
+
+<section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="eac-cet-verification-title">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Sources &amp; verification</span>
+          <h2 class="tool-verification-title" id="eac-cet-verification-title">CET planning rates must be confirmed before filing</h2>
+          <p class="tool-verification-lead">This lookup uses a local EAC CET planning dataset to help estimate CIF, duty, national levies, VAT, and effective landed cost. It is not a customs declaration, tariff ruling, or broker quote.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Customs planning model</span>
+          <p class="tool-verification-note">Reviewed 2026. Tariff treatment, national levies, exemptions, and gazette notices can change.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>Methodology</h3>
+          <ul class="tool-verification-list">
+            <li>Search selects a product or HS range, then applies the CET planning rate to your CIF value.</li>
+            <li>Country comparison adds country-level levy and VAT assumptions so landed-cost differences are visible.</li>
+            <li>Duty remission and certificate-of-origin notes are shown as planning prompts, not eligibility decisions.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Before acting</h3>
+          <ul class="tool-verification-list">
+            <li>Confirm HS classification, origin, customs valuation, CET rate, national levies, VAT, standards permits, and remission eligibility.</li>
+            <li>Ask the relevant revenue authority, licensed clearing agent, or freight forwarder to confirm the current treatment in writing.</li>
+            <li>Copy or download the CSV brief before sending it to a supplier, customer, broker, or finance reviewer.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <p class="tool-verification-disclaimer">Disclaimer: estimate only. AfroTools does not file customs entries, issue tariff rulings, approve duty remission, or provide legal/tax advice.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<afro-business-cta tool-name="EAC CET Lookup" prospect-segment="trade-import" save-note="Search a product, calculate landed cost, then copy the brief or download CSV for supplier, broker, customs, or bank review."></afro-business-cta>
+<afro-related-tools data-ssr="1" category="trade" current="eac-cet">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/afcfta-tracker/" data-related-tool data-id="afcfta-tracker" data-name="AfCFTA Tariff Tracker" data-category="trade" data-icon="AT" data-desc="Live AfCFTA duty schedule. Check duty-free status for any item between 54 African countries. Phase I &amp; II schedules.">AfCFTA Tariff Tracker</a></li><li><a href="/tools/landed-cost/" data-related-tool data-id="landed-cost" data-name="Landed Cost Calculator" data-category="trade" data-icon="LC" data-desc="Estimate landed cost for selected African import markets with source-confidence labels for user inputs, estimates, and v">Landed Cost Calculator</a></li><li><a href="/tools/incoterms-calculator/" data-related-tool data-id="incoterms-calculator" data-name="Incoterms 2020 Calculator" data-category="trade" data-icon="I2" data-desc="All 11 Incoterms 2020 explained with cost-split calculator, comparison tool, and Africa-specific trade guide.">Incoterms 2020 Calculator</a></li><li><a href="/tools/shipping-estimator/" data-related-tool data-id="shipping-estimator" data-name="Shipping Cost Estimator" data-category="trade" data-icon="SC" data-desc="Estimate sea freight, air freight and road haulage costs for Africa trade corridors. 16 ports, 8 airlines, 8 trucking ro">Shipping Cost Estimator</a></li><li><a href="/tools/export-docs/" data-related-tool data-id="export-docs-trade" data-name="Export Documentation Checklist" data-category="trade" data-icon="ED" data-desc="Country-specific checklist for every document needed to export from Africa. 17 origin countries, 8 destinations includin">Export Documentation Checklist</a></li><li><a href="/tools/fx-import-impact/" data-related-tool data-id="fx-import-impact" data-name="FX Import Cost Impact" data-category="trade" data-icon="FI" data-desc="Calculate how currency depreciation affects import costs. Model FX scenarios for 15 African currencies.">FX Import Cost Impact</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<script src="../../engines/eac-cet-engine.js?v=3f4c52fa"></script>
+<script>
+(function () {
+  'use strict';
+
+  var engine = EacCetEngine;
+  var selectedProduct = null;
+  var lastBrief = null;
+
+  /* ── Tab switching ─────────────────────────────────── */
+  var tabs    = document.querySelectorAll('.tab');
+  var panels  = document.querySelectorAll('.tab-panel');
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      tabs.forEach(function (t) { t.classList.remove('on'); t.setAttribute('aria-selected', 'false'); });
+      panels.forEach(function (p) { p.classList.remove('on'); });
+      tab.classList.add('on'); tab.setAttribute('aria-selected', 'true');
+      var panelId = 'panel-' + tab.dataset.tab;
+      var panel = document.getElementById(panelId);
+      if (panel) panel.classList.add('on');
+    });
+  });
+
+  /* ── Helpers ───────────────────────────────────────── */
+  function fmt(n) {
+    return '$' + (Math.round(n * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  function fmtPct(n) {
+    return (Math.round(n * 10) / 10).toFixed(1) + '%';
+  }
+  function downloadCsv(rows, filename) {
+    var csv = rows.map(function(row) {
+      return row.map(function(cell) { return '"' + String(cell == null ? '' : cell).replace(/"/g, '""') + '"'; }).join(',');
+    }).join('\n');
+    var blob = new Blob([csv], { type: 'text/csv' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(a.href);
+  }
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
+    var area = document.createElement('textarea');
+    area.value = text;
+    area.setAttribute('readonly', '');
+    area.style.position = 'fixed';
+    area.style.left = '-9999px';
+    document.body.appendChild(area);
+    area.select();
+    document.execCommand('copy');
+    document.body.removeChild(area);
+    return Promise.resolve();
+  }
+  function bandClass(rate) {
+    if (rate === 0) return 'band-0';
+    if (rate <= 10) return 'band-10';
+    if (rate <= 25) return 'band-25';
+    if (rate <= 35) return 'band-35';
+    if (rate <= 60) return 'band-60';
+    if (rate <= 75) return 'band-75';
+    return 'band-100';
+  }
+  function bandLabel(rate) {
+    if (rate === 0)   return '0%';
+    if (rate <= 10)   return '10%';
+    if (rate <= 25)   return '25%';
+    if (rate <= 35)   return '35%';
+    if (rate <= 60)   return '60%';
+    if (rate <= 75)   return '75%';
+    return rate + '%';
+  }
+  function esc(str) {
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  /* ── Render search results ─────────────────────────── */
+  function renderResults(products) {
+    var ul = document.getElementById('searchResults');
+    if (!products || products.length === 0) {
+      ul.innerHTML = '<li class="no-results">No products found. Try a different name or HS code.</li>';
+      return;
+    }
+    var html = '';
+    products.slice(0, 40).forEach(function (p) {
+      var bc = bandClass(p.cetRate);
+      var bl = bandLabel(p.cetRate);
+      html += '<li class="sr-item" data-hs="' + esc(p.hsRange) + '" data-rate="' + p.cetRate + '" data-name="' + esc(p.name) + '" data-cat="' + esc(p.category) + '">';
+      html += '<div class="sr-left">';
+      html += '<div>';
+      html += '<div class="sr-name">' + esc(p.name) + '</div>';
+      html += '<div class="sr-meta">' + esc(p.category) + ' &middot; <span class="hs-pill">HS ' + esc(p.hsRange) + '</span></div>';
+      html += '</div>';
+      html += '</div>';
+      html += '<div class="sr-right">';
+      html += '<span class="band-badge ' + bc + '">' + bl + ' CET</span>';
+      html += '</div>';
+      html += '</li>';
+    });
+    ul.innerHTML = html;
+
+    ul.querySelectorAll('.sr-item').forEach(function (item) {
+      item.addEventListener('click', function () {
+        ul.querySelectorAll('.sr-item').forEach(function (i) { i.classList.remove('selected'); });
+        item.classList.add('selected');
+        var rate    = parseFloat(item.dataset.rate);
+        var name    = item.dataset.name;
+        var hs      = item.dataset.hs;
+        var cat     = item.dataset.cat;
+        selectedProduct = { name: name, hsRange: hs, cetRate: rate, category: cat };
+        document.getElementById('cetRateInput').value = rate;
+        var bar = document.getElementById('selectedProductBar');
+        bar.classList.remove('hidden');
+        document.getElementById('spbName').textContent = name;
+        document.getElementById('spbMeta').textContent = 'HS ' + hs + '  ·  CET ' + rate + '%  ·  ' + cat;
+        document.getElementById('cifValue').focus();
+      });
+    });
+  }
+
+  /* ── Initial render (all products) ────────────────── */
+  renderResults(engine.PRODUCTS);
+
+  /* ── Search input ──────────────────────────────────── */
+  var searchInput = document.getElementById('searchInput');
+  searchInput.addEventListener('input', function () {
+    var q = searchInput.value.trim();
+    var results = q ? engine.search(q) : engine.PRODUCTS;
+    renderResults(results);
+  });
+
+  /* ── Clear product ─────────────────────────────────── */
+  document.getElementById('clearProduct').addEventListener('click', function () {
+    selectedProduct = null;
+    document.getElementById('selectedProductBar').classList.add('hidden');
+    document.getElementById('cetRateInput').value = '';
+    document.getElementById('resultBlock').classList.remove('on');
+  });
+
+  /* ── Calculate ─────────────────────────────────────── */
+  document.getElementById('calcBtn').addEventListener('click', function () {
+    var cif     = parseFloat(document.getElementById('cifValue').value);
+    var rate    = parseFloat(document.getElementById('cetRateInput').value);
+    var country = document.getElementById('countrySelect').value;
+
+    if (!cif || isNaN(cif) || cif <= 0) {
+      alert('Please enter a valid CIF value greater than 0.');
+      return;
+    }
+    if (isNaN(rate) || rate < 0) {
+      alert('Please enter a CET rate (0 or above). Select a product or type a rate manually.');
+      return;
+    }
+
+    var result = engine.calculate({ cifValue: cif, cetRate: rate, countryCode: country });
+    lastBrief = {
+      country: country,
+      cif: cif,
+      rate: rate,
+      total: result.totalLanded,
+      effectiveRate: result.effectiveRate,
+      breakdown: result.breakdown
+    };
+
+    document.getElementById('rhLanded').textContent = fmt(result.totalLanded);
+    document.getElementById('rhSub').textContent = 'CIF ' + fmt(cif) + '  ·  Duty+Levies+VAT ' + fmt(result.totalLanded - cif);
+    document.getElementById('rhRate').textContent = fmtPct(result.effectiveRate) + ' above CIF';
+
+    var tbody = document.getElementById('breakdownBody');
+    var rows = '';
+    result.breakdown.forEach(function (item, idx) {
+      var isCif   = idx === 0;
+      var isTotal = idx === result.breakdown.length - 1;
+      rows += '<tr>';
+      rows += '<td class="td-name' + (isCif ? ' td-cif' : '') + '">' + esc(item.name);
+      if (item.note) rows += '<div class="td-note">' + esc(item.note) + '</div>';
+      rows += '</td>';
+      rows += '<td class="td-amount">' + fmt(item.amount) + '</td>';
+      rows += '</tr>';
+    });
+    /* Total row */
+    rows += '<tr>';
+    rows += '<td class="td-name" style="font-weight:800">Total Landed Cost</td>';
+    rows += '<td class="td-amount" style="color:var(--color-primary,#0062CC)">' + fmt(result.totalLanded) + '</td>';
+    rows += '</tr>';
+
+    tbody.innerHTML = rows;
+    document.getElementById('resultBlock').classList.add('on');
+  });
+
+  document.getElementById('copyBriefBtn').addEventListener('click', function () {
+    if (!lastBrief) return;
+    var text = 'EAC CET landed-cost planning brief\nCountry: ' + lastBrief.country + '\nCIF: ' + fmt(lastBrief.cif) + '\nCET rate: ' + lastBrief.rate + '%\nTotal landed cost: ' + fmt(lastBrief.total) + '\nEffective rate above CIF: ' + fmtPct(lastBrief.effectiveRate) + '\nVerify HS classification, origin, valuation, current gazette notices, national levies, VAT, permits, and remission eligibility before filing.';
+    copyText(text).then(function () {
+      document.getElementById('copyBriefBtn').textContent = 'Copied';
+      setTimeout(function () { document.getElementById('copyBriefBtn').textContent = 'Copy landed-cost brief'; }, 1300);
+    });
+  });
+
+  document.getElementById('downloadCsvBtn').addEventListener('click', function () {
+    if (!lastBrief) return;
+    var rows = [['country','cif_usd','cet_rate_pct','line_item','amount_usd']];
+    lastBrief.breakdown.forEach(function (item) {
+      rows.push([lastBrief.country, lastBrief.cif, lastBrief.rate, item.name, item.amount]);
+    });
+    rows.push([lastBrief.country, lastBrief.cif, lastBrief.rate, 'Total landed cost', lastBrief.total]);
+    downloadCsv(rows, 'afrotools-eac-cet-landed-cost.csv');
+  });
+
+  /* ── Tariff Bands render ───────────────────────────── */
+  var bands = engine.getTariffBands();
+  var bandClassMap = { 0: 'b0', 10: 'b10', 25: 'b25', 35: 'b35' };
+  var bandHtml = '';
+  bands.forEach(function (b) {
+    var cls = bandClassMap[b.band] || 'b35';
+    bandHtml += '<div class="band-card ' + cls + '">';
+    bandHtml += '<div class="bc-label">' + esc(b.label) + '</div>';
+    bandHtml += '<div class="bc-rate">' + b.rate + '%</div>';
+    bandHtml += '<div class="bc-desc">' + esc(b.description) + '</div>';
+    bandHtml += '<div class="bc-examples">';
+    b.examples.forEach(function (ex) {
+      bandHtml += '<span class="bc-example">' + esc(ex) + '</span>';
+    });
+    bandHtml += '</div></div>';
+  });
+  document.getElementById('bandGrid').innerHTML = bandHtml;
+
+  /* ── Member States render ──────────────────────────── */
+  var members = engine.getMemberStates();
+  var mHtml = '';
+  members.forEach(function (m) {
+    mHtml += '<div class="member-card">';
+    mHtml += '<div class="mc-flag">' + m.flag + '</div>';
+    mHtml += '<div class="mc-name">' + esc(m.name) + '</div>';
+    mHtml += '<div class="mc-joined">EAC since ' + m.joined + '</div>';
+    mHtml += '<div class="mc-authority">' + esc(m.authority) + '</div>';
+    if (m.note) mHtml += '<div class="mc-note">' + esc(m.note) + '</div>';
+    mHtml += '</div>';
+  });
+  document.getElementById('membersGrid').innerHTML = mHtml;
+
+  /* ── Country Compare — populate product dropdown ─── */
+  var compareProductSel = document.getElementById('compareProduct');
+  var productsByCategory = {};
+  engine.PRODUCTS.forEach(function (p) {
+    if (!productsByCategory[p.category]) productsByCategory[p.category] = [];
+    productsByCategory[p.category].push(p);
+  });
+  Object.keys(productsByCategory).sort().forEach(function (cat) {
+    var optgroup = document.createElement('optgroup');
+    optgroup.label = cat;
+    productsByCategory[cat].forEach(function (p) {
+      var opt = document.createElement('option');
+      opt.value = p.cetRate;
+      opt.textContent = p.name + ' — HS ' + p.hsRange + ' (' + p.cetRate + '% CET)';
+      optgroup.appendChild(opt);
+    });
+    compareProductSel.appendChild(optgroup);
+  });
+
+  compareProductSel.addEventListener('change', function () {
+    var rate = parseFloat(compareProductSel.value);
+    if (!isNaN(rate)) {
+      document.getElementById('compareCetRate').value = rate;
+    }
+  });
+
+  /* ── Country Compare — run comparison ─────────────── */
+  document.getElementById('compareBtn').addEventListener('click', function () {
+    var cif  = parseFloat(document.getElementById('compareCif').value);
+    var rate = parseFloat(document.getElementById('compareCetRate').value);
+
+    if (!cif || isNaN(cif) || cif <= 0) {
+      alert('Please enter a valid CIF value.');
+      return;
+    }
+    if (isNaN(rate) || rate < 0) {
+      alert('Please enter a CET rate or select a product.');
+      return;
+    }
+
+    var results = engine.compareCountries(cif, rate);
+
+    /* Find cheapest */
+    var minLanded = Math.min.apply(null, results.map(function (r) { return r.totalLanded; }));
+
+    var countryNames = results.map(function (r) { return r.name; });
+    var flags = results.map(function (r) { return r.flag; });
+
+    /* Build header */
+    var headHtml = '<tr><th>Charge</th>';
+    results.forEach(function (r) {
+      headHtml += '<th class="country-head"><span class="flag-cell">' + r.flag + '</span><span class="country-name">' + esc(r.name) + '</span></th>';
+    });
+    headHtml += '</tr>';
+    document.getElementById('compareHead').innerHTML = headHtml;
+
+    /* Build body */
+    var bodyHtml = '';
+
+    /* CIF row */
+    bodyHtml += '<tr><td>CIF Value</td>';
+    results.forEach(function () { bodyHtml += '<td>' + fmt(cif) + '</td>'; });
+    bodyHtml += '</tr>';
+
+    /* CET Duty row */
+    bodyHtml += '<tr><td>CET Duty (' + rate + '%)</td>';
+    results.forEach(function (r) { bodyHtml += '<td>' + fmt(r.cetDuty) + '</td>'; });
+    bodyHtml += '</tr>';
+
+    /* Levies rows — collect all levy names across all countries */
+    var allLevyNames = [];
+    results.forEach(function (r) {
+      r.levies.forEach(function (l) {
+        if (allLevyNames.indexOf(l.name) === -1) allLevyNames.push(l.name);
+      });
+    });
+    allLevyNames.forEach(function (levyName) {
+      bodyHtml += '<tr><td style="font-size:.78rem">' + esc(levyName) + '</td>';
+      results.forEach(function (r) {
+        var levy = r.levies.find(function (l) { return l.name === levyName; });
+        if (levy) {
+          bodyHtml += '<td>' + fmt(levy.amount) + '</td>';
+        } else {
+          bodyHtml += '<td style="color:#94A3B8">—</td>';
+        }
+      });
+      bodyHtml += '</tr>';
+    });
+
+    /* VAT row */
+    bodyHtml += '<tr><td>VAT</td>';
+    results.forEach(function (r) { bodyHtml += '<td>' + fmt(r.vat) + '</td>'; });
+    bodyHtml += '</tr>';
+
+    /* Effective rate row */
+    bodyHtml += '<tr><td style="font-size:.78rem;color:#64748B">Effective Rate Above CIF</td>';
+    results.forEach(function (r) {
+      bodyHtml += '<td class="rate-cell">' + fmtPct(r.effectiveRate) + '</td>';
+    });
+    bodyHtml += '</tr>';
+
+    /* Total row */
+    bodyHtml += '<tr class="total-row"><td>Total Landed Cost</td>';
+    results.forEach(function (r) {
+      var isCheapest = Math.abs(r.totalLanded - minLanded) < 0.01;
+      bodyHtml += '<td class="' + (isCheapest ? 'cheapest' : '') + '">' + fmt(r.totalLanded) + '</td>';
+    });
+    bodyHtml += '</tr>';
+
+    document.getElementById('compareBody').innerHTML = bodyHtml;
+
+    /* Note */
+    var cheapestCountry = results.find(function (r) { return Math.abs(r.totalLanded - minLanded) < 0.01; });
+    document.getElementById('compareNote').textContent =
+      cheapestCountry
+        ? cheapestCountry.name + ' has the lowest total landed cost for this shipment (' + fmt(minLanded) + '). Highlighted in green above.'
+        : '';
+
+    document.getElementById('compareResult').classList.add('on');
+  });
+
+  /* ── Sensitive Items render ────────────────────────── */
+  var sensitiveItems = engine.getSensitiveItems();
+  var siHtml = '';
+  sensitiveItems.forEach(function (item) {
+    var cardClass = 'si-card ';
+    if (item.cetRate >= 100)      cardClass += 'rate-max';
+    else if (item.cetRate >= 60)  cardClass += 'rate-extreme';
+    else if (item.cetRate >= 35)  cardClass += 'rate-high';
+    else if (item.cetRate >= 25)  cardClass += 'rate-med';
+    else                          cardClass += 'rate-low';
+
+    siHtml += '<div class="' + cardClass + '">';
+    siHtml += '<div class="si-cat">' + esc(item.category) + '</div>';
+    siHtml += '<div class="si-rate-badge">' + item.cetRate + '%</div>';
+    siHtml += '<div class="si-hs">HS ' + esc(item.hsRange) + '</div>';
+    siHtml += '<div class="si-desc">' + esc(item.description) + '</div>';
+    siHtml += '<div class="si-note">' + esc(item.notes) + '</div>';
+    siHtml += '<div class="si-examples">';
+    item.examples.forEach(function (ex) {
+      siHtml += '<span class="si-example-tag">' + esc(ex) + '</span>';
+    });
+    siHtml += '</div></div>';
+  });
+  document.getElementById('siGrid').innerHTML = siHtml;
+
+  /* ── Duty Remission render ─────────────────────────── */
+  var dr = engine.getDutyRemission();
+  var drHtml = '';
+
+  /* Explainer */
+  drHtml += '<div class="dr-explainer">';
+  drHtml += '<div class="dr-title">EAC Duty Remission Scheme</div>';
+  drHtml += '<div class="dr-desc">' + esc(dr.description) + '</div>';
+  drHtml += '<div class="dr-legal">Legal basis: ' + esc(dr.legalBasis) + '</div>';
+  drHtml += '</div>';
+
+  /* Categories */
+  drHtml += '<div class="card"><div class="card-head"><span class="card-title">Qualifying Categories</span></div><div class="card-body">';
+  drHtml += '<div class="dr-cats">';
+  dr.categories.forEach(function (cat) {
+    drHtml += '<div class="dr-cat-card">';
+    drHtml += '<div class="dr-cat-name">' + esc(cat.name) + '<span class="dr-cat-rate">0% Duty</span></div>';
+    drHtml += '<div class="dr-cat-eligible">' + esc(cat.eligible) + '</div>';
+    drHtml += '<div class="dr-cat-condition"><strong>Condition:</strong> ' + esc(cat.conditions) + '</div>';
+    drHtml += '<div style="margin-top:6px;font-size:.72rem;color:#34C759;font-weight:700">' + esc(cat.benefit) + '</div>';
+    drHtml += '</div>';
+  });
+  drHtml += '</div></div></div>';
+
+  /* Process steps */
+  drHtml += '<div class="card"><div class="card-head"><span class="card-title">Application Process</span></div><div class="card-body">';
+  drHtml += '<div class="process-steps">';
+  dr.process.forEach(function (step) {
+    drHtml += '<div class="ps-item">';
+    drHtml += '<div class="ps-num">' + step.step + '</div>';
+    drHtml += '<div class="ps-content">';
+    drHtml += '<div class="ps-title">' + esc(step.title) + '</div>';
+    drHtml += '<div class="ps-detail">' + esc(step.detail) + '</div>';
+    drHtml += '</div></div>';
+  });
+  drHtml += '</div></div></div>';
+
+  /* COO card */
+  var coo = dr.cooRequirements;
+  drHtml += '<div class="coo-card">';
+  drHtml += '<div class="coo-title">' + esc(coo.title) + '</div>';
+  drHtml += '<div class="coo-desc">' + esc(coo.description) + '</div>';
+  drHtml += '<ul class="coo-criteria">';
+  coo.criteria.forEach(function (c) {
+    drHtml += '<li>' + esc(c) + '</li>';
+  });
+  drHtml += '</ul>';
+  drHtml += '<div class="coo-meta">';
+  drHtml += '<div class="coo-meta-item"><strong>Issuing Authority:</strong> ' + esc(coo.issuingAuthority) + '</div>';
+  drHtml += '<div class="coo-meta-item"><strong>Validity:</strong> ' + esc(coo.validity) + '</div>';
+  drHtml += '</div>';
+  drHtml += '<div class="coo-benefit">Intra-EAC trade with a valid COO = 0% import duty (vs. 0–100% on extra-EAC imports)</div>';
+  drHtml += '</div>';
+
+  document.getElementById('drContent').innerHTML = drHtml;
+
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/trade-toolkit.js?v=748d8913" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>

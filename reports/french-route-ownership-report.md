@@ -1,0 +1,228 @@
+# French Route Ownership Report
+Generated: 2026-07-12
+Preferred URL rule: French-owned country and money pages use /fr/<French-country-slug>/ for country hubs, /fr/<French-country-slug>/calculateur-salaire-net for PAYE/salary, /fr/<French-country-slug>/calculateur-tva for VAT, and /fr/document-pdf/ for the French PDF hub. Country-code and English-country French paths are aliases only.
+- Alias route rules currently stabilized: 74
+- Unique alias files currently stabilized: 53
+- Alias files rewritten this run: 53
+- Duplicate canonical groups before, including noindex aliases: 26
+- Duplicate canonical groups after, including noindex aliases: 46
+- Competing duplicate canonical groups before: 0
+- Competing duplicate canonical groups after: 0
+- Deferred alias routes: 38
+## Rewritten Aliases
+- /fr/algeria/dz-paye -> /fr/algerie/calculateur-salaire-net (fr/algeria/dz-paye.html)
+- /fr/algeria/dz-vat -> /fr/algerie/calculateur-tva (fr/algeria/dz-vat.html)
+- /fr/dr-congo/cd-paye -> /fr/rdc/calculateur-salaire-net (fr/dr-congo/cd-paye.html)
+- /fr/dr-congo/cd-paye/ -> /fr/rdc/calculateur-salaire-net (fr/dr-congo/cd-paye/index.html)
+- /fr/dr-congo/cd-vat -> /fr/rdc/calculateur-tva (fr/dr-congo/cd-vat.html)
+- /fr/dr-congo/cd-vat/ -> /fr/rdc/calculateur-tva (fr/dr-congo/cd-vat/index.html)
+- /fr/guinea/gn-paye -> /fr/guinee/calculateur-salaire-net (fr/guinea/gn-paye.html)
+- /fr/guinea/gn-paye/ -> /fr/guinee/calculateur-salaire-net (fr/guinea/gn-paye/index.html)
+- /fr/guinea/gn-vat -> /fr/guinee/calculateur-tva (fr/guinea/gn-vat.html)
+- /fr/guinea/gn-vat/ -> /fr/guinee/calculateur-tva (fr/guinea/gn-vat/index.html)
+- /fr/morocco/ma-vat -> /fr/maroc/calculateur-tva (fr/morocco/ma-vat.html)
+- /fr/tunisia/tn-vat -> /fr/tunisie/calculateur-tva (fr/tunisia/tn-vat.html)
+- /fr/cote-divoire/ci-vat -> /fr/cote-divoire/calculateur-tva (fr/cote-divoire/ci-vat.html)
+- /fr/cote-divoire/ci-vat/ -> /fr/cote-divoire/calculateur-tva (fr/cote-divoire/ci-vat/index.html)
+- /fr/senegal/sn-vat -> /fr/senegal/calculateur-tva (fr/senegal/sn-vat.html)
+- /fr/mali/ml-vat -> /fr/mali/calculateur-tva (fr/mali/ml-vat.html)
+- /fr/burkina-faso/bf-vat -> /fr/burkina-faso/calculateur-tva (fr/burkina-faso/bf-vat.html)
+- /fr/burkina-faso/bf-vat/ -> /fr/burkina-faso/calculateur-tva (fr/burkina-faso/bf-vat/index.html)
+- /fr/niger/ne-paye -> /fr/niger/calculateur-salaire-net (fr/niger/ne-paye.html)
+- /fr/niger/ne-paye/ -> /fr/niger/calculateur-salaire-net (fr/niger/ne-paye/index.html)
+- /fr/niger/ne-vat -> /fr/niger/calculateur-tva (fr/niger/ne-vat.html)
+- /fr/niger/ne-vat/ -> /fr/niger/calculateur-tva (fr/niger/ne-vat/index.html)
+- /fr/congo/cg-paye -> /fr/congo/calculateur-salaire-net (fr/congo/cg-paye.html)
+- /fr/congo/cg-paye/ -> /fr/congo/calculateur-salaire-net (fr/congo/cg-paye/index.html)
+- /fr/congo/cg-vat -> /fr/congo/calculateur-tva (fr/congo/cg-vat.html)
+- /fr/congo/cg-vat/ -> /fr/congo/calculateur-tva (fr/congo/cg-vat/index.html)
+- /fr/gabon/ga-paye -> /fr/gabon/calculateur-salaire-net (fr/gabon/ga-paye.html)
+- /fr/gabon/ga-paye/ -> /fr/gabon/calculateur-salaire-net (fr/gabon/ga-paye/index.html)
+- /fr/gabon/ga-vat -> /fr/gabon/calculateur-tva (fr/gabon/ga-vat.html)
+- /fr/gabon/ga-vat/ -> /fr/gabon/calculateur-tva (fr/gabon/ga-vat/index.html)
+- /fr/togo/tg-paye -> /fr/togo/calculateur-salaire-net (fr/togo/tg-paye.html)
+- /fr/togo/tg-vat -> /fr/togo/calculateur-tva (fr/togo/tg-vat.html)
+- /fr/burundi/bi-paye -> /fr/burundi/calculateur-salaire-net (fr/burundi/bi-paye.html)
+- /fr/burundi/bi-paye/ -> /fr/burundi/calculateur-salaire-net (fr/burundi/bi-paye/index.html)
+- /fr/burundi/bi-vat -> /fr/burundi/calculateur-tva (fr/burundi/bi-vat.html)
+- /fr/burundi/bi-vat/ -> /fr/burundi/calculateur-tva (fr/burundi/bi-vat/index.html)
+- /fr/car/cf-paye -> /fr/centrafrique/calculateur-salaire-net (fr/car/cf-paye.html)
+- /fr/car/cf-paye/ -> /fr/centrafrique/calculateur-salaire-net (fr/car/cf-paye/index.html)
+- /fr/car/cf-vat -> /fr/centrafrique/calculateur-tva (fr/car/cf-vat.html)
+- /fr/car/cf-vat/ -> /fr/centrafrique/calculateur-tva (fr/car/cf-vat/index.html)
+- /fr/tools/projection-retraite/ -> /fr/tools/projection-pension/ (fr/tools/projection-retraite/index.html)
+- /fr/tools/ng-wht/ -> /fr/tools/ng-retenue-source/ (fr/tools/ng-wht/index.html)
+- /fr/algeria/ -> /fr/algerie/ (fr/algeria/index.html)
+- /fr/cameroon/ -> /fr/cameroun/ (fr/cameroon/index.html)
+- /fr/dr-congo/ -> /fr/rdc/ (fr/dr-congo/index.html)
+- /fr/guinea/ -> /fr/guinee/ (fr/guinea/index.html)
+- /fr/morocco/ -> /fr/maroc/ (fr/morocco/index.html)
+- /fr/tunisia/ -> /fr/tunisie/ (fr/tunisia/index.html)
+- /fr/central-african-republic/ -> /fr/centrafrique/ (fr/central-african-republic/index.html)
+- /fr/equatorial-guinea/ -> /fr/guinee-equatoriale/ (fr/equatorial-guinea/index.html)
+- /fr/cape-verde/ -> /fr/cabo-verde/ (fr/cape-verde/index.html)
+- /fr/comoros/ -> /fr/comores/ (fr/comoros/index.html)
+- /fr/mauritania/ -> /fr/mauritanie/ (fr/mauritania/index.html)
+## Stable Alias Files
+- /fr/algeria -> /fr/algerie/ (fr/algeria/index.html)
+- /fr/algeria/ -> /fr/algerie/ (fr/algeria/index.html)
+- /fr/algeria/dz-paye -> /fr/algerie/calculateur-salaire-net (fr/algeria/dz-paye.html)
+- /fr/algeria/dz-paye/ -> /fr/algerie/calculateur-salaire-net (fr/algeria/dz-paye.html)
+- /fr/algeria/dz-vat -> /fr/algerie/calculateur-tva (fr/algeria/dz-vat.html)
+- /fr/algeria/dz-vat/ -> /fr/algerie/calculateur-tva (fr/algeria/dz-vat.html)
+- /fr/burkina-faso/bf-vat -> /fr/burkina-faso/calculateur-tva (fr/burkina-faso/bf-vat.html)
+- /fr/burkina-faso/bf-vat/ -> /fr/burkina-faso/calculateur-tva (fr/burkina-faso/bf-vat/index.html)
+- /fr/burundi/bi-paye -> /fr/burundi/calculateur-salaire-net (fr/burundi/bi-paye.html)
+- /fr/burundi/bi-paye/ -> /fr/burundi/calculateur-salaire-net (fr/burundi/bi-paye/index.html)
+- /fr/burundi/bi-vat -> /fr/burundi/calculateur-tva (fr/burundi/bi-vat.html)
+- /fr/burundi/bi-vat/ -> /fr/burundi/calculateur-tva (fr/burundi/bi-vat/index.html)
+- /fr/cameroon -> /fr/cameroun/ (fr/cameroon/index.html)
+- /fr/cameroon/ -> /fr/cameroun/ (fr/cameroon/index.html)
+- /fr/cape-verde -> /fr/cabo-verde/ (fr/cape-verde/index.html)
+- /fr/cape-verde/ -> /fr/cabo-verde/ (fr/cape-verde/index.html)
+- /fr/car/cf-paye -> /fr/centrafrique/calculateur-salaire-net (fr/car/cf-paye.html)
+- /fr/car/cf-paye/ -> /fr/centrafrique/calculateur-salaire-net (fr/car/cf-paye/index.html)
+- /fr/car/cf-vat -> /fr/centrafrique/calculateur-tva (fr/car/cf-vat.html)
+- /fr/car/cf-vat/ -> /fr/centrafrique/calculateur-tva (fr/car/cf-vat/index.html)
+- /fr/central-african-republic -> /fr/centrafrique/ (fr/central-african-republic/index.html)
+- /fr/central-african-republic/ -> /fr/centrafrique/ (fr/central-african-republic/index.html)
+- /fr/comoros -> /fr/comores/ (fr/comoros/index.html)
+- /fr/comoros/ -> /fr/comores/ (fr/comoros/index.html)
+- /fr/congo/cg-paye -> /fr/congo/calculateur-salaire-net (fr/congo/cg-paye.html)
+- /fr/congo/cg-paye/ -> /fr/congo/calculateur-salaire-net (fr/congo/cg-paye/index.html)
+- /fr/congo/cg-vat -> /fr/congo/calculateur-tva (fr/congo/cg-vat.html)
+- /fr/congo/cg-vat/ -> /fr/congo/calculateur-tva (fr/congo/cg-vat/index.html)
+- /fr/cote-divoire/ci-vat -> /fr/cote-divoire/calculateur-tva (fr/cote-divoire/ci-vat.html)
+- /fr/cote-divoire/ci-vat/ -> /fr/cote-divoire/calculateur-tva (fr/cote-divoire/ci-vat/index.html)
+- /fr/dr-congo -> /fr/rdc/ (fr/dr-congo/index.html)
+- /fr/dr-congo/ -> /fr/rdc/ (fr/dr-congo/index.html)
+- /fr/dr-congo/cd-paye -> /fr/rdc/calculateur-salaire-net (fr/dr-congo/cd-paye.html)
+- /fr/dr-congo/cd-paye/ -> /fr/rdc/calculateur-salaire-net (fr/dr-congo/cd-paye/index.html)
+- /fr/dr-congo/cd-vat -> /fr/rdc/calculateur-tva (fr/dr-congo/cd-vat.html)
+- /fr/dr-congo/cd-vat/ -> /fr/rdc/calculateur-tva (fr/dr-congo/cd-vat/index.html)
+- /fr/equatorial-guinea -> /fr/guinee-equatoriale/ (fr/equatorial-guinea/index.html)
+- /fr/equatorial-guinea/ -> /fr/guinee-equatoriale/ (fr/equatorial-guinea/index.html)
+- /fr/gabon/ga-paye -> /fr/gabon/calculateur-salaire-net (fr/gabon/ga-paye.html)
+- /fr/gabon/ga-paye/ -> /fr/gabon/calculateur-salaire-net (fr/gabon/ga-paye/index.html)
+- /fr/gabon/ga-vat -> /fr/gabon/calculateur-tva (fr/gabon/ga-vat.html)
+- /fr/gabon/ga-vat/ -> /fr/gabon/calculateur-tva (fr/gabon/ga-vat/index.html)
+- /fr/guinea -> /fr/guinee/ (fr/guinea/index.html)
+- /fr/guinea/ -> /fr/guinee/ (fr/guinea/index.html)
+- /fr/guinea/gn-paye -> /fr/guinee/calculateur-salaire-net (fr/guinea/gn-paye.html)
+- /fr/guinea/gn-paye/ -> /fr/guinee/calculateur-salaire-net (fr/guinea/gn-paye/index.html)
+- /fr/guinea/gn-vat -> /fr/guinee/calculateur-tva (fr/guinea/gn-vat.html)
+- /fr/guinea/gn-vat/ -> /fr/guinee/calculateur-tva (fr/guinea/gn-vat/index.html)
+- /fr/mali/ml-vat -> /fr/mali/calculateur-tva (fr/mali/ml-vat.html)
+- /fr/mali/ml-vat/ -> /fr/mali/calculateur-tva (fr/mali/ml-vat.html)
+- /fr/mauritania -> /fr/mauritanie/ (fr/mauritania/index.html)
+- /fr/mauritania/ -> /fr/mauritanie/ (fr/mauritania/index.html)
+- /fr/morocco -> /fr/maroc/ (fr/morocco/index.html)
+- /fr/morocco/ -> /fr/maroc/ (fr/morocco/index.html)
+- /fr/morocco/ma-vat -> /fr/maroc/calculateur-tva (fr/morocco/ma-vat.html)
+- /fr/morocco/ma-vat/ -> /fr/maroc/calculateur-tva (fr/morocco/ma-vat.html)
+- /fr/niger/ne-paye -> /fr/niger/calculateur-salaire-net (fr/niger/ne-paye.html)
+- /fr/niger/ne-paye/ -> /fr/niger/calculateur-salaire-net (fr/niger/ne-paye/index.html)
+- /fr/niger/ne-vat -> /fr/niger/calculateur-tva (fr/niger/ne-vat.html)
+- /fr/niger/ne-vat/ -> /fr/niger/calculateur-tva (fr/niger/ne-vat/index.html)
+- /fr/senegal/sn-vat -> /fr/senegal/calculateur-tva (fr/senegal/sn-vat.html)
+- /fr/senegal/sn-vat/ -> /fr/senegal/calculateur-tva (fr/senegal/sn-vat.html)
+- /fr/togo/tg-paye -> /fr/togo/calculateur-salaire-net (fr/togo/tg-paye.html)
+- /fr/togo/tg-paye/ -> /fr/togo/calculateur-salaire-net (fr/togo/tg-paye.html)
+- /fr/togo/tg-vat -> /fr/togo/calculateur-tva (fr/togo/tg-vat.html)
+- /fr/togo/tg-vat/ -> /fr/togo/calculateur-tva (fr/togo/tg-vat.html)
+- /fr/tools/ng-wht -> /fr/tools/ng-retenue-source/ (fr/tools/ng-wht/index.html)
+- /fr/tools/ng-wht/ -> /fr/tools/ng-retenue-source/ (fr/tools/ng-wht/index.html)
+- /fr/tools/projection-retraite -> /fr/tools/projection-pension/ (fr/tools/projection-retraite/index.html)
+- /fr/tools/projection-retraite/ -> /fr/tools/projection-pension/ (fr/tools/projection-retraite/index.html)
+- /fr/tunisia -> /fr/tunisie/ (fr/tunisia/index.html)
+- /fr/tunisia/ -> /fr/tunisie/ (fr/tunisia/index.html)
+- /fr/tunisia/tn-vat -> /fr/tunisie/calculateur-tva (fr/tunisia/tn-vat.html)
+- /fr/tunisia/tn-vat/ -> /fr/tunisie/calculateur-tva (fr/tunisia/tn-vat.html)
+## Deferred Routes
+- /fr/cameroun/cm-paye -> /fr/cameroun/calculateur-salaire-net: source file missing
+- /fr/cameroun/cm-paye/ -> /fr/cameroun/calculateur-salaire-net: source file missing
+- /fr/rdc/cd-paye -> /fr/rdc/calculateur-salaire-net: source file missing
+- /fr/rdc/cd-paye/ -> /fr/rdc/calculateur-salaire-net: source file missing
+- /fr/rdc/cd-vat -> /fr/rdc/calculateur-tva: source file missing
+- /fr/rdc/cd-vat/ -> /fr/rdc/calculateur-tva: source file missing
+- /fr/maroc/ma-paye -> /fr/maroc/calculateur-salaire-net: source file missing
+- /fr/maroc/ma-paye/ -> /fr/maroc/calculateur-salaire-net: source file missing
+- /fr/maroc/ma-vat -> /fr/maroc/calculateur-tva: source file missing
+- /fr/maroc/ma-vat/ -> /fr/maroc/calculateur-tva: source file missing
+- /fr/algerie/dz-paye -> /fr/algerie/calculateur-salaire-net: source file missing
+- /fr/algerie/dz-paye/ -> /fr/algerie/calculateur-salaire-net: source file missing
+- /fr/algerie/dz-vat -> /fr/algerie/calculateur-tva: source file missing
+- /fr/algerie/dz-vat/ -> /fr/algerie/calculateur-tva: source file missing
+- /fr/tunisie/tn-paye -> /fr/tunisie/calculateur-salaire-net: source file missing
+- /fr/tunisie/tn-paye/ -> /fr/tunisie/calculateur-salaire-net: source file missing
+- /fr/tunisie/tn-vat -> /fr/tunisie/calculateur-tva: source file missing
+- /fr/tunisie/tn-vat/ -> /fr/tunisie/calculateur-tva: source file missing
+- /fr/guinee/gn-paye -> /fr/guinee/calculateur-salaire-net: source file missing
+- /fr/guinee/gn-paye/ -> /fr/guinee/calculateur-salaire-net: source file missing
+- /fr/guinee/gn-vat -> /fr/guinee/calculateur-tva: source file missing
+- /fr/guinee/gn-vat/ -> /fr/guinee/calculateur-tva: source file missing
+- /fr/tools/vat-calculator/vat-calc/ -> /fr/tools/calculateur-tva/: source file missing
+- /fr/tools/vat-calculator/vat-calc -> /fr/tools/calculateur-tva/: source file missing
+- /fr/tools/vat-calculator/ -> /fr/tools/calculateur-tva/: source file missing
+- /fr/tools/vat-calculator -> /fr/tools/calculateur-tva/: source file missing
+- /fr/tools/mobile-money-fees/ -> /fr/tools/frais-mobile-money/: source file missing
+- /fr/tools/mobile-money-fees -> /fr/tools/frais-mobile-money/: source file missing
+- /fr/tools/remittance-compare/ -> /fr/tools/transfert-argent/: source file missing
+- /fr/tools/remittance-compare -> /fr/tools/transfert-argent/: source file missing
+- /fr/tools/import-duty/ -> /fr/tools/droits-douane/: source file missing
+- /fr/tools/import-duty -> /fr/tools/droits-douane/: source file missing
+- /fr/tools/remittance-v2/ -> /fr/tools/transfert-argent/: source file missing
+- /fr/tools/remittance-v2 -> /fr/tools/transfert-argent/: source file missing
+- /fr/car/ -> /fr/centrafrique/: source file missing
+- /fr/car -> /fr/centrafrique/: source file missing
+- /fr/eq-guinea/ -> /fr/guinee-equatoriale/: source file missing
+- /fr/eq-guinea -> /fr/guinee-equatoriale/: source file missing
+## Remaining Duplicate Canonical Groups
+- /fr/rdc: /fr/dr-congo, /fr/drc, /fr/rdc
+- /fr/algerie: /fr/algeria, /fr/algerie
+- /fr/algerie/calculateur-salaire-net: /fr/algeria/dz-paye, /fr/algerie/calculateur-salaire-net
+- /fr/algerie/calculateur-tva: /fr/algeria/dz-vat, /fr/algerie/calculateur-tva
+- /fr/burkina-faso/calculateur-tva: /fr/burkina-faso/bf-vat, /fr/burkina-faso/calculateur-tva
+- /fr/burundi/calculateur-salaire-net: /fr/burundi/bi-paye, /fr/burundi/calculateur-salaire-net
+- /fr/burundi/calculateur-tva: /fr/burundi/bi-vat, /fr/burundi/calculateur-tva
+- /fr/cabo-verde: /fr/cabo-verde, /fr/cape-verde
+- /fr/cameroun: /fr/cameroon, /fr/cameroun
+- /fr/centrafrique: /fr/centrafrique, /fr/central-african-republic
+- /fr/centrafrique/calculateur-salaire-net: /fr/car/cf-paye, /fr/centrafrique/calculateur-salaire-net
+- /fr/centrafrique/calculateur-tva: /fr/car/cf-vat, /fr/centrafrique/calculateur-tva
+- /fr/comores: /fr/comores, /fr/comoros
+- /fr/comores/calculateur-salaire-net: /fr/comores/calculateur-salaire-net, /fr/comoros/km-paye
+- /fr/congo/calculateur-salaire-net: /fr/congo/calculateur-salaire-net, /fr/congo/cg-paye
+- /fr/congo/calculateur-tva: /fr/congo/calculateur-tva, /fr/congo/cg-vat
+- /fr/cote-divoire/calculateur-salaire-net: /fr/cote-divoire/calculateur-salaire-net, /fr/cote-divoire/ci-paye
+- /fr/cote-divoire/calculateur-tva: /fr/cote-divoire/calculateur-tva, /fr/cote-divoire/ci-vat
+- /fr/djibouti/calculateur-salaire-net: /fr/djibouti/calculateur-salaire-net, /fr/djibouti/dj-paye
+- /fr/gabon/calculateur-salaire-net: /fr/gabon/calculateur-salaire-net, /fr/gabon/ga-paye
+- /fr/gabon/calculateur-tva: /fr/gabon/calculateur-tva, /fr/gabon/ga-vat
+- /fr/guinee: /fr/guinea, /fr/guinee
+- /fr/guinee-equatoriale: /fr/equatorial-guinea, /fr/guinee-equatoriale
+- /fr/guinee/calculateur-salaire-net: /fr/guinea/gn-paye, /fr/guinee/calculateur-salaire-net
+- /fr/guinee/calculateur-tva: /fr/guinea/gn-vat, /fr/guinee/calculateur-tva
+- /fr/madagascar/calculateur-salaire-net: /fr/madagascar/calculateur-salaire-net, /fr/madagascar/mg-paye
+- /fr/mali/calculateur-tva: /fr/mali/calculateur-tva, /fr/mali/ml-vat
+- /fr/maroc: /fr/maroc, /fr/morocco
+- /fr/maroc/calculateur-tva: /fr/maroc/calculateur-tva, /fr/morocco/ma-vat
+- /fr/mauritanie: /fr/mauritania, /fr/mauritanie
+- /fr/mauritanie/calculateur-salaire-net: /fr/mauritania/mr-paye, /fr/mauritanie/calculateur-salaire-net
+- /fr/niger/calculateur-salaire-net: /fr/niger/calculateur-salaire-net, /fr/niger/ne-paye
+- /fr/niger/calculateur-tva: /fr/niger/calculateur-tva, /fr/niger/ne-vat
+- /fr/rdc/calculateur-salaire-net: /fr/dr-congo/cd-paye, /fr/rdc/calculateur-salaire-net
+- /fr/rdc/calculateur-tva: /fr/dr-congo/cd-vat, /fr/rdc/calculateur-tva
+- /fr/senegal/calculateur-tva: /fr/senegal/calculateur-tva, /fr/senegal/sn-vat
+- /fr/tchad: /fr/chad, /fr/tchad
+- /fr/tchad/calculateur-salaire-net: /fr/chad/td-paye, /fr/tchad/calculateur-salaire-net
+- /fr/terms-of-use: /fr/terms, /fr/terms-of-use
+- /fr/togo/calculateur-salaire-net: /fr/togo/calculateur-salaire-net, /fr/togo/tg-paye
+- /fr/togo/calculateur-tva: /fr/togo/calculateur-tva, /fr/togo/tg-vat
+- /fr/tools/ng-retenue-source: /fr/tools/ng-retenue-source, /fr/tools/ng-wht
+- /fr/tools/projection-pension: /fr/tools/projection-pension, /fr/tools/projection-retraite
+- /fr/tunisie: /fr/tunisia, /fr/tunisie
+- /fr/tunisie/calculateur-tva: /fr/tunisia/tn-vat, /fr/tunisie/calculateur-tva
+- /fr/widgets: /fr/widgets, /fr/widgets/iframe/template
+## Remaining Competing Duplicate Canonical Groups
+- None

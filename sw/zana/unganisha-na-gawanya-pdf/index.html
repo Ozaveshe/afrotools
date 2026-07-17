@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unganisha na Gawanya PDF - Chagua kurasa na masafa | AfroTools</title>
+<meta name="description" content="Unganisha PDF, pangilia faili, chagua masafa ya kurasa, toa kurasa maalum au gawanya PDF kwa Kiswahili kwenye kivinjari chako.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Unganisha na Gawanya PDF - Chagua kurasa na masafa | AfroTools">
+<meta property="og:description" content="Unganisha PDF, pangilia faili, chagua masafa ya kurasa, toa kurasa maalum au gawanya PDF kwa Kiswahili kwenye kivinjari chako.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/sw/zana/unganisha-na-gawanya-pdf/">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/pdf-merge-split.webp">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Unganisha na Gawanya PDF - Chagua kurasa na masafa | AfroTools">
+<meta name="twitter:description" content="Unganisha PDF, pangilia faili, chagua masafa ya kurasa, toa kurasa maalum au gawanya PDF kwa Kiswahili kwenye kivinjari chako.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/vendor/pdf-lib/pdf-lib.min.js?v=dec481b1"></script>
+<script src="/assets/vendor/pdfjs/pdf.min.js?v=96de3233"></script>
+<style>
+  :root { --afro-green: var(--color-primary); --afro-dark: #0f1419; --afro-light: #f5f7fa; }
+
+  .tool-hero { background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%); padding: 44px 0 36px; position: relative; overflow: hidden; }
+  .tool-hero::after { content: 'PDF'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 5rem; font-weight:800; opacity: 0.06; pointer-events: none; }
+  .tool-hero-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; }
+  .breadcrumb { font-size: 0.72rem; font-weight: 500; color: rgba(255,255,255,0.3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+  .breadcrumb a { color: rgba(255,255,255,0.3); text-decoration: none; }
+  .breadcrumb span { color: var(--afro-green); }
+  h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; color: #fff; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 10px; }
+  h1 em { color: var(--afro-green); font-style: normal; }
+  .hero-sub { font-size: 0.88rem; color: rgba(255,255,255,0.45); line-height: 1.6; max-width: 560px; margin-bottom: 14px; }
+  .hero-badges { display: flex; flex-wrap: wrap; gap: 7px; }
+  .badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px; border-radius: 4px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.05em; }
+  .b-green { background: rgba(0,98,204,0.18); color: var(--color-primary); border: 1px solid rgba(0,98,204,0.38); }
+
+  .tool-main { max-width: 980px; margin: 0 auto; padding: 28px 24px 72px; }
+  .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 8px rgba(0,0,0,0.05); margin-bottom: 18px; }
+  .card-head { padding: 15px 22px; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; background: #f9fafb; }
+  .card-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #374151; }
+  .card-body { padding: 22px; }
+
+  .mode-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 18px; }
+  .mode-btn { padding: 12px 16px; background: #EFF6FF; border: 1.5px solid #e5e7eb; border-radius: 7px; cursor: pointer; transition: all 0.15s; font-size: 0.78rem; font-weight: 700; color: #334155; font-family: 'DM Sans', sans-serif; }
+  .mode-btn:hover { border-color: var(--afro-green); }
+  .mode-btn.on { border-color: var(--afro-green); background: var(--color-primary); color: #fff; }
+
+  .file-input-wrapper { position: relative; display: inline-block; width: 100%; }
+  .file-input-wrapper input[type="file"] { position:absolute;width:1px;height:1px;opacity:0;overflow:hidden; }
+  .file-input-label { display: block; padding: 20px; background: #EFF6FF; border: 2px dashed #e5e7eb; border-radius: 8px; cursor: pointer; text-align: center; transition: all 0.2s; font-size: 0.9rem; color: #334155; font-weight: 600; }
+  .file-input-label:hover { border-color: var(--afro-green); background: #EFF6FF; }
+  .file-input-label.dragover { border-color: var(--afro-green); background: rgba(0,98,204,0.1); }
+
+  .file-list { margin-top: 16px; }
+  .file-item { display: grid; grid-template-columns: auto minmax(0,1fr) auto minmax(128px,160px) auto; align-items: center; gap: 10px; padding: 12px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; margin-bottom: 8px; cursor: move; }
+  .file-item.dragging { opacity: 0.5; }
+  .file-item-name { flex: 1; font-size: 0.85rem; color: #1e293b; font-weight: 600; }
+  .file-item-meta { font-size: 0.7rem; color: #64748b; white-space: nowrap; }
+  .file-item-status { font-size: 0.68rem; color: #64748b; font-weight: 700; }
+  .file-item-status.err { color: #b91c1c; }
+  .merge-pages-field { display:grid; gap:3px; min-width:128px; }
+  .merge-pages-field span { font-size:.64rem; color:#64748b; font-weight:800; text-transform:uppercase; letter-spacing:.04em; }
+  .merge-pages-field input { width:100%; border:1px solid #dbe3ef; border-radius:5px; padding:7px 8px; font:700 .72rem 'DM Sans',sans-serif; color:#0f172a; background:#fff; }
+  .merge-pages-field input:focus { outline:none; border-color:#60a5fa; box-shadow:0 0 0 3px rgba(96,165,250,.18); }
+  .file-item-controls { display: flex; gap: 4px; }
+  .mini-btn { min-width: 32px; min-height: 32px; padding: 6px 8px; background: #fff; border: 1px solid #dbe3ef; color: #334155; border-radius: 5px; cursor: pointer; font-size: 0.74rem; font-weight: 800; }
+  .mini-btn:hover { border-color: #93c5fd; color: #1d4ed8; }
+  .file-item-remove { background: #EFF6FF; border: 1px solid #e5e7eb; color: #334155; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.7rem; font-weight: 700; transition: all 0.15s; }
+  .file-item-remove:hover { background: #EFF6FF; border-color: #BFDBFE; }
+  .tool-row { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-top:12px; }
+  .subtle-btn { border:1px solid #dbe3ef; background:#fff; color:#334155; border-radius:6px; padding:9px 12px; font-size:.74rem; font-weight:800; cursor:pointer; font-family:'DM Sans',sans-serif; }
+  .subtle-btn:hover { border-color:#93c5fd; color:#1d4ed8; }
+
+  .calc-btn { width: 100%; padding: 14px; background: var(--color-primary); color: #fff; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.03em; cursor: pointer; transition: all 0.18s; margin-top: 8px; font-family: 'DM Sans', sans-serif; }
+  .calc-btn:hover { background: #0059B3; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,98,204,0.3); }
+  .calc-btn:disabled { background: #93c5fd; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  .result-card { background: #f9fafb; border: 1.5px solid #e5e7eb; border-radius: 10px; padding: 20px; display: none; margin-bottom: 18px; }
+  .result-card.on { display: block; }
+  .result-text { font-size: 0.85rem; color: #1e293b; margin-bottom: 12px; font-weight: 600; }
+  .action-row { display: grid; grid-template-columns: 1fr; gap: 8px; }
+  .act-btn { padding: 12px; font-size: 0.78rem; font-weight: 700; border-radius: 6px; cursor: pointer; transition: all 0.15s; display: flex; align-items: center; justify-content: center; gap: 6px; font-family: 'DM Sans', sans-serif; border: none; }
+  .act-download { background: rgba(0,98,204,0.1); border: 1.5px solid rgba(0,98,204,0.35); color: #1e40af; }
+  .act-download:hover { background: rgba(0,98,204,0.2); }
+
+  .progress-bar { width: 100%; height: 4px; background: #e5e7eb; border-radius: 2px; overflow: hidden; margin-top: 12px; }
+  .progress-fill { height: 100%; background: var(--color-primary); width: 0%; transition: width 0.3s; }
+
+  /* Split page grid */
+  .split-mode-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 14px 0; }
+  .split-mode-btn { padding: 10px 9px; border: 1.5px solid #e5e7eb; background: #fff; color: #334155; border-radius: 7px; cursor: pointer; font-size: .72rem; font-weight: 800; font-family: 'DM Sans', sans-serif; }
+  .split-mode-btn:hover { border-color: #93c5fd; }
+  .split-mode-btn.on { border-color: var(--color-primary); color: #fff; background: var(--color-primary); }
+  .split-panel { display:none; margin-top:10px; }
+  .split-panel.on { display:block; }
+  .range-field { display:flex; flex-direction:column; gap:7px; margin:10px 0; }
+  .range-field label { font-size:.72rem; font-weight:800; color:#334155; letter-spacing:.05em; text-transform:uppercase; }
+  .range-field input { width:100%; box-sizing:border-box; padding:11px 12px; border:1.5px solid #dbe3ef; border-radius:7px; font-family:'DM Sans',sans-serif; font-size:.86rem; color:#0f172a; outline:none; }
+  .range-field input:focus { border-color: var(--color-primary); box-shadow:0 0 0 3px rgba(0,98,204,.12); }
+  .range-help { color:#64748b; font-size:.76rem; line-height:1.55; }
+  .range-options { display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-top:8px; font-size:.78rem; color:#334155; font-weight:700; }
+  .sp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 6px; margin-top: 16px; }
+  .sp-cell { position: relative; }
+  .sp-cell-thumb { border-radius: 6px; overflow: hidden; border: 2px solid #e5e7eb; background: #fff; transition: 0.2s; }
+  .sp-cell.selectable { cursor:pointer; }
+  .sp-cell.selectable .sp-cell-thumb:hover { border-color:#93c5fd; }
+  .sp-cell.selected .sp-cell-thumb { border-color:var(--color-primary); box-shadow:0 0 0 3px rgba(0,98,204,.16); }
+  .sp-cell.selected .sp-cell-label { color:#1d4ed8; }
+  .sp-cell-thumb img { width: 100%; aspect-ratio: 8.5/11; display: block; object-fit: contain; background: #f9fafb; }
+  .sp-ph { width: 100%; aspect-ratio: 8.5/11; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #9ca3af; font-weight: 700; background: #f9fafb; }
+  .sp-cell-label { text-align: center; font-size: 11px; font-weight: 700; color: #4b5563; padding: 3px 0; }
+  .sp-cut { position: absolute; top: 0; right: -7px; bottom: 20px; width: 14px; cursor: pointer; z-index: 5; display: flex; align-items: center; justify-content: center; border:0; background:transparent; padding:0; }
+  .sp-cut::before { content: ''; position: absolute; inset: 8px 5px; background: #e5e7eb; border-radius: 2px; transition: 0.2s; }
+  .sp-cut:hover::before { background: #fca5a5; }
+  .sp-cut.on::before { background: #dc2626; }
+  .sp-cut .sc-icon { width: 22px; height: 22px; border-radius: 50%; background: #f3f4f6; display: flex; align-items: center; justify-content: center; font-size: 11px; z-index: 2; transition: 0.2s; opacity: 0; }
+  .sp-cut:hover .sc-icon { opacity: 1; background: #fef2f2; color: #dc2626; }
+  .sp-cut.on .sc-icon { opacity: 1; background: #dc2626; color: #fff; }
+  .sp-info { font-size: 0.78rem; color: #4b5563; margin-top: 10px; padding: 10px 14px; background: #f9fafb; border-radius: 6px; border: 1px solid #e5e7eb; }
+
+  /* Tips section */
+  .tips-section { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 20px 24px; margin-top: 8px; }
+  .tips-title { font-size: 0.72rem; font-weight: 700; color: #374151; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+  .tips-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .tip-item { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: #334155; font-weight: 600; padding: 8px 12px; background: #fff; border: 1px solid #e5e7eb; border-radius: 6px; }
+
+  @media (max-width: 768px) {
+    .mode-row { grid-template-columns: 1fr; }
+    .split-mode-row { grid-template-columns: 1fr 1fr; }
+    .tips-grid { grid-template-columns: 1fr; }
+    .sp-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
+    .file-item { grid-template-columns:auto minmax(0,1fr); }
+    .file-item-meta,.merge-pages-field,.file-item-controls { grid-column:2; }
+  }
+</style>
+
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+
+
+<meta property="og:locale" content="sw_KE">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-merge-split.webp">
+<meta property="article:modified_time" content="2026-04-27">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Unganisha na Gawanya PDF","description":"Unganisha PDF, pangilia faili, chagua masafa ya kurasa, toa kurasa maalum au gawanya PDF kwa Kiswahili kwenye kivinjari chako.","url":"https://afrotools.com/sw/zana/unganisha-na-gawanya-pdf/","inLanguage":"sw","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Unganisha na Gawanya PDF","item":"https://afrotools.com/sw/zana/unganisha-na-gawanya-pdf/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Je, faili zangu zinabaki salama?","acceptedAnswer":{"@type":"Answer","text":"Tumia zana hizi kwa tahadhari ya faragha na hakiki faili kabla ya kushiriki. Ukurasa unategemea tabia ya zana ya Kiingereza na usindikaji wa kivinjari."}},{"@type":"Question","name":"Je, PDF iliyotengenezwa ni hati rasmi ya kisheria?","acceptedAnswer":{"@type":"Answer","text":"Hapana. Matokeo ni kwa maandalizi na mpangilio wa nyaraka. Kwa saini, mikataba, fomu rasmi au ushahidi wa kisheria, hakiki na mtaalamu au mamlaka husika."}}]}</script>
+<link rel="canonical" href="https://afrotools.com/sw/zana/unganisha-na-gawanya-pdf/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-merge-split/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/fusionner-diviser-pdf/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/unganisha-na-gawanya-pdf/">
+<link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/hada-da-raba-pdf/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-merge-split/">
+</head>
+<body class="top-level-page-ui-refresh">
+<!-- sw-document-pdf-workspace: pdf-merge-split -->
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/sw/zana-zote/">Zana zote</a> / <span>Unganisha na Gawanya PDF</span></div>
+    <h1>Unganisha na Gawanya PDF</h1>
+    <p class="hero-sub">Panga faili, chagua kurasa, unganisha PDF au gawanya sehemu unazohitaji bila kupakia faili mtandaoni.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">Hakuna kupakia</span>
+      <span class="badge b-green">Ndani ya kivinjari</span>
+      <span class="badge b-green">Masafa + ZIP</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <!-- Mode Selection -->
+  <div class="card">
+    <div class="card-head"><span class="card-title">Kazi</span></div>
+    <div class="card-body">
+      <div class="mode-row">
+        <button type="button" class="mode-btn on" data-mode="merge">Unganisha PDFs</button>
+        <button type="button" class="mode-btn" data-mode="split">Gawanya PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Unganisha Card -->
+  <div class="card" id="merge-card">
+    <div class="card-head"><span class="card-title">Pakia PDF za kuunganisha</span></div>
+    <div class="card-body">
+      <div class="file-input-wrapper">
+        <input type="file" id="mergeFileInput" accept=".pdf" multiple>
+        <label for="mergeFileInput" class="file-input-label">
+          Bofya kuongeza PDF. Bofya tena kuongeza faili zaidi
+          <div style="font-size:0.72rem;margin-top:4px;opacity:.65">Kila kubofya huongeza kwenye orodha yako. Tumia masafa ya kurasa kwa kila faili inapohitajika.</div>
+        </label>
+      </div>
+      <div class="file-list" id="mergeFileList"></div>
+      <div class="tool-row">
+        <span id="mergeSummary" style="font-size:.76rem;color:#64748b;font-weight:700;">Ongeza angalau PDF mbili ili kuunganisha.</span>
+        <button class="subtle-btn" id="clearMergeBtn" type="button" disabled>Futa orodha</button>
+      </div>
+      <button type="button" class="calc-btn" id="mergeBtn" disabled>Unganisha PDFs</button>
+    </div>
+  </div>
+
+  <!-- Gawanya Card -->
+  <div class="card" id="split-card" style="display:none;">
+    <div class="card-head"><span class="card-title">Pakia PDF ya kugawanya</span></div>
+    <div class="card-body">
+      <div class="file-input-wrapper">
+        <input type="file" id="splitFileInput" accept=".pdf">
+        <label for="splitFileInput" class="file-input-label">
+          Bofya kuchagua au buruta na dondosha PDF hapa
+        </label>
+      </div>
+      <div id="splitInfo" style="display:none; margin-top:12px;">
+        <div style="font-size:0.82rem;font-weight:700;color:#1e293b;">Faili: <span id="splitFileName"></span> - kurasa <span id="splitPageCount">0</span></div>
+        <div class="split-mode-row">
+          <button class="split-mode-btn on" type="button" data-split-mode="cuts">Alama za kugawanya</button>
+          <button class="split-mode-btn" type="button" data-split-mode="ranges">Masafa maalum</button>
+          <button class="split-mode-btn" type="button" data-split-mode="extract">Toa kurasa</button>
+          <button class="split-mode-btn" type="button" data-split-mode="every">Kila ukurasa</button>
+        </div>
+        <div class="split-panel on" id="cutsPanel">
+          <div class="sp-info">Bofya <span style="color:#dc2626;font-weight:700">mkasi</span> kati ya kurasa kuweka alama za kugawanya. Kurasa kati ya alama hizo hutoka kama PDF tofauti.</div>
+        </div>
+        <div class="split-panel" id="rangesPanel">
+          <div class="range-field">
+            <label for="rangeInput">Masafa ya kutengeneza</label>
+            <input id="rangeInput" type="text" placeholder="1-3, 4-6, 9">
+            <div class="range-help">Tumia koma kwa matokeo tofauti. Mfano: <strong>1-2, 5, 8-10</strong>.</div>
+          </div>
+          <label class="range-options"><input aria-label="RangeCombine" type="checkbox" id="rangeCombine"> Unganisha masafa kuwa PDF moja badala ya ZIP</label>
+        </div>
+        <div class="split-panel" id="extractPanel">
+          <div class="range-field">
+            <label for="extractInput">Kurasa za kubakisha</label>
+            <input id="extractInput" type="text" placeholder="2, 4-5, 9">
+            <div class="range-help">Bofya vijipicha vya kurasa hapa chini au andika namba za kurasa. Kurasa zilizotolewa hupakuliwa kama PDF moja.</div>
+          </div>
+        </div>
+        <div class="split-panel" id="everyPanel">
+          <div class="sp-info">Hamisha kila ukurasa kama PDF ya ukurasa mmoja ndani ya ZIP.</div>
+        </div>
+        <div class="sp-grid" id="splitGrid"></div>
+        <div id="splitSummary" style="margin-top:10px;font-size:0.78rem;color:#4b5563;font-weight:600;"></div>
+      </div>
+      <button type="button" class="calc-btn" id="splitBtn" disabled>Chagua alama za kugawanya kwanza</button>
+    </div>
+  </div>
+
+  <!-- Matokeo Card -->
+  <div class="result-card" id="resultCard">
+    <div class="result-text" id="resultText"></div>
+    <div class="progress-bar" id="progressBar" style="display:none;">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="action-row" id="actionRow" style="display:none;"></div>
+<div class="result-actions" style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
+  <share-result-button
+    tool-name="Unganisha na Gawanya PDF"
+    tool-slug="pdf-merge-split">
+  </share-result-button>
+</div>
+  </div>
+
+  <!-- Tips -->
+  <div class="tips-section">
+    <div class="tips-title">Jinsi inavyofanya kazi</div>
+    <div class="tips-grid">
+      <div class="tip-item">Sawa: Buruta, panga upya au weka masafa ya kurasa kabla ya kuunganisha</div>
+      <div class="tip-item">Sawa: Gawanya kwa alama, masafa au kurasa</div>
+      <div class="tip-item">Sawa: Uchakataji wote hubaki kwenye kivinjari chako</div>
+      <div class="tip-item">Sawa: Pakua matokeo kama PDF au ZIP</div>
+    </div>
+  </div>
+</div>
+
+
+
+<afro-newsletter-cta></afro-newsletter-cta>
+
+<section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
+  <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Unganisha na Gawanya PDF: jinsi inavyofanya kazi</h2>
+  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
+    <p>Zana ya AfroTools ya kuunganisha na kugawanya PDF huweka PDF nyingi kwenye hati moja, hukuruhusu kupanga faili kabla ya kuhamisha, kuchagua masafa ya kurasa unayohitaji, kugawanya hati kwa alama za kuona, kutoa masafa maalum na kuhamisha kila ukurasa kama ZIP. Inafaa kwa vifurushi vya maombi, makundi ya nyaraka zilizoskaniwa, mikataba, ripoti na nyaraka za darasani ambako mpangilio wa kurasa ni muhimu. Uchakataji hufanyika ndani ya kivinjari kwa maktaba za ndani za JavaScript, hivyo nyaraka zako hazipakiliwi kwenye seva.</p>
+  </div>
+  <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Maswali ya mara kwa mara</h3>
+
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+  <div class="landing-faq" style="display:flex;flex-direction:column;gap:8px;">
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Naweza kuunganisha PDF ngapi kwa wakati mmoja?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Unaweza kuunganisha PDF nyingi kadiri kivinjari chako kinavyoweza kushughulikia. Kwa nyaraka za kawaida, faili 10 hadi 20 hufanya kazi vizuri. Faili kubwa sana zinaweza kuchukua muda kulingana na kifaa chako.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Naweza kupanga PDF upya au kuunganisha kurasa fulani tu?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Ndiyo. Baada ya kupakia faili, ziburute katika mpangilio unaotaka, kisha acha kisanduku cha kurasa wazi kwa kurasa zote au weka masafa kama 1-2, 5. PDF iliyounganishwa hufuata mpangilio ulioweka kwenye skrini.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Kugawanya PDF hufanyaje kazi?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Unaweza kugawanya kwa alama za kuona, kuingiza masafa kama 1-3, 6, 9-11, kutoa kurasa ulizochagua kama PDF moja au kuhamisha kila ukurasa kama PDF tofauti ndani ya ZIP.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Je, PDF zangu hupakiliwa kwenye seva?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Hapana. Kuunganisha na kugawanya hufanyika ndani ya kivinjari chako. Nyaraka zako hubaki kwenye kifaa chako na hazitumwi kwenye seva ya nje.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Je, kuunganisha hupunguza ubora wa PDF?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Hapana. Kuunganisha huweka kurasa za awali pamoja bila kuzibana upya au kubadilisha maudhui yake. Ubora wa matokeo hubaki kama faili chanzo.</p>
+    </details>
+  </div>
+</section>
+
+<section class="sw-docpdf-related" style="max-width:1100px;margin:32px auto;padding:0 24px;"><div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:14px;padding:22px;"><p style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#2563eb;margin:0 0 8px;">Angalia pia</p><h2 style="font-size:1.15rem;font-weight:800;color:#111827;margin:0 0 10px;">Hati, PDF na mtiririko wa kazi</h2><p style="font-size:.9rem;color:#4b5563;line-height:1.65;margin:0 0 14px;">Tumia zana hizi kama maandalizi ya nyaraka. Kwa saini, mikataba, fomu rasmi, faragha au hati za kisheria, hakiki na mtaalamu au mamlaka husika kabla ya kuwasilisha.</p><div style="display:flex;flex-wrap:wrap;gap:10px;"><a href="/sw/hati-na-pdf/" style="display:inline-flex;padding:9px 12px;border:1px solid #dbeafe;border-radius:9px;background:#fff;color:#1d4ed8;font-weight:700;font-size:.84rem;text-decoration:none;">Hati na PDF</a><a href="/sw/zana/kituo-cha-pdf/" style="display:inline-flex;padding:9px 12px;border:1px solid #dbeafe;border-radius:9px;background:#fff;color:#1d4ed8;font-weight:700;font-size:.84rem;text-decoration:none;">Kituo cha PDF</a><a href="/sw/zana/kizalishaji-ankara/" style="display:inline-flex;padding:9px 12px;border:1px solid #dbeafe;border-radius:9px;background:#fff;color:#1d4ed8;font-weight:700;font-size:.84rem;text-decoration:none;">Ankara</a><a href="/sw/zana/mjenzi-cv/" style="display:inline-flex;padding:9px 12px;border:1px solid #dbeafe;border-radius:9px;background:#fff;color:#1d4ed8;font-weight:700;font-size:.84rem;text-decoration:none;">Mjenzi CV</a><a href="/sw/picha-na-design/" style="display:inline-flex;padding:9px 12px;border:1px solid #dbeafe;border-radius:9px;background:#fff;color:#1d4ed8;font-weight:700;font-size:.84rem;text-decoration:none;">Picha na design</a></div></div></section>
+<afro-footer></afro-footer>
+<script src="/assets/js/components/related-tools.js?v=4123e336" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
+<script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
+<script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
+
+<script src="/tools/pdf-merge-split/app.js?v=7809c2e3"></script>
+<email-gate-modal></email-gate-modal>
+<script src="/assets/js/lib/auto-email-gate.js?v=fa3f2d98" defer></script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script>
+(function(){var dict={"Home":"Mwanzo","Document & PDF":"Hati na PDF","PDF Workspace":"Nafasi ya Kazi ya PDF","Your PDF Workspace":"Nafasi yako ya Kazi ya PDF","Drop a PDF here to get started":"Dondosha PDF hapa ili kuanza","Drop a PDF here":"Dondosha PDF hapa","click to browse":"bofya kuchagua faili","Upload a PDF":"Pakia PDF","Upload PDF":"Pakia PDF","Choose PDF":"Chagua PDF","Choose file":"Chagua faili","No file chosen":"Hakuna faili iliyochaguliwa","Private":"Faragha","No Upload":"Hakuna kupakia","No upload":"Hakuna kupakia","Client-side":"Ndani ya kivinjari","No limits":"Hakuna kikomo","Instant":"Haraka","Works offline":"Hufanya kazi bila mtandao","Files never leave your browser":"Faili hazitoki kwenye kivinjari chako","Your files never leave your browser":"Faili zako hazitoki kwenye kivinjari chako","Open":"Fungua","Download":"Pakua","Download PDF":"Pakua PDF","Export":"Hamisha","Save":"Hifadhi","Cancel":"Ghairi","Close":"Funga","Remove":"Ondoa","Delete":"Futa","Preview":"Onyesho la awali","Result":"Matokeo","Results":"Matokeo","Settings":"Mipangilio","Options":"Chaguo","File":"Faili","Files":"Faili","Page":"Ukurasa","Pages":"Kurasa","Page range":"Masafa ya kurasa","Page ranges":"Masafa ya kurasa","Selected pages":"Kurasa zilizochaguliwa","All pages":"Kurasa zote","Start page":"Ukurasa wa kuanza","End page":"Ukurasa wa mwisho","Rotate":"Zungusha","Reorder":"Panga upya","Merge":"Unganisha","Split":"Gawanya","Compress":"Bana","Convert":"Badilisha","Watermark":"Watermark","Password":"Nenosiri","Sign":"Saini","Signature":"Saini","Redact":"Ficha taarifa","Header":"Kichwa","Footer":"Kijachini","Text":"Maandishi","Image":"Picha","Quality":"Ubora","Size":"Ukubwa","Original size":"Ukubwa wa awali","New size":"Ukubwa mpya","Compression Level":"Kiwango cha kubana","Low":"Chini","Medium":"Kati","High":"Juu","Strong":"Kubwa","Balanced":"Wastani","Lossless":"Bila kupoteza ubora","Processing":"Inachakata","Processing...":"Inachakata...","Processed":"Imechakatwa","Done":"Imekamilika","Error":"Hitilafu","Try again":"Jaribu tena","Reset":"Weka upya","Clear":"Futa","Add files":"Ongeza faili","Add file":"Ongeza faili","Add text":"Ongeza maandishi","Add image":"Ongeza picha","Add signature":"Ongeza saini","Draw":"Chora","Type":"Andika","Upload":"Pakia","Upload files":"Pakia faili","Drag and drop":"Buruta na dondosha","or click to browse":"au bofya kuchagua","Extract":"Toa","Extract text":"Toa maandishi","Text extraction":"Kutoa maandishi","Form Filler":"Kujaza Fomu","Fill form":"Jaza fomu","Page Numbering":"Namba za Kurasa","Page numbers":"Namba za kurasa","PDF Merge & Split":"Unganisha na Gawanya PDF","PDF Compressor":"Kubana PDF","PDF Watermark Tool":"Watermark PDF","PDF Password Protect":"Linda PDF kwa Nenosiri","PDF Page Numbering":"Namba za Kurasa za PDF","PDF eSignature Tool":"Kusaini PDF","PDF OCR":"OCR ya PDF","PDF Form Filler":"Kujaza Fomu za PDF","PDF Redaction Tool":"Kuficha Taarifa kwenye PDF","PDF Header & Footer":"Kichwa na Kijachini cha PDF","PDF Editor":"Hariri PDF","PDF Format Converter":"Kubadilisha Format ya PDF","PDF Page Manager":"Kupanga Kurasa za PDF","Search tools":"Tafuta zana","Request a Tool":"Omba zana"};var keys=Object.keys(dict).sort(function(a,b){return b.length-a.length;});function tx(v){if(!v||!/[A-Za-z]/.test(v))return v;var out=v;keys.forEach(function(k){out=out.split(k).join(dict[k]);});return out;}function walk(n){if(!n||n.nodeType!==1)return;if(/^(SCRIPT|STYLE|NOSCRIPT|CODE|PRE|TEXTAREA)$/i.test(n.tagName))return;['placeholder','aria-label','title','alt','value'].forEach(function(a){if(n.hasAttribute&&n.hasAttribute(a)){var v=n.getAttribute(a),nv=tx(v);if(nv!==v)n.setAttribute(a,nv);}});Array.prototype.forEach.call(n.childNodes||[],function(c){if(c.nodeType===3){var nv=tx(c.nodeValue);if(nv!==c.nodeValue)c.nodeValue=nv;}else if(c.nodeType===1)walk(c);});}function run(){walk(document.body);}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();new MutationObserver(function(ms){ms.forEach(function(m){Array.prototype.forEach.call(m.addedNodes||[],function(n){if(n.nodeType===1)walk(n);else if(n.nodeType===3){var nv=tx(n.nodeValue);if(nv!==n.nodeValue)n.nodeValue=nv;}});});}).observe(document.documentElement,{childList:true,subtree:true});})();
+</script>
+  <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
+</body>
+</html>

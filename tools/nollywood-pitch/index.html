@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nollywood Budget Estimator | AfroTools</title>
+<meta name="description" content="Estimate your African film or TV production budget. Pre-loaded cost data for Nollywood, Kenyan, Ghanaian, and South African productions across budget tiers.">
+<meta name="keywords" content="Nollywood budget, African film production cost, movie budget calculator, film budget template Africa, TV production estimate, Nollywood production">
+<meta property="og:title" content="Nollywood Budget Estimator | AfroTools">
+<meta property="og:description" content="Estimate production costs for African film and TV projects. Budget templates for Nollywood, Kenyan, Ghanaian, and South African markets.">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/nollywood-pitch/">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/nollywood-pitch.webp">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Nollywood Budget Estimator | AfroTools">
+<meta name="twitter:description" content="Estimate production costs for African film and TV projects. Budget templates for Nollywood, Kenyan, Ghanaian, and South African markets.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/nollywood-pitch.webp">
+<meta name="robots" content="index, follow">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<style>
+:root{--amber:var(--color-primary);--amber-light:#E8F2FF;--amber-dark:#0063D1}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}
+.hero{background:linear-gradient(135deg,#0A1628 0%,#0063D1 50%,#0062CC 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}
+.hero h1{color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
+.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}
+.container{max-width:1000px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#0A1628}
+.form-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;align-items:end}
+@media(max-width:700px){.form-grid{grid-template-columns:1fr}}
+.form-group{display:flex;flex-direction:column;gap:.3rem}
+.form-group label{font-weight:600;font-size:.85rem;color:#475569}
+.form-group select,.form-group input{padding:.55rem .75rem;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.95rem;background:#f8fafc;font-family:inherit}
+.form-group select:focus,.form-group input:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 3px rgba(0,98,204,.15)}
+.btn{padding:.65rem 1.5rem;border:none;border-radius:7px;font-weight:600;font-size:.95rem;cursor:pointer;background:var(--amber);color:#fff;transition:all .2s}
+.btn:hover{background:var(--amber-dark)}
+.btn-outline{background:transparent;color:var(--amber);border:1.5px solid var(--amber)}
+.btn-outline:hover{background:var(--amber-light)}
+.budget-table{width:100%;border-collapse:collapse;margin-top:1rem}
+.budget-table th{text-align:left;padding:.6rem .75rem;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8;border-bottom:2px solid #e2e8f0;font-weight:600}
+.budget-table td{padding:.6rem .75rem;border-bottom:1px solid #f1f5f9;font-size:.9rem}
+.budget-table tr:hover{background:#E8F2FF}
+.budget-table .cat-row{background:#f8fafc;font-weight:700;color:#0063D1}
+.budget-table .cat-row td{border-bottom:1px solid #e2e8f0;padding-top:.8rem}
+.budget-table input[type=number]{width:100%;padding:.4rem .5rem;border:1.5px solid #e2e8f0;border-radius:5px;font-size:.88rem;font-family:inherit;text-align:right}
+.budget-table input[type=number]:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 2px rgba(0,98,204,.12)}
+.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1rem}
+@media(max-width:700px){.summary-grid{grid-template-columns:1fr 1fr}}
+.summary-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:1rem;text-align:center}
+.summary-box .label{font-size:.72rem;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8;font-weight:600}
+.summary-box .value{font-size:1.3rem;font-weight:800;color:#0063D1;margin-top:.25rem}
+.summary-box.total{background:var(--amber-light);border-color:#4DA3FF}
+.bar-wrap{margin-top:1rem}
+.bar-row{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem;font-size:.82rem}
+.bar-label{width:120px;text-align:right;color:#475569;font-weight:600;flex-shrink:0}
+.bar-track{flex:1;height:22px;background:#f1f5f9;border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:.5rem;font-size:.72rem;font-weight:600;color:#fff;min-width:30px;transition:width .3s}
+.actions{display:flex;gap:.75rem;margin-top:1rem;flex-wrap:wrap}
+.pitch-grid{display:grid;grid-template-columns:1.2fr repeat(3,1fr);gap:1rem;margin-top:.75rem}
+.pitch-output{border-top:1px solid #e2e8f0;margin-top:1rem;padding-top:1rem}
+.pitch-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:.75rem}
+.pitch-metric{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:.75rem}
+.pitch-metric span{display:block;font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#64748b;margin-bottom:.2rem}
+.pitch-metric strong{font-size:.92rem;color:#0A1628}
+.pitch-output p{font-size:.88rem;color:#475569;line-height:1.65;margin:.45rem 0}
+.pitch-copy{padding:.55rem .9rem;border:1.5px solid rgba(0,98,204,.22);background:#fff;color:#0063D1;border-radius:7px;font-weight:800;font-family:inherit;cursor:pointer}
+@media(max-width:850px){.pitch-grid,.pitch-metrics{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.pitch-grid,.pitch-metrics{grid-template-columns:1fr}}
+.seo-section{max-width:800px;margin:2rem auto;padding:0 1.5rem}
+.seo-section h2{font-size:1.4rem;font-weight:800;color:#0A1628;margin-bottom:1rem}
+.seo-section h3{font-size:1.1rem;font-weight:700;color:#334155;margin:1.5rem 0 .5rem}
+.seo-section p{color:#475569;margin-bottom:1rem}
+.faq{max-width:800px;margin:2rem auto;padding:0 1.5rem}
+.faq h2{font-size:1.4rem;font-weight:800;color:#0A1628;margin-bottom:1rem}
+.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff}
+.faq summary{padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.faq summary::after{content:'+';font-size:1.3rem;color:#94a3b8;font-weight:300}
+.faq details[open] summary::after{content:'-'}
+.faq details p{padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem}
+.v2-hero{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);color:#fff;padding:3.5rem 1.5rem 2.5rem;text-align:center}
+.v2-hero .crumb{font-size:.82rem;color:rgba(255,255,255,.55);margin-bottom:1rem}
+.v2-hero .crumb a{color:rgba(255,255,255,.55);text-decoration:none}
+.v2-hero .crumb a:hover{color:#fff}
+.v2-hero .crumb span{margin:0 .4rem}
+.v2-hero h1{color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem;font-family:'Instrument Serif','DM Sans',serif}
+.v2-hero p{font-size:1.05rem;opacity:.85;max-width:620px;margin:0 auto;color:rgba(255,255,255,.8)}
+.zfun{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.zfun-card{padding:16px;border-radius:10px;text-align:center}
+.zfun-card.gold{background:#FFF8E7;border:1.5px solid rgba(212,168,67,.3)}
+.zfun-card.blue{background:#E8F2FF;border:1.5px solid rgba(0,98,204,.2)}
+.zfun-card.rose{background:#fff1f2;border:1.5px solid rgba(225,29,72,.2)}
+.zfun-card.green{background:#f0fdf4;border:1.5px solid #86efac}
+.zfun-emoji{font-size:2rem;margin-bottom:6px}
+.zfun-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.zfun-card.gold .zfun-title{color:#92400e}
+.zfun-card.blue .zfun-title{color:#1e40af}
+.zfun-card.rose .zfun-title{color:#be123c}
+.zfun-card.green .zfun-title{color:#166534}
+.zfun-text{font-size:.78rem;font-weight:600;color:#1e293b;line-height:1.5}
+.zfun-dyk{margin-top:16px;background:linear-gradient(135deg,#faf5ff,#f3e8ff);border:1.5px solid #c4b5fd;border-radius:12px;padding:18px}
+.zfun-dyk-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6d28d9;margin-bottom:8px}
+.zfun-dyk-text{font-size:.82rem;color:#4c1d95;line-height:1.7}
+@media(max-width:500px){.zfun{grid-template-columns:1fr}}
+</style>
+<meta name="tool-id" content="nollywood-pitch">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Film & TV Budget Estimator Africa",
+  "description": "Estimate your African film or TV production budget with pre-loaded industry costs for Nollywood, Kenyan, Ghanaian, and South African markets.",
+  "url": "https://afrotools.com/tools/nollywood-pitch/",
+  "inLanguage": "en",
+  "applicationCategory": "WebApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/nollywood-pitch.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Film & TV Budget Estimator Africa",
+  "url": "https://afrotools.com/tools/nollywood-pitch/",
+  "description": "Estimate your African film or TV production budget with pre-loaded industry costs for Nollywood, Kenyan, Ghanaian, and South African markets.",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/nollywood-pitch.webp"
+}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How much does a Nollywood film cost?","acceptedAnswer":{"@type":"Answer","text":"Nollywood budgets range widely. A low-budget production can cost 2-10 million Naira ($2,000-$10,000), a mid-range production 15-80 million Naira ($15,000-$80,000), and a high-end production 100 million Naira to several hundred million ($100,000+). Netflix-backed Nollywood films can exceed $1 million. The budget depends on cast, locations, shooting days, and production quality."}},{"@type":"Question","name":"What's the biggest cost in African film production?","acceptedAnswer":{"@type":"Answer","text":"Typically, cast and crew salaries are the largest expense (30-45% of budget). Equipment rental, locations, and post-production each account for 10-20%. For low-budget productions, equipment and location costs may dominate. For high-budget productions, above-the-line talent (stars, director) can take the largest share."}},{"@type":"Question","name":"Are these estimates accurate?","acceptedAnswer":{"@type":"Answer","text":"The pre-loaded estimates are based on industry averages and publicly available data from African film commissions and production companies. Actual costs vary significantly based on your specific project, location, crew experience, and negotiating power. Use these as starting points and adjust based on actual quotes."}},{"@type":"Question","name":"How do I fund my film?","acceptedAnswer":{"@type":"Answer","text":"Common funding sources include: personal savings, private investors, pre-sales to distributors (MultiChoice/Africa Magic, Netflix, Amazon), grants (African Film Fund, national film commissions, Hubert Bals Fund), crowdfunding, and brand partnerships/product placement. Most African films use a combination of these sources."}}]}
+</script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Nollywood Budget Estimator",
+      "item": "https://afrotools.com/tools/nollywood-pitch/"
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=c0a56b60">
+<script src="/assets/js/african-workflow.js?v=cf96f534" defer></script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/nollywood-pitch/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/nollywood-pitch/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/nollywood-pitch/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+<section class="v2-hero">
+<nav class="crumb"><a href="/">AfroTools</a><span>/</span><a href="/uniquely-african/">Uniquely African</a><span>/</span>Film Budget Estimator</nav>
+<h1>Film/TV Budget <em style="color:var(--color-primary);font-style:normal">Estimator</em></h1>
+<p>Budget Nollywood, Ghollywood, and African film/TV productions. Crew rates, location costs, and equipment pricing.</p>
+</section>
+<div class="container">
+<div class="card">
+<h2>Project Setup</h2>
+<div class="form-grid">
+<div class="form-group"><label for="country">Production Country</label><select id="country" onchange="loadPreset()"><option value="NG">Nigeria (Nollywood)</option><option value="KE">Kenya</option><option value="GH">Ghana (Ghallywood)</option><option value="ZA">South Africa</option></select></div>
+<div class="form-group"><label>Project Type</label><select id="projectType" onchange="loadPreset()" aria-label="Project Type"><option value="feature">Feature Film</option><option value="series">TV Series (per episode)</option><option value="short">Short Film</option><option value="music_video">Music Video</option><option value="documentary">Documentary</option></select></div>
+<div class="form-group"><label>Budget Tier</label><select id="tier" onchange="loadPreset()" aria-label="Tier"><option value="low">Low Budget</option><option value="mid">Mid Budget</option><option value="high">High Budget</option></select></div>
+</div>
+</div>
+
+<div class="card">
+<h2>Budget Breakdown</h2>
+<p style="font-size:.85rem;color:#64748b;margin-bottom:.5rem">Edit any line item. Amounts are in local currency. Pre-loaded estimates based on industry averages.</p>
+<table class="budget-table" id="budgetTable">
+<thead><tr><th>Category / Item</th><th style="width:120px;text-align:right">Estimate</th></tr></thead>
+<tbody id="budgetBody"></tbody>
+</table>
+</div>
+
+<div class="card">
+<h2>Budget Summary</h2>
+<div class="summary-grid" id="summaryGrid"></div>
+<div class="bar-wrap" id="barChart"></div>
+<div class="actions">
+<button type="button" class="btn" onclick="downloadBudget()">Download Budget (Text)</button>
+<button type="button" class="btn btn-outline" onclick="loadPreset()">Reset to Preset</button>
+</div>
+<div id="funZone" style="margin-top:1.5rem">
+  <div class="zfun" id="funCards"></div>
+  <div class="zfun-dyk">
+    <div class="zfun-dyk-title">Did You Know?</div>
+    <div class="zfun-dyk-text">Nollywood is the 2nd largest film industry by output &mdash; producing over 2,500 films per year! That's more than Hollywood. Only Bollywood makes more.</div>
+  </div>
+</div>
+</div>
+
+<div class="card">
+<h2>Pitch & Finance Readiness</h2>
+<p style="font-size:.85rem;color:#64748b;margin-bottom:.5rem">Competitor film-budget templates usually stop at a topsheet. This turns your estimate into a producer-facing note with funding gap, cash pressure, and outlet-specific next actions.</p>
+<div class="pitch-grid">
+<div class="form-group"><label>Logline</label><input aria-label="One sentence story hook" id="pitchLogline" placeholder="One sentence story hook"></div>
+<div class="form-group"><label>Shoot Days</label><input aria-label="PitchDays" id="pitchDays" type="number" value="18" min="1"></div>
+<div class="form-group"><label>Funding Secured (%)</label><input aria-label="PitchFunded" id="pitchFunded" type="number" value="30" min="0" max="100"></div>
+<div class="form-group"><label>Target Outlet</label><select id="pitchOutlet" aria-label="Pitch Outlet"><option value="cinema">Cinema release</option><option value="streaming">Streaming pitch</option><option value="tv">TV / Africa Magic</option><option value="festival">Festival route</option><option value="brand">Brand funded</option></select></div>
+</div>
+<div class="pitch-output" id="pitchOutput"></div>
+</div>
+</div>
+
+<section class="seo-section">
+<h2>African Film Production Budgeting</h2>
+<p>Africa's film and television industry is booming. Nollywood produces over 2,500 films annually, making Nigeria the world's second-largest film industry by volume. Kenya's film scene is growing rapidly with support from the Kenya Film Commission. South Africa has emerged as a global production hub with world-class studios and experienced crews. Ghana's Ghallywood continues to produce compelling content for West African audiences.</p>
+<h3>Understanding Production Costs</h3>
+<p>Film budgets in Africa vary enormously. A low-budget Nollywood feature can be produced for 2-5 million Naira (roughly $2,000-5,000), while a high-end production like "The Woman King" (filmed partly in South Africa) had a budget exceeding $50 million. Most commercial Nollywood films fall in the 10-50 million Naira range. Understanding where your money goes is crucial for efficient production.</p>
+<h3>Key Budget Categories</h3>
+<p>A professional film budget is divided into "above the line" costs (story rights, producer, director, lead cast) and "below the line" costs (crew, equipment, locations, post-production). In African productions, crew costs are typically the largest category, followed by equipment rental and location fees. Post-production costs have decreased significantly with digital editing, but quality sound mixing and colour grading remain important investments.</p>
+<h3>Tips for African Filmmakers</h3>
+<p>Always include a 10-15% contingency in your budget. Negotiate equipment package deals with rental houses. Consider shooting in locations that double for multiple scenes. Build relationships with crew members for better rates on repeat projects. Apply for grants from organizations like the African Film Fund, Netflix's Made in Africa program, or national film commissions. Pre-sell distribution rights to recover costs before release.</p>
+</section>
+
+
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+<section class="faq">
+<h2>Frequently Asked Questions</h2>
+<details><summary>How much does a Nollywood film cost?</summary><p>Nollywood budgets range widely. A low-budget production can cost 2-10 million Naira ($2,000-$10,000), a mid-range production 15-80 million Naira ($15,000-$80,000), and a high-end production 100 million Naira to several hundred million ($100,000+). Netflix-backed Nollywood films can exceed $1 million. The budget depends on cast, locations, shooting days, and production quality.</p></details>
+<details><summary>What's the biggest cost in African film production?</summary><p>Typically, cast and crew salaries are the largest expense (30-45% of budget). Equipment rental, locations, and post-production each account for 10-20%. For low-budget productions, equipment and location costs may dominate. For high-budget productions, above-the-line talent (stars, director) can take the largest share.</p></details>
+<details><summary>Are these estimates accurate?</summary><p>The pre-loaded estimates are based on industry averages and publicly available data from African film commissions and production companies. Actual costs vary significantly based on your specific project, location, crew experience, and negotiating power. Use these as starting points and adjust based on actual quotes.</p></details>
+<details><summary>How do I fund my film?</summary><p>Common funding sources include: personal savings, private investors, pre-sales to distributors (MultiChoice/Africa Magic, Netflix, Amazon), grants (African Film Fund, national film commissions, Hubert Bals Fund), crowdfunding, and brand partnerships/product placement. Most African films use a combination of these sources.</p></details>
+</section>
+<!-- AI Advisor -->
+<section style="max-width:800px;margin:0 auto;padding:32px 24px">
+<div style="background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:22px">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;flex-wrap:wrap;gap:8px">
+    <h3 style="font-size:15px;font-weight:800;color:#111;display:flex;align-items:center;gap:8px;margin:0">🤖 Film Budget Advisor <span style="padding:3px 9px;background:#EFF6FF;border:1px solid rgba(0,98,204,.2);border-radius:100px;font-size:10px;color:var(--color-primary);font-weight:700">AI</span></h3>
+    <span style="font-size:11px;color:#9ca3af">Optional AI · provider required</span>
+  </div>
+  <div style="font-size:11px;color:#9ca3af;margin-bottom:12px;line-height:1.5">Ask any question about African film production budgets. Max 3 exchanges per session.</div>
+  <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">
+    <div class="ai-prompt-btn" onclick="askAI(this.textContent)" style="padding:7px 12px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:7px;font-size:12px;color:#4b5563;cursor:pointer;font-weight:600;transition:.15s">How much does a Nollywood feature film cost?</div>
+    <div class="ai-prompt-btn" onclick="askAI(this.textContent)" style="padding:7px 12px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:7px;font-size:12px;color:#4b5563;cursor:pointer;font-weight:600;transition:.15s">What crew do I need for a music video?</div>
+    <div class="ai-prompt-btn" onclick="askAI(this.textContent)" style="padding:7px 12px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:7px;font-size:12px;color:#4b5563;cursor:pointer;font-weight:600;transition:.15s">How to reduce production costs?</div>
+  </div>
+  <div id="aiChat" style="display:flex;flex-direction:column;gap:8px;max-height:320px;overflow-y:auto;margin-bottom:12px;scroll-behavior:smooth"></div>
+  <div style="display:flex;gap:8px">
+    <input aria-label="Ask anything" type="text" id="aiQ" placeholder="Ask anything..." onkeydown="if(event.key==='Enter'&&!aiLoading)askAI()" style="flex:1;min-width:0;padding:10px 14px;border:1.5px solid #e5e7eb;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none">
+    <button type="button" id="aiBtn" onclick="askAI()" style="padding:10px 20px;background:linear-gradient(135deg,#0062CC,#0055D4);box-shadow:0 4px 14px rgba(0,98,204,.35);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap">Ask →</button>
+  </div>
+</div>
+</section>
+
+<script>
+var aiLoading=false,chatHistory=[],aiExchanges=0;
+async function askAI(preset){
+  var q=(preset||document.getElementById('aiQ').value||'').trim();
+  if(!q||aiLoading||aiExchanges>=3)return;
+  aiLoading=true;
+  document.getElementById('aiBtn').disabled=true;
+  document.getElementById('aiQ').value='';
+  var chat=document.getElementById('aiChat');
+  var uMsg=document.createElement('div');uMsg.style.cssText='padding:10px 14px;border-radius:10px;font-size:13px;line-height:1.65;max-width:88%;background:#EFF6FF;color:#111;border:1px solid rgba(0,98,204,.12);align-self:flex-end;font-weight:500';uMsg.textContent=q;chat.appendChild(uMsg);
+  var typing=document.createElement('div');typing.style.cssText='padding:10px 14px;border-radius:10px;font-size:13px;color:#9ca3af;font-style:italic;background:#f9fafb;border:1px solid #f3f4f6;align-self:flex-start';typing.textContent='Thinking…';chat.appendChild(typing);chat.scrollTop=9999;
+  var msgs=chatHistory.concat([{role:'user',content:q}]);
+  try{
+    var res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'nollywood-pitch',system:'',messages:msgs,maxTokens:500})});
+    typing.remove();
+    if(!res.ok)throw new Error();
+    var data=await res.json();
+    var reply=data.reply||data.content||'Sorry, something went wrong.';
+    chatHistory.push({role:'user',content:q});chatHistory.push({role:'assistant',content:reply});
+    aiExchanges++;
+    var bMsg=document.createElement('div');bMsg.style.cssText='padding:10px 14px;border-radius:10px;font-size:13px;line-height:1.65;max-width:88%;background:#f9fafb;color:#374151;border:1px solid #f3f4f6;align-self:flex-start;white-space:pre-wrap';bMsg.textContent=reply;chat.appendChild(bMsg);
+    if(aiExchanges>=3){document.getElementById('aiQ').placeholder='Session limit reached (3/3)';document.getElementById('aiQ').disabled=true;document.getElementById('aiBtn').disabled=true;}
+  }catch(e){
+    typing.remove();
+    var eMsg=document.createElement('div');eMsg.style.cssText='padding:10px 14px;border-radius:10px;font-size:13px;background:#fef3cd;color:#92400e;border:1px solid #fde68a;align-self:flex-start';eMsg.textContent='AI advisor is currently unavailable. Please try again later.';chat.appendChild(eMsg);
+  }
+  aiLoading=false;if(aiExchanges<3)document.getElementById('aiBtn').disabled=false;chat.scrollTop=9999;
+}
+</script>
+
+<afro-related-tools category="african" current="nollywood-pitch" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/afropoints/" data-related-tool data-id="afropoints" data-name="AfroPoints — Earn Money Contributing Data" data-category="african" data-icon="AE" data-desc="Earn real money by sharing African market data — prices, rates, salaries, costs. Contribute, earn points, cash out via m">AfroPoints — Earn Money Contributing Data</a></li><li><a href="/tools/remittance-compare/" data-related-tool data-id="remittance-compare" data-name="Remittance Comparator" data-category="african" data-icon="RC" data-desc="Compare Wise, WorldRemit, Western Union and 8 more. Find cheapest way to send money to Africa.">Remittance Comparator</a></li><li><a href="/tools/remittance-v2/" data-related-tool data-id="remittance-v2" data-name="Remittance Comparator Pro" data-category="african" data-icon="RC" data-desc="Compare editable remittance quotes by recipient value, FX margin, fee, speed, and payout method.">Remittance Comparator Pro</a></li><li><a href="/tools/afroatlas/" data-related-tool data-id="afroatlas" data-name="AfroAtlas — Africa Resource Explorer" data-category="african" data-icon="AA" data-desc="Interactive explorer for African country profiles, GDP, natural resources, trade data, rankings, and side-by-side compar">AfroAtlas — Africa Resource Explorer</a></li><li><a href="/tools/informal-fx-watch/" data-related-tool data-id="informal-fx-watch" data-name="Informal FX Watch" data-category="african" data-icon="IF" data-desc="Track street, BDC, and P2P informal FX spreads across African markets with contributor-backed quotes.">Informal FX Watch</a></li><li><a href="/tools/africa-conflict/" data-related-tool data-id="africa-conflict" data-name="AfroConflict — Conflict Intelligence" data-category="african" data-icon="AC" data-desc="Africa conflict intelligence dashboard — active conflicts, displacement tracker, economic impact, actor networks, scenar">AfroConflict — Conflict Intelligence</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools><afro-newsletter-cta></afro-newsletter-cta><afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script><script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script><script src="/assets/js/components/related-tools.js?v=4123e336" defer></script><script src="/assets/js/components/newsletter-cta.js?v=73bdfbf4" defer></script>
+<script src="/assets/js/favorites.js?v=163519f9" defer></script>
+<script>
+const CURRENCIES={NG:{sym:'\u20a6',name:'NGN'},KE:{sym:'KSh',name:'KES'},GH:{sym:'GH\u20b5',name:'GHS'},ZA:{sym:'R',name:'ZAR'}};
+const COLORS=['#0062CC','#0063D1','#4DA3FF','#0A1628','#3B82F6','#1D4ED8','#60A5FA','#2563EB'];
+
+const BUDGET_TEMPLATE=[
+  {cat:'Pre-Production',items:['Script/Story Rights','Producer Fee','Director Fee','Casting & Auditions','Location Scouting','Production Design','Legal & Insurance']},
+  {cat:'Cast',items:['Lead Actors (x2-3)','Supporting Cast (x5-8)','Extras','Wardrobe & Makeup']},
+  {cat:'Crew',items:['Director of Photography','Sound Recordist','Gaffer & Electricians','Art Department','Production Assistants','Catering/Craft Services']},
+  {cat:'Equipment',items:['Camera Package','Lighting Package','Sound Equipment','Grip & Rigging','Generator','Transport/Vehicles']},
+  {cat:'Locations',items:['Location Fees','Set Construction','Permits & Police','Security']},
+  {cat:'Post-Production',items:['Editing','Colour Grading','Sound Design & Mix','Music/Score','Visual Effects','Titles & Graphics']},
+  {cat:'Distribution & Marketing',items:['Festival Submissions','Poster & Trailer','Marketing & PR','Distribution Fees','Premiere Event']},
+  {cat:'Contingency',items:['Contingency (10-15%)']}
+];
+
+const PRESETS={
+  NG:{feature:{low:[200000,300000,500000,50000,80000,100000,50000,800000,300000,100000,200000,250000,80000,60000,50000,150000,100000,80000,200000,150000,100000,50000,30000,150000,80000,100000,50000,30000,20000,50000,20000,30000,100000,30000,400000,240000,45000,30000,535500],mid:[500000,1500000,2000000,200000,300000,500000,200000,4000000,1500000,500000,800000,1000000,400000,250000,200000,500000,500000,300000,700000,500000,300000,200000,150000,500000,300000,400000,200000,100000,100000,200000,100000,150000,300000,100000,1500000,900000,150000,100000,2210000],high:[2000000,5000000,8000000,500000,800000,2000000,500000,15000000,5000000,2000000,3000000,3000000,1500000,800000,500000,2000000,1500000,1000000,2000000,1500000,1000000,500000,500000,2000000,1000000,1500000,1000000,500000,400000,800000,500000,500000,1000000,500000,5000000,3000000,750000,500000,7855000]},series:{low:[100000,200000,300000,30000,50000,60000,30000,500000,200000,80000,100000,150000,50000,40000,30000,100000,60000,50000,100000,80000,60000,30000,20000,80000,50000,60000,30000,20000,10000,30000,10000,20000,50000,20000,200000,120000,30000,20000,317000],mid:[300000,800000,1000000,100000,150000,250000,100000,2000000,800000,300000,400000,500000,250000,150000,100000,300000,250000,150000,400000,300000,200000,100000,80000,300000,200000,250000,100000,60000,50000,100000,50000,80000,150000,60000,800000,480000,90000,60000,1181000],high:[1000000,3000000,5000000,300000,500000,1000000,300000,8000000,3000000,1000000,1500000,2000000,800000,500000,300000,1000000,800000,500000,1200000,800000,500000,300000,300000,1000000,500000,800000,500000,300000,200000,500000,250000,300000,500000,300000,3000000,1800000,450000,300000,4430000]},short:{low:[50000,50000,100000,20000,30000,30000,20000,150000,50000,30000,50000,60000,30000,20000,15000,50000,30000,20000,50000,40000,30000,15000,10000,30000,20000,30000,15000,10000,5000,10000,5000,10000,20000,5000,80000,48000,7500,5000,125050],mid:[100000,200000,300000,50000,80000,80000,50000,500000,200000,80000,100000,200000,80000,50000,40000,100000,80000,50000,150000,100000,80000,40000,30000,80000,60000,80000,40000,20000,15000,30000,15000,30000,50000,20000,250000,150000,30000,20000,363000],high:[300000,500000,800000,100000,200000,200000,100000,1500000,500000,200000,300000,500000,200000,120000,80000,300000,200000,120000,400000,250000,200000,80000,80000,200000,150000,200000,100000,50000,40000,80000,40000,60000,100000,50000,600000,360000,75000,50000,938500]},music_video:{low:[30000,50000,100000,10000,20000,30000,10000,100000,30000,20000,40000,50000,20000,15000,10000,40000,25000,15000,40000,30000,20000,10000,5000,20000,15000,20000,10000,5000,5000,10000,5000,5000,10000,5000,50000,30000,7500,5000,92250],mid:[80000,150000,300000,30000,50000,80000,30000,300000,100000,50000,80000,150000,60000,40000,30000,80000,60000,40000,100000,80000,60000,30000,20000,60000,40000,60000,30000,15000,10000,20000,15000,20000,30000,15000,150000,90000,22500,15000,259250],high:[200000,400000,800000,80000,120000,200000,80000,800000,300000,150000,200000,400000,150000,100000,80000,200000,150000,80000,250000,200000,150000,80000,50000,150000,100000,150000,80000,30000,25000,50000,30000,40000,80000,30000,400000,240000,45000,30000,670000]},documentary:{low:[50000,100000,150000,20000,50000,30000,30000,0,0,30000,50000,50000,30000,20000,15000,50000,30000,20000,60000,40000,30000,15000,10000,30000,20000,40000,20000,10000,5000,15000,10000,15000,30000,10000,80000,48000,15000,10000,123800],mid:[150000,300000,500000,50000,100000,80000,60000,0,0,50000,100000,150000,60000,40000,30000,100000,60000,40000,150000,100000,80000,30000,30000,80000,50000,80000,50000,20000,15000,40000,20000,30000,50000,20000,250000,150000,30000,20000,316500],high:[500000,1000000,1500000,100000,200000,200000,100000,0,0,100000,200000,400000,150000,100000,60000,200000,150000,80000,300000,200000,150000,60000,60000,200000,100000,150000,100000,50000,30000,80000,50000,60000,100000,50000,600000,360000,75000,50000,786500]}},
+  KE:{feature:{low:[15000,25000,40000,5000,8000,10000,5000,60000,25000,10000,15000,20000,8000,5000,4000,12000,8000,6000,15000,12000,8000,4000,3000,12000,6000,8000,4000,3000,2000,4000,2000,3000,8000,2000,30000,18000,3000,2000,43000],mid:[40000,120000,180000,15000,25000,40000,15000,300000,120000,40000,60000,80000,35000,20000,15000,40000,35000,20000,60000,40000,25000,15000,10000,40000,25000,30000,15000,8000,6000,15000,8000,12000,25000,8000,120000,72000,12000,8000,175400],high:[150000,400000,600000,40000,60000,150000,40000,1000000,400000,150000,200000,250000,120000,60000,40000,150000,100000,60000,150000,120000,80000,40000,40000,120000,80000,100000,60000,30000,20000,60000,30000,40000,80000,30000,400000,240000,45000,30000,576500]},series:{low:[10000,15000,25000,3000,5000,5000,3000,40000,15000,5000,8000,12000,5000,3000,3000,8000,5000,4000,10000,8000,5000,3000,2000,8000,4000,5000,3000,2000,1000,3000,1000,2000,4000,1000,20000,12000,1500,1000,27050],mid:[25000,60000,80000,8000,12000,20000,8000,150000,60000,20000,30000,40000,20000,10000,8000,20000,18000,10000,30000,20000,12000,8000,5000,20000,12000,15000,8000,4000,3000,8000,4000,6000,12000,4000,60000,36000,6000,4000,87600],high:[80000,200000,300000,20000,30000,60000,20000,500000,200000,80000,100000,120000,60000,30000,20000,80000,50000,30000,80000,60000,40000,20000,20000,60000,40000,50000,30000,15000,10000,30000,15000,20000,40000,15000,200000,120000,22500,15000,288250]},short:{low:[5000,5000,8000,2000,3000,3000,2000,12000,4000,3000,4000,5000,3000,2000,1000,4000,3000,2000,4000,3000,2000,1000,1000,3000,2000,3000,1000,1000,500,1000,500,1000,2000,500,6000,3600,750,500,10835],mid:[10000,15000,25000,4000,6000,6000,4000,40000,15000,6000,8000,15000,6000,4000,3000,8000,6000,4000,12000,8000,6000,3000,2000,6000,5000,6000,3000,2000,1000,3000,1000,2000,4000,1000,18000,10800,1500,1000,28130],high:[25000,40000,60000,8000,15000,15000,8000,120000,40000,15000,25000,40000,15000,10000,6000,25000,15000,10000,30000,20000,15000,6000,6000,15000,10000,15000,8000,4000,3000,6000,3000,5000,8000,4000,50000,30000,6000,4000,74000]},music_video:{low:[3000,4000,8000,1000,2000,2000,1000,8000,3000,2000,3000,4000,2000,1000,1000,3000,2000,1000,3000,2000,1500,1000,500,2000,1000,1500,1000,500,500,1000,500,500,1000,500,4000,2400,750,500,7665],mid:[8000,12000,25000,3000,4000,6000,3000,25000,8000,4000,6000,12000,5000,3000,2000,6000,5000,3000,8000,6000,5000,3000,1500,5000,3000,5000,3000,1000,1000,2000,1000,1500,3000,1000,12000,7200,1500,1000,21170],high:[20000,30000,60000,6000,10000,15000,6000,60000,25000,12000,15000,30000,12000,8000,6000,15000,12000,6000,20000,15000,12000,6000,4000,12000,8000,12000,6000,3000,2000,4000,2000,3000,6000,3000,30000,18000,4500,3000,52150]},documentary:{low:[5000,8000,12000,2000,5000,3000,3000,0,0,3000,4000,4000,3000,2000,1000,4000,3000,2000,5000,3000,2000,1000,1000,3000,2000,3000,2000,1000,500,1000,1000,1000,2000,1000,6000,3600,1500,1000,10560],mid:[12000,25000,40000,4000,8000,6000,5000,0,0,4000,8000,12000,5000,3000,2000,8000,5000,3000,12000,8000,6000,3000,2000,6000,4000,6000,4000,2000,1000,3000,2000,2000,4000,2000,20000,12000,3000,2000,25400],high:[40000,80000,120000,8000,15000,15000,8000,0,0,8000,15000,30000,12000,8000,5000,15000,12000,6000,25000,15000,12000,5000,5000,15000,8000,12000,8000,4000,2000,6000,4000,5000,8000,4000,50000,30000,6000,4000,62500]}},
+  GH:{feature:{low:[2000,2500,4000,500,800,1000,500,6000,2500,1000,1500,2000,800,500,400,1200,800,600,1500,1200,800,400,300,1200,600,800,400,300,200,400,200,300,800,200,3000,1800,300,200,4350],mid:[4000,12000,18000,1500,2500,4000,1500,30000,12000,4000,6000,8000,3500,2000,1500,4000,3500,2000,6000,4000,2500,1500,1000,4000,2500,3000,1500,800,600,1500,800,1200,2500,800,12000,7200,1200,800,17540],high:[15000,40000,60000,4000,6000,15000,4000,100000,40000,15000,20000,25000,12000,6000,4000,15000,10000,6000,15000,12000,8000,4000,4000,12000,8000,10000,6000,3000,2000,6000,3000,4000,8000,3000,40000,24000,4500,3000,57650]},series:{low:[1000,1500,2500,300,500,500,300,4000,1500,500,800,1200,500,300,300,800,500,400,1000,800,500,300,200,800,400,500,300,200,100,300,100,200,400,100,2000,1200,150,100,2705],mid:[2500,6000,8000,800,1200,2000,800,15000,6000,2000,3000,4000,2000,1000,800,2000,1800,1000,3000,2000,1200,800,500,2000,1200,1500,800,400,300,800,400,600,1200,400,6000,3600,600,400,8760],high:[8000,20000,30000,2000,3000,6000,2000,50000,20000,8000,10000,12000,6000,3000,2000,8000,5000,3000,8000,6000,4000,2000,2000,6000,4000,5000,3000,1500,1000,3000,1500,2000,4000,1500,20000,12000,2250,1500,28825]},short:{low:[500,500,800,200,300,300,200,1200,400,300,400,500,300,200,100,400,300,200,400,300,200,100,100,300,200,300,100,100,50,100,50,100,200,50,600,360,75,50,1084],mid:[1000,1500,2500,400,600,600,400,4000,1500,600,800,1500,600,400,300,800,600,400,1200,800,600,300,200,600,500,600,300,200,100,300,100,200,400,100,1800,1080,150,100,2813],high:[2500,4000,6000,800,1500,1500,800,12000,4000,1500,2500,4000,1500,1000,600,2500,1500,1000,3000,2000,1500,600,600,1500,1000,1500,800,400,300,600,300,500,800,400,5000,3000,600,400,7400]},music_video:{low:[300,400,800,100,200,200,100,800,300,200,300,400,200,100,100,300,200,100,300,200,150,100,50,200,100,150,100,50,50,100,50,50,100,50,400,240,75,50,767],mid:[800,1200,2500,300,400,600,300,2500,800,400,600,1200,500,300,200,600,500,300,800,600,500,300,150,500,300,500,300,100,100,200,100,150,300,100,1200,720,150,100,2117],high:[2000,3000,6000,600,1000,1500,600,6000,2500,1200,1500,3000,1200,800,600,1500,1200,600,2000,1500,1200,600,400,1200,800,1200,600,300,200,400,200,300,600,300,3000,1800,450,300,5215]},documentary:{low:[500,800,1200,200,500,300,300,0,0,300,400,400,300,200,100,400,300,200,500,300,200,100,100,300,200,300,200,100,50,100,100,100,200,100,600,360,150,100,1056],mid:[1200,2500,4000,400,800,600,500,0,0,400,800,1200,500,300,200,800,500,300,1200,800,600,300,200,600,400,600,400,200,100,300,200,200,400,200,2000,1200,300,200,2540],high:[4000,8000,12000,800,1500,1500,800,0,0,800,1500,3000,1200,800,500,1500,1200,600,2500,1500,1200,500,500,1500,800,1200,800,400,200,600,400,500,800,400,5000,3000,600,400,6250]}},
+  ZA:{feature:{low:[20000,30000,50000,5000,10000,12000,8000,80000,30000,12000,20000,25000,10000,6000,5000,15000,10000,8000,20000,15000,10000,5000,4000,15000,8000,10000,5000,4000,2000,5000,3000,4000,10000,3000,40000,24000,4500,3000,55050],mid:[60000,200000,300000,20000,40000,60000,25000,500000,200000,60000,100000,120000,50000,30000,20000,60000,50000,30000,80000,60000,40000,20000,15000,60000,40000,50000,20000,12000,8000,20000,12000,20000,40000,12000,180000,108000,18000,12000,275200],high:[250000,600000,1000000,60000,100000,200000,60000,1500000,600000,200000,300000,400000,200000,100000,60000,200000,150000,80000,250000,200000,150000,60000,60000,200000,120000,150000,80000,40000,30000,80000,50000,60000,120000,40000,600000,360000,60000,40000,881000]},series:{low:[12000,20000,30000,3000,6000,6000,4000,50000,20000,6000,10000,15000,6000,4000,3000,10000,6000,5000,12000,10000,6000,3000,2000,10000,5000,6000,3000,2000,1000,3000,2000,2000,5000,2000,25000,15000,3000,2000,33500],mid:[30000,80000,120000,10000,20000,30000,12000,200000,80000,30000,50000,60000,25000,15000,10000,30000,25000,15000,40000,30000,20000,10000,8000,30000,20000,25000,10000,6000,4000,10000,6000,10000,20000,6000,80000,48000,9000,6000,124000],high:[100000,250000,400000,25000,40000,80000,25000,600000,250000,100000,150000,200000,80000,40000,25000,80000,60000,30000,100000,80000,60000,25000,25000,80000,50000,60000,30000,20000,12000,30000,20000,25000,50000,20000,250000,150000,30000,20000,367200]},short:{low:[5000,5000,10000,2000,3000,3000,2000,15000,5000,3000,5000,6000,3000,2000,1500,5000,3000,2000,5000,4000,3000,1500,1000,4000,2000,3000,1500,1000,500,1500,500,1000,2000,500,8000,4800,750,500,12655],mid:[12000,20000,40000,5000,8000,8000,5000,50000,20000,8000,12000,20000,8000,5000,4000,10000,8000,5000,15000,10000,8000,4000,3000,8000,6000,8000,4000,2000,1500,4000,1500,3000,6000,1500,25000,15000,2250,1500,37725],high:[30000,50000,80000,10000,20000,20000,10000,150000,50000,20000,30000,50000,20000,12000,8000,30000,20000,12000,40000,25000,20000,8000,8000,20000,12000,20000,10000,5000,3000,8000,4000,6000,12000,5000,60000,36000,7500,5000,93650]},music_video:{low:[3000,5000,10000,1000,2000,3000,1000,10000,3000,2000,3000,5000,2000,1500,1000,4000,2500,1500,4000,3000,2000,1000,500,2000,1500,2000,1000,500,500,1000,500,500,1000,500,5000,3000,750,500,9125],mid:[8000,15000,30000,3000,5000,8000,3000,30000,10000,5000,8000,15000,6000,4000,3000,8000,6000,4000,10000,8000,6000,3000,2000,6000,4000,6000,3000,1500,1000,2000,1500,2000,4000,1500,15000,9000,2250,1500,26025],high:[25000,40000,80000,8000,12000,20000,8000,80000,30000,15000,20000,40000,15000,10000,8000,20000,15000,8000,25000,20000,15000,8000,5000,15000,10000,15000,8000,4000,2000,5000,3000,4000,8000,3000,40000,24000,4500,3000,67550]},documentary:{low:[5000,10000,15000,2000,5000,3000,3000,0,0,3000,5000,5000,3000,2000,1500,5000,3000,2000,6000,4000,3000,1500,1000,4000,2000,4000,2000,1000,500,1500,1000,1500,3000,1000,8000,4800,1500,1000,12480],mid:[15000,30000,50000,5000,10000,8000,6000,0,0,5000,10000,15000,6000,4000,3000,10000,6000,4000,15000,10000,8000,4000,3000,8000,5000,8000,5000,2000,1500,4000,2000,3000,5000,2000,25000,15000,3000,2000,31750],high:[50000,100000,150000,10000,20000,20000,10000,0,0,10000,20000,40000,15000,10000,6000,20000,15000,8000,30000,20000,15000,6000,6000,20000,10000,15000,10000,5000,3000,8000,5000,6000,10000,5000,60000,36000,7500,5000,78650]}}
+};
+
+let allItems=[];
+let lastGrandTotal=0;
+let lastCatTotals={};
+let lastPitchBrief='';
+
+function loadPreset(){
+  const c=document.getElementById('country').value;
+  const t=document.getElementById('projectType').value;
+  const tier=document.getElementById('tier').value;
+  const preset=PRESETS[c][t][tier];
+  const sym=CURRENCIES[c].sym;
+
+  allItems=[];
+  let idx=0;
+  let html='';
+  BUDGET_TEMPLATE.forEach(cat=>{
+    html+=`<tr class="cat-row"><td colspan="2">${cat.cat}</td></tr>`;
+    cat.items.forEach(item=>{
+      const val=preset[idx]||0;
+      allItems.push({cat:cat.cat,item,val});
+      html+=`<tr><td style="padding-left:1.5rem">${item}</td><td><input type="number" data-idx="${idx}" value="${val}" min="0" onchange="recalc()" aria-label="Input value"></td></tr>`;
+      idx++;
+    });
+  });
+  document.getElementById('budgetBody').innerHTML=html;
+  recalc();
+}
+
+function recalc(){
+  const c=document.getElementById('country').value;
+  const sym=CURRENCIES[c].sym;
+  const inputs=document.querySelectorAll('#budgetTable input[type=number]');
+  const catTotals={};
+  let grandTotal=0;
+
+  inputs.forEach(inp=>{
+    const i=parseInt(inp.dataset.idx);
+    const v=parseFloat(inp.value)||0;
+    allItems[i].val=v;
+    const cat=allItems[i].cat;
+    if(!catTotals[cat])catTotals[cat]=0;
+    catTotals[cat]+=v;
+    grandTotal+=v;
+  });
+
+  lastGrandTotal=grandTotal;
+  lastCatTotals=catTotals;
+
+  const cats=Object.keys(catTotals);
+  const aboveLine=catTotals['Pre-Production']||0;
+  const belowLine=grandTotal-aboveLine-(catTotals['Contingency']||0);
+  const contingency=catTotals['Contingency']||0;
+
+  document.getElementById('summaryGrid').innerHTML=`
+    <div class="summary-box"><div class="label">Above the Line</div><div class="value">${sym}${aboveLine.toLocaleString()}</div></div>
+    <div class="summary-box"><div class="label">Below the Line</div><div class="value">${sym}${belowLine.toLocaleString()}</div></div>
+    <div class="summary-box"><div class="label">Contingency</div><div class="value">${sym}${contingency.toLocaleString()}</div></div>
+    <div class="summary-box total"><div class="label">Total Budget</div><div class="value">${sym}${grandTotal.toLocaleString()}</div></div>`;
+
+  let barHtml='';
+  cats.forEach((cat,i)=>{
+    const pct=grandTotal>0?(catTotals[cat]/grandTotal*100):0;
+    const color=COLORS[i%COLORS.length];
+    barHtml+=`<div class="bar-row"><div class="bar-label">${cat}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.max(pct,2)}%;background:${color}">${pct.toFixed(1)}%</div></div></div>`;
+  });
+  document.getElementById('barChart').innerHTML=barHtml;
+  updateNollyFun(grandTotal, c);
+  renderPitchPlan();
+}
+
+function updateNollyFun(total, country){
+  var funCards=document.getElementById('funCards');
+  if(total<=0){funCards.innerHTML='';return;}
+  var sym=CURRENCIES[country].sym;
+  // Convert to NGN for comparisons (approximate rates)
+  var toNGN={NG:1,KE:11.5,GH:115,ZA:85};
+  var budgetNGN=total*(toNGN[country]||1);
+  var avgNolly=10000000;
+  var nollyRatio=(budgetNGN/avgNolly).toFixed(1);
+  var nollyLabel=budgetNGN>=avgNolly?nollyRatio+'x the average':'~'+(budgetNGN/avgNolly*100).toFixed(0)+'% of average';
+  var ticketPrice=5000;
+  var tickets=Math.round(budgetNGN/ticketPrice);
+  var iphonePrice=1200000;
+  var iphones=(budgetNGN/iphonePrice).toFixed(1);
+  var hollywoodNGN=65000000*1600;
+  var hollyFraction=(budgetNGN/hollywoodNGN*100);
+  var hollyLabel=hollyFraction<1?hollyFraction.toFixed(3)+'%':hollyFraction.toFixed(1)+'%';
+  funCards.innerHTML=
+    '<div class="zfun-card green"><div class="zfun-emoji">&#127916;</div><div class="zfun-title">Nollywood Average</div><div class="zfun-text">'+nollyLabel+'</div></div>'+
+    '<div class="zfun-card blue"><div class="zfun-emoji">&#127871;</div><div class="zfun-title">Cinema Tickets</div><div class="zfun-text">'+tickets.toLocaleString()+' tickets</div></div>'+
+    '<div class="zfun-card gold"><div class="zfun-emoji">&#128241;</div><div class="zfun-title">In iPhones</div><div class="zfun-text">'+iphones+' iPhone 16 Pros</div></div>'+
+    '<div class="zfun-card rose"><div class="zfun-emoji">&#127917;</div><div class="zfun-title">Hollywood Ratio</div><div class="zfun-text">'+hollyLabel+' of avg Hollywood film</div></div>';
+}
+
+function renderPitchPlan(){
+  var box=document.getElementById('pitchOutput');
+  if(!box)return;
+  var c=document.getElementById('country').value;
+  var sym=CURRENCIES[c].sym;
+  var countryLabel=document.getElementById('country').selectedOptions[0].text;
+  var projectLabel=document.getElementById('projectType').selectedOptions[0].text;
+  var tierLabel=document.getElementById('tier').selectedOptions[0].text;
+  var logline=(document.getElementById('pitchLogline').value||'Untitled project').trim();
+  var shootDays=Math.max(1,parseFloat(document.getElementById('pitchDays').value)||1);
+  var fundedPct=Math.min(100,Math.max(0,parseFloat(document.getElementById('pitchFunded').value)||0));
+  var outlet=document.getElementById('pitchOutlet').value;
+  var total=lastGrandTotal||0;
+  var secured=total*fundedPct/100;
+  var gap=Math.max(0,total-secured);
+  var perDay=total/shootDays;
+  var contingency=lastCatTotals['Contingency']||0;
+  var contingencyPct=total>0?contingency/total*100:0;
+  var largest=Object.keys(lastCatTotals).sort(function(a,b){return lastCatTotals[b]-lastCatTotals[a];})[0]||'Crew';
+  var outletNotes={
+    cinema:'Protect trailer, key art, classification, DCP, premiere and P&A spend before locking the budget.',
+    streaming:'Prioritize chain of title, music clearances, sound mix, subtitles, deliverables and a clean production bible.',
+    tv:'Translate the budget into per-episode cost, delivery dates, cast availability and broadcaster-friendly milestones.',
+    festival:'Reserve money for subtitling, festival fees, EPK, travel, stills, poster and rough-cut feedback.',
+    brand:'Define usage rights, approval rounds, product placement scope, brand safety and final deliverables in writing.'
+  };
+  var risk=contingencyPct<8?'Contingency looks thin':gap>total*0.6?'Funding gap is high':'Pitchable with clear assumptions';
+  lastPitchBrief=[
+    'NOLLYWOOD PITCH BRIEF',
+    'Project: '+logline,
+    'Market: '+countryLabel,
+    'Format: '+projectLabel+' / '+tierLabel,
+    'Budget: '+sym+Math.round(total).toLocaleString(),
+    'Secured: '+sym+Math.round(secured).toLocaleString()+' ('+fundedPct+'%)',
+    'Funding gap: '+sym+Math.round(gap).toLocaleString(),
+    'Shoot days: '+shootDays+' at about '+sym+Math.round(perDay).toLocaleString()+' per day',
+    'Largest cost bucket: '+largest,
+    'Finance note: '+risk,
+    'Outlet note: '+outletNotes[outlet]
+  ].join('\n');
+  box.innerHTML=
+    '<div class="pitch-metrics">'+
+    '<div class="pitch-metric"><span>Funding gap</span><strong>'+sym+Math.round(gap).toLocaleString()+'</strong></div>'+
+    '<div class="pitch-metric"><span>Cost / shoot day</span><strong>'+sym+Math.round(perDay).toLocaleString()+'</strong></div>'+
+    '<div class="pitch-metric"><span>Contingency</span><strong>'+contingencyPct.toFixed(1)+'%</strong></div>'+
+    '<div class="pitch-metric"><span>Largest bucket</span><strong>'+largest+'</strong></div>'+
+    '</div>'+
+    '<p><strong>Producer read:</strong> '+risk+'. Keep budget top sheet, detailed line items, cashflow timing and finance plan aligned before sharing with investors.</p>'+
+    '<p><strong>Outlet action:</strong> '+outletNotes[outlet]+'</p>'+
+    '<button class="pitch-copy" type="button" onclick="copyPitchBrief()">Copy pitch brief</button>';
+}
+
+function copyPitchBrief(){
+  if(!lastPitchBrief)return;
+  if(navigator.clipboard){navigator.clipboard.writeText(lastPitchBrief);}
+}
+
+function downloadBudget(){
+  const c=document.getElementById('country').value;
+  const t=document.getElementById('projectType').value;
+  const tier=document.getElementById('tier').value;
+  const sym=CURRENCIES[c].sym;
+  const cname=CURRENCIES[c].name;
+
+  let text=`FILM/TV PRODUCTION BUDGET\n`;
+  text+=`========================\n`;
+  text+=`Country: ${document.getElementById('country').selectedOptions[0].text}\n`;
+  text+=`Project: ${document.getElementById('projectType').selectedOptions[0].text}\n`;
+  text+=`Tier: ${tier.charAt(0).toUpperCase()+tier.slice(1)} Budget\n`;
+  text+=`Currency: ${cname}\n`;
+  text+=`Date: ${new Date().toLocaleDateString()}\n\n`;
+
+  let grandTotal=0;
+  let currentCat='';
+  allItems.forEach(item=>{
+    if(item.cat!==currentCat){
+      if(currentCat)text+='\n';
+      currentCat=item.cat;
+      text+=`--- ${currentCat} ---\n`;
+    }
+    text+=`  ${item.item}: ${sym}${item.val.toLocaleString()}\n`;
+    grandTotal+=item.val;
+  });
+  text+=`\n========================\n`;
+  text+=`TOTAL BUDGET: ${sym}${grandTotal.toLocaleString()}\n`;
+  text+=`\nGenerated by AfroTools Film Budget Estimator\nhttps://afrotools.com/tools/nollywood-pitch/\n`;
+
+  const blob=new Blob([text],{type:'text/plain'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`film-budget-${c}-${t}-${tier}.txt`;
+  a.click();
+}
+
+loadPreset();
+['pitchLogline','pitchDays','pitchFunded','pitchOutlet'].forEach(function(id){
+  var el=document.getElementById(id);
+  if(el)el.addEventListener('input',renderPitchPlan);
+  if(el)el.addEventListener('change',renderPitchPlan);
+});
+</script>
+
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+</body>
+</html>

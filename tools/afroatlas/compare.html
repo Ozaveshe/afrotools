@@ -1,0 +1,1298 @@
+﻿<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compare Countries — AfroAtlas | AfroTools</title>
+<meta name="description" content="Compare any two countries side-by-side — GDP, population, natural resources, HDI, and more.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta name="tool-id" content="afroatlas">
+<meta property="og:title" content="Compare Countries — AfroAtlas | AfroTools">
+<meta property="og:description" content="Compare any two countries side-by-side — GDP, population, natural resources, HDI, and more.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/afroatlas/compare">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Compare Countries — AfroAtlas | AfroTools">
+<meta name="twitter:description" content="Compare any two countries side-by-side — GDP, population, natural resources, HDI, and more.">
+<meta name="robots" content="index, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="style.css?v=5e706072">
+<link rel="stylesheet" href="/assets/css/afroatlas-twemoji.css?v=6d8ec1be">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<style>
+/* ── COMPARE PAGE ── */
+.aa-cmp-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding: 40px 20px 32px;
+  text-align: center;
+}
+.aa-cmp-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 120px;
+}
+.aa-cmp-flag {
+  font-size: 3.5rem;
+  line-height: 1;
+}
+.aa-cmp-name {
+  font-family: var(--font-heading, 'Instrument Serif', Georgia, serif);
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  font-weight: 400;
+  color: var(--color-text, #0f172a);
+}
+.aa-cmp-vs {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--color-primary, #0062CC);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.aa-cmp-swap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 auto;
+  padding: 7px 18px;
+  background: var(--color-bg-card, #fff);
+  border: 1.5px solid var(--color-border, #e2e8f0);
+  border-radius: var(--radius-pill, 100px);
+  font-family: var(--font-body, 'DM Sans', system-ui, sans-serif);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text-muted, #64748b);
+  cursor: pointer;
+  transition: border-color 150ms ease, color 150ms ease;
+}
+.aa-cmp-swap:hover {
+  border-color: var(--color-primary, #0062CC);
+  color: var(--color-primary, #0062CC);
+}
+.aa-cmp-swap-row {
+  text-align: center;
+  margin-bottom: 28px;
+}
+.aa-cmp-workbench {
+  max-width: 980px;
+  margin: 28px auto 8px;
+  padding: 18px;
+  background: #fff;
+  border: 1px solid #dbe5f0;
+  border-radius: 14px;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.07);
+}
+.aa-cmp-workbench-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: end;
+}
+.aa-cmp-kicker {
+  margin: 0 0 6px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primary, #0062CC);
+}
+.aa-cmp-workbench-title {
+  margin: 0;
+  font-family: var(--font-heading, 'Instrument Serif', Georgia, serif);
+  font-size: clamp(1.6rem, 4vw, 2.5rem);
+  font-weight: 400;
+  color: var(--color-text, #0f172a);
+}
+.aa-cmp-workbench-copy {
+  margin: 8px 0 0;
+  max-width: 66ch;
+  color: var(--color-text-muted, #64748b);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.aa-cmp-form {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) minmax(180px, 1fr) auto;
+  gap: 12px;
+  align-items: end;
+  margin-top: 16px;
+}
+.aa-cmp-field {
+  display: grid;
+  gap: 6px;
+  text-align: left;
+}
+.aa-cmp-field-label {
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #475569;
+}
+.aa-compare-select,
+.aa-cmp-select {
+  min-height: 46px;
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: #fff;
+  color: #0f172a;
+  font: 600 0.95rem var(--font-body, 'DM Sans', system-ui, sans-serif);
+  padding: 0 12px;
+}
+.aa-compare-select:focus,
+.aa-cmp-select:focus,
+.aa-compare-btn:focus-visible,
+.aa-cmp-suggestion:focus-visible,
+.aa-cmp-swap:focus-visible,
+.aa-cmp-cta:focus-visible {
+  outline: 3px solid rgba(0, 98, 204, 0.28);
+  outline-offset: 2px;
+  border-color: var(--color-primary, #0062CC);
+}
+.aa-compare-btn {
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--color-primary, #0062CC);
+  color: #fff;
+  font: 800 0.9rem var(--font-body, 'DM Sans', system-ui, sans-serif);
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(0, 98, 204, 0.2);
+}
+.aa-compare-btn:hover {
+  background: var(--color-primary-dark, #0063D1);
+}
+.aa-cmp-suggested {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+.aa-cmp-suggested-label {
+  width: 100%;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.aa-cmp-suggestion {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid #dbe5f0;
+  background: #f8fafc;
+  color: #0f172a;
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+.aa-cmp-suggestion:hover {
+  border-color: var(--color-primary, #0062CC);
+  color: var(--color-primary, #0062CC);
+  background: #f0f6ff;
+}
+.aa-cmp-source-note {
+  max-width: 780px;
+  margin: -14px auto 28px;
+  padding: 10px 14px;
+  border: 1px solid #fde68a;
+  border-radius: 10px;
+  background: #fffbeb;
+  color: #854d0e;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+.aa-cmp-metric-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.aa-cmp-leader {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: #eef6ff;
+  color: #075985;
+  font-size: 0.72rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.aa-cmp-metric-why {
+  margin-top: 4px;
+  padding-left: 42px;
+  color: #64748b;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+/* ── METRIC BARS ── */
+.aa-cmp-metrics {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 20px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.aa-cmp-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.aa-cmp-metric-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted, #64748b);
+}
+.aa-cmp-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.aa-cmp-bar-name {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text, #0f172a);
+  min-width: 32px;
+  text-align: right;
+  flex-shrink: 0;
+}
+.aa-cmp-bar-track {
+  flex: 1;
+  height: 28px;
+  background: var(--color-bg-subtle, #F1F5F9);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+.aa-cmp-bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+  min-width: 2px;
+}
+.aa-cmp-bar-fill.aa-bar-a {
+  background: var(--color-primary, #0062CC);
+}
+.aa-cmp-bar-fill.aa-bar-b {
+  background: var(--aa-terra, #E76F51);
+}
+.aa-cmp-bar-val {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text, #0f172a);
+  min-width: 80px;
+  flex-shrink: 0;
+}
+.aa-cmp-ratio {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--color-primary, #0062CC);
+  text-align: center;
+  margin-top: 2px;
+}
+
+/* ── CHARTS ── */
+.aa-cmp-charts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 20px 40px;
+}
+.aa-cmp-chart-card {
+  background: var(--color-bg-card, #fff);
+  border: 1.5px solid var(--color-border, #e2e8f0);
+  border-radius: var(--radius-lg, 16px);
+  padding: 24px;
+}
+.aa-cmp-chart-title {
+  font-family: var(--font-heading, 'Instrument Serif', Georgia, serif);
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--color-text, #0f172a);
+  margin-bottom: 16px;
+}
+.aa-cmp-chart-card canvas {
+  width: 100% !important;
+  max-height: 320px;
+}
+
+/* ── INSIGHTS ── */
+.aa-cmp-insights {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 20px 40px;
+}
+.aa-cmp-insights-title {
+  font-family: var(--font-heading, 'Instrument Serif', Georgia, serif);
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: var(--color-text, #0f172a);
+  margin-bottom: 16px;
+}
+.aa-cmp-insight-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.aa-cmp-insight-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--color-bg-card, #fff);
+  border: 1.5px solid var(--color-border, #e2e8f0);
+  border-radius: var(--radius-md, 10px);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--color-text, #0f172a);
+}
+.aa-cmp-insight-icon {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  background: rgba(0, 98, 204, 0.08);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  margin-top: 2px;
+}
+
+/* ── SHARED RESOURCES ── */
+.aa-cmp-shared {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 20px 40px;
+}
+.aa-cmp-shared-title {
+  font-family: var(--font-heading, 'Instrument Serif', Georgia, serif);
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: var(--color-text, #0f172a);
+  margin-bottom: 16px;
+}
+.aa-cmp-shared-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+.aa-cmp-shared-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--color-bg-card, #fff);
+  border: 1.5px solid var(--color-border, #e2e8f0);
+  border-radius: var(--radius-md, 10px);
+}
+.aa-cmp-shared-emoji {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+.aa-cmp-shared-info {
+  flex: 1;
+  min-width: 0;
+}
+.aa-cmp-shared-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--color-text, #0f172a);
+}
+.aa-cmp-shared-ranks {
+  font-size: 0.72rem;
+  color: var(--color-text-muted, #64748b);
+  margin-top: 2px;
+}
+
+/* ── CTAs ── */
+.aa-cmp-ctas {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 20px 20px 48px;
+}
+.aa-cmp-cta {
+  padding: 12px 24px;
+  border-radius: var(--radius-pill, 100px);
+  font-family: var(--font-body, 'DM Sans', system-ui, sans-serif);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+  border: none;
+}
+.aa-cmp-cta-primary {
+  background: var(--color-primary, #0062CC);
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 98, 204, 0.25);
+}
+.aa-cmp-cta-primary:hover {
+  background: var(--color-primary-dark, #0063D1);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0, 98, 204, 0.3);
+}
+.aa-cmp-cta-outline {
+  background: var(--color-bg-card, #fff);
+  color: var(--color-primary, #0062CC);
+  border: 1.5px solid var(--color-primary, #0062CC);
+}
+.aa-cmp-cta-outline:hover {
+  background: rgba(0, 98, 204, 0.04);
+  transform: translateY(-1px);
+}
+.aa-cmp-cta-link {
+  background: transparent;
+  color: var(--color-text-muted, #64748b);
+  border: 1.5px solid var(--color-border, #e2e8f0);
+}
+.aa-cmp-cta-link:hover {
+  border-color: var(--color-primary, #0062CC);
+  color: var(--color-primary, #0062CC);
+}
+
+/* ── SELECTOR UI ── */
+.aa-cmp-selector {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 48px 20px 80px;
+}
+.aa-cmp-selector-title {
+  font-family: var(--font-heading, 'Instrument Serif', Georgia, serif);
+  font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+  font-weight: 400;
+  color: var(--color-text, #0f172a);
+  margin-bottom: 8px;
+}
+.aa-cmp-selector-sub {
+  font-size: 0.92rem;
+  color: var(--color-text-muted, #64748b);
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+.aa-cmp-selector-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.aa-cmp-selector-row .aa-compare-select {
+  flex: 1;
+  min-width: 180px;
+}
+
+/* ── LEGEND ── */
+.aa-cmp-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+.aa-cmp-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text, #0f172a);
+}
+.aa-cmp-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.aa-cmp-legend-dot.aa-dot-a { background: var(--color-primary, #0062CC); }
+.aa-cmp-legend-dot.aa-dot-b { background: var(--aa-terra, #E76F51); }
+
+/* ── TOAST ── */
+.aa-cmp-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--color-text, #0f172a);
+  color: #fff;
+  padding: 10px 24px;
+  border-radius: var(--radius-pill, 100px);
+  font-size: 0.82rem;
+  font-weight: 600;
+  z-index: 9999;
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  pointer-events: none;
+}
+.aa-cmp-toast.visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .aa-cmp-charts {
+    grid-template-columns: 1fr;
+  }
+  .aa-cmp-workbench-top,
+  .aa-cmp-form {
+    grid-template-columns: 1fr;
+  }
+  .aa-cmp-workbench {
+    margin: 18px 14px 4px;
+    padding: 16px;
+  }
+  .aa-cmp-header {
+    gap: 16px;
+    padding: 32px 16px 24px;
+  }
+  .aa-cmp-flag {
+    font-size: 2.8rem;
+  }
+  .aa-cmp-vs {
+    width: 40px;
+    height: 40px;
+    font-size: 0.7rem;
+  }
+  .aa-cmp-bar-val {
+    min-width: 60px;
+    font-size: 0.7rem;
+  }
+  .aa-cmp-metric-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .aa-cmp-metric-why {
+    padding-left: 0;
+  }
+  .aa-cmp-selector-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .aa-cmp-selector-row .aa-compare-select {
+    width: 100%;
+  }
+}
+@media (max-width: 480px) {
+  .aa-cmp-header {
+    padding: 24px 14px 20px;
+  }
+  .aa-cmp-flag {
+    font-size: 2.2rem;
+  }
+  .aa-cmp-name {
+    font-size: 1rem;
+  }
+  .aa-cmp-bar-row {
+    flex-wrap: wrap;
+  }
+  .aa-cmp-bar-name {
+    min-width: 28px;
+  }
+  .aa-cmp-ctas {
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px 14px 40px;
+  }
+}
+</style>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="article:modified_time" content="2026-03-28">
+<link rel="canonical" href="https://afrotools.com/tools/afroatlas/compare">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afroatlas/compare">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/afroatlas/compare">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/afroatlas/compare">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+
+<nav class="aa-crumb aa-wrap" aria-label="breadcrumb" style="padding-top:14px;padding-bottom:0">
+  <a href="/">Home</a> <span>/</span> <a href="/tools/">Tools</a> <span>/</span> <a href="/tools/afroatlas/">AfroAtlas</a> <span>/</span> <span>Compare</span>
+</nav>
+
+<div class="aa-page" id="aa-compare-page">
+  <!-- Rendered by JS -->
+</div>
+
+<div class="aa-cmp-toast" id="aa-cmp-toast" role="status" aria-live="polite">Link copied to clipboard</div>
+
+<afro-footer></afro-footer>
+
+<script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/engines/afroatlas-engine.js?v=57ad0022"></script>
+<script src="/assets/js/lib/afroatlas-twemoji.js?v=f792df45"></script>
+<script>
+(function() {
+  'use strict';
+
+  var page = document.getElementById('aa-compare-page');
+  var params = new URLSearchParams(window.location.search);
+  var codeA = params.get('countryA') || params.get('a');
+  var codeB = params.get('countryB') || params.get('b');
+  if (!codeA && !codeB) {
+    codeA = 'NG';
+    codeB = 'AO';
+  }
+
+  /* ── Helpers ── */
+  var flagTools = window.AfroAtlasFlags || {};
+
+  function esc(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function flagHtml(code, country, className) {
+    if (flagTools.flagHtml) return flagTools.flagHtml(code, country && country.name ? country.name : code, className || '');
+    return '<span class="' + esc(className || 'aa-twemoji-flag') + '">' + esc(code || '') + '</span>';
+  }
+
+  function optionLabel(code, country) {
+    return esc(flagTools.optionLabel ? flagTools.optionLabel(code, country) : ((country && country.name ? country.name : code) + (code ? ' (' + code + ')' : '')));
+  }
+
+  function fmtGdp(v) {
+    if (v == null || isNaN(v)) return 'N/A';
+    if (v >= 1e12) return '$' + (v / 1e12).toFixed(2) + 'T';
+    if (v >= 1e9) return '$' + (v / 1e9).toFixed(1) + 'B';
+    if (v >= 1e6) return '$' + (v / 1e6).toFixed(0) + 'M';
+    return '$' + v.toLocaleString();
+  }
+
+  function fmtPop(v) {
+    if (v == null || isNaN(v)) return 'N/A';
+    if (v >= 1e9) return (v / 1e9).toFixed(2) + 'B';
+    if (v >= 1e6) return (v / 1e6).toFixed(1) + 'M';
+    if (v >= 1e3) return (v / 1e3).toFixed(0) + 'K';
+    return String(v);
+  }
+
+  function fmtPct(v) {
+    if (v == null || isNaN(v)) return 'N/A';
+    return v + '%';
+  }
+
+  function fmtNum(v) {
+    if (v == null || isNaN(v)) return 'N/A';
+    return v.toLocaleString();
+  }
+
+  function calcRatio(a, b) {
+    if (!a || !b || a === 0 || b === 0) return '';
+    var bigger = Math.max(a, b);
+    var smaller = Math.min(a, b);
+    var r = bigger / smaller;
+    if (r < 1.05) return 'roughly equal';
+    return r.toFixed(0) + 'x higher';
+  }
+
+  function findCode(c) {
+    var keys = Object.keys(AfroAtlas.COUNTRIES);
+    for (var i = 0; i < keys.length; i++) {
+      if (AfroAtlas.COUNTRIES[keys[i]] === c) return keys[i];
+    }
+    var wkeys = Object.keys(AfroAtlas.WORLD_REF);
+    for (var j = 0; j < wkeys.length; j++) {
+      if (AfroAtlas.WORLD_REF[wkeys[j]] === c) return wkeys[j];
+    }
+    return '';
+  }
+
+  function slugFor(c) {
+    if (!c) return '';
+    return c.slug || c.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  }
+
+  function profileLink(c) {
+    if (c.isRef) return '/tools/afroatlas/';
+    return '/tools/afroatlas/country/' + slugFor(c) + '/';
+  }
+
+  function compareHref(a, b) {
+    return 'compare.html?countryA=' + encodeURIComponent(a) + '&countryB=' + encodeURIComponent(b);
+  }
+
+  function showToast(msg) {
+    var t = document.getElementById('aa-cmp-toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.classList.add('visible');
+    setTimeout(function() { t.classList.remove('visible'); }, 2400);
+  }
+
+  /* ── Build select options ── */
+  function buildOptions(selectedCode) {
+    var selected = selectedCode ? selectedCode.toUpperCase() : '';
+    var html = '<option value="">Select a country...</option>';
+    html += '<optgroup label="African Countries">';
+    var aKeys = Object.keys(AfroAtlas.COUNTRIES);
+    var aSorted = aKeys.slice().sort(function(x, y) {
+      return AfroAtlas.COUNTRIES[x].name.localeCompare(AfroAtlas.COUNTRIES[y].name);
+    });
+    for (var i = 0; i < aSorted.length; i++) {
+      var k = aSorted[i];
+      html += '<option value="' + k + '"' + (k === selected ? ' selected' : '') + '>' + optionLabel(k, AfroAtlas.COUNTRIES[k]) + '</option>';
+    }
+    html += '</optgroup>';
+    html += '<optgroup label="World Reference Countries">';
+    var wKeys = Object.keys(AfroAtlas.WORLD_REF);
+    var wSorted = wKeys.slice().sort(function(x, y) {
+      return AfroAtlas.WORLD_REF[x].name.localeCompare(AfroAtlas.WORLD_REF[y].name);
+    });
+    for (var j = 0; j < wSorted.length; j++) {
+      var w = wSorted[j];
+      html += '<option value="' + w + '"' + (w === selected ? ' selected' : '') + '>' + optionLabel(w, AfroAtlas.WORLD_REF[w]) + '</option>';
+    }
+    html += '</optgroup>';
+    return html;
+  }
+
+  function suggestedComparisonsHtml() {
+    var suggestions = [
+      ['NG', 'AO', 'Nigeria vs Angola'],
+      ["GH", "CI", "Ghana vs Cote d'Ivoire"],
+      ['CD', 'ZM', 'DRC vs Zambia'],
+      ['KE', 'ET', 'Kenya vs Ethiopia'],
+      ['ZA', 'EG', 'South Africa vs Egypt']
+    ];
+    var html = '<div class="aa-cmp-suggested" aria-label="Suggested comparisons">';
+    html += '<span class="aa-cmp-suggested-label">Suggested comparisons</span>';
+    for (var i = 0; i < suggestions.length; i++) {
+      html += '<a class="aa-cmp-suggestion" href="' + compareHref(suggestions[i][0], suggestions[i][1]) + '">' + suggestions[i][2] + '</a>';
+    }
+    html += '</div>';
+    return html;
+  }
+
+  function wireCompareForm() {
+    var form = document.getElementById('aa-compare-form');
+    if (!form) return;
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      var a = document.getElementById('aa-sel-a').value;
+      var b = document.getElementById('aa-sel-b').value;
+      if (!a || !b) { showToast('Please select two countries'); return; }
+      if (a === b) { showToast('Please pick two different countries'); return; }
+      window.location.href = compareHref(a, b);
+    });
+  }
+
+  /* ── Selector UI (no params) ── */
+  function renderSelector() {
+    var h = '';
+    h += '<div class="aa-cmp-selector">';
+    h +=   '<section class="aa-cmp-workbench" aria-label="Country comparison controls">';
+    h +=     '<div class="aa-cmp-workbench-top">';
+    h +=       '<div>';
+    h +=         '<p class="aa-cmp-kicker">Decision workbench</p>';
+    h +=         '<h1 class="aa-cmp-workbench-title">Compare any two economies</h1>';
+    h +=         '<p class="aa-cmp-workbench-copy">Start with a suggested pair or choose two countries to compare market size, per-capita outcomes, resources, exports, and development indicators.</p>';
+    h +=       '</div>';
+    h +=     '</div>';
+    h +=     '<form class="aa-cmp-form" id="aa-compare-form">';
+    h +=       '<label class="aa-cmp-field" for="aa-sel-a"><span class="aa-cmp-field-label">Country A</span><select class="aa-compare-select" id="aa-sel-a">' + buildOptions('NG') + '</select></label>';
+    h +=       '<label class="aa-cmp-field" for="aa-sel-b"><span class="aa-cmp-field-label">Country B</span><select class="aa-compare-select" id="aa-sel-b">' + buildOptions('AO') + '</select></label>';
+    h +=       '<button type="submit" class="aa-compare-btn" id="aa-cmp-go">Run comparison</button>';
+    h +=     '</form>';
+    h +=     suggestedComparisonsHtml();
+    h +=   '</section>';
+    h += '</div>';
+    page.innerHTML = h;
+    wireCompareForm();
+  }
+
+  /* ── Validate codes ── */
+  function lookupCountry(code) {
+    if (!code) return null;
+    return AfroAtlas.getCountry(code) || AfroAtlas.getWorldRef(code);
+  }
+
+  var c1 = lookupCountry(codeA);
+  var c2 = lookupCountry(codeB);
+
+  if (!codeA || !codeB || !c1 || !c2) {
+    renderSelector();
+    return;
+  }
+
+  /* ── Comparison rendering ── */
+  var comp = AfroAtlas.compareCountries(codeA, codeB);
+  var insights = AfroAtlas.generateInsights(codeA, codeB);
+
+  if (!comp) {
+    renderSelector();
+    return;
+  }
+
+  var codeAUpper = findCode(c1) || codeA.toUpperCase();
+  var codeBUpper = findCode(c2) || codeB.toUpperCase();
+
+  /* ── Header ── */
+  var html = '';
+  html += '<section class="aa-cmp-workbench" aria-label="Country comparison controls">';
+  html +=   '<div class="aa-cmp-workbench-top">';
+  html +=     '<div>';
+  html +=       '<p class="aa-cmp-kicker">Comparison workbench</p>';
+  html +=       '<h1 class="aa-cmp-workbench-title">' + c1.name + ' vs ' + c2.name + '</h1>';
+  html +=       '<p class="aa-cmp-workbench-copy">Use this as a first-pass decision note. The badges identify higher values, while the context below explains where higher is not automatically better.</p>';
+  html +=     '</div>';
+  html +=     '<button type="button" class="aa-cmp-swap" id="aa-swap-btn">';
+  html +=       '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M7 16l-4-4 4-4"/><path d="M17 8l4 4-4 4"/><path d="M3 12h18"/></svg>';
+  html +=       'Swap';
+  html +=     '</button>';
+  html +=   '</div>';
+  html +=   '<form class="aa-cmp-form" id="aa-compare-form">';
+  html +=     '<label class="aa-cmp-field" for="aa-sel-a"><span class="aa-cmp-field-label">Country A</span><select class="aa-compare-select" id="aa-sel-a">' + buildOptions(codeAUpper) + '</select></label>';
+  html +=     '<label class="aa-cmp-field" for="aa-sel-b"><span class="aa-cmp-field-label">Country B</span><select class="aa-compare-select" id="aa-sel-b">' + buildOptions(codeBUpper) + '</select></label>';
+  html +=     '<button type="submit" class="aa-compare-btn" id="aa-cmp-go">Update comparison</button>';
+  html +=   '</form>';
+  html +=   suggestedComparisonsHtml();
+  html += '</section>';
+
+  html += '<div class="aa-cmp-header">';
+  html +=   '<div class="aa-cmp-side">';
+  html +=     '<div class="aa-cmp-flag">' + flagHtml(codeAUpper, c1, 'aa-cmp-flag-img') + '</div>';
+  html +=     '<div class="aa-cmp-name">' + c1.name + '</div>';
+  html +=   '</div>';
+  html +=   '<div class="aa-cmp-vs">VS</div>';
+  html +=   '<div class="aa-cmp-side">';
+  html +=     '<div class="aa-cmp-flag">' + flagHtml(codeBUpper, c2, 'aa-cmp-flag-img') + '</div>';
+  html +=     '<div class="aa-cmp-name">' + c2.name + '</div>';
+  html +=   '</div>';
+  html += '</div>';
+
+  /* ── Legend ── */
+  html += '<div class="aa-cmp-legend">';
+  html +=   '<div class="aa-cmp-legend-item"><span class="aa-cmp-legend-dot aa-dot-a"></span>' + c1.name + '</div>';
+  html +=   '<div class="aa-cmp-legend-item"><span class="aa-cmp-legend-dot aa-dot-b"></span>' + c2.name + '</div>';
+  html += '</div>';
+  html += '<div class="aa-cmp-source-note" role="note">Source metadata is not attached to this legacy comparison dataset yet. Treat these values as directional, and use country profile footnotes before citing a figure.</div>';
+
+  /* ── Metric Comparison Bars ── */
+  var metricDefs = [
+    { key: 'gdp', label: 'GDP (Nominal)', fmt: fmtGdp, why: 'Signals total market scale and fiscal capacity, but it does not show distribution or household purchasing power.' },
+    { key: 'gdpPC', label: 'GDP Per Capita', fmt: fmtGdp, why: 'A quick proxy for average income level; it can hide inequality and regional variation.' },
+    { key: 'population', label: 'Population', fmt: fmtPop, why: 'Shapes consumer market size, labor depth, and public service demand.' },
+    { key: 'totalExports', label: 'Total Exports', fmt: fmtGdp, why: 'Shows external earning power and exposure to global demand cycles.' },
+    { key: 'hdi', label: 'Human Development Index', fmt: function(v) { return v != null ? v.toFixed(3) : 'N/A'; }, why: 'Combines health, education, and income outcomes for a broader development view.' },
+    { key: 'lifeExp', label: 'Life Expectancy (years)', fmt: function(v) { return v != null ? v.toFixed(1) : 'N/A'; }, why: 'A useful human-development signal that can expose gaps hidden by resource wealth.' },
+    { key: 'literacy', label: 'Literacy Rate', fmt: fmtPct, why: 'Indicates education depth and talent readiness for higher-value sectors.' },
+    { key: 'internet', label: 'Internet Access', fmt: fmtPct, why: 'Matters for digital services, media reach, remote work, and data availability.' },
+    { key: 'electricity', label: 'Electricity Access', fmt: fmtPct, why: 'A core constraint on industry, health systems, education, and household welfare.' },
+    { key: 'inflation', label: 'Inflation', fmt: fmtPct, why: 'Higher inflation can indicate price instability, so the higher badge is not automatically favorable.' },
+    { key: 'debtGdp', label: 'Debt to GDP', fmt: fmtPct, why: 'Debt levels help frame fiscal room; sustainability depends on growth, currency, and repayment terms.' },
+    { key: 'rrs', label: 'Resource Reliance Score', fmt: function(v) { return v != null ? v + '/100' : 'N/A'; }, why: 'Highlights exposure to commodity cycles and the need to read resource wealth alongside development outcomes.' }
+  ];
+
+  html += '<div class="aa-cmp-metrics">';
+  for (var mi = 0; mi < metricDefs.length; mi++) {
+    var md = metricDefs[mi];
+    var va = c1[md.key];
+    var vb = c2[md.key];
+    if (va == null && vb == null) continue;
+    var numA = typeof va === 'number' ? va : 0;
+    var numB = typeof vb === 'number' ? vb : 0;
+    var maxVal = Math.max(numA, numB);
+    var pctA = maxVal > 0 ? (numA / maxVal * 100) : 0;
+    var pctB = maxVal > 0 ? (numB / maxVal * 100) : 0;
+    var ratio = calcRatio(numA, numB);
+
+    var leaderText = 'Similar values';
+    if (maxVal > 0 && Math.abs(numA - numB) / maxVal >= 0.02) {
+      leaderText = 'Higher: ' + (numA > numB ? c1.name : c2.name);
+    }
+
+    html += '<div class="aa-cmp-metric">';
+    html +=   '<div class="aa-cmp-metric-head">';
+    html +=     '<div class="aa-cmp-metric-label">' + md.label + '</div>';
+    html +=     '<span class="aa-cmp-leader">' + leaderText + '</span>';
+    html +=   '</div>';
+
+    /* Bar A */
+    html +=   '<div class="aa-cmp-bar-row">';
+    html +=     '<div class="aa-cmp-bar-name">' + codeAUpper + '</div>';
+    html +=     '<div class="aa-cmp-bar-track"><div class="aa-cmp-bar-fill aa-bar-a" style="width:' + pctA.toFixed(1) + '%"></div></div>';
+    html +=     '<div class="aa-cmp-bar-val">' + md.fmt(va) + '</div>';
+    html +=   '</div>';
+
+    /* Bar B */
+    html +=   '<div class="aa-cmp-bar-row">';
+    html +=     '<div class="aa-cmp-bar-name">' + codeBUpper + '</div>';
+    html +=     '<div class="aa-cmp-bar-track"><div class="aa-cmp-bar-fill aa-bar-b" style="width:' + pctB.toFixed(1) + '%"></div></div>';
+    html +=     '<div class="aa-cmp-bar-val">' + md.fmt(vb) + '</div>';
+    html +=   '</div>';
+
+    if (ratio) {
+      html += '<div class="aa-cmp-ratio">' + ratio + '</div>';
+    }
+    html += '<div class="aa-cmp-metric-why">Why this matters: ' + md.why + '</div>';
+    html += '</div>';
+  }
+  html += '</div>';
+
+  /* ── Charts Row ── */
+  html += '<div class="aa-cmp-charts">';
+
+  /* Radar chart card */
+  html +=   '<div class="aa-cmp-chart-card">';
+  html +=     '<div class="aa-cmp-chart-title" id="aa-radar-title">Development Radar</div>';
+  html +=     '<canvas id="aa-radar-chart" role="img" aria-labelledby="aa-radar-title" aria-label="Radar chart comparing ' + esc(c1.name) + ' and ' + esc(c2.name) + ' across GDP per capita, HDI, resource richness, internet, literacy, and life expectancy. The metric bars above list the same figures."></canvas>';
+  html +=   '</div>';
+
+  /* GDP Timeline card */
+  html +=   '<div class="aa-cmp-chart-card">';
+  html +=     '<div class="aa-cmp-chart-title" id="aa-gdp-title">GDP Timeline</div>';
+  html +=     '<canvas id="aa-gdp-chart" role="img" aria-labelledby="aa-gdp-title" aria-label="Line chart of GDP over time for ' + esc(c1.name) + ' and ' + esc(c2.name) + '. Current GDP appears in the metric bars above."></canvas>';
+  html +=   '</div>';
+
+  html += '</div>';
+
+  /* ── Insights ── */
+  if (insights && insights.length > 0) {
+    var icons = ['📊', '💰', '🏛️', '👥', '⚡', '❤️', '📈'];
+    html += '<div class="aa-cmp-insights">';
+    html +=   '<div class="aa-cmp-insights-title">Key Insights</div>';
+    html +=   '<ul class="aa-cmp-insight-list">';
+    for (var ii = 0; ii < insights.length; ii++) {
+      html += '<li class="aa-cmp-insight-item">';
+      html +=   '<div class="aa-cmp-insight-icon">' + (icons[ii] || '📌') + '</div>';
+      html +=   '<div>' + insights[ii] + '</div>';
+      html += '</li>';
+    }
+    html +=   '</ul>';
+    html += '</div>';
+  }
+
+  /* ── Shared Resources ── */
+  var r1 = c1.resources || [];
+  var r2 = c2.resources || [];
+  var shared = [];
+  for (var si = 0; si < r1.length; si++) {
+    for (var sj = 0; sj < r2.length; sj++) {
+      if (r1[si].type === r2[sj].type) {
+        var rt = AfroAtlas.RESOURCE_TYPES[r1[si].type];
+        shared.push({
+          type: r1[si].type,
+          emoji: rt ? rt.emoji : '⛏️',
+          label: rt ? rt.label : r1[si].type,
+          rankA: r1[si].rank,
+          rankB: r2[sj].rank
+        });
+        break;
+      }
+    }
+  }
+
+  if (shared.length > 0) {
+    html += '<div class="aa-cmp-shared">';
+    html +=   '<div class="aa-cmp-shared-title">Shared Resources</div>';
+    html +=   '<div class="aa-cmp-shared-grid">';
+    for (var shi = 0; shi < shared.length; shi++) {
+      var sr = shared[shi];
+      var rankText = '';
+      var rA = sr.rankA != null ? '#' + sr.rankA + ' in Africa' : 'Global';
+      var rB = sr.rankB != null ? '#' + sr.rankB + ' in Africa' : 'Global';
+      rankText = c1.name + ': ' + rA + ' | ' + c2.name + ': ' + rB;
+
+      html += '<div class="aa-cmp-shared-card">';
+      html +=   '<div class="aa-cmp-shared-emoji">' + sr.emoji + '</div>';
+      html +=   '<div class="aa-cmp-shared-info">';
+      html +=     '<div class="aa-cmp-shared-label">' + sr.label + '</div>';
+      html +=     '<div class="aa-cmp-shared-ranks">' + rankText + '</div>';
+      html +=   '</div>';
+      html += '</div>';
+    }
+    html +=   '</div>';
+    html += '</div>';
+  }
+
+  /* ── CTAs ── */
+  html += '<div class="aa-cmp-ctas">';
+  html +=   '<button type="button" class="aa-cmp-cta aa-cmp-cta-primary" id="aa-share-btn">Share This Comparison</button>';
+  html +=   '<button type="button" class="aa-cmp-cta aa-cmp-cta-outline" id="aa-tryagain-btn">Try Another Comparison</button>';
+  if (!c1.isRef) {
+    html += '<a class="aa-cmp-cta aa-cmp-cta-link" href="' + profileLink(c1) + '">' + c1.name + ' Profile</a>';
+  }
+  if (!c2.isRef) {
+    html += '<a class="aa-cmp-cta aa-cmp-cta-link" href="' + profileLink(c2) + '">' + c2.name + ' Profile</a>';
+  }
+  html += '</div>';
+
+  /* ── Inject ── */
+  page.innerHTML = html;
+  wireCompareForm();
+
+  /* ── Event: Swap ── */
+  var swapBtn = document.getElementById('aa-swap-btn');
+  if (swapBtn) {
+    swapBtn.addEventListener('click', function() {
+      window.location.href = compareHref(codeBUpper, codeAUpper);
+    });
+  }
+
+  /* ── Event: Share ── */
+  var shareBtn = document.getElementById('aa-share-btn');
+  if (shareBtn) {
+    shareBtn.addEventListener('click', function() {
+      var url = new URL(compareHref(codeAUpper, codeBUpper), window.location.href).href;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(function() {
+          showToast('Link copied to clipboard');
+        });
+      } else {
+        var inp = document.createElement('input');
+        inp.value = url;
+        document.body.appendChild(inp);
+        inp.select();
+        document.execCommand('copy');
+        document.body.removeChild(inp);
+        showToast('Link copied to clipboard');
+      }
+    });
+  }
+
+  /* ── Event: Try Another ── */
+  var tryBtn = document.getElementById('aa-tryagain-btn');
+  if (tryBtn) {
+    tryBtn.addEventListener('click', function() {
+      var firstSelect = document.getElementById('aa-sel-a');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (firstSelect) firstSelect.focus();
+    });
+  }
+
+  /* ── Charts (wait for Chart.js) ── */
+  function initCharts() {
+    if (typeof Chart === 'undefined') {
+      setTimeout(initCharts, 200);
+      return;
+    }
+
+    /* Radar Chart */
+    var radarEl = document.getElementById('aa-radar-chart');
+    if (radarEl) {
+      var normalize = function(val, max) {
+        if (val == null || isNaN(val) || max <= 0) return 0;
+        return Math.min((val / max) * 100, 100);
+      };
+
+      var radarLabels = ['GDP/Capita', 'HDI', 'Resource Richness', 'Internet', 'Literacy', 'Life Expectancy'];
+      var maxGdpPC = 120000;
+      var dataA = [
+        normalize(c1.gdpPC, maxGdpPC),
+        (c1.hdi || 0) * 100,
+        c1.rrs || 0,
+        c1.internet || 0,
+        c1.literacy || 0,
+        normalize(c1.lifeExp, 90)
+      ];
+      var dataB = [
+        normalize(c2.gdpPC, maxGdpPC),
+        (c2.hdi || 0) * 100,
+        c2.rrs || 0,
+        c2.internet || 0,
+        c2.literacy || 0,
+        normalize(c2.lifeExp, 90)
+      ];
+
+      new Chart(radarEl.getContext('2d'), {
+        type: 'radar',
+        data: {
+          labels: radarLabels,
+          datasets: [
+            {
+              label: c1.name,
+              data: dataA,
+              borderColor: '#0062CC',
+              backgroundColor: 'rgba(0, 98, 204, 0.12)',
+              borderWidth: 2,
+              pointRadius: 3,
+              pointBackgroundColor: '#0062CC'
+            },
+            {
+              label: c2.name,
+              data: dataB,
+              borderColor: '#E76F51',
+              backgroundColor: 'rgba(231, 111, 81, 0.12)',
+              borderWidth: 2,
+              pointRadius: 3,
+              pointBackgroundColor: '#E76F51'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'bottom',
+              labels: { font: { family: "'DM Sans', sans-serif", size: 12 }, padding: 16, usePointStyle: true }
+            }
+          },
+          scales: {
+            r: {
+              beginAtZero: true,
+              max: 100,
+              ticks: { display: false, stepSize: 20 },
+              grid: { color: 'rgba(0,0,0,0.06)' },
+              pointLabels: { font: { family: "'DM Sans', sans-serif", size: 11 }, color: '#64748b' }
+            }
+          }
+        }
+      });
+    }
+
+    /* GDP Timeline */
+    var gdpEl = document.getElementById('aa-gdp-chart');
+    if (gdpEl) {
+      var hist1 = AfroAtlas.getGdpTimeline(codeAUpper) || {};
+      var hist2 = AfroAtlas.getGdpTimeline(codeBUpper) || {};
+      var yearSet = {};
+      var k1 = Object.keys(hist1);
+      var k2 = Object.keys(hist2);
+      for (var yi = 0; yi < k1.length; yi++) yearSet[k1[yi]] = true;
+      for (var yj = 0; yj < k2.length; yj++) yearSet[k2[yj]] = true;
+      var years = Object.keys(yearSet).sort();
+
+      var gdpA = [];
+      var gdpB = [];
+      for (var yk = 0; yk < years.length; yk++) {
+        var yr = years[yk];
+        gdpA.push(hist1[yr] != null ? hist1[yr] / 1e9 : null);
+        gdpB.push(hist2[yr] != null ? hist2[yr] / 1e9 : null);
+      }
+
+      new Chart(gdpEl.getContext('2d'), {
+        type: 'line',
+        data: {
+          labels: years,
+          datasets: [
+            {
+              label: c1.name,
+              data: gdpA,
+              borderColor: '#0062CC',
+              backgroundColor: 'rgba(0, 98, 204, 0.08)',
+              borderWidth: 2.5,
+              fill: false,
+              tension: 0.3,
+              pointRadius: 4,
+              pointBackgroundColor: '#0062CC',
+              spanGaps: true
+            },
+            {
+              label: c2.name,
+              data: gdpB,
+              borderColor: '#E76F51',
+              backgroundColor: 'rgba(231, 111, 81, 0.08)',
+              borderWidth: 2.5,
+              fill: false,
+              tension: 0.3,
+              pointRadius: 4,
+              pointBackgroundColor: '#E76F51',
+              spanGaps: true
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'bottom',
+              labels: { font: { family: "'DM Sans', sans-serif", size: 12 }, padding: 16, usePointStyle: true }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(ctx) {
+                  var v = ctx.parsed.y;
+                  if (v == null) return ctx.dataset.label + ': N/A';
+                  if (v >= 1000) return ctx.dataset.label + ': $' + (v / 1000).toFixed(2) + 'T';
+                  return ctx.dataset.label + ': $' + v.toFixed(1) + 'B';
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { font: { family: "'DM Sans', sans-serif", size: 11 }, color: '#64748b' }
+            },
+            y: {
+              beginAtZero: true,
+              ticks: {
+                font: { family: "'DM Sans', sans-serif", size: 11 },
+                color: '#64748b',
+                callback: function(v) {
+                  if (v >= 1000) return '$' + (v / 1000).toFixed(1) + 'T';
+                  return '$' + v + 'B';
+                }
+              },
+              grid: { color: 'rgba(0,0,0,0.04)' }
+            }
+          }
+        }
+      });
+    }
+  }
+
+  initCharts();
+
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+</body>
+</html>

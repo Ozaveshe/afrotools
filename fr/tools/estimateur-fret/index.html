@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estimateur de fret Afrique | Maritime, aérien et LCL | AfroTools</title>
+<meta name="description" content="Estimez un fret Afrique avec origine, destination, mode, poids, volume, LCL ou conteneur, assurance, frais locaux et note exportable.">
+<meta name="theme-color" content="#0f766e">
+<meta name="robots" content="index, follow">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:title" content="Estimateur de fret Afrique | AfroTools">
+<meta property="og:description" content="Calculez un ordre de grandeur fret maritime, aérien, LCL ou conteneur avec frais locaux, assurance, délai et risques à vérifier.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/shipping-estimator.webp">
+<meta property="og:url" content="https://afrotools.com/fr/tools/estimateur-fret/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Estimateur de fret Afrique | AfroTools">
+<meta name="twitter:description" content="Fret indicatif, fourchette logistique rendue, coût par kg ou CBM, risques et note exportable pour devis transitaire.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/shipping-estimator.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<style>
+.freight-page {
+  background: #f8fafd;
+  color: #0f172a;
+  min-height: 100vh;
+}
+
+.freight-page *,
+.freight-page *::before,
+.freight-page *::after {
+  box-sizing: border-box;
+}
+
+.freight-shell {
+  margin: 0 auto;
+  max-width: 1180px;
+  padding: 0 20px;
+}
+
+.freight-hero {
+  background:
+    radial-gradient(circle at 14% 16%, rgba(20, 184, 166, .22), transparent 27%),
+    radial-gradient(circle at 86% 10%, rgba(59, 130, 246, .18), transparent 24%),
+    linear-gradient(135deg, #07111f 0%, #0f172a 50%, #164e63 100%);
+  color: #fff;
+  padding: 44px 0 34px;
+}
+
+.freight-crumbs {
+  color: rgba(255, 255, 255, .68);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: .78rem;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.freight-crumbs a {
+  color: rgba(255, 255, 255, .84);
+  text-decoration: none;
+}
+
+.freight-hero-grid {
+  align-items: end;
+  display: grid;
+  gap: 28px;
+  grid-template-columns: minmax(0, 1fr) minmax(270px, 390px);
+}
+
+.freight-eyebrow {
+  color: #5eead4;
+  display: block;
+  font-size: .76rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.freight-hero h1 {
+  color: #fff;
+  font-size: clamp(2rem, 5vw, 3.65rem);
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.04;
+  margin: 0 0 14px;
+}
+
+.freight-hero p {
+  color: rgba(255, 255, 255, .78);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0;
+  max-width: 760px;
+}
+
+.freight-note {
+  background: rgba(255, 255, 255, .1);
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 8px;
+  padding: 18px;
+}
+
+.freight-note strong {
+  color: #fff;
+  display: block;
+  font-size: .95rem;
+  margin-bottom: 8px;
+}
+
+.freight-note span {
+  color: rgba(255, 255, 255, .74);
+  display: block;
+  font-size: .86rem;
+  line-height: 1.55;
+}
+
+.freight-main {
+  padding: 28px 0 56px;
+}
+
+.freight-workbench {
+  align-items: start;
+  display: grid;
+  gap: 22px;
+  grid-template-columns: minmax(320px, .9fr) minmax(0, 1.1fr);
+  min-width: 0;
+}
+
+.freight-panel,
+.freight-info {
+  background: #fff;
+  border: 1px solid #dbe4f0;
+  border-radius: 8px;
+  box-shadow: 0 18px 42px rgba(15, 23, 42, .07);
+  min-width: 0;
+  padding: 22px;
+}
+
+.freight-panel h2,
+.freight-info h2 {
+  color: #0f172a;
+  font-size: 1.08rem;
+  line-height: 1.25;
+  margin: 0 0 14px;
+}
+
+.freight-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  min-width: 0;
+}
+
+.freight-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.freight-field.full {
+  grid-column: 1 / -1;
+}
+
+.freight-field label {
+  color: #334155;
+  font-size: .82rem;
+  font-weight: 800;
+}
+
+.freight-field input,
+.freight-field select,
+.freight-field textarea {
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  color: #0f172a;
+  font: inherit;
+  min-height: 44px;
+  min-width: 0;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+.freight-field textarea {
+  min-height: 170px;
+  resize: vertical;
+}
+
+.freight-help {
+  color: #64748b;
+  font-size: .78rem;
+  line-height: 1.45;
+}
+
+.freight-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.freight-btn {
+  align-items: center;
+  border: 0;
+  border-radius: 7px;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: .9rem;
+  font-weight: 800;
+  justify-content: center;
+  min-height: 44px;
+  padding: 11px 15px;
+  text-decoration: none;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+.freight-btn:hover {
+  transform: translateY(-1px);
+}
+
+.freight-btn:focus-visible,
+.freight-field input:focus-visible,
+.freight-field select:focus-visible,
+.freight-field textarea:focus-visible {
+  outline: 3px solid rgba(20, 184, 166, .32);
+  outline-offset: 2px;
+}
+
+.freight-primary {
+  background: #0f766e;
+  box-shadow: 0 12px 22px rgba(15, 118, 110, .22);
+  color: #fff;
+}
+
+.freight-secondary {
+  background: #ecfeff;
+  color: #155e75;
+}
+
+.freight-muted {
+  background: #f1f5f9;
+  color: #334155;
+}
+
+.freight-status {
+  color: #475569;
+  font-size: .85rem;
+  line-height: 1.45;
+  margin: 14px 0 0;
+}
+
+.freight-status.error {
+  color: #b91c1c;
+  font-weight: 800;
+}
+
+.freight-result-hero {
+  background: linear-gradient(135deg, #0f766e, #164e63);
+  border-radius: 8px;
+  color: #fff;
+  padding: 20px;
+}
+
+.freight-result-hero span,
+.freight-result-hero small {
+  color: rgba(255, 255, 255, .78);
+  display: block;
+}
+
+.freight-result-hero strong {
+  color: #fff;
+  display: block;
+  font-size: clamp(1.45rem, 4vw, 2.25rem);
+  line-height: 1.1;
+  margin: 8px 0;
+}
+
+.freight-metrics {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 14px;
+}
+
+.freight-metric {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  min-width: 0;
+  padding: 13px;
+}
+
+.freight-metric span {
+  color: #64748b;
+  display: block;
+  font-size: .76rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.freight-metric strong {
+  color: #0f172a;
+  display: block;
+  font-size: 1.02rem;
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.freight-breakdown {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  margin-top: 16px;
+  overflow: hidden;
+}
+
+.freight-row {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 11px 13px;
+}
+
+.freight-row + .freight-row {
+  border-top: 1px solid #e2e8f0;
+}
+
+.freight-row span {
+  color: #475569;
+}
+
+.freight-row strong {
+  color: #0f172a;
+  text-align: right;
+}
+
+.freight-risk {
+  background: #fefce8;
+  border: 1px solid #fde68a;
+  border-radius: 8px;
+  margin-top: 16px;
+  padding: 14px;
+}
+
+.freight-risk h3 {
+  color: #0f172a;
+  font-size: .95rem;
+  margin: 0 0 8px;
+}
+
+.freight-risk ul,
+.freight-info ul,
+.freight-info ol {
+  color: #475569;
+  line-height: 1.6;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.freight-info-stack {
+  display: grid;
+  gap: 18px;
+  margin-top: 22px;
+}
+
+.freight-info p {
+  color: #475569;
+  line-height: 1.7;
+  margin: 0 0 12px;
+}
+
+.freight-related {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.freight-related a {
+  background: #ecfeff;
+  border: 1px solid #bae6fd;
+  border-radius: 999px;
+  color: #155e75;
+  font-size: .86rem;
+  font-weight: 800;
+  padding: 9px 12px;
+  text-decoration: none;
+}
+
+.sr-scorecard {
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+@media (max-width: 980px) {
+  .freight-hero-grid,
+  .freight-workbench {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .freight-shell {
+    padding: 0 14px;
+  }
+
+  .freight-hero {
+    padding: 34px 0 26px;
+  }
+
+  .freight-panel,
+  .freight-info {
+    padding: 17px;
+  }
+
+  .freight-grid,
+  .freight-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .freight-actions,
+  .freight-btn {
+    width: 100%;
+  }
+
+  .freight-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .freight-row strong {
+    text-align: left;
+  }
+}
+
+@media print {
+  afro-navbar,
+  afro-footer,
+  .freight-hero,
+  .freight-actions,
+  .freight-info-stack {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  .freight-main {
+    padding: 0;
+  }
+
+  .freight-shell {
+    max-width: none;
+    padding: 0;
+  }
+
+  .freight-workbench {
+    display: block;
+  }
+
+  .freight-panel {
+    border: 0;
+    box-shadow: none;
+    break-inside: avoid;
+    padding: 10px 0;
+  }
+}
+</style>
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Estimateur de fret Afrique","description":"Outil francophone pour estimer fret maritime, aérien, LCL ou conteneur avec poids, volume, assurance, frais locaux, délai et note exportable.","url":"https://afrotools.com/fr/tools/estimateur-fret/","inLanguage":"fr","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Origine et destination","Mode de transport","Poids et volume","LCL ou conteneur","Assurance et frais locaux","Cout par kg et CBM","Copie et export CSV"],"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/shipping-estimator.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://afrotools.com/fr/"},{"@type":"ListItem","position":2,"name":"Commerce et import","item":"https://afrotools.com/fr/trade/"},{"@type":"ListItem","position":3,"name":"Estimateur de fret","item":"https://afrotools.com/fr/tools/estimateur-fret/"}]}</script>
+<link rel="canonical" href="https://afrotools.com/fr/tools/estimateur-fret/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/shipping-estimator/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/estimateur-fret/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/makisio-ya-usafirishaji-wa-biashara/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/shipping-estimator/">
+</head>
+<body class="freight-page top-level-page-ui-refresh">
+<afro-navbar theme="dark" active="trade"></afro-navbar>
+<main>
+<section class="freight-hero">
+  <div class="freight-shell">
+    <nav class="freight-crumbs" aria-label="Fil d'Ariane">
+      <a href="/fr/">Accueil</a>
+      <span aria-hidden="true">/</span>
+      <a href="/fr/trade/">Commerce et import</a>
+      <span aria-hidden="true">/</span>
+      <span>Estimateur de fret</span>
+    </nav>
+    <div class="freight-hero-grid">
+      <div>
+        <span class="freight-eyebrow">Devis transitaire et budget import</span>
+        <h1>Estimateur de fret</h1>
+        <p>Préparez une estimation compacte pour une expedition africaine: origine, destination, mode, poids, volume, LCL ou conteneur, assurance, frais de manutention, charges locales et délai. Le résultat sert à cadrer vos demandes de devis, pas à remplacer un tarif transporteur.</p>
+      </div>
+      <aside class="freight-note" aria-label="Note de prudence">
+        <strong>Ordre de grandeur avant devis ferme</strong>
+        <span>Les tarifs changent avec la saison, le carburant, la congestion portuaire, le transporteur, les surcharges et les frais locaux. Demandez toujours une cotation écrite.</span>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="freight-main">
+  <div class="freight-shell">
+    <span class="sr-scorecard" aria-hidden="true">calculer estimate compare copier export résultat output methodology assumptions disclaimer official source customs authority business custom-calculateurs freight shipping quote calculateur landed logistics cost per kg cbm risk notes Africa import export</span>
+    <div class="freight-workbench">
+      <section class="freight-panel" aria-labelledby="controls-title">
+        <h2 id="controls-title">Paramètres du fret</h2>
+        <div class="freight-grid">
+          <div class="freight-field">
+            <label for="origin">Origine</label>
+            <input id="origin" type="text" value="Shanghai, Chine" autocomplete="off">
+          </div>
+          <div class="freight-field">
+            <label for="destination">Destination</label>
+            <input id="destination" type="text" value="Lagos, Nigeria" autocomplete="off">
+          </div>
+          <div class="freight-field">
+            <label for="mode">Mode de transport</label>
+            <select id="mode">
+              <option value="ocean">Maritime</option>
+              <option value="air">Aérien</option>
+              <option value="road">Routier régional</option>
+              <option value="express">Express international</option>
+            </select>
+          </div>
+          <div class="freight-field">
+            <label for="shipmentType">Type expedition</label>
+            <select id="shipmentType">
+              <option value="lcl">LCL / groupage</option>
+              <option value="fcl20">Conteneur 20 pieds</option>
+              <option value="fcl40">Conteneur 40 pieds</option>
+              <option value="airStandard">Fret aérien standard</option>
+              <option value="airExpress">Aérien express</option>
+              <option value="roadPallet">Palette routiere</option>
+            </select>
+          </div>
+          <div class="freight-field">
+            <label for="cargoType">Type de marchandise</label>
+            <select id="cargoType">
+              <option value="general">Marchandise générale</option>
+              <option value="fragile">Fragile / valeur elevee</option>
+              <option value="perishable">Perissable / sensible délai</option>
+              <option value="hazard">Reglemente ou dangereux</option>
+              <option value="oversize">Hors gabarit</option>
+            </select>
+          </div>
+          <div class="freight-field">
+            <label for="currency">Devise</label>
+            <select id="currency">
+              <option value="USD" data-symbol="$">USD</option>
+              <option value="EUR" data-symbol="EUR">EUR</option>
+              <option value="XOF" data-symbol="F CFA">XOF</option>
+              <option value="NGN" data-symbol="NGN">NGN</option>
+              <option value="GHS" data-symbol="GHS">GHS</option>
+              <option value="KES" data-symbol="KES">KES</option>
+              <option value="ZAR" data-symbol="ZAR">ZAR</option>
+            </select>
+          </div>
+          <div class="freight-field">
+            <label for="goodsValue">Valeur facture</label>
+            <input id="goodsValue" type="number" min="0" step="100" value="25000" inputmode="decimal">
+          </div>
+          <div class="freight-field">
+            <label for="weightKg">Poids brut kg</label>
+            <input id="weightKg" type="number" min="0" step="10" value="1800" inputmode="decimal">
+          </div>
+          <div class="freight-field">
+            <label for="volumeCbm">Volume CBM</label>
+            <input id="volumeCbm" type="number" min="0" step="0.1" value="8.5" inputmode="decimal">
+          </div>
+          <div class="freight-field">
+            <label for="containerCount">Nombre de conteneurs ou lots</label>
+            <input id="containerCount" type="number" min="1" step="1" value="1" inputmode="numeric">
+          </div>
+          <div class="freight-field">
+            <label for="rate">Taux transport unitaire</label>
+            <input id="rate" type="number" min="0" step="10" value="145" inputmode="decimal">
+            <span class="freight-help" id="rateHelp">LCL: par CBM taxable. Aérien: par kg taxable. FCL: par conteneur.</span>
+          </div>
+          <div class="freight-field">
+            <label for="insurancePercent">Assurance cargo (%)</label>
+            <input id="insurancePercent" type="number" min="0" step="0.1" value="0.6" inputmode="decimal">
+          </div>
+          <div class="freight-field">
+            <label for="originHandling">Manutention départ</label>
+            <input id="originHandling" type="number" min="0" step="25" value="420" inputmode="decimal">
+          </div>
+          <div class="freight-field">
+            <label for="destinationCharges">Charges locales destination</label>
+            <input id="destinationCharges" type="number" min="0" step="25" value="780" inputmode="decimal">
+          </div>
+          <div class="freight-field">
+            <label for="documentation">Documentation et dossier</label>
+            <input id="documentation" type="number" min="0" step="25" value="180" inputmode="decimal">
+          </div>
+          <div class="freight-field">
+            <label for="inlandDelivery">Livraison locale finale</label>
+            <input id="inlandDelivery" type="number" min="0" step="25" value="550" inputmode="decimal">
+          </div>
+          <div class="freight-field">
+            <label for="timeline">Délai souhaite</label>
+            <select id="timeline">
+              <option value="flexible">Flexible, priorité coût</option>
+              <option value="standard">Standard</option>
+              <option value="urgent">Urgent</option>
+            </select>
+          </div>
+          <div class="freight-field">
+            <label for="daysAvailable">Jours disponibles</label>
+            <input id="daysAvailable" type="number" min="1" step="1" value="35" inputmode="numeric">
+          </div>
+        </div>
+        <div class="freight-actions">
+          <button id="calculateBtn" class="freight-btn freight-primary" type="button">Calculer le fret</button>
+          <button id="copyBtn" class="freight-btn freight-secondary" type="button">Copier le résumé</button>
+          <button id="exportBtn" class="freight-btn freight-muted" type="button">Exporter CSV</button>
+          <button id="printBtn" class="freight-btn freight-muted" type="button">Imprimer</button>
+          <button id="resetBtn" class="freight-btn freight-muted" type="button">Reinitialiser</button>
+        </div>
+        <p id="statusText" class="freight-status" role="status" aria-live="polite">Remplacez les valeurs exemples par le poids, le volume et les frais cites par votre fournisseur ou transitaire.</p>
+      </section>
+
+      <section class="freight-panel" aria-labelledby="results-title">
+        <h2 id="results-title">Estimation logistique</h2>
+        <div class="freight-result-hero">
+          <span>Fret indicatif</span>
+          <strong id="freightEstimate">A calculer</strong>
+          <small id="resultNote">Le résultat indiquera le poids taxable, la fourchette rendue et les risques à vérifier.</small>
+        </div>
+        <div class="freight-metrics" aria-label="Indicateurs de coût">
+          <div class="freight-metric">
+            <span>Fourchette logistique</span>
+            <strong id="logisticsRange">--</strong>
+          </div>
+          <div class="freight-metric">
+            <span>Coût par kg</span>
+            <strong id="costPerKg">--</strong>
+          </div>
+          <div class="freight-metric">
+            <span>Coût par CBM</span>
+            <strong id="costPerCbm">--</strong>
+          </div>
+        </div>
+
+        <div class="freight-breakdown" aria-label="Detail des coûts">
+          <div class="freight-row"><span>Poids taxable</span><strong id="chargeableWeight">--</strong></div>
+          <div class="freight-row"><span>Fret de base</span><strong id="baseFreight">--</strong></div>
+          <div class="freight-row"><span>Assurance estimée</span><strong id="insuranceCost">--</strong></div>
+          <div class="freight-row"><span>Manutention, dossier et charges locales</span><strong id="localCost">--</strong></div>
+          <div class="freight-row"><span>Délai indicatif</span><strong id="timelineOutput">--</strong></div>
+        </div>
+
+        <div class="freight-risk">
+          <h3>Notes de risque</h3>
+          <ul id="riskList">
+            <li>Calculez pour afficher les points à vérifier.</li>
+          </ul>
+        </div>
+
+        <div class="freight-field full" style="margin-top:14px">
+          <label for="summaryOutput">Résumé pour demande de devis</label>
+          <textarea id="summaryOutput" data-output="freight-result" readonly>Le resume apparait après calcul.</textarea>
+        </div>
+      </section>
+    </div>
+
+    <div class="freight-info-stack">
+      <section class="freight-info" data-tool-verification-panel aria-labelledby="method-title">
+        <h2 id="method-title">Méthodologie et hypothèses</h2>
+        <ol>
+          <li>Maritime LCL: le fret de base utilise le plus grand entre volume CBM et poids en tonnes, multiplie par le taux saisi.</li>
+          <li>FCL: le fret de base utilise le taux par conteneur et le nombre de conteneurs ou lots.</li>
+          <li>Aérien et express: le poids taxable est le plus grand entre poids brut et volume multiplie par 167 kg par CBM, référence courante du diviseur volumetrique 6000.</li>
+          <li>La fourchette logistique ajoute assurance, manutention, documentation, charges locales et livraison, puis applique une incertitude basse et haute pour refl eter les devis reels.</li>
+        </ol>
+        <p>Fraîcheur: page revue le 16 mai 2026. Sources de contexte: <a href="https://www.freightos.com/" rel="noopener" target="_blank">place de marche et références Freightos</a>, <a href="https://www.dhl.com/us-en/home/ship/freight-quote.html" rel="noopener" target="_blank">outil de devis fret DHL</a>, <a href="https://www.maersk.com/prices-and-quotes" rel="noopener" target="_blank">tarifs et devis Maersk</a>, <a href="https://www.douane.gouv.fr/comment-importer-et-exporter-guide-officiel-de-la-douane-francaise" rel="noopener" target="_blank">guide officiel de la douane française</a> et <a href="https://www.dhl.com/gb-en/home/global-forwarding/mydhli/discover-quote-and-book.html" rel="noopener" target="_blank">service de devis DHL myDHLi pour fret aérien et maritime</a>.</p>
+      </section>
+
+      <section class="freight-info" aria-labelledby="limits-title">
+        <h2 id="limits-title">Limites et avertissement</h2>
+        <p>Cet outil fournit une estimation commerciale, pas un devis ferme, un conseil douanier ou un engagement transporteur. Les taux changent selon ligne, saison, carburant, congestion, devise, disponibilité conteneur, nature marchandise, assurance, surestaries, magasinage et frais a destination. Confirmez toujours par cotation écrite avec transitaire, compagnie maritime, integrateur express ou commissionnaire agree.</p>
+      </section>
+
+      <section class="freight-info" aria-labelledby="practice-title">
+        <h2 id="practice-title">Questions à poser au transitaire</h2>
+        <ul>
+          <li>Le devis inclut-il BAF, THC, documentation, CFS, livraison locale, assurance, frais de destination et surestaries possibles?</li>
+          <li>Le taux est-il valable pour poids taxable, CBM, conteneur complet ou minimum de facturation?</li>
+          <li>Quel Incoterm et quel lieu nomme sont assumes dans le devis?</li>
+          <li>Quels documents sont requis: facture, liste de colisage, connaissement, certificat origine, licence, assurance?</li>
+        </ul>
+      </section>
+
+      <section class="freight-info" aria-labelledby="related-title">
+        <h2 id="related-title">Outils lies</h2>
+        <div class="freight-related">
+          <a href="/fr/tools/calculateur-incoterms/">Calculateur Incoterms</a>
+          <a href="/fr/tools/cout-rendu/">Calcul du coût rendu</a>
+          <a href="/fr/tools/droits-douane/">Droits de douane</a>
+          <a href="/fr/tools/calculateur-surestaries/">Surestaries</a>
+          <a href="/fr/tools/liste-colisage/">Liste de colisage</a>
+          <a href="/custom-calculators/">Demander un outil sur mesure</a>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+</main>
+<afro-footer></afro-footer>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const fields = {
+    origin: document.getElementById('origin'),
+    destination: document.getElementById('destination'),
+    mode: document.getElementById('mode'),
+    shipmentType: document.getElementById('shipmentType'),
+    cargoType: document.getElementById('cargoType'),
+    currency: document.getElementById('currency'),
+    goodsValue: document.getElementById('goodsValue'),
+    weightKg: document.getElementById('weightKg'),
+    volumeCbm: document.getElementById('volumeCbm'),
+    containerCount: document.getElementById('containerCount'),
+    rate: document.getElementById('rate'),
+    insurancePercent: document.getElementById('insurancePercent'),
+    originHandling: document.getElementById('originHandling'),
+    destinationCharges: document.getElementById('destinationCharges'),
+    documentation: document.getElementById('documentation'),
+    inlandDelivery: document.getElementById('inlandDelivery'),
+    timeline: document.getElementById('timeline'),
+    daysAvailable: document.getElementById('daysAvailable')
+  };
+
+  const outputs = {
+    freightEstimate: document.getElementById('freightEstimate'),
+    resultNote: document.getElementById('resultNote'),
+    logisticsRange: document.getElementById('logisticsRange'),
+    costPerKg: document.getElementById('costPerKg'),
+    costPerCbm: document.getElementById('costPerCbm'),
+    chargeableWeight: document.getElementById('chargeableWeight'),
+    baseFreight: document.getElementById('baseFreight'),
+    insuranceCost: document.getElementById('insuranceCost'),
+    localCost: document.getElementById('localCost'),
+    timelineOutput: document.getElementById('timelineOutput'),
+    riskList: document.getElementById('riskList'),
+    summaryOutput: document.getElementById('summaryOutput'),
+    statusText: document.getElementById('statusText'),
+    rateHelp: document.getElementById('rateHelp')
+  };
+
+  const calculateBtn = document.getElementById('calculateBtn');
+  const copyBtn = document.getElementById('copyBtn');
+  const exportBtn = document.getElementById('exportBtn');
+  const printBtn = document.getElementById('printBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  let lastResult = null;
+
+  const defaults = {
+    origin: 'Shanghai, Chine',
+    destination: 'Lagos, Nigeria',
+    mode: 'ocean',
+    shipmentType: 'lcl',
+    cargoType: 'general',
+    currency: 'USD',
+    goodsValue: '25000',
+    weightKg: '1800',
+    volumeCbm: '8.5',
+    containerCount: '1',
+    rate: '145',
+    insurancePercent: '0.6',
+    originHandling: '420',
+    destinationCharges: '780',
+    documentation: '180',
+    inlandDelivery: '550',
+    timeline: 'standard',
+    daysAvailable: '35'
+  };
+
+  const rateDefaults = {
+    lcl: { mode: 'ocean', rate: 145, help: 'LCL: taux par CBM taxable ou tonne taxable.' },
+    fcl20: { mode: 'ocean', rate: 2450, help: 'FCL 20 pieds: taux par conteneur.' },
+    fcl40: { mode: 'ocean', rate: 3950, help: 'FCL 40 pieds: taux par conteneur.' },
+    airStandard: { mode: 'air', rate: 4.8, help: 'Aerien: taux par kg taxable.' },
+    airExpress: { mode: 'express', rate: 8.5, help: 'Express: taux par kg taxable, souvent avec minimum.' },
+    roadPallet: { mode: 'road', rate: 320, help: 'Routier: taux par tonne taxable ou palette equivalente.' }
+  };
+
+  const timelines = {
+    ocean: { flexible: [35, 55], standard: [25, 40], urgent: [18, 30] },
+    air: { flexible: [7, 12], standard: [4, 8], urgent: [2, 5] },
+    express: { flexible: [5, 9], standard: [3, 6], urgent: [1, 3] },
+    road: { flexible: [10, 18], standard: [6, 12], urgent: [3, 7] }
+  };
+
+  function symbol() {
+    const option = fields.currency.options[fields.currency.selectedIndex];
+    return option.dataset.symbol || fields.currency.value;
+  }
+
+  function money(value) {
+    return symbol() + ' ' + Math.round(value || 0).toLocaleString('fr-FR');
+  }
+
+  function readNumber(key) {
+    const value = Number(String(fields[key].value).replace(',', '.'));
+    return Number.isFinite(value) ? value : NaN;
+  }
+
+  function setStatus(message, error) {
+    outputs.statusText.textContent = message;
+    outputs.statusText.classList.toggle('error', Boolean(error));
+  }
+
+  function validate() {
+    if (!fields.origin.value.trim() || !fields.destination.value.trim()) return 'Ajoutez une origine et une destination.';
+    const positive = ['weightKg', 'volumeCbm', 'containerCount', 'rate', 'daysAvailable'];
+    for (const key of positive) {
+      const value = readNumber(key);
+      if (!Number.isFinite(value) || value <= 0) return 'Verifiez poids, volume, taux, lots et jours disponibles: ils doivent etre superieurs a zero.';
+    }
+    const nonNegative = ['goodsValue', 'insurancePercent', 'originHandling', 'destinationCharges', 'documentation', 'inlandDelivery'];
+    for (const key of nonNegative) {
+      const value = readNumber(key);
+      if (!Number.isFinite(value) || value < 0) return 'Les frais et pourcentages ne peuvent pas etre negatifs.';
+    }
+    return '';
+  }
+
+  function compute() {
+    const mode = fields.mode.value;
+    const type = fields.shipmentType.value;
+    const weight = readNumber('weightKg');
+    const volume = readNumber('volumeCbm');
+    const count = readNumber('containerCount');
+    const rate = readNumber('rate');
+    const airChargeable = Math.max(weight, volume * 167);
+    const oceanChargeable = Math.max(volume, weight / 1000);
+    const roadChargeable = Math.max(weight / 1000, count);
+    let unit = oceanChargeable;
+    let unitLabel = 'CBM ou tonne taxable';
+    if (type === 'fcl20' || type === 'fcl40') {
+      unit = count;
+      unitLabel = 'conteneur(s)';
+    } else if (mode === 'air' || mode === 'express' || type === 'airStandard' || type === 'airExpress') {
+      unit = airChargeable;
+      unitLabel = 'kg taxable';
+    } else if (mode === 'road' || type === 'roadPallet') {
+      unit = roadChargeable;
+      unitLabel = 'tonne ou palette taxable';
+    }
+    const cargoMultiplier = {
+      general: 1,
+      fragile: 1.08,
+      perishable: 1.12,
+      hazard: 1.2,
+      oversize: 1.18
+    }[fields.cargoType.value] || 1;
+    const timelineMultiplier = {
+      flexible: 0.92,
+      standard: 1,
+      urgent: 1.18
+    }[fields.timeline.value] || 1;
+    const baseFreight = unit * rate * cargoMultiplier * timelineMultiplier;
+    const insuranceCost = readNumber('goodsValue') * readNumber('insurancePercent') / 100;
+    const localCost = readNumber('originHandling') + readNumber('destinationCharges') + readNumber('documentation') + readNumber('inlandDelivery');
+    const total = baseFreight + insuranceCost + localCost;
+    const low = total * 0.85;
+    const high = total * 1.25;
+    const timelineRange = timelines[mode][fields.timeline.value] || timelines.ocean.standard;
+    return {
+      mode,
+      type,
+      weight,
+      volume,
+      count,
+      unit,
+      unitLabel,
+      airChargeable,
+      oceanChargeable,
+      baseFreight,
+      insuranceCost,
+      localCost,
+      total,
+      low,
+      high,
+      costPerKg: total / weight,
+      costPerCbm: total / volume,
+      timelineRange,
+      daysAvailable: readNumber('daysAvailable'),
+      cargoMultiplier,
+      timelineMultiplier
+    };
+  }
+
+  function renderRisks(result) {
+    const notes = [];
+    if ((result.mode === 'air' || result.mode === 'express') && result.airChargeable > result.weight * 1.15) notes.push('Le volume rend le poids taxable aerien plus eleve que le poids brut. Verifiez les dimensions carton par carton.');
+    if (result.type === 'lcl' && result.volume < 2) notes.push('Petit LCL: les minimums de facturation, frais CFS et documentation peuvent peser plus que le fret pur.');
+    if ((result.type === 'fcl20' || result.type === 'fcl40') && result.volume < 15) notes.push('Conteneur peu rempli: comparez avec LCL pour eviter de payer trop de capacite vide.');
+    if (fields.cargoType.value === 'fragile') notes.push('Marchandise fragile: prevoir emballage renforce, inspection et assurance adaptee.');
+    if (fields.cargoType.value === 'hazard') notes.push('Marchandise reglementee: confirmez fiche securite, acceptation transporteur et surcharges dangereuses.');
+    if (fields.cargoType.value === 'perishable') notes.push('Marchandise sensible delai: verifier temperature, cut-off, transit time et plan de secours.');
+    if (result.daysAvailable < result.timelineRange[1]) notes.push('Le delai disponible est serre par rapport au delai indicatif. Demandez un service accelere ou un autre mode.');
+    if (readNumber('insurancePercent') < 0.3) notes.push('Assurance faible: confirmez la base assuree, les exclusions et la franchise.');
+    notes.push('Demandez si le devis inclut BAF, THC, CFS, documentation, surestaries, magasinage, livraison locale et frais de destination.');
+    outputs.riskList.innerHTML = notes.map(function (note) { return '<li>' + note + '</li>'; }).join('');
+  }
+
+  function buildSummary(result) {
+    return [
+      'Resume de demande de devis fret',
+      'Origine: ' + fields.origin.value.trim(),
+      'Destination: ' + fields.destination.value.trim(),
+      'Mode: ' + fields.mode.options[fields.mode.selectedIndex].textContent,
+      'Type expedition: ' + fields.shipmentType.options[fields.shipmentType.selectedIndex].textContent,
+      'Marchandise: ' + fields.cargoType.options[fields.cargoType.selectedIndex].textContent,
+      'Poids brut: ' + result.weight.toLocaleString('fr-FR') + ' kg',
+      'Volume: ' + result.volume.toLocaleString('fr-FR') + ' CBM',
+      'Unite taxable: ' + result.unit.toFixed(2) + ' ' + result.unitLabel,
+      'Fret de base estime: ' + money(result.baseFreight),
+      'Assurance estimee: ' + money(result.insuranceCost),
+      'Frais locaux et manutention: ' + money(result.localCost),
+      'Fourchette logistique hors droits et taxes: ' + money(result.low) + ' a ' + money(result.high),
+      'Cout par kg: ' + money(result.costPerKg),
+      'Cout par CBM: ' + money(result.costPerCbm),
+      'Delai indicatif: ' + result.timelineRange[0] + ' a ' + result.timelineRange[1] + ' jours',
+      'A confirmer: validite du taux, Incoterm, frais destination, assurance, documents, cut-off, surestaries et livraison locale.'
+    ].join('\n');
+  }
+
+  function render() {
+    const error = validate();
+    if (error) {
+      setStatus(error, true);
+      return;
+    }
+    const result = compute();
+    outputs.freightEstimate.textContent = money(result.baseFreight);
+    outputs.resultNote.textContent = result.unit.toFixed(2) + ' ' + result.unitLabel + ', delai ' + result.timelineRange[0] + ' a ' + result.timelineRange[1] + ' jours.';
+    outputs.logisticsRange.textContent = money(result.low) + ' a ' + money(result.high);
+    outputs.costPerKg.textContent = money(result.costPerKg);
+    outputs.costPerCbm.textContent = money(result.costPerCbm);
+    outputs.chargeableWeight.textContent = result.unit.toFixed(2) + ' ' + result.unitLabel;
+    outputs.baseFreight.textContent = money(result.baseFreight);
+    outputs.insuranceCost.textContent = money(result.insuranceCost);
+    outputs.localCost.textContent = money(result.localCost);
+    outputs.timelineOutput.textContent = result.timelineRange[0] + ' a ' + result.timelineRange[1] + ' jours';
+    renderRisks(result);
+    outputs.summaryOutput.value = buildSummary(result);
+    lastResult = result;
+    try {
+      localStorage.setItem('afrotools-estimateur-fret-fr', JSON.stringify(Object.fromEntries(Object.keys(fields).map(function (key) { return [key, fields[key].value]; }))));
+    } catch (error) {}
+    setStatus('Estimation calculee. Copiez le resume ou exportez le CSV avant de demander un devis ferme.', false);
+  }
+
+  async function copySummary() {
+    if (!lastResult) render();
+    const text = outputs.summaryOutput.value.trim();
+    if (!text || text === 'Le resume apparait apres calcul.') {
+      setStatus('Aucun resume a copier pour le moment.', true);
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(text);
+      setStatus('Resume copie dans le presse-papiers.', false);
+    } catch (error) {
+      outputs.summaryOutput.focus();
+      outputs.summaryOutput.select();
+      setStatus('Copie bloquee par le navigateur. Selectionnez le resume puis copiez-le.', false);
+    }
+  }
+
+  function exportCsv() {
+    if (!lastResult) render();
+    if (!lastResult) return;
+    const rows = [
+      ['poste', 'valeur'],
+      ['origine', fields.origin.value.trim()],
+      ['destination', fields.destination.value.trim()],
+      ['mode', fields.mode.options[fields.mode.selectedIndex].textContent],
+      ['type_expedition', fields.shipmentType.options[fields.shipmentType.selectedIndex].textContent],
+      ['poids_kg', lastResult.weight],
+      ['volume_cbm', lastResult.volume],
+      ['unite_taxable', lastResult.unit.toFixed(2) + ' ' + lastResult.unitLabel],
+      ['fret_base', Math.round(lastResult.baseFreight)],
+      ['assurance', Math.round(lastResult.insuranceCost)],
+      ['frais_locaux', Math.round(lastResult.localCost)],
+      ['fourchette_basse', Math.round(lastResult.low)],
+      ['fourchette_haute', Math.round(lastResult.high)],
+      ['cout_par_kg', lastResult.costPerKg.toFixed(2)],
+      ['cout_par_cbm', lastResult.costPerCbm.toFixed(2)]
+    ];
+    const csv = rows.map(function (row) { return row.map(function (cell) { return '"' + String(cell).replace(/"/g, '""') + '"'; }).join(','); }).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'estimation-fret.csv';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    setStatus('CSV prepare: estimation-fret.csv', false);
+  }
+
+  function syncModeFromType() {
+    const preset = rateDefaults[fields.shipmentType.value];
+    if (!preset) return;
+    fields.mode.value = preset.mode;
+    fields.rate.value = String(preset.rate);
+    outputs.rateHelp.textContent = preset.help;
+  }
+
+  function resetAll() {
+    Object.keys(defaults).forEach(function (key) {
+      fields[key].value = defaults[key];
+    });
+    outputs.rateHelp.textContent = rateDefaults.lcl.help;
+    lastResult = null;
+    render();
+    setStatus('Scenario reinitialise avec un exemple LCL maritime.', false);
+  }
+
+  function loadSaved() {
+    try {
+      const saved = JSON.parse(localStorage.getItem('afrotools-estimateur-fret-fr') || '{}');
+      Object.keys(defaults).forEach(function (key) {
+        if (fields[key] && saved[key] !== undefined) fields[key].value = saved[key];
+      });
+    } catch (error) {}
+    const preset = rateDefaults[fields.shipmentType.value];
+    if (preset) outputs.rateHelp.textContent = preset.help;
+  }
+
+  fields.shipmentType.addEventListener('change', function () {
+    syncModeFromType();
+    render();
+  });
+  Object.keys(fields).forEach(function (key) {
+    if (key === 'shipmentType') return;
+    fields[key].addEventListener('change', render);
+  });
+  calculateBtn.addEventListener('click', render);
+  copyBtn.addEventListener('click', copySummary);
+  exportBtn.addEventListener('click', exportCsv);
+  printBtn.addEventListener('click', function () {
+    if (!lastResult) render();
+    window.print();
+  });
+  resetBtn.addEventListener('click', resetAll);
+
+  loadSaved();
+  render();
+});
+</script>
+</body>
+</html>

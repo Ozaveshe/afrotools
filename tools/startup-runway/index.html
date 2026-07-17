@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Startup Runway Calculator for African Startups | AfroTools</title>
+<meta name="description" content="Calculate how many months your startup can survive with your current cash. Enter burn rate, revenue and cash balance to get runway, net burn and scenario planning. Built for African founders.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Startup Runway Calculator | AfroTools">
+<meta property="og:description" content="How long can your startup survive? Calculate runway in months with scenario planning for African startups.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/startup-runway.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/startup-runway/">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Startup Runway Calculator for African Startups | AfroTools">
+<meta name="twitter:description" content="Calculate how many months your startup can survive with your current cash. Enter burn rate, revenue and cash balance to get runway, net burn and scenario planning. Built for African founders.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Startup Runway Calculator",
+  "url": "https://afrotools.com/tools/startup-runway/",
+  "description": "Calculate startup runway in months based on burn rate and cash balance. Built for African founders.",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/startup-runway.webp"
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<style>
+body{font-family:'Inter',sans-serif;background:#f8fafd;color:#0f172a;margin:0;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+.tool-hero{background:linear-gradient(135deg,#78350f 0%,#ea580c 50%,#f97316 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}
+.breadcrumb span{color:#fed7aa}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#fed7aa;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.7);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(253,186,116,.2);color:#fed7aa;border:1px solid rgba(253,186,116,.3)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0f172a}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+select,input[type="number"],input[type="text"]{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.85rem;background:#f8fafc;font-family:inherit;box-sizing:border-box;color:#0f172a}
+select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px rgba(234,88,12,.1)}
+.field{margin-bottom:14px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.85rem;font-weight:700;cursor:pointer;margin-top:18px;font-family:inherit}
+.btn-primary{background:linear-gradient(135deg,#7c2d12,#ea580c);color:#fff;transition:transform .15s,box-shadow .15s}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(234,88,12,.35)}
+.btn-sm{display:inline-block;width:auto;padding:6px 14px;margin-top:0;font-size:.74rem}
+.btn-outline{background:#fff;color:#ea580c;border:1.5px solid #ea580c;transition:background .15s}
+.btn-outline:hover{background:#fff7ed}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.res-item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
+.res-num{font-size:1.3rem;font-weight:800;color:#ea580c}
+.res-lbl{font-size:.66rem;color:#64748b;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
+.res-hero{background:linear-gradient(135deg,#fff7ed,#ffedd5);border:1px solid #fed7aa;border-radius:10px;padding:20px;text-align:center;margin-bottom:12px}
+.res-hero .big{font-size:2rem;font-weight:800;color:#ea580c}
+.res-hero .lbl{font-size:.75rem;color:#9a3412;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-top:4px}
+.runway-red{background:linear-gradient(135deg,#fef2f2,#fee2e2);border-color:#fca5a5}
+.runway-red .big{color:#dc2626}
+.runway-amber{background:linear-gradient(135deg,#fffbeb,#fef3c7);border-color:#fcd34d}
+.runway-amber .big{color:#d97706}
+.runway-green{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#86efac}
+.runway-green .big{color:#16a34a}
+.status-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.72rem;font-weight:700;margin-top:8px}
+.status-red{background:#fee2e2;color:#dc2626}
+.status-amber{background:#fef3c7;color:#b45309}
+.status-green{background:#dcfce7;color:#16a34a}
+.info-card{background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:16px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#7c2d12;margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:#9a3412;line-height:1.6}
+.info-card ul{padding-left:16px;margin:6px 0}
+.cost-line{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.cost-line input{flex:1}
+.cost-line .cost-name{flex:1.4}
+.cost-line .cost-amt{flex:1}
+.cost-line .remove-btn{background:none;border:none;color:#dc2626;cursor:pointer;font-size:1rem;padding:0 4px;flex:0}
+.cost-total{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:2px solid #e2e8f0;margin-top:6px;font-weight:700;font-size:.88rem}
+.scenario-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;background:#f8fafc;border-radius:8px;padding:10px}
+.scenario-label{font-size:.78rem;font-weight:600;color:#64748b;flex:1}
+.scenario-val{font-size:.88rem;font-weight:700;color:#ea580c}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:#0f172a;list-style:none}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+.disclaimer{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:14px;margin-top:14px;font-size:.74rem;color:#78350f;line-height:1.6}
+#results-section{display:none}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.row{grid-template-columns:1fr}}
+.summary-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.summary-actions button{border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#0f172a;cursor:pointer;font-family:inherit;font-weight:800;min-height:42px;padding:0 14px}.summary-actions button:hover,.summary-actions button:focus-visible{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.14);outline:none}.summary-status{color:#64748b;font-size:.78rem;line-height:1.5;margin-top:8px}
+</style>
+<link rel="stylesheet" href="/assets/css/small-business-focus.css?v=e81fcfcb">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/startup-runway.webp">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is startup runway?","acceptedAnswer":{"@type":"Answer","text":"Runway is the number of months a startup can operate before running out of cash — assuming current burn rate and revenue remain constant. It's the most important survival metric for early-stage startups. Most investors want to see 12–18 months of runway before investing."}},{"@type":"Question","name":"What's the difference between gross burn and net burn?","acceptedAnswer":{"@type":"Answer","text":"Gross burn is your total monthly expenditure — all costs before any revenue. Net burn is gross burn minus revenue. If you spend ₦2M/month and earn ₦800k/month, your net burn is ₦1.2M/month. Runway is calculated using net burn."}},{"@type":"Question","name":"How do African startups typically extend runway?","acceptedAnswer":{"@type":"Answer","text":"Common strategies include: negotiating deferred salaries with equity compensation, moving to cheaper co-working spaces, pausing non-critical marketing spend, renegotiating vendor contracts, pursuing revenue-based financing (common in Nigeria via Capiblock or Carbon), or raising a bridge round from angels in the ecosystem."}},{"@type":"Question","name":"What runway should I target before raising funding?","acceptedAnswer":{"@type":"Answer","text":"Aim for at least 18 months post-raise. Fundraising in Africa typically takes 3–9 months, so if you have less than 9 months of runway, start fundraising now. Lagos, Nairobi and Cape Town-based founders benefit from being close to investor networks."}}]}
+</script>
+<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Startup Runway Calculator for African Startups","item":"https://afrotools.com/tools/startup-runway/"}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/startup-runway/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/startup-runway/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/runway-startup/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/startup-runway/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/startup-runway/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+
+<section class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="/">Home</a> › <a href="/small-business/">Small Business</a> › <span>Startup Runway Calculator</span></div>
+    <h1>Startup <em>Runway</em> Calculator</h1>
+    <p class="hero-sub">How long can your startup survive? Enter your cash balance, burn rate and revenue to see exactly how many months you have — and what you can do to extend it.</p>
+    <div class="hero-badges">
+      <span class="badge">🇳🇬 Nigeria</span>
+      <span class="badge">🇰🇪 Kenya</span>
+      <span class="badge">🇿🇦 South Africa</span>
+      <span class="badge">Scenario Planning</span>
+      <span class="badge">Free</span>
+    </div>
+  </div>
+</section>
+
+<section class="tool-main">
+  <div class="tool-main-inner">
+    <div class="main-col">
+
+      <!-- Inputs -->
+      <div class="card">
+        <div class="card-head"><div class="card-title">Cash &amp; Revenue</div></div>
+        <div class="card-body">
+          <div class="row">
+            <div class="field">
+              <label for="currency">Currency</label>
+              <select id="currency">
+                <option value="NGN">NGN — Nigerian Naira</option>
+                <option value="KES">KES — Kenyan Shilling</option>
+                <option value="ZAR">ZAR — South African Rand</option>
+                <option value="GHS">GHS — Ghanaian Cedi</option>
+                <option value="USD">USD — US Dollar</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="cash-balance">Current Cash Balance</label>
+              <input type="number" id="cash-balance" placeholder="e.g. 5000000" min="0">
+            </div>
+          </div>
+          <div class="field">
+            <label for="monthly-revenue">Monthly Revenue (current)</label>
+            <input type="number" id="monthly-revenue" placeholder="e.g. 800000" min="0">
+          </div>
+        </div>
+      </div>
+
+      <!-- Cost line items -->
+      <div class="card">
+        <div class="card-head" style="display:flex;justify-content:space-between;align-items:center">
+          <div class="card-title">Monthly Costs (Burn)</div>
+          <button type="button" class="btn btn-sm btn-outline" onclick="addCostLine()">+ Add Line</button>
+        </div>
+        <div class="card-body">
+          <div id="cost-lines">
+            <!-- Pre-filled lines -->
+          </div>
+          <div class="cost-total">
+            <span>Total Monthly Costs</span>
+            <span id="cost-total-display">₦ 0</span>
+          </div>
+          <button type="button" class="btn btn-primary" onclick="calculate()">Calculate Runway</button>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="card" id="results-section">
+        <div class="card-head"><div class="card-title">Runway Analysis</div></div>
+        <div class="card-body">
+          <div id="runway-hero" class="res-hero">
+            <div class="big" id="runway-months">—</div>
+            <div class="lbl">Months of Runway</div>
+            <div id="runway-status-badge" class="status-badge">—</div>
+          </div>
+          <div class="result-grid">
+            <div class="res-item">
+              <div class="res-num" id="gross-burn">—</div>
+              <div class="res-lbl">Gross Burn / Month</div>
+            </div>
+            <div class="res-item">
+              <div class="res-num" id="net-burn">—</div>
+              <div class="res-lbl">Net Burn / Month</div>
+            </div>
+            <div class="res-item">
+              <div class="res-num" id="zero-date">—</div>
+              <div class="res-lbl">Cash Zero Date</div>
+            </div>
+            <div class="res-item">
+              <div class="res-num" id="months-to-profitable">—</div>
+              <div class="res-lbl">Revenue Gap</div>
+            </div>
+          </div>
+          <div class="summary-actions"><button type="button" onclick="copyStartupRunwaySummary()">Copy summary</button><button type="button" onclick="downloadStartupRunwaySummary()">Download TXT</button></div>
+          <div class="summary-status" id="startup-summary-status" role="status" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <!-- Scenario Planning -->
+      <div class="card" id="scenario-section" style="display:none">
+        <div class="card-head"><div class="card-title">Scenario Planning</div></div>
+        <div class="card-body">
+          <p style="font-size:.82rem;color:#64748b;margin-bottom:14px">If you cut costs by X%, your runway extends to:</p>
+          <div class="scenario-row">
+            <span class="scenario-label">Cut costs by 10%</span>
+            <span class="scenario-val" id="sc-10">—</span>
+          </div>
+          <div class="scenario-row">
+            <span class="scenario-label">Cut costs by 20%</span>
+            <span class="scenario-val" id="sc-20">—</span>
+          </div>
+          <div class="scenario-row">
+            <span class="scenario-label">Cut costs by 30%</span>
+            <span class="scenario-val" id="sc-30">—</span>
+          </div>
+          <div class="scenario-row">
+            <span class="scenario-label">Revenue doubles</span>
+            <span class="scenario-val" id="sc-rev2x">—</span>
+          </div>
+          <div class="scenario-row">
+            <span class="scenario-label">Revenue triples</span>
+            <span class="scenario-val" id="sc-rev3x">—</span>
+          </div>
+        </div>
+      </div>
+
+<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="startup-runway" aria-labelledby="startup-runway-verification-title">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Runway workflow</span>
+          <h2 class="tool-verification-title" id="startup-runway-verification-title">Turn cash balance and burn into a survival plan</h2>
+          <p class="tool-verification-lead">Estimate how many months the company can operate with the current cash balance, monthly revenue, cost base, and growth assumptions, then compare simple cost-cut scenarios.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Local runway estimate</span>
+          <p class="tool-verification-note">Inputs and outputs stay in this browser unless you copy, download, print, save, or share them.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block"><h3>Primary task</h3><ul class="tool-verification-list"><li>Enter cash balance, monthly revenue, monthly spend, and growth assumptions.</li><li>Calculate gross burn, net burn, cash-zero timing, and runway status.</li><li>Use scenarios to see how cost cuts or revenue growth change survival time.</li></ul></div>
+        <div class="tool-verification-block"><h3>Result and export</h3><ul class="tool-verification-list"><li>Runway months, burn-rate figures, cash-zero date, revenue gap, and scenario table.</li><li>Copy and TXT download actions for founder updates or investor prep.</li><li>Planning note that keeps the estimate local-first and non-official.</li></ul></div>
+        <div class="tool-verification-block"><h3>Before you use it</h3><ul class="tool-verification-list"><li>Separate booked revenue from collected cash.</li><li>Add payroll taxes, contractor commitments, loan repayments, and founder draw if applicable.</li><li>Re-run after every material hire, layoff, funding event, or revenue miss.</li></ul></div>
+        <div class="tool-verification-block"><h3>Assumptions and freshness</h3><p class="tool-verification-meta">Runway is only as current as the cash and spend inputs. It is not fundraising, accounting, tax, or investment advice.</p></div>
+      </div>
+      <div class="tool-verification-actions">
+        <a class="tool-verification-report" href="/contact/">Report tool issue</a>
+        <p class="tool-verification-disclaimer">Planning utility only. It is not an official filing, legal, tax, accounting, security, finance, platform, lender, or live-data service.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<afro-business-cta tool-name="Startup Runway Calculator" prospect-segment="startup-finance" save-note="Calculate runway, inspect scenarios, then copy or download a founder/investor-ready TXT summary."></afro-business-cta>
+      <!-- FAQ -->
+      <div class="card">
+        <div class="card-head"><div class="card-title">FAQ</div></div>
+        <div class="card-body">
+          <details class="faq-item">
+            <summary>What is startup runway?</summary>
+            <p>Runway is the number of months a startup can operate before running out of cash — assuming current burn rate and revenue remain constant. It's the most important survival metric for early-stage startups. Most investors want to see 12–18 months of runway before investing.</p>
+          </details>
+          <details class="faq-item">
+            <summary>What's the difference between gross burn and net burn?</summary>
+            <p>Gross burn is your total monthly expenditure — all costs before any revenue. Net burn is gross burn minus revenue. If you spend ₦2M/month and earn ₦800k/month, your net burn is ₦1.2M/month. Runway is calculated using net burn.</p>
+          </details>
+          <details class="faq-item">
+            <summary>How do African startups typically extend runway?</summary>
+            <p>Common strategies include: negotiating deferred salaries with equity compensation, moving to cheaper co-working spaces, pausing non-critical marketing spend, renegotiating vendor contracts, pursuing revenue-based financing (common in Nigeria via Capiblock or Carbon), or raising a bridge round from angels in the ecosystem.</p>
+          </details>
+          <details class="faq-item">
+            <summary>What runway should I target before raising funding?</summary>
+            <p>Aim for at least 18 months post-raise. Fundraising in Africa typically takes 3–9 months, so if you have less than 9 months of runway, start fundraising now. Lagos, Nairobi and Cape Town-based founders benefit from being close to investor networks.</p>
+          </details>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Sidebar -->
+    <div class="side-col">
+      <div class="card">
+        <div class="card-head"><div class="card-title">How to Extend Runway</div></div>
+        <div class="card-body">
+          <div class="info-card">
+            <h4>Immediate Actions</h4>
+            <ul>
+              <li>Audit all SaaS subscriptions — cancel unused tools</li>
+              <li>Renegotiate office rent or move to co-working</li>
+              <li>Pause paid ads if CAC is not justified</li>
+              <li>Offer equity top-ups in exchange for salary deferrals</li>
+              <li>Switch cloud providers or downgrade tiers</li>
+            </ul>
+          </div>
+          <div class="info-card" style="margin-top:12px">
+            <h4>Revenue Acceleration</h4>
+            <ul>
+              <li>Focus sales on annual prepaid deals (boost cash immediately)</li>
+              <li>Reduce payment terms from 30 to 7 days</li>
+              <li>Upsell/cross-sell existing customers (zero CAC)</li>
+              <li>Launch a "lifetime deal" to inject cash</li>
+            </ul>
+          </div>
+          <div class="info-card" style="margin-top:12px">
+            <h4>Runway Red Zones</h4>
+            <p>🔴 <strong>&lt; 3 months</strong> — Critical. Fundraise immediately or cut to skeleton crew.<br>
+            🟡 <strong>3–6 months</strong> — Caution. Start fundraising conversations now.<br>
+            🟢 <strong>6+ months</strong> — Healthy. Execute and track monthly.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:18px">
+        <div class="card-head"><div class="card-title">Related Tools</div></div>
+        <div class="card-body" style="padding:14px">
+          <a href="/tools/burn-rate/" style="display:block;padding:9px 0;border-bottom:1px solid #f1f5f9;font-size:.82rem;color:#ea580c;font-weight:600">→ Burn Rate Calculator</a>
+          <a href="/tools/cash-flow-forecast/" style="display:block;padding:9px 0;border-bottom:1px solid #f1f5f9;font-size:.82rem;color:#ea580c;font-weight:600">→ 12-Month Cash Flow Forecast</a>
+          <a href="/tools/break-even/" style="display:block;padding:9px 0;border-bottom:1px solid #f1f5f9;font-size:.82rem;color:#ea580c;font-weight:600">→ Break-Even Calculator</a>
+          <a href="/tools/unit-economics/" style="display:block;padding:9px 0;font-size:.82rem;color:#ea580c;font-weight:600">→ Unit Economics Calculator</a>
+        </div>
+      </div>
+
+      <div class="disclaimer">
+        <strong>Disclaimer:</strong> Runway calculations are estimates based on your inputs. Actual cash position may differ due to irregular expenses, receivables delays, or tax obligations. Always maintain a real-time cash flow ledger.
+      </div>
+    </div>
+  </div>
+</section>
+<afro-related-tools data-ssr="1" category="small-business" current="startup-runway">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/mini-importation/" data-related-tool data-id="mini-importation" data-name="Mini-Importation Profit Calculator" data-category="small-business" data-icon="MI" data-desc="Calculate landed cost and profit for importing goods from China via Alibaba/1688. Includes FX conversion, shipping, cust">Mini-Importation Profit Calculator</a></li><li><a href="/tools/pos-agent/" data-related-tool data-id="pos-agent" data-name="POS Agent Business Calculator" data-category="small-business" data-icon="PA" data-desc="Calculate POS agent/mobile money agent profitability in Nigeria (OPay/Moniepoint), Kenya (M-Pesa), Ghana (MTN MoMo). Dai">POS Agent Business Calculator</a></li><li><a href="/tools/mama-put/" data-related-tool data-id="mama-put" data-name="Mama Put / Food Vendor Business Calculator" data-category="small-business" data-icon="MP" data-desc="Profit calculator for African food vendors and restaurants. Enter meals served, price, COGS, rent, and staff costs — get">Mama Put / Food Vendor Business Calculator</a></li><li><a href="/tools/marketplace-fees/" data-related-tool data-id="marketplace-fees" data-name="Marketplace Fee Comparator (Africa)" data-category="small-business" data-icon="MF" data-desc="Compare selling fees across Jumia, Konga, Takealot, Kilimall and other African marketplaces. See net payout per sale by ">Marketplace Fee Comparator (Africa)</a></li><li><a href="/tools/burn-rate/" data-related-tool data-id="burn-rate" data-name="Burn Rate Calculator" data-category="small-business" data-icon="BR" data-desc="Calculate your monthly gross and net burn rate. Enter personnel, rent, software, marketing costs — see runway and get ac">Burn Rate Calculator</a></li><li><a href="/tools/cash-flow-forecast/" data-related-tool data-id="cash-flow-forecast" data-name="Cash Flow Forecast Tool" data-category="small-business" data-icon="CF" data-desc="Build a 12-month cash flow projection for your African business. See monthly revenue, costs, net position, and highlight">Cash Flow Forecast Tool</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+var DEFAULT_COSTS = [
+  {name:"Salaries & Wages", amount:1200000},
+  {name:"Office / Rent", amount:200000},
+  {name:"Software & Subscriptions", amount:80000},
+  {name:"Marketing & Ads", amount:150000},
+  {name:"Utilities & Internet", amount:40000},
+  {name:"Other Expenses", amount:50000}
+];
+
+var CURRENCY_SYMBOLS = {NGN:"₦",KES:"KSh",ZAR:"R",GHS:"GH₵",USD:"$"};
+
+function getCurrSymbol() {
+  var c = document.getElementById('currency').value;
+  return CURRENCY_SYMBOLS[c] || c + " ";
+}
+
+function fmt(n) {
+  return getCurrSymbol() + Number(n).toLocaleString('en-NG', {maximumFractionDigits:0});
+}
+
+function addCostLine(name, amount) {
+  var container = document.getElementById('cost-lines');
+  var div = document.createElement('div');
+  div.className = 'cost-line';
+  div.innerHTML = '<input aria-label="Cost name" type="text" class="cost-name" placeholder="Cost name" value="' + (name||'') + '">' +
+    '<input aria-label="Amount" type="number" class="cost-amt" placeholder="Amount" value="' + (amount||'') + '" min="0" oninput="updateCostTotal()">' +
+    '<button type="button" class="remove-btn" onclick="this.parentElement.remove();updateCostTotal()">✕</button>';
+  container.appendChild(div);
+  updateCostTotal();
+}
+
+function updateCostTotal() {
+  var amts = document.querySelectorAll('.cost-amt');
+  var total = 0;
+  amts.forEach(function(el){ total += parseFloat(el.value)||0; });
+  document.getElementById('cost-total-display').textContent = fmt(total);
+}
+
+function getTotalCosts() {
+  var amts = document.querySelectorAll('.cost-amt');
+  var total = 0;
+  amts.forEach(function(el){ total += parseFloat(el.value)||0; });
+  return total;
+}
+
+function runwayLabel(months) {
+  if (!isFinite(months) || months < 0) return "∞ (profitable)";
+  return months.toFixed(1) + " months";
+}
+
+function calcRunway(cash, netBurn) {
+  if (netBurn <= 0) return Infinity;
+  return cash / netBurn;
+}
+
+function calculate() {
+  var cash = parseFloat(document.getElementById('cash-balance').value) || 0;
+  var revenue = parseFloat(document.getElementById('monthly-revenue').value) || 0;
+  var grossBurn = getTotalCosts();
+  var netBurn = grossBurn - revenue;
+
+  var runway = calcRunway(cash, netBurn);
+
+  // Show results
+  document.getElementById('results-section').style.display = 'block';
+  document.getElementById('scenario-section').style.display = 'block';
+
+  document.getElementById('gross-burn').textContent = fmt(grossBurn);
+  document.getElementById('net-burn').textContent = netBurn > 0 ? fmt(netBurn) : "Profitable!";
+
+  // Zero date
+  if (isFinite(runway) && runway > 0) {
+    var d = new Date();
+    d.setMonth(d.getMonth() + Math.floor(runway));
+    var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    document.getElementById('zero-date').textContent = months[d.getMonth()] + " " + d.getFullYear();
+  } else {
+    document.getElementById('zero-date').textContent = "N/A";
+  }
+
+  // Revenue gap
+  var gap = grossBurn - revenue;
+  document.getElementById('months-to-profitable').textContent = gap > 0 ? fmt(gap) + "/mo gap" : "Profitable!";
+
+  // Runway hero
+  var heroEl = document.getElementById('runway-hero');
+  var bigEl = document.getElementById('runway-months');
+  var badgeEl = document.getElementById('runway-status-badge');
+  heroEl.className = 'res-hero';
+  badgeEl.className = 'status-badge';
+
+  if (!isFinite(runway) || runway < 0) {
+    bigEl.textContent = "∞";
+    heroEl.classList.add('runway-green');
+    badgeEl.textContent = "PROFITABLE";
+    badgeEl.classList.add('status-green');
+  } else if (runway < 3) {
+    bigEl.textContent = runway.toFixed(1) + " mo";
+    heroEl.classList.add('runway-red');
+    badgeEl.textContent = "CRITICAL — ACT NOW";
+    badgeEl.classList.add('status-red');
+  } else if (runway < 6) {
+    bigEl.textContent = runway.toFixed(1) + " mo";
+    heroEl.classList.add('runway-amber');
+    badgeEl.textContent = "CAUTION — START FUNDRAISING";
+    badgeEl.classList.add('status-amber');
+  } else {
+    bigEl.textContent = runway.toFixed(1) + " mo";
+    heroEl.classList.add('runway-green');
+    badgeEl.textContent = "HEALTHY";
+    badgeEl.classList.add('status-green');
+  }
+
+  // Scenarios
+  [10,20,30].forEach(function(pct) {
+    var reducedBurn = grossBurn * (1 - pct/100);
+    var reducedNet = reducedBurn - revenue;
+    var sc = calcRunway(cash, reducedNet);
+    document.getElementById('sc-' + pct).textContent = runwayLabel(sc);
+  });
+
+  var sc2x = calcRunway(cash, grossBurn - revenue*2);
+  var sc3x = calcRunway(cash, grossBurn - revenue*3);
+  document.getElementById('sc-rev2x').textContent = runwayLabel(sc2x);
+  document.getElementById('sc-rev3x').textContent = runwayLabel(sc3x);
+
+  document.getElementById('results-section').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+// Init default costs
+document.addEventListener('DOMContentLoaded', function() {
+  DEFAULT_COSTS.forEach(function(c){ addCostLine(c.name, c.amount); });
+  document.getElementById('currency').addEventListener('change', updateCostTotal);
+});
+
+function textOf(id){ var el=document.getElementById(id); return el ? el.textContent.trim() : ''; }
+function valueOf(id){ var el=document.getElementById(id); return el ? (el.value || el.textContent || '').trim() : ''; }
+function buildToolSummary(title, rows){ return [title, new Date().toISOString().slice(0,10), ''].concat(rows.filter(Boolean)).join('\n'); }
+function copyToolSummary(text, statusId){
+  var s=document.getElementById(statusId);
+  if(s) s.textContent='Summary copied.';
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).catch(function(){ fallbackCopy(text); });
+  } else {
+    fallbackCopy(text);
+  }
+}
+function fallbackCopy(text){ var ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }
+function downloadToolSummary(text, filename, statusId){ var blob=new Blob([text],{type:'text/plain;charset=utf-8'}); var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=filename; document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(function(){URL.revokeObjectURL(a.href);},500); var s=document.getElementById(statusId); if(s) s.textContent='TXT summary downloaded.'; }
+
+function buildStartupRunwaySummary(){ return buildToolSummary('Startup runway summary', ['Currency: '+valueOf('currency'), 'Cash balance: '+valueOf('cash-balance'), 'Monthly revenue: '+valueOf('monthly-revenue'), 'Runway: '+textOf('runway-months'), 'Gross burn/month: '+textOf('gross-burn'), 'Net burn/month: '+textOf('net-burn'), 'Cash zero date: '+textOf('zero-date'), 'Revenue gap: '+textOf('months-to-profitable'), 'Status: '+textOf('runway-status-badge'), 'Note: planning estimate only; use current cash, committed expenses, and collected revenue.']); }
+function copyStartupRunwaySummary(){ copyToolSummary(buildStartupRunwaySummary(),'startup-summary-status'); }
+function downloadStartupRunwaySummary(){ downloadToolSummary(buildStartupRunwaySummary(),'startup-runway-summary.txt','startup-summary-status'); }
+
+</script>
+<script src="/assets/js/pages/small-business-focus.js?v=1f3c6d53" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+</body>
+</html>
