@@ -1,0 +1,341 @@
+{
+  "version": 1,
+  "category": "insurance",
+  "name": "Insurance official sources",
+  "reviewCadenceDays": 180,
+  "highRiskCadenceDays": 60,
+  "datasetStampFallback": "data/insurance-data.json:_metadata.lastUpdated",
+  "notes": [
+    "Insurance carries perishable public numbers: motor third-party tariffs, comprehensive rate bands, statutory health-fund contribution rates, workers-compensation rates and penetration figures. Tariffs move with finance acts, regulator circulars and CIMA-code revisions.",
+    "The calculator dataset data/insurance/country-insurance-index.js carries NO lastUpdated stamp for its 54 markets. Freshness is tracked here against data/insurance-data.json:_metadata.lastUpdated as a floor. Treat any premium older than highRiskCadenceDays as planning-grade, never as a current quote.",
+    "Never update a motor tariff, comprehensive rate band or statutory contribution rate because a URL's content hash changed. Open the page and read the gazetted circular or CIMA code article, exactly as .claude/rules/government.md requires.",
+    "A regulator source always outranks an insurer, broker or aggregator page for the same claim. Comprehensive rate bands, life/business rates, HMO premiums and microinsurance terms are commercial underwriting figures and are recorded as unsourced by design.",
+    "Only 19 of 54 markets have a bound insurance-regulator URL today. The other 35 are recorded in gaps.regulatorsWithoutUrl as known liabilities, not to-dos. Do not delete one without either finding the source or showing the figure as planning-grade.",
+    "The bug class to watch, per .claude/rules/telecom.md and energy.md: a required monetary input defaulting to 0 (parseFloat(x)||0) renders a premium of 0 — insurance shown as free. The insurance engines now force the user input (vehicle value, payroll, CIF value, property value, revenue, salary) and return an error instead of costing cover at zero. Keep that pattern.",
+    "Statutory health-fund contribution rates (NHIA, SHIF/SHA, AMO/CNSS, CNAM, Mutuelle) are set by national health funds, not by the insurance regulator. They are recorded as a separate unsourced class here until each fund's circular is bound."
+  ],
+  "tools": [
+    "car-insurance",
+    "motor-third-party",
+    "health-insurance-compare",
+    "health-contribution",
+    "life-insurance-calc",
+    "funeral-insurance",
+    "travel-insurance",
+    "business-insurance",
+    "crop-insurance-calc",
+    "professional-indemnity",
+    "fire-insurance",
+    "marine-insurance",
+    "microinsurance",
+    "workers-comp",
+    "claim-tracker",
+    "insurance-fraud-checker"
+  ],
+  "sources": [
+    {
+      "id": "reg-ng",
+      "country": "NG",
+      "authority": "NAICOM (National Insurance Commission)",
+      "title": "NAICOM — Nigeria insurance regulator",
+      "url": "https://naicom.gov.ng/",
+      "sourceType": "regulator",
+      "watch": "availability-and-content",
+      "fields": ["motorThirdParty", "motorComprehensiveRate", "mandatoryClasses", "penetration"],
+      "tools": ["car-insurance", "motor-third-party", "workers-comp"],
+      "notes": "Authoritative for the NAICOM-standardised motor third-party tariff (₦15,000 private since Jan 2023), comprehensive rate guidance and compulsory classes. Read the current NAICOM circular before changing a rate — a changed page is not a rate change."
+    },
+    {
+      "id": "reg-ke",
+      "country": "KE",
+      "authority": "IRA (Insurance Regulatory Authority)",
+      "title": "IRA — Kenya insurance regulator",
+      "url": "https://www.ira.go.ke/",
+      "sourceType": "regulator",
+      "watch": "availability-and-content",
+      "fields": ["motorThirdParty", "motorComprehensiveRate", "mandatoryClasses", "penetration"],
+      "tools": ["car-insurance", "motor-third-party", "workers-comp"],
+      "notes": "Authoritative for motor tariff guidance and the WIBA workers-compensation framework. SHIF health contributions are set by the Social Health Authority, not IRA."
+    },
+    {
+      "id": "reg-za",
+      "country": "ZA",
+      "authority": "FSCA / Prudential Authority",
+      "title": "FSCA — South Africa insurance conduct regulator",
+      "url": "https://www.fsca.co.za/",
+      "sourceType": "regulator",
+      "watch": "availability-and-content",
+      "fields": ["motorComprehensiveRate", "mandatoryClasses", "penetration"],
+      "tools": ["car-insurance", "motor-third-party", "workers-comp"],
+      "notes": "Motor insurance is NOT compulsory in South Africa; the Road Accident Fund (fuel levy) covers bodily injury, so the calculators show third-party as Not applicable. FSCA governs conduct; COIDA workers-comp is administered by the Compensation Fund."
+    },
+    {
+      "id": "reg-gh",
+      "country": "GH",
+      "authority": "NIC (National Insurance Commission)",
+      "title": "NIC — Ghana insurance regulator",
+      "url": "https://nicgh.org/",
+      "sourceType": "regulator",
+      "watch": "availability-and-content",
+      "fields": ["motorThirdParty", "motorComprehensiveRate", "mandatoryClasses", "penetration"],
+      "tools": ["car-insurance", "motor-third-party"],
+      "notes": "Authoritative for the NIC motor tariff (private saloon GHS 530, taxi GHS 637 for 2025/2026) and the Motor Tariff Guidelines comprehensive rate band. Read the current NIC tariff before changing a figure."
+    },
+    {
+      "id": "reg-eg",
+      "country": "EG",
+      "authority": "FRA (Financial Regulatory Authority)",
+      "title": "FRA — Egypt insurance regulator",
+      "url": "https://fra.gov.eg/",
+      "sourceType": "regulator",
+      "watch": "availability-and-content",
+      "fields": ["motorThirdParty", "motorComprehensiveRate", "mandatoryClasses", "penetration"],
+      "tools": ["car-insurance", "motor-third-party"],
+      "notes": "Authoritative for the FRA compulsory-motor tariff schedule tiered by engine CC. Unified Insurance Law No. 155/2024 governs the wider framework."
+    },
+    {
+      "id": "reg-et",
+      "country": "ET",
+      "authority": "NBE (National Bank of Ethiopia, Insurance Supervision)",
+      "title": "NBE — Ethiopia insurance supervisor",
+      "url": "https://nbe.gov.et/",
+      "sourceType": "regulator",
+      "watch": "availability-and-content",
+      "fields": ["motorThirdParty", "motorComprehensiveRate", "mandatoryClasses"],
+      "tools": ["car-insurance", "motor-third-party"],
+      "notes": "Authoritative for the motor minimum-premium directive (SIB/60/2023). Read the current NBE directive before changing a rate."
+    },
+    {
+      "id": "reg-tz",
+      "country": "TZ",
+      "authority": "TIRA (Tanzania Insurance Regulatory Authority)",
+      "title": "TIRA — Tanzania insurance regulator",
+      "url": "https://www.tira.go.tz/",
+      "sourceType": "regulator",
+      "watch": "availability-and-content",
+      "fields": ["motorThirdParty", "motorComprehensiveRate", "mandatoryClasses", "penetration"],
+      "tools": ["car-insurance", "motor-third-party", "workers-comp"],
+      "notes": "Authoritative for the motor third-party standard premium and comprehensive rate guidance."
+    },
+    {
+      "id": "reg-ug",
+      "country": "UG",
+      "authority": "IRA Uganda (Insurance Regulatory Authority of Uganda)",
+      "title": "IRA Uganda — insurance regulator",
+      "url": "https://ira.go.ug/",
+      "sourceType": "regulator",
+      "watch": "availability-and-content",
+      "fields": ["motorThirdParty", "motorComprehensiveRate", "mandatoryClasses", "penetration"],
+      "tools": ["car-insurance", "motor-third-party"],
+      "notes": "Authoritative for the motor third-party premium and cover limits. COMESA yellow-card cross-border rates are separate."
+    },
+    {
+      "id": "reg-rw",
+      "country": "RW",
+      "authority": "BNR (National Bank of Rwanda, Insurance Supervision)",
+      "title": "BNR — Rwanda insurance supervisor",
+      "url": "https://www.bnr.rw/",
+      "sourceType": "regulator",
+      "watch": "availability-and-content",
+      "fields": ["motorThirdParty", "motorComprehensiveRate", "mandatoryClasses", "penetration"],
+      "tools": ["car-insurance", "motor-third-party"],
+      "notes": "Authoritative for compulsory motor insurance. Mutuelle de Santé community health premiums are set by the RSSB, not BNR."
+    },
+    {
+      "id": "reg-ma",
+      "country": "MA",
+      "authority": "ACAPS (Autorité de Contrôle des Assurances et de la Prévoyance Sociale)",
+      "title": "ACAPS — Morocco insurance regulator",
+      "url": "https://www.acaps.ma/",
+      "sourceType": "regulator",
+      "watch": "availability-and-content",
+      "fields": ["motorThirdParty", "motorComprehensiveRate", "mandatoryClasses", "penetration"],
+      "tools": ["car-insurance", "motor-third-party"],
+      "notes": "Authoritative for the Article-120 compulsory motor civil-liability tariff and the Bonus-Malus (CRM) coefficients. AMO health contributions are set by CNSS/CNOPS."
+    },
+    {
+      "id": "reg-tn",
+      "country": "TN",
+      "authority": "CGA (Comité Général des Assurances)",
+      "title": "CGA — Tunisia insurance regulator",
+      "url": "https://www.cga.gov.tn/",
+      "sourceType": "regulator",
+      "watch": "availability-and-content",
+      "fields": ["motorThirdParty", "motorComprehensiveRate", "mandatoryClasses", "penetration"],
+      "tools": ["car-insurance", "motor-third-party"],
+      "notes": "Authoritative for the compulsory motor (RC Obligatoire) tariff. CNAM health contributions are separate."
+    },
+    {
+      "id": "reg-ao",
+      "country": "AO",
+      "authority": "ARSEG (Agência Angolana de Regulação e Supervisão de Seguros)",
+      "title": "ARSEG — Angola insurance regulator",
+      "url": "https://www.arseg.ao/",
+      "sourceType": "regulator",
+      "watch": "availability-and-content",
+      "fields": ["motorThirdParty", "motorComprehensiveRate", "mandatoryClasses"],
+      "tools": ["car-insurance", "motor-third-party", "workers-comp"],
+      "notes": "Authoritative for the engine-CC-tiered motor third-party tariff and the compulsory workers-compensation class."
+    },
+    {
+      "id": "reg-ci",
+      "country": "CI",
+      "authority": "CIMA / Direction des Assurances",
+      "title": "CIMA — regional insurance code (Côte d'Ivoire)",
+      "url": "https://cima-afrique.org/",
+      "sourceType": "regulator",
+      "watch": "availability-and-content",
+      "fields": ["motorThirdParty", "mandatoryClasses"],
+      "tools": ["car-insurance", "motor-third-party"],
+      "notes": "The CIMA Code (Article 200) sets compulsory motor and the 50% maximum no-claims discount across the zone; actual tariffs are set by the national Direction des Assurances, which has no bound URL here. Treat the national premium figure as planning-grade."
+    },
+    {
+      "id": "reg-cm",
+      "country": "CM",
+      "authority": "CIMA / Ministère des Finances",
+      "title": "CIMA — regional insurance code (Cameroon)",
+      "url": "https://cima-afrique.org/",
+      "sourceType": "regulator",
+      "watch": "availability-and-content",
+      "fields": ["motorThirdParty", "mandatoryClasses"],
+      "tools": ["car-insurance", "motor-third-party"],
+      "notes": "CIMA Code governs compulsory motor; national tariff figures are planning-grade until the national Direction des Assurances URL is bound."
+    },
+    {
+      "id": "reg-sn",
+      "country": "SN",
+      "authority": "CIMA / Direction des Assurances Sénégal",
+      "title": "CIMA — regional insurance code (Senegal)",
+      "url": "https://cima-afrique.org/",
+      "sourceType": "regulator",
+      "watch": "availability-and-content",
+      "fields": ["motorThirdParty", "mandatoryClasses"],
+      "tools": ["car-insurance", "motor-third-party"],
+      "notes": "CIMA Code governs compulsory motor; national tariff figures are planning-grade until the national Direction des Assurances URL is bound."
+    },
+    {
+      "id": "reg-na",
+      "country": "NA",
+      "authority": "NAMFISA (Namibia Financial Institutions Supervisory Authority)",
+      "title": "NAMFISA — Namibia insurance regulator",
+      "url": "https://www.namfisa.com.na/",
+      "sourceType": "regulator",
+      "watch": "availability-and-content",
+      "fields": ["motorComprehensiveRate", "mandatoryClasses", "penetration"],
+      "tools": ["car-insurance", "motor-third-party"],
+      "notes": "Authoritative for the insurance framework; Namibia's motor market is heavily SA-influenced. Verify third-party status before presenting a mandatory premium."
+    },
+    {
+      "id": "reg-zw",
+      "country": "ZW",
+      "authority": "IPEC (Insurance and Pensions Commission)",
+      "title": "IPEC — Zimbabwe insurance regulator",
+      "url": "https://www.ipec.co.zw/",
+      "sourceType": "regulator",
+      "watch": "availability-and-content",
+      "fields": ["motorThirdParty", "motorComprehensiveRate", "mandatoryClasses", "penetration"],
+      "tools": ["car-insurance", "motor-third-party"],
+      "notes": "Authoritative for compulsory motor third-party under the Road Traffic Act. Zimbabwe pricing moves fast with currency changes — treat figures as planning-grade."
+    },
+    {
+      "id": "reg-mu",
+      "country": "MU",
+      "authority": "FSC (Financial Services Commission Mauritius)",
+      "title": "FSC — Mauritius insurance regulator",
+      "url": "https://www.fscmauritius.org/",
+      "sourceType": "regulator",
+      "watch": "availability-and-content",
+      "fields": ["motorThirdParty", "motorComprehensiveRate", "mandatoryClasses", "penetration"],
+      "tools": ["car-insurance", "motor-third-party"],
+      "notes": "Authoritative for the insurance framework and compulsory motor third-party."
+    },
+    {
+      "id": "reg-bw",
+      "country": "BW",
+      "authority": "NBFIRA (Non-Bank Financial Institutions Regulatory Authority)",
+      "title": "NBFIRA — Botswana insurance regulator",
+      "url": "https://www.nbfira.org.bw/",
+      "sourceType": "regulator",
+      "watch": "availability-and-content",
+      "fields": ["motorThirdParty", "mandatoryClasses", "penetration"],
+      "tools": ["car-insurance", "motor-third-party", "workers-comp"],
+      "notes": "Authoritative for the insurance framework, compulsory motor third-party and workers-compensation."
+    }
+  ],
+  "gaps": {
+    "regulatorsWithoutUrl": [
+      { "country": "DZ", "authority": "CNA (Conseil National des Assurances)", "needs": ["motorThirdParty", "mandatoryClasses"], "note": "Algeria motor tariff is a bundled planning default with no bound regulator URL." },
+      { "country": "BJ", "authority": "CIMA / Direction des Assurances (Benin)", "needs": ["motorThirdParty"], "note": "CIMA member; national Direction des Assurances URL not bound. Figure is planning-grade." },
+      { "country": "BF", "authority": "CIMA / Direction des Assurances (Burkina Faso)", "needs": ["motorThirdParty"], "note": "CIMA member; national DA URL not bound. Figure is planning-grade." },
+      { "country": "BI", "authority": "ARCA (Autorité de Régulation et de Contrôle des Assurances)", "needs": ["motorThirdParty"], "note": "Burundi motor tariff is a bundled planning default with no bound regulator URL." },
+      { "country": "CV", "authority": "Banco de Cabo Verde (insurance supervision)", "needs": ["motorThirdParty"], "note": "Cabo Verde motor tariff is a bundled planning default with no bound regulator URL." },
+      { "country": "CF", "authority": "CIMA / Direction des Assurances (CAR)", "needs": ["motorThirdParty"], "note": "CIMA member; national DA URL not bound. Figure is planning-grade." },
+      { "country": "TD", "authority": "CIMA / Direction des Assurances (Chad)", "needs": ["motorThirdParty"], "note": "CIMA member; national DA URL not bound. Figure is planning-grade." },
+      { "country": "KM", "authority": "Banque Centrale des Comores", "needs": ["motorThirdParty"], "note": "Comoros motor tariff is a bundled planning default with no bound regulator URL." },
+      { "country": "CG", "authority": "CIMA / Direction Nationale des Assurances (Congo-Brazzaville)", "needs": ["motorThirdParty"], "note": "CIMA member; national DNA URL not bound. Figure is planning-grade." },
+      { "country": "CD", "authority": "ARCA (Autorité de Régulation et de Contrôle des Assurances)", "needs": ["motorThirdParty"], "note": "DR Congo motor tariff is a bundled planning default with no bound regulator URL." },
+      { "country": "DJ", "authority": "Banque Centrale de Djibouti / Ministry of Finance", "needs": ["motorThirdParty"], "note": "Djibouti motor tariff is a bundled planning default with no bound regulator URL." },
+      { "country": "GQ", "authority": "CIMA / CRCA (Equatorial Guinea)", "needs": ["motorThirdParty"], "note": "CIMA member; national DA URL not bound. Figure is planning-grade." },
+      { "country": "ER", "authority": "Ministry of Finance (Eritrea)", "needs": ["motorThirdParty"], "note": "Eritrea motor tariff is a bundled planning default with no bound regulator URL." },
+      { "country": "SZ", "authority": "FSRA (Financial Services Regulatory Authority)", "needs": ["motorThirdParty"], "note": "Eswatini motor tariff is a bundled planning default with no bound regulator URL." },
+      { "country": "GA", "authority": "CIMA / CRCA (Gabon)", "needs": ["motorThirdParty"], "note": "CIMA member (CRCA is headquartered in Libreville); national DA URL not bound. Figure is planning-grade." },
+      { "country": "GM", "authority": "Central Bank of The Gambia (insurance division)", "needs": ["motorThirdParty"], "note": "Gambia motor tariff is a bundled planning default with no bound regulator URL." },
+      { "country": "GN", "authority": "CIMA / national supervision (Guinea)", "needs": ["motorThirdParty"], "note": "CIMA member; national supervision URL not bound. Figure is planning-grade." },
+      { "country": "GW", "authority": "CIMA / national supervision (Guinea-Bissau)", "needs": ["motorThirdParty"], "note": "CIMA member since 2002; national supervision URL not bound. Figure is planning-grade." },
+      { "country": "LS", "authority": "Central Bank of Lesotho (insurance supervision)", "needs": ["motorThirdParty"], "note": "Lesotho motor tariff is a bundled planning default with no bound regulator URL." },
+      { "country": "LR", "authority": "Central Bank of Liberia (insurance division)", "needs": ["motorThirdParty"], "note": "Liberia motor tariff is a bundled planning default with no bound regulator URL." },
+      { "country": "LY", "authority": "Libyan Insurance Supervisory Authority", "needs": ["motorThirdParty"], "note": "Libya motor tariff is a bundled planning default with no bound regulator URL; market disrupted by instability." },
+      { "country": "MG", "authority": "CSBF / Direction des Assurances (Madagascar)", "needs": ["motorThirdParty"], "note": "Madagascar motor tariff is a bundled planning default with no bound regulator URL." },
+      { "country": "MW", "authority": "Reserve Bank of Malawi (insurance supervision)", "needs": ["motorThirdParty"], "note": "Malawi motor tariff is a bundled planning default with no bound regulator URL." },
+      { "country": "ML", "authority": "CIMA / Direction des Assurances (Mali)", "needs": ["motorThirdParty"], "note": "CIMA member; national DA URL not bound. Figure is planning-grade." },
+      { "country": "MR", "authority": "Direction de Contrôle des Assurances (Mauritania)", "needs": ["motorThirdParty"], "note": "Mauritania motor tariff is a bundled planning default with no bound regulator URL; not a CIMA member." },
+      { "country": "MZ", "authority": "ISSM (Instituto de Supervisão de Seguros de Moçambique)", "needs": ["motorThirdParty"], "note": "Mozambique motor tariff is a bundled planning default with no bound regulator URL." },
+      { "country": "NE", "authority": "CIMA / Direction des Assurances (Niger)", "needs": ["motorThirdParty"], "note": "CIMA member; national DA URL not bound. Figure is planning-grade." },
+      { "country": "ST", "authority": "Banco Central de São Tomé e Príncipe", "needs": ["motorThirdParty"], "note": "São Tomé and Príncipe motor tariff is a bundled planning default with no bound regulator URL." },
+      { "country": "SC", "authority": "FSA Seychelles (Financial Services Authority)", "needs": ["motorThirdParty"], "note": "Seychelles motor tariff is a bundled planning default with no bound regulator URL." },
+      { "country": "SL", "authority": "SLICOM (Sierra Leone Insurance Commission)", "needs": ["motorThirdParty"], "note": "Sierra Leone motor tariff is a bundled planning default with no bound regulator URL." },
+      { "country": "SO", "authority": "Ministry of Finance / Somaliland NIA", "needs": ["motorThirdParty"], "note": "Somalia has virtually no formal insurance regulator; motor is not compulsory. Figure is illustrative only." },
+      { "country": "SS", "authority": "Insurance Regulatory Authority (Juba)", "needs": ["motorThirdParty"], "note": "South Sudan motor tariff is a bundled planning default with no bound regulator URL; extremely nascent market." },
+      { "country": "SD", "authority": "National Insurance Regulatory Authority (Sudan)", "needs": ["motorThirdParty"], "note": "Sudan motor tariff is a bundled planning default with no bound regulator URL; Takaful-dominant market." },
+      { "country": "TG", "authority": "CIMA / Direction des Assurances (Togo)", "needs": ["motorThirdParty"], "note": "CIMA member; national DA URL not bound. Figure is planning-grade." },
+      { "country": "ZM", "authority": "PIA (Pensions and Insurance Authority)", "needs": ["motorThirdParty", "penetration"], "note": "Zambia motor tariff is a bundled planning default; PIA URL not yet verified/bound." }
+    ],
+    "unsourcedClaims": [
+      {
+        "field": "motor.comprehensive.rateMin / rateMax",
+        "markets": "all 54",
+        "why": "Comprehensive premiums are risk-rated underwriting bands set by each insurer, not a gazetted tariff. Only the third-party leg is regulated. Treat comprehensive rate bands as planning-grade benchmarks."
+      },
+      {
+        "field": "health.contribution.rate / employee / employer",
+        "markets": "all 54",
+        "why": "Statutory health-fund rates (NHIA, SHIF/SHA, AMO/CNSS, CNAM, Mutuelle, CBHI, CMU) are set by national health funds, not the insurance regulator bound here. Bind each fund's circular before presenting a rate as current."
+      },
+      {
+        "field": "health.premium.individual / family (HMO premiums)",
+        "markets": "all 54",
+        "why": "Private HMO/medical-scheme premiums are commercial offers that vary by plan and insurer. Informational benchmarks only."
+      },
+      {
+        "field": "life.* / business.* (rate bands)",
+        "markets": "all 54",
+        "why": "Life term rates, group-life rates and business (fire/burglary/liability/PI/goods-in-transit) rates are commercial underwriting benchmarks, not regulated tariffs."
+      },
+      {
+        "field": "micro.* (microinsurance terms)",
+        "markets": "all 54",
+        "why": "Microinsurance premiums and minimums are commercial provider offers, bound to no authority. Informational only."
+      },
+      {
+        "field": "penetration.rate / avgSalary",
+        "markets": "all 54",
+        "why": "Penetration figures come from Swiss Re sigma, Deloitte and OECD industry reports, not regulators; avgSalary is a planning proxy. Neither is a regulator-gazetted number."
+      },
+      {
+        "field": "dataset.lastUpdated",
+        "markets": "all 54",
+        "why": "data/insurance/country-insurance-index.js (the live calculator seed) carries no per-figure or dataset freshness stamp. Freshness is tracked here against data/insurance-data.json:_metadata.lastUpdated as a floor until a stamp is added to the calculator seed."
+      }
+    ]
+  }
+}
