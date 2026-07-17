@@ -363,6 +363,17 @@
         "why": "The per-HS-chapter 'typical' duty is an editable planning proxy, not a legal tariff line. National tariffs run to 8–10 digits with exemptions and product notes. The tools present a duty-rate INPUT the user overrides from the destination authority; the bundled figure is a starting point, never a ruling."
       },
       {
+        "field": "VAT base composition (NG) — landed-cost vs ecowas-levy divergence",
+        "markets": "NG (check the other levy markets before trusting either)",
+        "why": "The two tools compute Nigeria's VAT base differently. landed-cost (engines/src/landed-cost-engine.js) uses CIF + duty + ALL levies (CISS + ETLS + surcharge). ecowas-levy uses CIF + duty + community levy + statistical fee only, excluding CISS/ETLS/surcharge — on CIF 10,000 at the 20% band that is a VAT base of 12,150 rather than ~12,435. Both are planning approximations; neither is bound to an NCS ruling on the statutory VAT base. Do NOT reconcile them by picking one — read the NCS tariff/VAT guidance first, per this ledger's rules, then align both engines in one change. Recorded 2026-07-17.",
+        "tools": ["landed-cost", "ecowas-levy", "import-duty"]
+      },
+      {
+        "field": "ecowas-levy FOB derivation for FOB-based levies (CISS)",
+        "markets": "NG, GH, CI, SN",
+        "why": "ecowas-levy derives FOB from CIF at a fixed 95% (freight+insurance assumed 5%) to apply FOB-based levies such as Nigeria's 1% CISS. That is a modelling assumption, not a customs rule — the real FOB comes off the commercial invoice. Treat the CISS figure as indicative and confirm against the actual FOB."
+      },
+      {
         "field": "shipping-routes freight rates (sea/air/road)",
         "markets": "all corridors",
         "why": "Freight rates are commercial carrier quotes that move with fuel, capacity, season and GRI. No authority publishes them. Recorded as dated planning references; the estimator is a budgeting aid, not a quote."
