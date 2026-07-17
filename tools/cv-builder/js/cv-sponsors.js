@@ -1,1 +1,0 @@
-"use strict";!function(e,n){function o(){n.querySelectorAll(".cv-sponsored-zone").forEach(function(e){e.remove()})}function t(){o();try{new MutationObserver(o).observe(n.body,{childList:!0,subtree:!0})}catch(e){}}"loading"===n.readyState?n.addEventListener("DOMContentLoaded",t):t(),e.CVSponsorLayer={render:o,revealExport:o,setSponsors:o,trackClick:function(){}}}(window,document);
