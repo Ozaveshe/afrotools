@@ -210,6 +210,8 @@
 }
 .rc-results-header h2 { font-size: 1.2rem; font-weight: 700; margin: 0; }
 .rc-results-count { font-size: 0.85rem; color: #6b7280; }
+.rc-fx-note { font-size: 0.78rem; color: #6b7280; line-height: 1.5; margin: -4px 0 16px; }
+.rc-fx-note:empty { display: none; }
 
 /* Provider result cards (mobile-first, no table) */
 .rc-provider-list { display: grid; gap: 12px; }
@@ -620,7 +622,7 @@
 
     <!-- Disclaimer -->
     <div class="rc-disclaimer">
-      <strong>Rates and fees are indicative and may be out of date &mdash; confirm the current quote on the provider's own site before you send.</strong> Figures here are reference estimates from a published-pricing snapshot (source: provider public pricing pages, as of March 2026) and fallback benchmark exchange rates. This page is not a live quote feed. Actual rates, fees, payout paths, and delivery times vary by amount, payment method, and market conditions, so always verify the final quote in the provider's website or app before confirming your transfer. AfroTools is not a money transfer service and does not process transactions.
+      <strong>Rates and fees are indicative and may be out of date &mdash; confirm the current quote on the provider's own site before you send.</strong> Mid-market exchange rates are pulled live from the shared AfroTools forex source (with a March 2026 benchmark snapshot as fallback); provider fees and margins are reference estimates from a published-pricing snapshot (source: provider public pricing pages, as of March 2026). This page is not a live quote feed. Actual rates, fees, payout paths, and delivery times vary by amount, payment method, and market conditions, so always verify the final quote in the provider's website or app before confirming your transfer. AfroTools is not a money transfer service and does not process transactions.
     </div>
   </div>
 
@@ -770,8 +772,10 @@
   // ---------------------------------------------------------------
 
   /* Static reference mid-market rates (published-pricing snapshot, as of March 2026).
-     NOTE: these are NOT fetched live. To wire a live source, override MID_MARKET from
-     /api/forex?base=USD (see cars-directory pattern) before running compare(). */
+     These are the FALLBACK only: loadLiveFx() overrides them at runtime with live
+     USD-based rates from the shared forex source (/api/forex?base=USD, or
+     /data/forex/latest.json on localhost), following the cars-directory pattern.
+     getMidRate() prefers live rates and falls back to this table per corridor. */
   const MID_MARKET = {
     // USD corridors
     'USD-NGN': 1535, 'USD-KES': 129,  'USD-GHS': 14.8, 'USD-ZAR': 18.2,
@@ -799,6 +803,57 @@
     'AED-MAD': 2.67, 'AED-XOF': 165,  'AED-XAF': 165,  'AED-RWF': 376,
     'AED-ZMW': 7.49, 'AED-MZN': 17.4,
   };
+
+  /* Live mid-market rates, fetched from the shared forex source on load.
+     LIVE_RATES holds USD-based rates (1 USD = LIVE_RATES[cur] of that currency),
+     so a corridor mid-rate is LIVE_RATES[dest] / LIVE_RATES[send]. When the feed
+     is unavailable or missing a currency, we fall back to the MID_MARKET snapshot
+     above rather than defaulting to zero. */
+  let LIVE_RATES = null;
+  let FX_META = null;
+
+  function getMidRate(sendCur, destCur, key) {
+    if (LIVE_RATES && LIVE_RATES[sendCur] > 0 && LIVE_RATES[destCur] > 0) {
+      const r = LIVE_RATES[destCur] / LIVE_RATES[sendCur];
+      if (isFinite(r) && r > 0) return r;
+    }
+    return MID_MARKET[key]; // static snapshot fallback (may be undefined -> guarded by caller)
+  }
+
+  function loadLiveFx() {
+    const isLocal = /^(localhost|127\.0\.0\.1|\[?::1\]?)$/i.test(location.hostname);
+    const primary = isLocal ? '/data/forex/latest.json' : '/api/forex?base=USD';
+    const get = (u) => fetch(u, { cache: 'no-cache' }).then((res) => {
+      if (!res.ok) throw new Error('fx ' + res.status);
+      return res.json();
+    });
+    get(primary)
+      .catch(() => get('/data/forex/latest.json'))
+      .then((data) => {
+        if (!data || !data.rates) return;
+        if (data.rates.USD == null) data.rates.USD = 1; // base=USD feeds omit USD itself
+        LIVE_RATES = data.rates;
+        FX_META = { timestamp: data.timestamp || data.date || '', source: data.source || '' };
+        updateFxNote();
+        if (lastResults.length) compare(); // refresh any showing results with live rates
+      })
+      .catch(() => { /* keep static snapshot; never block the tool on FX */ });
+  }
+
+  function updateFxNote() {
+    const el = document.getElementById('rcFxNote');
+    if (!el) return;
+    if (LIVE_RATES && FX_META) {
+      let when = '';
+      if (FX_META.timestamp) {
+        const d = new Date(FX_META.timestamp);
+        if (!isNaN(d.getTime())) when = ' as of ' + d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+      }
+      el.textContent = 'Mid-market FX is live from the shared AfroTools forex source' + when + '. Provider fees and margins remain a March 2026 snapshot — verify the live quote before sending.';
+    } else {
+      el.textContent = 'Mid-market FX uses a March 2026 benchmark snapshot (live source unavailable). Verify the live quote before sending.';
+    }
+  }
 
   // Destination currency codes
   const DEST_CURRENCY = {
@@ -1012,6 +1067,7 @@
   document.addEventListener('DOMContentLoaded', () => {
     bindEvents();
     syncCurrencyWithFrom();
+    loadLiveFx();
   });
 
   function syncCurrencyWithFrom() {
@@ -1092,7 +1148,7 @@
     }
 
     const rateKey = sendCur + '-' + destCur;
-    const midRate = MID_MARKET[rateKey];
+    const midRate = getMidRate(sendCur, destCur, rateKey);
     if (!midRate) {
       alert('This currency corridor (' + sendCur + ' to ' + destCur + ') is not available yet. Try a different send currency.');
       return;
