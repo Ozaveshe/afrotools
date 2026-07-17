@@ -26,7 +26,8 @@ const PAGES = [
   { file: 'tools/diamond-valuation/index.html', faqSelector: 'mr-faq' },
   { file: 'tools/oil-well-production/index.html', faqSelector: 'mr-faq' },
   { file: 'tools/oil-gas-revenue/index.html', faqSelector: 'mr-faq' },
-  { file: 'tools/artisanal-mining-income/index.html', faqSelector: 'mr-faq' }
+  { file: 'tools/artisanal-mining-income/index.html', faqSelector: 'mr-faq' },
+  { file: 'tools/mining-license-fee/index.html', faqSelector: 'mr-faq' }
 ];
 
 const failures = [];

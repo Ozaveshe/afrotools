@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mining License Fee Calculator — Permit &amp; Licence Costs by African Country | AfroTools</title>
+<meta name="description" content="Estimate mining licence costs in 8 African jurisdictions — Nigeria, Ghana, Tanzania, Zambia, Botswana, Kenya, South Africa, Namibia. Application fees plus annual holding fees over your licence term, with the granting authority shown.">
+<meta property="og:title" content="Mining License Fee Calculator | AfroTools">
+<meta property="og:description" content="Application and annual holding fees for reconnaissance, exploration and mining licences across 8 African jurisdictions, projected over your licence term.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://afrotools.com/tools/mining-license-fee/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/tool-landing.css?v=09fede9d">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How is the mining licence cost calculated?","acceptedAnswer":{"@type":"Answer","text":"It adds the one-off application fee to the annual holding fee multiplied by the number of years you plan to hold the licence. Where a country charges by area — per square kilometre, per hectare or per cadastral unit — the annual fee is multiplied by the area you enter first, and any statutory minimum is applied after that. Both fees are editable, so you can override them with the figure on your own invoice."}},{"@type":"Question","name":"Which countries and licence types are covered?","acceptedAnswer":{"@type":"Answer","text":"Eight jurisdictions: Nigeria, Ghana, Tanzania, Zambia, Botswana, Kenya, South Africa and Namibia, across reconnaissance, prospecting or exploration, small-scale and full mining licences. The licence list changes with the country you pick, because each country grants a different set."}},{"@type":"Question","name":"Why are Zimbabwe and DR Congo missing?","acceptedAnswer":{"@type":"Answer","text":"Both are deliberately excluded rather than guessed. Zimbabwe's published fee schedule is reported superseded by a large increase we could not verify, and the DR Congo's per-carré surface rights are re-set by the cadastre each year and the amounts could not be confirmed. A confidently wrong fee is worse than an absent one, so they are recorded as known gaps instead."}},{"@type":"Question","name":"Are these the exact fees I will be charged?","acceptedAnswer":{"@type":"Answer","text":"No. They are planning-grade defaults with the granting authority shown, and fee schedules change by statutory instrument without much notice. Some entries are marked lower confidence where the official schedule could not be read directly. Always confirm with the cadastre or ministry before budgeting, and note that a missing fee is never treated as zero — the tool asks you to enter it."}}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Mining License Fee Calculator","description":"Application and annual holding fees for mining licences across 8 African jurisdictions.","url":"https://afrotools.com/tools/mining-license-fee/","inLanguage":"en","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Mining & Extractives","item":"https://afrotools.com/mining/"},{"@type":"ListItem","position":3,"name":"Mining License Fee Calculator","item":"https://afrotools.com/tools/mining-license-fee/"}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/mining-license-fee/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/mining-license-fee/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/mining-license-fee/">
+<style>
+.mr-note{font-size:.8rem;color:var(--text-muted,#64748b);margin-top:6px;line-height:1.5}
+.mr-grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:640px){.mr-grid2{grid-template-columns:1fr}}
+.mr-result{display:none}.mr-result.on{display:block}
+.mr-result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:8px 0 4px}
+@media(max-width:640px){.mr-result-grid{grid-template-columns:1fr}}
+.mr-stat{background:#F8FAFD;border:1.5px solid #e2e8f0;border-radius:14px;padding:16px;text-align:center}
+.mr-stat-val{font-size:1.35rem;font-weight:800;color:#0f172a;line-height:1.1}
+.mr-stat-val.hi{color:#92400E}
+.mr-stat-lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.04em;color:#64748b;font-weight:800;margin-top:6px}
+.mr-src{font-size:.8rem;color:#475569;background:#F1F5F9;border-radius:10px;padding:12px 14px;margin-top:14px;line-height:1.55}
+.mr-src a{color:#0062CC;font-weight:700}
+.mr-err{background:#FEF2F2;border:1.5px solid #FCA5A5;color:#991B1B;border-radius:10px;padding:12px 14px;font-size:.85rem;font-weight:600;margin-top:12px;display:none}
+.mr-err.on{display:block}
+.mr-lowconf{background:#FFFBEB;border:1.5px solid #FDE68A;border-radius:10px;padding:10px 14px;font-size:.82rem;color:#78350F;margin-top:10px;line-height:1.5;display:none}
+.mr-lowconf.on{display:block}
+.mr-breakdown{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:14px}
+.mr-breakdown td{padding:9px 4px;border-bottom:1px solid #e2e8f0}
+.mr-breakdown td:last-child{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.mr-breakdown tr:last-child td{border-bottom:none;border-top:2px solid #0f172a;font-weight:800}
+.mr-faq{max-width:760px;margin:0 auto}
+.mr-faq details{background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;padding:2px 18px;margin-bottom:10px}
+.mr-faq summary{font-weight:700;padding:14px 0;cursor:pointer;font-size:.95rem}
+.mr-faq details[open] summary{border-bottom:1px solid #eef2f7}
+.mr-faq p{font-size:.9rem;color:#475569;line-height:1.6;padding:12px 0}
+.mr-xlink{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:#0062CC;font-size:.85rem}
+.mr-hide{display:none}
+</style>
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="mining"></afro-navbar>
+
+<main class="tool-shell">
+  <div class="tool-hero">
+    <div class="tool-hero-icon">📄</div>
+    <h1 class="tool-hero-title">Mining License Fee Calculator</h1>
+    <p class="tool-hero-desc">Budget the real cost of holding a mining licence — application fee plus annual holding fees over your term — across 8 African jurisdictions, with the granting authority shown.</p>
+  </div>
+
+  <div class="tool-panel on">
+    <div class="tool-section">
+      <div class="section-title">Licence details</div>
+      <div class="section-desc">Fees are planning-grade defaults you can edit. A fee we could not verify is left blank for you to enter — it is never costed at zero.</div>
+
+      <div class="mr-grid2">
+        <div class="field-group"><label class="field-label" for="country">Country</label><select id="country" class="field-select"></select></div>
+        <div class="field-group"><label class="field-label" for="licence">Licence type</label><select id="licence" class="field-select"></select></div>
+      </div>
+      <div class="mr-note" id="licence-note"></div>
+      <div class="mr-lowconf" id="lowconf"></div>
+
+      <div class="mr-grid2" style="margin-top:14px">
+        <div class="field-group" id="area-wrap">
+          <label class="field-label" for="area">Area held (<span id="area-unit">km²</span>)</label>
+          <input id="area" class="field-input" type="number" min="0" step="any" placeholder="e.g. 100">
+        </div>
+        <div class="field-group"><label class="field-label" for="years">Years you will hold it</label><input id="years" class="field-input" type="number" min="1" step="1" value="5"></div>
+        <div class="field-group"><label class="field-label" for="oneOff">Application / one-off fee</label><input id="oneOff" class="field-input" type="number" min="0" step="any" placeholder="enter fee"></div>
+        <div class="field-group"><label class="field-label" for="annual">Annual fee <span id="annual-basis" style="color:#64748b;font-weight:600"></span></label><input id="annual" class="field-input" type="number" min="0" step="any" placeholder="enter fee"></div>
+      </div>
+
+      <button type="button" class="pill-btn" id="calc" style="background:#92400E;color:#fff">Calculate licence cost</button>
+      <div class="mr-err" id="err"></div>
+    </div>
+
+    <div class="tool-section mr-result" id="result">
+      <div class="section-title">Estimated licence cost</div>
+      <div class="mr-result-grid">
+        <div class="mr-stat"><div class="mr-stat-val" id="o-oneoff">—</div><div class="mr-stat-lbl">Application fee</div></div>
+        <div class="mr-stat"><div class="mr-stat-val" id="o-annual">—</div><div class="mr-stat-lbl">Annual fee</div></div>
+        <div class="mr-stat"><div class="mr-stat-val hi" id="o-total">—</div><div class="mr-stat-lbl">Total over term</div></div>
+      </div>
+      <table class="mr-breakdown" id="breakdown"></table>
+      <div class="mr-src" id="src"></div>
+    </div>
+
+    <div class="tool-section">
+      <div class="section-title">How this is calculated</div>
+      <div class="section-desc" style="margin-bottom:0">Total = application fee + (annual fee × years). Where a country charges by area, the annual fee is first multiplied by the area you enter (per km², per hectare or per cadastral unit), and any statutory minimum is applied afterwards — Botswana's prospecting minimum and Kenya's KShs 500,000/yr floor work this way. Royalties are separate and are handled by the <a href="/tools/mining-royalty/" style="color:#0062CC;font-weight:700">Mining Royalty Calculator</a>.</div>
+    </div>
+
+    <div class="tool-section" style="text-align:center">
+      <a class="mr-xlink" href="/mining/">← Mining &amp; Extractives</a> &nbsp;·&nbsp;
+      <a class="mr-xlink" href="/tools/mining-royalty/">Mining Royalty Calculator →</a>
+    </div>
+
+    <div class="tool-section">
+      <div class="section-title" style="text-align:center;margin-bottom:16px">Frequently asked questions</div>
+      <div class="mr-faq">
+        <details open><summary>How is the mining licence cost calculated?</summary><p>It adds the one-off application fee to the annual holding fee multiplied by the number of years you plan to hold the licence. Where a country charges by area — per square kilometre, per hectare or per cadastral unit — the annual fee is multiplied by the area you enter first, and any statutory minimum is applied after that. Both fees are editable, so you can override them with the figure on your own invoice.</p></details>
+        <details><summary>Which countries and licence types are covered?</summary><p>Eight jurisdictions: Nigeria, Ghana, Tanzania, Zambia, Botswana, Kenya, South Africa and Namibia, across reconnaissance, prospecting or exploration, small-scale and full mining licences. The licence list changes with the country you pick, because each country grants a different set.</p></details>
+        <details><summary>Why are Zimbabwe and DR Congo missing?</summary><p>Both are deliberately excluded rather than guessed. Zimbabwe's published fee schedule is reported superseded by a large increase we could not verify, and the DR Congo's per-carré surface rights are re-set by the cadastre each year and the amounts could not be confirmed. A confidently wrong fee is worse than an absent one, so they are recorded as known gaps instead.</p></details>
+        <details><summary>Are these the exact fees I will be charged?</summary><p>No. They are planning-grade defaults with the granting authority shown, and fee schedules change by statutory instrument without much notice. Some entries are marked lower confidence where the official schedule could not be read directly. Always confirm with the cadastre or ministry before budgeting, and note that a missing fee is never treated as zero — the tool asks you to enter it.</p></details>
+      </div>
+    </div>
+  </div>
+</main>
+
+<afro-footer></afro-footer>
+
+<script src="/data/mining/mining-fees.js"></script>
+<script>
+(function(){
+  var DATA = (typeof MINING_FEES !== 'undefined') ? MINING_FEES : {countries:{}};
+  var $=function(id){return document.getElementById(id);};
+  var UNIT={perKm2:'km²', perHa:'hectares', perCadastralUnit:'cadastral units'};
+  var BASIS={perKm2:'(per km²)', perHa:'(per hectare)', perCadastralUnit:'(per cadastral unit)', flat:'(flat, per year)'};
+  function num(id){ var v=parseFloat($(id).value); return isNaN(v)?null:v; }
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function money(n,sym){ return (sym?sym+' ':'')+(Math.round((n+Number.EPSILON)*100)/100).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+  // Only offer countries the dataset actually covers (energy dropdown-filter pattern).
+  var codes=Object.keys(DATA.countries||{}).sort(function(a,b){return DATA.countries[a].name.localeCompare(DATA.countries[b].name);});
+  $('country').innerHTML=codes.map(function(cc){var c=DATA.countries[cc];return '<option value="'+cc+'">'+(c.flag?c.flag+' ':'')+esc(c.name)+'</option>';}).join('');
+
+  function country(){ return DATA.countries[$('country').value]; }
+  function licence(){ var c=country(); return c?(c.licences||{})[$('licence').value]:null; }
+
+  function populateLicences(){
+    var c=country(); if(!c){ $('licence').innerHTML=''; return; }
+    $('licence').innerHTML=Object.keys(c.licences||{}).map(function(k){return '<option value="'+k+'">'+esc(c.licences[k].label)+'</option>';}).join('');
+  }
+
+  function sync(){
+    var c=country(), l=licence();
+    $('result').classList.remove('on'); $('err').classList.remove('on');
+    if(!c||!l) return;
+    $('licence-note').textContent = l.note || '';
+    // Low-confidence warning is surfaced, not buried.
+    var lc=$('lowconf');
+    if(c.confidence==='low'){ lc.textContent='Lower confidence: the official fee schedule for '+c.name+' could not be read directly, so these figures rest on secondary sources. Confirm with '+c.authority+' before budgeting.'; lc.classList.add('on'); }
+    else lc.classList.remove('on');
+
+    // Prefill editable fees; a fee the dataset does not carry stays BLANK so the
+    // user must enter it — never silently zero.
+    $('oneOff').value = (typeof l.oneOff==='number') ? l.oneOff : '';
+    $('annual').value = (typeof l.annual==='number') ? l.annual : '';
+
+    var basis = l.annualBasis || null;
+    $('annual-basis').textContent = basis ? BASIS[basis] : '';
+    // Area only matters for area-based annual fees.
+    if(basis && UNIT[basis]){ $('area-wrap').classList.remove('mr-hide'); $('area-unit').textContent=UNIT[basis]; }
+    else { $('area-wrap').classList.add('mr-hide'); }
+  }
+
+  function calc(){
+    var err=$('err'); err.classList.remove('on'); $('result').classList.remove('on');
+    var c=country(), l=licence();
+    if(!c||!l){ err.textContent='Pick a country and licence type.'; err.classList.add('on'); return; }
+    var years=num('years'), oneOff=num('oneOff'), annual=num('annual');
+    var basis=l.annualBasis||null;
+    var areaBased = !!(basis && UNIT[basis]);
+    var area = areaBased ? num('area') : null;
+
+    if(!(years>=1)){ err.textContent='Enter the number of years (1 or more).'; err.classList.add('on'); return; }
+    years=Math.floor(years);
+    if(oneOff===null){ err.textContent='Enter the application / one-off fee. We could not verify one for this licence — a missing fee is not zero.'; err.classList.add('on'); return; }
+    if(oneOff<0){ err.textContent='Application fee cannot be negative.'; err.classList.add('on'); return; }
+    if(annual===null){ err.textContent='Enter the annual fee. We could not verify one for this licence — a missing fee is not zero.'; err.classList.add('on'); return; }
+    if(annual<0){ err.textContent='Annual fee cannot be negative.'; err.classList.add('on'); return; }
+    if(areaBased && !(area>0)){ err.textContent='This licence is charged by area — enter the area you hold ('+UNIT[basis]+').'; err.classList.add('on'); return; }
+
+    var oneOffTotal = oneOff;
+    if(l.oneOffBasis && UNIT[l.oneOffBasis] && area>0) oneOffTotal = oneOff*area;
+    var annualComputed = areaBased ? annual*area : annual;
+    var floored=false;
+    if(typeof l.minAnnual==='number' && annualComputed < l.minAnnual){ annualComputed=l.minAnnual; floored=true; }
+    var total = oneOffTotal + annualComputed*years;
+    var sym=c.symbol||'';
+
+    $('o-oneoff').textContent = money(oneOffTotal,sym);
+    $('o-annual').textContent = money(annualComputed,sym);
+    $('o-total').textContent = money(total,sym);
+
+    var rows='';
+    rows+='<tr><td>Application / one-off fee'+(l.oneOffBasis&&area>0?' ('+area+' '+UNIT[l.oneOffBasis]+')':'')+'</td><td>'+money(oneOffTotal,sym)+'</td></tr>';
+    if(areaBased) rows+='<tr><td>Annual fee ('+money(annual,sym)+' × '+area+' '+UNIT[basis]+')</td><td>'+money(annual*area,sym)+'</td></tr>';
+    if(floored) rows+='<tr><td>Statutory annual minimum applied</td><td>'+money(l.minAnnual,sym)+'</td></tr>';
+    rows+='<tr><td>Annual fee × '+years+' year'+(years>1?'s':'')+'</td><td>'+money(annualComputed*years,sym)+'</td></tr>';
+    rows+='<tr><td>Total over '+years+' year'+(years>1?'s':'')+'</td><td>'+money(total,sym)+'</td></tr>';
+    $('breakdown').innerHTML=rows;
+
+    $('src').innerHTML='Granting authority: <a href="'+esc(c.url)+'" target="_blank" rel="noopener">'+esc(c.authority)+'</a>. '
+      +'Bundled defaults reviewed '+esc(DATA.lastUpdated||'')+' — planning-grade, not a quotation, and not legal advice. Fee schedules change by statutory instrument; confirm with the cadastre before budgeting.';
+    $('result').classList.add('on');
+  }
+
+  $('country').addEventListener('change', function(){ populateLicences(); sync(); });
+  $('licence').addEventListener('change', sync);
+  $('calc').addEventListener('click', calc);
+  populateLicences(); sync();
+})();
+</script>
+</body>
+</html>
