@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mining Royalty Calculator 2026 — Gold, Diamond &amp; Copper Royalties by African Country | AfroTools</title>
+<meta name="description" content="Estimate the mineral royalty due in 12 African mining jurisdictions — Ghana, Tanzania, DR Congo, South Africa, Zambia and more. Gold, diamond, copper and cobalt royalty rates with net-proceeds and the official source shown.">
+<meta property="og:title" content="Mining Royalty Calculator — African Mineral Royalties | AfroTools">
+<meta property="og:description" content="Royalty rate, royalty due and net proceeds for gold, diamonds, copper and cobalt across 12 African mining jurisdictions. Rates shown with their official source and review date.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://afrotools.com/tools/mining-royalty/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/tool-landing.css?v=09fede9d">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/components/navbar.min.js?v=d8d640ef" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How is a mining royalty calculated?","acceptedAnswer":{"@type":"Answer","text":"A mineral royalty is charged as a percentage of the gross market or sale value of the mineral. This calculator multiplies the gross value you enter by the royalty rate for your country and mineral, then shows the royalty due and your net proceeds after it. Where a separate statutory levy applies, such as Tanzania's 1% clearing-house inspection fee, it is shown as its own line."}},{"@type":"Question","name":"Are the royalty rates current?","acceptedAnswer":{"@type":"Answer","text":"The rates are planning-grade defaults drawn from each country's Mining Code or Finance Act and are shown with a review date. They change at budget and several countries use price- or profit-based sliding scales, so always confirm the current rate with the official source shown before you rely on it. It is not legal or tax advice."}},{"@type":"Question","name":"Which countries and minerals are covered?","acceptedAnswer":{"@type":"Answer","text":"It covers 12 African mining jurisdictions — Ghana, Tanzania, South Africa, Zambia, DR Congo, Zimbabwe, Botswana, Namibia, Nigeria, Kenya, Mali and Burkina Faso — across gold, diamonds, copper, cobalt, coltan and other minerals. The mineral list changes with the country you pick."}},{"@type":"Question","name":"Why does it ask me to enter the rate for some countries?","acceptedAnswer":{"@type":"Answer","text":"Where a country uses a formula or price-linked sliding scale — South Africa, Zambia copper, and Burkina Faso and Zimbabwe gold — no single flat rate applies, so the tool shows the statutory band and asks you to enter your effective rate rather than guessing. A missing rate is never treated as zero."}}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Mining Royalty Calculator","description":"Estimate the mineral royalty due across 12 African mining jurisdictions.","url":"https://afrotools.com/tools/mining-royalty/","inLanguage":"en","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Mining & Extractives","item":"https://afrotools.com/mining/"},{"@type":"ListItem","position":3,"name":"Mining Royalty Calculator","item":"https://afrotools.com/tools/mining-royalty/"}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/mining-royalty/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/mining-royalty/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/mining-royalty/">
+<style>
+/* Tool-specific — reuses the shared tool-landing shell; no accent bars. */
+.mr-note{font-size:.8rem;color:var(--text-muted,#64748b);margin-top:6px;line-height:1.5}
+.mr-band{background:#FFFBEB;border:1.5px solid #FDE68A;border-radius:10px;padding:10px 14px;font-size:.82rem;color:#78350F;margin-top:10px;line-height:1.5;display:none}
+.mr-band.on{display:block}
+.mr-result{display:none}
+.mr-result.on{display:block}
+.mr-result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:8px 0 4px}
+@media(max-width:640px){.mr-result-grid{grid-template-columns:1fr}}
+.mr-stat{background:#F8FAFD;border:1.5px solid #e2e8f0;border-radius:14px;padding:16px;text-align:center}
+.mr-stat-val{font-size:1.5rem;font-weight:800;color:#0f172a;line-height:1.1}
+.mr-stat-val.royalty{color:#92400E}
+.mr-stat-lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.04em;color:#64748b;font-weight:800;margin-top:6px}
+.mr-src{font-size:.8rem;color:#475569;background:#F1F5F9;border-radius:10px;padding:12px 14px;margin-top:14px;line-height:1.55}
+.mr-src a{color:#0062CC;font-weight:700}
+.mr-err{background:#FEF2F2;border:1.5px solid #FCA5A5;color:#991B1B;border-radius:10px;padding:12px 14px;font-size:.85rem;font-weight:600;margin-top:12px;display:none}
+.mr-err.on{display:block}
+.mr-breakdown{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:14px}
+.mr-breakdown td{padding:9px 4px;border-bottom:1px solid #e2e8f0}
+.mr-breakdown td:last-child{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.mr-breakdown tr:last-child td{border-bottom:none;border-top:2px solid #0f172a;font-weight:800}
+.mr-faq{max-width:760px;margin:0 auto}
+.mr-faq details{background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;padding:2px 18px;margin-bottom:10px}
+.mr-faq summary{font-weight:700;padding:14px 0;cursor:pointer;font-size:.95rem}
+.mr-faq details[open] summary{border-bottom:1px solid #eef2f7}
+.mr-faq p{font-size:.9rem;color:#475569;line-height:1.6;padding:12px 0}
+.mr-xlink{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:#0062CC;font-size:.85rem}
+</style>
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="mining"></afro-navbar>
+
+<main class="tool-shell">
+  <div class="tool-hero">
+    <div class="tool-hero-icon">⛏️</div>
+    <h1 class="tool-hero-title">Mining Royalty Calculator</h1>
+    <p class="tool-hero-desc">Estimate the mineral royalty due and your net proceeds across 12 African mining jurisdictions — with the rate's official source and review date shown, never guessed.</p>
+  </div>
+
+  <div class="tool-panel on">
+    <div class="tool-section">
+      <div class="section-title">Royalty inputs</div>
+      <div class="section-desc">Pick your jurisdiction and mineral, enter the gross market value of the mineral, and confirm the royalty rate. Every rate is an editable, planning-grade default — confirm it against the official source before you rely on it.</div>
+
+      <div class="field-group">
+        <label class="field-label" for="mr-country">Country / jurisdiction</label>
+        <select id="mr-country" class="field-select"></select>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="mr-mineral">Mineral</label>
+        <select id="mr-mineral" class="field-select"></select>
+        <div class="mr-note" id="mr-mineral-note"></div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="mr-gross">Gross market / sale value <span id="mr-cur-hint" style="color:#64748b;font-weight:600"></span></label>
+        <input id="mr-gross" class="field-input" type="number" min="0" step="any" inputmode="decimal" placeholder="e.g. 1000000">
+        <div class="mr-note">The value of the mineral sold, before deductions. Enter it in your own currency — the royalty is a percentage, so the result is in the same currency.</div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="mr-rate">Royalty rate (%)</label>
+        <input id="mr-rate" class="field-input" type="number" min="0" max="100" step="any" inputmode="decimal" placeholder="Enter the statutory rate">
+        <div class="mr-band" id="mr-band"></div>
+        <div class="mr-note" id="mr-rate-note"></div>
+      </div>
+
+      <button type="button" class="pill-btn" id="mr-calc" style="background:#92400E;color:#fff">Calculate royalty</button>
+      <div class="mr-err" id="mr-err"></div>
+    </div>
+
+    <div class="tool-section mr-result" id="mr-result">
+      <div class="section-title">Estimated royalty</div>
+      <div class="mr-result-grid">
+        <div class="mr-stat"><div class="mr-stat-val royalty" id="mr-out-royalty">—</div><div class="mr-stat-lbl">Royalty due</div></div>
+        <div class="mr-stat"><div class="mr-stat-val" id="mr-out-rate">—</div><div class="mr-stat-lbl">Rate applied</div></div>
+        <div class="mr-stat"><div class="mr-stat-val" id="mr-out-net">—</div><div class="mr-stat-lbl">Net proceeds</div></div>
+      </div>
+      <table class="mr-breakdown" id="mr-breakdown"></table>
+      <div class="mr-src" id="mr-src"></div>
+    </div>
+
+    <div class="tool-section">
+      <div class="section-title">How this is calculated</div>
+      <div class="section-desc" style="margin-bottom:0">
+        Royalty due = gross value × royalty rate. Net proceeds = gross value − royalty − any separate statutory levy (for example, Tanzania's 1% clearing-house inspection fee is shown on its own line, not folded into the royalty). Where a jurisdiction uses a profit- or price-based formula — South Africa (0.5%–5% refined / 0.5%–7% unrefined), Zambia copper (4%–10% by price), and Burkina Faso and Zimbabwe gold — no single flat rate applies, so the tool shows the statutory band and asks you to enter your effective rate. A missing rate is never treated as 0%.
+      </div>
+    </div>
+
+    <div class="tool-section" style="text-align:center">
+      <a class="mr-xlink" href="/mining/">← Back to Mining &amp; Extractives</a>
+      &nbsp;·&nbsp;
+      <a class="mr-xlink" href="/tools/commodity-tracker/">Commodity price reference →</a>
+    </div>
+
+    <div class="tool-section">
+      <div class="section-title" style="text-align:center;margin-bottom:16px">Frequently asked questions</div>
+      <div class="mr-faq">
+        <details open>
+          <summary>How is a mining royalty calculated?</summary>
+          <p>A mineral royalty is charged as a percentage of the gross market or sale value of the mineral. This calculator multiplies the gross value you enter by the royalty rate for your country and mineral, then shows the royalty due and your net proceeds after it. Where a separate statutory levy applies, such as Tanzania's 1% clearing-house inspection fee, it is shown as its own line.</p>
+        </details>
+        <details>
+          <summary>Are the royalty rates current?</summary>
+          <p>The rates are planning-grade defaults drawn from each country's Mining Code or Finance Act and are shown with a review date. They change at budget and several countries use price- or profit-based sliding scales, so always confirm the current rate with the official source shown before you rely on it. It is not legal or tax advice.</p>
+        </details>
+        <details>
+          <summary>Which countries and minerals are covered?</summary>
+          <p>It covers 12 African mining jurisdictions — Ghana, Tanzania, South Africa, Zambia, DR Congo, Zimbabwe, Botswana, Namibia, Nigeria, Kenya, Mali and Burkina Faso — across gold, diamonds, copper, cobalt, coltan and other minerals. The mineral list changes with the country you pick.</p>
+        </details>
+        <details>
+          <summary>Why does it ask me to enter the rate for some countries?</summary>
+          <p>Where a country uses a formula or price-linked sliding scale — South Africa, Zambia copper, and Burkina Faso and Zimbabwe gold — no single flat rate applies, so the tool shows the statutory band and asks you to enter your effective rate rather than guessing. A missing rate is never treated as zero.</p>
+        </details>
+      </div>
+    </div>
+  </div>
+</main>
+
+<afro-footer></afro-footer>
+
+<script src="/data/mining/mining-royalties.js?v=1a412260"></script>
+<script>
+(function(){
+  var DATA = (typeof MINING_DATA !== 'undefined') ? MINING_DATA : {countries:{}};
+  var MINERAL_LABELS = {
+    gold:'Gold', diamond:'Diamond', bauxite:'Bauxite', manganese:'Manganese',
+    gemstone:'Gemstones', copper:'Copper', coal:'Coal', platinum:'Platinum (PGM)',
+    cobalt:'Cobalt', coltan:'Coltan / tantalum', iron:'Iron ore', lithium:'Lithium',
+    uranium:'Uranium', tin:'Tin', limestone:'Limestone', leadZinc:'Lead / zinc',
+    titanium:'Titanium ores'
+  };
+  var $ = function(id){ return document.getElementById(id); };
+  var cEl = $('mr-country'), mEl = $('mr-mineral'), gEl = $('mr-gross'),
+      rEl = $('mr-rate'), bandEl = $('mr-band'), errEl = $('mr-err'),
+      resEl = $('mr-result'), noteEl = $('mr-rate-note'), mNoteEl = $('mr-mineral-note'),
+      curHint = $('mr-cur-hint');
+
+  function fmt(n, sym){
+    var v = Math.round((n + Number.EPSILON) * 100) / 100;
+    var s = v.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    return (sym ? sym + ' ' : '') + s;
+  }
+
+  // Only offer countries that actually have royalty data — filter the dropdown,
+  // never surface a jurisdiction the dataset cannot answer for (energy pattern).
+  var codes = Object.keys(DATA.countries || {}).sort(function(a,b){
+    return DATA.countries[a].name.localeCompare(DATA.countries[b].name);
+  });
+  cEl.innerHTML = codes.map(function(cc){
+    var c = DATA.countries[cc];
+    return '<option value="'+cc+'">'+(c.flag?c.flag+' ':'')+c.name+'</option>';
+  }).join('');
+
+  function currentCountry(){ return DATA.countries[cEl.value]; }
+  function currentMineral(){
+    var c = currentCountry(); if(!c) return null;
+    return (c.minerals || {})[mEl.value] || null;
+  }
+
+  function populateMinerals(){
+    var c = currentCountry(); if(!c){ mEl.innerHTML=''; return; }
+    var keys = Object.keys(c.minerals || {});
+    mEl.innerHTML = keys.map(function(k){
+      return '<option value="'+k+'">'+(MINERAL_LABELS[k]||k)+'</option>';
+    }).join('');
+    curHint.textContent = c.symbol ? '(in '+c.currency+')' : '';
+  }
+
+  function syncRate(){
+    var m = currentMineral();
+    bandEl.classList.remove('on');
+    if(!m){ rEl.value=''; noteEl.textContent=''; mNoteEl.textContent=''; return; }
+    mNoteEl.textContent = m.note || '';
+    if(m.variable){
+      // Formula / sliding scale: do NOT prefill a flat number — show the band and
+      // require the user to enter their effective rate. Missing != free.
+      rEl.value = '';
+      rEl.placeholder = 'Enter your effective rate (see band)';
+      bandEl.textContent = 'This jurisdiction uses a formula or price-linked sliding scale ('
+        + (typeof m.min==='number'?m.min:'?') + '%–' + (typeof m.max==='number'?m.max:'?')
+        + '%). No single flat rate applies — enter the effective rate for your operation.';
+      bandEl.classList.add('on');
+      noteEl.textContent = 'Statutory band shown above. Confirm your effective rate with the official source.';
+    } else {
+      rEl.value = m.rate;
+      rEl.placeholder = 'Enter the statutory rate';
+      noteEl.textContent = 'Planning-grade default — editable. Confirm against the official source before relying on it.';
+    }
+  }
+
+  function calc(){
+    errEl.classList.remove('on'); resEl.classList.remove('on');
+    var c = currentCountry(), m = currentMineral();
+    var gross = parseFloat(gEl.value);
+    var rate = parseFloat(rEl.value);
+
+    if(!(gross > 0)){
+      errEl.textContent = 'Enter a gross market value greater than zero.';
+      errEl.classList.add('on'); return;
+    }
+    // The core guard: a blank or non-positive rate is NOT treated as 0% (which
+    // would make the royalty vanish). Block and ask for the statutory rate.
+    if(!(rate > 0)){
+      errEl.textContent = m && m.variable
+        ? 'This mineral uses a sliding scale — enter your effective royalty rate from the band shown above.'
+        : 'Enter the royalty rate (%) for this mineral. A missing rate is not zero — confirm it with the official source.';
+      errEl.classList.add('on'); return;
+    }
+    if(rate > 100){
+      errEl.textContent = 'Royalty rate looks too high — enter a percentage between 0 and 100.';
+      errEl.classList.add('on'); return;
+    }
+
+    var sym = c.symbol || '';
+    var royalty = gross * rate / 100;
+    var extra = 0, extraLabel = null;
+    if(typeof c.extraLevyPct === 'number' && c.extraLevyPct > 0){
+      extra = gross * c.extraLevyPct / 100;
+      extraLabel = c.extraLevyLabel || (c.extraLevyPct + '% levy');
+    }
+    var net = gross - royalty - extra;
+
+    $('mr-out-royalty').textContent = fmt(royalty, sym);
+    $('mr-out-rate').textContent = (Math.round(rate*100)/100) + '%';
+    $('mr-out-net').textContent = fmt(net, sym);
+
+    var rows = '';
+    rows += '<tr><td>Gross market value</td><td>'+fmt(gross,sym)+'</td></tr>';
+    rows += '<tr><td>Royalty ('+(Math.round(rate*100)/100)+'%)</td><td>−'+fmt(royalty,sym)+'</td></tr>';
+    if(extra > 0){
+      rows += '<tr><td>'+extraLabel+'</td><td>−'+fmt(extra,sym)+'</td></tr>';
+    }
+    rows += '<tr><td>Net proceeds</td><td>'+fmt(net,sym)+'</td></tr>';
+    $('mr-breakdown').innerHTML = rows;
+
+    var stamp = DATA.lastUpdated || '';
+    var src = (DATA.sources || {})[c.source] || null;
+    var esc = function(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); };
+    var srcLine = src
+      ? 'Official source for ' + esc(c.name) + ': <a href="' + esc(src.url) + '" target="_blank" rel="noopener">' + esc(src.authority) + '</a>. '
+      : 'Confirm the current rate with ' + esc(c.name) + '’s mines ministry or revenue authority. ';
+    $('mr-src').innerHTML = 'Rate basis: <strong>'+ (m.note ? esc(m.note) : esc(MINERAL_LABELS[mEl.value]||mEl.value)) +'</strong>'
+      + '<br>' + srcLine
+      + 'Bundled default reviewed ' + esc(stamp) + ' — planning-grade, not a current gazetted rate, and not legal or tax advice.';
+
+    resEl.classList.add('on');
+  }
+
+  cEl.addEventListener('change', function(){ populateMinerals(); syncRate(); resEl.classList.remove('on'); });
+  mEl.addEventListener('change', function(){ syncRate(); resEl.classList.remove('on'); });
+  $('mr-calc').addEventListener('click', calc);
+
+  populateMinerals();
+  syncRate();
+})();
+</script>
+</body>
+</html>
