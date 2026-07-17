@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Oil Well Production Estimator — Darcy Flow Rate, Revenue &amp; Royalty | AfroTools</title>
+<meta name="description" content="Estimate an oil well's daily production with the steady-state Darcy radial-flow equation, then project annual revenue, royalty and net income. Built for African oil producers — enter your own reservoir data and oil price.">
+<meta property="og:title" content="Oil Well Production Estimator | AfroTools">
+<meta property="og:description" content="Darcy radial-flow daily production (bbl/day), annual revenue, royalty and net income. Enter your reservoir parameters and oil price.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://afrotools.com/tools/oil-well-production/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/tool-landing.css?v=09fede9d">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How does the Oil Well Production Estimator calculate flow rate?","acceptedAnswer":{"@type":"Answer","text":"It uses the steady-state Darcy radial-flow equation in oilfield units: q = 0.00708 × k × h × (Pe − Pwf) ÷ (μ × B × (ln(re/rw) + s)), where k is permeability in millidarcies, h is net pay thickness in feet, Pe and Pwf are reservoir and bottomhole flowing pressure in psi, μ is oil viscosity in centipoise, B is the formation volume factor, re and rw are drainage and wellbore radius, and s is the skin factor. The result is barrels of oil per day."}},{"@type":"Question","name":"How are revenue, royalty and net income estimated?","acceptedAnswer":{"@type":"Answer","text":"Annual production is the daily rate multiplied by 365 and your uptime percentage. Gross revenue is annual production times the oil price you enter. Royalty is gross revenue times the royalty rate you enter, and operating cost is your cost per barrel times annual production. Net income is gross revenue minus royalty minus operating cost. Every price and rate is your input, so a missing figure is never treated as zero."}},{"@type":"Question","name":"Is this an accurate production forecast?","acceptedAnswer":{"@type":"Answer","text":"It is a simplified steady-state estimate for screening and teaching, not a reservoir-simulation forecast. Real wells decline over time and are affected by drive mechanism, water cut and completion. Use it for a first-pass estimate and confirm with a petroleum engineer and current fiscal terms before any decision."}},{"@type":"Question","name":"Is it free and which oil price does it use?","acceptedAnswer":{"@type":"Answer","text":"Yes, it is completely free with no signup. It does not hardcode an oil price — you enter the price per barrel yourself, so the estimate always reflects the price you choose rather than a stale default."}}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Oil Well Production Estimator","description":"Darcy radial-flow daily production, revenue, royalty and net income for an oil well.","url":"https://afrotools.com/tools/oil-well-production/","inLanguage":"en","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Mining & Extractives","item":"https://afrotools.com/mining/"},{"@type":"ListItem","position":3,"name":"Oil Well Production Estimator","item":"https://afrotools.com/tools/oil-well-production/"}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/oil-well-production/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/oil-well-production/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/oil-well-production/">
+<style>
+.mr-note{font-size:.8rem;color:var(--text-muted,#64748b);margin-top:6px;line-height:1.5}
+.mr-grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:640px){.mr-grid2{grid-template-columns:1fr}}
+.mr-result{display:none}.mr-result.on{display:block}
+.mr-result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:8px 0 4px}
+@media(max-width:640px){.mr-result-grid{grid-template-columns:1fr}}
+.mr-stat{background:#F8FAFD;border:1.5px solid #e2e8f0;border-radius:14px;padding:16px;text-align:center}
+.mr-stat-val{font-size:1.4rem;font-weight:800;color:#0f172a;line-height:1.1}
+.mr-stat-val.hi{color:#92400E}
+.mr-stat-lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.04em;color:#64748b;font-weight:800;margin-top:6px}
+.mr-src{font-size:.8rem;color:#475569;background:#F1F5F9;border-radius:10px;padding:12px 14px;margin-top:14px;line-height:1.55}
+.mr-err{background:#FEF2F2;border:1.5px solid #FCA5A5;color:#991B1B;border-radius:10px;padding:12px 14px;font-size:.85rem;font-weight:600;margin-top:12px;display:none}
+.mr-err.on{display:block}
+.mr-breakdown{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:14px}
+.mr-breakdown td{padding:9px 4px;border-bottom:1px solid #e2e8f0}
+.mr-breakdown td:last-child{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.mr-breakdown tr:last-child td{border-bottom:none;border-top:2px solid #0f172a;font-weight:800}
+.mr-faq{max-width:760px;margin:0 auto}
+.mr-faq details{background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;padding:2px 18px;margin-bottom:10px}
+.mr-faq summary{font-weight:700;padding:14px 0;cursor:pointer;font-size:.95rem}
+.mr-faq details[open] summary{border-bottom:1px solid #eef2f7}
+.mr-faq p{font-size:.9rem;color:#475569;line-height:1.6;padding:12px 0}
+.mr-xlink{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:#0062CC;font-size:.85rem}
+</style>
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="mining"></afro-navbar>
+
+<main class="tool-shell">
+  <div class="tool-hero">
+    <div class="tool-hero-icon">🛢️</div>
+    <h1 class="tool-hero-title">Oil Well Production Estimator</h1>
+    <p class="tool-hero-desc">Estimate daily oil production with the steady-state Darcy radial-flow equation, then project annual revenue, royalty and net income — using your own reservoir data and oil price.</p>
+  </div>
+
+  <div class="tool-panel on">
+    <div class="tool-section">
+      <div class="section-title">Reservoir &amp; well inputs</div>
+      <div class="section-desc">Defaults are typical screening values — replace them with your well's data. Production is computed from physics, so nothing is assumed to be zero.</div>
+      <div class="mr-grid2">
+        <div class="field-group"><label class="field-label" for="k">Permeability k (mD)</label><input id="k" class="field-input" type="number" min="0" step="any" value="50"></div>
+        <div class="field-group"><label class="field-label" for="h">Net pay h (ft)</label><input id="h" class="field-input" type="number" min="0" step="any" value="30"></div>
+        <div class="field-group"><label class="field-label" for="pe">Reservoir pressure Pe (psi)</label><input id="pe" class="field-input" type="number" min="0" step="any" value="3000"></div>
+        <div class="field-group"><label class="field-label" for="pwf">Flowing pressure Pwf (psi)</label><input id="pwf" class="field-input" type="number" min="0" step="any" value="2000"></div>
+        <div class="field-group"><label class="field-label" for="mu">Oil viscosity μ (cp)</label><input id="mu" class="field-input" type="number" min="0" step="any" value="1.2"></div>
+        <div class="field-group"><label class="field-label" for="bo">Formation volume factor B (rb/stb)</label><input id="bo" class="field-input" type="number" min="0" step="any" value="1.2"></div>
+        <div class="field-group"><label class="field-label" for="re">Drainage radius re (ft)</label><input id="re" class="field-input" type="number" min="0" step="any" value="1000"></div>
+        <div class="field-group"><label class="field-label" for="rw">Wellbore radius rw (ft)</label><input id="rw" class="field-input" type="number" min="0" step="any" value="0.35"></div>
+        <div class="field-group"><label class="field-label" for="skin">Skin factor s</label><input id="skin" class="field-input" type="number" step="any" value="0"></div>
+        <div class="field-group"><label class="field-label" for="uptime">Uptime (%)</label><input id="uptime" class="field-input" type="number" min="0" max="100" step="any" value="90"></div>
+      </div>
+    </div>
+
+    <div class="tool-section">
+      <div class="section-title">Economics</div>
+      <div class="section-desc">Oil price and royalty are your inputs — the tool never fills in a price for you.</div>
+      <div class="mr-grid2">
+        <div class="field-group"><label class="field-label" for="price">Oil price (US$/bbl)</label><input id="price" class="field-input" type="number" min="0" step="any" placeholder="e.g. 75"></div>
+        <div class="field-group"><label class="field-label" for="opex">Operating cost (US$/bbl)</label><input id="opex" class="field-input" type="number" min="0" step="any" value="15"></div>
+        <div class="field-group"><label class="field-label" for="roy">Royalty rate (%)</label><input id="roy" class="field-input" type="number" min="0" max="100" step="any" value="10"><div class="mr-note">Oil royalties vary by country and contract (PSC/JOA). Enter your fiscal term.</div></div>
+      </div>
+      <button type="button" class="pill-btn" id="calc" style="background:#92400E;color:#fff">Estimate production &amp; revenue</button>
+      <div class="mr-err" id="err"></div>
+    </div>
+
+    <div class="tool-section mr-result" id="result">
+      <div class="section-title">Estimated results</div>
+      <div class="mr-result-grid">
+        <div class="mr-stat"><div class="mr-stat-val hi" id="o-q">—</div><div class="mr-stat-lbl">Barrels / day</div></div>
+        <div class="mr-stat"><div class="mr-stat-val" id="o-annual">—</div><div class="mr-stat-lbl">Barrels / year</div></div>
+        <div class="mr-stat"><div class="mr-stat-val" id="o-net">—</div><div class="mr-stat-lbl">Net income / year</div></div>
+      </div>
+      <table class="mr-breakdown" id="breakdown"></table>
+      <div class="mr-src" id="src"></div>
+    </div>
+
+    <div class="tool-section">
+      <div class="section-title">How this is calculated</div>
+      <div class="section-desc" style="margin-bottom:0">Daily rate uses the steady-state Darcy radial-flow equation (oilfield units): <strong>q = 0.00708·k·h·(Pe−Pwf) ÷ (μ·B·(ln(re/rw)+s))</strong>. Annual production = q × 365 × uptime. Gross revenue = annual production × oil price. Royalty = gross × royalty rate. Operating cost = annual production × cost/bbl. Net income = gross − royalty − operating cost. It is a simplified steady-state screening estimate, not a reservoir-simulation forecast.</div>
+    </div>
+
+    <div class="tool-section" style="text-align:center">
+      <a class="mr-xlink" href="/mining/">← Mining &amp; Extractives</a> &nbsp;·&nbsp;
+      <a class="mr-xlink" href="/tools/mining-royalty/">Mining Royalty Calculator →</a>
+    </div>
+
+    <div class="tool-section">
+      <div class="section-title" style="text-align:center;margin-bottom:16px">Frequently asked questions</div>
+      <div class="mr-faq">
+        <details open><summary>How does the Oil Well Production Estimator calculate flow rate?</summary><p>It uses the steady-state Darcy radial-flow equation in oilfield units: q = 0.00708 × k × h × (Pe − Pwf) ÷ (μ × B × (ln(re/rw) + s)), where k is permeability in millidarcies, h is net pay thickness in feet, Pe and Pwf are reservoir and bottomhole flowing pressure in psi, μ is oil viscosity in centipoise, B is the formation volume factor, re and rw are drainage and wellbore radius, and s is the skin factor. The result is barrels of oil per day.</p></details>
+        <details><summary>How are revenue, royalty and net income estimated?</summary><p>Annual production is the daily rate multiplied by 365 and your uptime percentage. Gross revenue is annual production times the oil price you enter. Royalty is gross revenue times the royalty rate you enter, and operating cost is your cost per barrel times annual production. Net income is gross revenue minus royalty minus operating cost. Every price and rate is your input, so a missing figure is never treated as zero.</p></details>
+        <details><summary>Is this an accurate production forecast?</summary><p>It is a simplified steady-state estimate for screening and teaching, not a reservoir-simulation forecast. Real wells decline over time and are affected by drive mechanism, water cut and completion. Use it for a first-pass estimate and confirm with a petroleum engineer and current fiscal terms before any decision.</p></details>
+        <details><summary>Is it free and which oil price does it use?</summary><p>Yes, it is completely free with no signup. It does not hardcode an oil price — you enter the price per barrel yourself, so the estimate always reflects the price you choose rather than a stale default.</p></details>
+      </div>
+    </div>
+  </div>
+</main>
+
+<afro-footer></afro-footer>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id);};
+  function num(id){ var v=parseFloat($(id).value); return isNaN(v)?null:v; }
+  function money(n){ return '$'+ (Math.round((n+Number.EPSILON)*100)/100).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+  function whole(n){ return Math.round(n).toLocaleString('en-US'); }
+
+  function calc(){
+    var err=$('err'); err.classList.remove('on'); $('result').classList.remove('on');
+    var k=num('k'),h=num('h'),pe=num('pe'),pwf=num('pwf'),mu=num('mu'),bo=num('bo'),re=num('re'),rw=num('rw'),skin=num('skin'),uptime=num('uptime');
+    var price=num('price'),opex=num('opex'),roy=num('roy');
+
+    // Guards — a missing physical input must block, never silently compute as zero.
+    var reqPos={ 'Permeability':k,'Net pay':h,'Viscosity':mu,'Formation volume factor':bo,'Drainage radius':re,'Wellbore radius':rw };
+    for(var key in reqPos){ if(!(reqPos[key]>0)){ err.textContent='Enter a positive value for '+key+'.'; err.classList.add('on'); return; } }
+    if(pe===null||pwf===null){ err.textContent='Enter reservoir and flowing pressures.'; err.classList.add('on'); return; }
+    if(pe<=pwf){ err.textContent='Reservoir pressure (Pe) must be greater than flowing pressure (Pwf) for the well to flow.'; err.classList.add('on'); return; }
+    if(re<=rw){ err.textContent='Drainage radius (re) must be greater than wellbore radius (rw).'; err.classList.add('on'); return; }
+    if(!(price>0)){ err.textContent='Enter an oil price greater than zero — the tool will not assume a price for you.'; err.classList.add('on'); return; }
+    if(opex===null||opex<0){ err.textContent='Enter an operating cost per barrel (0 or more).'; err.classList.add('on'); return; }
+    if(roy===null||roy<0||roy>100){ err.textContent='Enter a royalty rate between 0 and 100%.'; err.classList.add('on'); return; }
+    if(uptime===null||uptime<=0||uptime>100){ err.textContent='Enter an uptime between 0 and 100%.'; err.classList.add('on'); return; }
+
+    // Steady-state Darcy radial flow (oilfield units), 0.00708 = 1/141.2.
+    var q = (0.00708 * k * h * (pe - pwf)) / (mu * bo * (Math.log(re/rw) + skin));
+    if(!(q>0)){ err.textContent='These inputs give a non-positive flow rate — check the skin factor and radii.'; err.classList.add('on'); return; }
+    var annual = q * 365 * (uptime/100);
+    var gross = annual * price;
+    var royalty = gross * roy/100;
+    var operating = annual * opex;
+    var net = gross - royalty - operating;
+
+    $('o-q').textContent = whole(q);
+    $('o-annual').textContent = whole(annual);
+    $('o-net').textContent = money(net);
+
+    $('breakdown').innerHTML =
+      '<tr><td>Daily production</td><td>'+whole(q)+' bbl/day</td></tr>'+
+      '<tr><td>Annual production (× uptime '+uptime+'%)</td><td>'+whole(annual)+' bbl/yr</td></tr>'+
+      '<tr><td>Gross revenue (@ $'+price+'/bbl)</td><td>'+money(gross)+'</td></tr>'+
+      '<tr><td>Royalty ('+roy+'%)</td><td>−'+money(royalty)+'</td></tr>'+
+      '<tr><td>Operating cost (@ $'+opex+'/bbl)</td><td>−'+money(operating)+'</td></tr>'+
+      '<tr><td>Net income</td><td>'+money(net)+'</td></tr>';
+
+    $('src').innerHTML='Steady-state Darcy radial-flow estimate — a screening figure, not a reservoir-simulation forecast or fiscal-terms quote. Confirm production with a petroleum engineer and your country’s petroleum regulator / PSC terms before relying on it. Not investment advice.';
+    $('result').classList.add('on');
+  }
+  $('calc').addEventListener('click', calc);
+})();
+</script>
+</body>
+</html>

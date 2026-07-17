@@ -10,7 +10,9 @@ Applies to:
 
 ## Why this rule exists
 
-Mining royalty rates are legally significant and price-perishable: each is set by a jurisdiction's Mining Code or Finance Act and revised at budget, and several regimes (South Africa's profit formula, Zambia copper, Burkina Faso gold, Zimbabwe gold) use price- or profit-based **sliding scales**, not a flat rate. Until July 2026 the `/mining/` hub was a facade — 10 tool cards all badged "LIVE" but every one linked back to `/mining/` itself; no tool existed, no data, no source ledger. This rule governs the real tool that replaced the first of those cards (`tools/mining-royalty/`) and the dataset and ledger behind it.
+Mining royalty rates are legally significant and price-perishable: each is set by a jurisdiction's Mining Code or Finance Act and revised at budget, and several regimes (South Africa's profit formula, Zambia copper, and the gold scales in Ghana, Zimbabwe, Mali, Burkina Faso, Côte d'Ivoire, Egypt and Gabon) use price- or profit-based **sliding scales**, not a flat rate. Until July 2026 the `/mining/` hub was a facade — 10 tool cards all badged "LIVE" but every one linked back to `/mining/` itself; no tool existed, no data, no source ledger. This rule governs the real tools that replaced those cards and the dataset and ledger behind them.
+
+**How fast these rates move:** a July 2026 review found **8 of the original 12** defaults had changed in 2023-2026, all upward or restructured — Nigeria gold ~3%→**15%** (Nigeria Tax Act 2025), Ghana gold flat 5%→**sliding 5-12%** (L.I. 2517), Kenya all four rates cut (LN 106/2024), Zimbabwe platinum 2.5%→7% and lithium 5%→7% (2026 budget), Zambia copper bands + cobalt 5%→8% (2024 Act), Mali and Burkina Faso gold → sliding. Only Tanzania, South Africa, DR Congo, Botswana and Namibia were unchanged. Treat any rate older than one budget cycle as suspect.
 
 ## Rules
 
@@ -19,7 +21,8 @@ Mining royalty rates are legally significant and price-perishable: each is set b
 - **Never** update a royalty rate because a URL's content hash changed. Open the Mining Code / Finance Act / regulator schedule and read it — same standard as `.claude/rules/government.md` and `.claude/rules/energy.md`.
 - A mines ministry, minerals commission or revenue authority always outranks an aggregator, law-firm mining guide or news report for the same claim. A law-firm guide is a sanity check, never a citation.
 - Royalty rates are presented in the calculator as **editable, planning-grade defaults** shown with a review date, never as current gazetted rates. Keep it that way — do not restyle the tool to assert a rate as "current."
-- Only 12 of Africa's ~35 significant mining jurisdictions have a bound royalty source today. The rest live in the ledger's `gaps.jurisdictionsWithoutSource` block. An entry there is a known liability, not a to-do. Do not present an unbound market's rate as fact, and do not delete a gap without either binding the source or removing the claim it covers.
+- Only 18 of Africa's ~35 significant mining jurisdictions have a bound royalty source today. The remaining five (Guinea, Angola, Mozambique, Sudan, Mauritania) live in the ledger's `gaps.jurisdictionsWithoutSource` block because their official URL could not be verified reachable. An entry there is a known liability, not a to-do. Do not present an unbound market's rate as fact, and do not delete a gap without either binding the source or removing the claim it covers.
+- **Every source carries a `confidence` field.** Only Kenya (Kenya Law primary text) and Ghana (gazetted L.I. 2517) rest on primary instruments read directly; every other figure is secondary-corroborated. Do not promote a rate to "verified/current gazetted" without reading the operative Act or gazette yourself.
 - Keep `gaps` honest. Do not delete an `unsourcedClaims` class (sliding-scale regimes, additional levies) without either binding a source or removing the claim it covers.
 
 ## The bug class to watch for
@@ -38,5 +41,6 @@ Any dropdown that offers more countries or minerals than the dataset actually co
 
 ## Validation
 
-- `npm run mining:sources:check`
+- `npm run mining:sources:check` — ledger/dataset consistency; fails on a zero/negative flat rate or dataset↔ledger source drift.
+- `npm run test:mining` — pins every mining FAQPage JSON-LD to the visible FAQ verbatim, and enforces the hub honesty invariants (no `/mining/` self-links; a LIVE badge must resolve to a real page on disk).
 - `npm run check-links` for broad route changes (the hub's tool cards were dead self-links; keep them pointed at real routes).

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Oil &amp; Gas Revenue Calculator — PSC Royalty, Cost Oil &amp; Profit Split | AfroTools</title>
+<meta name="description" content="Model a production-sharing contract: gross revenue, royalty, cost-oil recovery, profit-oil split and government take. Built for African oil &amp; gas fields — enter your own volumes, prices and fiscal terms.">
+<meta property="og:title" content="Oil &amp; Gas Revenue Calculator | AfroTools">
+<meta property="og:description" content="PSC waterfall — royalty, cost oil, profit-oil split, contractor net and government take. Enter your own terms.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://afrotools.com/tools/oil-gas-revenue/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/tool-landing.css?v=09fede9d">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How does the Oil & Gas Revenue Calculator model a production-sharing contract?","acceptedAnswer":{"@type":"Answer","text":"It follows the standard PSC waterfall. First royalty is taken from gross revenue. From the revenue left after royalty, recoverable costs are recovered as cost oil, capped by a cost-recovery ceiling you set. What remains is profit oil, split between the contractor and the government by the share you enter. An optional profit tax is applied to the contractor's profit oil. The contractor's net is cost oil plus its profit-oil share, minus its costs and tax; the government take is royalty plus its profit-oil share plus tax."}},{"@type":"Question","name":"What is cost oil and the cost-recovery ceiling?","acceptedAnswer":{"@type":"Answer","text":"Cost oil is the portion of production revenue a contractor keeps to recover its operating and capital costs. Most PSCs cap it — for example at 60% or 70% of post-royalty revenue — so not all costs can be recovered in one period. The tool recovers the lower of your recoverable costs and the ceiling you set, and carries the rest as unrecovered."}},{"@type":"Question","name":"Are these real fiscal terms for my country?","acceptedAnswer":{"@type":"Answer","text":"No — every rate is your input. PSC terms differ by country, licence round and contract and are often confidential. Enter the royalty, cost-recovery ceiling, profit split and tax from your own contract or your regulator's model PSC. This is a planning model, not the terms of any specific agreement, and not tax or legal advice."}},{"@type":"Question","name":"Is it free?","acceptedAnswer":{"@type":"Answer","text":"Yes, it is completely free with no signup and runs on any phone or computer. It is built for African oil and gas contexts but works for any set of PSC terms you enter."}}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Oil & Gas Revenue Calculator","description":"Production-sharing contract waterfall — royalty, cost oil, profit split, contractor net and government take.","url":"https://afrotools.com/tools/oil-gas-revenue/","inLanguage":"en","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Mining & Extractives","item":"https://afrotools.com/mining/"},{"@type":"ListItem","position":3,"name":"Oil & Gas Revenue Calculator","item":"https://afrotools.com/tools/oil-gas-revenue/"}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/oil-gas-revenue/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/oil-gas-revenue/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/oil-gas-revenue/">
+<style>
+.mr-note{font-size:.8rem;color:var(--text-muted,#64748b);margin-top:6px;line-height:1.5}
+.mr-grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:640px){.mr-grid2{grid-template-columns:1fr}}
+.mr-result{display:none}.mr-result.on{display:block}
+.mr-result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:8px 0 4px}
+@media(max-width:640px){.mr-result-grid{grid-template-columns:1fr}}
+.mr-stat{background:#F8FAFD;border:1.5px solid #e2e8f0;border-radius:14px;padding:16px;text-align:center}
+.mr-stat-val{font-size:1.35rem;font-weight:800;color:#0f172a;line-height:1.1}
+.mr-stat-val.gov{color:#92400E}.mr-stat-val.con{color:#166534}
+.mr-stat-lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.04em;color:#64748b;font-weight:800;margin-top:6px}
+.mr-src{font-size:.8rem;color:#475569;background:#F1F5F9;border-radius:10px;padding:12px 14px;margin-top:14px;line-height:1.55}
+.mr-err{background:#FEF2F2;border:1.5px solid #FCA5A5;color:#991B1B;border-radius:10px;padding:12px 14px;font-size:.85rem;font-weight:600;margin-top:12px;display:none}
+.mr-err.on{display:block}
+.mr-breakdown{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:14px}
+.mr-breakdown td{padding:9px 4px;border-bottom:1px solid #e2e8f0}
+.mr-breakdown td:last-child{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.mr-breakdown tr.tot td{border-bottom:none;border-top:2px solid #0f172a;font-weight:800}
+.mr-faq{max-width:760px;margin:0 auto}
+.mr-faq details{background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;padding:2px 18px;margin-bottom:10px}
+.mr-faq summary{font-weight:700;padding:14px 0;cursor:pointer;font-size:.95rem}
+.mr-faq details[open] summary{border-bottom:1px solid #eef2f7}
+.mr-faq p{font-size:.9rem;color:#475569;line-height:1.6;padding:12px 0}
+.mr-xlink{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:#0062CC;font-size:.85rem}
+</style>
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="mining"></afro-navbar>
+
+<main class="tool-shell">
+  <div class="tool-hero">
+    <div class="tool-hero-icon">🛢️</div>
+    <h1 class="tool-hero-title">Oil &amp; Gas Revenue Calculator</h1>
+    <p class="tool-hero-desc">Model a production-sharing contract end to end — royalty, cost-oil recovery, profit-oil split, contractor net and government take — with your own volumes, prices and fiscal terms.</p>
+  </div>
+
+  <div class="tool-panel on">
+    <div class="tool-section">
+      <div class="section-title">Revenue</div>
+      <div class="section-desc">Enter gross revenue directly, or a volume and price. Every fiscal term below is your input.</div>
+      <div class="mr-grid2">
+        <div class="field-group"><label class="field-label" for="vol">Production volume (bbl or Mcf)</label><input id="vol" class="field-input" type="number" min="0" step="any" placeholder="e.g. 1000000"></div>
+        <div class="field-group"><label class="field-label" for="price">Price per unit (US$)</label><input id="price" class="field-input" type="number" min="0" step="any" placeholder="e.g. 75"></div>
+      </div>
+      <div class="field-group"><label class="field-label" for="gross">…or gross revenue directly (US$)</label><input id="gross" class="field-input" type="number" min="0" step="any" placeholder="leave blank to use volume × price"></div>
+    </div>
+
+    <div class="tool-section">
+      <div class="section-title">Fiscal terms</div>
+      <div class="mr-grid2">
+        <div class="field-group"><label class="field-label" for="roy">Royalty (%)</label><input id="roy" class="field-input" type="number" min="0" max="100" step="any" value="10"></div>
+        <div class="field-group"><label class="field-label" for="costs">Recoverable costs (US$)</label><input id="costs" class="field-input" type="number" min="0" step="any" value="0"></div>
+        <div class="field-group"><label class="field-label" for="ceiling">Cost-recovery ceiling (% of post-royalty)</label><input id="ceiling" class="field-input" type="number" min="0" max="100" step="any" value="60"></div>
+        <div class="field-group"><label class="field-label" for="conshare">Contractor profit-oil share (%)</label><input id="conshare" class="field-input" type="number" min="0" max="100" step="any" value="40"></div>
+        <div class="field-group"><label class="field-label" for="tax">Profit tax on contractor profit oil (%)</label><input id="tax" class="field-input" type="number" min="0" max="100" step="any" value="0"></div>
+      </div>
+      <button type="button" class="pill-btn" id="calc" style="background:#92400E;color:#fff">Calculate split</button>
+      <div class="mr-err" id="err"></div>
+    </div>
+
+    <div class="tool-section mr-result" id="result">
+      <div class="section-title">Revenue split</div>
+      <div class="mr-result-grid">
+        <div class="mr-stat"><div class="mr-stat-val con" id="o-con">—</div><div class="mr-stat-lbl">Contractor net</div></div>
+        <div class="mr-stat"><div class="mr-stat-val gov" id="o-gov">—</div><div class="mr-stat-lbl">Government take</div></div>
+        <div class="mr-stat"><div class="mr-stat-val" id="o-govpct">—</div><div class="mr-stat-lbl">Government share of revenue</div></div>
+      </div>
+      <table class="mr-breakdown" id="breakdown"></table>
+      <div class="mr-src" id="src"></div>
+    </div>
+
+    <div class="tool-section">
+      <div class="section-title">How this is calculated</div>
+      <div class="section-desc" style="margin-bottom:0">Royalty = gross × royalty%. Cost oil = min(recoverable costs, ceiling% × post-royalty revenue). Profit oil = post-royalty revenue − cost oil. Contractor profit = profit oil × contractor share; government profit = the rest. Tax = contractor profit × tax%. Contractor net = cost oil + contractor profit − recoverable costs − tax. Government take = royalty + government profit + tax. As a check, contractor net + government take + total costs always equals gross revenue.</div>
+    </div>
+
+    <div class="tool-section" style="text-align:center">
+      <a class="mr-xlink" href="/mining/">← Mining &amp; Extractives</a> &nbsp;·&nbsp;
+      <a class="mr-xlink" href="/tools/oil-well-production/">Oil Well Production Estimator →</a>
+    </div>
+
+    <div class="tool-section">
+      <div class="section-title" style="text-align:center;margin-bottom:16px">Frequently asked questions</div>
+      <div class="mr-faq">
+        <details open><summary>How does the Oil &amp; Gas Revenue Calculator model a production-sharing contract?</summary><p>It follows the standard PSC waterfall. First royalty is taken from gross revenue. From the revenue left after royalty, recoverable costs are recovered as cost oil, capped by a cost-recovery ceiling you set. What remains is profit oil, split between the contractor and the government by the share you enter. An optional profit tax is applied to the contractor's profit oil. The contractor's net is cost oil plus its profit-oil share, minus its costs and tax; the government take is royalty plus its profit-oil share plus tax.</p></details>
+        <details><summary>What is cost oil and the cost-recovery ceiling?</summary><p>Cost oil is the portion of production revenue a contractor keeps to recover its operating and capital costs. Most PSCs cap it — for example at 60% or 70% of post-royalty revenue — so not all costs can be recovered in one period. The tool recovers the lower of your recoverable costs and the ceiling you set, and carries the rest as unrecovered.</p></details>
+        <details><summary>Are these real fiscal terms for my country?</summary><p>No — every rate is your input. PSC terms differ by country, licence round and contract and are often confidential. Enter the royalty, cost-recovery ceiling, profit split and tax from your own contract or your regulator's model PSC. This is a planning model, not the terms of any specific agreement, and not tax or legal advice.</p></details>
+        <details><summary>Is it free?</summary><p>Yes, it is completely free with no signup and runs on any phone or computer. It is built for African oil and gas contexts but works for any set of PSC terms you enter.</p></details>
+      </div>
+    </div>
+  </div>
+</main>
+
+<afro-footer></afro-footer>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id);};
+  function num(id){ var v=parseFloat($(id).value); return isNaN(v)?null:v; }
+  function money(n){ return '$'+ (Math.round((n+Number.EPSILON)*100)/100).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+  function pct(n){ return (Math.round(n*10)/10)+'%'; }
+
+  function calc(){
+    var err=$('err'); err.classList.remove('on'); $('result').classList.remove('on');
+    var vol=num('vol'), price=num('price'), grossIn=num('gross');
+    var roy=num('roy'), costs=num('costs'), ceiling=num('ceiling'), conshare=num('conshare'), tax=num('tax');
+
+    var gross = (grossIn!==null && grossIn>0) ? grossIn : ((vol>0 && price>0) ? vol*price : null);
+    if(!(gross>0)){ err.textContent='Enter gross revenue, or both a volume and a price greater than zero.'; err.classList.add('on'); return; }
+    if(roy===null||roy<0||roy>100){ err.textContent='Royalty must be between 0 and 100%.'; err.classList.add('on'); return; }
+    if(costs===null||costs<0){ err.textContent='Enter recoverable costs (0 or more).'; err.classList.add('on'); return; }
+    if(ceiling===null||ceiling<0||ceiling>100){ err.textContent='Cost-recovery ceiling must be between 0 and 100%.'; err.classList.add('on'); return; }
+    if(conshare===null||conshare<0||conshare>100){ err.textContent='Contractor profit-oil share must be between 0 and 100%.'; err.classList.add('on'); return; }
+    if(tax===null||tax<0||tax>100){ err.textContent='Profit tax must be between 0 and 100%.'; err.classList.add('on'); return; }
+
+    var royalty = gross * roy/100;
+    var afterRoyalty = gross - royalty;
+    var costOil = Math.min(costs, afterRoyalty * ceiling/100);
+    var unrecovered = costs - costOil;
+    var profitOil = afterRoyalty - costOil;
+    var conProfit = profitOil * conshare/100;
+    var govProfit = profitOil - conProfit;
+    var taxAmt = conProfit * tax/100;
+    var contractorNet = costOil + conProfit - costs - taxAmt;   // cost oil offsets costs; unrecovered costs are a loss this period
+    var govTake = royalty + govProfit + taxAmt;
+
+    $('o-con').textContent = money(contractorNet);
+    $('o-gov').textContent = money(govTake);
+    $('o-govpct').textContent = pct(govTake/gross*100);
+
+    $('breakdown').innerHTML =
+      '<tr><td>Gross revenue</td><td>'+money(gross)+'</td></tr>'+
+      '<tr><td>Royalty ('+roy+'%) → government</td><td>−'+money(royalty)+'</td></tr>'+
+      '<tr><td>Revenue after royalty</td><td>'+money(afterRoyalty)+'</td></tr>'+
+      '<tr><td>Cost oil recovered (ceiling '+ceiling+'%)</td><td>'+money(costOil)+'</td></tr>'+
+      (unrecovered>0.005?'<tr><td>Costs not yet recovered</td><td>'+money(unrecovered)+'</td></tr>':'')+
+      '<tr><td>Profit oil</td><td>'+money(profitOil)+'</td></tr>'+
+      '<tr><td>Contractor profit oil ('+conshare+'%)</td><td>'+money(conProfit)+'</td></tr>'+
+      '<tr><td>Government profit oil</td><td>'+money(govProfit)+'</td></tr>'+
+      (taxAmt>0.005?'<tr><td>Profit tax ('+tax+'%) → government</td><td>−'+money(taxAmt)+'</td></tr>':'')+
+      '<tr class="tot"><td>Contractor net</td><td>'+money(contractorNet)+'</td></tr>'+
+      '<tr class="tot"><td>Government take</td><td>'+money(govTake)+'</td></tr>';
+
+    $('src').innerHTML='Simplified PSC model based on the terms you entered. Real contracts add ring-fencing, uplift, tranches and carry, and terms are often confidential. Confirm against your contract or your regulator’s model PSC. Not tax or legal advice.';
+    $('result').classList.add('on');
+  }
+  $('calc').addEventListener('click', calc);
+})();
+</script>
+</body>
+</html>

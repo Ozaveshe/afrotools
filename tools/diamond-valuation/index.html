@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Diamond Valuation Estimator — 4C Carat, Cut, Colour &amp; Clarity | AfroTools</title>
+<meta name="description" content="Estimate a diamond's value from the 4Cs — carat, cut, colour and clarity — using a base price per carat you provide. Retail, wholesale, insurance and resale estimates for African diamond buyers and sellers.">
+<meta property="og:title" content="Diamond Valuation Estimator | AfroTools">
+<meta property="og:description" content="4C diamond value estimate — retail, wholesale, insurance and resale — from a base price per carat you set.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://afrotools.com/tools/diamond-valuation/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/tool-landing.css?v=09fede9d">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How does the Diamond Valuation Estimator work?","acceptedAnswer":{"@type":"Answer","text":"You enter the carat weight and a base price per carat for a top-grade stone of that size, then choose the cut, colour and clarity. The tool multiplies carat × base price × quality factors for cut, colour and clarity to estimate the retail value, and derives wholesale, insurance and resale figures from percentages you can adjust. Because you supply the base price, the estimate reflects a current market reference rather than a stale built-in price."}},{"@type":"Question","name":"Why do I have to enter the base price per carat?","acceptedAnswer":{"@type":"Answer","text":"Diamond prices come from proprietary trade price lists that change constantly and cannot be redistributed. Rather than hardcode a price that would go stale, the tool asks you for a base price per carat — from a dealer quote, a price-list reference or a recent comparable sale — and applies the 4C quality factors to it. A missing base price is never treated as zero; the tool blocks the estimate until you enter one."}},{"@type":"Question","name":"Are the retail, wholesale, insurance and resale figures accurate?","acceptedAnswer":{"@type":"Answer","text":"They are illustrative. Retail is the 4C-adjusted value; wholesale, insurance replacement and private resale are derived from typical percentage relationships you can change. Real prices depend on certification, fluorescence, shape, make and the market, and large stones do not scale linearly. Use this as a first estimate and get a certified appraisal before buying, selling or insuring."}},{"@type":"Question","name":"Is it free?","acceptedAnswer":{"@type":"Answer","text":"Yes, it is completely free with no signup and works on any phone or computer. It suits diamond buyers, sellers and small dealers across African markets and works in any currency you choose."}}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Diamond Valuation Estimator","description":"Estimate a diamond's retail, wholesale, insurance and resale value from the 4Cs and a base price per carat.","url":"https://afrotools.com/tools/diamond-valuation/","inLanguage":"en","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Mining & Extractives","item":"https://afrotools.com/mining/"},{"@type":"ListItem","position":3,"name":"Diamond Valuation Estimator","item":"https://afrotools.com/tools/diamond-valuation/"}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/diamond-valuation/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/diamond-valuation/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/diamond-valuation/">
+<style>
+.mr-note{font-size:.8rem;color:var(--text-muted,#64748b);margin-top:6px;line-height:1.5}
+.mr-grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:640px){.mr-grid2{grid-template-columns:1fr}}
+.mr-result{display:none}.mr-result.on{display:block}
+.mr-result-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:8px 0 4px}
+.mr-stat{background:#F8FAFD;border:1.5px solid #e2e8f0;border-radius:14px;padding:16px;text-align:center}
+.mr-stat-val{font-size:1.35rem;font-weight:800;color:#0f172a;line-height:1.1}
+.mr-stat-val.hi{color:#0062CC}
+.mr-stat-lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.04em;color:#64748b;font-weight:800;margin-top:6px}
+.mr-src{font-size:.8rem;color:#475569;background:#F1F5F9;border-radius:10px;padding:12px 14px;margin-top:14px;line-height:1.55}
+.mr-err{background:#FEF2F2;border:1.5px solid #FCA5A5;color:#991B1B;border-radius:10px;padding:12px 14px;font-size:.85rem;font-weight:600;margin-top:12px;display:none}
+.mr-err.on{display:block}
+.mr-breakdown{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:14px}
+.mr-breakdown td{padding:9px 4px;border-bottom:1px solid #e2e8f0}
+.mr-breakdown td:last-child{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.mr-breakdown tr:last-child td{border-bottom:none;border-top:2px solid #0f172a;font-weight:800}
+.mr-faq{max-width:760px;margin:0 auto}
+.mr-faq details{background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;padding:2px 18px;margin-bottom:10px}
+.mr-faq summary{font-weight:700;padding:14px 0;cursor:pointer;font-size:.95rem}
+.mr-faq details[open] summary{border-bottom:1px solid #eef2f7}
+.mr-faq p{font-size:.9rem;color:#475569;line-height:1.6;padding:12px 0}
+.mr-xlink{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:#0062CC;font-size:.85rem}
+</style>
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="mining"></afro-navbar>
+
+<main class="tool-shell">
+  <div class="tool-hero">
+    <div class="tool-hero-icon">💎</div>
+    <h1 class="tool-hero-title">Diamond Valuation Estimator</h1>
+    <p class="tool-hero-desc">Estimate a diamond's value from the 4Cs — carat, cut, colour and clarity — using a base price per carat you provide, then see retail, wholesale, insurance and resale figures.</p>
+  </div>
+
+  <div class="tool-panel on">
+    <div class="tool-section">
+      <div class="section-title">The 4Cs</div>
+      <div class="section-desc">Enter the stone's carat weight and a base price per carat for a top-grade (D / Flawless / Excellent) diamond of that size, from a dealer quote or price-list reference. The quality factors below adjust it down.</div>
+      <div class="mr-grid2">
+        <div class="field-group"><label class="field-label" for="carat">Carat weight</label><input id="carat" class="field-input" type="number" min="0" step="any" placeholder="e.g. 1.00"></div>
+        <div class="field-group"><label class="field-label" for="base">Base price per carat (top grade, US$)</label><input id="base" class="field-input" type="number" min="0" step="any" placeholder="e.g. 12000"></div>
+        <div class="field-group"><label class="field-label" for="cut">Cut</label>
+          <select id="cut" class="field-select">
+            <option value="1.00">Excellent</option><option value="0.95">Very Good</option><option value="0.88">Good</option><option value="0.78">Fair</option><option value="0.68">Poor</option>
+          </select></div>
+        <div class="field-group"><label class="field-label" for="color">Colour</label>
+          <select id="color" class="field-select">
+            <option value="1.00">D (colourless)</option><option value="0.97">E</option><option value="0.94">F</option><option value="0.90">G</option><option value="0.85">H</option><option value="0.78">I</option><option value="0.70">J</option><option value="0.62">K or lower</option>
+          </select></div>
+        <div class="field-group"><label class="field-label" for="clarity">Clarity</label>
+          <select id="clarity" class="field-select">
+            <option value="1.00">FL / IF (flawless)</option><option value="0.95">VVS1</option><option value="0.92">VVS2</option><option value="0.88">VS1</option><option value="0.84">VS2</option><option value="0.75">SI1</option><option value="0.66">SI2</option><option value="0.50">I1 or lower</option>
+          </select></div>
+      </div>
+      <button type="button" class="pill-btn" id="calc" style="background:#0062CC;color:#fff">Estimate value</button>
+      <div class="mr-err" id="err"></div>
+    </div>
+
+    <div class="tool-section mr-result" id="result">
+      <div class="section-title">Estimated value</div>
+      <div class="mr-result-grid">
+        <div class="mr-stat"><div class="mr-stat-val hi" id="o-retail">—</div><div class="mr-stat-lbl">Retail (4C-adjusted)</div></div>
+        <div class="mr-stat"><div class="mr-stat-val" id="o-wholesale">—</div><div class="mr-stat-lbl">Wholesale</div></div>
+        <div class="mr-stat"><div class="mr-stat-val" id="o-insurance">—</div><div class="mr-stat-lbl">Insurance replacement</div></div>
+        <div class="mr-stat"><div class="mr-stat-val" id="o-resale">—</div><div class="mr-stat-lbl">Private resale</div></div>
+      </div>
+      <table class="mr-breakdown" id="breakdown"></table>
+      <div class="mr-src" id="src"></div>
+    </div>
+
+    <div class="tool-section">
+      <div class="section-title" style="margin-bottom:8px">Market tiers (editable)</div>
+      <div class="mr-grid2">
+        <div class="field-group"><label class="field-label" for="pWhole">Wholesale (% of retail)</label><input id="pWhole" class="field-input" type="number" min="0" max="200" step="any" value="65"></div>
+        <div class="field-group"><label class="field-label" for="pIns">Insurance (% of retail)</label><input id="pIns" class="field-input" type="number" min="0" max="300" step="any" value="120"></div>
+        <div class="field-group"><label class="field-label" for="pResale">Resale (% of retail)</label><input id="pResale" class="field-input" type="number" min="0" max="200" step="any" value="45"></div>
+      </div>
+    </div>
+
+    <div class="tool-section" style="text-align:center">
+      <a class="mr-xlink" href="/mining/">← Mining &amp; Extractives</a> &nbsp;·&nbsp;
+      <a class="mr-xlink" href="/tools/mining-royalty/">Mining Royalty Calculator →</a>
+    </div>
+
+    <div class="tool-section">
+      <div class="section-title" style="text-align:center;margin-bottom:16px">Frequently asked questions</div>
+      <div class="mr-faq">
+        <details open><summary>How does the Diamond Valuation Estimator work?</summary><p>You enter the carat weight and a base price per carat for a top-grade stone of that size, then choose the cut, colour and clarity. The tool multiplies carat × base price × quality factors for cut, colour and clarity to estimate the retail value, and derives wholesale, insurance and resale figures from percentages you can adjust. Because you supply the base price, the estimate reflects a current market reference rather than a stale built-in price.</p></details>
+        <details><summary>Why do I have to enter the base price per carat?</summary><p>Diamond prices come from proprietary trade price lists that change constantly and cannot be redistributed. Rather than hardcode a price that would go stale, the tool asks you for a base price per carat — from a dealer quote, a price-list reference or a recent comparable sale — and applies the 4C quality factors to it. A missing base price is never treated as zero; the tool blocks the estimate until you enter one.</p></details>
+        <details><summary>Are the retail, wholesale, insurance and resale figures accurate?</summary><p>They are illustrative. Retail is the 4C-adjusted value; wholesale, insurance replacement and private resale are derived from typical percentage relationships you can change. Real prices depend on certification, fluorescence, shape, make and the market, and large stones do not scale linearly. Use this as a first estimate and get a certified appraisal before buying, selling or insuring.</p></details>
+        <details><summary>Is it free?</summary><p>Yes, it is completely free with no signup and works on any phone or computer. It suits diamond buyers, sellers and small dealers across African markets and works in any currency you choose.</p></details>
+      </div>
+    </div>
+  </div>
+</main>
+
+<afro-footer></afro-footer>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id);};
+  function num(id){ var v=parseFloat($(id).value); return isNaN(v)?null:v; }
+  function money(n){ return '$'+ (Math.round((n+Number.EPSILON)*100)/100).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+  function calc(){
+    var err=$('err'); err.classList.remove('on'); $('result').classList.remove('on');
+    var carat=num('carat'), base=num('base');
+    var cut=num('cut'), color=num('color'), clarity=num('clarity');
+    var pWhole=num('pWhole'), pIns=num('pIns'), pResale=num('pResale');
+
+    if(!(carat>0)){ err.textContent='Enter the carat weight (greater than zero).'; err.classList.add('on'); return; }
+    if(!(base>0)){ err.textContent='Enter a base price per carat — the tool will not assume a diamond price for you.'; err.classList.add('on'); return; }
+    if(pWhole===null||pIns===null||pResale===null){ err.textContent='Market-tier percentages must be numbers.'; err.classList.add('on'); return; }
+
+    var qFactor = cut*color*clarity;
+    var retail = carat * base * qFactor;
+    var wholesale = retail * pWhole/100;
+    var insurance = retail * pIns/100;
+    var resale = retail * pResale/100;
+
+    $('o-retail').textContent = money(retail);
+    $('o-wholesale').textContent = money(wholesale);
+    $('o-insurance').textContent = money(insurance);
+    $('o-resale').textContent = money(resale);
+
+    $('breakdown').innerHTML =
+      '<tr><td>Base value (carat × base price)</td><td>'+money(carat*base)+'</td></tr>'+
+      '<tr><td>Combined 4C quality factor</td><td>×'+(Math.round(qFactor*1000)/1000)+'</td></tr>'+
+      '<tr><td>Retail (4C-adjusted)</td><td>'+money(retail)+'</td></tr>';
+
+    $('src').innerHTML='Illustrative estimate using relative 4C quality factors — not GIA or Rapaport price data. Diamond value is non-linear and depends on certification, shape, fluorescence and make. Get a certified appraisal before buying, selling or insuring. Not financial advice.';
+    $('result').classList.add('on');
+  }
+  $('calc').addEventListener('click', calc);
+  ['pWhole','pIns','pResale'].forEach(function(id){ $(id).addEventListener('input', function(){ if($('result').classList.contains('on')) calc(); }); });
+})();
+</script>
+</body>
+</html>

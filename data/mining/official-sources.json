@@ -5,12 +5,13 @@
   "reviewCadenceDays": 180,
   "highRiskCadenceDays": 90,
   "notes": [
-    "Mining royalty rates are legally significant and perishable: they are set by each jurisdiction's Mining Code / Finance Act and revised at budget. Several regimes (South Africa, Zambia copper, Burkina Faso gold, Zimbabwe gold) use price- or profit-based sliding formulas, not a flat rate.",
+    "Mining royalty rates are legally significant and perishable: they are set by each jurisdiction's Mining Code / Finance Act and revised at budget. Several regimes (South Africa, Zambia copper, Ghana/Zimbabwe/Mali/Burkina Faso/Côte d'Ivoire gold) use price- or profit-based sliding formulas, not a flat rate.",
+    "A July 2026 source review found EIGHT of the original twelve defaults had moved in 2023-2026: Nigeria gold ~3%->15% (Nigeria Tax Act 2025), Ghana gold flat 5%->sliding 5-12% (L.I. 2517), Kenya (all four rates changed, LN 106/2024), Zimbabwe platinum 2.5%->7% and lithium 5%->7% and gold->sliding (2026 budget), Zambia copper bands and cobalt 5%->8% (2024 Act), Mali gold->sliding (2023 Code), Burkina Faso gold ceiling 5%->7%+ (2023 decree). Tanzania, South Africa, DR Congo, Botswana and Namibia were confirmed unchanged.",
+    "SOURCING HONESTY: only Kenya (Kenya Law primary text) and Ghana (gazetted L.I. 2517) rest on primary instruments read directly. Every other 2026 change and every newly-added jurisdiction is corroborated only from secondary sources (practitioner guides, revenue-authority summaries, tax alerts, reputable press) and is recorded here with its confidence. NONE are presented as verified-gazetted; all stay planning-grade and editable in the tool.",
     "data/mining/mining-royalties.js carries one lastUpdated stamp for all rows — a floor, not a per-figure date. Rates are presented in the Mining Royalty Calculator as EDITABLE, planning-grade defaults the user must confirm, never as current gazetted rates.",
     "Never change a royalty rate because a URL's content hash changed. Open the Mining Code / Finance Act / regulator schedule and read it, exactly as .claude/rules/government.md and .claude/rules/energy.md require.",
-    "A ministry, revenue authority or minerals-commission source outranks any aggregator, law-firm summary or news report for the same claim. Law-firm mining guides are a sanity check, never a citation.",
-    "The bug class to watch: `country.minerals[m].rate || 0` turns a missing or formula-based rate into 0%, which makes the royalty vanish and understates cost. The calculator instead FORCES the user to enter a rate when none is bound, and shows the min/max band for sliding-scale regimes — copy that pattern, never default a rate to zero.",
-    "Only 13 of Africa's ~35 significant mining jurisdictions have a bound royalty source today. The rest are recorded in gaps.jurisdictionsWithoutSource as known liabilities, not to-dos. Do not present an unbound market's rate as fact."
+    "A ministry, revenue authority or minerals-commission source outranks any aggregator, law-firm summary or news report. Where confidence is low or the rate is a sliding scale, the tool models the mineral as a min/max band and forces the user to enter their effective rate rather than trusting a flat guess.",
+    "18 of Africa's ~35 significant mining jurisdictions are now bound to a verified-reachable official authority URL. Five (Guinea, Angola, Mozambique, Sudan, Mauritania) remain in gaps.jurisdictionsWithoutSource because their official URL could not be verified reachable in the review — known liabilities, not to-dos."
   ],
   "tools": [
     "mining-royalty"
@@ -20,25 +21,27 @@
       "id": "gh-minerals-commission",
       "country": "GH",
       "authority": "Ghana Minerals Commission / Ghana Revenue Authority",
-      "title": "Minerals and Mining Act 2006 (Act 703) — mineral royalty",
+      "title": "Minerals and Mining (Royalties) Regulations 2025 (L.I. 2517)",
       "url": "https://www.mincom.gov.gh/",
       "sourceType": "regulator",
       "watch": "availability-and-content",
+      "confidence": "high",
       "fields": ["royalty.gold", "royalty.diamond", "royalty.bauxite", "royalty.manganese"],
       "tools": ["mining-royalty"],
-      "notes": "Ghana applies a flat 5% ad-valorem royalty on the gross value of all minerals under Act 703, s.25. Confirm against the current Act before changing the rate."
+      "notes": "L.I. 2517 (gazetted 19 Dec 2025, in force 10 Mar 2026) made large-scale gold a sliding scale 5%-12% by the weekly London PM Fix and small-scale gold a flat 2%; other minerals stay flat 5% under Act 703. Primary L.I. text read; official mincom.gov.gh landing used as the durable URL."
     },
     {
       "id": "tz-mining-commission",
       "country": "TZ",
-      "authority": "Mining Commission of Tanzania (Tume ya Madini)",
-      "title": "Mining Act (as amended 2017) — royalty schedule",
-      "url": "https://www.tumeyamadini.go.tz/",
+      "authority": "Mining Commission of Tanzania (TUMEMADINI)",
+      "title": "Applicable Royalty and Inspection Fee Rates",
+      "url": "https://www.tumemadini.go.tz/pages/mineral-royalties-and-inspection-fees-rates/",
       "sourceType": "regulator",
       "watch": "availability-and-content",
+      "confidence": "high",
       "fields": ["royalty.gold", "royalty.diamond", "royalty.gemstone", "royalty.copper", "royalty.coal", "levy.clearingHouse"],
       "tools": ["mining-royalty"],
-      "notes": "6% on metallic minerals and gemstones/diamonds under the 2017 amendments, plus a separate 1% clearing-house inspection fee on gross value. Confirm the current schedule."
+      "notes": "Confirmed July 2026 from the official regulator rate page: 6% gold/metallic and rough gemstones/diamonds (4% gold to a licensed domestic refinery), 3% coal/industrial, plus a separate 1% clearing-house inspection fee on gross value."
     },
     {
       "id": "za-sars-royalty",
@@ -48,21 +51,23 @@
       "url": "https://www.sars.gov.za/types-of-tax/mineral-and-petroleum-resource-royalty/",
       "sourceType": "revenue-authority",
       "watch": "availability-and-content",
+      "confidence": "high",
       "fields": ["royalty.gold", "royalty.platinum", "royalty.diamond", "royalty.coal", "royalty.iron"],
       "tools": ["mining-royalty"],
-      "notes": "Profit-based formula, NOT a flat rate: refined minerals 0.5%–5%, unrefined 0.5%–7% of gross sales. The calculator shows the band and requires the user to enter their effective rate."
+      "notes": "Confirmed unchanged July 2026. Profit-based formula, NOT a flat rate: refined 0.5%-5%, unrefined 0.5%-7% of gross sales. The calculator shows the band and requires the user to enter their effective rate."
     },
     {
       "id": "zm-mines-ministry",
       "country": "ZM",
-      "authority": "Zambia Ministry of Mines and Minerals Development / ZRA",
-      "title": "Mines and Minerals Development Act — royalty",
+      "authority": "Zambia Minerals Regulation Commission / ZRA",
+      "title": "Minerals Regulation Commission Act No. 14 of 2024 — royalty",
       "url": "https://www.mmmd.gov.zm/",
       "sourceType": "regulator",
       "watch": "availability-and-content",
+      "confidence": "medium",
       "fields": ["royalty.copper", "royalty.cobalt", "royalty.gold", "royalty.gemstone", "royalty.manganese"],
       "tools": ["mining-royalty"],
-      "notes": "Copper royalty is a price-linked sliding scale 4%–10% (LME band); base metals 5%, precious metals and gemstones 6%. Confirm the current copper price band before quoting a copper rate."
+      "notes": "2024 Act (replaced the 2015 Act). Copper is an incremental sliding scale 4%-10% by LME band ($4,000/$5,000/$7,000 thresholds); base metals 5%, precious metals & gemstones 6%, cobalt & vanadium 8%. Corroborated from two practitioner guides (Chambers, ICLG); ZRA primary PDF was unparseable."
     },
     {
       "id": "cd-mining-code",
@@ -72,21 +77,23 @@
       "url": "https://mines-rdc.cd/",
       "sourceType": "regulator",
       "watch": "availability-and-content",
+      "confidence": "medium",
       "fields": ["royalty.gold", "royalty.copper", "royalty.cobalt", "royalty.coltan", "royalty.diamond", "royalty.iron"],
       "tools": ["mining-royalty"],
-      "notes": "2018 Mining Code: precious metals 3.5%, base metals 3.5%, strategic substances (cobalt, coltan) 10%, precious stones 6%, ferrous 1%. Confirm the strategic-substance list, which the government can revise by decree."
+      "notes": "Confirmed July 2026 (all four dataset defaults match): precious/base metals 3.5%, strategic substances (cobalt, coltan) 10%, precious stones 6%, ferrous 1%. Secondary law summaries (UNCTAD, WTO TPR); strategic-substance 10% well corroborated."
     },
     {
       "id": "zw-zimra",
       "country": "ZW",
       "authority": "Zimbabwe Revenue Authority (ZIMRA) / Ministry of Mines",
-      "title": "Finance Act — mining royalties",
+      "title": "Finance Act 37th Schedule — mining royalties (2026 budget)",
       "url": "https://www.zimra.co.zw/",
       "sourceType": "revenue-authority",
       "watch": "availability-and-content",
+      "confidence": "medium",
       "fields": ["royalty.gold", "royalty.platinum", "royalty.diamond", "royalty.lithium"],
       "tools": ["mining-royalty"],
-      "notes": "Rates are set in the Finance Act and revised at each national budget — treat as high-perishability. Gold has a reduced small-scale rate. Confirm the current budget."
+      "notes": "2026 budget (eff. 1 Jan 2026): platinum raised 2.5%->7%, lithium 5%->7%, gold a sliding 3-5% scale (small miners 1-2%), diamond 10%. Part payable in-kind. Corroborated from ICLG/KPMG budget compilers; Finance Act not read directly — high-perishability, re-read each budget."
     },
     {
       "id": "bw-mines-ministry",
@@ -96,93 +103,175 @@
       "url": "https://www.gov.bw/ministries/ministry-minerals-and-energy",
       "sourceType": "regulator",
       "watch": "availability",
+      "confidence": "medium",
       "fields": ["royalty.diamond", "royalty.gold", "royalty.copper", "royalty.coal"],
       "tools": ["mining-royalty"],
-      "notes": "Precious stones 10%, precious metals 5%, other minerals 3% of gross market value. Confirm against the current Act."
+      "notes": "Confirmed July 2026: precious stones 10%, precious metals 5%, other 3% of gross market value. Two independent secondary sources agree; stable statutory rates."
     },
     {
       "id": "na-mines-ministry",
       "country": "NA",
-      "authority": "Namibia Ministry of Mines and Energy",
+      "authority": "Namibia Ministry of Mines and Energy / NamRA",
       "title": "Minerals (Prospecting and Mining) Act — royalty",
       "url": "https://www.mme.gov.na/",
       "sourceType": "regulator",
       "watch": "availability",
+      "confidence": "high",
       "fields": ["royalty.diamond", "royalty.gold", "royalty.uranium", "royalty.gemstone"],
       "tools": ["mining-royalty"],
-      "notes": "Rough diamonds 10%, precious/base metals 3%, semi-precious stones 2%. Namibia has periodically proposed changes — confirm current rates."
+      "notes": "Confirmed July 2026 via NamRA / Chamber of Mines: rough diamonds 10%, precious & base metals 3% (the dataset's 3% gold is correct), semi-precious 2%, unprocessed dimension stone 5%. Separate export levies exist under the Export Levy Act 2016."
     },
     {
       "id": "ng-mining-cadastre",
       "country": "NG",
-      "authority": "Nigeria Mining Cadastre Office / Ministry of Solid Minerals Development",
-      "title": "Nigerian Minerals and Mining Regulations 2011 — royalty schedule",
-      "url": "https://www.minesandsteel.gov.ng/",
-      "sourceType": "regulator",
-      "watch": "availability",
+      "authority": "Nigeria Revenue Service / Ministry of Solid Minerals Development",
+      "title": "Nigeria Tax Act 2025 — mineral royalty (eff. 1 Jan 2026)",
+      "url": "https://www.nrs.gov.ng/",
+      "sourceType": "revenue-authority",
+      "watch": "availability-and-content",
+      "confidence": "medium",
       "fields": ["royalty.gold", "royalty.tin", "royalty.limestone", "royalty.leadZinc"],
       "tools": ["mining-royalty"],
-      "notes": "Royalties are set per mineral in the 2011 Regulations schedule. Confirm the per-mineral rate for solid minerals before quoting."
+      "notes": "HIGHEST-IMPACT correction: gold ~3%->15% under the Nigeria Tax Act 2025 (royalty provisions eff. 1 Jan 2026), ad-valorem band 7.5%-15% on the official selling price, collected by the Nigeria Revenue Service. Gold 15% corroborated across EY, Regan van Rooy and the NRS Act PDF; the per-mineral split rests on secondary reading."
     },
     {
       "id": "ke-mining-dept",
       "country": "KE",
       "authority": "Kenya State Department for Mining",
-      "title": "Mining Act 2016 — royalty schedule",
+      "title": "Mining (Royalty Collection and Management) Regulations 2024 (LN 106/2024)",
       "url": "https://www.mining.go.ke/",
       "sourceType": "regulator",
-      "watch": "availability",
+      "watch": "availability-and-content",
+      "confidence": "high",
       "fields": ["royalty.gold", "royalty.titanium", "royalty.coal", "royalty.gemstone"],
       "tools": ["mining-royalty"],
-      "notes": "Mining Act 2016 schedule: gold 5%, titanium ores 10%, coal 8%, gemstones 5%. Confirm the current schedule."
+      "notes": "LN 106/2024 (in force 5 Jul 2024, revokes LN 187/2013) read directly from Kenya Law: gold/platinoids 3% (was 5%), titanium/zircon 4% (was 10%), coal 7% (was 8%), rough gemstones 6% / cut 1%. The whole 2016-era schedule is superseded. Primary source."
     },
     {
       "id": "ml-mining-code",
       "country": "ML",
       "authority": "Mali Ministère des Mines / DNGM",
-      "title": "Code Minier du Mali — redevances",
+      "title": "Code minier 2023 (Loi n°2023-040)",
       "url": "https://www.mines.gouv.ml/",
       "sourceType": "regulator",
       "watch": "availability",
+      "confidence": "low",
       "fields": ["royalty.gold"],
       "tools": ["mining-royalty"],
-      "notes": "Gold ad-valorem royalty ~3% plus additional levies (ISCP/CPS) under the Mining Code. Mali revised its Mining Code in 2023 — confirm the current version and the additional levies."
+      "notes": "The 2023 Code replaced the flat ~3% with a price-linked scale (~3% below ~$1,000/oz rising to ~6-7% at high prices) plus stacked local-development (~0.75%) and infrastructure (1-2.5%) levies, and raised state free-carry to 10%. Structural change corroborated (Ecofin, IIED); exact bands from secondary reporting — modelled as a band."
     },
     {
       "id": "bf-mining-code",
       "country": "BF",
       "authority": "Burkina Faso Ministère de l'Énergie, des Mines et des Carrières",
-      "title": "Code Minier du Burkina Faso — redevances proportionnelles",
+      "title": "Code minier — redevance proportionnelle (2023 decree)",
       "url": "https://www.mines.gov.bf/",
       "sourceType": "regulator",
       "watch": "availability",
+      "confidence": "low",
       "fields": ["royalty.gold"],
       "tools": ["mining-royalty"],
-      "notes": "Gold royalty is a price-linked sliding scale 3%–5%. Confirm the current price thresholds in the Mining Code."
+      "notes": "The Oct-2023 decree extended the old 3-5% gold ceiling to 7% (3% below ~$1,000/oz up to 7% above ~$2,000/oz), with a +1%-per-$500 escalator added in Mar 2025. With gold above $2,000/oz the effective rate is >=7%. Secondary reading of the decree — modelled as a band."
+    },
+    {
+      "id": "eg-emra",
+      "country": "EG",
+      "authority": "Egyptian Mineral Resources Authority (EMRA)",
+      "title": "Mineral Resources Law 198/2014 + Exec. Reg. Decree 108/2020",
+      "url": "https://www.emra.gov.eg/",
+      "sourceType": "regulator",
+      "watch": "availability",
+      "confidence": "low",
+      "fields": ["royalty.gold", "royalty.phosphate"],
+      "tools": ["mining-royalty"],
+      "notes": "Statutory royalty band 5%-20% of production value; new licences ~5% base + 1% local-development charge. Do NOT publish Sukari's ~3% as the general gold rate — that is a project concession. Modelled as a band; EMRA URL verified reachable."
+    },
+    {
+      "id": "sl-nma",
+      "country": "SL",
+      "authority": "Sierra Leone National Minerals Agency (NMA)",
+      "title": "Mines and Minerals Development Act — royalty schedule",
+      "url": "https://www.nma.gov.sl/",
+      "sourceType": "regulator",
+      "watch": "availability",
+      "confidence": "low",
+      "fields": ["royalty.gold", "royalty.diamond", "royalty.rutile", "royalty.gemstone"],
+      "tools": ["mining-royalty"],
+      "notes": "Precious metals (gold) 5%, precious stones incl. diamonds 6.5% (special diamonds over ~US$500k 15%), other incl. rutile 3%. 2009-era schedule carried into the MMDA 2022 — not confirmed unchanged; secondary. NMA URL verified reachable."
+    },
+    {
+      "id": "ci-mines",
+      "country": "CI",
+      "authority": "Côte d'Ivoire Ministère des Mines, du Pétrole et de l'Énergie",
+      "title": "Code minier 2014 (Loi n°2014-138) + 2025 Finance Law",
+      "url": "https://www.energie.gouv.ci/mines",
+      "sourceType": "regulator",
+      "watch": "availability",
+      "confidence": "medium",
+      "fields": ["royalty.gold", "royalty.manganese"],
+      "tools": ["mining-royalty"],
+      "notes": "Gold is a price-indexed sliding scale 5% (<=$1,000/oz) to 8% (>$2,000/oz), raised +2 points by the 2025 Finance Law; manganese/base metals ~2.5%. Gold corroborated across multiple 2025 sources; manganese single secondary. Ministry URL verified reachable."
+    },
+    {
+      "id": "lr-mme",
+      "country": "LR",
+      "authority": "Liberia Ministry of Mines and Energy",
+      "title": "Minerals and Mining Law — royalty",
+      "url": "https://mme.gov.lr/",
+      "sourceType": "regulator",
+      "watch": "availability",
+      "confidence": "medium",
+      "fields": ["royalty.gold", "royalty.iron", "royalty.diamond"],
+      "tools": ["mining-royalty"],
+      "notes": "Gold 3%, iron ore 4.5%, diamonds 3% (statutory band 3-10%). Large mineral development agreements (MDAs) can override the statutory defaults. Secondary (US ITA + news); MME URL verified reachable."
+    },
+    {
+      "id": "mg-mines",
+      "country": "MG",
+      "authority": "Madagascar Ministère des Mines / BCMM",
+      "title": "Code minier 2023 (Loi n°2023-007)",
+      "url": "https://mmrs.gov.mg/",
+      "sourceType": "regulator",
+      "watch": "availability",
+      "confidence": "medium",
+      "fields": ["royalty.gemstone", "royalty.nickel", "royalty.graphite"],
+      "tools": ["mining-royalty"],
+      "notes": "The 2023 Code raised the general mineral royalty from 2% to 5% of mine-gate value, with a ~30% reduction (~3.5%) for in-country beneficiation. Primary PDF exists; the 2%->5% change corroborated (Dentons, UNCTAD). Per-mineral split not separately broken out. BCMM URL verified reachable."
+    },
+    {
+      "id": "ga-mines",
+      "country": "GA",
+      "authority": "Gabon Ministère des Mines et des Ressources Géologiques",
+      "title": "Code minier 2018 (Loi n°037/2018)",
+      "url": "https://www.mines.gouv.ga/",
+      "sourceType": "regulator",
+      "watch": "availability",
+      "confidence": "low",
+      "fields": ["royalty.manganese", "royalty.gold"],
+      "tools": ["mining-royalty"],
+      "notes": "The proportional royalty is set per mining convention above a statutory floor: base metals incl. manganese 3-5%, gold 5-8%, precious stones 8-10%. Manganese (Comilog) is governed by its convention, not a fixed statutory rate — modelled as a band. Ministry URL verified reachable."
     }
   ],
   "gaps": {
     "jurisdictionsWithoutSource": [
-      { "country": "EG", "authority": "Egyptian Mineral Resources Authority (EMRA)", "needs": ["royalty.gold", "royalty.phosphate"] },
       { "country": "GN", "authority": "Guinea Ministère des Mines et de la Géologie", "needs": ["royalty.bauxite", "royalty.gold", "royalty.iron"] },
-      { "country": "AO", "authority": "Angola Ministério dos Recursos Minerais, Petróleo e Gás", "needs": ["royalty.diamond", "royalty.gold"] },
-      { "country": "MZ", "authority": "Mozambique Ministério dos Recursos Minerais e Energia", "needs": ["royalty.coal", "royalty.gemstone", "royalty.gas"] },
-      { "country": "SL", "authority": "Sierra Leone National Minerals Agency", "needs": ["royalty.diamond", "royalty.gold", "royalty.rutile"] },
-      { "country": "CI", "authority": "Côte d'Ivoire Ministère des Mines, du Pétrole et de l'Énergie", "needs": ["royalty.gold", "royalty.manganese"] },
-      { "country": "SD", "authority": "Sudan Ministry of Minerals", "needs": ["royalty.gold"] },
-      { "country": "MR", "authority": "Mauritania Ministère du Pétrole, des Mines et de l'Énergie", "needs": ["royalty.iron", "royalty.gold", "royalty.copper"] },
-      { "country": "LR", "authority": "Liberia Ministry of Mines and Energy", "needs": ["royalty.gold", "royalty.iron", "royalty.diamond"] },
-      { "country": "MG", "authority": "Madagascar Ministère des Mines", "needs": ["royalty.gemstone", "royalty.nickel", "royalty.graphite"] },
-      { "country": "GA", "authority": "Gabon Ministère des Mines", "needs": ["royalty.manganese", "royalty.gold"] }
+      { "country": "AO", "authority": "Angola Ministério dos Recursos Minerais, Petróleo e Gás (MIREMPET)", "needs": ["royalty.diamond", "royalty.gold"] },
+      { "country": "MZ", "authority": "Mozambique Ministério dos Recursos Minerais e Energia (MIREME)", "needs": ["royalty.coal", "royalty.gemstone", "royalty.gas"] },
+      { "country": "SD", "authority": "Sudan Ministry of Minerals / SMRC", "needs": ["royalty.gold"] },
+      { "country": "MR", "authority": "Mauritania Ministère des Mines et de l'Industrie", "needs": ["royalty.iron", "royalty.gold", "royalty.copper"] }
     ],
     "unsourcedClaims": [
       {
         "field": "royalty.slidingScale",
-        "why": "South Africa (profit formula), Zambia copper, Burkina Faso gold and Zimbabwe gold use price- or profit-based formulas. The calculator shows the statutory band and requires the user to confirm their effective rate rather than asserting a single flat number."
+        "why": "South Africa (profit formula), Zambia copper, and Ghana/Zimbabwe/Mali/Burkina Faso/Côte d'Ivoire/Egypt/Gabon gold use price- or profit-based formulas. The calculator shows the statutory band and requires the user to confirm their effective rate rather than asserting a single flat number."
+      },
+      {
+        "field": "royalty.confidence",
+        "why": "Only Kenya (Kenya Law) and Ghana (L.I. 2517) rest on primary instruments read directly. Every other 2026 change and all six newly-added jurisdictions are corroborated only from secondary sources and are recorded per-source with a confidence field; none are verified-gazetted, and all stay planning-grade and editable."
       },
       {
         "field": "levy.additional",
-        "why": "Surface rent, education/inspection levies and additional taxes (e.g. Mali ISCP/CPS, Tanzania 1% clearing fee) vary by jurisdiction and are only partially modelled. Only Tanzania's 1% clearing fee is bound today; the rest are out of scope for the royalty figure."
+        "why": "Surface rent, education/inspection levies, export levies and local-development funds (e.g. Mali ISCP/CPS, Tanzania 1% clearing fee, Namibia export levy) vary by jurisdiction and are only partially modelled. Only Tanzania's 1% clearing fee is bound today."
       }
     ]
   }

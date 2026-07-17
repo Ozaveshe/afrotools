@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Artisanal Mining Income Calculator — Galamsey &amp; ASM Earnings | AfroTools</title>
+<meta name="description" content="Estimate monthly income for artisanal and small-scale miners (ASM) — gold, coltan, diamond, tin. Compare licensed-buyer vs informal middleman prices, subtract costs, and split earnings across a team.">
+<meta property="og:title" content="Artisanal Mining Income Calculator | AfroTools">
+<meta property="og:description" content="Monthly ASM mining income — formal vs informal price gap, costs and per-miner split. Enter your own production and prices.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://afrotools.com/tools/artisanal-mining-income/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/tool-landing.css?v=09fede9d">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How is artisanal mining income calculated?","acceptedAnswer":{"@type":"Answer","text":"Monthly gross is your production for the month multiplied by the price per unit you enter — for example grams of gold times the price per gram. The tool then subtracts your monthly costs (equipment, fuel, transport, permits) and, if you mine as a team, splits the result by the number of people sharing. It shows monthly and annual net income per miner. Every price is your input, so a missing price is never treated as zero."}},{"@type":"Question","name":"What is the formal vs informal price gap?","acceptedAnswer":{"@type":"Answer","text":"Artisanal miners often sell to informal middlemen at a discount to the licensed-buyer or market price. You enter the licensed price and the informal price as a percentage of it; the tool shows how much income is lost to the discount each month. That gap is the value that selling to a licensed buyer, or formalising, can recover — it is illustrative, not a guarantee."}},{"@type":"Question","name":"Which minerals and countries does it cover?","acceptedAnswer":{"@type":"Answer","text":"It works for any artisanal mineral — gold, coltan, diamond, tin and others — because you enter the unit and price yourself. It suits ASM contexts across Africa, from galamsey gold in Ghana to coltan in the DR Congo, in any currency you choose."}},{"@type":"Question","name":"Is it free and is it financial advice?","acceptedAnswer":{"@type":"Answer","text":"Yes, it is completely free with no signup. It is a planning estimate to help understand earnings and the cost of selling informally — it is not financial advice, and it does not endorse mining without the required licences and safety measures."}}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Artisanal Mining Income Calculator","description":"Monthly income for artisanal and small-scale miners, formal vs informal price gap and per-miner split.","url":"https://afrotools.com/tools/artisanal-mining-income/","inLanguage":"en","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Mining & Extractives","item":"https://afrotools.com/mining/"},{"@type":"ListItem","position":3,"name":"Artisanal Mining Income Calculator","item":"https://afrotools.com/tools/artisanal-mining-income/"}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/artisanal-mining-income/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/artisanal-mining-income/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/artisanal-mining-income/">
+<style>
+.mr-note{font-size:.8rem;color:var(--text-muted,#64748b);margin-top:6px;line-height:1.5}
+.mr-grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:640px){.mr-grid2{grid-template-columns:1fr}}
+.mr-result{display:none}.mr-result.on{display:block}
+.mr-result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:8px 0 4px}
+@media(max-width:640px){.mr-result-grid{grid-template-columns:1fr}}
+.mr-stat{background:#F8FAFD;border:1.5px solid #e2e8f0;border-radius:14px;padding:16px;text-align:center}
+.mr-stat-val{font-size:1.4rem;font-weight:800;color:#0f172a;line-height:1.1}
+.mr-stat-val.hi{color:#166534}.mr-stat-val.lo{color:#92400E}
+.mr-stat-lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.04em;color:#64748b;font-weight:800;margin-top:6px}
+.mr-src{font-size:.8rem;color:#475569;background:#F1F5F9;border-radius:10px;padding:12px 14px;margin-top:14px;line-height:1.55}
+.mr-err{background:#FEF2F2;border:1.5px solid #FCA5A5;color:#991B1B;border-radius:10px;padding:12px 14px;font-size:.85rem;font-weight:600;margin-top:12px;display:none}
+.mr-err.on{display:block}
+.mr-breakdown{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:14px}
+.mr-breakdown td{padding:9px 4px;border-bottom:1px solid #e2e8f0}
+.mr-breakdown td:last-child{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.mr-breakdown tr:last-child td{border-bottom:none;border-top:2px solid #0f172a;font-weight:800}
+.mr-faq{max-width:760px;margin:0 auto}
+.mr-faq details{background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;padding:2px 18px;margin-bottom:10px}
+.mr-faq summary{font-weight:700;padding:14px 0;cursor:pointer;font-size:.95rem}
+.mr-faq details[open] summary{border-bottom:1px solid #eef2f7}
+.mr-faq p{font-size:.9rem;color:#475569;line-height:1.6;padding:12px 0}
+.mr-xlink{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:#0062CC;font-size:.85rem}
+</style>
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar active="mining"></afro-navbar>
+
+<main class="tool-shell">
+  <div class="tool-hero">
+    <div class="tool-hero-icon">⛏️</div>
+    <h1 class="tool-hero-title">Artisanal Mining Income Calculator</h1>
+    <p class="tool-hero-desc">Estimate monthly earnings for artisanal &amp; small-scale miners — see the income lost to informal middlemen, subtract your costs, and split the result across your team.</p>
+  </div>
+
+  <div class="tool-panel on">
+    <div class="tool-section">
+      <div class="section-title">Your production &amp; prices</div>
+      <div class="section-desc">Enter values in whatever unit and currency you sell in — the tool never assumes a price for you.</div>
+      <div class="mr-grid2">
+        <div class="field-group">
+          <label class="field-label" for="mineral">Mineral / unit</label>
+          <select id="mineral" class="field-select">
+            <option value="gram|Gold">Gold (per gram)</option>
+            <option value="carat|Diamond">Diamond (per carat)</option>
+            <option value="kg|Coltan">Coltan (per kg)</option>
+            <option value="kg|Tin">Tin / cassiterite (per kg)</option>
+            <option value="gram|Other">Other (per unit)</option>
+          </select>
+        </div>
+        <div class="field-group"><label class="field-label" for="qty">Monthly production (<span id="unitq">grams</span>)</label><input id="qty" class="field-input" type="number" min="0" step="any" placeholder="e.g. 60"></div>
+        <div class="field-group"><label class="field-label" for="formal">Licensed-buyer price (per <span id="unitp">gram</span>)</label><input id="formal" class="field-input" type="number" min="0" step="any" placeholder="e.g. 55"></div>
+        <div class="field-group"><label class="field-label" for="informalPct">Informal price (% of licensed)</label><input id="informalPct" class="field-input" type="number" min="0" max="100" step="any" value="70"><div class="mr-note">What middlemen typically pay, as a share of the licensed price.</div></div>
+        <div class="field-group"><label class="field-label" for="costs">Monthly costs (equipment, fuel, permits)</label><input id="costs" class="field-input" type="number" min="0" step="any" value="0"></div>
+        <div class="field-group"><label class="field-label" for="team">Miners sharing the income</label><input id="team" class="field-input" type="number" min="1" step="1" value="1"></div>
+      </div>
+      <button type="button" class="pill-btn" id="calc" style="background:#166534;color:#fff">Calculate income</button>
+      <div class="mr-err" id="err"></div>
+    </div>
+
+    <div class="tool-section mr-result" id="result">
+      <div class="section-title">Estimated monthly income</div>
+      <div class="mr-result-grid">
+        <div class="mr-stat"><div class="mr-stat-val hi" id="o-net">—</div><div class="mr-stat-lbl">Net / miner / month</div></div>
+        <div class="mr-stat"><div class="mr-stat-val" id="o-annual">—</div><div class="mr-stat-lbl">Net / miner / year</div></div>
+        <div class="mr-stat"><div class="mr-stat-val lo" id="o-gap">—</div><div class="mr-stat-lbl">Lost to informal sale / month</div></div>
+      </div>
+      <table class="mr-breakdown" id="breakdown"></table>
+      <div class="mr-src" id="src"></div>
+    </div>
+
+    <div class="tool-section" style="text-align:center">
+      <a class="mr-xlink" href="/mining/">← Mining &amp; Extractives</a> &nbsp;·&nbsp;
+      <a class="mr-xlink" href="/tools/mining-royalty/">Mining Royalty Calculator →</a>
+    </div>
+
+    <div class="tool-section">
+      <div class="section-title" style="text-align:center;margin-bottom:16px">Frequently asked questions</div>
+      <div class="mr-faq">
+        <details open><summary>How is artisanal mining income calculated?</summary><p>Monthly gross is your production for the month multiplied by the price per unit you enter — for example grams of gold times the price per gram. The tool then subtracts your monthly costs (equipment, fuel, transport, permits) and, if you mine as a team, splits the result by the number of people sharing. It shows monthly and annual net income per miner. Every price is your input, so a missing price is never treated as zero.</p></details>
+        <details><summary>What is the formal vs informal price gap?</summary><p>Artisanal miners often sell to informal middlemen at a discount to the licensed-buyer or market price. You enter the licensed price and the informal price as a percentage of it; the tool shows how much income is lost to the discount each month. That gap is the value that selling to a licensed buyer, or formalising, can recover — it is illustrative, not a guarantee.</p></details>
+        <details><summary>Which minerals and countries does it cover?</summary><p>It works for any artisanal mineral — gold, coltan, diamond, tin and others — because you enter the unit and price yourself. It suits ASM contexts across Africa, from galamsey gold in Ghana to coltan in the DR Congo, in any currency you choose.</p></details>
+        <details><summary>Is it free and is it financial advice?</summary><p>Yes, it is completely free with no signup. It is a planning estimate to help understand earnings and the cost of selling informally — it is not financial advice, and it does not endorse mining without the required licences and safety measures.</p></details>
+      </div>
+    </div>
+  </div>
+</main>
+
+<afro-footer></afro-footer>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id);};
+  function num(id){ var v=parseFloat($(id).value); return isNaN(v)?null:v; }
+  function money(n){ return (Math.round((n+Number.EPSILON)*100)/100).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+  function syncUnit(){
+    var parts=$('mineral').value.split('|'); var u=parts[0];
+    $('unitq').textContent = u+'s'; $('unitp').textContent = u;
+  }
+  $('mineral').addEventListener('change', function(){ syncUnit(); $('result').classList.remove('on'); });
+
+  function calc(){
+    var err=$('err'); err.classList.remove('on'); $('result').classList.remove('on');
+    var qty=num('qty'), formal=num('formal'), infPct=num('informalPct'), costs=num('costs'), team=num('team');
+
+    if(!(qty>0)){ err.textContent='Enter your monthly production (greater than zero).'; err.classList.add('on'); return; }
+    if(!(formal>0)){ err.textContent='Enter the licensed-buyer price per unit — the tool will not assume a price.'; err.classList.add('on'); return; }
+    if(infPct===null||infPct<0||infPct>100){ err.textContent='Informal price must be between 0 and 100% of the licensed price.'; err.classList.add('on'); return; }
+    if(costs===null||costs<0){ err.textContent='Enter monthly costs (0 or more).'; err.classList.add('on'); return; }
+    if(!(team>=1)){ err.textContent='Number of miners must be at least 1.'; err.classList.add('on'); return; }
+    team=Math.floor(team);
+
+    var formalGross = qty*formal;
+    var informalGross = qty*formal*(infPct/100);
+    var gap = formalGross - informalGross;               // income lost by selling informally
+    var netTotal = formalGross - costs;                  // net if selling to licensed buyer
+    var netPerMiner = netTotal/team;
+    var annualPerMiner = netPerMiner*12;
+
+    $('o-net').textContent = money(netPerMiner);
+    $('o-annual').textContent = money(annualPerMiner);
+    $('o-gap').textContent = money(gap);
+
+    $('breakdown').innerHTML =
+      '<tr><td>Gross at licensed price</td><td>'+money(formalGross)+'</td></tr>'+
+      '<tr><td>Gross at informal price ('+infPct+'%)</td><td>'+money(informalGross)+'</td></tr>'+
+      '<tr><td>Lost by selling informally</td><td>−'+money(gap)+'</td></tr>'+
+      '<tr><td>Monthly costs</td><td>−'+money(costs)+'</td></tr>'+
+      '<tr><td>Net (licensed sale, whole team)</td><td>'+money(netTotal)+'</td></tr>'+
+      '<tr><td>Net per miner ('+team+' sharing)</td><td>'+money(netPerMiner)+'</td></tr>';
+
+    $('src').innerHTML='Planning estimate based on the production and prices you entered. Prices and yields vary widely and are not sourced. Not financial advice, and not an endorsement of mining without the required licences and safety measures.';
+    $('result').classList.add('on');
+  }
+  $('calc').addEventListener('click', calc);
+  syncUnit();
+})();
+</script>
+</body>
+</html>
