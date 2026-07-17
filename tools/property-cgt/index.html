@@ -487,10 +487,10 @@ var CGT_DATA = {
     rateType:'inclusion_rate', inclusionRate:40, primaryResidenceExempt:true, exemptionAmount:2000000,
     note:'South Africa: CGT inclusion rate of 40% for individuals (80% for companies). Only 40% of the gain is included in your income and taxed at your marginal income tax rate (up to 45%), giving an effective maximum CGT rate of 18% for individuals. First R2M of primary residence gain exempt.',
     tip:'SA\'s primary residence exclusion of R2M means most middle-income homeowners pay very little CGT on their main home. Investment properties have no exclusion. Annual exclusion of R40,000 also applies.' },
-  ZM: { name:'Zambia', currency:'ZMW', symbol:'ZMW ', rate:5, exempt:false,
-    rateType:'sliding', slidingRates:[{max:9999, rate:5},{max:49999, rate:7.5},{max:Infinity, rate:15}],
-    note:'Zambia: Sliding scale CGT — 5% on gains up to ZMW 10K, 7.5% up to ZMW 50K, 15% above. Check current ZRA rates.',
-    tip:'Zambia\'s property market is primarily leasehold. CGT is payable to ZRA (Zambia Revenue Authority) before title transfer can occur.' },
+  ZM: { name:'Zambia', currency:'ZMW', symbol:'ZMW ', rate:8, exempt:false,
+    rateType:'on_sale_price', primaryResidenceExempt:false,
+    note:'Zambia does NOT levy a gain-based CGT. Property Transfer Tax (PTT) is charged at a flat 8% of the realised (open-market) value on the transfer of land and buildings — NOT on the gain — effective 1 January 2025 (Property Transfer Tax (Amendment) Act 2024, raised from 5%). The seller is legally liable.',
+    tip:'Zambia\'s PTT is 8% of the transfer value, not the profit — so it applies even if you sell at a loss. Payable to ZRA before title transfer. Mining-right transfers are taxed at 10%.' },
   BW: { name:'Botswana', currency:'BWP', symbol:'BWP ', rate:22, exempt:false,
     rateType:'percentage', primaryResidenceExempt:false,
     note:'Botswana: Property gains are taxed as income at standard income tax rates (effective ~22% for most taxpayers).',
@@ -593,17 +593,6 @@ function calculate() {
     var marginalRate = 36;
     cgtAmount = includedGain * marginalRate / 100;
     taxableGain = gainAfterExclusion;
-    effectiveRate = gain > 0 ? cgtAmount / gain * 100 : 0;
-  } else if (d.rateType === 'sliding') {
-    // Zambia
-    taxableGain = gain;
-    cgtAmount = 0;
-    var remaining = gain;
-    d.slidingRates.forEach(function(band,i){
-      var prev = i > 0 ? d.slidingRates[i-1].max : 0;
-      var bandGain = Math.min(remaining, band.max - prev);
-      if (bandGain > 0) { cgtAmount += bandGain * band.rate / 100; remaining -= bandGain; }
-    });
     effectiveRate = gain > 0 ? cgtAmount / gain * 100 : 0;
   } else {
     // Standard percentage
