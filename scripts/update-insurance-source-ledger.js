@@ -129,6 +129,24 @@ for (const u of ((ledger.gaps || {}).unsourcedClaims || [])) {
   if (!u.field || !u.why) errors.push('gaps.unsourcedClaims entry needs field and why.');
 }
 
+// A verified figure must name what was read, when, and from which bound source.
+// This is the only place a number may be presented as current rather than
+// planning-grade, so the provenance has to be checkable.
+const verified = ledger.verifiedFigures || [];
+for (const f of verified) {
+  if (!f.country || !f.field || !f.value || !f.verified || !f.sourceId) {
+    errors.push('verifiedFigures entry needs country, field, value, verified (date) and sourceId.');
+    continue;
+  }
+  if (!countries[f.country]) errors.push(`verifiedFigures: ${f.country} is not in the dataset.`);
+  if (!ids.has(f.sourceId)) errors.push(`verifiedFigures ${f.country}/${f.field}: sourceId "${f.sourceId}" is not a known source.`);
+  const fAge = daysSince(f.verified);
+  if (fAge === null) errors.push(`verifiedFigures ${f.country}/${f.field}: verified date "${f.verified}" is not parseable.`);
+  else if (fAge > (ledger.reviewCadenceDays || 180)) {
+    warnings.push(`verifiedFigures ${f.country}/${f.field} was verified ${fAge} days ago, past reviewCadenceDays ${ledger.reviewCadenceDays}. Re-read the source before presenting it as current.`);
+  }
+}
+
 // A market must not be both sourced and listed as an unsourced regulator gap.
 for (const cc of gapCountries) {
   if (covered.has(cc)) errors.push(`Market ${cc} is both sourced and listed as a regulator gap.`);
@@ -164,6 +182,7 @@ console.log(`  markets in dataset : ${marketCount}`);
 console.log(`  markets sourced    : ${regulatorCountries.size}`);
 console.log(`  freshness stamp    : ${stamp || '(none)'}${age === null ? '' : ` (${age} days old)`}`);
 console.log(`  recorded gaps      : ${((ledger.gaps || {}).regulatorsWithoutUrl || []).length} regulator, ${((ledger.gaps || {}).unsourcedClaims || []).length} unsourced claim class(es)`);
+console.log(`  verified figures   : ${verified.length} (read from a bound source, with a date)`);
 
 for (const w of warnings) console.log(`  WARN  ${w}`);
 for (const e of errors) console.error(`  ERROR ${e}`);
