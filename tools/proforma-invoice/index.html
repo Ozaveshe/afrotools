@@ -338,8 +338,9 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
           <div class="totals-mini-row"><span>Subtotal</span><span id="tSubtotal">0.00</span></div>
           <div class="totals-mini-row"><span>Freight</span><input aria-label="PiFreight" type="number" id="piFreight" value="0" min="0" oninput="calcTotals()" style="width:110px;padding:.2rem .4rem;border:1.5px solid #e2e8f0;border-radius:6px;font-size:.82rem;text-align:right"></div>
           <div class="totals-mini-row"><span>Insurance</span><input aria-label="PiInsurance" type="number" id="piInsurance" value="0" min="0" oninput="calcTotals()" style="width:110px;padding:.2rem .4rem;border:1.5px solid #e2e8f0;border-radius:6px;font-size:.82rem;text-align:right"></div>
-          <div class="totals-mini-row strong"><span>FOB Total</span><span id="tFOB">0.00</span></div>
-          <div class="totals-mini-row strong" style="color:#0063D1"><span>CIF Total</span><span id="tCIF">0.00</span></div>
+          <div class="totals-mini-row strong"><span>FOB Total (goods)</span><span id="tFOB">0.00</span></div>
+          <div class="totals-mini-row strong"><span>CFR Total (+ freight)</span><span id="tCFR">0.00</span></div>
+          <div class="totals-mini-row strong" style="color:#0063D1"><span>CIF Total (+ insurance)</span><span id="tCIF">0.00</span></div>
         </div>
       </div>
 
@@ -519,10 +520,13 @@ function calcTotals(){
   });
   const freight=parseFloat(document.getElementById('piFreight').value)||0;
   const insurance=parseFloat(document.getElementById('piInsurance').value)||0;
-  const fob=subtotal+freight;
-  const cif=fob+insurance;
+  // FOB excludes international freight; goods + freight is CFR, + insurance is CIF.
+  const fob=subtotal;
+  const cfr=subtotal+freight;
+  const cif=cfr+insurance;
   document.getElementById('tSubtotal').textContent=fmt(subtotal);
   document.getElementById('tFOB').textContent=fmt(fob);
+  document.getElementById('tCFR').textContent=fmt(cfr);
   document.getElementById('tCIF').textContent=fmt(cif);
   renderDoc();
 }
@@ -549,8 +553,10 @@ function renderDoc(){
   });
   const freight=parseFloat(v('piFreight'))||0;
   const insurance=parseFloat(v('piInsurance'))||0;
-  const fob=subtotal+freight;
-  const cif=fob+insurance;
+  // FOB excludes international freight; goods + freight is CFR, + insurance is CIF.
+  const fob=subtotal;
+  const cfr=subtotal+freight;
+  const cif=cfr+insurance;
 
   const tableRows=rowData.map((r,i)=>`
     <tr>
@@ -645,6 +651,7 @@ function renderDoc(){
     <div class="doc-totals-row"><span>Freight:</span><span>${cur} ${fmt(freight)}</span></div>
     <div class="doc-totals-row"><span>Insurance:</span><span>${cur} ${fmt(insurance)}</span></div>
     <div class="doc-totals-row highlight"><span>FOB ${v('piPOL')||'Port'}:</span><span>${cur} ${fmt(fob)}</span></div>
+    <div class="doc-totals-row"><span>CFR ${v('piPOD')||'Destination'}:</span><span>${cur} ${fmt(cfr)}</span></div>
     <div class="doc-totals-row cif-row"><span>CIF ${v('piPOD')||'Destination'}:</span><span>${cur} ${fmt(cif)}</span></div>
     <div class="doc-totals-row" style="font-size:8pt;color:#94a3b8"><span>Currency:</span><span>${curLabel}</span></div>
   </div>
@@ -730,7 +737,9 @@ function proformaTotals(){
   });
   const freight=parseFloat(v('piFreight'))||0;
   const insurance=parseFloat(v('piInsurance'))||0;
-  return {subtotal,freight,insurance,fob:subtotal+freight,cif:subtotal+freight+insurance,itemCount};
+  // FOB is the goods value on board at the loading port — it must NOT include
+  // international freight. Freight added to FOB is CFR; CFR + insurance is CIF.
+  return {subtotal,freight,insurance,fob:subtotal,cfr:subtotal+freight,cif:subtotal+freight+insurance,itemCount};
 }
 
 function proformaItems(){
@@ -774,6 +783,7 @@ function tradeSummaryText(){
     'Incoterm/payment: '+(v('piIncoterm')||'not set')+' / '+(v('piPaymentTerms')||'not set'),
     'Items with values: '+totals.itemCount,
     'FOB total: '+cur+' '+fmt(totals.fob),
+    'CFR total: '+cur+' '+fmt(totals.cfr),
     'CIF total: '+cur+' '+fmt(totals.cif),
     'Review before sending: HS codes, permits, bank wording, inspection, freight, insurance, validity date, and final commercial invoice requirements.'
   ].join('\n');
@@ -785,7 +795,7 @@ function downloadProformaCsv(){
   const rows=[['description','hs_code','quantity','unit','unit_price_'+cur.toLowerCase(),'line_total_'+cur.toLowerCase()]];
   data.items.forEach(item=>rows.push([item.description,item.hsCode,item.quantity,item.unit,item.unitPrice.toFixed(2),(item.quantity*item.unitPrice).toFixed(2)]));
   rows.push([]);
-  rows.push(['field','value'],['proforma_number',v('piNumber')],['seller',v('sellerName')],['buyer',v('buyerName')],['incoterm',v('piIncoterm')],['payment_terms',v('piPaymentTerms')],['port_of_loading',v('piPOL')],['port_of_discharge',v('piPOD')],['fob_total',data.totals.fob.toFixed(2)],['cif_total',data.totals.cif.toFixed(2)],['assumption_note','Draft proforma only. Verify HS codes, permits, bank wording, freight, insurance, tax, and final commercial invoice requirements before sending.']);
+  rows.push(['field','value'],['proforma_number',v('piNumber')],['seller',v('sellerName')],['buyer',v('buyerName')],['incoterm',v('piIncoterm')],['payment_terms',v('piPaymentTerms')],['port_of_loading',v('piPOL')],['port_of_discharge',v('piPOD')],['fob_total',data.totals.fob.toFixed(2)],['cfr_total',data.totals.cfr.toFixed(2)],['cif_total',data.totals.cif.toFixed(2)],['assumption_note','Draft proforma only. Verify HS codes, permits, bank wording, freight, insurance, tax, and final commercial invoice requirements before sending.']);
   var csv=rows.map(row=>row.map(cell=>'"'+String(cell == null ? '' : cell).replace(/"/g,'""')+'"').join(',')).join('\n');
   var blob=new Blob([csv],{type:'text/csv'});
   var a=document.createElement('a');

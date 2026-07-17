@@ -398,7 +398,9 @@ var latestTradeFinanceResult = null;
 
 function runCalc() {
   var instrument = document.getElementById('calcInstrument').value;
-  var value      = parseFloat(document.getElementById('calcValue').value) || 50000;
+  // A blank trade value must not silently price a $50,000 deal the user never entered.
+  var value      = parseFloat(document.getElementById('calcValue').value);
+  if (!(value > 0)) { alert('Enter the trade value to compare finance costs.'); return; }
   var country    = document.getElementById('calcCountry').value;
   var tenor      = parseInt(document.getElementById('calcTenor').value) || 90;
   document.getElementById('tenorGroup').style.opacity = instrument === 'lc_usance' ? '1' : '.4';
