@@ -10,7 +10,7 @@
     "The calculator dataset data/insurance/country-insurance-index.js carries NO lastUpdated stamp for its 54 markets. Freshness is tracked here against data/insurance-data.json:_metadata.lastUpdated as a floor. Treat any premium older than highRiskCadenceDays as planning-grade, never as a current quote.",
     "Never update a motor tariff, comprehensive rate band or statutory contribution rate because a URL's content hash changed. Open the page and read the gazetted circular or CIMA code article, exactly as .claude/rules/government.md requires.",
     "A regulator source always outranks an insurer, broker or aggregator page for the same claim. Comprehensive rate bands, life/business rates, HMO premiums and microinsurance terms are commercial underwriting figures and are recorded as unsourced by design.",
-    "Only 19 of 54 markets have a bound insurance-regulator URL today. The other 35 are recorded in gaps.regulatorsWithoutUrl as known liabilities, not to-dos. Do not delete one without either finding the source or showing the figure as planning-grade.",
+    "Only 25 of 54 markets have a bound insurance-regulator URL today. The other 29 are recorded in gaps.regulatorsWithoutUrl as known liabilities, not to-dos. Do not delete one without either finding the source or showing the figure as planning-grade. Binding a regulator's home page is not the same as having read its tariff — a bound market's premium is still planning-grade until a published tariff is read and recorded in verifiedFigures.",
     "The bug class to watch, per .claude/rules/telecom.md and energy.md: a required monetary input defaulting to 0 (parseFloat(x)||0) renders a premium of 0 — insurance shown as free. The insurance engines now force the user input (vehicle value, payroll, CIF value, property value, revenue, salary) and return an error instead of costing cover at zero. Keep that pattern.",
     "Statutory health-fund contribution rates (NHIA, SHIF/SHA, AMO/CNSS, CNAM, Mutuelle) are set by national health funds, not by the insurance regulator. They are recorded as a separate unsourced class here until each fund's circular is bound."
   ],
@@ -455,19 +455,119 @@
         "health-contribution"
       ],
       "notes": "Read 2026-07-17: NHIF Act Cap 395 sets 6% of gross salary met equally by employer and employee (3% each). The calculator previously invented a 4.5% employer share. Note the dataset also records a UHI package launching Jan 2026 — re-read before the next review."
+    },
+    {
+      "id": "reg-zm",
+      "country": "ZM",
+      "authority": "PIA (Pensions and Insurance Authority)",
+      "title": "PIA — Zambia insurance regulator",
+      "url": "https://www.pia.org.zm/",
+      "sourceType": "regulator",
+      "watch": "availability-and-content",
+      "fields": [
+        "motorThirdParty",
+        "mandatoryClasses",
+        "penetration"
+      ],
+      "tools": [
+        "car-insurance",
+        "motor-third-party"
+      ],
+      "notes": "Regulator home verified 2026-07-17 (HTTP 200, \"Pensions and Insurance Authority\"). The Zambian motor tariff itself has not been read — the bundled figure remains planning-grade. Insurance Act 2021 governs."
+    },
+    {
+      "id": "reg-mz",
+      "country": "MZ",
+      "authority": "ISSM (Instituto de Supervisão de Seguros de Moçambique)",
+      "title": "ISSM — Mozambique insurance supervisor",
+      "url": "https://www.issm.gov.mz/",
+      "sourceType": "regulator",
+      "watch": "availability-and-content",
+      "fields": [
+        "motorThirdParty",
+        "mandatoryClasses"
+      ],
+      "tools": [
+        "car-insurance",
+        "motor-third-party"
+      ],
+      "notes": "Regulator home verified 2026-07-17 (HTTP 200, \"Instituto de Supervisão de Seguros de Moçambique\"). Tariff not yet read; figure remains planning-grade. Third-party is required for all vehicles including foreign-registered at the border."
+    },
+    {
+      "id": "reg-mw",
+      "country": "MW",
+      "authority": "RBM (Reserve Bank of Malawi, insurance supervision)",
+      "title": "Reserve Bank of Malawi — insurance supervision",
+      "url": "https://www.rbm.mw/",
+      "sourceType": "regulator",
+      "watch": "availability-and-content",
+      "fields": [
+        "motorThirdParty",
+        "mandatoryClasses"
+      ],
+      "tools": [
+        "car-insurance",
+        "motor-third-party"
+      ],
+      "notes": "Supervisor home verified 2026-07-17 (HTTP 200, \"Reserve Bank of Malawi\"). Insurance Act 2010; COMESA Yellow Card applies. Tariff not yet read; figure remains planning-grade."
+    },
+    {
+      "id": "reg-sz",
+      "country": "SZ",
+      "authority": "FSRA (Financial Services Regulatory Authority)",
+      "title": "FSRA — Eswatini financial services regulator",
+      "url": "https://www.fsra.co.sz/",
+      "sourceType": "regulator",
+      "watch": "availability-and-content",
+      "fields": [
+        "motorThirdParty",
+        "mandatoryClasses"
+      ],
+      "tools": [
+        "car-insurance",
+        "motor-third-party"
+      ],
+      "notes": "Regulator home verified 2026-07-17 (HTTP 200, \"Financial Services Regulatory Authority (FSRA) Eswatini\"). Tariff not yet read; figure remains planning-grade."
+    },
+    {
+      "id": "reg-sc",
+      "country": "SC",
+      "authority": "FSA Seychelles (Financial Services Authority)",
+      "title": "FSA — Seychelles financial services regulator",
+      "url": "https://fsaseychelles.sc/",
+      "sourceType": "regulator",
+      "watch": "availability-and-content",
+      "fields": [
+        "motorThirdParty",
+        "mandatoryClasses"
+      ],
+      "tools": [
+        "car-insurance",
+        "motor-third-party"
+      ],
+      "notes": "Regulator home verified 2026-07-17 (HTTP 200, \"Financial Services Authority\"). Tariff not yet read; figure remains planning-grade."
+    },
+    {
+      "id": "reg-dz",
+      "country": "DZ",
+      "authority": "CNA (Conseil National des Assurances)",
+      "title": "CNA — Algeria insurance council",
+      "url": "https://www.cna.dz/",
+      "sourceType": "regulator",
+      "watch": "availability-and-content",
+      "fields": [
+        "motorThirdParty",
+        "mandatoryClasses"
+      ],
+      "tools": [
+        "car-insurance",
+        "motor-third-party"
+      ],
+      "notes": "Council home verified 2026-07-17 (HTTP 200, \"Conseil National des Assurances\"). Motor is ~57% of non-life premiums; Orange Card applies for cross-border. Tariff not yet read; figure remains planning-grade."
     }
   ],
   "gaps": {
     "regulatorsWithoutUrl": [
-      {
-        "country": "DZ",
-        "authority": "CNA (Conseil National des Assurances)",
-        "needs": [
-          "motorThirdParty",
-          "mandatoryClasses"
-        ],
-        "note": "Algeria motor tariff is a bundled planning default with no bound regulator URL."
-      },
       {
         "country": "BJ",
         "authority": "CIMA / Direction des Assurances (Benin)",
@@ -565,14 +665,6 @@
         "note": "Eritrea motor tariff is a bundled planning default with no bound regulator URL."
       },
       {
-        "country": "SZ",
-        "authority": "FSRA (Financial Services Regulatory Authority)",
-        "needs": [
-          "motorThirdParty"
-        ],
-        "note": "Eswatini motor tariff is a bundled planning default with no bound regulator URL."
-      },
-      {
         "country": "GA",
         "authority": "CIMA / CRCA (Gabon)",
         "needs": [
@@ -637,14 +729,6 @@
         "note": "Madagascar motor tariff is a bundled planning default with no bound regulator URL."
       },
       {
-        "country": "MW",
-        "authority": "Reserve Bank of Malawi (insurance supervision)",
-        "needs": [
-          "motorThirdParty"
-        ],
-        "note": "Malawi motor tariff is a bundled planning default with no bound regulator URL."
-      },
-      {
         "country": "ML",
         "authority": "CIMA / Direction des Assurances (Mali)",
         "needs": [
@@ -661,14 +745,6 @@
         "note": "Mauritania motor tariff is a bundled planning default with no bound regulator URL; not a CIMA member."
       },
       {
-        "country": "MZ",
-        "authority": "ISSM (Instituto de Supervisão de Seguros de Moçambique)",
-        "needs": [
-          "motorThirdParty"
-        ],
-        "note": "Mozambique motor tariff is a bundled planning default with no bound regulator URL."
-      },
-      {
         "country": "NE",
         "authority": "CIMA / Direction des Assurances (Niger)",
         "needs": [
@@ -683,14 +759,6 @@
           "motorThirdParty"
         ],
         "note": "São Tomé and Príncipe motor tariff is a bundled planning default with no bound regulator URL."
-      },
-      {
-        "country": "SC",
-        "authority": "FSA Seychelles (Financial Services Authority)",
-        "needs": [
-          "motorThirdParty"
-        ],
-        "note": "Seychelles motor tariff is a bundled planning default with no bound regulator URL."
       },
       {
         "country": "SL",
@@ -731,15 +799,6 @@
           "motorThirdParty"
         ],
         "note": "CIMA member; national DA URL not bound. Figure is planning-grade."
-      },
-      {
-        "country": "ZM",
-        "authority": "PIA (Pensions and Insurance Authority)",
-        "needs": [
-          "motorThirdParty",
-          "penetration"
-        ],
-        "note": "Zambia motor tariff is a bundled planning default; PIA URL not yet verified/bound."
       }
     ],
     "unsourcedClaims": [
@@ -781,7 +840,7 @@
       {
         "field": "health.contribution.employer (single-rate markets)",
         "markets": "GH, DZ, CV, DJ, GA, ML, MR, TG",
-        "why": "These markets publish a single health contribution percentage with no documented employer/employee split. The engine previously invented an employer share of rate x 1.5, which fabricated employer cost. It now applies the published rate to the salary and renders the employer share as \"Not published\" rather than guessing. Ghana is additionally mis-modelled: its 2.5% is levied on the SSNIT contribution (and via the NHIL), not directly on gross salary — bind the NHIA basis before treating it as a salary percentage."
+        "why": "These markets publish a single health contribution percentage with no documented employer/employee split. The engine previously invented an employer share of rate x 1.5, which fabricated employer cost. It now applies the published rate to the salary and renders the employer share as \"Not published\" rather than guessing. GHANA IS SEPARATELY MIS-MODELLED and is the priority here: the calculator applies 2.5% to gross salary as an employee deduction, but Ghana funds the NHIS from (a) the 2.5% National Health Insurance Levy on goods/services and (b) 2.5 percentage points carved out of the 18.5% SSNIT contribution — a formal-sector SSNIT contributor pays NO separate NHIS deduction. This is corroborated but NOT yet bound: read National Health Insurance Act 2012 (Act 852) s.29 \"Exemptions to contributions\" and s.41 \"Sources of money for the Fund\" at https://www.nhis.gov.gh/files/ACT852.pdf (a scanned PDF — needs OCR or the Gazette text), then re-model Ghana as employee 0 / employer 2.5 of basic salary carved from SSNIT, and note that informal-sector members DO pay a direct premium."
       }
     ]
   },
