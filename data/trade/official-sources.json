@@ -1,0 +1,397 @@
+{
+  "version": 1,
+  "category": "trade",
+  "name": "Trade & Customs official sources",
+  "datasetReviewed": "2026-05",
+  "reviewCadenceDays": 120,
+  "highRiskCadenceDays": 45,
+  "notes": [
+    "Trade & Customs carries HIGH-stakes public numbers: import duty rates, CET bands, VAT and levies, AfCFTA/regional preference offers and rules-of-origin tests. A wrong duty rate or a falsely 'free' preference misprices a shipment and can trigger a customs penalty.",
+    "The duty datasets (data/trade/country-duty-rates.js, landed-cost-data.js) carry no per-figure date. datasetReviewed above is a floor, not a per-rate date. Treat any duty/levy/VAT figure older than highRiskCadenceDays as planning-grade and confirm with the named authority before pricing.",
+    "Never change a duty rate, CET band, VAT rate or levy because a URL's content hash changed. Open the tariff schedule or gazette and read it, exactly as .claude/rules/government.md requires. A national budget/finance act is the usual trigger for a real change.",
+    "A national customs authority outranks any aggregator, freight forwarder or broker page for the duty/VAT/levy claim of its own country. A regional secretariat (AfCFTA, ECOWAS, EAC, SADC, COMESA) is authoritative for the bloc's CET bands, preference schedule and rules of origin; the national authority applies them.",
+    "15 of the 24 duty-rate markets have a bound customs-authority URL today. The other 9 are recorded in gaps.authoritiesWithoutUrl as known liabilities, not to-dos. Do not delete one without either finding the source or showing the figure as planning-grade.",
+    "Shipping/freight rates, port demurrage tariffs, LC bank fees, B2B payment-provider fees, trade-finance instrument costs and commodity spot prices are COMMERCIAL market data, not regulator-published. They are recorded in gaps.unsourcedClaims by design and must never be presented as an official rate.",
+    "The bug class to watch, per .claude/rules/energy.md and .claude/rules/telecom.md: `country.data.field || 0` (or `|| 1` on an FX rate) turns missing data into free/wrong, which then wins a cost comparison. Force a user-entered value or filter the dropdown to covered markets — never default a missing rate to zero. Any dropdown that offers more markets than a dataset covers is the tell."
+  ],
+  "tools": [
+    "hs-code-lookup",
+    "afcfta-tracker",
+    "landed-cost",
+    "shipping-estimator",
+    "fx-import-impact",
+    "incoterms-calculator",
+    "lc-calculator",
+    "export-docs",
+    "coo-generator",
+    "demurrage-calculator",
+    "trade-finance-comparator",
+    "commodity-tracker",
+    "payment-comparator",
+    "ecowas-levy",
+    "sadc-roo",
+    "eac-cet",
+    "proforma-invoice",
+    "packing-list",
+    "bol-generator",
+    "cross-border-data",
+    "customs-time",
+    "shipping-weight",
+    "import-duty"
+  ],
+  "sources": [
+    {
+      "id": "cus-ng",
+      "country": "NG",
+      "authority": "NCS (Nigeria Customs Service)",
+      "title": "Nigeria Customs Service — tariff & import duty",
+      "url": "https://www.customs.gov.ng/",
+      "sourceType": "customs-authority",
+      "watch": "availability-and-content",
+      "fields": ["importDuty", "vat", "levies", "cet"],
+      "tools": ["landed-cost", "import-duty", "ecowas-levy", "hs-code-lookup", "customs-time"],
+      "notes": "Customs authority for Nigeria. Authoritative for import duty, VAT (7.5%), CISS/ETLS/surcharge levies and ECOWAS CET application. Read the current tariff/gazette or Finance Act change before altering a rate — a changed page is not a rate change."
+    },
+    {
+      "id": "cus-ke",
+      "country": "KE",
+      "authority": "KRA (Kenya Revenue Authority)",
+      "title": "Kenya Revenue Authority — customs & border control",
+      "url": "https://www.kra.go.ke/",
+      "sourceType": "customs-authority",
+      "watch": "availability-and-content",
+      "fields": ["importDuty", "vat", "levies", "cet"],
+      "tools": ["landed-cost", "import-duty", "eac-cet", "hs-code-lookup", "customs-time"],
+      "notes": "Customs authority for Kenya. Authoritative for import duty, VAT (16%), IDF/RDL levies and EAC CET application. Read the current EAC gazette or Finance Act before altering a rate."
+    },
+    {
+      "id": "cus-za",
+      "country": "ZA",
+      "authority": "SARS (South African Revenue Service)",
+      "title": "SARS Customs — tariff & import",
+      "url": "https://www.sars.gov.za/customs-and-excise/",
+      "sourceType": "customs-authority",
+      "watch": "availability-and-content",
+      "fields": ["importDuty", "vat", "levies"],
+      "tools": ["landed-cost", "import-duty", "sadc-roo", "hs-code-lookup", "customs-time"],
+      "notes": "Customs authority for South Africa (SACU). Authoritative for import duty, VAT (15%) and SACU/SADC treatment. ITAC sets the tariff; SARS administers it. Read the published tariff before altering a rate."
+    },
+    {
+      "id": "cus-gh",
+      "country": "GH",
+      "authority": "GRA (Ghana Revenue Authority — Customs Division)",
+      "title": "Ghana Revenue Authority — Customs",
+      "url": "https://gra.gov.gh/customs/",
+      "sourceType": "customs-authority",
+      "watch": "availability-and-content",
+      "fields": ["importDuty", "vat", "levies", "cet"],
+      "tools": ["landed-cost", "import-duty", "ecowas-levy", "hs-code-lookup", "customs-time"],
+      "notes": "Customs authority for Ghana. Authoritative for import duty, VAT (15%), NHIL/GETFund/AU/ECOWAS/exam/processing levies and ECOWAS CET application. Read the current tariff/gazette before altering a rate."
+    },
+    {
+      "id": "cus-tz",
+      "country": "TZ",
+      "authority": "TRA (Tanzania Revenue Authority)",
+      "title": "Tanzania Revenue Authority — customs",
+      "url": "https://www.tra.go.tz/",
+      "sourceType": "customs-authority",
+      "watch": "availability-and-content",
+      "fields": ["importDuty", "vat", "levies", "cet"],
+      "tools": ["landed-cost", "import-duty", "eac-cet", "hs-code-lookup", "customs-time"],
+      "notes": "Customs authority for Tanzania. Authoritative for import duty, VAT (18%), IDF/RDL levies and EAC CET application. Read the current EAC gazette or Finance Act before altering a rate."
+    },
+    {
+      "id": "cus-ug",
+      "country": "UG",
+      "authority": "URA (Uganda Revenue Authority)",
+      "title": "Uganda Revenue Authority — customs",
+      "url": "https://www.ura.go.ug/",
+      "sourceType": "customs-authority",
+      "watch": "availability-and-content",
+      "fields": ["importDuty", "vat", "levies", "cet"],
+      "tools": ["import-duty", "eac-cet", "hs-code-lookup", "customs-time"],
+      "notes": "Customs authority for Uganda. Authoritative for import duty, VAT (18%) and EAC CET application. Read the current EAC gazette or Finance Act before altering a rate."
+    },
+    {
+      "id": "cus-rw",
+      "country": "RW",
+      "authority": "RRA (Rwanda Revenue Authority)",
+      "title": "Rwanda Revenue Authority — customs",
+      "url": "https://www.rra.gov.rw/",
+      "sourceType": "customs-authority",
+      "watch": "availability-and-content",
+      "fields": ["importDuty", "vat", "levies", "cet"],
+      "tools": ["landed-cost", "import-duty", "eac-cet", "hs-code-lookup", "customs-time"],
+      "notes": "Customs authority for Rwanda. Authoritative for import duty, VAT (18%), IDSL/AU levies and EAC CET application. Read the current EAC gazette or Finance Act before altering a rate."
+    },
+    {
+      "id": "cus-zm",
+      "country": "ZM",
+      "authority": "ZRA (Zambia Revenue Authority)",
+      "title": "Zambia Revenue Authority — customs",
+      "url": "https://www.zra.org.zm/",
+      "sourceType": "customs-authority",
+      "watch": "availability-and-content",
+      "fields": ["importDuty", "vat", "levies"],
+      "tools": ["import-duty", "sadc-roo", "hs-code-lookup", "customs-time"],
+      "notes": "Customs authority for Zambia (COMESA/SADC). Authoritative for import duty and VAT. Read the current tariff/gazette before altering a rate."
+    },
+    {
+      "id": "cus-zw",
+      "country": "ZW",
+      "authority": "ZIMRA (Zimbabwe Revenue Authority)",
+      "title": "Zimbabwe Revenue Authority — customs",
+      "url": "https://www.zimra.co.zw/",
+      "sourceType": "customs-authority",
+      "watch": "availability-and-content",
+      "fields": ["importDuty", "vat", "levies"],
+      "tools": ["import-duty", "sadc-roo", "hs-code-lookup", "customs-time"],
+      "notes": "Customs authority for Zimbabwe (COMESA/SADC). Authoritative for import duty and VAT. Read the current tariff/gazette before altering a rate."
+    },
+    {
+      "id": "cus-eg",
+      "country": "EG",
+      "authority": "ECA (Egyptian Customs Authority)",
+      "title": "Egyptian Customs Authority — Ministry of Finance",
+      "url": "https://www.customs.gov.eg/",
+      "sourceType": "customs-authority",
+      "watch": "availability-and-content",
+      "fields": ["importDuty", "vat", "levies"],
+      "tools": ["landed-cost", "import-duty", "hs-code-lookup", "customs-time"],
+      "notes": "Customs authority for Egypt (under Ministry of Finance). Authoritative for import duty, VAT (14%) and services fee. Verified live 2026-07. Read the current tariff/decree before altering a rate."
+    },
+    {
+      "id": "cus-sn",
+      "country": "SN",
+      "authority": "DGD (Direction Générale des Douanes sénégalaises)",
+      "title": "Douanes Sénégalaises",
+      "url": "https://www.douanes.sn/",
+      "sourceType": "customs-authority",
+      "watch": "availability-and-content",
+      "fields": ["importDuty", "vat", "levies", "cet"],
+      "tools": ["import-duty", "ecowas-levy", "hs-code-lookup", "customs-time"],
+      "notes": "Customs authority for Senegal (ECOWAS/WAEMU). Authoritative for import duty, VAT, PCS/PCO levies and ECOWAS CET application. Verified live 2026-07. Read the current WAEMU/ECOWAS tariff before altering a rate."
+    },
+    {
+      "id": "cus-ci",
+      "country": "CI",
+      "authority": "DGD (Direction Générale des Douanes de Côte d'Ivoire)",
+      "title": "Douanes Ivoiriennes",
+      "url": "https://www.douanes.ci/",
+      "sourceType": "customs-authority",
+      "watch": "availability-and-content",
+      "fields": ["importDuty", "vat", "levies", "cet"],
+      "tools": ["landed-cost", "import-duty", "ecowas-levy", "hs-code-lookup", "customs-time"],
+      "notes": "Customs authority for Côte d'Ivoire (ECOWAS/WAEMU). Authoritative for import duty, VAT (18%), PCS/PCO/statistical levies and ECOWAS CET application. Verified live 2026-07. Read the current WAEMU/ECOWAS tariff before altering a rate."
+    },
+    {
+      "id": "cus-ma",
+      "country": "MA",
+      "authority": "ADII (Administration des Douanes et Impôts Indirects)",
+      "title": "Douane Maroc — ADII",
+      "url": "https://www.douane.gov.ma/",
+      "sourceType": "customs-authority",
+      "watch": "availability-and-content",
+      "fields": ["importDuty", "vat"],
+      "tools": ["landed-cost", "import-duty", "hs-code-lookup", "customs-time"],
+      "notes": "Customs authority for Morocco. Authoritative for import duty and VAT (20%). Portal is behind a WAF that rejected an automated fetch 2026-07 — treat as manual-review, not as evidence the tariff is unchanged. douane.gov.ma is the documented official ADII domain."
+    },
+    {
+      "id": "cus-tn",
+      "country": "TN",
+      "authority": "Douane Tunisienne",
+      "title": "Portail officiel de la Douane Tunisienne",
+      "url": "https://www.douane.gov.tn/",
+      "sourceType": "customs-authority",
+      "watch": "availability-and-content",
+      "fields": ["importDuty", "vat"],
+      "tools": ["import-duty", "hs-code-lookup", "customs-time"],
+      "notes": "Customs authority for Tunisia (GAFTA). Authoritative for import duty and VAT. Verified live 2026-07. Read the current tariff before altering a rate."
+    },
+    {
+      "id": "cus-dz",
+      "country": "DZ",
+      "authority": "DGD (Direction Générale des Douanes)",
+      "title": "Douanes Algériennes",
+      "url": "https://www.douane.gov.dz/",
+      "sourceType": "customs-authority",
+      "watch": "availability-and-content",
+      "fields": ["importDuty", "vat"],
+      "tools": ["import-duty", "hs-code-lookup", "customs-time"],
+      "notes": "Customs authority for Algeria (GAFTA/AU). Authoritative for import duty and VAT. Verified live 2026-07. Read the current tariff before altering a rate."
+    },
+    {
+      "id": "sec-afcfta",
+      "country": "ALL",
+      "bloc": "AfCFTA",
+      "authority": "AfCFTA Secretariat (African Union)",
+      "title": "AfCFTA — African Continental Free Trade Area",
+      "url": "https://au-afcfta.org/",
+      "sourceType": "secretariat",
+      "watch": "availability-and-content",
+      "fields": ["afcftaPreference", "rulesOfOrigin", "tariffSchedule"],
+      "tools": ["afcfta-tracker", "coo-generator"],
+      "notes": "Authoritative body for AfCFTA tariff-liberalisation schedules, rules of origin and the Guided Trade Initiative. A preferential-duty claim still depends on the exact national tariff offer, product classification and origin proof — the tracker presents schedule stages, not a legal ruling."
+    },
+    {
+      "id": "sec-ecowas",
+      "country": "ALL",
+      "bloc": "ECOWAS",
+      "authority": "ECOWAS Commission",
+      "title": "ECOWAS — Common External Tariff & ETLS",
+      "url": "https://www.ecowas.int/",
+      "sourceType": "secretariat",
+      "watch": "availability-and-content",
+      "fields": ["cet", "etls", "rulesOfOrigin"],
+      "tools": ["ecowas-levy", "coo-generator"],
+      "notes": "Authoritative for the ECOWAS 5-band CET and the ETLS duty-free scheme. National customs authorities (NCS, GRA, DGD) apply the CET and add national levies; confirm the band and any national surcharge with the destination authority."
+    },
+    {
+      "id": "sec-eac",
+      "country": "ALL",
+      "bloc": "EAC",
+      "authority": "East African Community Secretariat",
+      "title": "EAC — Common External Tariff",
+      "url": "https://www.eac.int/",
+      "sourceType": "secretariat",
+      "watch": "availability-and-content",
+      "fields": ["cet", "sensitiveItems", "dutyRemission"],
+      "tools": ["eac-cet", "coo-generator"],
+      "notes": "Authoritative for the EAC CET bands and the sensitive-items list (e.g. sugar, rice). The annual EAC Gazette carries stays of application and duty-remission changes — read it before altering a band. National revenue authorities (KRA, TRA, URA, RRA) apply the CET."
+    },
+    {
+      "id": "sec-sadc",
+      "country": "ALL",
+      "bloc": "SADC",
+      "authority": "SADC Secretariat",
+      "title": "SADC — Trade Protocol & Rules of Origin",
+      "url": "https://www.sadc.int/",
+      "sourceType": "secretariat",
+      "watch": "availability-and-content",
+      "fields": ["rulesOfOrigin", "tariffPhaseDown"],
+      "tools": ["sadc-roo", "coo-generator"],
+      "notes": "Authoritative for the SADC Trade Protocol and product-specific rules of origin. The rules-of-origin checker prepares the evidence trail; confirm the product-specific rule with the competent authority or a licensed broker before claiming preference."
+    },
+    {
+      "id": "sec-comesa",
+      "country": "ALL",
+      "bloc": "COMESA",
+      "authority": "COMESA Secretariat",
+      "title": "COMESA — Free Trade Area & Rules of Origin",
+      "url": "https://www.comesa.int/",
+      "sourceType": "secretariat",
+      "watch": "availability-and-content",
+      "fields": ["rulesOfOrigin", "tariffPreference"],
+      "tools": ["coo-generator"],
+      "notes": "Authoritative for the COMESA FTA preference and rules of origin used on the COMESA Certificate of Origin. Confirm the product rule with the destination authority before claiming preference."
+    },
+    {
+      "id": "ref-wco",
+      "country": "ALL",
+      "bloc": "GLOBAL",
+      "authority": "WCO (World Customs Organization)",
+      "title": "WCO — Harmonized System nomenclature",
+      "url": "https://www.wcoomd.org/",
+      "sourceType": "reference",
+      "watch": "availability-and-content",
+      "fields": ["hsNomenclature"],
+      "tools": ["hs-code-lookup", "proforma-invoice"],
+      "notes": "Authoritative for the 6-digit Harmonized System nomenclature. National tariff lines extend HS to 8–10 digits and set the duty rate; the HS lookup classifies, it does not quote a legal duty. The HS is revised on a multi-year cycle (HS 2022, HS 2027)."
+    }
+  ],
+  "gaps": {
+    "authoritiesWithoutUrl": [
+      {
+        "country": "ET",
+        "authority": "Ethiopian Customs Commission (formerly ERCA)",
+        "needs": ["importDuty", "vat"],
+        "note": "Ethiopia's revenue body was split; the customs function moved to the Ethiopian Customs Commission. The duty rates are a bundled planning default with no bound URL — find the current Commission tariff, or show the figure as planning-grade."
+      },
+      {
+        "country": "CM",
+        "authority": "DGD Cameroun (Direction Générale des Douanes)",
+        "needs": ["importDuty", "vat", "cet"],
+        "note": "Cameroon (CEMAC) duty/VAT figures are a bundled planning default with no bound URL — find the DGD Cameroun / CEMAC CET tariff, or show the figure as planning-grade."
+      },
+      {
+        "country": "AO",
+        "authority": "AGT (Administração Geral Tributária)",
+        "needs": ["importDuty", "vat"],
+        "note": "Angola (SADC) duty/VAT figures are a bundled planning default with no bound URL — find the AGT pauta aduaneira, or show the figure as planning-grade."
+      },
+      {
+        "country": "LY",
+        "authority": "Libyan Customs Authority",
+        "needs": ["importDuty"],
+        "note": "Libya duty figures are a bundled planning default with no bound URL and a limited regulatory framework — show the figure as planning-grade."
+      },
+      {
+        "country": "SD",
+        "authority": "Sudan Customs Authority",
+        "needs": ["importDuty"],
+        "note": "Sudan duty figures are a bundled planning default with no bound URL — show the figure as planning-grade."
+      },
+      {
+        "country": "MZ",
+        "authority": "AT (Autoridade Tributária de Moçambique)",
+        "needs": ["importDuty", "vat"],
+        "note": "Mozambique (SADC) duty/VAT figures are a bundled planning default with no bound URL — find the AT pauta aduaneira, or show the figure as planning-grade."
+      },
+      {
+        "country": "MG",
+        "authority": "Direction Générale des Douanes de Madagascar",
+        "needs": ["importDuty", "vat"],
+        "note": "Madagascar (COMESA/SADC) duty/VAT figures are a bundled planning default with no bound URL — show the figure as planning-grade."
+      },
+      {
+        "country": "BF",
+        "authority": "DGD Burkina Faso (Direction Générale des Douanes)",
+        "needs": ["importDuty", "vat", "cet"],
+        "note": "Burkina Faso (ECOWAS/WAEMU) duty figures are a bundled planning default with no bound URL — find the WAEMU/ECOWAS CET application, or show the figure as planning-grade."
+      },
+      {
+        "country": "ML",
+        "authority": "DGD Mali (Direction Générale des Douanes)",
+        "needs": ["importDuty", "vat", "cet"],
+        "note": "Mali (ECOWAS/WAEMU) duty figures are a bundled planning default with no bound URL — find the WAEMU/ECOWAS CET application, or show the figure as planning-grade."
+      }
+    ],
+    "unsourcedClaims": [
+      {
+        "field": "dutyRates.* (typical rate per HS chapter)",
+        "markets": "all 24",
+        "why": "The per-HS-chapter 'typical' duty is an editable planning proxy, not a legal tariff line. National tariffs run to 8–10 digits with exemptions and product notes. The tools present a duty-rate INPUT the user overrides from the destination authority; the bundled figure is a starting point, never a ruling."
+      },
+      {
+        "field": "shipping-routes freight rates (sea/air/road)",
+        "markets": "all corridors",
+        "why": "Freight rates are commercial carrier quotes that move with fuel, capacity, season and GRI. No authority publishes them. Recorded as dated planning references; the estimator is a budgeting aid, not a quote."
+      },
+      {
+        "field": "port-demurrage tariff bands",
+        "markets": "all 16 ports",
+        "why": "Demurrage/storage tariffs are set by each terminal operator and shipping line, revised commercially. Recorded as planning references; confirm the current free-days and daily band with the line and terminal."
+      },
+      {
+        "field": "lc-calculator bank fees / trade-finance-data instrument costs",
+        "markets": "all",
+        "why": "LC opening/confirmation/amendment/SWIFT fees and trade-finance instrument spreads are per-bank commercial pricing, not a published rate. Recorded as indicative planning ranges; confirm with the issuing/confirming bank."
+      },
+      {
+        "field": "b2b-payments provider fees (SWIFT/PAPSS/Flutterwave/Wise/Paystack…)",
+        "markets": "all corridors",
+        "why": "Cross-border payment fees and FX spreads are provider commercial pricing that changes without notice and by corridor. Recorded as indicative; confirm live with the provider before quoting a buyer. PAPSS availability is corridor- and bank-dependent."
+      },
+      {
+        "field": "commodity-trade-data spot prices & trade balances",
+        "markets": "all 8 economies",
+        "why": "Commodity prices are market spot data and trade balances are national-statistics snapshots; both are perishable and recorded as dated references, not live feeds."
+      },
+      {
+        "field": "fx-history monthly averages",
+        "markets": "all 15 currencies",
+        "why": "FX is market data reviewed 2026-03 in the bundled dataset. The tools pre-fill the latest bundled average and let the user override with a live rate; a missing currency must force user input, never default the rate to 1."
+      }
+    ]
+  }
+}
