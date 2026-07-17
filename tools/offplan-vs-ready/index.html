@@ -503,22 +503,27 @@ function calculate() {
   // Opportunity cost: money saved (discount) invested at alt return during wait
   var opportunityCost = offPlanPrice * (altReturn/100) * totalWaitYears * 0.60; // avg 60% drawdown assumption
 
-  // Capital appreciation during build
+  // Capital appreciation during the wait. BOTH buyers own an appreciating asset
+  // over the same period, so appreciation must be credited symmetrically — the
+  // ready buyer holds the larger (full-price) asset, so its gain is larger.
   var appreciationGain = offPlanPrice * (Math.pow(1 + appreciation/100, totalWaitYears) - 1);
+  var readyAppreciationGain = readyPrice * (Math.pow(1 + appreciation/100, totalWaitYears) - 1);
 
   // Rental income foregone (if buying ready now, you'd earn this rent)
   var rentalIncomeLost = monthlyRent * totalWaitMonths;
 
-  // Off-plan true cost (price + opp cost - appreciation gain)
+  // Off-plan true cost (price + opp cost - appreciation gain; no rent during build)
   var offPlanTrueCost = offPlanPrice + opportunityCost - appreciationGain;
   var offPlanNet = offPlanTrueCost;
-  var readyNet = readyPrice - rentalIncomeLost; // ready property earns rent during the off-plan wait period
+  // Ready property earns rent AND appreciates during the same wait period
+  var readyNet = readyPrice - rentalIncomeLost - readyAppreciationGain;
   var advantage = readyNet - offPlanNet;
 
   // Breakeven discount: the discount % at which offPlanNet = readyNet
-  // Solving: readyPrice*(1-d/100) + opportunityCost - appreciationGain = readyPrice - rentalIncomeLost
-  // => d = (opportunityCost + rentalIncomeLost - appreciationGain) / readyPrice * 100
-  var breakevenDiscount = readyPrice > 0 ? (opportunityCost + rentalIncomeLost - appreciationGain) / readyPrice * 100 : 0;
+  // Solving: readyPrice*(1-d/100) + opportunityCost - appreciationGain
+  //          = readyPrice - rentalIncomeLost - readyAppreciationGain
+  // => d = (opportunityCost + rentalIncomeLost + readyAppreciationGain - appreciationGain) / readyPrice * 100
+  var breakevenDiscount = readyPrice > 0 ? (opportunityCost + rentalIncomeLost + readyAppreciationGain - appreciationGain) / readyPrice * 100 : 0;
   breakevenDiscount = Math.max(0, Math.min(breakevenDiscount, 100));
 
   // Verdict

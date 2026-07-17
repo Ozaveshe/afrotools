@@ -615,14 +615,14 @@ function calculate() {
 
   document.getElementById('results').style.display = 'block';
   document.getElementById('r-cgt').textContent = fmt(cgtAmount, sym);
-  document.getElementById('r-cgt-sub').textContent = (d.rateType==='on_sale_price'?d.rate+'% of selling price':d.rateType==='inclusion_rate'?'40% inclusion × 36% marginal rate':d.rate+'% of taxable gain') + (isPrimary && d.primaryResidenceExempt?' (primary residence)':'');
+  document.getElementById('r-cgt-sub').textContent = (d.rateType==='on_sale_price'?d.rate+'% of selling price':d.rateType==='inclusion_rate'?'40% inclusion × 36% marginal rate':d.rate+'% of taxable gain') + (isPrimary && d.primaryResidenceExempt ? ((cc==='ZA'||cc==='KE'||cc==='MA') ? ' (primary residence)' : ' (primary residence — exemption subject to conditions)') : '');
   document.getElementById('r-gain').textContent = fmt(gain, sym);
   document.getElementById('r-eff-rate').textContent = effectiveRate.toFixed(1) + '%';
   document.getElementById('r-net').textContent = fmt(netProceeds - cgtAmount, sym);
 
   // Note box for special rules
   var note = document.getElementById('cgt-note-box');
-  if (d.rateType === 'on_sale_price' || cc === 'ZA' || (cc==='KE'&&gain>0) || (cc==='MA'&&yearsHeld<8)) {
+  if (d.rateType === 'on_sale_price' || cc === 'ZA' || (cc==='KE'&&gain>0) || (cc==='MA'&&yearsHeld<8) || (isPrimary && d.primaryResidenceExempt && cc!=='KE' && cc!=='ZA' && cc!=='MA')) {
     note.style.display = 'block';
     note.innerHTML = '⚠️ <strong>Note:</strong> ' + d.note;
   } else {

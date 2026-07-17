@@ -507,6 +507,20 @@ function checkEligibility(){
   const recs=[];
   let totalScore=0;
 
+  // Per-country bank criteria (planning-grade conventions, not statutory):
+  // dsrMax = typical max total debt-service as % of net income; minDep = typical
+  // minimum deposit %. Matches the mortgage-affordability tool's assumptions.
+  const COUNTRY_CRITERIA={
+    NG:{name:'Nigeria',dsrMax:33,minDep:10},
+    KE:{name:'Kenya',dsrMax:40,minDep:10},
+    ZA:{name:'South Africa',dsrMax:30,minDep:0},
+    GH:{name:'Ghana',dsrMax:40,minDep:20},
+    TZ:{name:'Tanzania',dsrMax:40,minDep:20},
+    EG:{name:'Egypt',dsrMax:40,minDep:20},
+    MA:{name:'Morocco',dsrMax:40,minDep:20}
+  };
+  const cc=COUNTRY_CRITERIA[country]||COUNTRY_CRITERIA.ZA;
+
   // 1. Age (10 pts)
   let ageScore=0,ageStatus='pass',ageNote='';
   if(age>=21&&age<=55){ageScore=10;ageNote='Excellent — within optimal lending age range.'}
@@ -543,12 +557,14 @@ function checkEligibility(){
   const netEst=grossIncome*0.7;
   const mortEst=netEst*0.3;
   const dsr=totalDebts/netEst*100;
-  if(dsr<=20){dsrScore=20;dsrNote='Excellent — low existing debt, maximum borrowing power.'}
-  else if(dsr<=30){dsrScore=16;dsrNote='Good. Existing debts leave adequate room for mortgage payments.'}
-  else if(dsr<=40){dsrScore=10;dsrStatus='warn';dsrNote='Moderate. You may still qualify but your available mortgage amount is reduced.';recs.push('Reduce existing debts before applying. Paying off a car loan could significantly increase your mortgage eligibility.');}
-  else{dsrScore=2;dsrStatus='fail';dsrNote='High debt load. Existing debts exceed 40% of income — most banks will decline.';recs.push('Pay down debts aggressively to below 30% of income before applying for a home loan.');}
+  // Bands are relative to the country's typical DSR ceiling (cc.dsrMax), so the
+  // same debt load scores differently in, e.g., South Africa (30%) vs Kenya (40%).
+  if(dsr<=cc.dsrMax*0.5){dsrScore=20;dsrNote='Excellent — low existing debt, maximum borrowing power in '+cc.name+'.'}
+  else if(dsr<=cc.dsrMax*0.75){dsrScore=16;dsrNote='Good. Existing debts leave adequate room under '+cc.name+' bank limits.'}
+  else if(dsr<=cc.dsrMax){dsrScore=10;dsrStatus='warn';dsrNote='Near the '+cc.dsrMax+'% debt-service ceiling most '+cc.name+' banks apply — your available mortgage is reduced.';recs.push('Reduce existing debts before applying. Paying off a car loan could significantly increase your mortgage eligibility.');}
+  else{dsrScore=2;dsrStatus='fail';dsrNote='High debt load. Existing debts exceed the '+cc.dsrMax+'% ceiling most '+cc.name+' banks apply — likely to be declined.';recs.push('Pay down debts to below '+Math.round(cc.dsrMax*0.75)+'% of net income before applying for a home loan.');}
   totalScore+=dsrScore;
-  criteria.push({label:'Debt Load (DSR: '+dsr.toFixed(0)+'%)',score:dsrScore,max:20,status:dsrStatus,note:dsrNote});
+  criteria.push({label:'Debt Load (DSR: '+dsr.toFixed(0)+'% · '+cc.name+' ceiling '+cc.dsrMax+'%)',score:dsrScore,max:20,status:dsrStatus,note:dsrNote});
 
   // 5. Credit history (20 pts)
   let creditS=0,creditSt='pass',creditN='';
@@ -564,13 +580,16 @@ function checkEligibility(){
   // 6. Down payment (10 pts)
   let dpScore=0,dpStatus='pass',dpNote='';
   const dpPct=homePrice>0?downPayment/homePrice*100:0;
+  // Bands relative to the country's typical minimum deposit (cc.minDep). ZA can
+  // approve 100% bonds (minDep 0), so any deposit clears the country minimum there.
+  const strongDep=Math.max(20,cc.minDep);
   if(downPayment===0&&homePrice===0){dpScore=7;dpNote='Enter your home price and down payment for a full assessment.';}
-  else if(dpPct>=20){dpScore=10;dpNote='20%+ down payment — strong position. May qualify for better rates.'}
-  else if(dpPct>=10){dpScore=7;dpNote='10–20% deposit is acceptable for most African banks.'}
-  else if(dpPct>=5){dpScore=4;dpStatus='warn';dpNote='Below 10% deposit. Some banks require 10–30%. This may limit your options.';recs.push('Save towards a 10–20% deposit. A deposit of '+Math.round((homePrice*0.1-downPayment)).toLocaleString()+' would put you at 10%.');}
-  else{dpScore=1;dpStatus='fail';dpNote='Insufficient deposit. Most banks require minimum 10% down payment.';recs.push('You need to save at least 10% of the home price as a deposit before applying.');}
+  else if(dpPct>=strongDep){dpScore=10;dpNote=strongDep+'%+ down payment — strong position in '+cc.name+'. May qualify for better rates.'}
+  else if(dpPct>=cc.minDep){dpScore=7;dpNote=(cc.minDep>0?'Meets the ~'+cc.minDep+'% deposit most '+cc.name+' banks expect.':cc.name+' banks may approve low- or zero-deposit bonds for strong applicants.');}
+  else if(dpPct>=cc.minDep*0.5){dpScore=4;dpStatus='warn';dpNote='Below the ~'+cc.minDep+'% deposit most '+cc.name+' banks expect. This may limit your options.';recs.push('Save towards a '+cc.minDep+'% deposit. A deposit of '+Math.round((homePrice*cc.minDep/100-downPayment)).toLocaleString()+' would meet the '+cc.name+' minimum.');}
+  else{dpScore=1;dpStatus='fail';dpNote='Insufficient deposit. Most '+cc.name+' banks require a minimum '+cc.minDep+'% down payment.';recs.push('You need to save at least '+cc.minDep+'% of the home price as a deposit before applying in '+cc.name+'.');}
   totalScore+=dpScore;
-  criteria.push({label:'Down Payment ('+(homePrice>0?dpPct.toFixed(0)+'%':'not specified')+')',score:dpScore,max:10,status:dpStatus,note:dpNote});
+  criteria.push({label:'Down Payment ('+(homePrice>0?dpPct.toFixed(0)+'%':'not specified')+' · '+cc.name+' min '+cc.minDep+'%)',score:dpScore,max:10,status:dpStatus,note:dpNote});
 
   // 7. Banking / documentation (5 pts)
   let bankS=0,bankSt='pass',bankN='';
