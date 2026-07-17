@@ -10,6 +10,11 @@
           error: "Country data not available"
         };
       }
+      if (!(parseFloat(e.cifValue) > 0)) {
+        return {
+          error: "Enter the CIF cargo value to estimate the premium."
+        };
+      }
       var i = a.symbol || "", t = a.currency || "";
       function o(r) {
         return null == r ? i + "0" : i + Math.round(r).toLocaleString();

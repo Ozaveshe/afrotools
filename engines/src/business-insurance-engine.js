@@ -10,6 +10,11 @@
           error: "Country data not available"
         };
       }
+      if (!((parseFloat(a.annualRevenue) || 0) > 0 || (parseFloat(a.propertyValue) || 0) > 0 || (parseFloat(a.stockValue) || 0) > 0)) {
+        return {
+          error: "Enter your revenue, property, or stock value to estimate cover."
+        };
+      }
       var o = r.symbol || "", t = r.currency || "";
       function e(n) {
         return null == n ? o + "0" : o + Math.round(n).toLocaleString();

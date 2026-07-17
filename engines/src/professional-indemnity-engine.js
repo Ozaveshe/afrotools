@@ -10,6 +10,11 @@
           error: "Country data not available"
         };
       }
+      if (!((parseFloat(e.annualRevenue) || 0) > 0 || (parseFloat(e.coverLimit) || 0) > 0)) {
+        return {
+          error: "Enter your annual revenue or desired cover limit to estimate the premium."
+        };
+      }
       var i = r.symbol || "", t = r.currency || "";
       function a(n) {
         return null == n ? i + "0" : i + Math.round(n).toLocaleString();

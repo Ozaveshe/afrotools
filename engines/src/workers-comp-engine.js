@@ -10,6 +10,11 @@
           error: "Country data not available"
         };
       }
+      if (!(parseFloat(r.annualPayroll) > 0)) {
+        return {
+          error: "Enter your annual payroll to estimate workers compensation contributions."
+        };
+      }
       var t = a.symbol || "", e = a.currency || "";
       function i(n) {
         return null == n ? t + "0" : t + Math.round(n).toLocaleString();

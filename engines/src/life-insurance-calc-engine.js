@@ -10,6 +10,11 @@
           error: "Country data not available"
         };
       }
+      if (!((parseFloat(r.annualIncome) || 0) > 0 || (parseFloat(r.totalDebts) || 0) > 0 || (parseFloat(r.childrenEducation) || 0) > 0 || (parseFloat(r.funeralCost) || 0) > 0)) {
+        return {
+          error: "Enter your income, debts, or other needs to calculate cover."
+        };
+      }
       var t = a.symbol || "", n = a.currency || "";
       function i(e) {
         return null == e ? t + "0" : t + Math.round(e).toLocaleString();

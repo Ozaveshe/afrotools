@@ -10,6 +10,11 @@
           error: "Country data not available"
         };
       }
+      if (!(parseFloat(e.propertyValue) > 0)) {
+        return {
+          error: "Enter the property value (sum insured) to estimate the premium."
+        };
+      }
       var o = r.symbol || "", t = r.currency || "";
       function a(n) {
         return null == n ? o + "0" : o + Math.round(n).toLocaleString();
