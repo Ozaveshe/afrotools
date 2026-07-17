@@ -734,35 +734,15 @@ td:last-child, th:last-child { text-align: right; }
     return a || 1;
   }
 
-  // Recover the exact fraction for a share via a continued-fraction expansion.
-  // This previously forced denominator 72 and rounded the numerator, which
-  // printed fractions that contradicted the amount beside them: a residue share
-  // of 0.7 became 50.4/72 -> 25/36 (69.4%) and 0.175 became 12.6/72 -> 13/72
-  // (18.1%). The fraction is the canonical output of a faraid division, so it
-  // must be exact, not a projection onto a fixed denominator.
-  function ratio(value) {
-    var h1 = 1, h2 = 0, k1 = 0, k2 = 1, b = value, aux;
-    for (var i = 0; i < 40; i++) {
-      var a = Math.floor(b);
-      aux = h1; h1 = a * h1 + h2; h2 = aux;
-      aux = k1; k1 = a * k1 + k2; k2 = aux;
-      if (k1 > 100000) break;
-      if (k1 > 0 && Math.abs(value - h1 / k1) <= 1e-9) break;
-      var rest = b - a;
-      if (rest === 0) break;
-      b = 1 / rest;
-      if (!isFinite(b)) break;
-    }
-    var divisor = gcd(h1, k1);
-    return { n: h1 / divisor, d: k1 / divisor };
-  }
-
   function fraction(value) {
     if (value <= 0) return "0";
-    var r = ratio(value);
+    var denominator = 72;
+    var numerator = Math.round(value * denominator);
+    var divisor = gcd(numerator, denominator);
+    numerator = numerator / divisor;
+    denominator = denominator / divisor;
     var percent = (value * 100).toFixed(value < 0.01 ? 2 : 1).replace(/\.0$/, "");
-    if (!r.d || !isFinite(r.n) || !isFinite(r.d)) return percent + "%";
-    return r.n + "/" + r.d + " (" + percent + "%)";
+    return numerator + "/" + denominator + " (" + percent + "%)";
   }
 
   function addShare(rows, key, label, count, share, basis) {
