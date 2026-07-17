@@ -101,6 +101,15 @@ for (const page of PAGES) {
   if (page.file !== 'mining/index.html' && !/"@type":\s*"WebApplication"/.test(html)) {
     failures.push(`${page.file}: tool page missing WebApplication schema`);
   }
+  // A tool page that uses the shell class vocabulary MUST link the stylesheet
+  // that defines it. tool-landing.css does NOT define .tool-shell/.field-label/etc
+  // — those originally only existed inline in tools/commodity-tracker, so copying
+  // the markup without the styles ships a page that renders as raw HTML. That is
+  // exactly what happened here; this check stops it recurring.
+  if (page.file !== 'mining/index.html' && /class="tool-shell"/.test(html)
+      && !/assets\/css\/mining-tools\.css/.test(html)) {
+    failures.push(`${page.file}: uses the .tool-shell vocabulary but does not link /assets/css/mining-tools.css — it will render unstyled.`);
+  }
   notes.push(`${page.file}: ${json.length} Q&A in sync`);
 }
 

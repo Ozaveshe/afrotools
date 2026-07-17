@@ -1,0 +1,155 @@
+/*
+ * Shared shell for the /mining/ category tool pages.
+ *
+ * WHY THIS FILE EXISTS: the `.tool-shell` / `.tool-hero` / `.tool-panel` /
+ * `.tool-section` / `.field-*` / `.pill-btn` class vocabulary is used across the
+ * site's tool pages, but it was never extracted into a stylesheet — each page
+ * carried its own copy in an inline <style> block (see tools/commodity-tracker).
+ * assets/css/tool-landing.css does NOT define any of it. Copying the markup
+ * without the styles renders the page as raw HTML, which is exactly what the
+ * first mining tools shipped as. This file is the shared definition so the six
+ * mining tools cannot drift from each other or silently lose their styling.
+ *
+ * Hero uses the same dark→brown gradient as mining/index.html so the category
+ * reads as one product. Everything else follows the existing token system —
+ * no accent bars, no restyle beyond the established tool look.
+ */
+
+.tool-shell {
+  background: #F8FAFD;
+  min-height: 100vh;
+}
+
+/* ── Hero ─────────────────────────────────────────── */
+.tool-hero {
+  background: linear-gradient(135deg, #0A1628 0%, #1c1100 50%, #451a00 100%);
+  padding: 52px 24px 44px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.tool-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 60% at 70% 20%, rgba(146, 64, 14, .28), transparent),
+    radial-gradient(ellipse 40% 40% at 20% 70%, rgba(253, 230, 138, .08), transparent);
+  pointer-events: none;
+}
+.tool-hero-icon {
+  font-size: 44px;
+  margin-bottom: 14px;
+  position: relative;
+  display: block;
+  line-height: 1;
+}
+.tool-hero-title,
+.tool-hero h1 {
+  font-size: clamp(1.75rem, 4vw, 2.6rem) !important;
+  font-weight: 900 !important;
+  color: #fff !important;
+  letter-spacing: -.025em;
+  line-height: 1.15;
+  margin: 0 auto 10px;
+  max-width: 700px;
+  position: relative;
+}
+.tool-hero-desc {
+  font-size: .96rem;
+  color: rgba(255, 255, 255, .72);
+  max-width: 620px;
+  margin: 0 auto;
+  line-height: 1.65;
+  position: relative;
+}
+
+/* ── Panel & sections ─────────────────────────────── */
+.tool-panel {
+  display: none;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 28px 24px 72px;
+}
+.tool-panel.on { display: block; }
+
+.tool-section {
+  background: #fff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+.section-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 6px;
+}
+.section-desc {
+  font-size: .88rem;
+  color: #64748b;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+/* ── Fields ───────────────────────────────────────── */
+.field-group { margin-bottom: 16px; }
+.field-label {
+  display: block;
+  font-size: .78rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 6px;
+  letter-spacing: .02em;
+}
+.field-input,
+.field-select {
+  width: 100%;
+  min-width: 0;
+  padding: 11px 14px;
+  background: #F4F7FA;
+  border: 1.5px solid #CBD5E1;
+  border-radius: 8px;
+  font-size: .95rem;
+  font-weight: 600;
+  color: #0f172a;
+  outline: none;
+  transition: border-color .18s, box-shadow .18s, background .18s;
+  font-family: inherit;
+}
+.field-input:focus,
+.field-select:focus {
+  border-color: #0062CC;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(0, 98, 204, .1);
+}
+
+/* ── Button ───────────────────────────────────────── */
+.pill-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 26px;
+  border: none;
+  border-radius: 980px;
+  font-size: .88rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: filter .2s, transform .2s;
+  font-family: inherit;
+  margin-top: 4px;
+}
+.pill-btn:hover { filter: brightness(1.08); }
+.pill-btn:active { transform: translateY(1px); }
+
+@media (max-width: 640px) {
+  .tool-hero { padding: 40px 18px 34px; }
+  .tool-panel { padding: 20px 16px 60px; }
+  .tool-section { padding: 18px; border-radius: 14px; }
+  /* Keep controls comfortably tappable and non-zooming on iOS. */
+  .field-input,
+  .field-select { font-size: 16px; min-height: 44px; }
+  .pill-btn { width: 100%; min-height: 44px; }
+}

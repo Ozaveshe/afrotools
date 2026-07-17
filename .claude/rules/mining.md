@@ -39,6 +39,13 @@ Any dropdown that offers more countries or minerals than the dataset actually co
 
 `data/mining/mining-royalties.js` carries one `lastUpdated` stamp for all rows — a floor, not a per-figure date. Surfaces that render a royalty rate older than the ledger's `highRiskCadenceDays` (90) should label it planning-grade with its review date, exactly as the tool does ("Bundled default reviewed 2026-07 — planning-grade, not a current gazetted rate"). Do not claim mining rates are "updated regularly" — the codebase cannot support that claim, and `mining:sources:check` will warn once the stamp passes the cadence.
 
+## The CSS trap (cost this hub a broken launch)
+
+`assets/css/tool-landing.css` does **not** define `.tool-shell`, `.tool-hero`, `.tool-panel`, `.tool-section`, `.section-title`, `.field-label`, `.field-input`, `.pill-btn` — none of it. That class vocabulary historically lived **inline** in each tool page's own `<style>` block (see `tools/commodity-tracker/index.html`). Copying a tool page's markup and its CSS `<link>`s therefore ships a page that renders as **raw unstyled HTML** — labels inline with inputs, no cards, invisible hero text. All six mining tools launched this way, because they were verified by driving the DOM and never actually looked at.
+
+- The shared definition now lives in **`assets/css/mining-tools.css`**. Every mining tool page must link it; `npm run test:mining` fails the build if a page uses `class="tool-shell"` without it.
+- **Verify a page visually, not just functionally.** A calculator can return the right number and still be unusable. If the screenshot tool is unavailable, assert `getComputedStyle` on `.tool-section` (white bg, 18px radius) and `.field-label` (`display:block`) — an unstyled page shows `display:inline`.
+
 ## Validation
 
 - `npm run mining:sources:check` — ledger/dataset consistency; fails on a zero/negative flat rate or dataset↔ledger source drift.
