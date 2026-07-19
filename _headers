@@ -67,25 +67,30 @@
 /service-worker.js
   Cache-Control: public, max-age=0, must-revalidate
 
-## ── Tool pages — 1 hour browser, 24 hours CDN ──
+## ── Tool pages — always revalidate in browser, 24 hours at the CDN edge ──
+## Browser must-revalidate so a deploy is visible immediately (a returning
+## visitor was otherwise served up to an hour of stale HTML). Netlify purges the
+## edge on every deploy, so s-maxage stays high for edge performance. These pages
+## are extensionless (/tools/foo/), so they do NOT match the /*.html rule below —
+## the cache policy has to be set here or they fall back to Netlify defaults.
 /tools/*
-  Cache-Control: public, max-age=3600, s-maxage=86400
+  Cache-Control: public, max-age=0, must-revalidate, s-maxage=86400
 
 /engineering/*
-  Cache-Control: public, max-age=3600, s-maxage=86400
+  Cache-Control: public, max-age=0, must-revalidate, s-maxage=86400
 
-## ── Country pages — 1 hour browser, 24 hours CDN ──
+## ── Country pages — always revalidate in browser, 24 hours at the CDN edge ──
 /nigeria/*
-  Cache-Control: public, max-age=3600, s-maxage=86400
+  Cache-Control: public, max-age=0, must-revalidate, s-maxage=86400
 
 /kenya/*
-  Cache-Control: public, max-age=3600, s-maxage=86400
+  Cache-Control: public, max-age=0, must-revalidate, s-maxage=86400
 
 /ghana/*
-  Cache-Control: public, max-age=3600, s-maxage=86400
+  Cache-Control: public, max-age=0, must-revalidate, s-maxage=86400
 
 /south-africa/*
-  Cache-Control: public, max-age=3600, s-maxage=86400
+  Cache-Control: public, max-age=0, must-revalidate, s-maxage=86400
 
 ## ── HTML pages — always revalidate ──
 /*.html
