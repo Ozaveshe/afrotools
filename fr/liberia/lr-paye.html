@@ -562,7 +562,7 @@ function setSector(s, btn) {
   btn.classList.add('on');
   const nssfTog = document.querySelector('[data-tog="nssf"]');
   document.getElementById('nssfLabel').textContent = 'NASSCORP';
-  nssfTog.querySelector('.tog-rate').textContent = '4% employee contribution';
+  nssfTog.querySelector('.tog-rate').textContent = 'Cotisation salariale de 4 %';
 }
 
 // ── SLIDER ────────────────────────────────────────────────────
@@ -669,7 +669,7 @@ function calcAnnualPAYE(annualTaxableIncome) {
   const social         = gross * socialRate;
   const empSocial      = gross * empSocialRate;
 
-  const annualBrut = gross * 12;
+  const annualGross = gross * 12;
   const annualTaxableIncome = annualGross;
   const annualResult = calcAnnualPAYE(annualTaxableIncome);
   const annualPAYE = annualResult.tax;
@@ -681,8 +681,8 @@ function calcAnnualPAYE(annualTaxableIncome) {
   const wcf = 0; // No WCF in Liberia
 
   // Net pay
-  const totalEmployeeDéductions = social + monthlyPAYE;
-  const netMonthly = gross - totalEmployeeDéductions;
+  const totalEmployeeDeductions = social + monthlyPAYE;
+  const netMonthly = gross - totalEmployeeDeductions;
   const effectiveRate = gross > 0 ? monthlyPAYE / gross : 0;
 
   // Annual figures
@@ -692,7 +692,7 @@ function calcAnnualPAYE(annualTaxableIncome) {
     gross, monthly: gross, social, socialRate, empSocial,
     monthlyPAYE, bandBreakdown, sector: SECTOR,
     sdl, wcf, empSocial,
-    totalEmployeeDéductions, netMonthly, effectiveRate,
+    totalEmployeeDeductions, netMonthly, effectiveRate,
     annualGross, annualNet: annual(netMonthly),
     annualTax: annualPAYE, annualSocial: annual(social),
     annualTaxableIncome,
@@ -704,10 +704,11 @@ function calcAnnualPAYE(annualTaxableIncome) {
   document.getElementById('resContent').innerHTML       = renderRows(RESULT, PERIOD);
   document.getElementById('effRateDisplay').textContent = pct(effectiveRate);
   setTimeout(() => { document.getElementById('rateFill').style.width = Math.min(effectiveRate * 200, 100) + '%'; }, 80);
-  document.getElementById('hiddenGross').value = gross;
+  var _hiddenGross = document.getElementById('hiddenGross');
+  if (_hiddenGross) _hiddenGross.value = gross;
 
   const strip = document.getElementById('employerStrip');
-  strip.innerHTML = `<strong>Cout total employeur : ${fmt(RESULT.totalEmployerCostMonthly)}/mois</strong><br>Brut + NASSCORP ${fmt(empSocial)}/mo (6% employer).`;
+  strip.innerHTML = `<strong>Coût total employeur : ${fmt(RESULT.totalEmployerCostMonthly)}/mois</strong><br>Brut + NASSCORP ${fmt(empSocial)}/mois (6 % employeur).`;
   strip.classList.add('on');
 
   document.getElementById('resultsCard').classList.add('on');
@@ -724,10 +725,10 @@ function calcAnnualPAYE(annualTaxableIncome) {
   var _shareBtn = document.querySelector('share-result-button');
   if (_shareBtn) _shareBtn.setResult({
     headline: 'Mon salaire net',
-    mainValue: fmt(RESULT.netMonthly) + '/mo',
+    mainValue: fmt(RESULT.netMonthly) + '/mois',
     subValues: [
-      { label: 'Gross', value: fmt(RESULT.gross) + '/mo' },
-      { label: 'Tax', value: fmt(RESULT.monthlyPAYE) + '/mo' },
+      { label: 'Brut', value: fmt(RESULT.gross) + '/mois' },
+      { label: 'Impôt', value: fmt(RESULT.monthlyPAYE) + '/mois' },
       { label: 'Taux effectif', value: pct(RESULT.effectiveRate) }
     ]
   });
@@ -738,18 +739,18 @@ function calcAnnualPAYE(annualTaxableIncome) {
 
   document.getElementById('aiBtn').disabled = false;
   document.getElementById('aiBtn').textContent = 'Obtenir l’analyse fiscale IA →';
-  document.getElementById('aiStatus').textContent = `Brut : ${fmt(gross)}/mo · Net : ${fmt(netMonthly)}/mo · PAYE: ${fmt(monthlyPAYE)}/mo · Taux effectif : ${pct(effectiveRate)}`;
+  document.getElementById('aiStatus').textContent = `Brut : ${fmt(gross)}/mois · Net : ${fmt(netMonthly)}/mois · PAYE : ${fmt(monthlyPAYE)}/mois · Taux effectif : ${pct(effectiveRate)}`;
 }
 
 // ── RENDER ROWS ───────────────────────────────────────────────
 function renderRows(R, period) {
   const isAnnual = period === 'annual';
   const d = isAnnual ? 1 : 1; // we always have monthly figures in RESULT
-  const gross  = isAnnual ? R.annualBrut   : R.gross;
+  const gross  = isAnnual ? R.annualGross   : R.gross;
   const social = isAnnual ? R.annualSocial  : R.social;
   const paye   = isAnnual ? R.annualTax     : R.monthlyPAYE;
   const net    = isAnnual ? R.annualNet     : R.netMonthly;
-  const totalDéductions = isAnnual ? R.annualTax + R.annualSocial : R.totalEmployeeDéductions;
+  const totalDeductions = isAnnual ? R.annualTax + R.annualSocial : R.totalEmployeeDeductions;
   const lbl = isAnnual ? '/an' : '/mois';
 
   const row = (l, v, cls='') => `<div class="res-row"><span class="res-row-lbl">${l}</span><span class="res-row-val ${cls}">${v}</span></div>`;
@@ -761,15 +762,15 @@ function renderRows(R, period) {
     </div>
     <div class="res-section">
       <div class="res-section-title">Déductions</div>
-      ${R.social > 0 ? row(`NASSCORP (${pct(R.socialRate)}, no cap)`, fmt(social), 'c-red') : ''}
-      ${row(isAnnual ? 'LRA annual taxable income' : 'base brute mensuelle LRA', fmt(isAnnual ? R.annualTaxableIncome : R.gross), 'c-mut')}
+      ${R.social > 0 ? row(`NASSCORP (${pct(R.socialRate)}, sans plafond)`, fmt(social), 'c-red') : ''}
+      ${row(isAnnual ? 'Revenu imposable annuel LRA' : 'base brute mensuelle LRA', fmt(isAnnual ? R.annualTaxableIncome : R.gross), 'c-mut')}
     </div>
     <div class="res-section">
       <div class="res-section-title">PAYE (LRA)</div>
       ${row(`Impôt sur le revenu (PAYE)${lbl}`, fmt(paye), 'c-red')}
     </div>
     <div class="res-section">
-      ${row('Total des déductions', fmt(totalDéductions), 'c-red')}
+      ${row('Total des déductions', fmt(totalDeductions), 'c-red')}
       <div class="res-row total"><span class="res-row-lbl">Salaire net</span><span class="res-row-val c-grn">${fmt(net)}</span></div>
     </div>`;
 }
@@ -783,7 +784,7 @@ function setPeriod(period, btn) {
     // Update hero
     var isMonthly = period === 'monthly';
     var net = isMonthly ? RESULT.netMonthly : (RESULT.annualNet || RESULT.netAnnual || RESULT.netMonthly * 12);
-    var gr = isMonthly ? RESULT.gross : (RESULT.annualBrut || RESULT.gross * 12);
+    var gr = isMonthly ? RESULT.gross : (RESULT.annualGross || RESULT.gross * 12);
     document.getElementById('resAmount').textContent = fmt(net);
     document.getElementById('resGross').textContent = isMonthly
       ? 'Brut : ' + fmt(gr) + '/mois'
@@ -947,7 +948,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   <table>
     ${R.social > 0 ? `<tr><td>NASSCORP (employee)</td><td class="num red">(LRD ${Math.round(R.social).toLocaleString()})</td></tr>` : ''}
     <tr><td>PAYE income tax</td><td class="num red">(LRD ${Math.round(R.monthlyPAYE).toLocaleString()})</td></tr>
-    <tr><td style="font-weight:700">Total mensuel des déductions</td><td class="num red">(LRD ${Math.round(R.totalEmployeeDéductions).toLocaleString()})</td></tr>
+    <tr><td style="font-weight:700">Total mensuel des déductions</td><td class="num red">(LRD ${Math.round(R.totalEmployeeDeductions).toLocaleString()})</td></tr>
     <tr class="total"><td style="color:#2563EB;font-weight:800">Salaire Net Mensuel</td><td class="num green">LRD ${Math.round(R.netMonthly).toLocaleString()}</td></tr>
     <tr class="total"><td style="color:#2563EB;font-weight:800">Salaire Net Annuel</td><td class="num green">LRD ${Math.round(R.annualNet).toLocaleString()}</td></tr>
   </table>
@@ -978,7 +979,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 </div>
 
 <script src="/assets/js/components/salary-benchmark-widget.js?v=1c8b8361" defer><\/script>
-<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"><\/script>
 
 </body></html>`;
 
@@ -986,17 +987,17 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   const url  = URL.createObjectURL(blob);
   const w    = window.open(url,'_blank');
   if(w){
-    w.addEventListener('load',()=>{setTimeout(()=>{w.imprimer();setTimeout(()=>URL.revokeObjectURL(url),3000)},600)});
-    setTimeout(()=>{try{w.imprimer()}catch(e){}},1200);
+    w.addEventListener('load',()=>{setTimeout(()=>{w.print();setTimeout(()=>URL.revokeObjectURL(url),3000)},600)});
+    setTimeout(()=>{try{w.print()}catch(e){}},1200);
   }
 }
 
 // ── partager ─────────────────────────────────────────────────────
 function shareResult() {
-  if (!résultat) return;
-  const text = `Mon PAYE Libéria récapitulatif : Brut LRD ${Math.round(résultat.gross).toLocaleString()}/mo → Net LRD ${Math.round(résultat.netMonthly).toLocaleString()}/mo (${pct(résultat.effectiveRate)} taux effectif). Calculé sur afrotools.com/fr/liberia/lr-paye`;
-  if (navigator.partager) {
-    navigator.partager({title:'Mon PAYE Libéria',text,url:'https://afrotools.com/fr/liberia/lr-paye'});
+  if (!RESULT) return;
+  const text = `Mon PAYE Libéria récapitulatif : Brut LRD ${Math.round(RESULT.gross).toLocaleString()}/mois → Net LRD ${Math.round(RESULT.netMonthly).toLocaleString()}/mois (${pct(RESULT.effectiveRate)} taux effectif). Calculé sur afrotools.com/fr/liberia/lr-paye`;
+  if (navigator.share) {
+    navigator.share({title:'Mon PAYE Libéria',text,url:'https://afrotools.com/fr/liberia/lr-paye'});
   } else if (navigator.clipboard) {
     navigator.clipboard.writeText(text);
     const btn = document.getElementById('tzPartagerBtn');
@@ -1007,8 +1008,8 @@ function shareResult() {
 
 // ── AI ADVISOR ────────────────────────────────────────────────
 async function getAI() {
-  if (!résultat) return;
-  const R   = résultat;
+  if (!RESULT) return;
+  const R   = RESULT;
   const btn = document.getElementById('aiBtn');
   const respEl = document.getElementById('aiResp');
 
@@ -1036,7 +1037,7 @@ Donnez : 1) Résumé clair en français de la situation PAYE 2) Deux points prat
         messages:[{role:'user',content:prompt}]
       })
     });
-    if(!res.ok) throw new erreur('HTTP '+res.status);
+    if(!res.ok) throw new Error('HTTP '+res.status);
     const data = await res.json();
     const text = data.text || 'Impossible de générer l’analyse.';
     respEl.className = 'ai-response'; respEl.textContent = '';
@@ -1081,11 +1082,11 @@ async function sendChat() {
   } catch { aiEl.textContent='Erreur réseau. Please try again.'; }
 }
 
-document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='saisissez')calculer();});
+document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
 
-// Net-to-Brut : register forward function
+// Net-to-Gross: register forward function
 window._grossToNet = function(g) {
-  var d=isOn('nssf')?g*0.04:0;return g-(d+calcMonthlyPAYE(Math.max(0,g-d)).tax);
+  var d=isOn('nssf')?g*0.04:0;return g-(d+calcAnnualPAYE(Math.max(0,g*12)).tax/12);
 };
 </script>
 <script src="/assets/js/bundles/tool-page.315f0428.min.js?v=315f0428" defer></script><script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>

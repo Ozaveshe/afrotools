@@ -1,0 +1,22 @@
+{
+  "reviewedBy": "Oza (AfroTools)",
+  "reviewedAt": "2026-07-21",
+  "sourceUrl": "https://lra.gov.lr/",
+  "reason": "Three clusters, none a statutory rate change. (1) Liberia PAYE route pair (route-lr-paye, route-lr-paye-fr): repair of non-executing inline calculator scripts. On fr/liberia/lr-paye.html a localization pass machine-translated JS identifiers (w.imprimer, e.key==='saisissez', calculer(), resultat, navigator.partager, new erreur, annualBrut vs annualGross) and an unescaped </script> inside the PDF template literal terminated the engine script, so calculate() never existed ('Unexpected end of input'). liberia/lr-paye.html had the same unescaped </script> defect plus a _grossToNet helper calling the nonexistent calcMonthlyPAYE; fixed as g - (nssf + calcAnnualPAYE(g*12).tax/12), consistent with calculate(). The LRA annual schedule (0% to LRD 70,000; 5% to 200,000; 6,500 + 15% to 800,000; 96,500 + 25% above; source https://lra.gov.lr/) and NASSCORP 4%/6% are unchanged. Verified in-browser post-fix on both routes: 50,000 LRD/month -> net LRD 42,458 (PAYE 5,541.67, NASSCORP 2,000); 100,000 LRD/month -> net LRD 79,625; every inline script block parses under new Function(). (2) Kenya PAYE route pair (route-ke-paye, route-ke-paye-fr): registry catch-up for the already-committed July 2026 AHL taxable-income correction (commits 84129d9, ff47f97) — AHL included as an allowable deduction per KRA public notice on the Tax Laws (Amendment) Act, 2024 (effective 27 Dec 2024); review basis documented in .claude/rules/salary-tax.md. (3) Insurance and HR engines (business, car, employee-cost, fire, funeral, health-contribution, life, marine, workers-comp): registry catch-up for the committed July 2026 premium=0 bug-class fixes and health-contribution split-rate fix (commits aadc3b7, 1d5101f, 679bd9b, 7c9505b, 95a5382) — engines now return {error} instead of costing cover at zero when a required monetary input is missing; review basis documented in .claude/rules/insurance.md and .claude/rules/hr-payroll.md. Golden fixtures are unaffected: the current fixture suite passes against the changed artifacts, so there are no expected-result deltas.",
+  "formulaIds": [
+    "route-lr-paye",
+    "route-lr-paye-fr",
+    "route-ke-paye",
+    "route-ke-paye-fr",
+    "formula-engines-business-insurance-engine",
+    "formula-engines-car-insurance-engine",
+    "formula-engines-employee-cost-engine",
+    "formula-engines-fire-insurance-engine",
+    "formula-engines-funeral-insurance-engine",
+    "formula-engines-health-contribution-engine",
+    "formula-engines-life-insurance-calc-engine",
+    "formula-engines-marine-insurance-engine",
+    "formula-engines-workers-comp-engine"
+  ],
+  "fixtureDeltas": []
+}

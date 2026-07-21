@@ -1,6 +1,6 @@
 # Calculation Quality Report
 
-As of: 2026-07-13
+As of: 2026-07-21
 
 ## Inventory
 
@@ -32,7 +32,7 @@ As of: 2026-07-13
 ## External data
 
 - Registered datasets: 3
-- Stale: forex-live-rates, fuel-live-prices, policy-live-rates
+- Stale: forex-live-rates
 - Incompatible: none
 
 ## Findings
@@ -41,5 +41,3 @@ As of: 2026-07-13
 - WARNING EFFECTIVE_DATE_REVIEW_REQUIRED formula-registry: 171 high-risk and 0 medium-risk formula records have unknown statutory effective dates; they remain explicitly review-required.
 - WARNING SOURCE_REVIEW_REQUIRED formula-registry: 0 high-risk and 18 medium-risk formula records still require authoritative-source review.
 - WARNING STALE_EXTERNAL_DATA forex-live-rates: Stale exchange-rate estimate
-- WARNING STALE_EXTERNAL_DATA fuel-live-prices: Stale fuel-price estimate
-- WARNING STALE_EXTERNAL_DATA policy-live-rates: Stale policy-rate reference

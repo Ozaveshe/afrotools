@@ -1054,7 +1054,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 </div>
 
 <script src="/assets/js/components/salary-benchmark-widget.js?v=1c8b8361" defer><\/script>
-<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"><\/script>
 
 </body></html>`;
 
@@ -1161,7 +1161,7 @@ document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==
 
 // Net-to-Gross: register forward function
 window._grossToNet = function(g) {
-  var d=isOn('nssf')?g*0.04:0;return g-(d+calcMonthlyPAYE(Math.max(0,g-d)).tax);
+  var d=isOn('nssf')?g*0.04:0;return g-(d+calcAnnualPAYE(Math.max(0,g*12)).tax/12);
 };
 </script>
 <script src="/assets/js/bundles/tool-page.315f0428.min.js?v=315f0428" defer></script>
