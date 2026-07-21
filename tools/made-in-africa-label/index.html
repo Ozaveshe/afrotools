@@ -127,6 +127,6 @@ function prepareOriginReview(){
 }
 function downloadOriginTxt(){if(!LAST_ORIGIN_REVIEW)prepareOriginReview();var r=LAST_ORIGIN_REVIEW;if(!r)return;var text=['AfroTools AfCFTA origin evidence worksheet','Production country: '+r.country,'Destination State Party: '+r.destination,'Exact HS code: '+r.hs,'Product-specific rule reference: '+(r.rule||'MISSING'),'Rule checked on: '+(r.ruleDate||'MISSING'),'Ex-works price: '+r.exw.toFixed(2),'Non-originating materials: '+r.nonOriginating.toFixed(2),'Estimated originating value: '+r.originating.toFixed(2)+' ('+r.originatingPct.toFixed(1)+'%)','Recorded criterion: '+(r.criterion||'unconfirmed'),'Production evidence note: '+(r.evidence||'none recorded'),'Decision: official verification required; this worksheet does not certify origin or tariff eligibility.'].join('\n'),blob=new Blob([text],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='afcfta-origin-evidence-worksheet.txt';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);document.getElementById('mia-status').textContent='TXT evidence worksheet downloaded.';}
 </script>
-<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=e25622fc" defer></script>
 </body>
 </html>

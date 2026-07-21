@@ -110,7 +110,10 @@ class AfroRelatedTools extends HTMLElement {
   _imageExt(t, imageKey) {
     if (t && (t.imageExt === 'svg' || t.imageExt === 'webp')) return t.imageExt;
     const extMap = (typeof TOOL_CARD_IMAGE_EXTENSIONS !== 'undefined') ? TOOL_CARD_IMAGE_EXTENSIONS : null;
-    return (extMap && imageKey && extMap[imageKey]) || '';
+    if (extMap && imageKey && extMap[imageKey]) return extMap[imageKey];
+    // The manifest ships with the lazily-loaded registry; before it arrives,
+    // assume webp — the card's onerror chain tries svg then the monogram.
+    return imageKey ? 'webp' : '';
   }
 
   _getSsrTools() {

@@ -186,6 +186,6 @@ function calcOEE(){
 }
 function downloadOeeCsv(){if(!LAST_OEE_RESULT)calcOEE();var r=LAST_OEE_RESULT;if(!r)return;var rows=[['metric','value','unit'],['scheduled_period',r.scheduled,'minutes'],['planned_excluded',r.excluded,'minutes'],['planned_production',r.plannedProduction,'minutes'],['unplanned_downtime',r.downtime,'minutes'],['run_time',r.runTime,'minutes'],['ideal_cycle',r.cycle,'seconds_per_unit'],['total_units',r.produced,'units'],['rejects',r.rejects,'units'],['good_units',r.good,'units'],['availability',oeePct(r.availability),''],['performance',oeePct(r.performance),''],['quality',oeePct(r.quality),''],['oee',oeePct(r.oee),''],['max_possible_good',r.maxPossible,'units'],['good_unit_gap',r.unitsLost,'units'],['contribution_scenario',r.opportunity,'entered_currency']];var csv=rows.map(function(row){return row.map(function(v){return '"'+String(v).replace(/"/g,'""')+'"';}).join(',');}).join('\n'),blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='oee-recorded-period.csv';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);document.getElementById('oee-status').textContent='CSV OEE record downloaded.';}
 </script>
-<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=e25622fc" defer></script>
 </body>
 </html>
