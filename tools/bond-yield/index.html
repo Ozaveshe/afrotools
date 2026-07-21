@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Government Bond Yield Calculator — Africa | AfroTools</title>
-<meta name="description" content="Calculate yield-to-maturity, current yield, and price for African government bonds. Compare bond vs T-bill returns across 15 African countries.">
+<title>Bond Yield to Maturity and Current Yield Calculator | AfroTools</title>
+<meta name="description" content="Calculate exact yield to maturity, current yield, coupon income and cash return from user-entered bond price and coupon terms.">
 <meta property="og:title" content="Government Bond Yield Calculator — Africa | AfroTools">
-<meta property="og:description" content="Calculate yield-to-maturity, current yield, and price for African government bonds. Compare bond vs T-bill returns across 15 African countries.">
+<meta property="og:description" content="Calculate exact yield to maturity and current yield from the bond price, coupon, term and payment frequency you enter.">
 <meta property="og:url" content="https://afrotools.com/tools/bond-yield/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Government Bond Yield Calculator — Africa | AfroTools">
-<meta name="twitter:description" content="Calculate yield-to-maturity, current yield, and price for African government bonds. Compare bond vs T-bill returns across 15 African countries.">
+<meta name="twitter:description" content="Calculate exact yield to maturity and current yield from user-entered bond terms.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -81,14 +81,14 @@ details summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
 details[open] summary::after{content:'\2212'}
 .faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
 .faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+.form-error{min-height:1.4em;color:#b91c1c;font-size:.84rem;font-weight:600;margin:.6rem 0 0}.field-help{font-size:.74rem;color:#64748b}
+html[data-theme="dark"] body{background:#07111f;color:#e5edf8}html[data-theme="dark"] :is(.card,.metric,.faq-item,.df-upgrade__card){background:#101c2c!important;border-color:#2a3b51!important;color:#e5edf8!important}html[data-theme="dark"] :is(h2,h3,label,.metric-val){color:#f8fafc!important}html[data-theme="dark"] :is(.field-help,.metric-label,.faq-a,.df-upgrade p,.df-upgrade li){color:#b6c5d8!important}html[data-theme="dark"] :is(input,select,details summary){background:#17263a!important;border-color:#3a4e68!important;color:#f8fafc!important}html[data-theme="dark"] .info-box{background:#102844;border-color:#315b86;color:#bfdbfe}
+@media(prefers-color-scheme:dark){html:not([data-theme="light"]) body{background:#07111f;color:#e5edf8}html:not([data-theme="light"]) :is(.card,.metric,.faq-item,.df-upgrade__card){background:#101c2c!important;border-color:#2a3b51!important;color:#e5edf8!important}html:not([data-theme="light"]) :is(h2,h3,label,.metric-val){color:#f8fafc!important}html:not([data-theme="light"]) :is(.field-help,.metric-label,.faq-a,.df-upgrade p,.df-upgrade li){color:#b6c5d8!important}html:not([data-theme="light"]) :is(input,select,details summary){background:#17263a!important;border-color:#3a4e68!important;color:#f8fafc!important}html:not([data-theme="light"]) .info-box{background:#102844;border-color:#315b86;color:#bfdbfe}}
 @media(max-width:680px){.form-grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}}
 </style>
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/bond-yield.webp">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/bond-yield.webp">
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Government Bond Yield Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Government Bond Yield Calculator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Government Bond Yield Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Government Bond Yield Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"What is Yield to Maturity (YTM)?","acceptedAnswer":{"@type":"Answer","text":"YTM is the total return you earn if you hold the bond to maturity, accounting for coupon payments AND the gain/loss from buying at a premium or discount to face value. It assumes all coupons are reinvested at the same rate. YTM is the standard way to compare bonds with different prices and coupon rates."}},{"@type":"Question","name":"How does bond price relate to yield in Africa?","acceptedAnswer":{"@type":"Answer","text":"Bond prices and yields move inversely: when market interest rates rise, existing bond prices fall (and vice versa). In high-inflation African markets like Nigeria and Ghana, bond prices are more volatile because interest rates change more frequently. Buying bonds at a discount can significantly boost your YTM."}},{"@type":"Question","name":"How can I buy government bonds in Africa?","acceptedAnswer":{"@type":"Answer","text":"In Nigeria: through DMO's FGN savings bond portal or commercial banks. In Kenya: through CBK's DhowCSD online platform (min KSh 50,000). In South Africa: through RSA Retail Savings Bonds or stockbrokers. In Ghana: through banks and licensed dealers. Most require a brokerage/investment account."}}]}
-</script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/tools/bond-yield/">
@@ -103,8 +103,8 @@ details[open] summary::after{content:'\2212'}
   <div class="container">
     <nav class="breadcrumb"><a href="/">AfroTools</a><span>›</span><a href="/fintech/">Fintech &amp; Banking</a><span>›</span>Bond Yield Calculator</nav>
     <h1>Government Bond Yield Calculator</h1>
-    <p>Calculate yield-to-maturity (YTM), current yield, and bond price for African government bonds. Compare bond vs T-bill returns.</p>
-    <div class="hero-badges"><span class="hero-badge">15 Countries</span><span class="hero-badge">YTM Calculation</span><span class="hero-badge">Free</span></div>
+    <p>Enter a bond's face value, market price, coupon, remaining term and frequency. Solve its cash flows for exact yield to maturity and current yield.</p>
+    <div class="hero-badges"><span class="hero-badge">Exact cash-flow YTM</span><span class="hero-badge">User-entered quote</span><span class="hero-badge">Local &amp; free</span></div>
   </div>
 </div>
 <div class="container">
@@ -112,35 +112,23 @@ details[open] summary::after{content:'\2212'}
     <h2>Bond Yield Calculator</h2>
     <div class="form-grid">
       <div class="form-group">
-        <label for="by-country">Country</label>
-        <select id="by-country" onchange="fillBond()">
-          <option value="NG" data-coupon="17" data-sym="&#x20A6;" data-maturity="5">Nigeria</option>
-          <option value="KE" data-coupon="13.5" data-sym="KSh" data-maturity="10">Kenya</option>
-          <option value="ZA" data-coupon="9" data-sym="R" data-maturity="10">South Africa</option>
-          <option value="GH" data-coupon="21" data-sym="GH&#x20B5;" data-maturity="3">Ghana</option>
-          <option value="EG" data-coupon="17" data-sym="E&#xa3;" data-maturity="5">Egypt</option>
-          <option value="TZ" data-coupon="12" data-sym="TSh" data-maturity="5">Tanzania</option>
-          <option value="UG" data-coupon="15" data-sym="USh" data-maturity="5">Uganda</option>
-          <option value="ZM" data-coupon="18" data-sym="ZK" data-maturity="5">Zambia</option>
-          <option value="RW" data-coupon="10" data-sym="FRw" data-maturity="5">Rwanda</option>
-          <option value="MA" data-coupon="3.5" data-sym="MAD" data-maturity="10">Morocco</option>
-        </select>
+        <label for="by-currency">Currency</label><select id="by-currency"><option>NGN</option><option>KES</option><option>GHS</option><option>ZAR</option><option>UGX</option><option>TZS</option><option>RWF</option><option>ZMW</option><option>XOF</option><option>XAF</option><option>USD</option></select>
       </div>
       <div class="form-group">
         <label for="by-face">Face Value</label>
-        <input type="number" id="by-face" value="1000000">
+        <input type="number" id="by-face" value="1000000" min="0.01" step="0.01" required>
       </div>
       <div class="form-group">
         <label for="by-coupon">Coupon Rate (% per year)</label>
-        <input type="number" id="by-coupon" value="17" step="0.1">
+        <input type="number" id="by-coupon" value="17" min="0" max="1000" step="0.01" required>
       </div>
       <div class="form-group">
         <label for="by-price">Market Price (% of face, e.g. 95)</label>
-        <input type="number" id="by-price" value="100" step="0.1" min="1" max="200">
+        <input type="number" id="by-price" value="100" step="0.01" min="0.01" max="10000" required>
       </div>
       <div class="form-group">
         <label for="by-years">Years to Maturity</label>
-        <input type="number" id="by-years" value="5" min="1" max="30">
+        <input type="number" id="by-years" value="5" min="0.25" max="100" step="0.25" required aria-describedby="by-years-help"><span class="field-help" id="by-years-help">Term × frequency must be a whole number of remaining coupon periods.</span>
       </div>
       <div class="form-group">
         <label for="by-freq">Coupon Frequency</label>
@@ -152,7 +140,7 @@ details[open] summary::after{content:'\2212'}
       </div>
     </div>
     <button type="button" class="btn-calc" onclick="calcBond()">Calculate Bond Yield</button>
-    <div class="results" id="by-results">
+    <p class="form-error" id="by-error" role="alert"></p><div class="results" id="by-results" role="region" aria-live="polite" tabindex="-1">
       <div class="res-hero">
         <div class="res-label">Yield to Maturity (YTM)</div>
         <div class="res-val" id="by-ytm"></div>
@@ -161,86 +149,65 @@ details[open] summary::after{content:'\2212'}
       <div class="metrics">
         <div class="metric"><div class="metric-val" id="by-current-yield"></div><div class="metric-label">Current Yield</div></div>
         <div class="metric"><div class="metric-val" id="by-annual-coupon"></div><div class="metric-label">Annual Coupon Income</div></div>
-        <div class="metric"><div class="metric-val" id="by-total-return"></div><div class="metric-label">Total Return to Maturity</div></div>
+        <div class="metric"><div class="metric-val" id="by-total-return"></div><div class="metric-label">Net Cash Gain at Maturity</div></div>
         <div class="metric"><div class="metric-val" id="by-market-price"></div><div class="metric-label">Market Price</div></div>
       </div>
-      <div class="info-box">YTM is the most important bond metric — it accounts for both coupon payments AND the price premium/discount to face value. A bond trading below face (discount) has a YTM higher than its coupon rate.</div>
+      <div class="info-box"><strong>Model:</strong> coupons arrive at equal intervals, the next coupon is one full period away, face value is repaid with the final coupon, and there is no default, tax, fee or accrued-interest adjustment. Confirm whether your quoted price is clean or dirty.</div>
     </div>
   </div>
   <div class="card">
     <h2>Frequently Asked Questions</h2>
 
-<section class="df-upgrade" data-df-upgrade="bond-yield">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Bond yield review</span>
-      <h2>Estimate bond yield with fees and holding period visible</h2>
-      <p>Not sure how to get the most from the Government Bond Yield Calculator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
-      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Government Bond Yield Calculator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
-    </div>
-    <form class="df-form" data-df-form="bond-yield">
-      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
-      <label>Face value<input name="faceValue" type="number" value="1000000" min="0" step="any" aria-label="Face value"></label>
-      <label>Purchase price<input name="price" type="number" value="920000" min="0" step="any" aria-label="Purchase price"></label>
-      <label>Annual coupon percent<input name="coupon" type="number" value="14" min="0" step="any" aria-label="Annual coupon percent"></label>
-      <label>Fees percent<input name="fees" type="number" value="1" min="0" step="any" aria-label="Fees percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="bond-yield" data-df-base="Government Bond Yield Calculator — enter your details above to see your result." aria-live="polite">Government Bond Yield Calculator — enter your details above to see your result.</output>
-      <div class="df-actions"><button type="button" data-df-copy="bond-yield">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="bond-yield-faq-title">
-  <h2 id="bond-yield-faq-title">Frequently Asked Questions</h2>
-  <div class="df-faq__grid"><details><summary>How do I use the Government Bond Yield Calculator?</summary><p>Enter your amounts, rates and dates in the fields above. The Government Bond Yield Calculator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Government Bond Yield Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Government Bond Yield Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
-</section>
-    <div class="faq-item"><details><summary>What is Yield to Maturity (YTM)?</summary><div class="faq-a">YTM is the total return you earn if you hold the bond to maturity, accounting for coupon payments AND the gain/loss from buying at a premium or discount to face value. It assumes all coupons are reinvested at the same rate. YTM is the standard way to compare bonds with different prices and coupon rates.</div></details></div>
-    <div class="faq-item"><details><summary>How does bond price relate to yield in Africa?</summary><div class="faq-a">Bond prices and yields move inversely: when market interest rates rise, existing bond prices fall (and vice versa). In high-inflation African markets like Nigeria and Ghana, bond prices are more volatile because interest rates change more frequently. Buying bonds at a discount can significantly boost your YTM.</div></details></div>
-    <div class="faq-item"><details><summary>How can I buy government bonds in Africa?</summary><div class="faq-a">In Nigeria: through DMO's FGN savings bond portal or commercial banks. In Kenya: through CBK's DhowCSD online platform (min KSh 50,000). In South Africa: through RSA Retail Savings Bonds or stockbrokers. In Ghana: through banks and licensed dealers. Most require a brokerage/investment account.</div></details></div>
+    <section class="df-upgrade" aria-labelledby="by-method-title"><div class="df-upgrade__card"><div><span class="df-upgrade__kicker">Exact discounted cash flows</span><h2 id="by-method-title">How yield to maturity is solved</h2><p>The calculator finds the periodic discount rate that makes the present value of every remaining coupon and the final face-value payment equal the entered market price.</p><ul class="df-upgrade__bullets"><li><strong>Annual YTM:</strong> periodic yield compounded by the coupon frequency.</li><li><strong>Current yield:</strong> annual coupon income divided by market price.</li><li><strong>Net cash gain:</strong> all coupons plus face value minus purchase price, without time-value adjustment.</li></ul><p class="df-upgrade__note">YTM assumes scheduled payments and reinvestment at the solved rate. It does not capture credit, liquidity, inflation, currency, call, tax or reinvestment risk.</p></div></div></section>
+    <div class="faq-item"><details><summary>Why can YTM differ from the coupon rate?</summary><div class="faq-a">The coupon is based on face value, while YTM also reflects the price paid and the gain or loss when face value is repaid at maturity.</div></details></div>
+    <div class="faq-item"><details><summary>What is current yield missing?</summary><div class="faq-a">Current yield considers annual coupons relative to price but ignores the maturity payment, time remaining and the timing of individual cash flows.</div></details></div>
+    <div class="faq-item"><details><summary>Does this handle accrued interest or irregular coupons?</summary><div class="faq-a">No. It assumes a full coupon period until the next payment and equal periods through maturity. Use the settlement convention and cash-flow schedule in the official instrument terms for a trade calculation.</div></details></div>
   </div>
 </div>
 <afro-related-tools data-ssr="1" category="fintech" current="bond-yield">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/tools/loan-shark-compare/" data-related-tool data-id="loan-shark-compare" data-name="Loan Shark vs Bank Rate" data-category="fintech" data-icon="LS" data-desc="Compare informal moneylender rates vs bank loans vs fintech apps. True APR calculator showing hidden cost of predatory l">Loan Shark vs Bank Rate</a></li><li><a href="/tools/mobile-vs-bank/" data-related-tool data-id="mobile-vs-bank" data-name="Mobile Money vs Bank Transfer" data-category="fintech" data-icon="MM" data-desc="Compare M-Pesa, MTN MoMo, Airtel Money vs bank transfer fees for domestic and cross-border payments across Africa.">Mobile Money vs Bank Transfer</a></li><li><a href="/tools/digital-lending/" data-related-tool data-id="digital-lending" data-name="Digital Lending App Rates" data-category="fintech" data-icon="DL" data-desc="Compare digital lending apps (Fuliza, FairMoney, Carbon, PalmCredit) — true APR, fees, repayment periods.">Digital Lending App Rates</a></li><li><a href="/tools/fixed-deposit/" data-related-tool data-id="fixed-deposit" data-name="Fixed Deposit Rate Comparator" data-category="fintech" data-icon="FD" data-desc="Compare fixed deposit and savings account interest rates across African banks. 30/60/90/180/365-day tenors, 20+ banks.">Fixed Deposit Rate Comparator</a></li><li><a href="/tools/microfinance-loan/" data-related-tool data-id="microfinance-loan" data-name="Microfinance Loan Calculator" data-category="fintech" data-icon="ML" data-desc="Calculate microfinance loan repayments for African MFIs. Flat vs reducing balance, group vs individual loans.">Microfinance Loan Calculator</a></li><li><a href="/tools/payment-gateway/" data-related-tool data-id="payment-gateway" data-name="Payment Gateway Fee Compare" data-category="fintech" data-icon="PG" data-desc="Compare Paystack, Flutterwave, Stripe, DPO, Peach Payments transaction fees for African merchants.">Payment Gateway Fee Compare</a></li></ul>
+<ul class="seo-links-list"><li><a href="/tools/loan-shark-compare/" data-related-tool data-id="loan-shark-compare" data-name="Informal Loan vs Bank Cost Calculator" data-category="fintech" data-icon="IL" data-desc="Compare a monthly flat-rate loan with a reducing-balance bank loan. See repayment, finance cost and effective annual rat">Informal Loan vs Bank Cost Calculator</a></li><li><a href="/tools/mobile-vs-bank/" data-related-tool data-id="mobile-vs-bank" data-name="Mobile Money vs Bank Transfer Comparator" data-category="fintech" data-icon="MM" data-desc="Compare a mobile money quote with a bank transfer quote. Enter the current flat and percentage fees to see total cost an">Mobile Money vs Bank Transfer Comparator</a></li><li><a href="/tools/digital-lending/" data-related-tool data-id="digital-lending" data-name="Digital Loan Offer and APR Comparator" data-category="fintech" data-icon="DL" data-desc="Compare up to three current digital loan offers by amount received, term and total repayment. See finance cost and effec">Digital Loan Offer and APR Comparator</a></li><li><a href="/tools/fixed-deposit/" data-related-tool data-id="fixed-deposit" data-name="Fixed Deposit Rate Comparator" data-category="fintech" data-icon="FD" data-desc="Calculate fixed deposit maturity value from a bank&#39;s current rate, term, tax and compounding method. See gross interest,">Fixed Deposit Rate Comparator</a></li><li><a href="/tools/microfinance-loan/" data-related-tool data-id="microfinance-loan" data-name="Microfinance Loan Calculator" data-category="fintech" data-icon="ML" data-desc="Calculate a microfinance offer&#39;s monthly repayment, fees, finance cost and effective annual rate for flat or reducing-ba">Microfinance Loan Calculator</a></li><li><a href="/tools/payment-gateway/" data-related-tool data-id="payment-gateway" data-name="Payment Gateway Fee Comparator" data-category="fintech" data-icon="PG" data-desc="Compare three current payment gateway quotes using transaction value, percentage fee, flat fee and optional per-transact">Payment Gateway Fee Comparator</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
 <script>
-function fillBond(){
-  var sel=document.getElementById('by-country');
-  var opt=sel.options[sel.selectedIndex];
-  document.getElementById('by-coupon').value=opt.getAttribute('data-coupon');
-  document.getElementById('by-years').value=opt.getAttribute('data-maturity');
-}
 function calcBond(){
-  var sel=document.getElementById('by-country');
-  var sym=sel.options[sel.selectedIndex].getAttribute('data-sym');
-  var face=parseFloat(document.getElementById('by-face').value)||0;
-  var couponRate=parseFloat(document.getElementById('by-coupon').value)/100;
-  var pricePercent=parseFloat(document.getElementById('by-price').value)/100;
-  var years=parseFloat(document.getElementById('by-years').value)||5;
+  var currency=document.getElementById('by-currency').value;
+  var face=parseFloat(document.getElementById('by-face').value);
+  var couponPercent=parseFloat(document.getElementById('by-coupon').value);
+  var enteredPricePercent=parseFloat(document.getElementById('by-price').value);
+  var years=parseFloat(document.getElementById('by-years').value);
   var freq=parseInt(document.getElementById('by-freq').value);
+  var error=document.getElementById('by-error');var output=document.getElementById('by-results');
+  error.textContent='';output.classList.remove('on');
+  var n=years*freq;
+  if(!Number.isFinite(face)||face<=0||!Number.isFinite(couponPercent)||couponPercent<0||couponPercent>1000||!Number.isFinite(enteredPricePercent)||enteredPricePercent<=0||enteredPricePercent>10000||!Number.isFinite(years)||years<=0||years>100||!Number.isInteger(freq)||Math.abs(n-Math.round(n))>1e-9){error.textContent='Enter positive face and price values, coupon from 0% to 1,000%, and a term that produces a whole number of coupon periods.';return;}
+  n=Math.round(n);
+  var couponRate=couponPercent/100;
+  var pricePercent=enteredPricePercent/100;
   var price=face*pricePercent;
   var periodicCoupon=(face*couponRate)/freq;
-  var n=years*freq;
   var totalCouponIncome=periodicCoupon*n;
   var capitalGain=face-price;
   var totalReturn=totalCouponIncome+capitalGain;
   var currentYield=(face*couponRate)/price;
-  // Approximate YTM
-  var ytm=((face*couponRate)+(capitalGain/years))/((face+price)/2);
-  function fmt(v){return sym+(Math.round(v)).toLocaleString();}
-  document.getElementById('by-ytm').textContent=(ytm*100).toFixed(2)+'%';
-  document.getElementById('by-sub').textContent='Coupon: '+(couponRate*100).toFixed(1)+'% | Price: '+pricePercent*100+'% of face';
+  function presentValue(rate){if(Math.abs(rate)<1e-12)return periodicCoupon*n+face;return periodicCoupon*(1-Math.pow(1+rate,-n))/rate+face/Math.pow(1+rate,n);}
+  var low=-0.999999,high=1;
+  while(presentValue(high)>price&&high<1048576)high*=2;
+  for(var i=0;i<160;i++){var mid=(low+high)/2;if(presentValue(mid)>price)low=mid;else high=mid;}
+  var periodicYield=(low+high)/2;
+  var annualYtm=(Math.pow(1+periodicYield,freq)-1)*100;
+  function fmt(v){return currency+' '+v.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
+  document.getElementById('by-ytm').textContent=annualYtm.toFixed(2)+'%';
+  document.getElementById('by-sub').textContent='Coupon: '+couponPercent.toFixed(2)+'% | Price: '+enteredPricePercent.toFixed(2)+'% of face | '+n+' periods';
   document.getElementById('by-current-yield').textContent=(currentYield*100).toFixed(2)+'%';
   document.getElementById('by-annual-coupon').textContent=fmt(face*couponRate);
   document.getElementById('by-total-return').textContent=fmt(totalReturn);
   document.getElementById('by-market-price').textContent=fmt(price);
-  document.getElementById('by-results').classList.add('on');
+  output.classList.add('on');output.focus();
 }
 </script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>

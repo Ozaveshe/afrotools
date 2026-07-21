@@ -106,54 +106,26 @@
         </div>
         <div class="en-field">
           <label class="en-label" for="fs-size">Factory Size (m²)</label>
-          <select class="en-select" id="fs-size" aria-label="Fs Size">
-            <option value="200">Small — 200m² (micro)</option>
-            <option value="500">Small-Medium — 500m²</option>
-            <option value="1000" selected>Medium — 1,000m²</option>
-            <option value="3000">Large — 3,000m²</option>
-            <option value="10000">Very Large — 10,000m²</option>
-          </select>
+          <input class="en-input" id="fs-size" type="number" min="1" placeholder="Enter planned floor area">
         </div>
         <div class="en-field">
-          <label class="en-label" for="fs-location">Location Type</label>
-          <select class="en-select" id="fs-location" aria-label="Fs Location">
-            <option value="industrial_park">Industrial Park / EPZ</option>
-            <option value="urban_fringe" selected>Urban Fringe</option>
-            <option value="rural">Rural / Greenfield</option>
-          </select>
+          <label class="en-label" for="fs-land-input">Land and Site Works Quote</label><input class="en-input" id="fs-land-input" type="number" min="0" placeholder="Current local-currency quote">
         </div>
         <div class="en-field">
-          <label class="en-label" for="fs-structure">Building Structure</label>
-          <select class="en-select" id="fs-structure" aria-label="Fs Structure">
-            <option value="steel_frame" selected>Steel Frame + Roofing (standard)</option>
-            <option value="concrete">Reinforced Concrete</option>
-            <option value="lease">Lease Existing Building</option>
-          </select>
+          <label class="en-label" for="fs-build-input">Building / Lease Fit-out Quote</label><input class="en-input" id="fs-build-input" type="number" min="0" placeholder="Current quote">
         </div>
         <div class="en-field">
-          <label class="en-label" for="fs-power">Power Connection (kVA required)</label>
-          <select class="en-select" id="fs-power" aria-label="Fs Power">
-            <option value="50">50 kVA (small)</option>
-            <option value="150" selected>150 kVA (medium)</option>
-            <option value="500">500 kVA (large)</option>
-            <option value="1000">1,000 kVA (very large)</option>
-          </select>
+          <label class="en-label" for="fs-mach-input">Machinery and Equipment Quotes</label><input class="en-input" id="fs-mach-input" type="number" min="0" placeholder="Delivered and installed">
         </div>
         <div class="en-field">
-          <label class="en-label" for="fs-water">Include Borehole / Water Supply?</label>
-          <select class="en-select" id="fs-water" aria-label="Fs Water">
-            <option value="yes" selected>Yes</option>
-            <option value="no">No — municipal supply</option>
-          </select>
+          <label class="en-label" for="fs-util-input">Utilities and Infrastructure Quotes</label><input class="en-input" id="fs-util-input" type="number" min="0" placeholder="Power, water, waste, safety">
         </div>
         <div class="en-field">
-          <label class="en-label" for="fs-mach">Machinery Budget (approx.)</label>
-          <select class="en-select" id="fs-mach" aria-label="Fs Mach">
-            <option value="min">Minimal — essential only</option>
-            <option value="standard" selected>Standard — mid-spec machines</option>
-            <option value="advanced">Advanced — automated lines</option>
-          </select>
+          <label class="en-label" for="fs-permits-input">Permit and Professional-fee Provision</label><input class="en-input" id="fs-permits-input" type="number" min="0" placeholder="Verify with authorities and advisers">
         </div>
+        <div class="en-field"><label class="en-label" for="fs-working-monthly">Monthly Operating Cash Need</label><input class="en-input" id="fs-working-monthly" type="number" min="0" placeholder="Payroll, inputs, rent, utilities"></div>
+        <div class="en-field"><label class="en-label" for="fs-working-months">Working-capital Months</label><input class="en-input" id="fs-working-months" type="number" min="0" step="1" placeholder="Enter months"></div>
+        <div class="en-field"><label class="en-label" for="fs-contingency">Optional Contingency %</label><input class="en-input" id="fs-contingency" type="number" min="0" max="100" step="0.1" placeholder="0"></div>
       </div>
       <button type="button" class="en-btn" onclick="calcFactory()">Calculate Setup Cost</button>
     </div>
@@ -169,7 +141,7 @@
         <div class="en-stat-card"><div class="en-stat-label">Machinery & Equipment</div><div class="en-stat-value" id="fs-mach-cost">—</div></div>
         <div class="en-stat-card"><div class="en-stat-label">Utilities & Infrastructure</div><div class="en-stat-value" id="fs-util">—</div></div>
         <div class="en-stat-card"><div class="en-stat-label">Permits & Licensing</div><div class="en-stat-value" id="fs-permits">—</div></div>
-        <div class="en-stat-card"><div class="en-stat-label">Working Capital (3 months)</div><div class="en-stat-value" id="fs-working">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Working Capital</div><div class="en-stat-value" id="fs-working">—</div></div>
         <div class="en-stat-card"><div class="en-stat-label">Total CAPEX</div><div class="en-stat-value" id="fs-total">—</div></div>
         <div class="en-stat-card"><div class="en-stat-label">Cost per m²</div><div class="en-stat-value" id="fs-per-m2">—</div></div>
       </div>
@@ -178,8 +150,8 @@
         <div id="fs-breakdown"></div>
       </div>
       <div class="en-card" style="margin-top:1.5rem">
-        <h3 style="margin-bottom:.5rem">Funding & Incentives Available</h3>
-        <ul id="fs-incentives" style="padding-left:1.25rem;margin:0;display:flex;flex-direction:column;gap:.4rem;font-size:.9rem"></ul>
+        <h3 style="margin-bottom:.5rem">Pre-commitment Checks</h3>
+        <ul id="fs-incentives" style="padding-left:1.25rem;margin:0;display:flex;flex-direction:column;gap:.4rem;font-size:.9rem"><li>Confirm land title or lease, zoning, environmental and building approvals.</li><li>Get delivered, installed and commissioned machinery quotes with tax, tariff and warranty terms.</li><li>Confirm utility capacity, connection lead time, safety, waste and sector licensing requirements.</li><li>Verify any incentive directly with the responsible authority before including it in financing.</li></ul>
       </div>
       <div class="en-card" style="margin-top:1.5rem">
         <h3 style="margin-bottom:.5rem">Export this estimate</h3>
@@ -208,7 +180,7 @@
     <div class="tool-verification-actions">
       <a class="tool-verification-primary" href="#fs-country">Review factory inputs</a>
       <a class="tool-verification-report" href="#fs-results">Review CAPEX output</a>
-      <p class="tool-verification-disclaimer">Source/freshness note: base costs are planning assumptions and can change with exchange rates, land policy, tariffs, supplier quotes, incentives, and local permits.</p>
+        <p class="tool-verification-disclaimer">Source/freshness note: no base cost or incentive value is embedded. Use dated quotes and verify land, tariff, tax, utility, permit and incentive terms with the responsible parties.</p>
     </div>
   </div>
 </section>
@@ -218,178 +190,36 @@
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/tools/mini-importation/" data-related-tool data-id="mini-importation" data-name="Mini-Importation Profit Calculator" data-category="small-business" data-icon="MI" data-desc="Calculate landed cost and profit for importing goods from China via Alibaba/1688. Includes FX conversion, shipping, cust">Mini-Importation Profit Calculator</a></li><li><a href="/tools/pos-agent/" data-related-tool data-id="pos-agent" data-name="POS Agent Business Calculator" data-category="small-business" data-icon="PA" data-desc="Calculate POS agent/mobile money agent profitability in Nigeria (OPay/Moniepoint), Kenya (M-Pesa), Ghana (MTN MoMo). Dai">POS Agent Business Calculator</a></li><li><a href="/tools/mama-put/" data-related-tool data-id="mama-put" data-name="Mama Put / Food Vendor Business Calculator" data-category="small-business" data-icon="MP" data-desc="Profit calculator for African food vendors and restaurants. Enter meals served, price, COGS, rent, and staff costs — get">Mama Put / Food Vendor Business Calculator</a></li><li><a href="/tools/startup-runway/" data-related-tool data-id="startup-runway" data-name="Startup Runway Calculator" data-category="small-business" data-icon="SR" data-desc="Calculate how many months of cash runway your startup has. Enter burn rate, revenue, and cash balance — get runway, brea">Startup Runway Calculator</a></li><li><a href="/tools/marketplace-fees/" data-related-tool data-id="marketplace-fees" data-name="Marketplace Fee Comparator (Africa)" data-category="small-business" data-icon="MF" data-desc="Compare selling fees across Jumia, Konga, Takealot, Kilimall and other African marketplaces. See net payout per sale by ">Marketplace Fee Comparator (Africa)</a></li><li><a href="/tools/burn-rate/" data-related-tool data-id="burn-rate" data-name="Burn Rate Calculator" data-category="small-business" data-icon="BR" data-desc="Calculate your monthly gross and net burn rate. Enter personnel, rent, software, marketing costs — see runway and get ac">Burn Rate Calculator</a></li></ul>
+<ul class="seo-links-list"><li><a href="/tools/mini-importation/" data-related-tool data-id="mini-importation" data-name="Mini-Importation Profit Calculator" data-category="small-business" data-icon="MI" data-desc="Calculate landed cost, profit margin and ROI using your entered purchase price, exchange rate, freight, customs, clearin">Mini-Importation Profit Calculator</a></li><li><a href="/tools/pos-agent/" data-related-tool data-id="pos-agent" data-name="POS Agent Business Calculator" data-category="small-business" data-icon="PA" data-desc="Estimate POS or mobile-money agent profit using your entered provider commission, completed transactions, operating cost">POS Agent Business Calculator</a></li><li><a href="/tools/mama-put/" data-related-tool data-id="mama-put" data-name="Mama Put / Food Vendor Business Calculator" data-category="small-business" data-icon="MP" data-desc="Profit calculator for African food vendors and restaurants. Enter meals served, price, COGS, rent, and staff costs — get">Mama Put / Food Vendor Business Calculator</a></li><li><a href="/tools/startup-runway/" data-related-tool data-id="startup-runway" data-name="Startup Runway Calculator" data-category="small-business" data-icon="SR" data-desc="Calculate how many months of cash runway your startup has. Enter burn rate, revenue, and cash balance — get runway, brea">Startup Runway Calculator</a></li><li><a href="/tools/marketplace-fees/" data-related-tool data-id="marketplace-fees" data-name="African Marketplace Fee Comparator" data-category="small-business" data-icon="AM" data-desc="Compare net seller payouts using current marketplace quotes you enter for commission, payment, per-sale, withdrawal and ">African Marketplace Fee Comparator</a></li><li><a href="/tools/burn-rate/" data-related-tool data-id="burn-rate" data-name="Burn Rate Calculator" data-category="small-business" data-icon="BR" data-desc="Calculate your monthly gross and net burn rate. Enter personnel, rent, software, marketing costs — see runway and get ac">Burn Rate Calculator</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
 <script>
-// Base land cost per m² (industrial land) and build cost per m²
-var FS_DATA = {
-  NG:{ sym:'₦', land_m2:25000, build_steel:85000, build_concrete:120000, lease_monthly:8000,
-    util_base:8000000, borehole:3500000, power_kva:180000, working_monthly:2000000,
-    permits:1500000, incentives:['Pioneer Status (0% CIT for 3–5 yrs) via NIPC for qualifying industries','BOI grants and matching funds for manufacturing','Industrial parks: Lekki Free Zone, Kano, Calabar FTZ offer tax holidays','NEXIM Bank low-interest loans for export-oriented manufacturers'] },
-  KE:{ sym:'KES', land_m2:8000, build_steel:35000, build_concrete:50000, lease_monthly:3500,
-    util_base:3000000, borehole:1500000, power_kva:75000, working_monthly:800000,
-    permits:600000, incentives:['Special Economic Zones (SEZs): Mombasa SEZ, Naivasha Oserian','Export Processing Zones (EPZs): 10-yr corporate tax holiday','KEDB development finance for manufacturing','Agro-processing: 100% investment deduction in first year'] },
-  ZA:{ sym:'ZAR', land_m2:2500, build_steel:9000, build_concrete:14000, lease_monthly:1200,
-    util_base:800000, borehole:350000, power_kva:22000, working_monthly:250000,
-    permits:180000, incentives:['IDC finance at below-market rates for manufacturing','SEDA support for SME manufacturers','Manufacturing Competitiveness Enhancement Programme (MCEP) grants','Industrial Development Zones (IDZs): Coega, East London, Richards Bay'] },
-  GH:{ sym:'GHS', land_m2:1500, build_steel:7000, build_concrete:10000, lease_monthly:900,
-    util_base:600000, borehole:280000, power_kva:17000, working_monthly:200000,
-    permits:140000, incentives:['Free Zones (Tema): 10-yr tax holiday, 0% customs on inputs','GIPC Pioneer Status: 5-yr tax exemption','EXIM Ghana SME manufacturing loans','1-District-1-Factory (1D1F) scheme: subsidised factory buildings'] },
-  EG:{ sym:'EGP', land_m2:2000, build_steel:8000, build_concrete:12000, lease_monthly:1000,
-    util_base:700000, borehole:300000, power_kva:18000, working_monthly:220000,
-    permits:160000, incentives:['New Industrial Development Authority (NIDA) subsidised land','Special Economic Zones: Suez Canal, Ain Sokhna','Income tax exemptions up to 50% for industrial zones','Golden Licence for large investments'] },
-  ET:{ sym:'ETB', land_m2:1200, build_steel:5500, build_concrete:8000, lease_monthly:700,
-    util_base:450000, borehole:200000, power_kva:12000, working_monthly:150000,
-    permits:100000, incentives:['Industrial Parks: Bole Lemi, Hawassa, Mekelle — subsidised sheds','5-yr income tax holiday for manufacturing','0% duty on capital goods imports','EIB and DFI development finance for manufacturing'] },
-  TZ:{ sym:'TZS', land_m2:60000, build_steel:220000, build_concrete:320000, lease_monthly:28000,
-    util_base:18000000, borehole:8000000, power_kva:480000, working_monthly:6000000,
-    permits:4000000, incentives:['EPZA Special Economic Zones: Dar es Salaam, Kigoma','3-yr tax holiday for qualifying manufacturing','Tanzania Industrial Development Corporation (TIDC) finance','Reduced import duty on capital equipment'] },
-  UG:{ sym:'UGX', land_m2:80000, build_steel:290000, build_concrete:420000, lease_monthly:38000,
-    util_base:24000000, borehole:10500000, power_kva:620000, working_monthly:8000000,
-    permits:5500000, incentives:['Uganda Free Zones Authority (UFZA) — 10-yr holiday','UDC industrial parks: Kampala, Luzira, Jinja','Initial allowance: 75% capital depreciation in year 1','Agro-processing SME fund via MTIC'] },
-  RW:{ sym:'RWF', land_m2:15000, build_steel:55000, build_concrete:80000, lease_monthly:7000,
-    util_base:4500000, borehole:2000000, power_kva:110000, working_monthly:1500000,
-    permits:1000000, incentives:['Kigali SEZ: subsidised land, duty-free imports','7-yr preferential tax rate (15%) for priority sectors','RDB one-stop shop for permits (fastest in Africa — World Bank ranking)','BRD development bank SME loans at 12% pa'] },
-  CI:{ sym:'XOF', land_m2:8000, build_steel:28000, build_concrete:42000, lease_monthly:3500,
-    util_base:2200000, borehole:1000000, power_kva:60000, working_monthly:750000,
-    permits:500000, incentives:['CEPICI Investment Code — Phase A/B/C preferential tax','Free Zones: Vridi, San Pedro Port zone','Agro-industrial processing: 5-yr exemption on profits','BOAD development finance at concessional rates'] },
-  CM:{ sym:'XAF', land_m2:7000, build_steel:26000, build_concrete:38000, lease_monthly:3200,
-    util_base:2000000, borehole:900000, power_kva:55000, working_monthly:700000,
-    permits:450000, incentives:['Investment Charter: priority enterprise benefits','Kribi SEZ: tax holidays, customs facilitation','API investment guide for sector-specific incentives','BEAC development finance'] },
-  SN:{ sym:'XOF', land_m2:9000, build_steel:30000, build_concrete:45000, lease_monthly:3800,
-    util_base:2400000, borehole:1100000, power_kva:65000, working_monthly:820000,
-    permits:550000, incentives:['APIX Free Zone: Dakar — 0% tax for 25 yrs','Investment Code — reduced CIT 15% for priority sectors','Caisse des Dépôts et Consignations (CDC) industrial finance','Plan Sénégal Émergent (PSE) manufacturing grants'] },
-  MA:{ sym:'MAD', land_m2:1800, build_steel:7500, build_concrete:11000, lease_monthly:950,
-    util_base:650000, borehole:290000, power_kva:16000, working_monthly:200000,
-    permits:145000, incentives:['Atlantic Free Zone (Kenitra) — 5-yr CIT exemption, 0% then 15%','Industrial Acceleration Plan (PAI): investment subsidies','AMDIE investment promotion — sector-specific support','OCP Group & Hassan II Fund grants for agri/phosphate sector'] },
-  TN:{ sym:'TND', land_m2:220, build_steel:900, build_concrete:1400, lease_monthly:115,
-    util_base:80000, borehole:35000, power_kva:1900, working_monthly:25000,
-    permits:17000, incentives:['Offshore regime (export-oriented): 10-yr CIT exemption','Industrial Zones: BIZERTE, Sfax — subsidised plots','FOPRODI fund: up to 30% subsidy on investment','UTICA and API one-stop-shop for permits'] },
-  AO:{ sym:'AOA', land_m2:6000, build_steel:22000, build_concrete:32000, lease_monthly:2800,
-    util_base:1800000, borehole:800000, power_kva:48000, working_monthly:630000,
-    permits:420000, incentives:['ANIP — Private Investment Law tax incentives','Luanda Industrial Park: subsidised utilities','PDN (National Development Plan) priority sectors: agro-processing','AIPEX support for FDI manufacturing projects'] }
-};
-var MACH_MULT = { min:0.6, standard:1.0, advanced:2.2 };
-var SECTOR_MACH_BASE = { food:0.4, textile:0.5, pharma:0.8, plastics:0.45, electronics:0.6, construction_mat:0.55, automotive:0.7, agro_processing:0.38 };
-var LOC_LAND_MULT = { industrial_park:0.7, urban_fringe:1.0, rural:0.5 };
-
-function fmtCur(sym,n){
-  if(n>=1000000000) return sym+(n/1000000000).toFixed(2)+'B';
-  if(n>=1000000) return sym+(n/1000000).toFixed(2)+'M';
-  return sym+Math.round(n).toLocaleString();
-}
-
-var FS_LAST_RESULT = null;
-
+var FS_SYMBOLS={NG:'₦',KE:'KES ',ZA:'ZAR ',GH:'GHS ',EG:'EGP ',ET:'ETB ',TZ:'TZS ',UG:'UGX ',RW:'RWF ',CI:'XOF ',CM:'XAF ',SN:'XOF ',MA:'MAD ',TN:'TND ',AO:'AOA '};
+var FS_LAST_RESULT=null;
+function fsNum(id){return parseFloat(document.getElementById(id).value)||0;}
+function fmtCur(sym,n){if(n>=1000000000)return sym+(n/1000000000).toFixed(2)+'B';if(n>=1000000)return sym+(n/1000000).toFixed(2)+'M';return sym+Math.round(n).toLocaleString();}
 function calcFactory(){
-  var country = document.getElementById('fs-country').value;
-  var sector = document.getElementById('fs-sector').value;
-  var size = +document.getElementById('fs-size').value;
-  var loc = document.getElementById('fs-location').value;
-  var structure = document.getElementById('fs-structure').value;
-  var power = +document.getElementById('fs-power').value;
-  var water = document.getElementById('fs-water').value;
-  var machLevel = document.getElementById('fs-mach').value;
-  var d = FS_DATA[country], sym = d.sym;
-
-  var landArea = size * 2.5; // factory footprint × 2.5 for yards, parking, etc.
-  var landCost = landArea * d.land_m2 * LOC_LAND_MULT[loc];
-  if (structure === 'lease') landCost = d.lease_monthly * 12 * 2; // 2-yr lease premium
-
-  var buildCost = structure === 'lease' ? 0 : size * (structure === 'steel_frame' ? d.build_steel : d.build_concrete);
-  var powerCost = power * d.power_kva;
-  var boreholeCost = water === 'yes' ? d.borehole : 0;
-  var utilCost = powerCost + boreholeCost + d.util_base;
-  var machBase = size * d.build_steel * SECTOR_MACH_BASE[sector]; // rough machinery base
-  var machCost = machBase * MACH_MULT[machLevel];
-  var permitsCost = d.permits;
-  var subtotal = landCost + buildCost + machCost + utilCost + permitsCost;
-  var workingCap = d.working_monthly * 3;
-  var total = subtotal + workingCap;
-  FS_LAST_RESULT = {
-    country:country, sector:sector, size:size, location:loc, structure:structure, powerKva:power, water:water, machineryLevel:machLevel,
-    landCost:landCost, buildCost:buildCost, machineryCost:machCost, utilityCost:utilCost, permitsCost:permitsCost, workingCapital:workingCap, total:total, costPerM2:total / size
-  };
-
-  document.getElementById('fs-headline').textContent = size.toLocaleString() + 'm² ' + sector.replace(/_/g,' ') + ' Factory';
-  document.getElementById('fs-sub').textContent = country + ' — ' + loc.replace(/_/g,' ');
-  document.getElementById('fs-land').textContent = fmtCur(sym, landCost);
-  document.getElementById('fs-build').textContent = structure === 'lease' ? 'Leased' : fmtCur(sym, buildCost);
-  document.getElementById('fs-mach-cost').textContent = fmtCur(sym, machCost);
-  document.getElementById('fs-util').textContent = fmtCur(sym, utilCost);
-  document.getElementById('fs-permits').textContent = fmtCur(sym, permitsCost);
-  document.getElementById('fs-working').textContent = fmtCur(sym, workingCap);
-  document.getElementById('fs-total').textContent = fmtCur(sym, total);
-  document.getElementById('fs-per-m2').textContent = fmtCur(sym, total / size) + '/m²';
-
-  var items = [
-    { label:'Land / Site ('+(landArea.toLocaleString())+'m²)', val:landCost, pct: landCost/total*100 },
-    { label:'Building / Structure', val:buildCost, pct: buildCost/total*100 },
-    { label:'Machinery & Equipment', val:machCost, pct: machCost/total*100 },
-    { label:'Power Connection ('+power+'kVA) + Borehole', val:utilCost, pct: utilCost/total*100 },
-    { label:'Permits, Licences & Legal', val:permitsCost, pct: permitsCost/total*100 },
-    { label:'Working Capital (3 months)', val:workingCap, pct: workingCap/total*100 }
-  ];
-  document.getElementById('fs-breakdown').innerHTML = items.map(function(i){
-    return '<div style="margin-bottom:.75rem"><div style="display:flex;justify-content:space-between;font-size:.88rem;margin-bottom:.2rem"><span>'+i.label+'</span><span style="font-weight:600">'+fmtCur(sym,i.val)+' ('+i.pct.toFixed(0)+'%)</span></div><div class="capex-bar"><div class="capex-fill" style="width:'+Math.min(i.pct,100)+'%"></div></div></div>';
-  }).join('');
-
-  document.getElementById('fs-incentives').innerHTML = d.incentives.map(function(inc){ return '<li>'+inc+'</li>'; }).join('');
-  document.getElementById('fs-results').classList.add('on');
-  document.getElementById('fs-results').scrollIntoView({ behavior:'smooth', block:'start' });
+  var country=document.getElementById('fs-country').value,sector=document.getElementById('fs-sector').value,size=fsNum('fs-size'),sym=FS_SYMBOLS[country];
+  var land=fsNum('fs-land-input'),build=fsNum('fs-build-input'),machinery=fsNum('fs-mach-input'),utilities=fsNum('fs-util-input'),permits=fsNum('fs-permits-input');
+  var monthly=fsNum('fs-working-monthly'),months=fsNum('fs-working-months'),working=monthly*months;
+  var subtotal=land+build+machinery+utilities+permits+working,contingencyPct=fsNum('fs-contingency'),contingency=subtotal*contingencyPct/100,total=subtotal+contingency;
+  var status=document.getElementById('fs-copy-status');
+  if(size<=0||subtotal<=0){FS_LAST_RESULT=null;status.textContent='Enter factory floor area and at least one current cost quote.';document.getElementById('fs-results').classList.remove('on');return;}
+  FS_LAST_RESULT={country:country,sector:sector,size:size,landCost:land,buildCost:build,machineryCost:machinery,utilityCost:utilities,permitsCost:permits,monthlyOperatingCash:monthly,workingCapitalMonths:months,workingCapital:working,contingencyPct:contingencyPct,contingency:contingency,total:total,costPerM2:total/size};
+  document.getElementById('fs-headline').textContent=size.toLocaleString()+'m² '+sector.replace(/_/g,' ')+' Factory Quote Model';
+  document.getElementById('fs-sub').textContent=country+' — all amounts are user-entered current quotes';
+  document.getElementById('fs-land').textContent=fmtCur(sym,land);document.getElementById('fs-build').textContent=fmtCur(sym,build);document.getElementById('fs-mach-cost').textContent=fmtCur(sym,machinery);document.getElementById('fs-util').textContent=fmtCur(sym,utilities);document.getElementById('fs-permits').textContent=fmtCur(sym,permits);document.getElementById('fs-working').textContent=fmtCur(sym,working);document.getElementById('fs-total').textContent=fmtCur(sym,total);document.getElementById('fs-per-m2').textContent=fmtCur(sym,total/size)+'/m²';
+  var items=[{label:'Land and site works',val:land},{label:'Building / lease fit-out',val:build},{label:'Machinery and equipment',val:machinery},{label:'Utilities and infrastructure',val:utilities},{label:'Permits and professional fees',val:permits},{label:'Working capital ('+months+' months)',val:working},{label:'Contingency ('+contingencyPct.toFixed(1)+'%)',val:contingency}];
+  document.getElementById('fs-breakdown').innerHTML=items.map(function(item){var pct=total>0?item.val/total*100:0;return '<div style="margin-bottom:.75rem"><div style="display:flex;justify-content:space-between;font-size:.88rem;margin-bottom:.2rem"><span>'+item.label+'</span><span style="font-weight:600">'+fmtCur(sym,item.val)+' ('+pct.toFixed(0)+'%)</span></div><div class="capex-bar"><div class="capex-fill" style="width:'+Math.min(pct,100)+'%"></div></div></div>';}).join('');
+  status.textContent='CAPEX model ready from your entered quotes.';
+  document.getElementById('fs-results').classList.add('on');document.getElementById('fs-results').scrollIntoView({behavior:'smooth',block:'start'});
 }
-
-function factorySummary(){
-  if(!FS_LAST_RESULT) return 'Run the Factory Setup Cost Estimator first.';
-  var d = FS_LAST_RESULT;
-  var sym = FS_DATA[d.country].sym;
-  return [
-    'Factory setup estimate',
-    'Country: '+d.country,
-    'Sector: '+d.sector.replace(/_/g,' '),
-    'Factory size: '+d.size+' m2',
-    'Location: '+d.location.replace(/_/g,' '),
-    'Structure: '+d.structure.replace(/_/g,' '),
-    'Power: '+d.powerKva+' kVA',
-    'Land/site: '+fmtCur(sym,d.landCost),
-    'Building: '+(d.structure==='lease'?'Leased':fmtCur(sym,d.buildCost)),
-    'Machinery: '+fmtCur(sym,d.machineryCost),
-    'Utilities: '+fmtCur(sym,d.utilityCost),
-    'Permits: '+fmtCur(sym,d.permitsCost),
-    'Working capital: '+fmtCur(sym,d.workingCapital),
-    'Total CAPEX: '+fmtCur(sym,d.total),
-    'Cost per m2: '+fmtCur(sym,d.costPerM2),
-    'Note: planning estimate only; verify supplier quotes, permits, tariffs, incentives, and finance terms before acting.'
-  ].join('\n');
-}
-
-function copyFactorySummary(){
-  var status = document.getElementById('fs-copy-status');
-  var text = factorySummary();
-  if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(function(){ status.textContent='Factory estimate copied.'; }).catch(function(){ status.textContent=text; });
-  } else {
-    status.textContent=text;
-  }
-}
-
-function downloadFactoryJson(){
-  if(!FS_LAST_RESULT){ document.getElementById('fs-copy-status').textContent='Run the estimate first.'; return; }
-  var blob = new Blob([JSON.stringify({ tool:'factory-setup-cost', generatedAt:new Date().toISOString(), result:FS_LAST_RESULT, note:'Planning estimate only. Verify local quotes, permits, incentives, tariffs, and finance terms.' }, null, 2)], {type:'application/json'});
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'factory-setup-cost-estimate.json';
-  document.body.appendChild(a);
-  a.click();
-  URL.revokeObjectURL(a.href);
-  a.remove();
-}
-
-document.getElementById('fs-copy-summary').addEventListener('click', copyFactorySummary);
-document.getElementById('fs-download-json').addEventListener('click', downloadFactoryJson);
+function factorySummary(){if(!FS_LAST_RESULT)return 'Run the Factory Setup Cost Estimator first.';var d=FS_LAST_RESULT,sym=FS_SYMBOLS[d.country];return ['Factory setup quote model','Country: '+d.country,'Sector: '+d.sector.replace(/_/g,' '),'Factory size: '+d.size+' m2','Land/site: '+fmtCur(sym,d.landCost),'Building / fit-out: '+fmtCur(sym,d.buildCost),'Machinery: '+fmtCur(sym,d.machineryCost),'Utilities: '+fmtCur(sym,d.utilityCost),'Permits/professional fees: '+fmtCur(sym,d.permitsCost),'Working capital: '+d.workingCapitalMonths+' × '+fmtCur(sym,d.monthlyOperatingCash)+' = '+fmtCur(sym,d.workingCapital),'Contingency: '+d.contingencyPct.toFixed(1)+'% = '+fmtCur(sym,d.contingency),'Total: '+fmtCur(sym,d.total),'Cost per m2: '+fmtCur(sym,d.costPerM2),'Note: user-entered planning model only; verify title/lease, zoning, approvals, delivered equipment, utility capacity, taxes, tariffs and incentives.'].join('\n');}
+function copyFactorySummary(){var status=document.getElementById('fs-copy-status'),value=factorySummary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(value).then(function(){status.textContent='Factory estimate copied.';}).catch(function(){status.textContent=value;});}else{status.textContent=value;}}
+function downloadFactoryJson(){if(!FS_LAST_RESULT){document.getElementById('fs-copy-status').textContent='Run the estimate first.';return;}var blob=new Blob([JSON.stringify({tool:'factory-setup-cost',generatedAt:new Date().toISOString(),result:FS_LAST_RESULT,note:'User-entered planning model; verify all quotes, permits, tariffs, incentives and finance terms.'},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='factory-setup-cost-estimate.json';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);document.getElementById('fs-copy-status').textContent='JSON estimate downloaded.';}
+document.getElementById('fs-copy-summary').addEventListener('click',copyFactorySummary);document.getElementById('fs-download-json').addEventListener('click',downloadFactoryJson);
 </script>
 <script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 </body>

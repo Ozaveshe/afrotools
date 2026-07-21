@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>12-Month Cash Flow Forecast Tool for African Businesses | AfroTools</title>
-<meta name="description" content="Build a 12-month cash flow forecast with revenue, COGS, fixed costs, tax, one-time expenses, negative-month alerts, CSV export and lender summary.">
+<meta name="description" content="Build a transparent 12-month cash forecast from collections, variable costs, fixed costs, one-time payments and a user-entered tax provision. Export CSV or print.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="12-Month Cash Flow Forecast | AfroTools">
 <meta property="og:description" content="Project your African business cash flow 12 months ahead. Red highlight for negative months. Visual bar chart.">
@@ -111,12 +111,12 @@ td:first-child{text-align:left;font-weight:600;color:#0f172a}
 .toggle-btn.active{background:#ea580c;color:#fff}
 .export-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}.export-actions .btn{width:auto;min-height:42px;margin:0;padding:10px 14px}.btn-secondary{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412}.btn-secondary:hover{background:#ffedd5}.action-plan{display:grid;gap:10px;border:1px solid #fed7aa;border-radius:10px;background:#fff7ed;padding:14px;color:#7c2d12;font-size:.82rem;line-height:1.55}.action-plan strong{display:block;color:#0f172a;font-size:.92rem}.action-plan ul{margin:0;padding-left:18px}.export-status{margin-top:10px;color:#475569;font-size:.78rem;font-weight:700;min-height:20px}.cashflow-next-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.cashflow-next-card{border:1px solid #e2e8f0;border-radius:10px;background:#fff;padding:14px}.cashflow-next-card strong{display:block;color:#0f172a;font-size:.9rem;margin-bottom:5px}.cashflow-next-card span{display:block;color:#52637a;font-size:.8rem;line-height:1.55}
 @media(max-width:768px){.row{grid-template-columns:1fr}.row-3{grid-template-columns:1fr 1fr}.monthly-grid{grid-template-columns:repeat(3,1fr)}.summary-row,.cashflow-next-grid{grid-template-columns:1fr 1fr}.export-actions{display:grid}.export-actions .btn{width:100%}}
+html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="dark"] .card,html[data-theme="dark"] .card-head,html[data-theme="dark"] .month-input-wrap,html[data-theme="dark"] .sum-item,html[data-theme="dark"] .cashflow-next-card{background:#111c2e;border-color:#334155}html[data-theme="dark"] .card-title,html[data-theme="dark"] .faq-item summary,html[data-theme="dark"] .cashflow-next-card strong,html[data-theme="dark"] td:first-child{color:#f8fafc}html[data-theme="dark"] label,html[data-theme="dark"] .faq-item p,html[data-theme="dark"] .cashflow-next-card span,html[data-theme="dark"] td,html[data-theme="dark"] .export-status{color:#cbd5e1}html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="dark"] .toggle-btn,html[data-theme="dark"] .btn-secondary{background:#0f172a;color:#f8fafc;border-color:#475569}html[data-theme="dark"] th,html[data-theme="dark"] .total-row td{background:#0f172a;color:#cbd5e1;border-color:#475569}
+@media(prefers-color-scheme:dark){html:not([data-theme="light"]) body{background:#0b1120;color:#e5edf8}html:not([data-theme="light"]) .card,html:not([data-theme="light"]) .card-head,html:not([data-theme="light"]) .month-input-wrap,html:not([data-theme="light"]) .sum-item,html:not([data-theme="light"]) .cashflow-next-card{background:#111c2e;border-color:#334155}html:not([data-theme="light"]) .card-title,html:not([data-theme="light"]) .faq-item summary,html:not([data-theme="light"]) .cashflow-next-card strong,html:not([data-theme="light"]) td:first-child{color:#f8fafc}html:not([data-theme="light"]) label,html:not([data-theme="light"]) .faq-item p,html:not([data-theme="light"]) .cashflow-next-card span,html:not([data-theme="light"]) td,html:not([data-theme="light"]) .export-status{color:#cbd5e1}html:not([data-theme="light"]) input,html:not([data-theme="light"]) select,html:not([data-theme="light"]) .toggle-btn,html:not([data-theme="light"]) .btn-secondary{background:#0f172a;color:#f8fafc;border-color:#475569}html:not([data-theme="light"]) th,html:not([data-theme="light"]) .total-row td{background:#0f172a;color:#cbd5e1;border-color:#475569}}
+@media print{afro-navbar,afro-footer,afro-related-tools,afro-business-cta,.tool-hero,.tool-main-inner>.card,.tool-verification-sec,.cashflow-next-grid,.export-actions,.export-status{display:none!important}body,.tool-main{background:#fff!important;color:#111!important}#results-section{display:block!important}.tool-main{padding:0}.tool-main-inner{padding:0}.card{box-shadow:none;break-inside:avoid}.table-wrap{overflow:visible}table{font-size:9px}}
 </style>
 <link rel="stylesheet" href="/assets/css/small-business-focus.css?v=e81fcfcb">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/cash-flow-forecast.webp">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a cash flow forecast?","acceptedAnswer":{"@type":"Answer","text":"A cash flow forecast projects when money comes in and goes out over a future period. Unlike a profit & loss statement, it tracks actual cash — including the timing of receipts and payments. It's the most important financial tool for small businesses because you can be profitable on paper but still run out of cash if timing is poor."}},{"@type":"Question","name":"What does a negative closing balance mean?","acceptedAnswer":{"@type":"Answer","text":"A negative closing balance (highlighted in red) means you would run out of cash in that month. This requires action: secure a short-term loan, delay expenses, speed up collections, or raise emergency working capital. African businesses often use informal credit (rotating savings with Ajo/Chama, family loans) to bridge short-term cash gaps."}},{"@type":"Question","name":"What tax rate should I use?","acceptedAnswer":{"@type":"Answer","text":"Use the planning rate your accountant, bookkeeping record, or current revenue-authority guidance supports. If you are unsure, run a conservative scenario and a lower-tax scenario, then verify the real filing treatment before using the forecast for lending, pricing, or compliance."}}]}
-</script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <!-- tool-structured-data:auto -->
@@ -129,7 +129,7 @@ td:first-child{text-align:left;font-weight:600;color:#0f172a}
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/makisio-mtiririko-wa-fedha/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/cash-flow-forecast/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="small-business-tool-focus top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
 
 <section class="tool-hero">
@@ -169,14 +169,15 @@ td:first-child{text-align:left;font-weight:600;color:#0f172a}
             <input type="number" id="opening-balance" placeholder="e.g. 3000000" min="0">
           </div>
           <div class="field">
-            <label for="tax-rate">Tax Rate %</label>
-            <input type="number" id="tax-rate" value="30" min="0" max="60" placeholder="e.g. 30">
+            <label for="tax-rate">Planning Cash-Tax Provision %</label>
+            <input type="number" id="tax-rate" min="0" max="100" placeholder="e.g. 20" aria-describedby="cash-tax-help">
+            <small id="cash-tax-help" style="color:#64748b;font-size:.7rem">Applied to positive monthly operating cash only; enter 0 if you model tax payments separately.</small>
           </div>
         </div>
         <div class="row">
           <div class="field">
             <label for="cogs-pct">COGS as % of Revenue</label>
-            <input type="number" id="cogs-pct" value="40" min="0" max="100" placeholder="e.g. 40">
+            <input type="number" id="cogs-pct" min="0" max="100" placeholder="e.g. 40">
           </div>
           <div class="field">
             <label for="fixed-monthly">Fixed Costs per Month</label>
@@ -197,12 +198,12 @@ td:first-child{text-align:left;font-weight:600;color:#0f172a}
         <div id="growth-mode">
           <div class="row">
             <div class="field">
-              <label for="month1-rev">Month 1 Revenue</label>
+              <label for="month1-rev">Month 1 Cash Collections</label>
               <input type="number" id="month1-rev" placeholder="e.g. 1500000" min="0">
             </div>
             <div class="field">
               <label for="monthly-growth">Monthly Growth Rate %</label>
-              <input type="number" id="monthly-growth" value="8" placeholder="e.g. 8">
+              <input type="number" id="monthly-growth" placeholder="e.g. 8" min="-100">
             </div>
           </div>
         </div>
@@ -237,6 +238,7 @@ td:first-child{text-align:left;font-weight:600;color:#0f172a}
             <div class="field" style="margin:0"><input aria-label="Amount" type="number" class="ot-amount" placeholder="Amount" min="0"></div>
           </div>
         </div>
+        <div class="export-status" id="forecast-input-status" role="status" aria-live="polite"></div>
         <button type="button" class="btn btn-primary" onclick="calculate()">Generate 12-Month Forecast</button>
       </div>
     </div>
@@ -280,7 +282,7 @@ td:first-child{text-align:left;font-weight:600;color:#0f172a}
             <span>The tool will flag negative months, year-end balance, and the next check to make before you share the forecast.</span>
           </div>
           <div class="export-actions" aria-label="Cash flow forecast export actions">
-            <button type="button" class="btn btn-secondary" onclick="copyForecastSummary()">Copy lender summary</button>
+            <button type="button" class="btn btn-secondary" onclick="copyForecastSummary()">Copy forecast summary</button>
             <button type="button" class="btn btn-secondary" data-no-gate="true" onclick="downloadCsv()">Download CSV</button>
             <button type="button" class="btn btn-secondary" onclick="window.print()">Print / PDF</button>
           </div>
@@ -294,11 +296,11 @@ td:first-child{text-align:left;font-weight:600;color:#0f172a}
       <div class="card-body">
         <details class="faq-item">
           <summary>What is a cash flow forecast?</summary>
-          <p>A cash flow forecast projects when money comes in and goes out over a future period. Unlike a profit & loss statement, it tracks actual cash — including the timing of receipts and payments. It's the most important financial tool for small businesses because you can be profitable on paper but still run out of cash if timing is poor.</p>
+          <p>A cash flow forecast projects when money may be collected and paid. Unlike a profit and loss statement, it focuses on cash timing. A business can report accounting profit while still facing a cash shortfall.</p>
         </details>
         <details class="faq-item">
           <summary>What does a negative closing balance mean?</summary>
-          <p>A negative closing balance (highlighted in red) means you would run out of cash in that month. This requires action: secure a short-term loan, delay expenses, speed up collections, or raise emergency working capital. African businesses often use informal credit (rotating savings with Ajo/Chama, family loans) to bridge short-term cash gaps.</p>
+          <p>A negative closing balance means the entered scenario cannot fund all planned payments in that month. Recheck timing and assumptions, then document permitted collection, cost, financing, or contingency actions before the month begins.</p>
         </details>
         <details class="faq-item">
           <summary>What tax rate should I use?</summary>
@@ -344,7 +346,7 @@ td:first-child{text-align:left;font-weight:600;color:#0f172a}
     </div>
   </div>
 </section>
-<afro-business-cta tool-name="Cash Flow Forecast Tool" save-note="Generate the forecast, then copy the lender summary, download CSV, or print the report for accountant, lender, or founder review."></afro-business-cta>
+<afro-business-cta tool-name="Cash Flow Forecast Tool" save-note="Generate the forecast, then copy the assumptions summary, download CSV, or print the report for review."></afro-business-cta>
 <afro-related-tools data-ssr="1" category="small-business" current="cash-flow-forecast">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
@@ -411,11 +413,22 @@ function getOneTimeCosts() {
 
 function calculate() {
   var opening = parseFloat(document.getElementById('opening-balance').value)||0;
-  var cogsPct = (parseFloat(document.getElementById('cogs-pct').value)||40) / 100;
+  var cogsInput = parseFloat(document.getElementById('cogs-pct').value);
   var fixedMonthly = parseFloat(document.getElementById('fixed-monthly').value)||0;
-  var taxRate = (parseFloat(document.getElementById('tax-rate').value)||30) / 100;
+  var taxInput = parseFloat(document.getElementById('tax-rate').value);
+  var cogsPct = (isFinite(cogsInput) ? cogsInput : 0) / 100;
+  var taxRate = (isFinite(taxInput) ? taxInput : 0) / 100;
   var revs = getRevenues();
   var ot = getOneTimeCosts();
+  var growthInput = parseFloat(document.getElementById('monthly-growth').value);
+  var inputStatus = document.getElementById('forecast-input-status');
+
+  if (opening < 0 || fixedMonthly < 0 || cogsPct < 0 || cogsPct > 1 || taxRate < 0 || taxRate > 1 || (revMode === 'growth' && (!isFinite(revs[0]) || revs[0] <= 0 || (isFinite(growthInput) && growthInput <= -100))) || revs.some(function(value){return !isFinite(value) || value < 0;})) {
+    inputStatus.textContent = 'Enter non-negative cash and costs, COGS and tax provisions from 0% to 100%, and positive Month 1 collections for growth mode.';
+    document.getElementById('results-section').style.display = 'none';
+    return;
+  }
+  inputStatus.textContent = '';
 
   var rows = {
     Revenue: [], COGS: [], GrossProfit: [], FixedCosts: [],
@@ -458,13 +471,13 @@ function calculate() {
 
   // Summary stats
   var totalRev = rows.Revenue.reduce(function(a,b){return a+b;},0);
-  var totalCost = rows.COGS.reduce(function(a,b){return a+b;},0) + rows.FixedCosts.reduce(function(a,b){return a+b;},0) + rows.OnetimeCosts.reduce(function(a,b){return a+b;},0);
+  var totalCost = rows.COGS.reduce(function(a,b){return a+b;},0) + rows.FixedCosts.reduce(function(a,b){return a+b;},0) + rows.OnetimeCosts.reduce(function(a,b){return a+b;},0) + rows.Tax.reduce(function(a,b){return a+b;},0);
   var negMonths = rows.ClosingBalance.filter(function(b){return b<0;}).length;
   var closingYear = rows.ClosingBalance[11];
 
   document.getElementById('summary-stats').innerHTML =
-    '<div class="sum-item"><div class="sum-num">' + fmtShort(totalRev) + '</div><div class="sum-lbl">Total Revenue (12mo)</div></div>' +
-    '<div class="sum-item"><div class="sum-num">' + fmtShort(totalCost) + '</div><div class="sum-lbl">Total Costs (12mo)</div></div>' +
+    '<div class="sum-item"><div class="sum-num">' + fmtShort(totalRev) + '</div><div class="sum-lbl">Cash Collected (12mo)</div></div>' +
+    '<div class="sum-item"><div class="sum-num">' + fmtShort(totalCost) + '</div><div class="sum-lbl">Cash Outflows (12mo)</div></div>' +
     '<div class="sum-item"><div class="sum-num" style="color:' + (negMonths>0?'#dc2626':'#15803d') + '">' + negMonths + '</div><div class="sum-lbl">Negative Months</div></div>' +
     '<div class="sum-item"><div class="sum-num" style="color:' + (closingYear<0?'#dc2626':'#ea580c') + '">' + fmtShort(closingYear) + '</div><div class="sum-lbl">Year-End Balance</div></div>';
 
@@ -484,13 +497,13 @@ function calculate() {
 
   // Table
   var rowDefs = [
-    {key:'Revenue',label:'Revenue',cls:''},
-    {key:'COGS',label:'Cost of Goods (COGS)',cls:''},
-    {key:'GrossProfit',label:'Gross Profit',cls:'total-row'},
+    {key:'Revenue',label:'Cash Collected',cls:''},
+    {key:'COGS',label:'Variable Cash Costs',cls:''},
+    {key:'GrossProfit',label:'Cash After Variable Costs',cls:'total-row'},
     {key:'FixedCosts',label:'Fixed Costs',cls:''},
     {key:'OnetimeCosts',label:'One-Time Costs',cls:''},
-    {key:'TaxablePL',label:'Taxable P&L',cls:'total-row'},
-    {key:'Tax',label:'Tax',cls:''},
+    {key:'TaxablePL',label:'Pre-Tax Operating Cash',cls:'total-row'},
+    {key:'Tax',label:'Planning Tax Cash Provision',cls:''},
     {key:'NetCashFlow',label:'Net Cash Flow',cls:'total-row'},
     {key:'ClosingBalance',label:'Closing Balance',cls:'closing-row'}
   ];
@@ -507,9 +520,6 @@ function calculate() {
       tds += '<td' + cls + '>' + fmt(val) + '</td>';
     });
     tr.innerHTML = tds;
-    if (rd.key === 'ClosingBalance') {
-      var allNeg = rows.ClosingBalance[rows.ClosingBalance.indexOf(rows[rd.key][0])] < 0;
-    }
     tbody.appendChild(tr);
   });
 
@@ -543,8 +553,8 @@ function forecastSummaryText() {
   return [
     'AfroTools cash flow forecast',
     'Currency: ' + lastForecast.currency,
-    'Total revenue: ' + fmt(summary.totalRevenue || 0),
-    'Total costs: ' + fmt(summary.totalCosts || 0),
+    'Total cash collected: ' + fmt(summary.totalRevenue || 0),
+    'Total cash outflows including planning tax provision: ' + fmt(summary.totalCosts || 0),
     'Year-end balance: ' + fmt(summary.yearEndBalance || 0),
     'Negative months: ' + (summary.negativeMonths || 0) + ' (first: ' + firstNegative + ')',
     'Lowest closing balance: ' + fmt(lowest),
@@ -600,7 +610,7 @@ document.addEventListener('DOMContentLoaded', function() {
   MONTH_NAMES.forEach(function(m) {
     var wrap = document.createElement('div');
     wrap.className = 'month-input-wrap';
-    wrap.innerHTML = '<label>' + m + '</label><input aria-label="Line item amount" type="number" placeholder="0" min="0">';
+    wrap.innerHTML = '<label>' + m + '</label><input aria-label="' + m + ' cash collections" type="number" placeholder="0" min="0">';
     grid.appendChild(wrap);
   });
 });

@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Net Worth Tracker | AfroTools</title>
-<meta name="description" content="Calculate your net worth: total assets minus total liabilities. Track savings, investments, property, vehicles, and debts in your local African currency.">
+<title>Net Worth Calculator | AfroTools</title>
+<meta name="description" content="Calculate a point-in-time net worth from asset and liability amounts you enter locally in your browser. No signup or account required.">
 <meta property="og:title" content="Net Worth Tracker | AfroTools">
-<meta property="og:description" content="Calculate your net worth: total assets minus total liabilities. Track savings, investments, property, vehicles, and debts in your local African currency.">
+<meta property="og:description" content="Calculate assets minus liabilities from point-in-time values you enter.">
 <meta property="og:url" content="https://afrotools.com/tools/net-worth/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Net Worth Tracker | AfroTools">
-<meta name="twitter:description" content="Calculate your net worth: total assets minus total liabilities. Track savings, investments, property, vehicles, and debts in your local African currency.">
+<meta name="twitter:description" content="Calculate assets minus liabilities from point-in-time values you enter.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -98,14 +98,14 @@ details summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
 details[open] summary::after{content:'\2212'}
 .faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
 .faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+.form-error{min-height:1.4em;color:#b91c1c;font-size:.84rem;font-weight:600;margin:.6rem 0 0}
+html[data-theme="dark"] body{background:#07111f;color:#e5edf8}html[data-theme="dark"] :is(.card,.item-row,.summary-box,.faq-item,.df-upgrade__card){background:#101c2c!important;border-color:#2a3b51!important;color:#e5edf8!important}html[data-theme="dark"] :is(h2,h3,label,.summary-val){color:#f8fafc!important}html[data-theme="dark"] :is(.summary-label,.faq-a,.df-upgrade p,.df-upgrade li){color:#b6c5d8!important}html[data-theme="dark"] :is(input,select,details summary,.btn-add-row){background:#17263a!important;border-color:#3a4e68!important;color:#f8fafc!important}html[data-theme="dark"] .info-box{background:#102844;border-color:#315b86;color:#bfdbfe}
+@media(prefers-color-scheme:dark){html:not([data-theme="light"]) body{background:#07111f;color:#e5edf8}html:not([data-theme="light"]) :is(.card,.item-row,.summary-box,.faq-item,.df-upgrade__card){background:#101c2c!important;border-color:#2a3b51!important;color:#e5edf8!important}html:not([data-theme="light"]) :is(h2,h3,label,.summary-val){color:#f8fafc!important}html:not([data-theme="light"]) :is(.summary-label,.faq-a,.df-upgrade p,.df-upgrade li){color:#b6c5d8!important}html:not([data-theme="light"]) :is(input,select,details summary,.btn-add-row){background:#17263a!important;border-color:#3a4e68!important;color:#f8fafc!important}html:not([data-theme="light"]) .info-box{background:#102844;border-color:#315b86;color:#bfdbfe}}
 @media(max-width:680px){.summary-grid{grid-template-columns:1fr}}
 </style>
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/net-worth.webp">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/net-worth.webp">
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Net Worth Tracker?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Net Worth Tracker then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Net Worth Tracker?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Net Worth Tracker free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"What is a good net worth by age in Africa?","acceptedAnswer":{"@type":"Answer","text":"A common rule of thumb: Net Worth should be approximately 1x annual salary by age 30, 3x by 40, 6x by 50. In African context, this varies widely by country, profession, and family obligations. More important than benchmarks: focus on the trend — is your net worth growing consistently each year?"}},{"@type":"Question","name":"Should I include my house in net worth?","acceptedAnswer":{"@type":"Answer","text":"Yes, include the current market value of your home. However, your primary residence is an illiquid asset — you can't easily access that wealth without selling. It's useful to calculate both \"total net worth\" (including home) and \"liquid net worth\" (excluding home) to understand your financial flexibility."}},{"@type":"Question","name":"How do I value my business for net worth calculation?","acceptedAnswer":{"@type":"Answer","text":"A simple approach: annual profit x 2-5 (depending on business stability). A more accurate approach: use the Seller's Discretionary Earnings (SDE) or EBITDA x industry multiple. For informal businesses or early-stage companies, be conservative (1-2x annual net profit). Overvaluing your business inflates your net worth unrealistically."}}]}
-</script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/tools/net-worth/">
@@ -119,8 +119,8 @@ details[open] summary::after{content:'\2212'}
 <div class="tool-hero">
   <div class="container">
     <nav class="breadcrumb"><a href="/">AfroTools</a><span>›</span><a href="/fintech/">Fintech &amp; Banking</a><span>›</span>Net Worth Tracker</nav>
-    <h1>Net Worth Tracker</h1>
-    <p>Calculate your net worth: assets minus liabilities. Track savings, investments, property, vehicles, business value, and all your debts in local currency.</p>
+    <h1>Net Worth Calculator</h1>
+    <p>Calculate a point-in-time net worth from asset and liability values you enter locally in your browser.</p>
     <div class="hero-badges"><span class="hero-badge">Universal</span><span class="hero-badge">All Asset Types</span><span class="hero-badge">Free &amp; Private</span></div>
   </div>
 </div>
@@ -166,7 +166,8 @@ details[open] summary::after{content:'\2212'}
     <button type="button" class="btn-add-row" onclick="addItemRow('liabilities-list')">+ Add Liability</button>
 
     <button type="button" class="btn-calc" onclick="calcNetWorth()">Calculate Net Worth</button>
-    <div class="results" id="nw-results">
+    <p class="form-error" id="nw-error" role="alert"></p>
+    <div class="results" id="nw-results" role="region" aria-live="polite" tabindex="-1">
       <div class="nw-hero">
         <div class="nw-label">Your Net Worth</div>
         <div class="nw-val" id="nw-total"></div>
@@ -191,35 +192,26 @@ details[open] summary::after{content:'\2212'}
     <div>
       <span class="df-upgrade__kicker">Net worth snapshot</span>
       <h2>Calculate assets minus debts without losing liquidity context</h2>
-      <p>Not sure how to get the most from the Net Worth Tracker? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
-      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Net Worth Tracker takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
+      <p>Enter current asset values and outstanding liability balances measured on the same date.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> total assets, total liabilities, net worth and the debt-to-asset ratio.</li><li><strong>How it works:</strong> net worth equals entered assets minus entered liabilities.</li><li><strong>What to check:</strong> use defensible current values, avoid double counting and update debt balances from statements.</li></ul>
+      <p class="df-upgrade__note"><strong>Private local calculation.</strong> Values are not saved by this page, and the result is not a valuation or financial recommendation.</p>
     </div>
-    <form class="df-form" data-df-form="net-worth">
-      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
-      <label>Total assets<input name="assets" type="number" value="12000000" min="0" step="any" aria-label="Total assets"></label>
-      <label>Total debts<input name="debts" type="number" value="3500000" min="0" step="any" aria-label="Total debts"></label>
-      <label>Cash reserve<input name="cash" type="number" value="800000" min="0" step="any" aria-label="Cash reserve"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="net-worth" data-df-base="Net Worth Tracker — enter your details above to see your result." aria-live="polite">Net Worth Tracker — enter your details above to see your result.</output>
-      <div class="df-actions"><button type="button" data-df-copy="net-worth">Copy summary</button></div>
-    </form>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="net-worth-faq-title">
   <h2 id="net-worth-faq-title">Frequently Asked Questions</h2>
-  <div class="df-faq__grid"><details><summary>How do I use the Net Worth Tracker?</summary><p>Enter your amounts, rates and dates in the fields above. The Net Worth Tracker then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Net Worth Tracker?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Net Worth Tracker free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
+  <div class="df-faq__grid"><details><summary>What date should values use?</summary><p>Use the same as-of date for assets and liabilities so the subtraction is meaningful.</p></details><details><summary>Are entries saved?</summary><p>No. This page calculates in the browser and does not persist the entered financial values.</p></details><details><summary>How should uncertain values be handled?</summary><p>Use a supportable estimate and consider low and high scenarios rather than presenting an uncertain private asset as exact.</p></details></div>
 </section>
-    <div class="faq-item"><details><summary>What is a good net worth by age in Africa?</summary><div class="faq-a">A common rule of thumb: Net Worth should be approximately 1x annual salary by age 30, 3x by 40, 6x by 50. In African context, this varies widely by country, profession, and family obligations. More important than benchmarks: focus on the trend — is your net worth growing consistently each year?</div></details></div>
+    <div class="faq-item"><details><summary>Is there a universal net-worth target by age?</summary><div class="faq-a">No. Circumstances, currencies, household structure, pensions and obligations vary. Use consistent definitions to monitor your own figures rather than treating a generic multiple as a requirement.</div></details></div>
     <div class="faq-item"><details><summary>Should I include my house in net worth?</summary><div class="faq-a">Yes, include the current market value of your home. However, your primary residence is an illiquid asset — you can't easily access that wealth without selling. It's useful to calculate both "total net worth" (including home) and "liquid net worth" (excluding home) to understand your financial flexibility.</div></details></div>
-    <div class="faq-item"><details><summary>How do I value my business for net worth calculation?</summary><div class="faq-a">A simple approach: annual profit x 2-5 (depending on business stability). A more accurate approach: use the Seller's Discretionary Earnings (SDE) or EBITDA x industry multiple. For informal businesses or early-stage companies, be conservative (1-2x annual net profit). Overvaluing your business inflates your net worth unrealistically.</div></details></div>
+    <div class="faq-item"><details><summary>How do I value a private business?</summary><div class="faq-a">Do not apply an unsupported generic multiple. Use a recent arm's-length valuation or a defensible method appropriate to the business, and show uncertainty separately.</div></details></div>
   </div>
 </div>
 <afro-related-tools data-ssr="1" category="fintech" current="net-worth">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/tools/loan-shark-compare/" data-related-tool data-id="loan-shark-compare" data-name="Loan Shark vs Bank Rate" data-category="fintech" data-icon="LS" data-desc="Compare informal moneylender rates vs bank loans vs fintech apps. True APR calculator showing hidden cost of predatory l">Loan Shark vs Bank Rate</a></li><li><a href="/tools/mobile-vs-bank/" data-related-tool data-id="mobile-vs-bank" data-name="Mobile Money vs Bank Transfer" data-category="fintech" data-icon="MM" data-desc="Compare M-Pesa, MTN MoMo, Airtel Money vs bank transfer fees for domestic and cross-border payments across Africa.">Mobile Money vs Bank Transfer</a></li><li><a href="/tools/digital-lending/" data-related-tool data-id="digital-lending" data-name="Digital Lending App Rates" data-category="fintech" data-icon="DL" data-desc="Compare digital lending apps (Fuliza, FairMoney, Carbon, PalmCredit) — true APR, fees, repayment periods.">Digital Lending App Rates</a></li><li><a href="/tools/fixed-deposit/" data-related-tool data-id="fixed-deposit" data-name="Fixed Deposit Rate Comparator" data-category="fintech" data-icon="FD" data-desc="Compare fixed deposit and savings account interest rates across African banks. 30/60/90/180/365-day tenors, 20+ banks.">Fixed Deposit Rate Comparator</a></li><li><a href="/tools/microfinance-loan/" data-related-tool data-id="microfinance-loan" data-name="Microfinance Loan Calculator" data-category="fintech" data-icon="ML" data-desc="Calculate microfinance loan repayments for African MFIs. Flat vs reducing balance, group vs individual loans.">Microfinance Loan Calculator</a></li><li><a href="/tools/payment-gateway/" data-related-tool data-id="payment-gateway" data-name="Payment Gateway Fee Compare" data-category="fintech" data-icon="PG" data-desc="Compare Paystack, Flutterwave, Stripe, DPO, Peach Payments transaction fees for African merchants.">Payment Gateway Fee Compare</a></li></ul>
+<ul class="seo-links-list"><li><a href="/tools/loan-shark-compare/" data-related-tool data-id="loan-shark-compare" data-name="Informal Loan vs Bank Cost Calculator" data-category="fintech" data-icon="IL" data-desc="Compare a monthly flat-rate loan with a reducing-balance bank loan. See repayment, finance cost and effective annual rat">Informal Loan vs Bank Cost Calculator</a></li><li><a href="/tools/mobile-vs-bank/" data-related-tool data-id="mobile-vs-bank" data-name="Mobile Money vs Bank Transfer Comparator" data-category="fintech" data-icon="MM" data-desc="Compare a mobile money quote with a bank transfer quote. Enter the current flat and percentage fees to see total cost an">Mobile Money vs Bank Transfer Comparator</a></li><li><a href="/tools/digital-lending/" data-related-tool data-id="digital-lending" data-name="Digital Loan Offer and APR Comparator" data-category="fintech" data-icon="DL" data-desc="Compare up to three current digital loan offers by amount received, term and total repayment. See finance cost and effec">Digital Loan Offer and APR Comparator</a></li><li><a href="/tools/fixed-deposit/" data-related-tool data-id="fixed-deposit" data-name="Fixed Deposit Rate Comparator" data-category="fintech" data-icon="FD" data-desc="Calculate fixed deposit maturity value from a bank&#39;s current rate, term, tax and compounding method. See gross interest,">Fixed Deposit Rate Comparator</a></li><li><a href="/tools/microfinance-loan/" data-related-tool data-id="microfinance-loan" data-name="Microfinance Loan Calculator" data-category="fintech" data-icon="ML" data-desc="Calculate a microfinance offer&#39;s monthly repayment, fees, finance cost and effective annual rate for flat or reducing-ba">Microfinance Loan Calculator</a></li><li><a href="/tools/payment-gateway/" data-related-tool data-id="payment-gateway" data-name="Payment Gateway Fee Comparator" data-category="fintech" data-icon="PG" data-desc="Compare three current payment gateway quotes using transaction value, percentage fee, flat fee and optional per-transact">Payment Gateway Fee Comparator</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
@@ -234,29 +226,34 @@ function addItemRow(listId){
 }
 function calcNetWorth(){
   var sym=document.getElementById('nw-currency').value;
+  var error=document.getElementById('nw-error'),output=document.getElementById('nw-results'),valid=true;
+  error.textContent='';output.classList.remove('on');
   function sumList(listId){
     var rows=document.querySelectorAll('#'+listId+' .item-row');
     var total=0;
     rows.forEach(function(row){
       var inputs=row.querySelectorAll('input');
-      total+=parseFloat(inputs[1].value)||0;
+      var raw=inputs[1].value.trim(),amount=raw===''?0:parseFloat(raw);
+      if(!Number.isFinite(amount)||amount<0){valid=false;return;}
+      total+=amount;
     });
     return total;
   }
   var assets=sumList('assets-list');
   var liabilities=sumList('liabilities-list');
+  if(!valid){error.textContent='Every asset and liability amount must be zero or more.';return;}
+  if(assets===0&&liabilities===0){error.textContent='Enter at least one asset or liability amount.';return;}
   var netWorth=assets-liabilities;
   var dta=assets>0?(liabilities/assets)*100:0;
-  function fmt(n){return sym+(Math.round(n)).toLocaleString();}
+  function fmt(n){return sym+' '+n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
   document.getElementById('nw-total').textContent=fmt(netWorth);
   document.getElementById('nw-sub').textContent='Assets: '+fmt(assets)+' − Liabilities: '+fmt(liabilities);
   document.getElementById('nw-assets').textContent=fmt(assets);
   document.getElementById('nw-liabilities').textContent=fmt(liabilities);
   document.getElementById('nw-dta').textContent=dta.toFixed(1)+'%';
   document.getElementById('nw-dta-fill').style.width=Math.min(100,dta)+'%';
-  var dtaText=dta<20?'Excellent — low debt relative to assets':dta<40?'Good — manageable debt level':dta<60?'Moderate — consider reducing debt':dta<80?'High — focus on paying down debt':'Very high — debt reduction is urgent';
-  document.getElementById('nw-dta-text').textContent=dtaText;
-  document.getElementById('nw-results').classList.add('on');
+  document.getElementById('nw-dta-text').textContent=assets>0?'Liabilities equal '+dta.toFixed(1)+'% of entered assets. This ratio is descriptive, not a financial-health score.':'No entered assets; the debt-to-asset ratio is not meaningful.';
+  output.classList.add('on');output.focus({preventScroll:true});
 }
 </script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>

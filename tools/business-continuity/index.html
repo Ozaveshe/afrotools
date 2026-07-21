@@ -39,10 +39,6 @@ a{text-decoration:none;color:inherit}
 <meta name="twitter:title" content="Business Continuity Plan Generator — Africa | AfroTools">
 <meta name="twitter:description" content="Generate a basic Business Continuity Plan (BCP) for African businesses. RTO/RPO targets, emergency contacts template, backup recommendations, insurance gap analysis.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/business-continuity.webp">
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Business Continuity Plan Generator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Business Continuity Plan Generator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Business Continuity Plan Generator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Business Continuity Plan Generator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}}]}
-</script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <!-- tool-structured-data:auto -->
@@ -79,7 +75,7 @@ a{text-decoration:none;color:inherit}
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/mwendelezo-wa-biashara/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/business-continuity/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh small-business-tool-focus">
 <afro-navbar theme="dark" active="security"></afro-navbar>
 <section class="en-tool-hero">
   <div class="en-tool-hero-inner">
@@ -103,7 +99,7 @@ a{text-decoration:none;color:inherit}
     <div class="en-form-grid">
       <div class="en-field">
         <label class="en-label">Business Name</label>
-        <input aria-label="E.g. Okonkwo Traders Ltd" type="text" id="bizName" class="en-input" placeholder="e.g. Okonkwo Traders Ltd" value="My Business">
+        <input aria-label="Business name" type="text" id="bizName" class="en-input" placeholder="e.g. Okonkwo Traders Ltd">
       </div>
       <div class="en-field">
         <label class="en-label">Country</label>
@@ -142,17 +138,21 @@ a{text-decoration:none;color:inherit}
         <select id="rto" class="en-select" aria-label="Rto">
           <option value="1h">1 hour (critical real-time)</option>
           <option value="4h">4 hours (same day)</option>
-          <option value="24h" selected>24 hours (next day)</option>
+          <option value="24h">24 hours (next day)</option>
           <option value="72h">72 hours (3 days)</option>
           <option value="1w">1 week</option>
         </select>
       </div>
       <div class="en-field">
+        <label class="en-label" for="rpo">Max Tolerable Data Loss</label>
+        <select id="rpo" class="en-select"><option value="15m">15 minutes</option><option value="1h">1 hour</option><option value="4h">4 hours</option><option value="24h">24 hours</option><option value="none">No digital data dependency</option></select>
+      </div>
+      <div class="en-field">
         <label class="en-label">Key Threats to Your Business</label>
         <select id="threats" class="en-select" multiple size="4" aria-label="Threats">
-          <option value="power" selected>Power outages / generator failure</option>
+          <option value="power">Power outages / generator failure</option>
           <option value="flood">Flooding / fire</option>
-          <option value="cyber" selected>Cyberattack / data breach</option>
+          <option value="cyber">Cyberattack / data breach</option>
           <option value="supplier">Key supplier failure</option>
           <option value="staff">Key staff loss</option>
           <option value="civil">Civil unrest / strike</option>
@@ -164,6 +164,8 @@ a{text-decoration:none;color:inherit}
   </div>
   <div class="en-form-actions">
     <button type="button" class="en-btn en-btn-full" onclick="generate()">Generate BCP Framework</button>
+    <button type="button" class="en-btn" onclick="downloadBcpTxt()">Download TXT</button>
+    <p id="bcpStatus" role="status" aria-live="polite"></p>
   </div>
   <div class="en-results" id="results">
     <div class="en-results-hero">
@@ -186,130 +188,79 @@ a{text-decoration:none;color:inherit}
     <div class="en-tip">
       <div class="en-tip-icon">&#x1f4a1;</div>
       <div class="en-tip-body">
-        <div class="en-tip-label">BCP Best Practice</div>
-        <div class="en-tip-text">Test your BCP at least twice a year with a tabletop exercise. In Nigeria, 37% of SMEs that experienced a major disruption without a BCP closed within 12 months. The cost of a BCP is 2–5% of annual revenue; the cost of NO BCP can be 100% of your business.</div>
+        <div class="en-tip-label">Exercise and ownership</div>
+        <div class="en-tip-text">Assign an owner and review date to every recovery action. Test the draft with a tabletop exercise and record what failed; the generator does not certify readiness or compliance.</div>
       </div>
     </div>
   </div>
 </div>
 
-<section class="df-upgrade" data-df-upgrade="business-continuity">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Business Continuity Plan Generator: quick guide</h2>
-      <p>Not sure how to get the most from the Business Continuity Plan Generator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
-      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Business Continuity Plan Generator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
-    </div>
-    <form class="df-form" data-df-form="business-continuity">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="business-continuity" data-df-base="Business Continuity Plan Generator — enter your details above to see your result." aria-live="polite">Business Continuity Plan Generator — enter your details above to see your result.</output>
-      <div class="df-actions"><button type="button" data-df-copy="business-continuity">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="business-continuity-faq-title">
-  <h2 id="business-continuity-faq-title">Business Continuity Plan Generator — Africa FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How do I use the Business Continuity Plan Generator?</summary><p>Enter your amounts, rates and dates in the fields above. The Business Continuity Plan Generator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Business Continuity Plan Generator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Business Continuity Plan Generator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
-</section>
 <afro-related-tools data-ssr="1" category="small-business" current="business-continuity">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/tools/mini-importation/" data-related-tool data-id="mini-importation" data-name="Mini-Importation Profit Calculator" data-category="small-business" data-icon="MI" data-desc="Calculate landed cost and profit for importing goods from China via Alibaba/1688. Includes FX conversion, shipping, cust">Mini-Importation Profit Calculator</a></li><li><a href="/tools/pos-agent/" data-related-tool data-id="pos-agent" data-name="POS Agent Business Calculator" data-category="small-business" data-icon="PA" data-desc="Calculate POS agent/mobile money agent profitability in Nigeria (OPay/Moniepoint), Kenya (M-Pesa), Ghana (MTN MoMo). Dai">POS Agent Business Calculator</a></li><li><a href="/tools/mama-put/" data-related-tool data-id="mama-put" data-name="Mama Put / Food Vendor Business Calculator" data-category="small-business" data-icon="MP" data-desc="Profit calculator for African food vendors and restaurants. Enter meals served, price, COGS, rent, and staff costs — get">Mama Put / Food Vendor Business Calculator</a></li><li><a href="/tools/startup-runway/" data-related-tool data-id="startup-runway" data-name="Startup Runway Calculator" data-category="small-business" data-icon="SR" data-desc="Calculate how many months of cash runway your startup has. Enter burn rate, revenue, and cash balance — get runway, brea">Startup Runway Calculator</a></li><li><a href="/tools/marketplace-fees/" data-related-tool data-id="marketplace-fees" data-name="Marketplace Fee Comparator (Africa)" data-category="small-business" data-icon="MF" data-desc="Compare selling fees across Jumia, Konga, Takealot, Kilimall and other African marketplaces. See net payout per sale by ">Marketplace Fee Comparator (Africa)</a></li><li><a href="/tools/burn-rate/" data-related-tool data-id="burn-rate" data-name="Burn Rate Calculator" data-category="small-business" data-icon="BR" data-desc="Calculate your monthly gross and net burn rate. Enter personnel, rent, software, marketing costs — see runway and get ac">Burn Rate Calculator</a></li></ul>
+<ul class="seo-links-list"><li><a href="/tools/mini-importation/" data-related-tool data-id="mini-importation" data-name="Mini-Importation Profit Calculator" data-category="small-business" data-icon="MI" data-desc="Calculate landed cost, profit margin and ROI using your entered purchase price, exchange rate, freight, customs, clearin">Mini-Importation Profit Calculator</a></li><li><a href="/tools/pos-agent/" data-related-tool data-id="pos-agent" data-name="POS Agent Business Calculator" data-category="small-business" data-icon="PA" data-desc="Estimate POS or mobile-money agent profit using your entered provider commission, completed transactions, operating cost">POS Agent Business Calculator</a></li><li><a href="/tools/mama-put/" data-related-tool data-id="mama-put" data-name="Mama Put / Food Vendor Business Calculator" data-category="small-business" data-icon="MP" data-desc="Profit calculator for African food vendors and restaurants. Enter meals served, price, COGS, rent, and staff costs — get">Mama Put / Food Vendor Business Calculator</a></li><li><a href="/tools/startup-runway/" data-related-tool data-id="startup-runway" data-name="Startup Runway Calculator" data-category="small-business" data-icon="SR" data-desc="Calculate how many months of cash runway your startup has. Enter burn rate, revenue, and cash balance — get runway, brea">Startup Runway Calculator</a></li><li><a href="/tools/marketplace-fees/" data-related-tool data-id="marketplace-fees" data-name="African Marketplace Fee Comparator" data-category="small-business" data-icon="AM" data-desc="Compare net seller payouts using current marketplace quotes you enter for commission, payment, per-sale, withdrawal and ">African Marketplace Fee Comparator</a></li><li><a href="/tools/burn-rate/" data-related-tool data-id="burn-rate" data-name="Burn Rate Calculator" data-category="small-business" data-icon="BR" data-desc="Calculate your monthly gross and net burn rate. Enter personnel, rent, software, marketing costs — see runway and get ac">Burn Rate Calculator</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
 <script>
-var SECTOR_RTO={retail:'24h',fintech:'1h',health:'4h',logistics:'24h',manufacturing:'72h',hospitality:'4h',professional:'72h',tech:'1h'};
+var LAST_BCP_TEXT='';
 var THREAT_PLANS={
-  power:{title:'Power Outage',steps:['Install minimum 8-hour diesel generator capacity','UPS units on all critical servers and networking equipment','Maintain 2-week diesel fuel reserve','MOA with backup generator rental company','Document all power-critical processes']},
-  flood:{title:'Fire / Flood Disaster',steps:['Offsite document backup (physical + cloud)','Fire suppression system and regular inspection','Business Premises Insurance (BPI) with full replacement value','Alternative operating location identified within 10km','Emergency evacuation drill every 6 months']},
-  cyber:{title:'Cyberattack / Ransomware',steps:['Daily encrypted cloud backup (test restoration monthly)','Offline backup copy (tape or external drive in separate location)','Incident Response Plan — who to call, what to isolate','Cyber insurance policy reviewed annually','Staff phishing simulation training quarterly']},
-  supplier:{title:'Key Supplier Failure',steps:['Maintain 30-day inventory buffer for critical inputs','Qualify at least 2 alternative suppliers per critical item','Supplier concentration risk — no single supplier >40% of input','Supplier financial health monitoring annually','Contractual force majeure and SLA clauses reviewed']},
-  staff:{title:'Key Staff Loss',steps:['Document all critical processes — no single-person dependency','Cross-training programme for all key roles','Succession plan for C-suite and department heads','Employment contracts with adequate notice periods','Knowledge management system for institutional knowledge']},
-  civil:{title:'Civil Unrest / Strike',steps:['Work-from-home policy and infrastructure in place','Early warning monitoring (local news, industry alerts)','Evacuation routes mapped for all office locations','Insurance: Political Violence & Terrorism (PVT) cover','Staff communication tree for rapid mobilization']},
-  telecom:{title:'Internet / Telecom Outage',steps:['Dual-ISP setup with automatic failover','4G/LTE backup via enterprise SIM card and router','Starlink backup for critical operations (now available in NG/KE/ZA/GH)','Identify offline-capable workflows for each department','Offline copies of critical data and CRM records']}
+  power:{title:'Power interruption',steps:['List critical loads and maximum safe outage','Name the alternate-power owner and activation criteria','Record current fuel, maintenance or rental contacts','Test safe transfer and shutdown procedures']},
+  flood:{title:'Fire or flood',steps:['Record evacuation and emergency-service contacts','Identify protected offsite records and backup locations','Name an alternate operating site or remote-work trigger','Test staff accounting and customer notification steps']},
+  cyber:{title:'Cyber incident',steps:['Record isolation authority and technical contacts','Keep protected backups and test restoration evidence','Define internal escalation and customer communication owners','Confirm applicable breach-notification and legal duties with qualified advisers']},
+  supplier:{title:'Key supplier failure',steps:['List critical inputs and maximum tolerable delay','Record at least one qualified alternative and current lead time','Document substitute approval and quality checks','Review contract, inventory and customer communication triggers']},
+  staff:{title:'Key-person loss',steps:['List single-person process dependencies','Assign trained alternates and controlled access','Store current process instructions in an accessible location','Test handover for each critical role']},
+  civil:{title:'Civil disruption',steps:['Prioritise staff safety and verified local guidance','Record a contact tree and remote-work trigger','Define travel, closure and customer notification authority','Test access to payroll and essential records offsite']},
+  telecom:{title:'Telecom outage',steps:['Record alternate connectivity and provider contacts','List offline-capable critical workflows','Define manual transaction and later-reconciliation controls','Test failover and data resynchronisation']}
 };
-var INSURANCE_GAPS={
-  NG:['Business Premises Insurance (BPI)','Employers\' Liability','Directors & Officers (D&O)','Business Interruption Insurance','Cyber Liability Insurance (new, limited availability)'],
-  KE:['Fire & Perils Insurance','Group Life Assurance (required for 5+ staff)','Workmen\'s Compensation','Business Interruption','Cyber Insurance (Jubilee, CIC, APA)'],
-  ZA:['Commercial Lines Insurance','Public Liability','Professional Indemnity','Business Interruption','Cyber Insurance (Santam, Discovery, OUTsurance)'],
-  GH:['Fire & Perils','Employer\'s Liability','Motor Fleet','Business Interruption','Cyber (limited availability)'],
-  EG:['Commercial Property','Civil Liability','Group Accident','Business Interruption','Cyber (emerging)']
-};
+function esc(value){return String(value).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 function generate(){
-  var bizName=document.getElementById('bizName').value||'Your Business';
+  var bizName=document.getElementById('bizName').value.trim();
   var country=document.getElementById('country').value;
   var sector=document.getElementById('sector').value;
   var staffCount=document.getElementById('staffCount').value;
-  var rtoSelected=document.getElementById('rto').value;
-  var threatSel=Array.from(document.getElementById('threats').selectedOptions).map(function(o){return o.value;});
-  var sectorRTO=SECTOR_RTO[sector];
-  var rtoMap={startup:'24h',mid:'4h',large:'1h'};
-  var effectiveRTO=rtoSelected;
-  var rpoMap={'1h':'1 hour','4h':'4 hours','24h':'24 hours','72h':'72 hours','1w':'1 week'};
-  var rpoTarget={'1h':'15 minutes','4h':'1 hour','24h':'4 hours','72h':'24 hours','1w':'24 hours'};
-  var readiness=threatSel.length>=4?'Emerging':'Needs Work';
-  var readinessSub=threatSel.length>=4?'You\'ve identified key threats — now build mitigation plans':'Select more threat categories for a comprehensive BCP';
-  document.getElementById('readinessLevel').textContent=readiness;
-  document.getElementById('readinessSub').textContent=readinessSub;
-  document.getElementById('rtoDisplay').textContent=rpoMap[effectiveRTO];
-  document.getElementById('metrics').innerHTML=
-    '<div class="en-metric"><div class="en-metric-label">RTO Target</div><div class="en-metric-value">'+rpoMap[effectiveRTO]+'</div><div class="en-metric-unit">Max acceptable downtime</div></div>'+
-    '<div class="en-metric"><div class="en-metric-label">RPO Target</div><div class="en-metric-value">'+rpoTarget[effectiveRTO]+'</div><div class="en-metric-unit">Max data loss window</div></div>'+
-    '<div class="en-metric"><div class="en-metric-label">Threats Covered</div><div class="en-metric-value">'+threatSel.length+'/7</div><div class="en-metric-unit">risk categories</div></div>'+
-    '<div class="en-metric"><div class="en-metric-label">Sector RTO</div><div class="en-metric-value">'+rpoMap[sectorRTO]+'</div><div class="en-metric-unit">industry benchmark</div></div>';
-  var html='';
-  html+='<div class="bcp-section"><div class="bcp-section-title">&#x1f3e2; BCP Summary — '+bizName+'</div>'+
-    '<div style="font-size:.87rem;color:#475569;line-height:1.7">'+
-    '<strong>Business:</strong> '+bizName+' | <strong>Country:</strong> '+country+' | <strong>Sector:</strong> '+sector+'<br>'+
-    '<strong>Staff:</strong> '+staffCount+' | <strong>RTO:</strong> <span class="rto-badge">'+rpoMap[effectiveRTO]+'</span> | <strong>RPO:</strong> <span class="rto-badge">'+rpoTarget[effectiveRTO]+'</span><br>'+
-    '<strong>Plan Date:</strong> '+new Date().toLocaleDateString('en-GB')+' | <strong>Review Date:</strong> '+new Date(Date.now()+365*24*60*60*1000).toLocaleDateString('en-GB')+
-    '</div></div>';
-  html+='<div class="bcp-section"><div class="bcp-section-title">&#x1f4de; Emergency Contact Template</div>'+
-    '<div style="font-size:.8rem;color:#94a3b8;margin-bottom:10px">Fill in these contacts and distribute to all staff</div>'+
-    ['Crisis Manager / CEO','IT / Systems Administrator','Head of Operations','Finance Controller','Key Customer Contact 1','Key Supplier Contact','Insurance Broker','Legal Counsel','Power/Generator Technician','Building Manager / Landlord'].map(function(role,i){
-      return '<div class="contact-row"><div class="contact-role">'+role+'</div><div style="color:#94a3b8">Name: _______________</div><div style="color:#94a3b8">Phone: _______________</div></div>';
-    }).join('')+'</div>';
-  if(threatSel.length>0){
-    html+='<div class="bcp-section"><div class="bcp-section-title">&#x26a0;&#xfe0f; Threat-Specific Response Plans</div>';
-    threatSel.forEach(function(t){
-      if(THREAT_PLANS[t]){
-        var plan=THREAT_PLANS[t];
-        html+='<div style="margin-bottom:16px"><div style="font-weight:700;color:#334155;font-size:.9rem;margin-bottom:8px">'+plan.title+'</div>'+
-          plan.steps.map(function(s){return '<div class="checklist-item"><span style="color:#475569;margin-top:2px">&#x25a1;</span><span>'+s+'</span></div>';}).join('')+'</div>';
-      }
-    });
-    html+='</div>';
+  var rto=document.getElementById('rto').value;
+  var rpo=document.getElementById('rpo').value;
+  var threats=Array.from(document.getElementById('threats').selectedOptions).map(function(o){return o.value;});
+  var status=document.getElementById('bcpStatus');
+  if(!bizName || threats.length===0){
+    status.textContent='Enter a business name and select at least one threat to create the draft.';
+    document.getElementById('results').classList.remove('on');
+    LAST_BCP_TEXT='';
+    return;
   }
-  var backups=['3-2-1 Backup Rule: 3 copies, 2 media types, 1 offsite',
-    'Cloud backup: Google Drive / Microsoft 365 / AWS S3 (available in NG/KE/ZA)','Daily automated backup with weekly restoration test',
-    'Offline backup: encrypted external drive in fireproof safe','ERP/accounting system: daily export to separate cloud account',
-    'Customer data: encrypted backup with access log',country==='NG'?'Consider Sage Nigeria, BusinessPlus, or QuickBooks cloud for automated backup':'Cloud-first infrastructure for automatic geo-redundancy'];
-  html+='<div class="bcp-section"><div class="bcp-section-title">&#x1f4be; Backup System Recommendations</div>'+
-    backups.map(function(b){return '<div class="checklist-item"><span style="color:#16a34a;margin-top:2px">&#x25a1;</span><span>'+b+'</span></div>';}).join('')+'</div>';
-  var insuranceList=INSURANCE_GAPS[country]||INSURANCE_GAPS['NG'];
-  html+='<div class="bcp-section"><div class="bcp-section-title">&#x1f4cb; Insurance Gap Analysis</div>'+
-    '<div style="font-size:.82rem;color:#64748b;margin-bottom:10px">Review each cover type — gaps = immediate financial exposure</div>'+
-    '<div class="en-results-table-wrap"><table class="en-results-table"><thead><tr><th>Cover Type</th><th>Status</th><th>Priority</th></tr></thead><tbody>'+
-    insuranceList.map(function(ins,i){
-      var priority=i<2?'Critical':i<4?'High':'Medium';
-      var cls=i<2?'gap-critical':i<4?'gap-moderate':'gap-ok';
-      return '<tr><td class="en-td-value">'+ins+'</td><td><span class="gap-badge gap-moderate">Review needed</span></td><td><span class="gap-badge '+cls+'">'+priority+'</span></td></tr>';
-    }).join('')+'</tbody></table></div></div>';
+  var rtoLabels={'1h':'1 hour','4h':'4 hours','24h':'24 hours','72h':'72 hours','1w':'1 week'};
+  var rpoLabels={'15m':'15 minutes','1h':'1 hour','4h':'4 hours','24h':'24 hours','none':'No digital data dependency'};
+  document.getElementById('readinessLevel').textContent='Draft created';
+  document.getElementById('readinessSub').textContent='Assign owners, contacts, evidence and exercise dates before approval';
+  document.getElementById('rtoDisplay').textContent=rtoLabels[rto];
+  document.getElementById('metrics').innerHTML=
+    '<div class="en-metric"><div class="en-metric-label">RTO Target</div><div class="en-metric-value">'+rtoLabels[rto]+'</div><div class="en-metric-unit">User-selected maximum downtime</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">RPO Target</div><div class="en-metric-value">'+rpoLabels[rpo]+'</div><div class="en-metric-unit">User-selected data loss window</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Threats in Draft</div><div class="en-metric-value">'+threats.length+'</div><div class="en-metric-unit">selected scenarios</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Readiness Status</div><div class="en-metric-value">Unverified</div><div class="en-metric-unit">exercise and approval required</div></div>';
+  var html='<div class="bcp-section"><div class="bcp-section-title">BCP summary — '+esc(bizName)+'</div><div style="font-size:.87rem;color:#475569;line-height:1.7"><strong>Country code:</strong> '+esc(country)+' | <strong>Sector:</strong> '+esc(sector)+' | <strong>Staff band:</strong> '+esc(staffCount)+'<br><strong>RTO:</strong> <span class="rto-badge">'+rtoLabels[rto]+'</span> | <strong>RPO:</strong> <span class="rto-badge">'+rpoLabels[rpo]+'</span><br><strong>Draft date:</strong> '+new Date().toISOString().slice(0,10)+'</div></div>';
+  html+='<div class="bcp-section"><div class="bcp-section-title">Emergency contact worksheet</div><div style="font-size:.8rem;color:#94a3b8;margin-bottom:10px">Complete, protect and distribute this contact sheet according to your privacy policy.</div>'+
+    ['Crisis lead','Operations alternate','IT or systems contact','Finance and payroll contact','Staff safety contact','Key customer contact','Key supplier contact','Insurer or broker','Legal or regulatory adviser','Premises contact'].map(function(role){return '<div class="contact-row"><div class="contact-role">'+role+'</div><div>Name: _______________</div><div>Phone: _______________</div></div>';}).join('')+'</div>';
+  html+='<div class="bcp-section"><div class="bcp-section-title">Scenario response worksheets</div>';
+  threats.forEach(function(key){var plan=THREAT_PLANS[key];html+='<div style="margin-bottom:16px"><div style="font-weight:700;color:#334155;font-size:.9rem;margin-bottom:8px">'+plan.title+'</div>'+plan.steps.map(function(step){return '<div class="checklist-item"><span>□</span><span>'+step+'</span></div>';}).join('')+'</div>';});
+  html+='</div><div class="bcp-section"><div class="bcp-section-title">Backup evidence checklist</div>'+['Inventory critical records and systems','Record backup location, owner and access controls','Define backup frequency from the selected RPO','Record the latest successful restoration test','Document manual fallback and reconciliation steps'].map(function(step){return '<div class="checklist-item"><span>□</span><span>'+step+'</span></div>';}).join('')+'</div>';
+  html+='<div class="bcp-section"><div class="bcp-section-title">Insurance and obligation review</div><div style="font-size:.82rem;color:#64748b;margin-bottom:10px">Ask a qualified local broker or adviser which covers and obligations apply; the tool does not determine mandatory insurance or coverage gaps.</div>'+['Property and equipment','Business interruption','Public or professional liability','Employee injury or employer liability','Cyber and data incident','Vehicle, goods in transit or specialist risks'].map(function(item){return '<div class="checklist-item"><span>□</span><span>'+item+' — applicable? limits? exclusions? renewal date?</span></div>';}).join('')+'</div>';
   document.getElementById('bcpContent').innerHTML=html;
+  LAST_BCP_TEXT=['AfroTools business continuity draft','Business: '+bizName,'Country code: '+country,'Sector: '+sector,'Staff band: '+staffCount,'RTO: '+rtoLabels[rto],'RPO: '+rpoLabels[rpo],'Threats: '+threats.map(function(key){return THREAT_PLANS[key].title;}).join(', '),'Status: unverified draft. Assign owners, contacts, evidence, approval and exercise dates.'].join('\n');
+  status.textContent='BCP worksheet generated locally. It is an unverified draft.';
   document.getElementById('results').classList.add('on');
   document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
 }
+function downloadBcpTxt(){
+  if(!LAST_BCP_TEXT) generate();
+  if(!LAST_BCP_TEXT)return;
+  var blob=new Blob([LAST_BCP_TEXT],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download='business-continuity-draft.txt';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);document.getElementById('bcpStatus').textContent='TXT draft downloaded.';
+}
 </script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 </body>
 </html>

@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Password Strength Checker — 100% Client-Side | AfroTools</title>
-<meta name="description" content="Check your password strength locally — never sent to any server. Entropy score, time-to-crack, pattern detection, passphrase suggestion. Fully private.">
-<meta property="og:title" content="Password Strength Checker — 100% Client-Side | AfroTools">
-<meta property="og:description" content="Check your password strength locally — never sent to any server. Entropy score, time-to-crack, pattern detection, passphrase suggestion. Fully private.">
+<title>Local Password Strength Checker | AfroTools</title>
+<meta name="description" content="Estimate password strength locally with length, character-set, pattern, entropy, and crack-time signals; the entered password is not sent by this tool.">
+<meta property="og:title" content="Local Password Strength Checker | AfroTools">
+<meta property="og:description" content="Estimate password strength locally with pattern, entropy, and crack-time signals; the entered password is not sent by this tool.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/password-strength.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,18 +37,19 @@ a{text-decoration:none;color:inherit}
 .pw-check.pass{color:#16a34a}
 .pw-check.fail{color:#dc2626}
 .passphrase-box{background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:14px 18px;font-family:monospace;font-size:.95rem;font-weight:700;letter-spacing:.05em;color:#166534;word-break:break-all}
+.pw-weakness{padding:10px 14px;border-left:3px solid #ef4444;background:#fef2f2;border-radius:0 8px 8px 0;margin-bottom:8px}.pw-weakness-title{font-weight:700;color:#b91c1c;font-size:.85rem}.pw-weakness-copy{font-size:.82rem;color:#4b5563;margin-top:3px}
+html[data-theme="dark"]{--en-bg:#0b1220;--en-card:#111c2f;--en-text:#f1f5f9;--en-muted:#a9b8ca;--en-border:#334155;--en-accent:#9fc5ff;--en-accent-dark:#dbeafe;--en-accent-light:#243650;--en-accent-pale:#17243a;color-scheme:dark}html[data-theme="dark"] body{background:var(--en-bg);color:var(--en-text)}html[data-theme="dark"] .en-input,html[data-theme="dark"] .en-select,html[data-theme="dark"] .passphrase-box,html[data-theme="dark"] .security-focus-rail,html[data-theme="dark"] .security-action-brief__card,html[data-theme="dark"] .security-action-brief__output,html[data-theme="dark"] .security-action-brief__checks li,html[data-theme="dark"] .tool-verification-card{background:#111c2f!important;color:var(--en-text)!important;border-color:var(--en-border)!important}html[data-theme="dark"] .en-tip-text,html[data-theme="dark"] .security-action-brief__note{color:#fed7aa!important}
+html[data-theme="dark"] .pw-weakness{background:#321820}html[data-theme="dark"] .pw-weakness-title{color:#fecaca}html[data-theme="dark"] .pw-weakness-copy{color:#e2e8f0}html[data-theme="dark"] #strengthLabel,html[data-theme="dark"] .en-card p{color:var(--en-muted)!important}
+@media(prefers-color-scheme:dark){html:not([data-theme]){--en-bg:#0b1220;--en-card:#111c2f;--en-text:#f1f5f9;--en-muted:#a9b8ca;--en-border:#334155;--en-accent:#9fc5ff;--en-accent-dark:#dbeafe;--en-accent-light:#243650;--en-accent-pale:#17243a;color-scheme:dark}html:not([data-theme]) body{background:var(--en-bg);color:var(--en-text)}html:not([data-theme]) .en-input,html:not([data-theme]) .passphrase-box,html:not([data-theme]) .tool-verification-card{background:#111c2f;color:var(--en-text);border-color:var(--en-border)}html:not([data-theme]) .pw-weakness{background:#321820}html:not([data-theme]) .pw-weakness-title{color:#fecaca}html:not([data-theme]) .pw-weakness-copy{color:#e2e8f0}html:not([data-theme]) #strengthLabel,html:not([data-theme]) .en-card p{color:var(--en-muted)!important}}
 </style>
 <meta property="og:url" content="https://afrotools.com/tools/password-strength/">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Password Strength Checker — 100% Client-Side | AfroTools">
-<meta name="twitter:description" content="Check your password strength locally — never sent to any server. Entropy score, time-to-crack, pattern detection, passphrase suggestion. Fully private.">
+<meta name="twitter:title" content="Local Password Strength Checker | AfroTools">
+<meta name="twitter:description" content="Estimate password strength locally with pattern, entropy, and crack-time signals; the entered password is not sent by this tool.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/password-strength.webp">
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
 <link rel="stylesheet" href="/assets/css/security-focus.css?v=c3e2d2fc">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Password Strength Checker?","acceptedAnswer":{"@type":"Answer","text":"Enter your site details and requirements in the fields above. The Password Strength Checker then gives you a costed plan for the setup you can use straight away."}},{"@type":"Question","name":"How accurate is the Password Strength Checker?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current equipment prices and installer quotes before you rely on it."}},{"@type":"Question","name":"Is the Password Strength Checker free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}}]}
-</script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <!-- tool-structured-data:auto -->
@@ -56,8 +57,8 @@ a{text-decoration:none;color:inherit}
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Password Strength Checker — 100% Client-Side",
-  "description": "Check your password strength locally — never sent to any server. Entropy score, time-to-crack, pattern detection, passphrase suggestion. Fully private.",
+  "name": "Local Password Strength Checker",
+  "description": "Estimate password strength locally with length, character-set, pattern, entropy, and crack-time signals; the entered password is not sent by this tool.",
   "url": "https://afrotools.com/tools/password-strength/",
   "inLanguage": "en",
   "applicationCategory": "UtilitiesApplication",
@@ -77,7 +78,7 @@ a{text-decoration:none;color:inherit}
 </script>
 <!-- tool-structured-data:auto -->
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Password Strength Checker — 100% Client-Side","item":"https://afrotools.com/tools/password-strength/"}]}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Local Password Strength Checker","item":"https://afrotools.com/tools/password-strength/"}]}
 </script>
 <link rel="canonical" href="https://afrotools.com/tools/password-strength/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/password-strength/">
@@ -94,32 +95,32 @@ a{text-decoration:none;color:inherit}
       <span class="en-breadcrumb-current">Password Strength Checker</span>
     </nav>
     <h1>Password Strength <em>Checker</em></h1>
-    <p>Your password is <strong>never sent anywhere</strong> — all analysis happens locally in your browser. Get entropy score, time-to-crack estimate, pattern detection, and stronger alternatives generated on-device.</p>
+    <p>The analyzer itself does not submit the entered password. Get a local strength estimate, pattern checks, a modelled crack-time signal, and on-device suggestions.</p>
     <div class="en-tool-hero-meta">
       <span class="en-tool-hero-pill">&#x1f511; Password</span>
-      <span class="en-tool-hero-pill">&#x1f512; 100% Private</span>
+      <span class="en-tool-hero-pill">&#x1f512; Local Analyzer</span>
       <span class="en-tool-hero-pill">&#x1f4bb; Client-Side Only</span>
     </div>
   </div>
 </section>
 <div class="en-tool-layout" style="max-width:640px">
-  <div class="en-notice"><strong>&#x1f512; Privacy Guarantee:</strong> This tool runs entirely in your browser. No password data is ever transmitted, stored, or logged. You can disconnect from the internet and it will still work.</div>
+  <div class="en-notice"><strong>&#x1f512; Privacy boundary:</strong> The analyzer code does not transmit, store, or log the entered password. Your browser, device, extensions, keyboard software, and any shared screen remain outside that boundary. Avoid testing a live production credential.</div>
 
   <div class="en-card" style="margin-top:20px">
     <div class="en-card-title"><div class="en-card-title-icon">&#x1f511;</div>Check Your Password</div>
     <div class="en-field">
-      <label class="en-label">Enter Password to Test</label>
+      <label class="en-label" for="pwInput">Enter Password to Test</label>
       <div class="pw-input-wrap">
-        <input aria-label="Type your password" type="password" id="pwInput" class="en-input" placeholder="Type your password..." oninput="analyzeRealtime()" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <input aria-label="Enter Password to Test" type="password" id="pwInput" class="en-input" placeholder="Type your password..." oninput="analyzeRealtime()" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false">
         <button class="pw-toggle" onclick="toggleVisibility()" id="pwToggle" type="button" aria-label="Show password">Show</button>
       </div>
       <div class="strength-bar"><div class="strength-fill" id="strengthBar"></div></div>
-      <div id="strengthLabel" style="font-size:.82rem;font-weight:700;margin-top:6px;color:#64748b">Start typing to analyse...</div>
+      <div id="strengthLabel" role="status" aria-live="polite" style="font-size:.82rem;font-weight:700;margin-top:6px;color:#64748b">Start typing to analyse...</div>
     </div>
     <div class="pw-check-list" id="checkList"></div>
   </div>
 
-  <div class="en-results" id="results">
+  <div class="en-results" id="results" aria-live="polite">
     <div class="en-results-hero">
       <div class="en-results-hero-inner">
         <div class="en-results-hero-grid">
@@ -147,7 +148,7 @@ a{text-decoration:none;color:inherit}
     <div class="en-card">
       <div class="en-card-title"><div class="en-card-title-icon">&#x1f4dd;</div>Passphrase Alternative (easier to remember, harder to crack)</div>
       <div class="passphrase-box" id="passphraseBox"></div>
-      <p style="font-size:.8rem;color:#64748b;margin-top:8px">Passphrases are 4+ random words — much harder to crack than complex short passwords. Entropy: ~50 bits vs typical 8-char password's ~30 bits.</p>
+      <p style="font-size:.8rem;color:#64748b;margin-top:8px">A long, randomly generated passphrase can be easier to remember while resisting guessing. The real strength depends on the word list, selection method, length, and whether it is unique.</p>
     </div>
     <div class="en-tip">
       <div class="en-tip-icon">&#x1f512;</div>
@@ -165,9 +166,9 @@ a{text-decoration:none;color:inherit}
     <div>
       <span class="df-upgrade__kicker">Password safety brief</span>
       <h2>Check a password locally, then keep the result private</h2>
-      <p>Not sure how to get the most from the Password Strength Checker? Enter your site details and requirements and it returns a costed plan for the setup — built for all 54 African countries.</p>
-      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a costed plan for the setup, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Password Strength Checker takes your site details and requirements and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current equipment prices and installer quotes before you rely on the result.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current equipment prices and installer quotes before acting.</p>
+      <p>Create a redacted follow-up brief from the score band and weakness category. The brief never includes the password you entered.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a non-secret reminder of the account type, score band, weakness focus, and next action.</li><li><strong>How it works:</strong> choose the result categories yourself after reviewing the local analysis.</li><li><strong>What to protect:</strong> never paste the real password into the brief, a message, a screenshot, or a printed page.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed July 2026.</strong> This is a heuristic estimate, not a breach lookup, service-policy check, or security guarantee.</p>
     </div>
     <form class="df-form" data-df-form="password-strength">
       <label>Use case<select name="use" aria-label="Use case"><option value="personal account">personal account</option><option value="work account">work account</option><option value="admin credential">admin credential</option><option value="passphrase planning">passphrase planning</option></select></label>
@@ -182,7 +183,7 @@ a{text-decoration:none;color:inherit}
 </section>
 <section class="df-faq" aria-labelledby="password-strength-faq-title">
   <h2 id="password-strength-faq-title">Password Strength Checker FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How do I use the Password Strength Checker?</summary><p>Enter your site details and requirements in the fields above. The Password Strength Checker then gives you a costed plan for the setup you can use straight away.</p></details><details><summary>How accurate is the Password Strength Checker?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current equipment prices and installer quotes before you rely on it.</p></details><details><summary>Is the Password Strength Checker free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
+  <div class="df-faq__grid"><details><summary>Does the analyzer send or store the password?</summary><p>The analyzer code runs in the browser and does not submit or save the entered password. Your device, browser, extensions, keyboard software, and shared screen are separate risks, so avoid testing a live production credential.</p></details><details><summary>Does a strong score prove a password is safe?</summary><p>No. This heuristic cannot check password reuse, every breached-password list, phishing exposure, malware, account recovery, or the rules of the service where the password will be used.</p></details><details><summary>Can I export or print the result?</summary><p>The raw password and generated suggestions intentionally have no copy, print, PDF, or save action. Only the separate redacted safety brief can be copied.</p></details></div>
 </section>
 <section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="password-verification-title">
   <div class="tool-verification-card">
@@ -212,6 +213,7 @@ a{text-decoration:none;color:inherit}
           <li>Use a trusted password manager, unique passwords per site, and MFA for important accounts.</li>
           <li>Use a trusted breach-monitoring service separately if you need compromise checks.</li>
           <li>Treat the result as a local planning signal, not a security guarantee, audit, or breach-database lookup.</li>
+          <li>Reference: <a href="https://pages.nist.gov/800-63-4/sp800-63b.html#passwordver" target="_blank" rel="noopener noreferrer">NIST SP 800-63B password-verifier guidance</a>, checked 18 July 2026.</li>
         </ul>
       </div>
     </div>
@@ -223,7 +225,7 @@ a{text-decoration:none;color:inherit}
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/tools/cctv-cost/" data-related-tool data-id="cctv-cost" data-name="CCTV System Cost Calculator — Africa" data-category="security" data-icon="CS" data-desc="Calculate CCTV system cost in Africa. Cameras, DVR/NVR, storage, installation, monitoring — hardware vs DIY vs professio">CCTV System Cost Calculator — Africa</a></li><li><a href="/tools/cybersecurity-assessment/" data-related-tool data-id="cybersecurity-assessment" data-name="Cybersecurity Risk Assessment Tool — Africa" data-category="security" data-icon="CR" data-desc="Score your business cybersecurity risk 0–100. Network, data, access, endpoint, awareness, incident domains. NDPR Nigeria">Cybersecurity Risk Assessment Tool — Africa</a></li><li><a href="/tools/data-breach-cost/" data-related-tool data-id="data-breach-cost" data-name="Data Breach Cost Calculator — Africa" data-category="security" data-icon="DB" data-desc="Estimate your data breach cost in Africa. Records exposed × $165/record, NDPR fines up to ₦10M, POPIA R10M, recovery tim">Data Breach Cost Calculator — Africa</a></li><li><a href="/tools/fire-safety-checklist/" data-related-tool data-id="fire-safety-checklist" data-name="Fire Safety Compliance Checker — Africa" data-category="security" data-icon="FS" data-desc="Fire safety compliance scoring for African businesses. NFSC Nigeria, SANS 10087 South Africa, Kenya Fire Prevention Act.">Fire Safety Compliance Checker — Africa</a></li><li><a href="/tools/home-security-cost/" data-related-tool data-id="home-security-cost" data-name="Home Security Cost Estimator — Africa" data-category="security" data-icon="HS" data-desc="Calculate total home security setup and monthly costs in Africa. CCTV, alarm, guard service — by risk level. ROI vs thef">Home Security Cost Estimator — Africa</a></li><li><a href="/tools/phishing-quiz/" data-related-tool data-id="phishing-quiz" data-name="Phishing Detection Quiz — Africa" data-category="security" data-icon="PD" data-desc="Test your ability to spot phishing scams in Africa. 10 real-world scenarios: fake bank emails, MTN/Airtel SMS, FIRS noti">Phishing Detection Quiz — Africa</a></li></ul>
+<ul class="seo-links-list"><li><a href="/tools/cctv-cost/" data-related-tool data-id="cctv-cost" data-name="CCTV System Cost Calculator — Africa" data-category="security" data-icon="CS" data-desc="Estimate CCTV setup, storage, installation, monitoring, and 5-year cost with illustrative assumptions for six African ma">CCTV System Cost Calculator — Africa</a></li><li><a href="/tools/cybersecurity-assessment/" data-related-tool data-id="cybersecurity-assessment" data-name="Cybersecurity Readiness Assessment — Africa" data-category="security" data-icon="CR" data-desc="Review 20 self-reported controls across six security domains for a transparent planning score; not an audit or complianc">Cybersecurity Readiness Assessment — Africa</a></li><li><a href="/tools/data-breach-cost/" data-related-tool data-id="data-breach-cost" data-name="Data Breach Cost Calculator — Africa" data-category="security" data-icon="DB" data-desc="Build an editable breach-response cost scenario for direct response, interruption, reputation, and recovery; regulatory ">Data Breach Cost Calculator — Africa</a></li><li><a href="/tools/fire-safety-checklist/" data-related-tool data-id="fire-safety-checklist" data-name="Fire Safety Readiness Checklist — Africa" data-category="security" data-icon="FS" data-desc="Review fire-safety readiness and illustrative remediation costs for planning; local inspection and certification remain ">Fire Safety Readiness Checklist — Africa</a></li><li><a href="/tools/home-security-cost/" data-related-tool data-id="home-security-cost" data-name="Home Security Cost Estimator — Africa" data-category="security" data-icon="HS" data-desc="Estimate CCTV, alarm, guard-service, setup, and monthly costs with illustrative assumptions for six African markets; no ">Home Security Cost Estimator — Africa</a></li><li><a href="/tools/phishing-quiz/" data-related-tool data-id="phishing-quiz" data-name="Phishing Detection Quiz — Africa" data-category="security" data-icon="PD" data-desc="Practise safer responses with 10 synthetic Africa-focused phishing and impersonation messages, instant explanations, and">Phishing Detection Quiz — Africa</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
@@ -239,7 +241,7 @@ var COMMON=[
   'abcdef','111111','123123','qazwsx','1q2w3e','!@#$%^','matrix','p@ssword','p@ssw0rd','pass123',
   'africa','nigeria','kenya','ghana','lagos','nairobi','accra','cairo','abuja','money'
 ];
-var WORDS=['mango','sunset','tiger','river','cloud','forest','silver','ocean','mountain','thunder','golden','crystal','phoenix','dragon','falcon','lightning','storm','ember','frost','coral','jungle','savanna','safari','baobab','acacia','zebra','giraffe','ubuntu','ubuntu1','jambo','karibu','nkosi','ubuntu'];
+var WORDS=['mango','sunset','tiger','river','cloud','forest','silver','ocean','mountain','thunder','golden','crystal','phoenix','dragon','falcon','lightning','storm','ember','frost','coral','jungle','savanna','safari','baobab','acacia','zebra','giraffe','ubuntu','jambo','karibu','nkosi'];
 function entropy(pw){
   var cs=0;
   if(/[a-z]/.test(pw)) cs+=26;
@@ -262,16 +264,32 @@ function crackTime(e){
   if(sec<1e12) return Math.round(sec/31536000/1e6)+' million years';
   return '1 billion+ years';
 }
+function secureIndex(max){
+  if(!window.crypto||!window.crypto.getRandomValues||max<1) return -1;
+  var values=new Uint32Array(1);
+  var limit=Math.floor(0x100000000/max)*max;
+  do{window.crypto.getRandomValues(values);}while(values[0]>=limit);
+  return values[0]%max;
+}
 function generatePassword(len){
   var c='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
   var pw='';
-  for(var i=0;i<len;i++) pw+=c[Math.floor(Math.random()*c.length)];
+  for(var i=0;i<len;i++){
+    var index=secureIndex(c.length);
+    if(index<0) return '';
+    pw+=c[index];
+  }
   return pw;
 }
 function generatePassphrase(){
   var w=[];
-  for(var i=0;i<4;i++) w.push(WORDS[Math.floor(Math.random()*WORDS.length)]);
-  return w.join('-')+Math.floor(Math.random()*99);
+  for(var i=0;i<4;i++){
+    var index=secureIndex(WORDS.length);
+    if(index<0) return '';
+    w.push(WORDS[index]);
+  }
+  var suffix=secureIndex(100);
+  return suffix<0?'':w.join('-')+String(suffix).padStart(2,'0');
 }
 function analyzeRealtime(){
   var pw=document.getElementById('pwInput').value;
@@ -280,6 +298,7 @@ function analyzeRealtime(){
     document.getElementById('strengthBar').className='strength-fill';
     document.getElementById('strengthBar').style.width='0';
     document.getElementById('checkList').innerHTML='';
+    document.getElementById('results').classList.remove('on');
     return;
   }
   var score=scorePassword(pw);
@@ -332,26 +351,28 @@ function showResults(pw,score){
     '<div class="en-metric"><div class="en-metric-label">Char Types</div><div class="en-metric-value">'+[/[a-z]/.test(pw),/[A-Z]/.test(pw),/[0-9]/.test(pw),/[^a-zA-Z0-9]/.test(pw)].filter(Boolean).length+'</div><div class="en-metric-unit">of 4 used</div></div>'+
     '<div class="en-metric"><div class="en-metric-label">Time to Crack</div><div class="en-metric-value" style="font-size:1rem">'+ct+'</div><div class="en-metric-unit">@ 10B attempts/sec</div></div>';
   var weaknesses=[];
-  if(COMMON.indexOf(pw.toLowerCase())>-1) weaknesses.push({w:'Common password',d:'This password appears in known breach databases. It can be cracked instantly with a dictionary attack.'});
-  if(pw.length<8) weaknesses.push({w:'Too short',d:'Minimum 12+ characters strongly recommended.'});
-  if(!/[A-Z]/.test(pw)) weaknesses.push({w:'No uppercase letters',d:'Add at least 2 uppercase letters to increase entropy.'});
-  if(!/[0-9]/.test(pw)) weaknesses.push({w:'No numbers',d:'Add numbers to expand the character set.'});
-  if(!/[^a-zA-Z0-9]/.test(pw)) weaknesses.push({w:'No special characters',d:'Add !@#$%^&*() to dramatically increase cracking time.'});
+  if(COMMON.indexOf(pw.toLowerCase())>-1) weaknesses.push({w:'Common password',d:'This value matches the tool\'s small local common-password list. The tool does not query a breach database.'});
+  if(pw.length<8) weaknesses.push({w:'Too short',d:'Use a much longer, unique password or passphrase. Follow the minimum required by the account service.'});
+  if(!/[A-Z]/.test(pw)) weaknesses.push({w:'No uppercase letters',d:'The estimate sees fewer character types. Length and uniqueness matter more than satisfying a composition recipe.'});
+  if(!/[0-9]/.test(pw)) weaknesses.push({w:'No numbers',d:'The estimate sees fewer character types. Do not make a predictable substitution just to add a number.'});
+  if(!/[^a-zA-Z0-9]/.test(pw)) weaknesses.push({w:'No special characters',d:'The estimate sees fewer character types. Prefer a long manager-generated value over a predictable symbol suffix.'});
   if(/^(.)\1+$/.test(pw)) weaknesses.push({w:'Repeated characters',d:'Using the same character repeatedly provides almost no security.'});
   if(weaknesses.length>0){
     document.getElementById('weaknessList').innerHTML=weaknesses.map(function(w){
-      return '<div style="padding:10px 14px;border-left:3px solid #ef4444;background:#fef2f2;border-radius:0 8px 8px 0;margin-bottom:8px"><div style="font-weight:700;color:#dc2626;font-size:.85rem">'+w.w+'</div><div style="font-size:.82rem;color:#6b7280;margin-top:3px">'+w.d+'</div></div>';
+      return '<div class="pw-weakness"><div class="pw-weakness-title">'+w.w+'</div><div class="pw-weakness-copy">'+w.d+'</div></div>';
     }).join('');
     document.getElementById('weaknessCard').style.display='block';
   } else {
     document.getElementById('weaknessCard').style.display='none';
   }
   var stronger=generatePassword(16);
-  document.getElementById('suggestions').innerHTML=
-    '<p style="font-size:.87rem;color:#475569;margin-bottom:10px">A stronger password suggestion (generated locally, never stored):</p>'+
+  document.getElementById('suggestions').innerHTML=stronger?
+    '<p style="font-size:.87rem;color:#475569;margin-bottom:10px">A draft password generated locally with Web Crypto:</p>'+
     '<div class="passphrase-box" style="background:#f0f9ff;border-color:#bae6fd;color:#0369a1">'+stronger+'</div>'+
-    '<p style="font-size:.78rem;color:#94a3b8;margin-top:6px">16-character random password with uppercase, lowercase, numbers and symbols.</p>';
-  document.getElementById('passphraseBox').textContent=generatePassphrase();
+    '<p style="font-size:.78rem;color:#64748b;margin-top:6px">16 random characters from a mixed local character set. Save credentials only in a trusted password manager.</p>':
+    '<p>Secure browser randomness is unavailable, so this tool will not generate a credential. Use a trusted password manager instead.</p>';
+  var passphrase=generatePassphrase();
+  document.getElementById('passphraseBox').textContent=passphrase||'Secure browser randomness is unavailable. Use a trusted password manager.';
   document.getElementById('results').classList.add('on');
 }
 function toggleVisibility(){

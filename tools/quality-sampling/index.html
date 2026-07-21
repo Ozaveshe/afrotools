@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Quality Control Sampling Calculator | AfroTools</title>
-<meta name="description" content="Calculate acceptance sampling plans for manufacturing quality control. AQL tables, sample sizes, and accept/reject criteria for African manufacturers.">
+<title>Quality Sampling Plan Execution Checker | AfroTools</title>
+<meta name="description" content="Record a controlled sampling-plan reference, approved sample size, accept/reject numbers and observed defects without inventing an AQL table.">
 <meta property="og:title" content="Quality Control Sampling Calculator | AfroTools">
-<meta property="og:description" content="Calculate acceptance sampling plans for manufacturing quality control. AQL tables, sample sizes, and accept/reject criteria for African manufacturers.">
+<meta property="og:description" content="Execute an approved quality sampling plan using entered acceptance criteria.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/quality-sampling/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Quality Control Sampling Calculator | AfroTools">
-<meta name="twitter:description" content="Calculate acceptance sampling plans for manufacturing quality control. AQL tables, sample sizes, and accept/reject criteria for African manufacturers.">
+<meta name="twitter:description" content="Execute an approved quality sampling plan using entered acceptance criteria.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -33,10 +33,6 @@
 <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/quality-sampling.webp">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/quality-sampling.webp">
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Quality Control Sampling Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Quality Control Sampling Calculator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Quality Control Sampling Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Quality Control Sampling Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}}]}
-</script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <!-- tool-structured-data:auto -->
@@ -44,8 +40,8 @@
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Quality Control Sampling Calculator",
-  "description": "Calculate acceptance sampling plans for manufacturing quality control. AQL tables, sample sizes, and accept/reject criteria for African manufacturers.",
+  "name": "Quality Sampling Plan Execution Checker",
+  "description": "Execute a controlled sampling plan using entered sample size and acceptance criteria.",
   "url": "https://afrotools.com/tools/quality-sampling/",
   "inLanguage": "en",
   "applicationCategory": "UtilitiesApplication",
@@ -68,7 +64,7 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-d-echantillonnage-qualite/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/quality-sampling/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh small-business">
 <afro-navbar theme="dark" active="engineering"></afro-navbar>
 <nav class="en-breadcrumb" aria-label="Breadcrumb">
   <div class="en-container"><ol>
@@ -79,8 +75,8 @@
 <section class="en-tool-hero">
   <div class="en-container">
     <div class="en-hero-badge">Manufacturing</div>
-    <h1>Quality Control Sampling Calculator</h1>
-    <p>Determine your acceptance sampling plan using ISO 2859 (ANSI/ASQ Z1.4) AQL tables. Know exactly how many units to inspect and when to accept or reject a lot.</p>
+    <h1>Quality Sampling Plan Execution Checker</h1>
+    <p>Apply the sample size and accept/reject numbers from your approved plan. This page does not reproduce or approximate a proprietary standard table.</p>
   </div>
 </section>
 <main class="en-main">
@@ -89,51 +85,43 @@
       <h2 class="en-section-title">Lot & Inspection Parameters</h2>
       <div class="en-form-grid">
         <div class="en-field">
-          <label class="en-label">Lot Size (total units in shipment/batch)</label>
-          <input aria-label="Qs lot" type="number" class="en-input" id="qs-lot" value="5000" min="2">
+          <label class="en-label" for="qs-lot">Lot size (total units)</label>
+          <input type="number" class="en-input" id="qs-lot" placeholder="0" min="1">
         </div>
         <div class="en-field">
-          <label class="en-label">AQL Level (Acceptable Quality Level %)</label>
-          <select class="en-select" id="qs-aql" aria-label="Qs Aql">
-            <option value="0.065">0.065% — Pharmaceuticals, medical devices</option>
-            <option value="0.1">0.1% — Aerospace, critical components</option>
-            <option value="0.25">0.25% — Electronics, precision parts</option>
-            <option value="0.65">0.65% — Food, cosmetics</option>
-            <option value="1.0">1.0% — General manufacturing</option>
-            <option value="1.5">1.5% — FMCG, consumer goods</option>
-            <option value="2.5" selected>2.5% — General commercial</option>
-            <option value="4.0">4.0% — Textiles, packaging</option>
-            <option value="6.5">6.5% — Construction materials</option>
-            <option value="10.0">10.0% — Bulk commodities</option>
-          </select>
+          <label class="en-label" for="qs-plan-ref">Controlled sampling plan reference</label>
+          <input class="en-input" id="qs-plan-ref" placeholder="Procedure, standard edition, table/plan or customer specification">
         </div>
         <div class="en-field">
-          <label class="en-label" for="qs-level">Inspection Level</label>
-          <select class="en-select" id="qs-level">
-            <option value="I">Level I — Reduced (lower cost)</option>
-            <option value="II" selected>Level II — Normal (standard)</option>
-            <option value="III">Level III — Tightened (high risk)</option>
-          </select>
+          <label class="en-label" for="qs-plan-date">Plan checked / approved on</label>
+          <input class="en-input" id="qs-plan-date" type="date">
         </div>
         <div class="en-field">
-          <label class="en-label">Sampling Type</label>
-          <select class="en-select" id="qs-type" aria-label="Qs Type">
-            <option value="single" selected>Single Sampling</option>
-            <option value="double">Double Sampling</option>
-          </select>
+          <label class="en-label" for="qs-sample-input">Approved sample size</label>
+          <input class="en-input" id="qs-sample-input" type="number" min="1" step="1" placeholder="0">
         </div>
         <div class="en-field">
-          <label class="en-label">Defects Found in Sample</label>
-          <input aria-label="Qs defects" type="number" class="en-input" id="qs-defects" value="0" min="0">
+          <label class="en-label" for="qs-accept-input">Accept when defects are at or below</label>
+          <input class="en-input" id="qs-accept-input" type="number" min="0" step="1" placeholder="0">
+        </div>
+        <div class="en-field">
+          <label class="en-label" for="qs-reject-input">Reject when defects are at or above</label>
+          <input class="en-input" id="qs-reject-input" type="number" min="1" step="1" placeholder="0">
+        </div>
+        <div class="en-field">
+          <label class="en-label" for="qs-defects">Defects found in completed sample</label>
+          <input type="number" class="en-input" id="qs-defects" placeholder="0" min="0" step="1">
           <span class="en-hint">Enter actual defects after inspection for verdict</span>
         </div>
         <div class="en-field">
-          <label class="en-label">Inspection Cost per Unit</label>
-          <input aria-label="Qs inspect cost" type="number" class="en-input" id="qs-inspect-cost" value="0" min="0">
+          <label class="en-label" for="qs-inspect-cost">Inspection cost per sampled unit</label>
+          <input type="number" class="en-input" id="qs-inspect-cost" placeholder="0" min="0">
           <span class="en-hint">Optional — for cost calculation</span>
         </div>
       </div>
-      <button type="button" class="en-btn" onclick="calcSampling()">Calculate Sampling Plan</button>
+      <button type="button" class="en-btn" onclick="calcSampling()">Check Recorded Sample</button>
+      <button type="button" class="en-btn" onclick="downloadSamplingTxt()">Download TXT</button>
+      <p id="qs-status" role="status" aria-live="polite"></p>
     </div>
 
     <div class="en-results" id="qs-results">
@@ -148,10 +136,10 @@
         <div class="en-stat-card"><div class="en-stat-label">Sample % of Lot</div><div class="en-stat-value" id="qs-pct">—</div></div>
       </div>
       <div class="en-results-grid" style="margin-top:1rem">
-        <div class="en-stat-card"><div class="en-stat-label">Estimated Defects in Lot</div><div class="en-stat-value" id="qs-est-defects">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Lot defect estimate</div><div class="en-stat-value" id="qs-est-defects">Not inferred</div></div>
         <div class="en-stat-card"><div class="en-stat-label">Inspection Cost</div><div class="en-stat-value" id="qs-cost">—</div></div>
         <div class="en-stat-card"><div class="en-stat-label">Defect Rate in Sample</div><div class="en-stat-value" id="qs-defect-rate">—</div></div>
-        <div class="en-stat-card"><div class="en-stat-label">ISO Code Letter</div><div class="en-stat-value" id="qs-code">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Controlled plan</div><div class="en-stat-value" id="qs-code">—</div></div>
       </div>
       <div class="en-card" style="margin-top:1.5rem">
         <h3 style="margin-bottom:.5rem">Interpretation & Next Steps</h3>
@@ -160,136 +148,29 @@
     </div>
   </div>
 
-<section class="df-upgrade" data-df-upgrade="quality-sampling">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Quality Control Sampling Calculator: quick guide</h2>
-      <p>Not sure how to get the most from the Quality Control Sampling Calculator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
-      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Quality Control Sampling Calculator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
-    </div>
-    <form class="df-form" data-df-form="quality-sampling">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="quality-sampling" data-df-base="Quality Control Sampling Calculator — enter your details above to see your result." aria-live="polite">Quality Control Sampling Calculator — enter your details above to see your result.</output>
-      <div class="df-actions"><button type="button" data-df-copy="quality-sampling">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="quality-sampling-faq-title">
-  <h2 id="quality-sampling-faq-title">Quality Control Sampling Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How do I use the Quality Control Sampling Calculator?</summary><p>Enter your amounts, rates and dates in the fields above. The Quality Control Sampling Calculator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Quality Control Sampling Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Quality Control Sampling Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
-</section>
 </main>
 <afro-related-tools data-ssr="1" category="small-business" current="quality-sampling">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/tools/mini-importation/" data-related-tool data-id="mini-importation" data-name="Mini-Importation Profit Calculator" data-category="small-business" data-icon="MI" data-desc="Calculate landed cost and profit for importing goods from China via Alibaba/1688. Includes FX conversion, shipping, cust">Mini-Importation Profit Calculator</a></li><li><a href="/tools/pos-agent/" data-related-tool data-id="pos-agent" data-name="POS Agent Business Calculator" data-category="small-business" data-icon="PA" data-desc="Calculate POS agent/mobile money agent profitability in Nigeria (OPay/Moniepoint), Kenya (M-Pesa), Ghana (MTN MoMo). Dai">POS Agent Business Calculator</a></li><li><a href="/tools/mama-put/" data-related-tool data-id="mama-put" data-name="Mama Put / Food Vendor Business Calculator" data-category="small-business" data-icon="MP" data-desc="Profit calculator for African food vendors and restaurants. Enter meals served, price, COGS, rent, and staff costs — get">Mama Put / Food Vendor Business Calculator</a></li><li><a href="/tools/startup-runway/" data-related-tool data-id="startup-runway" data-name="Startup Runway Calculator" data-category="small-business" data-icon="SR" data-desc="Calculate how many months of cash runway your startup has. Enter burn rate, revenue, and cash balance — get runway, brea">Startup Runway Calculator</a></li><li><a href="/tools/marketplace-fees/" data-related-tool data-id="marketplace-fees" data-name="Marketplace Fee Comparator (Africa)" data-category="small-business" data-icon="MF" data-desc="Compare selling fees across Jumia, Konga, Takealot, Kilimall and other African marketplaces. See net payout per sale by ">Marketplace Fee Comparator (Africa)</a></li><li><a href="/tools/burn-rate/" data-related-tool data-id="burn-rate" data-name="Burn Rate Calculator" data-category="small-business" data-icon="BR" data-desc="Calculate your monthly gross and net burn rate. Enter personnel, rent, software, marketing costs — see runway and get ac">Burn Rate Calculator</a></li></ul>
+<ul class="seo-links-list"><li><a href="/tools/mini-importation/" data-related-tool data-id="mini-importation" data-name="Mini-Importation Profit Calculator" data-category="small-business" data-icon="MI" data-desc="Calculate landed cost, profit margin and ROI using your entered purchase price, exchange rate, freight, customs, clearin">Mini-Importation Profit Calculator</a></li><li><a href="/tools/pos-agent/" data-related-tool data-id="pos-agent" data-name="POS Agent Business Calculator" data-category="small-business" data-icon="PA" data-desc="Estimate POS or mobile-money agent profit using your entered provider commission, completed transactions, operating cost">POS Agent Business Calculator</a></li><li><a href="/tools/mama-put/" data-related-tool data-id="mama-put" data-name="Mama Put / Food Vendor Business Calculator" data-category="small-business" data-icon="MP" data-desc="Profit calculator for African food vendors and restaurants. Enter meals served, price, COGS, rent, and staff costs — get">Mama Put / Food Vendor Business Calculator</a></li><li><a href="/tools/startup-runway/" data-related-tool data-id="startup-runway" data-name="Startup Runway Calculator" data-category="small-business" data-icon="SR" data-desc="Calculate how many months of cash runway your startup has. Enter burn rate, revenue, and cash balance — get runway, brea">Startup Runway Calculator</a></li><li><a href="/tools/marketplace-fees/" data-related-tool data-id="marketplace-fees" data-name="African Marketplace Fee Comparator" data-category="small-business" data-icon="AM" data-desc="Compare net seller payouts using current marketplace quotes you enter for commission, payment, per-sale, withdrawal and ">African Marketplace Fee Comparator</a></li><li><a href="/tools/burn-rate/" data-related-tool data-id="burn-rate" data-name="Burn Rate Calculator" data-category="small-business" data-icon="BR" data-desc="Calculate your monthly gross and net burn rate. Enter personnel, rent, software, marketing costs — see runway and get ac">Burn Rate Calculator</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
 <script>
-// ISO 2859-1 AQL tables (Normal, Level II, Single Sampling)
-// [lotMin, lotMax, codeL, n, Ac, Re] — using simplified representative values
-var AQL_TABLE = [
-  // [lotMin, lotMax, code, sampleSize by AQL level II]
-  // Format: { lot_min, lot_max, code, n_I, n_II, n_III }
-  { min:2, max:8, code:'A', n1:2, n2:2, n3:3 },
-  { min:9, max:15, code:'B', n1:2, n2:3, n3:5 },
-  { min:16, max:25, code:'C', n1:2, n2:5, n3:8 },
-  { min:26, max:50, code:'D', n1:3, n2:8, n3:13 },
-  { min:51, max:90, code:'E', n1:5, n2:13, n3:20 },
-  { min:91, max:150, code:'F', n1:8, n2:20, n3:32 },
-  { min:151, max:280, code:'G', n1:13, n2:32, n3:50 },
-  { min:281, max:500, code:'H', n1:20, n2:50, n3:80 },
-  { min:501, max:1200, code:'J', n1:32, n2:80, n3:125 },
-  { min:1201, max:3200, code:'K', n1:50, n2:125, n3:200 },
-  { min:3201, max:10000, code:'L', n1:80, n2:200, n3:315 },
-  { min:10001, max:35000, code:'M', n1:125, n2:315, n3:500 },
-  { min:35001, max:150000, code:'N', n1:200, n2:500, n3:800 },
-  { min:150001, max:500000, code:'P', n1:315, n2:800, n3:1250 },
-  { min:500001, max:Infinity, code:'Q', n1:500, n2:1250, n3:2000 }
-];
-
-// Accept/Reject numbers by AQL and sample code (simplified representative values)
-var AC_TABLE = {
-  '0.065':{ A:[0,1], B:[0,1], C:[0,1], D:[0,1], E:[0,1], F:[0,1], G:[0,1], H:[0,1], J:[0,1], K:[0,1], L:[0,1], M:[1,2], N:[1,2], P:[2,3], Q:[3,4] },
-  '0.1':{ A:[0,1], B:[0,1], C:[0,1], D:[0,1], E:[0,1], F:[0,1], G:[0,1], H:[0,1], J:[0,1], K:[0,1], L:[1,2], M:[1,2], N:[2,3], P:[3,4], Q:[5,6] },
-  '0.25':{ A:[0,1], B:[0,1], C:[0,1], D:[0,1], E:[0,1], F:[0,1], G:[0,1], H:[0,1], J:[0,1], K:[1,2], L:[1,2], M:[2,3], N:[3,4], P:[5,6], Q:[7,8] },
-  '0.65':{ A:[0,1], B:[0,1], C:[0,1], D:[0,1], E:[0,1], F:[0,1], G:[0,1], H:[0,1], J:[1,2], K:[1,2], L:[2,3], M:[3,4], N:[5,6], P:[7,8], Q:[10,11] },
-  '1.0':{ A:[0,1], B:[0,1], C:[0,1], D:[0,1], E:[0,1], F:[0,1], G:[0,1], H:[1,2], J:[1,2], K:[2,3], L:[3,4], M:[5,6], N:[7,8], P:[10,11], Q:[14,15] },
-  '1.5':{ A:[0,1], B:[0,1], C:[0,1], D:[0,1], E:[0,1], F:[0,1], G:[1,2], H:[1,2], J:[2,3], K:[3,4], L:[5,6], M:[7,8], N:[10,11], P:[14,15], Q:[21,22] },
-  '2.5':{ A:[0,1], B:[0,1], C:[0,1], D:[0,1], E:[0,1], F:[1,2], G:[1,2], H:[2,3], J:[3,4], K:[5,6], L:[7,8], M:[10,11], N:[14,15], P:[21,22], Q:[21,22] },
-  '4.0':{ A:[0,1], B:[0,1], C:[0,1], D:[0,1], E:[1,2], F:[1,2], G:[2,3], H:[3,4], J:[5,6], K:[7,8], L:[10,11], M:[14,15], N:[21,22], P:[21,22], Q:[21,22] },
-  '6.5':{ A:[0,1], B:[0,1], C:[0,1], D:[1,2], E:[1,2], F:[2,3], G:[3,4], H:[5,6], J:[7,8], K:[10,11], L:[14,15], M:[21,22], N:[21,22], P:[21,22], Q:[21,22] },
-  '10.0':{ A:[0,1], B:[0,1], C:[1,2], D:[1,2], E:[2,3], F:[3,4], G:[5,6], H:[7,8], J:[10,11], K:[14,15], L:[21,22], M:[21,22], N:[21,22], P:[21,22], Q:[21,22] }
-};
-
+var LAST_SAMPLING_CHECK=null;
 function calcSampling(){
-  var lot = +document.getElementById('qs-lot').value;
-  var aql = document.getElementById('qs-aql').value;
-  var level = document.getElementById('qs-level').value;
-  var stype = document.getElementById('qs-type').value;
-  var defectsFound = +document.getElementById('qs-defects').value;
-  var inspCost = +document.getElementById('qs-inspect-cost').value;
-
-  // Find code letter
-  var row = null;
-  for (var i=0; i<AQL_TABLE.length; i++) {
-    if (lot >= AQL_TABLE[i].min && lot <= AQL_TABLE[i].max) { row = AQL_TABLE[i]; break; }
-  }
-  if (!row) row = AQL_TABLE[AQL_TABLE.length-1];
-
-  var n = level === 'I' ? row.n1 : level === 'III' ? row.n3 : row.n2;
-  if (stype === 'double') n = Math.ceil(n * 0.6); // first sample of double plan
-
-  var acRe = AC_TABLE[aql] ? (AC_TABLE[aql][row.code] || [0,1]) : [0,1];
-  var ac = acRe[0], re = acRe[1];
-
-  var pct = (n / lot * 100).toFixed(1);
-  var defectRate = (defectsFound / n * 100).toFixed(2);
-  var estLotDefects = Math.round(defectsFound / n * lot);
-  var costTotal = inspCost > 0 ? n * inspCost : 0;
-
-  document.getElementById('qs-headline').textContent = 'AQL ' + aql + '% — Lot of ' + lot.toLocaleString() + ' units';
-  document.getElementById('qs-sample').textContent = n.toLocaleString() + ' units';
-  document.getElementById('qs-accept').textContent = ac + ' defect' + (ac !== 1 ? 's' : '');
-  document.getElementById('qs-reject').textContent = re + ' defect' + (re !== 1 ? 's' : '');
-  document.getElementById('qs-pct').textContent = pct + '%';
-  document.getElementById('qs-est-defects').textContent = estLotDefects.toLocaleString() + ' (est.)';
-  document.getElementById('qs-cost').textContent = inspCost > 0 ? costTotal.toLocaleString() : 'N/A';
-  document.getElementById('qs-defect-rate').textContent = defectRate + '%';
-  document.getElementById('qs-code').textContent = 'Code ' + row.code;
-
-  var verdictEl = document.getElementById('qs-verdict-box');
-  if (defectsFound <= ac) {
-    verdictEl.innerHTML = '<div class="verdict accept">✅ ACCEPT — ' + defectsFound + ' defect(s) found ≤ Ac (' + ac + '). Lot passes.</div>';
-  } else if (defectsFound >= re) {
-    verdictEl.innerHTML = '<div class="verdict reject">❌ REJECT — ' + defectsFound + ' defect(s) found ≥ Re (' + re + '). Lot fails. Return to supplier or 100% sort.</div>';
-  } else {
-    verdictEl.innerHTML = '<div class="verdict borderline">⚠️ BORDERLINE — ' + defectsFound + ' defect(s) found. Between Ac(' + ac + ') and Re(' + re + '). Use double sampling or escalate to 100% inspection.</div>';
-  }
-
-  var actions = [
-    'Sample ' + n + ' units randomly from throughout the lot (front, middle, back). Never cherry-pick from easy-access units.',
-    'Inspection level ' + level + ': ' + (level==='I'?'Use only when supplier has strong quality history or cost sensitivity is high.':level==='III'?'Use when product risk is high or supplier has recent quality failures.':'Standard inspection — appropriate for most situations.'),
-    defectsFound >= re ? 'Lot REJECTED. Options: (1) Return full lot to supplier, (2) 100% sort at supplier cost, (3) Use for rework/scrap.' : '',
-    defectsFound <= ac ? 'Continue normal inspection. If 10 consecutive lots pass, consider switching to Reduced inspection (Level I).' : '',
-    'Document all defects found: type, location, and quantity. Feed back to supplier/production for root cause analysis.',
-    stype === 'double' ? 'Double sampling: if first sample borderline, draw second sample of '+n+' units. Combined accept number: ' + (ac*2+1) + '.' : ''
-  ].filter(Boolean);
-  document.getElementById('qs-actions').innerHTML = actions.map(function(a){ return '<li>'+a+'</li>'; }).join('');
-  document.getElementById('qs-results').classList.add('on');
-  document.getElementById('qs-results').scrollIntoView({ behavior:'smooth', block:'start' });
+  var lot=parseInt(document.getElementById('qs-lot').value,10),plan=document.getElementById('qs-plan-ref').value.trim(),planDate=document.getElementById('qs-plan-date').value,sample=parseInt(document.getElementById('qs-sample-input').value,10),accept=parseInt(document.getElementById('qs-accept-input').value,10),reject=parseInt(document.getElementById('qs-reject-input').value,10),defects=parseInt(document.getElementById('qs-defects').value,10),cost=parseFloat(document.getElementById('qs-inspect-cost').value)||0,status=document.getElementById('qs-status');
+  if(!Number.isInteger(lot)||lot<1||!plan||!planDate||!Number.isInteger(sample)||sample<1||sample>lot||!Number.isInteger(accept)||accept<0||!Number.isInteger(reject)||reject<=accept||reject>sample||!Number.isInteger(defects)||defects<0||defects>sample||cost<0){LAST_SAMPLING_CHECK=null;status.textContent='Enter a dated plan, a sample no larger than the lot, Ac below Re, Re no larger than the sample, and observed defects within the sample.';document.getElementById('qs-results').classList.remove('on');return;}
+  var outcome=defects<=accept?'ACCEPT per entered plan':defects>=reject?'REJECT per entered plan':'CONTINUE / ESCALATE per entered plan',samplePct=sample/lot*100,defectRate=defects/sample*100,totalCost=sample*cost;
+  LAST_SAMPLING_CHECK={lot:lot,plan:plan,planDate:planDate,sample:sample,accept:accept,reject:reject,defects:defects,outcome:outcome,samplePct:samplePct,defectRate:defectRate,costPerUnit:cost,totalCost:totalCost};
+  document.getElementById('qs-headline').textContent='Recorded sample · lot '+lot.toLocaleString()+' · plan checked '+planDate;document.getElementById('qs-sample').textContent=sample.toLocaleString()+' units';document.getElementById('qs-accept').textContent=accept+' defect'+(accept===1?'':'s');document.getElementById('qs-reject').textContent=reject+' defect'+(reject===1?'':'s');document.getElementById('qs-pct').textContent=samplePct.toFixed(1)+'%';document.getElementById('qs-est-defects').textContent='Not inferred';document.getElementById('qs-cost').textContent=cost>0?totalCost.toLocaleString('en-US',{maximumFractionDigits:2}):'N/A';document.getElementById('qs-defect-rate').textContent=defectRate.toFixed(2)+'%';document.getElementById('qs-code').textContent=plan;
+  var box=document.createElement('div');box.className='verdict '+(outcome.indexOf('ACCEPT')===0?'accept':outcome.indexOf('REJECT')===0?'reject':'borderline');box.textContent=outcome+' — '+defects+' defect(s) observed; entered Ac='+accept+', Re='+reject+'.';document.getElementById('qs-verdict-box').replaceChildren(box);
+  document.getElementById('qs-actions').innerHTML='<li>Confirm the sample was selected using the randomisation method in the controlled plan.</li><li>Record defect class, item identity, inspector, time and evidence; do not extrapolate a lot defect count from this page.</li><li>Apply the plan’s exact continuation, disposition, switching and resubmission rules; this tool does not invent them.</li>';status.textContent='Recorded sample checked against the entered controlled-plan criteria.';document.getElementById('qs-results').classList.add('on');
 }
+function downloadSamplingTxt(){if(!LAST_SAMPLING_CHECK)calcSampling();var r=LAST_SAMPLING_CHECK;if(!r)return;var text=['AfroTools quality sampling execution record','Controlled plan: '+r.plan,'Plan checked on: '+r.planDate,'Lot size: '+r.lot,'Approved sample size: '+r.sample,'Accept at or below: '+r.accept,'Reject at or above: '+r.reject,'Observed defects: '+r.defects,'Sample defect rate: '+r.defectRate.toFixed(2)+'%','Sample share of lot: '+r.samplePct.toFixed(1)+'%','Inspection cost scenario: '+r.totalCost.toFixed(2),'Outcome: '+r.outcome,'Note: no AQL table, code letter, switching rule or lot defect estimate is supplied by this page.'].join('\n'),blob=new Blob([text],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='quality-sampling-execution-record.txt';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);document.getElementById('qs-status').textContent='TXT sampling record downloaded.';}
 </script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 </body>
 </html>

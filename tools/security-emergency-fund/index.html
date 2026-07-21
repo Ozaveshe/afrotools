@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Security Emergency Fund Calculator — Africa | AfroTools</title>
-<meta name="description" content="Calculate and build your security emergency fund for any of the 54 African countries. Cover unexpected crises, medical emergencies, and income disruptions.">
+<title>Emergency Fund Target Calculator for Africa | AfroTools</title>
+<meta name="description" content="Set an emergency-fund target from monthly essentials, chosen coverage months and one-off costs, then subtract current savings and estimate time to the goal.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Security Emergency Fund Calculator | AfroTools">
-<meta property="og:description" content="Calculate your security emergency fund for any African country. Cover crises, medical emergencies, and income disruptions.">
+<meta property="og:description" content="Set a transparent emergency-fund target from essentials, chosen coverage months, one-off costs and current savings.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/security-emergency-fund.webp">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/security-emergency-fund/">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Security Emergency Fund Calculator | AfroTools">
-<meta name="twitter:description" content="Calculate your security emergency fund for any African country.">
+<meta name="twitter:description" content="Set a transparent emergency-fund target and estimate the remaining gap and time to goal.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/security-emergency-fund.webp">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Personal Finance","item":"https://afrotools.com/personal-finance/"},{"@type":"ListItem","position":3,"name":"Security Emergency Fund","item":"https://afrotools.com/tools/security-emergency-fund/"}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -65,22 +65,40 @@ select:focus,input:focus{outline:none;border-color:#7c3aed}
 .tier-name{font-weight:700;font-size:.9rem;margin-bottom:.25rem}
 .tier-desc{font-size:.82rem;color:#4b5563}
 .tier-amount{font-weight:700;color:#0f172a;font-size:.95rem;margin-top:.25rem}
+.skip-link:focus{left:1rem!important;top:1rem!important;width:auto!important;height:auto!important;padding:.75rem 1rem;background:#fff;color:#0f172a;border-radius:8px;overflow:visible!important}
 @media(max-width:600px){.form-grid,.res-grid{grid-template-columns:1fr}}
 </style>
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <link rel="stylesheet" href="/assets/css/personal-finance-focus.css?v=2749e6da">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Security Emergency Fund?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Security Emergency Fund then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Security Emergency Fund?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Security Emergency Fund free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}}]}
-</script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<style>
+html[data-theme="dark"] body{background:#08111f;color:#e5edf7}
+html[data-theme="dark"] .personal-finance-tool-focus :is(.card,.df-upgrade__card,.df-faq details,.personal-finance-focus-rail,.personal-finance-result-actions){background:#111e30!important;border-color:#33445a!important;color:#e5edf7!important}
+html[data-theme="dark"] .personal-finance-tool-focus :is(.card h2,.card h3,label,.res-item-val,.tier-amount,.df-upgrade h2,.df-faq h2,.personal-finance-focus-rail strong,.personal-finance-result-actions strong){color:#edf4fc!important}
+html[data-theme="dark"] .personal-finance-tool-focus :is(.tool-hero,.res-hero){background:linear-gradient(180deg,#0b1627,#101d30)!important;border-color:#33445a!important}
+html[data-theme="dark"] .personal-finance-tool-focus :is(.tool-hero h1){color:#edf4fc!important}
+html[data-theme="dark"] .personal-finance-tool-focus :is(.tool-hero p,.breadcrumb,.breadcrumb a,.res-item-label,.tier-desc,.df-upgrade p,.df-upgrade li,.df-faq p,.personal-finance-focus-rail p,.personal-finance-focus-rail__status,.personal-finance-result-actions p,.personal-finance-result-actions__status){color:#aebed2!important}
+html[data-theme="dark"] .personal-finance-tool-focus :is(input,select,.personal-finance-focus-rail a,.personal-finance-focus-rail button,.personal-finance-result-actions button){background:#0d192a!important;border-color:#40526a!important;color:#edf4fc!important}
+html[data-theme="dark"] .personal-finance-tool-focus :is(.hero-badge,.personal-finance-focus-rail__privacy,.res-item,.tier-card){background:#13243a!important;border-color:#40526a!important;color:#dbeafe!important}
+@media(prefers-color-scheme:dark){
+  html:not([data-theme="light"]) body{background:#08111f;color:#e5edf7}
+  html:not([data-theme="light"]) .personal-finance-tool-focus :is(.card,.df-upgrade__card,.df-faq details,.personal-finance-focus-rail,.personal-finance-result-actions){background:#111e30!important;border-color:#33445a!important;color:#e5edf7!important}
+  html:not([data-theme="light"]) .personal-finance-tool-focus :is(.card h2,.card h3,label,.res-item-val,.tier-amount,.df-upgrade h2,.df-faq h2,.personal-finance-focus-rail strong,.personal-finance-result-actions strong){color:#edf4fc!important}
+  html:not([data-theme="light"]) .personal-finance-tool-focus :is(.tool-hero,.res-hero){background:linear-gradient(180deg,#0b1627,#101d30)!important;border-color:#33445a!important}
+  html:not([data-theme="light"]) .personal-finance-tool-focus :is(.tool-hero h1){color:#edf4fc!important}
+  html:not([data-theme="light"]) .personal-finance-tool-focus :is(.tool-hero p,.breadcrumb,.breadcrumb a,.res-item-label,.tier-desc,.df-upgrade p,.df-upgrade li,.df-faq p,.personal-finance-focus-rail p,.personal-finance-focus-rail__status,.personal-finance-result-actions p,.personal-finance-result-actions__status){color:#aebed2!important}
+  html:not([data-theme="light"]) .personal-finance-tool-focus :is(input,select,.personal-finance-focus-rail a,.personal-finance-focus-rail button,.personal-finance-result-actions button){background:#0d192a!important;border-color:#40526a!important;color:#edf4fc!important}
+  html:not([data-theme="light"]) .personal-finance-tool-focus :is(.hero-badge,.personal-finance-focus-rail__privacy,.res-item,.tier-card){background:#13243a!important;border-color:#40526a!important;color:#dbeafe!important}
+}
+</style>
 <!-- tool-structured-data:auto -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Security Emergency Fund Calculator — Africa",
-  "description": "Calculate and build your security emergency fund for any of the 54 African countries. Cover unexpected crises, medical emergencies, and income disruptions.",
+  "name": "Emergency Fund Target Calculator for Africa",
+  "description": "Set an emergency-fund target from monthly essentials, chosen coverage months and one-off costs, then calculate the remaining gap and time to goal.",
   "url": "https://afrotools.com/tools/security-emergency-fund/",
   "inLanguage": "en",
   "applicationCategory": "UtilitiesApplication",
@@ -114,11 +132,11 @@ select:focus,input:focus{outline:none;border-color:#7c3aed}
       <a href="/personal-finance/">Personal Finance</a><span>›</span>
       Security Emergency Fund
     </nav>
-    <h1>Security Emergency Fund Calculator</h1>
-    <p>Build a financial safety net that covers true emergencies — job loss, medical crises, security incidents. Sized for African realities across all 54 countries.</p>
+    <h1>Emergency Fund Target Calculator</h1>
+    <p>Choose how many months of essentials to cover, add likely one-off emergency costs, subtract current savings, and see the remaining gap without hidden risk multipliers.</p>
     <div class="hero-badges">
-      <span class="hero-badge">54 Countries</span>
-      <span class="hero-badge">3-Tier System</span>
+      <span class="hero-badge">14 currency labels</span>
+      <span class="hero-badge">Editable target</span>
       <span class="hero-badge">Free</span>
     </div>
   </div>
@@ -127,7 +145,7 @@ select:focus,input:focus{outline:none;border-color:#7c3aed}
 <main id="main-content">
   <div class="container">
     <div class="card">
-      <h2>Calculate Your Security Emergency Fund</h2>
+      <h2>Calculate Your Emergency Fund Target</h2>
       <div class="form-grid">
         <div class="form-group">
           <label for="country">Country</label>
@@ -149,117 +167,96 @@ select:focus,input:focus{outline:none;border-color:#7c3aed}
           </select>
         </div>
         <div class="form-group">
-          <label for="monthly-expenses">Monthly Expenses (local currency)</label>
+          <label for="monthly-expenses">Monthly Essential Expenses (local currency)</label>
           <input type="number" id="monthly-expenses" placeholder="e.g. 150000" min="0">
         </div>
         <div class="form-group">
-          <label for="job-type">Employment Type</label>
-          <select id="job-type">
-            <option value="formal">Formal employment (salary)</option>
-            <option value="informal">Informal / gig work</option>
-            <option value="business">Business owner</option>
-            <option value="government">Government employee</option>
-          </select>
+          <label for="target-months">Months of Essentials to Cover</label>
+          <input type="number" id="target-months" value="3" min="1" max="24" step="1" inputmode="numeric">
         </div>
         <div class="form-group">
-          <label for="dependants">Number of Dependants</label>
-          <input type="number" id="dependants" value="0" min="0" max="20">
+          <label for="one-off-costs">One-off Emergency Costs</label>
+          <input type="number" id="one-off-costs" value="0" min="0" inputmode="decimal">
         </div>
         <div class="form-group">
-          <label for="security-risk">Security Risk Level</label>
-          <select id="security-risk">
-            <option value="low">Low — stable city, low crime</option>
-            <option value="medium" selected>Medium — urban area, moderate risk</option>
-            <option value="high">High — high crime / conflict region</option>
-          </select>
+          <label for="current-savings">Current Emergency Savings</label>
+          <input type="number" id="current-savings" value="0" min="0" inputmode="decimal">
         </div>
         <div class="form-group">
-          <label for="health-coverage">Health Coverage</label>
-          <select id="health-coverage">
-            <option value="none">No insurance</option>
-            <option value="basic">Basic / NHIF / NHIS</option>
-            <option value="comprehensive">Comprehensive medical</option>
-          </select>
+          <label for="monthly-contribution">Planned Monthly Contribution</label>
+          <input type="number" id="monthly-contribution" value="0" min="0" inputmode="decimal">
         </div>
       </div>
-      <button type="button" class="btn-calc" onclick="calculate()">Calculate My Security Fund</button>
+      <button type="button" class="btn-calc" onclick="calculate()">Calculate My Emergency Fund</button>
+      <p id="fundStatus" role="status" aria-live="polite"></p>
     </div>
 
     <div class="results card" id="results">
       <div class="res-hero">
-        <div class="res-label">Recommended Security Emergency Fund</div>
+        <div class="res-label">Chosen Emergency Fund Target</div>
         <div class="res-val" id="res-total">—</div>
         <div class="res-sub" id="res-months">— months of expenses</div>
       </div>
 
       <div class="res-grid">
         <div class="res-item">
-          <div class="res-item-label">Minimum (Tier 1)</div>
+          <div class="res-item-label">One-month Scenario</div>
           <div class="res-item-val" id="res-t1">—</div>
         </div>
         <div class="res-item">
-          <div class="res-item-label">Recommended (Tier 2)</div>
+          <div class="res-item-label">Chosen Target</div>
           <div class="res-item-val" id="res-t2">—</div>
         </div>
         <div class="res-item">
-          <div class="res-item-label">Full Security (Tier 3)</div>
+          <div class="res-item-label">Six-month Scenario</div>
           <div class="res-item-val" id="res-t3">—</div>
         </div>
         <div class="res-item">
-          <div class="res-item-label">Monthly Savings Target</div>
+          <div class="res-item-label">Estimated Time to Goal</div>
           <div class="res-item-val" id="res-monthly">—</div>
         </div>
       </div>
 
-      <h3 style="font-size:.95rem;font-weight:700;margin:0 0 .75rem">Your 3-Tier Security Fund Plan</h3>
+      <h3 style="font-size:.95rem;font-weight:700;margin:0 0 .75rem">Compare Three Transparent Scenarios</h3>
       <div class="tier-card tier-1">
-        <div class="tier-name">Tier 1 — Liquid Crisis Fund (3 months)</div>
-        <div class="tier-desc">Instant access. Cash, mobile money, or bank savings. Covers sudden job loss, medical emergency, or forced relocation.</div>
+        <div class="tier-name">One Month of Essentials + One-off Costs</div>
+        <div class="tier-desc">A short-horizon comparison only. Review withdrawal access, provider risk, fees and account protection before choosing where to keep it.</div>
         <div class="tier-amount" id="tier1-amount">—</div>
       </div>
       <div class="tier-card tier-2">
-        <div class="tier-name">Tier 2 — Security Buffer (5 months)</div>
-        <div class="tier-desc">High-yield savings or money market fund. Covers extended unemployment, major repairs, or security incidents requiring relocation.</div>
+        <div class="tier-name">Your Chosen Coverage Target</div>
+        <div class="tier-desc">Uses the exact number of months and one-off costs you entered. It is not a recommendation or guarantee.</div>
         <div class="tier-amount" id="tier2-amount">—</div>
       </div>
       <div class="tier-card tier-3">
-        <div class="tier-name">Tier 3 — Full Security Reserve (8 months)</div>
-        <div class="tier-desc">Treasury bills, fixed deposit, or short-term bond. Full protection against extended crisis — business failure, serious illness, or regional instability.</div>
+        <div class="tier-name">Six Months of Essentials + One-off Costs</div>
+        <div class="tier-desc">A longer-horizon comparison. Do not assume an emergency fund fully protects against loss, illness, conflict, inflation or provider failure.</div>
         <div class="tier-amount" id="tier3-amount">—</div>
       </div>
     </div>
   </div>
 
-<section class="df-upgrade" data-df-upgrade="security-emergency-fund">
+<section class="df-upgrade" aria-labelledby="emergency-method-title">
   <div class="df-upgrade__card">
     <div>
-      <span class="df-upgrade__kicker">Emergency fund sizing</span>
-      <h2>Size an emergency fund for safety and disruption risk</h2>
-      <p>Not sure how to get the most from the Security Emergency Fund? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
-      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Security Emergency Fund takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
+      <span class="df-upgrade__kicker">Method and source</span>
+      <h2 id="emergency-method-title">Your circumstances set the target</h2>
+      <p>The target is monthly essentials multiplied by your chosen months, plus one-off emergency costs. The remaining gap subtracts current emergency savings; time to goal divides that gap by your planned monthly contribution. No employment, dependant, medical or security-risk multiplier is hidden in the result.</p>
+      <p>The Consumer Financial Protection Bureau says the amount needed depends on the person's situation and suggests looking at common past unexpected expenses and their cost. <a href="https://www.consumerfinance.gov/an-essential-guide-to-building-an-emergency-fund/" rel="noopener noreferrer" target="_blank">Read the CFPB emergency-fund guide</a>. Source reviewed 18 July 2026.</p>
+      <p><strong>Privacy:</strong> amounts stay in this browser. Copy, TXT download, and Print / save PDF happen only when selected. No network function or account is used.</p>
     </div>
-    <form class="df-form" data-df-form="security-emergency-fund">
-      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
-      <label>Monthly essentials<input name="essentials" type="number" value="350000" min="0" step="any" aria-label="Monthly essentials"></label>
-      <label>Dependants<input name="dependants" type="number" value="3" min="0" step="any" aria-label="Dependants"></label>
-      <label>Risk level<select name="risk" aria-label="Risk level"><option value="low">low</option><option value="medium">medium</option><option value="high">high</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="security-emergency-fund" data-df-base="Security Emergency Fund — enter your details above to see your result." aria-live="polite">Security Emergency Fund — enter your details above to see your result.</output>
-      <div class="df-actions"><button type="button" data-df-copy="security-emergency-fund">Copy summary</button></div>
-    </form>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="security-emergency-fund-faq-title">
-  <h2 id="security-emergency-fund-faq-title">Frequently Asked Questions</h2>
-  <div class="df-faq__grid"><details><summary>How do I use the Security Emergency Fund?</summary><p>Enter your amounts, rates and dates in the fields above. The Security Emergency Fund then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Security Emergency Fund?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Security Emergency Fund free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
+  <h2 id="security-emergency-fund-faq-title">Emergency fund questions</h2>
+  <div class="df-faq__grid"><details><summary>What belongs in monthly essentials?</summary><p>Use unavoidable costs such as basic housing, food, utilities, necessary transport, minimum debt payments, essential care and required support. Keep discretionary spending separate.</p></details><details><summary>What belongs in one-off costs?</summary><p>Use realistic amounts for the emergencies you are planning around, such as urgent travel, temporary accommodation, an insurance excess, repairs or uncovered medical costs. Avoid counting the same cost twice.</p></details><details><summary>Where should the fund be kept?</summary><p>The tool does not recommend a provider or product. Compare access time, withdrawal limits, fees, currency risk, account protection and provider failure risk for your country.</p></details></div>
 </section>
 </main>
 <afro-related-tools data-ssr="1" category="personal-finance" current="security-emergency-fund">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/tools/50-30-20-budget/" data-related-tool data-id="50-30-20-budget" data-name="50/30/20 Budget Calculator for Africa — Needs, Wants &amp; Savings" data-category="personal-finance" data-icon="53" data-desc="Free 50/30/20 budget calculator for Africa. See your ideal needs/wants/savings split, current vs ideal comparison, and t">50/30/20 Budget Calculator for Africa — Needs, Wants &amp; Savings</a></li><li><a href="/tools/side-hustle-ranker/" data-related-tool data-id="side-hustle-ranker" data-name="African Side Hustle Profitability Ranker — Top 5 for Your Profile" data-category="personal-finance" data-icon="AS" data-desc="Compare side hustles for African professionals. 20+ options scored by startup cost, time-to-income, scalability, and mar">African Side Hustle Profitability Ranker — Top 5 for Your Profile</a></li><li><a href="/tools/album-budget/" data-related-tool data-id="album-budget" data-name="Album / EP Release Budget Calculator — Africa" data-category="personal-finance" data-icon="AE" data-desc="Plan your album, EP or single release budget. DIY vs professional comparison, streaming breakeven, 1-year revenue projec">Album / EP Release Budget Calculator — Africa</a></li><li><a href="/tools/film-budget/" data-related-tool data-id="film-budget" data-name="Film / Movie Budget Breakdown Tool — Nollywood &amp; Africa" data-category="personal-finance" data-icon="FM" data-desc="Nollywood-calibrated film budget tool. Plan short film, feature, TV series, and web series budgets. Department breakdown">Film / Movie Budget Breakdown Tool — Nollywood &amp; Africa</a></li></ul>
+<ul class="seo-links-list"><li><a href="/tools/50-30-20-budget/" data-related-tool data-id="50-30-20-budget" data-name="50/30/20 Budget Calculator for Africa" data-category="personal-finance" data-icon="53" data-desc="Compare take-home income with a 50% needs, 30% wants and 20% savings or extra-debt rule of thumb across 15 listed curren">50/30/20 Budget Calculator for Africa</a></li><li><a href="/tools/side-hustle-ranker/" data-related-tool data-id="side-hustle-ranker" data-name="African Side Hustle Fit Shortlist" data-category="personal-finance" data-icon="AS" data-desc="Shortlist 15 ideas by selected skills, weekly time and startup-capital band, with transparent input-fit scores and pre-s">African Side Hustle Fit Shortlist</a></li><li><a href="/tools/album-budget/" data-related-tool data-id="album-budget" data-name="Album and EP Release Budget Calculator" data-category="personal-finance" data-icon="AA" data-desc="Plan recording, mixing, mastering, artwork, video, distribution and promotion costs with contingency and an optional net">Album and EP Release Budget Calculator</a></li><li><a href="/tools/film-budget/" data-related-tool data-id="film-budget" data-name="Film Production Budget Allocation Tool" data-category="personal-finance" data-icon="FP" data-desc="Allocate a film budget across four departments, then calculate shoot-day cost, contingency and the remaining committed-f">Film Production Budget Allocation Tool</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
@@ -276,41 +273,32 @@ function fmt(n, cur) {
 }
 
 function calculate() {
-  var expenses = parseFloat(document.getElementById('monthly-expenses').value) || 0;
-  if (expenses <= 0) { alert('Please enter your monthly expenses.'); return; }
-
-  var jobType = document.getElementById('job-type').value;
-  var secRisk = document.getElementById('security-risk').value;
-  var health = document.getElementById('health-coverage').value;
-  var dependants = parseInt(document.getElementById('dependants').value) || 0;
+  var status = document.getElementById('fundStatus');
+  var expenses = Number(document.getElementById('monthly-expenses').value);
+  var targetMonths = Number(document.getElementById('target-months').value);
+  var oneOff = Number(document.getElementById('one-off-costs').value);
+  var currentSavings = Number(document.getElementById('current-savings').value);
+  var monthlyContribution = Number(document.getElementById('monthly-contribution').value);
+  if ([expenses,targetMonths,oneOff,currentSavings,monthlyContribution].some(function(value){return !Number.isFinite(value)||value<0;})) { status.textContent='Enter zero or a positive number in every money field.'; return; }
+  if (expenses <= 0) { status.textContent='Enter monthly essential expenses greater than zero.'; document.getElementById('monthly-expenses').focus(); return; }
+  if (!Number.isInteger(targetMonths) || targetMonths < 1 || targetMonths > 24) { status.textContent='Choose a whole number of coverage months from 1 to 24.'; document.getElementById('target-months').focus(); return; }
+  status.textContent='Emergency fund target calculated locally.';
   var country = document.getElementById('country').value;
   var cur = CURRENCIES[country] || 'USD';
+  var t1 = expenses + oneOff;
+  var target = expenses * targetMonths + oneOff;
+  var t3 = expenses * 6 + oneOff;
+  var gap = Math.max(0, target - currentSavings);
+  var monthsToGoal = gap === 0 ? 0 : (monthlyContribution > 0 ? Math.ceil(gap / monthlyContribution) : null);
 
-  // Risk-adjusted multipliers
-  var baseMonths = 3;
-  if (jobType === 'informal' || jobType === 'business') baseMonths += 2;
-  if (secRisk === 'medium') baseMonths += 1;
-  if (secRisk === 'high') baseMonths += 2;
-  if (health === 'none') baseMonths += 1;
-  if (dependants >= 2) baseMonths += 1;
-  if (dependants >= 4) baseMonths += 1;
-  baseMonths = Math.min(baseMonths, 8);
-
-  var adjusted = expenses * (1 + dependants * 0.15);
-  var t1 = adjusted * 3;
-  var t2 = adjusted * 5;
-  var t3 = adjusted * 8;
-  var recommended = adjusted * baseMonths;
-  var monthlySavings = recommended / 12;
-
-  document.getElementById('res-total').textContent = fmt(recommended, cur);
-  document.getElementById('res-months').textContent = baseMonths + ' months of adjusted expenses';
+  document.getElementById('res-total').textContent = fmt(target, cur);
+  document.getElementById('res-months').textContent = targetMonths + ' months of essentials + one-off costs';
   document.getElementById('res-t1').textContent = fmt(t1, cur);
-  document.getElementById('res-t2').textContent = fmt(t2, cur);
+  document.getElementById('res-t2').textContent = fmt(target, cur);
   document.getElementById('res-t3').textContent = fmt(t3, cur);
-  document.getElementById('res-monthly').textContent = fmt(monthlySavings, cur) + '/mo';
+  document.getElementById('res-monthly').textContent = monthsToGoal === null ? 'Add a contribution' : (monthsToGoal === 0 ? 'Target reached' : monthsToGoal + ' months');
   document.getElementById('tier1-amount').textContent = fmt(t1, cur);
-  document.getElementById('tier2-amount').textContent = fmt(t2, cur);
+  document.getElementById('tier2-amount').textContent = fmt(target, cur) + ' target · ' + fmt(gap, cur) + ' remaining';
   document.getElementById('tier3-amount').textContent = fmt(t3, cur);
 
   var r = document.getElementById('results');

@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Payment Gateway Fee Comparator — Africa | AfroTools</title>
-<meta name="description" content="Compare payment gateway fees across Africa. Paystack, Flutterwave, Peach Payments, DPO, Pesapal — find the cheapest gateway for your transaction volume.">
+<title>Payment Gateway Fee Calculator and Comparator | AfroTools</title>
+<meta name="description" content="Compare three current payment gateway quotes using transaction value, percentage fee, flat fee and optional per-transaction cap.">
 <meta property="og:title" content="Payment Gateway Fee Comparator | AfroTools">
-<meta property="og:description" content="Compare payment gateway fees across Africa. Paystack, Flutterwave, Peach Payments, DPO, Pesapal — find the cheapest gateway for your transaction volume.">
+<meta property="og:description" content="Compare three current payment gateway fee quotes using your own terms and monthly transaction volume.">
 <meta property="og:url" content="https://afrotools.com/tools/payment-gateway/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Payment Gateway Fee Comparator — Africa | AfroTools">
-<meta name="twitter:description" content="Compare payment gateway fees across Africa. Paystack, Flutterwave, Peach Payments, DPO, Pesapal — find the cheapest gateway for your transaction volume.">
+<meta name="twitter:description" content="Compare three current payment gateway fee quotes using your own terms and monthly transaction volume.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -61,7 +61,7 @@ body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;line-heig
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 .form-group{display:flex;flex-direction:column;gap:4px}
 label{font-size:.82rem;font-weight:600;color:#374151}
-select,input[type="number"]{width:100%;padding:.65rem .85rem;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.9rem;background:#fff;transition:border-color .2s}
+select,input{width:100%;padding:.65rem .85rem;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.9rem;background:#fff;transition:border-color .2s}
 select:focus,input:focus{outline:none;border-color:var(--color-primary)}
 .btn-calc{width:100%;padding:.85rem;border:none;border-radius:10px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:.5rem;transition:filter .2s}
 .btn-calc:hover{filter:brightness(1.1)}
@@ -90,14 +90,15 @@ details summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
 details[open] summary::after{content:'\2212'}
 .faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
 .faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+.offer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1rem 0}.offer-card{border:1.5px solid #dbe4f0;border-radius:12px;padding:1rem;margin:0;min-width:0}.offer-card legend{font-weight:800;padding:0 .35rem}.form-error{min-height:1.4em;color:#b91c1c;font-size:.84rem;font-weight:600;margin:.6rem 0 0}.table-wrap{overflow-x:auto}.field-help{font-size:.74rem;color:#64748b}.gw-table caption{text-align:left;font-weight:700;margin-bottom:.5rem}
+html[data-theme="dark"] body{background:#07111f;color:#e5edf8}html[data-theme="dark"] :is(.card,.metric,.faq-item,.offer-card,.df-upgrade__card){background:#101c2c!important;border-color:#2a3b51!important;color:#e5edf8!important}html[data-theme="dark"] :is(h2,h3,label,legend,.metric-val){color:#f8fafc!important}html[data-theme="dark"] :is(.field-help,.metric-label,.faq-a,.df-upgrade p,.df-upgrade li){color:#b6c5d8!important}html[data-theme="dark"] :is(input,select,details summary){background:#17263a!important;border-color:#3a4e68!important;color:#f8fafc!important}html[data-theme="dark"] .info-box{background:#102844;border-color:#315b86;color:#bfdbfe}html[data-theme="dark"] .gw-table td{border-color:#2a3b51}html[data-theme="dark"] .gw-table tr.best td{background:#1e2f47}
+@media(prefers-color-scheme:dark){html:not([data-theme="light"]) body{background:#07111f;color:#e5edf8}html:not([data-theme="light"]) :is(.card,.metric,.faq-item,.offer-card,.df-upgrade__card){background:#101c2c!important;border-color:#2a3b51!important;color:#e5edf8!important}html:not([data-theme="light"]) :is(h2,h3,label,legend,.metric-val){color:#f8fafc!important}html:not([data-theme="light"]) :is(.field-help,.metric-label,.faq-a,.df-upgrade p,.df-upgrade li){color:#b6c5d8!important}html:not([data-theme="light"]) :is(input,select,details summary){background:#17263a!important;border-color:#3a4e68!important;color:#f8fafc!important}html:not([data-theme="light"]) .info-box{background:#102844;border-color:#315b86;color:#bfdbfe}html:not([data-theme="light"]) .gw-table td{border-color:#2a3b51}html:not([data-theme="light"]) .gw-table tr.best td{background:#1e2f47}}
 @media(max-width:680px){.form-grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}}
+@media(max-width:680px){.offer-grid{grid-template-columns:1fr}.gw-table{min-width:620px}}
 </style>
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/payment-gateway.webp">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/payment-gateway.webp">
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Payment Gateway Fee Compare?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Payment Gateway Fee Compare then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Payment Gateway Fee Compare?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Payment Gateway Fee Compare free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"Which payment gateway is best for Nigeria?","acceptedAnswer":{"@type":"Answer","text":"Paystack (acquired by Stripe) and Flutterwave are the most widely used in Nigeria. Paystack charges 1.5% + ₦100 (capped at ₦2,000) for local cards. Flutterwave charges similar rates. For high volumes, negotiate enterprise rates. Interswitch (Quickteller) is also popular for USSD and card payments targeting mass market."}},{"@type":"Question","name":"Which gateway is best for East Africa?","acceptedAnswer":{"@type":"Answer","text":"For Kenya, Pesapal and DPO Pay cover M-Pesa well. Flutterwave has expanded M-Pesa integration. Cellulant (Tingg) is strong across East Africa for mobile money. For Tanzania, Selcom and Azam Pay are popular. Pesapal covers Uganda, Rwanda, Tanzania, and Kenya with a single integration."}},{"@type":"Question","name":"What is MDR (Merchant Discount Rate)?","acceptedAnswer":{"@type":"Answer","text":"MDR is the fee the payment gateway or acquirer charges the merchant for processing card transactions. It's expressed as a % of the transaction value, often plus a flat fee. For example, 1.5% + ₦100 means on a ₦10,000 transaction the merchant pays ₦150 + ₦100 = ₦250. The MDR covers interchange fees paid to the card-issuing bank, scheme fees (Visa/Mastercard), and the acquirer's margin."}}]}
-</script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/tools/payment-gateway/">
@@ -112,8 +113,8 @@ details[open] summary::after{content:'\2212'}
   <div class="container">
     <nav class="breadcrumb"><a href="/">AfroTools</a><span>›</span><a href="/fintech/">Fintech &amp; Banking</a><span>›</span>Payment Gateway Fee Comparator</nav>
     <h1>Payment Gateway Fee Comparator</h1>
-    <p>Compare Paystack, Flutterwave, Peach Payments, DPO Pay, Pesapal, and more. Find the cheapest gateway for your transaction volume and country.</p>
-    <div class="hero-badges"><span class="hero-badge">15 Countries</span><span class="hero-badge">8 Gateways</span><span class="hero-badge">Free</span></div>
+    <p>Compare three current gateway quotes on the same transaction value and monthly volume. Enter the percentage fee, flat fee and optional cap exactly as quoted.</p>
+    <div class="hero-badges"><span class="hero-badge">Your current quotes</span><span class="hero-badge">Transparent maths</span><span class="hero-badge">Local &amp; free</span></div>
   </div>
 </div>
 <div class="container">
@@ -121,45 +122,41 @@ details[open] summary::after{content:'\2212'}
     <h2>Payment Gateway Fee Comparator</h2>
     <div class="form-grid">
       <div class="form-group">
-        <label for="pg-country">Country / Region</label>
-        <select id="pg-country">
-          <option value="NG">Nigeria</option>
-          <option value="KE">Kenya</option>
-          <option value="GH">Ghana</option>
-          <option value="ZA">South Africa</option>
-          <option value="UG">Uganda</option>
-          <option value="TZ">Tanzania</option>
-          <option value="RW">Rwanda</option>
-          <option value="CI">Côte d'Ivoire</option>
-          <option value="SN">Senegal</option>
-          <option value="EG">Egypt</option>
-          <option value="MA">Morocco</option>
-          <option value="ET">Ethiopia</option>
-          <option value="ZM">Zambia</option>
-          <option value="CM">Cameroon</option>
-          <option value="MZ">Mozambique</option>
-        </select>
+        <label for="pg-currency">Currency</label>
+        <select id="pg-currency"><option>NGN</option><option>KES</option><option>GHS</option><option>ZAR</option><option>UGX</option><option>TZS</option><option>RWF</option><option>ZMW</option><option>XOF</option><option>XAF</option><option>USD</option></select>
       </div>
       <div class="form-group">
         <label for="pg-avg-txn">Average Transaction Value (local currency)</label>
-        <input type="number" id="pg-avg-txn" value="15000" min="0">
+        <input type="number" id="pg-avg-txn" value="15000" min="0.01" step="0.01" required>
       </div>
       <div class="form-group">
         <label for="pg-monthly-txns">Monthly Transaction Count</label>
-        <input type="number" id="pg-monthly-txns" value="200" min="1">
-      </div>
-      <div class="form-group">
-        <label for="pg-type">Payment Method</label>
-        <select id="pg-type">
-          <option value="card">Card (Visa/Mastercard)</option>
-          <option value="mobile">Mobile Money</option>
-          <option value="bank">Bank Transfer</option>
-          <option value="ussd">USSD</option>
-        </select>
+        <input type="number" id="pg-monthly-txns" value="200" min="1" step="1" required>
       </div>
     </div>
+    <div class="offer-grid">
+      <fieldset class="offer-card"><legend>Quote A</legend>
+        <div class="form-group"><label for="pg-name-1">Gateway name</label><input id="pg-name-1" value="Gateway A" maxlength="40" required></div>
+        <div class="form-group"><label for="pg-rate-1">Percentage fee (%)</label><input type="number" id="pg-rate-1" value="1.5" min="0" max="100" step="0.01" required></div>
+        <div class="form-group"><label for="pg-flat-1">Flat fee per transaction</label><input type="number" id="pg-flat-1" value="100" min="0" step="0.01" required></div>
+        <div class="form-group"><label for="pg-cap-1">Fee cap per transaction</label><input type="number" id="pg-cap-1" value="2000" min="0" step="0.01" aria-describedby="pg-cap-help-1"><span class="field-help" id="pg-cap-help-1">Use 0 when there is no cap.</span></div>
+      </fieldset>
+      <fieldset class="offer-card"><legend>Quote B</legend>
+        <div class="form-group"><label for="pg-name-2">Gateway name</label><input id="pg-name-2" value="Gateway B" maxlength="40" required></div>
+        <div class="form-group"><label for="pg-rate-2">Percentage fee (%)</label><input type="number" id="pg-rate-2" value="1.4" min="0" max="100" step="0.01" required></div>
+        <div class="form-group"><label for="pg-flat-2">Flat fee per transaction</label><input type="number" id="pg-flat-2" value="0" min="0" step="0.01" required></div>
+        <div class="form-group"><label for="pg-cap-2">Fee cap per transaction</label><input type="number" id="pg-cap-2" value="0" min="0" step="0.01"><span class="field-help">Use 0 when there is no cap.</span></div>
+      </fieldset>
+      <fieldset class="offer-card"><legend>Quote C</legend>
+        <div class="form-group"><label for="pg-name-3">Gateway name</label><input id="pg-name-3" value="Gateway C" maxlength="40" required></div>
+        <div class="form-group"><label for="pg-rate-3">Percentage fee (%)</label><input type="number" id="pg-rate-3" value="2" min="0" max="100" step="0.01" required></div>
+        <div class="form-group"><label for="pg-flat-3">Flat fee per transaction</label><input type="number" id="pg-flat-3" value="0" min="0" step="0.01" required></div>
+        <div class="form-group"><label for="pg-cap-3">Fee cap per transaction</label><input type="number" id="pg-cap-3" value="0" min="0" step="0.01"><span class="field-help">Use 0 when there is no cap.</span></div>
+      </fieldset>
+    </div>
     <button type="button" class="btn-calc" onclick="calcGateway()">Compare Gateways</button>
-    <div class="results" id="pg-results" role="region" aria-live="polite" aria-label="Gateway comparison results">
+    <p class="form-error" id="pg-error" role="alert"></p>
+    <div class="results" id="pg-results" role="region" aria-live="polite" aria-label="Gateway comparison results" tabindex="-1">
       <div class="winner-card" id="pg-winner">
         <div class="winner-icon">🏆</div>
         <div>
@@ -173,106 +170,89 @@ details[open] summary::after{content:'\2212'}
         <div class="metric"><div class="metric-val" id="pg-most-exp"></div><div class="metric-label">Most Expensive Fee</div></div>
         <div class="metric"><div class="metric-val" id="pg-annual-saving"></div><div class="metric-label">Annual Saving (best vs worst)</div></div>
       </div>
-      <table class="gw-table" id="pg-table"></table>
-      <div class="info-box"><strong>Source:</strong> Standard published rates from each provider's pricing pages (Paystack, Flutterwave, Peach Payments, DPO Pay, Pesapal, Cellulant Tingg, Interswitch, PayGate), reviewed July 2026. Enterprise rates are typically lower at high volumes (&gt;$50K/month). Fees are indicative and change — confirm on the provider's pricing page before you rely on them.</div>
+      <div class="table-wrap"><table class="gw-table" id="pg-table"><caption>Estimated processing fees</caption><thead><tr><th>#</th><th>Gateway</th><th>Per transaction</th><th>Monthly fee</th><th>Effective rate</th></tr></thead><tbody id="pg-table-body"></tbody></table></div>
+      <div class="info-box"><strong>Planning estimate:</strong> this applies each quote to every transaction at the same value. It does not include tax, settlement, refund, chargeback, cross-border, currency-conversion, monthly, minimum, reserve or negotiated fees unless you include them in the entered quote.</div>
     </div>
   </div>
   <div class="card">
     <h2>Frequently Asked Questions</h2>
 
-<section class="df-upgrade" data-df-upgrade="payment-gateway">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Payment comparison workflow</span>
-      <h2>Payment Gateway Fee Compare: quick guide</h2>
-      <p>Not sure how to get the most from the Payment Gateway Fee Compare? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
-      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Payment Gateway Fee Compare takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
-    </div>
-    <form class="df-form" data-df-form="payment-gateway">
-      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
-      <label>Transaction value<input name="transaction" type="number" value="50000" min="0" step="any" aria-label="Transaction value"></label>
-      <label>Fee percent<input name="fee" type="number" value="1.5" min="0" step="any" aria-label="Fee percent"></label>
-      <label>Channel<select name="channel" aria-label="Channel"><option value="POS">POS</option><option value="bank transfer">bank transfer</option><option value="mobile money">mobile money</option><option value="card">card</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="payment-gateway" data-df-base="Payment Gateway Fee Compare — enter your details above to see your result." aria-live="polite">Payment Gateway Fee Compare — enter your details above to see your result.</output>
-      <div class="df-actions"><button type="button" data-df-copy="payment-gateway">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="payment-gateway-faq-title">
-  <h2 id="payment-gateway-faq-title">Payment Gateway Fee Compare FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How do I use the Payment Gateway Fee Compare?</summary><p>Enter your amounts, rates and dates in the fields above. The Payment Gateway Fee Compare then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Payment Gateway Fee Compare?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Payment Gateway Fee Compare free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
-</section>
-    <div class="faq-item"><details><summary>Which payment gateway is best for Nigeria?</summary><div class="faq-a">Paystack (acquired by Stripe) and Flutterwave are the most widely used in Nigeria. Paystack charges 1.5% + ₦100 (capped at ₦2,000) for local cards. Flutterwave charges similar rates. For high volumes, negotiate enterprise rates. Interswitch (Quickteller) is also popular for USSD and card payments targeting mass market.</div></details></div>
-    <div class="faq-item"><details><summary>Which gateway is best for East Africa?</summary><div class="faq-a">For Kenya, Pesapal and DPO Pay cover M-Pesa well. Flutterwave has expanded M-Pesa integration. Cellulant (Tingg) is strong across East Africa for mobile money. For Tanzania, Selcom and Azam Pay are popular. Pesapal covers Uganda, Rwanda, Tanzania, and Kenya with a single integration.</div></details></div>
-    <div class="faq-item"><details><summary>What is MDR (Merchant Discount Rate)?</summary><div class="faq-a">MDR is the fee the payment gateway or acquirer charges the merchant for processing card transactions. It's expressed as a % of the transaction value, often plus a flat fee. For example, 1.5% + ₦100 means on a ₦10,000 transaction the merchant pays ₦150 + ₦100 = ₦250. The MDR covers interchange fees paid to the card-issuing bank, scheme fees (Visa/Mastercard), and the acquirer's margin.</div></details></div>
+    <section class="df-upgrade" aria-labelledby="pg-method-title">
+      <div class="df-upgrade__card"><div>
+        <span class="df-upgrade__kicker">Quote-by-quote comparison</span>
+        <h2 id="pg-method-title">What to copy from each pricing quote</h2>
+        <p>Use terms for the same country, payment method, card origin and settlement currency. A percentage-plus-flat quote is calculated for one transaction, capped if you enter a cap, then multiplied by the monthly count.</p>
+        <ul class="df-upgrade__bullets"><li><strong>Percentage fee:</strong> enter 1.5 for 1.5%, not 0.015.</li><li><strong>Flat fee:</strong> enter the fixed charge added to each transaction.</li><li><strong>Cap:</strong> enter a maximum processing fee per transaction, or zero when none applies.</li></ul>
+        <p class="df-upgrade__note">Confirm eligibility, taxes, cross-border rules, settlement time, refunds, chargebacks, reserves, payout fees, payment-method support and negotiated pricing before selecting a gateway.</p>
+      </div></div>
+    </section>
+    <div class="faq-item"><details><summary>Does the lowest processing fee mean the best gateway?</summary><div class="faq-a">Not necessarily. Reliability, payment-method coverage, settlement timing, dispute handling, fraud controls, reporting, integration effort and support may matter more than a small fee difference.</div></details></div>
+    <div class="faq-item"><details><summary>How does a fee cap work?</summary><div class="faq-a">The calculator first adds the percentage fee and flat fee. If a positive cap is lower than that amount, it uses the cap as the per-transaction fee.</div></details></div>
+    <div class="faq-item"><details><summary>Are taxes and cross-border fees included?</summary><div class="faq-a">Only if they are already included in the numbers you enter. Review the current provider quote and contract for tax, foreign-card, conversion, payout, refund, dispute, reserve and monthly charges.</div></details></div>
   </div>
 </div>
 <afro-related-tools data-ssr="1" category="fintech" current="payment-gateway">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/tools/loan-shark-compare/" data-related-tool data-id="loan-shark-compare" data-name="Loan Shark vs Bank Rate" data-category="fintech" data-icon="LS" data-desc="Compare informal moneylender rates vs bank loans vs fintech apps. True APR calculator showing hidden cost of predatory l">Loan Shark vs Bank Rate</a></li><li><a href="/tools/mobile-vs-bank/" data-related-tool data-id="mobile-vs-bank" data-name="Mobile Money vs Bank Transfer" data-category="fintech" data-icon="MM" data-desc="Compare M-Pesa, MTN MoMo, Airtel Money vs bank transfer fees for domestic and cross-border payments across Africa.">Mobile Money vs Bank Transfer</a></li><li><a href="/tools/digital-lending/" data-related-tool data-id="digital-lending" data-name="Digital Lending App Rates" data-category="fintech" data-icon="DL" data-desc="Compare digital lending apps (Fuliza, FairMoney, Carbon, PalmCredit) — true APR, fees, repayment periods.">Digital Lending App Rates</a></li><li><a href="/tools/fixed-deposit/" data-related-tool data-id="fixed-deposit" data-name="Fixed Deposit Rate Comparator" data-category="fintech" data-icon="FD" data-desc="Compare fixed deposit and savings account interest rates across African banks. 30/60/90/180/365-day tenors, 20+ banks.">Fixed Deposit Rate Comparator</a></li><li><a href="/tools/microfinance-loan/" data-related-tool data-id="microfinance-loan" data-name="Microfinance Loan Calculator" data-category="fintech" data-icon="ML" data-desc="Calculate microfinance loan repayments for African MFIs. Flat vs reducing balance, group vs individual loans.">Microfinance Loan Calculator</a></li><li><a href="/tools/sacco-calc/" data-related-tool data-id="sacco-calc" data-name="SACCO/Credit Union Calculator" data-category="fintech" data-icon="SC" data-desc="Calculate SACCO loan eligibility, dividend projections, and savings growth. Kenya, Uganda, Tanzania, Rwanda SACCOs.">SACCO/Credit Union Calculator</a></li></ul>
+<ul class="seo-links-list"><li><a href="/tools/loan-shark-compare/" data-related-tool data-id="loan-shark-compare" data-name="Informal Loan vs Bank Cost Calculator" data-category="fintech" data-icon="IL" data-desc="Compare a monthly flat-rate loan with a reducing-balance bank loan. See repayment, finance cost and effective annual rat">Informal Loan vs Bank Cost Calculator</a></li><li><a href="/tools/mobile-vs-bank/" data-related-tool data-id="mobile-vs-bank" data-name="Mobile Money vs Bank Transfer Comparator" data-category="fintech" data-icon="MM" data-desc="Compare a mobile money quote with a bank transfer quote. Enter the current flat and percentage fees to see total cost an">Mobile Money vs Bank Transfer Comparator</a></li><li><a href="/tools/digital-lending/" data-related-tool data-id="digital-lending" data-name="Digital Loan Offer and APR Comparator" data-category="fintech" data-icon="DL" data-desc="Compare up to three current digital loan offers by amount received, term and total repayment. See finance cost and effec">Digital Loan Offer and APR Comparator</a></li><li><a href="/tools/fixed-deposit/" data-related-tool data-id="fixed-deposit" data-name="Fixed Deposit Rate Comparator" data-category="fintech" data-icon="FD" data-desc="Calculate fixed deposit maturity value from a bank&#39;s current rate, term, tax and compounding method. See gross interest,">Fixed Deposit Rate Comparator</a></li><li><a href="/tools/microfinance-loan/" data-related-tool data-id="microfinance-loan" data-name="Microfinance Loan Calculator" data-category="fintech" data-icon="ML" data-desc="Calculate a microfinance offer&#39;s monthly repayment, fees, finance cost and effective annual rate for flat or reducing-ba">Microfinance Loan Calculator</a></li><li><a href="/tools/sacco-calc/" data-related-tool data-id="sacco-calc" data-name="SACCO / Credit Union Savings Calculator" data-category="fintech" data-icon="SC" data-desc="Model monthly SACCO contributions, a user-entered annual dividend rate, projected balance and loan capacity, with a bank">SACCO / Credit Union Savings Calculator</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
 <script>
-var GATEWAYS=[
-  {name:'Paystack',cardRate:0.015,cardFlat:100,mmRate:0.01,mmFlat:50,bankRate:0.0,bankFlat:100,ussdRate:0.015,ussdFlat:100,countries:['NG','GH','ZA','KE'],cap:2000},
-  {name:'Flutterwave',cardRate:0.014,cardFlat:0,mmRate:0.009,mmFlat:0,bankRate:0.0,bankFlat:50,ussdRate:0.014,ussdFlat:0,countries:['NG','GH','KE','UG','TZ','ZA','CI','SN','CM','ZM','ET','EG','MA','RW','MZ'],cap:0},
-  {name:'Peach Payments',cardRate:0.029,cardFlat:0,mmRate:0.02,mmFlat:0,bankRate:0.0,bankFlat:0,ussdRate:0.02,ussdFlat:0,countries:['ZA','KE','NG','GH'],cap:0},
-  {name:'DPO Pay',cardRate:0.035,cardFlat:0,mmRate:0.025,mmFlat:0,bankRate:0.0,bankFlat:0,ussdRate:0.025,ussdFlat:0,countries:['KE','UG','TZ','ZA','GH','NG','RW','ZM','ET','CM','MZ'],cap:0},
-  {name:'Pesapal',cardRate:0.025,cardFlat:0,mmRate:0.018,mmFlat:0,bankRate:0.0,bankFlat:0,ussdRate:0.018,ussdFlat:0,countries:['KE','UG','TZ','RW','ZM'],cap:0},
-  {name:'Cellulant (Tingg)',cardRate:0.022,cardFlat:0,mmRate:0.015,mmFlat:0,bankRate:0.0,bankFlat:0,ussdRate:0.015,ussdFlat:0,countries:['KE','NG','GH','TZ','UG','RW','ZM','CI','SN','CM','MZ'],cap:0},
-  {name:'Interswitch',cardRate:0.015,cardFlat:100,mmRate:0.015,mmFlat:100,bankRate:0.0,bankFlat:50,ussdRate:0.01,ussdFlat:50,countries:['NG','KE','GH','UG','TZ'],cap:2000},
-  {name:'PayGate (SA)',cardRate:0.025,cardFlat:0,mmRate:0.02,mmFlat:0,bankRate:0.0,bankFlat:0,ussdRate:0.02,ussdFlat:0,countries:['ZA'],cap:0}
-];
 function calcGateway(){
-  var country=document.getElementById('pg-country').value;
-  var avgTxn=parseFloat(document.getElementById('pg-avg-txn').value)||0;
-  var monthlyTxns=parseInt(document.getElementById('pg-monthly-txns').value)||1;
-  var type=document.getElementById('pg-type').value;
+  var currency=document.getElementById('pg-currency').value;
+  var avgTxn=parseFloat(document.getElementById('pg-avg-txn').value);
+  var monthlyTxns=Number(document.getElementById('pg-monthly-txns').value);
   var monthlyVol=avgTxn*monthlyTxns;
+  var error=document.getElementById('pg-error');
+  var output=document.getElementById('pg-results');
+  error.textContent='';
+  output.classList.remove('on');
+  if(!Number.isFinite(avgTxn)||avgTxn<=0||!Number.isInteger(monthlyTxns)||monthlyTxns<1){
+    error.textContent='Enter a positive transaction value and a whole monthly transaction count of at least 1.';
+    return;
+  }
   var results=[];
-  for(var i=0;i<GATEWAYS.length;i++){
-    var gw=GATEWAYS[i];
-    if(!gw.countries.includes(country)) continue;
-    var rate=type==='card'?gw.cardRate:type==='mobile'?gw.mmRate:type==='bank'?gw.bankRate:gw.ussdRate;
-    var flat=type==='card'?gw.cardFlat:type==='mobile'?gw.mmFlat:type==='bank'?gw.bankFlat:gw.ussdFlat;
-    var txnFee=avgTxn*rate+flat;
-    if(gw.cap>0) txnFee=Math.min(txnFee,gw.cap);
+  for(var i=1;i<=3;i++){
+    var name=document.getElementById('pg-name-'+i).value.trim();
+    var rate=parseFloat(document.getElementById('pg-rate-'+i).value);
+    var flat=parseFloat(document.getElementById('pg-flat-'+i).value);
+    var cap=parseFloat(document.getElementById('pg-cap-'+i).value);
+    if(!name||!Number.isFinite(rate)||rate<0||rate>100||!Number.isFinite(flat)||flat<0||!Number.isFinite(cap)||cap<0){
+      error.textContent='Give each quote a name, a percentage from 0% to 100%, and non-negative flat fee and cap values.';
+      return;
+    }
+    var txnFee=avgTxn*(rate/100)+flat;
+    if(cap>0) txnFee=Math.min(txnFee,cap);
     var monthlyFee=txnFee*monthlyTxns;
     var effectiveRate=(monthlyFee/monthlyVol)*100;
-    results.push({name:gw.name,txnFee:txnFee,monthlyFee:monthlyFee,effectiveRate:effectiveRate});
+    results.push({name:name,txnFee:txnFee,monthlyFee:monthlyFee,effectiveRate:effectiveRate,order:i});
   }
-  results.sort(function(a,b){return a.monthlyFee-b.monthlyFee;});
-  function fmt(n){return Math.round(n).toLocaleString();}
+  results.sort(function(a,b){return a.monthlyFee-b.monthlyFee||a.order-b.order;});
+  function fmt(n){return currency+' '+n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
   document.getElementById('pg-monthly-vol').textContent=fmt(monthlyVol);
-  if(results.length>0){
-    document.getElementById('pg-cheapest-fee').textContent=fmt(results[0].monthlyFee);
-    document.getElementById('pg-most-exp').textContent=fmt(results[results.length-1].monthlyFee);
-    document.getElementById('pg-annual-saving').textContent=fmt((results[results.length-1].monthlyFee-results[0].monthlyFee)*12);
-    document.getElementById('pg-winner-name').textContent=results[0].name+' — Cheapest';
-    document.getElementById('pg-winner-detail').textContent='Monthly fees: '+fmt(results[0].monthlyFee)+' | Effective rate: '+results[0].effectiveRate.toFixed(2)+'%';
-  }
-  var ranks=['gold','silver','bronze'];
-  var headers='<tr><th>#</th><th>Gateway</th><th>Per Txn Fee</th><th>Monthly Fee</th><th>Effective Rate</th></tr>';
-  var rows='';
+  document.getElementById('pg-cheapest-fee').textContent=fmt(results[0].monthlyFee);
+  document.getElementById('pg-most-exp').textContent=fmt(results[results.length-1].monthlyFee);
+  document.getElementById('pg-annual-saving').textContent=fmt((results[results.length-1].monthlyFee-results[0].monthlyFee)*12);
+  document.getElementById('pg-winner-name').textContent=results[0].name+' — lowest entered quote';
+  document.getElementById('pg-winner-detail').textContent='Monthly fees: '+fmt(results[0].monthlyFee)+' | Effective rate: '+results[0].effectiveRate.toFixed(2)+'%';
+  var tbody=document.getElementById('pg-table-body');
+  tbody.replaceChildren();
   for(var j=0;j<results.length;j++){
     var r=results[j];
-    var rankClass=j<3?ranks[j]:'';
-    rows+='<tr'+(j===0?' class="best"':'')+'>'
-      +'<td>'+(rankClass?'<span class="rank '+rankClass+'">'+(j+1)+'</span>':j+1)+'</td>'
-      +'<td>'+r.name+'</td>'
-      +'<td>'+fmt(r.txnFee)+'</td>'
-      +'<td>'+fmt(r.monthlyFee)+'</td>'
-      +'<td>'+r.effectiveRate.toFixed(2)+'%</td>'
-      +'</tr>';
+    var row=document.createElement('tr');
+    if(j===0) row.className='best';
+    [String(j+1),r.name,fmt(r.txnFee),fmt(r.monthlyFee),r.effectiveRate.toFixed(2)+'%'].forEach(function(value){
+      var cell=document.createElement('td');
+      cell.textContent=value;
+      row.appendChild(cell);
+    });
+    tbody.appendChild(row);
   }
-  document.getElementById('pg-table').innerHTML=headers+rows;
-  document.getElementById('pg-results').classList.add('on');
+  output.classList.add('on');
+  output.focus();
 }
 </script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>

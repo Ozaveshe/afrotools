@@ -4,15 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Dollar-Cost Averaging Calculator | AfroTools</title>
-<meta name="description" content="Model dollar-cost averaging (DCA) investing: monthly contributions over time, average cost per unit, and portfolio value at various return scenarios.">
+<meta name="description" content="Estimate a DCA plan with an initial amount, monthly contributions and your own annual return scenarios. Free planning calculator with no signup.">
 <meta property="og:title" content="Dollar-Cost Averaging Calculator | AfroTools">
-<meta property="og:description" content="Model dollar-cost averaging (DCA) investing: monthly contributions over time, average cost per unit, and portfolio value at various return scenarios.">
+<meta property="og:description" content="Estimate a DCA plan using your initial amount, monthly contributions and annual return scenario.">
 <meta property="og:url" content="https://afrotools.com/tools/dca-calc/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Dollar-Cost Averaging Calculator | AfroTools">
-<meta name="twitter:description" content="Model dollar-cost averaging (DCA) investing: monthly contributions over time, average cost per unit, and portfolio value at various return scenarios.">
+<meta name="twitter:description" content="Estimate a DCA plan using your initial amount, monthly contributions and annual return scenario.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -85,14 +85,14 @@ details summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
 details[open] summary::after{content:'\2212'}
 .faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
 .faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+.form-error{min-height:1.4em;color:#b91c1c;font-size:.84rem;font-weight:600;margin:.6rem 0 0}
+html[data-theme="dark"] body{background:#07111f;color:#e5edf8}html[data-theme="dark"] :is(.card,.metric,.scenario,.faq-item,.df-upgrade__card){background:#101c2c!important;border-color:#2a3b51!important;color:#e5edf8!important}html[data-theme="dark"] :is(h2,h3,label,.metric-val,.scenario-val){color:#f8fafc!important}html[data-theme="dark"] :is(.metric-label,.scenario-label,.faq-a,.df-upgrade p,.df-upgrade li){color:#b6c5d8!important}html[data-theme="dark"] :is(input,select,details summary){background:#17263a!important;border-color:#3a4e68!important;color:#f8fafc!important}html[data-theme="dark"] .info-box{background:#102844;border-color:#315b86;color:#bfdbfe}
+@media(prefers-color-scheme:dark){html:not([data-theme="light"]) body{background:#07111f;color:#e5edf8}html:not([data-theme="light"]) :is(.card,.metric,.scenario,.faq-item,.df-upgrade__card){background:#101c2c!important;border-color:#2a3b51!important;color:#e5edf8!important}html:not([data-theme="light"]) :is(h2,h3,label,.metric-val,.scenario-val){color:#f8fafc!important}html:not([data-theme="light"]) :is(.metric-label,.scenario-label,.faq-a,.df-upgrade p,.df-upgrade li){color:#b6c5d8!important}html:not([data-theme="light"]) :is(input,select,details summary){background:#17263a!important;border-color:#3a4e68!important;color:#f8fafc!important}html:not([data-theme="light"]) .info-box{background:#102844;border-color:#315b86;color:#bfdbfe}}
 @media(max-width:680px){.form-grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}.scenario-grid{grid-template-columns:1fr 1fr}}
 </style>
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/dca-calc.webp">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/dca-calc.webp">
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Dollar-Cost Averaging Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Dollar-Cost Averaging Calculator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Dollar-Cost Averaging Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Dollar-Cost Averaging Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"What is Dollar-Cost Averaging?","acceptedAnswer":{"@type":"Answer","text":"DCA is the strategy of investing a fixed amount at regular intervals (e.g., monthly), regardless of price. When prices fall, you buy more units; when prices rise, you buy fewer. Over time, this averages out your cost per unit and reduces the risk of investing a lump sum at a market peak. It is particularly effective for volatile African markets."}},{"@type":"Question","name":"Is DCA better than lump sum investing?","acceptedAnswer":{"@type":"Answer","text":"Research shows lump sum investing outperforms DCA in rising markets about 65-70% of the time. However, DCA is psychologically easier, reduces timing risk, and is the only practical option for most people who invest from monthly income. For high-volatility assets (African equities, crypto), DCA typically reduces risk significantly."}},{"@type":"Question","name":"What should I DCA into in Africa?","acceptedAnswer":{"@type":"Answer","text":"Common DCA targets in Africa: Money Market Funds (daily compounding, immediate liquidity), index ETFs on JSE or NSE Kenya, T-bills (if accessible), blue-chip stocks on local exchanges. Avoid putting your DCA into single stocks with limited liquidity. Diversify across asset classes where possible."}}]}
-</script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/tools/dca-calc/">
@@ -107,21 +107,22 @@ details[open] summary::after{content:'\2212'}
   <div class="container">
     <nav class="breadcrumb"><a href="/">AfroTools</a><span>›</span><a href="/fintech/">Fintech &amp; Banking</a><span>›</span>DCA Calculator</nav>
     <h1>Dollar-Cost Averaging Calculator</h1>
-    <p>Model DCA investing: monthly contributions, average cost per unit, and portfolio value at conservative, moderate, and aggressive return scenarios.</p>
-    <div class="hero-badges"><span class="hero-badge">Universal</span><span class="hero-badge">3 Scenarios</span><span class="hero-badge">Free</span></div>
+    <p>Estimate a regular investing plan from your own contribution amounts and annual return scenario, with lower and higher comparisons.</p>
+    <div class="hero-badges"><span class="hero-badge">Your Assumptions</span><span class="hero-badge">3 Scenarios</span><span class="hero-badge">Free</span></div>
   </div>
 </div>
 <div class="container">
   <div class="card">
     <h2>Dollar-Cost Averaging (DCA) Calculator</h2>
     <div class="form-grid">
+      <div class="form-group"><label for="dca-currency">Currency</label><select id="dca-currency"><option>NGN</option><option>KES</option><option>GHS</option><option>ZAR</option><option>USD</option><option>EUR</option><option>GBP</option></select></div>
       <div class="form-group">
         <label for="dca-monthly">Monthly Investment Amount</label>
-        <input type="number" id="dca-monthly" value="10000" min="0">
+        <input type="number" id="dca-monthly" value="10000" min="0" step="0.01" required>
       </div>
       <div class="form-group">
         <label for="dca-initial">Initial Lump Sum (optional)</label>
-        <input type="number" id="dca-initial" value="0" min="0">
+        <input type="number" id="dca-initial" value="0" min="0" step="0.01" required>
       </div>
       <div class="form-group">
         <label for="dca-years">Investment Period (Years)</label>
@@ -136,15 +137,11 @@ details[open] summary::after{content:'\2212'}
       </div>
       <div class="form-group">
         <label for="dca-rate">Expected Annual Return (%)</label>
-        <input type="number" id="dca-rate" value="12" step="0.5">
-      </div>
-      <div class="form-group">
-        <label for="dca-price">Current Unit/Share Price</label>
-        <input type="number" id="dca-price" value="100" min="0.01" step="0.01">
+        <input type="number" id="dca-rate" value="12" min="-99.99" max="1000" step="0.01" required>
       </div>
     </div>
     <button type="button" class="btn-calc" onclick="calcDCA()">Calculate DCA Returns</button>
-    <div class="results" id="dca-results">
+    <p class="form-error" id="dca-error" role="alert"></p><div class="results" id="dca-results" role="region" aria-live="polite" tabindex="-1">
       <div class="res-hero">
         <div class="res-label">Portfolio Value at Target Return</div>
         <div class="res-val" id="dca-value"></div>
@@ -153,17 +150,17 @@ details[open] summary::after{content:'\2212'}
       <div class="metrics">
         <div class="metric"><div class="metric-val" id="dca-total-invested"></div><div class="metric-label">Total Invested</div></div>
         <div class="metric"><div class="metric-val" id="dca-total-return"></div><div class="metric-label">Investment Return</div></div>
-        <div class="metric"><div class="metric-val" id="dca-total-units"></div><div class="metric-label">Units Accumulated</div></div>
-        <div class="metric"><div class="metric-val" id="dca-avg-cost"></div><div class="metric-label">Avg Cost per Unit</div></div>
+        <div class="metric"><div class="metric-val" id="dca-total-units"></div><div class="metric-label">Monthly Contributions</div></div>
+        <div class="metric"><div class="metric-val" id="dca-avg-cost"></div><div class="metric-label">Monthly Equivalent Return</div></div>
       </div>
       <h3 style="font-size:.95rem;font-weight:700;margin:.5rem 0 .75rem">Scenarios</h3>
       <div class="scenario-grid">
-        <div class="scenario"><div class="scenario-label">Conservative (6%)</div><div class="scenario-val" id="dca-s1"></div></div>
-        <div class="scenario"><div class="scenario-label">Moderate (12%)</div><div class="scenario-val" id="dca-s2"></div></div>
-        <div class="scenario"><div class="scenario-label">Aggressive (18%)</div><div class="scenario-val" id="dca-s3"></div></div>
-        <div class="scenario"><div class="scenario-label">T-Bill Equivalent (24%)</div><div class="scenario-val" id="dca-s4"></div></div>
+        <div class="scenario"><div class="scenario-label" id="dca-l1">Lower scenario</div><div class="scenario-val" id="dca-s1"></div></div>
+        <div class="scenario"><div class="scenario-label" id="dca-l2">Entered scenario</div><div class="scenario-val" id="dca-s2"></div></div>
+        <div class="scenario"><div class="scenario-label" id="dca-l3">Higher scenario</div><div class="scenario-val" id="dca-s3"></div></div>
+        <div class="scenario"><div class="scenario-label">Zero-return baseline</div><div class="scenario-val" id="dca-s4"></div></div>
       </div>
-      <div class="info-box">DCA reduces the impact of price volatility — you buy more units when prices are low and fewer when high. For African markets with higher volatility, DCA is especially powerful as a risk management strategy.</div>
+      <div class="info-box">This is a smooth-return planning model with month-end contributions. Real prices and returns vary, so it cannot calculate units, average purchase price, volatility, fees, taxes, inflation or losses from an actual investment path.</div>
     </div>
   </div>
   <div class="card">
@@ -172,77 +169,57 @@ details[open] summary::after{content:'\2212'}
 <section class="df-upgrade" data-df-upgrade="dca-calc">
   <div class="df-upgrade__card">
     <div>
-      <span class="df-upgrade__kicker">Payment comparison workflow</span>
+      <span class="df-upgrade__kicker">Investment planning workflow</span>
       <h2>Dollar-Cost Averaging Calculator: quick guide</h2>
-      <p>Not sure how to get the most from the Dollar-Cost Averaging Calculator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
-      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Dollar-Cost Averaging Calculator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
+      <p>Enter a starting amount, a month-end contribution and an annual return scenario. The result shows your contributions, estimated growth and comparable lower, entered and higher scenarios.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a smooth-return estimate in your selected currency.</li><li><strong>How it works:</strong> the annual return is converted to an effective monthly rate and applied to the running balance.</li><li><strong>What to check:</strong> product fees, taxes, price changes, currency risk, liquidity and possible losses are outside this model.</li></ul>
+      <p class="df-upgrade__note"><strong>Planning estimate.</strong> The result is not a forecast, product recommendation or financial advice.</p>
     </div>
-    <form class="df-form" data-df-form="dca-calc">
-      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
-      <label>Transaction value<input name="transaction" type="number" value="50000" min="0" step="any" aria-label="Transaction value"></label>
-      <label>Fee percent<input name="fee" type="number" value="1.5" min="0" step="any" aria-label="Fee percent"></label>
-      <label>Channel<select name="channel" aria-label="Channel"><option value="POS">POS</option><option value="bank transfer">bank transfer</option><option value="mobile money">mobile money</option><option value="card">card</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="dca-calc" data-df-base="Dollar-Cost Averaging Calculator — enter your details above to see your result." aria-live="polite">Dollar-Cost Averaging Calculator — enter your details above to see your result.</output>
-      <div class="df-actions"><button type="button" data-df-copy="dca-calc">Copy summary</button></div>
-    </form>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="dca-calc-faq-title">
   <h2 id="dca-calc-faq-title">Dollar-Cost Averaging Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How do I use the Dollar-Cost Averaging Calculator?</summary><p>Enter your amounts, rates and dates in the fields above. The Dollar-Cost Averaging Calculator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Dollar-Cost Averaging Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Dollar-Cost Averaging Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
+  <div class="df-faq__grid"><details><summary>How do I use the Dollar-Cost Averaging Calculator?</summary><p>Enter the amount invested now, the amount contributed at each month end, a duration and your own annual return assumption.</p></details><details><summary>How precise is the estimate?</summary><p>The arithmetic follows the entered smooth annual return. Real investment prices move unevenly and fees, taxes and currency changes can materially alter the outcome.</p></details><details><summary>Does the calculator need live market prices?</summary><p>No. It models account growth from your assumptions and does not calculate actual units or an average purchase price.</p></details></div>
 </section>
-    <div class="faq-item"><details><summary>What is Dollar-Cost Averaging?</summary><div class="faq-a">DCA is the strategy of investing a fixed amount at regular intervals (e.g., monthly), regardless of price. When prices fall, you buy more units; when prices rise, you buy fewer. Over time, this averages out your cost per unit and reduces the risk of investing a lump sum at a market peak. It is particularly effective for volatile African markets.</div></details></div>
-    <div class="faq-item"><details><summary>Is DCA better than lump sum investing?</summary><div class="faq-a">Research shows lump sum investing outperforms DCA in rising markets about 65-70% of the time. However, DCA is psychologically easier, reduces timing risk, and is the only practical option for most people who invest from monthly income. For high-volatility assets (African equities, crypto), DCA typically reduces risk significantly.</div></details></div>
-    <div class="faq-item"><details><summary>What should I DCA into in Africa?</summary><div class="faq-a">Common DCA targets in Africa: Money Market Funds (daily compounding, immediate liquidity), index ETFs on JSE or NSE Kenya, T-bills (if accessible), blue-chip stocks on local exchanges. Avoid putting your DCA into single stocks with limited liquidity. Diversify across asset classes where possible.</div></details></div>
+    <div class="faq-item"><details><summary>What does this calculator mean by DCA?</summary><div class="faq-a">It models adding the same amount at the end of every month. The smooth return assumption estimates account value but does not reproduce changing market prices or actual units bought.</div></details></div>
+    <div class="faq-item"><details><summary>Does DCA guarantee a profit or reduce every risk?</summary><div class="faq-a">No. Regular contributions do not prevent losses, fees, illiquidity, currency changes or product failure. The entered return is a scenario, not a forecast.</div></details></div>
+    <div class="faq-item"><details><summary>Can this choose an investment for me?</summary><div class="faq-a">No. Check the current regulated status, costs, liquidity, diversification, currency exposure, tax treatment and loss risk of any product before investing.</div></details></div>
   </div>
 </div>
 <afro-related-tools data-ssr="1" category="fintech" current="dca-calc">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/tools/loan-shark-compare/" data-related-tool data-id="loan-shark-compare" data-name="Loan Shark vs Bank Rate" data-category="fintech" data-icon="LS" data-desc="Compare informal moneylender rates vs bank loans vs fintech apps. True APR calculator showing hidden cost of predatory l">Loan Shark vs Bank Rate</a></li><li><a href="/tools/mobile-vs-bank/" data-related-tool data-id="mobile-vs-bank" data-name="Mobile Money vs Bank Transfer" data-category="fintech" data-icon="MM" data-desc="Compare M-Pesa, MTN MoMo, Airtel Money vs bank transfer fees for domestic and cross-border payments across Africa.">Mobile Money vs Bank Transfer</a></li><li><a href="/tools/digital-lending/" data-related-tool data-id="digital-lending" data-name="Digital Lending App Rates" data-category="fintech" data-icon="DL" data-desc="Compare digital lending apps (Fuliza, FairMoney, Carbon, PalmCredit) — true APR, fees, repayment periods.">Digital Lending App Rates</a></li><li><a href="/tools/fixed-deposit/" data-related-tool data-id="fixed-deposit" data-name="Fixed Deposit Rate Comparator" data-category="fintech" data-icon="FD" data-desc="Compare fixed deposit and savings account interest rates across African banks. 30/60/90/180/365-day tenors, 20+ banks.">Fixed Deposit Rate Comparator</a></li><li><a href="/tools/microfinance-loan/" data-related-tool data-id="microfinance-loan" data-name="Microfinance Loan Calculator" data-category="fintech" data-icon="ML" data-desc="Calculate microfinance loan repayments for African MFIs. Flat vs reducing balance, group vs individual loans.">Microfinance Loan Calculator</a></li><li><a href="/tools/payment-gateway/" data-related-tool data-id="payment-gateway" data-name="Payment Gateway Fee Compare" data-category="fintech" data-icon="PG" data-desc="Compare Paystack, Flutterwave, Stripe, DPO, Peach Payments transaction fees for African merchants.">Payment Gateway Fee Compare</a></li></ul>
+<ul class="seo-links-list"><li><a href="/tools/loan-shark-compare/" data-related-tool data-id="loan-shark-compare" data-name="Informal Loan vs Bank Cost Calculator" data-category="fintech" data-icon="IL" data-desc="Compare a monthly flat-rate loan with a reducing-balance bank loan. See repayment, finance cost and effective annual rat">Informal Loan vs Bank Cost Calculator</a></li><li><a href="/tools/mobile-vs-bank/" data-related-tool data-id="mobile-vs-bank" data-name="Mobile Money vs Bank Transfer Comparator" data-category="fintech" data-icon="MM" data-desc="Compare a mobile money quote with a bank transfer quote. Enter the current flat and percentage fees to see total cost an">Mobile Money vs Bank Transfer Comparator</a></li><li><a href="/tools/digital-lending/" data-related-tool data-id="digital-lending" data-name="Digital Loan Offer and APR Comparator" data-category="fintech" data-icon="DL" data-desc="Compare up to three current digital loan offers by amount received, term and total repayment. See finance cost and effec">Digital Loan Offer and APR Comparator</a></li><li><a href="/tools/fixed-deposit/" data-related-tool data-id="fixed-deposit" data-name="Fixed Deposit Rate Comparator" data-category="fintech" data-icon="FD" data-desc="Calculate fixed deposit maturity value from a bank&#39;s current rate, term, tax and compounding method. See gross interest,">Fixed Deposit Rate Comparator</a></li><li><a href="/tools/microfinance-loan/" data-related-tool data-id="microfinance-loan" data-name="Microfinance Loan Calculator" data-category="fintech" data-icon="ML" data-desc="Calculate a microfinance offer&#39;s monthly repayment, fees, finance cost and effective annual rate for flat or reducing-ba">Microfinance Loan Calculator</a></li><li><a href="/tools/payment-gateway/" data-related-tool data-id="payment-gateway" data-name="Payment Gateway Fee Comparator" data-category="fintech" data-icon="PG" data-desc="Compare three current payment gateway quotes using transaction value, percentage fee, flat fee and optional per-transact">Payment Gateway Fee Comparator</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
 <script>
 function calcDCA(){
-  var monthly=parseFloat(document.getElementById('dca-monthly').value)||0;
-  var initial=parseFloat(document.getElementById('dca-initial').value)||0;
+  var currency=document.getElementById('dca-currency').value;
+  var monthly=parseFloat(document.getElementById('dca-monthly').value);
+  var initial=parseFloat(document.getElementById('dca-initial').value);
   var years=parseInt(document.getElementById('dca-years').value);
-  var rate=parseFloat(document.getElementById('dca-rate').value)/100;
-  var price=parseFloat(document.getElementById('dca-price').value)||100;
+  var ratePercent=parseFloat(document.getElementById('dca-rate').value);
+  var error=document.getElementById('dca-error');var output=document.getElementById('dca-results');error.textContent='';output.classList.remove('on');
+  if(!Number.isFinite(monthly)||monthly<0||!Number.isFinite(initial)||initial<0||monthly+initial<=0||!Number.isInteger(years)||years<1||!Number.isFinite(ratePercent)||ratePercent<=-100||ratePercent>1000){error.textContent='Enter non-negative contributions with at least one amount above zero, and an annual return above -100% and no higher than 1,000%.';return;}
   var months=years*12;
-  var monthlyRate=rate/12;
-  // FV of annuity + FV of initial lump sum
-  var fvAnnuity=monthly*((Math.pow(1+monthlyRate,months)-1)/monthlyRate);
-  var fvInitial=initial*Math.pow(1+monthlyRate,months);
-  var total=fvAnnuity+fvInitial;
+  function futureValue(annualPercent){var annual=annualPercent/100;var mr=Math.pow(1+annual,1/12)-1;var fvA=Math.abs(mr)<1e-12?monthly*months:monthly*((Math.pow(1+mr,months)-1)/mr);return {value:fvA+initial*Math.pow(1+mr,months),monthlyRate:mr};}
+  var target=futureValue(ratePercent);var total=target.value;
   var totalInvested=monthly*months+initial;
   var totalReturn=total-totalInvested;
-  // Units: monthly buying, price assumed steady for simplicity
-  var totalUnits=(monthly*months)/price+(initial/price);
-  var avgCost=totalInvested/totalUnits;
-  function fmt(n){return (Math.round(n)).toLocaleString();}
-  function scenario(r){
-    var mr=r/12;
-    var fvA=monthly*((Math.pow(1+mr,months)-1)/mr);
-    var fvI=initial*Math.pow(1+mr,months);
-    return fmt(fvA+fvI);
-  }
+  function fmt(n){return currency+' '+n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
+  var lower=Math.max(-99.99,ratePercent-5),higher=Math.min(1000,ratePercent+5);
   document.getElementById('dca-value').textContent=fmt(total);
   document.getElementById('dca-sub').textContent='Total invested: '+fmt(totalInvested)+' | Over '+years+' years';
   document.getElementById('dca-total-invested').textContent=fmt(totalInvested);
   document.getElementById('dca-total-return').textContent=fmt(totalReturn);
-  document.getElementById('dca-total-units').textContent=totalUnits.toFixed(0);
-  document.getElementById('dca-avg-cost').textContent=avgCost.toFixed(2);
-  document.getElementById('dca-s1').textContent=scenario(0.06);
-  document.getElementById('dca-s2').textContent=scenario(0.12);
-  document.getElementById('dca-s3').textContent=scenario(0.18);
-  document.getElementById('dca-s4').textContent=scenario(0.24);
-  document.getElementById('dca-results').classList.add('on');
+  document.getElementById('dca-total-units').textContent=months;
+  document.getElementById('dca-avg-cost').textContent=(target.monthlyRate*100).toFixed(4)+'%';
+  document.getElementById('dca-l1').textContent='Lower scenario ('+lower.toFixed(2)+'%)';document.getElementById('dca-l2').textContent='Entered scenario ('+ratePercent.toFixed(2)+'%)';document.getElementById('dca-l3').textContent='Higher scenario ('+higher.toFixed(2)+'%)';
+  document.getElementById('dca-s1').textContent=fmt(futureValue(lower).value);document.getElementById('dca-s2').textContent=fmt(total);document.getElementById('dca-s3').textContent=fmt(futureValue(higher).value);document.getElementById('dca-s4').textContent=fmt(totalInvested);
+  output.classList.add('on');output.focus();
 }
 </script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>

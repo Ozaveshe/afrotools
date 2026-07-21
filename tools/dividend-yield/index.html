@@ -4,15 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Dividend Yield Calculator | AfroTools</title>
-<meta name="description" content="Calculate dividend yield, payout ratio, and income from shareholdings. Compare dividend yield against inflation and fixed deposit rates in Africa.">
+<meta name="description" content="Calculate gross and after-tax dividend yield, payout ratio, share income and inflation-adjusted yield from values you enter.">
 <meta property="og:title" content="Dividend Yield Calculator | AfroTools">
-<meta property="og:description" content="Calculate dividend yield, payout ratio, and income from shareholdings. Compare dividend yield against inflation and fixed deposit rates in Africa.">
+<meta property="og:description" content="Calculate gross and after-tax dividend yield, payout ratio and share income from your inputs.">
 <meta property="og:url" content="https://afrotools.com/tools/dividend-yield/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Dividend Yield Calculator | AfroTools">
-<meta name="twitter:description" content="Calculate dividend yield, payout ratio, and income from shareholdings. Compare dividend yield against inflation and fixed deposit rates in Africa.">
+<meta name="twitter:description" content="Calculate gross and after-tax dividend yield, payout ratio and share income from your inputs.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -81,14 +81,14 @@ details summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
 details[open] summary::after{content:'\2212'}
 .faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
 .faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+.form-error{min-height:1.4em;color:#b91c1c;font-size:.84rem;font-weight:600;margin:.6rem 0 0}
+html[data-theme="dark"] body{background:#07111f;color:#e5edf8}html[data-theme="dark"] :is(.card,.metric,.faq-item,.df-upgrade__card){background:#101c2c!important;border-color:#2a3b51!important;color:#e5edf8!important}html[data-theme="dark"] :is(h2,h3,label,.metric-val){color:#f8fafc!important}html[data-theme="dark"] :is(.metric-label,.faq-a,.df-upgrade p,.df-upgrade li){color:#b6c5d8!important}html[data-theme="dark"] :is(input,select,details summary){background:#17263a!important;border-color:#3a4e68!important;color:#f8fafc!important}html[data-theme="dark"] .info-box{background:#102844;border-color:#315b86;color:#bfdbfe}
+@media(prefers-color-scheme:dark){html:not([data-theme="light"]) body{background:#07111f;color:#e5edf8}html:not([data-theme="light"]) :is(.card,.metric,.faq-item,.df-upgrade__card){background:#101c2c!important;border-color:#2a3b51!important;color:#e5edf8!important}html:not([data-theme="light"]) :is(h2,h3,label,.metric-val){color:#f8fafc!important}html:not([data-theme="light"]) :is(.metric-label,.faq-a,.df-upgrade p,.df-upgrade li){color:#b6c5d8!important}html:not([data-theme="light"]) :is(input,select,details summary){background:#17263a!important;border-color:#3a4e68!important;color:#f8fafc!important}html:not([data-theme="light"]) .info-box{background:#102844;border-color:#315b86;color:#bfdbfe}}
 @media(max-width:680px){.form-grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}}
 </style>
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/dividend-yield.webp">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/dividend-yield.webp">
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Dividend Yield Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Dividend Yield Calculator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Dividend Yield Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Dividend Yield Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"What is a good dividend yield?","acceptedAnswer":{"@type":"Answer","text":"In Africa, dividend yields of 3-8% are common for blue-chip stocks. A yield above 8% may signal either a very generous company or a depressed stock price (which can indicate risk). Compare against your country's fixed deposit rate — if the dividend yield exceeds the FD rate, you're being compensated for the added equity risk."}},{"@type":"Question","name":"What is the payout ratio?","acceptedAnswer":{"@type":"Answer","text":"The payout ratio is the percentage of earnings paid out as dividends. A ratio under 60% is generally sustainable — the company retains enough earnings for growth. A ratio over 80% may be unsustainable if earnings fall. Some mature utility and banking stocks pay out 70-90% of earnings."}},{"@type":"Question","name":"Are dividends taxed in Africa?","acceptedAnswer":{"@type":"Answer","text":"Yes, most African countries withhold dividend tax: Nigeria: 10%, Kenya: 5% (resident shareholders), 10% (non-resident), South Africa: 20% Dividends Tax, Ghana: 8%, Egypt: 10%. These are automatically deducted before payment. Your net yield shown uses this rate."}}]}
-</script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/tools/dividend-yield/">
@@ -103,17 +103,18 @@ details[open] summary::after{content:'\2212'}
   <div class="container">
     <nav class="breadcrumb"><a href="/">AfroTools</a><span>›</span><a href="/fintech/">Fintech &amp; Banking</a><span>›</span>Dividend Yield Calculator</nav>
     <h1>Dividend Yield Calculator</h1>
-    <p>Calculate dividend yield, payout ratio, and annual income from your shareholdings. Compare against fixed deposit rates and inflation.</p>
-    <div class="hero-badges"><span class="hero-badge">Universal</span><span class="hero-badge">Multi-Currency</span><span class="hero-badge">Free</span></div>
+    <p>Calculate gross and after-tax yield, income, payout ratio and an inflation-adjusted yield from values you provide.</p>
+    <div class="hero-badges"><span class="hero-badge">Your Inputs</span><span class="hero-badge">Multi-Currency</span><span class="hero-badge">Free</span></div>
   </div>
 </div>
 <div class="container">
   <div class="card">
     <h2>Calculate Dividend Yield &amp; Income</h2>
     <div class="form-grid">
+      <div class="form-group"><label for="dv-currency">Currency</label><select id="dv-currency"><option>NGN</option><option>KES</option><option>GHS</option><option>ZAR</option><option>USD</option><option>EUR</option><option>GBP</option></select></div>
       <div class="form-group">
         <label for="dv-price">Current Share Price</label>
-        <input type="number" id="dv-price" value="250" min="0" step="0.01">
+        <input type="number" id="dv-price" value="250" min="0.01" step="0.01">
       </div>
       <div class="form-group">
         <label for="dv-dps">Annual Dividend per Share (DPS)</label>
@@ -121,31 +122,31 @@ details[open] summary::after{content:'\2212'}
       </div>
       <div class="form-group">
         <label for="dv-shares">Number of Shares Held</label>
-        <input type="number" id="dv-shares" value="1000" min="0">
+        <input type="number" id="dv-shares" value="1000" min="0" step="0.0001">
       </div>
       <div class="form-group">
-        <label for="dv-eps">Earnings per Share (EPS)</label>
-        <input type="number" id="dv-eps" value="40" min="0" step="0.01">
+        <label for="dv-eps">Earnings per Share (optional)</label>
+        <input type="number" id="dv-eps" value="40" min="0.01" step="0.01">
       </div>
       <div class="form-group">
-        <label for="dv-fd-rate">Current Fixed Deposit Rate (%)</label>
-        <input type="number" id="dv-fd-rate" value="10" step="0.1">
+        <label for="dv-fd-rate">Comparison Yield (%)</label>
+        <input type="number" id="dv-fd-rate" value="10" min="-99.99" max="1000" step="0.1">
       </div>
       <div class="form-group">
         <label for="dv-inflation">Inflation Rate (%)</label>
-        <input type="number" id="dv-inflation" value="5" step="0.1">
+        <input type="number" id="dv-inflation" value="5" min="-99.99" max="1000" step="0.1">
       </div>
       <div class="form-group">
         <label for="dv-tax">Dividend Tax (%)</label>
-        <input type="number" id="dv-tax" value="10" step="0.5">
+        <input type="number" id="dv-tax" value="10" min="0" max="100" step="0.5">
       </div>
       <div class="form-group">
         <label for="dv-growth">Expected Dividend Growth Rate (%/yr)</label>
-        <input type="number" id="dv-growth" value="5" step="0.1">
+        <input type="number" id="dv-growth" value="5" min="-99.99" max="1000" step="0.1">
       </div>
     </div>
     <button type="button" class="btn-calc" onclick="calcDividend()">Calculate Dividend Yield</button>
-    <div class="results" id="dv-results">
+    <p class="form-error" id="dv-error" role="alert"></p><div class="results" id="dv-results" role="region" aria-live="polite" tabindex="-1">
       <div class="res-hero">
         <div class="res-label">Dividend Yield</div>
         <div class="res-val" id="dv-yield"></div>
@@ -156,10 +157,10 @@ details[open] summary::after{content:'\2212'}
         <div class="metric"><div class="metric-val" id="dv-net-income"></div><div class="metric-label">After-Tax Income</div></div>
         <div class="metric"><div class="metric-val" id="dv-payout-ratio"></div><div class="metric-label">Payout Ratio</div></div>
         <div class="metric"><div class="metric-val" id="dv-pe-ratio"></div><div class="metric-label">P/E Ratio</div></div>
-        <div class="metric"><div class="metric-val" id="dv-vs-fd"></div><div class="metric-label">vs Fixed Deposit Rate</div></div>
+        <div class="metric"><div class="metric-val" id="dv-vs-fd"></div><div class="metric-label">vs Comparison Yield</div></div>
         <div class="metric"><div class="metric-val" id="dv-real-yield"></div><div class="metric-label">Real Yield (After Inflation)</div></div>
         <div class="metric"><div class="metric-val" id="dv-5yr-income"></div><div class="metric-label">5-Year Cumulative Income</div></div>
-        <div class="metric"><div class="metric-val" id="dv-payback"></div><div class="metric-label">Dividend Payback Period (yrs)</div></div>
+        <div class="metric"><div class="metric-val" id="dv-payback"></div><div class="metric-label">Current Net Dividend Payback</div></div>
       </div>
       <div class="info-box" id="dv-verdict"></div>
     </div>
@@ -170,30 +171,21 @@ details[open] summary::after{content:'\2212'}
 <section class="df-upgrade" data-df-upgrade="dividend-yield">
   <div class="df-upgrade__card">
     <div>
-      <span class="df-upgrade__kicker">Payment comparison workflow</span>
+      <span class="df-upgrade__kicker">Dividend analysis workflow</span>
       <h2>Dividend Yield Calculator: quick guide</h2>
-      <p>Not sure how to get the most from the Dividend Yield Calculator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
-      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Dividend Yield Calculator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
+      <p>Enter a share price, annual dividend per share and your own tax and comparison assumptions. Earnings per share is optional.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> gross and after-tax yield, income and ratio calculations.</li><li><strong>How it works:</strong> dividend yield is annual dividend per share divided by the entered share price.</li><li><strong>What to check:</strong> confirm the dividend declaration, ex-dividend date, tax treatment, fees and current market price.</li></ul>
+      <p class="df-upgrade__note"><strong>Planning estimate.</strong> Dividends and share prices can fall; an entered growth rate is a scenario, not a forecast.</p>
     </div>
-    <form class="df-form" data-df-form="dividend-yield">
-      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
-      <label>Transaction value<input name="transaction" type="number" value="50000" min="0" step="any" aria-label="Transaction value"></label>
-      <label>Fee percent<input name="fee" type="number" value="1.5" min="0" step="any" aria-label="Fee percent"></label>
-      <label>Channel<select name="channel" aria-label="Channel"><option value="POS">POS</option><option value="bank transfer">bank transfer</option><option value="mobile money">mobile money</option><option value="card">card</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="dividend-yield" data-df-base="Dividend Yield Calculator — enter your details above to see your result." aria-live="polite">Dividend Yield Calculator — enter your details above to see your result.</output>
-      <div class="df-actions"><button type="button" data-df-copy="dividend-yield">Copy summary</button></div>
-    </form>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="dividend-yield-faq-title">
   <h2 id="dividend-yield-faq-title">Dividend Yield Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How do I use the Dividend Yield Calculator?</summary><p>Enter your amounts, rates and dates in the fields above. The Dividend Yield Calculator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Dividend Yield Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Dividend Yield Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
+  <div class="df-faq__grid"><details><summary>Which dividend should I enter?</summary><p>Use the total dividend per share for the period you want to annualise. Do not combine a quarterly dividend with an annual share count assumption unless you first annualise it.</p></details><details><summary>What does the comparison show?</summary><p>It subtracts your entered comparison yield from the after-tax dividend yield. It does not make the two products equally risky or recommend one.</p></details><details><summary>Why is earnings per share optional?</summary><p>Dividend yield and income do not require EPS. EPS is only used for the payout ratio and price-to-earnings ratio.</p></details></div>
 </section>
-    <div class="faq-item"><details><summary>What is a good dividend yield?</summary><div class="faq-a">In Africa, dividend yields of 3-8% are common for blue-chip stocks. A yield above 8% may signal either a very generous company or a depressed stock price (which can indicate risk). Compare against your country's fixed deposit rate — if the dividend yield exceeds the FD rate, you're being compensated for the added equity risk.</div></details></div>
-    <div class="faq-item"><details><summary>What is the payout ratio?</summary><div class="faq-a">The payout ratio is the percentage of earnings paid out as dividends. A ratio under 60% is generally sustainable — the company retains enough earnings for growth. A ratio over 80% may be unsustainable if earnings fall. Some mature utility and banking stocks pay out 70-90% of earnings.</div></details></div>
-    <div class="faq-item"><details><summary>Are dividends taxed in Africa?</summary><div class="faq-a">Yes, most African countries withhold dividend tax: Nigeria: 10%, Kenya: 5% (resident shareholders), 10% (non-resident), South Africa: 20% Dividends Tax, Ghana: 8%, Egypt: 10%. These are automatically deducted before payment. Your net yield shown uses this rate.</div></details></div>
+    <div class="faq-item"><details><summary>What does payout ratio mean?</summary><div class="faq-a">It is annual dividend per share divided by earnings per share. It is a historical ratio from the entered figures, not proof that a dividend is sustainable.</div></details></div>
+    <div class="faq-item"><details><summary>Is a higher dividend yield always better?</summary><div class="faq-a">No. A high yield can result from a falling share price, and future dividends can be reduced or cancelled. Review the company, cash flows, debt, currency exposure and concentration risk.</div></details></div>
+    <div class="faq-item"><details><summary>Which tax rate should I enter?</summary><div class="faq-a">Use the rate applicable to your investor status and the specific security. Confirm current rules with the relevant tax authority or a qualified adviser.</div></details></div>
   </div>
 </div>
 <afro-related-tools data-ssr="1" category="fintech" current="dividend-yield">
@@ -207,39 +199,45 @@ details[open] summary::after{content:'\2212'}
 <afro-footer></afro-footer>
 <script>
 function calcDividend(){
-  var price=parseFloat(document.getElementById('dv-price').value)||1;
-  var dps=parseFloat(document.getElementById('dv-dps').value)||0;
-  var shares=parseFloat(document.getElementById('dv-shares').value)||0;
-  var eps=parseFloat(document.getElementById('dv-eps').value)||1;
-  var fdRate=parseFloat(document.getElementById('dv-fd-rate').value)/100;
-  var inflation=parseFloat(document.getElementById('dv-inflation').value)/100;
-  var taxRate=parseFloat(document.getElementById('dv-tax').value)/100;
-  var growth=parseFloat(document.getElementById('dv-growth').value)/100;
+  var price=parseFloat(document.getElementById('dv-price').value);
+  var dps=parseFloat(document.getElementById('dv-dps').value);
+  var shares=parseFloat(document.getElementById('dv-shares').value);
+  var epsText=document.getElementById('dv-eps').value.trim(),eps=epsText===''?null:parseFloat(epsText);
+  var benchmark=parseFloat(document.getElementById('dv-fd-rate').value);
+  var inflationPercent=parseFloat(document.getElementById('dv-inflation').value);
+  var taxPercent=parseFloat(document.getElementById('dv-tax').value);
+  var growthPercent=parseFloat(document.getElementById('dv-growth').value);
+  var currency=document.getElementById('dv-currency').value,error=document.getElementById('dv-error'),output=document.getElementById('dv-results');
+  error.textContent='';output.classList.remove('on');
+  if(!Number.isFinite(price)||price<=0||!Number.isFinite(dps)||dps<0||!Number.isFinite(shares)||shares<0){error.textContent='Enter a share price above zero, plus a non-negative dividend and number of shares.';return;}
+  if(eps!==null&&(!Number.isFinite(eps)||eps<=0)){error.textContent='Earnings per share must be blank or greater than zero.';return;}
+  if(!Number.isFinite(benchmark)||benchmark<=-100||benchmark>1000||!Number.isFinite(inflationPercent)||inflationPercent<=-100||inflationPercent>1000||!Number.isFinite(taxPercent)||taxPercent<0||taxPercent>100||!Number.isFinite(growthPercent)||growthPercent<=-100||growthPercent>1000){error.textContent='Check the entered percentages: tax must be 0% to 100%, and other rates must be above -100% and no more than 1,000%.';return;}
+  var taxRate=taxPercent/100,growth=growthPercent/100,inflation=inflationPercent/100;
   var divYield=(dps/price)*100;
   var annualIncome=dps*shares;
   var netIncome=annualIncome*(1-taxRate);
-  var payoutRatio=eps>0?(dps/eps)*100:0;
-  var pe=dps>0?price/(dps):0;
+  var payoutRatio=eps!==null?(dps/eps)*100:null;
   var netYield=divYield*(1-taxRate);
-  var realYield=((1+netYield/100)/(1+inflation*100/100)-1)*100;
-  var vsfd=netYield-fdRate*100;
+  var realYield=((1+netYield/100)/(1+inflation)-1)*100;
+  var vsfd=netYield-benchmark;
   var fiveYrIncome=0;
   var d=dps;
   for(var i=0;i<5;i++){fiveYrIncome+=d*shares*(1-taxRate);d*=(1+growth);}
-  var payback=annualIncome*(1-taxRate)>0?Math.round((price*shares)/(annualIncome*(1-taxRate))):999;
+  var payback=netYield>0?100/netYield:null;
+  function fmt(n){return currency+' '+n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
   document.getElementById('dv-yield').textContent=divYield.toFixed(2)+'%';
-  document.getElementById('dv-sub').textContent='Net yield (after '+Math.round(taxRate*100)+'% tax): '+netYield.toFixed(2)+'%';
-  document.getElementById('dv-annual-income').textContent=Math.round(annualIncome).toLocaleString();
-  document.getElementById('dv-net-income').textContent=Math.round(netIncome).toLocaleString();
-  document.getElementById('dv-payout-ratio').textContent=payoutRatio.toFixed(1)+'%';
-  document.getElementById('dv-pe-ratio').textContent=eps>0?(price/eps).toFixed(1)+'x':'N/A';
+  document.getElementById('dv-sub').textContent='After-tax yield at '+taxPercent.toFixed(2)+'% entered tax: '+netYield.toFixed(2)+'%';
+  document.getElementById('dv-annual-income').textContent=fmt(annualIncome);
+  document.getElementById('dv-net-income').textContent=fmt(netIncome);
+  document.getElementById('dv-payout-ratio').textContent=payoutRatio===null?'N/A':payoutRatio.toFixed(2)+'%';
+  document.getElementById('dv-pe-ratio').textContent=eps===null?'N/A':(price/eps).toFixed(2)+'x';
   document.getElementById('dv-vs-fd').textContent=(vsfd>=0?'+':'')+vsfd.toFixed(2)+'%';
   document.getElementById('dv-real-yield').textContent=realYield.toFixed(2)+'%';
-  document.getElementById('dv-5yr-income').textContent=Math.round(fiveYrIncome).toLocaleString();
-  document.getElementById('dv-payback').textContent=payback>100?'100+':payback+' yrs';
-  var verdict=vsfd>=0?'Your dividend yield beats the fixed deposit rate by '+vsfd.toFixed(2)+'%. The stock provides income AND potential capital appreciation.':'Your dividend yield is '+Math.abs(vsfd).toFixed(2)+'% below the fixed deposit rate. Fixed deposits may offer a better risk-adjusted income unless you expect significant capital gains.';
+  document.getElementById('dv-5yr-income').textContent=fmt(fiveYrIncome);
+  document.getElementById('dv-payback').textContent=payback===null?'N/A':payback.toFixed(2)+' years';
+  var verdict='The entered after-tax dividend yield is '+Math.abs(vsfd).toFixed(2)+' percentage points '+(vsfd>=0?'above':'below')+' the entered comparison yield. This arithmetic does not make the risks equal or recommend either option.';
   document.getElementById('dv-verdict').textContent=verdict;
-  document.getElementById('dv-results').classList.add('on');
+  output.classList.add('on');output.focus({preventScroll:true});
 }
 </script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>

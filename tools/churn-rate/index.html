@@ -102,12 +102,11 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
 .disclaimer{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:14px;margin-top:14px;font-size:.74rem;color:#78350f;line-height:1.6}
 #results-section{display:none}
 @media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.row{grid-template-columns:1fr}}
+.result-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.action-btn{min-height:42px;padding:0 14px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#0f172a;font:800 .8rem/1 inherit;cursor:pointer}.status-line{min-height:1.2em;margin-top:8px;color:#64748b;font-size:.76rem}
+html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="dark"] .card,html[data-theme="dark"] .card-head,html[data-theme="dark"] .res-item,html[data-theme="dark"] .scenario-row{background:#111c2e;border-color:#334155}html[data-theme="dark"] .card-title,html[data-theme="dark"] .faq-item summary{color:#f8fafc}html[data-theme="dark"] label,html[data-theme="dark"] .faq-item p,html[data-theme="dark"] .scenario-label,html[data-theme="dark"] .status-line{color:#cbd5e1}html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="dark"] .toggle-btn,html[data-theme="dark"] .action-btn{background:#0f172a;color:#f8fafc;border-color:#475569}html[data-theme="dark"] .info-card{background:#2a190d;border-color:#9a3412}html[data-theme="dark"] .info-card h4,html[data-theme="dark"] .info-card p,html[data-theme="dark"] .info-card li{color:#fed7aa}
+@media(prefers-color-scheme:dark){html:not([data-theme="light"]) body{background:#0b1120;color:#e5edf8}html:not([data-theme="light"]) .card,html:not([data-theme="light"]) .card-head,html:not([data-theme="light"]) .res-item,html:not([data-theme="light"]) .scenario-row{background:#111c2e;border-color:#334155}html:not([data-theme="light"]) .card-title,html:not([data-theme="light"]) .faq-item summary{color:#f8fafc}html:not([data-theme="light"]) label,html:not([data-theme="light"]) .faq-item p,html:not([data-theme="light"]) .scenario-label,html:not([data-theme="light"]) .status-line{color:#cbd5e1}html:not([data-theme="light"]) input,html:not([data-theme="light"]) select,html:not([data-theme="light"]) .toggle-btn,html:not([data-theme="light"]) .action-btn{background:#0f172a;color:#f8fafc;border-color:#475569}html:not([data-theme="light"]) .info-card{background:#2a190d;border-color:#9a3412}html:not([data-theme="light"]) .info-card h4,html:not([data-theme="light"]) .info-card p,html:not([data-theme="light"]) .info-card li{color:#fed7aa}}
 </style>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/churn-rate.webp">
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Churn Rate Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Churn Rate Calculator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Churn Rate Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Churn Rate Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"What is a good monthly churn rate for African SaaS?","acceptedAnswer":{"@type":"Answer","text":"Global SaaS benchmarks: 3–8% monthly churn for early-stage startups, <2% for established companies. African SaaS businesses often face higher churn due to FX volatility (USD pricing with NGN/KES income), mobile money payment failures, and lower income predictability. Targeting <5% monthly churn is a reasonable starting point for African B2C SaaS."}},{"@type":"Question","name":"What is Net Revenue Retention (NRR)?","acceptedAnswer":{"@type":"Answer","text":"NRR measures how much revenue you retain from existing customers, including expansions (upsells, upgrades) minus contractions and churn. NRR >100% means you grow revenue from existing customers without any new sales. World-class SaaS has NRR of 120%+. African SaaS benchmarks are still evolving but 85–95% NRR is a reasonable target for B2B SaaS in Nigeria and Kenya."}},{"@type":"Question","name":"How do I reduce churn for African subscribers?","acceptedAnswer":{"@type":"Answer","text":"Key strategies: (1) Offer NGN/KES local pricing instead of USD to reduce payment friction, (2) Enable bank transfer and USSD payment options for Nigerians without reliable card access, (3) Proactive customer success outreach, (4) Offer grace periods and pause plans (common need during salary delays), (5) Build a WhatsApp support channel — most users trust WhatsApp over email in Nigeria."}}]}
-</script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <!-- tool-structured-data:auto -->
@@ -120,7 +119,7 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-churn-rate/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/churn-rate/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="small-business-tool-focus top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
 
 <section class="tool-hero">
@@ -195,15 +194,20 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
 
           <div class="row">
             <div class="field">
-              <label for="mrr-start">MRR at Start of Period</label>
+              <label for="mrr-start">Recurring Revenue at Start of Period</label>
               <input type="number" id="mrr-start" placeholder="e.g. 2500000" min="0">
             </div>
             <div class="field">
-              <label for="mrr-end">MRR at End of Period</label>
-              <input type="number" id="mrr-end" placeholder="e.g. 2300000" min="0">
+              <label for="mrr-churned">Revenue Lost to Churn</label>
+              <input type="number" id="mrr-churned" placeholder="e.g. 200000" min="0">
             </div>
           </div>
+          <div class="row">
+            <div class="field"><label for="mrr-contraction">Revenue Lost to Downgrades</label><input type="number" id="mrr-contraction" placeholder="e.g. 50000" min="0"></div>
+            <div class="field"><label for="mrr-expansion">Expansion Revenue from Starting Customers</label><input type="number" id="mrr-expansion" placeholder="e.g. 100000" min="0"></div>
+          </div>
 
+          <div class="status-line" id="churn-input-status" role="status" aria-live="polite"></div>
           <button type="button" class="btn btn-primary" onclick="calculate()">Calculate Churn</button>
         </div>
       </div>
@@ -219,7 +223,7 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
             </div>
             <div id="mrr-churn-hero" class="res-hero">
               <div class="big" id="mrr-churn-val">—</div>
-              <div class="lbl">MRR Churn Rate</div>
+              <div class="lbl">Revenue Churn Rate</div>
             </div>
           </div>
 
@@ -238,21 +242,23 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
             </div>
             <div class="res-item">
               <div class="res-num" id="r-mrr-lost">—</div>
-              <div class="res-lbl">MRR Lost</div>
+              <div class="res-lbl">Revenue Churned</div>
             </div>
           </div>
 
           <div id="annual-churn-note" style="display:none;margin-top:12px;background:#f1f5f9;border-radius:8px;padding:12px;font-size:.82rem;color:#475569">
-            <strong>Annual equivalent:</strong> Monthly churn of <span id="annual-monthly-equiv">—</span>% = <span id="annual-annual-equiv">—</span>% annual churn.
+            <strong>Annual equivalent:</strong> Monthly customer churn of <span id="annual-monthly-equiv">—</span> compounds to <span id="annual-annual-equiv">—</span>% annual churn if the rate stays constant.
           </div>
+          <div class="result-actions"><button type="button" class="action-btn" onclick="copyChurnSummary()">Copy summary</button><button type="button" class="action-btn" onclick="downloadChurnSummary()">Download TXT</button></div>
+          <div class="status-line" id="churn-status" role="status" aria-live="polite"></div>
         </div>
       </div>
 
       <!-- What-if scenarios -->
       <div class="card" id="scenario-section" style="display:none">
-        <div class="card-head"><div class="card-title">What-If: Revenue Impact of Reducing Churn</div></div>
+        <div class="card-head"><div class="card-title">What-If: Same-Period Revenue Retained</div></div>
         <div class="card-body">
-          <p style="font-size:.82rem;color:#64748b;margin-bottom:14px">If you reduce churn by X%, this is the additional annual revenue retained:</p>
+          <p style="font-size:.82rem;color:#64748b;margin-bottom:14px">If churned revenue falls by X% relative to this period, this is the additional recurring revenue retained in the same period:</p>
           <div class="scenario-row">
             <span class="scenario-label">Reduce churn by 10% (relative)</span>
             <span class="scenario-val" id="sc-10">—</span>
@@ -272,45 +278,21 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
         </div>
       </div>
 
-<section class="df-upgrade" data-df-upgrade="churn-rate">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Churn Rate Calculator: quick guide</h2>
-      <p>Not sure how to get the most from the Churn Rate Calculator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
-      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Churn Rate Calculator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
-    </div>
-    <form class="df-form" data-df-form="churn-rate">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="churn-rate" data-df-base="Churn Rate Calculator — enter your details above to see your result." aria-live="polite">Churn Rate Calculator — enter your details above to see your result.</output>
-      <div class="df-actions"><button type="button" data-df-copy="churn-rate">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="churn-rate-faq-title">
-  <h2 id="churn-rate-faq-title">Churn Rate Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How do I use the Churn Rate Calculator?</summary><p>Enter your amounts, rates and dates in the fields above. The Churn Rate Calculator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Churn Rate Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Churn Rate Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
-</section>
       <!-- FAQ -->
       <div class="card">
         <div class="card-head"><div class="card-title">FAQ</div></div>
         <div class="card-body">
           <details class="faq-item">
-            <summary>What is a good monthly churn rate for African SaaS?</summary>
-            <p>Global SaaS benchmarks: 3–8% monthly churn for early-stage startups, &lt;2% for established companies. African SaaS businesses often face higher churn due to FX volatility (USD pricing with NGN/KES income), mobile money payment failures, and lower income predictability. Targeting &lt;5% monthly churn is a reasonable starting point for African B2C SaaS.</p>
+            <summary>What churn rate should I compare against?</summary>
+            <p>Start with your own cohorts by product, plan, acquisition channel, tenure and customer type. External benchmarks are only useful when their period, churn definition and business model match yours.</p>
           </details>
           <details class="faq-item">
             <summary>What is Net Revenue Retention (NRR)?</summary>
-            <p>NRR measures how much revenue you retain from existing customers, including expansions (upsells, upgrades) minus contractions and churn. NRR &gt;100% means you grow revenue from existing customers without any new sales. World-class SaaS has NRR of 120%+. African SaaS benchmarks are still evolving but 85–95% NRR is a reasonable target for B2B SaaS in Nigeria and Kenya.</p>
+            <p>NRR measures recurring revenue retained from the starting customer cohort after churn and downgrades, plus expansion. It excludes revenue from new customers. A value above 100% means expansion exceeded churn and contraction for that cohort.</p>
           </details>
           <details class="faq-item">
             <summary>How do I reduce churn for African subscribers?</summary>
-            <p>Key strategies: (1) Offer NGN/KES local pricing instead of USD to reduce payment friction, (2) Enable bank transfer and USSD payment options for Nigerians without reliable card access, (3) Proactive customer success outreach, (4) Offer grace periods and pause plans (common need during salary delays), (5) Build a WhatsApp support channel — most users trust WhatsApp over email in Nigeria.</p>
+            <p>Tag voluntary cancellation, payment failure, downgrade and inactivity separately. Review retention by cohort, test onboarding and value delivery, make supported payment recovery easier, and measure whether each intervention changes retention.</p>
           </details>
         </div>
       </div>
@@ -319,30 +301,20 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
     <!-- Sidebar -->
     <div class="side-col">
       <div class="card">
-        <div class="card-head"><div class="card-title">Churn Benchmarks</div></div>
+        <div class="card-head"><div class="card-title">Measurement Checks</div></div>
         <div class="card-body">
           <div class="info-card">
-            <h4>Monthly Churn Rate Guide</h4>
-            <p>🟢 <strong>&lt;2%</strong> — Excellent. World-class retention.<br>
-            🟡 <strong>2–5%</strong> — Good. Work on reducing further.<br>
-            🟠 <strong>5–8%</strong> — Concerning. Address product-market fit.<br>
-            🔴 <strong>&gt;8%</strong> — Critical. Fix immediately before scaling.</p>
+            <h4>Keep the denominator stable</h4>
+            <p>Customer churn uses customers at the start of the period. New customers do not enter that denominator. Reconcile ending customers before accepting a Method A result.</p>
           </div>
           <div class="info-card" style="margin-top:12px">
-            <h4>NRR Benchmarks</h4>
-            <p>🟢 <strong>&gt;110%</strong> — Excellent. Growing from existing base.<br>
-            🟡 <strong>95–110%</strong> — Healthy. Some expansion revenue.<br>
-            🟠 <strong>80–95%</strong> — Needs improvement.<br>
-            🔴 <strong>&lt;80%</strong> — Serious churn problem.</p>
+            <h4>Keep new revenue out of NRR</h4>
+            <p>Use only the starting cohort's churn, contraction and expansion. Revenue from newly acquired customers belongs in total growth, not NRR.</p>
           </div>
           <div class="info-card" style="margin-top:12px">
-            <h4>Why African SaaS Churns</h4>
+            <h4>Useful churn reason groups</h4>
             <ul>
-              <li>Payment failures (card issues, insufficient funds)</li>
-              <li>USD pricing vs. local currency income</li>
-              <li>Poor internet connectivity for web-based tools</li>
-              <li>Low switching cost / many free alternatives</li>
-              <li>Seasonal income fluctuations in SME segment</li>
+              <li>Voluntary cancellation</li><li>Payment or renewal failure</li><li>Downgrade or contraction</li><li>Product inactivity</li><li>Business closure or duplicate account</li>
             </ul>
           </div>
         </div>
@@ -375,6 +347,7 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
 <script>
 var CURR_SYMS = {NGN:"₦",KES:"KSh",ZAR:"R",GHS:"GH₵",USD:"$"};
 var currentMethod = 'A';
+var LAST_CHURN = null;
 
 function sym() { return CURR_SYMS[document.getElementById('currency').value] || ""; }
 function fmt(n) { return sym() + Math.round(n).toLocaleString('en-NG'); }
@@ -392,7 +365,10 @@ function calculate() {
   var custStart = parseFloat(document.getElementById('cust-start').value)||0;
   var custNew = parseFloat(document.getElementById('cust-new').value)||0;
   var mrrStart = parseFloat(document.getElementById('mrr-start').value)||0;
-  var mrrEnd = parseFloat(document.getElementById('mrr-end').value)||0;
+  var mrrChurned = parseFloat(document.getElementById('mrr-churned').value)||0;
+  var mrrContraction = parseFloat(document.getElementById('mrr-contraction').value)||0;
+  var mrrExpansion = parseFloat(document.getElementById('mrr-expansion').value)||0;
+  var inputStatus = document.getElementById('churn-input-status');
 
   var churned;
   if (currentMethod === 'A') {
@@ -402,39 +378,39 @@ function calculate() {
     churned = parseFloat(document.getElementById('cust-churned').value)||0;
   }
 
-  if (churned < 0) churned = 0;
+  if (custStart <= 0 || churned < 0 || churned > custStart || mrrStart <= 0 || mrrChurned < 0 || mrrContraction < 0 || mrrExpansion < 0 || mrrChurned + mrrContraction > mrrStart) {
+    inputStatus.textContent = 'Enter a starting customer and revenue base above zero. Lost customers must reconcile from 0 to the starting base, and churn plus contraction cannot exceed starting revenue.';
+    document.getElementById('results-section').style.display = 'none';
+    document.getElementById('scenario-section').style.display = 'none';
+    return;
+  }
+  inputStatus.textContent = '';
 
   var custChurnRate = custStart > 0 ? (churned / custStart) * 100 : 0;
-  var mrrLost = Math.max(0, mrrStart - mrrEnd);
-  var mrrChurnRate = mrrStart > 0 ? (mrrLost / mrrStart) * 100 : 0;
-  var nrr = mrrStart > 0 ? (mrrEnd / mrrStart) * 100 : 0;
+  var mrrChurnRate = (mrrChurned / mrrStart) * 100;
+  var nrr = ((mrrStart - mrrChurned - mrrContraction + mrrExpansion) / mrrStart) * 100;
   var custLifetime = custChurnRate > 0 ? (1 / (custChurnRate/100)) : Infinity;
+  var period = document.getElementById('period').value;
+
+  LAST_CHURN = {period:period,custStart:custStart,custNew:custNew,churned:churned,custChurnRate:custChurnRate,mrrStart:mrrStart,mrrChurned:mrrChurned,mrrContraction:mrrContraction,mrrExpansion:mrrExpansion,mrrChurnRate:mrrChurnRate,nrr:nrr,custLifetime:custLifetime};
 
   document.getElementById('results-section').style.display = 'block';
   document.getElementById('scenario-section').style.display = 'block';
 
-  // Color churn heroes
-  function getChurnClass(pct) {
-    if (pct < 2) return 'res-hero res-green';
-    if (pct < 5) return 'res-hero';
-    return 'res-hero res-red';
-  }
-
   var custHero = document.getElementById('cust-churn-hero');
-  custHero.className = getChurnClass(custChurnRate);
+  custHero.className = 'res-hero';
   document.getElementById('cust-churn-val').textContent = fmtPct(custChurnRate);
 
   var mrrHero = document.getElementById('mrr-churn-hero');
-  mrrHero.className = getChurnClass(mrrChurnRate);
+  mrrHero.className = 'res-hero';
   document.getElementById('mrr-churn-val').textContent = fmtPct(mrrChurnRate);
 
   document.getElementById('r-nrr').textContent = nrr.toFixed(1) + "%";
-  document.getElementById('r-lifetime').textContent = isFinite(custLifetime) ? custLifetime.toFixed(1) + " months" : "∞";
+  document.getElementById('r-lifetime').textContent = isFinite(custLifetime) ? custLifetime.toFixed(1) + (period === 'monthly' ? " months" : " years") : "No observed churn";
   document.getElementById('r-churned-count').textContent = Math.round(churned).toLocaleString();
-  document.getElementById('r-mrr-lost').textContent = fmt(mrrLost);
+  document.getElementById('r-mrr-lost').textContent = fmt(mrrChurned);
 
   // Annual note
-  var period = document.getElementById('period').value;
   if (period === 'monthly') {
     document.getElementById('annual-churn-note').style.display = 'block';
     var annualChurn = (1 - Math.pow(1 - custChurnRate/100, 12)) * 100;
@@ -444,20 +420,25 @@ function calculate() {
     document.getElementById('annual-churn-note').style.display = 'none';
   }
 
-  // Scenarios — annual revenue impact
-  var annualMRR = mrrStart * 12;
+  // Same-period, relative reductions in entered churned revenue.
   [10, 25, 50, 100].forEach(function(pct, i) {
     var ids = ['sc-10','sc-25','sc-50','sc-100'];
-    var reducedChurnRate = mrrChurnRate * (1 - pct/100);
-    var savedMRR = (mrrChurnRate - reducedChurnRate) / 100 * mrrStart;
-    var annualSaving = savedMRR * 12;
-    document.getElementById(ids[i]).textContent = fmt(annualSaving) + "/yr saved";
+    var retained = mrrChurned * (pct/100);
+    document.getElementById(ids[i]).textContent = fmt(retained) + " retained";
   });
 
   document.getElementById('results-section').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
+
+function buildChurnSummary() {
+  if (!LAST_CHURN) return '';
+  var r = LAST_CHURN;
+  return ['AfroTools churn summary','Period: '+r.period,'Customers at start: '+r.custStart,'New customers: '+r.custNew,'Customers churned: '+r.churned,'Customer churn: '+fmtPct(r.custChurnRate),'Recurring revenue at start: '+fmt(r.mrrStart),'Revenue churned: '+fmt(r.mrrChurned),'Revenue contraction: '+fmt(r.mrrContraction),'Expansion from starting cohort: '+fmt(r.mrrExpansion),'Revenue churn rate: '+fmtPct(r.mrrChurnRate),'NRR: '+r.nrr.toFixed(1)+'%','Estimated lifetime: '+(isFinite(r.custLifetime)?r.custLifetime.toFixed(1)+' '+(r.period==='monthly'?'months':'years'):'no observed churn'),'','Definitions: NRR excludes new-customer revenue. Lifetime is the reciprocal of constant period churn and is not a cohort forecast.'].join('\n');
+}
+function copyChurnSummary(){var text=buildChurnSummary(),status=document.getElementById('churn-status');if(!text){status.textContent='Run a calculation first.';return;}var done=function(){status.textContent='Summary copied.';};if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done).catch(function(){fallbackChurnCopy(text);done();});}else{fallbackChurnCopy(text);done();}}
+function fallbackChurnCopy(text){var ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();}
+function downloadChurnSummary(){var text=buildChurnSummary(),status=document.getElementById('churn-status');if(!text){status.textContent='Run a calculation first.';return;}var blob=new Blob([text],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='churn-rate-summary.txt';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url);},500);status.textContent='TXT summary downloaded.';}
 </script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 </body>
 </html>

@@ -111,15 +111,14 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
 .disclaimer{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:14px;margin-top:14px;font-size:.74rem;color:#78350f;line-height:1.6}
 #results-section{display:none}
 @media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.row{grid-template-columns:1fr}}
+html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="dark"] .card,html[data-theme="dark"] .card-head,html[data-theme="dark"] .res-item,html[data-theme="dark"] .summary-actions button{background:#111c2e;border-color:#334155}html[data-theme="dark"] .card-title,html[data-theme="dark"] .faq-item summary,html[data-theme="dark"] .summary-table tr td:last-child{color:#f8fafc}html[data-theme="dark"] label,html[data-theme="dark"] .faq-item p,html[data-theme="dark"] .summary-table tr td:first-child,html[data-theme="dark"] .status-line{color:#cbd5e1}html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="dark"] .action-btn{background:#0f172a;color:#f8fafc;border-color:#475569}html[data-theme="dark"] .info-card{background:#2a190d;border-color:#9a3412}html[data-theme="dark"] .info-card h4,html[data-theme="dark"] .info-card p,html[data-theme="dark"] .info-card li{color:#fed7aa}
+@media(prefers-color-scheme:dark){html:not([data-theme="light"]) body{background:#0b1120;color:#e5edf8}html:not([data-theme="light"]) .card,html:not([data-theme="light"]) .card-head,html:not([data-theme="light"]) .res-item{background:#111c2e;border-color:#334155}html:not([data-theme="light"]) .card-title,html:not([data-theme="light"]) .faq-item summary,html:not([data-theme="light"]) .summary-table tr td:last-child{color:#f8fafc}html:not([data-theme="light"]) label,html:not([data-theme="light"]) .faq-item p,html:not([data-theme="light"]) .summary-table tr td:first-child,html:not([data-theme="light"]) .status-line{color:#cbd5e1}html:not([data-theme="light"]) input,html:not([data-theme="light"]) select,html:not([data-theme="light"]) .action-btn{background:#0f172a;color:#f8fafc;border-color:#475569}html:not([data-theme="light"]) .info-card{background:#2a190d;border-color:#9a3412}html:not([data-theme="light"]) .info-card h4,html:not([data-theme="light"]) .info-card p,html:not([data-theme="light"]) .info-card li{color:#fed7aa}}
 </style>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/unit-economics.webp">
 <script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <!-- tool-structured-data:auto -->
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between gross margin and contribution margin?","acceptedAnswer":{"@type":"Answer","text":"Gross margin = (Selling price - COGS) ÷ Selling price. It measures production efficiency. Contribution margin = (Selling price - all variable costs) ÷ Selling price. It measures how much each sale contributes toward covering fixed costs and profit. For most African SMEs without complex overhead allocation, these will be similar."}},{"@type":"Question","name":"What LTV/CAC ratio is healthy?","acceptedAnswer":{"@type":"Answer","text":"A ratio above 3:1 is considered healthy for most businesses — meaning you earn 3x what you spend to acquire a customer. SaaS businesses typically target 4:1 or higher. If your LTV/CAC is below 1:1, you are losing money on each customer and your business model needs adjustment. African markets often have higher CAC due to lower digital trust but longer customer retention once trust is established."}},{"@type":"Question","name":"What gross margin should I target in Nigeria?","acceptedAnswer":{"@type":"Answer","text":"It varies widely: Tech/SaaS 60–80%, retail products 30–50%, food & beverages 40–60%, fashion 50–70%, logistics/delivery 20–35%. Nigerian SMEs typically see compressed margins due to forex volatility on imported inputs. Track your margins monthly and adjust pricing accordingly."}}]}
-</script>
 <!-- tool-structured-data:auto -->
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Unit Economics Calculator for African Businesses","item":"https://afrotools.com/tools/unit-economics/"}]}
@@ -130,7 +129,7 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/unit-economics/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/unit-economics/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="small-business-tool-focus top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
 
 <section class="tool-hero">
@@ -170,8 +169,12 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
             </div>
           </div>
           <div class="field">
-            <label for="variable-cost">Variable Cost per Unit (COGS + packaging + delivery)</label>
+            <label for="variable-cost">COGS per Unit (materials or direct service delivery)</label>
             <input type="number" id="variable-cost" placeholder="e.g. 2500" min="0">
+          </div>
+          <div class="field">
+            <label for="other-variable-cost">Other Variable Cost per Unit (packaging, payment, delivery)</label>
+            <input type="number" id="other-variable-cost" placeholder="e.g. 500" min="0">
           </div>
           <div class="row">
             <div class="field">
@@ -193,6 +196,11 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
               <input type="number" id="refund-rate" placeholder="e.g. 3" min="0" max="100" value="3">
             </div>
           </div>
+          <div class="field">
+            <label for="lifetime-units">Expected paid units/orders per acquired customer (for LTV, optional)</label>
+            <input type="number" id="lifetime-units" placeholder="e.g. 6" min="0" step="0.1">
+          </div>
+          <div class="status-line" id="unit-input-status" role="status" aria-live="polite"></div>
           <button type="button" class="btn btn-primary" onclick="calculate()">Calculate Unit Economics</button>
         </div>
       </div>
@@ -208,8 +216,9 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
 
           <table class="summary-table">
             <tbody>
-              <tr><td>Selling Price (per unit)</td><td id="r-price">—</td></tr>
-              <tr><td>Variable Cost (per unit)</td><td id="r-vcost">—</td></tr>
+              <tr><td>Realised Revenue (per unit, after refunds)</td><td id="r-price">—</td></tr>
+              <tr><td>COGS (per unit)</td><td id="r-vcost">—</td></tr>
+              <tr><td>Other Variable Cost (per unit)</td><td id="r-other-vcost">—</td></tr>
               <tr><td>Gross Profit (per unit)</td><td id="r-gross-unit">—</td></tr>
               <tr><td>Gross Margin %</td><td id="r-gross-pct">—</td></tr>
               <tr><td>Contribution Margin (per unit)</td><td id="r-contrib-unit">—</td></tr>
@@ -246,7 +255,7 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
             <div class="result-grid">
               <div class="res-item">
                 <div class="res-num" id="r-ltv">—</div>
-                <div class="res-lbl">Customer LTV</div>
+                <div class="res-lbl">Contribution LTV</div>
               </div>
               <div class="res-item">
                 <div class="res-num" id="r-cac-show">—</div>
@@ -271,15 +280,15 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
         <div class="card-body">
           <details class="faq-item">
             <summary>What is the difference between gross margin and contribution margin?</summary>
-            <p>Gross margin = (Selling price - COGS) ÷ Selling price. It measures production efficiency. Contribution margin = (Selling price - all variable costs) ÷ Selling price. It measures how much each sale contributes toward covering fixed costs and profit. For most African SMEs without complex overhead allocation, these will be similar.</p>
+            <p>Gross margin subtracts COGS from realised revenue. Contribution margin subtracts COGS plus every other variable cost. Contribution margin is therefore the amount each unit contributes toward fixed costs and profit.</p>
           </details>
           <details class="faq-item">
             <summary>What LTV/CAC ratio is healthy?</summary>
-            <p>A ratio above 3:1 is considered healthy for most businesses — meaning you earn 3x what you spend to acquire a customer. SaaS businesses typically target 4:1 or higher. If your LTV/CAC is below 1:1, you are losing money on each customer and your business model needs adjustment. African markets often have higher CAC due to lower digital trust but longer customer retention once trust is established.</p>
+            <p>There is no universal healthy ratio. Compare contribution LTV with CAC, cash payback timing, retention evidence and your own capital constraints. This tool calculates a ratio only when you enter both CAC and expected paid units per customer.</p>
           </details>
           <details class="faq-item">
             <summary>What gross margin should I target in Nigeria?</summary>
-            <p>It varies widely: Tech/SaaS 60–80%, retail products 30–50%, food & beverages 40–60%, fashion 50–70%, logistics/delivery 20–35%. Nigerian SMEs typically see compressed margins due to forex volatility on imported inputs. Track your margins monthly and adjust pricing accordingly.</p>
+            <p>Use your own historical margins and current supplier, labour, logistics, payment, tax and returns evidence. Sector averages can hide major differences in product mix, geography, channel and business stage.</p>
           </details>
         </div>
       </div>
@@ -295,17 +304,17 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
             <p><strong>Gross Margin</strong> = (Price - COGS) / Price<br>
             <strong>Contribution Margin</strong> = Price - All Variable Costs<br>
             <strong>Break-Even</strong> = Fixed Costs / Contribution Margin<br>
-            <strong>LTV</strong> = Gross Margin per Customer / Monthly Churn Rate<br>
+            <strong>Contribution LTV</strong> = Contribution per Unit × Expected Paid Units per Customer<br>
             <strong>LTV/CAC</strong> = LTV / Customer Acquisition Cost</p>
           </div>
           <div class="info-card" style="margin-top:12px">
-            <h4>Nigerian SME Benchmarks</h4>
+            <h4>Input Evidence</h4>
             <ul>
-              <li>Fashion/Apparel: 55–70% gross margin</li>
-              <li>Food retail: 30–45%</li>
-              <li>Tech products: 60–80%</li>
-              <li>Services: 50–75%</li>
-              <li>Return rates: 5–15% online</li>
+              <li>Use realised selling price after discounts and refunds</li>
+              <li>Separate COGS from packaging, payment and delivery costs</li>
+              <li>Use actual acquisition spend and acquired-customer count</li>
+              <li>Base lifetime orders on a dated retention cohort</li>
+              <li>Re-run when supplier, FX, logistics or fee inputs change</li>
             </ul>
           </div>
         </div>
@@ -335,7 +344,7 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
         <div>
           <span class="tool-verification-kicker">Unit economics workflow</span>
           <h2 class="tool-verification-title" id="unit-economics-verification-title">Check whether every sale contributes enough to survive growth</h2>
-          <p class="tool-verification-lead">Use price, COGS, variable costs, fixed costs, volume, CAC, churn, and customer value assumptions to understand contribution margin, break-even units, LTV, CAC, and payback.</p>
+          <p class="tool-verification-lead">Use realised price, COGS, other variable costs, fixed costs, volume, CAC, refunds, and expected paid units per customer to understand contribution margin, break-even, and contribution LTV/CAC.</p>
         </div>
         <div class="tool-verification-status">
           <span class="tool-verification-badge">Local unit economics estimate</span>
@@ -343,8 +352,8 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
         </div>
       </div>
       <div class="tool-verification-grid">
-        <div class="tool-verification-block"><h3>Primary task</h3><ul class="tool-verification-list"><li>Enter the product price, cost, fees, returns, fixed costs, and expected sales volume.</li><li>Add acquisition and retention assumptions for CAC, LTV, and payback.</li><li>Calculate and review margin, break-even, and growth-risk signals.</li></ul></div>
-        <div class="tool-verification-block"><h3>Result and export</h3><ul class="tool-verification-list"><li>Gross margin, contribution margin, break-even units, CAC, LTV, LTV/CAC, and payback period.</li><li>Existing copy and TXT download actions in the result panel.</li><li>Local-first estimate note for sensitive business data.</li></ul></div>
+        <div class="tool-verification-block"><h3>Primary task</h3><ul class="tool-verification-list"><li>Enter price, COGS, other variable costs, returns, fixed costs, and expected sales volume.</li><li>Add CAC and expected paid units per customer only when backed by cohort evidence.</li><li>Calculate and review gross margin, contribution margin, break-even, and monthly profit.</li></ul></div>
+        <div class="tool-verification-block"><h3>Result and export</h3><ul class="tool-verification-list"><li>Gross margin, contribution margin, break-even units, monthly profit, and optional contribution LTV/CAC.</li><li>Copy and TXT download actions in the result panel; no PDF is generated.</li><li>Local-first estimate note for sensitive business data.</li></ul></div>
         <div class="tool-verification-block"><h3>Before you use it</h3><ul class="tool-verification-list"><li>Use real supplier quotes and actual ad/customer acquisition data where possible.</li><li>Recalculate when FX, logistics, returns, or payment fees change.</li><li>Ask an accountant before using results for financing or tax decisions.</li></ul></div>
         <div class="tool-verification-block"><h3>Assumptions and freshness</h3><p class="tool-verification-meta">Supplier prices, payment fees, FX, CAC, churn, and taxes can change quickly. Treat this as a planning model, not audited financial advice.</p></div>
       </div>
@@ -380,32 +389,45 @@ function fmt(n) {
 
 function calculate() {
   var price = parseFloat(document.getElementById('selling-price').value)||0;
-  var vcost = parseFloat(document.getElementById('variable-cost').value)||0;
+  var cogs = parseFloat(document.getElementById('variable-cost').value)||0;
+  var otherVariable = parseFloat(document.getElementById('other-variable-cost').value)||0;
   var fixed = parseFloat(document.getElementById('fixed-costs').value)||0;
   var units = parseFloat(document.getElementById('units-sold').value)||0;
   var cac = parseFloat(document.getElementById('cac').value)||0;
-  var refundPct = (parseFloat(document.getElementById('refund-rate').value)||0) / 100;
+  var refundInput = parseFloat(document.getElementById('refund-rate').value);
+  var refundPct = (isFinite(refundInput) ? refundInput : 0) / 100;
+  var lifetimeUnits = parseFloat(document.getElementById('lifetime-units').value)||0;
+  var inputStatus = document.getElementById('unit-input-status');
 
-  // Effective price after refunds
+  if (price <= 0 || units <= 0 || cogs < 0 || otherVariable < 0 || fixed < 0 || cac < 0 || lifetimeUnits < 0 || refundPct < 0 || refundPct >= 1) {
+    inputStatus.textContent = 'Enter price and monthly units above zero, non-negative costs, and a refund rate from 0% to below 100%.';
+    document.getElementById('results-section').style.display = 'none';
+    return;
+  }
+  inputStatus.textContent = '';
+
+  // Conservative realised revenue: refunded orders retain their entered unit costs.
   var effPrice = price * (1 - refundPct);
-  var grossUnit = effPrice - vcost;
+  var grossUnit = effPrice - cogs;
   var grossMarginPct = effPrice > 0 ? (grossUnit / effPrice) * 100 : 0;
-  var contribUnit = grossUnit; // same as gross in simplified model
-  var contribPct = grossMarginPct;
+  var contribUnit = grossUnit - otherVariable;
+  var contribPct = effPrice > 0 ? (contribUnit / effPrice) * 100 : 0;
   var bep = contribUnit > 0 ? Math.ceil(fixed / contribUnit) : Infinity;
   var bepRev = bep * effPrice;
 
   var monthlyRevenue = units * effPrice;
-  var monthlyCOGS = units * vcost;
+  var monthlyCOGS = units * cogs;
+  var monthlyOtherVariable = units * otherVariable;
   var monthlyGross = monthlyRevenue - monthlyCOGS;
-  var monthlyNetProfit = monthlyGross - fixed;
-  var ltv = cac > 0 && contribUnit > 0 ? contribUnit * 12 : 0;
-  var ratio = cac > 0 && contribUnit > 0 ? ltv / cac : 0;
+  var monthlyNetProfit = monthlyGross - monthlyOtherVariable - fixed;
+  var ltv = cac > 0 && lifetimeUnits > 0 && contribUnit > 0 ? contribUnit * lifetimeUnits : 0;
+  var ratio = cac > 0 && lifetimeUnits > 0 && contribUnit > 0 ? ltv / cac : 0;
 
   LAST_UNIT_ECONOMICS = {
     currency: document.getElementById('currency').value,
     price: effPrice,
-    variableCost: vcost,
+    cogs: cogs,
+    otherVariableCost: otherVariable,
     fixedCosts: fixed,
     units: units,
     refundPct: refundPct * 100,
@@ -416,9 +438,11 @@ function calculate() {
     breakEvenRevenue: bepRev,
     monthlyRevenue: monthlyRevenue,
     monthlyCOGS: monthlyCOGS,
+    monthlyOtherVariable: monthlyOtherVariable,
     monthlyGross: monthlyGross,
     monthlyNetProfit: monthlyNetProfit,
     cac: cac,
+    lifetimeUnits: lifetimeUnits,
     ltv: ltv,
     ltvCacRatio: ratio
   };
@@ -426,7 +450,8 @@ function calculate() {
   document.getElementById('results-section').style.display = 'block';
 
   document.getElementById('r-price').textContent = fmt(effPrice);
-  document.getElementById('r-vcost').textContent = fmt(vcost);
+  document.getElementById('r-vcost').textContent = fmt(cogs);
+  document.getElementById('r-other-vcost').textContent = fmt(otherVariable);
   document.getElementById('r-gross-unit').textContent = fmt(grossUnit);
   document.getElementById('r-gross-pct').textContent = grossMarginPct.toFixed(1) + "%";
   document.getElementById('r-contrib-unit').textContent = fmt(contribUnit);
@@ -444,14 +469,13 @@ function calculate() {
   document.getElementById('monthly-profit-lbl').textContent = monthlyNetProfit >= 0 ? "Monthly Net Profit" : "Monthly Net Loss";
 
   // LTV/CAC
-  if (cac > 0 && contribUnit > 0) {
+  if (cac > 0 && lifetimeUnits > 0 && contribUnit > 0) {
     document.getElementById('ltv-cac-section').style.display = 'block';
-    // Assume avg customer life = 12 months for simple LTV
     document.getElementById('r-ltv').textContent = fmt(ltv);
     document.getElementById('r-cac-show').textContent = fmt(cac);
     document.getElementById('ltv-cac-ratio').textContent = ratio.toFixed(2) + "x";
     var box = document.getElementById('ltv-cac-box');
-    box.className = ratio >= 3 ? 'ltv-cac' : 'ltv-cac ltv-bad';
+    box.className = 'ltv-cac';
   } else {
     document.getElementById('ltv-cac-section').style.display = 'none';
   }
@@ -467,17 +491,19 @@ function buildUnitEconomicsSummary() {
     'AfroTools Unit Economics Summary',
     'Currency: ' + r.currency,
     'Effective selling price: ' + fmt(r.price),
-    'Variable cost per unit: ' + fmt(r.variableCost),
+    'COGS per unit: ' + fmt(r.cogs),
+    'Other variable cost per unit: ' + fmt(r.otherVariableCost),
     'Gross profit per unit: ' + fmt(r.grossUnit),
     'Gross margin: ' + r.grossMarginPct.toFixed(1) + '%',
     'Monthly units sold: ' + r.units.toLocaleString(),
     'Monthly revenue: ' + fmt(r.monthlyRevenue),
     'Monthly COGS: ' + fmt(r.monthlyCOGS),
+    'Monthly other variable costs: ' + fmt(r.monthlyOtherVariable),
     'Monthly gross profit: ' + fmt(r.monthlyGross),
     'Monthly fixed costs: ' + fmt(r.fixedCosts),
     'Monthly net ' + (r.monthlyNetProfit >= 0 ? 'profit: ' : 'loss: ') + fmt(r.monthlyNetProfit),
     'Break-even: ' + (isFinite(r.breakEvenUnits) ? r.breakEvenUnits.toLocaleString() + ' units / ' + fmt(r.breakEvenRevenue) + ' revenue' : 'N/A'),
-    r.cac > 0 ? 'LTV/CAC: ' + r.ltvCacRatio.toFixed(2) + 'x (LTV ' + fmt(r.ltv) + ', CAC ' + fmt(r.cac) + ')' : 'LTV/CAC: not calculated',
+    r.cac > 0 && r.lifetimeUnits > 0 ? 'Contribution LTV/CAC: ' + r.ltvCacRatio.toFixed(2) + 'x (LTV ' + fmt(r.ltv) + ', CAC ' + fmt(r.cac) + ', lifetime units ' + r.lifetimeUnits + ')' : 'Contribution LTV/CAC: not calculated',
     '',
     'Assumptions: local-first planning estimate based only on entered inputs. Confirm current supplier costs, taxes, and accountant advice before acting.'
   ].join('\n');

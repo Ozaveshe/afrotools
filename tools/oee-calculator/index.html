@@ -40,10 +40,6 @@
 <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/oee-calculator.webp">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/oee-calculator.webp">
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the OEE Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The OEE Calculator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the OEE Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the OEE Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}}]}
-</script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <!-- tool-structured-data:auto -->
@@ -75,7 +71,7 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-oee/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/oee-calculator/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh small-business">
 <afro-navbar theme="dark" active="engineering"></afro-navbar>
 <nav class="en-breadcrumb" aria-label="Breadcrumb">
   <div class="en-container"><ol>
@@ -87,7 +83,7 @@
   <div class="en-container">
     <div class="en-hero-badge">Manufacturing</div>
     <h1>OEE Calculator</h1>
-    <p>Measure your Overall Equipment Effectiveness — the gold standard for manufacturing efficiency. Identify the Six Big Losses eating into your output.</p>
+    <p>Calculate availability, performance, quality and OEE from one recorded production period. No loss split or benchmark is invented from the totals.</p>
   </div>
 </section>
 <main class="en-main">
@@ -96,51 +92,53 @@
       <h2 class="en-section-title">Shift / Production Data</h2>
       <div class="en-form-grid">
         <div class="en-field">
-          <label class="en-label">Planned Production Time (minutes/shift)</label>
-          <input aria-label="Oee planned" type="number" class="en-input" id="oee-planned" value="480" min="60" max="1440">
-          <span class="en-hint">e.g. 8-hr shift = 480 min</span>
+          <label class="en-label" for="oee-planned">Scheduled period (minutes)</label>
+          <input type="number" class="en-input" id="oee-planned" min="1" max="10080" placeholder="0">
+          <span class="en-hint">The full shift or measurement window</span>
         </div>
         <div class="en-field">
-          <label class="en-label">Unplanned Downtime (minutes)</label>
-          <input aria-label="Oee downtime" type="number" class="en-input" id="oee-downtime" value="45" min="0">
+          <label class="en-label" for="oee-downtime">Unplanned downtime (minutes)</label>
+          <input type="number" class="en-input" id="oee-downtime" min="0" placeholder="0">
           <span class="en-hint">Breakdowns, material shortages, operator absence</span>
         </div>
         <div class="en-field">
-          <label class="en-label">Planned Stops (minutes)</label>
-          <input aria-label="Oee planned stop" type="number" class="en-input" id="oee-planned-stop" value="30" min="0">
-          <span class="en-hint">Changeovers, preventive maintenance, breaks</span>
+          <label class="en-label" for="oee-planned-stop">Planned excluded time (minutes)</label>
+          <input type="number" class="en-input" id="oee-planned-stop" min="0" placeholder="0">
+          <span class="en-hint">Time excluded from planned production by your measurement policy</span>
         </div>
         <div class="en-field">
-          <label class="en-label">Ideal Cycle Time (seconds per unit)</label>
-          <input aria-label="Oee cycle" type="number" class="en-input" id="oee-cycle" value="20" min="1">
-          <span class="en-hint">Theoretical maximum speed</span>
+          <label class="en-label" for="oee-cycle">Ideal cycle time (seconds per unit)</label>
+          <input type="number" class="en-input" id="oee-cycle" min="0.001" step="0.001" placeholder="0">
+          <span class="en-hint">Verified design/nameplate or validated best-repeatable rate</span>
         </div>
         <div class="en-field">
-          <label class="en-label">Total Units Produced</label>
-          <input aria-label="Oee produced" type="number" class="en-input" id="oee-produced" value="1100" min="0">
+          <label class="en-label" for="oee-produced">Total units produced</label>
+          <input type="number" class="en-input" id="oee-produced" min="0" placeholder="0">
         </div>
         <div class="en-field">
-          <label class="en-label">Defective / Rejected Units</label>
-          <input aria-label="Oee rejects" type="number" class="en-input" id="oee-rejects" value="55" min="0">
+          <label class="en-label" for="oee-rejects">Defective / rejected units</label>
+          <input type="number" class="en-input" id="oee-rejects" min="0" placeholder="0">
         </div>
         <div class="en-field">
-          <label class="en-label">Revenue per Good Unit</label>
-          <input aria-label="Oee rev unit" type="number" class="en-input" id="oee-rev-unit" value="0" min="0">
-          <span class="en-hint">Optional — to calculate lost revenue</span>
+          <label class="en-label" for="oee-rev-unit">Contribution per additional good unit (optional)</label>
+          <input type="number" class="en-input" id="oee-rev-unit" min="0" placeholder="0">
+          <span class="en-hint">Use contribution, not selling price, for the opportunity scenario</span>
         </div>
       </div>
       <button type="button" class="en-btn" onclick="calcOEE()">Calculate OEE</button>
+      <button type="button" class="en-btn" onclick="downloadOeeCsv()">Download CSV</button>
+      <p id="oee-status" role="status" aria-live="polite"></p>
     </div>
 
     <div class="en-results" id="oee-results">
       <div class="en-results-hero">
         <div class="oee-score" id="oee-ring" style="--pct:0;--score-color:#78716c" data-val="—"></div>
         <div class="en-results-title" id="oee-headline">OEE Score</div>
-        <div class="en-results-subtitle" id="oee-grade"></div>
+        <div class="en-results-subtitle" id="oee-grade">Recorded-period result</div>
       </div>
       <div class="en-results-grid" id="oee-pillars"></div>
       <div class="en-card" style="margin-top:1.5rem">
-        <h3 style="margin-bottom:.75rem">Six Big Losses Analysis</h3>
+        <h3 style="margin-bottom:.75rem">Measured loss inputs</h3>
         <div class="six-big" id="oee-six-big"></div>
       </div>
       <div class="en-card" style="margin-top:1.5rem">
@@ -149,40 +147,16 @@
           <div class="en-stat-card"><div class="en-stat-label">Good Units Produced</div><div class="en-stat-value" id="oee-good">—</div></div>
           <div class="en-stat-card"><div class="en-stat-label">Max Possible Units (100% OEE)</div><div class="en-stat-value" id="oee-max">—</div></div>
           <div class="en-stat-card"><div class="en-stat-label">Units Lost</div><div class="en-stat-value" id="oee-lost">—</div></div>
-          <div class="en-stat-card"><div class="en-stat-label">Revenue Lost (if priced)</div><div class="en-stat-value" id="oee-rev-lost">—</div></div>
+          <div class="en-stat-card"><div class="en-stat-label">Contribution opportunity (scenario)</div><div class="en-stat-value" id="oee-rev-lost">—</div></div>
         </div>
       </div>
       <div class="en-card" style="margin-top:1.5rem">
-        <h3 style="margin-bottom:.5rem">Improvement Priorities</h3>
+        <h3 style="margin-bottom:.5rem">Review priorities from measured dimensions</h3>
         <ol id="oee-actions" style="padding-left:1.25rem;margin:0;display:flex;flex-direction:column;gap:.5rem;font-size:.9rem"></ol>
       </div>
     </div>
   </div>
 
-<section class="df-upgrade" data-df-upgrade="oee-calculator">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>OEE Calculator: quick guide</h2>
-      <p>Not sure how to get the most from the OEE Calculator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
-      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the OEE Calculator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
-    </div>
-    <form class="df-form" data-df-form="oee-calculator">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="oee-calculator" data-df-base="OEE Calculator — enter your details above to see your result." aria-live="polite">OEE Calculator — enter your details above to see your result.</output>
-      <div class="df-actions"><button type="button" data-df-copy="oee-calculator">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="oee-calculator-faq-title">
-  <h2 id="oee-calculator-faq-title">OEE Calculator — Overall Equipment Effectiveness FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How do I use the OEE Calculator?</summary><p>Enter your amounts, rates and dates in the fields above. The OEE Calculator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the OEE Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the OEE Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
-</section>
 </main>
 <afro-related-tools data-ssr="1" category="small-business" current="oee-calculator">
 <!-- RELATED_TOOLS_SSR_START -->
@@ -194,92 +168,24 @@
 </afro-related-tools>
 <afro-footer></afro-footer>
 <script>
+var LAST_OEE_RESULT=null;
+function oeePct(value){return (value*100).toFixed(1)+'%';}
 function calcOEE(){
-  var planned = +document.getElementById('oee-planned').value;
-  var downtime = +document.getElementById('oee-downtime').value;
-  var plannedStop = +document.getElementById('oee-planned-stop').value;
-  var cycleTime = +document.getElementById('oee-cycle').value; // seconds
-  var produced = +document.getElementById('oee-produced').value;
-  var rejects = +document.getElementById('oee-rejects').value;
-  var revUnit = +document.getElementById('oee-rev-unit').value;
-
-  // OEE calculations
-  var operatingTime = planned - plannedStop;
-  var runTime = operatingTime - downtime;
-  var availability = runTime / operatingTime;
-
-  var idealOutput = (runTime * 60) / cycleTime; // runTime is minutes
-  var performance = idealOutput > 0 ? produced / idealOutput : 0;
-  performance = Math.min(performance, 1); // cap at 100%
-
-  var goodUnits = produced - rejects;
-  var quality = produced > 0 ? goodUnits / produced : 0;
-
-  var oee = availability * performance * quality * 100;
-  var maxPossible = Math.round((operatingTime * 60) / cycleTime);
-  var unitsLost = maxPossible - goodUnits;
-  var revLost = revUnit > 0 ? unitsLost * revUnit : 0;
-
-  // Colour coding
-  var scoreColor = oee >= 85 ? '#16a34a' : oee >= 65 ? '#2563eb' : oee >= 40 ? '#f59e0b' : '#dc2626';
-  var grade = oee >= 85 ? 'World Class (≥85%)' : oee >= 65 ? 'Typical (65–85%)' : oee >= 40 ? 'Developing (40–65%)' : 'Poor (<40%) — urgent action needed';
-
-  var ring = document.getElementById('oee-ring');
-  ring.style.setProperty('--pct', oee.toFixed(0));
-  ring.style.setProperty('--score-color', scoreColor);
-  ring.setAttribute('data-val', oee.toFixed(0) + '%');
-  document.getElementById('oee-headline').textContent = 'OEE: ' + oee.toFixed(1) + '%';
-  document.getElementById('oee-grade').textContent = grade;
-
-  document.getElementById('oee-pillars').innerHTML = [
-    { label:'Availability', val: availability*100, desc: operatingTime+'min → '+runTime+'min run' },
-    { label:'Performance', val: performance*100, desc: produced+' of '+Math.round(idealOutput)+' ideal' },
-    { label:'Quality', val: quality*100, desc: goodUnits+' good of '+produced+' produced' }
-  ].map(function(p){
-    var c = p.val >= 90 ? '#16a34a' : p.val >= 70 ? '#2563eb' : '#dc2626';
-    return '<div class="en-stat-card oee-pillar"><div class="pil-val" style="color:'+c+'">'+p.val.toFixed(1)+'%</div><div class="pil-label">'+p.label+'</div><div style="font-size:.78rem;color:#94a3b8;margin-top:.2rem">'+p.desc+'</div></div>';
-  }).join('');
-
-  var avLossPct = (1-availability)*100, perfLossPct = (1-performance)*availability*100, qualLossPct = (1-quality)*100;
-  var sixBig = [
-    { name:'Breakdowns', cat:'Availability', pct:(downtime/operatingTime*100).toFixed(1), desc: downtime+' min unplanned' },
-    { name:'Setup & Changeover', cat:'Availability', pct:(plannedStop/operatingTime*100).toFixed(1), desc: plannedStop+' min planned stops' },
-    { name:'Minor Stoppages', cat:'Performance', pct:(perfLossPct*0.4).toFixed(1), desc:'Micro-stops <5min' },
-    { name:'Reduced Speed', cat:'Performance', pct:(perfLossPct*0.6).toFixed(1), desc:'Running below ideal rate' },
-    { name:'Process Defects', cat:'Quality', pct:(rejects/produced*100*0.7).toFixed(1), desc: Math.round(rejects*0.7)+' defects in steady state' },
-    { name:'Startup Rejects', cat:'Quality', pct:(rejects/produced*100*0.3).toFixed(1), desc: Math.round(rejects*0.3)+' at startup / warmup' }
-  ];
-  document.getElementById('oee-six-big').innerHTML = sixBig.map(function(l){
-    return '<div class="loss-card"><h5>'+l.name+' <span style="font-weight:400;color:#94a3b8">('+l.cat+')</span></h5><strong>'+l.pct+'% loss</strong><div style="color:#64748b">'+l.desc+'</div></div>';
-  }).join('');
-
-  document.getElementById('oee-good').textContent = goodUnits.toLocaleString() + ' units';
-  document.getElementById('oee-max').textContent = maxPossible.toLocaleString() + ' units';
-  document.getElementById('oee-lost').textContent = unitsLost.toLocaleString() + ' units (' + ((unitsLost/maxPossible)*100).toFixed(0) + '%)';
-  document.getElementById('oee-rev-lost').textContent = revUnit > 0 ? '≈ ' + revLost.toLocaleString() + ' lost/shift' : 'Enter unit price above';
-
-  // Priorities based on biggest loss
-  var losses = [
-    { name:'Availability (downtime)', val: (1-availability)*100 },
-    { name:'Performance (speed)', val: (availability*(1-performance))*100 },
-    { name:'Quality (defects)', val: (availability*performance*(1-quality))*100 }
-  ].sort(function(a,b){ return b.val - a.val; });
-
-  var actions = [
-    'Biggest loss: ' + losses[0].name + ' (' + losses[0].val.toFixed(1) + '% OEE impact) — address first.',
-    losses[0].name.includes('Availability') ? 'Implement Preventive Maintenance (PM) schedule. Target MTBF improvement.' : '',
-    losses[0].name.includes('Performance') ? 'Time study the production process. Identify minor stoppages and speed-loss root causes.' : '',
-    losses[0].name.includes('Quality') ? 'Fishbone (Ishikawa) analysis on top defect types. Implement Statistical Process Control (SPC).' : '',
-    oee < 65 ? 'OEE below 65% — consider a Lean/Kaizen event to identify and eliminate top 3 waste sources.' : '',
-    'Track OEE daily by shift. Trend data over 4 weeks before major interventions.',
-    'World class OEE target: ≥85%. Your current path to 85%: +' + Math.max(0, (85 - oee)).toFixed(1) + ' percentage points.'
-  ].filter(Boolean);
-  document.getElementById('oee-actions').innerHTML = actions.map(function(a){ return '<li>'+a+'</li>'; }).join('');
-  document.getElementById('oee-results').classList.add('on');
-  document.getElementById('oee-results').scrollIntoView({ behavior:'smooth', block:'start' });
+  var scheduled=parseFloat(document.getElementById('oee-planned').value),downtime=parseFloat(document.getElementById('oee-downtime').value)||0,excluded=parseFloat(document.getElementById('oee-planned-stop').value)||0,cycle=parseFloat(document.getElementById('oee-cycle').value),produced=parseFloat(document.getElementById('oee-produced').value),rejects=parseFloat(document.getElementById('oee-rejects').value)||0,contribution=parseFloat(document.getElementById('oee-rev-unit').value)||0,status=document.getElementById('oee-status');
+  var plannedProduction=scheduled-excluded;
+  if(!Number.isFinite(scheduled)||scheduled<=0||excluded<0||excluded>=scheduled||downtime<0||downtime>plannedProduction||!Number.isFinite(cycle)||cycle<=0||!Number.isFinite(produced)||produced<0||rejects<0||rejects>produced){LAST_OEE_RESULT=null;status.textContent='Check that scheduled time and ideal cycle are above zero, exclusions leave production time, downtime fits within it, and rejects do not exceed total units.';document.getElementById('oee-results').classList.remove('on');return;}
+  var runTime=plannedProduction-downtime,availability=plannedProduction>0?runTime/plannedProduction:0,idealDuringRun=runTime>0?runTime*60/cycle:0,performance=idealDuringRun>0?produced/idealDuringRun:(produced===0?0:NaN),good=produced-rejects,quality=produced>0?good/produced:0,oee=availability*performance*quality,maxPossible=plannedProduction*60/cycle,unitsLost=Math.max(0,maxPossible-good),opportunity=unitsLost*contribution;
+  if(!Number.isFinite(performance)){LAST_OEE_RESULT=null;status.textContent='Produced units cannot be recorded when run time is zero.';document.getElementById('oee-results').classList.remove('on');return;}
+  LAST_OEE_RESULT={scheduled:scheduled,excluded:excluded,plannedProduction:plannedProduction,downtime:downtime,runTime:runTime,cycle:cycle,produced:produced,rejects:rejects,good:good,availability:availability,performance:performance,quality:quality,oee:oee,maxPossible:maxPossible,unitsLost:unitsLost,contribution:contribution,opportunity:opportunity};
+  var ring=document.getElementById('oee-ring');ring.style.setProperty('--pct',Math.max(0,Math.min(100,oee*100)).toFixed(0));ring.style.setProperty('--score-color','#57534e');ring.setAttribute('data-val',oeePct(oee));document.getElementById('oee-headline').textContent='OEE: '+oeePct(oee);document.getElementById('oee-grade').textContent=performance>1?'Performance exceeds 100% — verify the ideal cycle, run time and count.':'Recorded-period result; compare only with the same measurement policy.';
+  document.getElementById('oee-pillars').innerHTML=[['Availability',availability,plannedProduction+' min planned → '+runTime+' min run'],['Performance',performance,produced+' units vs '+Math.round(idealDuringRun)+' ideal during run'],['Quality',quality,good+' good of '+produced]].map(function(p){return '<div class="en-stat-card oee-pillar"><div class="pil-val">'+oeePct(p[1])+'</div><div class="pil-label">'+p[0]+'</div><div style="font-size:.78rem;color:#64748b;margin-top:.2rem">'+p[2]+'</div></div>';}).join('');
+  var speedGap=Math.max(0,idealDuringRun-produced);document.getElementById('oee-six-big').innerHTML=[['Planned excluded time',excluded+' minutes','Defined by your measurement policy'],['Unplanned downtime',downtime+' minutes','Measured stop time'],['Rate gap',Math.round(speedGap)+' units','Ideal-during-run minus actual total'],['Rejects',rejects+' units','Total minus good units']].map(function(l){return '<div class="loss-card"><h5>'+l[0]+'</h5><strong>'+l[1]+'</strong><div style="color:#64748b">'+l[2]+'</div></div>';}).join('');
+  document.getElementById('oee-good').textContent=good.toLocaleString()+' units';document.getElementById('oee-max').textContent=Math.round(maxPossible).toLocaleString()+' units';document.getElementById('oee-lost').textContent=Math.round(unitsLost).toLocaleString()+' units';document.getElementById('oee-rev-lost').textContent=contribution>0?opportunity.toLocaleString()+' contribution scenario':'Enter contribution above';
+  var gaps=[{name:'Availability',value:Math.max(0,1-availability)},{name:'Performance',value:Math.max(0,availability*(1-performance))},{name:'Quality',value:Math.max(0,availability*performance*(1-quality))}].sort(function(a,b){return b.value-a.value;});document.getElementById('oee-actions').innerHTML='<li>Largest measured OEE gap dimension: '+gaps[0].name+' ('+oeePct(gaps[0].value)+' contribution to the gap).</li><li>Review source records and loss codes before assigning root cause or corrective action.</li><li>Trend results only when the time boundary, ideal cycle and good/reject definitions remain consistent.</li>';
+  status.textContent=performance>1?'Calculation complete with a data-consistency warning: performance is above 100%.':'OEE calculated from the recorded-period inputs.';document.getElementById('oee-results').classList.add('on');
 }
+function downloadOeeCsv(){if(!LAST_OEE_RESULT)calcOEE();var r=LAST_OEE_RESULT;if(!r)return;var rows=[['metric','value','unit'],['scheduled_period',r.scheduled,'minutes'],['planned_excluded',r.excluded,'minutes'],['planned_production',r.plannedProduction,'minutes'],['unplanned_downtime',r.downtime,'minutes'],['run_time',r.runTime,'minutes'],['ideal_cycle',r.cycle,'seconds_per_unit'],['total_units',r.produced,'units'],['rejects',r.rejects,'units'],['good_units',r.good,'units'],['availability',oeePct(r.availability),''],['performance',oeePct(r.performance),''],['quality',oeePct(r.quality),''],['oee',oeePct(r.oee),''],['max_possible_good',r.maxPossible,'units'],['good_unit_gap',r.unitsLost,'units'],['contribution_scenario',r.opportunity,'entered_currency']];var csv=rows.map(function(row){return row.map(function(v){return '"'+String(v).replace(/"/g,'""')+'"';}).join(',');}).join('\n'),blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='oee-recorded-period.csv';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);document.getElementById('oee-status').textContent='CSV OEE record downloaded.';}
 </script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 </body>
 </html>

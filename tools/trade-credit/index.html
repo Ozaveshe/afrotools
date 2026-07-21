@@ -4,15 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Trade Credit Terms Calculator — Africa | AfroTools</title>
-<meta name="description" content="Calculate trade credit costs and early payment discount savings across Africa. Net terms, 2/10 net 30, effective APR, and cash flow impact.">
+<meta name="description" content="Compare an entered early-payment discount with the borrowing cost for the extra trade-credit days, including annualized cost and net advantage.">
 <meta property="og:title" content="Trade Credit Terms Calculator | AfroTools">
-<meta property="og:description" content="Calculate trade credit costs and early payment discount savings across Africa. Net terms, 2/10 net 30, effective APR, and cash flow impact.">
+<meta property="og:description" content="Compare an early-payment discount with borrowing cost over the same entered credit period.">
 <meta property="og:url" content="https://afrotools.com/tools/trade-credit/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Trade Credit Terms Calculator — Africa | AfroTools">
-<meta name="twitter:description" content="Calculate trade credit costs and early payment discount savings across Africa. Net terms, 2/10 net 30, effective APR, and cash flow impact.">
+<meta name="twitter:description" content="Compare an early-payment discount with borrowing cost over the same entered credit period.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -88,15 +88,14 @@ details summary::-webkit-details-marker{display:none}
 details summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
 details[open] summary::after{content:'\2212'}
 .faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
-.faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+.faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}.form-error{display:none;color:#b91c1c;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:.75rem;margin-top:.75rem;font-size:.86rem}.form-error.on{display:block}
 @media(max-width:680px){.form-grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}}
+@media(prefers-color-scheme:dark){body{background:#07101f;color:#e5e7eb}.card,.metric{background:#0f1b2d;border-color:#334155}.card h2{color:#f8fafc}label,.faq-a{color:#cbd5e1}select,input[type="number"]{background:#0b1424;color:#f8fafc;border-color:#475569}.metric-label{color:#94a3b8}.terms-table td{border-color:#334155}.terms-table tr.highlight td{background:#172554;color:#ddd6fe}details summary{background:#0b1424;color:#e5e7eb}.faq-item{border-color:#334155}}
+[data-theme="dark"] body{background:#07101f;color:#e5e7eb}[data-theme="dark"] .card,[data-theme="dark"] .metric{background:#0f1b2d;border-color:#334155}[data-theme="dark"] .card h2{color:#f8fafc}[data-theme="dark"] label,[data-theme="dark"] .faq-a{color:#cbd5e1}[data-theme="dark"] select,[data-theme="dark"] input[type="number"]{background:#0b1424;color:#f8fafc;border-color:#475569}[data-theme="dark"] .metric-label{color:#94a3b8}[data-theme="dark"] .terms-table td{border-color:#334155}[data-theme="dark"] .terms-table tr.highlight td{background:#172554;color:#ddd6fe}[data-theme="dark"] details summary{background:#0b1424;color:#e5e7eb}[data-theme="dark"] .faq-item{border-color:#334155}
 </style>
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/trade-credit.webp">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/trade-credit.webp">
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Trade Credit Terms Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Trade Credit Terms Calculator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Trade Credit Terms Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Trade Credit Terms Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"What does \"2/10 Net 30\" mean?","acceptedAnswer":{"@type":"Answer","text":"2/10 Net 30 means: you get a 2% discount if you pay within 10 days, otherwise the full amount is due in 30 days. The \"2\" is the discount percentage, \"10\" is the discount window (days), and \"30\" is the net payment deadline. This is the most common trade credit term globally, including in African B2B trade."}},{"@type":"Question","name":"When should I take the early payment discount?","acceptedAnswer":{"@type":"Answer","text":"Take the early payment discount when the implied APR of the trade credit exceeds your bank borrowing rate. For example, 2/10 Net 30 implies ~37% APR — almost always worth taking if your borrowing rate is under 25%. In high-inflation African markets where borrowing costs are 20-35%, most early payment discounts are worth taking."}},{"@type":"Question","name":"What is supply chain finance?","acceptedAnswer":{"@type":"Answer","text":"Supply chain finance (SCF) or reverse factoring allows buyers to use their strong credit rating to help suppliers get early payment at a lower rate. The bank pays the supplier early (at a discount close to the buyer's rate), and the buyer repays the bank on the original due date. Popular in South Africa, Nigeria, and Kenya through banks like Standard Bank, FirstRand, and Ecobank."}}]}
-</script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/tools/trade-credit/">
@@ -110,17 +109,18 @@ details[open] summary::after{content:'\2212'}
   <div class="container">
     <nav class="breadcrumb"><a href="/">AfroTools</a><span>›</span><a href="/fintech/">Fintech &amp; Banking</a><span>›</span>Trade Credit Terms Calculator</nav>
     <h1>Trade Credit Terms Calculator</h1>
-    <p>Calculate the true cost of trade credit and whether early payment discounts are worth taking. Compare 2/10 Net 30, Net 60, and other B2B payment terms.</p>
-    <div class="hero-badges"><span class="hero-badge">Universal</span><span class="hero-badge">Early Payment Discount</span><span class="hero-badge">Free</span></div>
+    <p>Compare the discount saved by paying early with the borrowing cost over the exact extra days of supplier credit. All terms and rates come from you.</p>
+    <div class="hero-badges"><span class="hero-badge">Entered terms</span><span class="hero-badge">Same-period comparison</span><span class="hero-badge">Free</span></div>
   </div>
 </div>
 <div class="container">
   <div class="card">
     <h2>Trade Credit Terms Calculator</h2>
     <div class="form-grid">
+      <div class="form-group"><label for="tc-currency">Currency</label><select id="tc-currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option><option value="USD">USD</option><option value="XOF">XOF</option></select></div>
       <div class="form-group">
         <label for="tc-invoice">Invoice Amount</label>
-        <input type="number" id="tc-invoice" value="1000000" min="0">
+        <input type="number" id="tc-invoice" value="1000000" min="0.01" step="0.01">
       </div>
       <div class="form-group">
         <label for="tc-net-days">Net Payment Days (e.g. 30, 60, 90)</label>
@@ -140,11 +140,12 @@ details[open] summary::after{content:'\2212'}
       </div>
       <div class="form-group">
         <label for="tc-monthly-vol">Monthly Purchase Volume</label>
-        <input type="number" id="tc-monthly-vol" value="5000000" min="0">
+        <input type="number" id="tc-monthly-vol" value="5000000" min="0" step="0.01">
       </div>
     </div>
     <button type="button" class="btn-calc" onclick="calcTradeCredit()">Calculate Trade Credit Cost</button>
-    <div class="results" id="tc-results">
+    <div class="form-error" id="tc-error" role="alert"></div>
+    <div class="results" id="tc-results" aria-live="polite">
       <div class="res-hero" id="tc-hero">
         <div class="res-label" id="tc-hero-label">Recommendation</div>
         <div class="res-val" id="tc-verdict-main"></div>
@@ -152,13 +153,13 @@ details[open] summary::after{content:'\2212'}
       </div>
       <div class="metrics">
         <div class="metric"><div class="metric-val" id="tc-discount-amt"></div><div class="metric-label">Discount if Paid Early</div></div>
-        <div class="metric"><div class="metric-val" id="tc-credit-cost"></div><div class="metric-label">Cost of Trade Credit</div></div>
+        <div class="metric"><div class="metric-val" id="tc-credit-cost"></div><div class="metric-label">Amount Due if Paid Early</div></div>
         <div class="metric"><div class="metric-val" id="tc-credit-apr"></div><div class="metric-label">Implied APR of Credit</div></div>
         <div class="metric"><div class="metric-val" id="tc-borrow-cost"></div><div class="metric-label">Bank Borrowing Cost</div></div>
-        <div class="metric"><div class="metric-val" id="tc-annual-saving"></div><div class="metric-label">Annual Saving (if take)</div></div>
-        <div class="metric"><div class="metric-val" id="tc-days-free"></div><div class="metric-label">Days of Free Credit</div></div>
+        <div class="metric"><div class="metric-val" id="tc-annual-saving"></div><div class="metric-label">Annual Net Advantage of Early Pay</div></div>
+        <div class="metric"><div class="metric-val" id="tc-days-free"></div><div class="metric-label">Extra Credit Days Forgone</div></div>
       </div>
-      <h3 style="font-size:.95rem;font-weight:700;margin:.5rem 0 .75rem">Common Terms Comparison</h3>
+      <h3 style="font-size:.95rem;font-weight:700;margin:.5rem 0 .75rem">Entered Terms Breakdown</h3>
       <table class="terms-table" id="tc-table"></table>
       <div class="verdict" id="tc-verdict-box"></div>
     </div>
@@ -166,33 +167,9 @@ details[open] summary::after{content:'\2212'}
   <div class="card">
     <h2>Frequently Asked Questions</h2>
 
-<section class="df-upgrade" data-df-upgrade="trade-credit">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Payment comparison workflow</span>
-      <h2>Trade Credit Terms Calculator: quick guide</h2>
-      <p>Not sure how to get the most from the Trade Credit Terms Calculator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
-      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Trade Credit Terms Calculator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
-    </div>
-    <form class="df-form" data-df-form="trade-credit">
-      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
-      <label>Transaction value<input name="transaction" type="number" value="50000" min="0" step="any" aria-label="Transaction value"></label>
-      <label>Fee percent<input name="fee" type="number" value="1.5" min="0" step="any" aria-label="Fee percent"></label>
-      <label>Channel<select name="channel" aria-label="Channel"><option value="POS">POS</option><option value="bank transfer">bank transfer</option><option value="mobile money">mobile money</option><option value="card">card</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="trade-credit" data-df-base="Trade Credit Terms Calculator — enter your details above to see your result." aria-live="polite">Trade Credit Terms Calculator — enter your details above to see your result.</output>
-      <div class="df-actions"><button type="button" data-df-copy="trade-credit">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="trade-credit-faq-title">
-  <h2 id="trade-credit-faq-title">Trade Credit Terms Calculator — Africa FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How do I use the Trade Credit Terms Calculator?</summary><p>Enter your amounts, rates and dates in the fields above. The Trade Credit Terms Calculator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Trade Credit Terms Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Trade Credit Terms Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
-</section>
-    <div class="faq-item"><details><summary>What does "2/10 Net 30" mean?</summary><div class="faq-a">2/10 Net 30 means: you get a 2% discount if you pay within 10 days, otherwise the full amount is due in 30 days. The "2" is the discount percentage, "10" is the discount window (days), and "30" is the net payment deadline. This is the most common trade credit term globally, including in African B2B trade.</div></details></div>
-    <div class="faq-item"><details><summary>When should I take the early payment discount?</summary><div class="faq-a">Take the early payment discount when the implied APR of the trade credit exceeds your bank borrowing rate. For example, 2/10 Net 30 implies ~37% APR — almost always worth taking if your borrowing rate is under 25%. In high-inflation African markets where borrowing costs are 20-35%, most early payment discounts are worth taking.</div></details></div>
-    <div class="faq-item"><details><summary>What is supply chain finance?</summary><div class="faq-a">Supply chain finance (SCF) or reverse factoring allows buyers to use their strong credit rating to help suppliers get early payment at a lower rate. The bank pays the supplier early (at a discount close to the buyer's rate), and the buyer repays the bank on the original due date. Popular in South Africa, Nigeria, and Kenya through banks like Standard Bank, FirstRand, and Ecobank.</div></details></div>
+    <div class="faq-item"><details><summary>What does “2/10 Net 30” mean?</summary><div class="faq-a">It means a 2% discount applies if payment is made within 10 days; otherwise the full invoice is due in 30 days.</div></details></div>
+    <div class="faq-item"><details><summary>How is the cost of skipping the discount annualized?</summary><div class="faq-a">The periodic cost is discount divided by the discounted early-payment amount. The calculator multiplies that rate by 365 divided by the extra credit days to show a simple annualized rate.</div></details></div>
+    <div class="faq-item"><details><summary>What is excluded from the comparison?</summary><div class="faq-a">It excludes compounding, lender fees, taxes, liquidity reserves, supplier risk and contract consequences. Confirm the invoice terms and actual borrowing quote before acting.</div></details></div>
   </div>
 </div>
 <afro-related-tools data-ssr="1" category="fintech" current="trade-credit">
@@ -206,56 +183,58 @@ details[open] summary::after{content:'\2212'}
 <afro-footer></afro-footer>
 <script>
 function calcTradeCredit(){
-  var invoice=parseFloat(document.getElementById('tc-invoice').value)||0;
-  var netDays=parseInt(document.getElementById('tc-net-days').value)||30;
-  var discountPct=parseFloat(document.getElementById('tc-discount').value)/100;
-  var discountDays=parseInt(document.getElementById('tc-discount-days').value)||10;
-  var borrowRate=parseFloat(document.getElementById('tc-borrow-rate').value)/100;
-  var monthlyVol=parseFloat(document.getElementById('tc-monthly-vol').value)||0;
+  var invoice=Number(document.getElementById('tc-invoice').value);
+  var netDays=Number(document.getElementById('tc-net-days').value);
+  var discountInput=Number(document.getElementById('tc-discount').value);
+  var discountDays=Number(document.getElementById('tc-discount-days').value);
+  var borrowInput=Number(document.getElementById('tc-borrow-rate').value);
+  var monthlyVol=Number(document.getElementById('tc-monthly-vol').value);
+  var error=document.getElementById('tc-error');
+  var results=document.getElementById('tc-results');
+  if(!Number.isFinite(invoice)||invoice<=0||!Number.isInteger(netDays)||!Number.isInteger(discountDays)||discountDays<0||netDays<=discountDays||!Number.isFinite(discountInput)||discountInput<0||discountInput>=100||!Number.isFinite(borrowInput)||borrowInput<0||!Number.isFinite(monthlyVol)||monthlyVol<0){
+    error.textContent='Enter a positive invoice, a net date after the discount date, a discount below 100%, and non-negative borrowing rate and volume.';error.classList.add('on');results.classList.remove('on');return;
+  }
+  error.classList.remove('on');
+  var discountPct=discountInput/100;
+  var borrowRate=borrowInput/100;
   var discountAmt=invoice*discountPct;
   var daysDeferred=netDays-discountDays;
-  var creditAPR=(discountPct/(1-discountPct))*(365/daysDeferred)*100;
-  var creditCost=invoice*discountPct;
-  var borrowCost=invoice*(borrowRate/365)*daysDeferred;
-  var annualSaving=(monthlyVol*12*discountPct)-(monthlyVol*12*(borrowRate/365)*daysDeferred);
-  var takeDeal=creditAPR>borrowRate*100;
-  function fmt(n){return Math.round(n).toLocaleString();}
+  var earlyPayment=invoice-discountAmt;
+  var creditAPR=discountPct===0?0:(discountPct/(1-discountPct))*(365/daysDeferred)*100;
+  var borrowCost=earlyPayment*(borrowRate/365)*daysDeferred;
+  var invoiceAdvantage=discountAmt-borrowCost;
+  var annualSaving=(monthlyVol*discountPct-monthlyVol*(1-discountPct)*(borrowRate/365)*daysDeferred)*12;
+  var takeDeal=invoiceAdvantage>0;
+  var currency=document.getElementById('tc-currency').value;
+  var money=new Intl.NumberFormat(undefined,{style:'currency',currency:currency,maximumFractionDigits:2});
+  function fmt(n){return money.format(n);}
   document.getElementById('tc-discount-amt').textContent=fmt(discountAmt);
-  document.getElementById('tc-credit-cost').textContent=fmt(creditCost);
+  document.getElementById('tc-credit-cost').textContent=fmt(earlyPayment);
   document.getElementById('tc-credit-apr').textContent=creditAPR.toFixed(1)+'%';
   document.getElementById('tc-borrow-cost').textContent=fmt(borrowCost);
-  document.getElementById('tc-annual-saving').textContent=fmt(Math.abs(annualSaving));
-  document.getElementById('tc-days-free').textContent=discountDays+' days';
+  document.getElementById('tc-annual-saving').textContent=(annualSaving>=0?'+':'')+fmt(annualSaving);
+  document.getElementById('tc-days-free').textContent=daysDeferred+' days';
   var hero=document.getElementById('tc-hero');
   var verdictMain=document.getElementById('tc-verdict-main');
   var verdictSub=document.getElementById('tc-sub');
   var verdictBox=document.getElementById('tc-verdict-box');
   if(takeDeal){
     hero.className='res-hero go';
-    verdictMain.textContent='Take the Discount';
-    verdictSub.textContent='Trade credit APR ('+creditAPR.toFixed(0)+'%) > your borrowing rate ('+Math.round(borrowRate*100)+'%)';
+    verdictMain.textContent='Modeled Lower Cost: Pay Early';
+    verdictSub.textContent='Discount saved exceeds modeled borrowing cost over '+daysDeferred+' days';
     verdictBox.className='verdict take';
-    verdictBox.textContent='Recommendation: PAY EARLY and take the '+Math.round(discountPct*100)+'% discount. The implied APR of this trade credit is '+creditAPR.toFixed(1)+'%, which is higher than your borrowing cost of '+Math.round(borrowRate*100)+'%. You save '+fmt(discountAmt-borrowCost)+' per invoice by borrowing to pay early.';
+    verdictBox.textContent='On the entered assumptions, paying early has a net advantage of '+fmt(invoiceAdvantage)+' per invoice after '+fmt(borrowCost)+' modeled borrowing cost. Confirm lender fees, liquidity needs and supplier terms.';
   } else {
     hero.className='res-hero nogo';
-    verdictMain.textContent='Use the Full Credit Period';
-    verdictSub.textContent='Trade credit APR ('+creditAPR.toFixed(0)+'%) < your borrowing rate ('+Math.round(borrowRate*100)+'%)';
+    verdictMain.textContent='Modeled Lower Cost: Pay at Net Date';
+    verdictSub.textContent='Modeled borrowing cost is not lower than the discount saved';
     verdictBox.className='verdict skip';
-    verdictBox.textContent='Recommendation: USE THE FULL '+netDays+' DAYS. The implied APR of this trade credit ('+creditAPR.toFixed(1)+'%) is lower than what you would pay to borrow ('+Math.round(borrowRate*100)+'%). Free financing — use it.';
+    verdictBox.textContent='On the entered assumptions, borrowing to pay early costs '+fmt(borrowCost)+' versus a '+fmt(discountAmt)+' discount. This is a planning comparison, not a payment instruction.';
   }
-  var terms=[['1/10 Net 30',1,10,30],['2/10 Net 30',2,10,30],['2/10 Net 60',2,10,60],['3/10 Net 45',3,10,45],['1/15 Net 45',1,15,45],['Net 30 (no discount)',0,0,30]];
   var tbody='<tr><th>Terms</th><th>Discount</th><th>Implied APR</th><th>Action</th></tr>';
-  for(var i=0;i<terms.length;i++){
-    var t=terms[i];
-    var tDisc=t[1]/100;
-    var tDays=t[3]-t[2];
-    var tAPR=tDays>0?(tDisc/(1-tDisc))*(365/tDays)*100:0;
-    var action=tAPR>borrowRate*100?'Take discount':'Use full term';
-    var isThis=(Math.abs(t[1]-discountPct*100)<0.1&&t[2]===discountDays&&t[3]===netDays);
-    tbody+='<tr'+(isThis?' class="highlight"':'')+'><td>'+t[0]+'</td><td>'+t[1]+'%</td><td>'+(tAPR>0?tAPR.toFixed(0)+'%':'N/A')+'</td><td>'+action+'</td></tr>';
-  }
+  tbody+='<tr class="highlight"><td>'+discountInput.toFixed(2)+'/'+discountDays+' Net '+netDays+'</td><td>'+discountInput.toFixed(2)+'%</td><td>'+creditAPR.toFixed(2)+'%</td><td>'+(takeDeal?'Early pay has modeled advantage':'Net-date pay has modeled advantage')+'</td></tr>';
   document.getElementById('tc-table').innerHTML=tbody;
-  document.getElementById('tc-results').classList.add('on');
+  results.classList.add('on');
 }
 </script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>

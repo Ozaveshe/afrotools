@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Asset Finance Calculator — Africa | AfroTools</title>
+<title>Asset Finance and Balloon Payment Calculator | AfroTools</title>
 <meta name="description" content="Calculate asset finance costs for vehicles, equipment, and machinery across Africa. Monthly installments, total cost, balloon payment options, and effective rate.">
 <meta property="og:title" content="Asset Finance Calculator — Africa | AfroTools">
 <meta property="og:description" content="Calculate asset finance costs for vehicles, equipment, and machinery across Africa. Monthly installments, total cost, balloon payment options, and effective rate.">
@@ -81,14 +81,14 @@ details summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
 details[open] summary::after{content:'\2212'}
 .faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
 .faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+.form-error{min-height:1.4em;color:#b91c1c;font-size:.84rem;font-weight:600;margin:.6rem 0 0}.field-help{font-size:.74rem;color:#64748b}
+html[data-theme="dark"] body{background:#07111f;color:#e5edf8}html[data-theme="dark"] :is(.card,.metric,.faq-item,.df-upgrade__card){background:#101c2c!important;border-color:#2a3b51!important;color:#e5edf8!important}html[data-theme="dark"] :is(h2,h3,label,.metric-val){color:#f8fafc!important}html[data-theme="dark"] :is(.field-help,.metric-label,.faq-a,.df-upgrade p,.df-upgrade li){color:#b6c5d8!important}html[data-theme="dark"] :is(input,select,details summary){background:#17263a!important;border-color:#3a4e68!important;color:#f8fafc!important}html[data-theme="dark"] .info-box{background:#102844;border-color:#315b86;color:#bfdbfe}
+@media(prefers-color-scheme:dark){html:not([data-theme="light"]) body{background:#07111f;color:#e5edf8}html:not([data-theme="light"]) :is(.card,.metric,.faq-item,.df-upgrade__card){background:#101c2c!important;border-color:#2a3b51!important;color:#e5edf8!important}html:not([data-theme="light"]) :is(h2,h3,label,.metric-val){color:#f8fafc!important}html:not([data-theme="light"]) :is(.field-help,.metric-label,.faq-a,.df-upgrade p,.df-upgrade li){color:#b6c5d8!important}html:not([data-theme="light"]) :is(input,select,details summary){background:#17263a!important;border-color:#3a4e68!important;color:#f8fafc!important}html:not([data-theme="light"]) .info-box{background:#102844;border-color:#315b86;color:#bfdbfe}}
 @media(max-width:680px){.form-grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}}
 </style>
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/asset-finance.webp">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/asset-finance.webp">
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Asset Finance Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Asset Finance Calculator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Asset Finance Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Asset Finance Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"What is asset finance?","acceptedAnswer":{"@type":"Answer","text":"Asset finance (also called hire purchase or chattel mortgage) allows you to acquire a productive asset and pay for it over time, while using it to generate income. The asset typically serves as collateral. Common in Africa for commercial vehicles, boda bodas, agricultural tractors, medical equipment, and manufacturing machinery."}},{"@type":"Question","name":"Who offers asset finance in Africa?","acceptedAnswer":{"@type":"Answer","text":"Major providers: Stanbic Bank, Standard Chartered (Kenya, Nigeria, Ghana), Equity Bank (Kenya), First National Bank (SA), Imperial Asset Finance (SA), CFAO Motors (West Africa), Toyota Financial Services. Specialized equipment lenders include Absa, Investec, and development finance institutions like AFC and AFDB."}},{"@type":"Question","name":"What is a balloon payment?","acceptedAnswer":{"@type":"Answer","text":"A balloon payment is a large lump sum payment at the end of the finance term (typically 10-30% of the asset value). It reduces your monthly installments during the repayment period but creates a large obligation at maturity. Options at balloon date: pay it in full, refinance it, or trade in/sell the asset. Always plan for the balloon well in advance."}}]}
-</script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/tools/asset-finance/">
@@ -103,35 +103,26 @@ details[open] summary::after{content:'\2212'}
   <div class="container">
     <nav class="breadcrumb"><a href="/">AfroTools</a><span>›</span><a href="/fintech/">Fintech &amp; Banking</a><span>›</span>Asset Finance Calculator</nav>
     <h1>Asset Finance Calculator</h1>
-    <p>Calculate monthly installments, total finance cost, and balloon payment options for vehicles, equipment, and machinery across Africa.</p>
-    <div class="hero-badges"><span class="hero-badge">15 Countries</span><span class="hero-badge">Balloon Payments</span><span class="hero-badge">Free</span></div>
+    <p>Model a reducing-balance asset loan with a deposit and optional balloon due at the end. See the monthly installment, full cash outlay and effective annual rate.</p>
+    <div class="hero-badges"><span class="hero-badge">End-of-term balloon</span><span class="hero-badge">Reducing balance</span><span class="hero-badge">Local &amp; free</span></div>
   </div>
 </div>
 <div class="container">
   <div class="card">
     <h2>Asset Finance Calculator</h2>
     <div class="form-grid">
-      <div class="form-group">
-        <label for="af-asset-type">Asset Type</label>
-        <select id="af-asset-type">
-          <option value="vehicle">Motor Vehicle</option>
-          <option value="equipment">Industrial Equipment</option>
-          <option value="medical">Medical Equipment</option>
-          <option value="agricultural">Agricultural Machinery</option>
-          <option value="office">Office Equipment</option>
-        </select>
-      </div>
+      <div class="form-group"><label for="af-currency">Currency</label><select id="af-currency"><option>NGN</option><option>KES</option><option>GHS</option><option>ZAR</option><option>UGX</option><option>TZS</option><option>RWF</option><option>ZMW</option><option>XOF</option><option>XAF</option><option>USD</option></select></div>
       <div class="form-group">
         <label for="af-price">Asset Price / Invoice Value</label>
-        <input type="number" id="af-price" value="5000000" min="0">
+        <input type="number" id="af-price" value="5000000" min="0.01" step="0.01" required>
       </div>
       <div class="form-group">
         <label for="af-deposit">Deposit / Down Payment (%)</label>
-        <input type="number" id="af-deposit" value="20" min="0" max="100">
+        <input type="number" id="af-deposit" value="20" min="0" max="99.99" step="0.01" required>
       </div>
       <div class="form-group">
         <label for="af-rate">Annual Interest Rate (%)</label>
-        <input type="number" id="af-rate" value="22" step="0.5">
+        <input type="number" id="af-rate" value="22" min="0" max="1000" step="0.01" required>
       </div>
       <div class="form-group">
         <label for="af-tenor">Repayment Period (Months)</label>
@@ -146,11 +137,12 @@ details[open] summary::after{content:'\2212'}
       </div>
       <div class="form-group">
         <label for="af-balloon">Balloon Payment (% of asset)</label>
-        <input type="number" id="af-balloon" value="0" min="0" max="50">
+        <input type="number" id="af-balloon" value="0" min="0" max="99.99" step="0.01" required aria-describedby="af-balloon-help"><span class="field-help" id="af-balloon-help">Percentage of the original asset price due with the final installment.</span>
       </div>
     </div>
     <button type="button" class="btn-calc" onclick="calcAssetFinance()">Calculate Finance Cost</button>
-    <div class="results" id="af-results">
+    <p class="form-error" id="af-error" role="alert"></p>
+    <div class="results" id="af-results" role="region" aria-live="polite" tabindex="-1">
       <div class="res-hero">
         <div class="res-label">Monthly Installment</div>
         <div class="res-val" id="af-monthly"></div>
@@ -164,39 +156,21 @@ details[open] summary::after{content:'\2212'}
         <div class="metric"><div class="metric-val" id="af-balloon-amt"></div><div class="metric-label">Balloon Payment</div></div>
         <div class="metric"><div class="metric-val" id="af-effective-rate"></div><div class="metric-label">Effective Annual Rate</div></div>
       </div>
-      <div class="info-box">Asset finance (hire purchase) typically requires 10-30% deposit, especially for vehicles. The financed amount = Price - Deposit - Balloon. Balloon payments reduce monthly installments but create a large payment at the end. Make sure you can fund the balloon when it comes due.</div>
+      <div class="info-box"><strong>Model:</strong> amount financed is price minus deposit. The balloon remains part of that financed balance and is discounted back from the end of the term when calculating monthly installments. Fees, insurance, tax, maintenance and late charges are not included.</div>
     </div>
   </div>
   <div class="card">
     <h2>Frequently Asked Questions</h2>
 
-<section class="df-upgrade" data-df-upgrade="asset-finance">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Payment comparison workflow</span>
-      <h2>Asset Finance Calculator: quick guide</h2>
-      <p>Not sure how to get the most from the Asset Finance Calculator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
-      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Asset Finance Calculator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
-    </div>
-    <form class="df-form" data-df-form="asset-finance">
-      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
-      <label>Transaction value<input name="transaction" type="number" value="50000" min="0" step="any" aria-label="Transaction value"></label>
-      <label>Fee percent<input name="fee" type="number" value="1.5" min="0" step="any" aria-label="Fee percent"></label>
-      <label>Channel<select name="channel" aria-label="Channel"><option value="POS">POS</option><option value="bank transfer">bank transfer</option><option value="mobile money">mobile money</option><option value="card">card</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="asset-finance" data-df-base="Asset Finance Calculator — enter your details above to see your result." aria-live="polite">Asset Finance Calculator — enter your details above to see your result.</output>
-      <div class="df-actions"><button type="button" data-df-copy="asset-finance">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="asset-finance-faq-title">
-  <h2 id="asset-finance-faq-title">Asset Finance Calculator — Africa FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How do I use the Asset Finance Calculator?</summary><p>Enter your amounts, rates and dates in the fields above. The Asset Finance Calculator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Asset Finance Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Asset Finance Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
-</section>
-    <div class="faq-item"><details><summary>What is asset finance?</summary><div class="faq-a">Asset finance (also called hire purchase or chattel mortgage) allows you to acquire a productive asset and pay for it over time, while using it to generate income. The asset typically serves as collateral. Common in Africa for commercial vehicles, boda bodas, agricultural tractors, medical equipment, and manufacturing machinery.</div></details></div>
-    <div class="faq-item"><details><summary>Who offers asset finance in Africa?</summary><div class="faq-a">Major providers: Stanbic Bank, Standard Chartered (Kenya, Nigeria, Ghana), Equity Bank (Kenya), First National Bank (SA), Imperial Asset Finance (SA), CFAO Motors (West Africa), Toyota Financial Services. Specialized equipment lenders include Absa, Investec, and development finance institutions like AFC and AFDB.</div></details></div>
-    <div class="faq-item"><details><summary>What is a balloon payment?</summary><div class="faq-a">A balloon payment is a large lump sum payment at the end of the finance term (typically 10-30% of the asset value). It reduces your monthly installments during the repayment period but creates a large obligation at maturity. Options at balloon date: pay it in full, refinance it, or trade in/sell the asset. Always plan for the balloon well in advance.</div></details></div>
+    <section class="df-upgrade" aria-labelledby="af-method-title"><div class="df-upgrade__card"><div>
+      <span class="df-upgrade__kicker">Balloon-aware amortisation</span><h2 id="af-method-title">How the monthly payment is derived</h2>
+      <p>The deposit reduces the amount borrowed immediately. The balloon is still owed at maturity, so its discounted present value is removed before calculating the equal monthly installments.</p>
+      <ul class="df-upgrade__bullets"><li><strong>Amount financed:</strong> asset price minus deposit.</li><li><strong>Total cash outlay:</strong> deposit plus all monthly installments plus balloon.</li><li><strong>Effective annual rate:</strong> the entered nominal annual rate, divided monthly and compounded for 12 months.</li></ul>
+      <p class="df-upgrade__note">Check whether the written quote uses nominal or effective interest, advance or arrears payments, variable rates, compulsory insurance, documentation fees, taxes, tracking charges and ownership-transfer conditions.</p>
+    </div></div></section>
+    <div class="faq-item"><details><summary>What is a balloon payment?</summary><div class="faq-a">It is an amount left outstanding until the end of the finance term. It lowers regular installments but does not remove the debt; the final obligation must still be paid, refinanced or otherwise settled under the contract.</div></details></div>
+    <div class="faq-item"><details><summary>Does this include fees and insurance?</summary><div class="faq-a">No. Add those costs separately when comparing the calculator result with a written quote. Also check whether any fee is financed and therefore attracts interest.</div></details></div>
+    <div class="faq-item"><details><summary>Why is the effective annual rate above the nominal rate?</summary><div class="faq-a">A nominal annual rate divided into monthly periods compounds during the year. The displayed effective annual rate is (1 + nominal rate ÷ 12) raised to 12, minus 1.</div></details></div>
   </div>
 </div>
 <afro-related-tools data-ssr="1" category="fintech" current="asset-finance">
@@ -210,19 +184,30 @@ details[open] summary::after{content:'\2212'}
 <afro-footer></afro-footer>
 <script>
 function calcAssetFinance(){
-  var price=parseFloat(document.getElementById('af-price').value)||0;
-  var depositPct=parseFloat(document.getElementById('af-deposit').value)/100;
-  var annualRate=parseFloat(document.getElementById('af-rate').value)/100;
+  var currency=document.getElementById('af-currency').value;
+  var price=parseFloat(document.getElementById('af-price').value);
+  var depositPercent=parseFloat(document.getElementById('af-deposit').value);
+  var annualPercent=parseFloat(document.getElementById('af-rate').value);
   var months=parseInt(document.getElementById('af-tenor').value);
-  var balloonPct=parseFloat(document.getElementById('af-balloon').value)/100;
+  var balloonPercent=parseFloat(document.getElementById('af-balloon').value);
+  var error=document.getElementById('af-error');
+  var output=document.getElementById('af-results');
+  error.textContent='';output.classList.remove('on');
+  if(!Number.isFinite(price)||price<=0||!Number.isFinite(depositPercent)||depositPercent<0||depositPercent>=100||!Number.isFinite(annualPercent)||annualPercent<0||annualPercent>1000||!Number.isInteger(months)||months<1||!Number.isFinite(balloonPercent)||balloonPercent<0||depositPercent+balloonPercent>100){
+    error.textContent='Enter a positive price, a deposit below 100%, a rate from 0% to 1,000%, and deposit plus balloon no higher than 100% of the price.';return;
+  }
+  var depositPct=depositPercent/100;
+  var annualRate=annualPercent/100;
+  var balloonPct=balloonPercent/100;
   var deposit=price*depositPct;
   var balloon=price*balloonPct;
-  var financed=price-deposit-balloon;
+  var financed=price-deposit;
   var monthlyRate=annualRate/12;
-  var monthly=monthlyRate>0?financed*(monthlyRate*Math.pow(1+monthlyRate,months))/(Math.pow(1+monthlyRate,months)-1):financed/months;
+  var monthly=monthlyRate>0?(financed-balloon/Math.pow(1+monthlyRate,months))*(monthlyRate*Math.pow(1+monthlyRate,months))/(Math.pow(1+monthlyRate,months)-1):(financed-balloon)/months;
   var totalPay=monthly*months+deposit+balloon;
   var totalInterest=totalPay-price;
-  function fmt(n){return (Math.round(n)).toLocaleString();}
+  var effectiveAnnual=(Math.pow(1+monthlyRate,12)-1)*100;
+  function fmt(n){return currency+' '+n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
   document.getElementById('af-monthly').textContent=fmt(monthly);
   document.getElementById('af-sub').textContent='Financed: '+fmt(financed)+' over '+months+' months';
   document.getElementById('af-financed').textContent=fmt(financed);
@@ -230,8 +215,8 @@ function calcAssetFinance(){
   document.getElementById('af-total-interest').textContent=fmt(totalInterest);
   document.getElementById('af-deposit-amt').textContent=fmt(deposit);
   document.getElementById('af-balloon-amt').textContent=balloon>0?fmt(balloon):'None';
-  document.getElementById('af-effective-rate').textContent=(annualRate*100).toFixed(1)+'%';
-  document.getElementById('af-results').classList.add('on');
+  document.getElementById('af-effective-rate').textContent=effectiveAnnual.toFixed(2)+'%';
+  output.classList.add('on');output.focus();
 }
 </script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Startup Runway Calculator for African Startups | AfroTools</title>
-<meta name="description" content="Calculate how many months your startup can survive with your current cash. Enter burn rate, revenue and cash balance to get runway, net burn and scenario planning. Built for African founders.">
+<meta name="description" content="Calculate startup runway from current cash, monthly costs and revenue. See net burn, months remaining and neutral scenarios using values you enter.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Startup Runway Calculator | AfroTools">
 <meta property="og:description" content="How long can your startup survive? Calculate runway in months with scenario planning for African startups.">
@@ -14,7 +14,7 @@
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Startup Runway Calculator for African Startups | AfroTools">
-<meta name="twitter:description" content="Calculate how many months your startup can survive with your current cash. Enter burn rate, revenue and cash balance to get runway, net burn and scenario planning. Built for African founders.">
+<meta name="twitter:description" content="Calculate startup runway from current cash, monthly costs and revenue. See net burn, months remaining and neutral scenarios using values you enter.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -115,12 +115,11 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
 #results-section{display:none}
 @media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.row{grid-template-columns:1fr}}
 .summary-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.summary-actions button{border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#0f172a;cursor:pointer;font-family:inherit;font-weight:800;min-height:42px;padding:0 14px}.summary-actions button:hover,.summary-actions button:focus-visible{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.14);outline:none}.summary-status{color:#64748b;font-size:.78rem;line-height:1.5;margin-top:8px}
+html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="dark"] .card,html[data-theme="dark"] .card-head,html[data-theme="dark"] .res-item,html[data-theme="dark"] .scenario-row{background:#111c2e;border-color:#334155}html[data-theme="dark"] .card-title,html[data-theme="dark"] .faq-item summary,html[data-theme="dark"] .cost-total{color:#f8fafc}html[data-theme="dark"] label,html[data-theme="dark"] .faq-item p,html[data-theme="dark"] .scenario-label,html[data-theme="dark"] .summary-status{color:#cbd5e1}html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="dark"] .summary-actions button{background:#0f172a;color:#f8fafc;border-color:#475569}html[data-theme="dark"] .info-card{background:#2a190d;border-color:#9a3412}html[data-theme="dark"] .info-card h4,html[data-theme="dark"] .info-card p,html[data-theme="dark"] .info-card li{color:#fed7aa}
+@media(prefers-color-scheme:dark){html:not([data-theme="light"]) body{background:#0b1120;color:#e5edf8}html:not([data-theme="light"]) .card,html:not([data-theme="light"]) .card-head,html:not([data-theme="light"]) .res-item,html:not([data-theme="light"]) .scenario-row{background:#111c2e;border-color:#334155}html:not([data-theme="light"]) .card-title,html:not([data-theme="light"]) .faq-item summary,html:not([data-theme="light"]) .cost-total{color:#f8fafc}html:not([data-theme="light"]) label,html:not([data-theme="light"]) .faq-item p,html:not([data-theme="light"]) .scenario-label,html:not([data-theme="light"]) .summary-status{color:#cbd5e1}html:not([data-theme="light"]) input,html:not([data-theme="light"]) select,html:not([data-theme="light"]) .summary-actions button{background:#0f172a;color:#f8fafc;border-color:#475569}html:not([data-theme="light"]) .info-card{background:#2a190d;border-color:#9a3412}html:not([data-theme="light"]) .info-card h4,html:not([data-theme="light"]) .info-card p,html:not([data-theme="light"]) .info-card li{color:#fed7aa}}
 </style>
 <link rel="stylesheet" href="/assets/css/small-business-focus.css?v=e81fcfcb">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/startup-runway.webp">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is startup runway?","acceptedAnswer":{"@type":"Answer","text":"Runway is the number of months a startup can operate before running out of cash — assuming current burn rate and revenue remain constant. It's the most important survival metric for early-stage startups. Most investors want to see 12–18 months of runway before investing."}},{"@type":"Question","name":"What's the difference between gross burn and net burn?","acceptedAnswer":{"@type":"Answer","text":"Gross burn is your total monthly expenditure — all costs before any revenue. Net burn is gross burn minus revenue. If you spend ₦2M/month and earn ₦800k/month, your net burn is ₦1.2M/month. Runway is calculated using net burn."}},{"@type":"Question","name":"How do African startups typically extend runway?","acceptedAnswer":{"@type":"Answer","text":"Common strategies include: negotiating deferred salaries with equity compensation, moving to cheaper co-working spaces, pausing non-critical marketing spend, renegotiating vendor contracts, pursuing revenue-based financing (common in Nigeria via Capiblock or Carbon), or raising a bridge round from angels in the ecosystem."}},{"@type":"Question","name":"What runway should I target before raising funding?","acceptedAnswer":{"@type":"Answer","text":"Aim for at least 18 months post-raise. Fundraising in Africa typically takes 3–9 months, so if you have less than 9 months of runway, start fundraising now. Lagos, Nairobi and Cape Town-based founders benefit from being close to investor networks."}}]}
-</script>
 <script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
@@ -134,7 +133,7 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/startup-runway/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/startup-runway/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="small-business-tool-focus top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
 
 <section class="tool-hero">
@@ -197,6 +196,7 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
             <span>Total Monthly Costs</span>
             <span id="cost-total-display">₦ 0</span>
           </div>
+          <div class="summary-status" id="runway-input-status" role="status" aria-live="polite"></div>
           <button type="button" class="btn btn-primary" onclick="calculate()">Calculate Runway</button>
         </div>
       </div>
@@ -295,7 +295,7 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
         <div class="card-body">
           <details class="faq-item">
             <summary>What is startup runway?</summary>
-            <p>Runway is the number of months a startup can operate before running out of cash — assuming current burn rate and revenue remain constant. It's the most important survival metric for early-stage startups. Most investors want to see 12–18 months of runway before investing.</p>
+            <p>Runway is the number of months the current cash balance could cover a positive monthly net burn, assuming the entered cash collections and costs stay constant. It is one planning signal, not a prediction or investor requirement.</p>
           </details>
           <details class="faq-item">
             <summary>What's the difference between gross burn and net burn?</summary>
@@ -303,11 +303,11 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
           </details>
           <details class="faq-item">
             <summary>How do African startups typically extend runway?</summary>
-            <p>Common strategies include: negotiating deferred salaries with equity compensation, moving to cheaper co-working spaces, pausing non-critical marketing spend, renegotiating vendor contracts, pursuing revenue-based financing (common in Nigeria via Capiblock or Carbon), or raising a bridge round from angels in the ecosystem.</p>
+            <p>Test actions you can control: remove unused subscriptions, renegotiate vendor commitments, delay discretionary spend, shorten collection cycles, and model a smaller hiring plan. Check employment and contract obligations before changing pay or staffing.</p>
           </details>
           <details class="faq-item">
             <summary>What runway should I target before raising funding?</summary>
-            <p>Aim for at least 18 months post-raise. Fundraising in Africa typically takes 3–9 months, so if you have less than 9 months of runway, start fundraising now. Lagos, Nairobi and Cape Town-based founders benefit from being close to investor networks.</p>
+            <p>There is no universal target. Set an internal minimum that covers the time needed to reach the next financing or operating milestone, plus a contingency for slower collections and unexpected costs.</p>
           </details>
         </div>
       </div>
@@ -340,9 +340,9 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
           </div>
           <div class="info-card" style="margin-top:12px">
             <h4>Runway Red Zones</h4>
-            <p>🔴 <strong>&lt; 3 months</strong> — Critical. Fundraise immediately or cut to skeleton crew.<br>
-            🟡 <strong>3–6 months</strong> — Caution. Start fundraising conversations now.<br>
-            🟢 <strong>6+ months</strong> — Healthy. Execute and track monthly.</p>
+            <p><strong>&lt; 3 months</strong> — Short window; review cash and committed costs now.<br>
+            <strong>3–6 months</strong> — Build a documented contingency plan.<br>
+            <strong>6+ months</strong> — Continue monthly reforecasting; this is not a guarantee.</p>
           </div>
         </div>
       </div>
@@ -375,12 +375,12 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
 
 <script>
 var DEFAULT_COSTS = [
-  {name:"Salaries & Wages", amount:1200000},
-  {name:"Office / Rent", amount:200000},
-  {name:"Software & Subscriptions", amount:80000},
-  {name:"Marketing & Ads", amount:150000},
-  {name:"Utilities & Internet", amount:40000},
-  {name:"Other Expenses", amount:50000}
+  {name:"Salaries & Wages", amount:""},
+  {name:"Office / Rent", amount:""},
+  {name:"Software & Subscriptions", amount:""},
+  {name:"Marketing & Ads", amount:""},
+  {name:"Utilities & Internet", amount:""},
+  {name:"Other Expenses", amount:""}
 ];
 
 var CURRENCY_SYMBOLS = {NGN:"₦",KES:"KSh",ZAR:"R",GHS:"GH₵",USD:"$"};
@@ -420,7 +420,7 @@ function getTotalCosts() {
 }
 
 function runwayLabel(months) {
-  if (!isFinite(months) || months < 0) return "∞ (profitable)";
+  if (!isFinite(months) || months < 0) return "No net burn";
   return months.toFixed(1) + " months";
 }
 
@@ -434,6 +434,15 @@ function calculate() {
   var revenue = parseFloat(document.getElementById('monthly-revenue').value) || 0;
   var grossBurn = getTotalCosts();
   var netBurn = grossBurn - revenue;
+  var inputStatus = document.getElementById('runway-input-status');
+
+  if (cash <= 0 || grossBurn <= 0) {
+    inputStatus.textContent = 'Enter a cash balance above zero and at least one monthly cost before calculating.';
+    document.getElementById('results-section').style.display = 'none';
+    document.getElementById('scenario-section').style.display = 'none';
+    return;
+  }
+  inputStatus.textContent = '';
 
   var runway = calcRunway(cash, netBurn);
 
@@ -442,12 +451,12 @@ function calculate() {
   document.getElementById('scenario-section').style.display = 'block';
 
   document.getElementById('gross-burn').textContent = fmt(grossBurn);
-  document.getElementById('net-burn').textContent = netBurn > 0 ? fmt(netBurn) : "Profitable!";
+  document.getElementById('net-burn').textContent = netBurn > 0 ? fmt(netBurn) : "No net burn";
 
   // Zero date
   if (isFinite(runway) && runway > 0) {
     var d = new Date();
-    d.setMonth(d.getMonth() + Math.floor(runway));
+    d.setDate(d.getDate() + Math.round(runway * 30.4375));
     var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
     document.getElementById('zero-date').textContent = months[d.getMonth()] + " " + d.getFullYear();
   } else {
@@ -456,7 +465,7 @@ function calculate() {
 
   // Revenue gap
   var gap = grossBurn - revenue;
-  document.getElementById('months-to-profitable').textContent = gap > 0 ? fmt(gap) + "/mo gap" : "Profitable!";
+  document.getElementById('months-to-profitable').textContent = gap > 0 ? fmt(gap) + "/mo gap" : (gap === 0 ? "Break-even" : fmt(Math.abs(gap)) + "/mo surplus");
 
   // Runway hero
   var heroEl = document.getElementById('runway-hero');
@@ -468,22 +477,22 @@ function calculate() {
   if (!isFinite(runway) || runway < 0) {
     bigEl.textContent = "∞";
     heroEl.classList.add('runway-green');
-    badgeEl.textContent = "PROFITABLE";
+    badgeEl.textContent = "NO NET BURN";
     badgeEl.classList.add('status-green');
   } else if (runway < 3) {
     bigEl.textContent = runway.toFixed(1) + " mo";
     heroEl.classList.add('runway-red');
-    badgeEl.textContent = "CRITICAL — ACT NOW";
+    badgeEl.textContent = "UNDER 3 MONTHS";
     badgeEl.classList.add('status-red');
   } else if (runway < 6) {
     bigEl.textContent = runway.toFixed(1) + " mo";
     heroEl.classList.add('runway-amber');
-    badgeEl.textContent = "CAUTION — START FUNDRAISING";
+    badgeEl.textContent = "3–6 MONTHS";
     badgeEl.classList.add('status-amber');
   } else {
     bigEl.textContent = runway.toFixed(1) + " mo";
     heroEl.classList.add('runway-green');
-    badgeEl.textContent = "HEALTHY";
+    badgeEl.textContent = "6+ MONTHS";
     badgeEl.classList.add('status-green');
   }
 

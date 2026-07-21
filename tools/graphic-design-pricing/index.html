@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Graphic Design Pricing Calculator — Africa | AfroTools</title>
-<meta name="description" content="Set profitable freelance graphic design prices in Africa. Logo, brand identity, UI design, packaging — NGN market rates with international benchmarks.">
+<meta name="description" content="Build a graphic design quote from estimated hours, your hourly floor, project expenses and a user-entered scope buffer.">
 <meta property="og:title" content="Graphic Design Pricing Calculator — Africa | AfroTools">
-<meta property="og:description" content="Set profitable freelance graphic design prices in Africa. Logo, brand identity, UI design, packaging — NGN market rates with international benchmarks.">
+<meta property="og:description" content="Build a graphic design quote from your cost and scope evidence without hidden market or FX benchmarks.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/graphic-design-pricing.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,7 +33,7 @@ a{text-decoration:none;color:inherit}
 <meta property="og:url" content="https://afrotools.com/tools/graphic-design-pricing/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Graphic Design Pricing Calculator — Africa | AfroTools">
-<meta name="twitter:description" content="Set profitable freelance graphic design prices in Africa. Logo, brand identity, UI design, packaging — NGN market rates with international benchmarks.">
+<meta name="twitter:description" content="Build a graphic design quote from your hourly floor, expenses and scope buffer.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/graphic-design-pricing.webp">
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
 
@@ -45,7 +45,7 @@ a{text-decoration:none;color:inherit}
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Graphic Design Pricing Calculator — Africa",
-  "description": "Set profitable freelance graphic design prices in Africa. Logo, brand identity, UI design, packaging — NGN market rates with international benchmarks.",
+  "description": "Build a graphic design quote from user-entered hours, hourly floor, expenses and scope buffer.",
   "url": "https://afrotools.com/tools/graphic-design-pricing/",
   "inLanguage": "en",
   "applicationCategory": "DesignApplication",
@@ -82,7 +82,7 @@ a{text-decoration:none;color:inherit}
       <span class="en-breadcrumb-current">Graphic Design Pricing</span>
     </nav>
     <h1>Graphic Design <em>Pricing Calculator</em></h1>
-    <p>Set profitable prices for graphic design projects in Africa. Logo, brand identity, UI/UX, packaging, social media content — African market rates with international benchmark comparison.</p>
+<p>Build a quote for logo, identity, UI, packaging or content work from your own hours, hourly floor, expenses and scope buffer. No market rate or FX conversion is embedded.</p>
     <div class="en-tool-hero-meta">
       <span class="en-tool-hero-pill">&#x1f58c;&#xfe0f; Design</span>
       <span class="en-tool-hero-pill">&#x1f4b0; Freelance</span>
@@ -106,7 +106,7 @@ a{text-decoration:none;color:inherit}
       </div>
       <div class="en-field">
         <label class="en-label" for="projectType">Project Type</label>
-        <select id="projectType" class="en-select" onchange="setDefaults()" aria-label="Project Type">
+        <select id="projectType" class="en-select" aria-label="Project Type">
           <option value="logo">Logo Design</option>
           <option value="brand_identity">Brand Identity (full)</option>
           <option value="flyer">Flyer / Poster</option>
@@ -141,27 +141,30 @@ a{text-decoration:none;color:inherit}
         <select id="revisions" class="en-select" aria-label="Revisions">
           <option value="2">2 revisions</option>
           <option value="3" selected>3 revisions</option>
-          <option value="unlimited">Unlimited (+20%)</option>
+          <option value="unlimited">Unlimited (define fair-use terms)</option>
         </select>
       </div>
       <div class="en-field">
         <label class="en-label" for="timeline">Timeline</label>
         <select id="timeline" class="en-select" aria-label="Timeline">
           <option value="standard">Standard (5–10 days)</option>
-          <option value="rush">Rush (1–2 days) +40%</option>
+          <option value="rush">Rush (recorded in scope)</option>
         </select>
       </div>
       <div class="en-field">
         <label class="en-label" for="license">Commercial License Required?</label>
         <select id="license" class="en-select" aria-label="License">
           <option value="no">No — internal use</option>
-          <option value="yes">Yes (+30%)</option>
+          <option value="yes">Yes (price rights explicitly)</option>
         </select>
       </div>
       <div class="en-field">
         <label class="en-label" for="hours">Estimated Hours</label>
-        <input aria-label="Hours" type="number" id="hours" class="en-input" value="8" min="1">
+        <input aria-label="Estimated hours" type="number" id="hours" class="en-input" placeholder="0" min="0.5" step="0.5">
       </div>
+      <div class="en-field"><label class="en-label" for="hourly-floor">Hourly Floor (local currency)</label><input id="hourly-floor" class="en-input" type="number" min="0" placeholder="0"></div>
+      <div class="en-field"><label class="en-label" for="project-expenses">Project Expenses</label><input id="project-expenses" class="en-input" type="number" min="0" placeholder="Fonts, stock, printing, travel"></div>
+      <div class="en-field"><label class="en-label" for="scope-buffer">User-entered Scope Buffer %</label><input id="scope-buffer" class="en-input" type="number" min="0" max="100" step="0.1" placeholder="0"></div>
     </div>
   </div>
   <div class="en-form-actions">
@@ -172,7 +175,7 @@ a{text-decoration:none;color:inherit}
       <div class="en-results-hero-inner">
         <div class="en-results-hero-grid">
           <div>
-            <div class="en-results-hero-label">Recommended Price</div>
+            <div class="en-results-hero-label">Calculated Quote Total</div>
             <div class="en-results-hero-value" id="recPrice">₦0</div>
             <div class="en-results-hero-sub" id="priceRange"></div>
           </div>
@@ -185,10 +188,10 @@ a{text-decoration:none;color:inherit}
     </div>
     <div class="en-metrics" id="metrics"></div>
     <div class="en-card">
-      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4ca;</div>International Rate Benchmark</div>
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4ca;</div>Calculation Basis</div>
       <div class="en-results-table-wrap">
         <table class="en-results-table">
-          <thead><tr><th>Market</th><th>Typical Range</th><th>Your Price</th><th>vs International</th></tr></thead>
+          <thead><tr><th>Component</th><th>Input</th><th>Amount</th><th>Evidence note</th></tr></thead>
           <tbody id="benchmarkTable"></tbody>
         </table>
       </div>
@@ -196,8 +199,8 @@ a{text-decoration:none;color:inherit}
     <div class="en-tip">
       <div class="en-tip-icon">&#x1f4a1;</div>
       <div class="en-tip-body">
-        <div class="en-tip-label">International Client Tip</div>
-        <div class="en-tip-text">Nigerian designers charging international clients on Upwork, Fiverr, or direct can earn 3–5x local rates in USD. A Nigerian logo designer charging ₦50,000 locally can charge $150–$400 for the same work from a US client. Build your portfolio with 5–10 strong projects and start applying to international job boards.</div>
+        <div class="en-tip-label">Scope before price</div>
+        <div class="en-tip-text">Put concepts, deliverables, formats, revision limits, usage rights, rush timing, payment milestones and cancellation terms in writing. The calculator does not determine a market price.</div>
       </div>
     </div>
   </div>
@@ -219,15 +222,15 @@ a{text-decoration:none;color:inherit}
       <h2 class="tool-verification-title" id="graphic-design-pricing-verification-title">Price scope, rights, revisions, and delivery before sending a proposal</h2>
       <p class="tool-verification-lead">Use the result as a quote starting point, then turn it into a written scope with deliverables, file formats, payment milestones, revision limits, usage rights, and cancellation terms.</p>
       <div class="tool-verification-grid" aria-label="Graphic design pricing verification checklist">
-        <div class="tool-verification-card"><strong>Inputs to verify</strong><ul><li>Country, project type, experience level, concepts, revision rounds, rush timeline, license scope, and expected hours.</li><li>Market rates are estimates, not live platform rates or a guarantee of client acceptance.</li></ul></div>
-        <div class="tool-verification-card"><strong>Outputs to export</strong><ul><li>Copy the quote summary into a proposal or download the JSON for a reusable pricing record.</li><li>Use the benchmark table as negotiation context, not as a fixed market price.</li></ul></div>
+        <div class="tool-verification-card"><strong>Inputs to verify</strong><ul><li>Country, project type, experience label, concepts, revision rounds, timeline, license scope, expected hours, hourly floor, expenses, and scope buffer.</li><li>The total uses only those entered cost inputs; the scope labels do not add hidden premiums.</li></ul></div>
+        <div class="tool-verification-card"><strong>Outputs to export</strong><ul><li>Copy the quote summary into a proposal or download the JSON for a reusable pricing record.</li><li>Compare the result with your own recent quotes and client evidence before sending it.</li></ul></div>
         <div class="tool-verification-card"><strong>Limits</strong><ul><li>Planning estimate only; it is not a contract, invoice, legal advice, or IP rights transfer.</li><li>Privacy note: project details stay local unless you copy or download the summary.</li></ul></div>
       </div>
     </div>
     <div class="tool-verification-actions">
       <a class="tool-verification-primary" href="#projectType">Review project scope</a>
       <a class="tool-verification-report" href="#results">Review quote output</a>
-      <p class="tool-verification-disclaimer">Source/freshness note: design prices move with local demand, portfolio strength, client budget, FX, platform fees, and usage-rights scope. Cross-check with your own market evidence.</p>
+      <p class="tool-verification-disclaimer">Evidence note: this page does not supply market rates or live FX. Refresh your hourly floor, expenses, and rights terms from your own current records.</p>
     </div>
   </div>
 </section>
@@ -236,116 +239,28 @@ a{text-decoration:none;color:inherit}
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/tools/mini-importation/" data-related-tool data-id="mini-importation" data-name="Mini-Importation Profit Calculator" data-category="small-business" data-icon="MI" data-desc="Calculate landed cost and profit for importing goods from China via Alibaba/1688. Includes FX conversion, shipping, cust">Mini-Importation Profit Calculator</a></li><li><a href="/tools/pos-agent/" data-related-tool data-id="pos-agent" data-name="POS Agent Business Calculator" data-category="small-business" data-icon="PA" data-desc="Calculate POS agent/mobile money agent profitability in Nigeria (OPay/Moniepoint), Kenya (M-Pesa), Ghana (MTN MoMo). Dai">POS Agent Business Calculator</a></li><li><a href="/tools/mama-put/" data-related-tool data-id="mama-put" data-name="Mama Put / Food Vendor Business Calculator" data-category="small-business" data-icon="MP" data-desc="Profit calculator for African food vendors and restaurants. Enter meals served, price, COGS, rent, and staff costs — get">Mama Put / Food Vendor Business Calculator</a></li><li><a href="/tools/startup-runway/" data-related-tool data-id="startup-runway" data-name="Startup Runway Calculator" data-category="small-business" data-icon="SR" data-desc="Calculate how many months of cash runway your startup has. Enter burn rate, revenue, and cash balance — get runway, brea">Startup Runway Calculator</a></li><li><a href="/tools/marketplace-fees/" data-related-tool data-id="marketplace-fees" data-name="Marketplace Fee Comparator (Africa)" data-category="small-business" data-icon="MF" data-desc="Compare selling fees across Jumia, Konga, Takealot, Kilimall and other African marketplaces. See net payout per sale by ">Marketplace Fee Comparator (Africa)</a></li><li><a href="/tools/burn-rate/" data-related-tool data-id="burn-rate" data-name="Burn Rate Calculator" data-category="small-business" data-icon="BR" data-desc="Calculate your monthly gross and net burn rate. Enter personnel, rent, software, marketing costs — see runway and get ac">Burn Rate Calculator</a></li></ul>
+<ul class="seo-links-list"><li><a href="/tools/mini-importation/" data-related-tool data-id="mini-importation" data-name="Mini-Importation Profit Calculator" data-category="small-business" data-icon="MI" data-desc="Calculate landed cost, profit margin and ROI using your entered purchase price, exchange rate, freight, customs, clearin">Mini-Importation Profit Calculator</a></li><li><a href="/tools/pos-agent/" data-related-tool data-id="pos-agent" data-name="POS Agent Business Calculator" data-category="small-business" data-icon="PA" data-desc="Estimate POS or mobile-money agent profit using your entered provider commission, completed transactions, operating cost">POS Agent Business Calculator</a></li><li><a href="/tools/mama-put/" data-related-tool data-id="mama-put" data-name="Mama Put / Food Vendor Business Calculator" data-category="small-business" data-icon="MP" data-desc="Profit calculator for African food vendors and restaurants. Enter meals served, price, COGS, rent, and staff costs — get">Mama Put / Food Vendor Business Calculator</a></li><li><a href="/tools/startup-runway/" data-related-tool data-id="startup-runway" data-name="Startup Runway Calculator" data-category="small-business" data-icon="SR" data-desc="Calculate how many months of cash runway your startup has. Enter burn rate, revenue, and cash balance — get runway, brea">Startup Runway Calculator</a></li><li><a href="/tools/marketplace-fees/" data-related-tool data-id="marketplace-fees" data-name="African Marketplace Fee Comparator" data-category="small-business" data-icon="AM" data-desc="Compare net seller payouts using current marketplace quotes you enter for commission, payment, per-sale, withdrawal and ">African Marketplace Fee Comparator</a></li><li><a href="/tools/burn-rate/" data-related-tool data-id="burn-rate" data-name="Burn Rate Calculator" data-category="small-business" data-icon="BR" data-desc="Calculate your monthly gross and net burn rate. Enter personnel, rent, software, marketing costs — see runway and get ac">Burn Rate Calculator</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
 <script>
-var BASE={
-  NG:{logo:[20000,80000],brand_identity:[150000,600000],flyer:[5000,20000],social_post:[3000,12000],banner:[10000,35000],book_cover:[25000,80000],packaging:[80000,300000],ui_design:[150000,600000],illustration:[30000,150000],pitch_deck:[50000,200000]},
-  KE:{logo:[2000,8000],brand_identity:[15000,60000],flyer:[500,2000],social_post:[300,1200],banner:[1000,3500],book_cover:[2500,8000],packaging:[8000,30000],ui_design:[15000,60000],illustration:[3000,15000],pitch_deck:[5000,20000]},
-  ZA:{logo:[500,2500],brand_identity:[4000,18000],flyer:[200,700],social_post:[100,400],banner:[300,1200],book_cover:[700,2500],packaging:[2500,10000],ui_design:[4000,18000],illustration:[900,4500],pitch_deck:[1500,6000]},
-  GH:{logo:[300,1200],brand_identity:[2000,9000],flyer:[100,400],social_post:[80,300],banner:[200,700],book_cover:[400,1500],packaging:[1500,6000],ui_design:[2000,9000],illustration:[500,2500],pitch_deck:[800,3500]},
-  EG:{logo:[800,3500],brand_identity:[6000,25000],flyer:[300,1200],social_post:[200,800],banner:[600,2500],book_cover:[1200,5000],packaging:[4000,18000],ui_design:[6000,25000],illustration:[1500,7000],pitch_deck:[2500,10000]}
-};
-var EXP_MULT={junior:0.6,mid:1.0,senior:1.5,expert:2.5};
-var INT_RATES={logo:'$150–$800',brand_identity:'$1,500–$8,000',flyer:'$50–$300',social_post:'$30–$150',banner:'$100–$500',book_cover:'$200–$800',packaging:'$500–$3,000',ui_design:'$2,000–$15,000',illustration:'$200–$1,500',pitch_deck:'$500–$3,000'};
-var SYM={NG:'₦',KE:'KES ',ZA:'R',GH:'GHS ',EG:'EGP '};
-var FX={NG:1660,KE:130,ZA:18.5,GH:15.5,EG:48};
-var GD_LAST_RESULT=null;
-function fmt(n){return n.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});}
-function setDefaults(){
-  var hrs={logo:8,brand_identity:24,flyer:2,social_post:1,banner:3,book_cover:6,packaging:20,ui_design:40,illustration:12,pitch_deck:16};
-  var type=document.getElementById('projectType').value;
-  if(hrs[type]) document.getElementById('hours').value=hrs[type];
-}
+var SYM={NG:'₦',KE:'KES ',ZA:'R',GH:'GHS ',EG:'EGP '},GD_LAST_RESULT=null;
+function fmt(n){return Number(n).toLocaleString('en-US',{maximumFractionDigits:0});}
 function calculate(){
-  var country=document.getElementById('country').value;
-  var type=document.getElementById('projectType').value;
-  var exp=document.getElementById('experience').value;
-  var concepts=parseInt(document.getElementById('concepts').value)||2;
-  var revisions=document.getElementById('revisions').value;
-  var timeline=document.getElementById('timeline').value;
-  var license=document.getElementById('license').value;
-  var hours=parseFloat(document.getElementById('hours').value)||8;
-  var sym=SYM[country];var rate=FX[country];
-  var baseRange=BASE[country]&&BASE[country][type]?BASE[country][type]:[10000,50000];
-  var expMult=EXP_MULT[exp]||1;
-  var conceptsMult=1+(concepts-1)*0.3;
-  var revMult=revisions==='unlimited'?1.2:1;
-  var timelineMult=timeline==='rush'?1.4:1;
-  var licenseMult=license==='yes'?1.3:1;
-  var price=(baseRange[0]+baseRange[1])/2*expMult*conceptsMult*revMult*timelineMult*licenseMult;
-  var min=baseRange[0]*expMult*conceptsMult;
-  var max=baseRange[1]*expMult*conceptsMult*timelineMult*licenseMult;
-  var hourly=price/hours;
-  GD_LAST_RESULT={country:country,projectType:type,experience:exp,concepts:concepts,revisions:revisions,timeline:timeline,license:license,hours:hours,price:price,min:min,max:max,hourly:hourly,usdEquivalent:price/rate,internationalBenchmark:INT_RATES[type]||'$200-$2,000'};
-  document.getElementById('recPrice').textContent=sym+fmt(price);
-  document.getElementById('priceRange').textContent='Range: '+sym+fmt(min)+' – '+sym+fmt(max);
-  document.getElementById('hourlyRate').textContent=sym+fmt(hourly)+'/hr';
-  document.getElementById('metrics').innerHTML=
-    '<div class="en-metric"><div class="en-metric-label">Base Price</div><div class="en-metric-value">'+sym+fmt((baseRange[0]+baseRange[1])/2)+'</div><div class="en-metric-unit">'+exp+' level</div></div>'+
-    '<div class="en-metric"><div class="en-metric-label">Experience Premium</div><div class="en-metric-value">'+expMult+'x</div><div class="en-metric-unit">'+exp+' multiplier</div></div>'+
-    '<div class="en-metric"><div class="en-metric-label">Add-ons</div><div class="en-metric-value">+'+(Math.round((conceptsMult*revMult*timelineMult*licenseMult-1)*100))+'%</div><div class="en-metric-unit">Concepts/rush/license</div></div>'+
-    '<div class="en-metric"><div class="en-metric-label">USD Equivalent</div><div class="en-metric-value">$'+fmt(price/rate)+'</div><div class="en-metric-unit">At current FX</div></div>';
-  var intRate=INT_RATES[type]||'$200–$2,000';
-  var intMidUSD=parseInt(intRate.replace(/[^0-9–]/g,'').split('–')[1]||500);
-  var yourUSD=price/rate;
-  var pctOfInt=Math.round(yourUSD/intMidUSD*100);
-  document.getElementById('benchmarkTable').innerHTML=
-    '<tr><td class="en-td-value">Nigeria / Africa (local)</td><td>'+sym+fmt(baseRange[0])+' – '+sym+fmt(baseRange[1])+'</td><td class="en-td-highlight">'+sym+fmt(price)+'</td><td>Your local rate</td></tr>'+
-    '<tr><td class="en-td-value">International (USD)</td><td>'+intRate+'</td><td>$'+fmt(yourUSD)+'</td><td>'+pctOfInt+'% of intl rate</td></tr>'+
-    '<tr><td class="en-td-value">International (local equiv.)</td><td>'+sym+fmt(intMidUSD*0.5*rate)+'+</td><td></td><td>Charge this for intl clients</td></tr>';
-  document.getElementById('results').classList.add('on');
-  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+  var country=document.getElementById('country').value,sym=SYM[country],hours=parseFloat(document.getElementById('hours').value)||0,hourly=parseFloat(document.getElementById('hourly-floor').value)||0,expenses=parseFloat(document.getElementById('project-expenses').value)||0,bufferPct=parseFloat(document.getElementById('scope-buffer').value)||0,status=document.getElementById('gd-copy-status');
+  if(hours<=0||hourly<=0){GD_LAST_RESULT=null;status.textContent='Enter estimated hours and an hourly floor greater than zero.';document.getElementById('results').classList.remove('on');return;}
+  var labour=hours*hourly,subtotal=labour+expenses,buffer=subtotal*bufferPct/100,total=subtotal+buffer;
+  GD_LAST_RESULT={country:country,projectType:document.getElementById('projectType').value,experience:document.getElementById('experience').value,concepts:document.getElementById('concepts').value,revisions:document.getElementById('revisions').value,timeline:document.getElementById('timeline').value,license:document.getElementById('license').value,hours:hours,hourlyFloor:hourly,expenses:expenses,scopeBufferPct:bufferPct,labour:labour,buffer:buffer,total:total};
+  document.getElementById('recPrice').textContent=sym+fmt(total);document.getElementById('priceRange').textContent='Base labour + expenses: '+sym+fmt(subtotal)+'; scope buffer: '+sym+fmt(buffer);document.getElementById('hourlyRate').textContent=sym+fmt(hourly)+'/hr';
+  document.getElementById('metrics').innerHTML='<div class="en-metric"><div class="en-metric-label">Labour</div><div class="en-metric-value">'+sym+fmt(labour)+'</div><div class="en-metric-unit">'+hours+' hours × '+sym+fmt(hourly)+'</div></div><div class="en-metric"><div class="en-metric-label">Expenses</div><div class="en-metric-value">'+sym+fmt(expenses)+'</div></div><div class="en-metric"><div class="en-metric-label">Scope Buffer</div><div class="en-metric-value">'+sym+fmt(buffer)+'</div><div class="en-metric-unit">'+bufferPct.toFixed(1)+'% user input</div></div>';
+  document.getElementById('benchmarkTable').innerHTML='<tr><td>Labour</td><td>'+hours+' hours × '+sym+fmt(hourly)+'</td><td>'+sym+fmt(labour)+'</td><td>Your capacity and rate floor</td></tr><tr><td>Expenses</td><td>User-entered</td><td>'+sym+fmt(expenses)+'</td><td>Attach quotes or receipts</td></tr><tr><td>Scope buffer</td><td>'+bufferPct.toFixed(1)+'%</td><td>'+sym+fmt(buffer)+'</td><td>Not a market premium</td></tr>';
+  status.textContent='Quote ready from your cost and scope inputs.';document.getElementById('results').classList.add('on');document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
 }
-
-function designQuoteSummary(){
-  if(!GD_LAST_RESULT)return 'Run the Graphic Design Pricing Calculator first.';
-  var r=GD_LAST_RESULT;
-  var sym=SYM[r.country];
-  return [
-    'Graphic design quote estimate',
-    'Country: '+r.country,
-    'Project type: '+r.projectType.replace(/_/g,' '),
-    'Experience: '+r.experience,
-    'Concepts: '+r.concepts,
-    'Revisions: '+r.revisions,
-    'Timeline: '+r.timeline,
-    'Commercial license: '+r.license,
-    'Estimated hours: '+r.hours,
-    'Recommended price: '+sym+fmt(r.price),
-    'Range: '+sym+fmt(r.min)+' - '+sym+fmt(r.max),
-    'Hourly rate: '+sym+fmt(r.hourly)+'/hr',
-    'USD equivalent: $'+fmt(r.usdEquivalent),
-    'International benchmark: '+r.internationalBenchmark,
-    'Note: planning estimate only; confirm deliverables, file formats, usage rights, revision limits, payment terms, and cancellation terms in writing.'
-  ].join('\n');
-}
-
-function copyDesignQuote(){
-  var status=document.getElementById('gd-copy-status');
-  var text=designQuoteSummary();
-  if(navigator.clipboard&&navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(function(){status.textContent='Design quote copied.';}).catch(function(){status.textContent=text;});
-  }else{status.textContent=text;}
-}
-
-function downloadDesignQuoteJson(){
-  if(!GD_LAST_RESULT){document.getElementById('gd-copy-status').textContent='Run the quote first.';return;}
-  var blob=new Blob([JSON.stringify({tool:'graphic-design-pricing',generatedAt:new Date().toISOString(),result:GD_LAST_RESULT,note:'Planning estimate only. Confirm scope, deliverables, usage rights, revisions, and payment terms in writing.'},null,2)],{type:'application/json'});
-  var a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download='graphic-design-quote-estimate.json';
-  document.body.appendChild(a);
-  a.click();
-  URL.revokeObjectURL(a.href);
-  a.remove();
-}
-
-document.getElementById('gd-copy-summary').addEventListener('click',copyDesignQuote);
-document.getElementById('gd-download-json').addEventListener('click',downloadDesignQuoteJson);
+function designQuoteSummary(){if(!GD_LAST_RESULT)return 'Run the Graphic Design Pricing Calculator first.';var r=GD_LAST_RESULT,sym=SYM[r.country];return ['Graphic design quote plan','Country: '+r.country,'Project type: '+r.projectType.replace(/_/g,' '),'Experience label: '+r.experience,'Concepts: '+r.concepts,'Revisions: '+r.revisions,'Timeline: '+r.timeline,'Commercial license: '+r.license,'Estimated hours: '+r.hours,'Hourly floor: '+sym+r.hourlyFloor.toFixed(2),'Labour: '+sym+r.labour.toFixed(2),'Expenses: '+sym+r.expenses.toFixed(2),'Scope buffer: '+r.scopeBufferPct.toFixed(1)+'% = '+sym+r.buffer.toFixed(2),'Quote total: '+sym+r.total.toFixed(2),'Note: cost-based planning result, not a market benchmark. Confirm scope, rights, revisions, payment and cancellation terms.'].join('\n');}
+function copyDesignQuote(){var status=document.getElementById('gd-copy-status'),text=designQuoteSummary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){status.textContent='Design quote copied.';}).catch(function(){status.textContent=text;});}else{status.textContent=text;}}
+function downloadDesignQuoteJson(){if(!GD_LAST_RESULT){document.getElementById('gd-copy-status').textContent='Run the quote first.';return;}var blob=new Blob([JSON.stringify({tool:'graphic-design-pricing',generatedAt:new Date().toISOString(),result:GD_LAST_RESULT,note:'Cost-based planning result; confirm scope, rights, revisions and payment terms.'},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='graphic-design-quote-estimate.json';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);document.getElementById('gd-copy-status').textContent='JSON quote downloaded.';}
+document.getElementById('gd-copy-summary').addEventListener('click',copyDesignQuote);document.getElementById('gd-download-json').addEventListener('click',downloadDesignQuoteJson);
 </script>
 <script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 </body>

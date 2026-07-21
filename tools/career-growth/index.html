@@ -41,8 +41,55 @@
 .secondary-btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:#1d4ed8;font-weight:800;font-size:.86rem;padding:.65rem .9rem;cursor:pointer}
 .secondary-btn:hover{border-color:var(--en-accent);background:var(--en-accent-pale)}
 .action-status{min-height:20px;margin-top:.7rem;color:#1d4ed8;font-size:.8rem;font-weight:800}
+.form-status{min-height:22px;margin:.7rem 0 0;color:#b91c1c;font-size:.86rem;font-weight:800}
 .method-card p{margin:.45rem 0 0;color:#475569;line-height:1.65;font-size:.9rem}
 .method-list{margin:.75rem 0 0;padding-left:1.15rem;color:#475569;line-height:1.65;font-size:.88rem}
+html[data-theme="dark"]{--career-focus-ink:#e7edf7;--career-focus-muted:#aab7c8;--career-focus-line:#334155;--career-focus-soft:#111c2e;--career-focus-blue:#7db7ff;--career-focus-green:#5eead4}
+html[data-theme="dark"] .en-card,
+html[data-theme="dark"] .career-focus-rail,
+html[data-theme="dark"] .career-focus-panel{border-color:#334155;background:#121f33;color:#e7edf7}
+html[data-theme="dark"] .en-input,
+html[data-theme="dark"] .en-select,
+html[data-theme="dark"] .career-focus-field select,
+html[data-theme="dark"] .career-focus-action,
+html[data-theme="dark"] .career-focus-rail__links a{border-color:#475569;background:#0c1728;color:#e7edf7}
+html[data-theme="dark"] .en-results-hero{border-color:#334155;background:#101c2d;color:#e7edf7}
+html[data-theme="dark"] .trajectory-table th{background:#172554;color:#c7d2fe}
+html[data-theme="dark"] .trajectory-table td{border-bottom-color:#334155}
+html[data-theme="dark"] .trajectory-table tr:hover td{background:#172033}
+html[data-theme="dark"] .milestone-row td{background:#172554 !important}
+html[data-theme="dark"] .path-card{border-color:#334155;background:#111c2e}
+html[data-theme="dark"] .path-card h4{color:#c7d2fe}
+html[data-theme="dark"] .progress-track{background:#334155}
+html[data-theme="dark"] .result-note{border-color:#334155;background:#111c2e;color:#cbd5e1}
+html[data-theme="dark"] .secondary-btn{border-color:#475569;background:#111c2e;color:#bfdbfe}
+html[data-theme="dark"] .secondary-btn:hover{background:#172554}
+html[data-theme="dark"] .method-card p,
+html[data-theme="dark"] .method-list{color:#cbd5e1}
+@media(prefers-color-scheme:dark){
+  html:not([data-theme]){--career-focus-ink:#e7edf7;--career-focus-muted:#aab7c8;--career-focus-line:#334155;--career-focus-soft:#111c2e;--career-focus-blue:#7db7ff;--career-focus-green:#5eead4}
+  html:not([data-theme]) .en-card,
+  html:not([data-theme]) .career-focus-rail,
+  html:not([data-theme]) .career-focus-panel{border-color:#334155;background:#121f33;color:#e7edf7}
+  html:not([data-theme]) .en-input,
+  html:not([data-theme]) .en-select,
+  html:not([data-theme]) .career-focus-field select,
+  html:not([data-theme]) .career-focus-action,
+  html:not([data-theme]) .career-focus-rail__links a{border-color:#475569;background:#0c1728;color:#e7edf7}
+  html:not([data-theme]) .en-results-hero{border-color:#334155;background:#101c2d;color:#e7edf7}
+  html:not([data-theme]) .trajectory-table th{background:#172554;color:#c7d2fe}
+  html:not([data-theme]) .trajectory-table td{border-bottom-color:#334155}
+  html:not([data-theme]) .trajectory-table tr:hover td{background:#172033}
+  html:not([data-theme]) .milestone-row td{background:#172554 !important}
+  html:not([data-theme]) .path-card{border-color:#334155;background:#111c2e}
+  html:not([data-theme]) .path-card h4{color:#c7d2fe}
+  html:not([data-theme]) .progress-track{background:#334155}
+  html:not([data-theme]) .result-note{border-color:#334155;background:#111c2e;color:#cbd5e1}
+  html:not([data-theme]) .secondary-btn{border-color:#475569;background:#111c2e;color:#bfdbfe}
+  html:not([data-theme]) .secondary-btn:hover{background:#172554}
+  html:not([data-theme]) .method-card p,
+  html:not([data-theme]) .method-list{color:#cbd5e1}
+}
 @media(max-width:600px){.result-actions .secondary-btn{width:100%}}
 </style>
 <script type="application/ld+json">
@@ -160,8 +207,8 @@
         </div>
 
         <div class="en-field">
-          <label class="en-label">Current Role Level</label>
-          <select class="en-select" id="cg-level" aria-label="Cg Level">
+          <label class="en-label" for="cg-level">Current Role Level</label>
+          <select class="en-select" id="cg-level">
             <option value="0">Entry Level / Graduate</option>
             <option value="1">Junior (1–3 yrs)</option>
             <option value="2">Mid-Level (3–6 yrs)</option>
@@ -172,18 +219,19 @@
         </div>
 
         <div class="en-field">
-          <label class="en-label">Current Monthly Salary</label>
-          <input aria-label="Cg salary" type="number" class="en-input" id="cg-salary" value="0" min="0">
+          <label class="en-label" for="cg-salary">Current Monthly Salary</label>
+          <input type="number" class="en-input" id="cg-salary" value="0" min="0" max="1000000000000" inputmode="decimal" aria-describedby="cg-salary-help">
+          <small id="cg-salary-help">Enter 0 to use the tool's static planning baseline. Enter your current pay for a more useful personal projection.</small>
         </div>
 
         <div class="en-field">
-          <label class="en-label">Years of Experience</label>
-          <input aria-label="Cg experience" type="number" class="en-input" id="cg-experience" value="2" min="0" max="40">
+          <label class="en-label" for="cg-experience">Years of Experience</label>
+          <input type="number" class="en-input" id="cg-experience" value="2" min="0" max="40" inputmode="numeric">
         </div>
 
         <div class="en-field">
-          <label class="en-label">Education Level</label>
-          <select class="en-select" id="cg-edu" aria-label="Cg Edu">
+          <label class="en-label" for="cg-edu">Education Level</label>
+          <select class="en-select" id="cg-edu">
             <option value="diploma">Diploma / HND</option>
             <option value="degree" selected>Bachelor's Degree</option>
             <option value="masters">Master's / MBA</option>
@@ -192,8 +240,8 @@
         </div>
 
         <div class="en-field">
-          <label class="en-label">Growth Path</label>
-          <select class="en-select" id="cg-path" aria-label="Cg Path">
+          <label class="en-label" for="cg-path">Growth Path</label>
+          <select class="en-select" id="cg-path">
             <option value="ic">Individual Contributor (IC)</option>
             <option value="management">Management Track</option>
             <option value="entrepreneur">Entrepreneur / Founder</option>
@@ -202,8 +250,8 @@
         </div>
 
         <div class="en-field">
-          <label class="en-label">Learning Investment (hrs/week)</label>
-          <select class="en-select" id="cg-learning" aria-label="Cg Learning">
+          <label class="en-label" for="cg-learning">Learning Investment (hrs/week)</label>
+          <select class="en-select" id="cg-learning">
             <option value="0">None — only on-the-job</option>
             <option value="2">2 hrs (occasional courses)</option>
             <option value="5" selected>5 hrs (active learner)</option>
@@ -212,8 +260,8 @@
         </div>
 
         <div class="en-field">
-          <label class="en-label">Networking Level</label>
-          <select class="en-select" id="cg-network" aria-label="Cg Network">
+          <label class="en-label" for="cg-network">Networking Level</label>
+          <select class="en-select" id="cg-network">
             <option value="low">Low — mainly internal</option>
             <option value="medium" selected>Medium — some events/LinkedIn</option>
             <option value="high">High — conferences, mentors, board roles</option>
@@ -221,8 +269,8 @@
         </div>
 
         <div class="en-field">
-          <label class="en-label">Willingness to Change Employer</label>
-          <select class="en-select" id="cg-switch" aria-label="Cg Switch">
+          <label class="en-label" for="cg-switch">Willingness to Change Employer</label>
+          <select class="en-select" id="cg-switch">
             <option value="no">Stay at same company</option>
             <option value="sometimes" selected>Move every 3–4 years</option>
             <option value="yes">Move every 1–2 years</option>
@@ -230,6 +278,7 @@
         </div>
       </div>
       <button type="button" class="en-btn" onclick="calcCareerGrowth()">Plot My Career Trajectory</button>
+      <div class="form-status" id="cg-form-status" role="alert" aria-live="polite"></div>
     </div>
 
     <div class="en-results" id="cg-results">
@@ -322,9 +371,11 @@
 <section class="en-container career-growth-method" aria-labelledby="career-growth-method-title">
   <div class="en-card method-card">
     <h2 class="en-section-title" id="career-growth-method-title">Method and checks</h2>
-    <p>This MVP projects a 10-year career path from country, industry, current level, salary, education, growth track, learning investment, networking level, and employer-mobility assumptions.</p>
+    <p>This planning tool projects a 10-year career path from country, industry, current level, salary, education, growth track, learning investment, networking level, and employer-mobility assumptions.</p>
     <ul class="method-list">
-      <li>Salary paths combine local baseline assumptions with level multipliers, annual raises, promotion intervals, learning and network boosts, and job-hop premiums.</li>
+      <li>Salary paths combine static planning baselines with level multipliers, annual raises, promotion intervals, learning and network boosts, and job-hop premiums. They are not live salary-market data.</li>
+      <li>Years of experience is recorded as report context; current role level drives the starting level. Enter your actual salary instead of 0 whenever possible.</li>
+      <li>The calculation and TXT export run locally and make no network or external-function request.</li>
       <li>The action plan is tailored from the weak points in the inputs, such as low learning time, low networking, or no willingness to compare external offers.</li>
       <li>This is career planning support, not a job offer, salary guarantee, immigration advice, tax advice, or employment-contract review.</li>
     </ul>
@@ -336,7 +387,7 @@
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/tools/career-switch/" data-related-tool data-id="career-switch" data-name="Career Switch Financial Impact Calculator Africa" data-category="career" data-icon="CS" data-desc="Calculate the true financial cost of switching careers in Africa. Foregone income during retraining, break-even timeline">Career Switch Financial Impact Calculator Africa</a></li><li><a href="/tools/retirement-readiness/" data-related-tool data-id="retirement-readiness" data-name="Retirement Readiness Score" data-category="career" data-icon="RR" data-desc="Calculate your retirement readiness score. Project savings, check pension adequacy, find your monthly shortfall across 1">Retirement Readiness Score</a></li><li><a href="/tools/salary-negotiation/" data-related-tool data-id="salary-negotiation" data-name="Salary Negotiation Calculator Africa — Market Rates &amp; Counter-Offer" data-category="career" data-icon="SN" data-desc="African salary negotiation calculator. Market rates by country, role, and industry. 25th/50th/75th percentile. Counter-o">Salary Negotiation Calculator Africa — Market Rates &amp; Counter-Offer</a></li><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li></ul>
+<ul class="seo-links-list"><li><a href="/tools/career-switch/" data-related-tool data-id="career-switch" data-name="Career Switch Financial Impact Calculator Africa" data-category="career" data-icon="CS" data-desc="Calculate the true financial cost of switching careers in Africa. Foregone income during retraining, break-even timeline">Career Switch Financial Impact Calculator Africa</a></li><li><a href="/tools/retirement-readiness/" data-related-tool data-id="retirement-readiness" data-name="Retirement Readiness Score" data-category="career" data-icon="RR" data-desc="Calculate your retirement readiness score. Project savings, check pension adequacy, find your monthly shortfall across 1">Retirement Readiness Score</a></li><li><a href="/tools/salary-negotiation/" data-related-tool data-id="salary-negotiation" data-name="Salary Negotiation Planner — Benchmark &amp; Counter-Offer" data-category="career" data-icon="SN" data-desc="Compare an offer with a salary benchmark you verified, build transparent planning bands, and export a private counter-of">Salary Negotiation Planner — Benchmark &amp; Counter-Offer</a></li><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
@@ -406,6 +457,19 @@ function calcCareerGrowth() {
   var learning = document.getElementById('cg-learning').value;
   var network = document.getElementById('cg-network').value;
   var switchWill = document.getElementById('cg-switch').value;
+  var formStatus = document.getElementById('cg-form-status');
+
+  if (!Number.isFinite(curSalary) || curSalary < 0 || curSalary > 1000000000000) {
+    formStatus.textContent = 'Enter a current monthly salary from 0 to 1,000,000,000,000.';
+    document.getElementById('cg-salary').focus();
+    return false;
+  }
+  if (!Number.isFinite(experience) || experience < 0 || experience > 40) {
+    formStatus.textContent = 'Enter years of experience from 0 to 40.';
+    document.getElementById('cg-experience').focus();
+    return false;
+  }
+  formStatus.textContent = '';
 
   var sym = CURRENCY[country];
   var baseEntry = COUNTRY_BASE[country];
@@ -468,7 +532,7 @@ function calcCareerGrowth() {
       }
     }
 
-    cumEarnings += salary * 12;
+    if (yr > 0) cumEarnings += salary * 12;
     rows.push({ yr: yr, level: LEVEL_NAMES[Math.min(curLevel, LEVEL_NAMES.length - 1)], salary: salary, annual: salary * 12, event: event, milestone: milestone });
   }
 
@@ -492,7 +556,7 @@ function calcCareerGrowth() {
   document.getElementById('cg-promo').textContent = '+' + Math.round((LEVEL_MULT[Math.min(levelIdx + 1, 5)] / LEVEL_MULT[levelIdx] - 1) * 50) + '% at next level';
   document.getElementById('cg-promo-note').textContent = 'Estimated years to next promotion: ' + (yearsToNextPromo || 'N/A');
   document.getElementById('cg-hop').textContent = hopGain > 0 ? '+' + Math.round(hopGain * 100) + '% per move' : 'N/A (staying put)';
-  document.getElementById('cg-hop-note').textContent = hopGain > 0 ? 'Job changes accelerate compensation growth significantly' : 'Internal growth only — raises may be slower';
+  document.getElementById('cg-hop-note').textContent = hopGain > 0 ? 'The selected planning model applies a premium at each assumed move' : 'Internal growth only — the model applies no job-move premium';
 
   // Milestones
   var mlEl = document.getElementById('cg-milestones');
@@ -502,12 +566,12 @@ function calcCareerGrowth() {
 
   // Actions
   var actions = [];
-  if (learning === '0') actions.push('Start investing 2–5 hours/week in skill development. Online certifications (Coursera, ALX, Google) pay dividends in 12–18 months.');
+  if (learning === '0') actions.push('Consider investing 2–5 hours/week in a relevant skill and choose a proof project that demonstrates progress.');
   if (network === 'low') actions.push('Expand your professional network. Attend 1 industry event per quarter and engage on LinkedIn weekly.');
-  if (switchWill === 'no') actions.push('Consider external opportunities every 3–4 years — data shows job changers earn 20–30% more over a decade vs those who stay.');
+  if (switchWill === 'no') actions.push('Periodically compare external opportunities with your internal progression, without assuming that a move will always improve pay or conditions.');
   if (curLevel < 4) actions.push('Document your achievements monthly. Build a "brag document" for your next performance review or job application.');
-  actions.push('Negotiate at every opportunity — most employers expect it. Know your market rate (use our Salary Negotiation tool).');
-  actions.push('Develop leadership and communication skills alongside technical skills — they accelerate promotion at every level.');
+  actions.push('Prepare for appropriate negotiation opportunities with current market evidence and a clear record of your results.');
+  actions.push('Develop leadership and communication skills alongside technical skills, then verify which capabilities your target role actually requires.');
 
   currentCareerGrowthPlan = {
     country: country,
@@ -539,6 +603,7 @@ function calcCareerGrowth() {
 
   document.getElementById('cg-results').classList.add('on');
   document.getElementById('cg-results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  return true;
 }
 
 function buildCareerGrowthReport() {

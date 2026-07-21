@@ -116,11 +116,10 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
 #results-section{display:none}
 @media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.row{grid-template-columns:1fr}}
 .summary-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.summary-actions button{border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#0f172a;cursor:pointer;font-family:inherit;font-weight:800;min-height:42px;padding:0 14px}.summary-actions button:hover,.summary-actions button:focus-visible{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.14);outline:none}.summary-status{color:#64748b;font-size:.78rem;line-height:1.5;margin-top:8px}
+html[data-theme="dark"] body{background:#0b1120;color:#e5edf8}html[data-theme="dark"] .card,html[data-theme="dark"] .card-head,html[data-theme="dark"] .card-head-plain,html[data-theme="dark"] .res-item,html[data-theme="dark"] .section-total,html[data-theme="dark"] .grand-total{background:#111c2e;border-color:#334155;color:#f8fafc}html[data-theme="dark"] .card-title,html[data-theme="dark"] .faq-item summary,html[data-theme="dark"] .pct-val{color:#f8fafc}html[data-theme="dark"] label,html[data-theme="dark"] .faq-item p,html[data-theme="dark"] .pct-label,html[data-theme="dark"] .summary-status{color:#cbd5e1}html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="dark"] .summary-actions button,html[data-theme="dark"] .btn-outline{background:#0f172a;color:#f8fafc;border-color:#475569}html[data-theme="dark"] .info-card{background:#2a190d;border-color:#9a3412}html[data-theme="dark"] .info-card h4,html[data-theme="dark"] .info-card p,html[data-theme="dark"] .info-card li{color:#fed7aa}
+@media(prefers-color-scheme:dark){html:not([data-theme="light"]) body{background:#0b1120;color:#e5edf8}html:not([data-theme="light"]) .card,html:not([data-theme="light"]) .card-head,html:not([data-theme="light"]) .card-head-plain,html:not([data-theme="light"]) .res-item,html:not([data-theme="light"]) .section-total,html:not([data-theme="light"]) .grand-total{background:#111c2e;border-color:#334155;color:#f8fafc}html:not([data-theme="light"]) .card-title,html:not([data-theme="light"]) .faq-item summary,html:not([data-theme="light"]) .pct-val{color:#f8fafc}html:not([data-theme="light"]) label,html:not([data-theme="light"]) .faq-item p,html:not([data-theme="light"]) .pct-label,html:not([data-theme="light"]) .summary-status{color:#cbd5e1}html:not([data-theme="light"]) input,html:not([data-theme="light"]) select,html:not([data-theme="light"]) .summary-actions button,html:not([data-theme="light"]) .btn-outline{background:#0f172a;color:#f8fafc;border-color:#475569}html:not([data-theme="light"]) .info-card{background:#2a190d;border-color:#9a3412}html:not([data-theme="light"]) .info-card h4,html:not([data-theme="light"]) .info-card p,html:not([data-theme="light"]) .info-card li{color:#fed7aa}}
 </style>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/burn-rate.webp">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between gross burn and net burn?","acceptedAnswer":{"@type":"Answer","text":"Gross burn is your total monthly cash spend regardless of revenue. Net burn is gross burn minus monthly revenue. Investors typically ask about net burn when assessing runway. If your revenue covers all expenses, net burn is zero and you are cash-flow positive."}},{"@type":"Question","name":"What is a typical startup burn rate in Lagos/Nairobi?","acceptedAnswer":{"@type":"Answer","text":"Early-stage Lagos tech startups typically burn ₦2M–₦10M/month depending on team size. A 5-person early-stage team in Lagos might spend ₦3–5M/month (salaries ₦2M, office ₦300k, tech ₦500k, marketing ₦600k, other ₦300k). Nairobi equivalents are roughly 15–20% lower in local currency terms due to lower cost of living."}},{"@type":"Question","name":"What costs should I cut first when burn is too high?","acceptedAnswer":{"@type":"Answer","text":"Priority order: (1) Non-performing marketing channels (pause immediately), (2) Unused SaaS subscriptions (audit everything), (3) Office costs — move to co-working or home if possible, (4) Contractor costs before full-time staff, (5) Last resort: salary deferrals with equity compensation. Never cut engineering resources if they are building core product."}}]}
-</script>
 <script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
@@ -134,7 +133,7 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-burn-rate/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/burn-rate/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="small-business-tool-focus top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
 
 <section class="tool-hero">
@@ -176,7 +175,7 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
             </div>
           </div>
           <div class="field">
-            <label for="monthly-revenue">Monthly Revenue</label>
+              <label for="monthly-revenue">Monthly Cash Collected</label>
             <input type="number" id="monthly-revenue" placeholder="e.g. 1200000" min="0">
           </div>
         </div>
@@ -240,7 +239,8 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
           <div id="other-lines"></div>
           <div class="section-total"><span>Other Total</span><span id="other-total">—</span></div>
           <div class="grand-total"><span>GROSS BURN (Total Monthly)</span><span id="grand-total-display">—</span></div>
-          <button type="button" class="btn btn-primary" onclick="calculate()">Calculate Burn Rate & Runway</button>
+          <div class="summary-status" id="burn-input-status" role="status" aria-live="polite"></div>
+          <button type="button" class="btn btn-primary" onclick="calculate()">Calculate Burn Rate &amp; Runway</button>
         </div>
       </div>
 
@@ -296,7 +296,7 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
       </div>
       <div class="tool-verification-grid">
         <div class="tool-verification-block"><h3>Primary task</h3><ul class="tool-verification-list"><li>Enter cash balance, revenue, currency, and line-item costs.</li><li>Add or remove cost rows for each spend category.</li><li>Calculate and review the breakdown bars before making cuts.</li></ul></div>
-        <div class="tool-verification-block"><h3>Result and export</h3><ul class="tool-verification-list"><li>Gross burn, net burn, runway months, cash-zero date, alert status, and category breakdown.</li><li>Copy and TXT download actions for board, founder, or finance notes.</li><li>Planning note that keeps operational data local.</li></ul></div>
+        <div class="tool-verification-block"><h3>Result and export</h3><ul class="tool-verification-list"><li>Gross burn, net burn, runway months, cash-zero date, planning flag, and category breakdown.</li><li>Copy and TXT download actions for board, founder, or finance notes; no PDF is generated.</li><li>Planning note that keeps operational data local.</li></ul></div>
         <div class="tool-verification-block"><h3>Before you use it</h3><ul class="tool-verification-list"><li>Use actual bank outflows where possible, not only budgeted costs.</li><li>Check recurring SaaS, contractors, taxes, and FX-linked expenses.</li><li>Do not treat this as audited financial reporting.</li></ul></div>
         <div class="tool-verification-block"><h3>Assumptions and freshness</h3><p class="tool-verification-meta">Spend, FX, payroll, and revenue collection change month by month. Recalculate before investor updates, hiring decisions, or cost-cut plans.</p></div>
       </div>
@@ -314,15 +314,15 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
         <div class="card-body">
           <details class="faq-item">
             <summary>What is the difference between gross burn and net burn?</summary>
-            <p>Gross burn is your total monthly cash spend regardless of revenue. Net burn is gross burn minus monthly revenue. Investors typically ask about net burn when assessing runway. If your revenue covers all expenses, net burn is zero and you are cash-flow positive.</p>
+            <p>Gross burn is total monthly cash outflow. Net burn subtracts cash actually collected in the same month. Booked revenue and unpaid invoices do not extend runway until cash is received.</p>
           </details>
           <details class="faq-item">
-            <summary>What is a typical startup burn rate in Lagos/Nairobi?</summary>
-            <p>Early-stage Lagos tech startups typically burn ₦2M–₦10M/month depending on team size. A 5-person early-stage team in Lagos might spend ₦3–5M/month (salaries ₦2M, office ₦300k, tech ₦500k, marketing ₦600k, other ₦300k). Nairobi equivalents are roughly 15–20% lower in local currency terms due to lower cost of living.</p>
+            <summary>What burn rate should I compare against?</summary>
+            <p>Compare against your own actual bank outflows, committed obligations, budget and prior months. Team, location, stage, currency and business model make generic city benchmarks unreliable.</p>
           </details>
           <details class="faq-item">
             <summary>What costs should I cut first when burn is too high?</summary>
-            <p>Priority order: (1) Non-performing marketing channels (pause immediately), (2) Unused SaaS subscriptions (audit everything), (3) Office costs — move to co-working or home if possible, (4) Contractor costs before full-time staff, (5) Last resort: salary deferrals with equity compensation. Never cut engineering resources if they are building core product.</p>
+            <p>Review unused or duplicative spend, variable commitments and low-return experiments first. Before changing staff pay, contracts, leases or regulated obligations, check the applicable agreement and professional advice.</p>
           </details>
         </div>
       </div>
@@ -331,30 +331,19 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
     <!-- Sidebar -->
     <div class="side-col">
       <div class="card">
-        <div class="card-head-plain"><div class="card-title">Typical Nigerian Startup Costs</div></div>
+        <div class="card-head-plain"><div class="card-title">Cost Evidence Checklist</div></div>
         <div class="card-body">
           <div class="info-card">
-            <h4>5-Person Team — Lagos (Monthly)</h4>
+            <h4>Reconcile to cash</h4>
             <ul>
-              <li>CEO: ₦400k–₦800k</li>
-              <li>CTO/Lead Dev: ₦500k–₦1.2M</li>
-              <li>2× Junior Devs: ₦250k–₦400k each</li>
-              <li>Operations/Sales: ₦200k–₦350k</li>
-              <li>Co-working (5 desks): ₦150k–₦300k</li>
-              <li>Cloud (AWS/GCP): ₦80k–₦250k</li>
-              <li>Marketing: ₦300k–₦800k</li>
+              <li>Bank and mobile-money outflows</li><li>Payroll, tax and benefit obligations</li><li>Contractor and lease commitments</li><li>Annual subscriptions converted to monthly cash planning</li><li>Loan, FX and one-off payments</li>
             </ul>
-            <p style="margin-top:8px"><strong>Total: ~₦2.5M–₦5.5M/month</strong></p>
+            <p style="margin-top:8px"><strong>Use your actual amounts; the tool supplies no market-rate defaults.</strong></p>
           </div>
           <div class="info-card" style="margin-top:12px">
-            <h4>Common SaaS Subscriptions</h4>
+            <h4>Keep categories complete</h4>
             <ul>
-              <li>Slack: ~$8/user/month</li>
-              <li>Notion: ~$10/user/month</li>
-              <li>GitHub: ~$4/user/month</li>
-              <li>Figma: ~$15/editor/month</li>
-              <li>Postman: Free–$14/month</li>
-              <li>AWS/GCP: Varies ($50–$500/mo)</li>
+              <li>Personnel and statutory costs</li><li>Space, utilities and connectivity</li><li>Software and infrastructure</li><li>Marketing and sales</li><li>Compliance, insurance and contingency</li>
             </ul>
           </div>
         </div>
@@ -388,11 +377,11 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
 var CURR_SYMS = {NGN:"₦",KES:"KSh",ZAR:"R",GHS:"GH₵",USD:"$"};
 
 var DEFAULTS = {
-  personnel: [{name:"CEO / Founder",amount:500000},{name:"CTO / Lead Dev",amount:700000},{name:"Operations",amount:280000}],
-  office: [{name:"Co-working Space",amount:180000},{name:"Utilities & Internet",amount:45000}],
-  software: [{name:"Cloud Hosting (AWS/GCP)",amount:120000},{name:"Slack + Notion + GitHub",amount:60000}],
-  marketing: [{name:"Paid Ads (Meta/Google)",amount:300000},{name:"Content & Design",amount:100000}],
-  other: [{name:"Legal & Compliance",amount:50000},{name:"Travel & Logistics",amount:40000}]
+  personnel: [{name:"Payroll & founders",amount:""},{name:"Contractors",amount:""}],
+  office: [{name:"Workspace / rent",amount:""},{name:"Utilities & internet",amount:""}],
+  software: [{name:"Cloud & hosting",amount:""},{name:"Software subscriptions",amount:""}],
+  marketing: [{name:"Paid acquisition",amount:""},{name:"Content & sales",amount:""}],
+  other: [{name:"Tax, legal & compliance",amount:""},{name:"Travel, debt & contingency",amount:""}]
 };
 
 function sym() { return CURR_SYMS[document.getElementById('currency').value] || ""; }
@@ -434,31 +423,39 @@ function calculate() {
   var revenue = parseFloat(document.getElementById('monthly-revenue').value)||0;
   var cash = parseFloat(document.getElementById('cash-balance').value)||0;
   var netBurn = grossBurn - revenue;
+  var inputStatus = document.getElementById('burn-input-status');
+
+  if (grossBurn <= 0 || revenue < 0 || cash < 0) {
+    inputStatus.textContent = 'Enter at least one monthly cash cost above zero. Cash balance and cash collected must be non-negative.';
+    document.getElementById('results-section').style.display = 'none';
+    return;
+  }
+  inputStatus.textContent = '';
 
   document.getElementById('results-section').style.display = 'block';
   document.getElementById('gross-burn').textContent = fmt(grossBurn);
-  document.getElementById('net-burn').textContent = netBurn > 0 ? fmt(netBurn) : "Cash positive!";
+  document.getElementById('net-burn').textContent = netBurn > 0 ? fmt(netBurn) : "No net burn";
 
   if (cash > 0 && netBurn > 0) {
     var runway = cash / netBurn;
     document.getElementById('runway-val').textContent = runway.toFixed(1) + " mo";
     var d = new Date();
-    d.setMonth(d.getMonth() + Math.floor(runway));
+    d.setDate(d.getDate() + Math.round(runway * 30.4375));
     var mos = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
     document.getElementById('zero-date').textContent = mos[d.getMonth()] + " " + d.getFullYear();
 
     var alertBox = document.getElementById('alert-box');
     if (runway < 3) {
       alertBox.style.display = 'block';
-      alertBox.innerHTML = '<div class="alert-red"><div class="alert-title">🔴 RED ZONE — CRITICAL</div><p>You have less than 3 months of runway. Fundraise immediately or make drastic cost cuts. Do not wait.</p></div>';
+      alertBox.innerHTML = '<div class="alert-red"><div class="alert-title">UNDER 3 MONTHS</div><p>Reconcile the cash figure, committed costs and collection timing now, then document the actions available to the business.</p></div>';
     } else if (runway < 6) {
       alertBox.style.display = 'block';
-      alertBox.innerHTML = '<div class="alert-amber"><div class="alert-title">🟡 AMBER ZONE — CAUTION</div><p>3–6 months of runway. Start fundraising conversations now. Aim to close in 3 months to have buffer time.</p></div>';
+      alertBox.innerHTML = '<div class="alert-amber"><div class="alert-title">3–6 MONTHS</div><p>Build a dated contingency plan and reforecast for slower collections and unexpected payments.</p></div>';
     } else {
       alertBox.style.display = 'none';
     }
   } else {
-    document.getElementById('runway-val').textContent = cash > 0 ? "Profitable" : "N/A";
+    document.getElementById('runway-val').textContent = cash > 0 ? "No net burn" : "N/A";
     document.getElementById('zero-date').textContent = "—";
     document.getElementById('alert-box').style.display = 'none';
   }

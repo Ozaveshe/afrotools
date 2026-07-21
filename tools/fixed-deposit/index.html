@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Fixed Deposit Rate Comparator — Africa | AfroTools</title>
-<meta name="description" content="Compare fixed deposit interest rates across African banks. Calculate interest earned, total payout, and effective annual return for 54 African countries.">
-<meta property="og:title" content="Fixed Deposit Rate Comparator — Africa | AfroTools">
-<meta property="og:description" content="Compare fixed deposit interest rates across African banks. Calculate interest earned, total payout, and effective annual return for 54 African countries.">
+<title>Fixed Deposit Interest Calculator | AfroTools</title>
+<meta name="description" content="Calculate fixed deposit maturity value from a bank's current rate, term, tax and compounding method. See gross interest, tax and net payout.">
+<meta property="og:title" content="Fixed Deposit Interest Calculator | AfroTools">
+<meta property="og:description" content="Enter a current fixed deposit quote to estimate gross interest, withholding tax and net maturity value.">
 <meta property="og:url" content="https://afrotools.com/tools/fixed-deposit/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Fixed Deposit Rate Comparator — Africa | AfroTools">
-<meta name="twitter:description" content="Compare fixed deposit interest rates across African banks. Calculate interest earned, total payout, and effective annual return for 54 African countries.">
+<meta name="twitter:title" content="Fixed Deposit Interest Calculator | AfroTools">
+<meta name="twitter:description" content="Enter a current fixed deposit quote to estimate gross interest, withholding tax and net maturity value.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -86,6 +86,7 @@ td:last-child{font-weight:600;text-align:right}
 tr:last-child td{border-bottom:none}
 .info-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:1rem 1.25rem;font-size:.85rem;color:#1e40af;line-height:1.6;margin-top:1rem}
 .fd-source{font-size:.78rem;color:#6b7280;line-height:1.55;margin:.85rem 0 0}
+.form-error{display:none;color:#b42318;font-size:.8rem;font-weight:600;margin:.65rem 0}.form-error.on{display:block}.results:focus{outline:none}
 .faq-section h2{font-size:1.1rem;font-weight:700;margin:0 0 1rem}
 .faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
 .faq-q{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:#f9fafb;list-style:none}
@@ -94,13 +95,13 @@ tr:last-child td{border-bottom:none}
 details[open] .faq-q::after{content:'\2212'}
 .faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
 @media(max-width:680px){.form-grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}}
+html[data-theme="dark"] body{background:#07111f;color:#e5edf8}html[data-theme="dark"] :is(.card,.metric,.faq-item,.df-upgrade__card){background:#101c2c!important;border-color:#2a3b51!important;color:#e5edf8!important}html[data-theme="dark"] :is(.card h2,h2,h3,label,.metric-val){color:#f8fafc!important}html[data-theme="dark"] :is(.fd-source,.metric-label,.faq-a,.df-upgrade p,.df-upgrade li){color:#b6c5d8!important}html[data-theme="dark"] :is(input,select,.faq-q,th){background:#17263a!important;border-color:#3a4e68!important;color:#f8fafc!important}html[data-theme="dark"] td{border-color:#2a3b51;color:#dbe7f5}html[data-theme="dark"] .info-box{background:#102844;border-color:#315b86;color:#bfdbfe}
+@media(prefers-color-scheme:dark){html:not([data-theme="light"]) body{background:#07111f;color:#e5edf8}html:not([data-theme="light"]) :is(.card,.metric,.faq-item,.df-upgrade__card){background:#101c2c!important;border-color:#2a3b51!important;color:#e5edf8!important}html:not([data-theme="light"]) :is(.card h2,h2,h3,label,.metric-val){color:#f8fafc!important}html:not([data-theme="light"]) :is(.fd-source,.metric-label,.faq-a,.df-upgrade p,.df-upgrade li){color:#b6c5d8!important}html:not([data-theme="light"]) :is(input,select,.faq-q,th){background:#17263a!important;border-color:#3a4e68!important;color:#f8fafc!important}html:not([data-theme="light"]) td{border-color:#2a3b51;color:#dbe7f5}html:not([data-theme="light"]) .info-box{background:#102844;border-color:#315b86;color:#bfdbfe}}
+@media(max-width:480px){.container{padding:1rem}.card{padding:1rem}.metrics{grid-template-columns:1fr}.btn-calc{min-height:44px}}
 </style>
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/fixed-deposit.webp">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/fixed-deposit.webp">
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Fixed Deposit Rate Comparator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Fixed Deposit Rate Comparator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Fixed Deposit Rate Comparator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Fixed Deposit Rate Comparator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"What is a fixed deposit?","acceptedAnswer":{"@type":"Answer","text":"A fixed deposit (also called term deposit or time deposit) is a savings product where you lock in a lump sum with a bank for a fixed period at a guaranteed interest rate. Your money is not accessible until maturity (or subject to early withdrawal penalties)."}},{"@type":"Question","name":"Which African country offers the highest fixed deposit rates?","acceptedAnswer":{"@type":"Answer","text":"Nigeria (18-22%), Ghana (25-30%), and Egypt (18-24%) typically offer the highest nominal rates, reflecting their higher inflation environments. However, your real return (after inflation) may be lower than lower-inflation countries like Rwanda or Kenya."}},{"@type":"Question","name":"Is fixed deposit interest taxable in Africa?","acceptedAnswer":{"@type":"Answer","text":"Yes, in most African countries a withholding tax of 10-15% is deducted on interest earned. Nigeria: 10%, Kenya: 15%, South Africa: 0% (but interest income included in tax return), Ghana: 8%, Egypt: 0% for personal accounts. Tax rates shown are indicative — consult a tax advisor for your situation."}},{"@type":"Question","name":"Simple vs compound interest — which do banks use?","acceptedAnswer":{"@type":"Answer","text":"Most African banks pay fixed deposit interest as simple interest (interest on the principal only), credited at maturity. Simple and compound match only when interest is paid once at maturity. This tool's compound option compounds monthly, so it earns slightly more even over 12 months — for example 12% on 500,000 pays 60,000 simple versus about 63,412 compounded monthly — and the gap widens over longer tenors. Confirm with your bank whether interest is simple, compounded, or paid out periodically."}},{"@type":"Question","name":"What happens if I break a fixed deposit early?","acceptedAnswer":{"@type":"Answer","text":"Early withdrawal typically attracts a penalty of 1-3% on the earned interest or a reduction to the savings rate (lower than the FD rate). Some banks require 30-day notice. Always confirm the early withdrawal policy before committing."}}]}
-</script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/tools/fixed-deposit/">
@@ -116,10 +117,10 @@ details[open] .faq-q::after{content:'\2212'}
   <div class="container">
     <nav class="breadcrumb"><a href="/">AfroTools</a><span>›</span><a href="/fintech/">Fintech &amp; Banking</a><span>›</span>Fixed Deposit Calculator</nav>
     <h1>Fixed Deposit Rate Comparator</h1>
-    <p>Compare fixed deposit rates across African banks. Enter your amount, country, and tenor to see exact interest earned and effective annual return.</p>
+    <p>Enter the annual rate and tax shown in a current bank quote. Model simple interest or monthly compounding and review the gross interest, tax and net maturity value.</p>
     <div class="hero-badges">
-      <span class="hero-badge">54 Countries</span>
-      <span class="hero-badge">Pre-filled Rates</span>
+      <span class="hero-badge">20 currency labels</span>
+      <span class="hero-badge">You enter the quoted rate</span>
       <span class="hero-badge">Free</span>
     </div>
   </div>
@@ -132,26 +133,26 @@ details[open] .faq-q::after{content:'\2212'}
       <div class="form-group">
         <label for="fd-country">Country</label>
         <select id="fd-country" onchange="fillFDRate()">
-          <option value="NG" data-rate="20" data-currency="NGN" data-sym="&#x20A6;">Nigeria</option>
-          <option value="KE" data-rate="10" data-currency="KES" data-sym="KSh">Kenya</option>
-          <option value="ZA" data-rate="9" data-currency="ZAR" data-sym="R">South Africa</option>
-          <option value="GH" data-rate="27" data-currency="GHS" data-sym="GH&#x20B5;">Ghana</option>
-          <option value="EG" data-rate="21" data-currency="EGP" data-sym="E&#xa3;">Egypt</option>
-          <option value="TZ" data-rate="10" data-currency="TZS" data-sym="TSh">Tanzania</option>
-          <option value="UG" data-rate="13" data-currency="UGX" data-sym="USh">Uganda</option>
-          <option value="ZM" data-rate="17" data-currency="ZMW" data-sym="ZK">Zambia</option>
-          <option value="MZ" data-rate="10" data-currency="MZN" data-sym="MT">Mozambique</option>
-          <option value="RW" data-rate="8.5" data-currency="RWF" data-sym="FRw">Rwanda</option>
-          <option value="MA" data-rate="3.5" data-currency="MAD" data-sym="MAD">Morocco</option>
-          <option value="ET" data-rate="7" data-currency="ETB" data-sym="Br">Ethiopia</option>
-          <option value="SN" data-rate="4" data-currency="XOF" data-sym="FCFA">Senegal</option>
-          <option value="CI" data-rate="4" data-currency="XOF" data-sym="FCFA">Cote d'Ivoire</option>
-          <option value="CM" data-rate="5" data-currency="XAF" data-sym="FCFA">Cameroon</option>
-          <option value="AO" data-rate="14" data-currency="AOA" data-sym="Kz">Angola</option>
-          <option value="MW" data-rate="18" data-currency="MWK" data-sym="MK">Malawi</option>
-          <option value="BW" data-rate="5.5" data-currency="BWP" data-sym="P">Botswana</option>
-          <option value="NA" data-rate="8.5" data-currency="NAD" data-sym="N&#x24;">Namibia</option>
-          <option value="ZW" data-rate="7" data-currency="USD" data-sym="&#x24;">Zimbabwe</option>
+          <option value="NG" data-currency="NGN" data-sym="NGN ">Nigeria (NGN)</option>
+          <option value="KE" data-currency="KES" data-sym="KES ">Kenya (KES)</option>
+          <option value="ZA" data-currency="ZAR" data-sym="ZAR ">South Africa (ZAR)</option>
+          <option value="GH" data-currency="GHS" data-sym="GHS ">Ghana (GHS)</option>
+          <option value="EG" data-currency="EGP" data-sym="EGP ">Egypt (EGP)</option>
+          <option value="TZ" data-currency="TZS" data-sym="TZS ">Tanzania (TZS)</option>
+          <option value="UG" data-currency="UGX" data-sym="UGX ">Uganda (UGX)</option>
+          <option value="ZM" data-currency="ZMW" data-sym="ZMW ">Zambia (ZMW)</option>
+          <option value="MZ" data-currency="MZN" data-sym="MZN ">Mozambique (MZN)</option>
+          <option value="RW" data-currency="RWF" data-sym="RWF ">Rwanda (RWF)</option>
+          <option value="MA" data-currency="MAD" data-sym="MAD ">Morocco (MAD)</option>
+          <option value="ET" data-currency="ETB" data-sym="ETB ">Ethiopia (ETB)</option>
+          <option value="SN" data-currency="XOF" data-sym="XOF ">Senegal (XOF)</option>
+          <option value="CI" data-currency="XOF" data-sym="XOF ">Cote d'Ivoire (XOF)</option>
+          <option value="CM" data-currency="XAF" data-sym="XAF ">Cameroon (XAF)</option>
+          <option value="AO" data-currency="AOA" data-sym="AOA ">Angola (AOA)</option>
+          <option value="MW" data-currency="MWK" data-sym="MWK ">Malawi (MWK)</option>
+          <option value="BW" data-currency="BWP" data-sym="BWP ">Botswana (BWP)</option>
+          <option value="NA" data-currency="NAD" data-sym="NAD ">Namibia (NAD)</option>
+          <option value="ZW" data-currency="USD" data-sym="USD ">Zimbabwe (USD)</option>
         </select>
       </div>
       <div class="form-group">
@@ -167,15 +168,15 @@ details[open] .faq-q::after{content:'\2212'}
       </div>
       <div class="form-group">
         <label for="fd-amount">Principal Amount</label>
-        <input type="number" id="fd-amount" value="500000" min="0">
+        <input type="number" id="fd-amount" value="500000" min="0.01" step="0.01" required>
       </div>
       <div class="form-group">
         <label for="fd-rate">Annual Interest Rate (%)</label>
-        <input type="number" id="fd-rate" value="20" step="0.1" min="0" max="100">
+        <input type="number" id="fd-rate" placeholder="e.g. 12" step="0.01" min="0" max="100" required>
       </div>
       <div class="form-group">
         <label for="fd-tax">Withholding Tax on Interest (%)</label>
-        <input type="number" id="fd-tax" value="10" step="0.5" min="0" max="100">
+        <input type="number" id="fd-tax" value="0" step="0.01" min="0" max="100" required>
       </div>
       <div class="form-group">
         <label for="fd-compound">Interest Type</label>
@@ -185,11 +186,12 @@ details[open] .faq-q::after{content:'\2212'}
         </select>
       </div>
     </div>
-    <button type="button" class="btn-calc" onclick="calcFD()">Calculate Returns</button>
+    <button type="button" class="btn-calc" onclick="calcFD()">Calculate quoted return</button>
+    <p class="form-error" id="fd-error" role="alert"></p>
 
-    <p class="fd-source">Pre-filled rates are indicative 12-month term-deposit benchmarks drawn from central-bank policy rates and typical commercial-bank offers (reviewed Jul 2026). Rates are indicative and change often &mdash; confirm the current rate, tenor and fees with the bank before you commit. This is a planning estimate, not financial advice.</p>
+    <p class="fd-source">No rate or tax is fetched or inferred. Copy the nominal annual rate, compounding convention, term, withholding tax and early-withdrawal conditions from the bank's current term sheet. A central-bank policy rate is not a bank deposit quote.</p>
 
-    <div class="results" id="fd-results" aria-live="polite">
+    <div class="results" id="fd-results" aria-live="polite" tabindex="-1">
       <div class="res-hero">
         <div class="res-label">Total Maturity Value</div>
         <div class="res-val" id="fd-total"></div>
@@ -209,7 +211,7 @@ details[open] .faq-q::after{content:'\2212'}
           <tbody id="fd-schedule"></tbody>
         </table>
       </div>
-      <div class="info-box">Compare this rate against Treasury Bills and Money Market Funds — T-bills in your country may offer a similar or better risk-free return.</div>
+      <div class="info-box">This is a cash-flow estimate, not a recommendation. Before placing funds, confirm deposit-insurance eligibility and limits, early-withdrawal treatment, tax, fees, payout timing and whether the quoted rate is simple, compounded or paid periodically.</div>
     </div>
   </div>
 
@@ -218,59 +220,57 @@ details[open] .faq-q::after{content:'\2212'}
     <div>
       <span class="df-upgrade__kicker">Payment comparison workflow</span>
       <h2>Fixed Deposit Rate Comparator: quick guide</h2>
-      <p>Not sure how to get the most from the Fixed Deposit Rate Comparator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
-      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Fixed Deposit Rate Comparator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
+      <p>Use the exact annual rate, tax and interest method in the bank's term sheet. The country selector changes only the display currency.</p>
+      <ul class="df-upgrade__bullets"><li><strong>Simple:</strong> principal × annual rate × months ÷ 12.</li><li><strong>Monthly compound:</strong> principal × (1 + annual rate ÷ 12)<sup>months</sup>.</li><li><strong>Net payout:</strong> principal plus gross interest after the entered withholding-tax percentage.</li></ul>
+      <p class="df-upgrade__note"><strong>Not included:</strong> fees, early-withdrawal penalties, changing rates, deposit-insurance limits or periodic interest payouts.</p>
     </div>
-    <form class="df-form" data-df-form="fixed-deposit">
-      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
-      <label>Transaction value<input name="transaction" type="number" value="50000" min="0" step="any" aria-label="Transaction value"></label>
-      <label>Fee percent<input name="fee" type="number" value="1.5" min="0" step="any" aria-label="Fee percent"></label>
-      <label>Channel<select name="channel" aria-label="Channel"><option value="POS">POS</option><option value="bank transfer">bank transfer</option><option value="mobile money">mobile money</option><option value="card">card</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="fixed-deposit" data-df-base="Fixed Deposit Rate Comparator — enter your details above to see your result." aria-live="polite">Fixed Deposit Rate Comparator — enter your details above to see your result.</output>
-      <div class="df-actions"><button type="button" data-df-copy="fixed-deposit">Copy summary</button></div>
-    </form>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="fixed-deposit-faq-title">
   <h2 id="fixed-deposit-faq-title">Fixed Deposit Rate Comparator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How do I use the Fixed Deposit Rate Comparator?</summary><p>Enter your amounts, rates and dates in the fields above. The Fixed Deposit Rate Comparator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Fixed Deposit Rate Comparator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Fixed Deposit Rate Comparator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
+  <div class="df-faq__grid"><details><summary>Does country selection load a market rate?</summary><p>No. It changes the currency label only. Enter the rate in the current bank offer you are reviewing.</p></details><details><summary>What tax rate should I enter?</summary><p>Enter the withholding rate applicable to your specific account and jurisdiction, or zero when modelling gross interest. Confirm it with the bank or tax authority.</p></details><details><summary>What does monthly equivalent mean?</summary><p>It divides net interest by the selected number of months. It is a planning average, not a promise that the bank pays interest monthly.</p></details></div>
 </section>
   <div class="card faq-section">
     <h2>Frequently Asked Questions</h2>
     <details><summary class="faq-q">What is a fixed deposit?</summary><div class="faq-a">A fixed deposit (also called term deposit or time deposit) is a savings product where you lock in a lump sum with a bank for a fixed period at a guaranteed interest rate. Your money is not accessible until maturity (or subject to early withdrawal penalties).</div></details>
-    <details><summary class="faq-q">Which African country offers the highest fixed deposit rates?</summary><div class="faq-a">Nigeria (18-22%), Ghana (25-30%), and Egypt (18-24%) typically offer the highest nominal rates, reflecting their higher inflation environments. However, your real return (after inflation) may be lower than lower-inflation countries like Rwanda or Kenya.</div></details>
-    <details><summary class="faq-q">Is fixed deposit interest taxable in Africa?</summary><div class="faq-a">Yes, in most African countries a withholding tax of 10-15% is deducted on interest earned. Nigeria: 10%, Kenya: 15%, South Africa: 0% (but interest income included in tax return), Ghana: 8%, Egypt: 0% for personal accounts. Tax rates shown are indicative — consult a tax advisor for your situation.</div></details>
-    <details><summary class="faq-q">Simple vs compound interest — which do banks use?</summary><div class="faq-a">Most African banks pay fixed deposit interest as simple interest (interest on the principal only), credited at maturity. Simple and compound match only when interest is paid once at maturity. This tool's compound option compounds monthly, so it earns slightly more even over 12 months — for example 12% on 500,000 pays 60,000 simple versus about 63,412 compounded monthly — and the gap widens over longer tenors. Confirm with your bank whether interest is simple, compounded, or paid out periodically.</div></details>
-    <details><summary class="faq-q">What happens if I break a fixed deposit early?</summary><div class="faq-a">Early withdrawal typically attracts a penalty of 1-3% on the earned interest or a reduction to the savings rate (lower than the FD rate). Some banks require 30-day notice. Always confirm the early withdrawal policy before committing.</div></details>
+    <details><summary class="faq-q">Which country offers the highest fixed deposit rate?</summary><div class="faq-a">This page does not rank countries or banks. Nominal rates change and cannot be compared responsibly without inflation, tax, currency, liquidity, issuer and deposit-protection context.</div></details>
+    <details><summary class="faq-q">Is fixed deposit interest taxable?</summary><div class="faq-a">Tax treatment depends on jurisdiction, account type and taxpayer circumstances. Enter the rate that applies to the quote, then confirm it with the bank or relevant tax authority.</div></details>
+    <details><summary class="faq-q">Should I choose simple or compound?</summary><div class="faq-a">Choose the convention stated in the offer. Monthly compound assumes retained interest is added to principal every month; it is not appropriate when a bank quotes simple interest or pays interest out.</div></details>
+    <details><summary class="faq-q">What happens if I break a fixed deposit early?</summary><div class="faq-a">The tool does not model early exit. Check the bank's term sheet for notice, forfeited interest, repricing and fees before committing funds.</div></details>
   </div>
 </div>
 <afro-related-tools data-ssr="1" category="fintech" current="fixed-deposit">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/tools/loan-shark-compare/" data-related-tool data-id="loan-shark-compare" data-name="Loan Shark vs Bank Rate" data-category="fintech" data-icon="LS" data-desc="Compare informal moneylender rates vs bank loans vs fintech apps. True APR calculator showing hidden cost of predatory l">Loan Shark vs Bank Rate</a></li><li><a href="/tools/mobile-vs-bank/" data-related-tool data-id="mobile-vs-bank" data-name="Mobile Money vs Bank Transfer" data-category="fintech" data-icon="MM" data-desc="Compare M-Pesa, MTN MoMo, Airtel Money vs bank transfer fees for domestic and cross-border payments across Africa.">Mobile Money vs Bank Transfer</a></li><li><a href="/tools/digital-lending/" data-related-tool data-id="digital-lending" data-name="Digital Lending App Rates" data-category="fintech" data-icon="DL" data-desc="Compare digital lending apps (Fuliza, FairMoney, Carbon, PalmCredit) — true APR, fees, repayment periods.">Digital Lending App Rates</a></li><li><a href="/tools/microfinance-loan/" data-related-tool data-id="microfinance-loan" data-name="Microfinance Loan Calculator" data-category="fintech" data-icon="ML" data-desc="Calculate microfinance loan repayments for African MFIs. Flat vs reducing balance, group vs individual loans.">Microfinance Loan Calculator</a></li><li><a href="/tools/payment-gateway/" data-related-tool data-id="payment-gateway" data-name="Payment Gateway Fee Compare" data-category="fintech" data-icon="PG" data-desc="Compare Paystack, Flutterwave, Stripe, DPO, Peach Payments transaction fees for African merchants.">Payment Gateway Fee Compare</a></li><li><a href="/tools/sacco-calc/" data-related-tool data-id="sacco-calc" data-name="SACCO/Credit Union Calculator" data-category="fintech" data-icon="SC" data-desc="Calculate SACCO loan eligibility, dividend projections, and savings growth. Kenya, Uganda, Tanzania, Rwanda SACCOs.">SACCO/Credit Union Calculator</a></li></ul>
+<ul class="seo-links-list"><li><a href="/tools/loan-shark-compare/" data-related-tool data-id="loan-shark-compare" data-name="Informal Loan vs Bank Cost Calculator" data-category="fintech" data-icon="IL" data-desc="Compare a monthly flat-rate loan with a reducing-balance bank loan. See repayment, finance cost and effective annual rat">Informal Loan vs Bank Cost Calculator</a></li><li><a href="/tools/mobile-vs-bank/" data-related-tool data-id="mobile-vs-bank" data-name="Mobile Money vs Bank Transfer Comparator" data-category="fintech" data-icon="MM" data-desc="Compare a mobile money quote with a bank transfer quote. Enter the current flat and percentage fees to see total cost an">Mobile Money vs Bank Transfer Comparator</a></li><li><a href="/tools/digital-lending/" data-related-tool data-id="digital-lending" data-name="Digital Loan Offer and APR Comparator" data-category="fintech" data-icon="DL" data-desc="Compare up to three current digital loan offers by amount received, term and total repayment. See finance cost and effec">Digital Loan Offer and APR Comparator</a></li><li><a href="/tools/microfinance-loan/" data-related-tool data-id="microfinance-loan" data-name="Microfinance Loan Calculator" data-category="fintech" data-icon="ML" data-desc="Calculate a microfinance offer&#39;s monthly repayment, fees, finance cost and effective annual rate for flat or reducing-ba">Microfinance Loan Calculator</a></li><li><a href="/tools/payment-gateway/" data-related-tool data-id="payment-gateway" data-name="Payment Gateway Fee Comparator" data-category="fintech" data-icon="PG" data-desc="Compare three current payment gateway quotes using transaction value, percentage fee, flat fee and optional per-transact">Payment Gateway Fee Comparator</a></li><li><a href="/tools/sacco-calc/" data-related-tool data-id="sacco-calc" data-name="SACCO / Credit Union Savings Calculator" data-category="fintech" data-icon="SC" data-desc="Model monthly SACCO contributions, a user-entered annual dividend rate, projected balance and loan capacity, with a bank">SACCO / Credit Union Savings Calculator</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
 <script>
 function fillFDRate(){
-  var sel=document.getElementById('fd-country');
-  var opt=sel.options[sel.selectedIndex];
-  document.getElementById('fd-rate').value=opt.getAttribute('data-rate');
+  document.getElementById('fd-results').classList.remove('on');
 }
-function fmt(n,sym){return sym+(Math.round(n)).toLocaleString();}
+function fmt(n,sym){return sym+n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
 function calcFD(){
   var sel=document.getElementById('fd-country');
   var opt=sel.options[sel.selectedIndex];
   var sym=opt.getAttribute('data-sym');
-  var principal=parseFloat(document.getElementById('fd-amount').value)||0;
-  var annualRate=parseFloat(document.getElementById('fd-rate').value)||0;
-  var months=parseInt(document.getElementById('fd-tenor').value)||12;
-  var taxRate=parseFloat(document.getElementById('fd-tax').value)||0;
+  var principal=parseFloat(document.getElementById('fd-amount').value);
+  var annualRate=parseFloat(document.getElementById('fd-rate').value);
+  var months=parseInt(document.getElementById('fd-tenor').value,10);
+  var taxRate=parseFloat(document.getElementById('fd-tax').value);
   var compound=document.getElementById('fd-compound').value==='compound';
+  var error=document.getElementById('fd-error');
+  if(!Number.isFinite(principal)||principal<=0||!Number.isFinite(annualRate)||annualRate<0||annualRate>100||!Number.isFinite(taxRate)||taxRate<0||taxRate>100||!Number.isFinite(months)||months<=0){
+    error.textContent='Enter a principal above zero and annual rate and tax values from 0% to 100%.';
+    error.classList.add('on');
+    document.getElementById('fd-results').classList.remove('on');
+    return;
+  }
+  error.textContent='';
+  error.classList.remove('on');
   var r=annualRate/100;
   var grossInterest,total;
   if(compound){
@@ -306,6 +306,7 @@ function calcFD(){
     tbody.innerHTML+=row;
   }
   document.getElementById('fd-results').classList.add('on');
+  document.getElementById('fd-results').focus();
 }
 </script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>

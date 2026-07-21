@@ -35,8 +35,43 @@ a{text-decoration:none;color:inherit}
 .secondary-btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:#1d4ed8;font-weight:800;font-size:.86rem;padding:.65rem .9rem;cursor:pointer}
 .secondary-btn:hover{border-color:#6366f1;background:#eef2ff}
 .action-status{min-height:20px;margin-top:.7rem;color:#1d4ed8;font-size:.8rem;font-weight:800}
+.form-status{min-height:22px;margin:.7rem 0 0;color:#b91c1c;font-size:.86rem;font-weight:800}
 .method-card p{margin:.45rem 0 0;color:#475569;line-height:1.65;font-size:.9rem}
 .method-list{margin:.75rem 0 0;padding-left:1.15rem;color:#475569;line-height:1.65;font-size:.88rem}
+html[data-theme="dark"]{--career-focus-ink:#e7edf7;--career-focus-muted:#aab7c8;--career-focus-line:#334155;--career-focus-soft:#111c2e;--career-focus-blue:#7db7ff;--career-focus-green:#5eead4}
+html[data-theme="dark"] body{background:#09111f;color:#e7edf7}
+html[data-theme="dark"] .en-card,
+html[data-theme="dark"] .career-focus-rail,
+html[data-theme="dark"] .career-focus-panel{border-color:#334155;background:#121f33;color:#e7edf7}
+html[data-theme="dark"] .en-input,
+html[data-theme="dark"] .en-select,
+html[data-theme="dark"] .career-focus-field select,
+html[data-theme="dark"] .career-focus-action,
+html[data-theme="dark"] .career-focus-rail__links a{border-color:#475569;background:#0c1728;color:#e7edf7}
+html[data-theme="dark"] .result-note{border-color:#334155;background:#111c2e;color:#cbd5e1}
+html[data-theme="dark"] .secondary-btn{border-color:#475569;background:#111c2e;color:#bfdbfe}
+html[data-theme="dark"] .secondary-btn:hover{background:#172554}
+html[data-theme="dark"] .method-card p,
+html[data-theme="dark"] .method-list,
+html[data-theme="dark"] #alternativePaths{color:#cbd5e1 !important}
+@media(prefers-color-scheme:dark){
+  html:not([data-theme]){--career-focus-ink:#e7edf7;--career-focus-muted:#aab7c8;--career-focus-line:#334155;--career-focus-soft:#111c2e;--career-focus-blue:#7db7ff;--career-focus-green:#5eead4}
+  html:not([data-theme]) body{background:#09111f;color:#e7edf7}
+  html:not([data-theme]) .en-card,
+  html:not([data-theme]) .career-focus-rail,
+  html:not([data-theme]) .career-focus-panel{border-color:#334155;background:#121f33;color:#e7edf7}
+  html:not([data-theme]) .en-input,
+  html:not([data-theme]) .en-select,
+  html:not([data-theme]) .career-focus-field select,
+  html:not([data-theme]) .career-focus-action,
+  html:not([data-theme]) .career-focus-rail__links a{border-color:#475569;background:#0c1728;color:#e7edf7}
+  html:not([data-theme]) .result-note{border-color:#334155;background:#111c2e;color:#cbd5e1}
+  html:not([data-theme]) .secondary-btn{border-color:#475569;background:#111c2e;color:#bfdbfe}
+  html:not([data-theme]) .secondary-btn:hover{background:#172554}
+  html:not([data-theme]) .method-card p,
+  html:not([data-theme]) .method-list,
+  html:not([data-theme]) #alternativePaths{color:#cbd5e1 !important}
+}
 @media(max-width:600px){.result-actions .secondary-btn{width:100%}}
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Career Tools","item":"https://afrotools.com/career/"},{"@type":"ListItem","position":3,"name":"Career Switch Calculator","item":"https://afrotools.com/tools/career-switch/"}]}</script>
@@ -97,12 +132,12 @@ a{text-decoration:none;color:inherit}
     <div class="en-card-title"><div class="en-card-title-icon">💼</div>Your Current Career</div>
     <div class="en-form-grid en-form-grid-2">
       <div class="en-field">
-        <label class="en-label">Current Monthly Salary</label>
-        <input aria-label="E.g. 500000" class="en-input" type="number" id="currentSal" placeholder="e.g. 500000">
+        <label class="en-label" for="currentSal">Current Monthly Salary</label>
+        <input class="en-input" type="number" id="currentSal" placeholder="e.g. 500000" min="0" max="1000000000000" inputmode="decimal">
       </div>
       <div class="en-field">
-        <label class="en-label">Currency</label>
-        <select class="en-select" id="currency" aria-label="Currency">
+        <label class="en-label" for="currency">Currency</label>
+        <select class="en-select" id="currency">
           <option value="NGN">Nigerian Naira (₦)</option>
           <option value="KES">Kenyan Shilling (KES)</option>
           <option value="ZAR">South African Rand (R)</option>
@@ -111,12 +146,12 @@ a{text-decoration:none;color:inherit}
         </select>
       </div>
       <div class="en-field">
-        <label class="en-label">Monthly Benefits Value (pension, health, allowances)</label>
-        <input aria-label="Optional" class="en-input" type="number" id="currentBenefits" value="0" placeholder="Optional">
+        <label class="en-label" for="currentBenefits">Monthly Benefits Value (pension, health, allowances)</label>
+        <input class="en-input" type="number" id="currentBenefits" value="0" placeholder="Optional" min="0" max="1000000000000" inputmode="decimal">
       </div>
       <div class="en-field">
-        <label class="en-label">Current Role Satisfaction (1–10)</label>
-        <input aria-label="Satisfaction" class="en-input" type="number" id="satisfaction" value="4" min="1" max="10">
+        <label class="en-label" for="satisfaction">Current Role Satisfaction (1–10)</label>
+        <input class="en-input" type="number" id="satisfaction" value="4" min="1" max="10" inputmode="numeric">
       </div>
     </div>
   </div>
@@ -125,24 +160,24 @@ a{text-decoration:none;color:inherit}
     <div class="en-card-title"><div class="en-card-title-icon">🎯</div>Target Career</div>
     <div class="en-form-grid en-form-grid-2">
       <div class="en-field">
-        <label class="en-label">Expected New Monthly Salary</label>
-        <input aria-label="Starting salary in new career" class="en-input" type="number" id="newSal" placeholder="Starting salary in new career">
+        <label class="en-label" for="newSal">Expected New Monthly Salary</label>
+        <input class="en-input" type="number" id="newSal" placeholder="Starting salary in new career" min="0" max="1000000000000" inputmode="decimal">
       </div>
       <div class="en-field">
-        <label class="en-label">Retraining Cost (total)</label>
-        <input aria-label="Course fees, bootcamp, degree etc" class="en-input" type="number" id="retrainCost" placeholder="Course fees, bootcamp, degree etc">
+        <label class="en-label" for="retrainCost">Retraining Cost (total)</label>
+        <input class="en-input" type="number" id="retrainCost" placeholder="Course fees, bootcamp, degree etc" min="0" max="1000000000000" inputmode="decimal">
       </div>
       <div class="en-field">
-        <label class="en-label">Time to Retrain (Months)</label>
-        <input aria-label="RetrainMonths" class="en-input" type="number" id="retrainMonths" value="6" min="0" max="48">
+        <label class="en-label" for="retrainMonths">Time to Retrain (Months)</label>
+        <input class="en-input" type="number" id="retrainMonths" value="6" min="0" max="48" inputmode="numeric">
       </div>
       <div class="en-field">
-        <label class="en-label">Job Search Time After Training (Months)</label>
-        <input aria-label="SearchMonths" class="en-input" type="number" id="searchMonths" value="3" min="0" max="18">
+        <label class="en-label" for="searchMonths">Job Search Time After Training (Months)</label>
+        <input class="en-input" type="number" id="searchMonths" value="3" min="0" max="18" inputmode="numeric">
       </div>
       <div class="en-field">
-        <label class="en-label">Will you earn during retraining?</label>
-        <select class="en-select" id="partTimeIncome" aria-label="Part Time Income">
+        <label class="en-label" for="partTimeIncome">Will you earn during retraining?</label>
+        <select class="en-select" id="partTimeIncome">
           <option value="0">No income during retraining</option>
           <option value="0.5">50% income (part-time study)</option>
           <option value="0.75">75% income (evening classes)</option>
@@ -150,12 +185,13 @@ a{text-decoration:none;color:inherit}
         </select>
       </div>
       <div class="en-field">
-        <label class="en-label">Annual Salary Growth in New Career (%)</label>
-        <input aria-label="GrowthRate" class="en-input" type="number" id="growthRate" value="12" min="0" max="50">
+        <label class="en-label" for="growthRate">Annual Salary Growth in New Career (%)</label>
+        <input class="en-input" type="number" id="growthRate" value="12" min="0" max="50" inputmode="decimal">
       </div>
     </div>
     <div class="en-form-actions">
       <button type="button" class="en-btn en-btn-full" onclick="calcSwitch()">Calculate Career Switch Impact →</button>
+      <div class="form-status" id="switch-form-status" role="alert" aria-live="polite"></div>
     </div>
   </div>
 
@@ -205,10 +241,12 @@ a{text-decoration:none;color:inherit}
 
   <div class="en-card method-card" aria-labelledby="career-switch-method-title">
     <div class="en-card-title" id="career-switch-method-title"><div class="en-card-title-icon">CK</div>Method and checks</div>
-    <p>This MVP compares your current monthly salary plus benefits against direct retraining cost, income lost while studying, expected search gap, and the first five years of income in the new path.</p>
+    <p>This local planning tool compares your current monthly salary plus benefits against direct retraining cost, income lost while studying, expected search gap, and the first five years of income in the new path.</p>
     <ul class="method-list">
       <li>Current-career income is treated as the baseline opportunity cost during retraining and search months.</li>
       <li>Break-even only appears when the expected new salary is higher than the current monthly package.</li>
+      <li>The five-year cash-flow path subtracts direct retraining cost once, includes any retained income during training, and does not double-count the transition gap.</li>
+      <li>The calculation and TXT export run in your browser and make no network or external-function request.</li>
       <li>The projection is a planning estimate, not a job offer, salary guarantee, visa or licensing opinion, or training-provider endorsement.</li>
     </ul>
   </div>
@@ -220,19 +258,40 @@ var CURR_SYM={NGN:'₦',KES:'KES ',ZAR:'R',GHS:'GHS ',USD:'$'};
 var currentSwitchPlan=null;
 
 function fmt(n,sym){return sym+Math.round(Math.abs(n)).toLocaleString();}
+function signedFmt(n,sym){return (n<0?'-':'')+fmt(n,sym);}
 
 function calcSwitch(){
   var currency=document.getElementById('currency').value;
   var sym=CURR_SYM[currency];
-  var cur=parseFloat(document.getElementById('currentSal').value)||0;
-  var ben=parseFloat(document.getElementById('currentBenefits').value)||0;
-  var newSal=parseFloat(document.getElementById('newSal').value)||0;
-  var retrainCost=parseFloat(document.getElementById('retrainCost').value)||0;
-  var retrainMos=parseInt(document.getElementById('retrainMonths').value)||0;
-  var searchMos=parseInt(document.getElementById('searchMonths').value)||0;
-  var partTime=parseFloat(document.getElementById('partTimeIncome').value)||0;
+  var cur=Number(document.getElementById('currentSal').value);
+  var ben=Number(document.getElementById('currentBenefits').value);
+  var newSal=Number(document.getElementById('newSal').value);
+  var retrainCost=Number(document.getElementById('retrainCost').value);
+  var retrainMos=Number(document.getElementById('retrainMonths').value);
+  var searchMos=Number(document.getElementById('searchMonths').value);
+  var partTime=Number(document.getElementById('partTimeIncome').value);
   var growth=parseFloat(document.getElementById('growthRate').value)/100;
-  var satisfaction=parseInt(document.getElementById('satisfaction').value)||4;
+  var satisfaction=Number(document.getElementById('satisfaction').value);
+  var status=document.getElementById('switch-form-status');
+  var checks=[
+    {id:'currentSal',value:cur,min:0.01,max:1000000000000,message:'Enter a current monthly salary greater than 0.'},
+    {id:'currentBenefits',value:ben,min:0,max:1000000000000,message:'Enter monthly benefits from 0 to 1,000,000,000,000.'},
+    {id:'newSal',value:newSal,min:0.01,max:1000000000000,message:'Enter an expected new monthly salary greater than 0.'},
+    {id:'retrainCost',value:retrainCost,min:0,max:1000000000000,message:'Enter a retraining cost from 0 to 1,000,000,000,000.'},
+    {id:'retrainMonths',value:retrainMos,min:0,max:48,integer:true,message:'Enter whole retraining months from 0 to 48.'},
+    {id:'searchMonths',value:searchMos,min:0,max:18,integer:true,message:'Enter whole job-search months from 0 to 18.'},
+    {id:'growthRate',value:growth*100,min:0,max:50,message:'Enter annual salary growth from 0% to 50%.'},
+    {id:'satisfaction',value:satisfaction,min:1,max:10,integer:true,message:'Enter a satisfaction score from 1 to 10.'}
+  ];
+  for(var checkIndex=0;checkIndex<checks.length;checkIndex++){
+    var check=checks[checkIndex];
+    if(!Number.isFinite(check.value)||check.value<check.min||check.value>check.max||(check.integer&&!Number.isInteger(check.value))){
+      status.textContent=check.message;
+      document.getElementById(check.id).focus();
+      return false;
+    }
+  }
+  status.textContent='';
 
   var curTotal=cur+ben;
   var forfeited=curTotal*retrainMos*(1-partTime); // income lost during training
@@ -259,23 +318,25 @@ function calcSwitch(){
   var gap=retrainMos+searchMos;
   var rows='';
   var projectionRows=[];
-  var cumCurrent=0,cumNew=-totalCost;
+  var cumCurrent=0,cumNew=-retrainCost;
   for(var yr=1;yr<=5;yr++){
     var moStart=(yr-1)*12;
     var moEnd=yr*12;
     for(var mo=moStart;mo<moEnd;mo++){
       cumCurrent+=curTotal;
-      if(mo>=gap){
+      if(mo<retrainMos){
+        cumNew+=curTotal*partTime;
+      }else if(mo>=gap){
         var newSalNow=newSal*Math.pow(1+growth/12,mo-gap);
         cumNew+=newSalNow;
       }
     }
     var diff=cumNew-cumCurrent;
-    projectionRows.push({year:yr,current:cumCurrent,newCareer:Math.max(0,cumNew),difference:diff});
+    projectionRows.push({year:yr,current:cumCurrent,newCareer:cumNew,difference:diff});
     rows+='<tr>'+
       '<td>Year '+yr+'</td>'+
       '<td>'+fmt(cumCurrent,sym)+'</td>'+
-      '<td>'+fmt(Math.max(0,cumNew),sym)+'</td>'+
+      '<td>'+signedFmt(cumNew,sym)+'</td>'+
       '<td style="color:'+(diff>0?'#16a34a':'#dc2626');
     rows+='">'+( diff>0?'+'+fmt(diff,sym):'-'+fmt(Math.abs(diff),sym))+'</td></tr>';
   }
@@ -283,10 +344,10 @@ function calcSwitch(){
 
   var altPaths='<strong>Faster alternative paths to consider:</strong><br><br>'+
     '1. <strong>Part-time study</strong> — Take evening/online courses while employed. Cost: same, time: 50% longer, income impact: minimal. Best for professional certifications.<br><br>'+
-    '2. <strong>Internal pivot</strong> — Move to adjacent role within current company. No job search gap, may offer retraining budget. Timeline: 3–6 months vs '+gap+' months.<br><br>'+
-    '3. <strong>Bootcamp (intensive)</strong> — Tech/digital marketing/finance bootcamps compress learning to 3–6 months with job placement support. Cost higher but faster break-even.<br><br>'+
-    '4. <strong>Freelance bridge</strong> — Take freelance projects in new field while employed to build portfolio before full switch. Reduces risk significantly.<br><br>'+
-    (satisfaction<5?'<strong>Note:</strong> Your satisfaction score ('+satisfaction+'/10) suggests switching is worth pursuing even with financial cost. Low satisfaction reduces productivity and affects long-term earnings anyway.':'<strong>Note:</strong> Your satisfaction score ('+satisfaction+'/10) suggests current role isn\'t critical to escape. Weigh financial impact carefully.');
+    '2. <strong>Internal pivot</strong> — Explore an adjacent role within your current company and verify whether training support or a shorter transition is actually available.<br><br>'+
+    '3. <strong>Intensive programme</strong> — Compare shorter programmes on verified fees, curriculum, completion rates, and independently confirmed outcomes; do not rely on placement claims alone.<br><br>'+
+    '4. <strong>Portfolio bridge</strong> — Build a small proof project or permitted freelance sample while employed, checking contract and conflict-of-interest rules first.<br><br>'+
+    '<strong>Satisfaction context:</strong> You entered '+satisfaction+'/10. Treat that as one personal signal alongside finances, health, family commitments, role conditions, and verified target-role demand.';
 
   document.getElementById('alternativePaths').innerHTML=altPaths;
   currentSwitchPlan={
@@ -310,6 +371,7 @@ function calcSwitch(){
     projectionRows:projectionRows
   };
   document.getElementById('results').className='en-results on';
+  return true;
 }
 
 function buildSwitchReport(){
@@ -338,7 +400,7 @@ function buildSwitchReport(){
     'Five-year projection'
   ];
   p.projectionRows.forEach(function(row){
-    lines.push('Year '+row.year+': current '+fmt(row.current,p.symbol)+' | new '+fmt(row.newCareer,p.symbol)+' | difference '+(row.difference>=0?'+':'-')+fmt(Math.abs(row.difference),p.symbol));
+    lines.push('Year '+row.year+': current '+fmt(row.current,p.symbol)+' | new '+signedFmt(row.newCareer,p.symbol)+' | difference '+(row.difference>=0?'+':'-')+fmt(Math.abs(row.difference),p.symbol));
   });
   lines.push('');
   lines.push('Checks before acting: verify course fees, placement rates, licensing rules, visa constraints if relevant, job-market demand, and live salary bands.');
@@ -406,7 +468,7 @@ function saveSwitchReport(){
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/tools/career-growth/" data-related-tool data-id="career-growth" data-name="Career Growth Trajectory Calculator" data-category="career" data-icon="CG" data-desc="Plot your career growth trajectory. Predict salary milestones, time to promotion, and lifetime earnings across 15 Africa">Career Growth Trajectory Calculator</a></li><li><a href="/tools/retirement-readiness/" data-related-tool data-id="retirement-readiness" data-name="Retirement Readiness Score" data-category="career" data-icon="RR" data-desc="Calculate your retirement readiness score. Project savings, check pension adequacy, find your monthly shortfall across 1">Retirement Readiness Score</a></li><li><a href="/tools/salary-negotiation/" data-related-tool data-id="salary-negotiation" data-name="Salary Negotiation Calculator Africa — Market Rates &amp; Counter-Offer" data-category="career" data-icon="SN" data-desc="African salary negotiation calculator. Market rates by country, role, and industry. 25th/50th/75th percentile. Counter-o">Salary Negotiation Calculator Africa — Market Rates &amp; Counter-Offer</a></li><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li></ul>
+<ul class="seo-links-list"><li><a href="/tools/career-growth/" data-related-tool data-id="career-growth" data-name="Career Growth Trajectory Calculator" data-category="career" data-icon="CG" data-desc="Plot your career growth trajectory. Predict salary milestones, time to promotion, and lifetime earnings across 15 Africa">Career Growth Trajectory Calculator</a></li><li><a href="/tools/retirement-readiness/" data-related-tool data-id="retirement-readiness" data-name="Retirement Readiness Score" data-category="career" data-icon="RR" data-desc="Calculate your retirement readiness score. Project savings, check pension adequacy, find your monthly shortfall across 1">Retirement Readiness Score</a></li><li><a href="/tools/salary-negotiation/" data-related-tool data-id="salary-negotiation" data-name="Salary Negotiation Planner — Benchmark &amp; Counter-Offer" data-category="career" data-icon="SN" data-desc="Compare an offer with a salary benchmark you verified, build transparent planning bands, and export a private counter-of">Salary Negotiation Planner — Benchmark &amp; Counter-Offer</a></li><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>

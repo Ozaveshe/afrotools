@@ -91,14 +91,14 @@ details summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
 details[open] summary::after{content:'\2212'}
 .faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
 .faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+.form-error{min-height:1.4em;color:#b91c1c;font-size:.84rem;font-weight:600;margin:.6rem 0 0}
+html[data-theme="dark"] body{background:#07111f;color:#e5edf8}html[data-theme="dark"] :is(.card,.metric,.faq-item,.person-card,.df-upgrade__card){background:#101c2c!important;border-color:#2a3b51!important;color:#e5edf8!important}html[data-theme="dark"] :is(h2,h3,label,.metric-val,.person-name){color:#f8fafc!important}html[data-theme="dark"] :is(.metric-label,.person-pct,.faq-a,.df-upgrade p,.df-upgrade li){color:#b6c5d8!important}html[data-theme="dark"] :is(input,select,details summary){background:#17263a!important;border-color:#3a4e68!important;color:#f8fafc!important}
+@media(prefers-color-scheme:dark){html:not([data-theme="light"]) body{background:#07111f;color:#e5edf8}html:not([data-theme="light"]) :is(.card,.metric,.faq-item,.person-card,.df-upgrade__card){background:#101c2c!important;border-color:#2a3b51!important;color:#e5edf8!important}html:not([data-theme="light"]) :is(h2,h3,label,.metric-val,.person-name){color:#f8fafc!important}html:not([data-theme="light"]) :is(.metric-label,.person-pct,.faq-a,.df-upgrade p,.df-upgrade li){color:#b6c5d8!important}html:not([data-theme="light"]) :is(input,select,details summary){background:#17263a!important;border-color:#3a4e68!important;color:#f8fafc!important}}
 @media(max-width:680px){.form-grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}}
 </style>
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/bill-split.webp">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/bill-split.webp">
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Bill Split Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Bill Split Calculator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Bill Split Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Bill Split Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"Is tipping customary in Africa?","acceptedAnswer":{"@type":"Answer","text":"Tipping customs vary widely: South Africa: 10-15% is standard at restaurants; not common for casual takeout. Nigeria: 5-10% at mid-range restaurants; not expected at fast food. Kenya: 10% at sit-down restaurants; \"service charge\" often already included. West Africa: Not traditionally common but growing in urban areas. Check your bill for service charge (usually 5-10%) before adding extra tip."}},{"@type":"Question","name":"Best apps to split bills in Africa?","acceptedAnswer":{"@type":"Answer","text":"Popular apps: SplitWise (global, widely used), Settle Up (Android/iOS), Nosh (Nigeria food delivery with split), M-Pesa Request Money (Kenya), Cowrywise (Nigeria). For quick informal splits, WhatsApp groups + mobile money (M-Pesa, MoMo, OPay) work well. Simply calculate each person's share, then request payment directly via mobile money — instant and traceable."}},{"@type":"Question","name":"How to handle unequal contributions in a group?","acceptedAnswer":{"@type":"Answer","text":"Use the Custom % method: assign each person their share percentage based on what they ordered or consumed. For accommodation splits, consider usage (who had the larger room?). For group travel, consider income levels and agree upfront on the fairness principle: strict equality, proportional to earnings, or weighted by consumption. Document the agreed amounts in WhatsApp to avoid disputes."}}]}
-</script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/tools/bill-split/">
@@ -139,11 +139,11 @@ details[open] summary::after{content:'\2212'}
       </div>
       <div class="form-group">
         <label for="bs-total">Total Bill Amount</label>
-        <input type="number" id="bs-total" value="45000" min="0">
+        <input type="number" id="bs-total" value="45000" min="0.01" step="0.01" required>
       </div>
       <div class="form-group">
         <label for="bs-tip">Tip / Service Charge (%)</label>
-        <input type="number" id="bs-tip" value="10" min="0" max="50">
+        <input type="number" id="bs-tip" value="0" min="0" max="100" step="0.01" required>
       </div>
       <div class="form-group">
         <label for="bs-method">Split Method</label>
@@ -164,9 +164,9 @@ details[open] summary::after{content:'\2212'}
       <button type="button" class="btn-add" onclick="addPerson()">+ Add Person</button>
     </div>
     <button type="button" class="btn-calc" onclick="calcBillSplit()">Calculate Split</button>
-    <div class="results" id="bs-results">
+    <p class="form-error" id="bs-error" role="alert"></p><div class="results" id="bs-results" role="region" aria-live="polite" tabindex="-1">
       <div class="res-hero">
-        <div class="res-label">Per Person (Equal Split)</div>
+        <div class="res-label" id="bs-primary-label">Per Person (Equal Split)</div>
         <div class="res-val" id="bs-per-person"></div>
         <div class="res-sub" id="bs-sub"></div>
       </div>
@@ -183,33 +183,10 @@ details[open] summary::after{content:'\2212'}
   <div class="card">
     <h2>Frequently Asked Questions</h2>
 
-<section class="df-upgrade" data-df-upgrade="bill-split">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Payment comparison workflow</span>
-      <h2>Bill Split Calculator: quick guide</h2>
-      <p>Not sure how to get the most from the Bill Split Calculator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
-      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Bill Split Calculator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
-    </div>
-    <form class="df-form" data-df-form="bill-split">
-      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
-      <label>Transaction value<input name="transaction" type="number" value="50000" min="0" step="any" aria-label="Transaction value"></label>
-      <label>Fee percent<input name="fee" type="number" value="1.5" min="0" step="any" aria-label="Fee percent"></label>
-      <label>Channel<select name="channel" aria-label="Channel"><option value="POS">POS</option><option value="bank transfer">bank transfer</option><option value="mobile money">mobile money</option><option value="card">card</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="bill-split" data-df-base="Bill Split Calculator — enter your details above to see your result." aria-live="polite">Bill Split Calculator — enter your details above to see your result.</output>
-      <div class="df-actions"><button type="button" data-df-copy="bill-split">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="bill-split-faq-title">
-  <h2 id="bill-split-faq-title">Bill Split Calculator — Africa FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How do I use the Bill Split Calculator?</summary><p>Enter your amounts, rates and dates in the fields above. The Bill Split Calculator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Bill Split Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Bill Split Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
-</section>
-    <div class="faq-item"><details><summary>Is tipping customary in Africa?</summary><div class="faq-a">Tipping customs vary widely: South Africa: 10-15% is standard at restaurants; not common for casual takeout. Nigeria: 5-10% at mid-range restaurants; not expected at fast food. Kenya: 10% at sit-down restaurants; "service charge" often already included. West Africa: Not traditionally common but growing in urban areas. Check your bill for service charge (usually 5-10%) before adding extra tip.</div></details></div>
-    <div class="faq-item"><details><summary>Best apps to split bills in Africa?</summary><div class="faq-a">Popular apps: SplitWise (global, widely used), Settle Up (Android/iOS), Nosh (Nigeria food delivery with split), M-Pesa Request Money (Kenya), Cowrywise (Nigeria). For quick informal splits, WhatsApp groups + mobile money (M-Pesa, MoMo, OPay) work well. Simply calculate each person's share, then request payment directly via mobile money — instant and traceable.</div></details></div>
-    <div class="faq-item"><details><summary>How to handle unequal contributions in a group?</summary><div class="faq-a">Use the Custom % method: assign each person their share percentage based on what they ordered or consumed. For accommodation splits, consider usage (who had the larger room?). For group travel, consider income levels and agree upfront on the fairness principle: strict equality, proportional to earnings, or weighted by consumption. Document the agreed amounts in WhatsApp to avoid disputes.</div></details></div>
+    <section class="df-upgrade" aria-labelledby="bs-method-title"><div class="df-upgrade__card"><div><span class="df-upgrade__kicker">Cent-accurate allocation</span><h2 id="bs-method-title">How the split handles rounding</h2><p>The bill and added percentage are converted to the smallest currency unit before allocation. Any rounding remainder is distributed so the displayed shares add back to the displayed grand total.</p><ul class="df-upgrade__bullets"><li><strong>Equal:</strong> divides cents evenly, assigning one extra cent to early rows when needed.</li><li><strong>Custom:</strong> requires entered shares to total exactly 100%.</li><li><strong>Added charge:</strong> use zero if service is already included in the bill.</li></ul></div></div></section>
+    <div class="faq-item"><details><summary>Should service charge be entered again?</summary><div class="faq-a">No. If the total bill already includes it, leave the added percentage at zero. Only enter an extra percentage that is not already part of the total.</div></details></div>
+    <div class="faq-item"><details><summary>Why must custom percentages total 100%?</summary><div class="faq-a">It prevents the calculator from silently changing the agreement. Adjust the entered shares until they total 100%, then calculate again.</div></details></div>
+    <div class="faq-item"><details><summary>How are fractions of a cent handled?</summary><div class="faq-a">The calculator allocates whole smallest units and distributes the remainder deterministically. This keeps the individual displayed amounts equal to the displayed grand total.</div></details></div>
   </div>
 </div>
 <afro-related-tools data-ssr="1" category="fintech" current="bill-split">
@@ -245,41 +222,51 @@ function removePerson(btn){
   if(rows.length>2){btn.parentNode.remove();}
 }
 function calcBillSplit(){
-  var total=parseFloat(document.getElementById('bs-total').value)||0;
-  var tipPct=parseFloat(document.getElementById('bs-tip').value)/100;
+  var total=parseFloat(document.getElementById('bs-total').value);
+  var tipPercent=parseFloat(document.getElementById('bs-tip').value);
   var method=document.getElementById('bs-method').value;
   var currency=document.getElementById('bs-currency').value;
-  var tipAmt=total*tipPct;
-  var grandTotal=total+tipAmt;
+  var error=document.getElementById('bs-error');var output=document.getElementById('bs-results');
+  error.textContent='';output.classList.remove('on');
+  if(!Number.isFinite(total)||total<=0||!Number.isFinite(tipPercent)||tipPercent<0||tipPercent>100){error.textContent='Enter a bill above zero and an added charge from 0% to 100%.';return;}
+  var subtotalCents=Math.round(total*100);
+  var grandCents=Math.round(total*(1+tipPercent/100)*100);
+  var tipCents=grandCents-subtotalCents;
   var rows=document.querySelectorAll('#bs-people .person-row');
   var names=[],pcts=[];
   for(var i=0;i<rows.length;i++){
     var nameInput=rows[i].querySelector('input[type="text"]');
     var pctInput=rows[i].querySelector('.pct-input');
-    names.push(nameInput?nameInput.value||('Person '+(i+1)):'Person '+(i+1));
-    pcts.push(pctInput&&method==='custom'?(parseFloat(pctInput.value)||0):0);
+    names.push(nameInput?(nameInput.value.trim()||('Person '+(i+1))):'Person '+(i+1));
+    pcts.push(pctInput&&method==='custom'?parseFloat(pctInput.value):0);
   }
   var n=names.length;
-  var amounts=[];
+  if(n<2){error.textContent='Keep at least two people in the split.';return;}
+  var amountCents=[];
   if(method==='equal'){
-    for(var j=0;j<n;j++) amounts.push(grandTotal/n);
+    var base=Math.floor(grandCents/n);var remainder=grandCents-base*n;
+    for(var j=0;j<n;j++) amountCents.push(base+(j<remainder?1:0));
   } else {
     var totalPct=pcts.reduce(function(a,b){return a+b;},0);
-    for(var k=0;k<n;k++) amounts.push(totalPct>0?grandTotal*(pcts[k]/totalPct):grandTotal/n);
+    if(pcts.some(function(p){return !Number.isFinite(p)||p<0||p>100;})||Math.abs(totalPct-100)>0.001){error.textContent='Custom percentages must each be from 0% to 100% and total exactly 100%.';return;}
+    var fractions=[];var allocated=0;
+    for(var k=0;k<n;k++){var raw=grandCents*pcts[k]/100;var whole=Math.floor(raw);amountCents.push(whole);allocated+=whole;fractions.push({index:k,fraction:raw-whole});}
+    fractions.sort(function(a,b){return b.fraction-a.fraction||a.index-b.index;});
+    for(var extra=0;extra<grandCents-allocated;extra++)amountCents[fractions[extra%fractions.length].index]++;
   }
-  function fmt(v){return v<100?v.toFixed(2):Math.round(v).toLocaleString();}
-  document.getElementById('bs-per-person').textContent=currency+' '+fmt(grandTotal/n);
-  document.getElementById('bs-sub').textContent='Total: '+currency+' '+fmt(grandTotal)+' | '+n+' people';
-  document.getElementById('bs-subtotal').textContent=currency+' '+fmt(total);
-  document.getElementById('bs-tip-amt').textContent=currency+' '+fmt(tipAmt);
-  document.getElementById('bs-grand-total').textContent=currency+' '+fmt(grandTotal);
+  function fmtCents(cents){return currency+' '+(cents/100).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
+  document.getElementById('bs-primary-label').textContent=method==='equal'?'Per Person (Equal Split)':'Average Share';
+  document.getElementById('bs-per-person').textContent=fmtCents(Math.round(grandCents/n));
+  document.getElementById('bs-sub').textContent='Total: '+fmtCents(grandCents)+' | '+n+' people';
+  document.getElementById('bs-subtotal').textContent=fmtCents(subtotalCents);
+  document.getElementById('bs-tip-amt').textContent=fmtCents(tipCents);
+  document.getElementById('bs-grand-total').textContent=fmtCents(grandCents);
   document.getElementById('bs-people-count').textContent=n+' people';
-  var cards='';
+  var cards=document.getElementById('bs-person-cards');cards.replaceChildren();
   for(var m=0;m<names.length;m++){
-    cards+='<div class="person-card"><div class="person-name">'+names[m]+'</div><div class="person-amt">'+fmt(amounts[m])+'</div><div class="person-pct">'+(amounts[m]/grandTotal*100).toFixed(0)+'% of total</div></div>';
+    var card=document.createElement('div');card.className='person-card';var name=document.createElement('div');name.className='person-name';name.textContent=names[m];var amount=document.createElement('div');amount.className='person-amt';amount.textContent=fmtCents(amountCents[m]);var pct=document.createElement('div');pct.className='person-pct';pct.textContent=(amountCents[m]/grandCents*100).toFixed(2)+'% of total';card.append(name,amount,pct);cards.appendChild(card);
   }
-  document.getElementById('bs-person-cards').innerHTML=cards;
-  document.getElementById('bs-results').classList.add('on');
+  output.classList.add('on');output.focus();
 }
 </script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
