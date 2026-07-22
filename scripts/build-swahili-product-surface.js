@@ -40,6 +40,25 @@ function filePath(rel) { return path.join(ROOT, rel); }
 function read(rel) { return fs.readFileSync(filePath(rel), 'utf8'); }
 function readJson(rel) { return JSON.parse(read(rel)); }
 function normalize(value) { return String(value).normalize('NFC').replace(/\r\n/g, '\n'); }
+function withAnalyticsLoader(html) {
+  if (html.includes('/assets/js/lazy-analytics.js')) return html;
+  return html.replace(/<\/body>(\s*<\/html>\s*)$/i, '<script defer src="/assets/js/lazy-analytics.js"></script>\n</body>$1');
+}
+function withAnalyticsDisclosure(html) {
+  return html
+    .replace(
+      'Metadata ndogo ya matumizi baada ya idhini.',
+      'Kwenye kurasa zinazopimwa, GA4 inaweza kupokea ishara chache zisizo na vidakuzi wakati hifadhi ya uchanganuzi imekataliwa. Vitambulishi vya kudumu na matukio ya bidhaa huhitaji idhini.'
+    )
+    .replace(
+      'Thamani za hesabu na maudhui ya hati hayapaswi kutumwa kama analytics.',
+      'Thamani za hesabu, maudhui ya hati na vigezo vya URL havitumwi. Metadata ya kiufundi ya ombi bado inaweza kuwepo.'
+    )
+    .replace(
+      'na Google Analytics au Microsoft Clarity baada ya idhini ya uchanganuzi.',
+      'Google Analytics kwa ishara chache zisizo na vidakuzi kabla ya idhini na uchanganuzi kamili baada ya idhini, na Microsoft Clarity baada tu ya idhini ya uchanganuzi.'
+    );
+}
 function escapeHtml(value) {
   return String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
@@ -425,8 +444,8 @@ repair('sw/zana/kikokotoo-vat/index.html', [
   ["function calcVat(){var amt=parseFloat(document.getElementById('vatAmount').value)||0;if(!amt){alert('Tafadhali ingiza kiasi.');return;}var c=currentCountry||VAT_DB.KE;", "function calcVat(){var amountInput=document.getElementById('vatAmount'),status=document.getElementById('vatStatus'),amt=parseFloat(amountInput.value)||0;if(!amt){status.textContent='Tafadhali ingiza kiasi kikubwa kuliko sifuri.';amountInput.focus();return;}status.textContent='';var c=currentCountry||VAT_DB.KE;"]
 ]);
 
-output('sw/faragha/index.html', privacyPage());
-output('sw/masharti/index.html', termsPage());
+output('sw/faragha/index.html', withAnalyticsLoader(withAnalyticsDisclosure(privacyPage())));
+output('sw/masharti/index.html', withAnalyticsLoader(termsPage()));
 output('sw/msaada/index.html', helpPage());
 output('sw/bei/index.html', pricingPage());
 output('sw/auth/index.html', bridgePage('auth'));
@@ -467,6 +486,14 @@ for (const file of allHtml(path.join(ROOT, 'sw'))) {
   if (GENERATED_HTML.has(rel)) continue;
   ensureAccessibilityRuntime(rel);
 }
+
+// This older hand-authored route is outside the generated page set. Add the
+// analytics loader after accessibility normalization so both scripts remain
+// stable and the surface check stays idempotent.
+output(
+  'sw/kenya/kikokotoo-kodi-mshahara/index.html',
+  withAnalyticsLoader(read('sw/kenya/kikokotoo-kodi-mshahara/index.html'))
+);
 
 const criticalFiles = [
   'sw/index.html', 'sw/zana-zote/index.html', 'sw/nchi/index.html',
