@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/site-shell-ui-refresh.css?v=b86042d3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=d8d640ef" defer></script>
 <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -51,6 +51,9 @@
   .highlight-box { background: #f0f7ff; border: 1px solid #bfdbfe; border-radius: 12px; padding: 14px 18px; display: flex; gap: 12px; margin-top: 14px; }
   .highlight-box-icon { font-size: 1.1rem; flex-shrink: 0; }
   .highlight-box p { font-size: 0.82rem; color: #1e40af; font-weight: 600; margin: 0; line-height: 1.5; }
+  .choice-btn { appearance: none; border: 0; border-radius: 10px; background: var(--color-primary); color: #fff; cursor: pointer; font: inherit; font-size: .86rem; font-weight: 700; min-height: 44px; padding: 0 16px; }
+  .choice-btn:hover { background: #004fa8; }
+  .choice-btn:focus-visible { outline: 3px solid rgba(0,98,204,.35); outline-offset: 3px; }
   @media (max-width: 640px) { .doc-section { padding: 24px 20px; } .layout { padding: 0 16px; } }
 </style>
 <script type="application/ld+json">
@@ -71,7 +74,7 @@
   <div class="hero-inner">
     <div class="eyebrow">Legal</div>
     <h1>Cookie Policy</h1>
-    <div class="hero-meta"><span>Last updated: July 13, 2026</span><span>privacy@afrotools.com</span></div>
+    <div class="hero-meta"><span>Last updated: July 22, 2026</span><span>privacy@afrotools.com</span></div>
   </div>
 </section>
 
@@ -80,7 +83,7 @@
   <div class="doc-section">
     <h2>What this covers</h2>
     <p>This Cookie Policy explains the cookies, browser local storage, and analytics identifiers AfroTools uses, and how you can change your choices. It supplements our <a href="/privacy/">Privacy Policy</a>. "Cookies" below also refers to similar technologies such as <code>localStorage</code>, <code>sessionStorage</code>, and analytics pixels.</p>
-    <p>AfroTools does not enable advertising cookies in its intended configuration. We group storage into <strong>strictly necessary / functional</strong> (always on) and <strong>analytics</strong> (only after you consent).</p>
+    <p>AfroTools does not enable advertising cookies in its intended configuration. We group storage into <strong>strictly necessary / functional</strong> (always on) and <strong>analytics storage</strong> (only after you consent). On measured public pages, the Google tag can send limited cookieless consent-state and page-measurement pings while analytics storage is denied.</p>
   </div>
 
   <div class="doc-section">
@@ -98,8 +101,8 @@
   </div>
 
   <div class="doc-section">
-    <h2>2. Analytics (consent required)</h2>
-    <p>These are set <strong>only after you accept</strong> analytics in the cookie banner. They help us understand which tools are used and where the experience breaks. We exclude raw calculator inputs and form values from analytics events, but provider request metadata still exists.</p>
+    <h2>2. Analytics storage (consent required)</h2>
+    <p>Analytics cookies and persistent analytics identifiers are set <strong>only after you accept</strong> analytics in the banner. Google Analytics 4 loads in denied-by-default Consent Mode and may receive limited cookieless page-measurement pings before a choice or after rejection. Product events remain opt-in, page URLs exclude query strings, advertising permissions remain denied, and Microsoft Clarity remains unloaded until you accept. Provider request metadata such as IP address and user agent can still exist.</p>
     <table class="ck-table">
       <thead><tr><th>Name</th><th>Provider</th><th>Purpose</th><th>Retention</th></tr></thead>
       <tbody>
@@ -113,20 +116,21 @@
 
   <div class="doc-section">
     <h2>3. Third-party service requests</h2>
-    <p>Some features load resources from third parties that may receive your IP address and request metadata when the feature is used. These are described in Section 06 of the <a href="/privacy/#s6">Privacy Policy</a> and include Google Fonts, Supabase (accounts), Paystack/Stripe (checkout), Anthropic (optional AI assist), and Netlify/Formspree (forms). Local-only tools do not make these requests unless you choose a labelled action.</p>
+    <p>Some features load resources from third parties that may receive your IP address and request metadata when the feature is used. These are described in Section 06 of the <a href="/privacy/#s6">Privacy Policy</a> and include Google Fonts, Supabase (accounts), Paystack/Stripe (checkout), Anthropic (optional AI assist), and Netlify/Formspree (forms). The Google tag on measured public pages may also make the denied-consent requests described above; local calculator inputs and document contents are not included in those requests.</p>
   </div>
 
   <div class="doc-section">
     <h2>4. Managing your choices</h2>
     <ul>
-      <li><strong>Cookie banner</strong> &mdash; accept or reject analytics when you first visit, and withdraw consent later by clearing site data or reopening the banner.</li>
+      <li><strong>Cookie banner</strong> &mdash; accept or reject analytics when you first visit, then use the control below to change or withdraw that choice.</li>
       <li><strong>Browser controls</strong> &mdash; block or delete cookies and local storage for afrotools.com in your browser's privacy settings. Blocking functional storage may sign you out or reset preferences.</li>
-      <li><strong>Do Not Track / GPC</strong> &mdash; we treat analytics as off until you opt in, so rejecting the banner is the reliable control.</li>
+      <li><strong>Do Not Track / GPC</strong> &mdash; analytics storage and product events remain off until you opt in; the banner is the direct control for this site.</li>
       <li><strong>Your data rights</strong> &mdash; to access, export, or delete personal data, use the <a href="/privacy/data-request/">Data Request tool</a>.</li>
     </ul>
+    <p><button class="choice-btn" type="button" data-afro-cookie-consent-open>Manage analytics choice</button></p>
     <div class="highlight-box">
       <span class="highlight-box-icon">&#127850;</span>
-      <p>Reject analytics and the GA4, Clarity, and pixel identifiers above are never set. Functional storage still works so the site can remember your basic preferences.</p>
+      <p>Rejecting analytics keeps GA4 analytics storage denied and prevents Clarity from loading. GA4 may still receive limited cookieless pings, but no raw calculator inputs, form values, document content, or URL query strings are included by this implementation.</p>
     </div>
   </div>
 
@@ -138,6 +142,6 @@
 </div>
 
 <afro-footer></afro-footer>
-<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=2cd970f9"></script>
 </body>
 </html>

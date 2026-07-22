@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/site-shell-ui-refresh.css?v=b86042d3">
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=d8d640ef" defer></script>
 <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 
 <style>
@@ -334,7 +334,7 @@
   ]
 }
 </script>
-<meta property="article:modified_time" content="2026-07-13">
+<meta property="article:modified_time" content="2026-07-22">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 <link rel="canonical" href="https://afrotools.com/privacy/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/privacy/">
@@ -351,7 +351,7 @@
     <div class="eyebrow">Legal</div>
     <h1>Privacy Policy</h1>
     <div class="hero-meta">
-      <span>Last updated: July 13, 2026</span>
+      <span>Last updated: July 22, 2026</span>
       <span>AfroTools.com</span>
       <span>privacy@afrotools.com</span>
     </div>
@@ -432,7 +432,7 @@
       <ul>
         <li><strong>Email address</strong> &mdash; collected only when you voluntarily subscribe to updates, create an account, or use a labelled email-delivery workflow. Core public calculators remain available to guests without a paid subscription.</li>
         <li><strong>Account information</strong> &mdash; if you create an account, Supabase Auth manages the credential flow; AfroTools account services can store your email, profile, subscription status, preferences, and supported saved items.</li>
-        <li><strong>Usage analytics</strong> &mdash; bounded page, device, country, session, and product-event metadata may be collected by configured analytics services after analytics consent. Raw sensitive workflow content is excluded; provider request metadata and identifiers can still exist.</li>
+        <li><strong>Usage analytics</strong> &mdash; on measured public pages, GA4 may receive limited cookieless consent-state and page-measurement pings while analytics storage is denied. Persistent analytics identifiers and product events require analytics consent. Raw sensitive workflow content and URL query strings are excluded; provider request metadata can still exist.</li>
         <li><strong>Calculator inputs</strong> &mdash; local-only tools process salary, tax, health, and financial inputs in your browser. AI-assisted tools send a calculation summary and your question only after you continue from the AI notice. Saved scenarios are stored only when you use account sync.</li>
         <li><strong>Payment information</strong> &mdash; if you start a paid checkout, payment details are entered and processed on the configured provider flow. AfroTools receives the transaction and subscription metadata required to confirm entitlement, not the full card number or CVV entered with the provider.</li>
         <li><strong>Contact form submissions</strong> &mdash; when you use our contact form, your name, email, and message are stored by our form provider for the purpose of responding to your enquiry.</li>
@@ -469,9 +469,9 @@
           <h2>Cookies &amp; Local Storage</h2>
         </div>
       </div>
-      <p>AfroTools does not enable advertising features in its intended analytics configuration. Functional storage and consented analytics can still create the identifiers described below:</p>
+      <p>AfroTools does not enable advertising features in its intended analytics configuration. Advertising permissions stay denied. GA4 uses denied-by-default Consent Mode on measured public pages; analytics cookies remain blocked until consent, although limited cookieless pings can still be sent.</p>
       <ul>
-        <li><strong>Analytics cookies</strong> &mdash; Google Analytics 4 can use <code>_ga</code> and <code>_ga_*</code> identifiers for bounded usage measurement. Microsoft Clarity may set analytics identifiers for session diagnostics after consent when configured. AfroTools excludes raw sensitive workflow content, but does not describe provider request metadata as anonymous. You can reject or withdraw analytics consent.</li>
+        <li><strong>Analytics cookies</strong> &mdash; after consent, Google Analytics 4 can use <code>_ga</code> and <code>_ga_*</code> identifiers for bounded usage measurement, and Microsoft Clarity may set analytics identifiers for session diagnostics. Before consent or after rejection, GA4 analytics storage stays denied and Clarity stays unloaded. AfroTools does not describe cookieless provider request metadata as anonymous. You can reject or withdraw analytics consent.</li>
         <li><strong>Supabase authentication cookies</strong> &mdash; if you sign in to an AfroTools Pro account, Supabase stores a session token to keep you logged in. These are strictly functional and are cleared when you log out.</li>
         <li><strong>localStorage preferences</strong> &mdash; we use browser localStorage to remember settings such as preferred country, dark/light mode, cookie consent choice, and recently used tools. Browser-local preferences stay on your device unless you choose a tool or feature that uses account sync, analytics, forms, or AI assist.</li>
       </ul>
@@ -542,7 +542,7 @@
       <p>AfroTools uses the following service classes in current public workflows. Each feature should send only the fields disclosed for that action:</p>
       <ul>
         <li><strong>Supabase</strong> &mdash; provides configured authentication, account database, workspace, and private-vault services. Supabase processes account identifiers and the records a signed-in user explicitly saves. <a href="https://supabase.com/privacy" target="_blank" rel="noopener">Supabase Privacy Policy</a></li>
-        <li><strong>Google Analytics 4</strong> &mdash; can process bounded usage and request metadata after analytics consent when the property is configured. Raw sensitive workflow content is excluded from intended product events. <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a></li>
+        <li><strong>Google Analytics 4</strong> &mdash; can receive limited cookieless page-measurement pings while analytics storage is denied, then process consented identifiers and product events after opt-in. Advertising permissions remain denied; raw sensitive workflow content and URL query strings are excluded by the site implementation. <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a></li>
         <li><strong>Microsoft Clarity</strong> &mdash; consented product-session diagnostics such as page interactions, scroll behaviour, and heatmap-style UX signals. AfroTools does not intentionally send form values or sensitive calculator inputs to Clarity. <a href="https://privacy.microsoft.com/privacystatement" target="_blank" rel="noopener">Microsoft Privacy Statement</a></li>
         <li><strong>Paystack</strong> &mdash; can provide the configured checkout and payment-status flow. Card details are entered with the provider; AfroTools receives transaction and subscription metadata needed to confirm status. <a href="https://paystack.com/privacy" target="_blank" rel="noopener">Paystack Privacy Policy</a></li>
         <li><strong>Stripe</strong> &mdash; can provide the configured checkout and payment-status flow. Card details are entered with the provider; AfroTools receives transaction and subscription metadata needed to confirm status. <a href="https://stripe.com/privacy" target="_blank" rel="noopener">Stripe Privacy Policy</a></li>
@@ -698,6 +698,6 @@
   }, { rootMargin: '-60px 0px -60% 0px', threshold: 0 });
   sections.forEach(s => observer.observe(s));
 </script>
-<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=2cd970f9"></script>
 </body>
 </html>
