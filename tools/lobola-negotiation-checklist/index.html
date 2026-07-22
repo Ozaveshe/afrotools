@@ -56,7 +56,7 @@
 <script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
 <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/tools/lobola-negotiation-checklist/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/lobola-negotiation-checklist/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/checklist-negociation-dot/">
@@ -87,6 +87,7 @@
     <form class="lc-tool" id="lobolaChecklistForm" novalidate>
       <h2 id="tool-title">Build a family meeting brief</h2>
       <p class="lc-muted">Use only the details both families are comfortable recording. The brief stays in this browser session and is not submitted to AfroTools.</p>
+      <div class="lc-note">Already built a plan? <button class="lc-btn" type="button" id="useSavedPlan" disabled>Use the last plan saved on this device</button></div>
       <div class="lc-form-grid">
         <div class="lc-field">
           <label for="country">Country or family context</label>
@@ -97,6 +98,7 @@
             <option value="Zambia">Zambia</option>
             <option value="Eswatini">Eswatini</option>
             <option value="Lesotho">Lesotho</option>
+            <option value="Namibia">Namibia</option>
             <option value="Other">Other / cross-border</option>
           </select>
         </div>
@@ -221,7 +223,7 @@
     <details><summary>Can customs differ inside the same country?</summary><p>Yes. Lobola, roora, bogadi, bohali, and related customary discussions vary by family, community, language group, faith practice, and the people appointed to speak for the families.</p></details>
   </section>
 </main>
-<afro-related-tools data-ssr="1" category="religious-cultural" current="lobola-negotiation-checklist">
+<afro-related-tools hidden aria-hidden="true" data-ssr="1" category="religious-cultural" current="lobola-negotiation-checklist">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
@@ -235,6 +237,8 @@
   var output = document.getElementById('summaryOutput');
   var status = document.getElementById('statusMsg');
   var form = document.getElementById('lobolaChecklistForm');
+  var savedPlan = null;
+  try { savedPlan = JSON.parse(localStorage.getItem('afrotools_lobola_plan_v1') || 'null'); } catch (error) { savedPlan = null; }
   var countryCurrency = {
     'South Africa':'ZAR',
     'Zimbabwe':'USD',
@@ -242,6 +246,7 @@
     'Zambia':'ZMW',
     'Eswatini':'SZL',
     'Lesotho':'LSL',
+    'Namibia':'NAD',
     'Other':'USD'
   };
   function value(id, fallback) {
@@ -301,6 +306,21 @@
     el.addEventListener('change', buildSummary);
   });
   document.getElementById('buildSummary').addEventListener('click', buildSummary);
+  var useSavedPlan = document.getElementById('useSavedPlan');
+  if (savedPlan && savedPlan.country && savedPlan.currency) {
+    useSavedPlan.disabled = false;
+    useSavedPlan.textContent = 'Use saved ' + savedPlan.country + ' plan';
+  }
+  useSavedPlan.addEventListener('click', function(){
+    if (!savedPlan) return;
+    document.getElementById('country').value = savedPlan.country;
+    document.getElementById('currency').value = savedPlan.currency;
+    document.getElementById('amountRange').value = savedPlan.currency + ' ' + Math.round(savedPlan.lowScenario || savedPlan.totalValue || 0).toLocaleString('en-US') + ' to ' + Math.round(savedPlan.highScenario || savedPlan.totalValue || 0).toLocaleString('en-US');
+    document.getElementById('confirmed').value = 'Saved calculator planning total: ' + savedPlan.currency + ' ' + Math.round(savedPlan.totalValue || 0).toLocaleString('en-US') + '. Confirm every line with both families before treating it as agreed.';
+    document.getElementById('pending').value = 'Confirm the livestock reference, cash amount, gifts, meeting costs, timing, and what each item represents.';
+    buildSummary();
+    status.textContent = 'Saved calculator context added. Review it before sharing.';
+  });
   document.getElementById('resetForm').addEventListener('click', function(){
     window.setTimeout(function(){
       output.textContent = 'Fill the checklist, then build a respectful family meeting summary.';
@@ -328,6 +348,5 @@
   buildSummary();
 })();
 </script>
-<script src="/assets/js/components/related-tools.min.js?v=e25622fc" defer></script>
 </body>
 </html>

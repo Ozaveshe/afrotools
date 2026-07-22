@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
 <head>
-<script>try{if(new URLSearchParams(location.search).get("embed")==="1")document.documentElement.classList.add("lc-embed")}catch(e){}</script>
   <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,6 +37,15 @@
     /* Cards */
     .card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:16px}
     .card-title{font-size:15px;font-weight:800;color:var(--text);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+    .planner-card{scroll-margin-top:92px}
+    .planner-step{display:flex;gap:12px;align-items:flex-start;padding-top:18px;margin-top:18px;border-top:1px solid var(--border)}
+    .planner-step.first{padding-top:0;margin-top:0;border-top:0}
+    .planner-step>span{display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px;border-radius:50%;background:var(--dark);color:#fff;font-size:13px;font-weight:900}
+    .planner-step strong{display:block;color:var(--dark);font-size:14px}
+    .planner-step small{display:block;margin-top:3px;color:var(--muted);font-size:12px;line-height:1.5}
+    .planner-more{margin-top:16px;border:1px solid var(--border);border-radius:10px;background:#f8fafc}
+    .planner-more summary{padding:13px 14px;color:var(--dark);font-size:13px;font-weight:800;cursor:pointer}
+    .planner-more-body{padding:2px 14px 14px}
     .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:12px}
     .field{margin-bottom:10px}
     .field label{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
@@ -81,12 +89,6 @@
     .meter-fill{height:100%;border-radius:12px;transition:width .8s ease;background:linear-gradient(90deg,var(--green),var(--accent),var(--amber),var(--red))}
     .meter-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);gap:8px}
     .meter-indicator{font-size:14px;font-weight:700;text-align:center;margin-top:8px}
-
-    /* Charts */
-    .chart-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
-    .chart-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px}
-    .chart-title{font-size:13px;font-weight:800;margin-bottom:14px}
-    canvas{width:100%;display:block}
 
     /* Breakdown */
     .breakdown{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:16px}
@@ -224,7 +226,6 @@
   <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does this lobola calculator estimate?","acceptedAnswer":{"@type":"Answer","text":"It estimates a planning budget for family discussions by combining editable cash expectations, livestock or cattle equivalents, gifts, and ceremony or meeting costs."}},{"@type":"Question","name":"Is there an official lobola amount?","acceptedAnswer":{"@type":"Answer","text":"No. Customs vary by family, community, country, and circumstance. This calculator is a planning guide, not an official rate or cultural rule."}},{"@type":"Question","name":"Can lobola be planned in cash and gifts instead of cattle?","acceptedAnswer":{"@type":"Answer","text":"Many families discuss a cash equivalent, gifts, livestock, or a combination. The calculator lets you edit each line so the summary reflects the conversation both families choose to have."}},{"@type":"Question","name":"Should the estimate replace family negotiations?","acceptedAnswer":{"@type":"Answer","text":"No. Use the estimate to prepare respectfully, then confirm expectations directly with both families and any appointed elders or negotiators."}},{"@type":"Question","name":"How much is lobola in Zimbabwe?","acceptedAnswer":{"@type":"Answer","text":"There is no official amount. Zimbabwean families typically discuss roora as cattle equivalents plus a cash component and gifts, and amounts vary widely by family. Use the Zimbabwe lobola calculator for editable USD planning defaults."}},{"@type":"Question","name":"How much is lobola in South Africa?","acceptedAnswer":{"@type":"Answer","text":"There is no set figure. South African families often discuss a cattle-equivalent number, a cash amount in rand, and gifts, all shaped by family expectations. The South Africa lobola calculator starts from editable ZAR defaults."}},{"@type":"Question","name":"Why does the page still mention bride price?","acceptedAnswer":{"@type":"Answer","text":"Some people search with that phrase, so the page uses it carefully for discovery. The tool itself frames the workflow as respectful family budgeting, not a purchase or a measure of a person's worth."}}]}
 </script>
-<script src="/assets/js/components/related-tools.min.js?v=e25622fc" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Lobola Calculator – Estimate Cattle, Cash &amp; Gifts Online | AfroTools">
@@ -259,21 +260,21 @@
   ]
 }
 </script>
-<meta property="article:modified_time" content="2026-06-29">
-<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-<link rel="stylesheet" href="/assets/css/african-workflow.css?v=c0a56b60">
-<link rel="stylesheet" href="/assets/css/african-focus.css?v=9fa23580">
+<meta property="article:modified_time" content="2026-07-22">
 <style id="lb-hero-style">
-.lb-hero,.african-tool-focus .tool-hero.lb-hero{background:linear-gradient(140deg,#fffbf3 0%,#fdf1de 46%,#eef5ff 100%) !important;background-image:linear-gradient(140deg,#fffbf3 0%,#fdf1de 46%,#eef5ff 100%) !important;border-bottom:1px solid #f0e2c8 !important;color:#1c1917 !important;padding:40px 0 36px !important;box-shadow:none !important}
+.lb-hero{background:linear-gradient(140deg,#fffbf3 0%,#fdf1de 46%,#eef5ff 100%) !important;background-image:linear-gradient(140deg,#fffbf3 0%,#fdf1de 46%,#eef5ff 100%) !important;border-bottom:1px solid #f0e2c8 !important;color:#1c1917 !important;padding:40px 0 36px !important;box-shadow:none !important}
 .lb-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:34px;align-items:center}
 .lb-hero .lb-crumb,.lb-hero .lb-crumb a{font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#8a6d3b !important;text-decoration:none}
 .lb-hero .lb-crumb span{color:#b45309 !important}
 .lb-kicker{display:inline-flex;align-items:center;margin:12px 0 10px;padding:4px 12px;border-radius:999px;font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:rgba(180,83,9,.1);color:#92400e;border:1px solid rgba(180,83,9,.25)}
-.lb-hero h1,.african-tool-focus .tool-hero.lb-hero h1{font-size:clamp(1.9rem,4.5vw,2.9rem);font-weight:800;color:#1c1917 !important;letter-spacing:-.02em;line-height:1.08;margin:0 0 10px}
+.lb-hero h1{font-size:clamp(1.9rem,4.5vw,2.9rem);font-weight:800;color:#1c1917 !important;letter-spacing:-.02em;line-height:1.08;margin:0 0 10px}
 .lb-hero h1 em{font-style:normal;color:#b45309}
-.lb-sub,.african-tool-focus .tool-hero.lb-hero p.lb-sub{font-size:.92rem;color:#57534e !important;line-height:1.65;max-width:600px;margin:0 0 14px}
+.lb-sub{font-size:.92rem;color:#57534e !important;line-height:1.65;max-width:600px;margin:0 0 14px}
 .lb-badges{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}
 .lb-badges span{display:inline-flex;align-items:center;padding:4px 11px;border-radius:6px;font-size:.68rem;font-weight:700;letter-spacing:.04em;background:#eff6ff;color:#0057b8;border:1px solid #bfdbfe}
+.lb-primary-actions{display:flex;flex-wrap:wrap;gap:9px;margin:14px 0}
+.lb-primary-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 16px;border-radius:8px;background:#0062cc;color:#fff !important;text-decoration:none;font-size:.82rem;font-weight:800}
+.lb-primary-actions a+ a{background:#fff;color:#334155 !important;border:1px solid #d6cbb4}
 .lb-pills{display:flex;flex-wrap:wrap;gap:7px}
 .lb-pills a{display:inline-flex;align-items:center;min-height:34px;padding:0 13px;border-radius:999px;font-size:.74rem;font-weight:700;background:#ffffff;color:#334155 !important;border:1px solid #d6cbb4;text-decoration:none}
 .lb-pills a:hover{border-color:#b45309;color:#92400e !important}
@@ -284,11 +285,7 @@
 .lb-art-cap strong{display:block;font-size:.78rem;color:#44403c;font-weight:800}
 .lb-art-cap span{display:block;font-size:.7rem;color:#8a6d3b;margin-top:2px}
 @media(max-width:860px){.lb-hero-inner{grid-template-columns:1fr}.lb-hero-art{display:none}}
-html.lc-embed afro-navbar,html.lc-embed afro-footer,html.lc-embed afro-chat,html.lc-embed afro-related-tools,html.lc-embed afro-newsletter-cta,html.lc-embed .tool-hero,html.lc-embed .rs-upgrade-shell,html.lc-embed .ng-save-sec,html.lc-embed .content-section{display:none !important}
-html.lc-embed .wrap{padding-top:8px !important}
 </style>
-<script src="/assets/js/african-workflow.js?v=cf96f534" defer></script>
-<script src="/assets/js/pages/african-focus.js?v=acd287cb" defer></script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 <link rel="canonical" href="https://afrotools.com/tools/lobola-calculator/">
@@ -308,6 +305,7 @@ html.lc-embed .wrap{padding-top:8px !important}
 <h1>Lobola <em>Calculator</em></h1>
 <p class="lb-sub">Estimate a respectful family discussion budget across cash, livestock, gifts, and ceremony costs. Customs vary by family, community, and country &mdash; this is a planning aid, never a price.</p>
 <div class="lb-badges"><span>Planning estimate</span><span>Editable assumptions</span><span>Family summary</span><span>Local-first privacy</span></div>
+<div class="lb-primary-actions"><a href="#lobola-planner">Start the family plan</a><a href="#how-use-lobola">How it works</a></div>
 <div class="lb-pills">
 <a href="/tools/lobola-calculator/zimbabwe/">Zimbabwe (roora)</a>
 <a href="/tools/lobola-calculator/south-africa/">South Africa</a>
@@ -340,15 +338,16 @@ html.lc-embed .wrap{padding-top:8px !important}
   <div class="direct-answer"><strong>What this tool does:</strong> This lobola calculator estimates a planning budget for family discussions by adding editable cash expectations, livestock or cattle equivalents, gifts, and ceremony or meeting costs. People may search for this as a bride price calculator, but the tool does not price a person, set an official amount, or replace family negotiators.</div>
 
   <!-- ── INPUT FORM ── -->
-  <div class="card">
-    <div class="card-title"><span aria-hidden="true">LC</span> Estimation details</div>
+  <div class="card planner-card" id="lobola-planner">
+    <div class="card-title">Build a respectful family plan</div>
+    <div class="planner-step first"><span>1</span><div><strong>Choose the family context</strong><small>This selects an editable starting point. It does not apply an official country rate.</small></div></div>
     <div class="form-row">
       <div class="field">
         <label for="country">Country</label>
         <select id="country" onchange="queryCurrency=''; updateCountryFields()">
           <option value="za">South Africa</option>
           <option value="zw">Zimbabwe</option>
-          <option value="sz">Eswatini (Swaziland)</option>
+          <option value="sz">Eswatini</option>
           <option value="ls">Lesotho</option>
           <option value="bw">Botswana</option>
           <option value="na">Namibia</option>
@@ -356,14 +355,14 @@ html.lc-embed .wrap{padding-top:8px !important}
         </select>
       </div>
       <div class="field">
-        <label for="region">Region / Province</label>
-        <select id="region" aria-label="Region"></select>
+        <label for="region">Region or province</label>
+        <select id="region"></select>
       </div>
     </div>
     <div class="form-row">
       <div class="field">
-        <label for="currency">Display Currency</label>
-        <select id="currency" aria-label="Display Currency">
+        <label for="currency">Planning currency</label>
+        <select id="currency">
           <option value="ZAR">South African rand (ZAR)</option>
           <option value="USD">US dollar (USD)</option>
           <option value="BWP">Botswana pula (BWP)</option>
@@ -375,120 +374,56 @@ html.lc-embed .wrap{padding-top:8px !important}
         <div class="field-help">Use the currency both families are discussing. This does not fetch live exchange rates.</div>
       </div>
       <div class="field">
-        <label for="familyExpectation">Family expectation amount (optional)</label>
-        <input aria-label="Family expectation amount" type="number" id="familyExpectation" value="0" min="0" step="1">
-        <div class="field-help">Enter a known cash expectation, or leave 0 to use the livestock estimate.</div>
+        <label for="familyExpectation">Known family-agreed cash amount (optional)</label>
+        <input type="number" id="familyExpectation" value="0" min="0" step="1" inputmode="decimal">
+        <div class="field-help">Enter a known cash amount, or leave 0 to use the editable livestock reference.</div>
       </div>
     </div>
-    <div class="form-row">
-      <div class="field">
-        <label for="education">Education assumption (optional)</label>
-        <select id="education" aria-label="Education">
-          <option value="neutral" selected>No adjustment</option>
-          <option value="none">Lower expectation discussed</option>
-          <option value="matric">Matric / High School</option>
-          <option value="diploma">Diploma / Certificate</option>
-          <option value="degree">Bachelor's Degree</option>
-          <option value="honours">Honours / Postgrad</option>
-          <option value="masters">Master's Degree</option>
-          <option value="doctorate">Doctorate / PhD</option>
-        </select>
-        <div class="field-help">Use only if both families have made education part of the discussion.</div>
-      </div>
-      <div class="field">
-        <label for="profession">Income expectation assumption</label>
-        <select id="profession" aria-label="Profession">
-          <option value="neutral" selected>No adjustment</option>
-          <option value="unemployed">Lower expectation discussed</option>
-          <option value="entry">Entry-level Employee</option>
-          <option value="skilled">Skilled Professional</option>
-          <option value="senior">Senior Professional</option>
-          <option value="executive">Executive / Director</option>
-          <option value="doctor">Medical Doctor</option>
-          <option value="lawyer">Lawyer / Advocate</option>
-          <option value="engineer">Engineer</option>
-        </select>
-        <div class="field-help">Keep neutral unless a family expectation has already been raised.</div>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="field">
-        <label for="familyStatus">Family expectation level</label>
-        <select id="familyStatus" aria-label="Family Status">
-          <option value="regular" selected>Standard discussion</option>
-          <option value="prominent">Higher expectation discussed</option>
-          <option value="chief">Chiefly or royal protocol discussed</option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="marriageType">Discussion context</label>
-        <select id="marriageType" aria-label="Marriage Type">
-          <option value="standard" selected>Standard planning range</option>
-          <option value="reduced">Family has discussed a lower range</option>
-          <option value="extraSupport">Family has asked for extra ceremony support</option>
-        </select>
-      </div>
-    </div>
+    <div class="planner-step"><span>2</span><div><strong>Edit the livestock or cash reference</strong><small>Use only what has actually been discussed. The starting figures are examples, not recommendations.</small></div></div>
     <div class="form-row" id="priceFields">
       <div class="field">
-        <label for="cattlePrice">Livestock Value Per Head</label>
-        <input aria-label="CattlePrice" type="number" id="cattlePrice" value="18000" min="1000">
+        <label for="cattlePrice">Planning value per head</label>
+        <input type="number" id="cattlePrice" value="18000" min="0" inputmode="decimal">
       </div>
       <div class="field">
-        <label for="customCattle">Livestock / Cattle Equivalent</label>
-        <input aria-label="Leave blank for estimate" type="number" id="customCattle" placeholder="Leave blank for estimate" min="1" max="100">
+        <label for="customCattle">Livestock or cattle equivalent</label>
+        <input type="number" id="customCattle" placeholder="Use starter estimate" min="0" max="100" inputmode="numeric">
       </div>
     </div>
     <div class="form-row hidden" id="zwFields">
       <div class="field">
-        <label for="zwCattlePrice">Livestock Value (USD per head)</label>
-        <input aria-label="ZwCattlePrice" type="number" id="zwCattlePrice" value="500" min="100">
-      </div>
-      <div class="field">
-        <label for="zwCustom">Additional Cash Component (USD)</label>
-        <input aria-label="ZwCustom" type="number" id="zwCustom" value="0" min="0">
+        <label for="zwCustom">Additional cash component (USD)</label>
+        <input type="number" id="zwCustom" value="0" min="0" inputmode="decimal">
       </div>
     </div>
+    <div class="planner-step"><span>3</span><div><strong>Add practical costs</strong><small>Keep gifts and meeting costs separate so families can see what each line represents.</small></div></div>
     <div class="form-row">
       <div class="field">
-        <label for="savedAmount">Cash Contribution Already Available</label>
-        <input aria-label="SavedAmount" type="number" id="savedAmount" value="0" min="0">
+        <label for="giftValue">Gifts and practical items</label>
+        <input type="number" id="giftValue" value="0" min="0" inputmode="decimal">
       </div>
       <div class="field">
-        <label for="giftValue">Gifts / Custom Items Value</label>
-        <input aria-label="Gifts and custom items value" type="number" id="giftValue" value="0" min="0">
+        <label for="ceremonyCost">Meeting, travel and ceremony costs</label>
+        <input type="number" id="ceremonyCost" value="0" min="0" inputmode="decimal">
       </div>
     </div>
-    <div class="form-row">
-      <div class="field">
-        <label for="ceremonyCost">Ceremony / Meeting Budget</label>
-        <input aria-label="Ceremony or meeting budget" type="number" id="ceremonyCost" value="0" min="0">
+    <details class="planner-more">
+      <summary>Add savings timing, a contingency buffer, and family notes (optional)</summary>
+      <div class="planner-more-body">
+        <div class="form-row">
+          <div class="field"><label for="savedAmount">Contribution already available</label><input type="number" id="savedAmount" value="0" min="0" inputmode="decimal"></div>
+          <div class="field"><label for="giftBuffer">Contingency buffer (%)</label><input type="number" id="giftBuffer" value="10" min="0" max="100" inputmode="decimal"></div>
+        </div>
+        <div class="form-row">
+          <div class="field"><label for="depositPct">Initial contribution (%)</label><input type="number" id="depositPct" value="25" min="0" max="100" inputmode="decimal"></div>
+          <div class="field"><label for="timelineMonths">Target timeline (months)</label><input type="number" id="timelineMonths" value="6" min="1" max="48" inputmode="numeric"></div>
+        </div>
+        <div class="field"><label for="giftItems">Gifts, items, or expectations to discuss</label><textarea id="giftItems" placeholder="Example: blankets, groceries, family travel, meeting costs, witnesses, instalment dates"></textarea></div>
+        <div class="field"><label for="familyNotes">Private family notes</label><textarea id="familyNotes" placeholder="Add questions, assumptions, family preferences, or what still needs to be confirmed."></textarea></div>
       </div>
-      <div class="field">
-        <label for="giftBuffer">Contingency Buffer %</label>
-        <input aria-label="GiftBuffer" type="number" id="giftBuffer" value="10" min="0" max="100">
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="field">
-        <label for="depositPct">Initial Contribution %</label>
-        <input aria-label="DepositPct" type="number" id="depositPct" value="25" min="0" max="100">
-      </div>
-      <div class="field">
-        <label for="timelineMonths">Target Timeline (months)</label>
-        <input aria-label="TimelineMonths" type="number" id="timelineMonths" value="6" min="1" max="48">
-      </div>
-    </div>
-    <div class="field">
-      <label for="giftItems">Gifts, items, or expectations to discuss</label>
-      <textarea id="giftItems" aria-label="Gifts, items, or expectations to discuss" placeholder="Example: blankets, clothing, groceries, family travel, meeting costs, witnesses, agreed instalment dates"></textarea>
-    </div>
-    <div class="field">
-      <label for="familyNotes">Optional notes for the family discussion</label>
-      <textarea id="familyNotes" aria-label="Optional notes for the family discussion" placeholder="Add questions, assumptions, family preferences, or what still needs to be confirmed."></textarea>
-    </div>
+    </details>
     <div class="btn-row">
-      <button type="button" class="btn btn-primary" onclick="calculate()">Calculate Lobola Estimate</button>
+      <button type="button" class="btn btn-primary" onclick="calculate()">Build my family plan</button>
       <button type="button" class="btn btn-outline" onclick="resetCalc()">Reset</button>
     </div>
   </div>
@@ -501,7 +436,7 @@ html.lc-embed .wrap{padding-top:8px !important}
       <h3>Your Lobola Estimate</h3>
       <div class="cattle-grid" id="cattleGrid"></div>
       <div class="cattle-count" id="cattleCountDisplay">0</div>
-      <div class="cattle-label">livestock equivalent estimated</div>
+      <div class="cattle-label">editable livestock reference</div>
     </div>
 
     <!-- Stat Cards -->
@@ -531,18 +466,6 @@ html.lc-embed .wrap{padding-top:8px !important}
       <div class="meter-track"><div class="meter-fill" id="meterFill" style="width:0%"></div></div>
       <div class="meter-labels"><span>Low plan</span><span>Base plan</span><span>High plan</span><span>Confirm with family</span></div>
       <div class="meter-indicator" id="meterLabel"></div>
-    </div>
-
-    <!-- Charts -->
-    <div class="chart-row">
-      <div class="chart-card">
-        <div class="chart-title">Country Comparison (same profile)</div>
-        <canvas id="chartCountry" height="260"></canvas>
-      </div>
-      <div class="chart-card">
-        <div class="chart-title">Assumption Sensitivity</div>
-        <canvas id="chartEducation" height="260"></canvas>
-      </div>
     </div>
 
     <!-- Breakdown -->
@@ -575,12 +498,11 @@ html.lc-embed .wrap{padding-top:8px !important}
       <div class="tips">
         <h4>Negotiation Guidance</h4>
         <ul>
-          <li>Bring respected elders - negotiations are between families, not individuals</li>
-          <li>Send a formal letter of intent before negotiations begin</li>
-          <li>The process is about building relationships, not bargaining</li>
-          <li>Payment can be arranged in instalments if both families agree</li>
-          <li>Some families allow partial cattle + partial cash payment</li>
-          <li>Ask both families which customs, language group, faith practice, or community protocol should guide the discussion</li>
+          <li>Confirm who each family has appointed to speak and record decisions.</li>
+          <li>Ask which local terms, customs, language group, faith practice, or community protocol apply.</li>
+          <li>Separate confirmed items from questions that still need a family answer.</li>
+          <li>Discuss affordability and timing before treating any staged contribution as agreed.</li>
+          <li>Write down what each payment or gift represents so the record is not misread later.</li>
         </ul>
       </div>
     </div>
@@ -593,8 +515,8 @@ html.lc-embed .wrap{padding-top:8px !important}
   <ol>
     <li>Choose the country and currency that match the family discussion.</li>
     <li>Enter a known family expectation if one has been shared, or use the editable livestock estimate.</li>
-    <li>Add gifts, custom items, ceremony or meeting costs, and any cash already available.</li>
-    <li>Copy the family discussion summary and confirm the assumptions with both families.</li>
+    <li>Add gifts, practical items, meeting costs, and any contribution already available.</li>
+    <li>Save the plan on this device, then continue to the gift list or meeting checklist.</li>
   </ol>
   <h3>How the estimate works</h3>
   <p>The base estimate comes from editable livestock and cash assumptions. The final planning budget adds gifts, ceremony or meeting costs, and a contingency buffer. Low and high scenarios show a cautious planning range around the base estimate.</p>
@@ -609,7 +531,7 @@ html.lc-embed .wrap{padding-top:8px !important}
   <h3>Assumptions</h3>
   <ul>
     <li>Default livestock values are planning placeholders, not market quotes or official rates.</li>
-    <li>Education, income, and family expectation settings are editable assumptions, not cultural rules.</li>
+    <li>The calculator never changes a number based on education, employment, sexual history, or a person's perceived worth.</li>
     <li>Customs vary by family, community, language group, country, and the people appointed to negotiate.</li>
     <li>The currency selector is for the numbers you enter on this page; it does not perform live exchange conversion.</li>
   </ul>
@@ -623,10 +545,10 @@ html.lc-embed .wrap{padding-top:8px !important}
 </section>
 
 <section class="content-section" aria-labelledby="country-planning">
-  <h2 id="country-planning">Country planning notes</h2>
-  <p>Use the country pages below for local currency defaults, cautious country notes, example calculations, and a link back to the editable calculator. They are planning pages only, not official rates.</p>
+  <h2 id="country-planning">Country quick planners</h2>
+  <p>Each country page now calculates directly on the page with local currency defaults, a short breakdown, copy and WhatsApp actions, and clear next steps. They are planning pages only, not official rates.</p>
   <div class="country-grid">
-    <a class="cluster-link" href="/tools/lobola-calculator/south-africa/"><strong>South Africa lobola calculator</strong><span>Start with ZAR, province, negotiator notes, and family expectation level.</span></a>
+    <a class="cluster-link" href="/tools/lobola-calculator/south-africa/"><strong>South Africa lobola calculator</strong><span>Edit the cattle reference, cash, gifts, and meeting costs in ZAR.</span></a>
     <a class="cluster-link" href="/tools/lobola-calculator/zimbabwe/"><strong>Zimbabwe lobola calculator</strong><span>Start with USD, roora planning lines, and any additional cash component.</span></a>
     <a class="cluster-link" href="/tools/lobola-calculator/botswana/"><strong>Botswana lobola calculator</strong><span>Start with BWP and edit cattle, cash, gifts, and bogadi meeting assumptions.</span></a>
     <a class="cluster-link" href="/tools/lobola-calculator/eswatini/"><strong>Eswatini lobola calculator</strong><span>Start with SZL and confirm family protocol before treating any estimate as settled.</span></a>
@@ -645,7 +567,7 @@ html.lc-embed .wrap{padding-top:8px !important}
     <a class="cluster-link" href="/tools/currency-converter/"><strong>Currency converter</strong><span>Check cross-border discussion amounts before confirming numbers.</span></a>
     <a class="cluster-link" href="/tools/marriage-cert/"><strong>Marriage certificate guide</strong><span>Understand civil, customary, and statutory registration steps.</span></a>
     <a class="cluster-link" href="/blog/bride-price-africa/"><strong>Bridewealth planning guide</strong><span>Read broader context across communities without treating any example as a rulebook.</span></a>
-    <a class="cluster-link" href="/religious-cultural/"><strong>Religious and cultural tools</strong><span>Explore ceremony, naming, attire, and family planning tools.</span></a>
+    <a class="cluster-link" href="/tools/brideprice-advisor/"><strong>African bridewealth context guide</strong><span>Compare terms and traditions carefully before assuming one family's practice applies elsewhere.</span></a>
   </div>
 </section>
 
@@ -662,18 +584,7 @@ html.lc-embed .wrap{padding-top:8px !important}
   </div>
 </div>
 
-<afro-related-tools category="religious-cultural" current="lobola-calculator" data-ssr="1">
-<!-- RELATED_TOOLS_SSR_START -->
-<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
-<h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/tools/zakat-calculator/" data-related-tool data-id="zakat-calculator" data-name="Zakat Calculator" data-category="religious-cultural" data-icon="ZC" data-desc="Calculate zakat on cash, gold, silver, business inventory, receivables and liabilities with gold or silver nisab plannin">Zakat Calculator</a></li><li><a href="/tools/prayer-times/" data-related-tool data-id="prayer-times" data-name="Prayer Times and Qibla Planner" data-category="religious-cultural" data-icon="PT" data-desc="Plan daily salah times with African city presets, prayer method adjustments, Asr school choice and Qibla bearing.">Prayer Times and Qibla Planner</a></li><li><a href="/tools/faraid-inheritance/" data-related-tool data-id="faraid-inheritance" data-name="Islamic Inheritance Faraid Calculator" data-category="religious-cultural" data-icon="II" data-desc="Model common Faraid inheritance shares for spouse, parents, sons and daughters with estate deductions and scholar review">Islamic Inheritance Faraid Calculator</a></li><li><a href="/tools/ramadan-timetable/" data-related-tool data-id="ramadan-timetable" data-name="Ramadan Timetable Generator" data-category="religious-cultural" data-icon="RT" data-desc="Generate a Ramadan planning timetable with suhoor, iftar, taraweeh, last ten nights and Eid preparation markers.">Ramadan Timetable Generator</a></li><li><a href="/tools/hajj-budget/" data-related-tool data-id="hajj-budget" data-name="Hajj and Umrah Budget Calculator" data-category="religious-cultural" data-icon="HA" data-desc="Estimate Hajj or Umrah costs by origin, package level, travelers, days, visa, food, transport and contingency.">Hajj and Umrah Budget Calculator</a></li><li><a href="/tools/tithe-calculator/" data-related-tool data-id="tithe-offering" data-name="Tithe &amp; Offering Calculator" data-category="religious-cultural" data-icon="TO" data-desc="10% tithe, first fruits, and offering calculator. Multi-currency.">Tithe &amp; Offering Calculator</a></li></ul>
-</nav>
-<!-- RELATED_TOOLS_SSR_END -->
-</afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
-
-<section class="rs-upgrade-shell" data-rs-tool-id="lobola-calculator"></section>
-<script src="/assets/js/religious-cultural-apps.js?v=6fdda1a6" defer></script>
 <afro-footer></afro-footer>
 
 <script>
@@ -717,16 +628,12 @@ var COUNTRIES = {
 
 var CURRENCY_SYMBOLS = { ZAR:'R', USD:'$', BWP:'P', ZMW:'K', SZL:'E', LSL:'M', NAD:'N$' };
 var COUNTRY_CURRENCY = { za:'ZAR', zw:'USD', sz:'SZL', ls:'LSL', bw:'BWP', na:'NAD', zm:'ZMW' };
-var EDU = { neutral:1.0, none:0.9, matric:0.95, diploma:1.0, degree:1.05, honours:1.08, masters:1.1, doctorate:1.12 };
-var PROF = { neutral:1.0, unemployed:0.9, entry:0.95, skilled:1.0, senior:1.05, executive:1.08, doctor:1.1, lawyer:1.08, engineer:1.06 };
-var FAMILY = { regular:1.0, chief:1.25, prominent:1.15 };
-var MARRIAGE = { standard:1.0, reduced:0.85, extraSupport:1.1 };
-var EDU_LABELS = { neutral:'Neutral', none:'Lower', matric:'Matric', diploma:'Diploma', degree:'Degree', honours:'Honours', masters:'Masters', doctorate:'PhD' };
 var lastLobolaBrief = '';
+var lastLobolaPlan = null;
 var queryCurrency = '';
 
 function fmt(n) { return (Number(n) || 0).toLocaleString('en-US',{maximumFractionDigits:0}); }
-function money(symbol, amount) { return symbol + ' ' + fmt(Math.max(0, amount)); }
+function money(symbol, amount) { return symbol + (symbol.slice(-1) === '$' ? '' : ' ') + fmt(Math.max(0, amount)); }
 function escapeHtml(value) {
   return String(value == null ? '' : value).replace(/[&<>"']/g, function(ch) {
     return ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[ch];
@@ -748,8 +655,6 @@ function updateCountryFields() {
   sel.innerHTML = d.regions.map(function(r){return '<option value="'+escapeHtml(r)+'">'+escapeHtml(r)+'</option>';}).join('');
   document.getElementById('cattlePrice').value = d.cattlePrice;
   document.getElementById('zwFields').classList.toggle('hidden', c !== 'zw');
-  document.getElementById('priceFields').classList.toggle('hidden', c === 'zw');
-  if (c === 'zw') document.getElementById('zwCattlePrice').value = d.cattlePrice;
   var currency = document.getElementById('currency');
   if (currency) currency.value = queryCurrency || COUNTRY_CURRENCY[c] || d.currency;
 }
@@ -762,10 +667,9 @@ function applyQueryDefaults() {
   if (currency && CURRENCY_SYMBOLS[currency]) queryCurrency = currency;
 }
 
-function getCattleCount(countryKey, edu, prof, fam, mar) {
+function getCattleCount(countryKey) {
   var d = COUNTRIES[countryKey];
-  var count = Math.round(d.baseCattle * (EDU[edu] || 1) * (PROF[prof] || 1) * (FAMILY[fam] || 1) * (MARRIAGE[mar] || 1));
-  return Math.max(4, count);
+  return Math.max(0, Math.round(d.baseCattle));
 }
 
 function calculate() {
@@ -773,10 +677,6 @@ function calculate() {
   var d = COUNTRIES[countryKey];
   var currencyCode = (document.getElementById('currency') && document.getElementById('currency').value) || d.currency;
   var symbol = CURRENCY_SYMBOLS[currencyCode] || d.symbol;
-  var edu = document.getElementById('education').value;
-  var prof = document.getElementById('profession').value;
-  var fam = document.getElementById('familyStatus').value;
-  var mar = document.getElementById('marriageType').value;
   var customCattle = Math.floor(readNumber('customCattle', 0, 0, 100));
   var familyExpectation = readNumber('familyExpectation', 0, 0, 1000000000);
   var savedAmount = readNumber('savedAmount', 0, 0, 1000000000);
@@ -788,11 +688,11 @@ function calculate() {
   var giftItems = document.getElementById('giftItems').value.trim();
   var familyNotes = document.getElementById('familyNotes').value.trim();
 
-  var cattleCount = customCattle || getCattleCount(countryKey, edu, prof, fam, mar);
+  var cattleCount = customCattle || getCattleCount(countryKey);
   var cattlePrice, livestockValue, baseExpectation, totalValue, breakdown = [];
 
   if (countryKey === 'zw') {
-    cattlePrice = readNumber('zwCattlePrice', 500, 0, 1000000000);
+    cattlePrice = readNumber('cattlePrice', 500, 0, 1000000000);
     var extra = readNumber('zwCustom', 0, 0, 1000000000);
     var mom = 1, dad = 1, danga = Math.max(2, cattleCount - 2);
     cattleCount = mom + dad + danga;
@@ -895,7 +795,6 @@ function calculate() {
     depositPct: depositPct,
     timelineMonths: timelineMonths,
     region: document.getElementById('region').value,
-    familyStatus: fam,
     giftItems: giftItems,
     familyNotes: familyNotes
   });
@@ -915,10 +814,7 @@ function calculate() {
   document.getElementById('contextText').textContent = d.context;
   document.getElementById('dykBox').innerHTML = '<div class="dyk-title">Planning note</div><div class="dyk-text">Treat every number on this page as a discussion aid. Families may agree on cash, livestock, gifts, instalments, ceremony support, or a different arrangement entirely.</div>';
 
-  // Show results first so canvas has dimensions, then draw charts
   document.getElementById('results').classList.add('show');
-  drawCountryChart(edu, prof, fam, mar, cattlePrice);
-  drawEducationChart(countryKey, prof, fam, mar);
   document.getElementById('results').scrollIntoView({ behavior:'smooth', block:'start' });
 }
 
@@ -929,7 +825,6 @@ function renderNegotiationPlan(data) {
   var remaining = Math.max(0, fullBudget - data.savedAmount);
   var deposit = fullBudget * data.depositPct / 100;
   var monthly = remaining / data.timelineMonths;
-  var familyLabel = data.familyStatus === 'chief' ? 'royal or chiefly protocol' : data.familyStatus === 'prominent' ? 'prominent family expectations' : 'regular family expectations';
   var discussionNotes = [];
   if (data.giftItems) discussionNotes.push('Items to discuss: ' + data.giftItems);
   if (data.familyNotes) discussionNotes.push('Notes: ' + data.familyNotes);
@@ -947,9 +842,23 @@ function renderNegotiationPlan(data) {
     'Estimate: ' + money(data.symbol, data.totalValue) + ' ' + data.currency + ' | Low: ' + money(data.symbol, data.lowScenario) + ' | High: ' + money(data.symbol, data.highScenario) + '.',
     'Gifts/items: ' + (data.giftItems || 'Not specified yet') + '.',
     'Notes: ' + (data.familyNotes || 'No notes added yet') + '.',
-    'Context: ' + familyLabel + '.',
     actions.join(' ')
   ].join('\n');
+  lastLobolaPlan = {
+    version: 1,
+    country: data.country,
+    currency: data.currency,
+    symbol: data.symbol,
+    region: data.region,
+    cattleCount: data.cattleCount,
+    cattlePrice: data.cattlePrice,
+    totalValue: data.totalValue,
+    giftValue: data.giftValue,
+    ceremonyCost: data.ceremonyCost,
+    lowScenario: data.lowScenario,
+    highScenario: data.highScenario,
+    savedAt: new Date().toISOString()
+  };
   target.innerHTML =
     '<div class="negotiation-head"><div class="negotiation-title">Family negotiation preparation plan</div><button type="button" class="copy-plan" onclick="copyLobolaBrief(this)">Copy brief</button><button type="button" class="copy-plan" onclick="shareLobolaWhatsApp()">Share on WhatsApp</button></div>' +
     '<div class="negotiation-grid">' +
@@ -967,7 +876,10 @@ function renderResultActions() {
     '<div class="result-actions" aria-label="Family summary actions">' +
       '<button type="button" class="btn btn-outline" onclick="copyLobolaBrief(this)">Copy family summary</button>' +
       '<button type="button" class="btn btn-outline" onclick="shareLobolaBrief()">Share summary text</button>' +
+      '<button type="button" class="btn btn-outline" onclick="saveLobolaPlan()">Save on this device</button>' +
       '<button type="button" class="btn btn-outline" onclick="printLobolaBrief()">Print summary</button>' +
+      '<a class="btn btn-outline" href="/tools/lobola-gift-list/">Build the gift list</a>' +
+      '<a class="btn btn-outline" href="/tools/lobola-negotiation-checklist/">Prepare the family meeting</a>' +
       '<span class="result-status" id="resultActionStatus" aria-live="polite"></span>' +
     '</div>';
 }
@@ -975,6 +887,16 @@ function renderResultActions() {
 function setResultStatus(message) {
   var status = document.getElementById('resultActionStatus');
   if (status) status.textContent = message || '';
+}
+
+function saveLobolaPlan() {
+  if (!lastLobolaPlan) return;
+  try {
+    localStorage.setItem('afrotools_lobola_plan_v1', JSON.stringify(lastLobolaPlan));
+    setResultStatus('Plan saved on this device. The checklist and gift list can reuse the country, currency, and totals.');
+  } catch (error) {
+    setResultStatus('This browser could not save the plan. Copy the family summary instead.');
+  }
 }
 
 function copyLobolaBrief(btn) {
@@ -1036,81 +958,8 @@ function fallbackCopyLobolaBrief(done) {
   document.body.removeChild(area);
 }
 
-function drawCountryChart(edu, prof, fam, mar) {
-  var c = document.getElementById('chartCountry');
-  var ctx = c.getContext('2d');
-  var W = c.offsetWidth, H = 260;
-  c.width = W*2; c.height = H*2; ctx.scale(2,2);
-  ctx.clearRect(0,0,W,H);
-
-  var pad = {t:20,r:20,b:50,l:20};
-  var cW = W-pad.l-pad.r, cH = H-pad.t-pad.b;
-  var keys = ['za','zw','sz','ls','bw','na','zm'];
-  var data = keys.map(function(k){ return getCattleCount(k,edu,prof,fam,mar); });
-  var maxVal = Math.max.apply(null, data);
-  if (maxVal === 0) maxVal = 1;
-  var colors = ['#0062CC','#10b981','#f59e0b','#8b5cf6','#ef4444','#06b6d4','#64748b'];
-  var barW = cW / (keys.length * 1.8);
-
-  keys.forEach(function(k,i){
-    var x = pad.l + (cW/(keys.length))*(i+0.5) - barW/2;
-    var barH = (data[i]/maxVal)*cH;
-    var y = pad.t+cH-barH;
-    ctx.fillStyle = colors[i];
-    ctx.beginPath();
-    var r=5;
-    ctx.moveTo(x+r,y); ctx.lineTo(x+barW-r,y); ctx.quadraticCurveTo(x+barW,y,x+barW,y+r);
-    ctx.lineTo(x+barW,pad.t+cH); ctx.lineTo(x,pad.t+cH); ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y);
-    ctx.fill();
-    // Value
-    ctx.fillStyle=colors[i]; ctx.font='bold 13px DM Sans'; ctx.textAlign='center';
-    ctx.fillText(data[i]+' head',x+barW/2,y-6);
-    // Label
-    ctx.fillStyle='#64748b'; ctx.font='10px DM Sans';
-    ctx.fillText(COUNTRIES[k].name.split(' ')[0],x+barW/2,pad.t+cH+14);
-  });
-}
-
-function drawEducationChart(countryKey, prof, fam, mar) {
-  var c = document.getElementById('chartEducation');
-  var ctx = c.getContext('2d');
-  var W = c.offsetWidth, H = 260;
-  c.width = W*2; c.height = H*2; ctx.scale(2,2);
-  ctx.clearRect(0,0,W,H);
-
-  var pad = {t:20,r:20,b:50,l:20};
-  var cW = W-pad.l-pad.r, cH = H-pad.t-pad.b;
-  var eduKeys = ['neutral','none','matric','diploma','degree','honours','masters','doctorate'];
-  var data = eduKeys.map(function(e){ return getCattleCount(countryKey,e,prof,fam,mar); });
-  var maxVal = Math.max.apply(null, data);
-  if (maxVal === 0) maxVal = 1;
-  var barW = cW / (eduKeys.length * 1.6);
-
-  eduKeys.forEach(function(e,i){
-    var x = pad.l + (cW/eduKeys.length)*(i+0.5) - barW/2;
-    var barH = (data[i]/maxVal)*cH;
-    var y = pad.t+cH-barH;
-    var isSelected = e === document.getElementById('education').value;
-    ctx.fillStyle = isSelected ? '#0062CC' : '#94a3b8';
-    ctx.beginPath();
-    var r=4;
-    ctx.moveTo(x+r,y); ctx.lineTo(x+barW-r,y); ctx.quadraticCurveTo(x+barW,y,x+barW,y+r);
-    ctx.lineTo(x+barW,pad.t+cH); ctx.lineTo(x,pad.t+cH); ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y);
-    ctx.fill();
-    ctx.fillStyle = isSelected ? '#0062CC' : '#94a3b8';
-    ctx.font = 'bold 11px DM Sans'; ctx.textAlign='center';
-    ctx.fillText(data[i],x+barW/2,y-5);
-    ctx.fillStyle='#64748b'; ctx.font='9px DM Sans';
-    ctx.fillText(EDU_LABELS[e],x+barW/2,pad.t+cH+14);
-  });
-}
-
 function resetCalc() {
   document.getElementById('country').value = 'za';
-  document.getElementById('education').value = 'neutral';
-  document.getElementById('profession').value = 'neutral';
-  document.getElementById('familyStatus').value = 'regular';
-  document.getElementById('marriageType').value = 'standard';
   document.getElementById('customCattle').value = '';
   document.getElementById('familyExpectation').value = '0';
   document.getElementById('savedAmount').value = '0';

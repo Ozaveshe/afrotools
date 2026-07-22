@@ -85,6 +85,7 @@
     <form class="lc-tool" id="giftListForm" novalidate>
       <h2 id="tool-title">Build a family gift list</h2>
       <p class="lg-muted">The list stays in this browser session. Use placeholders until both families confirm the actual items.</p>
+      <div class="lc-note">Already built a plan? <button class="lc-btn" type="button" id="useSavedPlan" disabled>Use the last plan saved on this device</button></div>
       <div class="lg-form-grid">
         <div class="lg-field">
           <label for="country">Country or family context</label>
@@ -95,6 +96,7 @@
             <option value="Zambia">Zambia</option>
             <option value="Eswatini">Eswatini</option>
             <option value="Lesotho">Lesotho</option>
+            <option value="Namibia">Namibia</option>
             <option value="Other / cross-border">Other / cross-border</option>
           </select>
         </div>
@@ -188,7 +190,7 @@
     <details><summary>Does AfroTools store the gift list?</summary><p>No. This page builds the list in your browser session only. Copy or print the summary when you are ready to share it.</p></details>
   </section>
 </main>
-<afro-related-tools data-ssr="1" category="religious-cultural" current="lobola-gift-list">
+<afro-related-tools hidden aria-hidden="true" data-ssr="1" category="religious-cultural" current="lobola-gift-list">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
@@ -207,6 +209,7 @@
     'Zambia':'ZMW',
     'Eswatini':'SZL',
     'Lesotho':'LSL',
+    'Namibia':'NAD',
     'Other / cross-border':'USD'
   };
   var defaults = [
@@ -219,6 +222,8 @@
   var itemRows = document.getElementById('itemRows');
   var summaryOutput = document.getElementById('summaryOutput');
   var statusMsg = document.getElementById('statusMsg');
+  var savedPlan = null;
+  try { savedPlan = JSON.parse(localStorage.getItem('afrotools_lobola_plan_v1') || 'null'); } catch (error) { savedPlan = null; }
   function money(value) {
     var currency = document.getElementById('currency').value || 'USD';
     return currency + ' ' + Math.max(0, Number(value) || 0).toLocaleString('en-US', { maximumFractionDigits: 0 });
@@ -327,6 +332,21 @@
   document.getElementById('currency').addEventListener('change', updateSummary);
   document.getElementById('familyNotes').addEventListener('input', updateSummary);
   document.getElementById('addItem').addEventListener('click', function(){ addRow({ item:'New item', value:0, status:'Pending' }); });
+  var useSavedPlan = document.getElementById('useSavedPlan');
+  if (savedPlan && savedPlan.country && savedPlan.currency) {
+    useSavedPlan.disabled = false;
+    useSavedPlan.textContent = 'Use saved ' + savedPlan.country + ' plan';
+  }
+  useSavedPlan.addEventListener('click', function(){
+    if (!savedPlan) return;
+    document.getElementById('country').value = savedPlan.country;
+    document.getElementById('currency').value = savedPlan.currency;
+    rows = defaults.map(function(item){ return Object.assign({}, item); });
+    if (Number(savedPlan.giftValue) > 0) rows.push({ item:'Gift budget from saved calculator', category:'Gift', value:savedPlan.giftValue, status:'Pending' });
+    if (Number(savedPlan.ceremonyCost) > 0) rows.push({ item:'Meeting and ceremony budget from saved calculator', category:'Ceremony', value:savedPlan.ceremonyCost, status:'Pending' });
+    renderRows();
+    statusMsg.textContent = 'Saved calculator context added. Review every item before sharing.';
+  });
   document.getElementById('resetDefaults').addEventListener('click', function(){
     rows = defaults.map(function(item){ return Object.assign({}, item); });
     renderRows();
@@ -345,6 +365,5 @@
   renderRows();
 })();
 </script>
-<script src="/assets/js/components/related-tools.min.js?v=e25622fc" defer></script>
 </body>
 </html>
