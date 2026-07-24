@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDF Converter Online Free | Word, Excel, Text, Images | AfroTools</title>
+<title>PDF Converter | Word, Excel, Text &amp; Images | AfroTools</title>
 <meta name="description" content="Convert DOCX, XLSX, XLS, CSV, selectable PDF text, and PDF pages to PNG or JPG locally in your browser with output review before download.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="PDF Converter Online Free | AfroTools">
@@ -52,7 +52,8 @@
   .mode-btn:hover { border-color: var(--afro-blue); }
   .mode-btn.on { border-color: var(--afro-blue); background: var(--color-primary); color: #fff; }
 
-  .drop-zone { border: 2px dashed #e5e7eb; border-radius: 8px; padding: 40px 20px; text-align: center; cursor: pointer; transition: all 0.2s; background: #EFF6FF; touch-action: manipulation; }
+  .drop-zone { border: 2px dashed #e5e7eb; border-radius: 8px; padding: 40px 20px; text-align: center; cursor: pointer; transition: all 0.2s; background: #EFF6FF; touch-action: manipulation; display: block; }
+  .drop-zone > * { max-width: 100%; overflow-wrap: anywhere; }
   .drop-zone:hover { border-color: var(--afro-blue); }
   .drop-zone.dragover { border-color: var(--afro-blue); background: rgba(0,98,204,0.08); box-shadow: 0 0 0 3px rgba(0,98,204,0.1); }
   .drop-icon { color: var(--afro-blue); font-size: 0.78rem; font-weight: 900; letter-spacing: 0.08em; margin-bottom: 8px; text-transform: uppercase; }
@@ -142,6 +143,53 @@
   .faq-item.open .faq-a { display: block; }
   .faq-arrow { transition: 0.2s; font-size: 0.7rem; color: #9ca3af; }
   .faq-item.open .faq-arrow { transform: rotate(180deg); }
+  .mode-btn:focus-visible, .drop-zone:focus-visible { outline: 3px solid var(--color-primary); outline-offset: 3px; }
+
+  :root[data-theme="dark"] .card,
+  :root[data-theme="dark"] .faq-item,
+  :root[data-theme="dark"] .faq-q,
+  :root[data-theme="dark"] .tip-item { background: #121f33; border-color: #3a4c68; }
+  :root[data-theme="dark"] .card-head,
+  :root[data-theme="dark"] .drop-zone,
+  :root[data-theme="dark"] .f-select,
+  :root[data-theme="dark"] .f-input,
+  :root[data-theme="dark"] .text-output,
+  :root[data-theme="dark"] .file-info,
+  :root[data-theme="dark"] .mode-btn,
+  :root[data-theme="dark"] .page-tab,
+  :root[data-theme="dark"] .sheet-tab { background: #17263c; border-color: #3a4c68; color: #eef5ff; }
+  :root[data-theme="dark"] .mode-btn.on,
+  :root[data-theme="dark"] .page-tab.on,
+  :root[data-theme="dark"] .sheet-tab.on { background: var(--color-primary); color: #fff; }
+  :root[data-theme="dark"] .card-title,
+  :root[data-theme="dark"] .drop-text,
+  :root[data-theme="dark"] .f-label,
+  :root[data-theme="dark"] .toggle-label,
+  :root[data-theme="dark"] .file-info .fname,
+  :root[data-theme="dark"] .tips-title,
+  :root[data-theme="dark"] .tip-item,
+  :root[data-theme="dark"] .seo-section h2,
+  :root[data-theme="dark"] .seo-section h3,
+  :root[data-theme="dark"] .faq-title,
+  :root[data-theme="dark"] .faq-q,
+  :root[data-theme="dark"] #wordResultName,
+  :root[data-theme="dark"] #excelResultName,
+  :root[data-theme="dark"] #imageResultName { color: #eef5ff!important; }
+  :root[data-theme="dark"] .drop-hint,
+  :root[data-theme="dark"] .field-note,
+  :root[data-theme="dark"] .progress-text,
+  :root[data-theme="dark"] .file-info .fsize,
+  :root[data-theme="dark"] .seo-section p,
+  :root[data-theme="dark"] .seo-section li,
+  :root[data-theme="dark"] .faq-a,
+  :root[data-theme="dark"] #wordResultInfo,
+  :root[data-theme="dark"] #excelResultInfo,
+  :root[data-theme="dark"] #imageResultInfo { color: #d8e4f5!important; }
+  :root[data-theme="dark"] .tips-section { background: #0f1b2d; border-color: #3a4c68; }
+  :root[data-theme="dark"] .output-review { background: #312711; border-color: #8a681d; color: #fde68a; }
+  :root[data-theme="dark"] .act-download { background: #172f52; border-color: #5685c4; color: #dbeafe; }
+  :root[data-theme="dark"] .act-reset { background: #1d2b40; border-color: #4a5e7a; color: #eef5ff; }
+  :root[data-theme="dark"] .act-copy { background: #12372f; border-color: #3d8b75; color: #d1fae5; }
 
   @media (max-width: 768px) {
     .mode-row { grid-template-columns: 1fr; }
@@ -157,7 +205,7 @@
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "PDF Converter Online",
-  "description": "Convert DOCX, XLSX, XLS, CSV, selectable PDF text, and PDF pages to PNG or JPG locally in your browser with output review before gated PDF or ZIP downloads.",
+  "description": "Convert DOCX, XLSX, XLS, CSV, selectable PDF text, and PDF pages to PNG or JPG locally in your browser with output review before direct PDF or ZIP downloads.",
   "url": "https://afrotools.com/tools/pdf-convert/",
   "inLanguage": "en",
   "applicationCategory": "ProductivityApplication",
@@ -177,7 +225,7 @@
 }
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I convert a Word document to PDF? ▼","acceptedAnswer":{"@type":"Answer","text":"Select the \"Word to PDF\" tab, upload your .docx file by dragging it onto the upload area or clicking to browse. Choose your page size and margin preferences, then click \"Convert to PDF\". Your PDF will be generated instantly in your browser."}},{"@type":"Question","name":"Can I convert Excel files with multiple sheets? ▼","acceptedAnswer":{"@type":"Answer","text":"Yes. When you upload a multi-sheet workbook, the tool shows tabs for each sheet. You can select which sheet to convert. Each sheet is rendered as a styled table in the PDF."}},{"@type":"Question","name":"Can I turn PDF pages into images? ▼","acceptedAnswer":{"@type":"Answer","text":"Yes. Select \"PDF to Images\", upload your PDF, choose PNG or JPG, set the render scale, and optionally enter a page range such as 1, 3-5. The tool creates a ZIP file with one image per selected page."}},{"@type":"Question","name":"Is my data safe? ▼","acceptedAnswer":{"@type":"Answer","text":"Absolutely. All processing uses JavaScript libraries running entirely in your browser. Your files are never uploaded to any server. No data leaves your device at any point during conversion."}},{"@type":"Question","name":"What formatting is preserved in Word to PDF? ▼","acceptedAnswer":{"@type":"Answer","text":"The converter preserves headings, paragraphs, bold, italic, underline, lists (ordered and unordered), tables, and hyperlinks. Complex formatting like custom fonts, images, and advanced layout may not be fully supported."}},{"@type":"Question","name":"Why can't I extract text from my scanned PDF? ▼","acceptedAnswer":{"@type":"Answer","text":"The PDF to Text feature extracts selectable text embedded in the PDF. Scanned documents are images without text data. For scanned PDFs, use our PDF OCR tool which uses optical character recognition to read text from images."}}]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I convert a Word document to PDF?","acceptedAnswer":{"@type":"Answer","text":"Select the \"Word to PDF\" tab, upload your .docx file by dragging it onto the upload area or clicking to browse. Choose your page size and margin preferences, then click \"Convert to PDF\". Your PDF will be generated instantly in your browser."}},{"@type":"Question","name":"Can I convert Excel files with multiple sheets?","acceptedAnswer":{"@type":"Answer","text":"Yes. When you upload a multi-sheet workbook, the tool shows tabs for each sheet. You can select which sheet to convert. Each sheet is rendered as a styled table in the PDF."}},{"@type":"Question","name":"Can I turn PDF pages into images?","acceptedAnswer":{"@type":"Answer","text":"Yes. Select \"PDF to Images\", upload your PDF, choose PNG or JPG, set the render scale, and optionally enter a page range such as 1, 3-5. The tool creates a ZIP file with one image per selected page."}},{"@type":"Question","name":"Is my data safe?","acceptedAnswer":{"@type":"Answer","text":"Absolutely. All processing uses JavaScript libraries running entirely in your browser. Your files are never uploaded to any server. No data leaves your device at any point during conversion."}},{"@type":"Question","name":"What formatting is preserved in Word to PDF?","acceptedAnswer":{"@type":"Answer","text":"The converter preserves headings, paragraphs, bold, italic, underline, lists (ordered and unordered), tables, and hyperlinks. Complex formatting like custom fonts, images, and advanced layout may not be fully supported."}},{"@type":"Question","name":"Why can't I extract text from my scanned PDF?","acceptedAnswer":{"@type":"Answer","text":"The PDF to Text feature extracts selectable text embedded in the PDF. Scanned documents are images without text data. For scanned PDFs, use our PDF OCR tool which uses optical character recognition to read text from images."}}]}
 </script>
 <script src="/assets/js/bundles/core.53e2e483.min.js" defer></script>
 <meta property="og:locale" content="en_US">
@@ -218,9 +266,10 @@
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kubadilisha-format-pdf/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-convert/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar active="tools"></afro-navbar>
 
+<main>
 <div class="tool-hero">
   <div class="tool-hero-inner">
     <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/tools/">Tools</a> / <span>PDF Converter</span></div>
@@ -358,7 +407,7 @@
         </div>
         <div class="toggle-row">
           <label class="toggle-switch">
-            <input type="checkbox" id="excelFitPage" checked>
+            <input type="checkbox" id="excelFitPage" aria-label="Auto-fit columns to page width" checked>
             <span class="toggle-track"></span>
           </label>
           <span class="toggle-label">Auto-fit columns to page width</span>
@@ -535,7 +584,7 @@
     <li><strong>No Software Needed:</strong> No need to install Microsoft Office, LibreOffice, or any desktop application.</li>
     <li><strong>Multi-Format:</strong> Handle Word, Excel, CSV, PDF text, and PDF image exports in one tool.</li>
     <li><strong>Page Range Control:</strong> Export every page or specific page ranges such as 1, 3-5, 8.</li>
-    <li><strong>Use Instantly:</strong> Start conversion locally in the browser. Some PDF-category downloads may ask for a free account to keep workspace metadata; the gate does not upload your files.</li>
+    <li><strong>Use Instantly:</strong> Start conversion and download the result locally without creating an account.</li>
     <li><strong>Mobile Friendly:</strong> Works on phones, tablets, and desktops alike.</li>
   </ul>
 </div>
@@ -567,6 +616,7 @@
     <div class="faq-a">The PDF to Text feature extracts selectable text embedded in the PDF. Scanned documents are images without text data. For scanned PDFs, use our PDF OCR tool which uses optical character recognition to read text from images.</div>
   </div>
 </div>
+</main>
 
 <afro-related-tools category="document-pdf" current="pdf-convert" data-ssr="1">
 <!-- RELATED_TOOLS_SSR_START -->
@@ -628,8 +678,7 @@ function showToast(msg, isError) {
 function outputReviewConfirmed() {
   var checks = Array.prototype.slice.call(document.querySelectorAll('.output-review input'));
   return checks.some(function(input) {
-    var card = input.closest('.card');
-    return card && !card.classList.contains('hidden') && input.checked;
+    return input.offsetParent !== null && input.checked;
   });
 }
 
@@ -637,8 +686,7 @@ function requireOutputReview() {
   if (outputReviewConfirmed()) return true;
   showToast('Review the output details, then tick the review checkbox before download.', true);
   var activeCheck = Array.prototype.slice.call(document.querySelectorAll('.output-review input')).find(function(input) {
-    var card = input.closest('.card');
-    return card && !card.classList.contains('hidden');
+    return input.offsetParent !== null;
   });
   if (activeCheck) activeCheck.focus();
   return false;
@@ -658,21 +706,7 @@ function saveBlob(blob, filename) {
 
 function downloadBlob(blob, filename, requiresGate) {
   if (requiresGate && !requireOutputReview()) return;
-  function save() { saveBlob(blob, filename); }
-  if (!requiresGate) {
-    save();
-    return;
-  }
-  if (window.AfroPdfDownloadGate && typeof window.AfroPdfDownloadGate.guard === 'function') {
-    window.AfroPdfDownloadGate.guard(save);
-    return;
-  }
-  var gate = document.querySelector('email-gate-modal');
-  if (gate && typeof gate.show === 'function') {
-    gate.show(save);
-    return;
-  }
-  save();
+  saveBlob(blob, filename);
 }
 
 // ============================================================
@@ -759,7 +793,15 @@ function switchMode(mode) {
 function setupDropZone(zoneId, inputId, handler) {
   var dz = document.getElementById(zoneId);
   var fi = document.getElementById(inputId);
+  dz.setAttribute('role', 'button');
+  dz.setAttribute('tabindex', '0');
   dz.addEventListener('click', function() { fi.click(); });
+  dz.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+      e.preventDefault();
+      fi.click();
+    }
+  });
   dz.addEventListener('dragover', function(e) { e.preventDefault(); dz.classList.add('dragover'); });
   dz.addEventListener('dragleave', function() { dz.classList.remove('dragover'); });
   dz.addEventListener('drop', function(e) {
@@ -800,6 +842,7 @@ function resetWord() {
 
 async function convertWord() {
   if (!wordFile) return;
+  document.getElementById('wordReviewConfirm').checked = false;
   var btn = document.getElementById('wordConvertBtn');
   var bar = document.getElementById('wordProgress');
   var fill = document.getElementById('wordProgressFill');
@@ -974,6 +1017,7 @@ function resetExcel() {
 
 async function convertExcel() {
   if (!excelWorkbook) return;
+  document.getElementById('excelReviewConfirm').checked = false;
   var btn = document.getElementById('excelConvertBtn');
   var bar = document.getElementById('excelProgress');
   var fill = document.getElementById('excelProgressFill');
@@ -1435,6 +1479,7 @@ function resetPdfImages() {
 
 async function convertImages() {
   if (!imagePdfDoc || !imagePdfFile) return;
+  document.getElementById('imageReviewConfirm').checked = false;
   var btn = document.getElementById('imageConvertBtn');
   var bar = document.getElementById('imageProgress');
   var fill = document.getElementById('imageProgressFill');
@@ -1498,7 +1543,7 @@ async function convertImages() {
     ptext.textContent = 'Done!';
     showToast('PDF pages exported as images successfully!');
   } catch (err) {
-    console.error('PDF image export error:', err);
+    if (!/^Enter a valid page range/.test(err.message || '')) console.error('PDF image export error:', err);
     showToast('Image export failed: ' + err.message, true);
     fill.style.width = '0%';
     ptext.textContent = '';
@@ -1535,8 +1580,6 @@ Array.prototype.forEach.call(document.querySelectorAll('.faq-q'), function(q) {
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
 
-<email-gate-modal></email-gate-modal>
-<script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
 <script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
 </body>
