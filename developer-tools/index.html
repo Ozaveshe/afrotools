@@ -97,6 +97,17 @@
   details.faq-d summary{padding:14px 16px;font-size:.88rem;font-weight:800;color:#111827;cursor:pointer;list-style:none}
   details.faq-d summary::-webkit-details-marker{display:none}
   details.faq-d .faq-a{padding:0 16px 15px;font-size:.84rem;color:#475569;line-height:1.7}
+  html[data-theme="dark"] body{background:#09111f;color:#eef5ff}
+  html[data-theme="dark"] .hero{background:#09111f;background-image:radial-gradient(circle at 16% 12%,rgba(56,189,248,.11),transparent 30%),radial-gradient(circle at 86% 18%,rgba(52,211,153,.09),transparent 28%);border-color:#25354d}
+  html[data-theme="dark"] .hero h1,html[data-theme="dark"] h2,html[data-theme="dark"] .tool-card h3,html[data-theme="dark"] .thesis strong,html[data-theme="dark"] details.faq-d summary{color:#eef5ff}
+  html[data-theme="dark"] .hero-sub,html[data-theme="dark"] .sec-copy,html[data-theme="dark"] .tool-card p,html[data-theme="dark"] .thesis p,html[data-theme="dark"] details.faq-d .faq-a{color:#b8c7dc}
+  html[data-theme="dark"] .ey,html[data-theme="dark"] .score,html[data-theme="dark"] .sec-white,html[data-theme="dark"] .thesis,html[data-theme="dark"] .search-panel,html[data-theme="dark"] .search-row input,html[data-theme="dark"] .pill,html[data-theme="dark"] .tool-card,html[data-theme="dark"] details.faq-d{background:#121f33;border-color:#2b3c55;color:#eef5ff}
+  html[data-theme="dark"] .btn-ghost{background:#121f33;border-color:#40536f;color:#eef5ff}
+  html[data-theme="dark"] .score-l,html[data-theme="dark"] .tool-meta{color:#9fb0c8}
+  html[data-theme="dark"] .tool-icon,html[data-theme="dark"] .tool-meta span{background:#192a43;color:#7dd3fc}
+  html[data-theme="dark"] .tool-chip{background:#17334c;color:#7dd3fc}
+  html[data-theme="dark"] .pill.active{background:#e7eef9;border-color:#e7eef9;color:#09111f}
+  html[data-theme="dark"] .empty{background:#121f33;border-color:#40536f;color:#b8c7dc}
   @media(max-width:820px){.hero-grid{grid-template-columns:1fr}.scoreboard{grid-template-columns:repeat(3,minmax(0,1fr))}.sec-head{display:block}.thesis-grid{grid-template-columns:1fr 1fr}}
   @media(max-width:520px){.wrap{padding:0 16px}.scoreboard{grid-template-columns:1fr 1fr}.tool-grid{grid-template-columns:1fr}.thesis-grid{grid-template-columns:1fr}.hero{padding-top:38px}.btn{width:100%}}
 </style>
@@ -123,7 +134,7 @@
       </div>
     </div>
     <div class="scoreboard" aria-label="Developer tools stats">
-      <div class="score"><div class="score-n" id="s-live" data-registry-count="tools.category.developer.published">83</div><div class="score-l">Published tools</div></div>
+      <div class="score"><div class="score-n" id="s-live" data-registry-count="tools.category.developer.published">32</div><div class="score-l">Free app routes</div></div>
       <div class="score"><div class="score-n" id="s-flagship" data-registry-count="features.developer_flagship">8</div><div class="score-l">Flagship apps</div></div>
       <div class="score"><div class="score-n">0</div><div class="score-l">Server uploads</div></div>
       <div class="score"><div class="score-n">100%</div><div class="score-l">No signup core</div></div>
@@ -282,15 +293,21 @@
       if (window.AfroProgressiveDirectory) window.AfroProgressiveDirectory.markNoPublished();
       return;
     }
-    var tools = (AFRO_TOOLS || []).filter(function(t){ return t.category === 'developer' && t.status === 'live'; });
+    var tools = (AFRO_TOOLS || []).filter(function(t){ return t.category === 'developer' && (t.status === 'live' || t.status === 'new'); });
     var map = byId(tools);
+    var listedIds = [];
+    Object.keys(SEGMENTS).forEach(function(segment){
+      SEGMENTS[segment].ids.forEach(function(id){
+        if (map[id] && listedIds.indexOf(id) === -1) listedIds.push(id);
+      });
+    });
     var keys = currentSegment === 'all' ? ['flagship','data','launch','utility'] : [currentSegment];
     var html = keys.map(function(k){ return sectionHtml(k, SEGMENTS[k], map); }).join('');
     document.getElementById('tool-sections').innerHTML = html || '<section class="sec"><div class="wrap"><div class="empty">No tools matched that filter.</div></div></section>';
     var liveEl = document.getElementById('s-live');
     var flagEl = document.getElementById('s-flagship');
     var counts = window.AFRO_REGISTRY_COUNTS || {};
-    if (liveEl) liveEl.textContent = String(counts['tools.category.developer.published'] || tools.length);
+    if (liveEl) liveEl.textContent = String(listedIds.length);
     if (flagEl) flagEl.textContent = String(counts['features.developer_flagship'] || SEGMENTS.flagship.ids.filter(function(id){ return !!map[id]; }).length);
     if (window.AfroProgressiveDirectory) {
       if (html) window.AfroProgressiveDirectory.markReady();
