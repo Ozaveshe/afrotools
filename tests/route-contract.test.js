@@ -162,4 +162,16 @@ assert.deepStrictEqual(nativeDestination, {
   advertisedAsEquivalent: true
 });
 
+const hiddenFixture = fs.mkdtempSync(path.join(ROOT, '.route-contract-hidden-'));
+try {
+  fs.writeFileSync(path.join(hiddenFixture, 'index.html'), '<!doctype html><title>Ignored fixture</title>', 'utf8');
+  const discovered = routeApi.walkHtmlFiles(ROOT).map((file) => path.relative(ROOT, file).replace(/\\/g, '/'));
+  assert.ok(
+    !discovered.some((file) => file.startsWith(path.basename(hiddenFixture) + '/')),
+    'AC-13: hidden local evidence directories must never enter the public route graph'
+  );
+} finally {
+  fs.rmSync(hiddenFixture, { recursive: true, force: true });
+}
+
 console.log('Route contract tests passed');

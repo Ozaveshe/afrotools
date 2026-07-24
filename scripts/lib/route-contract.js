@@ -84,6 +84,7 @@ function walkHtmlFiles(dir = ROOT, out = [], policy = loadPolicy()) {
   for (const entry of entries) {
     const fullPath = path.join(dir, entry.name);
     if (entry.isDirectory()) {
+      if (entry.name.startsWith(".")) continue;
       const relDir = path.relative(ROOT, fullPath).replace(/\\/g, "/");
       const rootSegment = relDir.split("/")[0];
       if (!excludedDirs.has(rootSegment)) walkHtmlFiles(fullPath, out, policy);

@@ -78,7 +78,7 @@ test("/search/ finds flagship apps and exposes all registry category filters", a
 
   await page.getByRole("button", { name: /creative economy/i }).click();
   await page.locator("#search-input").fill("AfroStream");
-  await expect(page.getByRole("link", { name: /afrostream/i })).toBeVisible();
+  await expect(page.locator('a.result-card[href="/tools/afrostream/"]')).toBeVisible();
 });
 
 test("/search/ uses the local AI router for practical sentence-style prompts", async ({ page }) => {
