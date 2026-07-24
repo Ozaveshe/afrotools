@@ -37,6 +37,7 @@ Snapshot date: 2026-07-24
 
 Clean integration branch: `codex/day3-reconciliation`
 Live/base commit: `bf399f3732a85e202d2e7e17fbbd8d7f0e829e9d`
+Day 3 release branch: [PR #37](https://github.com/Ozaveshe/afrotools/pull/37); latest source-validation head `c5ca1762c6dc56fbaaa1047a0daee4faa2787c8c` followed only by this ledger receipt
 
 | Measure | Current evidence-backed count |
 | --- | ---: |
@@ -50,6 +51,8 @@ Live/base commit: `bf399f3732a85e202d2e7e17fbbd8d7f0e829e9d`
 | Deployment of this reconciliation branch | PAUSED EXTERNALLY: Netlify production deploys and Agent Runners are disabled after the team exhausted its billing-cycle credit allowance; published production remains on the prior deployment. Preview/branch deploys remain available. User reported 2026-07-22; billing-cycle reset stated as 2026-08-09 unless credits are restored sooner. |
 
 Day 3 has reached its local app/category and generated-artifact gates. It must not be described as previewed, production-deployed or live until those remaining release layers are proved separately.
+
+GitHub CI for PR head `c5ca1762c6dc56fbaaa1047a0daee4faa2787c8c` independently passed `Build and audit` and all 8 `Playwright smoke` cases. The `Verify` job remains red only at the prerequisite static-fallback freshness gate: committed forex, fuel, rates and commodities snapshots exceed the seven-day limit. Repeated refresh attempts against the verified AfroTools Supabase project `zpclagtgczsygrgztlts` returned Cloudflare HTTP 522 origin timeouts across both forex and commodities reads. No timestamp was forged and the freshness limit was not relaxed. This is an external data-origin release blocker, not a promotion to preview or production proof.
 
 Production deployment is additionally blocked by the current Netlify billing state. Local acceptance, generated-artifact proof and preview/branch proof may continue, but no row or category may receive `LIVE PASS` from preview evidence. Exact-SHA production deployment and live-route verification must be replayed after production deploy authority is restored.
 
