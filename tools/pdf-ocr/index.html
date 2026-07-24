@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OCR PDF Online Free | Extract Text from Scanned PDFs | AfroTools</title>
+<title>OCR PDF | Extract Text from Scanned Documents | AfroTools</title>
 <meta name="description" content="Extract text from scanned PDFs and document images in your browser. Free local-first OCR with page tabs, confidence checks, copy, and TXT download.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="OCR PDF Online Free | AfroTools">
@@ -110,6 +110,11 @@
     gap: 22px;
     align-items: start;
   }
+  .tool-main-inner > *,
+  .card,
+  .card-body,
+  .field,
+  .file-info { min-width: 0; }
 
   .card {
     background: #fff;
@@ -203,6 +208,9 @@
     display: block;
   }
   .f-input {
+    box-sizing: border-box;
+    max-width: 100%;
+    min-width: 0;
     width: 100%;
     min-height: 44px;
     padding: 11px 13px;
@@ -469,6 +477,26 @@
     margin: 20px 0 8px;
   }
 
+  :root[data-theme="dark"] .tool-hero { background:#101b2e; border-color:#26364e; }
+  :root[data-theme="dark"] body.top-level-page-ui-refresh .tool-hero h1 { color:#eef5ff!important; }
+  :root[data-theme="dark"] .hero-sub { color:#b8c7dc!important; }
+  :root[data-theme="dark"] .badge { background:#17263d; border-color:#60a5fa; color:#bfdbfe; }
+  :root[data-theme="dark"] .f-label-text,
+  :root[data-theme="dark"] .info-title,
+  :root[data-theme="dark"] .seo-section h2,
+  :root[data-theme="dark"] .seo-section h3 { color:#eef5ff; }
+  :root[data-theme="dark"] .info-card,
+  :root[data-theme="dark"] .extracted-text,
+  :root[data-theme="dark"] .ocr-summary div,
+  :root[data-theme="dark"] .page-tabs { background:#121f33; border-color:#3a4c68; }
+  :root[data-theme="dark"] .info-text,
+  :root[data-theme="dark"] .info-text li,
+  :root[data-theme="dark"] .seo-section p,
+  :root[data-theme="dark"] .extracted-text,
+  :root[data-theme="dark"] .ocr-summary strong { color:#d8e4f5; }
+  :root[data-theme="dark"] .ocr-summary span,
+  :root[data-theme="dark"] .status-line { color:#b8c7dc; }
+
   @media (max-width: 768px) {
     .tool-main-inner { grid-template-columns: 1fr; }
     .action-row { grid-template-columns: 1fr; }
@@ -528,7 +556,7 @@
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ocr-pdf/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-ocr/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar active="tools"></afro-navbar>
 
 <div class="tool-hero">
@@ -547,7 +575,7 @@
   </div>
 </div>
 
-<div class="tool-main">
+<main class="tool-main">
   <div class="tool-main-inner">
     <div>
       <!-- Upload -->
@@ -664,7 +692,7 @@
       </div>
     </div>
   </div>
-</div>
+</main>
 
 <!-- SEO Content -->
 <div class="seo-section">
@@ -698,7 +726,7 @@
       </div>
       <div class="tool-verification-status">
         <span class="tool-verification-badge">Local-first OCR workflow</span>
-        <p class="tool-verification-note">Reviewed 2026. Disclaimer: verify with the original document before relying on extracted text. The shared PDF account gate does not upload your files.</p>
+        <p class="tool-verification-note">Reviewed 2026. Disclaimer: verify with the original document before relying on extracted text. Direct local TXT downloads do not upload your files.</p>
       </div>
     </div>
     <div class="tool-verification-grid">
@@ -902,6 +930,16 @@ function hideProgress() {
   progressBar.setAttribute('aria-valuenow', '0');
 }
 
+function withTimeout(promise, timeoutMs, message) {
+  let timer;
+  return Promise.race([
+    promise,
+    new Promise((resolve, reject) => {
+      timer = setTimeout(() => reject(new Error(message)), timeoutMs);
+    })
+  ]).finally(() => clearTimeout(timer));
+}
+
 // Render a single PDF page to canvas and return data URL
 async function renderPdfPage(pdfDoc, pageNum) {
   const page = await pdfDoc.getPage(pageNum);
@@ -938,7 +976,7 @@ extractBtn.addEventListener('click', async () => {
     showProgress(3, 'Initializing OCR engine...');
 
     // Create Tesseract worker with detailed progress
-    worker = await Tesseract.createWorker(language, 1, {
+    const workerPromise = Tesseract.createWorker(language, 1, {
       workerPath: '/assets/vendor/tesseract/worker.min.js?v=65249fe4',
       corePath: '/assets/vendor/tesseract/core',
       langPath: '/assets/vendor/tesseract/lang',
@@ -961,6 +999,12 @@ extractBtn.addEventListener('click', async () => {
         }
       }
     });
+    try {
+      worker = await withTimeout(workerPromise, 30000, 'OCR engine initialization timed out. Check your connection to the local assets, then retry.');
+    } catch (workerError) {
+      workerPromise.then((lateWorker) => lateWorker.terminate()).catch(() => {});
+      throw workerError;
+    }
 
     if (isPdf) {
       // Load PDF
@@ -979,7 +1023,7 @@ extractBtn.addEventListener('click', async () => {
         const imgData = await renderPdfPage(pdfDoc, i);
 
         showProgress(basePct + 20 / totalPages, 'OCR on ' + pageLabel + '...');
-        const result = await worker.recognize(imgData);
+        const result = await withTimeout(worker.recognize(imgData), 45000, 'OCR recognition timed out on page ' + i + '. Reconnect to local assets or try a smaller, clearer file.');
         const text = result.data.text.trim();
         const confidence = normalizeConfidence(result.data.confidence);
 
@@ -993,7 +1037,7 @@ extractBtn.addEventListener('click', async () => {
       const dataUrl = await readFileAsDataURL(currentFile);
 
       showProgress(40, 'Running OCR on image...');
-      const result = await worker.recognize(dataUrl);
+      const result = await withTimeout(worker.recognize(dataUrl), 45000, 'OCR recognition timed out. Reconnect to local assets or try a smaller, clearer image.');
       const text = result.data.text.trim();
       const confidence = normalizeConfidence(result.data.confidence);
       allPagesText.push({ page: 1, text: text || '(No text detected in this image)', confidence });
@@ -1020,10 +1064,19 @@ extractBtn.addEventListener('click', async () => {
 
   } catch (err) {
     console.error('OCR Error:', err);
-    showProgress(0, 'Error: ' + (err.message || 'OCR processing failed'));
+    const isOffline = navigator.onLine === false;
+    const errorMessage = isOffline
+      ? 'OCR could not start offline because a local runtime asset was unavailable.'
+      : (err.message || 'OCR processing failed');
+    showProgress(0, 'Error: ' + errorMessage);
     progressFill.style.width = '0%';
     progressBar.setAttribute('aria-valuenow', '0');
-    setFileStatus('OCR failed. Try a smaller file, a clearer scan, or refresh and try again.', true);
+    setFileStatus(
+      isOffline
+        ? 'OCR could not start offline. Reconnect, reload the local OCR assets, and try again; your file was not uploaded.'
+        : 'OCR failed. Try a smaller file, a clearer scan, or refresh and try again.',
+      true
+    );
     extractBtn.disabled = false;
     if (worker) {
       try { await worker.terminate(); } catch (terminateErr) {}
@@ -1134,8 +1187,6 @@ downloadBtn.addEventListener('click', () => {
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
 <script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
-<email-gate-modal></email-gate-modal>
-<script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
 <script src="/assets/js/pages/document-pdf-tool-focus.js?v=1def0859" defer></script>
 </body>
