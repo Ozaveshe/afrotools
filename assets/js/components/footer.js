@@ -139,11 +139,14 @@
       border-bottom: 1px solid #1f2937;
       align-items: start;
     }
+    .top > *, .links > * { min-width: 0; }
 
     .logo-row {
       display: flex; align-items: center; gap: 10px;
       text-decoration: none; margin-bottom: 14px;
+      max-width: 100%; min-width: 0; flex-wrap: wrap;
     }
+    .logo-row > div { min-width: 0; }
     .logo-name {
       font-size: 1.1rem; font-weight: 800;
       letter-spacing: 0.02em; color: #ffffff;
@@ -153,6 +156,7 @@
       font-size: 0.46rem; font-weight: 600;
       letter-spacing: 0.2em; text-transform: uppercase;
       color: #8B95A3; display: block; margin-top: 3px;
+      overflow-wrap: anywhere;
     }
 
     /* Tagline under logo — readable, not ghost */
@@ -173,7 +177,7 @@
       color: #f9fafb; line-height: 1.25; margin-bottom: 18px;
       letter-spacing: -0.02em;
     }
-    .nl-form { display: flex; gap: 8px; max-width: 400px; }
+    .nl-form { display: flex; gap: 8px; max-width: 400px; width: 100%; min-width: 0; }
     .nl-input {
       flex: 1; min-width: 0;
       padding: 11px 14px;
@@ -288,7 +292,7 @@
 
     .built-with {
       font-size: 0.78rem; font-weight: 500; color: #8B95A3;
-      margin-top: 18px;
+      margin-top: 18px; overflow-wrap: anywhere;
     }
 
     @media (max-width: 900px) {
