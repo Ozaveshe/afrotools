@@ -237,6 +237,23 @@
   font-size: 0.84rem;
   line-height: 1.55;
 }
+.invoice-review{display:flex;align-items:flex-start;gap:10px;grid-column:1/-1;margin:2px 0;padding:11px 12px;border:1px solid #BFDBFE;border-radius:8px;background:#F8FBFF;color:#334155;font-size:.78rem;font-weight:700;line-height:1.5;cursor:pointer}.invoice-review input{width:19px;height:19px;margin:1px 0 0;flex:0 0 auto;accent-color:#0062cc}
+:root[data-theme="dark"] .inv-page,:root[data-theme="dark"] .invoice-starter,:root[data-theme="dark"] .faq-sec{background:#0b1120!important}
+:root[data-theme="dark"] .card,:root[data-theme="dark"] .invoice-review,:root[data-theme="dark"] .invoice-starter-card,:root[data-theme="dark"] .faq-item{background:#101a2b!important;border-color:#294164!important;color:#dbeafe!important}
+:root[data-theme="dark"] .card-head,:root[data-theme="dark"] .advanced-panel,:root[data-theme="dark"] .totals,:root[data-theme="dark"] .line-item{background:#152238!important;border-color:#294164!important;color:#dbeafe!important}
+:root[data-theme="dark"] .f-input,:root[data-theme="dark"] .items-table input,:root[data-theme="dark"] .totals-row input{background:#0b1423!important;border-color:#35527b!important;color:#f1f5f9!important;opacity:1!important;-webkit-text-fill-color:#f1f5f9}
+:root[data-theme="dark"] #bankDetails{background:#0b1423!important;border-color:#35527b!important;color:#f1f5f9!important;opacity:1!important;-webkit-text-fill-color:#f1f5f9}
+:root[data-theme="dark"] .f-label,:root[data-theme="dark"] .card-title,:root[data-theme="dark"] .faq-q,:root[data-theme="dark"] .invoice-starter-head h2,:root[data-theme="dark"] .invoice-starter-card strong{color:#f1f5f9!important}
+:root[data-theme="dark"] .f-note,:root[data-theme="dark"] .card-sub,:root[data-theme="dark"] .action-hint,:root[data-theme="dark"] .faq-a,:root[data-theme="dark"] .invoice-starter-head p,:root[data-theme="dark"] .invoice-starter-card span:last-child{color:#b7c5d8!important}
+:root[data-theme="dark"] .items-table th,:root[data-theme="dark"] .items-table td{border-color:#294164!important}
+:root[data-theme="dark"] .invoice-preview{background:#fff!important;border-color:#cbd5e1!important;color:#0f172a!important}
+:root[data-theme="dark"] .invoice-preview .inv-party-name,:root[data-theme="dark"] .invoice-preview .inv-meta-value,:root[data-theme="dark"] .invoice-preview .inv-total-row,:root[data-theme="dark"] .invoice-preview .inv-items-table td{color:#1e293b!important}
+:root[data-theme="dark"] .invoice-preview .inv-party-detail,:root[data-theme="dark"] .invoice-preview .inv-party-label,:root[data-theme="dark"] .invoice-preview .inv-meta-label,:root[data-theme="dark"] .invoice-preview .inv-notes{color:#475569!important}
+:root[data-theme="dark"] .invoice-preview .inv-meta-item{background:#f1f5f9!important}
+:root[data-theme="dark"] .invoice-preview .inv-items-table thead,:root[data-theme="dark"] .invoice-preview .inv-items-table th{background:#0f172a!important;color:#fff!important}
+:root[data-theme="dark"] .invoice-preview .inv-items-table tbody,:root[data-theme="dark"] .invoice-preview .inv-items-table tr,:root[data-theme="dark"] .invoice-preview .inv-items-table td{background:#fff!important}
+:root[data-theme="dark"] .invoice-preview .inv-items-table th,:root[data-theme="dark"] .invoice-preview .inv-items-table td,:root[data-theme="dark"] .invoice-preview .inv-notes,:root[data-theme="dark"] .invoice-preview .inv-total-row.grand{border-color:#cbd5e1!important}
+:root[data-theme="dark"] .invoice-preview .inv-total-row.grand,:root[data-theme="dark"] .invoice-preview .inv-title h2{color:#0062cc!important}
 .invoice-preview.is-empty { opacity: 0.58; }
 .empty-state-copy {
   margin: 0;
@@ -385,7 +402,7 @@
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/kirkiro-invoice/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/invoice-generator/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh" data-local-first-downloads>
 <a class="skip-to-form" href="#invoiceMain">Skip to the invoice form</a>
 <afro-navbar active="ecommerce"></afro-navbar>
 
@@ -815,6 +832,10 @@
         </details>
         <input aria-label="ImportJsonInput" class="import-json-input" id="importJsonInput" type="file" accept="application/json,.json">
         <p class="action-hint" id="invoiceActionHint" aria-live="polite"></p>
+        <label class="invoice-review" for="invoiceReviewConfirm">
+          <input type="checkbox" id="invoiceReviewConfirm">
+          <span>I reviewed the seller, client, invoice number, dates, line items, tax, payment details, totals, and live preview before export.</span>
+        </label>
         <p class="action-hint">Local-first by default: PDF, print, reminders, JSON export, and unsigned saved drafts run in this browser. Verify VAT, withholding, invoice numbering, and local invoicing rules before using an invoice for compliance.</p>
       </div>
     </div>
@@ -1909,8 +1930,6 @@ init();
 
 })();
 </script>
-<email-gate-modal></email-gate-modal>
-<script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
 <script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c"></script>
 <script>
@@ -2146,6 +2165,46 @@ init();
     }
     return false;
   };
+})();
+</script>
+<script>
+(function(){
+  var review=document.getElementById('invoiceReviewConfirm');
+  var hint=document.getElementById('invoiceActionHint');
+  function requireReview(event){
+    if(review&&review.checked)return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if(hint)hint.textContent='Review the live invoice preview and confirm the commercial details before export.';
+    if(review)review.focus();
+  }
+  ['btnPDF','btnPDFMobile','btnExportJson'].forEach(function(id){
+    var button=document.getElementById(id);
+    if(button)button.addEventListener('click',requireReview,true);
+  });
+  document.addEventListener('input',function(event){
+    if(!review||event.target===review||!review.checked)return;
+    if(event.target&&event.target.closest&&event.target.closest('#invoiceMain')){
+      review.checked=false;
+      if(hint)hint.textContent='Invoice changed. Review the preview again before export.';
+    }
+  },true);
+  document.addEventListener('change',function(event){
+    if(!review||event.target===review||!review.checked)return;
+    if(event.target&&event.target.closest&&event.target.closest('#invoiceMain')){
+      review.checked=false;
+      if(hint)hint.textContent='Invoice changed. Review the preview again before export.';
+    }
+  },true);
+  document.addEventListener('click',function(event){
+    if(!review||!review.checked||!event.target||!event.target.closest)return;
+    var button=event.target.closest('#invoiceMain button');
+    if(!button||['btnPDF','btnPDFMobile','btnExportJson','btnShare','btnPrint'].indexOf(button.id)!==-1)return;
+    setTimeout(function(){
+      review.checked=false;
+      if(hint)hint.textContent='Invoice changed. Review the preview again before export.';
+    },0);
+  },true);
 })();
 </script>
 <script src="/tools/invoice-generator/js/invoice-workspace-sync.js?v=47d5871b" defer></script>
