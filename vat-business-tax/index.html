@@ -28,6 +28,7 @@
 <link rel="stylesheet" href="/assets/css/workflow-tightening.css?v=5c3ceaed">
 <link rel="stylesheet" href="/assets/css/vat-business-tax-layout-fix.css?v=3583381e">
 <link rel="stylesheet" href="/assets/css/vat-business-tax-focus.css?v=8b167f6d">
+<link rel="stylesheet" href="/assets/css/vat-ui-refinement.css">
 <script src="/assets/js/components/tool-registry.min.js?v=32cae627" defer></script>
 <script src="/assets/js/components/category-cards.js?v=c011c712" defer></script>
 <script src="/assets/js/components/category-hub-card-images.js?v=12b677fb" defer></script>
@@ -194,12 +195,18 @@
 <section class="sec"><div class="wrap">
   <div class="ey">All Tools</div>
   <h2 class="st">VAT & Business Tax Tools</h2>
-  <p class="ss">Search VAT, invoice, margin, pricing, and business tax tools by name.</p>
+  <p class="ss">Start with a focused set, browse every country VAT calculator, or open the business workflow tools. Every route stays available in this page.</p>
+  <div class="vat-tool-filters" role="group" aria-label="Filter VAT and business tax tools">
+    <button type="button" data-vat-tool-filter="featured" aria-pressed="true">Featured <span data-vat-filter-count="featured">12</span></button>
+    <button type="button" data-vat-tool-filter="vat">VAT calculators <span data-vat-filter-count="vat">52</span></button>
+    <button type="button" data-vat-tool-filter="business">Business tools <span data-vat-filter-count="business">11</span></button>
+    <button type="button" data-vat-tool-filter="all">All tools <span data-vat-filter-count="all">63</span></button>
+  </div>
   <div class="search-bar">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     <input aria-label="Search tools - e.g. VAT, profit margin, break even..." type="text" id="tool-search" placeholder="Search tools - e.g. VAT, profit margin, break-even..." autocomplete="off" spellcheck="false">
   </div>
-  <div id="search-label" class="search-results-label" style="display:none"></div>
+  <div id="search-label" class="search-results-label" role="status" aria-live="polite"></div>
   <div id="tool-grid"></div>
   <noscript>
     <section aria-labelledby="vat-featured-nojs" style="margin-top:20px;padding:20px;border:1px solid #d7e1ec;border-radius:10px;background:#fff">
@@ -345,46 +352,110 @@ function _initVatBusiness(){
     });
   }
 
-  function renderGrid(filteredLive,filteredPipe,query){
-    var html='';
-    var label=document.getElementById('search-label');
-    if(query){
-      var total=filteredLive.length+filteredPipe.length;
-      label.style.display='block';
-      label.textContent=total+' result'+(total!==1?'s':'')+' for "'+query+'"';
-    } else {
-      label.style.display='none';
-    }
-    if(filteredLive.length){
-      html+='<h2 style="font-size:18px;font-weight:800;color:#111;margin:0 0 14px;display:flex;align-items:center;gap:10px;font-family:Inter,sans-serif"><span style="width:8px;height:8px;border-radius:50%;background:var(--color-primary);flex-shrink:0"></span> Available Now <span style="font-size:13px;font-weight:500;color:#6b7280;">('+filteredLive.length+')</span></h2>';
-      html+='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:32px">';
-      filteredLive.forEach(function(t){html+=afroCard(t,true);});html+='</div>';
-    }
-    if(filteredPipe.length){
-      html+='<h2 style="font-size:18px;font-weight:800;color:#111;margin:0 0 14px;display:flex;align-items:center;gap:10px;font-family:Inter,sans-serif"><span style="width:8px;height:8px;border-radius:50%;background:#d1d5db;flex-shrink:0"></span> Coming Soon <span style="font-size:13px;font-weight:500;color:#6b7280;">('+filteredPipe.length+')</span></h2>';
-      html+='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px">';
-      filteredPipe.forEach(function(t){html+=afroCard(t,false);});html+='</div>';
-    }
-    if(!filteredLive.length&&!filteredPipe.length){
-      html='<div class="no-results">No tools found for <strong>"'+query+'"</strong>.<br>Try a different search term.</div>';
-    }
+  var featuredIds={
+    'vat-calc-pan-african':true,
+    'ng-vat':true,
+    'ke-vat':true,
+    'gh-vat':true,
+    'za-vat':true,
+    'profit-margin':true,
+    'markup-calc':true,
+    'break-even':true,
+    'inventory':true,
+    'shipping-calc':true,
+    'discount-calc':true,
+    'paystack-calculator':true
+  };
+  var toolsById={};
+  live.forEach(function(t){toolsById[t.id]=t;});
+  pipe.forEach(function(t){toolsById[t.id]=t;});
+
+  function familyFor(t){
+    var families=[];
+    if(featuredIds[t.id])families.push('featured');
+    families.push(t.id==='vat-calc-pan-african'||/-vat$/.test(t.id)?'vat':'business');
+    return families.join(' ');
+  }
+
+  function renderGrid(){
+    var html='<div class="vat-tool-grid" data-vat-tool-grid>';
+    live.forEach(function(t){html+=afroCard(t,true);});
+    pipe.forEach(function(t){html+=afroCard(t,false);});
+    html+='</div><div class="no-results" data-vat-no-results hidden>No matching tools. Try a broader filter or a different search term.</div>';
     container.innerHTML=html;
+    container.querySelectorAll('.tc').forEach(function(card){
+      var tool=toolsById[card.getAttribute('data-tool-id')];
+      if(!tool)return;
+      card.dataset.family=familyFor(tool);
+      card.dataset.search=[tool.name,tool.desc,tool.id,(tool.countries||[]).join(' ')].join(' ').toLowerCase();
+    });
     cleanGeneratedCardMarks(container);
   }
 
-  renderGrid(live,pipe,'');
+  renderGrid();
 
+  var activeFilter='featured';
+  var searchQuery='';
   var searchInput=document.getElementById('tool-search');
-  if(searchInput){
-    searchInput.addEventListener('input',function(){
-      var q=this.value.trim().toLowerCase();
-      if(!q){renderGrid(live,pipe,'');return;}
-      function match(t){
-        return (t.name||'').toLowerCase().includes(q)||(t.desc||'').toLowerCase().includes(q)||(t.id||'').toLowerCase().includes(q);
-      }
-      renderGrid(live.filter(match),pipe.filter(match),q);
+  var filterButtons=Array.prototype.slice.call(document.querySelectorAll('[data-vat-tool-filter]'));
+  var allCards=Array.prototype.slice.call(container.querySelectorAll('.tc'));
+  var label=document.getElementById('search-label');
+  var noResults=container.querySelector('[data-vat-no-results]');
+
+  function setFilterButtonState(){
+    filterButtons.forEach(function(button){
+      button.setAttribute('aria-pressed',button.dataset.vatToolFilter===activeFilter?'true':'false');
     });
   }
+
+  function applyFilters(){
+    var shown=0;
+    allCards.forEach(function(card){
+      var familyMatch=activeFilter==='all'||card.dataset.family.split(' ').indexOf(activeFilter)!==-1;
+      var searchMatch=!searchQuery||card.dataset.search.indexOf(searchQuery)!==-1;
+      var visible=familyMatch&&searchMatch;
+      card.hidden=!visible;
+      if(visible)shown+=1;
+    });
+    if(label){
+      label.textContent=searchQuery
+        ? shown+' result'+(shown===1?'':'s')+' for "'+searchQuery+'"'
+        : 'Showing '+shown+' of '+allCards.length+' available tools.';
+    }
+    if(noResults)noResults.hidden=shown!==0;
+  }
+
+  var counts={featured:0,vat:0,business:0,all:allCards.length};
+  allCards.forEach(function(card){
+    card.dataset.family.split(' ').forEach(function(family){
+      counts[family]=(counts[family]||0)+1;
+    });
+  });
+  Object.keys(counts).forEach(function(key){
+    var countNode=document.querySelector('[data-vat-filter-count="'+key+'"]');
+    if(countNode)countNode.textContent=counts[key];
+  });
+
+  filterButtons.forEach(function(button){
+    button.addEventListener('click',function(){
+      activeFilter=button.dataset.vatToolFilter||'all';
+      searchQuery='';
+      if(searchInput)searchInput.value='';
+      setFilterButtonState();
+      applyFilters();
+    });
+  });
+
+  if(searchInput){
+    searchInput.addEventListener('input',function(){
+      searchQuery=this.value.trim().toLowerCase();
+      if(searchQuery)activeFilter='all';
+      setFilterButtonState();
+      applyFilters();
+    });
+  }
+  setFilterButtonState();
+  applyFilters();
 }
 if (typeof onRegistryReady === 'function') { onRegistryReady(_initVatBusiness); }
 else { document.addEventListener('DOMContentLoaded', function(){ if(typeof AFRO_TOOLS!=='undefined') _initVatBusiness(); else document.addEventListener('afrotools:registry-ready', _initVatBusiness); }); }
