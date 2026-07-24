@@ -34,7 +34,9 @@ assert.strictEqual(toyotaWithCosts.inputs.insuranceCost, 250);
 assert.strictEqual(toyotaWithCosts.inputs.fxRate, 1600);
 assert.strictEqual(toyotaWithCosts.inputs.engineCc, 1500);
 assert.strictEqual(toyotaWithCosts.estimate.cif, 9950);
-assert.ok(toyotaWithCosts.estimate.totalUSD > toyotaWithCosts.estimate.cif);
+assert.strictEqual(toyotaWithCosts.estimate.totalUSD, null);
+assert.strictEqual(toyotaWithCosts.estimate.confidence.status, "needs_classification");
+assert.ok(has(toyotaWithCosts.checklist, "vehicle age"));
 assert.deepStrictEqual(toyotaWithCosts.missingInputs, []);
 
 const electronics = advisor.buildAdvisorPlan({}, {
@@ -44,7 +46,7 @@ assert.strictEqual(electronics.inputs.productCategory, "electronics");
 assert.strictEqual(electronics.inputs.originCountry, "China");
 assert.strictEqual(electronics.inputs.destinationCountry, "Nigeria");
 assert.strictEqual(electronics.estimate.cif, 5850);
-assert.ok(electronics.estimate.totalUSD > electronics.estimate.cif);
+assert.strictEqual(electronics.estimate.totalUSD, null);
 assert.ok(has(electronics.checklist, "HS classification"));
 
 const clothing = advisor.buildAdvisorPlan({}, {
@@ -60,7 +62,7 @@ const machinery = advisor.buildAdvisorPlan({}, {
 assert.strictEqual(machinery.inputs.productCategory, "machinery");
 assert.strictEqual(machinery.inputs.originCountry, "Germany");
 assert.strictEqual(machinery.inputs.purchasePrice, 12000);
-assert.ok(machinery.estimate.totalUSD > machinery.estimate.cif);
+assert.strictEqual(machinery.estimate.totalUSD, null);
 
 const unknown = advisor.buildAdvisorPlan({}, {
   query: "How much duty to import something into Nigeria?"
@@ -73,7 +75,8 @@ assert.ok(unknown.sourceConfidence.join(" ").includes("No final customs assessme
 assert.match(advisor.renderImportAdvisorPanel(toyotaWithCosts), /Import advisor estimate/);
 assert.match(advisor.renderImportAdvisorPanel(toyotaWithCosts), /Official verification checklist/);
 assert.match(advisor.renderImportAdvisorPanel(toyotaWithCosts), /Planning estimate only/);
+assert.match(advisor.renderImportAdvisorPanel(toyotaWithCosts), /classification needed/i);
 assert.match(advisor.renderImportAdvisorPanel(toyotaWithCosts), /FX Import Impact/);
 assert.match(advisor.renderImportAdvisorPanel(toyotaWithCosts), /\/tools\/fx-import-impact\//);
 
-console.log("AI import advisor workflow validated: extraction, missing inputs, estimates, source confidence, and cautious copy.");
+console.log("AI import advisor workflow validated: extraction, CIF-only fail-closed planning, source confidence, and cautious copy.");

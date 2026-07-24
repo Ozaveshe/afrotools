@@ -52,10 +52,11 @@ test('SEO and AI contracts state the real browser-local boundaries', () => {
     assert.match(html, /FAQPage/);
   }
   const context = JSON.parse(read('data/ai/tool-context/compound-interest.json'));
-  assert.equal(context.sourceOfTruth, 'engines/src/investment-return-engine.js');
-  assert.equal(context.boundaries.prefill, false);
-  assert.equal(context.boundaries.liveRates, false);
-  assert.equal(context.boundaries.guaranteedReturn, false);
+  assert.equal(context.status, 'source-coupled');
+  assert.equal(context.sourceBindings[0].formulaId, 'route-investment-return');
+  assert.match(context.staticText, /accepts no AI prefill/i);
+  assert.match(context.staticText, /Never supply a market rate/i);
+  assert.match(context.staticText, /guaranteed return/i);
   const manifest = require('../assets/js/ai/tool-manifest.js').MAJOR_TOOL_OVERRIDES['compound-interest'];
   assert.deepEqual(manifest.aiCapabilities, ['route_only', 'export']);
   assert.equal(manifest.privacyMode, 'browser_local');

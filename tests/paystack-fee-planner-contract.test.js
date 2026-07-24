@@ -12,7 +12,7 @@ const routes=[
 test("English, French and Hausa are reciprocal native calculator routes",()=>{
   for(const [file,lang] of routes){
     const html=fs.readFileSync(path.join(root,file),"utf8");
-    assert.match(html,new RegExp(`<html lang="${lang}">`));
+    assert.match(html,new RegExp(`<html\\b[^>]*\\blang="${lang}"[^>]*>`));
     assert.match(html,new RegExp(`data-locale="${lang}"`));
     assert.match(html,/paystack-fee-planner\.js/);
     assert.match(html,/hreflang="en"/);assert.match(html,/hreflang="fr"/);assert.match(html,/hreflang="ha"/);

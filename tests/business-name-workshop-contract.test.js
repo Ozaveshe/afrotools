@@ -13,7 +13,7 @@ const pages = [
 test("all three native pages use the shared browser-local workshop", () => {
   for (const [locale, file, canonical] of pages) {
     const html = fs.readFileSync(path.join(ROOT, file), "utf8");
-    assert.match(html, new RegExp(`<html lang="${locale}"`));
+    assert.match(html, new RegExp(`<html\\b[^>]*\\blang="${locale}"[^>]*>`));
     assert.match(html, new RegExp(`data-locale="${locale}"`));
     assert.match(html, /assets\/js\/engines\/business-name-workshop\.js/);
     assert.match(html, /assets\/js\/pages\/business-name-workshop\.js/);

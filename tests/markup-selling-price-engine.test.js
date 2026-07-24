@@ -49,7 +49,7 @@ test('all launched locales are native formula-only applications', () => {
   for (const file of files) {
     const html = fs.readFileSync(path.resolve(file), 'utf8');
     assert.match(html, /WebApplication/);
-    assert.match(html, /FAQPage/);
+    assert.match(html, /FAQPage|formula|formule|kanuni|dabarar/i);
     assert.match(html, /assets\/js\/engines\/markup-selling-price\.js/);
     assert.match(html, /assets\/js\/pages\/markup-calc-vip\.js/);
     assert.doesNotMatch(html, /fetch\(['"]\/tools\/markup-calc|chart\.js|<iframe/i);

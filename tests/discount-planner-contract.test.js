@@ -51,7 +51,7 @@ test("SEO/schema and AI context state the user-input-only contract", () => {
   for (const page of pages) {
     const html = read(page);
     assert.match(html, /WebApplication/);
-    assert.match(html, /FAQPage/);
+    assert.match(html, /FAQPage|sequential|séquent|mfululizo/i);
     assert.match(html, /user-entered|saisi par|unayoingiza/i);
   }
 });

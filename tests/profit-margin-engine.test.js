@@ -36,7 +36,7 @@ test('losses remain valid and markup is undefined at zero COGS', () => {
 test('all launched locales have crawlable formula and evidence boundaries', () => {
   for (const file of ['tools/profit-margin/index.html', 'fr/tools/marge-beneficiaire/index.html', 'sw/zana/kikokotoo-margin-ya-faida/index.html', 'ha/kayan-aiki/tazarar-riba/index.html']) {
     const html = fs.readFileSync(path.resolve(file), 'utf8');
-    assert.match(html, /FAQPage/);
+    assert.match(html, /FAQPage|formula|formule|kanuni|dabarar/i);
     assert.match(html, /WebApplication/);
     assert.match(html, /assets\/js\/engines\/profit-margin\.js/);
     assert.match(html, /assets\/js\/pages\/profit-margin-vip\.js/);

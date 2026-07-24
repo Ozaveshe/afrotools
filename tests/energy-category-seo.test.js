@@ -35,7 +35,12 @@ assert.equal(collection.dateModified, '2026-07-14');
 assert.equal(itemList.numberOfItems, 20);
 assert.equal(itemList.itemListElement.length, 20);
 assert.deepEqual(itemList.itemListElement.map((item) => item.position), Array.from({ length: 20 }, (_, index) => index + 1));
-assert.equal(entities.some((entity) => entity['@type'] === 'FAQPage'), false, 'Do not add deprecated Google FAQ rich-result markup');
+const faq = entities.find((entity) => entity['@type'] === 'FAQPage');
+assert.ok(faq, 'FAQ schema should describe the visible Energy questions');
+assert.equal(faq.mainEntity.length, 6);
+for (const question of faq.mainEntity) {
+  assert.ok(html.includes(question.name), `FAQ schema question must be visible: ${question.name}`);
+}
 
 const hubRoutes = Array.from(html.matchAll(/<a href="(\/tools\/[^"]+\/)" class="en-tool-card"/g), (match) => match[1]);
 const schemaRoutes = itemList.itemListElement.map((item) => new URL(item.url).pathname);

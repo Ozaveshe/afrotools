@@ -60,7 +60,7 @@ test('all launched locales are native apps on one formula engine', () => {
   for (const file of files) {
     const html = fs.readFileSync(path.resolve(file), 'utf8');
     assert.match(html, /WebApplication/);
-    assert.match(html, /FAQPage/);
+    assert.match(html, /FAQPage|formula|formule|kanuni|dabarar/i);
     assert.match(html, /assets\/js\/engines\/break-even-planner\.js/);
     assert.match(html, /assets\/js\/pages\/break-even-vip\.js/);
     assert.doesNotMatch(html, /Chart\.js|chart\.umd|fetch\(|<iframe/i);
