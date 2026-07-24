@@ -883,6 +883,83 @@
       grid-template-columns: 1fr;
       flex-direction: column;
     }
+    .tool-main-inner,
+    .seo-section,
+    .faq-section {
+      padding-inline: 16px;
+    }
+    .card-body {
+      padding: 16px;
+    }
+  }
+
+  :root[data-theme="dark"] .tool-card,
+  :root[data-theme="dark"] details,
+  :root[data-theme="dark"] .info-card,
+  :root[data-theme="dark"] .match-item,
+  :root[data-theme="dark"] .result-box {
+    background: #101a2b;
+    border-color: #294164;
+    color: #dbeafe;
+  }
+
+  :root[data-theme="dark"] .card-head,
+  :root[data-theme="dark"] .review-check,
+  :root[data-theme="dark"] .summary-stat,
+  :root[data-theme="dark"] .page-nav {
+    background: #152238;
+    border-color: #294164;
+    color: #dbeafe;
+  }
+
+  :root[data-theme="dark"] .fr-row input,
+  :root[data-theme="dark"] .fr-row select,
+  :root[data-theme="dark"] .page-nav button,
+  :root[data-theme="dark"] .mini-btn,
+  :root[data-theme="dark"] .light-btn {
+    background: #0b1423;
+    border-color: #35527b;
+    color: #f1f5f9;
+  }
+
+  :root[data-theme="dark"] .fr-row select option {
+    background: #0b1423;
+    color: #f1f5f9;
+  }
+
+  :root[data-theme="dark"] .upload-zone {
+    background: #0b1423;
+    border-color: #35527b;
+    color: #bcd6f6;
+  }
+
+  :root[data-theme="dark"] .warning-banner {
+    background: #34250d;
+    border-color: #7c5a18;
+    color: #fde7a8;
+  }
+
+  :root[data-theme="dark"] .warning-banner a {
+    color: #ffd56a !important;
+  }
+
+  :root[data-theme="dark"] .fr-row label,
+  :root[data-theme="dark"] .toggle-item,
+  :root[data-theme="dark"] .section-label,
+  :root[data-theme="dark"] .summary-stat strong,
+  :root[data-theme="dark"] .seo-section h2,
+  :root[data-theme="dark"] .faq-section h2,
+  :root[data-theme="dark"] details summary {
+    color: #f1f5f9;
+  }
+
+  :root[data-theme="dark"] .field-note,
+  :root[data-theme="dark"] .summary-stat span,
+  :root[data-theme="dark"] .seo-section p,
+  :root[data-theme="dark"] details .faq-body,
+  :root[data-theme="dark"] .match-item .meta-line,
+  :root[data-theme="dark"] .no-matches {
+    color: #b7c5d8;
   }
 </style>
 <script type="application/ld+json">
@@ -967,9 +1044,10 @@
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/tafuta-na-badilisha-pdf/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-find-replace/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar active="tools"></afro-navbar>
 
+<main id="main-content">
 <div class="tool-hero">
   <div class="tool-hero-inner">
     <div class="breadcrumb">
@@ -997,7 +1075,7 @@
         <div class="tool-card">
           <div class="card-head">Upload PDF</div>
           <div class="card-body">
-            <div class="upload-zone" id="uploadZone">
+            <div class="upload-zone" id="uploadZone" role="button" tabindex="0" aria-controls="fileInput" aria-label="Choose a PDF file or drop it here">
               <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
               <p>Drop a PDF here or click to browse</p>
               <span class="hint">Supports any PDF file</span>
@@ -1224,6 +1302,7 @@
     </details>
   </div>
 </section>
+</main>
 
 <afro-related-tools category="document-pdf" current="pdf-find-replace" data-ssr="1">
 <!-- RELATED_TOOLS_SSR_START -->
@@ -1272,7 +1351,7 @@
 </script>
 <script src="/assets/js/lib/pdf-utils.js?v=dd2ba85f"></script>
 <script src="/assets/vendor/pdf-lib/pdf-lib.min.js?v=dec481b1"></script>
-<script src="/assets/js/pages/pdf-find-replace.js?v=296e075d"></script>
+<script src="/assets/js/pages/pdf-find-replace.js?v=80e1bb84"></script>
 <script type="application/x-afrotools-legacy-disabled">
 (function() {
   'use strict';
@@ -1780,8 +1859,7 @@
   }
 
   downloadBtn.addEventListener('click', function() {
-    var gate = document.querySelector('email-gate-modal');
-    if (gate) { gate.show(doActualDownload); } else { doActualDownload(); }
+    doActualDownload();
   });
 
 })();
@@ -1789,8 +1867,6 @@
 <script src="/assets/js/components/related-tools.js?v=0edc780e" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
-<email-gate-modal></email-gate-modal>
-<script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
 <script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
 </body>
