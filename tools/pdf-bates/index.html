@@ -714,6 +714,47 @@
     max-height: 400px;
   }
 
+  .output-review { align-items: flex-start; background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; color: #92400e; display: flex; gap: 8px; margin-bottom: 10px; padding: 10px 11px; }
+  .output-review input { flex: 0 0 auto; height: 17px; margin-top: 2px; width: 17px; }
+  .output-review span { cursor: pointer; font-size: 0.74rem; font-weight: 750; line-height: 1.45; }
+  .tool-verification-card, .tool-verification-head, .tool-verification-grid, .tool-verification-status { min-width: 0; }
+  .tool-verification-status { max-width: 100%; width: 100%; }
+  .tool-verification-badge { box-sizing: border-box; display: block; max-width: 100%; overflow-wrap: anywhere !important; white-space: normal !important; width: 100%; word-break: break-word; }
+  .tool-verification-note { max-width: 100%; overflow-wrap: anywhere; }
+  :root[data-theme="dark"] .card,
+  :root[data-theme="dark"] .result-card,
+  :root[data-theme="dark"] .info-card,
+  :root[data-theme="dark"] .file-row,
+  :root[data-theme="dark"] .stat-pill,
+  :root[data-theme="dark"] .faq-item { background: #121f33; border-color: #3a4c68; }
+  :root[data-theme="dark"] .card-head,
+  :root[data-theme="dark"] .faq-q,
+  :root[data-theme="dark"] .preview-box,
+  :root[data-theme="dark"] .manifest-box { background: #17263c; border-color: #3a4c68; }
+  :root[data-theme="dark"] .file-input-label { background: #17263c; border-color: #566985; color: #eef5ff; }
+  :root[data-theme="dark"] .card-title,
+  :root[data-theme="dark"] .f-label-text,
+  :root[data-theme="dark"] .section-label,
+  :root[data-theme="dark"] .file-name,
+  :root[data-theme="dark"] .stat-v,
+  :root[data-theme="dark"] .preview-text,
+  :root[data-theme="dark"] .result-text,
+  :root[data-theme="dark"] .info-title,
+  :root[data-theme="dark"] .info-text,
+  :root[data-theme="dark"] .seo-section h2,
+  :root[data-theme="dark"] .faq-q,
+  :root[data-theme="dark"] .faq-a { color: #eef5ff; }
+  :root[data-theme="dark"] .file-meta,
+  :root[data-theme="dark"] .stat-k,
+  :root[data-theme="dark"] .help-text,
+  :root[data-theme="dark"] .preview-sequence,
+  :root[data-theme="dark"] .manifest-box,
+  :root[data-theme="dark"] .result-note { color: #c9d7eb; }
+  :root[data-theme="dark"] .f-input,
+  :root[data-theme="dark"] .secondary-btn,
+  :root[data-theme="dark"] .mini-btn { background: #101b2c; border-color: #3a4c68; color: #eef5ff; }
+  :root[data-theme="dark"] .output-review { background: #312711; border-color: #8a681d; color: #fde68a; }
+
   @media (max-width: 768px) {
     .tool-main-inner {
       grid-template-columns: 1fr;
@@ -737,6 +778,13 @@
 
     .file-actions {
       justify-content: flex-start;
+    }
+
+    .tool-main-inner,
+    .tool-hero-inner,
+    .seo-section {
+      padding-left: 16px;
+      padding-right: 16px;
     }
   }
 </style>
@@ -816,7 +864,7 @@
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=71f122b6">
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the PDF Bates Numbering?","acceptedAnswer":{"@type":"Answer","text":"Enter your file and options in the fields above. The PDF Bates Numbering then gives you the processed document, ready to download you can use straight away."}},{"@type":"Question","name":"How accurate is the PDF Bates Numbering?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm the output before sending it on before you rely on it."}},{"@type":"Question","name":"Is the PDF Bates Numbering free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"What is Bates numbering used for?","acceptedAnswer":{"@type":"Answer","text":"Bates numbering is primarily used in legal and business settings to assign unique, sequential identifiers to pages in a document set. This makes it easy to reference specific pages during depositions, court proceedings, regulatory audits, and large-scale document reviews."}},{"@type":"Question","name":"Is my PDF uploaded to a server?","acceptedAnswer":{"@type":"Answer","text":"No. The entire Bates stamping process runs locally in your browser. Your PDFs are not uploaded to AfroTools, which is important for legal, medical, finance, and HR records."}},{"@type":"Question","name":"What format should I use for the prefix and suffix?","acceptedAnswer":{"@type":"Answer","text":"Common formats include a matter or case prefix such as \"CASE-\" and a suffix such as \"-CONF\". You can also use the template field with tokens like {file}, {page}, {total}, and {date} for document-aware stamps."}},{"@type":"Question","name":"How does zero-padding work?","acceptedAnswer":{"@type":"Answer","text":"Zero-padding adds leading zeros to maintain consistent number length. With 6-digit padding, the number 1 becomes \"000001\", 42 becomes \"000042\", and so on. This ensures all stamps are the same width, which is standard in legal documents."}},{"@type":"Question","name":"Can I stamp multiple PDFs with continuous numbering?","acceptedAnswer":{"@type":"Answer","text":"Yes. Upload multiple PDFs, arrange them in the queue, and the tool will continue the Bates sequence across the whole batch. The output ZIP keeps one stamped PDF per source file and includes an audit CSV."}},{"@type":"Question","name":"Can I stamp only specific pages?","acceptedAnswer":{"@type":"Answer","text":"Yes. Choose custom ranges such as \"1-3, 6, 9-12\", add exclusions, or skip the first page of each PDF. Numbering advances only on pages that actually receive a Bates stamp."}}]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is Bates numbering used for?","acceptedAnswer":{"@type":"Answer","text":"Bates numbering assigns unique sequential page identifiers for legal discovery, court proceedings, audits, and document review."}},{"@type":"Question","name":"Is my PDF uploaded to a server?","acceptedAnswer":{"@type":"Answer","text":"No. The Bates stamping process runs locally in your browser and does not upload source PDFs to AfroTools."}},{"@type":"Question","name":"What format should I use for the prefix and suffix?","acceptedAnswer":{"@type":"Answer","text":"Use a matter or case prefix such as CASE- and an optional suffix such as -CONF. Template tokens can also include file, page, total, and date values."}},{"@type":"Question","name":"How does zero-padding work?","acceptedAnswer":{"@type":"Answer","text":"Zero-padding adds leading zeros for consistent label width. With six digits, 1 becomes 000001 and 42 becomes 000042."}},{"@type":"Question","name":"Can I stamp multiple PDFs with continuous numbering?","acceptedAnswer":{"@type":"Answer","text":"Yes. Arrange multiple PDFs in the queue and numbering continues across the batch. ZIP export includes one stamped PDF per source file plus an audit CSV."}},{"@type":"Question","name":"Can I stamp only specific pages?","acceptedAnswer":{"@type":"Answer","text":"Yes. Use custom ranges, exclusions, or the skip-first-page option. Numbering advances only on pages that receive a stamp."}}]}
 </script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1bd26ae3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
@@ -826,8 +874,9 @@
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/namba-bates-pdf/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-bates/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar active="tools"></afro-navbar>
+<main>
 
 <div class="tool-hero">
   <div class="tool-hero-inner">
@@ -935,7 +984,7 @@
           </div>
 
           <label class="check-row">
-            <input aria-label="SkipFirstPage" type="checkbox" id="skipFirstPage">
+            <input type="checkbox" id="skipFirstPage">
             <span>Skip first page of each PDF, useful when cover pages should stay unstamped.</span>
           </label>
 
@@ -943,12 +992,12 @@
           <div class="field">
             <label class="f-label-text">Position</label>
             <div class="pos-grid">
-              <button type="button" class="pos-btn" data-pos="top-left">Top Left</button>
-              <button type="button" class="pos-btn" data-pos="top-center">Top Center</button>
-              <button type="button" class="pos-btn" data-pos="top-right">Top Right</button>
-              <button type="button" class="pos-btn" data-pos="bottom-left">Bottom Left</button>
-              <button type="button" class="pos-btn active" data-pos="bottom-center">Bottom Center</button>
-              <button type="button" class="pos-btn" data-pos="bottom-right">Bottom Right</button>
+              <button type="button" class="pos-btn" data-pos="top-left" aria-pressed="false">Top Left</button>
+              <button type="button" class="pos-btn" data-pos="top-center" aria-pressed="false">Top Center</button>
+              <button type="button" class="pos-btn" data-pos="top-right" aria-pressed="false">Top Right</button>
+              <button type="button" class="pos-btn" data-pos="bottom-left" aria-pressed="false">Bottom Left</button>
+              <button type="button" class="pos-btn active" data-pos="bottom-center" aria-pressed="true">Bottom Center</button>
+              <button type="button" class="pos-btn" data-pos="bottom-right" aria-pressed="false">Bottom Right</button>
             </div>
           </div>
 
@@ -962,24 +1011,24 @@
               </select>
             </div>
             <label class="check-row">
-              <input aria-label="FontBold" type="checkbox" id="fontBold">
+              <input type="checkbox" id="fontBold">
               <span>Use bold stamp text</span>
             </label>
           </div>
 
           <div class="field">
-            <label class="f-label-text">Font Size</label>
+            <label class="f-label-text" for="fontSize">Font Size</label>
             <div class="slider-row">
-              <input aria-label="FontSize" type="range" id="fontSize" min="7" max="30" value="10">
+              <input type="range" id="fontSize" min="7" max="30" value="10">
               <span class="slider-val slider-wide" id="fontSizeVal">10pt</span>
             </div>
           </div>
 
           <div class="grid-2">
             <div class="field">
-              <label class="f-label-text">Color</label>
+              <label class="f-label-text" for="stampColor">Color</label>
               <div style="display:flex;align-items:center;gap:12px;">
-                <input aria-label="StampColor" type="color" id="stampColor" value="#000000" style="width:60px;height:40px;border:1.5px solid #e5e7eb;border-radius:7px;cursor:pointer;background:#EFF6FF;">
+                <input type="color" id="stampColor" value="#000000" style="width:60px;height:40px;border:1.5px solid #e5e7eb;border-radius:7px;cursor:pointer;background:#EFF6FF;">
                 <span id="stampColorHex" style="font-size:0.75rem;font-weight:700;color:#1e293b;">#000000</span>
               </div>
             </div>
@@ -1008,15 +1057,15 @@
           </div>
 
           <div class="field">
-            <label class="f-label-text">Opacity</label>
+            <label class="f-label-text" for="opacity">Opacity</label>
             <div class="slider-row">
-              <input aria-label="Opacity" type="range" id="opacity" min="20" max="100" value="90">
+              <input type="range" id="opacity" min="20" max="100" value="90">
               <span class="slider-val slider-wide" id="opacityVal">90%</span>
             </div>
           </div>
 
           <label class="check-row">
-            <input aria-label="BackgroundPatch" type="checkbox" id="backgroundPatch" checked>
+            <input type="checkbox" id="backgroundPatch" checked>
             <span>Add a white backing patch behind the stamp for scanned or busy pages.</span>
           </label>
 
@@ -1045,15 +1094,19 @@
           <span class="card-title">Result and audit log</span>
         </div>
         <div class="card-body">
-          <div class="result-text" id="resultText"></div>
+          <div class="result-text" id="resultText" aria-live="polite"></div>
           <div id="actionRow" style="display:none;">
+            <label class="output-review" for="batesReviewConfirm">
+              <input type="checkbox" id="batesReviewConfirm">
+              <span>I checked file order, every stamped page, the first/last Bates values, and the audit manifest.</span>
+            </label>
             <div class="action-stack">
               <button type="button" class="act-btn" id="downloadBtn">Download result</button>
               <button type="button" class="act-btn" id="downloadZipBtn">Download ZIP batch</button>
               <button type="button" class="act-btn" id="manifestBtn">Download audit CSV</button>
             </div>
           </div>
-          <div class="manifest-box" id="auditManifest">Upload PDFs to see the planned Bates range.</div>
+          <div class="manifest-box" id="auditManifest" aria-live="polite">Upload PDFs to see the planned Bates range.</div>
           <div class="result-note">Files are stamped locally in your browser. The audit CSV records file order, page, stamp value, and Bates range.</div>
         </div>
       </div>
@@ -1100,59 +1153,35 @@
 
 
 
-<section class="df-upgrade" data-df-upgrade="pdf-bates">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>PDF Bates Numbering: quick guide</h2>
-      <p>Not sure how to get the most from the PDF Bates Numbering? Enter your file and options and it returns the processed document, ready to download — built for all 54 African countries.</p>
-      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> the processed document, ready to download, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the PDF Bates Numbering takes your file and options and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm the output before sending it on before you rely on the result.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm the output before sending it on before acting.</p>
-    </div>
-    <form class="df-form" data-df-form="pdf-bates">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="pdf-bates" data-df-base="PDF Bates Numbering — enter your details above to see your result." aria-live="polite">PDF Bates Numbering — enter your details above to see your result.</output>
-      <div class="df-actions"><button type="button" data-df-copy="pdf-bates">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="pdf-bates-faq-title">
-  <h2 id="pdf-bates-faq-title">PDF Bates Numbering FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How do I use the PDF Bates Numbering?</summary><p>Enter your file and options in the fields above. The PDF Bates Numbering then gives you the processed document, ready to download you can use straight away.</p></details><details><summary>How accurate is the PDF Bates Numbering?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm the output before sending it on before you rely on it.</p></details><details><summary>Is the PDF Bates Numbering free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
-</section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
   <div class="faq-item">
-    <button type="button" class="faq-q">What is Bates numbering used for?</button>
+    <button type="button" class="faq-q" aria-expanded="false">What is Bates numbering used for?</button>
     <div class="faq-a">Bates numbering is primarily used in legal and business settings to assign unique, sequential identifiers to pages in a document set. This makes it easy to reference specific pages during depositions, court proceedings, regulatory audits, and large-scale document reviews.</div>
   </div>
 
   <div class="faq-item">
-    <button type="button" class="faq-q">Is my PDF uploaded to a server?</button>
+    <button type="button" class="faq-q" aria-expanded="false">Is my PDF uploaded to a server?</button>
     <div class="faq-a">No. The entire Bates stamping process runs locally in your browser. Your PDFs are not uploaded to AfroTools, which is important for legal, medical, finance, and HR records.</div>
   </div>
 
   <div class="faq-item">
-    <button type="button" class="faq-q">What format should I use for the prefix and suffix?</button>
+    <button type="button" class="faq-q" aria-expanded="false">What format should I use for the prefix and suffix?</button>
     <div class="faq-a">Common formats include a matter or case prefix such as "CASE-" and a suffix such as "-CONF". You can also use the template field with tokens like {file}, {page}, {total}, and {date} for document-aware stamps.</div>
   </div>
 
   <div class="faq-item">
-    <button type="button" class="faq-q">How does zero-padding work?</button>
+    <button type="button" class="faq-q" aria-expanded="false">How does zero-padding work?</button>
     <div class="faq-a">Zero-padding adds leading zeros to maintain consistent number length. With 6-digit padding, the number 1 becomes "000001", 42 becomes "000042", and so on. This ensures all stamps are the same width, which is standard in legal documents.</div>
   </div>
 
   <div class="faq-item">
-    <button type="button" class="faq-q">Can I stamp multiple PDFs with continuous numbering?</button>
+    <button type="button" class="faq-q" aria-expanded="false">Can I stamp multiple PDFs with continuous numbering?</button>
     <div class="faq-a">Yes. Upload multiple PDFs, arrange them in the queue, and the tool will continue the Bates sequence across the whole batch. The output ZIP keeps one stamped PDF per source file and includes an audit CSV.</div>
   </div>
 
   <div class="faq-item">
-    <button type="button" class="faq-q">Can I stamp only specific pages?</button>
+    <button type="button" class="faq-q" aria-expanded="false">Can I stamp only specific pages?</button>
     <div class="faq-a">Yes. Choose custom ranges such as "1-3, 6, 9-12", add exclusions, or skip the first page of each PDF. Numbering advances only on pages that actually receive a Bates stamp.</div>
   </div>
 </div>
@@ -1167,7 +1196,7 @@
       </div>
       <div class="tool-verification-status">
         <span class="tool-verification-badge">Local-first disclosure workflow</span>
-        <p class="tool-verification-note">Reviewed 2026. Disclaimer: verify with counsel, the recipient, or the filing rules before relying on Bates output. The shared PDF account gate does not upload your files.</p>
+        <p class="tool-verification-note">Reviewed 2026. Disclaimer: verify with counsel, the recipient, or the filing rules before relying on Bates output. Downloads are direct and source files remain in this browser.</p>
       </div>
     </div>
     <div class="tool-verification-grid">
@@ -1190,6 +1219,7 @@
     </div>
   </div>
 </section>
+</main>
 <afro-related-tools category="document-pdf" current="pdf-bates" data-ssr="1">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
@@ -1204,7 +1234,7 @@
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
-<script src="/assets/js/pages/pdf-bates.js?v=2140948a"></script>
+<script src="/assets/js/pages/pdf-bates.js?v=c7cfc41c"></script>
 
 <script type="application/x-afrotools-legacy-disabled">
 (function() {
@@ -1400,8 +1430,7 @@
   }
 
   downloadBtn.addEventListener('click', function() {
-    var gate = document.querySelector('email-gate-modal');
-    if (gate) { gate.show(doActualDownload); } else { doActualDownload(); }
+    doActualDownload();
   });
 
   // FAQ toggles
@@ -1432,10 +1461,7 @@
   target.appendChild(div);
 })();
 </script>
-<email-gate-modal></email-gate-modal>
-<script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
 <script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 </body>
 </html>
