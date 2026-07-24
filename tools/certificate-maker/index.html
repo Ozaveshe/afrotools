@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Certificate Generator | Free Award &amp; Completion Certificates for Africa</title>
+<title>Certificate Maker: Award &amp; Completion Templates | AfroTools</title>
 <meta name="description" content="Free certificate generator for African schools, churches, and community groups. Add names and dates to award or completion templates, then export as PNG or PDF.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Certificate Generator | AfroTools">
@@ -32,8 +32,8 @@
 <script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=783a8ae4" defer></script>
 <script src="/assets/js/components/footer.min.js?v=6f4a0d1b" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="/assets/vendor/html2canvas/html2canvas.min.js?v=1.4.1"></script>
+<script src="/assets/vendor/pdf-lib/pdf-lib.min.js?v=1.17.1"></script>
 <style>
   :root {
     --afro-blue: var(--color-primary);
@@ -137,7 +137,7 @@
     margin: 0 auto;
     padding: 0 24px;
     display: grid;
-    grid-template-columns: 1fr 360px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 360px);
     gap: 22px;
     align-items: start;
   }
@@ -148,6 +148,7 @@
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+    min-width: 0;
   }
 
   .card + .card {
@@ -318,6 +319,7 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+    min-width: 0;
   }
 
   .info-card {
@@ -342,9 +344,94 @@
     line-height: 1.6;
   }
 
+  .certificate-status {
+    min-height: 1.4em;
+    margin: 10px 0 0;
+    color: #334155;
+    font-size: 0.78rem;
+    line-height: 1.4;
+  }
+
+  .certificate-status[data-state="error"] {
+    color: #b42318;
+    font-weight: 700;
+  }
+
+  .certificate-status[data-state="success"] {
+    color: #0a5c36;
+    font-weight: 700;
+  }
+
+  html[data-theme="dark"] .card,
+  html[data-theme="dark"] .card-head,
+  html[data-theme="dark"] .info-card,
+  html[data-theme="dark"] details,
+  html[data-theme="dark"] section[style*="background:#f8fafc"] {
+    background: #121f33 !important;
+    border-color: #334155 !important;
+  }
+
+  html[data-theme="dark"] .card-title,
+  html[data-theme="dark"] .f-label-text,
+  html[data-theme="dark"] .info-title,
+  html[data-theme="dark"] .info-text,
+  html[data-theme="dark"] .certificate-status,
+  html[data-theme="dark"] section[style*="max-width:900px"] h2,
+  html[data-theme="dark"] section[style*="max-width:900px"] h3,
+  html[data-theme="dark"] section[style*="max-width:900px"] p,
+  html[data-theme="dark"] details summary,
+  html[data-theme="dark"] section[style*="background:#f8fafc"] h2 {
+    color: #eef5ff !important;
+  }
+
+  html[data-theme="dark"] .f-input,
+  html[data-theme="dark"] .template-btn {
+    background: #0b1525;
+    border-color: #475569;
+    color: #eef5ff;
+  }
+
+  html[data-theme="dark"] .template-btn.active {
+    background: var(--afro-blue);
+    border-color: var(--afro-blue);
+    color: #fff;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .card,
+    html:not([data-theme="light"]) .card-head,
+    html:not([data-theme="light"]) .info-card,
+    html:not([data-theme="light"]) details,
+    html:not([data-theme="light"]) section[style*="background:#f8fafc"] {
+      background: #121f33 !important;
+      border-color: #334155 !important;
+    }
+
+    html:not([data-theme="light"]) .card-title,
+    html:not([data-theme="light"]) .f-label-text,
+    html:not([data-theme="light"]) .info-title,
+    html:not([data-theme="light"]) .info-text,
+    html:not([data-theme="light"]) .certificate-status,
+    html:not([data-theme="light"]) section[style*="max-width:900px"] h2,
+    html:not([data-theme="light"]) section[style*="max-width:900px"] h3,
+    html:not([data-theme="light"]) section[style*="max-width:900px"] p,
+    html:not([data-theme="light"]) details summary,
+    html:not([data-theme="light"]) section[style*="background:#f8fafc"] h2 {
+      color: #eef5ff !important;
+    }
+
+    html:not([data-theme="light"]) .f-input,
+    html:not([data-theme="light"]) .template-btn {
+      background: #0b1525;
+      border-color: #475569;
+      color: #eef5ff;
+    }
+  }
+
   @media (max-width: 768px) {
     .tool-main-inner {
       grid-template-columns: 1fr;
+      padding-inline: 16px;
     }
 
     .template-grid {
@@ -353,6 +440,20 @@
 
     .action-row {
       grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .card-body {
+      padding: 16px;
+    }
+
+    .preview {
+      padding: 20px 14px;
+    }
+
+    .preview-title {
+      font-size: 1.55rem;
     }
   }
 </style>
@@ -436,7 +537,7 @@
 </script>
 <meta property="article:modified_time" content="2026-03-28">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What types of certificates can I create?","acceptedAnswer":{"@type":"Answer","text":"You can create certificates of achievement, completion, appreciation, participation, and excellence. Each template is professionally designed with elegant borders, typography, and layout."}},{"@type":"Question","name":"Can I customise the certificate text?","acceptedAnswer":{"@type":"Answer","text":"Yes, every text field is customisable — recipient name, certificate title, description, organisation name, signatory name, and date. The live preview updates instantly as you make changes."}},{"@type":"Question","name":"What format is the certificate downloaded in?","acceptedAnswer":{"@type":"Answer","text":"Certificates are exported as high-resolution PNG images suitable for both digital sharing and professional printing at standard paper sizes."}},{"@type":"Question","name":"Can I create certificates in bulk?","acceptedAnswer":{"@type":"Answer","text":"Currently the tool generates one certificate at a time. However, you can quickly change the recipient name and download multiple certificates in succession. The template and other details stay the same between downloads."}},{"@type":"Question","name":"Do I need design skills to use this tool?","acceptedAnswer":{"@type":"Answer","text":"Not at all. The templates are pre-designed with professional layouts, fonts, and styling. You simply fill in the details and download — the tool handles all the design work for you."}}]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What types of certificates can I create?","acceptedAnswer":{"@type":"Answer","text":"You can create certificates of excellence, completion, service, and appreciation. Each template includes its own title, introduction, and recognition wording."}},{"@type":"Question","name":"Can I customise the certificate text?","acceptedAnswer":{"@type":"Answer","text":"Yes. Choose a certificate template, then change the recipient name, course or event, date, and organisation. The live preview updates as you type."}},{"@type":"Question","name":"What format is the certificate downloaded in?","acceptedAnswer":{"@type":"Answer","text":"Certificates can be exported locally as a high-resolution PNG image or a one-page PDF for digital sharing and printing."}},{"@type":"Question","name":"Can I create certificates in bulk?","acceptedAnswer":{"@type":"Answer","text":"Currently the tool generates one certificate at a time. However, you can quickly change the recipient name and download multiple certificates in succession. The template and other details stay the same between downloads."}},{"@type":"Question","name":"Do I need design skills to use this tool?","acceptedAnswer":{"@type":"Answer","text":"Not at all. The templates are pre-designed with professional layouts, fonts, and styling. You simply fill in the details and download — the tool handles all the design work for you."}}]}
 </script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1bd26ae3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
@@ -510,6 +611,7 @@
           </div>
 
           <button type="button" class="calc-btn" id="generateBtn">Generate Certificate</button>
+          <p class="certificate-status" id="certificateStatus" role="status" aria-live="polite"></p>
         </div>
       </div>
     </div>
@@ -527,6 +629,7 @@
             <div class="preview-text" style="font-size:1.1rem;font-weight:700;"><span id="previewName">John Doe</span></div>
             <div class="preview-text" id="previewAction">has successfully completed</div>
             <div class="preview-text" style="font-weight:700;"><span id="previewCourse">Web Development</span></div>
+            <div class="preview-text" id="previewDate"></div>
             <div class="preview-text" id="previewOrg" style="margin-top:18px;font-size:0.84rem;opacity:0.82;">Issued by AfroTools Academy</div>
           </div>
           <div class="action-row">
@@ -569,7 +672,7 @@
 <section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
   <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Certificate Generator: How It Works</h2>
   <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>The AfroTools Certificate Generator lets you create professional digital certificates in minutes. Choose from elegant templates for achievement awards, course completion, employee appreciation, and more. Customise every detail including the recipient name, date, issuing organisation, authorised signatory, and certificate description. The live preview updates as you type, so you can see exactly how the finished certificate will look before downloading. Export your certificate as a high-resolution image ready for printing or digital distribution. This tool is perfect for schools, training institutions, churches, community organisations, and businesses that need to issue certificates without paying for expensive design software. Whether you are running a workshop, recognising top performers, or completing a training programme, the Certificate Generator gives you polished, professional results with zero design skills required. All processing happens in your browser — no account needed and no data is sent to external servers.</p>
+    <p>The AfroTools Certificate Generator lets you create professional digital certificates in minutes. Choose from templates for school awards, course completion, church service, and community appreciation. Customise the recipient name, course or event, date, and issuing organisation. The live preview updates as you type, so you can check the finished certificate before downloading it as PNG or PDF. This tool is useful for schools, training institutions, churches, community organisations, and businesses that need to issue simple certificates without design software. Whether you are running a workshop, recognising top performers, or completing a training programme, the Certificate Generator gives you a clear, print-ready handoff. All processing happens in your browser — no account is needed and no certificate data is sent to external servers.</p>
   </div>
   <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Frequently Asked Questions</h3>
 
@@ -616,15 +719,15 @@
   <div class="landing-faq" style="display:flex;flex-direction:column;gap:8px;">
     <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
       <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">What types of certificates can I create?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">You can create certificates of achievement, completion, appreciation, participation, and excellence. Each template is professionally designed with elegant borders, typography, and layout.</p>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">You can create certificates of excellence, completion, service, and appreciation. Each template includes its own title, introduction, and recognition wording.</p>
     </details>
     <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
       <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Can I customise the certificate text?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Yes, every text field is customisable — recipient name, certificate title, description, organisation name, signatory name, and date. The live preview updates instantly as you make changes.</p>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Yes. Choose a certificate template, then change the recipient name, course or event, date, and organisation. The live preview updates as you type.</p>
     </details>
     <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
       <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">What format is the certificate downloaded in?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Certificates are exported as high-resolution PNG images suitable for both digital sharing and professional printing at standard paper sizes.</p>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Certificates can be exported locally as a high-resolution PNG image or a one-page PDF for digital sharing and printing.</p>
     </details>
     <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
       <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Can I create certificates in bulk?</summary>
@@ -656,10 +759,12 @@
   const previewName = document.getElementById('previewName');
   const previewAction = document.getElementById('previewAction');
   const previewCourse = document.getElementById('previewCourse');
+  const previewDate = document.getElementById('previewDate');
   const previewOrg = document.getElementById('previewOrg');
   const downloadPngBtn = document.getElementById('downloadPngBtn');
   const downloadPdfBtn = document.getElementById('downloadPdfBtn');
   const templateButtons = document.querySelectorAll('.template-btn');
+  const certificateStatus = document.getElementById('certificateStatus');
   const templateConfigs = {
     'school-award': {
       title: 'Certificate of Excellence',
@@ -697,7 +802,28 @@
   function updatePreview() {
     previewName.textContent = recipientName.value || 'Name';
     previewCourse.textContent = courseName.value || 'Course';
+    const selectedDate = certDate.value ? new Date(certDate.value + 'T00:00:00') : null;
+    previewDate.textContent = selectedDate && !Number.isNaN(selectedDate.getTime())
+      ? selectedDate.toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' })
+      : '';
     previewOrg.textContent = 'Issued by ' + (organization.value || 'Your organisation');
+  }
+
+  function setStatus(message, state) {
+    certificateStatus.textContent = message;
+    certificateStatus.dataset.state = state || '';
+  }
+
+  function validateCertificate() {
+    const missing = [];
+    if (!recipientName.value.trim()) missing.push('recipient name');
+    if (!courseName.value.trim()) missing.push('course or event');
+    if (!organization.value.trim()) missing.push('organisation');
+    if (missing.length) {
+      setStatus('Add the ' + missing.join(', ') + ' before generating or downloading.', 'error');
+      return false;
+    }
+    return true;
   }
 
   templateButtons.forEach(btn => {
@@ -723,11 +849,17 @@
   recipientName.addEventListener('input', updatePreview);
   courseName.addEventListener('input', updatePreview);
   organization.addEventListener('input', updatePreview);
-  generateBtn.addEventListener('click', updatePreview);
+  certDate.addEventListener('input', updatePreview);
+  generateBtn.addEventListener('click', () => {
+    if (!validateCertificate()) return;
+    updatePreview();
+    setStatus('Certificate preview updated. Check every detail before downloading.', 'success');
+  });
 
   updatePreview();
 
   downloadPngBtn.addEventListener('click', async () => {
+    if (!validateCertificate()) return;
     try {
       const preview = document.querySelector('.preview');
       const canvas = await html2canvas(preview, { scale: 2 });
@@ -735,12 +867,14 @@
       link.href = canvas.toDataURL('image/png');
       link.download = 'certificate.png';
       link.click();
+      setStatus('PNG certificate downloaded.', 'success');
     } catch (err) {
-      alert('Error generating PNG: ' + err.message);
+      setStatus('Could not generate the PNG. Please try again.', 'error');
     }
   });
 
   downloadPdfBtn.addEventListener('click', async () => {
+    if (!validateCertificate()) return;
     try {
       const preview = document.querySelector('.preview');
       const canvas = await html2canvas(preview, { scale: 2 });
@@ -757,8 +891,9 @@
       link.download = 'certificate.pdf';
       link.click();
       setTimeout(() => URL.revokeObjectURL(url), 5000);
+      setStatus('PDF certificate downloaded.', 'success');
     } catch (err) {
-      alert('Error generating PDF: ' + err.message);
+      setStatus('Could not generate the PDF. Please try again.', 'error');
     }
   });
 </script>
