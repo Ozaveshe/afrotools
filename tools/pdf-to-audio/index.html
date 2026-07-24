@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDF to Audio Reader - Natural Voices, AI Voice Mode and Study Controls | AfroTools</title>
+<title>PDF to Audio Reader | Local &amp; AI Voices | AfroTools</title>
 <meta name="description" content="Listen to PDFs with ranked browser voices, optional AI voices, page navigation, sentence tracking, text filters, bookmarks, and audio export when enabled.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="PDF to Audio Reader | AfroTools">
@@ -739,6 +739,126 @@
     max-height: 400px;
   }
 
+  .output-review {
+    align-items: flex-start;
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.48);
+    border-radius: 7px;
+    color: #fde68a;
+    display: flex;
+    flex: 1 1 100%;
+    gap: 8px;
+    padding: 9px 10px;
+  }
+
+  .output-review input {
+    flex: 0 0 auto;
+    height: 17px;
+    margin-top: 2px;
+    width: 17px;
+  }
+
+  .output-review span {
+    cursor: pointer;
+    font-size: 0.74rem;
+    font-weight: 750;
+    line-height: 1.45;
+  }
+
+  .audio-player .ai-consent-notice {
+    background: #17263c;
+    border-color: #3a4c68;
+    color: #eef5ff;
+    margin: 0 0 14px;
+  }
+
+  .audio-player .ai-consent-notice h3,
+  .audio-player .ai-consent-notice strong {
+    color: #fff;
+  }
+
+  .audio-player .ai-consent-notice p {
+    color: #d8e4f5;
+  }
+
+  .tool-verification-card,
+  .tool-verification-head,
+  .tool-verification-grid,
+  .tool-verification-status {
+    min-width: 0;
+  }
+
+  .tool-verification-badge {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+
+  :root[data-theme="dark"] .card,
+  :root[data-theme="dark"] .info-card,
+  :root[data-theme="dark"] .listen-stat,
+  :root[data-theme="dark"] .page-pill,
+  :root[data-theme="dark"] .faq-item {
+    background: #121f33;
+    border-color: #3a4c68;
+  }
+
+  :root[data-theme="dark"] .card-head,
+  :root[data-theme="dark"] .faq-q {
+    background: #17263c;
+    border-color: #3a4c68;
+  }
+
+  :root[data-theme="dark"] .file-input-label,
+  :root[data-theme="dark"] .file-info {
+    background: #17263c;
+    border-color: #566985;
+    color: #eef5ff;
+  }
+
+  :root[data-theme="dark"] .text-display {
+    background: #101b2c;
+    border-color: #3a4c68;
+    color: #e3ecf9;
+  }
+
+  :root[data-theme="dark"] .card-title,
+  :root[data-theme="dark"] .file-info-name,
+  :root[data-theme="dark"] .file-info-pages,
+  :root[data-theme="dark"] .listen-stat strong,
+  :root[data-theme="dark"] .info-title,
+  :root[data-theme="dark"] .info-text,
+  :root[data-theme="dark"] .seo-section h2,
+  :root[data-theme="dark"] .faq-q,
+  :root[data-theme="dark"] .faq-a {
+    color: #eef5ff;
+  }
+
+  :root[data-theme="dark"] .listen-stat span,
+  :root[data-theme="dark"] .page-pill {
+    color: #c9d7eb;
+  }
+
+  :root[data-theme="dark"] .page-pill.active {
+    background: #133149;
+    border-color: #4c91c7;
+    color: #b9ddff;
+  }
+
+  :root[data-theme="dark"] .text-display .sentence.active {
+    background: rgba(73, 162, 255, 0.24);
+    color: #fff;
+  }
+
+  .file-input-label:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 3px solid rgba(73, 162, 255, 0.35);
+    outline-offset: 2px;
+  }
+
   @media (max-width: 768px) {
     .tool-main-inner {
       grid-template-columns: 1fr;
@@ -754,6 +874,17 @@
     .filter-grid,
     .listen-stats {
       grid-template-columns: 1fr;
+    }
+
+    .tool-main-inner,
+    .tool-hero-inner,
+    .seo-section {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+
+    .reader-btn {
+      flex: 1 1 calc(50% - 8px);
     }
   }
 </style>
@@ -833,7 +964,7 @@
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=71f122b6">
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the PDF to Audio Reader?","acceptedAnswer":{"@type":"Answer","text":"Enter your file and options in the fields above. The PDF to Audio Reader then gives you the processed document, ready to download you can use straight away."}},{"@type":"Question","name":"How accurate is the PDF to Audio Reader?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm the output before sending it on before you rely on it."}},{"@type":"Question","name":"Is the PDF to Audio Reader free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"Does this tool upload my PDF to a server?","acceptedAnswer":{"@type":"Answer","text":"Browser voice mode does not upload your PDF. AI voice mode sends only the current text chunk to the configured server voice provider when you choose that mode, so the page labels that difference clearly."}},{"@type":"Question","name":"Why do some voices still sound robotic?","acceptedAnswer":{"@type":"Answer","text":"Browser voices come from your operating system and browser, so quality varies. The reader ranks natural, neural, enhanced, online, and premium voices first when they are available. For consistently modern voices, configure the AI voice gateway."}},{"@type":"Question","name":"Can I listen to scanned PDFs?","acceptedAnswer":{"@type":"Answer","text":"This tool extracts text from PDF text layers. Scanned PDFs that contain only images won't have extractable text. For scanned documents, use our PDF OCR tool first to add a text layer, then use this tool to listen."}},{"@type":"Question","name":"Can I export audio?","acceptedAnswer":{"@type":"Answer","text":"Text export works in browser mode. Downloadable audio is available after AI voice generation, because browser speech engines do not expose an audio file for download."}},{"@type":"Question","name":"Does auto-advance work across all pages?","acceptedAnswer":{"@type":"Answer","text":"Yes. When auto-advance is enabled, the tool automatically moves to the next page when the current page finishes reading. It stops after the last page. You can also manually navigate between pages using the skip buttons."}}]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does this tool upload my PDF to a server?","acceptedAnswer":{"@type":"Answer","text":"Browser voice mode does not upload your PDF. AI voice mode sends only the current page text, capped at 2,800 characters, after explicit document-content consent."}},{"@type":"Question","name":"Why do some voices still sound robotic?","acceptedAnswer":{"@type":"Answer","text":"Browser voices come from your operating system and browser, so quality varies. The reader ranks natural, neural, enhanced, online, and premium voices first when they are available."}},{"@type":"Question","name":"Can I listen to scanned PDFs?","acceptedAnswer":{"@type":"Answer","text":"This tool extracts text from PDF text layers. Scanned PDFs that contain only images need OCR before the reader can speak their content."}},{"@type":"Question","name":"Can I export audio?","acceptedAnswer":{"@type":"Answer","text":"Text export works in browser mode. Downloadable audio is available after consented AI voice generation, because browser speech engines do not expose an audio file for download."}},{"@type":"Question","name":"Does auto-advance work across all pages?","acceptedAnswer":{"@type":"Answer","text":"Yes. When auto-advance is enabled, the tool moves to the next page when the current page finishes and stops after the last page."}}]}
 </script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1bd26ae3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
@@ -843,8 +974,9 @@
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/pdf-kwenda-sauti/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-to-audio/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar active="tools"></afro-navbar>
+<main>
 
 <div class="tool-hero">
   <div class="tool-hero-inner">
@@ -873,7 +1005,7 @@
           <div>
             <input type="file" id="pdfInput" accept=".pdf" style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;">
             <label for="pdfInput" class="file-input-label" id="dropLabel">
-              📁 Click or drag & drop a PDF file
+              &#128193; Click or drag &amp; drop a PDF file (up to 25 MB / 150 pages)
             </label>
           </div>
           <div class="file-info" id="fileInfo">
@@ -885,7 +1017,7 @@
 
       <!-- Audio Player -->
       <div class="audio-player" id="audioPlayer">
-        <div class="player-page-info" id="pageInfo">Reading page 1 of 1</div>
+        <div class="player-page-info" id="pageInfo" aria-live="polite">Reading page 1 of 1</div>
 
         <div class="player-progress" id="progressBar">
           <div class="player-progress-fill" id="progressFill"></div>
@@ -899,9 +1031,10 @@
         </div>
 
         <div class="voice-engine-row" role="group" aria-label="Voice engine">
-          <button type="button" class="engine-btn active" data-engine="browser" id="browserEngineBtn">Browser Voices</button>
-          <button type="button" class="engine-btn" data-engine="ai" id="aiEngineBtn">AI Voices</button>
+          <button type="button" class="engine-btn active" data-engine="browser" id="browserEngineBtn" aria-pressed="true">Browser Voices</button>
+          <button type="button" class="engine-btn" data-engine="ai" id="aiEngineBtn" aria-pressed="false">AI Voices</button>
         </div>
+        <div class="ai-consent-notice" data-ai-consent-notice data-consent-mode="ai_optional_content_included" data-tool-id="pdf-to-audio" data-consent-title="Optional AI voice generation" data-consent-copy="Browser voices keep extracted text on this device. AI voice mode sends only the current page text, up to 2,800 characters, after you consent." data-consent-action="Allow AI voice generation"></div>
 
         <div class="voice-tools">
           <select id="voiceLanguage" aria-label="Voice language filter">
@@ -920,15 +1053,15 @@
 
         <div class="player-options">
           <div>
-            <div class="player-opt-label">Voice</div>
-            <select class="player-select" id="voiceSelect" aria-label="Voice Select">
+            <label class="player-opt-label" for="voiceSelect">Voice</label>
+            <select class="player-select" id="voiceSelect">
               <option value="">Loading voices...</option>
             </select>
           </div>
           <div>
-            <div class="player-opt-label">Speed</div>
+            <label class="player-opt-label" for="speedSlider">Speed</label>
             <div class="speed-row">
-              <input aria-label="SpeedSlider" type="range" class="speed-slider" id="speedSlider" min="0.5" max="2.5" step="0.1" value="1">
+              <input type="range" class="speed-slider" id="speedSlider" min="0.5" max="2.5" step="0.1" value="1">
               <span class="speed-val" id="speedVal">1x</span>
             </div>
           </div>
@@ -936,16 +1069,16 @@
 
         <div class="advanced-controls">
           <div class="range-control">
-            <div class="player-opt-label">Pitch <span id="pitchVal">1.0</span></div>
-            <input aria-label="PitchSlider" type="range" id="pitchSlider" min="0.6" max="1.6" step="0.1" value="1">
+            <label class="player-opt-label" for="pitchSlider">Pitch <span id="pitchVal">1.0</span></label>
+            <input type="range" id="pitchSlider" min="0.6" max="1.6" step="0.1" value="1">
           </div>
           <div class="range-control">
-            <div class="player-opt-label">Volume <span id="volumeVal">100%</span></div>
-            <input aria-label="VolumeSlider" type="range" id="volumeSlider" min="0" max="1" step="0.05" value="1">
+            <label class="player-opt-label" for="volumeSlider">Volume <span id="volumeVal">100%</span></label>
+            <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="1">
           </div>
           <div class="range-control">
-            <div class="player-opt-label">Pause <span id="pauseVal">0s</span></div>
-            <input aria-label="PauseSlider" type="range" id="pauseSlider" min="0" max="2" step="0.25" value="0">
+            <label class="player-opt-label" for="pauseSlider">Pause <span id="pauseVal">0s</span></label>
+            <input type="range" id="pauseSlider" min="0" max="2" step="0.25" value="0">
           </div>
         </div>
 
@@ -957,15 +1090,19 @@
         <div class="reader-filters">
           <div class="player-opt-label">Listening Cleanup</div>
           <div class="filter-grid">
-            <label><input aria-label="SkipHeaders" type="checkbox" id="skipHeaders" checked> Skip repeated headers</label>
-            <label><input aria-label="SkipPageNumbers" type="checkbox" id="skipPageNumbers" checked> Skip page numbers</label>
-            <label><input aria-label="SkipUrls" type="checkbox" id="skipUrls" checked> Skip long URLs</label>
-            <label><input aria-label="SkipCitations" type="checkbox" id="skipCitations"> Skip bracket citations</label>
+            <label><input type="checkbox" id="skipHeaders" checked> Skip repeated headers</label>
+            <label><input type="checkbox" id="skipPageNumbers" checked> Skip page numbers</label>
+            <label><input type="checkbox" id="skipUrls" checked> Skip long URLs</label>
+            <label><input type="checkbox" id="skipCitations"> Skip bracket citations</label>
           </div>
           <textarea class="pronunciation-box" id="pronunciationBox" placeholder="Pronunciation fixes, one per line: GRA = G R A" aria-label="Pronunciation fixes, one per line: GRA = G R A"></textarea>
         </div>
 
         <div class="reader-actions">
+          <label class="output-review" for="audioReviewConfirm">
+            <input type="checkbox" id="audioReviewConfirm">
+            <span>I checked extracted text against the PDF and confirmed the current page before export.</span>
+          </label>
           <button type="button" class="reader-btn" id="previewVoiceBtn">Preview Voice</button>
           <button type="button" class="reader-btn" id="bookmarkBtn">Bookmark</button>
           <button type="button" class="reader-btn" id="resumeBtn">Resume</button>
@@ -974,7 +1111,7 @@
           <button type="button" class="reader-btn" id="downloadAudioBtn" disabled>Download Audio</button>
         </div>
 
-        <div class="voice-note" id="voiceStatus"><strong>Voice setup:</strong> loading local voices...</div>
+        <div class="voice-note" id="voiceStatus" role="status" aria-live="polite"><strong>Voice setup:</strong> loading local voices...</div>
       </div>
 
       <!-- Text Display -->
@@ -1056,54 +1193,30 @@
 
 
 
-<section class="df-upgrade" data-df-upgrade="pdf-to-audio">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>PDF to Audio Reader: quick guide</h2>
-      <p>Not sure how to get the most from the PDF to Audio Reader? Enter your file and options and it returns the processed document, ready to download — built for all 54 African countries.</p>
-      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> the processed document, ready to download, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the PDF to Audio Reader takes your file and options and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm the output before sending it on before you rely on the result.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm the output before sending it on before acting.</p>
-    </div>
-    <form class="df-form" data-df-form="pdf-to-audio">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="pdf-to-audio" data-df-base="PDF to Audio Reader — enter your details above to see your result." aria-live="polite">PDF to Audio Reader — enter your details above to see your result.</output>
-      <div class="df-actions"><button type="button" data-df-copy="pdf-to-audio">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="pdf-to-audio-faq-title">
-  <h2 id="pdf-to-audio-faq-title">PDF to Audio Reader FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How do I use the PDF to Audio Reader?</summary><p>Enter your file and options in the fields above. The PDF to Audio Reader then gives you the processed document, ready to download you can use straight away.</p></details><details><summary>How accurate is the PDF to Audio Reader?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm the output before sending it on before you rely on it.</p></details><details><summary>Is the PDF to Audio Reader free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
-</section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
   <div class="faq-item">
-    <button type="button" class="faq-q">Does this tool upload my PDF to a server?</button>
-    <div class="faq-a">Browser voice mode does not upload your PDF. AI voice mode sends only the current text chunk to the configured server voice provider when you choose that mode, so the page labels that difference clearly.</div>
+    <button type="button" class="faq-q" aria-expanded="false">Does this tool upload my PDF to a server?</button>
+    <div class="faq-a">Browser voice mode does not upload your PDF. AI voice mode sends only the current page text, capped at 2,800 characters, after explicit document-content consent.</div>
   </div>
 
   <div class="faq-item">
-    <button type="button" class="faq-q">Why do some voices still sound robotic?</button>
+    <button type="button" class="faq-q" aria-expanded="false">Why do some voices still sound robotic?</button>
     <div class="faq-a">Browser voices come from your operating system and browser, so quality varies. The reader ranks natural, neural, enhanced, online, and premium voices first when they are available. For consistently modern voices, configure the AI voice gateway.</div>
   </div>
 
   <div class="faq-item">
-    <button type="button" class="faq-q">Can I listen to scanned PDFs?</button>
+    <button type="button" class="faq-q" aria-expanded="false">Can I listen to scanned PDFs?</button>
     <div class="faq-a">This tool extracts text from PDF text layers. Scanned PDFs that contain only images won't have extractable text. For scanned documents, use our PDF OCR tool first to add a text layer, then use this tool to listen.</div>
   </div>
 
   <div class="faq-item">
-    <button type="button" class="faq-q">Can I export audio?</button>
+    <button type="button" class="faq-q" aria-expanded="false">Can I export audio?</button>
     <div class="faq-a">Text export works in browser mode. Downloadable audio is available after AI voice generation, because browser speech engines do not expose an audio file for download.</div>
   </div>
 
   <div class="faq-item">
-    <button type="button" class="faq-q">Does auto-advance work across all pages?</button>
+    <button type="button" class="faq-q" aria-expanded="false">Does auto-advance work across all pages?</button>
     <div class="faq-a">Yes. When auto-advance is enabled, the tool automatically moves to the next page when the current page finishes reading. It stops after the last page. You can also manually navigate between pages using the skip buttons.</div>
   </div>
 </div>
@@ -1127,7 +1240,7 @@
         <ul class="tool-verification-list">
           <li>Loads PDF text in the browser, splits it into readable sections, and sends those sections to the browser speech engine.</li>
           <li>Text export is available for extracted content; downloadable audio depends on a separate voice-generation workflow.</li>
-          <li>Source PDFs stay local unless a future opt-in workflow clearly says otherwise.</li>
+          <li>Browser voices keep source text local. AI voice mode sends only the current page text, capped at 2,800 characters, after explicit document-content consent.</li>
         </ul>
       </div>
       <div class="tool-verification-block">
@@ -1141,6 +1254,7 @@
     </div>
   </div>
 </section>
+</main>
 <afro-related-tools category="document-pdf" current="pdf-to-audio" data-ssr="1">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
@@ -1151,14 +1265,6 @@
 </afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 
-<section class="df-faq quality-verification-panel" data-quality-proof="PDF to Audio Reader" aria-label="PDF to Audio Reader verification and limitations">
-  <h2>PDF to Audio Reader verification and limitations</h2>
-  <div class="df-faq__grid">
-    <details open><summary>Official/source check</summary><p>Uploaded PDFs may include personal, school, legal, or business content. Prefer browser-local reading, check voice availability on the device, and verify any extracted text before relying on it for study or accessibility support.</p></details>
-    <details><summary>Export or save path</summary><p>Use the page output, copy, print, download, or saved draft controls where available, and keep a separate record before acting on a money, travel, career, telecom, or document decision.</p></details>
-    <details><summary>Related next steps</summary><p><a href="/tools/pdf-workspace/">PDF workspace</a> &middot; <a href="/tools/pdf-ocr/">PDF OCR</a> &middot; <a href="/document-pdf/">Document tools</a></p></details>
-  </div>
-</section>
 <afro-footer></afro-footer>
 <script src="/assets/js/components/related-tools.js?v=0edc780e" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
@@ -1166,7 +1272,7 @@
 <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
 <script src="/assets/js/lib/pdf-utils.js?v=dd2ba85f"></script>
 
-<script src="/assets/js/pages/pdf-to-audio.js?v=1cb4581c"></script>
+<script src="/assets/js/pages/pdf-to-audio.js?v=d895f89b"></script>
 <script type="application/x-afrotools-legacy-disabled">
 (function() {
   'use strict';
@@ -1468,9 +1574,6 @@
 })();
 </script>
 <script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
-<email-gate-modal></email-gate-modal>
-<script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 </body>
 </html>
