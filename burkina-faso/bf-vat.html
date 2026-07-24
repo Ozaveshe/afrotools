@@ -30,7 +30,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <script src="/assets/js/components/navbar.min.js?v=996960fa" defer></script>
-<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/footer.min.js?v=6f4a0d1b" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
@@ -335,15 +335,18 @@
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
 <link rel="stylesheet" href="/assets/css/country-tax-page-ui-refresh.css?v=fcc20688">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<link rel="stylesheet" href="/assets/css/vat-ui-refinement.css?v=6d26433e">
 <script src="/assets/js/lib/source-confidence.js?v=e7c3ebe4" defer></script>
+<script src="/assets/js/pages/vat-ui-refinement.js?v=1ba6bd86" defer></script>
 <link rel="canonical" href="https://afrotools.com/burkina-faso/bf-vat">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/burkina-faso/bf-vat">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/burkina-faso/calculateur-tva">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/burkina-faso/kikokotoo-vat/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/burkina-faso/bf-vat">
 </head>
-<body class="country-tax-page-ui-refresh top-level-page-ui-refresh">
+<body class="country-tax-page-ui-refresh top-level-page-ui-refresh vat-legacy-ui-refinement">
 <afro-navbar active="tools"></afro-navbar>
+<main id="main-content">
 
 <section class="tool-hero">
   <div class="tool-hero-inner">
@@ -398,7 +401,7 @@
             <!-- SLIDER -->
             <div class="slider-wrap">
               <div class="slider-row">
-                <span class="slider-label" id="sliderLbl">Pre-Tax Amount (XOF)</span>
+                <label class="slider-label" id="sliderLbl" for="amountSlider">Pre-Tax Amount (XOF)</label>
                 <span class="slider-val" id="sliderVal">CFA10,000</span>
               </div>
               <input aria-label="AmountSlider" type="range" id="amountSlider" min="100" max="10000000" step="100" value="10000" oninput="onSlider(this)">
@@ -407,7 +410,7 @@
 
             <!-- INPUT -->
             <div class="field">
-              <div class="f-label"><span class="f-label-text">Amount</span><span class="f-hint">Or type exact value</span></div>
+              <label class="f-label" for="amount"><span class="f-label-text">Amount</span><span class="f-hint">Or type exact value</span></label>
               <div class="f-wrap">
                 <span class="f-prefix">CFA</span>
                 <input aria-label="Amount" type="number" class="f-input" id="amount" placeholder="10,000" min="0" step="100" value="10000" oninput="onInput(this)">
@@ -425,8 +428,9 @@
 
             <!-- CUSTOM VAT RATE -->
             <div class="custom-rate-wrap">
-              <label><input aria-label="CustomRateToggle" type="checkbox" id="customRateToggle" onchange="toggleCustomRate(this)"> Use custom rate</label>
-              <input aria-label="E.g. 12" type="text" class="custom-rate-input" id="customRateInput" placeholder="e.g. 12" style="display:none" oninput="onCustomRate()">
+              <label for="customRateToggle"><input aria-label="CustomRateToggle" type="checkbox" id="customRateToggle" onchange="toggleCustomRate(this)"> Use custom rate</label>
+              <label for="customRateInput" class="custom-rate-value-label" id="customRateInputLabel" style="display:none">Custom VAT rate (%)</label>
+              <input aria-label="Custom VAT rate percentage" type="text" class="custom-rate-input" id="customRateInput" placeholder="e.g. 12" style="display:none" oninput="onCustomRate()">
               <span id="customRateHint" style="font-size:.7rem;color:#6B8CAE;display:none">%</span>
             </div>
 
@@ -754,7 +758,8 @@
           <p class="tool-verification-note">Burkina Faso - high risk - AfroTools source audit</p>
         </div>
       </div>
-      <div class="tool-verification-grid">
+      <button type="button" class="vat-source-toggle" aria-expanded="true" aria-controls="bf-vat-source-details" hidden>Hide source details</button>
+      <div class="tool-verification-grid" id="bf-vat-source-details">
         <div class="tool-verification-block">
           <h3>Official source links</h3>
           <ul class="tool-verification-list">
@@ -801,6 +806,7 @@
   </div>
 </section>
 <!-- TOOL_VERIFICATION_PANEL_END -->
+</main>
 <afro-related-tools data-ssr="1" category="ecommerce" current="bf-vat">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
@@ -884,6 +890,7 @@ let CUSTOM_RATE = 0;
 function toggleCustomRate(el) {
   USE_CUSTOM_RATE = el.checked;
   document.getElementById('customRateInput').style.display = el.checked ? '' : 'none';
+  document.getElementById('customRateInputLabel').style.display = el.checked ? '' : 'none';
   document.getElementById('customRateHint').style.display = el.checked ? '' : 'none';
   if (!el.checked) { CUSTOM_RATE = 0; }
 }

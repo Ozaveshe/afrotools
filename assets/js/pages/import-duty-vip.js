@@ -3,6 +3,7 @@
   var engine = window.AfroImportDutyNigeriaEngine;
   var form = document.getElementById('importDutyForm');
   var result = document.getElementById('importDutyResult');
+  var workspace = result ? result.closest('.idv-workspace') : null;
   var status = document.getElementById('importDutyStatus');
   var copyButton = document.getElementById('copyImportDuty');
   var shareButton = document.getElementById('shareImportDuty');
@@ -11,6 +12,7 @@
   var locale = window.ImportDutyLocale || {};
   var current = null;
   if (!engine || !form || !result || !status) return;
+  if (workspace && result.hidden) workspace.classList.add('idv-workspace-empty');
 
   function value(id) { return document.getElementById(id).value; }
   function checked(id) { return document.getElementById(id).checked; }
@@ -63,6 +65,7 @@
       line(locale.portClearing || 'Port and clearing', usd(data.portCharges + data.clearingFee), locale.userEntered || 'User entered') + '</div>' +
       '<div class="idv-result-note"><strong>' + escape(locale.beforePaying || 'Before paying') + '</strong><p>' + escape(data.reviewRequired ? (locale.reviewNote || 'Confirm the HS code, rate and current quotes before relying on this estimate.') : (locale.confirmedNote || 'You confirmed the classification and quote inputs. Final assessment still belongs to NCS.')) + '</p></div>';
     result.hidden = false;
+    if (workspace) workspace.classList.remove('idv-workspace-empty');
     setActions(true);
     status.textContent = locale.calculated || 'Estimate updated locally. Nothing was sent or stored.';
   }
@@ -82,6 +85,7 @@
   clearButton.addEventListener('click', function () {
     form.reset(); document.getElementById('vatRate').value = '7.5'; current = null;
     result.hidden = true; result.innerHTML = ''; setActions(false);
+    if (workspace) workspace.classList.add('idv-workspace-empty');
     status.textContent = locale.cleared || 'Cleared. Nothing was stored or sent.';
   });
 

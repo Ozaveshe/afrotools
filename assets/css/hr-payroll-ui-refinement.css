@@ -1,0 +1,477 @@
+/*
+ * Day 3 HR & Payroll UI refinement.
+ * Keeps the existing calculators and no-JS country links intact while improving
+ * hierarchy, interaction states, responsive density, and dark-mode surfaces.
+ */
+.hr-payroll-category-focus .path-card button,
+.hr-payroll-category-focus .check-actions button {
+  min-width: 44px;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.hr-payroll-category-focus .path-card {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.hr-payroll-category-focus .path-card button {
+  margin-top: auto;
+}
+
+.hr-payroll-category-focus .path-card:has(button[aria-pressed="true"]) {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-pale);
+}
+
+.hr-payroll-category-focus .tool-card,
+.hr-payroll-category-focus .related-card {
+  transition: border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+}
+
+.hr-payroll-category-focus .tool-card:hover,
+.hr-payroll-category-focus .tool-card:focus-visible {
+  border-color: var(--color-primary);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.1);
+  transform: none;
+}
+
+.hr-ui-refined .hr-tool-hero {
+  padding: clamp(2rem, 4vw, 3.5rem) var(--page-gutter);
+}
+
+.hr-ui-refined .hr-tool-hero .container {
+  width: min(1080px, 100%);
+  margin: 0 auto;
+}
+
+.hr-ui-refined .hr-tool-hero h1,
+.hr-ui-refined .hr-tool-hero h1 em,
+.hr-ui-refined .dw-hero h1 {
+  max-width: 780px;
+  font-family: var(--font-sans);
+  font-size: clamp(2rem, 4.8vw, 3.35rem);
+  font-style: normal;
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+}
+
+.hr-ui-refined .hr-tool-hero-sub,
+.hr-ui-refined .dw-hero p {
+  max-width: 720px;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.hr-ui-refined .hr-main {
+  width: min(1140px, 100%);
+  margin: 0 auto;
+  padding-top: clamp(1rem, 2.5vw, 2rem);
+}
+
+.hr-ui-refined .contractor-calculator,
+.hr-ui-refined .employee-cost-calculator,
+.hr-ui-refined .gratuity-calculator,
+.hr-ui-refined .retrenchment-calculator {
+  padding-top: 0;
+}
+
+.hr-ui-refined .contractor-calculator__card,
+.hr-ui-refined .employee-cost-card,
+.hr-ui-refined .gratuity-card,
+.hr-ui-refined .retrenchment-card,
+.hr-ui-refined .hr-card,
+.hr-ui-refined .dw-card {
+  border-color: var(--color-border);
+  box-shadow: 0 16px 42px rgba(15, 23, 42, 0.08);
+}
+
+.hr-ui-refined .contractor-calculator__intro h2,
+.hr-ui-refined .employee-cost-intro h2,
+.hr-ui-refined .gratuity-intro h2,
+.hr-ui-refined .retrenchment-intro h2,
+.hr-ui-refined .hr-card-head h2,
+.hr-ui-refined .dw-card-header h2 {
+  font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.hr-ui-refined .contractor-form fieldset,
+.hr-ui-refined .employee-cost-form fieldset,
+.hr-ui-refined .gratuity-form fieldset,
+.hr-ui-refined .retrenchment-form fieldset {
+  margin-bottom: 1rem;
+  padding: clamp(1rem, 2vw, 1.25rem);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-subtle);
+}
+
+.hr-ui-refined .contractor-form legend,
+.hr-ui-refined .employee-cost-form legend,
+.hr-ui-refined .gratuity-form legend,
+.hr-ui-refined .retrenchment-form legend {
+  padding: 0 0.35rem;
+  font-size: 1rem;
+}
+
+.hr-ui-refined .contractor-form input,
+.hr-ui-refined .employee-cost-form input,
+.hr-ui-refined .gratuity-form input,
+.hr-ui-refined .retrenchment-form input,
+.hr-ui-refined .hr-f-input,
+.hr-ui-refined .hr-f-select,
+.hr-ui-refined .dw-field input,
+.hr-ui-refined .dw-field select,
+.hr-ui-refined .dw-field textarea {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface);
+}
+
+.hr-ui-refined input:hover,
+.hr-ui-refined select:hover,
+.hr-ui-refined textarea:hover {
+  border-color: var(--color-primary-light);
+}
+
+.hr-ui-refined input[aria-invalid="true"],
+.hr-ui-refined select[aria-invalid="true"],
+.hr-ui-refined textarea[aria-invalid="true"] {
+  border-color: var(--color-danger, #b91c1c);
+  box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.12);
+}
+
+.hr-ui-refined .contractor-form__submit,
+.hr-ui-refined .employee-cost-submit,
+.hr-ui-refined .gratuity-submit,
+.hr-ui-refined .retrenchment-submit,
+.hr-ui-refined .leave-action.primary,
+.hr-ui-refined .dw-button {
+  min-width: min(100%, 220px);
+  box-shadow: 0 8px 20px rgba(var(--color-primary-rgb), 0.2);
+  transition: background-color 180ms ease, box-shadow 180ms ease;
+}
+
+.hr-ui-refined .contractor-form__submit:hover,
+.hr-ui-refined .employee-cost-submit:hover,
+.hr-ui-refined .gratuity-submit:hover,
+.hr-ui-refined .retrenchment-submit:hover,
+.hr-ui-refined .leave-action.primary:hover,
+.hr-ui-refined .dw-button:hover {
+  box-shadow: 0 10px 24px rgba(var(--color-primary-rgb), 0.28);
+  filter: brightness(0.96);
+}
+
+.hr-ui-contractor .contractor-actions,
+.hr-ui-employee .employee-cost-actions,
+.hr-ui-gratuity .gratuity-actions,
+.hr-ui-retrenchment .retrenchment-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.hr-ui-maternity .leave-actions {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.4fr) repeat(3, minmax(0, 1fr));
+}
+
+.hr-ui-maternity .leave-action {
+  width: 100%;
+}
+
+.hr-ui-domestic .dw-actions .dw-button:first-child {
+  flex: 2 1 190px;
+}
+
+.hr-ui-refined .contractor-status:not(:empty),
+.hr-ui-refined .employee-cost-status:not(:empty),
+.hr-ui-refined .gratuity-status:not(:empty),
+.hr-ui-refined .retrenchment-status:not(:empty),
+.hr-ui-refined .leave-status:not(:empty),
+.hr-ui-refined .dw-copy-status:not(:empty) {
+  margin-top: 0.75rem;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-subtle);
+  color: var(--color-text-muted);
+}
+
+.hr-result-placeholder {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: start;
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-subtle);
+  color: var(--color-text-muted);
+}
+
+.hr-result-placeholder[hidden] {
+  display: none;
+}
+
+.hr-result-placeholder__mark {
+  display: inline-flex;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: var(--color-primary-pale);
+  color: var(--color-primary);
+  font-weight: 800;
+}
+
+.hr-result-placeholder strong {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: var(--color-text);
+}
+
+.hr-result-placeholder p {
+  margin: 0;
+  line-height: 1.55;
+}
+
+.hr-ui-refined .hr-hub {
+  padding: clamp(1.25rem, 3vw, 2rem) 0;
+}
+
+.hr-ui-refined .hr-hub .container {
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.hr-ui-refined .hr-hub h2 {
+  margin-bottom: 0.35rem;
+  font-family: var(--font-sans);
+  font-size: clamp(1.35rem, 2.4vw, 1.65rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-align: left;
+}
+
+.hr-country-directory__intro {
+  max-width: 720px;
+  margin: 0 0 1rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.hr-country-directory__controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.hr-country-directory__search {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+}
+
+.hr-country-directory__toggle {
+  min-height: 48px;
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: 700 0.9rem/1.2 var(--font-sans);
+  cursor: pointer;
+}
+
+.hr-country-directory__toggle:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.hr-country-directory__status {
+  grid-column: 1 / -1;
+  margin: -0.2rem 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
+.hr-ui-refined .hr-country-card[data-directory-hidden="true"] {
+  display: none;
+}
+
+.hr-ui-refined .hr-country-card {
+  min-height: 52px;
+  padding: 0.7rem 0.8rem;
+}
+
+.hr-ui-refined .hr-country-name {
+  color: var(--color-text);
+  font-size: 0.9rem;
+}
+
+html[data-theme="dark"] .hr-ui-refined .contractor-form fieldset,
+html[data-theme="dark"] .hr-ui-refined .employee-cost-form fieldset,
+html[data-theme="dark"] .hr-ui-refined .gratuity-form fieldset,
+html[data-theme="dark"] .hr-ui-refined .retrenchment-form fieldset,
+html[data-theme="dark"] .hr-ui-refined .hr-result-placeholder,
+html[data-theme="dark"] .hr-ui-refined .contractor-status:not(:empty),
+html[data-theme="dark"] .hr-ui-refined .employee-cost-status:not(:empty),
+html[data-theme="dark"] .hr-ui-refined .gratuity-status:not(:empty),
+html[data-theme="dark"] .hr-ui-refined .retrenchment-status:not(:empty),
+html[data-theme="dark"] .hr-ui-refined .leave-status:not(:empty) {
+  border-color: var(--color-border);
+  background: var(--color-bg-subtle);
+}
+
+html[data-theme="dark"] .hr-ui-refined .hr-hub .container,
+html[data-theme="dark"] .hr-ui-refined .hr-country-card,
+html[data-theme="dark"] .hr-ui-refined .leave-source-card,
+html[data-theme="dark"] .hr-ui-refined .hr-seo-section,
+html[data-theme="dark"] .hr-ui-refined .df-upgrade__card,
+html[data-theme="dark"] .hr-ui-refined .df-faq details,
+html[data-theme="dark"] .hr-ui-refined .tool-verification-card,
+html[data-theme="dark"] .hr-ui-refined .contractor-result__item,
+html[data-theme="dark"] .hr-ui-refined .employee-cost-result-item,
+html[data-theme="dark"] .hr-ui-refined .gratuity-result-item,
+html[data-theme="dark"] .hr-ui-refined .retrenchment-result-item {
+  border-color: var(--color-border);
+  background: var(--color-surface);
+}
+
+html[data-theme="dark"] .hr-ui-refined .hr-seo-section h2,
+html[data-theme="dark"] .hr-ui-refined .hr-seo-section h3,
+html[data-theme="dark"] .hr-ui-refined .df-upgrade h2,
+html[data-theme="dark"] .hr-ui-refined .df-faq h2,
+html[data-theme="dark"] .hr-ui-refined .df-faq summary,
+html[data-theme="dark"] .hr-ui-refined .tool-verification-card h2,
+html[data-theme="dark"] .hr-ui-refined .tool-verification-card h3 {
+  color: var(--color-text);
+}
+
+html[data-theme="dark"] .hr-ui-refined .hr-seo-section p,
+html[data-theme="dark"] .hr-ui-refined .hr-seo-section li,
+html[data-theme="dark"] .hr-ui-refined .df-upgrade p,
+html[data-theme="dark"] .hr-ui-refined .df-upgrade li,
+html[data-theme="dark"] .hr-ui-refined .df-faq p,
+html[data-theme="dark"] .hr-ui-refined .tool-verification-card p,
+html[data-theme="dark"] .hr-ui-refined .tool-verification-card li {
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 640px) {
+  .hr-payroll-category-focus .path-grid {
+    gap: 0.75rem;
+  }
+
+  .hr-payroll-category-focus .path-card {
+    padding: 1rem;
+  }
+
+  .hr-ui-refined .hr-tool-hero {
+    padding: 1.5rem 1rem 2rem;
+  }
+
+  .hr-ui-refined .hr-tool-hero h1,
+  .hr-ui-refined .hr-tool-hero h1 em,
+  .hr-ui-refined .dw-hero h1 {
+    font-size: clamp(1.85rem, 9vw, 2.35rem);
+  }
+
+  .hr-ui-refined .hr-tool-hero-sub,
+  .hr-ui-refined .dw-hero p,
+  .hr-ui-refined .contractor-calculator__intro p,
+  .hr-ui-refined .employee-cost-intro p,
+  .hr-ui-refined .gratuity-intro p,
+  .hr-ui-refined .retrenchment-intro p,
+  .hr-ui-refined .hr-section-desc {
+    font-size: 1rem;
+  }
+
+  .hr-ui-refined .contractor-form fieldset,
+  .hr-ui-refined .employee-cost-form fieldset,
+  .hr-ui-refined .gratuity-form fieldset,
+  .hr-ui-refined .retrenchment-form fieldset {
+    padding: 0.9rem;
+  }
+
+  .hr-ui-refined .contractor-form__submit,
+  .hr-ui-refined .employee-cost-submit,
+  .hr-ui-refined .gratuity-submit,
+  .hr-ui-refined .retrenchment-submit,
+  .hr-ui-refined .leave-action.primary,
+  .hr-ui-refined .dw-button {
+    width: 100%;
+  }
+
+  .hr-ui-contractor .contractor-actions,
+  .hr-ui-employee .employee-cost-actions,
+  .hr-ui-gratuity .gratuity-actions,
+  .hr-ui-maternity .leave-actions,
+  .hr-ui-retrenchment .retrenchment-actions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hr-country-directory__controls {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hr-country-directory__toggle {
+    width: 100%;
+  }
+
+  .hr-ui-refined .hr-hub-country-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.55rem;
+  }
+
+  .hr-ui-refined .hr-country-card {
+    min-width: 0;
+    min-height: 56px;
+    padding: 0.65rem;
+  }
+
+  .hr-ui-refined .hr-country-name {
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 380px) {
+  .hr-ui-refined .hr-hub-country-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hr-payroll-category-focus .tool-card,
+  .hr-payroll-category-focus .related-card,
+  .hr-ui-refined .contractor-form__submit,
+  .hr-ui-refined .employee-cost-submit,
+  .hr-ui-refined .gratuity-submit,
+  .hr-ui-refined .retrenchment-submit,
+  .hr-ui-refined .leave-action,
+  .hr-country-directory__toggle {
+    transition: none;
+  }
+}
+
+@media print {
+  .hr-country-directory__controls,
+  .hr-result-placeholder {
+    display: none !important;
+  }
+}
