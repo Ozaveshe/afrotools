@@ -53,3 +53,16 @@ Status: accepted in commit `6500b67`.
 - External requests during user actions were limited to consent-denied analytics page-view metadata; synthetic file names and QR payloads were absent.
 - System-dark and manual-dark computed receipts match. Representative screenshots are in `artifacts/day4-image-design/after/` and are intentionally not product source.
 - The generic "Image workflow desk" checklist panel is hidden for reviewed tools. It duplicated the tool workflow, pushed the primary task below the fold, and failed dark contrast.
+
+## Final category closeout — 2026-07-25
+
+- All 19 English canonical apps are accepted; each row above records its own function, failure-path, export, privacy/lifecycle, mobile, dark-mode, SEO, and accessibility evidence.
+- The hub plus 19 apps passed 40/40 final browser checks: 320px light and 375px system-dark, with 0 document overflow, page exceptions, unnamed controls, malformed JSON-LD blocks, missing canonicals, missing main landmarks, or H1-count failures.
+- The final shared acceptance CSS SHA-256 prefix is `1e48fbc8`; all 18 reviewed pages that load that stylesheet now use the matching cache version. Certificate Maker keeps its reviewed page-local acceptance styles.
+- UTF-8/codepoint inspection passed for 23 category source/evidence files with no replacement characters or common mojibake lead sequences.
+- `node --test tests/image-to-text-local-runtime.test.js` passed 1/1 and continues to guard same-origin OCR runtime/fallback assets.
+- `npm run check-links` passed 125,095 internal links across 10,836 HTML files with 0 broken links.
+- `npm run seo:report` found 0 missing canonical tags, titles, descriptions, hreflang violations, or French-homepage link errors. Its 681 repo-wide JSON-LD normalizations remain a separate generated SEO lane and were not applied in this category pass.
+- `npm run audit` reconciled 78 raw Image & Design registry rows. The three reported missing pages are the pre-existing Job Offer Evaluator English/French/Swahili routes outside this category.
+- `git diff --check` passed.
+- Production deployment was not attempted: the Netlify team production-deploy lane is paused by its credit allowance. This branch is prepared for integration and a later deploy from the exact integrated commit.
