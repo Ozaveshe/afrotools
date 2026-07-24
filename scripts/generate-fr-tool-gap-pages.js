@@ -7678,7 +7678,7 @@ function htmlFor(page) {
         description: page.description,
         isBasedOn: enUrl,
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-        provider: { "@type": "Organization", name: "AfroTools", url: `${SITE}/` },
+        provider: { "@type": "Organization", name: "AfroTools", url: SITE },
       },
       {
         "@context": "https://schema.org",
@@ -7704,7 +7704,7 @@ function htmlFor(page) {
     2
   );
   const nativeTool = lobolaNativeMarkup(page);
-  const prepPanel = nativeTool ? "" : `<section class="prep-panel" aria-label="Preparation rapide">
+  const prepPanel = nativeTool ? "" : `    <section class="prep-panel" aria-label="Preparation rapide">
       <h2>Preparez votre saisie</h2>
       <p>Notez les trois informations utiles avant de lancer l'outil. Rien n'est envoye: ce brouillon reste dans votre navigateur.</p>
       <form class="prep-form" data-fr-prep>
@@ -7715,7 +7715,11 @@ function htmlFor(page) {
           <label>Fichier de travail<input name="file" type="file" aria-label="Fichier de travail local"></label>
         </div>
         <output class="prep-output" data-prep-output>Ajoutez un pays, un montant ou un objectif pour preparer votre resume.</output>
-        <div class="prep-actions"><button type="button" data-copy-prep>Copier le resume</button><button type="button" data-download-prep>Telecharger le brief</button><span class="prep-note" data-copy-status aria-live="polite"></span></div>
+        <div class="prep-actions">
+          <button type="button" data-copy-prep>Copier le resume</button>
+          <button type="button" data-download-prep>Telecharger le brief</button>
+          <span class="prep-note" data-copy-status aria-live="polite"></span>
+        </div>
         <p class="privacy-note"><strong>Confidentialite locale 2026:</strong> le fichier selectionne et le brouillon restent dans votre navigateur; ne collez pas de donnees sensibles dans un service externe sans accord explicite.</p>
       </form>
     </section>`;
@@ -7761,11 +7765,10 @@ function htmlFor(page) {
     .action-row{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 22px}.primary-action,.secondary-action{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:11px 16px;font-weight:800;text-decoration:none}.primary-action{background:#0f766e;color:#fff}.secondary-action{border:1px solid #cbd5e1;color:#0f172a;background:#fff}
     .prep-panel{border:1px solid #b6e4dd;background:linear-gradient(135deg,#ecfdf5 0%,#f8fafc 100%);border-radius:8px;padding:18px;margin:0 0 24px}.prep-panel h2{font-size:1.05rem;margin:0 0 6px;color:#064e3b}.prep-panel p{margin:0 0 14px;color:#334155;line-height:1.55}
     .prep-form{display:grid;gap:12px}.prep-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.prep-form label{display:grid;gap:5px;font-size:.82rem;font-weight:800;color:#0f172a}.prep-form input{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;background:#fff}.prep-output{display:block;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#334155;padding:12px;line-height:1.5;min-height:52px}.prep-actions{display:flex;flex-wrap:wrap;gap:8px}.prep-actions button{border:0;border-radius:999px;background:#0f172a;color:#fff;font-weight:800;padding:10px 14px;cursor:pointer}.prep-note{font-size:.82rem;color:#64748b}.privacy-note{margin-top:10px;border-left:4px solid #10b981;background:#f0fdf4;border-radius:8px;padding:10px 12px;color:#365346;font-size:.9rem;line-height:1.55}
-    #tool-mount{background:#fff;border:1px solid #dbe4ef;border-radius:8px;padding:18px;box-shadow:0 10px 28px rgba(15,23,42,.08);overflow:hidden}
-    .lobola-native{display:grid;gap:16px}.lobola-native-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}.lobola-native-heading span{display:block;color:#0f766e;font-size:.76rem;font-weight:850;letter-spacing:.08em;text-transform:uppercase}.lobola-native-heading h2{margin:4px 0 0;font-size:1.25rem;color:#0f172a}.lobola-native-heading button,.lobola-native-actions button{border:0;border-radius:999px;background:#0f766e;color:#fff;padding:10px 14px;font-weight:800;cursor:pointer}.lobola-native-heading button:disabled{opacity:.48;cursor:not-allowed}.lobola-native-form{display:grid;gap:13px}.lobola-native-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.lobola-native-form label{display:grid;gap:6px;color:#0f172a;font-size:.86rem;font-weight:800}.lobola-native-form input,.lobola-native-form select,.lobola-native-form textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;background:#fff;padding:10px 11px;font:inherit;color:#0f172a}.lobola-native-form textarea{min-height:84px;resize:vertical}.lobola-native-checks{display:grid;gap:8px;border:1px solid #dbe4ef;border-radius:8px;background:#f8fafc;padding:12px}.lobola-native-checks label{display:flex;grid-template-columns:none;align-items:flex-start;gap:8px;font-weight:650}.lobola-native-checks input{width:auto;margin-top:3px}.lobola-native-actions{display:flex;flex-wrap:wrap;align-items:center;gap:9px}.lobola-native-actions button.secondary{background:#0f172a}.lobola-native-actions span{color:#64748b;font-size:.86rem}.lobola-native-output{display:block;white-space:pre-line;border:1px solid #b6e4dd;border-left:4px solid #0f766e;border-radius:0 8px 8px 0;background:#f0fdf4;padding:14px;color:#334155;line-height:1.62;min-height:110px}
+    #tool-mount{background:#fff;border:1px solid #dbe4ef;border-radius:8px;padding:18px;box-shadow:0 10px 28px rgba(15,23,42,.08);overflow:hidden}${nativeTool ? ".lobola-native{display:grid;gap:16px}.lobola-native-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}.lobola-native-heading span{display:block;color:#0f766e;font-size:.76rem;font-weight:850;letter-spacing:.08em;text-transform:uppercase}.lobola-native-heading h2{margin:4px 0 0;font-size:1.25rem;color:#0f172a}.lobola-native-heading button,.lobola-native-actions button{border:0;border-radius:999px;background:#0f766e;color:#fff;padding:10px 14px;font-weight:800;cursor:pointer}.lobola-native-heading button:disabled{opacity:.48;cursor:not-allowed}.lobola-native-form{display:grid;gap:13px}.lobola-native-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.lobola-native-form label{display:grid;gap:6px;color:#0f172a;font-size:.86rem;font-weight:800}.lobola-native-form input,.lobola-native-form select,.lobola-native-form textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;background:#fff;padding:10px 11px;font:inherit;color:#0f172a}.lobola-native-form textarea{min-height:84px;resize:vertical}.lobola-native-checks{display:grid;gap:8px;border:1px solid #dbe4ef;border-radius:8px;background:#f8fafc;padding:12px}.lobola-native-checks label{display:flex;grid-template-columns:none;align-items:flex-start;gap:8px;font-weight:650}.lobola-native-checks input{width:auto;margin-top:3px}.lobola-native-actions{display:flex;flex-wrap:wrap;align-items:center;gap:9px}.lobola-native-actions button.secondary{background:#0f172a}.lobola-native-actions span{color:#64748b;font-size:.86rem}.lobola-native-output{display:block;white-space:pre-line;border:1px solid #b6e4dd;border-left:4px solid #0f766e;border-radius:0 8px 8px 0;background:#f0fdf4;padding:14px;color:#334155;line-height:1.62;min-height:110px}" : ""}
     .tool-status{color:#64748b}.tool-error{padding:18px;border:1px solid #fecaca;background:#fef2f2;border-radius:8px;color:#991b1b}.tool-error a{color:#1d4ed8}
     .support-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:26px}.support-grid section{border:1px solid #dbe4ef;border-radius:8px;padding:18px;background:#fff}.support-grid h2{font-size:1rem;margin:0 0 8px;color:#111827}.support-grid p{margin:0;color:#475569;line-height:1.55;font-size:.94rem}
-    @media (max-width:760px){.fr-tool-shell{padding-top:76px}.support-grid,.lobola-native-grid{grid-template-columns:1fr}#tool-mount{padding:12px}.lobola-native-heading{display:grid}.lobola-native-heading button,.lobola-native-actions button{width:100%}}
+    @media (max-width:760px){.fr-tool-shell{padding-top:76px}.support-grid${nativeTool ? ",.lobola-native-grid" : ""}{grid-template-columns:1fr}#tool-mount{padding:12px}${nativeTool ? ".lobola-native-heading{display:grid}.lobola-native-heading button,.lobola-native-actions button{width:100%}" : ""}}
   </style>
   <script type="application/ld+json">${schema.replace(/</g, "\\u003c")}</script>
 </head>

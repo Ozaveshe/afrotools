@@ -188,6 +188,7 @@ function transformRelatedTools(html, tool, related) {
   RELATED_BLOCK_RE.lastIndex = 0;
   const hostPattern = /<afro-related-tools\b([^>]*)>([\s\S]*?)<\/afro-related-tools>/i;
   const hostMatch = output.match(hostPattern);
+  const staticOnly = Boolean(hostMatch && /\bdata-no-hydrate(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+))?/i.test(hostMatch[1]));
 
   if (hostMatch) {
     let attributes = hostMatch[1];
@@ -210,7 +211,9 @@ function transformRelatedTools(html, tool, related) {
   RELATED_LAZY_SCRIPT_RE.lastIndex = 0;
   output = output.replace(RELATED_INLINE_ASSET_LINE_RE, '');
   RELATED_INLINE_ASSET_LINE_RE.lastIndex = 0;
-  if (!RELATED_COMPONENT_SCRIPT_RE.test(output)) {
+  if (staticOnly) {
+    output = output.replace(RELATED_COMPONENT_SCRIPT_RE, '');
+  } else if (!RELATED_COMPONENT_SCRIPT_RE.test(output)) {
     output = insertBeforeFirst(output, ['</body>'], getRelatedComponentTag());
   }
   return output;
