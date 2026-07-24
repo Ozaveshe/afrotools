@@ -72,6 +72,7 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="/assets/css/image-design-workflow.css?v=0c4f7205">
 <link rel="stylesheet" href="/assets/css/image-design-tool-focus.css?v=8941fca1">
+<link rel="stylesheet" href="/assets/css/image-design-day4-tools.css?v=b25ad14e">
 <script src="/assets/js/pages/image-design-tool-focus.js?v=257c735f" defer></script>
 <script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=783a8ae4" defer></script>
@@ -386,18 +387,18 @@
       </div>
       <div class="card-body">
         <div class="tab-row">
-          <button class="tab-btn active" type="button" data-source="starter">Starter scenes</button>
-          <button class="tab-btn" type="button" data-source="upload">Upload your image</button>
+          <button class="tab-btn active" type="button" data-source="starter" aria-pressed="true">Starter scenes</button>
+          <button class="tab-btn" type="button" data-source="upload" aria-pressed="false">Upload your image</button>
         </div>
         <div class="starter-pane pane-active" id="starterPane" style="margin-top:16px">
           <div class="scene-grid" id="sceneGrid"></div>
         </div>
         <div class="upload-pane" id="uploadPane" style="margin-top:16px">
-          <div class="drop-zone" id="uploadArea">
+          <div class="drop-zone" id="uploadArea" role="button" tabindex="0" aria-label="Choose or drop an image for the meme">
             <div class="drop-icon">📤</div>
             <div class="drop-title">Choose an image or drag it here</div>
             <div class="mini">Best with reaction selfies, screenshots, group chat moments, or real photos.</div>
-            <input aria-label="ImageInput" type="file" id="imageInput" accept="image/*">
+            <input aria-label="Choose an image for the meme" type="file" id="imageInput" accept="image/*">
           </div>
           <div class="mini" id="uploadMeta" style="margin-top:12px">No custom image selected yet.</div>
         </div>
@@ -458,7 +459,7 @@
           <button class="btn btn-primary" id="downloadBtn" type="button">Download PNG</button>
           <button class="btn btn-secondary" id="resetBtn" type="button">Reset Text</button>
         </div>
-        <div class="status" id="statusText">Starter scenes are built in. For the strongest memes, use your own screenshots and reaction photos.</div>
+        <div class="status" id="statusText" role="status" aria-live="polite">Starter scenes are built in. For the strongest memes, use your own screenshots and reaction photos.</div>
         <div class="result-actions" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:18px">
           <share-result-button tool-name="Meme Generator" tool-slug="meme-generator"></share-result-button>
         </div>
@@ -751,7 +752,7 @@ function renderGuide() {
 
 function renderScenes() {
   elements.sceneGrid.innerHTML = Object.entries(STARTER_SCENES).map(([key, scene]) => `
-    <button class="scene-btn ${key === activeScene ? 'active' : ''}" type="button" data-scene="${key}">
+    <button class="scene-btn ${key === activeScene ? 'active' : ''}" type="button" data-scene="${key}" aria-pressed="${key === activeScene}">
       <span class="scene-title">${scene.label}</span>
       <span class="scene-copy">${scene.copy}</span>
     </button>
@@ -760,7 +761,7 @@ function renderScenes() {
 
 function renderPacks() {
   elements.packGrid.innerHTML = Object.entries(CAPTION_PACKS).map(([key, pack]) => `
-    <button class="pack-btn ${key === activePack ? 'active' : ''}" type="button" data-pack="${key}">
+    <button class="pack-btn ${key === activePack ? 'active' : ''}" type="button" data-pack="${key}" aria-pressed="${key === activePack}">
       <span class="pack-title">${pack.label}</span>
       <span class="pack-copy">${pack.copy}</span>
     </button>
@@ -769,7 +770,11 @@ function renderPacks() {
 
 function setSourceMode(mode) {
   sourceMode = mode;
-  elements.tabButtons.forEach((button) => button.classList.toggle('active', button.dataset.source === mode));
+  elements.tabButtons.forEach((button) => {
+    const selected = button.dataset.source === mode;
+    button.classList.toggle('active', selected);
+    button.setAttribute('aria-pressed', String(selected));
+  });
   elements.starterPane.classList.toggle('pane-active', mode === 'starter');
   elements.uploadPane.classList.toggle('pane-active', mode === 'upload');
   renderGuide();
@@ -883,6 +888,11 @@ elements.packGrid.addEventListener('click', (event) => {
   applyPack(button.dataset.pack, true);
 });
 elements.uploadArea.addEventListener('click', () => elements.imageInput.click());
+elements.uploadArea.addEventListener('keydown', (event) => {
+  if (event.key !== 'Enter' && event.key !== ' ') return;
+  event.preventDefault();
+  elements.imageInput.click();
+});
 elements.uploadArea.addEventListener('dragover', (event) => { event.preventDefault(); elements.uploadArea.classList.add('active'); });
 elements.uploadArea.addEventListener('dragleave', () => elements.uploadArea.classList.remove('active'));
 elements.uploadArea.addEventListener('drop', (event) => {
