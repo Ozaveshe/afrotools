@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDF Compare Tool - Side-by-Side Text, Visual Diff and Review Report</title>
+<title>Compare PDFs: Text &amp; Visual Diff | AfroTools</title>
 <meta name="description" content="Compare two PDFs locally with word or line diff, visual overlay, changed-page map, similarity score, copyable summary, and downloadable review report.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="PDF Compare Tool | AfroTools">
@@ -59,7 +59,7 @@
 }
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the PDF Compare Tool?","acceptedAnswer":{"@type":"Answer","text":"Enter your file and options in the fields above. The PDF Compare Tool then gives you the processed document, ready to download you can use straight away."}},{"@type":"Question","name":"How accurate is the PDF Compare Tool?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm the output before sending it on before you rely on it."}},{"@type":"Question","name":"Is the PDF Compare Tool free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"How does the text diff work?","acceptedAnswer":{"@type":"Answer","text":"The tool extracts text from each page of both PDFs, compares it at word, sentence, or line level, and highlights additions and deletions in side-by-side review panes."}},{"@type":"Question","name":"What does the visual diff show?","acceptedAnswer":{"@type":"Answer","text":"Visual diff renders both PDF pages as images, highlights changed pixels, reports a visual-change percentage, and supports slider or side-by-side review modes."}},{"@type":"Question","name":"Is my PDF uploaded to a server?","acceptedAnswer":{"@type":"Answer","text":"No. All processing happens entirely in your browser using JavaScript. Your PDFs never leave your device."}},{"@type":"Question","name":"Can I export the comparison?","acceptedAnswer":{"@type":"Answer","text":"Yes. You can copy the summary or download a text report with document names, page counts, similarity, and per-page changes."}},{"@type":"Question","name":"What to check","acceptedAnswer":{"@type":"Answer","text":"Compare two PDFs locally with text diff, visual overlay, page map, similarity score, copyable summary, and review-report export."}}]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How does the text diff work?","acceptedAnswer":{"@type":"Answer","text":"The tool extracts text from each page of both PDFs, compares it at word, sentence, or line level, and highlights additions and deletions in side-by-side review panes."}},{"@type":"Question","name":"What does the visual diff show?","acceptedAnswer":{"@type":"Answer","text":"Visual diff renders both PDF pages as images, highlights changed pixels, reports a visual-change percentage, and supports slider or side-by-side review modes."}},{"@type":"Question","name":"Is my PDF uploaded to a server?","acceptedAnswer":{"@type":"Answer","text":"No. All processing happens entirely in your browser using JavaScript. Your PDFs never leave your device."}},{"@type":"Question","name":"Can I export the comparison?","acceptedAnswer":{"@type":"Answer","text":"Yes. You can copy the summary or download a text report with document names, page counts, similarity, settings, and per-page changes after review."}}]}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
@@ -431,6 +431,7 @@
 
   .option-item select {
     width: 100%;
+    min-width: 0;
     border: none;
     background: transparent;
     color: #374151;
@@ -992,6 +993,160 @@
     padding: 3px 0;
   }
 
+  .output-review {
+    align-items: flex-start;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 7px;
+    color: #92400e;
+    display: flex;
+    gap: 8px;
+    padding: 8px 10px;
+  }
+
+  .output-review input {
+    flex: 0 0 auto;
+    height: 17px;
+    margin-top: 1px;
+    width: 17px;
+  }
+
+  .output-review span {
+    cursor: pointer;
+    font-size: 0.74rem;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  .output-review:focus-within {
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.18);
+  }
+
+  .upload-zone:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  summary:focus-visible {
+    outline: 3px solid rgba(0, 135, 81, 0.28);
+    outline-offset: 2px;
+  }
+
+  .faq-list details {
+    border-bottom: 1px solid #e5e7eb;
+    padding: 16px 0;
+  }
+
+  .seo-section .faq-list summary {
+    color: #111;
+    cursor: pointer;
+    font-size: 1rem !important;
+    font-weight: 700;
+    line-height: 1.45;
+    padding: 4px 0;
+  }
+
+  .faq-list details p {
+    margin: 10px 0 0;
+  }
+
+  .tool-verification-card,
+  .tool-verification-head,
+  .tool-verification-grid,
+  .tool-verification-status {
+    min-width: 0;
+  }
+
+  .tool-verification-badge {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+
+  :root[data-theme="dark"] .card,
+  :root[data-theme="dark"] .review-toolbar,
+  :root[data-theme="dark"] .option-item,
+  :root[data-theme="dark"] .diff-panel,
+  :root[data-theme="dark"] .change-page,
+  :root[data-theme="dark"] .page-nav button,
+  :root[data-theme="dark"] .toolbar-btn {
+    background: #121f33;
+    border-color: #3a4c68;
+  }
+
+  :root[data-theme="dark"] .card-head,
+  :root[data-theme="dark"] .compare-options,
+  :root[data-theme="dark"] .summary-bar,
+  :root[data-theme="dark"] .diff-panel-head,
+  :root[data-theme="dark"] .visual-metric,
+  :root[data-theme="dark"] .visual-controls,
+  :root[data-theme="dark"] .info-card {
+    background: #17263c;
+    border-color: #3a4c68;
+  }
+
+  :root[data-theme="dark"] .upload-zone {
+    background: #17263c;
+    border-color: #566985;
+  }
+
+  :root[data-theme="dark"] .upload-zone.has-file {
+    background: #132d3a;
+    border-color: #3f806f;
+  }
+
+  :root[data-theme="dark"] .card-title,
+  :root[data-theme="dark"] .upload-label,
+  :root[data-theme="dark"] .compare-options-title,
+  :root[data-theme="dark"] .option-item,
+  :root[data-theme="dark"] .option-item select,
+  :root[data-theme="dark"] .check-row,
+  :root[data-theme="dark"] .summary-bar,
+  :root[data-theme="dark"] .toolbar-btn,
+  :root[data-theme="dark"] .change-page strong,
+  :root[data-theme="dark"] .page-nav button,
+  :root[data-theme="dark"] .diff-panel-head,
+  :root[data-theme="dark"] .diff-panel-body,
+  :root[data-theme="dark"] .visual-metric,
+  :root[data-theme="dark"] .visual-controls label,
+  :root[data-theme="dark"] .info-title,
+  :root[data-theme="dark"] .seo-section h2,
+  :root[data-theme="dark"] .faq-list summary {
+    color: #eef5ff;
+  }
+
+  :root[data-theme="dark"] .upload-text,
+  :root[data-theme="dark"] .upload-hint,
+  :root[data-theme="dark"] .file-info .file-meta,
+  :root[data-theme="dark"] .change-page span,
+  :root[data-theme="dark"] .page-nav .page-indicator,
+  :root[data-theme="dark"] .info-text,
+  :root[data-theme="dark"] .seo-section p,
+  :root[data-theme="dark"] .faq-list p {
+    color: #d8e4f5;
+  }
+
+  :root[data-theme="dark"] .file-info .file-name {
+    color: #a9d4ff;
+  }
+
+  :root[data-theme="dark"] .quality-note {
+    background: #132a45;
+    border-color: #315b85;
+    color: #cfe5ff;
+  }
+
+  :root[data-theme="dark"] .quality-note.warn {
+    background: #352414;
+    border-color: #8a5b25;
+    color: #fed7aa;
+  }
+
+  :root[data-theme="dark"] .output-review {
+    background: #312711;
+    border-color: #8a681d;
+    color: #fde68a;
+  }
+
   /* === Spinner === */
   .spinner {
     display: inline-block;
@@ -1057,6 +1212,34 @@
     .toolbar-btn {
       flex: 1 1 auto;
     }
+
+    .option-select {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .card-head {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .mode-toggle-row {
+      width: 100%;
+    }
+
+    .mode-btn {
+      flex: 1 1 0;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+
+    .tool-main-inner,
+    .tool-hero-inner,
+    .seo-section {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
   }
 </style>
 <script src="/assets/js/bundles/core.53e2e483.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
@@ -1100,9 +1283,10 @@
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kulinganisha-pdf/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-compare/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh" data-local-first-downloads>
 
 <afro-navbar></afro-navbar>
+<main>
 
 <!-- Hero -->
 <div class="tool-hero">
@@ -1134,44 +1318,45 @@
           <!-- Original -->
           <div class="upload-col">
             <div class="upload-label"><span class="dot dot-original"></span> Original PDF</div>
-            <div class="upload-zone" id="dropOriginal">
-              <input aria-label="FileOriginal" type="file" id="fileOriginal" accept=".pdf">
+            <div class="upload-zone" id="dropOriginal" role="button" tabindex="0" aria-label="Choose or drop the original PDF">
+              <input aria-label="Choose original PDF" type="file" id="fileOriginal" accept=".pdf">
               <span class="upload-icon">&#128196;</span>
               <div class="upload-text">Drop original PDF here</div>
-              <div class="upload-hint">or click to browse</div>
+              <div class="upload-hint">or press Enter to browse · up to 25 MB / 150 pages</div>
             </div>
           </div>
           <!-- Modified -->
           <div class="upload-col">
             <div class="upload-label"><span class="dot dot-modified"></span> Modified PDF</div>
-            <div class="upload-zone" id="dropModified">
-              <input aria-label="FileModified" type="file" id="fileModified" accept=".pdf">
+            <div class="upload-zone" id="dropModified" role="button" tabindex="0" aria-label="Choose or drop the modified PDF">
+              <input aria-label="Choose modified PDF" type="file" id="fileModified" accept=".pdf">
               <span class="upload-icon">&#128196;</span>
               <div class="upload-text">Drop modified PDF here</div>
-              <div class="upload-hint">or click to browse</div>
+              <div class="upload-hint">or press Enter to browse · up to 25 MB / 150 pages</div>
             </div>
           </div>
         </div>
-        <div class="compare-options" aria-label="Comparison settings">
-          <div class="compare-options-title">Comparison Settings</div>
+        <fieldset class="compare-options">
+          <legend class="compare-options-title">Comparison Settings</legend>
           <div class="option-grid">
-            <label class="option-item">
-              <select id="diffGranularity" aria-label="Diff granularity">
+            <label class="option-item option-select">
+              <span>Compare by</span>
+              <select id="diffGranularity">
                 <option value="word" selected>Word-level diff</option>
                 <option value="sentence">Sentence-level diff</option>
                 <option value="line">Line-level diff</option>
               </select>
             </label>
             <label class="option-item">
-              <input aria-label="IgnoreWhitespace" type="checkbox" id="ignoreWhitespace" checked>
+              <input type="checkbox" id="ignoreWhitespace" checked>
               Ignore extra whitespace
             </label>
             <label class="option-item">
-              <input aria-label="IgnoreCase" type="checkbox" id="ignoreCase">
+              <input type="checkbox" id="ignoreCase">
               Ignore letter case
             </label>
           </div>
-        </div>
+        </fieldset>
         <div class="compare-row">
           <button type="button" class="compare-btn" id="compareBtn" disabled>
             <span id="compareBtnText">&#8596; Run Comparison</span>
@@ -1186,8 +1371,8 @@
         <div class="card-head">
           <span class="card-title">Comparison Results</span>
           <div class="mode-toggle-row" style="margin-bottom:0;">
-            <button type="button" class="mode-btn active" id="modeText" data-mode="text">&#9998; Text Diff</button>
-            <button type="button" class="mode-btn" id="modeVisual" data-mode="visual">&#128065; Visual Diff</button>
+              <button type="button" class="mode-btn active" id="modeText" data-mode="text" aria-pressed="true">&#9998; Text Diff</button>
+              <button type="button" class="mode-btn" id="modeVisual" data-mode="visual" aria-pressed="false">&#128065; Visual Diff</button>
           </div>
         </div>
         <div class="card-body">
@@ -1206,17 +1391,21 @@
             </div>
             <div class="review-toolbar" id="reviewToolbar">
               <div class="review-toolbar-left">
-                <label class="check-row"><input aria-label="ChangedOnly" type="checkbox" id="changedOnly"> Changed pages only</label>
+                <label class="check-row"><input type="checkbox" id="changedOnly"> Changed pages only</label>
                 <input class="filter-input" type="search" id="changeSearch" placeholder="Find changed text or page note" aria-label="Search comparison results">
               </div>
               <div class="review-toolbar-right">
                 <button class="toolbar-btn" id="prevChangeBtn" type="button">Previous Change</button>
                 <button class="toolbar-btn" id="nextChangeBtn" type="button">Next Change</button>
                 <button class="toolbar-btn" id="copySummaryBtn" type="button">Copy Summary</button>
+                <label class="output-review" for="reportReviewConfirm">
+                  <input type="checkbox" id="reportReviewConfirm">
+                  <span>I reviewed every changed page and the visual diff.</span>
+                </label>
                 <button class="toolbar-btn" id="downloadReportBtn" type="button">Download Report</button>
               </div>
             </div>
-            <div class="quality-note" id="qualityNote">Upload two PDFs, then run a comparison to see page-level review notes.</div>
+            <div class="quality-note" id="qualityNote" aria-live="polite">Upload two PDFs, then run a comparison to see page-level review notes.</div>
             <div class="change-map" id="changeMap" aria-label="Changed page map"></div>
             <div class="page-nav" id="textPageNav">
               <button type="button" id="textPrevBtn" disabled>&#8592; Prev</button>
@@ -1253,13 +1442,13 @@
               <label>
                 <span class="mode-label">View:</span>
                 <div class="visual-btn-group">
-                  <button type="button" class="active" data-vmode="difference" id="vmodeDiff">Difference</button>
-                  <button type="button" data-vmode="slider" id="vmodeSlider">Slider</button>
-                  <button type="button" data-vmode="sidebyside" id="vmodeSbs">Side by Side</button>
+                  <button type="button" class="active" data-vmode="difference" id="vmodeDiff" aria-pressed="true">Difference</button>
+                  <button type="button" data-vmode="slider" id="vmodeSlider" aria-pressed="false">Slider</button>
+                  <button type="button" data-vmode="sidebyside" id="vmodeSbs" aria-pressed="false">Side by Side</button>
                 </div>
               </label>
               <label id="sliderLabel" style="display:none;">
-                Blend: <input aria-label="BlendSlider" type="range" id="blendSlider" min="0" max="100" value="50">
+                Blend: <input type="range" id="blendSlider" min="0" max="100" value="50">
               </label>
             </div>
           </div>
@@ -1311,49 +1500,25 @@
   <h2>Frequently Asked Questions</h2>
 
 
-<section class="df-upgrade" data-df-upgrade="pdf-compare">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>PDF Compare Tool: quick guide</h2>
-      <p>Not sure how to get the most from the PDF Compare Tool? Enter your file and options and it returns the processed document, ready to download — built for all 54 African countries.</p>
-      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> the processed document, ready to download, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the PDF Compare Tool takes your file and options and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm the output before sending it on before you rely on the result.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm the output before sending it on before acting.</p>
-    </div>
-    <form class="df-form" data-df-form="pdf-compare">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="pdf-compare" data-df-base="PDF Compare Tool — enter your details above to see your result." aria-live="polite">PDF Compare Tool — enter your details above to see your result.</output>
-      <div class="df-actions"><button type="button" data-df-copy="pdf-compare">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="pdf-compare-faq-title">
-  <h2 id="pdf-compare-faq-title">PDF Compare Tool FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How do I use the PDF Compare Tool?</summary><p>Enter your file and options in the fields above. The PDF Compare Tool then gives you the processed document, ready to download you can use straight away.</p></details><details><summary>How accurate is the PDF Compare Tool?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm the output before sending it on before you rely on it.</p></details><details><summary>Is the PDF Compare Tool free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
-</section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
   <div class="faq-list" id="faqList">
-    <div class="faq-item">
-      <div class="faq-q">How does the text diff work?</div>
-      <div class="faq-a">The tool extracts text from each page of both PDFs, compares it at word, sentence, or line level, and highlights additions and deletions in side-by-side review panes.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q">What does the visual diff show?</div>
-      <div class="faq-a">Visual diff renders both PDF pages as images, highlights changed pixels, reports a visual-change percentage, and supports slider or side-by-side review modes.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q">Is my PDF uploaded to a server?</div>
-      <div class="faq-a">No. All processing happens entirely in your browser using JavaScript. Your PDFs never leave your device.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q">Can I export the comparison?</div>
-      <div class="faq-a">Yes. You can copy the summary or download a text report with document names, page counts, similarity, and per-page changes.</div>
-    </div>
+    <details>
+      <summary>How does the text diff work?</summary>
+      <p>The tool extracts text from each page of both PDFs, compares it at word, sentence, or line level, and highlights additions and deletions in side-by-side review panes.</p>
+    </details>
+    <details>
+      <summary>What does the visual diff show?</summary>
+      <p>Visual diff renders both PDF pages as images, highlights changed pixels, reports a visual-change percentage, and supports slider or side-by-side review modes.</p>
+    </details>
+    <details>
+      <summary>Is my PDF uploaded to a server?</summary>
+      <p>No. All processing happens entirely in your browser using JavaScript. Your PDFs never leave your device.</p>
+    </details>
+    <details>
+      <summary>Can I export the comparison?</summary>
+      <p>Yes. You can copy the summary or download a text report with document names, page counts, similarity, and per-page changes.</p>
+    </details>
   </div>
 </div>
 
@@ -1397,6 +1562,7 @@
     </div>
   </div>
 </section>
+</main>
 <afro-business-cta tool-name="PDF Compare" prospect-segment="document-review" save-note="Run the comparison, then copy the summary or export the review report before approval discussions."></afro-business-cta>
 <afro-related-tools category="document-pdf" current="pdf-compare" data-ssr="1">
 <!-- RELATED_TOOLS_SSR_START -->
@@ -1447,6 +1613,7 @@
   var nextChangeBtn = document.getElementById('nextChangeBtn');
   var copySummaryBtn = document.getElementById('copySummaryBtn');
   var downloadReportBtn = document.getElementById('downloadReportBtn');
+  var reportReviewConfirm = document.getElementById('reportReviewConfirm');
   var qualityNote = document.getElementById('qualityNote');
   var changeMap = document.getElementById('changeMap');
   var textPrevBtn  = document.getElementById('textPrevBtn');
@@ -1487,6 +1654,8 @@
   var currentVMode = 'difference'; // difference | slider | sidebyside
   var lastSimilarity = 100;
   var lastOptions = null;
+  var MAX_FILE_BYTES = 25 * 1024 * 1024;
+  var MAX_PAGES = 150;
 
   // === Upload handling ===
   function setupUploadZone(dropZone, fileInput, side) {
@@ -1494,6 +1663,13 @@
     if (!dropZone._pdfCompareBound) {
       dropZone.addEventListener('click', function(e) {
         if (e.target.closest('.change-btn')) return;
+        var input = dropZone.querySelector('input[type="file"]');
+        if (input) input.click();
+      });
+      dropZone.addEventListener('keydown', function(e) {
+        if (e.target.closest('.change-btn')) return;
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        e.preventDefault();
         var input = dropZone.querySelector('input[type="file"]');
         if (input) input.click();
       });
@@ -1523,10 +1699,20 @@
       PdfUtils.showToast('Please upload a PDF file', true);
       return;
     }
+    if (file.size > MAX_FILE_BYTES) {
+      PdfUtils.showToast('Choose a PDF up to 25 MB so comparison stays responsive.', true);
+      return;
+    }
 
     try {
       var result = await PdfUtils.loadPdf(file);
+      if (result.pageCount > MAX_PAGES) {
+        if (result.pdfDoc && typeof result.pdfDoc.destroy === 'function') result.pdfDoc.destroy();
+        PdfUtils.showToast('Choose a PDF with 150 pages or fewer so comparison stays responsive.', true);
+        return;
+      }
       var dropZone = side === 'original' ? dropOriginal : dropModified;
+      clearComparisonResults();
 
       if (side === 'original') {
         pdfOriginal = result;
@@ -1562,12 +1748,16 @@
 
     if (side === 'original') pdfOriginal = null;
     else pdfModified = null;
+    clearComparisonResults();
 
     dropZone.classList.remove('has-file');
-    dropZone.innerHTML = '<input aria-label="File' + (side === 'original' ? 'Original' : 'Modified') + '" type="file" id="file' + (side === 'original' ? 'Original' : 'Modified') + '" accept=".pdf">' +
+    dropZone.setAttribute('role', 'button');
+    dropZone.setAttribute('tabindex', '0');
+    dropZone.setAttribute('aria-label', 'Choose or drop the ' + label + ' PDF');
+    dropZone.innerHTML = '<input aria-label="Choose ' + label + ' PDF" type="file" id="file' + (side === 'original' ? 'Original' : 'Modified') + '" accept=".pdf">' +
       '<span class="upload-icon">&#128196;</span>' +
       '<div class="upload-text">Drop ' + label + ' PDF here</div>' +
-      '<div class="upload-hint">or click to browse</div>';
+      '<div class="upload-hint">or press Enter to browse &middot; up to 25 MB / 150 pages</div>';
 
     // Re-get the file input and fully rebind all handlers
     var newInput = dropZone.querySelector('input[type="file"]');
@@ -1586,8 +1776,31 @@
     compareBtn.disabled = !(pdfOriginal && pdfModified);
   }
 
+  function clearComparisonResults(message) {
+    var hadResults = textResults.length > 0;
+    textResults = [];
+    totalAdds = 0;
+    totalDels = 0;
+    totalChangedWords = 0;
+    totalChangedChars = 0;
+    totalComparableChars = 0;
+    pagesChanged = 0;
+    totalPages = 0;
+    lastSimilarity = 100;
+    lastOptions = null;
+    resultsCard.classList.remove('on');
+    if (reportReviewConfirm) reportReviewConfirm.checked = false;
+    updateReviewActions();
+    if (hadResults && message) PdfUtils.showToast(message);
+  }
+
   setupUploadZone(dropOriginal, fileOriginal, 'original');
   setupUploadZone(dropModified, fileModified, 'modified');
+  [diffGranularity, ignoreWhitespace, ignoreCase].forEach(function(control) {
+    control.addEventListener('change', function() {
+      clearComparisonResults('Comparison settings changed. Run the comparison again.');
+    });
+  });
 
   // === Compare ===
   compareBtn.addEventListener('click', async function() {
@@ -1600,6 +1813,7 @@
     progressFill.style.width = '0%';
     changeSearch.value = '';
     changedOnly.checked = false;
+    if (reportReviewConfirm) reportReviewConfirm.checked = false;
 
     try {
       // Extract text from both
@@ -1738,6 +1952,11 @@
   });
 
   downloadReportBtn.addEventListener('click', function() {
+    if (!reportReviewConfirm || !reportReviewConfirm.checked) {
+      PdfUtils.showToast('Review every changed page and the visual diff before downloading the report.', true);
+      if (reportReviewConfirm) reportReviewConfirm.focus();
+      return;
+    }
     downloadReport();
   });
 
@@ -1765,6 +1984,8 @@
     currentMode = 'text';
     modeText.classList.add('active');
     modeVisual.classList.remove('active');
+    modeText.setAttribute('aria-pressed', 'true');
+    modeVisual.setAttribute('aria-pressed', 'false');
     textDiffView.style.display = '';
     visualDiffView.style.display = 'none';
   });
@@ -1773,6 +1994,8 @@
     currentMode = 'visual';
     modeVisual.classList.add('active');
     modeText.classList.remove('active');
+    modeVisual.setAttribute('aria-pressed', 'true');
+    modeText.setAttribute('aria-pressed', 'false');
     textDiffView.style.display = 'none';
     visualDiffView.style.display = '';
     renderVisualPage(currentVisualPage);
@@ -1783,8 +2006,12 @@
   visualModeButtons.forEach(function(btn) {
     btn.addEventListener('click', function() {
       currentVMode = btn.dataset.vmode;
-      visualModeButtons.forEach(function(b) { b.classList.remove('active'); });
+      visualModeButtons.forEach(function(b) {
+        b.classList.remove('active');
+        b.setAttribute('aria-pressed', 'false');
+      });
       btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
       sliderLabel.style.display = currentVMode === 'slider' ? '' : 'none';
       renderVisualPage(currentVisualPage);
     });
@@ -2455,14 +2682,6 @@
     return value.toFixed(3);
   }
 
-  // === FAQs ===
-  document.querySelectorAll('.faq-q').forEach(function(q) {
-    q.addEventListener('click', function() {
-      var item = q.closest('.faq-item');
-      item.classList.toggle('open');
-    });
-  });
-
   // === Helpers ===
   function escapeHtml(text) {
     var div = document.createElement('div');
@@ -2485,9 +2704,6 @@
 })();
 </script>
 <script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
-<email-gate-modal></email-gate-modal>
-<script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 </body>
 </html>
