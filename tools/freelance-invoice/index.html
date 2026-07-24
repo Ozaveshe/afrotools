@@ -7,7 +7,7 @@
 <meta name="tool-id" content="freelance-invoice">
 <meta name="theme-color" content="#0f4aa2">
 <title>Freelance Invoice Generator for Africa | AfroTools</title>
-<meta name="description" content="Create freelance invoices, estimates, and receipts with African currencies, VAT, withholding, payment links, QR code, saved clients, reminders, and direct PDF, DOC, CSV, JSON export.">
+<meta name="description" content="Create freelance invoices, estimates and receipts with African currencies, tax controls, saved clients, payment instructions, and local PDF, DOC, CSV and JSON exports.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Freelance Invoice Generator for Africa | AfroTools">
 <meta property="og:description" content="Local-first freelance invoice maker with payment tracking, tax controls, saved clients, QR payment links, and exports.">
@@ -106,8 +106,26 @@
 .fi-btn:hover,.fi-export-btn:hover,.file-label:hover,.fi-link-btn:hover,.fi-template-btn:hover{transform:none}
 .fi-panel input,.fi-panel select,.fi-panel textarea{min-height:44px;border-radius:8px}
 .fi-draft,.fi-score-label,.fi-client-chip,.fi-doc-status{border-radius:8px}
+.fi-export-review{display:grid;grid-template-columns:auto minmax(0,1fr);grid-column:1/-1;gap:9px;align-items:start;min-width:0;flex:1 0 100%;padding:11px 12px;border:1px solid #bfdbfe;border-radius:8px;background:#f8fbff;color:#334155;font-size:.78rem;font-weight:700;line-height:1.45;overflow-wrap:anywhere;cursor:pointer}
+.fi-export-review input{width:20px;height:20px;margin:1px 0 0;accent-color:#0f4aa2}
+.fi-export-status{grid-column:1/-1;color:#475569;font-size:.76rem;font-weight:700}
+:root[data-theme="dark"] body,:root[data-theme="dark"] .fi-page{background:#0b1120!important;color:#e5edf8!important}
+:root[data-theme="dark"] .fi-hero{background:#0d1728!important;border-color:#294164!important}
+:root[data-theme="dark"] .fi-hero h1,:root[data-theme="dark"] .fi-hero p,:root[data-theme="dark"] .fi-breadcrumb,:root[data-theme="dark"] .fi-breadcrumb a{color:#e5edf8!important}
+:root[data-theme="dark"] .fi-panel,:root[data-theme="dark"] .fi-export,:root[data-theme="dark"] .fi-review,:root[data-theme="dark"] .fi-summary,:root[data-theme="dark"] .fi-preview-card,:root[data-theme="dark"] .fi-info,:root[data-theme="dark"] .fi-faq,:root[data-theme="dark"] .fi-saved,:root[data-theme="dark"] .fi-subpanel,:root[data-theme="dark"] .fi-faq article,:root[data-theme="dark"] .fi-saved-card{background:#101a2b!important;border-color:#294164!important;color:#e5edf8!important}
+:root[data-theme="dark"] .fi-panel input,:root[data-theme="dark"] .fi-panel select,:root[data-theme="dark"] .fi-panel textarea,:root[data-theme="dark"] .fi-items-table input,:root[data-theme="dark"] .fi-items-table select{background:#f1f5f9!important;border-color:#64748b!important;color:#0f172a!important;-webkit-text-fill-color:#0f172a!important;color-scheme:light}
+:root[data-theme="dark"] .fi-panel h2,:root[data-theme="dark"] .fi-panel h3,:root[data-theme="dark"] .fi-review h2,:root[data-theme="dark"] .fi-info h2,:root[data-theme="dark"] .fi-faq h2,:root[data-theme="dark"] .fi-faq h3,:root[data-theme="dark"] .fi-panel label,:root[data-theme="dark"] .fi-check strong,:root[data-theme="dark"] .fi-summary dd,:root[data-theme="dark"] .fi-saved-card strong{color:#f1f5f9!important}
+:root[data-theme="dark"] .fi-check,:root[data-theme="dark"] .fi-summary dt,:root[data-theme="dark"] .fi-info p,:root[data-theme="dark"] .fi-faq p,:root[data-theme="dark"] .fi-saved-card span{color:#b7c5d8!important}
+:root[data-theme="dark"] .fi-info-grid span{background:#142238!important;color:#dbeafe!important}
+:root[data-theme="dark"] .fi-export-review{background:#101d31!important;border-color:#35527b!important;color:#dbeafe!important}
+:root[data-theme="dark"] .fi-export-status{color:#b7c5d8!important}
+:root[data-theme="dark"] .fi-invoice-preview{background:#fff!important;border-color:#cbd5e1!important;color:#111827!important}
+:root[data-theme="dark"] .fi-invoice-preview h1,:root[data-theme="dark"] .fi-invoice-preview h2,:root[data-theme="dark"] .fi-invoice-preview h3,:root[data-theme="dark"] .fi-invoice-preview p,:root[data-theme="dark"] .fi-invoice-preview span,:root[data-theme="dark"] .fi-invoice-preview strong,:root[data-theme="dark"] .fi-invoice-preview th,:root[data-theme="dark"] .fi-invoice-preview td{color:#111827!important}
 @media(max-width:780px){.fi-hero{padding:34px 0 28px}.fi-hero-card{display:none}.fi-btn,.fi-export-btn,.file-label{width:100%}.fi-export{grid-template-columns:1fr}}
 </style>
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c4853917">
+<script src="/assets/js/lib/dark-mode.js?v=5cb64ba3" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=783a8ae4" defer></script>
 <script src="/assets/js/components/footer.min.js?v=6f4a0d1b" defer></script>
 <script src="/assets/js/lib/save-state-classic.js?v=015b323f"></script>
@@ -122,7 +140,7 @@
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ankara-ya-freelancer/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/freelance-invoice/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar active="career"></afro-navbar>
 <main class="fi-page">
   <section class="fi-hero">
@@ -391,13 +409,18 @@
     <aside class="fi-right" aria-label="Invoice preview and export">
       <section class="fi-export">
         <button class="fi-export-btn primary" id="saveInvoiceBtn" type="button">Save</button>
-        <button class="fi-export-btn" id="pdfBtn" type="button">PDF</button>
+        <button class="fi-export-btn" id="pdfBtn" type="button">Download PDF</button>
         <button class="fi-export-btn" id="docBtn" type="button">DOC</button>
         <button class="fi-export-btn" id="txtBtn" type="button">TXT</button>
         <button class="fi-export-btn" id="csvBtn" type="button">CSV</button>
         <button class="fi-export-btn" id="jsonBtn" type="button">JSON</button>
         <label class="fi-export-btn file-label" for="importJson">Import</label>
         <input id="importJson" class="fi-file-input" type="file" accept="application/json,.json">
+        <label class="fi-export-review" for="fiExportReview">
+          <input id="fiExportReview" type="checkbox">
+          <span>I reviewed the freelancer, client, dates, billable lines, tax, withholding, amount paid, balance, and payment instructions.</span>
+          <span class="fi-export-status" id="fiExportStatus" role="status" aria-live="polite">Complete and review the document before download, print, or client handoff.</span>
+        </label>
       </section>
 
       <section class="fi-review">
@@ -469,6 +492,82 @@
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
+<script>
+(function(){
+  var review=document.getElementById('fiExportReview');
+  var status=document.getElementById('fiExportStatus');
+  var exportIds=['pdfBtn','docBtn','txtBtn','csvBtn','jsonBtn','printBtn','copyEmailBtn','copyReminderBtn','copyWhatsappBtn'];
+  function value(id){var node=document.getElementById(id);return String(node&&node.value||'').trim()}
+  function firstValidLine(){
+    return [].slice.call(document.querySelectorAll('#lineItems tr')).find(function(row){
+      var description=row.querySelector('[data-item-field="description"]');
+      var quantity=row.querySelector('[data-item-field="quantity"]');
+      var rate=row.querySelector('[data-item-field="rate"]');
+      return String(description&&description.value||'').trim().length>4&&Number(quantity&&quantity.value)>0&&Number(rate&&rate.value)>0;
+    });
+  }
+  function exportProblem(id){
+    if(id==='jsonBtn')return '';
+    if(!value('freelancerName'))return 'Add the freelancer or studio name before this handoff.';
+    if(!value('freelancerContact'))return 'Add a freelancer email or phone number before this handoff.';
+    if(!value('clientName'))return 'Add the client or company name before this handoff.';
+    if(!value('clientEmail')&&!value('clientAddress'))return 'Add a client email or address before this handoff.';
+    if(!value('invoiceNumber'))return 'Add an invoice number before this handoff.';
+    if(!value('issueDate'))return 'Add an issue date before this handoff.';
+    if(!firstValidLine())return 'Add at least one clearly described, positively priced billable line.';
+    var instructions=value('paymentInstructions');
+    if(instructions.length<25||/\[[^\]]+\]/.test(instructions))return 'Replace payment placeholders with usable payment instructions.';
+    return '';
+  }
+  function focusFor(problem){
+    if(/freelancer or studio/.test(problem))return document.getElementById('freelancerName');
+    if(/freelancer email/.test(problem))return document.getElementById('freelancerContact');
+    if(/client or company/.test(problem))return document.getElementById('clientName');
+    if(/client email/.test(problem))return document.getElementById('clientEmail');
+    if(/invoice number/.test(problem))return document.getElementById('invoiceNumber');
+    if(/issue date/.test(problem))return document.getElementById('issueDate');
+    if(/billable line/.test(problem))return document.querySelector('[data-item-field="description"]');
+    return document.getElementById('paymentInstructions');
+  }
+  function requireReview(event){
+    var button=event.target&&event.target.closest&&event.target.closest('button');
+    if(!button||exportIds.indexOf(button.id)===-1)return;
+    var problem=exportProblem(button.id);
+    if(problem){
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      if(status)status.textContent=problem;
+      var target=focusFor(problem);
+      if(target)target.focus();
+      return;
+    }
+    if(review&&review.checked)return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if(status)status.textContent='Review the final document preview and confirm it before this handoff.';
+    if(review)review.focus();
+  }
+  function invalidate(event){
+    if(!review||event.target===review||!review.checked)return;
+    if(event.target&&event.target.closest&&event.target.closest('.fi-page')){
+      review.checked=false;
+      if(status)status.textContent='Document changed. Review the final preview again before export.';
+    }
+  }
+  document.addEventListener('click',requireReview,true);
+  document.addEventListener('input',invalidate,true);
+  document.addEventListener('change',invalidate,true);
+  document.addEventListener('click',function(event){
+    if(!review||!review.checked||!event.target||!event.target.closest)return;
+    var mutation=event.target.closest('#loadSampleBtn,#newInvoiceBtn,#addItemBtn,#addTimeBtn,#addExpenseBtn,[data-remove-item],[data-template],[data-client-id],[data-open-saved]');
+    if(!mutation)return;
+    setTimeout(function(){
+      review.checked=false;
+      if(status)status.textContent='Document changed. Review the final preview again before export.';
+    },0);
+  },true);
+})();
+</script>
 <afro-footer></afro-footer>
 <script src="/assets/js/components/related-tools.min.js?v=7d171d76" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
