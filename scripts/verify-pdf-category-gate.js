@@ -94,7 +94,8 @@ function verifyToolPages(tools) {
       const gateCount = (html.match(/pdf-download-gate\.js/g) || []).length;
       const modalCount = (html.match(/<email-gate-modal/g) || []).length;
       const oldGateCount = (html.match(/auto-email-gate\.js/g) || []).length;
-      const gateExempt = localFirstSensitiveGateExemptions.has(tool.slug);
+      const declaresLocalFirstDownloads = /<body[^>]*\bdata-local-first-downloads(?:\s|=|>)/i.test(html);
+      const gateExempt = localFirstSensitiveGateExemptions.has(tool.slug) || declaresLocalFirstDownloads;
       if (!gateExempt && gateCount !== 1) failures.push(`${rel(file)} should load pdf-download-gate.js exactly once, found ${gateCount}.`);
       if (!gateExempt && modalCount < 1) failures.push(`${rel(file)} is missing <email-gate-modal>.`);
       if (gateExempt && (gateCount > 0 || modalCount > 0)) failures.push(`${rel(file)} is local-first and should not load the PDF/email gate.`);
