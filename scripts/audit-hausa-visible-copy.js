@@ -182,7 +182,11 @@ function extractVisibleAttributeText(line) {
 
 function visibleLines(html) {
   const state = { ignoredTag: "" };
-  return html.split(/\r?\n/).map((line, index) => {
+  // Generated and hand-authored pages may wrap one opening tag across many
+  // lines. Collapse only tag-internal newlines before the line audit so
+  // class/id/data/role attributes cannot be mistaken for visible copy.
+  const normalizedHtml = html.replace(/<[^>]+>/g, (tag) => tag.replace(/\r?\n/g, " "));
+  return normalizedHtml.split(/\r?\n/).map((line, index) => {
     let visible = removeIgnoredSegments(line.replace(/<!--[\s\S]*?-->/g, " "), state);
     const attrText = state.ignoredTag ? "" : extractVisibleAttributeText(visible);
     visible = `${visible} ${attrText}`

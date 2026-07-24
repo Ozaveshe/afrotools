@@ -179,10 +179,13 @@ test('business market-stall calculator produces a profit summary', async ({ page
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/tools/market-stall-profit/', { waitUntil: 'domcontentloaded' });
 
-  await page.getByRole('button', { name: /food seller/i }).click();
-  await page.getByRole('button', { name: /calculate profit/i }).click();
-  await expect(page.locator('#resultsSection')).toBeVisible();
-  await expect(page.locator('#summaryCards')).toContainText(/profit|revenue/i);
+  await page.locator('.js-name').first().fill('Tomatoes');
+  await page.locator('.js-cost').first().fill('50');
+  await page.locator('.js-price').first().fill('80');
+  await page.locator('.js-sold').first().fill('10');
+  await page.getByRole('button', { name: /calculate daily profit/i }).click();
+  await expect(page.locator('[data-results]')).toBeVisible();
+  await expect(page.locator('[data-results]')).toContainText(/net daily profit|sales revenue/i);
   await assertNoHorizontalOverflow(page);
   expect(errors).toEqual([]);
 });
@@ -192,11 +195,11 @@ test('property calculators show clear mobile results', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
 
   await page.goto('/tools/rent-vs-buy/', { waitUntil: 'domcontentloaded' });
-  await page.locator('#homePrice').fill('2000000');
-  await page.locator('#monthlyRent').fill('15000');
-  await page.getByRole('button', { name: /compare renting vs buying/i }).click();
-  await expect(page.locator('#results-section')).toBeVisible();
-  await expect(page.locator('#verdict-title')).not.toHaveText('Result');
+  await page.locator('#rvb-rent-housing').fill('15000');
+  await page.locator('#rvb-buy-housing').fill('20000');
+  await page.getByRole('button', { name: /compare entered cash flows/i }).click();
+  await expect(page.locator('.rvb-results')).toBeVisible();
+  await expect(page.locator('#rvb-scenario-line')).not.toHaveText('—');
   await assertNoHorizontalOverflow(page);
 
   await page.goto('/tools/rent-affordability/', { waitUntil: 'domcontentloaded' });

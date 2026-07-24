@@ -1,0 +1,51 @@
+{
+  "reviewedBy": "Codex Day 3 release gate",
+  "reviewedAt": "2026-07-21",
+  "sourceUrl": "https://revenue.lra.gov.lr/domestic-tax/tax-education/",
+  "reason": "Correct Liberia resident natural-person PAYE to the LRA annual gross-income schedule, keep NASSCORP employee contributions separate from the PAYE tax base, correct the NASSCORP name, and synchronize the English and French route runtimes. NASSCORP contribution rates are supported by the official employer guide at https://www.nasscorp.org.lr/wp-content/uploads/2024/06/Revised-Employers-Guide-Mar-20-24.pdf.",
+  "formulaIds": [
+    "paye-server-lr",
+    "route-lr-paye",
+    "route-lr-paye-fr"
+  ],
+  "fixtureDeltas": [
+    {
+      "fixtureId": "paye-lr-defaults",
+      "previousExpected": {
+        "deductions.totalDeductions": 251400,
+        "result.netAnnual": 748600,
+        "result.netMonthly": 62383,
+        "tax.netTax": 211400
+      },
+      "nextExpected": {
+        "deductions.totalDeductions": 186500,
+        "result.netAnnual": 813500,
+        "result.netMonthly": 67792,
+        "tax.netTax": 146500
+      },
+      "reason": "At LRD 1,000,000 annual gross, the published LRA schedule yields LRD 146,500 PIT; the separate 4% employee NASSCORP contribution is LRD 40,000.",
+      "sourceUrl": "https://revenue.lra.gov.lr/domestic-tax/tax-education/",
+      "reviewedBy": "Codex Day 3 release gate",
+      "reviewedAt": "2026-07-21"
+    },
+    {
+      "fixtureId": "paye-lr-large-decimal",
+      "previousExpected": {
+        "deductions.totalDeductions": 279971400,
+        "result.netAnnual": 720028601,
+        "result.netMonthly": 60002383,
+        "tax.netTax": 239971400
+      },
+      "nextExpected": {
+        "deductions.totalDeductions": 289896500,
+        "result.netAnnual": 710103501,
+        "result.netMonthly": 59175292,
+        "tax.netTax": 249896500
+      },
+      "reason": "The large-value boundary fixture now uses the published 25% top band on annual gross income and keeps the 4% NASSCORP deduction separate.",
+      "sourceUrl": "https://revenue.lra.gov.lr/domestic-tax/tax-education/",
+      "reviewedBy": "Codex Day 3 release gate",
+      "reviewedAt": "2026-07-21"
+    }
+  ]
+}

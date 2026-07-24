@@ -1,0 +1,60 @@
+{
+  "reviewedBy": "AfroTools VAT VIP review",
+  "reviewedAt": "2026-07-22",
+  "sourceUrl": "https://www.finances.gouv.td/index.php/le-ministere/le-ministre/item/download/404_2503d5c174528169afd3a9cd827c3cb0",
+  "reason": "Use the official definitive invoice rates after provincial and communal centimes: 19.25% on the 17.5% base and 9.9% on the evidence-gated Article 238 9% base.",
+  "formulaIds": ["route-td-vat"],
+  "fixtureDeltas": [],
+  "tool": "td-vat",
+  "reviewedOn": "2026-07-22",
+  "scope": [
+    "/chad/td-vat",
+    "/fr/tchad/calculateur-tva",
+    "/sw/chad/kikokotoo-vat/",
+    "AfroVAT TD"
+  ],
+  "officialSources": [
+    {
+      "title": "Chad 2024 Finance Law application circular",
+      "url": "https://www.finances.gouv.td/index.php/le-ministere/le-ministre/item/download/404_2503d5c174528169afd3a9cd827c3cb0",
+      "provisions": "Paragraphs 31-36 require 10% centimes on base VAT and invoices showing 19.25% and 9.9%."
+    },
+    {
+      "title": "Chad 2024 Finance Law",
+      "url": "https://www.finances.gouv.td/index.php/le-ministere/le-ministre/item/download/403_f415c0610b4b26d6bae5aeec20c82e81"
+    },
+    {
+      "title": "Chad Code general des impots 2025",
+      "url": "https://www.finances.gouv.td/index.php/le-ministere/le-ministre/item/download/438_afa372566d4acca63cb857e846d67eef",
+      "articles": [229, 230, 235, 238, 239, 245, 1014]
+    },
+    {
+      "title": "2026 Finance Law application circular",
+      "url": "https://www.finances.gouv.td/index.php/le-ministere/le-ministre/item/download/454_94f28246efd69cb6a80af5e0e49b36e9",
+      "provisions": "Article 229 V and paragraphs 131-133 continuing the provincial and communal centimes allocation."
+    }
+  ],
+  "formulas": {
+    "baseStandardRate": 17.5,
+    "baseReducedRate": 9,
+    "centimesOnBaseVatPercent": 10,
+    "standardRate": 19.25,
+    "reducedRate": 9.9,
+    "zeroRate": 0,
+    "add": "gross = net * (1 + effectiveRate / 100)",
+    "extract": "net = gross / (1 + effectiveRate / 100)"
+  },
+  "failClosedRules": [
+    "9.9% is the definitive invoice rate and requires a confirmed supply listed by Article 238; it already includes centimes on the 9% base.",
+    "0% requires a confirmed Article 238 export, international transport or outbound Jet A1 case.",
+    "An Article 230 exemption is not inferred from a broad category label.",
+    "The 2026 IGL single-operation override applies strictly above XAF 50,000,000, not at equality.",
+    "The estimator flags statutory base rounding and does not silently alter entered invoice values.",
+    "No generic VAT-withholding percentage is exposed."
+  ],
+  "privacy": "Calculator, invoice line and PDF remain local; the share action contains only the canonical URL.",
+  "tests": [
+    "tests/engines/td-vat.test.js",
+    "tests/e2e/day3-vat-chad-vip.spec.js"
+  ]
+}

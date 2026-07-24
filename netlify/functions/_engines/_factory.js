@@ -36,6 +36,9 @@ function createEngine(config) {
     lastUpdated = '2026-03-01', sourceCheckedOn = null, nextReviewDate = null,
     bands, bandType = 'progressive', // 'progressive' (width-based) or 'cumulative' (threshold-based)
     isMonthly = false, // if bands are monthly, multiply result by 12
+    ssDeductibleFromTaxable = true,
+    taxFreeAllowance = 0, // in the same period as the bands
+    taxableRoundingStep = null, // optional statutory round-down step
     socialSecurity = [], // [{key, label, rate, cap, default}]
     employerSS = [], // [{key, label, rate, cap}]
     personalRelief = 0,
@@ -54,6 +57,9 @@ function createEngine(config) {
     formulaParameters: {
       bandType,
       isMonthly,
+      ...(ssDeductibleFromTaxable ? {} : { ssDeductibleFromTaxable }),
+      ...(taxFreeAllowance ? { taxFreeAllowance } : {}),
+      ...(taxableRoundingStep ? { taxableRoundingStep } : {}),
       bands,
       socialSecurity,
       employerSS,
@@ -81,7 +87,7 @@ function createEngine(config) {
       const deductions = {};
       for (const ss of socialSecurity) {
         if (opts[ss.key] === false) { deductions[ss.key] = 0; continue; }
-        const base = isMonthly ? monthly : grossAnnual;
+        const base = ss.baseCap ? Math.min(isMonthly ? monthly : grossAnnual, ss.baseCap * (isMonthly ? 1 : 12)) : (isMonthly ? monthly : grossAnnual);
         let amt = base * ss.rate;
         if (ss.cap) amt = Math.min(amt, ss.cap * (isMonthly ? 1 : 12));
         if (isMonthly) amt *= 12;
@@ -90,8 +96,11 @@ function createEngine(config) {
       }
 
       // Calculate taxable income
-      const taxable = Math.max(0, grossAnnual - totalSS);
-      const calcAmount = isMonthly ? taxable / 12 : taxable;
+      const taxable = Math.max(0, ssDeductibleFromTaxable ? grossAnnual - totalSS : grossAnnual);
+      const periodTaxable = Math.max(0, (isMonthly ? taxable / 12 : taxable) - taxFreeAllowance);
+      const calcAmount = taxableRoundingStep
+        ? Math.floor(periodTaxable / taxableRoundingStep) * taxableRoundingStep
+        : periodTaxable;
 
       // Calculate tax
       const calcFn = bandType === 'cumulative' ? calcCumulativeBands : calcProgressiveBands;
@@ -108,7 +117,7 @@ function createEngine(config) {
       let empTotal = 0;
       const employer = {};
       for (const es of employerSS) {
-        const base = isMonthly ? monthly : grossAnnual;
+        const base = es.baseCap ? Math.min(isMonthly ? monthly : grossAnnual, es.baseCap * (isMonthly ? 1 : 12)) : (isMonthly ? monthly : grossAnnual);
         let amt = base * es.rate;
         if (es.cap) amt = Math.min(amt, es.cap * (isMonthly ? 1 : 12));
         if (isMonthly) amt *= 12;
@@ -124,7 +133,7 @@ function createEngine(config) {
         input: { country, grossAnnual, regime: regimes[0] },
         deductions,
         tax: {
-          taxableIncome: Math.round(taxable),
+          taxableIncome: Math.round(isMonthly ? calcAmount * 12 : calcAmount),
           bands: bandDetail,
           grossTax: Math.round(annualTax),
           reliefs: relief > 0 ? { personalRelief: relief } : {},

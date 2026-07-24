@@ -1,194 +1,23 @@
-<!doctype html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="sw">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Kifuatiliaji cha Inventory kwa Biashara Ndogo | AfroTools</title>
-  <meta name="description" content="Fuatilia inventory, yaani stock ya bidhaa, bei ya kununua, bei ya kuuza, thamani na bidhaa zilizo karibu kuisha.">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Kifuatiliaji cha Inventory kwa Biashara Ndogo | AfroTools">
-  <meta property="og:description" content="Fuatilia inventory, yaani stock ya bidhaa, bei ya kununua, bei ya kuuza, thamani na bidhaa zilizo karibu kuisha.">
-<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-  <meta property="og:url" content="https://afrotools.com/sw/zana/kifuatiliaji-inventory/">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Kifuatiliaji cha Inventory kwa Biashara Ndogo | AfroTools">
-  <meta name="twitter:description" content="Fuatilia inventory, yaani stock ya bidhaa, bei ya kununua, bei ya kuuza, thamani na bidhaa zilizo karibu kuisha.">
+<!doctype html><html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="sw"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Kikokotoo cha Inventory na Ufuatiliaji wa Stock | AfroTools</title><meta name="description" content="Fuatilia stock ndani ya browser na ukokotoe thamani kwa gharama, mauzo yanayowezekana, faida ghafi yenye ishara, tahadhari na reorder."><meta name="robots" content="index,follow">
+<meta property="og:title" content="Kikokotoo cha Inventory na Ufuatiliaji wa Stock"><meta property="og:description" content="Hesabu za stock za ndani ya browser, backup na export kwa biashara ndogo."><meta property="og:url" content="https://afrotools.com/sw/zana/kifuatiliaji-inventory/"><meta property="og:type" content="website"><meta property="og:image" content="https://afrotools.com/assets/img/tools/inventory.webp">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75"><link rel="stylesheet" href="/assets/css/inventory-vip.css?v=4752332f"><script>(function(){try{var t=localStorage.getItem("aft_theme"),d=matchMedia("(prefers-color-scheme: dark)").matches,a=t==="dark"||t==="light"?t:(d?"dark":"light");document.documentElement.setAttribute("data-theme",a);document.documentElement.style.colorScheme=a}catch(_){}})();</script>
+<script src="/assets/js/components/navbar.min.js?v=996960fa" defer></script><script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script><script src="/assets/js/bundles/core.53e2e483.min.js" defer></script><script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c" defer></script><script src="/assets/js/engines/inventory-planner.js?v=3cf76554" defer></script><script src="/assets/js/pages/inventory-vip.js?v=8b66590f" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Kikokotoo cha Inventory na Ufuatiliaji wa Stock","url":"https://afrotools.com/sw/zana/kifuatiliaji-inventory/","description":"Kokotoa thamani ya stock kwa gharama, mauzo yanayowezekana, faida ghafi na reorder kutoka data unayoingiza.","inLanguage":"sw","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"isAccessibleForFree":true}</script>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-  <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
-  <style>
-    :root { color-scheme: light; }
-    body { margin: 0; font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f7faf8; color: #14241e; }
-    .wrap { max-width: 1120px; margin: 0 auto; padding: 36px 20px 56px; }
-    .hero { padding: 38px 0 26px; display: grid; gap: 14px; }
-    .eyebrow { color: #0f766e; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; font-size: .78rem; }
-    h1 { font-size: clamp(2rem, 5vw, 3.9rem); line-height: 1.02; margin: 0; max-width: 900px; letter-spacing: 0; }
-    h2 { margin-top: 0; color: #143c33; }
-    p { line-height: 1.65; }
-    a { color: #0f766e; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
-    .panel, .tool-card, .result-card { background: #fff; border: 1px solid #d9e7df; border-radius: 8px; padding: 20px; box-shadow: 0 8px 28px rgba(18, 51, 39, .06); }
-    .tool-card h3, .result-card h3 { margin: 0 0 8px; font-size: 1.05rem; }
-    .tool-card p, .result-card p { margin: 0; color: #475b52; }
-    .tool-card ul { margin: 10px 0 0; padding-left: 20px; color: #475b52; }
-    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
-    label { display: grid; gap: 6px; font-weight: 700; color: #213e34; }
-    input, select, textarea { width: 100%; box-sizing: border-box; border: 1px solid #bfd3c8; border-radius: 8px; padding: 11px 12px; font: inherit; background: #fff; color: #17231f; }
-    textarea { min-height: 104px; resize: vertical; }
-    button, .button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 8px; padding: 11px 16px; background: #0f766e; color: #fff; font-weight: 800; text-decoration: none; cursor: pointer; }
-    button.secondary, .button.secondary { background: #e5f1eb; color: #174539; }
-    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
-    .results { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-top: 18px; }
-    .metric { border: 1px solid #d9e7df; border-radius: 8px; padding: 14px; background: #fbfdfb; }
-    .metric strong { display: block; font-size: 1.35rem; color: #0f3f35; margin-top: 6px; overflow-wrap: anywhere; }
-    table { width: 100%; border-collapse: collapse; margin-top: 14px; }
-    th, td { text-align: left; border-bottom: 1px solid #dce8e0; padding: 10px; vertical-align: top; }
-    th { color: #143c33; background: #edf6f1; }
-    .note { border-left: 4px solid #0f766e; background: #eaf7f2; padding: 14px 16px; border-radius: 8px; color: #21443b; }
-    .warn { border-left-color: #b45309; background: #fff7ed; }
-    .link-list { display: flex; flex-wrap: wrap; gap: 10px; }
-    .link-list a { border: 1px solid #cce1d7; background: #fff; border-radius: 999px; padding: 9px 12px; text-decoration: none; font-weight: 700; }
-    .section { margin-top: 26px; }
-    @media (max-width: 640px) { .wrap { padding: 24px 14px 42px; } .hero { padding-top: 20px; } th, td { padding: 8px 6px; font-size: .92rem; } }
-  </style>
-  <script type="application/ld+json">{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Mwanzo",
-      "item": "https://afrotools.com/sw/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Zana",
-      "item": "https://afrotools.com/sw/zana-zote/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Kifuatiliaji cha inventory",
-      "item": "https://afrotools.com/sw/zana/kifuatiliaji-inventory/"
-    }
-  ]
-}</script>
-  <script type="application/ld+json">{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Kifuatiliaji cha inventory",
-  "url": "https://afrotools.com/sw/zana/kifuatiliaji-inventory/",
-  "inLanguage": "sw",
-  "description": "Fuatilia inventory, yaani stock ya bidhaa, bei ya kununua, bei ya kuuza, thamani na bidhaa zilizo karibu kuisha.",
-  "applicationCategory": "BusinessApplication",
-  "operatingSystem": "Web"
-}</script>
-<link rel="stylesheet" href="/assets/css/sw-zana-mobile.css?v=adecdf8a">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 <link rel="canonical" href="https://afrotools.com/sw/zana/kifuatiliaji-inventory/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/inventory/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/gestion-stocks/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kifuatiliaji-inventory/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/inventory/">
-</head>
-<body class="top-level-page-ui-refresh">
-  <afro-navbar></afro-navbar>
-  <main class="wrap">
-    <section class="hero">
-      <div class="eyebrow">Biashara ndogo na SME</div>
-      <h1>Kifuatiliaji cha inventory</h1>
-      <p>Fuatilia inventory, yaani stock ya bidhaa, bei ya kununua, bei ya kuuza, thamani ya bidhaa na vitu vilivyo karibu kuisha.</p>
-    </section>
-    <section class="grid">
-      <div class="panel">
-        <h2>Ongeza bidhaa</h2>
-        <div class="form-grid">
-                    <label>Jina la bidhaa<input aria-label="Name" id="name" type="text" value="Sabuni ya asili" ></label>
-                    <label>SKU au msimbo<input aria-label="Sku" id="sku" type="text" value="SBN-001" ></label>
-                    <label>Bei ya kununua<input aria-label="Cost" id="cost" type="number" value="800" ></label>
-                    <label>Bei ya kuuza<input aria-label="Sell" id="sell" type="number" value="1200" ></label>
-                    <label>Stock iliyopo<input aria-label="Qty" id="qty" type="number" value="40" ></label>
-                    <label>Kiwango cha tahadhari<input aria-label="Low" id="low" type="number" value="10" ></label>
-        </div>
-        <div class="actions"><button type="button" id="calculate">Ongeza au sasisha</button><button type="button" class="secondary" id="reset">Mfano</button></div>
-      </div>
-      <div class="panel"><h2>Muhtasari wa inventory</h2><div id="results" class="results"></div><div id="detail"></div></div>
-    </section>
-<section class="section panel">
-      <h2>Angalia pia</h2>
-      <div class="link-list">
-        <a href="/sw/zana/kikokotoo-markup/">Markup</a>
-        <a href="/sw/zana/makisio-mtiririko-wa-fedha/">Cash flow</a>
-        <a href="/sw/biashara-ndogo/">Biashara ndogo</a>
-        <a href="/sw/biashara-na-faida/">Faida na margin</a>
-        <a href="/sw/biashara-na-uzingatiaji/">Uzingatiaji wa biashara</a>
-        <a href="/sw/zana/kikokotoo-break-even/">Break-even</a>
-        <a href="/sw/zana/kikokotoo-margin-ya-faida/">Margin ya faida</a>
-        <a href="/sw/zana/kizalishaji-ankara/">Ankara</a>
-        <a href="/sw/zana/mwongozo-tin/">TIN</a>
-        <a href="/sw/zana/usajili-biashara/">Usajili wa biashara</a>
-      </div>
-    </section>
-<section class="section note warn">
-      <strong>Angalizo:</strong> Matokeo haya ni makadirio ya kupanga inventory na stock. Hayathibitishi faida, ufadhili, bei, thamani ya kampuni, malipo ya mtoa huduma au uhai wa biashara. Hakiki namba zako na mshauri wa biashara, mhasibu, mtoa huduma wa malipo, msajili au mamlaka ya kodi inapohitajika.
-    </section><section class="section panel">
-      <h2>Maswali ya haraka</h2>
-      <h3>Data inahifadhiwa wapi?</h3><p>Ukurasa huu hutumia kivinjari localStorage kwa matumizi ya kifaa hiki. Si mfumo rasmi wa stock wa kampuni.</p>
-      <h3>Kiwango cha tahadhari ni nini?</h3><p>Ni idadi ya chini inayokukumbusha kuagiza tena kabla stock haijaisha. Reorder hapa maana yake ni kupanga ununuzi mpya.</p>
-    </section>
-
-<section data-tool-verification-panel style="max-width:1080px;margin:20px auto;padding:20px;border:1px solid #dbeafe;border-radius:12px;background:#fff;box-shadow:0 8px 22px rgba(15,23,42,.05);line-height:1.65">
-  <!-- upgrade-proof-panel:start -->
-  <p style="margin:0 0 6px;font-size:.78rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#0f766e">Muhtasari wa uthibitisho</p>
-  <h2 style="margin:0 0 8px;font-size:1.2rem;color:#0f172a">Inventory: hatua ya haraka</h2>
-  <p style="margin:.35rem 0;color:#475569"><strong>Mbinu:</strong> Mbinu ni kufuatilia stock iliyopo, reorder level, supplier lead time na mauzo ya siku.</p>
-  <p style="margin:.35rem 0;color:#475569"><strong>Chanzo cha kuhakiki:</strong> Hesabu ya ghala, POS, invoice na ratiba ya supplier.</p>
-  <p style="margin:.35rem 0;color:#475569"><strong>Kanusho:</strong> Makadirio haya hayabadilishi stock count ya kimwili au approval ya ununuzi.</p>
-  <form aria-label="Inventory: hatua ya haraka" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px">
-    <label style="display:block;font-weight:850;margin:10px 0 6px;color:#334155">Kiasi au mada<input style="width:100%;min-height:42px;border:1px solid #cbd5e1;border-radius:8px;padding:9px 10px;font:inherit;background:#fff" placeholder="Mfano: ada, nchi, kozi"></label>
-    <label style="display:block;font-weight:850;margin:10px 0 6px;color:#334155">Jambo la kuhakiki<input style="width:100%;min-height:42px;border:1px solid #cbd5e1;border-radius:8px;padding:9px 10px;font:inherit;background:#fff" placeholder="Chanzo, tarehe, mamlaka"></label>
-    <button type="button" style="display:inline-flex;align-items:center;justify-content:center;min-height:42px;margin-top:12px;padding:10px 14px;border:0;border-radius:8px;background:#0f766e;color:#fff;font-weight:900;text-decoration:none;cursor:pointer">Panga na nakili mpango</button>
-  </form>
-  <!-- upgrade-proof-panel:end -->
-</section>
-</main>
-  <afro-footer></afro-footer>
-  <script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script>
-  <script src="/assets/js/afro-history.js?v=6ecf1296"></script>
-  <script src="/assets/js/components/save-result-button.js?v=cc26bc74"></script>
-  <script src="/assets/js/components/share-card-generator.js?v=1d440fc6"></script>
-  <script src="/assets/js/components/share-button.js?v=f8342961"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa"></script>
-  <script src="/assets/js/components/footer.min.js?v=dfb30911"></script>
-  <script src="/assets/js/components/related-tools.js?v=4123e336"></script>
-  <script src="/assets/js/components/newsletter-cta.js?v=73bdfbf4"></script>
-  <script>
-const q = function(id){ return document.getElementById(id); };
-function num(id){ const el = q(id); return el ? Number(el.value || 0) : 0; }
-function text(id){ const el = q(id); return el ? String(el.value || '').trim() : ''; }
-function money(v, cur){ try { return new Intl.NumberFormat('sw', { style: 'currency', currency: cur || 'USD', maximumFractionDigits: 0 }).format(Number(v) || 0); } catch(e) { return (cur || '') + ' ' + Math.round(Number(v) || 0).toLocaleString('sw'); } }
-function pct(v){ return (Number(v) || 0).toFixed(1) + '%'; }
-function metric(label, value, help){ return '<div class="metric"><span>' + label + '</span><strong>' + value + '</strong>' + (help ? '<small>' + help + '</small>' : '') + '</div>'; }
-function setResults(html){ q('results').innerHTML = html; }
-function setDetail(html){ const el = q('detail'); if (el) el.innerHTML = html; }
-function bind(calc, reset){ q('calculate').addEventListener('click', calc); if (q('reset')) q('reset').addEventListener('click', function(){ reset(); calc(); }); calc(); }
-const key='sw-sme-inventory-v1';
-function load(){ try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch(e){ return []; } }
-function save(items){ localStorage.setItem(key, JSON.stringify(items)); }
-function render(){
-  const items=load(); let value=0, profit=0, low=0;
-  items.forEach(function(it){ value += it.cost*it.qty; profit += (it.sell-it.cost)*it.qty; if(it.qty <= it.low) low++; });
-  setResults(metric('Bidhaa', String(items.length), '') + metric('Thamani ya stock', money(value,'KES'), '') + metric('Faida ikiuzwa yote', money(profit,'KES'), '') + metric('Chini ya kiwango', String(low), 'Tahadhari'));
-  setDetail('<table><thead><tr><th>Bidhaa</th><th>SKU</th><th>Stock</th><th>Nunua</th><th>Uza</th><th>Hali</th></tr></thead><tbody>' + items.map(function(it){ return '<tr><td>' + it.name + '</td><td>' + it.sku + '</td><td>' + it.qty + '</td><td>' + money(it.cost,'KES') + '</td><td>' + money(it.sell,'KES') + '</td><td>' + (it.qty <= it.low ? 'Chini' : 'Sawa') + '</td></tr>'; }).join('') + '</tbody></table>');
-}
-function calc(){ const items=load(); const sku=text('sku') || text('name'); const item={ name:text('name')||'Bidhaa', sku:sku, cost:num('cost'), sell:num('sell'), qty:num('qty'), low:num('low') }; const idx=items.findIndex(function(x){ return x.sku===sku; }); if(idx>=0) items[idx]=item; else items.push(item); save(items); render(); }
-function reset(){ save([{name:'Sabuni ya asili', sku:'SBN-001', cost:800, sell:1200, qty:40, low:10},{name:'Mafuta ya nywele', sku:'MFT-002', cost:1200, sell:1900, qty:8, low:10}]); render(); }
-q('calculate').addEventListener('click', calc); q('reset').addEventListener('click', reset); if(!load().length) reset(); else render();
-  </script>
+</head><body><a class="skip-link" href="#main-content">Ruka hadi inventory</a><afro-navbar active="tools"></afro-navbar>
+<main id="main-content" class="inv-shell" tabindex="-1"><header class="inv-hero"><span class="inv-kicker">Mipango ya stock ndani ya kivinjari</span><h1>Kikokotoo cha inventory na ufuatiliaji wa stock</h1><p>Fuatilia bidhaa bila kuzipakia seva. Kokotoa thamani kwa gharama, mauzo yanayowezekana, faida ghafi yenye ishara na reorder kutokana na stock lengwa.</p></header>
+<section aria-label="Vidhibiti vya inventory"><div class="inv-toolbar"><button id="invAdd" class="inv-button inv-primary" type="button">Ongeza bidhaa</button><label class="inv-field inv-search">Tafuta bidhaa<input id="invSearch" class="inv-input" type="search" autocomplete="off"></label><label class="inv-field">Kipimo cha kuonyesha<select id="invUnit" class="inv-input"><option>USD</option><option>NGN</option><option>KES</option><option>ZAR</option><option>GHS</option><option>XOF</option><option>XAF</option><option>UGX</option><option>TZS</option><option>RWF</option><option>ETB</option><option>Nyingine</option></select><span>Ni label tu; hakuna ubadilishaji wa FX.</span></label></div>
+<div id="invMetrics" class="inv-metrics" aria-live="polite"></div><div class="inv-card"><div class="inv-toolbar"><button id="invCopy" class="inv-button" type="button">Nakili muhtasari</button><button id="invCsv" class="inv-button" type="button">Export CSV salama</button><button id="invJson" class="inv-button" type="button">Backup JSON</button><button id="invPdf" class="inv-button" type="button">Pakua PDF</button><select id="invImportMode" class="inv-input" aria-label="Njia ya kuingiza JSON" style="width:auto"><option value="merge">Unganisha JSON</option><option value="replace">Badilisha kwa JSON</option></select><button id="invImportButton" class="inv-button" type="button">Ingiza JSON</button><input id="invImport" type="file" accept="application/json,.json" hidden><button id="invSample" class="inv-button" type="button">Pakia mfano</button><button id="invClear" class="inv-button inv-danger" type="button">Futa zote</button></div>
+<p id="invStatus" class="inv-status" aria-live="polite"></p><p class="inv-privacy"><strong>Faragha kwa chaguo-msingi.</strong> Bidhaa, SKU na bei hukaa kwenye kivinjari hii. Hakiki stock halisi, invoice, uharibifu, expiry, returns na stock iliyohifadhiwa kabla ya kununua au kufanya hesabu.</p>
+<div class="inv-table-wrap" tabindex="0" aria-label="Jedwali la inventory linalosogea"><table class="inv-table"><thead><tr><th>Bidhaa</th><th>SKU</th><th>Kategoria</th><th>Gharama</th><th>Bei ya kuuza</th><th>Iliyopo</th><th>Kiwango cha reorder</th><th>Lengo</th><th>Thamani ya gharama</th><th>Reorder</th><th>Vitendo</th></tr></thead><tbody id="invBody"></tbody></table></div></div></section>
+<section class="inv-method"><h2>Mbinu na mipaka</h2><ul><li>Thamani ya stock kwa gharama = gharama ya unit × idadi iliyopo. Si FIFO, weighted average wala COGS.</li><li>Mauzo yanayowezekana = bei ya kuuza × idadi. Faida ghafi inayowezekana = (bei − gharama) × idadi na inaweza kuwa hasi.</li><li>Stock ni ndogo ikiwa idadi ni sawa au chini ya reorder point. Reorder = max(stock lengwa − idadi, 0).</li><li>Hakuna VAT, tax, FX, utabiri wa demand, bei ya supplier, lead time au ushauri wa ununuzi.</li></ul></section></main>
+<div id="invModal" class="inv-modal" role="dialog" aria-modal="true" aria-labelledby="invModalTitle" aria-hidden="true"><div class="inv-dialog"><div class="inv-dialog-head"><h2 id="invModalTitle">Ongeza bidhaa</h2><button id="invClose" class="inv-button inv-close" type="button" aria-label="Funga dirisha">×</button></div><form id="invForm"><div class="inv-form-grid"><label class="inv-field">Jina la bidhaa<input id="invName" class="inv-input" maxlength="120" required></label><label class="inv-field">SKU (si lazima)<input id="invSku" class="inv-input" maxlength="80"></label><label class="inv-field">Kategoria (si lazima)<input id="invCategory" class="inv-input" maxlength="80"></label><label class="inv-field">Gharama ya unit<input id="invCost" class="inv-input" type="number" min="0" step="any" required></label><label class="inv-field">Bei ya kuuza<input id="invSell" class="inv-input" type="number" min="0" step="any" required></label><label class="inv-field">Idadi iliyopo<input id="invQty" class="inv-input" type="number" min="0" step="any" required></label><label class="inv-field">Reorder point<input id="invReorder" class="inv-input" type="number" min="0" step="any" required></label><label class="inv-field">Stock lengwa (si lazima)<input id="invTarget" class="inv-input" type="number" min="0" step="any"><span>Huwezesha hesabu ya reorder pekee.</span></label></div><p id="invModalError" class="inv-modal-error" aria-live="assertive"></p><div class="inv-dialog-actions"><button id="invCancel" class="inv-button" type="button">Ghairi</button><button class="inv-button inv-primary" type="submit">Hifadhi</button></div></form></div></div>
+<afro-footer></afro-footer><script>window.INVENTORY_VIP_CONFIG={locale:"sw",defaultUnit:"KES",sample:{name:"Sabuni ya mfano",sku:"SBN-01",category:"Nyumbani",unitCost:800,sellPrice:1200,quantity:4,reorderPoint:4,targetStock:12},t:{products:"Bidhaa",lowStock:"Stock ndogo",stockValue:"Thamani kwa gharama",potentialSales:"Mauzo yanayowezekana",potentialProfit:"Faida ghafi inayowezekana",reorderUnits:"Unit za reorder",edit:"Hariri",addOne:"Ongeza 1",removeOne:"Punguza 1",delete:"Futa",empty:"Hakuna bidhaa. Ongeza bidhaa au pakia mfano kwa hiari.",editProduct:"Hariri bidhaa",addProduct:"Ongeza bidhaa",saved:"Inventory imehifadhiwa ndani ya browser.",adjusted:"Stock imerekebishwa.",deleted:"Bidhaa imefutwa.",unitSaved:"Kipimo kimehifadhiwa.",storageBlocked:"Browser storage haipatikani. Mabadiliko yanabaki kwenye tab hii.",corrupt:"Inventory iliyohifadhiwa haisomeki. Hakuna data iliyobadilishwa.",migrated:"Rekodi {count} za zamani zimepakiwa; duplicate {duplicates} zimeondolewa. Keys za zamani zimehifadhiwa.",pdfMissing:"Maktaba ya PDF haipatikani.",pdfTitle:"Muhtasari wa inventory wa AfroTools",formulaCost:"Thamani kwa gharama = jumla(gharama ya unit x idadi iliyopo). Si COGS wala accounting valuation.",formulaSales:"Mauzo yanayowezekana = jumla(bei ya kuuza x idadi iliyopo).",formulaProfit:"Faida ghafi inayowezekana = jumla((bei ya kuuza - gharama) x idadi).",formulaReorder:"Reorder = max(stock lengwa - idadi iliyopo, 0), ikiwa lengo limewekwa.",pdfLimits:"Ni worksheet ya kupanga. Hakiki stock halisi, invoice, uharibifu, expiry, returns na reservations.",lowList:"Stock ndogo na reorder",exported:"Export imetengenezwa ndani ya browser.",fileTooLarge:"Backup imezidi kikomo cha MB 1.",confirmMerge:"Unganisha backup hii iliyothibitishwa? Duplicate halisi zitaondolewa.",confirmReplace:"Badilisha inventory kwa backup hii iliyothibitishwa?",cancelled:"Hatua imeghairiwa; inventory haijabadilishwa.",importedMerge:"Backup imeunganishwa; duplicate {duplicates} zimeondolewa.",importedReplace:"Backup imebadilisha inventory.",confirmDelete:"Futa {name}?",confirmSample:"Badilisha inventory kwa bidhaa moja ya mfano?",confirmClear:"Futa rekodi zote za version hii? Keys za zamani zitabaki.",sampleLoaded:"Mfano umepakiwa.",cleared:"Inventory imefutwa.",copied:"Muhtasari umenakiliwa."}};</script><noscript>Zana hii inahitaji JavaScript.</noscript><script src="/assets/js/lazy-analytics.js?v=71239a16" defer></script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
-</body>
-</html>
+</body></html>

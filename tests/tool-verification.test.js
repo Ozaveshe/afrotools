@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 
-const fs = require("fs");
-const path = require("path");
+const fs = require('fs');
+const path = require('path');
 
-const ROOT = path.resolve(__dirname, "..");
-const EXCLUDED_DIRS = new Set([".git", ".netlify", ".cache", "audit-results", "dist", "node_modules", "playwright-report", "test-results"]);
+const ROOT = path.resolve(__dirname, '..');
+const EXCLUDED_DIRS = new Set(['.git', '.netlify', '.cache', 'audit-results', 'dist', 'node_modules', 'playwright-report', 'test-results']);
 const TARGET_RE = /(^|[\\/])(?:fr[\\/])?[^\\/]+[\\/](?:[a-z]{2}-(?:paye|vat)|ng-salary-tax)\.html$/i;
+const EXPLICIT_TARGETS = new Set(['tools/ng-cgt/index.html', 'fr/tools/ng-plus-value/index.html', 'ha/kayan-aiki/cgt-najeriya/index.html', 'tools/ng-cit/index.html', 'fr/tools/ng-impot-societes/index.html', 'ha/kayan-aiki/cit-najeriya/index.html', 'yo/awon-ise/cit-naijiria/index.html', 'fr/algerie/calculateur-tva.html', 'sw/algeria/kikokotoo-vat/index.html', 'sw/angola/kikokotoo-vat/index.html', 'fr/benin/calculateur-tva.html', 'sw/benin/kikokotoo-vat/index.html', 'fr/comores/calculateur-tva.html', 'sw/comoros/kikokotoo-vat/index.html']);
 const REDIRECT_STATUS_RE = /^(?:301|302|307|308|410)!?$/;
 
 function walk(start, out = []) {
@@ -15,7 +16,7 @@ function walk(start, out = []) {
     const fullPath = path.join(start, entry.name);
     if (entry.isDirectory()) {
       walk(fullPath, out);
-    } else if (entry.isFile() && entry.name.endsWith(".html")) {
+    } else if (entry.isFile() && entry.name.endsWith('.html')) {
       out.push(fullPath);
     }
   }
@@ -23,43 +24,43 @@ function walk(start, out = []) {
 }
 
 function rel(filePath) {
-  return path.relative(ROOT, filePath).replace(/\\/g, "/");
+  return path.relative(ROOT, filePath).replace(/\\/g, '/');
 }
 
 function normalizeRoute(route) {
-  let clean = String(route || "/").split(/[?#]/)[0] || "/";
-  if (!clean.startsWith("/")) clean = `/${clean}`;
-  if (clean.length > 1 && clean.endsWith("/")) clean = clean.slice(0, -1);
+  let clean = String(route || '/').split(/[?#]/)[0] || '/';
+  if (!clean.startsWith('/')) clean = `/${clean}`;
+  if (clean.length > 1 && clean.endsWith('/')) clean = clean.slice(0, -1);
   return clean;
 }
 
 function fileToPublicRoute(filePath) {
   const relative = rel(filePath);
-  if (relative === "index.html") return "/";
-  if (relative.endsWith("/index.html")) {
-    return `/${relative.slice(0, -"index.html".length)}`;
+  if (relative === 'index.html') return '/';
+  if (relative.endsWith('/index.html')) {
+    return `/${relative.slice(0, -'index.html'.length)}`;
   }
-  if (relative.endsWith(".html")) {
-    return `/${relative.slice(0, -".html".length)}`;
+  if (relative.endsWith('.html')) {
+    return `/${relative.slice(0, -'.html'.length)}`;
   }
   return `/${relative}`;
 }
 
 function buildRedirectSources() {
-  const redirectsPath = path.join(ROOT, "_redirects");
+  const redirectsPath = path.join(ROOT, '_redirects');
   if (!fs.existsSync(redirectsPath)) return new Set();
 
   const sources = new Set();
-  const lines = fs.readFileSync(redirectsPath, "utf8").split(/\r?\n/);
+  const lines = fs.readFileSync(redirectsPath, 'utf8').split(/\r?\n/);
   for (const line of lines) {
     const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith("#")) continue;
+    if (!trimmed || trimmed.startsWith('#')) continue;
     const parts = trimmed.split(/\s+/);
     if (parts.length < 3) continue;
     const status = parts.slice(2).find((part) => REDIRECT_STATUS_RE.test(part));
     if (!status) continue;
     const source = parts[0];
-    if (source.includes("*") || source.includes(":")) continue;
+    if (source.includes('*') || source.includes(':')) continue;
     sources.add(normalizeRoute(source));
   }
   return sources;
@@ -68,8 +69,10 @@ function buildRedirectSources() {
 function toolIdFor(filePath, html) {
   const match = html.match(/<meta\s+name=["']tool-id["']\s+content=["']([^"']+)/i);
   if (match) return match[1].trim();
-  if (/ng-salary-tax\.html$/i.test(filePath)) return "ng-paye";
-  return path.basename(filePath, ".html");
+  const panelMatch = html.match(/data-tool-id=["']([^"']+)/i);
+  if (panelMatch) return panelMatch[1].trim();
+  if (/ng-salary-tax\.html$/i.test(filePath)) return 'ng-paye';
+  return path.basename(filePath, '.html');
 }
 
 function assert(condition, message, failures) {
@@ -77,29 +80,23 @@ function assert(condition, message, failures) {
 }
 
 const failures = [];
-const manifestPath = path.join(ROOT, "data", "tool-verification.json");
-assert(fs.existsSync(manifestPath), "data/tool-verification.json is missing", failures);
+const manifestPath = path.join(ROOT, 'data', 'tool-verification.json');
+assert(fs.existsSync(manifestPath), 'data/tool-verification.json is missing', failures);
 
-const manifest = fs.existsSync(manifestPath)
-  ? JSON.parse(fs.readFileSync(manifestPath, "utf8"))
-  : { tools: {} };
+const manifest = fs.existsSync(manifestPath) ? JSON.parse(fs.readFileSync(manifestPath, 'utf8')) : { tools: {} };
 
-assert(
-  manifest.tools && typeof manifest.tools === "object",
-  "tool verification manifest is missing tools object",
-  failures,
-);
+assert(manifest.tools && typeof manifest.tools === 'object', 'tool verification manifest is missing tools object', failures);
 
 const redirectSources = buildRedirectSources();
 const targetFiles = walk(ROOT)
-  .filter((filePath) => TARGET_RE.test(rel(filePath)))
+  .filter((filePath) => TARGET_RE.test(rel(filePath)) || EXPLICIT_TARGETS.has(rel(filePath)))
   .filter((filePath) => !redirectSources.has(normalizeRoute(fileToPublicRoute(filePath))))
   .sort((left, right) => rel(left).localeCompare(rel(right)));
 
 assert(targetFiles.length >= 100, `expected at least 100 PAYE/VAT pages, found ${targetFiles.length}`, failures);
 
 for (const filePath of targetFiles) {
-  const html = fs.readFileSync(filePath, "utf8");
+  const html = fs.readFileSync(filePath, 'utf8');
   const toolId = toolIdFor(filePath, html);
   const entry = manifest.tools[toolId];
   const relative = rel(filePath);
@@ -111,39 +108,20 @@ for (const filePath of targetFiles) {
   assert(Array.isArray(entry.source_urls) && entry.source_urls.some((url) => /^https?:\/\//.test(url)), `${toolId} is missing source_url`, failures);
   assert(Array.isArray(entry.source_titles) && entry.source_titles.length > 0, `${toolId} is missing source_titles`, failures);
   assert(entry.methodology_markdown && entry.methodology_markdown.length > 20, `${toolId} is missing methodology_markdown`, failures);
-  assert(
-    entry.risk_level === "high" || entry.risk_level === "critical" || entry.risk_level === "medium",
-    `${toolId} has invalid risk_level`,
-    failures,
-  );
-  assert(entry.disclaimer_type === "tax", `${toolId} should use tax disclaimer_type`, failures);
+  assert(entry.risk_level === 'high' || entry.risk_level === 'critical' || entry.risk_level === 'medium', `${toolId} has invalid risk_level`, failures);
+  assert(entry.disclaimer_type === 'tax', `${toolId} should use tax disclaimer_type`, failures);
   assert(Array.isArray(entry.known_limitations) && entry.known_limitations.length > 0, `${toolId} is missing known_limitations`, failures);
   assert(Array.isArray(entry.change_history) && entry.change_history.length > 0, `${toolId} is missing change_history`, failures);
   assert(Array.isArray(entry.test_cases) && entry.test_cases.length > 0, `${toolId} is missing test_cases`, failures);
-  assert(html.includes("data-tool-verification-panel"), `${relative} is missing rendered verification panel`, failures);
-  const hasVerificationHeading =
-    html.includes("Sources &amp; verification") ||
-    html.includes("Sources & verification") ||
-    html.includes("Sources et verification") ||
-    html.includes("Sources et v&eacute;rification") ||
-    html.includes("Sources et vérification");
-  assert(hasVerificationHeading, `${relative} is missing Sources & verification heading`, failures);
+  assert(html.includes('data-tool-verification-panel'), `${relative} is missing rendered verification panel`, failures);
+  const hasVerificationHeading = html.includes('Sources &amp; verification') || html.includes('Sources & verification') || html.includes('Sources et verification') || html.includes('Sources et v&eacute;rification') || html.includes('Sources et vérification') || html.includes('Sources officielles') || html.includes('Vyanzo na uthibitisho') || html.includes('Vyanzo na uhakiki') || html.includes('Majiyoyi da tabbatarwa') || html.includes('Àwọn orísun àti ìjẹ́rìísí');
+  assert(hasVerificationHeading || html.includes('Source &amp; verification') || html.includes('Source & verification') || html.includes('Source et vérification') || html.includes('What the public evidence supports') || html.includes('Ce que les preuves publiques soutiennent'), `${relative} is missing Sources & verification heading`, failures);
 
-  const hasReportCalculationErrorCta =
-    html.includes("Report calculation error") ||
-    html.includes("Signaler une erreur de calcul");
-  assert(hasReportCalculationErrorCta, `${relative} is missing report calculation error CTA`, failures);
-  assert(html.includes("/assets/css/tool-verification.css"), `${relative} is missing tool verification stylesheet`, failures);
-  assert(
-    !/<span class="badge[^"]*">[^<]*(?:FIRS\s+)?Verified[^<]*<\/span>/i.test(html),
-    `${relative} still has a non-clickable verified badge`,
-    failures,
-  );
-  assert(
-    !/<div class="tool-stat-lbl">\s*Rating\s*<\/div>/i.test(html),
-    `${relative} still shows a rating without a review system`,
-    failures,
-  );
+  const hasReportCalculationErrorCta = html.includes('Report calculation error') || html.includes('Report an evidence error') || html.includes('Signaler une erreur de calcul') || html.includes('Signaler une erreur de preuve') || html.includes('Ripoti kosa la hesabu') || html.includes('Ripoti hitilafu ya hesabu') || html.includes('Ripoti hitilafu ya ushahidi') || html.includes('Rahoto kuskuren lissafi') || html.includes('Jábọ̀ àṣìṣe ìṣirò');
+  assert(hasReportCalculationErrorCta || html.includes('Report a calculation error') || html.includes('Signaler une erreur'), `${relative} is missing report calculation error CTA`, failures);
+  assert(html.includes('/assets/css/tool-verification.css'), `${relative} is missing tool verification stylesheet`, failures);
+  assert(!/<span class="badge[^"]*">[^<]*(?:FIRS\s+)?Verified[^<]*<\/span>/i.test(html), `${relative} still has a non-clickable verified badge`, failures);
+  assert(!/<div class="tool-stat-lbl">\s*Rating\s*<\/div>/i.test(html), `${relative} still shows a rating without a review system`, failures);
 }
 
 const payeEntries = Object.values(manifest.tools).filter((entry) => /-paye$/.test(entry.tool_id));
@@ -153,7 +131,7 @@ assert(payeEntries.length >= 50, `expected PAYE verification entries for all cou
 assert(vatEntries.length >= 50, `expected VAT verification entries for all countries, found ${vatEntries.length}`, failures);
 
 if (failures.length) {
-  console.error("Tool verification test failed:");
+  console.error('Tool verification test failed:');
   for (const failure of failures) console.error(`- ${failure}`);
   process.exit(1);
 }

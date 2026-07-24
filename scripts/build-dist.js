@@ -8,9 +8,63 @@
  */
 const fs = require('fs');
 const path = require('path');
+const vm = require('vm');
+const { minify } = require('terser');
 
 const ROOT = path.resolve(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
+
+const PAIRED_JS_SOURCES = new Set([
+  'assets/js/components/navbar.js',
+  'assets/js/components/footer.js',
+  'assets/js/components/tool-registry.js',
+  'assets/js/components/chat-panel.js',
+  'assets/js/components/newsletter-cta.js',
+  'assets/js/components/related-tools.js',
+  'assets/js/components/site-assistant.js',
+  'assets/js/favorites.js'
+]);
+
+const PAIRED_CSS_SOURCES = new Set([
+  'assets/css/tokens.css',
+  'assets/css/global.css',
+  'assets/css/calculator.css',
+  'assets/css/design-system.css',
+  'assets/css/theme-dark.css',
+  'assets/css/dashboard.css',
+  'assets/css/tool-landing.css',
+  'assets/css/animations.css'
+]);
+
+const UNPAIRED_JS_EXCLUSIONS = new Set([
+  'assets/js/data/registry-counts.js',
+  'assets/js/data/african-countries.js',
+  'assets/js/data/locale-manifest.js',
+  'assets/js/data/ui-translations.js',
+  'assets/js/lib/localization.js',
+  'assets/js/lib/localize-shared-ui.js',
+  'assets/js/lib/formatters.js',
+  'assets/js/lib/export-tools.js',
+  'assets/js/lib/locale-route-resolver.js',
+  'assets/js/i18n-detect.js',
+  'service-worker.js'
+]);
+
+const DIST_TERSER_OPTIONS = {
+  compress: { dead_code: true, passes: 1 },
+  mangle: {
+    reserved: [
+      'AFRO_TOOLS',
+      'AFRO_CATEGORIES',
+      'onRegistryReady',
+      'AfroAuth',
+      'AfroData',
+      'externalLink',
+      'recordWidgetIntent'
+    ]
+  },
+  output: { comments: /^!/ }
+};
 
 const BLOCKED_TOP_LEVEL_DIRS = new Set([
   '.agents',
@@ -254,6 +308,97 @@ function copyTree(sourceDir, targetDir, counters) {
   }
 }
 
+function minifyCss(source) {
+  return source
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/\s+/g, ' ')
+    .replace(/\s*([{}:;,>~+])\s*/g, '$1')
+    .replace(/;}/g, '}')
+    .trim();
+}
+
+function isValidJavaScript(code, filename) {
+  try {
+    new vm.Script(code, { filename });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function shouldOptimizeJavaScript(relative) {
+  const normalized = relative.replace(/\\/g, '/');
+  if (!normalized.endsWith('.js') || normalized.endsWith('.min.js')) return false;
+  if (normalized.startsWith('assets/js/ai/')) return false;
+  if (normalized.startsWith('engines/src/')) return false;
+  if (PAIRED_JS_SOURCES.has(normalized)) return false;
+  return !UNPAIRED_JS_EXCLUSIONS.has(normalized);
+}
+
+function shouldOptimizeCss(relative) {
+  const normalized = relative.replace(/\\/g, '/');
+  if (!normalized.endsWith('.css') || normalized.endsWith('.min.css')) return false;
+  return !PAIRED_CSS_SOURCES.has(normalized);
+}
+
+function listDistFiles(root, current = root) {
+  const files = [];
+  for (const entry of fs.readdirSync(current, { withFileTypes: true })) {
+    const target = path.join(current, entry.name);
+    if (entry.isDirectory()) files.push(...listDistFiles(root, target));
+    else if (entry.isFile()) files.push(target);
+  }
+  return files;
+}
+
+async function optimizeDistAssets(distRoot = DIST) {
+  const counters = {
+    jsCount: 0,
+    cssCount: 0,
+    skippedJs: 0,
+    before: 0,
+    after: 0
+  };
+
+  for (const filePath of listDistFiles(distRoot)) {
+    const relative = path.relative(distRoot, filePath).replace(/\\/g, '/');
+    const optimizeCss = shouldOptimizeCss(relative);
+    const optimizeJavaScript = shouldOptimizeJavaScript(relative);
+    if (!optimizeCss && !optimizeJavaScript) continue;
+
+    const source = fs.readFileSync(filePath, 'utf8');
+    const sourceSize = Buffer.byteLength(source);
+    if (sourceSize < 100) continue;
+
+    if (optimizeCss) {
+      const optimized = minifyCss(source);
+      fs.writeFileSync(filePath, optimized, 'utf8');
+      counters.cssCount += 1;
+      counters.before += sourceSize;
+      counters.after += Buffer.byteLength(optimized);
+      continue;
+    }
+
+    try {
+      const result = await minify(source, DIST_TERSER_OPTIONS);
+      const optimized = result.code || source;
+      if (!isValidJavaScript(optimized, relative)) {
+        counters.skippedJs += 1;
+        continue;
+      }
+      fs.writeFileSync(filePath, optimized, 'utf8');
+      counters.jsCount += 1;
+      counters.before += sourceSize;
+      counters.after += Buffer.byteLength(optimized);
+    } catch (error) {
+      counters.skippedJs += 1;
+      console.warn(`  DIST SKIP ${relative}: ${error.message.slice(0, 80)}`);
+    }
+  }
+
+  return counters;
+}
+
 function verifyDist() {
   const forbidden = [
     'package.json',
@@ -295,19 +440,38 @@ function verifyDist() {
   }
 }
 
-function main() {
+async function main() {
   assertInsideWorkspace(DIST);
   clearDistWithRetry();
   fs.mkdirSync(DIST, { recursive: true });
 
   const counters = { copiedFiles: 0, skippedDirs: 0, skippedFiles: 0 };
   copyTree(ROOT, DIST, counters);
+  const optimized = await optimizeDistAssets(DIST);
   verifyDist();
 
   console.log(
     `Built dist: ${counters.copiedFiles} files copied, ` +
       `${counters.skippedDirs} directories skipped, ${counters.skippedFiles} files skipped.`
   );
+  console.log(
+    `Optimized dist: ${optimized.jsCount} JS and ${optimized.cssCount} CSS files, ` +
+      `${optimized.before} -> ${optimized.after} bytes` +
+      (optimized.skippedJs ? `; ${optimized.skippedJs} JS skipped` : '') +
+      '.'
+  );
 }
 
-main();
+if (require.main === module) {
+  main().catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  });
+}
+
+module.exports = {
+  minifyCss,
+  optimizeDistAssets,
+  shouldOptimizeCss,
+  shouldOptimizeJavaScript
+};

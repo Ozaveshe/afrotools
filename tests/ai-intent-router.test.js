@@ -69,7 +69,7 @@ const takeHomePayRoute = router.routeDeterministically("I earn 650k in Nigeria a
 assert.strictEqual(takeHomePayRoute.selectedToolId, "paye-calculator");
 assert.strictEqual(takeHomePayRoute.extractedInputs.country, "Nigeria");
 assert.strictEqual(takeHomePayRoute.extractedInputs.grossPay, 650000);
-assert.ok(takeHomePayRoute.missingInputs.includes("payPeriod"));
+assert.deepStrictEqual(takeHomePayRoute.missingInputs, []);
 
 const japanImportRoute = router.routeDeterministically("Import a used Toyota from Japan to Ghana", { manifest });
 assert.strictEqual(japanImportRoute.selectedToolId, "import-duty");

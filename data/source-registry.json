@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-07-13",
+  "updatedAt": "2026-07-24",
   "sources": [
     {
       "id": "afrofuel-static-snapshot",
@@ -46,13 +46,19 @@
       "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 45,
-      "notes": "Reviewed policy-rate and inflation pack. Partial verification: true.",
+      "notes": "Committed policy-rate and inflation pack. The interest-rate reference exposes only rows with a numeric policy rate, official central-bank URL, decision date and verification within 45 days; incomplete rows are withheld. Partial verification: true.",
       "displayDisclaimer": "Rates and inflation values are planning context, not investment advice. Check the relevant central bank before pricing loans or financial products.",
       "toolIds": [
         "afrorates",
-        "interest-rate-ref"
+        "afrotaux-fr",
+        "interest-rate-ref",
+        "reference-taux-interet-fr",
+        "zana-viwango-benki-sw"
       ],
       "routes": [
+        "/fr/tools/afrotaux",
+        "/fr/tools/reference-taux-interet",
+        "/sw/zana/viwango-benki",
         "/tools/afrorates",
         "/tools/interest-rate-ref"
       ]
@@ -76,6 +82,183 @@
       "displayDisclaimer": "Internal operational status. Verify failing endpoints before changing public copy, rates, or source claims."
     },
     {
+      "id": "backup-power-costs-user-input-method",
+      "sourceName": "Backup Power Costs transparent user-input methodology",
+      "sourceType": "reviewed_dataset",
+      "countryCodes": [
+        "ALL"
+      ],
+      "appliesTo": [
+        "business",
+        "energy"
+      ],
+      "lastCheckedAt": "2026-07-24",
+      "lastReviewedAt": "2026-07-24",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 365,
+      "notes": "Local planning method. The user supplies load, outage, price, quote, service-life, efficiency and maintenance assumptions. Generator running cost is compared with straight-line battery and solar monthly equivalents. No live tariff, quote, savings, payback, engineering sizing or lifecycle-cost verdict is supplied, and no planner field is transmitted.",
+      "displayDisclaimer": "Planning comparison only. Confirm load and surge sizing, usable battery capacity, component life, solar yield, current local prices, written quotes, installation and electrical safety before purchase.",
+      "toolIds": [
+        "backup-power-costs",
+        "backup-power-costs-sw-coverage-backup-power-costs",
+        "couts-secours-energie-fr"
+      ],
+      "routes": [
+        "/fr/tools/couts-secours-energie",
+        "/sw/zana/gharama-ya-nishati-ya-dharura",
+        "/tools/backup-power-costs"
+      ]
+    },
+    {
+      "id": "bank-charge-offer-user-input-method",
+      "sourceName": "Bank Charge Offer Comparator user-input methodology with Bank of Ghana consumer-information context",
+      "sourceType": "regulator",
+      "sourceUrl": "https://www.bog.gov.gh/supervision-regulation/consumer-rights-and-responsibilities/",
+      "countryCodes": [
+        "ALL"
+      ],
+      "appliesTo": [
+        "business"
+      ],
+      "lastCheckedAt": "2026-07-24",
+      "lastReviewedAt": "2026-07-24",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 365,
+      "notes": "Local comparison using two user-entered provider tariff documents and one shared activity profile. Evidence dates must be within 365 days. Annual total is monthly total multiplied by twelve. No bank price, country fee, free allowance, transaction band, recommendation, service-quality verdict, forecast, AI or network request is supplied. Bank of Ghana consumer guidance provides complete-product-information context; its dated survey demonstrates tariff specificity.",
+      "displayDisclaimer": "User-entered fee comparison only. Confirm product-specific transaction bands, taxes, waivers, limits, exchange rates, third-party charges, eligibility and effective dates with each provider.",
+      "toolIds": [
+        "bank-charges",
+        "bank-charges-ha",
+        "frais-bancaires-fr",
+        "zana-ada-za-benki-sw"
+      ],
+      "routes": [
+        "/fr/tools/frais-bancaires",
+        "/ha/kayan-aiki/cajin-banki",
+        "/sw/zana/ada-za-benki",
+        "/tools/bank-charges"
+      ]
+    },
+    {
+      "id": "car-loan-user-input-method",
+      "sourceName": "Car Loan Cost Planner user-input methodology with Central Bank of Kenya total-cost-of-credit context",
+      "sourceType": "regulator",
+      "sourceUrl": "https://www.centralbank.go.ke/uploads/press_releases/712400338_Press%20Release-Launch%20of%20Cost%20of%20Credit%20Website-June%202017.pdf",
+      "countryCodes": [
+        "ALL"
+      ],
+      "appliesTo": [
+        "business"
+      ],
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 365,
+      "notes": "Local fixed-rate vehicle-finance plan using user-entered offer and operating-cost assumptions checked within 365 days. No lender/country rates, approval verdict, ranking, depreciation, insurance rule, deposit advice, AI or network request.",
+      "displayDisclaimer": "User-entered loan and operating-cost plan only. Confirm rate basis, APR, fees, tax, balloon, insurance and repayment schedule with the provider.",
+      "toolIds": [
+        "car-loan",
+        "pret-automobile-fr",
+        "zana-mkopo-wa-gari-sw"
+      ],
+      "routes": [
+        "/fr/tools/pret-automobile",
+        "/sw/zana/mkopo-wa-gari",
+        "/tools/car-loan"
+      ]
+    },
+    {
+      "id": "cbk-manual-rate-guide-source",
+      "sourceName": "Central Bank of Kenya daily indicative exchange-rate table",
+      "sourceType": "official",
+      "sourceUrl": "https://www.centralbank.go.ke/rates/forex-exchange-rates/",
+      "countryCodes": [
+        "KE"
+      ],
+      "appliesTo": [
+        "business",
+        "fx"
+      ],
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 90,
+      "notes": "Guidance-only source for a manual local converter. AfroTools does not ingest, cache, bundle or redistribute CBK rate rows. The user supplies the dated Mean rate, quoted unit and currency code; no network rate data or fallback value is used.",
+      "displayDisclaimer": "CBK figures are indicative market-opening averages, not executable quotes. Confirm the dated official row and obtain a bank, bureau, card, wallet or remittance quote before committing funds.",
+      "toolIds": [
+        "cbk-rates",
+        "cbk-rates-fr-coverage-cbk-rates",
+        "cbk-rates-sw-coverage-cbk-rates"
+      ],
+      "routes": [
+        "/fr/tools/taux-de-change-de-la-cbk",
+        "/sw/zana/viwango-vya-cbk",
+        "/tools/cbk-rates"
+      ]
+    },
+    {
+      "id": "cnps-ci-guide-source",
+      "sourceName": "CNPS employer contribution and declaration guidance",
+      "sourceType": "official",
+      "sourceUrl": "https://www.cnps.ci/employeur/",
+      "countryCodes": [
+        "CI"
+      ],
+      "appliesTo": [
+        "other",
+        "salary",
+        "tax"
+      ],
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 90,
+      "notes": "Independent, non-calculative guide to CNPS contribution branches, the specific January 2023 floor and ceilings, declarations, remittance and e-CNPS. AfroTools never collects payroll or identity records, calculates an official contribution, declares or takes a payment.",
+      "displayDisclaimer": "Confirm the assigned risk rate, current floor and ceilings, worker status, declaration schedule and remittance with CNPS before payroll or submission.",
+      "toolIds": [
+        "cnps-guide",
+        "cnps-guide-fr-coverage-cnps-guide",
+        "cnps-guide-sw-coverage-cnps-guide"
+      ],
+      "routes": [
+        "/fr/tools/guide-de-la-cnps-en-cote-d-ivoire",
+        "/sw/zana/mwongozo-wa-cnps",
+        "/tools/cnps-guide"
+      ]
+    },
+    {
+      "id": "contractor-vs-employee-user-input-method",
+      "sourceName": "Contractor vs Employee user-input methodology with ILO employment-relationship guidance",
+      "sourceType": "official",
+      "sourceUrl": "https://www.ilo.org/topics/employment-relationship",
+      "countryCodes": [
+        "ALL"
+      ],
+      "appliesTo": [
+        "business",
+        "documents",
+        "salary"
+      ],
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 365,
+      "notes": "Method source for a local cost comparison using only user-entered employee pay, contributions, benefits, recurring costs, contractor quote and buyer-paid contractor costs. The arithmetic does not decide worker classification. AfroTools AI may route to the page but cannot prefill or receive calculator or contract fields.",
+      "displayDisclaimer": "Cost-planning estimate only. Worker status depends on the real relationship and current local law, not the cheaper path. Confirm classification, withholding, benefits and contract obligations with the relevant authority or a qualified professional.",
+      "toolIds": [
+        "contractor-vs-employee"
+      ],
+      "routes": [
+        "/tools/contractor-vs-employee"
+      ]
+    },
+    {
       "id": "country-profile-reviewed-dataset",
       "sourceName": "AfroAtlas reviewed country profile dataset",
       "sourceType": "reviewed_dataset",
@@ -92,6 +275,89 @@
       "reviewCadenceDays": 90,
       "notes": "Country pages and statistics should migrate to this shared metadata entry or to a country-specific official source entry as they are reviewed.",
       "displayDisclaimer": "Country statistics are for planning context. Check official statistical agencies or current authority publications for high-stakes decisions."
+    },
+    {
+      "id": "crypto-cgt-ng-ke-za-gh-2026-source",
+      "sourceName": "Official crypto and capital-gains tax sources for Nigeria, Kenya, South Africa and Ghana",
+      "sourceType": "official",
+      "sourceUrl": "https://www.nipc.gov.ng/wp-content/uploads/2025/07/Nigeria-Tax-Act-2025.pdf",
+      "countryCodes": [
+        "NG",
+        "KE",
+        "ZA",
+        "GH"
+      ],
+      "appliesTo": [
+        "business",
+        "tax"
+      ],
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "effectiveFrom": "2026-01-01",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 90,
+      "notes": "The local crypto calculator supports individuals only and fails closed unless capital-account treatment is explicitly confirmed. It models the reviewed in-scope capital calculation for Nigeria, Kenya, South Africa or Ghana and excludes revenue activity, business trading, mining, staking, rewards and uncertain classifications.",
+      "displayDisclaimer": "Crypto capital-gains planning estimate only. Confirm classification, residence, valuation, cost-basis evidence, filing and payment with the relevant tax authority or a qualified tax professional.",
+      "toolIds": [
+        "crypto-cgt",
+        "crypto-tax"
+      ],
+      "routes": [
+        "/tools/crypto-tax"
+      ]
+    },
+    {
+      "id": "crypto-dca-coingecko-history",
+      "sourceName": "CoinGecko market chart range API",
+      "sourceType": "third_party_snapshot",
+      "countryCodes": [
+        "ALL"
+      ],
+      "appliesTo": [
+        "other"
+      ],
+      "lastCheckedAt": "2026-07-23",
+      "lastReviewedAt": "2026-07-23",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 30,
+      "notes": "The isolated crypto-dca-history endpoint permits BTC or ETH in NGN, ZAR or USD for at most 365 completed UTC days. It validates and deduplicates positive ordered CoinGecko market_chart/range rows, caches successful responses for no more than five minutes, and provides no stale or synthetic fallback.",
+      "displayDisclaimer": "Historical CoinGecko daily reference points are not exchange execution quotes, forecasts, guarantees, or investment recommendations.",
+      "sourceUrl": "https://docs.coingecko.com/reference/coins-id-market-chart-range",
+      "toolIds": [
+        "crypto-dca"
+      ],
+      "routes": [
+        "/crypto/dca-calculator",
+        "/fr/crypto/dca-calculator"
+      ]
+    },
+    {
+      "id": "domestic-worker-user-input-method",
+      "sourceName": "Domestic Worker user-input methodology with ILO Convention No. 189 context",
+      "sourceType": "official",
+      "sourceUrl": "https://www.ilo.org/resource/record-proceedings/ilc/100/text-convention-concerning-decent-work-domestic-workers",
+      "countryCodes": [
+        "ALL"
+      ],
+      "appliesTo": [
+        "documents",
+        "salary"
+      ],
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 365,
+      "notes": "Method source for a local domestic-worker pay and employer-cost plan. The calculator supplies no wage floor, contribution rate, overtime multiplier or legal conclusion. Users enter every amount, rate, work pattern and dated source. AfroTools AI may route to the page but cannot prefill or receive calculator, source or contract-readiness fields.",
+      "displayDisclaimer": "Planning estimate only. Confirm current wage floors, hours, overtime, leave, rest days, in-kind treatment, social contributions, records and contract requirements with the relevant authority or a qualified labour or payroll professional.",
+      "toolIds": [
+        "domestic-worker"
+      ],
+      "routes": [
+        "/tools/domestic-worker"
+      ]
     },
     {
       "id": "electricity-tariff-rates",
@@ -118,6 +384,32 @@
       ]
     },
     {
+      "id": "employee-cost-user-input-method",
+      "sourceName": "Employee Cost user-input methodology with ILO wage guidance",
+      "sourceType": "official",
+      "sourceUrl": "https://www.ilo.org/topics/wages",
+      "countryCodes": [
+        "ALL"
+      ],
+      "appliesTo": [
+        "business",
+        "salary"
+      ],
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 365,
+      "notes": "Method source for a local hiring-cost worksheet. The canonical calculator supplies no statutory rate or country preset. Every salary, employer obligation, benefit, allowance, recurring cost, hiring cost and dated source label is entered by the user. AfroTools AI may route to the page but cannot prefill or receive those calculator fields.",
+      "displayDisclaimer": "Hiring-cost planning estimate only. Confirm current rates, ceilings, risk classes, contract terms and filing treatment with the responsible authority or a qualified payroll or legal professional.",
+      "toolIds": [
+        "employee-cost"
+      ],
+      "routes": [
+        "/tools/employee-cost"
+      ]
+    },
+    {
       "id": "forex-third-party-snapshot",
       "sourceName": "Foreign-exchange third-party API snapshot",
       "sourceType": "third_party_snapshot",
@@ -130,37 +422,68 @@
       "effectiveFrom": "2026-07-12",
       "lastCheckedAt": "2026-07-12",
       "lastReviewedAt": "2026-06-16",
-      "freshnessStatus": "fresh",
+      "freshnessStatus": "acceptable",
       "confidence": "estimated",
       "reviewCadenceDays": 7,
       "notes": "Current committed fallback metadata; FX remains indicative and is not an executable provider quote.",
       "displayDisclaimer": "FX values can move quickly. Verify a current quote from your bank, broker, or payment provider before committing funds.",
       "toolIds": [
+        "convertisseur-devises-fr",
         "currency-converter",
-        "forex-profit"
+        "forex-profit",
+        "zana-kibadilishaji-sarafu-sw"
       ],
       "routes": [
+        "/fr/tools/convertisseur-devises",
+        "/sw/zana/kibadilishaji-sarafu",
         "/tools/currency-converter",
         "/tools/forex-profit"
       ]
     },
     {
+      "id": "gratuity-user-input-method",
+      "sourceName": "Gratuity user-input methodology with ILO Convention No. 158 context",
+      "sourceType": "official",
+      "sourceUrl": "https://normlex.ilo.org/dyn/nrmlx_en/f?p=NORMLEXPUB:12100:0::NO::P12100_ILO_CODE:C158",
+      "countryCodes": [
+        "ALL"
+      ],
+      "appliesTo": [
+        "documents",
+        "salary"
+      ],
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 365,
+      "notes": "Method source for a local gratuity and final-pay planning estimate. The calculator supplies no statutory gratuity rate, eligibility decision, payroll divisor, eligible-day rule, cap, tax treatment or deduction authority. Users enter every amount and dated rule source. AfroTools AI may route to the page but cannot prefill or receive calculator or rule-source fields.",
+      "displayDisclaimer": "Planning estimate only. Confirm eligibility, exit reason, service definition, pay basis, eligible days, divisor, caps, rounding, notice, leave, pension, tax, deductions and contract terms with the responsible authority or a qualified labour, legal or payroll professional.",
+      "toolIds": [
+        "gratuity-calculator"
+      ],
+      "routes": [
+        "/tools/gratuity-calculator"
+      ]
+    },
+    {
       "id": "import-duty-planning-rates",
-      "sourceName": "AfroTools reviewed import-duty planning assumptions",
-      "sourceType": "reviewed_dataset",
+      "sourceName": "Nigeria Customs Service CET and customs-assessment guidance",
+      "sourceType": "official",
+      "sourceUrl": "https://cet.customs.gov.ng/",
       "countryCodes": [
         "NG"
       ],
       "appliesTo": [
         "import_duty"
       ],
-      "lastCheckedAt": "2026-06-14",
-      "lastReviewedAt": "2026-06-14",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
       "freshnessStatus": "acceptable",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Planning model for import-duty estimates. Stored rates and modeled charges are not final customs assessments.",
-      "displayDisclaimer": "Reviewed planning model. Final customs assessment may differ. Confirm with customs or a licensed clearing professional before payment.",
+      "notes": "Classification-first Nigeria planning model. The user must confirm the HS classification and CET band, assessed customs value, declaration exchange rate, and any other assessed charges; no stored category rate or FX quote is treated as a customs assessment.",
+      "displayDisclaimer": "Planning estimate only. Confirm the HS classification, customs value, CET band, declaration rate and assessed charges with Nigeria Customs Service or a licensed clearing professional before payment.",
       "toolIds": [
         "import-duty"
       ],
@@ -184,6 +507,172 @@
       "confidence": "user_entered",
       "notes": "Purchase price, shipping, insurance, assessed value, and overrides are entered by the user.",
       "displayDisclaimer": "Amounts entered by the user are not independently verified by AfroTools."
+    },
+    {
+      "id": "inflation-scenario-user-input-method",
+      "sourceName": "Inflation Scenario Calculator user-input methodology with World Bank CPI indicator metadata context",
+      "sourceType": "reviewed_dataset",
+      "sourceUrl": "https://databank.worldbank.org/metadataglossary/gender-statistics/series/FP.CPI.TOTL.ZG",
+      "countryCodes": [
+        "ALL"
+      ],
+      "appliesTo": [
+        "business"
+      ],
+      "lastCheckedAt": "2026-07-24",
+      "lastReviewedAt": "2026-07-24",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 365,
+      "notes": "Local constant-rate scenario using a user-entered annual rate, source label and checked date within 365 days. No country rates, live CPI feed, household-basket multiplier, forecast, investment advice, AI or network request is supplied.",
+      "displayDisclaimer": "User-entered constant-rate scenario only. Confirm geography, period, measure, source and publication date. Headline CPI may not match a personal basket.",
+      "toolIds": [
+        "calculateur-inflation-fr",
+        "inflation-calc"
+      ],
+      "routes": [
+        "/fr/tools/calculateur-inflation",
+        "/tools/inflation-calc"
+      ]
+    },
+    {
+      "id": "investment-return-method-source",
+      "sourceName": "Investor.gov Compound Interest Calculator",
+      "sourceType": "official",
+      "sourceUrl": "https://www.investor.gov/financial-tools-calculators/calculators/compound-interest-calculator",
+      "countryCodes": [
+        "ALL"
+      ],
+      "appliesTo": [
+        "business"
+      ],
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 180,
+      "notes": "User-entered investment projection only. The engine applies the selected compounding frequency and contribution timing, then uses the exact Fisher relationship for real return. It supplies no market rate, forecast, provider comparison, tax result or suitability verdict.",
+      "displayDisclaimer": "Planning estimate only. Entered return and inflation rates are assumptions, not forecasts. Confirm fees, taxes, liquidity, risk and provider terms independently before acting.",
+      "toolIds": [
+        "investment-return"
+      ],
+      "routes": [
+        "/tools/investment-return"
+      ]
+    },
+    {
+      "id": "kenya-cgt-2026-source",
+      "sourceName": "Kenya Revenue Authority Capital Gains Tax FAQs",
+      "sourceType": "official",
+      "sourceUrl": "https://www.kra.go.ke/helping-tax-payers/faqs/capital-gain-taxes",
+      "countryCodes": [
+        "KE"
+      ],
+      "appliesTo": [
+        "business",
+        "tax"
+      ],
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "effectiveFrom": "2023-01-01",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 90,
+      "notes": "Kenya CGT uses the current KRA guidance and the Income Tax Act Eighth Schedule version dated 1 January 2026. The local engine separates net transfer value from adjusted cost and never infers exemption eligibility.",
+      "displayDisclaimer": "Kenya capital-gains-tax planning estimate only. Confirm valuation, adjusted-cost evidence, exemptions, filing and payment with KRA or a qualified tax professional.",
+      "toolIds": [
+        "ke-cgt",
+        "ke-plus-value-fr"
+      ],
+      "routes": [
+        "/fr/tools/ke-plus-value",
+        "/tools/ke-cgt"
+      ]
+    },
+    {
+      "id": "kenya-wht-2026-source",
+      "sourceName": "KRA detailed withholding-income-tax table",
+      "sourceType": "official",
+      "sourceUrl": "https://www.kra.go.ke/helping-tax-payers/faqs/withholding-income-tax",
+      "countryCodes": [
+        "KE"
+      ],
+      "appliesTo": [
+        "business",
+        "tax"
+      ],
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 90,
+      "notes": "Kenya WHT uses reviewed payment and recipient rows, exact resident fee thresholds, and evidence-gated residential MRI, controlling dividend, public-goods, EAC and treaty treatment. The product discloses the official-source conflict on winnings and does not infer unsupported relief.",
+      "displayDisclaimer": "Kenya withholding-tax planning estimate only. Confirm payment classification, residence, thresholds, special-treatment evidence, source conflicts, filing and remittance with KRA before acting.",
+      "toolIds": [
+        "ke-retenue-source-fr",
+        "ke-wht"
+      ],
+      "routes": [
+        "/fr/tools/ke-retenue-source",
+        "/tools/ke-wht"
+      ]
+    },
+    {
+      "id": "kra-etims-guide-source",
+      "sourceName": "Official KRA eTIMS taxpayer portal",
+      "sourceType": "official",
+      "sourceUrl": "https://etims.kra.go.ke/",
+      "countryCodes": [
+        "KE"
+      ],
+      "appliesTo": [
+        "business",
+        "other",
+        "tax"
+      ],
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 90,
+      "notes": "Independent, non-calculative guide to current official KRA eTIMS scope, solution and onboarding routes. AfroTools never collects credentials or documents, creates an invoice, transmits a sale or determines deductibility.",
+      "displayDisclaimer": "Confirm current eTIMS scope, solution eligibility, invoice treatment and expense requirements with KRA or a qualified Kenyan tax professional.",
+      "toolIds": [
+        "etims-guide",
+        "etims-guide-fr-coverage-etims-guide"
+      ],
+      "routes": [
+        "/fr/tools/guide-d-etims-de-la-kra",
+        "/tools/etims-guide"
+      ]
+    },
+    {
+      "id": "kra-itax-guide-source",
+      "sourceName": "KRA iTax portal",
+      "sourceType": "official",
+      "sourceUrl": "https://itax.kra.go.ke/KRA-Portal/",
+      "countryCodes": [
+        "KE"
+      ],
+      "appliesTo": [
+        "other",
+        "tax"
+      ],
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 90,
+      "notes": "Independent, non-calculative guide to official KRA PIN, account-access and return-help routes. AfroTools never signs in, files, pays or stores credentials.",
+      "displayDisclaimer": "Confirm the registered obligation, filing period and required records in the official KRA portal or with KRA support before submitting a return.",
+      "toolIds": [
+        "itax-guide",
+        "itax-guide-fr-coverage-itax-guide"
+      ],
+      "routes": [
+        "/fr/tools/guide-d-itax-de-la-kra",
+        "/tools/itax-guide"
+      ]
     },
     {
       "id": "ledger-tool-boda-income",
@@ -731,6 +1220,190 @@
       ],
       "routes": [
         "/tools/vehicle-tracker-roi"
+      ]
+    },
+    {
+      "id": "loan-comparison-method",
+      "sourceName": "CFPB written loan-offer comparison guidance",
+      "sourceType": "regulator",
+      "sourceUrl": "https://www.consumerfinance.gov/owning-a-home/compare/compare-loan-estimates/",
+      "countryCodes": [
+        "ALL"
+      ],
+      "appliesTo": [
+        "business"
+      ],
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 365,
+      "notes": "Method source for comparing user-entered written loan offers by rate method, cash received, payment, fees and total borrowing cost. The calculator does not provide lender rates, calculate APR, make approval decisions or recommend a lender.",
+      "displayDisclaimer": "Planning comparison only. Confirm each lender's APR or effective cost, fees, repayment schedule, default terms, insurance, taxes and approval conditions before acting.",
+      "toolIds": [
+        "comparateur-prets-fr",
+        "loan-compare",
+        "zana-kilinganisha-mikopo-sw"
+      ],
+      "routes": [
+        "/fr/tools/comparateur-prets",
+        "/sw/zana/kilinganisha-mikopo",
+        "/tools/loan-compare"
+      ]
+    },
+    {
+      "id": "mortgage-planning-method",
+      "sourceName": "CFPB fixed-rate mortgage comparison and Total Interest Percentage guidance",
+      "sourceType": "regulator",
+      "sourceUrl": "https://www.consumerfinance.gov/owning-a-home/loan-estimate/",
+      "countryCodes": [
+        "ALL"
+      ],
+      "appliesTo": [
+        "business"
+      ],
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 365,
+      "notes": "Method source for an assumption-first fixed-rate planning worksheet. The calculator accepts only user-entered rates and costs; it does not provide lender rates, approval decisions, APR, local taxes, or country presets. World Bank housing-sector material supplies non-formula African context on the public page.",
+      "displayDisclaimer": "Planning estimate only. Confirm the lender rate, APR or effective cost, fees, insurance, taxes, adjustable-rate rules and approval terms before acting.",
+      "toolIds": [
+        "calculateur-hypothecaire-fr",
+        "mortgage-calculator",
+        "zana-kikokotoo-mkopo-wa-nyumba-sw"
+      ],
+      "routes": [
+        "/fr/tools/calculateur-hypothecaire",
+        "/sw/zana/kikokotoo-mkopo-wa-nyumba",
+        "/tools/mortgage-calculator"
+      ]
+    },
+    {
+      "id": "ng-pension-cps-scenario-method",
+      "sourceName": "Nigeria CPS contribution and RSA scenario methodology with PenCom PRA 2014 context",
+      "sourceType": "official",
+      "sourceUrl": "https://www.pencom.gov.ng/pra2014/",
+      "countryCodes": [
+        "NG"
+      ],
+      "appliesTo": [
+        "business",
+        "salary"
+      ],
+      "lastCheckedAt": "2026-07-23",
+      "lastReviewedAt": "2026-07-23",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 365,
+      "notes": "PenCom PRA 2014 section 4 supports the 10% employer and 8% employee minimum contribution defaults for covered employment. The local engine uses editable user-entered contribution rates, RSA balance, pensionable emoluments, voluntary contribution, salary growth and a separately sourced net-return assumption checked within 365 days. It does not rank PFAs or calculate lump sums, programmed withdrawals, annuities, gratuity, tax treatment or guaranteed benefits.",
+      "displayDisclaimer": "User-entered CPS contribution and RSA planning scenario only. Confirm coverage, pensionable emoluments, rates, balances, fees, returns and benefit options with PenCom, the employer and a licensed provider.",
+      "toolIds": [
+        "ng-pension",
+        "ng-pension-fr",
+        "ng-pension-ha"
+      ],
+      "routes": [
+        "/fr/tools/ng-pension",
+        "/ha/kayan-aiki/fansho-najeriya",
+        "/tools/ng-pension"
+      ]
+    },
+    {
+      "id": "nigeria-cgt-2026-source",
+      "sourceName": "Nigeria Tax Act 2025 official Gazette copy",
+      "sourceType": "official",
+      "sourceUrl": "https://www.nipc.gov.ng/wp-content/uploads/2025/07/Nigeria-Tax-Act-2025.pdf",
+      "countryCodes": [
+        "NG"
+      ],
+      "appliesTo": [
+        "business",
+        "tax"
+      ],
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "effectiveFrom": "2026-01-01",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 90,
+      "notes": "Nigeria disposal tax uses the Nigeria Tax Act 2025 from 1 January 2026. The local engine models the gain step, incremental Fourth Schedule tax for individuals, the reviewed company classification, scoped Nigerian-share relief and user-confirmed principal-residence relief.",
+      "displayDisclaimer": "Nigeria disposal-tax planning estimate only. Confirm classification, deductions, exemptions, filing and payment with NRS, the relevant state tax authority or a qualified tax professional.",
+      "toolIds": [
+        "ng-cgt",
+        "ng-cgt-ha",
+        "ng-plus-value-fr"
+      ],
+      "routes": [
+        "/fr/tools/ng-plus-value",
+        "/ha/kayan-aiki/cgt-najeriya",
+        "/tools/ng-cgt"
+      ]
+    },
+    {
+      "id": "nigeria-cit-2026-source",
+      "sourceName": "Nigeria Tax Act 2025 official Gazette copy",
+      "sourceType": "official",
+      "sourceUrl": "https://www.nipc.gov.ng/wp-content/uploads/2025/07/Nigeria-Tax-Act-2025.pdf",
+      "countryCodes": [
+        "NG"
+      ],
+      "appliesTo": [
+        "business",
+        "tax"
+      ],
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "effectiveFrom": "2026-01-01",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 90,
+      "notes": "Nigeria CIT uses the Nigeria Tax Act 2025 from 1 January 2026. Small-company status requires turnover not above NGN 50 million, total fixed assets not above NGN 250 million and no professional-services business. CIT and development levy use separate user-entered statutory profit bases. Section 57 review is flagged but no effective-tax-rate top-up is calculated.",
+      "displayDisclaimer": "Nigeria company-tax planning estimate only. Confirm the company classification, statutory profit bases, incentives, losses, specialised-sector treatment, section 57 position, filing and payment with NRS or a qualified tax professional.",
+      "toolIds": [
+        "ng-cit",
+        "ng-cit-ha",
+        "ng-cit-yo",
+        "ng-impot-societes-fr"
+      ],
+      "routes": [
+        "/fr/tools/ng-impot-societes",
+        "/ha/kayan-aiki/cit-najeriya",
+        "/tools/ng-cit",
+        "/yo/awon-ise/cit-naijiria"
+      ]
+    },
+    {
+      "id": "nigeria-wht-2026-source",
+      "sourceName": "Federal Republic of Nigeria Deduction of Tax at Source Regulations 2024 Gazette",
+      "sourceType": "official",
+      "sourceUrl": "https://fiscalreforms.ng/wp-content/uploads/2024/10/Deduction-of-Tax-at-Source-Withholding-Regulations-2024_Gazetted.pdf",
+      "countryCodes": [
+        "NG"
+      ],
+      "appliesTo": [
+        "business",
+        "tax"
+      ],
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "effectiveFrom": "2026-01-01",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 90,
+      "notes": "Nigeria WHT uses the exact official Schedule by transaction, recipient class and residence. Missing Tax ID doubles only eligible non-passive rates. Treaty, exemption, authority and filing treatment remain evidence-gated; unsupported combinations fail closed.",
+      "displayDisclaimer": "Nigeria withholding-tax planning estimate only. Confirm the relevant authority, transaction classification, recipient facts, Tax ID, treaty or exemption evidence, filing and remittance before acting.",
+      "toolIds": [
+        "ng-wht",
+        "ng-wht-ha",
+        "ng-wht-yo"
+      ],
+      "routes": [
+        "/fr/tools/ng-wht",
+        "/ha/kayan-aiki/wht-najeriya",
+        "/tools/ng-wht",
+        "/yo/awon-ise/wht-naijiria"
       ]
     },
     {
@@ -2004,6 +2677,32 @@
       ]
     },
     {
+      "id": "parental-leave-user-input-method",
+      "sourceName": "Parental Leave user-input methodology with ILO NATLEX discovery context",
+      "sourceType": "official",
+      "sourceUrl": "https://natlex.ilo.org/",
+      "countryCodes": [
+        "ALL"
+      ],
+      "appliesTo": [
+        "documents",
+        "salary"
+      ],
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 365,
+      "notes": "Method source for a local parental-leave pay plan. The planner supplies no country leave duration, replacement rate, payer, eligibility decision, cap or social-insurance conclusion. Users enter every salary, date, duration, rate, policy, official-source and HR-note value. AfroTools AI may route to the page but cannot prefill or receive those fields, and the browser does not persist the summary.",
+      "displayDisclaimer": "Planning estimate only. Confirm current leave duration, eligibility, payer, caps, tax, social-insurance claim steps, adoption or birth rules, service requirements, collective agreement and employer policy in the issuing country official source before action.",
+      "toolIds": [
+        "maternity-leave"
+      ],
+      "routes": [
+        "/tools/maternity-leave"
+      ]
+    },
+    {
       "id": "paye-ao-source",
       "sourceName": "agt.minfin.gov.ao",
       "sourceType": "official",
@@ -2011,8 +2710,8 @@
         "AO"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2026-03-26",
       "lastReviewedAt": "2026-03-26",
@@ -2037,8 +2736,8 @@
         "BF"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2025-07-01",
       "lastReviewedAt": "2025-07-01",
@@ -2063,8 +2762,8 @@
         "BI"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2026-04-01",
       "lastReviewedAt": "2026-04-01",
@@ -2083,29 +2782,31 @@
     },
     {
       "id": "paye-bj-source",
-      "sourceName": "impots.finances.gouv.bj",
+      "sourceName": "Benin CGI 2026 and CNSS Benin",
       "sourceType": "official",
       "countryCodes": [
         "BJ"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
-      "lastCheckedAt": "2026-03-28",
-      "lastReviewedAt": "2026-03-28",
-      "freshnessStatus": "acceptable",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Benin PAYE engine source audit. Outputs remain planning estimates. Formula status: review-required; version: 2026-03-01+sha256.2a41a562b672.",
-      "displayDisclaimer": "PAYE and payroll results are planning estimates. Confirm current rates, reliefs, filing, and remittance treatment with the relevant authority or a qualified payroll professional.",
-      "sourceUrl": "https://impots.finances.gouv.bj",
+      "notes": "Benin salary estimates use the CGI 2026 monthly ITS bands and ORTB levies. Employee CNSS is 3.6%; employer CNSS is 16.4%-19.4% depending on occupational risk. Formula status: review-required; version: 2026-07-22+sha256.17df7386c5f3.",
+      "displayDisclaimer": "Benin ITS and CNSS results are planning estimates. Confirm benefits in kind, exceptional remuneration, exemptions, variable pay and filing treatment with DGI, CNSS or a qualified payroll professional.",
+      "sourceUrl": "https://api.impots.bj/media/6984ebbbb7bc0_B%C3%A9nin-Code%20G%C3%A9n%C3%A9ral%20des%20Imp%C3%B4ts%202026.pdf",
       "toolIds": [
         "bj-paye"
       ],
       "routes": [
         "/benin/bj-paye",
-        "/fr/benin/bj-paye"
+        "/fr/benin/calculateur-salaire-net",
+        "/sw/benin/kikokotoo-kodi-mshahara",
+        "/widgets/iframe/financial-benin-paye"
       ]
     },
     {
@@ -2116,8 +2817,8 @@
         "BW"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2025-07-01",
       "lastReviewedAt": "2025-07-01",
@@ -2142,8 +2843,8 @@
         "CD"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2026-04-06",
       "lastReviewedAt": "2026-04-06",
@@ -2168,8 +2869,8 @@
         "CF"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2026-03-28",
       "lastReviewedAt": "2026-03-28",
@@ -2194,8 +2895,8 @@
         "CG"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2026-03-28",
       "lastReviewedAt": "2026-03-28",
@@ -2220,8 +2921,8 @@
         "CI"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2026-04-01",
       "lastReviewedAt": "2026-04-01",
@@ -2246,8 +2947,8 @@
         "CM"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2026-04-01",
       "lastReviewedAt": "2026-04-01",
@@ -2266,23 +2967,23 @@
     },
     {
       "id": "paye-cv-source",
-      "sourceName": "dgci.gov.cv",
+      "sourceName": "DNRE employee withholding guidance",
       "sourceType": "official",
       "countryCodes": [
         "CV"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
-      "lastCheckedAt": "2025-07-01",
-      "lastReviewedAt": "2025-07-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Cabo Verde PAYE engine source audit. Outputs remain planning estimates. Formula status: review-required; version: 2026-03-01+sha256.e7eb2b71c73e.",
+      "notes": "Cabo Verde PAYE engine source audit. Outputs remain planning estimates. Formula status: review-required; version: 2026-07-21+sha256.18374e33b45e.",
       "displayDisclaimer": "PAYE and payroll results are planning estimates. Confirm current rates, reliefs, filing, and remittance treatment with the relevant authority or a qualified payroll professional.",
-      "sourceUrl": "https://dgci.gov.cv",
+      "sourceUrl": "https://www.mf.gov.cv/web/dnre/dire%C3%A7%C3%A3o-geral-das-contribui%C3%A7%C3%B5es-e-impostos",
       "toolIds": [
         "cv-paye"
       ],
@@ -2292,29 +2993,32 @@
     },
     {
       "id": "paye-dj-source",
-      "sourceName": "Direction generale des impots - Djibouti",
+      "sourceName": "Djibouti Finance Laws, General Tax Code and CNSS",
       "sourceType": "official",
       "countryCodes": [
         "DJ"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
-      "lastCheckedAt": "2026-04-06",
-      "lastReviewedAt": "2026-04-06",
-      "freshnessStatus": "acceptable",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Djibouti PAYE engine source audit. Outputs remain planning estimates. Formula status: review-required; version: 2026-03-01+sha256.45952e8ce695.",
-      "displayDisclaimer": "PAYE and payroll results are planning estimates. Confirm current rates, reliefs, filing, and remittance treatment with the relevant authority or a qualified payroll professional.",
-      "sourceUrl": "https://budget.gouv.dj/dgi/",
+      "notes": "Djibouti salary estimates use Finance Law 2022 Article 7, the 2016 taxable-remuneration exemption, CGI Articles 6 and 14, and official CNSS rates and contribution floors. Formula status: review-required; version: 2026-07-22+sha256.6add05f56fc2.",
+      "displayDisclaimer": "Djibouti ITS and CNSS results are planning estimates. Confirm benefits, exceptional remuneration, exemptions, special regimes, filing and remittance treatment with DGI, CNSS or a qualified payroll professional.",
+      "sourceUrl": "https://www.journalofficiel.dj/texte-juridique/loi-de-finances-n142-an-21-8eme-l-portant-budget-initial-de-letat-pour-lexercice-2022/",
       "toolIds": [
-        "dj-paye"
+        "dj-paye",
+        "dj-paye-fr"
       ],
       "routes": [
         "/djibouti/dj-paye",
-        "/fr/djibouti/dj-paye"
+        "/fr/djibouti/calculateur-salaire-net",
+        "/sw/djibouti/kikokotoo-kodi-mshahara",
+        "/widgets/iframe/financial-djibouti-paye"
       ]
     },
     {
@@ -2325,8 +3029,8 @@
         "DZ"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2026-04-06",
       "lastReviewedAt": "2026-04-06",
@@ -2351,8 +3055,8 @@
         "EG"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2025-03-01",
       "lastReviewedAt": "2025-03-01",
@@ -2371,28 +3075,31 @@
     },
     {
       "id": "paye-er-source",
-      "sourceName": "financialministry.gov.sd",
+      "sourceName": "Eritrea income-tax and public-sector pension proclamations",
       "sourceType": "official",
       "countryCodes": [
         "ER"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
-      "lastCheckedAt": "2026-03-28",
-      "lastReviewedAt": "2026-03-28",
-      "freshnessStatus": "acceptable",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Eritrea PAYE engine source audit. Outputs remain planning estimates. Formula status: review-required; version: 2026-03-01+sha256.ac8f51bf7c5c.",
-      "displayDisclaimer": "PAYE and payroll results are planning estimates. Confirm current rates, reliefs, filing, and remittance treatment with the relevant authority or a qualified payroll professional.",
-      "sourceUrl": "https://financialministry.gov.sd",
+      "notes": "Eritrea employment-tax estimates use the last primary eight-band monthly schedule located in Proclamation 62/1994 and Legal Notice 20/1995. No generic private-sector contribution is modeled; the optional 5%/7% pension scenario is limited to Proclamation 146/2005 public-sector scope. Formula status: review-required; version: 2026-07-22+sha256.4ac4a8ed78c1.",
+      "displayDisclaimer": "Statutory-reference planning estimate only. Confirm later amendments, exemptions, benefit treatment, withholding and pension coverage with the competent Eritrean authority or a qualified professional.",
+      "sourceUrl": "https://tile.loc.gov/storage-services/service/ll/lleritrea/eritrean-proc-62-1994/eritrean-proc-62-1994.pdf",
       "toolIds": [
         "er-paye"
       ],
       "routes": [
-        "/eritrea/er-paye"
+        "/eritrea/er-paye",
+        "/fr/eritrea/er-paye",
+        "/sw/eritrea/kikokotoo-kodi-mshahara",
+        "/widgets/iframe/financial-eritrea-paye"
       ]
     },
     {
@@ -2403,8 +3110,8 @@
         "ET"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2026-04-01",
       "lastReviewedAt": "2026-04-01",
@@ -2431,8 +3138,8 @@
         "GA"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2026-04-01",
       "lastReviewedAt": "2026-04-01",
@@ -2457,8 +3164,8 @@
         "GH"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2026-05-04",
       "lastReviewedAt": "2026-05-04",
@@ -2479,23 +3186,23 @@
     },
     {
       "id": "paye-gm-source",
-      "sourceName": "gra.gm",
+      "sourceName": "GRA PAYE calculator",
       "sourceType": "official",
       "countryCodes": [
         "GM"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
-      "lastCheckedAt": "2026-04-01",
-      "lastReviewedAt": "2026-04-01",
-      "freshnessStatus": "acceptable",
+      "lastCheckedAt": "2026-07-21",
+      "lastReviewedAt": "2026-07-21",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Gambia PAYE engine source audit. Outputs remain planning estimates. Formula status: review-required; version: 2026-03-01+sha256.b25d0aad0cd6.",
+      "notes": "Gambia PAYE engine source audit. Outputs remain planning estimates. Formula status: review-required; version: 2026-07-21+sha256.31dc78b7dd62.",
       "displayDisclaimer": "PAYE and payroll results are planning estimates. Confirm current rates, reliefs, filing, and remittance treatment with the relevant authority or a qualified payroll professional.",
-      "sourceUrl": "https://www.gra.gm",
+      "sourceUrl": "https://www.gra.gm/calculators/pay-as-you-earn-paye-",
       "toolIds": [
         "gm-paye"
       ],
@@ -2511,8 +3218,8 @@
         "GN"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2026-04-01",
       "lastReviewedAt": "2026-04-01",
@@ -2537,8 +3244,8 @@
         "GQ"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2026-03-28",
       "lastReviewedAt": "2026-03-28",
@@ -2563,8 +3270,8 @@
         "KE"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2026-04-01",
       "lastReviewedAt": "2026-04-01",
@@ -2585,47 +3292,50 @@
     },
     {
       "id": "paye-km-source",
-      "sourceName": "Direction generale des impots - Comoros",
+      "sourceName": "Union of the Comoros Code general des impots 2023",
       "sourceType": "official",
       "countryCodes": [
         "KM"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
-      "lastCheckedAt": "2026-04-06",
-      "lastReviewedAt": "2026-04-06",
-      "freshnessStatus": "acceptable",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Comoros PAYE engine source audit. Outputs remain planning estimates. Formula status: review-required; version: 2026-03-01+sha256.7743febb2361.",
-      "displayDisclaimer": "PAYE and payroll results are planning estimates. Confirm current rates, reliefs, filing, and remittance treatment with the relevant authority or a qualified payroll professional.",
-      "sourceUrl": "https://dgi.gouv.km/",
+      "notes": "Comoros employment-income estimates use CGI 2023 Articles 47, 55-60, 97 and 104-106: the official annual IRPP schedule, the standard 30% professional-expense deduction, and an optional user-supplied approved employee contribution capped at 6%. Employer contributions are not modeled. Formula status: review-required; version: 2026-07-22+sha256.2a0d1283f369.",
+      "displayDisclaimer": "CGI 2023 statutory-reference planning estimate only. Confirm later amendments, benefits in kind, actual-expense claims, the approved contribution rate on the payslip, withholding and remittance with DGI or a qualified professional.",
+      "sourceUrl": "https://www.dgi.gouv.km/file/actes_officiels/Comores-CGI-2023.pdf",
       "toolIds": [
         "km-paye"
       ],
       "routes": [
-        "/comoros/km-paye"
+        "/comoros/km-paye",
+        "/fr/comores/calculateur-salaire-net",
+        "/sw/comoros/kikokotoo-kodi-mshahara",
+        "/widgets/iframe/financial-comoros-paye"
       ]
     },
     {
       "id": "paye-lr-source",
-      "sourceName": "revenue.lra.gov.lr",
+      "sourceName": "Liberia Revenue Authority tax education",
       "sourceType": "official",
       "countryCodes": [
         "LR"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
-      "lastCheckedAt": "2026-04-01",
-      "lastReviewedAt": "2026-04-01",
-      "freshnessStatus": "acceptable",
+      "lastCheckedAt": "2026-07-21",
+      "lastReviewedAt": "2026-07-21",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Liberia PAYE engine source audit. Outputs remain planning estimates. Formula status: review-required; version: 2026-03-01+sha256.b8bce6846da3.",
+      "notes": "Liberia PAYE engine source audit. Outputs remain planning estimates. Formula status: review-required; version: 2026-03-01+sha256.a01adc0ac2d8.",
       "displayDisclaimer": "PAYE and payroll results are planning estimates. Confirm current rates, reliefs, filing, and remittance treatment with the relevant authority or a qualified payroll professional.",
       "sourceUrl": "https://revenue.lra.gov.lr/domestic-tax/tax-education/",
       "toolIds": [
@@ -2645,8 +3355,8 @@
         "LS"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2025-07-01",
       "lastReviewedAt": "2025-07-01",
@@ -2671,8 +3381,8 @@
         "LY"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2025-01-01",
       "lastReviewedAt": "2025-01-01",
@@ -2697,8 +3407,8 @@
         "MA"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2025-01-01",
       "lastReviewedAt": "2025-01-01",
@@ -2723,8 +3433,8 @@
         "MG"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2026-03-28",
       "lastReviewedAt": "2026-03-28",
@@ -2750,8 +3460,8 @@
         "ML"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2025-07-01",
       "lastReviewedAt": "2025-07-01",
@@ -2770,23 +3480,23 @@
     },
     {
       "id": "paye-mr-source",
-      "sourceName": "dgi.gov.mr",
+      "sourceName": "Mauritania Ministry of Finance - General Tax Code 2023",
       "sourceType": "official",
       "countryCodes": [
         "MR"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
-      "lastCheckedAt": "2026-04-01",
-      "lastReviewedAt": "2026-04-01",
-      "freshnessStatus": "acceptable",
+      "lastCheckedAt": "2026-07-21",
+      "lastReviewedAt": "2026-07-21",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Mauritania PAYE engine source audit. Outputs remain planning estimates. Formula status: review-required; version: 2026-03-01+sha256.dda095c4b0a5.",
+      "notes": "Mauritania PAYE engine source audit. Outputs remain planning estimates. Formula status: review-required; version: 2026-03-01+sha256.8b5b900b2aac.",
       "displayDisclaimer": "PAYE and payroll results are planning estimates. Confirm current rates, reliefs, filing, and remittance treatment with the relevant authority or a qualified payroll professional.",
-      "sourceUrl": "https://dgi.gov.mr",
+      "sourceUrl": "https://finances.gov.mr/fr/node/317",
       "toolIds": [
         "mr-paye"
       ],
@@ -2802,8 +3512,8 @@
         "MU"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2025-07-01",
       "lastReviewedAt": "2025-07-01",
@@ -2828,8 +3538,8 @@
         "MW"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2026-01-01",
       "lastReviewedAt": "2026-01-01",
@@ -2855,8 +3565,8 @@
         "MZ"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2026-04-06",
       "lastReviewedAt": "2026-04-06",
@@ -2881,8 +3591,8 @@
         "NA"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2025-07-01",
       "lastReviewedAt": "2025-07-01",
@@ -2907,8 +3617,8 @@
         "NE"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2025-07-01",
       "lastReviewedAt": "2025-07-01",
@@ -2933,8 +3643,8 @@
         "NG"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2026-03-01",
       "lastReviewedAt": "2026-03-01",
@@ -2961,8 +3671,8 @@
         "RW"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2025-03-01",
       "lastReviewedAt": "2025-03-01",
@@ -2989,8 +3699,8 @@
         "SC"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2025-07-01",
       "lastReviewedAt": "2025-07-01",
@@ -3016,8 +3726,8 @@
         "SD"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2026-01-01",
       "lastReviewedAt": "2026-01-01",
@@ -3042,8 +3752,8 @@
         "SL"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2026-04-01",
       "lastReviewedAt": "2026-04-01",
@@ -3070,8 +3780,8 @@
         "SN"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2026-04-06",
       "lastReviewedAt": "2026-04-06",
@@ -3090,80 +3800,89 @@
     },
     {
       "id": "paye-so-source",
-      "sourceName": "financialministry.gov.sd",
+      "sourceName": "Somalia Income Tax Law, Regulations and Manual 2025",
       "sourceType": "official",
       "countryCodes": [
         "SO"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
-      "lastCheckedAt": "2026-04-06",
-      "lastReviewedAt": "2026-04-06",
-      "freshnessStatus": "acceptable",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Somalia PAYE engine source audit. Outputs remain planning estimates. Formula status: review-required; version: 2026-03-01+sha256.703db1d2c558.",
-      "displayDisclaimer": "PAYE and payroll results are planning estimates. Confirm current rates, reliefs, filing, and remittance treatment with the relevant authority or a qualified payroll professional.",
-      "sourceUrl": "https://financialministry.gov.sd",
+      "notes": "Federal Somalia employment-income estimates use the 2025 monthly USD schedule for resident adults and the statutory flat rates for non-residents and residents under 18. Employment deductions and other payroll contributions are not modeled. Formula status: review-required; version: 2026-07-22+sha256.85a31b0e7ba5.",
+      "displayDisclaimer": "Federal income-tax planning estimate only. Confirm residence, federal member-state treatment, benefits, other payroll obligations, filing and remittance with the Revenue Directorate or a qualified professional.",
+      "sourceUrl": "https://mof.gov.so/sites/default/files/Publications/Somalia%20Income%20Tax%20Manual_English%20Version.pdf",
       "toolIds": [
         "so-paye"
       ],
       "routes": [
-        "/somalia/so-paye"
+        "/fr/somalia/so-paye",
+        "/somalia/so-paye",
+        "/sw/somalia/kikokotoo-kodi-mshahara",
+        "/widgets/iframe/financial-somalia-paye"
       ]
     },
     {
       "id": "paye-ss-source",
-      "sourceName": "nra.gov.ss",
+      "sourceName": "South Sudan taxation, finance and social-insurance statutes",
       "sourceType": "official",
       "countryCodes": [
         "SS"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
-      "lastCheckedAt": "2026-04-06",
-      "lastReviewedAt": "2026-04-06",
-      "freshnessStatus": "acceptable",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "South Sudan PAYE engine source audit. Outputs remain planning estimates. Formula status: review-required; version: 2026-03-01+sha256.77e7e63b5898.",
-      "displayDisclaimer": "PAYE and payroll results are planning estimates. Confirm current rates, reliefs, filing, and remittance treatment with the relevant authority or a qualified payroll professional.",
-      "sourceUrl": "https://nra.gov.ss",
+      "notes": "South Sudan employment-tax estimates use the last primary five-band monthly schedule located in the Financial Act FY 2023/24, the 30% PIT surtax in the Taxation Amendment Act 2012, and the 8% employee/17% employer NSIF scenario in the 2023 framework. Formula status: review-required; version: 2026-07-22+sha256.f40d00c1cb77.",
+      "displayDisclaimer": "Statutory-reference planning estimate only. Confirm later amendments, national or state administration, taxpayer scope, approved-pension treatment, filing and remittance with the South Sudan Revenue Authority or a qualified professional.",
+      "sourceUrl": "https://cms.nra.gov.ss/uploads/FINANCIAL_Act_FY_2023_2024_MAIL_97b32cab38.pdf",
       "toolIds": [
         "ss-paye"
       ],
       "routes": [
-        "/south-sudan/ss-paye"
+        "/fr/south-sudan/ss-paye",
+        "/south-sudan/ss-paye",
+        "/sw/south-sudan/kikokotoo-kodi-mshahara",
+        "/widgets/iframe/financial-south-sudan-paye"
       ]
     },
     {
       "id": "paye-st-source",
-      "sourceName": "mf.gov.st",
+      "sourceName": "INSS Decreto-Lei 19/2022",
       "sourceType": "official",
       "countryCodes": [
         "ST"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
-      "lastCheckedAt": "2026-04-06",
-      "lastReviewedAt": "2026-04-06",
-      "freshnessStatus": "acceptable",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "São Tomé and Príncipe PAYE engine source audit. Outputs remain planning estimates. Formula status: review-required; version: 2026-03-01+sha256.b7c516ddb2f8.",
-      "displayDisclaimer": "PAYE and payroll results are planning estimates. Confirm current rates, reliefs, filing, and remittance treatment with the relevant authority or a qualified payroll professional.",
-      "sourceUrl": "https://mf.gov.st",
+      "notes": "Sao Tome payroll checker verifies 4% employee and 6% employer INSS. IRS calculation is paused because the current official schedule remains unconfirmed. Formula status: review-required; version: 2026-07-22+sha256.6fd4a8fd254e.",
+      "displayDisclaimer": "INSS results are planning estimates. IRS and final take-home are intentionally not calculated; confirm current tax and payroll treatment with the authorities.",
+      "sourceUrl": "https://inss.gov.st/assets/Leis/Lei_n_19_2022.pdf",
       "toolIds": [
         "st-paye"
       ],
       "routes": [
-        "/sao-tome/st-paye"
+        "/fr/sao-tome/st-paye",
+        "/sao-tome/st-paye",
+        "/sw/sao-tome/kikokotoo-kodi-mshahara",
+        "/widgets/iframe/financial-sao-tome-paye"
       ]
     },
     {
@@ -3174,8 +3893,8 @@
         "SZ"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2025-07-01",
       "lastReviewedAt": "2025-07-01",
@@ -3225,8 +3944,8 @@
         "TD"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2026-04-06",
       "lastReviewedAt": "2026-04-06",
@@ -3245,28 +3964,31 @@
     },
     {
       "id": "paye-tg-source",
-      "sourceName": "Office togolais des recettes",
+      "sourceName": "OTR consolidated CGI/LPF and CNSS Togo",
       "sourceType": "official",
       "countryCodes": [
         "TG"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
-      "lastCheckedAt": "2026-03-28",
-      "lastReviewedAt": "2026-03-28",
-      "freshnessStatus": "acceptable",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Togo PAYE engine source audit. Outputs remain planning estimates. Formula status: review-required; version: 2026-03-01+sha256.3b15cf82f6ee.",
-      "displayDisclaimer": "PAYE and payroll results are planning estimates. Confirm current rates, reliefs, filing, and remittance treatment with the relevant authority or a qualified payroll professional.",
-      "sourceUrl": "https://www.otr.tg/",
+      "notes": "Togo PAYE uses one reviewed engine for OTR CGI Articles 26 and 72-74, 4% employee CNSS and 17.5% employer CNSS. Other personal deductions and special regimes remain excluded. Formula status: review-required; version: 2026-07-22+sha256.cb5460d5053f.",
+      "displayDisclaimer": "Togo PAYE results are planning estimates. Confirm benefits, other mandatory insurance, special regimes, filing and remittance treatment with OTR, CNSS or a qualified payroll professional.",
+      "sourceUrl": "https://www.otr.tg/index.php/fr/documentation/sur-les-impots/code-general-des-impots/600-code-general-des-impots-livre-des-procedures-fiscales-mis-a-jour-2025/file.html",
       "toolIds": [
         "tg-paye"
       ],
       "routes": [
-        "/togo/tg-paye"
+        "/fr/togo/calculateur-salaire-net",
+        "/sw/togo/kikokotoo-kodi-mshahara",
+        "/togo/tg-paye",
+        "/widgets/iframe/financial-togo-paye"
       ]
     },
     {
@@ -3277,8 +3999,8 @@
         "TN"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2026-03-28",
       "lastReviewedAt": "2026-03-28",
@@ -3303,8 +4025,8 @@
         "TZ"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2025-07-01",
       "lastReviewedAt": "2025-07-01",
@@ -3331,8 +4053,8 @@
         "UG"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2026-03-28",
       "lastReviewedAt": "2026-03-28",
@@ -3360,8 +4082,8 @@
         "ZA"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2025-03-01",
       "lastReviewedAt": "2025-03-01",
@@ -3388,8 +4110,8 @@
         "ZM"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2025-07-01",
       "lastReviewedAt": "2025-07-01",
@@ -3414,8 +4136,8 @@
         "ZW"
       ],
       "appliesTo": [
-        "tax",
-        "salary"
+        "salary",
+        "tax"
       ],
       "lastCheckedAt": "2025-07-01",
       "lastReviewedAt": "2025-07-01",
@@ -3433,6 +4155,68 @@
       ]
     },
     {
+      "id": "payslip-draft-method",
+      "sourceName": "ILO Protection of Wages Convention and South Africa BCEA4 payslip example",
+      "sourceType": "official",
+      "sourceUrl": "https://normlex.ilo.org/dyn/nrmlx_en/f?p=NORMLEXPUB:12100:0::NO::P12100_ILO_CODE:C095",
+      "countryCodes": [
+        "ALL"
+      ],
+      "appliesTo": [
+        "documents",
+        "salary"
+      ],
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 365,
+      "notes": "Method context for a private local draft assembled only from user-confirmed earnings, reimbursements, employer contributions and deductions. ILO Convention C095 supplies high-level wage-protection context; South Africa BCEA4 at https://www.labour.gov.za/DocumentCenter/Pages/Form-BCEA4---Pay-Slip.aspx is one official country example. Neither source is a pan-African field prescription. The tool does not calculate or verify PAYE, statutory contributions, deduction authority, payment, remittance, filing, authenticity, employer approval or legal compliance.",
+      "displayDisclaimer": "Draft only. Confirm employee identity, earnings, deduction authority, statutory treatment, payment, remittance, filing and local payslip requirements with the employer, relevant authority or a qualified payroll professional before issue or reliance.",
+      "toolIds": [
+        "generateur-fiche-paie-fr",
+        "payslip-generator",
+        "payslip-generator-ha",
+        "zana-kizalishaji-payslip-sw"
+      ],
+      "routes": [
+        "/fr/tools/generateur-fiche-paie",
+        "/ha/kayan-aiki/takardar-albashi",
+        "/sw/zana/kizalishaji-payslip",
+        "/tools/payslip-generator"
+      ]
+    },
+    {
+      "id": "pension-projection-method-source",
+      "sourceName": "Pension accumulation user-assumption method with Investor.gov and IOPS disclosure guidance",
+      "sourceType": "official",
+      "sourceUrl": "https://www.investor.gov/financial-tools-calculators/calculators/compound-interest-calculator",
+      "countryCodes": [
+        "ALL"
+      ],
+      "appliesTo": [
+        "business",
+        "salary"
+      ],
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 365,
+      "notes": "Deterministic local accumulation projection using only user-entered balance, contributions, return, fee, inflation, growth and dated scheme evidence. No country rate, forecast, probability, benefit, annuity, drawdown, tax result or AI prefill is supplied.",
+      "displayDisclaimer": "Planning estimate only. Confirm scheme values, fees, guarantees, tax, access, beneficiaries and retirement-income options with the provider, authority or a licensed adviser.",
+      "toolIds": [
+        "pension-proj",
+        "pension-projection",
+        "projection-pension-simple-fr"
+      ],
+      "routes": [
+        "/fr/tools/projection-pension-simple",
+        "/tools/pension-proj",
+        "/tools/pension-projection"
+      ]
+    },
+    {
       "id": "remittance-fx-planning",
       "sourceName": "Foreign-exchange third-party API snapshot",
       "sourceType": "third_party_snapshot",
@@ -3440,12 +4224,12 @@
         "ALL"
       ],
       "appliesTo": [
-        "fx",
-        "business"
+        "business",
+        "fx"
       ],
       "lastCheckedAt": "2026-07-12",
       "lastReviewedAt": "2026-06-16",
-      "freshnessStatus": "fresh",
+      "freshnessStatus": "acceptable",
       "confidence": "estimated",
       "reviewCadenceDays": 7,
       "notes": "Indicative remittance comparison using the FX snapshot plus modeled provider fees and spreads. Formula status: not-applicable; version: legacy-current+sha256.db0ae04285d1.",
@@ -3455,6 +4239,205 @@
       ],
       "routes": [
         "/tools/remittance-compare"
+      ]
+    },
+    {
+      "id": "retirement-scenario-user-input-method",
+      "sourceName": "Retirement Scenario Planner user-input methodology with Investor.gov compounding context",
+      "sourceType": "official",
+      "sourceUrl": "https://www.investor.gov/financial-tools-calculators/calculators/savings-goal-calculator",
+      "countryCodes": [
+        "ALL"
+      ],
+      "appliesTo": [
+        "business",
+        "salary"
+      ],
+      "lastCheckedAt": "2026-07-24",
+      "lastReviewedAt": "2026-07-24",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 365,
+      "notes": "Local today-money scenario. Users supply every balance, contribution, spending amount, other retirement income, annual real return after inflation/fees/tax, withdrawal assumption and a checked evidence label dated within 365 days. Target fund equals the spending shortfall divided by the user withdrawal assumption. Current balance and end-of-month contributions compound at the equivalent monthly real rate. No country preset, market return, inflation rate, pension benefit, safe-withdrawal claim, forecast, AI or network request is supplied.",
+      "displayDisclaimer": "Deterministic planning scenario only. Confirm current pension statements, tax treatment, fees, benefit access, inflation basis and investment assumptions. This is not a forecast, guaranteed outcome, safe withdrawal recommendation, investment advice, tax advice or legal advice.",
+      "toolIds": [
+        "planificateur-retraite-fr",
+        "retirement-planner",
+        "zana-mpango-wa-kustaafu-mapema-sw"
+      ],
+      "routes": [
+        "/fr/tools/planificateur-retraite",
+        "/sw/zana/mpango-wa-kustaafu-mapema",
+        "/tools/retirement-planner"
+      ]
+    },
+    {
+      "id": "retrenchment-user-input-method",
+      "sourceName": "Retrenchment user-input methodology with ILO Convention No. 158 context",
+      "sourceType": "official",
+      "sourceUrl": "https://normlex.ilo.org/dyn/nrmlx_en/f?p=NORMLEXPUB:12100:0::NO::P12100_ILO_CODE:C158",
+      "countryCodes": [
+        "ALL"
+      ],
+      "appliesTo": [
+        "documents",
+        "salary"
+      ],
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 365,
+      "notes": "Method source for a local retrenchment package estimate. The calculator supplies no severance rule, weeks per service year, notice entitlement, leave divisor, eligibility, consultation conclusion, selection-fairness decision, tax treatment or deduction authority. Users enter every amount and dated rule source. AfroTools AI may route to the page but cannot prefill or receive calculator or rule-source fields, and the browser does not persist the summary.",
+      "displayDisclaimer": "Planning estimate only. Confirm consultation, alternatives, eligibility, selection fairness, severance rules, caps, rounding, notice, leave records, tax, deductions, contract and collective agreement with the responsible authority or a qualified labour, legal or payroll professional.",
+      "toolIds": [
+        "retrenchment-calculator"
+      ],
+      "routes": [
+        "/tools/retrenchment-calculator"
+      ]
+    },
+    {
+      "id": "route-fares-user-input-method",
+      "sourceName": "Route Fares user-confirmed-fare methodology",
+      "sourceType": "reviewed_dataset",
+      "countryCodes": [
+        "ALL"
+      ],
+      "appliesTo": [
+        "business"
+      ],
+      "lastCheckedAt": "2026-07-24",
+      "lastReviewedAt": "2026-07-24",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 365,
+      "notes": "Local planning method. The user confirms every fare and cost input. Optional published community observations are read-only, non-official and never treated as a current quote; planner inputs are not sent with the feed request.",
+      "displayDisclaimer": "Planning estimate only. Confirm the current fare, transfers, luggage, booking and peak-time charges with the operator, stage, ticket seller or transport app before travel.",
+      "toolIds": [
+        "route-fares",
+        "tarifs-itineraire-fr",
+        "zana-nauli-za-ruti-sw"
+      ],
+      "routes": [
+        "/fr/tools/tarifs-itineraire",
+        "/sw/zana/nauli-za-ruti",
+        "/tools/route-fares"
+      ]
+    },
+    {
+      "id": "salary-evidence-notebook-method",
+      "sourceName": "Salary Evidence Notebook user-input methodology with NIST percentiles and ILOSTAT earnings context",
+      "sourceType": "official",
+      "sourceUrl": "https://www.itl.nist.gov/div898/handbook/prc/section2/prc262.htm",
+      "countryCodes": [
+        "ALL"
+      ],
+      "appliesTo": [
+        "business",
+        "salary"
+      ],
+      "lastCheckedAt": "2026-07-24",
+      "lastReviewedAt": "2026-07-24",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 365,
+      "notes": "Local evidence method. Users supply every observation, same-scope metadata, evidence label and date. Monthly values are annualised by multiplying by 12. At least five fresh rows with the same country, city scope, role, experience, currency and gross/net basis are required. Q1, median and Q3 use the documented NIST p(N+1) interpolation method. ILOSTAT earnings guidance provides gross-pay context only. No market values, representative-population claim, upload, account, AI or automatic storage is supplied.",
+      "displayDisclaimer": "Descriptive sample summary only. It is not an official wage schedule, representative market benchmark, job offer, tax or net-pay result, fair-pay conclusion, legal advice or recommendation.",
+      "toolIds": [
+        "salary-benchmarks-fr",
+        "salary-intelligence"
+      ],
+      "routes": [
+        "/fr/jobs/salary-benchmarks",
+        "/tools/salary-intelligence"
+      ]
+    },
+    {
+      "id": "salary-offer-comparison-method",
+      "sourceName": "Salary Offer Comparator user-input methodology with ILOSTAT earnings guidance",
+      "sourceType": "official",
+      "sourceUrl": "https://ilostat.ilo.org/methods/concepts-and-definitions/description-wages-and-working-time-statistics/",
+      "countryCodes": [
+        "ALL"
+      ],
+      "appliesTo": [
+        "business",
+        "salary"
+      ],
+      "lastCheckedAt": "2026-07-24",
+      "lastReviewedAt": "2026-07-24",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 365,
+      "notes": "Local same-currency comparison method. The user supplies both written packages and dated evidence labels. Gross earnings include annualised base pay, recurring cash allowances and guaranteed annual bonus; non-cash benefits and employer contributions remain separate. ILOSTAT supports the component boundary only and supplies no market values. No salary band, FX, PPP, tax, net-pay, AI or network result is supplied.",
+      "displayDisclaimer": "Planning comparison only. Confirm the written offers, currency, pay period, benefit values, working time, tax treatment and current local rules. This is not market salary evidence, a net-pay result, legal advice or a recommendation.",
+      "toolIds": [
+        "comparateur-salaires-fr",
+        "salary-compare",
+        "zana-kilinganisha-mishahara-sw"
+      ],
+      "routes": [
+        "/fr/tools/comparateur-salaires",
+        "/sw/zana/kilinganisha-mishahara",
+        "/tools/salary-compare"
+      ]
+    },
+    {
+      "id": "sars-efiling-guide-source",
+      "sourceName": "Official SARS eFiling portal",
+      "sourceType": "official",
+      "sourceUrl": "https://secure.sarsefiling.co.za/",
+      "countryCodes": [
+        "ZA"
+      ],
+      "appliesTo": [
+        "other",
+        "tax"
+      ],
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 60,
+      "notes": "Independent, non-calculative guide to official SARS registration, current filing windows, auto-assessment review and record preparation. AfroTools never collects credentials or documents, connects an account, submits a return, accepts an assessment or takes a payment.",
+      "displayDisclaimer": "Confirm the live filing window, obligation, assessment, amount and action in official SARS systems or with SARS support before submission or payment.",
+      "toolIds": [
+        "sars-efiling",
+        "sars-efiling-fr-coverage-sars-efiling"
+      ],
+      "routes": [
+        "/fr/tools/guide-de-sars-efiling",
+        "/tools/sars-efiling"
+      ]
+    },
+    {
+      "id": "savings-goal-user-input-method",
+      "sourceName": "Savings Goal Planner user-input methodology with FSCA consumer financial-goal context",
+      "sourceType": "regulator",
+      "sourceUrl": "https://www.fsca.co.za/Consumers/",
+      "countryCodes": [
+        "ALL"
+      ],
+      "appliesTo": [
+        "business"
+      ],
+      "lastCheckedAt": "2026-07-24",
+      "lastReviewedAt": "2026-07-24",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 365,
+      "notes": "Local constant-return plan using user-entered goal, current savings, month-end contribution, period, effective annual return assumption, source and checked date within 365 days. No product or country rates, presets, guarantee, recommendation, tax claim, AI or network request.",
+      "displayDisclaimer": "User-entered constant-return plan only. Confirm interest method, fees, tax, access restrictions, risk and current provider terms.",
+      "toolIds": [
+        "objectif-epargne-fr",
+        "savings-goal",
+        "zana-lengo-la-akiba-sw"
+      ],
+      "routes": [
+        "/fr/tools/objectif-epargne",
+        "/sw/zana/lengo-la-akiba",
+        "/tools/savings-goal"
       ]
     },
     {
@@ -3493,6 +4476,34 @@
       "confidence": "user_entered",
       "notes": "Nationality, grades, budget, destination, and field preferences are entered by the user.",
       "displayDisclaimer": "Profile details are user-entered and should be checked before applications or reminders are created."
+    },
+    {
+      "id": "side-income-tax-reserve-user-input-method",
+      "sourceName": "Side-Income Tax Reserve user-input methodology with ATAF authority-directory context",
+      "sourceType": "official",
+      "sourceUrl": "https://www.ataftax.org/members",
+      "countryCodes": [
+        "ALL"
+      ],
+      "appliesTo": [
+        "business",
+        "tax"
+      ],
+      "lastCheckedAt": "2026-07-24",
+      "lastReviewedAt": "2026-07-24",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 365,
+      "notes": "Local arithmetic worksheet. Users supply every jurisdiction, tax period, amount, reserve rate, credit and evidence label dated within 365 days. Recorded costs reduce planning profit but are never represented as legally deductible. Equal instalments are planning splits only. No country rate, bracket, relief, threshold, tax regime, turnover tax, filing date, platform preset, tax advice, final liability, AI or network request is supplied. Primary guidance examples checked during review: KRA return preparation, SARS provisional tax and GRA personal income tax.",
+      "displayDisclaimer": "Planning worksheet only. Confirm taxpayer type, taxable income, deductions, withholding treatment, current rates, reliefs, thresholds, registration and deadlines with the responsible tax authority or a qualified tax adviser.",
+      "toolIds": [
+        "impot-activite-secondaire-fr",
+        "side-hustle-tax"
+      ],
+      "routes": [
+        "/fr/tools/impot-activite-secondaire",
+        "/tools/side-hustle-tax"
+      ]
     },
     {
       "id": "social-security-country-packs",
@@ -3562,7 +4573,7 @@
     },
     {
       "id": "social-security-ng-pension-source",
-      "sourceName": "AfroTools reviewed PAYE and salary-tax country packs",
+      "sourceName": "Nigeria CPS contribution and RSA scenario methodology with PenCom PRA 2014 context",
       "sourceType": "official",
       "countryCodes": [
         "NG"
@@ -3576,27 +4587,151 @@
       "freshnessStatus": "acceptable",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Reviewed statutory-contribution formula source. Formula status: not-applicable; version: legacy-current+sha256.df951d99d7b1.",
-      "displayDisclaimer": "Contribution results are planning estimates. Confirm current rates and caps with the relevant statutory scheme."
+      "notes": "Reviewed statutory-contribution formula source. Formula status: not-applicable; version: legacy-current+sha256.8d22bff15c11.",
+      "displayDisclaimer": "Contribution results are planning estimates. Confirm current rates and caps with the relevant statutory scheme.",
+      "sourceUrl": "https://www.pencom.gov.ng/pra2014/"
     },
     {
-      "id": "social-security-za-uif-source",
-      "sourceName": "AfroTools reviewed PAYE and salary-tax country packs",
+      "id": "south-africa-cgt-2027-source",
+      "sourceName": "SARS Capital Gains Tax rates and exclusions",
       "sourceType": "official",
+      "sourceUrl": "https://www.sars.gov.za/tax-rates/income-tax/capital-gains-tax-cgt/",
       "countryCodes": [
         "ZA"
       ],
       "appliesTo": [
-        "salary",
+        "business",
         "tax"
       ],
-      "lastCheckedAt": "2026-03-01",
-      "lastReviewedAt": "2026-03-01",
-      "freshnessStatus": "acceptable",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "effectiveFrom": "2026-03-01",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Reviewed statutory-contribution formula source. Formula status: not-applicable; version: legacy-current+sha256.e5b45d05a374.",
-      "displayDisclaimer": "Contribution results are planning estimates. Confirm current rates and caps with the relevant statutory scheme."
+      "notes": "South Africa CGT uses SARS 2027 assessment-year rates and exclusions. The local engine models supported base cost, current and carried losses, inclusion rates, incremental individual tax and only user-confirmed apportioned residence relief.",
+      "displayDisclaimer": "South Africa CGT planning estimate only. Confirm classification, valuation, exclusions, losses, filing and payment with SARS or a qualified tax professional.",
+      "toolIds": [
+        "za-cgt"
+      ],
+      "routes": [
+        "/tools/za-cgt"
+      ]
+    },
+    {
+      "id": "south-africa-dividends-tax-source",
+      "sourceName": "SARS Dividends Tax overview",
+      "sourceType": "official",
+      "sourceUrl": "https://www.sars.gov.za/types-of-tax/dividends-tax/",
+      "countryCodes": [
+        "ZA"
+      ],
+      "appliesTo": [
+        "business",
+        "tax"
+      ],
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "effectiveFrom": "2017-02-22",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 90,
+      "notes": "South Africa dividends tax uses the SARS-confirmed 20% standard rate. The local engine accepts a reduced DTA rate or exemption only after explicit declaration confirmation and never infers eligibility from a country or recipient label. Ordinary foreign dividends, REIT income-tax treatment, dividends in specie and STC credits are outside the calculation.",
+      "displayDisclaimer": "South Africa dividends-tax planning estimate only. Confirm scope, beneficial ownership, declaration validity, treaty or exemption eligibility, filing and payment with SARS or a qualified tax professional.",
+      "toolIds": [
+        "za-dividend-tax",
+        "za-impot-dividendes-fr"
+      ],
+      "routes": [
+        "/fr/tools/za-impot-dividendes",
+        "/tools/za-dividend-tax"
+      ]
+    },
+    {
+      "id": "south-africa-uif-source",
+      "sourceName": "Department of Employment and Labour - calculation of normal UIF benefit",
+      "sourceType": "official",
+      "sourceUrl": "https://www.labour.gov.za/DocumentCenter/Publications/Unemployment%20Insurance%20Fund/Fact%20Sheet%20on%20the%20Calculation%20of%20normal%20UIF%20benefit.pdf",
+      "countryCodes": [
+        "ZA"
+      ],
+      "appliesTo": [
+        "salary"
+      ],
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 90,
+      "notes": "South Africa UIF planning uses the SARS ZAR 17,712 contribution ceiling, the Department daily-income and 38%-60% IRR formula for days 1-238, a 20% second tier through day 365, and a separate 66% maternity plan capped at 121 days. Credits, eligibility and approved payment remain UIF decisions.",
+      "displayDisclaimer": "UIF results are planning estimates. Confirm current contribution, credit, eligibility, claim and payment rules with SARS, UIF or the Department of Employment and Labour.",
+      "toolIds": [
+        "za-uif",
+        "za-uif-fr"
+      ],
+      "routes": [
+        "/fr/tools/za-uif",
+        "/tools/za-uif"
+      ]
+    },
+    {
+      "id": "staff-cost-user-input-method",
+      "sourceName": "Staff Cost user-evidence methodology with IAS 19 and ILO employment-relationship context",
+      "sourceType": "official",
+      "sourceUrl": "https://www.ifrs.org/issued-standards/list-of-standards/ias-19-employee-benefits/",
+      "countryCodes": [
+        "ALL"
+      ],
+      "appliesTo": [
+        "business",
+        "documents",
+        "salary"
+      ],
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 365,
+      "notes": "Method source for a local staff-budget worksheet. No statutory rate, country preset, worker classification, PAYE, take-home pay or termination treatment is supplied. Every cost and dated source label is entered by the user. AfroTools AI may route to the page but cannot prefill or receive calculator fields, source evidence or personal identifiers.",
+      "displayDisclaimer": "Staff-budget planning estimate only. Confirm current employment status, rates, ceilings, risk classes, contract terms, accounting treatment and filing obligations with the responsible authority or a qualified payroll, accounting or legal professional.",
+      "toolIds": [
+        "cout-employe-fr",
+        "staff-cost",
+        "staff-cost-ha"
+      ],
+      "routes": [
+        "/fr/tools/cout-employe",
+        "/ha/kayan-aiki/kudin-maikaci",
+        "/tools/staff-cost"
+      ]
+    },
+    {
+      "id": "student-loan-user-input-method",
+      "sourceName": "Student Loan Repayment Planner user-input methodology with official HELB, NSFAS and TETFund boundary context",
+      "sourceType": "official",
+      "sourceUrl": "https://www.helb.co.ke/helb-products/helb-loans/undergraduate-loans/",
+      "countryCodes": [
+        "ALL"
+      ],
+      "appliesTo": [
+        "business",
+        "education"
+      ],
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 365,
+      "notes": "Local fixed-rate repayment plan using a user-entered recent statement, rate, fees, grace treatment and term. No NSFAS, HELB, TETFund, SOBA or private-provider preset, eligibility or approval verdict, income-contingent schedule, recommendation, AI or network request.",
+      "displayDisclaimer": "User-entered fixed-rate plan only. Confirm the official balance, rate method, fees, interest during study or grace, deductions, penalties, waivers and repayment schedule with the provider.",
+      "toolIds": [
+        "pret-etudiant-fr",
+        "student-loan"
+      ],
+      "routes": [
+        "/fr/tools/pret-etudiant",
+        "/tools/student-loan"
+      ]
     },
     {
       "id": "study-abroad-cost-planning-estimates",
@@ -3617,6 +4752,34 @@
       "displayDisclaimer": "Study abroad costs and visa requirements change frequently. Confirm tuition, proof-of-funds, insurance, visa, and deadline details with official university and government sources before applying or paying."
     },
     {
+      "id": "transfer-pricing-method-source",
+      "sourceName": "OECD Transfer Pricing Guidelines 2022",
+      "sourceType": "official",
+      "sourceUrl": "https://www.oecd.org/en/publications/2022/01/oecd-transfer-pricing-guidelines-for-multinational-enterprises-and-tax-administrations-2022_57104b3a.html",
+      "countryCodes": [
+        "ALL"
+      ],
+      "appliesTo": [
+        "business",
+        "tax"
+      ],
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
+      "confidence": "reviewed",
+      "reviewCadenceDays": 180,
+      "notes": "Transfer-pricing comparability worksheet only. It computes one method-specific indicator and locates it against a range supplied and documented by the user. It does not select comparables, determine arm's-length compliance, automate Amount B, produce an audit report, calculate an adjustment or apply jurisdiction-specific law.",
+      "displayDisclaimer": "Planning worksheet only. Confirm the functional analysis, method, comparables, range, adjustments, local law, documentation and filing with the relevant authority or a qualified transfer-pricing professional.",
+      "toolIds": [
+        "prix-transfert-fr",
+        "transfer-pricing"
+      ],
+      "routes": [
+        "/fr/tools/prix-transfert",
+        "/tools/transfer-pricing"
+      ]
+    },
+    {
       "id": "unknown-source",
       "sourceName": "Unknown or unavailable source",
       "sourceType": "estimate",
@@ -3635,28 +4798,33 @@
     },
     {
       "id": "vat-ao-source",
-      "sourceName": "agt.minfin.gov.ao",
+      "sourceName": "AGT Angola current tax portal",
       "sourceType": "official",
       "countryCodes": [
         "AO"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Angola VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-AGT-(agt+sha256.c4415268b0fe.",
-      "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://www.agt.minfin.gov.ao",
+      "notes": "Angola VAT uses the 14% general rate. The 7% simplified and eligible hospitality rates, 5% Annex I/II treatment, and 1% Cabinda treatment require confirmation. The regime screen uses the AOA 25 million and AOA 350 million boundaries; Article 21 imposto cativo is kept separate from the VAT rate. Formula status: declared; version: Lei-14/23-republished-VAT-Code-and-Decreto-Presi+sha256.25f0081f0da1.",
+      "displayDisclaimer": "Angola VAT planning estimate only. Confirm classification, regime, Cabinda or hospitality eligibility, captive-tax status, invoicing, input tax, filing and payment with AGT or a qualified tax professional.",
+      "sourceUrl": "https://agt.minfin.gov.ao/",
+      "effectiveFrom": "2024-01-01",
       "toolIds": [
+        "angola-kikokotoo-vat-sw",
+        "ao-tva-fr",
         "ao-vat"
       ],
       "routes": [
-        "/angola/ao-vat"
+        "/angola/ao-vat",
+        "/fr/angola/ao-vat",
+        "/sw/angola/kikokotoo-vat"
       ]
     },
     {
@@ -3667,8 +4835,8 @@
         "BF"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
       "lastCheckedAt": "2026-01-01",
       "lastReviewedAt": "2026-01-01",
@@ -3682,7 +4850,8 @@
         "bf-vat"
       ],
       "routes": [
-        "/burkina-faso/bf-vat"
+        "/burkina-faso/bf-vat",
+        "/fr/burkina-faso/bf-vat"
       ]
     },
     {
@@ -3693,8 +4862,8 @@
         "BI"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
       "lastCheckedAt": "2026-01-01",
       "lastReviewedAt": "2026-01-01",
@@ -3708,189 +4877,219 @@
         "bi-vat"
       ],
       "routes": [
-        "/burundi/bi-vat"
+        "/burundi/bi-vat",
+        "/fr/burundi/bi-vat"
       ]
     },
     {
       "id": "vat-bj-source",
-      "sourceName": "impots.finances.gouv.bj",
+      "sourceName": "DGI Benin official General Tax Code 2023",
       "sourceType": "official",
       "countryCodes": [
         "BJ"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Benin VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-DGI-(finances+sha256.a500c7a11406.",
-      "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://impots.finances.gouv.bj",
+      "notes": "Benin VAT uses the 18% standard rate under CGI Article 241. Export zero-rating, Article 229 exemptions and the current Article 228 registration threshold require confirmation; Article 259 sets monthly declaration and payment by the 10th. Formula status: declared; version: Benin-CGI-2023-Articles-228,-229,-241-and-259;-2+sha256.54c8e074cec9.",
+      "displayDisclaimer": "Benin VAT planning estimate only. Confirm classification, export or exemption treatment, the current registration threshold, invoicing, input tax, filing and payment with DGI Benin or a qualified tax professional.",
+      "sourceUrl": "https://api.impots.bj/media/63c7b8d3eef3c_Benin-CGI-2023-officiel.pdf",
+      "effectiveFrom": "2023-01-01",
       "toolIds": [
+        "benin-kikokotoo-vat-sw",
+        "bj-tva-fr",
         "bj-vat"
       ],
       "routes": [
-        "/benin/bj-vat"
+        "/benin/bj-vat",
+        "/fr/benin/calculateur-tva",
+        "/sw/benin/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-bw-source",
-      "sourceName": "burs.org.bw",
+      "sourceName": "BURS VAT brochure",
       "sourceType": "official",
       "countryCodes": [
         "BW"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Botswana VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-BURS-(burs+sha256.1084d71f7765.",
-      "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://burs.org.bw",
+      "notes": "Botswana VAT uses the current 14% standard rate. Registration screening uses the BURS-published BWP 1 million compulsory threshold and BWP 500,000 voluntary floor. Zero-rating, exemption and the 2026 remote-digital-services transition remain confirmation-only. Formula status: review-required; version: Current-BURS-material-and-Botswana-Value-Added-T+sha256.4dd009b5acb4.",
+      "displayDisclaimer": "Botswana VAT planning estimate only. Confirm classification, registration, digital-services treatment, input tax, invoicing, filing and payment with BURS or a qualified tax adviser.",
+      "sourceUrl": "https://www.burs.org.bw/index.php/brochure?download=815%3Aburs-vat-brochures",
       "toolIds": [
+        "botswana-kikokotoo-vat-sw",
+        "bw-tva-fr",
         "bw-vat"
       ],
       "routes": [
-        "/botswana/bw-vat"
+        "/botswana/bw-vat",
+        "/fr/botswana/bw-vat",
+        "/sw/botswana/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-cd-source",
-      "sourceName": "dgi.gouv.cd",
+      "sourceName": "DGI RDC - Taxe sur la Valeur Ajoutée",
       "sourceType": "official",
       "countryCodes": [
         "CD"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "DR Congo VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-DGI-(dgi+sha256.108d65442c1e.",
-      "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://dgi.gouv.cd",
+      "notes": "DR Congo uses the DGI-published 16% general TVA rate. The 8% reduced path requires an exact current legal item and qualifying-export 0% requires declaration and customs evidence. The CDF 80m annual-turnover figure is review-only because liberal professions and other cases have specific rules. Generic mining, exemption, withholding and custom-rate treatment is not inferred. Formula status: reviewed; version: DGI-current-TVA-guidance,-2026-Budget-instructio+sha256.817652a6dd36.",
+      "displayDisclaimer": "DR Congo TVA planning estimate only. Confirm classification, registration, normalized invoicing, filing, deductions, refunds and remittance with DGI or a qualified professional.",
+      "sourceUrl": "https://dgi.gouv.cd/taxe-sur-la-valeur-ajoutee-tva/",
       "toolIds": [
-        "cd-vat"
+        "cd-tva-fr",
+        "cd-vat",
+        "dr-congo-kikokotoo-vat-sw"
       ],
       "routes": [
-        "/dr-congo/cd-vat"
+        "/dr-congo/cd-vat",
+        "/fr/rdc/calculateur-tva",
+        "/sw/dr-congo/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-cf-source",
-      "sourceName": "Ministere des Finances et du Budget - Central African Republic",
+      "sourceName": "DGID Code general des impots updated 2023",
       "sourceType": "official",
       "countryCodes": [
         "CF"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Central African Republic VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-DGID-(mfdgi+sha256.739341b283ca.",
-      "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://www.finances.gouv.cf/",
+      "notes": "Central African Republic TVA uses the 19% general rate. The 5% path requires an exact Article 257 tariff-list match and the 0% path requires qualifying export or international-transport scope with customs evidence. The XAF 30 million screen is strictly greater-than and does not decide registration. Generic exemptions and withholding percentages are not inferred. Formula status: reviewed; version: DGID-CGI-updated-2023-Articles-247,-257,-268-and+sha256.2c7ce2ed7a07.",
+      "displayDisclaimer": "Central African Republic TVA planning estimate only. Confirm tariff or export classification, registration, invoicing, filing frequency, deductions, designated-entity treatment and remittance with DGID or a qualified professional.",
+      "sourceUrl": "https://www.finances.gouv.cf/sites/default/files/2023-05/CGI%20RCA%202017%20mise%20%C3%A0%20jour%202023.pdf",
       "toolIds": [
+        "central-african-republic-kikokotoo-vat-sw",
+        "cf-tva-fr",
         "cf-vat"
       ],
       "routes": [
-        "/car/cf-vat"
+        "/car/cf-vat",
+        "/fr/centrafrique/calculateur-tva",
+        "/sw/central-african-republic/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-cg-source",
-      "sourceName": "Portail fiscal officiel - Republique du Congo",
+      "sourceName": "Journal officiel - Loi de finances 2024 (TVA Articles 21, 22 and 38 A)",
       "sourceType": "official",
       "countryCodes": [
         "CG"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Congo VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-DGI-(finances+sha256.2862bd3e1936.",
-      "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://impots.gouv.cg/portail-client-web/public/accueil.xhtml",
+      "notes": "Republic of the Congo invoices use 18% VAT plus additional centimes equal to 5% of collected VAT, producing an 18.9% standard invoice burden. The confirmed Annex 5 treatment has a 5.25% burden and Article 22 zero cases have 0%; both paths require exact matching evidence. The annual XAF 100 million screen is review-only, broad exemptions are not inferred, and Article 21 filing-base rounding is disclosed. Formula status: reviewed; version: Congo-VAT-law-as-amended-by-Finance-Laws-2024-an+sha256.28489623cb0d.",
+      "displayDisclaimer": "Congo TVA planning estimate only. Confirm tariff or zero-rate evidence, exemption, regime, statutory rounding, invoicing, filing, deductions and remittance with DGI or a qualified professional.",
+      "sourceUrl": "https://www.sgg.cg/JO/2023/congo-jo-2023-06-sp.pdf",
       "toolIds": [
-        "cg-vat"
+        "cg-tva-fr",
+        "cg-vat",
+        "congo-kikokotoo-vat-sw"
       ],
       "routes": [
-        "/congo/cg-vat"
+        "/congo/cg-vat",
+        "/fr/congo/calculateur-tva",
+        "/sw/congo/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-ci-source",
-      "sourceName": "dgi.gouv.ci",
+      "sourceName": "DGI Côte d'Ivoire 2026 General Tax Code resources",
       "sourceType": "official",
       "countryCodes": [
         "CI"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Côte d'Ivoire VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-DGI-(dgi+sha256.58b2872b251b.",
-      "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://dgi.gouv.ci",
+      "notes": "Côte d’Ivoire uses the 18% common VAT rate. The 9% paths require an exact current CGI Article 359 item or Ordinance 2026-03 item, effective 17 January 2026 for the four named groups. Exempt treatment requires exact Article 355 evidence. Turnover bands provide regime context only and do not decide VAT liability. Formula status: reviewed; version: CGI-2026-Articles-339-and-following,-including-A+sha256.570dcb33b9c8.",
+      "displayDisclaimer": "Côte d’Ivoire VAT planning estimate only. Confirm classification, regime, invoicing, filing and remittance with DGI or a qualified professional.",
+      "sourceUrl": "https://dgi.gouv.ci/",
       "toolIds": [
-        "ci-vat"
+        "ci-tva-fr",
+        "ci-vat",
+        "cote-divoire-kikokotoo-vat-sw"
       ],
       "routes": [
-        "/cote-divoire/ci-vat"
+        "/cote-divoire/ci-vat",
+        "/fr/cote-divoire/calculateur-tva",
+        "/sw/cote-divoire/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-cm-source",
-      "sourceName": "impots.cm",
+      "sourceName": "DGI 2026 VAT withholding order",
       "sourceType": "official",
       "countryCodes": [
         "CM"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Cameroon VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-DGI-(dgi+sha256.15d761a3389a.",
-      "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://www.impots.cm",
+      "notes": "Cameroon VAT uses the 19.25% effective standard rate: 17.5% base VAT plus communal additional tax equal to 10% of the base. The 10% social-housing rate, zero-rating, exemptions and full VAT withholding require explicit current qualification or authorization evidence. The XAF 50 million turnover value is an inclusive regime-review boundary, not an automatic registration decision. Formula status: review-required; version: Cameroon-2026-finance-and-withholding-material;-+sha256.3a0ab2b52769.",
+      "displayDisclaimer": "Cameroon VAT planning estimate only. Confirm classification, social-housing qualification, registration, withholding authorization, input tax, invoicing, filing and payment with DGI Cameroon or a qualified tax adviser.",
+      "sourceUrl": "https://www.impots.cm/sites/default/files/documents/arr%C3%AAt%C3%A9%20RTS%202026%20VF.pdf",
       "toolIds": [
+        "cameroon-kikokotoo-vat-sw",
+        "cm-tva-fr",
         "cm-vat"
       ],
       "routes": [
-        "/cameroon/cm-vat"
+        "/cameroon/cm-vat",
+        "/fr/cameroun/calculateur-tva",
+        "/sw/cameroon/kikokotoo-vat"
       ]
     },
     {
@@ -3920,415 +5119,494 @@
     },
     {
       "id": "vat-cv-source",
-      "sourceName": "mf.gov.cv",
+      "sourceName": "Cabo Verde 2026 State Budget Article 73",
       "sourceType": "official",
       "countryCodes": [
         "CV"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Cabo Verde VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-DGCI-(mf+sha256.dd1b39db6665.",
+      "notes": "Cabo Verde VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: declared; version: Cabo-Verde-IVA-Code-plus-2026-State-Budget-Artic+sha256.c1bb0df8961c.",
       "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://mf.gov.cv",
+      "sourceUrl": "https://www.mf.gov.cv/documents/198414/5793427/Proposta%2Bde%2BLei%2Bque%2BAprova%2Bo%2BOr%C3%A7amento%2Bdo%2BEstado%2Bpara%2Bo%2Bano%2Becon%C3%B3mico%2Bde%2B2026.docx.pdf/a482dc41-69a8-e126-8287-3bf23464d85c",
+      "effectiveFrom": "2026-01-01",
       "toolIds": [
+        "cape-verde-kikokotoo-vat-sw",
+        "cv-tva-fr",
         "cv-vat"
       ],
       "routes": [
-        "/cape-verde/cv-vat"
+        "/assets/js/engines/cv-vat.js",
+        "/cape-verde/cv-vat",
+        "/fr/cape-verde/cv-vat",
+        "/sw/cape-verde/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-dj-source",
-      "sourceName": "Direction generale des impots - Djibouti",
+      "sourceName": "Djibouti VAT Law No. 43/AN/08/6th L",
       "sourceType": "official",
       "countryCodes": [
         "DJ"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Djibouti VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-DGI-(mef+sha256.d3ef611b87ae.",
-      "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://budget.gouv.dj/dgi/",
+      "notes": "Djibouti uses a current 10% standard VAT rate corroborated by later official finance laws; the original 2008 law page preserves superseded 7% wording. Article 19 zero-rating and Article 8 exemptions require exact evidence. The FDJ 80m and 120m thresholds are review-only, and Article 39 whole-FDJ rounding is modeled. Formula status: reviewed; version: VAT-Law-Articles-6,-8,-12,-19-and-38-40;-current+sha256.7df11f46542c.",
+      "displayDisclaimer": "Djibouti VAT planning estimate only. Confirm the current consolidated CGI, classification, evidence, registration, invoicing, filing and payment with DGI or a qualified professional.",
+      "sourceUrl": "https://www.journalofficiel.dj/texte-juridique/loi-n43-an-08-6eme-l-portant-creation-de-la-taxe-sur-la-valeur-ajoutee-et-definissant-les-dispositifs-dapplication/",
       "toolIds": [
-        "dj-vat"
+        "dj-tva-fr",
+        "dj-vat",
+        "djibouti-kikokotoo-vat-sw"
       ],
       "routes": [
-        "/djibouti/dj-vat"
+        "/djibouti/dj-vat",
+        "/fr/djibouti/dj-vat",
+        "/sw/djibouti/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-dz-source",
-      "sourceName": "mfdgi.gov.dz",
+      "sourceName": "DGI Algeria current VAT guidance",
       "sourceType": "official",
       "countryCodes": [
         "DZ"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Algeria VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-DGI-(mfdgi+sha256.8dacd51ab49b.",
-      "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://mfdgi.gov.dz",
+      "notes": "Algeria VAT uses the 19% normal rate. The 9% reduced rate requires confirmation that the operation is listed in article 23 of the TCA Code; exemptions under articles 8-13 are confirmation-only. The regime screen distinguishes real or simplified VAT treatment from IFU taxpayers without inventing a generic registration threshold. Formula status: declared; version: DGI-Algeria-VAT-guidance-updated-2026-02-23-and-+sha256.d7fbd39d9a9e.",
+      "displayDisclaimer": "Algeria VAT planning estimate only. Confirm the exact TCA treatment, taxpayer regime, invoicing, deduction, filing and payment position with DGI or a qualified tax professional.",
+      "sourceUrl": "https://www.mfdgi.gov.dz/fr/professionnels/services-pro/regime-reel/la-taxe-sur-la-valeur-ajoutee",
+      "effectiveFrom": "2026-01-01",
       "toolIds": [
+        "algeria-kikokotoo-vat-sw",
+        "dz-tva-fr",
         "dz-vat"
       ],
       "routes": [
-        "/algeria/dz-vat"
+        "/algeria/dz-vat",
+        "/fr/algerie/calculateur-tva",
+        "/sw/algeria/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-eg-source",
-      "sourceName": "eta.gov.eg",
+      "sourceName": "Egyptian Tax Authority - VAT laws and amendments",
       "sourceType": "official",
       "countryCodes": [
         "EG"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-03-01",
-      "lastReviewedAt": "2026-03-01",
-      "freshnessStatus": "acceptable",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Egypt VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-March-2026-·-Source:-Egyptian-Tax+sha256.eb41eb49ca22.",
-      "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://eta.gov.eg",
+      "notes": "Egypt VAT uses the 14% standard rate and an inclusive EGP 500,000 general prior-12-month registration screen. Table Tax, zero-rating and exemptions require an exact current law, schedule or table entry; no generic reduced band is claimed. Special registration cases, input-tax, invoicing, filing and remittance require separate ETA review. Formula status: review-required; version: VAT-Law-No.-67-of-2016-and-Executive-Regulations+sha256.fffccb88c339.",
+      "displayDisclaimer": "Egypt VAT planning estimate only. Confirm classification, registration, invoicing, filing and remittance with ETA or a qualified tax professional.",
+      "sourceUrl": "https://www.eta.gov.eg/ar/content/qwanyn-aldrybt-ly-alqymt-almdaft",
       "toolIds": [
-        "eg-vat"
+        "eg-tva-fr",
+        "eg-vat",
+        "egypt-kikokotoo-vat-sw"
       ],
       "routes": [
-        "/egypt/eg-vat"
+        "/egypt/eg-vat",
+        "/fr/egypt/eg-vat",
+        "/sw/egypt/kikokotoo-vat",
+        "/widgets/iframe/financial-egypt-vat"
       ]
     },
     {
       "id": "vat-er-source",
-      "sourceName": "financialministry.gov.sd",
+      "sourceName": "IMF Staff Country Report: Eritrea - Tax Summary (information as of December 2002)",
       "sourceType": "official",
       "countryCodes": [
         "ER"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Eritrea VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-SRTD-(financialmin+sha256.b5c3694b0763.",
-      "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://financialministry.gov.sd",
+      "notes": "Historical single-stage sales-tax reference based on a public summary dated December 2002. It does not establish current rates or legal force. Formula status: review-required; version: Historical-single-stage-sales-tax-summary;-sourc+sha256.954ef0e31759.",
+      "displayDisclaimer": "Historical planning arithmetic only, not a current VAT result. Confirm the current Eritrean tax system, rates, classification, registration, invoicing, filing, and payment duties with a current authority or qualified adviser.",
+      "sourceUrl": "https://www.elibrary.imf.org/view/journals/002/2003/165/article-A001-en.xml",
+      "toolIds": [
+        "er-tva-fr",
+        "er-vat",
+        "eritrea-kikokotoo-vat-sw"
+      ],
       "routes": [
-        "/eritrea/er-vat"
+        "/assets/js/engines/er-vat.js",
+        "/eritrea/er-vat",
+        "/fr/eritrea/er-vat",
+        "/sw/eritrea/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-et-source",
-      "sourceName": "erca.gov.et",
+      "sourceName": "Ethiopia Ministry of Finance VAT Proclamation No. 1341/2024 with schedules",
       "sourceType": "official",
       "countryCodes": [
         "ET"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-03-01",
-      "lastReviewedAt": "2026-03-01",
-      "freshnessStatus": "acceptable",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Ethiopia VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-March-2026-·-Source:-Ethiopian-Re+sha256.14ab4768a4a8.",
+      "notes": "Ethiopia VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: VAT-Proclamation-No.-1341/2024,-Articles-8-and-9+sha256.255be00b0f29.",
       "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://erca.gov.et",
+      "sourceUrl": "https://www.mofed.gov.et/media/filer_public/af/45/af45af2f-7959-4e8b-b736-9494dda9f017/vat_proclamation_no_1341-2016_with_annex.pdf",
       "toolIds": [
-        "et-vat"
+        "et-tva-fr",
+        "et-vat",
+        "ethiopia-kikokotoo-vat-sw"
       ],
       "routes": [
-        "/ethiopia/et-vat"
+        "/assets/js/engines/et-vat.js",
+        "/ethiopia/et-vat",
+        "/fr/ethiopia/et-vat",
+        "/sw/ethiopia/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-ga-source",
-      "sourceName": "Direction generale des impots - Gabon",
+      "sourceName": "Journal Officiel - Loi 041/2025 (Finance Law 2026)",
       "sourceType": "official",
       "countryCodes": [
         "GA"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Gabon VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-DGI-(dgi+sha256.ae7c208ff856.",
+      "notes": "Gabon VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-DGI-(dgi+sha256.b6c0e115481b.",
       "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://dgi.ga/",
+      "sourceUrl": "https://journal-officiel.ga/22265-041-2025-/",
       "toolIds": [
-        "ga-vat"
+        "ga-tva-fr",
+        "ga-vat",
+        "gabon-kikokotoo-vat-sw"
       ],
       "routes": [
-        "/gabon/ga-vat"
+        "/assets/js/engines/ga-vat.js",
+        "/fr/gabon/calculateur-tva",
+        "/gabon/ga-vat",
+        "/sw/gabon/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-gh-source",
-      "sourceName": "gra.gov.gh",
+      "sourceName": "GRA notice to VAT-registered taxpayers under Act 1151",
       "sourceType": "official",
       "countryCodes": [
         "GH"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Ghana VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-April-19,-2026-·-Source:-Ghana-Re+sha256.88ebbd18be2d.",
+      "notes": "Ghana VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: declared; version: Value-Added-Tax-Act,-2025-(Act-1151),-effective-+sha256.41da01a406ed.",
       "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://gra.gov.gh",
+      "sourceUrl": "https://gra.gov.gh/news/portfolio/notice-to-all-vat-registered-taxpayers/",
+      "effectiveFrom": "2026-01-01",
       "toolIds": [
-        "gh-vat"
+        "gh-tva-fr",
+        "gh-vat",
+        "ghana-kikokotoo-vat-sw"
       ],
       "routes": [
-        "/ghana/gh-vat"
+        "/fr/ghana/gh-vat",
+        "/ghana/gh-vat",
+        "/sw/ghana/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-gm-source",
-      "sourceName": "gra.gm",
+      "sourceName": "GRA Domestic Taxes FAQs",
       "sourceType": "official",
       "countryCodes": [
         "GM"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Gambia VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-GRA-(gra+sha256.29c112f93aa8.",
+      "notes": "Gambia VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-GRA-(gra+sha256.0e10e2995118.",
       "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://www.gra.gm",
+      "sourceUrl": "https://www.gra.gm/domestic-faqs",
       "toolIds": [
+        "gambia-kikokotoo-vat-sw",
+        "gm-tva-fr",
         "gm-vat"
       ],
       "routes": [
-        "/gambia/gm-vat"
+        "/assets/js/engines/gm-vat.js",
+        "/fr/gambia/gm-vat",
+        "/gambia/gm-vat",
+        "/sw/gambia/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-gn-source",
-      "sourceName": "mf.gov.gn",
+      "sourceName": "DGI Code general des impots",
       "sourceType": "official",
       "countryCodes": [
         "GN"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Guinea VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-DNI-(mf+sha256.4527103c1bf4.",
+      "notes": "Guinea VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: DGI-CGI-Articles-359,-360,-362-and-373;-current-+sha256.3ab65d4bec86.",
       "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://mf.gov.gn",
+      "sourceUrl": "https://dgi.gov.gn/code-general-des-impots/",
       "toolIds": [
-        "gn-vat"
+        "gn-tva-fr",
+        "gn-vat",
+        "guinea-kikokotoo-vat-sw"
       ],
       "routes": [
-        "/guinea/gn-vat"
+        "/assets/js/engines/gn-vat.js",
+        "/fr/guinee/calculateur-tva",
+        "/guinea/gn-vat",
+        "/sw/guinea/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-gq-source",
-      "sourceName": "Ministerio de Hacienda y Presupuestos - Guinea Ecuatorial",
+      "sourceName": "Government presentation of Equatorial Guinea General Tax Law 1/2024",
       "sourceType": "official",
       "countryCodes": [
         "GQ"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Equatorial Guinea VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-Agencia-Tributaria+sha256.9ac2b65e1547.",
-      "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://minhacienda-gob.com/",
+      "notes": "Equatorial Guinea uses the 15% general IVA rate retained by General Tax Law 1/2024. The 2026 State Budget Article 13 import treatments at 5% and 0% require an exact named-product match and retained tariff/import evidence. Broad product, exemption, export, registration-threshold, withholding and custom-rate treatment is not inferred. Formula status: reviewed; version: General-Tax-Law-1/2024,-2026-State-Budget-Articl+sha256.b159242bf2b7.",
+      "displayDisclaimer": "Equatorial Guinea IVA planning estimate only. Confirm product and tariff classification, import evidence, registration, invoicing, filing, deductions and remittance with DGIC or a qualified professional.",
+      "sourceUrl": "https://www.guineaecuatorialpress.com/noticias/presentacion_oficial_de_la_nueva_ley_general_tributaria_de_guinea_ecuatorial",
+      "effectiveFrom": "2026-01-01",
       "toolIds": [
+        "equatorial-guinea-kikokotoo-vat-sw",
+        "gq-tva-fr",
         "gq-vat"
       ],
       "routes": [
-        "/eq-guinea/gq-vat"
+        "/eq-guinea/gq-vat",
+        "/fr/eq-guinea/gq-vat",
+        "/sw/equatorial-guinea/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-gw-source",
-      "sourceName": "mf.gov.gw",
+      "sourceName": "DGCI Kontaktu IVA notices",
       "sourceType": "official",
       "countryCodes": [
         "GW"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Guinea-Bissau VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-DNRE-(mf+sha256.9b1bc9190d3b.",
+      "notes": "Guinea-Bissau VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: CIVA-Law-4/2022-Article-18;-DGCI-Circular-20/202+sha256.11eb0e3d6cde.",
       "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://mf.gov.gw",
+      "sourceUrl": "https://kontaktu.mef.gw/",
       "toolIds": [
+        "guinea-bissau-kikokotoo-vat-sw",
         "gw-vat"
       ],
       "routes": [
-        "/guinea-bissau/gw-vat"
+        "/assets/js/engines/gw-vat.js",
+        "/guinea-bissau/gw-vat",
+        "/sw/guinea-bissau/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-ke-source",
-      "sourceName": "KRA",
+      "sourceName": "KRA value-added tax guidance",
       "sourceType": "official",
       "countryCodes": [
         "KE"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Kenya VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-April-17,-2026-·-Source:-KRA-VAT-+sha256.ad5e870c575d.",
+      "notes": "Kenya VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Kenya-Value-Added-Tax-Act-2013,-version-effectiv+sha256.3809f03d3a67.",
       "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://www.kra.go.ke/",
+      "sourceUrl": "https://www.kra.go.ke/individual/filing-paying/types-of-taxes/value-added-tax",
       "toolIds": [
-        "ke-vat"
+        "ke-tva-fr",
+        "ke-vat",
+        "kenya-kikokotoo-vat-sw"
       ],
       "routes": [
-        "/kenya/ke-vat"
+        "/fr/kenya/ke-vat",
+        "/kenya/ke-vat",
+        "/sw/kenya/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-km-source",
-      "sourceName": "Direction generale des impots - Comoros",
+      "sourceName": "DGI Comores Code général des impôts 2023",
       "sourceType": "official",
       "countryCodes": [
         "KM"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Comoros VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-DGI-(finances+sha256.053241b4b7f5.",
-      "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://dgi.gouv.km/",
+      "notes": "Comoros Taxe sur la Consommation uses the 10% reference rate. Every 3%, 5%, 7.5%, 25% or 0% Article 152 path requires the exact supply, explicit confirmation and matching evidence type. The Article 141 KMF 20 million screen and KMF 15 million confirmed-importer exception remain review-only. The separate KMF 50-per-minute incoming-call termination additional tax is expressly excluded. Formula status: review-required; version: KM-CGI-2023-Arts-139-152-review-2026-07-22+sha256.5a32d3fdde7f.",
+      "displayDisclaimer": "Comoros TC planning estimate only. Confirm Article 152 classification and evidence, Article 141 threshold status, invoicing, filing, deductions and remittance with DGI or a qualified professional.",
+      "sourceUrl": "https://www.dgi.gouv.km/file/actes_officiels/Comores-CGI-2023.pdf",
       "toolIds": [
+        "comoros-kikokotoo-vat-sw",
+        "km-tva-fr",
         "km-vat"
       ],
       "routes": [
-        "/comoros/km-vat"
+        "/comoros/km-vat",
+        "/fr/comores/calculateur-tva",
+        "/sw/comoros/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-lr-source",
-      "sourceName": "revenue.lra.gov.lr",
+      "sourceName": "Liberia Tax Amendment Act of December 2025",
       "sourceType": "official",
       "countryCodes": [
         "LR"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Liberia VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-LRA-(lra+sha256.20d7f15471ce.",
+      "notes": "Liberia VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Liberia-Tax-Amendment-Act-of-December-2025,-appr+sha256.f8f9f8474abf.",
       "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://revenue.lra.gov.lr/domestic-tax/tax-education/",
+      "sourceUrl": "https://revenue.lra.gov.lr/wp-content/uploads/2026/04/LRC-Amendment-December-2025.pdf",
       "toolIds": [
+        "liberia-kikokotoo-vat-sw",
+        "lr-tva-fr",
         "lr-vat"
       ],
       "routes": [
-        "/liberia/lr-vat"
+        "/assets/js/engines/lr-vat.js",
+        "/fr/liberia/lr-vat",
+        "/liberia/lr-vat",
+        "/sw/liberia/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-ls-source",
-      "sourceName": "lra.org.ls",
+      "sourceName": "RSL tax rates",
       "sourceType": "official",
       "countryCodes": [
         "LS"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Lesotho VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-LRA-(lra+sha256.43dd7063efe2.",
+      "notes": "Lesotho VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: RSL-current-tax-rate-page,-VAT-Act-Fourth-Schedu+sha256.dcd28227b33f.",
       "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://www.lra.org.ls",
+      "sourceUrl": "https://www.rsl.org.ls/tax-rates",
       "toolIds": [
+        "lesotho-kikokotoo-vat-sw",
+        "ls-tva-fr",
         "ls-vat"
       ],
       "routes": [
-        "/lesotho/ls-vat"
+        "/assets/js/engines/ls-vat.js",
+        "/fr/lesotho/ls-vat",
+        "/lesotho/ls-vat",
+        "/sw/lesotho/kikokotoo-vat"
       ]
     },
     {
@@ -4339,8 +5617,8 @@
         "LY"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
       "lastCheckedAt": "2026-01-01",
       "lastReviewedAt": "2026-01-01",
@@ -4350,421 +5628,508 @@
       "notes": "Libya VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-SRTD-(financialmin+sha256.1341e2281d85.",
       "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
       "sourceUrl": "https://financialministry.gov.sd",
+      "toolIds": [
+        "ly-tva-fr"
+      ],
       "routes": [
+        "/fr/libya/ly-vat",
         "/libya/ly-vat"
       ]
     },
     {
       "id": "vat-ma-source",
-      "sourceName": "dgi.gov.ma",
+      "sourceName": "Code général des impôts 2026",
       "sourceType": "official",
       "countryCodes": [
         "MA"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Morocco VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-DGI-(tax+sha256.4eb5c1c5cc4b.",
-      "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://dgi.gov.ma",
+      "notes": "Morocco CGI 2026 Article 99 uses the 20% standard rate and exact listed 10% treatment; former 14% and 7% bands are retired. Article 92 I.1 qualifying exports are exemptions with deduction and require exact transaction evidence. Article 89 merchant taxable-scope and Article 108 filing thresholds are not universal registration rules. Formula status: reviewed; version: CGI-2026-Articles-89,-92,-99,-108,-110,-111-and-+sha256.15df8754038d.",
+      "displayDisclaimer": "Morocco VAT planning estimate only. Confirm the exact CGI classification, taxable scope, export evidence, invoice, deduction, withholding, filing and payment with DGI or a qualified tax professional.",
+      "sourceUrl": "https://www.finances.gov.ma/Publication/dgi/2025/CGI-2026-FR.pdf",
       "toolIds": [
-        "ma-vat"
+        "ma-tva-fr",
+        "ma-vat",
+        "morocco-kikokotoo-vat-sw"
       ],
       "routes": [
-        "/morocco/ma-vat"
+        "/fr/maroc/calculateur-tva",
+        "/morocco/ma-vat",
+        "/sw/morocco/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-mg-source",
-      "sourceName": "mef.gov.mg",
+      "sourceName": "DGI Madagascar Code des impôts 2026",
       "sourceType": "official",
       "countryCodes": [
         "MG"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Madagascar VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-DGI-(mef+sha256.699dd50c7a51.",
+      "notes": "Madagascar VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: DGI-Madagascar-Code-des-impôts-incorporating-LFI+sha256.e86efcd10165.",
       "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://mef.gov.mg",
+      "sourceUrl": "https://www.impots.mg/explorer?path=/legislation/Codes%20et%20Manuels/CDI-LFI%202026.pdf",
       "toolIds": [
+        "madagascar-kikokotoo-vat-sw",
+        "mg-tva-fr",
         "mg-vat"
       ],
       "routes": [
-        "/madagascar/mg-vat"
+        "/assets/js/engines/mg-vat.js",
+        "/fr/madagascar/calculateur-tva",
+        "/madagascar/mg-vat",
+        "/sw/madagascar/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-ml-source",
-      "sourceName": "impots.gouv.ml",
+      "sourceName": "DGI Mali Code général des impôts",
       "sourceType": "official",
       "countryCodes": [
         "ML"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Mali VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-DGI-(finances+sha256.5492d66c50b2.",
+      "notes": "Mali VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: DGI-Mali-Code-général-des-impôts,-Articles-192,-+sha256.82bc009aa5fb.",
       "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://impots.gouv.ml",
+      "sourceUrl": "https://www.dgi.gouv.ml/CGI/",
       "toolIds": [
+        "mali-kikokotoo-vat-sw",
+        "ml-tva-fr",
         "ml-vat"
       ],
       "routes": [
-        "/mali/ml-vat"
+        "/assets/js/engines/ml-vat.js",
+        "/fr/mali/calculateur-tva",
+        "/mali/ml-vat",
+        "/sw/mali/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-mr-source",
-      "sourceName": "dgi.gov.mr",
+      "sourceName": "Mauritania Code général des impôts 2023",
       "sourceType": "official",
       "countryCodes": [
         "MR"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Mauritania VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-DGI-(finances+sha256.0f55da6c74d4.",
+      "notes": "Mauritania VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: CGI-2023-Articles-211,-213,-215,-230,-243,-249-a+sha256.e3f4945eeda4.",
       "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://dgi.gov.mr",
+      "sourceUrl": "https://finances.gov.mr/sites/default/files/2023-03/CGI-Fr-2023.pdf",
       "toolIds": [
+        "mauritania-kikokotoo-vat-sw",
+        "mr-tva-fr",
         "mr-vat"
       ],
       "routes": [
-        "/mauritania/mr-vat"
+        "/assets/js/engines/mr-vat.js",
+        "/fr/mauritanie/calculateur-tva",
+        "/mauritania/mr-vat",
+        "/sw/mauritania/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-mu-source",
-      "sourceName": "mra.mu",
+      "sourceName": "MRA VAT guidance",
       "sourceType": "official",
       "countryCodes": [
         "MU"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Mauritius VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-MRA-(mra+sha256.aaf3ee882cef.",
-      "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://www.mra.mu",
+      "notes": "Mauritius VAT uses the 15% standard rate. A zero-rated result requires an exact Fifth Schedule supply and an exempt result requires an exact First Schedule item; tourist services are not inferred as a generic zero-rate. The Rs 6 million general registration threshold, Tenth Schedule exceptions, Rs 10 million return-frequency boundary and Section 20 invoice particulars remain review context. Formula status: reviewed; version: VAT-Act-sections-9-11,-15,-20-and-71;-First,-Fou+sha256.6b5799518a29.",
+      "displayDisclaimer": "Mauritius VAT planning estimate only. Confirm classification, schedule evidence, registration, invoicing, filing, input tax and payment with MRA or a qualified tax professional.",
+      "sourceUrl": "https://mra.mu/index.php/taxes-duties/26-vat",
       "toolIds": [
+        "mauritius-kikokotoo-vat-sw",
+        "mu-tva-fr",
         "mu-vat"
       ],
       "routes": [
-        "/mauritius/mu-vat"
+        "/fr/mauritius/mu-vat",
+        "/mauritius/mu-vat",
+        "/sw/mauritius/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-mw-source",
-      "sourceName": "mra.mw",
+      "sourceName": "MRA-hosted Value Added Tax Amendment No. 2 Act 37 of 2025",
       "sourceType": "official",
       "countryCodes": [
         "MW"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Malawi VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-MRA-(mra+sha256.794820c628e5.",
+      "notes": "Malawi VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Value-Added-Tax-Amendment-No.-2-Act-37-of-2025,-+sha256.230873ebdacf.",
       "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://www.mra.mw",
+      "sourceUrl": "https://www.mra.mw/admin/storage/download_files/1767960417_Value%20Adde%20Tax%20%28Amendment%29%20%28NO.%202%29%20ACT.pdf",
       "toolIds": [
+        "malawi-kikokotoo-vat-sw",
+        "mw-tva-fr",
         "mw-vat"
       ],
       "routes": [
-        "/malawi/mw-vat"
+        "/assets/js/engines/mw-vat.js",
+        "/fr/malawi/mw-vat",
+        "/malawi/mw-vat",
+        "/sw/malawi/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-mz-source",
-      "sourceName": "minfin.gov.mz",
+      "sourceName": "Official Gazette summary for Law 10/2025",
       "sourceType": "official",
       "countryCodes": [
         "MZ"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-23",
+      "lastReviewedAt": "2026-07-23",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Mozambique VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-AT-(at+sha256.bb0b1563ef0a.",
+      "notes": "Mozambique VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Law-22/2022-and-Law-10/2025,-reviewed-2026-07-23+sha256.8bcfdbb00f62.",
       "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://minfin.gov.mz",
+      "sourceUrl": "https://www.inm.gov.mz/pt-br/content/suplemento-n%C2%BA-1-de-291225-pag-2180-1-20-br-n%C2%BA-248-boletim-da-rep%C3%BAblica-i-serie",
       "toolIds": [
+        "mozambique-kikokotoo-vat-sw",
+        "mz-tva-fr",
         "mz-vat"
       ],
       "routes": [
-        "/mozambique/mz-vat"
+        "/assets/js/engines/mz-vat.js",
+        "/fr/mozambique/mz-vat",
+        "/mozambique/mz-vat",
+        "/sw/mozambique/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-na-source",
-      "sourceName": "namra.org.na",
+      "sourceName": "NamRA consolidated Value-Added Tax Act 10 of 2000",
       "sourceType": "official",
       "countryCodes": [
         "NA"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-23",
+      "lastReviewedAt": "2026-07-23",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Namibia VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-NamRA-(namra+sha256.551ff4fc8b18.",
+      "notes": "Namibia VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: current; version: VAT-Act-10-2000-through-Act-5-2024+sha256.c2403154474a.",
       "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://www.namra.org.na",
+      "sourceUrl": "https://www.namra.org.na/documents/cms/uploaded/valueadded-tax-act-10-of-2000-0d8c7ed7fc.pdf",
+      "effectiveFrom": "2024-10-01",
       "toolIds": [
-        "na-vat"
+        "na-tva-fr",
+        "na-vat",
+        "namibia-kikokotoo-vat-sw"
       ],
       "routes": [
-        "/namibia/na-vat"
+        "/assets/js/engines/na-vat.js",
+        "/fr/namibia/na-vat",
+        "/namibia/na-vat",
+        "/sw/namibia/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-ne-source",
-      "sourceName": "Direction generale des impots - Niger",
+      "sourceName": "DGI Niger Code general des impots 2025",
       "sourceType": "official",
       "countryCodes": [
         "NE"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-23",
+      "lastReviewedAt": "2026-07-23",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Niger VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-DGI-(dgi+sha256.38d05bddfebd.",
+      "notes": "Niger VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: current; version: Niger-CGI-2025-Art-226-and-LF-2026-Art-322+sha256.3aa36e3a50f6.",
       "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://www.impots.gouv.ne/",
+      "sourceUrl": "https://www.impots.gouv.ne/media/telech/LIVRE%201%20ET%202%20ENTIER%20CGI%202025.pdf",
+      "effectiveFrom": "2026-01-01",
       "toolIds": [
-        "ne-vat"
+        "ne-tva-fr",
+        "ne-vat",
+        "niger-kikokotoo-vat-sw"
       ],
       "routes": [
-        "/niger/ne-vat"
+        "/assets/js/engines/ne-vat.js",
+        "/fr/niger/calculateur-tva",
+        "/niger/ne-vat",
+        "/sw/niger/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-ng-source",
-      "sourceName": "FIRS",
+      "sourceName": "Nigeria Tax Act 2025",
       "sourceType": "official",
       "countryCodes": [
         "NG"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-03-01",
-      "lastReviewedAt": "2026-03-01",
-      "freshnessStatus": "acceptable",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Nigeria VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-March-2026-·-Source:-Federal-Inla+sha256.54309cae8794.",
+      "notes": "Nigeria VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Nigeria-Tax-Act-2025-sections-148,-186-and-187;-+sha256.1c8b25f103e0.",
       "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://www.firs.gov.ng/",
+      "sourceUrl": "https://nass.gov.ng/documents/download/11249",
       "toolIds": [
-        "ng-vat"
+        "ng-tva-fr",
+        "ng-vat",
+        "nigeria-kikokotoo-vat-sw"
       ],
       "routes": [
-        "/nigeria/ng-vat"
+        "/fr/nigeria/ng-vat",
+        "/nigeria/ng-vat",
+        "/sw/nigeria/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-rw-source",
-      "sourceName": "rra.gov.rw",
+      "sourceName": "Rwanda VAT Law 049/2023",
       "sourceType": "official",
       "countryCodes": [
         "RW"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-03-01",
-      "lastReviewedAt": "2026-03-01",
-      "freshnessStatus": "acceptable",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Rwanda VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-March-2026-·-Source:-Rwanda-Reven+sha256.d14ab4f26d2c.",
-      "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://rra.gov.rw",
+      "notes": "Rwanda VAT uses the Article 4 standard rate. Article 7 zero-rating and Article 8 exemptions are confirmation-only after Law 009/2025. Registration screening uses strict above-threshold tests for previous-fiscal-year and preceding-quarter turnover. Formula status: review-required; version: VAT-Law-049/2023-Articles-4,-7-and-8-as-amended-+sha256.804ea8d80fcc.",
+      "displayDisclaimer": "Rwanda VAT planning estimate only. Confirm classification, registration, input tax, withholding, invoicing, filing and remittance with RRA or a qualified tax professional.",
+      "sourceUrl": "https://www.rlrc.gov.rw/fileadmin/user_upload/RLRC/Laws_of_Rwanda_v2/Domestic_laws/Laws_in_force/8._Taxation/8.2._Value_Added_Taxes/8.2.1._Value_Added_Tax__Law_n___49_of_2023.pdf",
       "toolIds": [
-        "rw-vat"
+        "rw-tva-fr",
+        "rw-vat",
+        "rwanda-kikokotoo-vat-sw"
       ],
       "routes": [
-        "/rwanda/rw-vat"
+        "/fr/rwanda/rw-vat",
+        "/rwanda/rw-vat",
+        "/sw/rwanda/kikokotoo-vat",
+        "/widgets/iframe/financial-rwanda-vat"
       ]
     },
     {
       "id": "vat-sc-source",
-      "sourceName": "src.gov.sc",
+      "sourceName": "SRC VAT legislation hub",
       "sourceType": "official",
       "countryCodes": [
         "SC"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-23",
+      "lastReviewedAt": "2026-07-23",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Seychelles VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-SRC-(src+sha256.5a63e57884b4.",
+      "notes": "Seychelles VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: reviewed; version: seychelles-vat-schedules-2025-v1+sha256.810929a35f01.",
       "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://src.gov.sc",
+      "sourceUrl": "https://src.gov.sc/legislation/",
       "toolIds": [
-        "sc-vat"
+        "sc-tva-fr",
+        "sc-vat",
+        "seychelles-kikokotoo-vat-sw"
       ],
       "routes": [
-        "/seychelles/sc-vat"
+        "/assets/js/engines/sc-vat.js",
+        "/fr/seychelles/sc-vat",
+        "/seychelles/sc-vat",
+        "/sw/seychelles/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-sd-source",
-      "sourceName": "financialministry.gov.sd",
+      "sourceName": "Sudan Tax Authority clarification of 28 March 2026",
       "sourceType": "official",
       "countryCodes": [
         "SD"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-23",
+      "lastReviewedAt": "2026-07-23",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Sudan VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-SRTD-(financialmin+sha256.a5d2865e7091.",
+      "notes": "Sudan VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: current-official-clarification; version: sudan-vat-standard-17-2026-03-28+sha256.b2783aa4d380.",
       "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://financialministry.gov.sd",
+      "sourceUrl": "https://tax.gov.sd/en/newsen/",
+      "effectiveFrom": "2026-03-28",
       "toolIds": [
-        "sd-vat"
+        "sd-tva-fr",
+        "sd-vat",
+        "sudan-kikokotoo-vat-sw"
       ],
       "routes": [
-        "/sudan/sd-vat"
+        "/assets/js/engines/sd-vat.js",
+        "/fr/sudan/sd-vat",
+        "/sudan/sd-vat",
+        "/sw/sudan/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-sl-source",
-      "sourceName": "nra.gov.sl",
+      "sourceName": "NRA Goods and Services Tax",
       "sourceType": "official",
       "countryCodes": [
         "SL"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-23",
+      "lastReviewedAt": "2026-07-23",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Sierra Leone VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-NRA-(nra+sha256.e3a859104a88.",
+      "notes": "Sierra Leone VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: sierra-leone-gst-schedules-registration-v1.",
       "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://nra.gov.sl",
+      "sourceUrl": "https://nra.gov.sl/dtd/1",
       "toolIds": [
+        "sierra-leone-kikokotoo-vat-sw",
+        "sl-tva-fr",
         "sl-vat"
       ],
       "routes": [
-        "/sierra-leone/sl-vat"
+        "/fr/sierra-leone/sl-vat",
+        "/sierra-leone/sl-vat",
+        "/sw/sierra-leone/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-sn-source",
-      "sourceName": "impotsetdomaines.gouv.sn",
+      "sourceName": "DGID laws and regulations hub",
       "sourceType": "official",
       "countryCodes": [
         "SN"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-23",
+      "lastReviewedAt": "2026-07-23",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Senegal VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-DGID-(impotsetdoma+sha256.3d7cbf59c631.",
+      "notes": "Senegal VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: reviewed; version: senegal-cgi-article-369-evidence-gated-v1+sha256.1f8a1d5a7b41.",
       "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://impotsetdomaines.gouv.sn",
+      "sourceUrl": "https://www.dgid.sn/loi-et-reglement/",
       "toolIds": [
+        "senegal-kikokotoo-vat-sw",
+        "sn-tva-fr",
         "sn-vat"
       ],
       "routes": [
-        "/senegal/sn-vat"
+        "/assets/js/engines/sn-vat.js",
+        "/fr/senegal/calculateur-tva",
+        "/fr/senegal/sn-vat",
+        "/senegal/sn-vat",
+        "/sw/senegal/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-so-source",
-      "sourceName": "financialministry.gov.sd",
+      "sourceName": "Federal MoF FY2026 Budget Policy Framework",
       "sourceType": "official",
       "countryCodes": [
         "SO"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-23",
+      "lastReviewedAt": "2026-07-23",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Somalia VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-SRTD-(financialmin+sha256.8becd03d45ed.",
-      "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://financialministry.gov.sd",
+      "notes": "Fail-closed federal evidence review: no current nationwide VAT rate is verified. Named sector sales-tax evidence remains separate from the dated turnover-tax publication; no transaction rate or liability is inferred. Formula status: fail-closed-current-review; version: somalia-federal-consumption-tax-status-v1.",
+      "displayDisclaimer": "Evidence-status reference only. Confirm the current written rule, assessment and invoice requirements with the competent authority for the exact sector and jurisdiction.",
+      "sourceUrl": "https://mof.gov.so/publications/fiscal-year-2026-budget-policy-framework-paper",
+      "effectiveFrom": "2026-01-01",
+      "toolIds": [
+        "so-tva-fr",
+        "so-vat",
+        "somalia-kikokotoo-vat-sw"
+      ],
       "routes": [
-        "/somalia/so-vat"
+        "/fr/somalia/so-vat",
+        "/somalia/so-vat",
+        "/sw/somalia/kikokotoo-vat"
       ]
     },
     {
@@ -4775,8 +6140,8 @@
         "SS"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
       "lastCheckedAt": "2026-01-01",
       "lastReviewedAt": "2026-01-01",
@@ -4786,86 +6151,103 @@
       "notes": "South Sudan VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-SRTD-(financialmin+sha256.042e53108499.",
       "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
       "sourceUrl": "https://nra.gov.ss",
+      "toolIds": [
+        "ss-tva-fr"
+      ],
       "routes": [
+        "/fr/south-sudan/ss-vat",
         "/south-sudan/ss-vat"
       ]
     },
     {
       "id": "vat-st-source",
-      "sourceName": "mf.gov.st",
+      "sourceName": "National Assembly 2023 CIVA amendment record",
       "sourceType": "official",
       "countryCodes": [
         "ST"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-23",
+      "lastReviewedAt": "2026-07-23",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "São Tomé and Príncipe VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-DNRE-(mf+sha256.4e6a2f09f7f4.",
+      "notes": "São Tomé and Príncipe VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: reviewed; version: st-civa-2023-evidence-gated-v1+sha256.575afc5da062.",
       "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://mf.gov.st",
+      "sourceUrl": "https://www2.camara.leg.br/saotomeeprincipe/diarios-da-an/xii-legislatura-8-11-22-a-8-11-26/i-serie/2.a-sessao/DAN04-IS.pdf/at_download/file",
+      "effectiveFrom": "2023-06-01",
       "toolIds": [
+        "sao-tome-kikokotoo-vat-sw",
         "st-vat"
       ],
       "routes": [
-        "/sao-tome/st-vat"
+        "/assets/js/engines/st-vat.js",
+        "/fr/sao-tome/st-vat",
+        "/sao-tome/st-vat",
+        "/sw/sao-tome/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-sz-source",
-      "sourceName": "sra.org.sz",
+      "sourceName": "ERS Eswatini VAT overview",
       "sourceType": "official",
       "countryCodes": [
         "SZ"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Eswatini VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-SRA-(sra+sha256.0f61d1acf24b.",
-      "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://sra.org.sz",
+      "notes": "Eswatini uses the ERS-published 15% standard VAT rate. The 0% path requires an exact current Second Schedule match and retained transaction evidence. Exemptions, registration, withholding, filing and custom rates are not inferred. Formula status: reviewed; version: VAT-Act-2011-section-24;-2022-amendment-and-sche+sha256.7b407898719a.",
+      "displayDisclaimer": "Eswatini VAT planning estimate only. Confirm classification, evidence, registration, invoicing, filing and payment with ERS or a qualified professional.",
+      "sourceUrl": "https://www.ers.org.sz/VAT/Eswatini",
       "toolIds": [
+        "eswatini-kikokotoo-vat-sw",
+        "sz-tva-fr",
         "sz-vat"
       ],
       "routes": [
-        "/eswatini/sz-vat"
+        "/eswatini/sz-vat",
+        "/fr/eswatini/sz-vat",
+        "/sw/eswatini/kikokotoo-vat"
       ]
     },
     {
       "id": "vat-td-source",
-      "sourceName": "Direction generale des impots - Chad",
+      "sourceName": "2024 Finance Law application circular - definitive VAT invoice rates",
       "sourceType": "official",
       "countryCodes": [
         "TD"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-01-01",
-      "lastReviewedAt": "2026-01-01",
-      "freshnessStatus": "stale",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Chad VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-2026-·-Source:-DGI-(finances+sha256.71318b30c34d.",
-      "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://www.dgi.td/docs/",
+      "notes": "Chad invoices use effective TVA rates of 19.25% and 9.9% after applying 10% provincial and communal centimes to the 17.5% and 9% bases. The 9.9% and 0% paths require exact Article 238 evidence. The annual XAF 50 million screen and confirmed-IGL 2026 single-operation strict greater-than override remain separate; no generic exemption or withholding percentage is inferred. Formula status: reviewed; version: 2024-application-circular-paragraphs-31-36;-Chad+sha256.b281b8d06ed1.",
+      "displayDisclaimer": "Chad TVA planning estimate only. Confirm Article 238 classification, Article 230 exemptions, regime and IGL status, invoicing, statutory rounding, filing and remittance with DGI or a qualified professional.",
+      "sourceUrl": "https://www.finances.gouv.td/index.php/le-ministere/le-ministre/item/download/404_2503d5c174528169afd3a9cd827c3cb0",
       "toolIds": [
+        "chad-kikokotoo-vat-sw",
+        "td-tva-fr",
         "td-vat"
       ],
       "routes": [
-        "/chad/td-vat"
+        "/chad/td-vat",
+        "/fr/tchad/calculateur-tva",
+        "/sw/chad/kikokotoo-vat"
       ]
     },
     {
@@ -4876,8 +6258,8 @@
         "TG"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
       "lastCheckedAt": "2026-01-01",
       "lastReviewedAt": "2026-01-01",
@@ -4891,6 +6273,7 @@
         "tg-vat"
       ],
       "routes": [
+        "/fr/togo/tg-vat",
         "/togo/tg-vat"
       ]
     },
@@ -4902,8 +6285,8 @@
         "TN"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
       "lastCheckedAt": "2026-01-01",
       "lastReviewedAt": "2026-01-01",
@@ -4917,85 +6300,101 @@
         "tn-vat"
       ],
       "routes": [
+        "/fr/tunisia/tn-vat",
         "/tunisia/tn-vat"
       ]
     },
     {
       "id": "vat-tz-source",
-      "sourceName": "TRA PAYE calculator Official TRA calculator for monthly income tax payable.",
+      "sourceName": "Tanzania Value Added Tax Act, Cap 148 R.E. 2019",
       "sourceType": "official",
       "countryCodes": [
         "TZ"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-03-01",
-      "lastReviewedAt": "2026-03-01",
-      "freshnessStatus": "acceptable",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Tanzania VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-March-2026-·-Source:-Tanzania-Rev+sha256.34bf5680e597.",
-      "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://paymentregistration.tra.go.tz/payecalculator/paye.htm",
+      "notes": "Tanzania Mainland VAT uses 18% by default. The Finance Act 2025 16% path requires every statutory condition and current Commissioner-General eligibility. Appointed-agent withholding retains three percentage points from an 18% invoice. Registration screening covers prospective/prior 12-month TZS 200 million and prior-six-month TZS 100 million tests. Formula status: review-required; version: VAT-Act-Cap-148-R.E.-2019-and-Finance-Act-2025-r+sha256.59f50dcf5a03.",
+      "displayDisclaimer": "Tanzania VAT planning estimate only. Confirm the current public-notice eligibility, classification, registration, invoicing, filing, remittance and Zanzibar treatment with TRA or a qualified tax professional.",
+      "sourceUrl": "https://www.mof.go.tz/uploads/documents/en-1676548670-THE%20VALUE%20ADDED%20TAX%20ACT%2C%20CAP%20148%20R.E.%202019.pdf",
       "toolIds": [
+        "tanzania-kikokotoo-vat-sw",
+        "tz-tva-fr",
         "tz-vat"
       ],
       "routes": [
-        "/tanzania/tz-vat"
+        "/fr/tanzania/tz-vat",
+        "/sw/tanzania/kikokotoo-vat",
+        "/tanzania/tz-vat",
+        "/widgets/iframe/financial-tanzania-vat"
       ]
     },
     {
       "id": "vat-ug-source",
-      "sourceName": "ura.go.ug",
+      "sourceName": "URA current VAT guidance",
       "sourceType": "official",
       "countryCodes": [
         "UG"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-03-01",
-      "lastReviewedAt": "2026-03-01",
-      "freshnessStatus": "acceptable",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "Uganda VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-March-2026---Source:-Uganda-Reven+sha256.35cb2bf67e09.",
-      "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://ura.go.ug",
+      "notes": "Uganda VAT uses the section 4 standard rate and strict past- or expected-three-month registration tests above UGX 37.5 million. Second Schedule exemptions and Third Schedule zero-rating are confirmation-only. Section 5 designated VAT withholding is 6% of taxable value, not a VAT rate, and is not calculated until designation, supplier or supply eligibility, and current exemption status are confirmed. Formula status: review-required; version: Uganda-VAT-Act-sections-4-and-5,-Second-and-Thir+sha256.b4a64e1668de.",
+      "displayDisclaimer": "Uganda VAT planning estimate only. Confirm classification, registration, VAT-withholding designation and exemption status, input tax, invoicing, filing and remittance with URA or a qualified tax professional.",
+      "sourceUrl": "https://ura.go.ug/en/value-added-tax-vat/",
       "toolIds": [
-        "ug-vat"
+        "ug-tva-fr",
+        "ug-vat",
+        "uganda-kikokotoo-vat-sw"
       ],
       "routes": [
-        "/uganda/ug-vat"
+        "/fr/uganda/ug-vat",
+        "/sw/uganda/kikokotoo-vat",
+        "/uganda/ug-vat",
+        "/widgets/iframe/financial-uganda-vat"
       ]
     },
     {
       "id": "vat-za-source",
-      "sourceName": "SARS (sars.gov.za)",
+      "sourceName": "SARS current VAT rate and registration thresholds",
       "sourceType": "official",
       "countryCodes": [
         "ZA"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
-      "lastCheckedAt": "2026-03-01",
-      "lastReviewedAt": "2026-03-01",
-      "freshnessStatus": "acceptable",
+      "lastCheckedAt": "2026-07-22",
+      "lastReviewedAt": "2026-07-22",
+      "freshnessStatus": "fresh",
       "confidence": "reviewed",
       "reviewCadenceDays": 90,
-      "notes": "South Africa VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: review-required; version: Last-verified:-March-2026-·-Source:-SARS-(South-+sha256.5b6aefb6fe95.",
+      "notes": "South Africa VAT route source audit. Exemptions and filing treatment may require separate review. Formula status: declared; version: Value-Added-Tax-Act-89-of-1991,-sections-7,-11-a+sha256.cffe82751e40.",
       "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
-      "sourceUrl": "https://www.sars.gov.za/",
+      "sourceUrl": "https://www.sars.gov.za/tax-rates/other-taxes/",
+      "effectiveFrom": "2026-04-01",
       "toolIds": [
+        "south-africa-kikokotoo-vat-sw",
+        "za-tva-fr",
         "za-vat"
       ],
       "routes": [
-        "/south-africa/za-vat"
+        "/fr/south-africa/za-vat",
+        "/south-africa/za-vat",
+        "/sw/south-africa/kikokotoo-vat"
       ]
     },
     {
@@ -5006,8 +6405,8 @@
         "ZM"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
       "lastCheckedAt": "2026-01-01",
       "lastReviewedAt": "2026-01-01",
@@ -5018,9 +6417,11 @@
       "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
       "sourceUrl": "https://www.zra.org.zm",
       "toolIds": [
+        "zm-tva-fr",
         "zm-vat"
       ],
       "routes": [
+        "/fr/zambia/zm-vat",
         "/zambia/zm-vat"
       ]
     },
@@ -5032,8 +6433,8 @@
         "ZW"
       ],
       "appliesTo": [
-        "tax",
-        "business"
+        "business",
+        "tax"
       ],
       "lastCheckedAt": "2026-01-01",
       "lastReviewedAt": "2026-01-01",
@@ -5044,9 +6445,11 @@
       "displayDisclaimer": "VAT results are planning estimates. Confirm current rates, exemptions, registration, invoicing, and filing treatment with the relevant authority or a qualified tax professional.",
       "sourceUrl": "https://www.zimra.co.zw",
       "toolIds": [
+        "zw-tva-fr",
         "zw-vat"
       ],
       "routes": [
+        "/fr/zimbabwe/zw-vat",
         "/zimbabwe/zw-vat"
       ]
     }

@@ -29,9 +29,8 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=996960fa" defer></script>
 <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
     --acc: #009DD1;
@@ -331,10 +330,11 @@
   <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
   <script src="/assets/js/components/share-button.js?v=f8342961"></script>
 <meta property="og:locale:alternate" content="fr_FR">
-<meta property="article:modified_time" content="2026-03-28">
+<meta property="article:modified_time" content="2026-07-22">
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
 <link rel="stylesheet" href="/assets/css/country-tax-page-ui-refresh.css?v=fcc20688">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<link rel="stylesheet" href="/assets/css/botswana-vat-vip.css?v=e8993039">
 <script src="/assets/js/lib/source-confidence.js?v=e7c3ebe4" defer></script>
 <link rel="canonical" href="https://afrotools.com/botswana/bw-vat">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/botswana/bw-vat">
@@ -342,7 +342,7 @@
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/botswana/kikokotoo-vat/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/botswana/bw-vat">
 </head>
-<body class="country-tax-page-ui-refresh top-level-page-ui-refresh">
+<body class="country-tax-page-ui-refresh top-level-page-ui-refresh bw-vat-vip">
 <afro-navbar active="tools"></afro-navbar>
 
 <section class="tool-hero">
@@ -365,6 +365,33 @@
     <p><strong>2026 Rates:</strong> Standard VAT rate is <strong>14%</strong>.  Zero-rated: Export goods, Agricultural supplies. Exempt: Financial services, Medical services, Educational services. Registration threshold: BWP 1M/year. Tax authority: BURS.</p>
   </div>
 </div>
+
+<main class="bwv-shell" id="main-content">
+  <header class="bwv-intro">
+    <div><span class="bwv-kicker">BURS-reviewed planning tool</span><h2>Price, invoice and registration checks in one calm workspace</h2><p>The standard calculation uses 14%. Zero-rating and exemption are confirmation-only choices: the tool will not infer a legal treatment from a product name.</p></div>
+    <span class="bwv-review">Reviewed 22 July 2026</span>
+  </header>
+  <div class="bwv-grid">
+    <section class="bwv-card" aria-labelledby="bwv-calc-title">
+      <h3 id="bwv-calc-title">VAT amount</h3><p>Add VAT to a net price or extract it from a VAT-inclusive total. All arithmetic runs in this browser.</p>
+      <form id="bwvForm" novalidate>
+        <div class="bwv-actions" aria-label="Calculation direction"><button class="bwv-button" type="button" data-bwv-mode="add" aria-pressed="true">Add VAT</button><button class="bwv-button" type="button" data-bwv-mode="extract" aria-pressed="false">Extract VAT</button></div>
+        <label class="bwv-field" for="bwvAmount"><span>Amount <small>Botswana pula (BWP)</small></span><input id="bwvAmount" type="number" min="0" step="0.01" inputmode="decimal" value="10000" required></label>
+        <div class="bwv-actions" aria-label="VAT treatment"><button class="bwv-button" type="button" data-bwv-rate="standard" aria-pressed="true">Standard 14%</button><button class="bwv-button" type="button" data-bwv-rate="confirmed-zero" aria-pressed="false">Confirmed zero-rate 0%</button></div>
+        <button class="bwv-button primary" type="submit">Calculate Botswana VAT</button><p class="bwv-error" id="bwvError" aria-live="polite"></p>
+      </form>
+      <section class="bwv-result" id="bwvResult" aria-live="polite"><div class="bwv-result-label" id="bwvResultLabel">Total including VAT</div><div class="bwv-result-main" id="bwvMain">BWP 0.00</div><dl><dt>Before VAT</dt><dd id="bwvNet">BWP 0.00</dd><dt>VAT</dt><dd id="bwvVat">BWP 0.00</dd><dt>Including VAT</dt><dd id="bwvGross">BWP 0.00</dd><dt>Rate used</dt><dd id="bwvRate">14%</dd></dl><p class="bwv-note" id="bwvResultNote"></p></section>
+      <div class="bwv-tools"><button class="bwv-button" id="bwvPdf" type="button">Download local PDF</button><button class="bwv-button" id="bwvShare" type="button">Share tool link</button></div>
+    </section>
+    <div class="bwv-stack">
+      <section class="bwv-card" aria-labelledby="bwv-invoice-title"><h3 id="bwv-invoice-title">One-line invoice check</h3><p>Quantity × unit price, with the selected VAT treatment.</p><form id="bwvInvoiceForm"><div class="bwv-inline"><label class="bwv-field" for="bwvDescription"><span>Description</span><input id="bwvDescription" value="Consulting service"></label><label class="bwv-field" for="bwvQuantity"><span>Quantity</span><input id="bwvQuantity" type="number" min="0" step="0.01" value="2"></label><label class="bwv-field" for="bwvUnitPrice"><span>Unit price</span><input id="bwvUnitPrice" type="number" min="0" step="0.01" value="5000"></label></div><button class="bwv-button" type="submit">Check invoice</button><p class="bwv-error" id="bwvInvoiceError" aria-live="polite"></p></form><div class="bwv-mini-result" id="bwvInvoiceResult"><span>Net<strong id="bwvInvoiceNet"></strong></span><span>VAT<strong id="bwvInvoiceVat"></strong></span><span>Total<strong id="bwvInvoiceGross"></strong></span></div></section>
+      <section class="bwv-card" aria-labelledby="bwv-reg-title"><h3 id="bwv-reg-title">Registration screen</h3><p>BURS currently states compulsory registration above BWP 1 million; BWP 500,000–1 million may apply voluntarily, subject to approval.</p><form id="bwvRegistrationForm"><label class="bwv-field" for="bwvTurnover"><span>Taxable supplies over 12 months <small>BWP</small></span><input id="bwvTurnover" type="number" min="0" step="0.01" value="1200000"></label><button class="bwv-button" type="submit">Screen turnover</button><p class="bwv-error" id="bwvRegistrationError" aria-live="polite"></p></form><div class="bwv-treatment" id="bwvRegistrationResult">Enter turnover to screen the published bands.</div></section>
+      <section class="bwv-card" aria-labelledby="bwv-class-title"><h3 id="bwv-class-title">Treatment boundary</h3><p>Do not confuse a zero-rated supply with an exempt supply: input-tax consequences can differ.</p><label class="bwv-field" for="bwvClassification"><span>Known treatment</span><select id="bwvClassification"><option value="review">Not yet confirmed</option><option value="standard">Standard-rated</option><option value="confirmed-zero">Confirmed zero-rated</option><option value="confirmed-exempt">Confirmed exempt</option></select></label><div class="bwv-treatment review" id="bwvClassificationResult">Confirm the current statutory schedule with BURS before invoicing or filing.</div></section>
+    </div>
+  </div>
+  <section class="bwv-card" data-tool-verification-panel data-tool-id="bw-vat" aria-labelledby="bwv-source-title" style="margin-top:18px"><div class="afro-source-meta" data-source-meta-id="vat-bw-source" data-source-meta-compact="true"></div><h3 id="bwv-source-title">Official sources, freshness and limits</h3><p class="bwv-freshness">The 14% rate and BWP 1 million / BWP 500,000 registration bands were reviewed on 22 July 2026. The 2025 VAT Bill and 2026 digital-services announcements are linked as change context; this calculator does not claim the Bill’s uncommenced or transitional provisions as settled filing rules.</p><ul class="bwv-source-list"><li><a href="https://www.burs.org.bw/index.php/brochure?download=815%3Aburs-vat-brochures" target="_blank" rel="noopener">BURS VAT brochure</a> — standard rate and registration bands.</li><li><a href="https://www.burs.org.bw/index.php/tax/tax-amendment-bills" target="_blank" rel="noopener">BURS VAT Amendment Act notice</a> — BWP 1 million threshold.</li><li><a href="https://www.botswanaspeaks.gov.bw/media/BILLS/2026%20BILLS/Bill39%2019_12_2025%20VALUE%20ADDED%20TAX.pdf" target="_blank" rel="noopener">Botswana Value Added Tax Bill 2025</a> — 14% and proposed modernisation context.</li><li><a href="https://dailynews.gov.bw/news-detail/91645" target="_blank" rel="noopener">Botswana Government digital VAT update</a> — 2026 remote-services transition.</li></ul><p>Planning estimate only. Confirm classification, registration, digital-services treatment, input tax, invoicing, filing and payment with BURS or a qualified Botswana tax adviser.</p><a class="tool-verification-report" href="/contact/?topic=calculation-error&amp;tool=bw-vat">Report calculation error</a></section>
+  <p class="bwv-status" id="bwvStatus" aria-live="polite"></p>
+</main>
 
 <div class="tool-main">
   <div class="tool-main-inner">
@@ -693,13 +720,13 @@
 <section style="max-width:900px;margin:32px auto;padding:0 20px;">
   <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">VAT in Botswana: Key Facts</h2>
   <div style="font-size:0.88rem;color:#475569;line-height:1.7;">
-    <p>Botswana introduced its Value Added Tax (VAT) system on <strong>1 July 2002</strong>, replacing the previous sales tax. The standard VAT rate was <strong>14%</strong> from introduction until <strong>1 April 2025</strong>, when it increased to <strong>15%</strong> as part of the government's revenue mobilization strategy. This was the first VAT rate change since the tax's introduction. Botswana applies a <strong>zero rate (0%)</strong> to exports, certain basic food items including sorghum, maize meal, millet, and beans, as well as agricultural inputs and international transport services. <strong>Exempt supplies</strong> include financial services, residential rentals, public transport, medical and dental services, and educational services. The <strong>Botswana Unified Revenue Service (BURS)</strong> administers and enforces VAT. Businesses with annual taxable turnover exceeding <strong>BWP 1 million</strong> must register for VAT, while those with turnover between <strong>BWP 500,000 and BWP 1 million</strong> may register voluntarily. VAT returns are filed on a <strong>bimonthly basis</strong> (every two months), with payment due by the <strong>25th of the month</strong> following the end of the tax period. Botswana has implemented electronic filing through the BURS online portal to improve compliance and efficiency. Input VAT can be reclaimed on business purchases, subject to standard documentary requirements.</p>
+    <p>Botswana introduced Value Added Tax on <strong>1 July 2002</strong>. The current standard rate used by this calculator is <strong>14%</strong>, supported by BURS material and retained in Botswana's 2025 reform Bill. BURS states compulsory registration above <strong>BWP 1 million</strong> in taxable supplies over 12 months; businesses from <strong>BWP 500,000 through BWP 1 million</strong> may seek voluntary registration, subject to approval. Zero-rating, exemptions, filing frequency and newer remote-digital-services rules must be confirmed for the taxpayer and supply before filing.</p>
   </div>
   <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Common Questions About Botswana VAT</h3>
   <div class="landing-faq" style="display:flex;flex-direction:column;gap:8px;">
     <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
       <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">When did Botswana's VAT rate change to 15%?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Botswana increased its VAT rate from 14% to 15% on 1 April 2025. This was the first rate change since VAT was introduced in 2002. The increase was part of the government's efforts to broaden revenue sources and reduce dependence on diamond-related income.</p>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">The current standard rate used here is 14%. Botswana's 2025 VAT reform Bill also retained 14%; confirm any commencement notices and transaction-specific treatment with BURS before filing.</p>
     </details>
     <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
       <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">What food items are zero-rated for VAT in Botswana?</summary>
@@ -740,8 +767,6 @@
 
 <!-- TOOL_VERIFICATION_PANEL_START -->
 <section class="tool-verification-sec" id="sources-verification" data-tool-verification-panel data-tool-id="bw-vat">
-  <!-- AfroTools source confidence -->
-  <div class="container afro-source-meta" data-source-meta-id="vat-bw-source" data-source-meta-compact="true"></div>
   <div class="container">
     <div class="tool-verification-card">
       <div class="tool-verification-head">
@@ -752,15 +777,18 @@
         </div>
         <div class="tool-verification-status">
           <span class="tool-verification-badge">Last verified 2026-01-01</span>
-          <p class="tool-verification-note">Botswana - high risk - AfroTools source audit</p>
+          <p class="tool-verification-note">Botswana - high risk - AfroTools VIP source review</p>
         </div>
       </div>
       <div class="tool-verification-grid">
         <div class="tool-verification-block">
           <h3>Official source links</h3>
           <ul class="tool-verification-list">
+<li><a href="https://www.burs.org.bw/index.php/brochure?download=815%3Aburs-vat-brochures" target="_blank" rel="noopener">Brochure TVA de BURS</a></li>
+<li><a href="https://www.burs.org.bw/index.php/tax/tax-amendment-bills" target="_blank" rel="noopener">Avis BURS sur la loi modificative</a></li>
+<li><a href="https://www.botswanaspeaks.gov.bw/media/BILLS/2026%20BILLS/Bill39%2019_12_2025%20VALUE%20ADDED%20TAX.pdf" target="_blank" rel="noopener">Projet de loi TVA 2025</a></li>
+<li><a href="https://dailynews.gov.bw/news-detail/91645" target="_blank" rel="noopener">Mise à jour gouvernementale sur la TVA numérique</a></li>
 <li><a href="https://burs.org.bw" target="_blank" rel="noopener">burs.org.bw</a></li>
-<li><a href="https://www.burs.org.bw" target="_blank" rel="noopener">burs.org.bw</a></li>
           </ul>
         </div>
         <div class="tool-verification-block">
@@ -769,15 +797,16 @@
         </div>
         <div class="tool-verification-block">
           <h3>Calculation methodology</h3>
-          <p class="tool-verification-meta">The calculator splits the entered amount into net amount, VAT, and VAT-inclusive total using the displayed standard or custom VAT rate. Zero-rated and exempt categories are treated as decision guidance and must be confirmed against the linked authority material before filing.</p>
+          <p class="tool-verification-meta">The pure browser engine adds 14% to a net amount or extracts VAT from a tax-inclusive amount by dividing by 1.14. Invoice lines are rounded to two decimal places before aggregation. The registration screen uses BURS-published bands: compulsory above BWP 1 million over 12 months and voluntary from BWP 500,000 through BWP 1 million subject to approval. Zero-rating and exemption remain confirmation-only.</p>
         </div>
         <div class="tool-verification-block">
           <h3>Known limitations</h3>
           <ul class="tool-verification-list">
-<li>Informational estimate only. It is not professional tax, legal, payroll, or filing advice.</li>
-<li>Product classification, exemption, and zero-rating rules can require invoice-level review.</li>
-<li>Sector-specific, regional, treaty, relief, and special-regime rules may not be fully modeled.</li>
-<li>Confirm filing, registration, and remittance duties with the official authority or a qualified adviser before submission.</li>
+<li>Informational planning estimate only; it is not professional tax, legal or filing advice.</li>
+<li>Product classification, exemption and zero-rating require current schedule and invoice-level review.</li>
+<li>The 2025 reform Bill and 2026 remote-digital-services transition are change context; the calculator does not model uncommenced or transitional provisions as settled filing rules.</li>
+<li>The tool does not calculate VAT withholding because no current BURS authority was found for the generic presets previously shown.</li>
+<li>Confirm registration, invoicing, input tax, filing and payment with BURS or a qualified Botswana adviser.</li>
           </ul>
         </div>
         <div class="tool-verification-block">
@@ -788,6 +817,7 @@
         <div class="tool-verification-block">
           <h3>Change history</h3>
           <ul class="tool-verification-list">
+<li><strong>2026-07-22:</strong> Corrected the false 15% claim, removed unsupported VAT-withholding presets, added a pure 14% engine, registration screen, localized UI, local PDF and source-coupled change context.</li>
 <li><strong>2026-05-02:</strong> Trust and verification panel added with source links, methodology, limitations, and report-error CTA.</li>
           </ul>
         </div>
@@ -804,7 +834,7 @@
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/tools/vat-calculator/" data-related-tool data-id="vat-calc-pan-african" data-name="VAT Calculator (Pan-African)" data-category="ecommerce" data-icon="VC" data-desc="All 50+ African countries. Add VAT, extract VAT, compare countries side-by-side. 2025/26 rates.">VAT Calculator (Pan-African)</a></li><li><a href="/nigeria/ng-vat" data-related-tool data-id="ng-vat" data-name="Nigeria VAT Calculator" data-category="ecommerce" data-icon="NV" data-desc="NTA 2026 VAT: 7.5% standard, zero-rated, exempt categories. Reverse VAT included.">Nigeria VAT Calculator</a></li><li><a href="/south-africa/za-vat" data-related-tool data-id="za-vat" data-name="South Africa VAT Calculator" data-category="ecommerce" data-icon="SA" data-desc="SARS VAT 15%, zero-rated, exempt. Inclusive/exclusive. Vendor registration threshold.">South Africa VAT Calculator</a></li><li><a href="/kenya/ke-vat" data-related-tool data-id="ke-vat" data-name="Kenya VAT Calculator" data-category="ecommerce" data-icon="KV" data-desc="KRA VAT 16%, zero-rated, exempt. Reverse VAT and inclusive/exclusive toggle.">Kenya VAT Calculator</a></li><li><a href="/egypt/eg-vat" data-related-tool data-id="eg-vat" data-name="Egypt VAT Calculator" data-category="ecommerce" data-icon="EV" data-desc="ETA VAT 14%. Standard + reduced rates. Table tax.">Egypt VAT Calculator</a></li><li><a href="/ghana/gh-vat" data-related-tool data-id="gh-vat" data-name="Ghana VAT Calculator" data-category="ecommerce" data-icon="GV" data-desc="GRA VAT 15% + 2.5% NHIL + 2.5% GETFund. Standard effective charge and zero-rated supplies.">Ghana VAT Calculator</a></li></ul>
+<ul class="seo-links-list"><li><a href="/tools/vat-calculator/" data-related-tool data-id="vat-calc-pan-african" data-name="VAT Calculator (Pan-African)" data-category="ecommerce" data-icon="VC" data-desc="Custom-rate-first VAT planning, invoices, withholding scenarios, and rate comparisons, with authority-bound presets only">VAT Calculator (Pan-African)</a></li><li><a href="/nigeria/ng-vat" data-related-tool data-id="ng-vat" data-name="Nigeria VAT Calculator" data-category="ecommerce" data-icon="NV" data-desc="Add or extract Nigeria VAT at 7.5%, compare zero-rated and exempt treatment, build invoice estimates, and export a priva">Nigeria VAT Calculator</a></li><li><a href="/south-africa/za-vat" data-related-tool data-id="za-vat" data-name="South Africa VAT Calculator" data-category="ecommerce" data-icon="SA" data-desc="Add or extract VAT at the current 15% rate, keep confirmed zero-rated and exempt treatment distinct, screen 2026 registr">South Africa VAT Calculator</a></li><li><a href="/kenya/ke-vat" data-related-tool data-id="ke-vat" data-name="Kenya VAT Calculator" data-category="ecommerce" data-icon="KV" data-desc="Add or extract Kenya VAT at 16%, keep confirmed zero-rated and exempt treatment distinct, build invoice estimates, and e">Kenya VAT Calculator</a></li><li><a href="/egypt/eg-vat" data-related-tool data-id="eg-vat" data-name="Egypt VAT Calculator" data-category="ecommerce" data-icon="EV" data-desc="Add or extract Egypt&#39;s standard 14% VAT, screen the general registration threshold, and test clearly labelled non-statut">Egypt VAT Calculator</a></li><li><a href="/ghana/gh-vat" data-related-tool data-id="gh-vat" data-name="Ghana VAT Calculator" data-category="ecommerce" data-icon="GV" data-desc="Plan Ghana invoices under the 2026 GRA structure: 15% VAT, 2.5% NHIL and 2.5% GETFund on the same base.">Ghana VAT Calculator</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
@@ -1219,6 +1249,7 @@ function renderChart(type) {
 })();
 </script>
 <script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
-<script src="/assets/js/components/related-tools.min.js?v=e25622fc" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=f3f910a8" defer></script>
+<script src="/assets/js/engines/bw-vat.js?v=ce12389b"></script><script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c"></script><script src="/assets/js/pages/botswana-vat-vip.js?v=6b9f7907"></script>
 </body>
 </html>

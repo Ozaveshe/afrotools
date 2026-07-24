@@ -425,15 +425,6 @@ repair('sw/zana/kikokotoo-vat/index.html', [
   ["function calcVat(){var amt=parseFloat(document.getElementById('vatAmount').value)||0;if(!amt){alert('Tafadhali ingiza kiasi.');return;}var c=currentCountry||VAT_DB.KE;", "function calcVat(){var amountInput=document.getElementById('vatAmount'),status=document.getElementById('vatStatus'),amt=parseFloat(amountInput.value)||0;if(!amt){status.textContent='Tafadhali ingiza kiasi kikubwa kuliko sifuri.';amountInput.focus();return;}status.textContent='';var c=currentCountry||VAT_DB.KE;"]
 ]);
 
-repair('sw/zana/kibadilishaji-sarafu/index.html', [
-  ['<p>Inapopatikana, zana hutumia /data/forex/latest.json kama chanzo cha kiwango cha ubadilishaji. Ikishindikana, hutumia kiwango cha akiba cha makadirio kama ukurasa wa Kiingereza.</p>', '<p>Inapopatikana, zana hutumia <code>/data/forex/latest.json</code> kama snapshot yenye chanzo na muda. Ikishindikana au ikiwa rekodi ni tupu, hutumia viwango vya akiba vya makadirio na kuonyesha hali hiyo wazi.</p><p id="fxDataStatus" role="status" aria-live="polite">Inapakia hali ya kiwango…</p><button id="fxRetry" type="button" hidden>Jaribu tena</button>'],
-  ["let fxRates=Object.assign({},FX_FALLBACK),fxStamp=null,fxSource='fallback ya makadirio';", "let fxRates=Object.assign({},FX_FALLBACK),fxStamp=null,fxSource='viwango vya akiba vya makadirio';"],
-  [/async function fetchFx\(\)\{try\{var res=await fetch\('\/data\/forex\/latest\.json',\{cache:'no-cache'\}\);if\(!res\.ok\)throw new Error\('HTTP '\+res\.status\);var data=await res\.json\(\);if\(data&&data\.rates\)\{fxRates=Object\.assign\(\{\},FX_FALLBACK,data\.rates\);fxStamp=data\.timestamp\|\|data\.updatedAt\|\|null;fxSource='snapshot ya AfroTools';\}\}catch\(e\)\{console\.warn\('FX data fallback',e\);\}renderPairs\(\);convertCurrency\(\);\}/, "async function fetchFx(){var status=document.getElementById('fxDataStatus'),retry=document.getElementById('fxRetry');status.textContent='Inapakia hali ya kiwango…';retry.hidden=true;try{var res=await fetch('/data/forex/latest.json',{cache:'no-cache'});if(!res.ok)throw new Error('HTTP '+res.status);var data=await res.json();if(!data||!data.rates||!Object.keys(data.rates).length)throw new Error('empty rates');fxRates=Object.assign({},FX_FALLBACK,data.rates);fxStamp=data.timestamp||data.updatedAt||null;fxSource='snapshot ya AfroTools';status.textContent='Snapshot imepatikana. Kagua chanzo na muda unaoonyeshwa kwenye matokeo.';}catch(e){fxRates=Object.assign({},FX_FALLBACK);fxStamp=null;fxSource='viwango vya akiba vya makadirio';status.textContent='Chanzo cha mtandao hakipatikani. Tunatumia viwango vya akiba vya makadirio; si viwango vya moja kwa moja.';retry.hidden=false;}renderPairs();convertCurrency();}"],
-  ["document.getElementById('fxUpdated').textContent=fxSource+(fxStamp?' - '+new Date(fxStamp).toLocaleString('en'):'');", "document.getElementById('fxUpdated').textContent=fxSource+(fxStamp?' - '+new Intl.DateTimeFormat('sw-KE',{dateStyle:'medium',timeStyle:'short'}).format(new Date(fxStamp)):'');"],
-  ["document.getElementById('fxRetry').addEventListener('click',fetchFx);document.getElementById('fxRetry').addEventListener('click',fetchFx);", "document.getElementById('fxRetry').addEventListener('click',fetchFx);"],
-  ['fillCurrencySelects();renderPairs();fetchFx();', "fillCurrencySelects();renderPairs();document.getElementById('fxRetry').addEventListener('click',fetchFx);fetchFx();"]
-]);
-
 output('sw/faragha/index.html', privacyPage());
 output('sw/masharti/index.html', termsPage());
 output('sw/msaada/index.html', helpPage());
@@ -508,8 +499,9 @@ for (const [rel, pattern] of prohibitedClaims) {
 const requiredPatterns = [
   ['sw/index.html', new RegExp(`data-registry-count="tools\\.locale\\.sw\\.published">${swTools}<`)],
   ['sw/zana-zote/index.html', new RegExp(`data-registry-count="tools\\.locale\\.sw\\.published">${swTools}<`)],
-  ['sw/zana/kibadilishaji-sarafu/index.html', /fxDataStatus/],
-  ['sw/zana/kibadilishaji-sarafu/index.html', /si viwango vya moja kwa moja/],
+  ['sw/zana/kibadilishaji-sarafu/index.html', /data-currency-locale-vip="sw"/],
+  ['sw/zana/kibadilishaji-sarafu/index.html', /currency-converter-locales-vip\.js/],
+  ['sw/zana/kibadilishaji-sarafu/index.html', /Snapshot husitishwa baada ya siku 7/],
   ['sw/auth/index.html', /Ukurasa unaofuata ni wa Kiingereza/],
   ['sw/dashboard/index.html', /Ukurasa unaofuata ni wa Kiingereza/],
   ['sw/vault/index.html', /Ukurasa unaofuata ni wa Kiingereza/]

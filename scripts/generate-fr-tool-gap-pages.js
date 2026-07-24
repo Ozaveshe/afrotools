@@ -7538,7 +7538,7 @@ const CURATED_PAGES = [
 ];
 
 const COVERAGE_WAVE = require("../data/localization/coverage-wave-2026-07.json");
-const WAVE_PAGES = COVERAGE_WAVE.french.map((page) => ({
+const WAVE_PAGES = COVERAGE_WAVE.french.filter((page) => page.native !== true).map((page) => ({
   enSlug: page.enSlug,
   frSlug: page.frSlug,
   title: `${page.name} | AfroTools`,
@@ -7605,6 +7605,9 @@ function escapeHtml(value) {
 }
 
 function htmlFor(page) {
+  if (page.enSlug === "route-fares") {
+    return require("./lib/route-fares-locale-page.js").render("fr");
+  }
   const enUrl = `${SITE}/tools/${page.enSlug}/`;
   const frUrl = `${SITE}/fr/tools/${page.frSlug}/`;
   const terms = JSON.stringify([...page.terms, ...COMMON_TERMS]);

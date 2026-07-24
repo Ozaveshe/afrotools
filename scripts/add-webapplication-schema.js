@@ -410,7 +410,12 @@ function processFile(file, stats) {
   let html = normalizeJsonLd(original, stats);
   let blocks = parseJsonLd(html);
 
-  if (!hasType(blocks, "WebApplication")) {
+  if (hasType(blocks, "CollectionPage") && hasType(blocks, "WebApplication")) {
+    html = removeStandaloneSchemaByType(html, "WebApplication", stats);
+    blocks = parseJsonLd(html);
+  }
+
+  if (!hasType(blocks, "WebApplication") && !hasType(blocks, "CollectionPage")) {
     const schema = webApplicationSchema(file, html);
     if (schema) {
       html = injectSchema(html, schema);

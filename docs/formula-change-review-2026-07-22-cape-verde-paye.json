@@ -1,0 +1,51 @@
+{
+  "reviewedBy": "Codex Day 3 release gate",
+  "reviewedAt": "2026-07-22",
+  "sourceUrl": "https://www.mf.gov.cv/documents/54571/227418/0E%2B2018_Principais%2BMedidas%2BFiscais.pdf/c18e0d23-28ee-4d81-e03f-bfd3f0168e54?download=true",
+  "reason": "Replace conflicting Cape Verde annual progressive-band implementations with the official DNRE Category A monthly gross-income formula, including the CVE 36,607 inclusive threshold, CVE 100 minimum positive withholding, ordinary escudo rounding, and current standard and domestic-service INPS contribution rates. The shared browser engine, server adapter, three public locales, widget, and standalone fallback now use the same reviewed contract.",
+  "formulaIds": [
+    "paye-browser-cv",
+    "paye-server-cv",
+    "route-cv-paye"
+  ],
+  "fixtureDeltas": [
+    {
+      "fixtureId": "paye-cv-defaults",
+      "previousExpected": {
+        "deductions.totalDeductions": 107275,
+        "result.netAnnual": 892725,
+        "result.netMonthly": 74394,
+        "tax.netTax": 22275
+      },
+      "nextExpected": {
+        "deductions.totalDeductions": 166296,
+        "result.netAnnual": 833704,
+        "result.netMonthly": 69475,
+        "tax.netTax": 81300
+      },
+      "reason": "At CVE 1,000,000 annual gross, the server adapter applies the official monthly gross formula to CVE 83,333.33 per month and calculates employee INPS separately at 8.5%.",
+      "sourceUrl": "https://www.mf.gov.cv/documents/54571/227418/0E%2B2018_Principais%2BMedidas%2BFiscais.pdf/c18e0d23-28ee-4d81-e03f-bfd3f0168e54?download=true",
+      "reviewedBy": "Codex Day 3 release gate",
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "fixtureId": "paye-cv-large-decimal",
+      "previousExpected": {
+        "deductions.totalDeductions": 404916100,
+        "result.netAnnual": 595083901,
+        "result.netMonthly": 49590325,
+        "tax.netTax": 319916100
+      },
+      "nextExpected": {
+        "deductions.totalDeductions": 334799292,
+        "result.netAnnual": 665200709,
+        "result.netMonthly": 55433392,
+        "tax.netTax": 249799296
+      },
+      "reason": "The large-value fixture now applies the official 25% monthly formula on gross income and keeps employee INPS as a separate deduction.",
+      "sourceUrl": "https://www.mf.gov.cv/documents/54571/227418/0E%2B2018_Principais%2BMedidas%2BFiscais.pdf/c18e0d23-28ee-4d81-e03f-bfd3f0168e54?download=true",
+      "reviewedBy": "Codex Day 3 release gate",
+      "reviewedAt": "2026-07-22"
+    }
+  ]
+}

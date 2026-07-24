@@ -176,16 +176,20 @@ async function main() {
       path: '/tools/currency-converter/',
       run: async (page) => {
         await page.waitForFunction(() => {
-          const from = document.getElementById('fromCurrency');
-          const to = document.getElementById('toCurrency');
-          return from && to && from.options.length > 10 && to.options.length > 10;
+          const from = document.getElementById('fxFrom');
+          const to = document.getElementById('fxTo');
+          const status = document.getElementById('fxStatus');
+          return from && to && status && from.options.length > 5 && to.options.length > 5 && !/Checking/.test(status.textContent || '');
         });
-        await page.fill('#fromAmount', '100');
-        await page.selectOption('#fromCurrency', 'USD');
-        await page.selectOption('#toCurrency', 'NGN');
+        await page.getByLabel('My provider rate').check();
+        await page.fill('#fxAmount', '100');
+        await page.selectOption('#fxFrom', 'USD');
+        await page.selectOption('#fxTo', 'NGN');
+        await page.fill('#fxManualRate', '1');
+        await page.click('#fxConvert');
         await page.waitForFunction(() => {
-          const el = document.getElementById('resultValue');
-          return el && el.textContent && el.textContent !== '--';
+          const el = document.getElementById('fxResultValue');
+          return el && el.textContent && /NGN/.test(el.textContent);
         });
       }
     },

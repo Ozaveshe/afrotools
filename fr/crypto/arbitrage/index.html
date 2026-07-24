@@ -1,57 +1,117 @@
-<!DOCTYPE html>
+<!doctype html>
 <html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Arbitrage crypto en Afrique | AfroTools</title>
-<meta name="description" content="Arbitrage crypto en Afrique — Lisez cet article sur AfroTools.">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Arbitrage crypto en Afrique">
-<meta property="og:url" content="https://afrotools.com/fr/crypto/arbitrage/">
-<meta property="og:site_name" content="AfroTools">
-<meta name="twitter:card" content="summary_large_image">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
-<link rel="preload" href="/assets/css/tokens.min.css?v=c13f04eb" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" href="/assets/css/global.min.css?v=2777b75b" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb"><link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-</noscript>
-<style>
-.fr-hero{background:var(--color-bg-dark,#0A1628);padding:48px 0 32px;text-align:center}
-.fr-hero .container{max-width:900px;margin:0 auto;padding:0 24px}
-.fr-hero .section-label{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--color-brand-light,#4DA3FF);margin-bottom:12px}
-.fr-hero h1{font-size:clamp(1.5rem,3vw,2.2rem);font-weight:800;color:#fff;max-width:800px;margin:0 auto 12px;line-height:1.2}
-.fr-hero p{color:rgba(255,255,255,.55);font-size:.9rem;margin:0 auto;max-width:600px}
-.fr-iframe-wrap{max-width:900px;margin:0 auto;padding:32px 16px 64px}
-.fr-iframe-wrap iframe{width:100%;min-height:80vh;border:none;border-radius:12px;background:#fff}
-.fr-note{text-align:center;padding:16px;font-size:.8rem;color:var(--color-text-muted,#64748b)}
-.fr-note a{color:var(--color-brand,#0062CC);text-decoration:underline}
-</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Feuille de faisabilité d’arbitrage crypto | AfroTools</title>
+<meta name="description" content="Vérifiez un parcours crypto à deux étapes avec les reçus exécutables que vous saisissez. Écart net, expiration et seuil calculés localement.">
+<meta name="robots" content="index,follow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Feuille de faisabilité d’arbitrage crypto">
+<meta property="og:description" content="Calcul privé à partir de deux reçus crypto exécutables. Aucun flux de plateforme, classement ou recommandation.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:url" content="https://afrotools.com/fr/crypto/arbitrage/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Feuille de faisabilité d’arbitrage crypto">
+<meta name="twitter:description" content="Vérifiez localement deux reçus saisis, leur expiration et le seuil d’équilibre.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/crypto-arbitrage-worksheet.css?v=02b9e76b">
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"WebApplication","name":"Feuille de faisabilité d’arbitrage crypto à deux étapes","url":"https://afrotools.com/fr/crypto/arbitrage/","applicationCategory":"FinanceApplication","operatingSystem":"Any","inLanguage":"fr","description":"Feuille locale pour vérifier un parcours crypto à partir de reçus exécutables, coûts et expirations saisis.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Reçus exécutables saisis","Contrôle strict des heures et expirations","Écart brut et net modélisé","Exports locaux PDF, CSV et JSON"]},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Cette feuille charge-t-elle des prix crypto ou de plateformes en direct ?","acceptedAnswer":{"@type":"Answer","text":"Non. Elle n’interroge aucun marché, aucune plateforme ni API de taux. Saisissez deux reçus exécutables vérifiés directement."}},{"@type":"Question","name":"Que doivent couvrir les deux reçus ?","acceptedAnswer":{"@type":"Answer","text":"Ils doivent couvrir le même actif et exactement la même quantité. Le débit d’achat et le crédit de vente doivent inclure tous les coûts sauf ceux saisis séparément."}},{"@type":"Question","name":"Que se passe-t-il lorsqu’un devis expire ?","acceptedAnswer":{"@type":"Answer","text":"Un reçu expiré bloque le résultat et tous les exports. Si l’expiration est inconnue, le calcul affiche un avertissement de revérification."}},{"@type":"Question","name":"Un écart modélisé positif signifie-t-il qu’il faut effectuer l’opération ?","acceptedAnswer":{"@type":"Answer","text":"Non. Il s’agit d’un calcul de reçus, pas d’une recommandation. La liquidité, le règlement, les contreparties, les retraits, la fiscalité et l’éligibilité ne sont pas vérifiés."}}]}]</script>
 <link rel="canonical" href="https://afrotools.com/fr/crypto/arbitrage/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/crypto/arbitrage/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/crypto/arbitrage/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/crypto/arbitrage/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body>
 <afro-navbar></afro-navbar>
-<section class="fr-hero"><div class="container">
-<p class="section-label">Crypto</p>
-<h1>Arbitrage crypto en Afrique</h1>
-<p>Contenu disponible en anglais — traduction à venir.</p>
-</div></section>
-<div class="fr-iframe-wrap">
-<iframe src="/crypto/arbitrage/" title="Arbitrage crypto en Afrique" loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
-</div>
-<p class="fr-note"><a href="/fr/crypto/arbitrage/">Lire la version originale en anglais</a></p>
+<main class="aw-shell">
+  <header class="aw-hero">
+    <span class="aw-kicker">Feuille locale de reçus</span>
+    <h1>Feuille de faisabilité d’arbitrage crypto à deux étapes</h1>
+    <p class="aw-lead">Vérifiez un parcours d’achat et de vente à partir de deux reçus exécutables obtenus directement. La feuille modélise l’écart et le seuil d’équilibre ; elle ne charge aucun prix, ne classe aucune plateforme et ne recommande aucune opération.</p>
+    <div class="aw-trust" aria-label="Limites de la feuille">
+      <div><strong>Aucun flux de marché</strong><span>Seules les valeurs saisies sont calculées.</span></div>
+      <div><strong>Aucune donnée de compte</strong><span>Utilisez des libellés génériques, jamais de portefeuille ou d’identifiant.</span></div>
+      <div><strong>Exports locaux</strong><span>Copie, CSV, JSON et PDF lisible restent sur cet appareil.</span></div>
+    </div>
+  </header>
+
+  <div class="aw-alert" role="note"><strong>Avant ce contrôle :</strong> obtenez des reçus exécutables pour exactement la même quantité d’actif et vérifiez ce que chaque total inclut. Les conditions peuvent s’inverser avant le règlement. Un écart modélisé positif n’est ni une promesse de gain ni une recommandation.</div>
+
+  <section class="aw-card" aria-labelledby="aw-form-title">
+    <h2 id="aw-form-title">Saisissez les deux reçus</h2>
+    <p class="aw-intro">Les champs obligatoires sont signalés. Les heures sont contrôlées avec cet appareil. Laissez l’expiration vide uniquement si le reçu ne l’indique pas ; un avertissement apparaîtra.</p>
+    <form id="aw-form" novalidate>
+      <div class="aw-grid">
+        <div class="aw-field"><label for="aw-asset">Code de l’actif *</label><input id="aw-asset" maxlength="12" autocomplete="off" placeholder="ex. USDT" required><small>Un code générique court uniquement.</small></div>
+        <div class="aw-field"><label for="aw-amount">Quantité exacte sur les deux reçus *</label><input id="aw-amount" type="number" min="0.00000001" step="any" inputmode="decimal" required></div>
+        <div class="aw-field"><label for="aw-buy-label">Libellé du parcours d’achat (facultatif)</label><input id="aw-buy-label" maxlength="40" autocomplete="off" placeholder="ex. Reçu d’achat A"><small>Ne saisissez ni compte, ni portefeuille, ni commerçant, ni personne.</small></div>
+        <div class="aw-field"><label for="aw-sell-label">Libellé du parcours de vente (facultatif)</label><input id="aw-sell-label" maxlength="40" autocomplete="off" placeholder="ex. Reçu de vente B"></div>
+        <div class="aw-field"><label for="aw-buy-debit">Débit d’achat tout compris (NGN) *</label><input id="aw-buy-debit" type="number" min="0.01" step="0.01" inputmode="decimal" required><small>Total NGN payé pour la quantité exacte d’actif.</small></div>
+        <div class="aw-field"><label for="aw-sell-credit">Crédit de vente tout compris (NGN) *</label><input id="aw-sell-credit" type="number" min="0.01" step="0.01" inputmode="decimal" required><small>Total NGN reçu pour cette même quantité.</small></div>
+        <div class="aw-field aw-wide"><label for="aw-costs">Coûts externes non inclus ci-dessus (NGN)</label><input id="aw-costs" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0"><small>Ajoutez les coûts de transfert, réseau, paiement ou retrait uniquement s’ils sont exclus des reçus. Ne les comptez pas deux fois.</small></div>
+        <div class="aw-field"><label for="aw-buy-checked">Reçu d’achat vérifié le *</label><input id="aw-buy-checked" type="datetime-local" required></div>
+        <div class="aw-field"><label for="aw-buy-expiry">Expiration du reçu d’achat (si indiquée)</label><input id="aw-buy-expiry" type="datetime-local"></div>
+        <div class="aw-field"><label for="aw-sell-checked">Reçu de vente vérifié le *</label><input id="aw-sell-checked" type="datetime-local" required></div>
+        <div class="aw-field"><label for="aw-sell-expiry">Expiration du reçu de vente (si indiquée)</label><input id="aw-sell-expiry" type="datetime-local"></div>
+      </div>
+      <div class="aw-confirm">
+        <input id="aw-confirm" type="checkbox" required>
+        <label for="aw-confirm">Je confirme que les deux reçus couvrent le même actif et exactement la même quantité, et que le débit d’achat et le crédit de vente incluent tous les coûts sauf ceux saisis séparément.</label>
+      </div>
+      <div class="aw-actions">
+        <button class="aw-btn" type="submit">Vérifier ce parcours</button>
+        <button class="aw-btn aw-secondary" id="aw-copy" data-aw-export type="button">Copier le résumé</button>
+        <button class="aw-btn aw-secondary" id="aw-csv" data-aw-export type="button">CSV</button>
+        <button class="aw-btn aw-secondary" id="aw-json" data-aw-export type="button">JSON</button>
+        <button class="aw-btn aw-secondary" id="aw-pdf" data-aw-export type="button">PDF</button>
+      </div>
+      <output class="aw-status" id="aw-status" aria-live="polite"></output>
+    </form>
+    <section id="aw-results" hidden aria-labelledby="aw-results-title">
+      <h2 id="aw-results-title">Calcul des reçus</h2>
+      <div class="aw-results">
+        <div class="aw-metric"><span>Écart brut</span><strong id="aw-gross">—</strong></div>
+        <div class="aw-metric"><span>Coûts externes</span><strong id="aw-costs-out">—</strong></div>
+        <div class="aw-metric"><span>Écart net modélisé</span><strong id="aw-net">—</strong></div>
+        <div class="aw-metric"><span>Rendement sur le débit d’achat</span><strong id="aw-return">—</strong></div>
+        <div class="aw-metric"><span>Crédit de vente au seuil</span><strong id="aw-break-even">—</strong></div>
+      </div>
+      <p class="aw-result-note">Formule : écart net modélisé = crédit de vente − débit d’achat − coûts externes. Ce calcul ne confirme pas que les reçus restent exécutables.</p>
+    </section>
+  </section>
+
+  <section class="aw-guide" aria-labelledby="aw-guide-title">
+    <h2 id="aw-guide-title">Ce qu’un contrôle sérieux doit inclure</h2>
+    <div class="aw-guide-grid">
+      <article><h3>Rendre les totaux comparables</h3><p>Utilisez exactement la même quantité d’actif. Copiez les débit et crédit finaux depuis des écrans de confirmation exécutables, pas un taux d’appel. Séparez uniquement les coûts exclus des deux reçus.</p></article>
+      <article><h3>Revérifier les risques d’exécution</h3><ul><li>Taille disponible et glissement</li><li>Délais de règlement blockchain et fiat</li><li>Blocages et limites de retrait</li><li>Réversibilité du paiement et contrepartie</li></ul></article>
+      <article><h3>Protéger l’accès et les traces</h3><ul><li>KYC et conditions de la plateforme</li><li>Garde et transferts irréversibles</li><li>Fiscalité et obligations déclaratives</li><li>Aucune donnée personnelle ou de connexion ici</li></ul></article>
+    </div>
+  </section>
+
+  <section class="aw-faq" aria-labelledby="aw-faq-title">
+    <h2 id="aw-faq-title">Questions fréquentes</h2>
+    <details><summary>Cette feuille charge-t-elle des prix crypto ou de plateformes en direct ?</summary><p>Non. Elle n’interroge aucun fournisseur, marché, plateforme ni API de taux. Vous devez saisir deux reçus exécutables vérifiés directement.</p></details>
+    <details><summary>Pourquoi faut-il le débit et le crédit tout compris ?</summary><p>Les taux d’appel omettent souvent des coûts et l’effet de la quantité. Les totaux finaux pour exactement la même quantité rendent les deux étapes arithmétiquement comparables.</p></details>
+    <details><summary>Que se passe-t-il si l’expiration est inconnue ou dépassée ?</summary><p>Un reçu expiré bloque le résultat et les exports. Une expiration inconnue autorise le calcul uniquement avec un avertissement de revérification des deux reçus.</p></details>
+    <details><summary>Un écart modélisé positif est-il une recommandation ?</summary><p>Non. La liquidité, le règlement, les contreparties, les retraits, l’éligibilité, les conditions, la fiscalité et l’adéquation ne sont pas vérifiés. C’est un calcul de planification, pas un conseil financier.</p></details>
+  </section>
+
+  <nav class="aw-related" aria-label="Outils crypto associés">
+    <h2>Outils associés</h2>
+    <ul><li><a href="/crypto/p2p-rates/">Comparateur de devis P2P</a></li><li><a href="/fr/crypto/remittance/">Comparateur de devis de transfert</a></li><li><a href="/crypto/prices/">Référence du marché crypto</a></li></ul>
+  </nav>
+</main>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c"></script>
+<script src="/assets/js/pages/crypto-arbitrage-worksheet.js?v=f65bbf0b"></script>
+<script src="/assets/js/components/navbar.min.js?v=996960fa" defer></script>
 <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 </body>
 </html>

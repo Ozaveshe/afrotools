@@ -1,15 +1,66 @@
-// São Tomé and Príncipe PAYE (IRS) — Source: Direcção dos Impostos
-const { createEngine } = require('./_factory');
-module.exports = createEngine({
-  country: 'ST', countryName: 'São Tomé and Príncipe', currency: 'STN',
-  source: 'Direcção dos Impostos',
-  /* source-confidence-stamp:start */
-  lastUpdated: '2026-03-01',
-  sourceCheckedOn: '2026-04-06',
-  nextReviewDate: '2026-07-05',
-  /* source-confidence-stamp:end */
+'use strict';
 
-  bands: [[18000000,0.10],[60000000,0.15],[Infinity,0.25]],
-  socialSecurity: [{ key: 'inss', label: 'INSS (6%)', rate: 0.06 }],
-  employerSS: [{ key: 'inss', label: 'INSS (10%)', rate: 0.10 }]
-});
+const engine = require('../../../assets/js/engines/st-paye');
+
+module.exports = {
+  country: 'ST',
+  countryName: 'Sao Tome and Principe',
+  currency: 'STN',
+  regimes: ['STANDARD'],
+  lastUpdated: '2026-07-22',
+  sourceCheckedOn: '2026-07-22',
+  nextReviewDate: '2026-08-22',
+  source: 'INSS Decreto-Lei 19/2022, Articles 101-102; Direccao dos Impostos IRS legislation catalogue and 2026 State Budget review',
+  formulaParameters: {
+    method: 'verified-contributions-only',
+    employeeInssRate: 0.04,
+    employerInssRate: 0.06,
+    irsStatus: 'CURRENT_SCHEDULE_UNCONFIRMED',
+    irsCalculated: false
+  },
+  calculate(params) {
+    params = params || {};
+    const grossAnnual = Number(params.grossAnnual);
+    const result = engine.calculate({ grossMonthly: grossAnnual / 12 });
+    if (!result.ok) throw new Error(result.error);
+    return {
+      input: { country: 'ST', grossAnnual },
+      deductions: {
+        inssEmployee: result.employeeInssAnnual,
+        totalDeductions: result.employeeInssAnnual,
+        totalVerifiedDeductions: result.employeeInssAnnual
+      },
+      tax: {
+        status: result.irsStatus,
+        taxableIncome: null,
+        grossTax: null,
+        netTax: null
+      },
+      result: {
+        afterEmployeeInssAnnual: result.afterEmployeeInssAnnual,
+        afterEmployeeInssMonthly: result.afterEmployeeInssMonthly,
+        netAnnual: null,
+        netMonthly: null
+      },
+      employer: {
+        inssEmployer: result.employerInssAnnual,
+        totalCostAnnual: result.employerCostAnnual,
+        totalCostMonthly: result.employerCostMonthly
+      },
+      meta: {
+        currency: 'STN',
+        lastUpdated: this.lastUpdated,
+        sourceCheckedOn: this.sourceCheckedOn,
+        nextReviewDate: this.nextReviewDate,
+        source: this.source,
+        warning: 'IRS is intentionally not calculated because the current official withholding schedule could not be confirmed.'
+      }
+    };
+  },
+  reverseCalculate() {
+    throw new Error('Reverse calculation is unavailable while the current IRS schedule is unconfirmed.');
+  },
+  getOptions() {
+    return { regimes: [{ key: 'STANDARD', label: 'Employee', default: true }], deductions: [] };
+  }
+};

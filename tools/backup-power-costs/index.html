@@ -1,170 +1,122 @@
-<!DOCTYPE html>
+<!doctype html>
 <html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Backup Power Costs | AfroTools</title>
-<meta name="description" content="Track generator fuel, LPG, inverter battery, and solar backup costs across African cities, then contribute verified local power backup data through AfroPoints.">
-<meta property="og:title" content="Backup Power Costs | AfroTools">
-<meta property="og:description" content="Track generator fuel, LPG, inverter battery, and solar backup costs across African cities, then contribute verified local power backup data through AfroPoints.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/backup-power-costs.webp">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<link rel="stylesheet" href="/assets/css/market-data.css?v=82be8cb4">
-<meta property="og:url" content="https://afrotools.com/tools/backup-power-costs/">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Backup Power Costs | AfroTools">
-<meta name="twitter:description" content="Track generator fuel, LPG, inverter battery, and solar backup costs across African cities, then contribute verified local power backup data through AfroPoints.">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/backup-power-costs.webp">
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Backup Power Costs?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Backup Power Costs then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Backup Power Costs?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Backup Power Costs free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for Nigeria, Kenya, South Africa and other African markets."}}]}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Generator, Battery &amp; Solar Cost Calculator | AfroTools</title>
+  <meta name="description" content="Compare monthly generator fuel, battery and solar backup costs from your own load, outage, tariff, quote and service-life assumptions. Free and private.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Backup Power Cost Calculator: Generator, Battery or Solar">
+  <meta property="og:description" content="Compare three backup-power scenarios with your own local prices, quotes and usage assumptions.">
+  <meta property="og:url" content="https://afrotools.com/tools/backup-power-costs/">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/backup-power-costs.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Backup Power Cost Calculator">
+  <meta name="twitter:description" content="A private generator, battery and solar cost comparison using values you provide.">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/backup-power-costs.webp">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <link rel="stylesheet" href="/assets/css/backup-power-costs-vip.css?v=82fa0b8d">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Backup Power Cost Calculator","url":"https://afrotools.com/tools/backup-power-costs/","applicationCategory":"FinanceApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"A local-first planner comparing monthly-equivalent fuel generator, battery/inverter and solar/battery backup costs from user-provided assumptions.","featureList":["Generator running-cost estimate","Battery and inverter monthly-equivalent estimate","Solar and battery monthly-equivalent estimate","Text export","Print or PDF via the browser"],"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"isAccessibleForFree":true,"image":"https://afrotools.com/assets/img/tools/backup-power-costs.webp"}
+  </script>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How are the three monthly costs calculated?","acceptedAnswer":{"@type":"Answer","text":"Generator cost is runtime × measured fuel use × local fuel price, plus monthly maintenance. Battery cost is installed cost ÷ chosen life, plus grid recharge energy adjusted for efficiency and maintenance. Solar cost is installed cost ÷ chosen life, plus maintenance."}},{"@type":"Question","name":"Why does solar not use the backup energy in its cost formula?","acceptedAnswer":{"@type":"Answer","text":"The solar line is a simple monthly equivalent for a supplier quote that has already been sized for your need. This calculator does not model irradiance, panel yield, battery depth of discharge or component replacement schedules. Reject any quote that has not been sized locally."}},{"@type":"Question","name":"Does this include financing, inflation or lost business?","acceptedAnswer":{"@type":"Answer","text":"No. Add financing costs to the quoted scenario before comparing, and assess outage losses separately. The comparison uses nominal values you enter and does not forecast prices."}},{"@type":"Question","name":"Can I save a PDF privately?","acceptedAnswer":{"@type":"Answer","text":"Yes. Calculate, choose “Print / save PDF,” and use your browser's PDF destination. Nothing in the calculator form is sent to AfroTools or AI."}}]}
 </script>
-<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<!-- tool-structured-data:auto -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Backup Power Costs",
-  "description": "Track generator fuel, LPG, inverter battery, and solar backup costs across African cities, then contribute verified local power backup data through AfroPoints.",
-  "url": "https://afrotools.com/tools/backup-power-costs/",
-  "inLanguage": "en",
-  "applicationCategory": "UtilitiesApplication",
-  "operatingSystem": "Web",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/backup-power-costs.webp"
-}
-</script>
-<!-- tool-structured-data:auto -->
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Backup Power Costs","item":"https://afrotools.com/tools/backup-power-costs/"}]}
-</script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"HowTo","name":"Compare backup power costs","step":[{"@type":"HowToStep","name":"Describe the backup need","text":"Enter the essential load, daily outage hours and backup days."},{"@type":"HowToStep","name":"Enter local scenario assumptions","text":"Add measured generator fuel use, current local prices, supplier quotes, service life and maintenance."},{"@type":"HowToStep","name":"Compare and verify","text":"Calculate the monthly equivalents, then confirm system sizing, safety and quotes with qualified local professionals."}]}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Personal finance","item":"https://afrotools.com/personal-finance/"},{"@type":"ListItem","position":3,"name":"Backup Power Cost Calculator","item":"https://afrotools.com/tools/backup-power-costs/"}]}
+  </script>
 <link rel="canonical" href="https://afrotools.com/tools/backup-power-costs/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/backup-power-costs/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/couts-secours-energie/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/gharama-ya-nishati-ya-dharura/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/backup-power-costs/">
 </head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar></afro-navbar>
-<section class="md-hero">
-  <div class="md-hero-inner">
-    <div class="md-breadcrumb"><a href="/">AfroTools</a><span>/</span><a href="/tools/afropoints/">AfroPoints</a><span>/</span><span>Backup Power Costs</span></div>
-    <div class="md-eyebrow">Backup Power</div>
-    <h1>Backup Power Costs</h1>
-    <p>See what homes and businesses are paying for generator fuel, LPG refills, inverter batteries, and solar backups, then add your own verified cost data.</p>
-    <div class="md-chip-row"><span class="md-chip">Generator fuel</span><span class="md-chip">LPG and inverters</span><span class="md-chip">Solar setup tracking</span></div>
-  </div>
-</section>
-<div class="md-shell">
-  <div class="md-main">
-    <div class="md-panel">
-      <div class="md-panel-head"><div class="md-panel-title">Verified Backup Power Feed</div><div class="md-panel-subtitle">Fresh cost reports across cities and energy types.</div></div>
-      <div class="md-panel-body">
-        <div class="md-toolbar">
-          <div class="md-field"><label for="mdCountry">Country</label><select id="mdCountry" class="md-select" data-md-filter="country"></select></div>
-          <div class="md-field"><label for="mdCity">City</label><input id="mdCity" class="md-input" data-md-filter="city" placeholder="e.g. Ibadan"></div>
-          <div class="md-field"><label for="mdEnergyType">Energy Type</label><input id="mdEnergyType" class="md-input" data-md-filter="energy_type" placeholder="e.g. Generator Fuel"></div>
-          <div class="md-field"><label for="mdRefresh">Refresh</label><button type="button" id="mdRefresh" class="md-btn md-btn-secondary">Reload</button></div>
+<body class="bp-page">
+  <a class="bp-skip" href="#bpPlanner">Skip to calculator</a>
+  <afro-navbar></afro-navbar>
+  <header class="bp-hero">
+    <div class="bp-wrap">
+      <nav class="bp-crumb" aria-label="Breadcrumb"><a href="/">AfroTools</a> / <a href="/personal-finance/">Personal finance</a> / Backup power costs</nav>
+      <div class="bp-kicker">Private, assumption-first planning</div>
+      <h1>Compare the monthly cost of generator, battery and solar backup.</h1>
+      <p>Use a measured essential load, your outage pattern and prices or quotes you confirmed locally. The calculator shows transparent monthly equivalents without uploading your figures.</p>
+      <div class="bp-badges" aria-label="Tool features"><span class="bp-badge">Any currency</span><span class="bp-badge">No signup</span><span class="bp-badge">No input transmission</span><span class="bp-badge">Print or save PDF</span></div>
+    </div>
+  </header>
+  <main class="bp-main bp-wrap">
+    <div class="bp-stack">
+      <section class="bp-card bp-planner" aria-labelledby="bpPlannerTitle">
+        <div class="bp-head"><h2 id="bpPlannerTitle">Backup power cost comparison</h2><p>Start with values from a plug meter, appliance labels, recent receipts and written supplier quotes. Zero means that scenario has no cost for that line.</p></div>
+        <div class="bp-body">
+          <form id="bpPlanner" novalidate>
+            <p class="bp-section-label">Backup need</p>
+            <div class="bp-fields">
+              <div class="bp-field"><label for="bpCurrency">Currency code</label><input class="bp-input" id="bpCurrency" name="currency" value="NGN" maxlength="3" pattern="[A-Za-z]{3}" autocomplete="off"><small>For example NGN, KES, GHS, ZAR, XOF or USD.</small></div>
+              <div class="bp-field"><label for="bpLoad">Essential continuous load (watts)</label><input class="bp-input" id="bpLoad" name="loadWatts" type="number" min="1" max="10000000" step="1" value="1000" inputmode="decimal" required><small>Use the load you need during an outage, not the building maximum.</small></div>
+              <div class="bp-field"><label for="bpHours">Backup hours per day</label><input class="bp-input" id="bpHours" name="outageHours" type="number" min="0.1" max="24" step="0.1" value="4" inputmode="decimal" required></div>
+              <div class="bp-field"><label for="bpDays">Backup days per month</label><input class="bp-input" id="bpDays" name="days" type="number" min="1" max="31" step="1" value="26" inputmode="numeric" required></div>
+            </div>
+            <p class="bp-section-label">Fuel generator</p>
+            <div class="bp-fields">
+              <div class="bp-field"><label for="bpFuelUse">Measured fuel use per hour</label><input class="bp-input" id="bpFuelUse" name="fuelUsePerHour" type="number" min="0" step="0.01" value="1" inputmode="decimal"><small>Use litres, kg or another unit consistently with the price below.</small></div>
+              <div class="bp-field"><label for="bpFuelPrice">Fuel price per matching unit</label><input class="bp-input" id="bpFuelPrice" name="fuelPrice" type="number" min="0" step="0.01" value="1000" inputmode="decimal"></div>
+              <div class="bp-field full"><label for="bpGeneratorMaintenance">Generator maintenance per month</label><input class="bp-input" id="bpGeneratorMaintenance" name="generatorMaintenance" type="number" min="0" step="0.01" value="10000" inputmode="decimal"><small>Average routine servicing, oil and expected small repairs; exclude generator purchase cost unless you add it separately.</small></div>
+            </div>
+            <p class="bp-section-label">Battery / inverter charged from the grid</p>
+            <div class="bp-fields">
+              <div class="bp-field"><label for="bpBatteryCost">Installed system cost</label><input class="bp-input" id="bpBatteryCost" name="batterySystemCost" type="number" min="0" step="0.01" value="1200000" inputmode="decimal"></div>
+              <div class="bp-field"><label for="bpBatteryLife">Planning service life (months)</label><input class="bp-input" id="bpBatteryLife" name="batteryLifeMonths" type="number" min="1" max="600" step="1" value="48" inputmode="numeric"><small>Use the supplier warranty or a conservative life you can defend.</small></div>
+              <div class="bp-field"><label for="bpTariff">Grid recharge tariff per kWh</label><input class="bp-input" id="bpTariff" name="rechargeTariff" type="number" min="0" step="0.01" value="200" inputmode="decimal"><small>Use your latest bill or utility tariff, including applicable charges.</small></div>
+              <div class="bp-field"><label for="bpEfficiency">Battery round-trip efficiency (%)</label><input class="bp-input" id="bpEfficiency" name="roundTripEfficiency" type="number" min="1" max="100" step="0.1" value="85" inputmode="decimal"><small>Use the system specification; do not assume the default fits your equipment.</small></div>
+              <div class="bp-field full"><label for="bpBatteryMaintenance">Battery / inverter maintenance per month</label><input class="bp-input" id="bpBatteryMaintenance" name="batteryMaintenance" type="number" min="0" step="0.01" value="5000" inputmode="decimal"></div>
+            </div>
+            <p class="bp-section-label">Solar / battery backup</p>
+            <div class="bp-fields">
+              <div class="bp-field"><label for="bpSolarCost">Installed solar backup cost</label><input class="bp-input" id="bpSolarCost" name="solarSystemCost" type="number" min="0" step="0.01" value="3000000" inputmode="decimal"></div>
+              <div class="bp-field"><label for="bpSolarLife">Planning life for the whole quote (months)</label><input class="bp-input" id="bpSolarLife" name="solarLifeMonths" type="number" min="1" max="600" step="1" value="120" inputmode="numeric"><small>Use a conservative blended life; batteries and other components may need earlier replacement.</small></div>
+              <div class="bp-field full"><label for="bpSolarMaintenance">Solar / battery maintenance per month</label><input class="bp-input" id="bpSolarMaintenance" name="solarMaintenance" type="number" min="0" step="0.01" value="10000" inputmode="decimal"><small>Include cleaning, inspections and a reserve for component work where appropriate.</small></div>
+            </div>
+            <div class="bp-actions"><button class="bp-button primary" type="submit">Compare backup costs</button></div>
+            <p id="bpStatus" class="bp-status" role="status" aria-live="polite"></p>
+          </form>
         </div>
-        <div class="md-summary" id="mdSummary"></div>
-        <div class="md-grid" id="mdList"><div class="md-empty">Loading backup power costs...</div></div>
-      </div>
+      </section>
+      <section class="bp-card bp-results" id="bpResults" aria-hidden="true" aria-labelledby="bpResultsTitle">
+        <h2 class="bp-print-title" id="bpResultsTitle">Backup power cost comparison</h2>
+        <div class="bp-result-hero"><span id="bpLowestLabel">Lowest monthly equivalent</span><strong id="bpLowest"></strong><small>Cost comparison only. The lowest result is not proof that a system is correctly sized, safe or available at this price.</small></div>
+        <div class="bp-metrics">
+          <div class="bp-metric"><strong id="bpGenerator"></strong><span>Fuel generator monthly cost</span></div><div class="bp-metric"><strong id="bpBattery"></strong><span>Battery straight-line monthly equivalent</span></div><div class="bp-metric"><strong id="bpSolar"></strong><span>Solar straight-line monthly equivalent</span></div><div class="bp-metric"><strong id="bpEnergy"></strong><span>Backup energy / month</span></div><div class="bp-metric"><strong id="bpRuntime"></strong><span>Backup runtime / month</span></div><div class="bp-metric"><strong id="bpFuelUnits"></strong><span>Generator fuel units / month</span></div>
+        </div>
+        <div class="bp-result-actions"><div class="bp-actions"><button class="bp-button secondary" id="bpCopy" type="button">Copy summary</button><button class="bp-button secondary" id="bpDownload" type="button">Download text</button><button class="bp-button secondary" id="bpPrint" type="button">Print / save PDF</button></div></div>
+      </section>
+      <section class="bp-card bp-faq" aria-labelledby="bpFaqTitle"><div class="bp-head"><h2 id="bpFaqTitle">Backup power planning questions</h2></div><div class="bp-body"><details><summary>How are the three monthly costs calculated?</summary><p>Generator cost is runtime × measured fuel use × local fuel price, plus monthly maintenance. Battery cost is installed cost ÷ chosen life, plus grid recharge energy adjusted for efficiency and maintenance. Solar cost is installed cost ÷ chosen life, plus maintenance.</p></details><details><summary>Why does solar not use the backup energy in its cost formula?</summary><p>The solar line is a simple monthly equivalent for a supplier quote that has already been sized for your need. This calculator does not model irradiance, panel yield, battery depth of discharge or component replacement schedules. Reject any quote that has not been sized locally.</p></details><details><summary>Does this include financing, inflation or lost business?</summary><p>No. Add financing costs to the quoted scenario before comparing, and assess outage losses separately. The comparison uses nominal values you enter and does not forecast prices.</p></details><details><summary>Can I save a PDF privately?</summary><p>Yes. Calculate, choose “Print / save PDF,” and use your browser's PDF destination. Nothing in the calculator form is sent to AfroTools or AI.</p></details></div></section>
     </div>
-  </div>
-  <aside class="md-side">
-    <div class="md-panel">
-      <div class="md-panel-head"><div class="md-panel-title">Submit a Backup Power Cost</div><div class="md-panel-subtitle">Use this for diesel, petrol, LPG, inverter, or solar data.</div></div>
-      <div class="md-panel-body">
-        <div class="md-form-field"><label for="mdReportCountry">Country</label><select id="mdReportCountry" class="md-select"></select></div>
-        <div class="md-form-field"><label for="mdReportCity">City</label><input id="mdReportCity" class="md-input" placeholder="e.g. Lagos"></div>
-        <div class="md-form-field"><label for="mdReportNeighborhood">Neighborhood</label><input id="mdReportNeighborhood" class="md-input" placeholder="Optional"></div>
-        <div class="md-form-field"><label for="mdReportCurrency">Currency</label><input id="mdReportCurrency" class="md-input" value="NGN"></div>
-        <div class="md-form-field"><label for="mdReportProvider">Provider or Seller</label><input id="mdReportProvider" class="md-input" placeholder="Optional"></div>
-        <div id="mdReportFields"></div>
-        <div class="md-form-field"><label for="mdObservedAt">Observed At</label><input id="mdObservedAt" class="md-input" type="datetime-local"></div>
-        <div class="md-form-field"><label for="mdSourceType">Source Type</label><select id="mdSourceType" class="md-select"><option value="self_observed">I paid or checked this myself</option><option value="receipt">Receipt or invoice</option><option value="merchant_quote">Seller quote</option><option value="community_check">Community check</option></select></div>
-        <div class="md-form-field"><label for="mdProofUrl">Proof URL</label><input id="mdProofUrl" class="md-input" placeholder="Optional"></div>
-        <div class="md-actions"><button type="button" class="md-btn md-btn-primary" id="mdSubmitReport">Submit Cost</button></div>
-      </div>
-    </div>
-    <div class="md-panel">
-      <div class="md-panel-head"><div class="md-panel-title">Check current fuel prices</div></div>
-      <div class="md-panel-body">
-        <p class="md-list">Planning generator or LPG spend? Use <a href="/tools/fuel-tracker/">AfroFuel to compare petrol, diesel, and LPG prices across African countries</a> before estimating backup-power costs.</p>
-      </div>
-    </div>
-  </aside>
-</div>
-<div class="md-toast" id="mdToast"></div>
-
-<section class="df-upgrade" data-df-upgrade="backup-power-costs">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Backup Power Costs: quick guide</h2>
-      <p>Not sure how to get the most from the Backup Power Costs? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for Nigeria, Kenya, South Africa and other African markets.</p>
-      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Backup Power Costs takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
-    </div>
-    <form class="df-form" data-df-form="backup-power-costs">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="backup-power-costs" data-df-base="Backup Power Costs — enter your details above to see your result." aria-live="polite">Backup Power Costs — enter your details above to see your result.</output>
-      <div class="df-actions"><button type="button" data-df-copy="backup-power-costs">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="backup-power-costs-faq-title">
-  <h2 id="backup-power-costs-faq-title">Backup Power Costs FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How do I use the Backup Power Costs?</summary><p>Enter your amounts, rates and dates in the fields above. The Backup Power Costs then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Backup Power Costs?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Backup Power Costs free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for Nigeria, Kenya, South Africa and other African markets.</p></details></div>
-</section>
-<afro-related-tools data-ssr="1" category="financial" current="backup-power-costs">
+    <aside class="bp-stack bp-side" aria-label="Method, safety and sources">
+      <section class="bp-card"><div class="bp-head"><h2>Before relying on the comparison</h2></div><div class="bp-body"><ul class="bp-list"><li>Measure continuous and startup loads; motors and compressors can surge.</li><li>Confirm usable battery capacity, inverter rating and safe depth of discharge.</li><li>Ask for itemised written quotes, warranties and replacement assumptions.</li><li>Use current fuel and electricity evidence from your location.</li><li>Have wiring, earthing, ventilation and generator exhaust checked professionally.</li></ul></div></section>
+      <section class="bp-card"><div class="bp-head"><h2>Transparent method</h2><p>Every price, performance and life assumption comes from you.</p></div><div class="bp-body bp-formula"><strong>Monthly backup energy</strong><code>(load watts ÷ 1,000) × hours/day × days/month</code><strong>Generator</strong><code>(hours × fuel units/hour × price/unit) + maintenance</code><strong>Battery / inverter</strong><code>(system cost ÷ life months) + (energy ÷ efficiency × grid tariff) + maintenance</code><strong>Solar / battery</strong><code>(system cost ÷ life months) + maintenance</code><p><strong>Excluded unless you build them into a quote or maintenance input:</strong> financing and interest, inflation, tax, salvage value, battery degradation or staged replacement, solar recharge or backup-grid energy, generator purchase reserve, downtime and lost business. No savings or payback claim is calculated.</p><p>Reviewed 22 July 2026. This is a transparent user-input methodology, not a live tariff, vendor quote, engineering design, levelised-cost study, financed cash-flow model, lifecycle-cost verdict or financial recommendation.</p></div></section>
+      <section class="bp-card"><div class="bp-head"><h2>Source confidence</h2></div><div class="bp-body"><div class="bp-note"><strong>Manual evidence required.</strong> Use appliance labels or meter readings, a recent utility bill or tariff notice, dated fuel evidence, and itemised supplier quotes. Defaults are examples only and are not country rates or product specifications.</div></div></section>
+      <section class="bp-card"><div class="bp-head"><h2>Privacy and exports</h2></div><div class="bp-body bp-privacy"><span aria-hidden="true">🔒</span><div><strong>Local calculation only</strong><p class="bp-formula">Calculator fields are not submitted to AfroTools, AI, analytics, Supabase or a community feed. Copy, text download and browser PDF are created on this device.</p></div></div></section>
+      <section class="bp-card"><div class="bp-head"><h2>Related checks</h2></div><div class="bp-body"><ul class="bp-list"><li><a href="/tools/fuel-tracker/">Inspect dated fuel-price evidence</a></li><li><a href="/tools/battery-sizing/">Estimate battery and inverter size</a></li><li><a href="/tools/generator-sizing/">Review generator sizing</a></li><li><a href="/tools/outage-cost/">Estimate outage business cost</a></li></ul></div></section>
+    </aside>
+  </main>
+  <div class="bp-related bp-wrap"><afro-related-tools data-ssr="1" category="financial" current="backup-power-costs">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Tracker" data-category="financial" data-icon="AA" data-desc="Compare petrol, diesel, and LPG prices across 54 African countries, then estimate generator fuel costs in local currency">AfroFuel — African Fuel Price Tracker</a></li></ul>
+<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Reference" data-category="financial" data-icon="AA" data-desc="Inspect dated, row-sourced African petrol, diesel, and LPG snapshots, then estimate generator cost from a verified local">AfroFuel — African Fuel Price Reference</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
-</afro-related-tools>
-<afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
-<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="/assets/js/afro-auth.js?v=4250956b"></script>
-<script src="/engines/afropoints-engine.js?v=2a5ea36e"></script>
-<script src="/assets/js/market-data-app.js?v=1b8c8bd6"></script>
-<script>
-document.getElementById('mdObservedAt').value = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
-window.MarketDataApp.mount({
-  endpoint: '/api/backup-power-costs',
-  responseKey: 'costs',
-  subtype: 'backup_power_cost',
-  vertical: 'backup_power',
-  reportButtonLabel: 'Submit Cost',
-  renderCard: function (row, helpers) {
-    return '<article class="md-card"><h3>' + helpers.escapeHtml(row.energy_type || 'Power cost') + '</h3>' +
-      '<p>' + helpers.escapeHtml((row.product_name || 'Backup product') + ' | ' + (row.city || '')) + '</p>' +
-      '<div class="md-meta"><span class="md-pill">' + helpers.escapeHtml(row.currency_code || '') + ' ' + helpers.escapeHtml(row.cost_amount || '') + '</span><span class="md-pill">' + helpers.escapeHtml(row.unit || 'unit') + '</span></div></article>';
-  }
-});
-</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=e25622fc" defer></script>
+</afro-related-tools></div>
+  <afro-footer></afro-footer>
+  <script src="/assets/js/components/navbar.min.js?v=996960fa" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+  <script src="/assets/js/engines/backup-power-costs.js?v=6b43b12c"></script>
+  <script src="/assets/js/pages/backup-power-costs-vip.js?v=a0f33749" defer></script>
+  <script src="/assets/js/components/related-tools.min.js?v=f3f910a8" defer></script>
 </body>
 </html>

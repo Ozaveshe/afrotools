@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://afrotools.com/schemas/pan-african-vat-presets.schema.json",
+  "title": "Pan-African VAT planning preset pack",
+  "type": "object",
+  "required": ["schemaVersion", "datasetReviewed", "displayDisclaimer", "countries"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": 1 },
+    "datasetReviewed": { "type": "string", "format": "date" },
+    "displayDisclaimer": { "type": "string", "minLength": 1 },
+    "countries": {
+      "type": "object",
+      "minProperties": 54,
+      "maxProperties": 54,
+      "propertyNames": { "pattern": "^[A-Z]{2}$" },
+      "additionalProperties": { "$ref": "#/$defs/country" }
+    }
+  },
+  "$defs": {
+    "source": {
+      "type": "object",
+      "required": ["authority", "title", "url"],
+      "additionalProperties": false,
+      "properties": {
+        "authority": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "format": "uri", "pattern": "^https://" }
+      }
+    },
+    "country": {
+      "type": "object",
+      "required": ["name", "currencyLabel", "status"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "currencyLabel": { "type": "string", "minLength": 1 },
+        "status": {
+          "enum": ["authority-bound-planning-preset", "authority-source-gap", "unverified-no-vat-claim"]
+        },
+        "standardRate": { "type": "number", "minimum": 0, "maximum": 100 },
+        "source": { "$ref": "#/$defs/source" },
+        "gapAuthority": { "type": "string", "minLength": 1 }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "const": "authority-bound-planning-preset" } } },
+          "then": { "required": ["standardRate", "source"] }
+        },
+        {
+          "if": { "properties": { "status": { "const": "authority-source-gap" } } },
+          "then": { "required": ["gapAuthority"] }
+        },
+        {
+          "if": { "properties": { "status": { "enum": ["authority-source-gap", "unverified-no-vat-claim"] } } },
+          "then": { "not": { "anyOf": [{ "required": ["standardRate"] }, { "required": ["source"] }] } }
+        }
+      ]
+    }
+  }
+}

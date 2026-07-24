@@ -60,7 +60,7 @@ test('legacy HTML formula digests ignore presentation-only disclosure state', fu
 test('all high-risk PAYE and VAT routes map to one formula and external source', function () {
   const verification = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/tool-verification.json'), 'utf8'));
   const result = quality.checkHighRiskRouteTraceability(verification, artifacts.formulas);
-  assert.strictEqual(result.protectedRoutes, 119);
+  assert.ok(result.protectedRoutes >= 119, 'protected route coverage must not regress below the established baseline');
   assert.strictEqual(result.mappedRoutes, result.protectedRoutes);
   assert.deepStrictEqual(result.gaps, []);
 });

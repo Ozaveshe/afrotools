@@ -1,740 +1,143 @@
-<!DOCTYPE html>
+<!doctype html>
 <html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>African Business Name Generator | AfroTools</title>
-<meta name="description" content="Generate unique business names inspired by 10 African languages. Includes name scoring, domain search links, social handle links, and shortlist export. Free for entrepreneurs.">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="African Business Name Generator | Domain Search Links + 10 Languages | AfroTools">
-<meta property="og:description" content="Generate unique business names with African flair. Domain search links, social handle links, name scoring, and shortlist export.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/business-name-gen.webp">
-<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/business-name-gen/">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
-<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
-<style>
-:root{--afro-dark:#0f1419;--accent:#7c3aed}
-.tool-hero{background:linear-gradient(135deg,#4c1d95 0%,#7c3aed 50%,#6d28d9 100%);padding:44px 0 36px}
-.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
-.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
-.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#ddd6fe}
-h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
-h1 em{color:#ddd6fe;font-style:normal}
-.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:600px;margin-bottom:14px}
-.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
-.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
-.b-em{background:rgba(221,214,254,.2);color:#ddd6fe;border:1px solid rgba(221,214,254,.4)}
-.tool-main{padding:28px 0 72px}
-.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
-.card+.card{margin-top:18px}
-.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
-.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
-.card-body{padding:22px}
-label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
-input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
-input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,58,237,.15)}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
-.field{margin-bottom:14px}
-.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:14px;font-family:inherit;transition:all .15s}
-.btn-primary{background:linear-gradient(135deg,#6d28d9,#7c3aed);color:#fff}
-.btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(124,58,237,.3)}
-.btn-secondary{background:linear-gradient(135deg,#475569,#64748b);color:#fff}
-.btn-secondary:hover{transform:translateY(-1px)}
-.style-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
-.style-chip{padding:6px 14px;border:1.5px solid #e2e8f0;border-radius:20px;font-size:.72rem;font-weight:600;cursor:pointer;background:#f8fafc;color:#475569;transition:all .15s}
-.style-chip:hover,.style-chip.active{border-color:#7c3aed;background:#f5f3ff;color:#7c3aed}
-.names-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
-.name-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:14px;transition:all .2s;position:relative}
-.name-card:hover{border-color:#7c3aed;background:#f5f3ff;transform:translateY(-1px)}
-.name-card.saved{border-color:#7c3aed;background:#f5f3ff}
-.name-card .nm{font-size:.95rem;font-weight:800;color:#1e293b;display:flex;align-items:center;justify-content:space-between}
-.name-card .nm .save-icon{cursor:pointer;font-size:1rem;opacity:.4;transition:all .15s}
-.name-card .nm .save-icon:hover,.name-card.saved .nm .save-icon{opacity:1;color:#7c3aed}
-.name-card .type{font-size:.62rem;color:#7c3aed;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
-.name-card .meaning{font-size:.72rem;color:#64748b;margin-top:4px;line-height:1.4}
-.name-card .score{display:inline-flex;align-items:center;gap:3px;margin-top:6px;padding:3px 8px;border-radius:4px;font-size:.62rem;font-weight:700}
-.score-high{background:#dcfce7;color:#059669}
-.score-mid{background:#fef3c7;color:#d97706}
-.score-low{background:#fee2e2;color:#dc2626}
-.name-card .domain-row{margin-top:8px;display:flex;gap:4px;flex-wrap:wrap}
-.domain-tag{font-size:.62rem;padding:2px 6px;border-radius:4px;font-weight:600;cursor:pointer;text-decoration:none;transition:all .1s}
-.domain-tag:hover{transform:scale(1.05)}
-.dt-avail{background:#dcfce7;color:#059669;border:1px solid #bbf7d0}
-.dt-taken{background:#fee2e2;color:#dc2626;border:1px solid #fecaca}
-.dt-check{background:#f1f5f9;color:#64748b;border:1px solid #e2e8f0}
-.social-links{display:flex;gap:6px;margin-top:6px}
-.social-links a{font-size:.6rem;color:#64748b;text-decoration:none;padding:2px 6px;border:1px solid #e2e8f0;border-radius:4px;transition:all .1s}
-.social-links a:hover{border-color:#7c3aed;color:#7c3aed}
-.stats-bar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
-.stat-item{background:#f5f3ff;border:1px solid #ddd6fe;border-radius:8px;padding:10px;text-align:center}
-.stat-item .stat-val{font-size:1.2rem;font-weight:800;color:#7c3aed}
-.stat-item .stat-label{font-size:.62rem;font-weight:600;color:#6d28d9;text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
-.saved-list{margin-top:14px}
-.saved-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f1f5f9;font-size:.82rem;font-weight:700;color:#1e293b}
-.saved-item button{background:none;border:none;color:#ef4444;cursor:pointer;font-size:.72rem}
-.name-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
-.name-actions button{border:1.5px solid #cbd5e1;background:#fff;border-radius:8px;padding:9px 12px;font-family:inherit;font-size:.76rem;font-weight:800;color:#1e293b;cursor:pointer}
-.name-actions button:hover{border-color:#7c3aed;color:#7c3aed;background:#f5f3ff}
-.biz-status{color:#64748b;font-size:.76rem;min-height:1.2em;margin-top:8px}
-.name-workflow{max-width:1180px;margin:24px auto 0;padding:0 24px}
-.name-workflow-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px;box-shadow:0 1px 8px rgba(15,23,42,.05)}
-.name-workflow-card h2{font-size:1.2rem;line-height:1.25;margin:0 0 8px;color:var(--afro-dark)}
-.name-workflow-card p{font-size:.86rem;color:#475569;line-height:1.65;margin:0 0 12px}
-.name-workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.name-workflow-grid div{border:1px solid #e2e8f0;border-radius:9px;background:#f8fafc;padding:12px;font-size:.78rem;color:#475569;line-height:1.55}
-.name-workflow-grid strong{display:block;color:#1e293b;margin-bottom:4px}
-.sidebar .info-card{background:#f5f3ff;border:1px solid #ddd6fe;border-radius:8px;padding:16px;margin-top:14px}
-.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#6d28d9;margin-bottom:8px}
-.info-card p,.info-card li{font-size:.78rem;color:#6d28d9;line-height:1.6}
-.info-card ul{padding-left:16px;margin:6px 0}
-.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
-.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
-.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
-.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
-.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
-.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
-.filter-row{display:flex;gap:8px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
-.filter-row label{margin:0;font-size:.72rem;white-space:nowrap}
-.length-slider{flex:1;min-width:100px}
-@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.names-grid{grid-template-columns:1fr}.row3{grid-template-columns:1fr 1fr}.stats-bar{grid-template-columns:1fr}.name-workflow-grid{grid-template-columns:1fr}}
-</style>
-<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
-<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
-<script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
-
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"African Business Name Generator","description":"Generate business name ideas with African language roots, name scoring, domain search links, social handle links, and shortlist export.","url":"https://afrotools.com/tools/business-name-gen/","inLanguage":"en","applicationCategory":"BusinessApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/business-name-gen.webp"}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"https://afrotools.com/","url":"https://afrotools.com/","description":"https://afrotools.com/","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/business-name-gen.webp"}</script>
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
-<meta property="og:site_name" content="AfroTools">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="African Business Name Generator | Domain Search Links + 10 Languages | AfroTools">
-<meta name="twitter:description" content="Generate unique business names with African flair. Domain search links, social handle links, name scoring, and shortlist export.">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>African Business Name Shortlist Workshop | AfroTools</title>
+  <meta name="description" content="Build a deterministic business-name shortlist from your brief, compare transparent readability signals, save candidates and export a local verification checklist.">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#172554">
+  <meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
+  <meta property="og:title" content="African Business Name Shortlist Workshop">
+  <meta property="og:description" content="Create and compare business-name ideas locally, then take a careful registry, trademark, language and domain verification checklist.">
+  <meta property="og:url" content="https://afrotools.com/tools/business-name-gen/">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/business-name-gen.webp">
+  <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="African Business Name Shortlist Workshop | AfroTools">
+<meta name="twitter:description" content="Build a deterministic business-name shortlist from your brief, compare transparent readability signals, save candidates and export a local verification checklist.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/business-name-gen.webp">
-<script type="application/ld+json">
+  <link rel="icon" href="/assets/img/logo-mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <link rel="stylesheet" href="/assets/css/business-name-workshop.css?v=fc69fc35">
+  <script src="/assets/js/components/navbar.min.js?v=996960fa" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+  <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
+  "@graph": [
     {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "AfroTools",
-      "item": "https://afrotools.com/"
+      "@type": "WebApplication",
+      "name": "African Business Name Shortlist Workshop",
+      "url": "https://afrotools.com/tools/business-name-gen/",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Any",
+      "isAccessibleForFree": true,
+      "inLanguage": [
+        "en",
+        "fr",
+        "sw"
+      ],
+      "description": "A deterministic browser-local workshop for creating a business-name shortlist and planning independent verification.",
+      "image": "https://afrotools.com/assets/img/tools/business-name-gen.webp"
     },
     {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Tools",
-      "item": "https://afrotools.com/tools/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "African Business Name Generator",
-      "item": "https://afrotools.com/tools/business-name-gen/"
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Does this tool check whether a business name is available?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. It creates ideas only. Search the relevant company registries, trademarks, domains and social platforms independently before use."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does AfroTools store my naming brief?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The workshop keeps its working state only in the current browser session and does not send the brief to a server."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does the score mean?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It is a transparent readability heuristic based on length, word count, keyword connection, repeated characters and simple characters. It is not a legal or commercial quality score."
+          }
+        }
+      ]
     }
   ]
 }
 </script>
-<meta property="article:modified_time" content="2026-03-28">
-<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<!-- tool-structured-data:auto -->
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Should my African business have an African name?","acceptedAnswer":{"@type":"Answer","text":"It depends on your target market and brand strategy. African names can differentiate you, build cultural connection, and show authenticity. However, if you're targeting a global market, ensure the name is easy to pronounce and spell internationally. Many successful African companies use a mix — like Flutterwave (English) or M-Pesa (Swahili for mobile money)."}},{"@type":"Question","name":"How do I check if a business name is available?","acceptedAnswer":{"@type":"Answer","text":"Check multiple registries: CAC (Nigeria), CIPC (South Africa), BRS (Kenya), RGD (Ghana). Also search domain registrars, social media platforms, and trademark databases such as WIPO Global Brand Database. This tool gives you quick lookup links; it does not replace official registry, domain, social, or trademark checks."}},{"@type":"Question","name":"What makes a good business name?","acceptedAnswer":{"@type":"Answer","text":"A strong business name is: short (2-3 syllables), easy to spell and pronounce, has an available .com domain, carries positive meaning, is unique enough to trademark, and works well as a social media handle. Our name scoring system evaluates these factors automatically."}},{"@type":"Question","name":"How do I register a business name in Africa?","acceptedAnswer":{"@type":"Answer","text":"In Nigeria, register through CAC online portal. In South Africa, use CIPC BizPortal. In Kenya, use the Business Registration Service. In Ghana, use the Registrar General's Department. Registration typically costs $10-50 and takes 1-5 business days. Always register your domain name simultaneously."}}]}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"African Business Name Shortlist Workshop","item":"https://afrotools.com/tools/business-name-gen/"}]}
 </script>
-<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 <link rel="canonical" href="https://afrotools.com/tools/business-name-gen/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/business-name-gen/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-nom-entreprise/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kitengeneza-jina-la-biashara/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/business-name-gen/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body>
 <afro-navbar></afro-navbar>
-<section class="tool-hero"><div class="tool-hero-inner">
-<div class="breadcrumb"><a href="/">Home</a> / <a href="/vat-business-tax/">VAT & Business</a> / <span>Business Name Generator</span></div>
-<h1>African <em>Business Name Generator</em></h1>
-<p class="hero-sub">Generate unique, meaningful business names from 10 African languages. Review name strength, domain search links, and social handle links in one workspace.</p>
-<div class="hero-badges"><span class="badge b-em">50+ Names/Click</span><span class="badge b-em">10 African Languages</span><span class="badge b-em">Domain Links</span><span class="badge b-em">Name Scoring</span></div>
-</div></section>
-
-<section class="tool-main"><div class="tool-main-inner">
-<div class="calculator">
-<div class="card">
-<div class="card-head"><span class="card-title">Describe Your Business</span></div>
-<div class="card-body">
-<div class="row field">
-<div><label for="industry">Industry / Sector</label>
-<select id="industry">
-<option value="tech">Technology / Fintech</option>
-<option value="food">Food & Beverage</option>
-<option value="fashion">Fashion & Beauty</option>
-<option value="health">Health & Wellness</option>
-<option value="education">Education / EdTech</option>
-<option value="finance">Finance / Banking</option>
-<option value="logistics">Logistics / Transport</option>
-<option value="agri">Agriculture / AgriTech</option>
-<option value="media">Media / Entertainment</option>
-<option value="real-estate">Real Estate / PropTech</option>
-<option value="ecommerce">E-Commerce / Marketplace</option>
-<option value="energy">Energy / CleanTech</option>
-<option value="general">General / Other</option>
-</select></div>
-<div><label for="lang">Language Preference</label>
-<select id="lang" aria-label="Lang">
-<option value="any">Any African Language</option>
-<option value="yoruba">Yoruba (Nigeria)</option>
-<option value="swahili">Swahili (East Africa)</option>
-<option value="igbo">Igbo (Nigeria)</option>
-<option value="zulu">Zulu (South Africa)</option>
-<option value="akan">Akan / Twi (Ghana)</option>
-<option value="hausa">Hausa (West Africa)</option>
-<option value="amharic">Amharic (Ethiopia)</option>
-<option value="wolof">Wolof (Senegal)</option>
-<option value="shona">Shona (Zimbabwe)</option>
-<option value="lingala">Lingala (Congo)</option>
-</select></div>
-</div>
-
-<div class="field">
-<label for="keyword">Keywords (optional) — describe your brand in 1-3 words</label>
-<input aria-label="E.g. fast, green, trust, connect, pay" type="text" id="keyword" placeholder="e.g. fast, green, trust, connect, pay">
-</div>
-
-<div><label for="maxLen">Name Style</label></div>
-<div class="style-chips" id="styleChips">
-<button type="button" class="style-chip active" data-val="mix" onclick="setStyle(this)">Mix of All</button>
-<button type="button" class="style-chip" data-val="african" onclick="setStyle(this)">African Root</button>
-<button type="button" class="style-chip" data-val="modern" onclick="setStyle(this)">Modern / Tech</button>
-<button type="button" class="style-chip" data-val="compound" onclick="setStyle(this)">Compound</button>
-<button type="button" class="style-chip" data-val="acronym" onclick="setStyle(this)">Short / Acronym</button>
-<button type="button" class="style-chip" data-val="mashup" onclick="setStyle(this)">Mashup</button>
-</div>
-
-<div class="filter-row">
-<label>Max length:</label>
-<select id="maxLen" style="width:auto;padding:6px 10px">
-<option value="0">Any</option>
-<option value="6">6 chars (very short)</option>
-<option value="8" selected>8 chars</option>
-<option value="10">10 chars</option>
-<option value="14">14 chars</option>
-</select>
-<label style="margin-left:8px" for="checkDomains">Show domain links:</label>
-<input aria-label="Show domain search links" type="checkbox" id="checkDomains" checked style="width:auto;margin:0">
-</div>
-
-<button type="button" class="btn btn-primary" onclick="generate()">Generate Names</button>
-</div></div>
-
-<!-- Results -->
-<div class="card" id="resultCard" style="display:none">
-<div class="card-head"><span class="card-title">Generated Names <span style="font-weight:400;color:#94a3b8">click heart to save</span></span></div>
-<div class="card-body">
-<div class="stats-bar" id="statsBar"></div>
-<div class="names-grid" id="namesGrid"></div>
-<button type="button" class="btn btn-secondary" onclick="generate()">Generate More</button>
-<div class="name-actions" aria-label="Business name shortlist actions">
-<button type="button" onclick="copyGeneratedNames()">Copy shortlist</button>
-<button type="button" onclick="downloadGeneratedNames()">Download shortlist .txt</button>
-</div>
-<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
-<save-result-button tool-slug="business-name-gen" tool-name="Business Name Generator"></save-result-button>
-<share-result-button tool-name="Business Name Generator" tool-slug="business-name-gen"></share-result-button>
-</div>
-<p class="biz-status" id="bizNameStatus" aria-live="polite"></p>
-</div></div>
-
-<!-- Saved Names -->
-<div class="card">
-<div class="card-head"><span class="card-title">Saved Names (<span id="savedCount">0</span>)</span></div>
-<div class="card-body">
-<div class="saved-list" id="savedList"><p style="font-size:.82rem;color:#94a3b8">Click the heart icon on names above to save them here.</p></div>
-<button type="button" class="btn btn-secondary" id="exportBtn" style="display:none" onclick="exportSaved()">Export Saved Names</button>
-<p class="biz-status" id="bizSavedStatus" aria-live="polite"></p>
-</div></div>
-</div>
-
-<!-- Sidebar -->
-<div class="sidebar">
-<div class="card">
-<div class="card-head"><span class="card-title">Naming Tips</span></div>
-<div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
-<p><strong>1.</strong> Keep it short — 2-3 syllables is ideal</p>
-<p><strong>2.</strong> Easy to spell and pronounce across languages</p>
-<p><strong>3.</strong> Search .com domain options first</p>
-<p><strong>4.</strong> Verify no trademark conflicts (WIPO database)</p>
-<p><strong>5.</strong> Test with your target audience</p>
-<p><strong>6.</strong> Ensure it works in both English and local languages</p>
-<p><strong>7.</strong> Avoid names that sound negative in other African languages</p>
-<p><strong>8.</strong> Secure social media handles early</p>
-</div></div>
-<div class="info-card">
-<h4>Registration Checklist</h4>
-<ul>
-<li><strong>CAC</strong> — Nigeria business name search</li>
-<li><strong>CIPC BizPortal</strong> — South Africa</li>
-<li><strong>BRS</strong> — Kenya name check</li>
-<li><strong>RGD</strong> — Ghana name search</li>
-<li><strong>Domain</strong> — .com, .co.za, .ng, .co.ke</li>
-<li><strong>Social</strong> — IG, Twitter/X, Facebook, TikTok</li>
-<li><strong>Trademark</strong> — WIPO Global Brand Database</li>
-</ul>
-</div>
-<div class="info-card" style="margin-top:10px">
-<h4>Successful African Brands</h4>
-<ul>
-<li><strong>Flutterwave</strong> — Modern compound</li>
-<li><strong>Paystack</strong> — Keyword + suffix</li>
-<li><strong>Jumia</strong> — Made-up, memorable</li>
-<li><strong>Kuda</strong> — Yoruba-inspired</li>
-<li><strong>Safaricom</strong> — Swahili + suffix</li>
-<li><strong>Chipper</strong> — Modern, short</li>
-<li><strong>M-Pesa</strong> — Swahili (mobile money)</li>
-<li><strong>Andela</strong> — African root, global feel</li>
-<li><strong>Moniepoint</strong> — Compound + purpose</li>
-</ul>
-</div>
-<div class="info-card" style="margin-top:10px">
-<h4>Languages Included</h4>
-<p style="line-height:2">
-Yoruba (Nigeria) · Swahili (East Africa) · Igbo (Nigeria) · Zulu (South Africa) · Akan/Twi (Ghana) · Hausa (West Africa) · Amharic (Ethiopia) · Wolof (Senegal) · Shona (Zimbabwe) · Lingala (Congo)
-</p>
-</div>
-</div>
-</div></section>
-
-<section class="seo-section">
-<h2>Choosing the Right Business Name in Africa</h2>
-<p>Your business name is often the first impression customers have of your brand. In Africa's diverse market, a great name should be memorable, easy to pronounce across multiple languages, and ideally carry meaning or evoke positive associations. The best African brands combine local cultural elements with modern business sensibility.</p>
-<p>African languages offer a rich source of meaningful, distinctive business names. Words from Yoruba, Swahili, Igbo, Zulu, Akan, and other languages can convey powerful concepts like trust, speed, growth, and community. These names carry authenticity and cultural pride that resonates with African consumers while standing out in global markets.</p>
-<p>When choosing a name, consider these practical factors: Is the .com domain available? Can it be easily spelled when heard? Does it work in both English and local languages? Are the social media handles available? Does it infringe on existing trademarks? Our generator creates names across multiple styles and links to domain and social searches for verification.</p>
-<p>After selecting your name, register it quickly. In Nigeria, reserve through CAC (Corporate Affairs Commission). In South Africa, use CIPC's BizPortal. In Kenya, use the Business Registration Service (BRS). In Ghana, use the Registrar General's Department. Domain registration should be done simultaneously to secure your online presence.</p>
-
-<h2>Frequently Asked Questions</h2>
-<details class="faq-item"><summary>Should my African business have an African name?</summary><p>It depends on your target market and brand strategy. African names can differentiate you, build cultural connection, and show authenticity. However, if you're targeting a global market, ensure the name is easy to pronounce and spell internationally. Many successful African companies use a mix — like Flutterwave (English) or M-Pesa (Swahili for mobile money).</p></details>
-<details class="faq-item"><summary>How do I check if a business name is available?</summary><p>Check multiple registries: CAC (Nigeria), CIPC (South Africa), BRS (Kenya), RGD (Ghana). Also search domain registrars, social media platforms, and trademark databases such as WIPO Global Brand Database. This tool gives you quick lookup links; it does not replace official registry, domain, social, or trademark checks.</p></details>
-<details class="faq-item"><summary>What makes a good business name?</summary><p>A strong business name is: short (2-3 syllables), easy to spell and pronounce, has an available .com domain, carries positive meaning, is unique enough to trademark, and works well as a social media handle. Our name scoring system evaluates these factors automatically.</p></details>
-<details class="faq-item"><summary>How do I register a business name in Africa?</summary><p>In Nigeria, register through CAC online portal. In South Africa, use CIPC BizPortal. In Kenya, use the Business Registration Service. In Ghana, use the Registrar General's Department. Registration typically costs $10-50 and takes 1-5 business days. Always register your domain name simultaneously.</p></details>
-</section>
-
-<section class="name-workflow" data-tool-verification-panel aria-labelledby="business-name-workflow-title">
-  <div class="name-workflow-card">
-    <h2 id="business-name-workflow-title">Use the shortlist before you register</h2>
-    <p>Generated names are idea starters, not availability checks. Save the strongest options, then verify spelling, pronunciation, local business-registration rules, domain ownership, social handles, and trademark conflicts before paying for registration or branding.</p>
-    <div class="name-workflow-grid">
-      <div><strong>Methodology</strong>Combine industry, language family, style, length, and brand keywords into scored local name ideas.</div>
-      <div><strong>Result breakdown</strong>Review score, meaning, domain-search links, and social-handle links for each generated name.</div>
-      <div><strong>Export</strong>Copy or download a shortlist you can share with co-founders, designers, lawyers, or registration agents.</div>
+<main data-business-name-workshop data-locale="en" id="main-content">
+  <header class="bnw-hero"><div class="bnw-shell">
+    <nav class="bnw-crumb" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/small-business/">Small business</a> / Name workshop</nav>
+    <div class="bnw-kicker">Private, deterministic and browser-local</div>
+    <h1>African Business Name Shortlist Workshop</h1>
+    <p class="bnw-lead">Turn a clear business brief into 16–20 reproducible name prompts. Compare the visible readability factors, save a working shortlist, then verify every candidate independently.</p>
+    <div class="bnw-badges" aria-label="Tool qualities"><span>No sign-in</span><span>No network lookup</span><span>Session only</span><span>Local exports</span></div>
+  </div></header>
+  <div class="bnw-main"><div class="bnw-shell">
+    <div class="bnw-layout">
+      <section class="bnw-card">
+        <h2>1. Define the naming brief</h2>
+        <p class="bnw-note"><strong>Ideas, not clearance:</strong> the workshop does not check company, trademark, domain or social-handle availability and does not translate or certify local words.</p>
+        <form class="bnw-form" novalidate>
+          <div class="bnw-grid">
+            <div class="bnw-field bnw-field-wide"><label for="keywords">Keywords (required)</label><input id="keywords" name="keywords" required maxlength="130" placeholder="trust, payments, quick"><small class="bnw-help">Use up to five words separated by commas.</small></div>
+            <div class="bnw-field bnw-field-wide"><label for="localWord">Optional local word you already know</label><input id="localWord" name="localWord" maxlength="24" placeholder="A word supplied by you"><small class="bnw-help">We do not supply a meaning. Confirm pronunciation and meaning with a fluent speaker.</small></div>
+            <div class="bnw-field"><label for="industry">Industry</label><select id="industry" name="industry"><option value="technology">Technology</option><option value="food">Food</option><option value="fashion">Fashion</option><option value="health">Health</option><option value="education">Education</option><option value="finance">Finance</option><option value="logistics">Logistics</option><option value="agriculture">Agriculture</option><option value="media">Media</option><option value="property">Property</option><option value="commerce">Commerce</option><option value="energy">Energy</option><option value="general">General</option></select></div>
+            <div class="bnw-field"><label for="audience">Audience</label><select id="audience" name="audience"><option value="local">Local</option><option value="national">National</option><option value="regional" selected>Regional</option><option value="global">Global</option></select></div>
+            <div class="bnw-field"><label for="tone">Tone</label><select id="tone" name="tone"><option value="clear">Clear</option><option value="warm">Warm</option><option value="bold">Bold</option><option value="premium">Premium</option><option value="modern" selected>Modern</option></select></div>
+            <div class="bnw-field"><label for="style">Pattern</label><select id="style" name="style"><option value="mixed">Mixed</option><option value="descriptive">Descriptive</option><option value="compound">Compound</option><option value="short">Short</option><option value="evocative">Evocative</option></select></div>
+            <div class="bnw-field"><label for="maxLength">Maximum characters</label><input id="maxLength" name="maxLength" type="number" min="12" max="32" step="1" value="20"></div>
+          </div>
+          <div class="bnw-actions"><button class="bnw-btn bnw-btn-primary" data-generate type="submit"></button><button class="bnw-btn" data-next type="button"></button></div>
+        </form>
+        <p class="bnw-status" data-status role="status" aria-live="polite"></p>
+        <section class="bnw-results" aria-labelledby="results-title">
+          <div class="bnw-results-head"><div><h2 id="results-title">2. Compare the prompts</h2><p>The heuristic is mechanical and visible—not a prediction of success.</p></div><button class="bnw-btn" data-copy type="button">Copy summary</button></div>
+          <div class="bnw-results-grid" data-results></div>
+          <div class="bnw-export" aria-label="Export shortlist"><button class="bnw-btn" data-export="csv" type="button"></button><button class="bnw-btn" data-export="json" type="button"></button><button class="bnw-btn" data-export="pdf" type="button"></button><button class="bnw-btn" data-export="print" type="button"></button></div>
+        </section>
+      </section>
+      <aside class="bnw-aside">
+        <section class="bnw-card" hidden><h2 data-saved-title></h2><ol class="bnw-saved" data-saved></ol></section>
+        <section class="bnw-card"><h2>3. Verify before use</h2><ol class="bnw-checklist"><li>Say it aloud with intended customers.</li><li>Ask a fluent speaker to verify any local word.</li><li>Search company registries in every target country.</li><li>Search trademarks and close spellings.</li><li>Check domains and social handles separately.</li></ol></section>
+        <section class="bnw-card bnw-links"><h2>Official starting points</h2><p>These links open general official search services. AfroTools does not send a proposed name or interpret a result.</p><a href="https://www.wipo.int/en/web/global-brand-database" target="_blank" rel="noopener noreferrer">WIPO Global Brand Database</a><a href="https://icrp.cac.gov.ng/public-search" target="_blank" rel="noopener noreferrer">Nigeria CAC public search</a><a href="https://eservices.cipc.co.za/Search.aspx" target="_blank" rel="noopener noreferrer">South Africa CIPC search service</a><a href="https://orc.gov.gh/service/entity-information-search/" target="_blank" rel="noopener noreferrer">Ghana ORC entity search</a><a href="https://org.rdb.rw/" target="_blank" rel="noopener noreferrer">Rwanda Office of the Registrar General</a></section>
+      </aside>
     </div>
-  </div>
-</section>
-<afro-related-tools category="ecommerce" current="business-name-gen" data-ssr="1">
+    <section class="bnw-card bnw-seo"><h2>How to shortlist a business name responsibly</h2><div class="bnw-seo-grid"><div><h3>Start with the brief</h3><p>A useful shortlist reflects what the business does, who it serves, the desired tone and the markets where the name must work. This tool combines those user-supplied signals through fixed patterns, so the same brief and set number produce the same ideas.</p></div><div><h3>Separate ideation from verification</h3><p>Readable does not mean registrable. Company-name rules, trademark conflicts, language associations, domains and social handles are different checks. Keep evidence from the relevant official registry and professional advisers when the decision matters.</p></div></div></section>
+  </div></div>
+</main>
+<afro-related-tools data-ssr="1" category="ecommerce" current="business-name-gen">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/tools/vat-calculator/" data-related-tool data-id="vat-calc-pan-african" data-name="VAT Calculator (Pan-African)" data-category="ecommerce" data-icon="VC" data-desc="All 50+ African countries. Add VAT, extract VAT, compare countries side-by-side. 2025/26 rates.">VAT Calculator (Pan-African)</a></li><li><a href="/nigeria/ng-vat" data-related-tool data-id="ng-vat" data-name="Nigeria VAT Calculator" data-category="ecommerce" data-icon="NV" data-desc="NTA 2026 VAT: 7.5% standard, zero-rated, exempt categories. Reverse VAT included.">Nigeria VAT Calculator</a></li><li><a href="/south-africa/za-vat" data-related-tool data-id="za-vat" data-name="South Africa VAT Calculator" data-category="ecommerce" data-icon="SA" data-desc="SARS VAT 15%, zero-rated, exempt. Inclusive/exclusive. Vendor registration threshold.">South Africa VAT Calculator</a></li><li><a href="/kenya/ke-vat" data-related-tool data-id="ke-vat" data-name="Kenya VAT Calculator" data-category="ecommerce" data-icon="KV" data-desc="KRA VAT 16%, zero-rated, exempt. Reverse VAT and inclusive/exclusive toggle.">Kenya VAT Calculator</a></li><li><a href="/egypt/eg-vat" data-related-tool data-id="eg-vat" data-name="Egypt VAT Calculator" data-category="ecommerce" data-icon="EV" data-desc="ETA VAT 14%. Standard + reduced rates. Table tax.">Egypt VAT Calculator</a></li><li><a href="/ghana/gh-vat" data-related-tool data-id="gh-vat" data-name="Ghana VAT Calculator" data-category="ecommerce" data-icon="GV" data-desc="GRA VAT 15% + 2.5% NHIL + 2.5% GETFund. Standard effective charge and zero-rated supplies.">Ghana VAT Calculator</a></li></ul>
+<ul class="seo-links-list"><li><a href="/tools/vat-calculator/" data-related-tool data-id="vat-calc-pan-african" data-name="VAT Calculator (Pan-African)" data-category="ecommerce" data-icon="VC" data-desc="Custom-rate-first VAT planning, invoices, withholding scenarios, and rate comparisons, with authority-bound presets only">VAT Calculator (Pan-African)</a></li><li><a href="/nigeria/ng-vat" data-related-tool data-id="ng-vat" data-name="Nigeria VAT Calculator" data-category="ecommerce" data-icon="NV" data-desc="Add or extract Nigeria VAT at 7.5%, compare zero-rated and exempt treatment, build invoice estimates, and export a priva">Nigeria VAT Calculator</a></li><li><a href="/south-africa/za-vat" data-related-tool data-id="za-vat" data-name="South Africa VAT Calculator" data-category="ecommerce" data-icon="SA" data-desc="Add or extract VAT at the current 15% rate, keep confirmed zero-rated and exempt treatment distinct, screen 2026 registr">South Africa VAT Calculator</a></li><li><a href="/kenya/ke-vat" data-related-tool data-id="ke-vat" data-name="Kenya VAT Calculator" data-category="ecommerce" data-icon="KV" data-desc="Add or extract Kenya VAT at 16%, keep confirmed zero-rated and exempt treatment distinct, build invoice estimates, and e">Kenya VAT Calculator</a></li><li><a href="/egypt/eg-vat" data-related-tool data-id="eg-vat" data-name="Egypt VAT Calculator" data-category="ecommerce" data-icon="EV" data-desc="Add or extract Egypt&#39;s standard 14% VAT, screen the general registration threshold, and test clearly labelled non-statut">Egypt VAT Calculator</a></li><li><a href="/ghana/gh-vat" data-related-tool data-id="gh-vat" data-name="Ghana VAT Calculator" data-category="ecommerce" data-icon="GV" data-desc="Plan Ghana invoices under the 2026 GRA structure: 15% VAT, 2.5% NHIL and 2.5% GETFund on the same base.">Ghana VAT Calculator</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
-<script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
-<afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
-
-<script>
-var ROOTS = {
-  yoruba: [
-    {word:'Owo',meaning:'Money/Wealth'},{word:'Aje',meaning:'Prosperity'},{word:'Ire',meaning:'Goodness'},
-    {word:'Aanu',meaning:'Mercy/Grace'},{word:'Ola',meaning:'Wealth/Honour'},{word:'Ayo',meaning:'Joy'},
-    {word:'Ife',meaning:'Love'},{word:'Dara',meaning:'Good/Beautiful'},{word:'Imole',meaning:'Light'},
-    {word:'Agba',meaning:'Elder/Great'},{word:'Orun',meaning:'Sky/Heaven'},{word:'Ade',meaning:'Crown'},
-    {word:'Ile',meaning:'Home'},{word:'Ona',meaning:'Path/Way'},{word:'Eko',meaning:'Lagos/Learning'},
-    {word:'Iwa',meaning:'Character'},{word:'Ore',meaning:'Friend'},{word:'Alayo',meaning:'Joyful'},
-    {word:'Temi',meaning:'Mine'},{word:'Remi',meaning:'Comforts me'}
-  ],
-  swahili: [
-    {word:'Haraka',meaning:'Speed'},{word:'Amani',meaning:'Peace'},{word:'Furaha',meaning:'Happiness'},
-    {word:'Nguvu',meaning:'Strength'},{word:'Imara',meaning:'Firm/Strong'},{word:'Hodari',meaning:'Brave'},
-    {word:'Jamii',meaning:'Community'},{word:'Elimu',meaning:'Education'},{word:'Afya',meaning:'Health'},
-    {word:'Baraka',meaning:'Blessings'},{word:'Pesa',meaning:'Money'},{word:'Safari',meaning:'Journey'},
-    {word:'Nyota',meaning:'Star'},{word:'Simba',meaning:'Lion'},{word:'Mwanga',meaning:'Light'},
-    {word:'Ujamaa',meaning:'Unity'},{word:'Rafiki',meaning:'Friend'},{word:'Duka',meaning:'Shop'},
-    {word:'Bora',meaning:'Best'},{word:'Pamoja',meaning:'Together'}
-  ],
-  igbo: [
-    {word:'Aku',meaning:'Wealth'},{word:'Ndi',meaning:'People'},{word:'Ezi',meaning:'Good/True'},
-    {word:'Olu',meaning:'God/Work'},{word:'Chi',meaning:'God/Spirit'},{word:'Nma',meaning:'Beauty'},
-    {word:'Obi',meaning:'Heart'},{word:'Udo',meaning:'Peace'},{word:'Ike',meaning:'Power'},
-    {word:'Ugo',meaning:'Eagle'},{word:'Ala',meaning:'Earth/Land'},{word:'Izu',meaning:'Wisdom'},
-    {word:'Azu',meaning:'Support'},{word:'Nkem',meaning:'Mine'},{word:'Ozo',meaning:'Noble'}
-  ],
-  zulu: [
-    {word:'Amandla',meaning:'Power'},{word:'Ithemba',meaning:'Hope'},{word:'Thula',meaning:'Peace'},
-    {word:'Inkosi',meaning:'Chief/King'},{word:'Ikhaya',meaning:'Home'},{word:'Ubuhle',meaning:'Beauty'},
-    {word:'Isibani',meaning:'Lamp/Light'},{word:'Umoya',meaning:'Spirit/Wind'},
-    {word:'Intaba',meaning:'Mountain'},{word:'Indlela',meaning:'Path/Way'},{word:'Ithuba',meaning:'Opportunity'},
-    {word:'Hlala',meaning:'Stay/Live'},{word:'Zama',meaning:'Try/Strive'}
-  ],
-  akan: [
-    {word:'Nkosuo',meaning:'Progress'},{word:'Adom',meaning:'Grace'},{word:'Nyame',meaning:'God'},
-    {word:'Adwuma',meaning:'Work'},{word:'Sika',meaning:'Gold/Money'},{word:'Biribi',meaning:'Something Great'},
-    {word:'Anidaso',meaning:'Hope'},{word:'Ahooden',meaning:'Strength'},{word:'Nimdefo',meaning:'Wisdom'},
-    {word:'Ahomka',meaning:'Fame'},{word:'Nkunim',meaning:'Victory'},{word:'Aseda',meaning:'Gratitude'}
-  ],
-  hausa: [
-    {word:'Arziqi',meaning:'Prosperity'},{word:'Nasara',meaning:'Victory'},{word:'Amana',meaning:'Trust'},
-    {word:'Hikima',meaning:'Wisdom'},{word:'Karfi',meaning:'Strength'},{word:'Hanya',meaning:'Path'},
-    {word:'Nagari',meaning:'Town/City'},{word:'Kasuwanci',meaning:'Commerce'},{word:'Gaskiya',meaning:'Truth'},
-    {word:'Cigaba',meaning:'Progress'},{word:'Albarka',meaning:'Blessing'}
-  ],
-  amharic: [
-    {word:'Selam',meaning:'Peace'},{word:'Fikir',meaning:'Love'},{word:'Birhan',meaning:'Light'},
-    {word:'Tesfa',meaning:'Hope'},{word:'Hayl',meaning:'Power'},{word:'Nigist',meaning:'Queen'},
-    {word:'Abay',meaning:'Great'},{word:'Betam',meaning:'Very/Great'},
-    {word:'Desta',meaning:'Joy'},{word:'Hiwot',meaning:'Life'},{word:'Getnet',meaning:'Wealth'}
-  ],
-  wolof: [
-    {word:'Teranga',meaning:'Hospitality'},{word:'Diom',meaning:'Trust'},{word:'Jom',meaning:'Honour'},
-    {word:'Njamm',meaning:'Together'},{word:'Liggey',meaning:'Work'},{word:'Yalla',meaning:'God'},
-    {word:'Ndey',meaning:'Mother'},{word:'Tekki',meaning:'Success'},{word:'Bakh',meaning:'Good'},
-    {word:'Xam',meaning:'Knowledge'}
-  ],
-  shona: [
-    {word:'Rudo',meaning:'Love'},{word:'Simba',meaning:'Strength'},{word:'Rufaro',meaning:'Joy'},
-    {word:'Tariro',meaning:'Hope'},{word:'Nyasha',meaning:'Grace'},{word:'Kuda',meaning:'Love'},
-    {word:'Tenda',meaning:'Thanks'},{word:'Ziva',meaning:'Know'},{word:'Chipo',meaning:'Gift'},
-    {word:'Mufaro',meaning:'Happiness'}
-  ],
-  lingala: [
-    {word:'Bolingo',meaning:'Love'},{word:'Esengo',meaning:'Joy'},{word:'Makasi',meaning:'Strong'},
-    {word:'Motema',meaning:'Heart'},{word:'Nzela',meaning:'Path/Way'},{word:'Bomoi',meaning:'Life'},
-    {word:'Kimia',meaning:'Peace'},{word:'Mpiko',meaning:'Courage'},{word:'Bozali',meaning:'Generosity'}
-  ]
-};
-
-var SUFFIXES = {
-  tech:['Hub','Labs','Stack','Wave','Fi','Pay','Verse','Link','Net','Base','Cloud','Bit','Sync','Flow','AI','IO','Dev'],
-  food:['Bites','Kitchen','Eats','Plate','Bowl','Table','Fresh','Taste','Chef','Grill','Pot','Farm'],
-  fashion:['Wear','Style','Chic','Look','Fabric','Thread','Luxe','Glam','Studio','Atelier','Haus'],
-  health:['Care','Med','Vita','Well','Life','Health','Cure','Fit','Pulse','Doc','Plus'],
-  education:['Learn','Ed','Academy','Class','Study','Brain','Wise','Tutor','School','Quest'],
-  finance:['Pay','Fi','Capital','Vest','Fund','Cash','Coin','Bank','Save','Wealth','Money'],
-  logistics:['Go','Move','Ship','Route','Dash','Fast','Fleet','Ride','Track','Express','Box'],
-  agri:['Farm','Grow','Harvest','Seed','Green','Field','Crop','Root','Terra','Soil'],
-  media:['Cast','Stream','View','Show','Vibe','Buzz','Pulse','Beat','Studio','Live','Play'],
-  'real-estate':['Homes','Space','Place','Land','Build','Nest','Haven','Block','Estate','Lot'],
-  ecommerce:['Mart','Shop','Buy','Cart','Store','Deal','Market','Trade','Mall','Sell'],
-  energy:['Sol','Power','Watt','Volt','Grid','Sun','Charge','Amp','Eco','Green'],
-  general:['Hub','Pro','Plus','Works','Group','Co','Core','Prime','One','Max','Up']
-};
-
-var PREFIXES_MODERN = ['Neo','Vu','Zu','Ka','Ki','Mo','Ta','Ze','Ri','Ba','Nu','Mi','Qi','Xe','Jo','Da','Fa','So','Lu','Wa','Ku','Ya','Zi','Eko','Ayo'];
-
-var saved = JSON.parse(localStorage.getItem('biz_names') || '[]');
-var currentStyle = 'mix';
-var lastNames = [];
-
-function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-
-function setStyle(btn) {
-  document.querySelectorAll('#styleChips .style-chip').forEach(function(b){b.classList.remove('active')});
-  btn.classList.add('active');
-  currentStyle = btn.dataset.val;
-}
-
-function scoreName(name) {
-  var score = 50;
-  var len = name.length;
-  if (len <= 5) score += 25;
-  else if (len <= 7) score += 20;
-  else if (len <= 9) score += 10;
-  else if (len > 12) score -= 15;
-
-  // Pronounceability: vowel-consonant ratio
-  var vowels = (name.match(/[aeiou]/gi) || []).length;
-  var ratio = vowels / len;
-  if (ratio >= 0.3 && ratio <= 0.55) score += 15;
-  else if (ratio < 0.2 || ratio > 0.65) score -= 10;
-
-  // No consecutive consonants > 3
-  if (/[^aeiou]{4,}/i.test(name)) score -= 15;
-
-  // Starts with uppercase-friendly letter
-  if (/^[A-Z]/.test(name)) score += 5;
-
-  return Math.max(10, Math.min(100, score));
-}
-
-function generate() {
-  var industry = document.getElementById('industry').value;
-  var style = currentStyle;
-  var keyword = document.getElementById('keyword').value.trim();
-  var lang = document.getElementById('lang').value;
-  var maxLen = +document.getElementById('maxLen').value;
-  var checkDomains = document.getElementById('checkDomains').checked;
-  var suffixes = SUFFIXES[industry] || SUFFIXES.general;
-
-  var langRoots;
-  if (lang === 'any') {
-    langRoots = [];
-    Object.keys(ROOTS).forEach(function(l) {
-      ROOTS[l].forEach(function(w) { langRoots.push({word:w.word, meaning:w.meaning, lang:l}); });
-    });
-  } else {
-    langRoots = (ROOTS[lang] || []).map(function(w) { return {word:w.word, meaning:w.meaning, lang:lang}; });
-  }
-
-  var names = [];
-  var attempts = 0;
-
-  while (names.length < 30 && attempts < 200) {
-    attempts++;
-    var s = style === 'mix' ? pick(['african','african','modern','compound','acronym','mashup']) : style;
-    var entry = null;
-
-    if (s === 'african' && langRoots.length) {
-      var root = pick(langRoots);
-      var suf = pick(suffixes);
-      entry = {name: root.word + suf, type: root.lang.charAt(0).toUpperCase()+root.lang.slice(1) + ' Root', meaning: '"' + root.word + '" = "' + root.meaning + '" (' + root.lang + ')'};
-    } else if (s === 'modern') {
-      var pre = pick(PREFIXES_MODERN);
-      var suf = pick(suffixes);
-      entry = {name: pre + suf, type: 'Modern', meaning: 'Tech-forward brand name'};
-    } else if (s === 'compound') {
-      if (keyword) {
-        var cap = keyword.charAt(0).toUpperCase() + keyword.slice(1).toLowerCase();
-        entry = {name: cap + pick(suffixes), type: 'Keyword', meaning: 'Based on "' + keyword + '"'};
-      } else if (langRoots.length) {
-        var root = pick(langRoots);
-        entry = {name: root.word + pick(suffixes), type: 'Compound', meaning: '"' + root.word + '" = "' + root.meaning + '"'};
-      }
-    } else if (s === 'mashup' && langRoots.length) {
-      var r1 = pick(langRoots);
-      var r2 = pick(langRoots);
-      if (r1.word !== r2.word) {
-        var w1 = r1.word.slice(0, Math.ceil(r1.word.length * 0.6));
-        var w2 = r2.word.slice(Math.floor(r2.word.length * 0.4));
-        entry = {name: w1 + w2, type: 'Mashup', meaning: '"' + r1.word + '" + "' + r2.word + '" (' + r1.lang + '/' + r2.lang + ')'};
-      }
-    } else {
-      var letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-      var acr = '';
-      for (var j = 0; j < pick([2,3,3,4]); j++) acr += letters[Math.floor(Math.random()*26)];
-      entry = {name: acr + pick(suffixes), type: 'Acronym', meaning: 'Short, memorable brand'};
-    }
-
-    if (!entry) continue;
-    if (maxLen > 0 && entry.name.length > maxLen) continue;
-    entry.name = entry.name.replace(/\s+/g, '');
-    if (names.some(function(n){return n.name === entry.name})) continue;
-    entry.score = scoreName(entry.name);
-    names.push(entry);
-  }
-
-  // Sort by score descending
-  names.sort(function(a,b) { return b.score - a.score; });
-  lastNames = names;
-
-  // Stats
-  var avgScore = Math.round(names.reduce(function(s,n){return s+n.score},0) / names.length);
-  document.getElementById('statsBar').innerHTML =
-    '<div class="stat-item"><div class="stat-val">' + names.length + '</div><div class="stat-label">Names Generated</div></div>' +
-    '<div class="stat-item"><div class="stat-val">' + avgScore + '/100</div><div class="stat-label">Avg Score</div></div>' +
-    '<div class="stat-item"><div class="stat-val">' + names.filter(function(n){return n.score >= 70}).length + '</div><div class="stat-label">Strong Names</div></div>';
-
-  // Render names
-  var html = '';
-  names.forEach(function(n) {
-    var isSaved = saved.indexOf(n.name) >= 0;
-    var scoreClass = n.score >= 70 ? 'score-high' : n.score >= 45 ? 'score-mid' : 'score-low';
-    var slug = n.name.toLowerCase().replace(/[^a-z0-9]/g, '');
-    var domainHtml = checkDomains ? (
-      '<div class="domain-row">' +
-        '<a class="domain-tag dt-check" href="https://www.namecheap.com/domains/registration/results/?domain=' + slug + '.com" target="_blank" rel="noopener">' + slug + '.com</a>' +
-        '<a class="domain-tag dt-check" href="https://www.namecheap.com/domains/registration/results/?domain=' + slug + '.io" target="_blank" rel="noopener">.io</a>' +
-        '<a class="domain-tag dt-check" href="https://www.namecheap.com/domains/registration/results/?domain=' + slug + '.co" target="_blank" rel="noopener">.co</a>' +
-      '</div>'
-    ) : '';
-
-    html += '<div class="name-card' + (isSaved ? ' saved' : '') + '" data-name="' + n.name.replace(/"/g,'&quot;') + '">' +
-      '<div class="nm"><span>' + n.name + '</span><span class="save-icon" onclick="toggleSave(\'' + n.name.replace(/'/g,"\\'") + '\',event)">&#x2661;</span></div>' +
-      '<div class="type">' + n.type + '</div>' +
-      '<div class="meaning">' + n.meaning + '</div>' +
-      '<span class="score ' + scoreClass + '">' + n.score + '/100</span>' +
-      domainHtml +
-      '<div class="social-links">' +
-        '<a href="https://www.instagram.com/' + slug + '/" target="_blank" rel="noopener">IG</a>' +
-        '<a href="https://twitter.com/' + slug + '" target="_blank" rel="noopener">X</a>' +
-        '<a href="https://www.tiktok.com/@' + slug + '" target="_blank" rel="noopener">TikTok</a>' +
-        '<a href="https://www.facebook.com/' + slug + '" target="_blank" rel="noopener">FB</a>' +
-      '</div>' +
-    '</div>';
-  });
-  document.getElementById('namesGrid').innerHTML = html;
-  document.getElementById('resultCard').style.display = 'block';
-
-  // Wire save/share
-  var topNames = names.slice(0,5).map(function(n){return n.name});
-  var _saveBtn = document.querySelector('save-result-button');
-  if (_saveBtn) _saveBtn.setData({
-    inputs: {industry: industry, style: style, keyword: keyword || 'none'},
-    outputs: {totalGenerated: names.length, topNames: topNames.join(', '), avgScore: avgScore}
-  });
-  var _shareBtn = document.querySelector('share-result-button');
-  if (_shareBtn) _shareBtn.setResult({
-    headline: 'Business Name Ideas',
-    mainValue: names[0].name,
-    subValues: [
-      {label: 'Score', value: names[0].score + '/100'},
-      {label: 'Style', value: names[0].type},
-      {label: 'Generated', value: names.length + ' names'}
-    ]
-  });
-
-  if (window.gtag) gtag('event', 'name_gen', {industry: industry, style: style, count: names.length});
-}
-
-function toggleSave(name, evt) {
-  if (evt) evt.stopPropagation();
-  var idx = saved.indexOf(name);
-  if (idx >= 0) saved.splice(idx, 1);
-  else saved.push(name);
-  localStorage.setItem('biz_names', JSON.stringify(saved));
-  renderSaved();
-  document.querySelectorAll('.name-card').forEach(function(c) {
-    var nm = c.dataset.name;
-    c.classList.toggle('saved', saved.indexOf(nm) >= 0);
-  });
-}
-
-function renderSaved() {
-  document.getElementById('savedCount').textContent = saved.length;
-  if (!saved.length) {
-    document.getElementById('savedList').innerHTML = '<p style="font-size:.82rem;color:#94a3b8">Click the heart icon on names above to save them here.</p>';
-    document.getElementById('exportBtn').style.display = 'none';
-    return;
-  }
-  var html = '';
-  saved.forEach(function(n) {
-    var slug = n.toLowerCase().replace(/[^a-z0-9]/g, '');
-    html += '<div class="saved-item"><span>' + n + '</span><div style="display:flex;gap:6px;align-items:center">' +
-      '<a href="https://www.namecheap.com/domains/registration/results/?domain=' + slug + '.com" target="_blank" rel="noopener" style="font-size:.66rem;color:#7c3aed;text-decoration:none">.com?</a>' +
-      '<button type="button" onclick="event.stopPropagation();toggleSave(\'' + n.replace(/'/g,"\\'") + '\')">Remove</button></div></div>';
-  });
-  document.getElementById('savedList').innerHTML = html;
-  document.getElementById('exportBtn').style.display = 'block';
-}
-
-function exportSaved() {
-  if (!saved.length) {
-    setBizStatus('bizSavedStatus', 'Save at least one name before exporting.');
-    return;
-  }
-  var text = 'SAVED BUSINESS NAMES\n' + '='.repeat(40) + '\n\n';
-  saved.forEach(function(n,i) {
-    var slug = n.toLowerCase().replace(/[^a-z0-9]/g, '');
-    text += (i+1) + '. ' + n + '\n   Domain search: https://www.namecheap.com/domains/registration/results/?domain=' + slug + '.com\n\n';
-  });
-  text += '\nVerification note: confirm business registry, domain, social handle, and trademark availability before using a name.\nGenerated by AfroTools Business Name Generator\nhttps://afrotools.com/tools/business-name-gen/\n';
-  var blob = new Blob([text], {type: 'text/plain'});
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'afrotools-saved-names.txt';
-  a.setAttribute('data-no-pdf-gate', 'true');
-  document.body.appendChild(a);
-  a.click();
-  setTimeout(function() {
-    URL.revokeObjectURL(a.href);
-    a.remove();
-  }, 0);
-  setBizStatus('bizSavedStatus', 'Saved names downloaded.');
-}
-
-function generatedNamesText() {
-  if (!lastNames.length) return '';
-  var lines = [
-    'AfroTools business-name shortlist',
-    'Generated: ' + new Date().toISOString(),
-    'Verification note: these are idea starters. Confirm registry, domain, social handle, and trademark availability before use.',
-    ''
-  ];
-  lastNames.slice(0, 20).forEach(function(n, i) {
-    var slug = n.name.toLowerCase().replace(/[^a-z0-9]/g, '');
-    lines.push((i + 1) + '. ' + n.name + ' - ' + n.type + ' - score ' + n.score + '/100');
-    lines.push('   Meaning: ' + n.meaning);
-    lines.push('   Domain search: https://www.namecheap.com/domains/registration/results/?domain=' + slug + '.com');
-  });
-  return lines.join('\n');
-}
-
-function copyGeneratedNames() {
-  var text = generatedNamesText();
-  if (!text) {
-    setBizStatus('bizNameStatus', 'Generate names before copying a shortlist.');
-    return;
-  }
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(function() {
-      setBizStatus('bizNameStatus', 'Shortlist copied.');
-    }).catch(function() {
-      fallbackBizCopy(text, 'Shortlist copied.');
-    });
-  } else {
-    fallbackBizCopy(text, 'Shortlist copied.');
-  }
-}
-
-function downloadGeneratedNames() {
-  var text = generatedNamesText();
-  if (!text) {
-    setBizStatus('bizNameStatus', 'Generate names before downloading a shortlist.');
-    return;
-  }
-  var blob = new Blob([text + '\n'], {type: 'text/plain;charset=utf-8'});
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'afrotools-business-name-shortlist.txt';
-  a.setAttribute('data-no-pdf-gate', 'true');
-  document.body.appendChild(a);
-  a.click();
-  setTimeout(function() {
-    URL.revokeObjectURL(a.href);
-    a.remove();
-  }, 0);
-  setBizStatus('bizNameStatus', 'Shortlist downloaded.');
-}
-
-function fallbackBizCopy(text, message) {
-  var ta = document.createElement('textarea');
-  ta.value = text;
-  ta.setAttribute('readonly', '');
-  ta.style.position = 'fixed';
-  ta.style.left = '-9999px';
-  document.body.appendChild(ta);
-  ta.select();
-  try { document.execCommand('copy'); } catch (err) {}
-  ta.remove();
-  setBizStatus('bizNameStatus', message);
-}
-
-function setBizStatus(id, message) {
-  var el = document.getElementById(id);
-  if (el) el.textContent = message;
-}
-
-renderSaved();
-</script>
-<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
-<script src="/assets/js/components/related-tools.min.js?v=e25622fc" defer></script>
+<script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c"></script>
+<script src="/assets/js/engines/business-name-workshop.js?v=8207fce8"></script>
+<script src="/assets/js/pages/business-name-workshop.js?v=3ca10144"></script>
+<script src="/assets/js/components/related-tools.min.js?v=f3f910a8" defer></script>
 </body>
 </html>

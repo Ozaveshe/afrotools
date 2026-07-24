@@ -1,0 +1,36 @@
+{
+  "reviewedBy": "Codex Day 3 release gate",
+  "reviewedAt": "2026-07-22",
+  "sourceUrl": "https://www.journalofficiel.dj/texte-juridique/loi-de-finances-n142-an-21-8eme-l-portant-budget-initial-de-letat-pour-lexercice-2022/",
+  "reason": "Replace four contradictory Djibouti payroll implementations with one reviewed monthly contract. The shared engine applies the Finance Law 2022 Article 7 eight-band ITS schedule, the taxable-remuneration exemption, CGI Articles 6 and 14, and official CNSS employee, employer and contribution-floor rules. English, French, Swahili, server and widget now use that one engine; the obsolete French formula route is a noindex handoff to the canonical French app.",
+  "formulaIds": ["paye-browser-dj", "paye-server-dj", "route-dj-paye", "route-dj-paye-fr"],
+  "fixtureDeltas": [
+    {
+      "fixtureId": "paye-dj-defaults",
+      "previousExpected": {"deductions.totalDeductions": 148000, "result.netAnnual": 852000, "result.netMonthly": 71000, "tax.netTax": 108000},
+      "nextExpected": {"deductions.totalDeductions": 141000, "result.netAnnual": 859000, "result.netMonthly": 71583, "tax.netTax": 81000},
+      "reason": "The annual fixture is converted to a repeated monthly case and now applies 6% employee CNSS, the DJF 50,000 exemption, DJF 5,000 taxable-income floor, and the current marginal ITS bands.",
+      "sourceUrl": "https://www.journalofficiel.dj/texte-juridique/loi-de-finances-n142-an-21-8eme-l-portant-budget-initial-de-letat-pour-lexercice-2022/",
+      "reviewedBy": "Codex Day 3 release gate",
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "fixtureId": "paye-dj-large-decimal",
+      "previousExpected": {"deductions.totalDeductions": 327798400, "result.netAnnual": 672201601, "result.netMonthly": 56016800, "tax.netTax": 287798400},
+      "nextExpected": {"deductions.totalDeductions": 479334000, "result.netAnnual": 520666001, "result.netMonthly": 43388833, "tax.netTax": 419334000},
+      "reason": "The high-income fixture now reaches the statutory 45% top marginal band after employee CNSS and statutory taxable-income flooring instead of the obsolete six-band model.",
+      "sourceUrl": "https://www.journalofficiel.dj/texte-juridique/loi-de-finances-n142-an-21-8eme-l-portant-budget-initial-de-letat-pour-lexercice-2022/",
+      "reviewedBy": "Codex Day 3 release gate",
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "fixtureId": "paye-dj-zero",
+      "previousExpected": {"deductions.totalDeductions": 0, "result.netAnnual": 0, "result.netMonthly": 0, "tax.netTax": 0},
+      "nextExpected": {"deductions.totalDeductions": 0, "result.netAnnual": 0, "result.netMonthly": 0, "tax.netTax": 0},
+      "reason": "The zero-income baseline remains zero and does not trigger a CNSS contribution floor.",
+      "sourceUrl": "https://cnss.dj/declaration-et-versement-des-cotisations/",
+      "reviewedBy": "Codex Day 3 release gate",
+      "reviewedAt": "2026-07-22"
+    }
+  ]
+}

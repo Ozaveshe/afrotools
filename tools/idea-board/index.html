@@ -1,961 +1,106 @@
-<!DOCTYPE html>
+<!doctype html>
 <html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>African Business Ideas 2026 — Startup ROI | AfroTools</title>
-<meta name="description" content="Discover 11,000+ profitable business ideas across Africa with real startup costs, breakeven timelines, and AI-powered feasibility analysis for all 54 African countries.">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>African Business Idea Evidence Explorer | AfroTools</title>
+<meta name="description" content="Explore submitted African business-idea records by country and sector, inspect source gaps, and compare up to six planning estimates locally.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="AfroIdeas — Business Idea Explorer for Africa">
-<meta property="og:url" content="https://afrotools.com/tools/idea-board/">
-<meta property="og:type" content="website">
-<meta property="og:description" content="11,000+ business ideas with real startup costs, breakeven timelines & AI analysis for 54 African countries.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/idea-board.webp">
 <meta name="tool-id" content="idea-board">
-<meta name="tool-category" content="financial">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<script src="/assets/js/afro-auth.js?v=4250956b"></script>
-<script src="/engines/afroideas-engine.js?v=d856fa9b"></script>
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
-<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
-<style>
-*{box-sizing:border-box}
-body{font-family:'DM Sans',system-ui,sans-serif;background:var(--color-bg,#F8FAFD);color:var(--color-text,#0f172a);margin:0;-webkit-font-smoothing:antialiased}
-a{text-decoration:none;color:inherit}
-.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
-h1,h2,h3,h4{font-weight:800;letter-spacing:-.01em}
-
-/* HERO */
-.hero{background:#0A1628;padding:56px 0 48px;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-150px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(0,98,204,.22) 0%,transparent 70%);pointer-events:none}
-.hero::after{content:'';position:absolute;bottom:-100px;left:-50px;width:400px;height:400px;background:radial-gradient(circle,rgba(96,181,255,.14) 0%,transparent 70%);pointer-events:none}
-.hero-z{position:relative;z-index:1}
-.hero .eyebrow{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#0062CC;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-
-.hero h1{font-size:clamp(1.8rem,5vw,3rem);color:#fff;margin:0 0 14px;line-height:1.1;letter-spacing:-.02em}
-.hero h1 em{color:#F5A623;font-style:normal}
-.hero-sub{font-size:.95rem;color:rgba(255,255,255,.55);line-height:1.65;max-width:580px;margin-bottom:28px}
-.hero-form{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
-.hero-form select,.hero-form input{padding:12px 16px;border:1.5px solid rgba(255,255,255,.15);border-radius:980px;background:rgba(255,255,255,.06);color:#fff;font-family:inherit;font-size:.9rem;font-weight:500;backdrop-filter:blur(8px);outline:none;transition:border-color .2s}
-.hero-form select:focus,.hero-form input:focus{border-color:#0062CC}
-.hero-form select option{background:#0A1628;color:#fff}
-.hero-form input::placeholder{color:rgba(255,255,255,.35)}
-.hero-form input{min-width:180px}
-.btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.75rem 1.75rem;font-family:inherit;font-size:.9375rem;font-weight:600;color:#fff;background:#0062CC;border:none;border-radius:980px;cursor:pointer;transition:all .2s;box-shadow:0 2px 10px rgba(0,98,204,.3)}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,98,204,.4)}
-.hero-stats{display:flex;gap:24px;margin-top:20px}
-.hero-stat{font-size:.75rem;color:rgba(255,255,255,.4);font-weight:600;letter-spacing:.05em}
-.hero-stat strong{color:rgba(255,255,255,.8);font-size:1.1rem;display:block;margin-bottom:2px}
-
-/* TABS */
-.tabs{display:flex;gap:4px;background:#fff;border-radius:980px;padding:4px;border:1.5px solid #E5E7EB;width:fit-content;margin:24px auto}
-.tab-btn{padding:8px 20px;border:none;border-radius:980px;font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer;background:transparent;color:#64748b;transition:all .2s}
-.tab-btn.active{background:#0062CC;color:#fff}
-.tab-btn:hover:not(.active){color:#0062CC}
-
-/* SECTORS */
-.sectors{padding:32px 0 0}
-.sectors h2{font-size:clamp(1.2rem,3vw,1.5rem);text-align:center;margin:0 0 24px;color:#0f172a}
-.sector-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
-.sector-btn{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;background:#fff;border:1.5px solid #E5E7EB;border-radius:18px;cursor:pointer;transition:all .3s;text-align:center;font-family:inherit}
-.sector-btn:hover,.sector-btn.active{border-color:#0062CC;transform:translateY(-3px);box-shadow:0 4px 16px rgba(0,98,204,.1)}
-.sector-btn.active{background:#DBEAFE}
-.sector-icon{font-size:1.5rem}
-.sector-name{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#374151;line-height:1.2}
-
-/* FILTERS */
-.filters{display:flex;flex-wrap:wrap;gap:8px;padding:20px 0;border-bottom:1px solid #e2e8f0;margin-bottom:16px;align-items:center}
-.filters label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#64748b}
-.filter-pill{padding:7px 16px;border:1.5px solid #E5E7EB;border-radius:980px;font-size:.78rem;font-weight:600;cursor:pointer;background:#fff;color:#374151;transition:all .2s;font-family:inherit}
-.filter-pill:hover{border-color:#0062CC;color:#0062CC}
-.filter-pill.active{background:#0062CC;color:#fff;border-color:#0062CC}
-.filter-select{padding:7px 14px;border:1.5px solid #E5E7EB;border-radius:980px;font-size:.78rem;font-weight:600;background:#fff;color:#374151;font-family:inherit;cursor:pointer}
-.filter-search{padding:7px 14px;border:1.5px solid #E5E7EB;border-radius:980px;font-size:.78rem;font-weight:500;background:#fff;color:#374151;font-family:inherit;min-width:160px;outline:none}
-.filter-search:focus{border-color:#0062CC}
-
-/* IDEA CARDS */
-.ideas-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding-bottom:24px}
-.idea-card{background:#fff;border:1.5px solid #E5E7EB;border-radius:18px;overflow:hidden;transition:all .3s;display:flex;flex-direction:column;cursor:pointer}
-.idea-card:hover{border-color:#0062CC;transform:translateY(-4px);box-shadow:0 6px 24px rgba(0,98,204,.1)}
-.idea-card.community{border-left:3px solid #F5A623}
-.idea-card-header{padding:18px 18px 10px;display:flex;align-items:flex-start;gap:10px}
-.idea-card-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.idea-card-header h3{font-size:.82rem;font-weight:700;letter-spacing:.01em;margin:0 0 6px;line-height:1.3}
-.idea-card-meta{display:flex;gap:5px;flex-wrap:wrap}
-.idea-card-meta span{font-size:.58rem;font-weight:700;padding:2px 7px;border-radius:980px;text-transform:uppercase;letter-spacing:.04em}
-.meta-sector{background:#F3F4F6;color:#6B7280}
-.meta-risk-low{background:#DCFCE7;color:#166534}
-.meta-risk-medium{background:#FEF9C3;color:#854D0E}
-.meta-risk-high{background:#FEE2E2;color:#991B1B}
-.meta-community{background:#FFF7ED;color:#9A3412}
-.idea-card-body{padding:0 18px 14px;flex:1}
-.idea-card-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
-.stat-item{padding:8px;background:#F8FAFD;border-radius:10px}
-.stat-label{font-size:.58rem;font-weight:700;color:#94a3af;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
-.stat-value{font-size:.8rem;font-weight:800;color:#0f172a}
-.idea-card-fit{padding:6px 10px;background:#DBEAFE;border-radius:8px;font-size:.7rem;font-weight:700;color:#1e40af;display:flex;align-items:center;gap:4px;margin-bottom:8px}
-.idea-card-footer{padding:10px 18px;border-top:1px solid #f1f5f9;display:flex;gap:6px;align-items:center}
-.idea-card-footer a,.idea-card-footer button{padding:7px 12px;border-radius:980px;font-size:.7rem;font-weight:700;text-align:center;border:none;cursor:pointer;font-family:inherit;transition:all .15s}
-.btn-details{background:#F3F4F6;color:#374151;flex:1}
-.btn-details:hover{background:#E5E7EB}
-.btn-start{background:#0062CC;color:#fff;flex:1}
-.btn-start:hover{background:#005cc5}
-.btn-vote{background:transparent;color:#64748b;padding:4px 8px;font-size:.75rem;display:flex;align-items:center;gap:3px}
-.btn-vote:hover{color:#0062CC}
-.btn-vote.voted{color:#0062CC}
-.btn-save{background:transparent;color:#64748b;padding:4px 6px;font-size:.9rem}
-.btn-save:hover{color:#F5A623}
-.btn-save.saved{color:#F5A623}
-
-/* PAGINATION */
-.pagination{display:flex;justify-content:center;gap:6px;padding:16px 0 48px;align-items:center}
-.page-btn{width:36px;height:36px;border-radius:50%;border:1.5px solid #E5E7EB;background:#fff;font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;color:#374151}
-.page-btn:hover{border-color:#0062CC;color:#0062CC}
-.page-btn.active{background:#0062CC;color:#fff;border-color:#0062CC}
-.page-btn:disabled{opacity:.3;cursor:default}
-.page-info{font-size:.75rem;color:#64748b;font-weight:600}
-
-/* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:none;align-items:flex-start;justify-content:center;padding:24px;overflow-y:auto;backdrop-filter:blur(4px)}
-.modal-overlay.open{display:flex}
-.modal{background:#fff;border-radius:18px;max-width:720px;width:100%;max-height:calc(100vh - 48px);overflow-y:auto;position:relative}
-.modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:50%;border:none;background:#F3F4F6;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;z-index:2;font-family:inherit;color:#374151}
-.modal-close:hover{background:#E5E7EB}
-.modal-header{padding:28px 28px 16px;border-bottom:1px solid #f1f5f9}
-.modal-header h2{font-size:1.1rem;margin:0 0 10px;padding-right:40px}
-.modal-body{padding:20px 28px 28px}
-.detail-section{margin-bottom:20px}
-.detail-section h3{font-size:.82rem;margin:0 0 8px;color:#0062CC}
-.detail-section p,.detail-section li{font-size:.85rem;color:#374151;line-height:1.65}
-.detail-section ul{padding-left:18px;margin:0}
-.detail-section li{margin-bottom:4px}
-.detail-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
-.detail-stat{padding:14px;background:#F8FAFD;border-radius:12px;text-align:center;border:1px solid #f1f5f9}
-.detail-stat .num{font-size:1.1rem;font-weight:800;color:#0f172a}
-.detail-stat .lbl{font-size:.6rem;font-weight:700;color:#94a3af;text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
-.breakdown-table{width:100%;border-collapse:collapse;font-size:.82rem}
-.breakdown-table td{padding:6px 0;border-bottom:1px solid #f1f5f9}
-.breakdown-table td:last-child{text-align:right;font-weight:700;color:#0f172a}
-.cities-list{display:flex;flex-wrap:wrap;gap:6px}
-.city-tag{padding:4px 10px;background:#DBEAFE;border-radius:980px;font-size:.7rem;font-weight:700;color:#1e40af}
-.risk-item{display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;font-size:.82rem;color:#374151;line-height:1.5}
-.risk-item::before{content:'\26A0';flex-shrink:0;font-size:.75rem}
-.modal-actions{display:flex;gap:10px;margin-top:20px;padding-top:16px;border-top:1px solid #f1f5f9}
-.modal-actions a,.modal-actions button{flex:1;padding:12px;border-radius:980px;font-size:.82rem;font-weight:700;text-align:center;border:none;cursor:pointer;font-family:inherit;transition:all .15s}
-
-/* SUBMIT FORM */
-.submit-section{padding:48px 0;background:#F8FAFD;border-top:1px solid #e2e8f0}
-.submit-section h2{font-size:clamp(1.2rem,3vw,1.5rem);text-align:center;margin:0 0 8px}
-.submit-section .subtitle{text-align:center;font-size:.85rem;color:#64748b;margin:0 0 28px;line-height:1.5}
-.submit-form{max-width:640px;margin:0 auto;background:#fff;border:1.5px solid #E5E7EB;border-radius:18px;padding:28px}
-.form-row{margin-bottom:16px}
-.form-row label{display:block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#64748b;margin-bottom:6px}
-.form-row input,.form-row select,.form-row textarea{width:100%;padding:10px 14px;border:1.5px solid #E5E7EB;border-radius:12px;font-family:inherit;font-size:.85rem;outline:none;transition:border-color .2s}
-.form-row input:focus,.form-row select:focus,.form-row textarea:focus{border-color:#0062CC}
-.form-row textarea{min-height:80px;resize:vertical}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.form-grid .form-row{margin-bottom:0}
-.submit-form .btn-primary{width:100%;padding:14px;font-size:.9rem}
-.form-login-msg{text-align:center;padding:32px;color:#64748b;font-size:.9rem}
-.form-login-msg a{color:#0062CC;font-weight:700}
-
-/* AI CHAT */
-.ai-section{padding:48px 0}
-.ai-section h2{font-size:clamp(1.2rem,3vw,1.5rem);text-align:center;margin:0 0 8px}
-.ai-section .subtitle{text-align:center;font-size:.85rem;color:#64748b;margin:0 0 28px;line-height:1.5}
-.chat-container{max-width:720px;margin:0 auto;background:#fff;border:1.5px solid #E5E7EB;border-radius:18px;overflow:hidden}
-.chat-messages{min-height:200px;max-height:400px;overflow-y:auto;padding:24px}
-.chat-msg{margin-bottom:14px;display:flex;gap:10px}
-.chat-msg.user{flex-direction:row-reverse}
-.chat-msg .bubble{max-width:80%;padding:10px 14px;border-radius:16px;font-size:.85rem;line-height:1.6}
-.chat-msg.assistant .bubble{background:#F8FAFD;color:#374151;border:1px solid #f1f5f9}
-.chat-msg.user .bubble{background:#0062CC;color:#fff}
-.chat-input{display:flex;gap:8px;padding:16px;border-top:1px solid #f1f5f9}
-.chat-input input{flex:1;padding:10px 14px;border:1.5px solid #E5E7EB;border-radius:980px;font-size:.85rem;font-family:inherit;outline:none}
-.chat-input input:focus{border-color:#0062CC}
-.chat-input button{width:40px;height:40px;border-radius:50%;background:#0062CC;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.chat-input button svg{width:18px;height:18px}
-.suggested-qs{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 14px}
-.sq{padding:6px 12px;border:1.5px solid #E5E7EB;border-radius:980px;font-size:.7rem;font-weight:600;cursor:pointer;background:#fff;color:#374151;transition:all .15s;font-family:inherit}
-.sq:hover{border-color:#0062CC;color:#0062CC}
-
-/* CTA */
-.cross-links{padding:48px 0;background:#F8FAFD;border-top:1px solid #e2e8f0}
-.cross-links h2{font-size:clamp(1.2rem,3vw,1.5rem);text-align:center;margin:0 0 28px}
-.link-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:800px;margin:0 auto}
-.link-card{display:flex;align-items:center;gap:12px;padding:18px;background:#fff;border:1.5px solid #E5E7EB;border-radius:18px;transition:all .3s}
-.link-card:hover{border-color:#0062CC;transform:translateY(-3px);box-shadow:0 4px 16px rgba(0,98,204,.1)}
-.link-card .lc-icon{font-size:1.4rem;flex-shrink:0}
-.link-card .lc-text{font-size:.82rem;font-weight:700;color:#0f172a}
-.link-card .lc-text span{display:block;font-weight:400;font-size:.72rem;color:#64748b;margin-top:2px}
-
-/* NO RESULTS / LOADING */
-.no-results,.loading-state{text-align:center;padding:48px 24px;color:#64748b;grid-column:1/-1}
-.no-results h3{font-size:1rem;color:#374151;margin:0 0 8px}
-.loading-state{font-size:.9rem;font-weight:600}
-.spinner{display:inline-block;width:24px;height:24px;border:3px solid #E5E7EB;border-top-color:#0062CC;border-radius:50%;animation:spin .8s linear infinite;margin-bottom:12px}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* RESPONSIVE */
-@media(max-width:1024px){
-  .sector-grid{grid-template-columns:repeat(4,1fr)}
-  .ideas-grid{grid-template-columns:repeat(2,1fr)}
-}
-@media(max-width:768px){
-  .hero{padding:40px 0 36px}
-  .sector-grid{grid-template-columns:repeat(3,1fr)}
-  .ideas-grid{grid-template-columns:1fr}
-  .detail-stats{grid-template-columns:1fr 1fr}
-  .link-grid{grid-template-columns:1fr}
-  .hero-form{flex-direction:column;align-items:stretch}
-  .hero-stats{flex-wrap:wrap;gap:16px}
-  .modal{border-radius:12px}
-  .modal-header,.modal-body{padding-left:18px;padding-right:18px}
-  .form-grid{grid-template-columns:1fr}
-}
-@media(max-width:480px){
-  .sector-grid{grid-template-columns:repeat(2,1fr)}
-  .idea-card-stats{grid-template-columns:1fr}
-  .tabs{width:auto;justify-content:center}
-}
-</style>
+<meta name="tool-category" content="ecommerce">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
-<meta property="og:site_name" content="AfroTools">
+<meta property="og:title" content="African Business Idea Evidence Explorer">
+<meta property="og:description" content="Inspect submitted estimates and source gaps, then build a private local comparison.">
+<meta property="og:url" content="https://afrotools.com/tools/idea-board/">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/idea-board.webp">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="AfroIdeas — Business Idea Explorer for Africa">
-<meta name="twitter:description" content="11,000+ business ideas with real startup costs, breakeven timelines & AI analysis for 54 African countries.">
+<meta name="twitter:title" content="African Business Idea Evidence Explorer">
+<meta name="twitter:description" content="Inspect submitted estimates and source gaps, then build a private local comparison.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/idea-board.webp">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "AfroTools",
-      "item": "https://afrotools.com/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Tools",
-      "item": "https://afrotools.com/tools/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "AfroIdeas",
-      "item": "https://afrotools.com/tools/idea-board/"
-    }
-  ]
-}
-</script>
-<meta property="article:modified_time" content="2026-03-28">
-<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the African Business Ideas?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The African Business Ideas then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the African Business Ideas?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the African Business Ideas free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}}]}
-</script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<link rel="canonical" href="https://afrotools.com/tools/idea-board/">
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/idea-board/">
-<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/tableau-idees/">
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/idea-board/">
-</head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar></afro-navbar>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="wrap hero-z">
-    <div class="eyebrow">AfroIdeas</div>
-    <h1>What Business Should You<br>Start in <em>Africa</em>?</h1>
-    <p class="hero-sub">Real costs. Real breakeven timelines. Real data for all 54 African countries and 20 sectors. Submit your own ideas and vote on the best ones.</p>
-    <div class="hero-form">
-      <select id="country-select" aria-label="Country Select"></select>
-      <input aria-label="Available capital (optional)" type="number" id="budget-input" placeholder="Available capital (optional)">
-      <button type="button" class="btn-primary" id="btn-find">Find Ideas for Me</button>
-    </div>
-    <div class="hero-stats">
-      <div class="hero-stat"><strong id="stat-ideas">11,016</strong>Business Ideas</div>
-      <div class="hero-stat"><strong>20</strong>Sectors</div>
-      <div class="hero-stat"><strong>54</strong>Countries</div>
-    </div>
-  </div>
-</section>
-
-<!-- TABS: Browse / Community / Saved -->
-<div class="wrap" style="padding-top:8px">
-  <div class="tabs" id="main-tabs">
-    <button type="button" class="tab-btn active" data-tab="browse">Browse Ideas</button>
-    <button type="button" class="tab-btn" data-tab="community">Community Ideas</button>
-    <button type="button" class="tab-btn" data-tab="saved">My Saved</button>
-  </div>
-</div>
-
-<!-- SECTORS -->
-<section class="sectors" id="sectors-section">
-  <div class="wrap">
-    <h2>Browse by Sector</h2>
-    <div class="sector-grid" id="sector-grid"></div>
-  </div>
-</section>
-
-<!-- FILTERS + IDEAS -->
-<section class="wrap" style="padding-top:24px">
-  <div class="filters" id="filters-bar">
-    <label for="sort-select">Sort:</label>
-    <select class="filter-select" id="sort-select">
-      <option value="breakeven">Fastest Breakeven</option>
-      <option value="cost">Lowest Cost</option>
-      <option value="revenue">Highest Revenue</option>
-      <option value="votes">Most Voted</option>
-      <option value="newest">Newest</option>
-    </select>
-    <label style="margin-left:10px">Risk:</label>
-    <button type="button" class="filter-pill active" data-risk="all">All</button>
-    <button type="button" class="filter-pill" data-risk="low">Low</button>
-    <button type="button" class="filter-pill" data-risk="medium">Medium</button>
-    <button type="button" class="filter-pill" data-risk="high">High</button>
-    <input aria-label="Search ideas" class="filter-search" id="search-input" placeholder="Search ideas..." style="margin-left:auto">
-  </div>
-  <div id="results-count" style="font-size:.78rem;font-weight:600;color:#64748b;margin-bottom:12px"></div>
-  <div class="ideas-grid" id="ideas-grid"></div>
-  <div class="pagination" id="pagination"></div>
-</section>
-
-<!-- SUBMIT IDEA -->
-<section class="submit-section" id="submit-section">
-  <div class="wrap">
-    <h2>Submit Your Business Idea</h2>
-    <p class="subtitle">Share a business idea that works in Africa. Signed-in users can submit ideas for the community to discover and vote on.</p>
-    <div class="submit-form" id="submit-form-wrap"></div>
-  </div>
-</section>
-
-<!-- AI ADVISOR -->
-<section class="ai-section">
-  <div class="wrap">
-    <h2>AI Business Advisor</h2>
-    <p class="subtitle">Ask anything about starting a business in Africa — our AI advisor covers all 54 countries.</p>
-    <div class="chat-container">
-      <div class="chat-messages" id="chat-messages">
-        <div class="chat-msg assistant"><div class="bubble">Hi! I'm the AfroIdeas AI Advisor. Tell me your country, available capital, and interests — I'll recommend the best business ideas for you.</div></div>
-      </div>
-      <div class="suggested-qs" id="suggested-qs">
-        <button type="button" class="sq">What can I start with $500 in Lagos?</button>
-        <button type="button" class="sq">Compare poultry vs fish farming in Kenya</button>
-        <button type="button" class="sq">Best low-risk businesses in South Africa</button>
-        <button type="button" class="sq">What licenses do I need for a restaurant in Nairobi?</button>
-      </div>
-      <div class="chat-input">
-        <input aria-label="Ask about any business idea" type="text" id="chat-input" placeholder="Ask about any business idea...">
-        <button type="button" id="btn-send" aria-label="Send idea"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg></button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CROSS LINKS -->
-<section class="cross-links">
-  <div class="wrap">
-    <h2>Ready to Start?</h2>
-    <div class="link-grid">
-      <a href="/tools/business-planner/" class="link-card">
-        <div class="lc-icon">&#128203;</div>
-        <div class="lc-text">Business Planner<span>Registration, tax & licensing steps</span></div>
-      </a>
-      <a href="/salary-tax/" class="link-card">
-        <div class="lc-icon">&#128176;</div>
-        <div class="lc-text">PAYE Calculator<span>Calculate employee taxes</span></div>
-      </a>
-      <a href="/tools/import-duty/" class="link-card">
-        <div class="lc-icon">&#128230;</div>
-        <div class="lc-text">Import Duty Calculator<span>Check import costs</span></div>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- DETAIL MODAL -->
-<div class="modal-overlay" id="modal-overlay">
-  <div class="modal">
-    <button type="button" class="modal-close" id="modal-close" aria-label="Close idea details">&times;</button>
-    <div class="modal-header" id="modal-header"></div>
-    <div class="modal-body" id="modal-body"></div>
-  </div>
-</div>
-
-
-
-<section class="df-upgrade" data-df-upgrade="idea-board">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>African Business Ideas: quick guide</h2>
-      <p>Not sure how to get the most from the African Business Ideas? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
-      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the African Business Ideas takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
-    </div>
-    <form class="df-form" data-df-form="idea-board">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="idea-board" data-df-base="African Business Ideas — enter your details above to see your result." aria-live="polite">African Business Ideas — enter your details above to see your result.</output>
-      <div class="df-actions"><button type="button" data-df-copy="idea-board">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="idea-board-faq-title">
-  <h2 id="idea-board-faq-title">African Business Ideas FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How do I use the African Business Ideas?</summary><p>Enter your amounts, rates and dates in the fields above. The African Business Ideas then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the African Business Ideas?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the African Business Ideas free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
-</section>
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-</div>
-<afro-related-tools data-ssr="1" category="ecommerce" current="idea-board">
-<!-- RELATED_TOOLS_SSR_START -->
-<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
-<h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/tools/vat-calculator/" data-related-tool data-id="vat-calc-pan-african" data-name="VAT Calculator (Pan-African)" data-category="ecommerce" data-icon="VC" data-desc="All 50+ African countries. Add VAT, extract VAT, compare countries side-by-side. 2025/26 rates.">VAT Calculator (Pan-African)</a></li><li><a href="/nigeria/ng-vat" data-related-tool data-id="ng-vat" data-name="Nigeria VAT Calculator" data-category="ecommerce" data-icon="NV" data-desc="NTA 2026 VAT: 7.5% standard, zero-rated, exempt categories. Reverse VAT included.">Nigeria VAT Calculator</a></li><li><a href="/south-africa/za-vat" data-related-tool data-id="za-vat" data-name="South Africa VAT Calculator" data-category="ecommerce" data-icon="SA" data-desc="SARS VAT 15%, zero-rated, exempt. Inclusive/exclusive. Vendor registration threshold.">South Africa VAT Calculator</a></li><li><a href="/kenya/ke-vat" data-related-tool data-id="ke-vat" data-name="Kenya VAT Calculator" data-category="ecommerce" data-icon="KV" data-desc="KRA VAT 16%, zero-rated, exempt. Reverse VAT and inclusive/exclusive toggle.">Kenya VAT Calculator</a></li><li><a href="/egypt/eg-vat" data-related-tool data-id="eg-vat" data-name="Egypt VAT Calculator" data-category="ecommerce" data-icon="EV" data-desc="ETA VAT 14%. Standard + reduced rates. Table tax.">Egypt VAT Calculator</a></li><li><a href="/ghana/gh-vat" data-related-tool data-id="gh-vat" data-name="Ghana VAT Calculator" data-category="ecommerce" data-icon="GV" data-desc="GRA VAT 15% + 2.5% NHIL + 2.5% GETFund. Standard effective charge and zero-rated supplies.">Ghana VAT Calculator</a></li></ul>
-</nav>
-<!-- RELATED_TOOLS_SSR_END -->
-</afro-related-tools>
-<afro-footer></afro-footer>
-
-<script>
-(function(){
-  var E = AfroIdeasEngine;
-  var sectors = E.getSectors();
-  var countries = E.getCountries();
-  var currentSector = 'all';
-  var currentRisk = 'all';
-  var currentTab = 'browse';
-  var currentPage = 1;
-  var searchTimeout = null;
-  var savedIds = [];
-  var userVotes = {};
-
-  var countrySelect = document.getElementById('country-select');
-  var budgetInput = document.getElementById('budget-input');
-  var sortSelect = document.getElementById('sort-select');
-  var searchInput = document.getElementById('search-input');
-  var ideasGrid = document.getElementById('ideas-grid');
-  var resultsCount = document.getElementById('results-count');
-  var sectorGrid = document.getElementById('sector-grid');
-  var paginationEl = document.getElementById('pagination');
-
-  // Populate country select with all 54
-  countries.forEach(function(c){
-    var opt = document.createElement('option');
-    opt.value = c.code;
-    opt.textContent = c.name + ' (' + c.currency + ')';
-    countrySelect.appendChild(opt);
-  });
-
-  // Render sectors
-  var allBtn = '<button type="button" class="sector-btn active" data-sector="all"><div class="sector-icon">&#127758;</div><div class="sector-name">All</div></button>';
-  sectorGrid.innerHTML = allBtn + sectors.map(function(s){
-    return '<button type="button" class="sector-btn" data-sector="'+s.id+'"><div class="sector-icon">'+s.icon+'</div><div class="sector-name">'+s.name.split(' ')[0]+'</div></button>';
-  }).join('');
-
-  // Sector click
-  sectorGrid.addEventListener('click', function(e){
-    var btn = e.target.closest('.sector-btn');
-    if(!btn) return;
-    currentSector = btn.dataset.sector;
-    sectorGrid.querySelectorAll('.sector-btn').forEach(function(b){ b.classList.remove('active'); });
-    btn.classList.add('active');
-    currentPage = 1;
-    render();
-  });
-
-  // Tabs
-  document.getElementById('main-tabs').addEventListener('click', function(e){
-    var btn = e.target.closest('.tab-btn');
-    if(!btn) return;
-    currentTab = btn.dataset.tab;
-    document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
-    btn.classList.add('active');
-    currentPage = 1;
-    render();
-  });
-
-  // Risk filter
-  document.getElementById('filters-bar').addEventListener('click', function(e){
-    var pill = e.target.closest('.filter-pill');
-    if(!pill) return;
-    currentRisk = pill.dataset.risk;
-    document.querySelectorAll('.filter-pill').forEach(function(p){ p.classList.remove('active'); });
-    pill.classList.add('active');
-    currentPage = 1;
-    render();
-  });
-
-  // Sort, country change
-  sortSelect.addEventListener('change', function(){ currentPage = 1; render(); });
-  countrySelect.addEventListener('change', function(){ currentPage = 1; render(); });
-  document.getElementById('btn-find').addEventListener('click', function(){ currentPage = 1; render(); });
-
-  // Search with debounce
-  searchInput.addEventListener('input', function(){
-    clearTimeout(searchTimeout);
-    searchTimeout = setTimeout(function(){ currentPage = 1; render(); }, 400);
-  });
-
-  // Load user data
-  async function loadUserData(){
-    try {
-      savedIds = await E.getSavedIds();
-      userVotes = await E.getUserVotes();
-    } catch(e){}
-  }
-
-  // Main render
-  async function render(){
-    ideasGrid.innerHTML = '<div class="loading-state"><div class="spinner"></div><br>Loading ideas...</div>';
-    paginationEl.innerHTML = '';
-    resultsCount.textContent = '';
-
-    // For saved tab, get saved IDs first
-    if(currentTab === 'saved'){
-      await loadUserData();
-    }
-
-    var params = {
-      countryCode: countrySelect.value,
-      sector: currentSector,
-      riskLevel: currentRisk,
-      sortBy: sortSelect.value,
-      page: currentPage,
-      pageSize: 24,
-      search: searchInput.value || undefined
-    };
-
-    var budget = budgetInput.value ? parseInt(budgetInput.value, 10) : null;
-    if(budget) params.maxBudget = budget;
-
-    if(currentTab === 'community') params.source = 'community';
-    else if(currentTab === 'saved') params.source = 'seed'; // filter client-side
-    else params.source = 'all';
-
-    try {
-      var result = await E.filterIdeas(params);
-      var ideas = result.ideas;
-
-      // For saved tab, filter to only saved
-      if(currentTab === 'saved'){
-        ideas = ideas.filter(function(i){ return savedIds.indexOf(i.id) > -1; });
-        result.total = ideas.length;
-        result.pages = 1;
-      }
-
-      resultsCount.textContent = result.total + ' idea' + (result.total !== 1 ? 's' : '') + ' found' +
-        (budget ? ' within your budget' : '') +
-        (currentTab === 'community' ? ' (community submitted)' : '') +
-        (currentTab === 'saved' ? ' (your saved ideas)' : '');
-
-      if(ideas.length === 0){
-        ideasGrid.innerHTML = '<div class="no-results"><h3>No Ideas Found</h3><p>' +
-          (currentTab === 'saved' ? 'You haven\'t saved any ideas yet. Browse and click the bookmark icon to save.' :
-           currentTab === 'community' ? 'No community ideas for this country yet. Be the first to submit one!' :
-           'Try adjusting your filters, budget, or country.') + '</p></div>';
-        return;
-      }
-
-      renderCards(ideas, budget);
-      renderPagination(result);
-    } catch(err) {
-      ideasGrid.innerHTML = '<div class="no-results"><h3>Connection Error</h3><p>Could not load ideas. Please check your connection and try again.</p></div>';
-    }
-  }
-
-  function renderCards(ideas, budget){
-    ideasGrid.innerHTML = ideas.map(function(idea){
-      var sectorObj = E.getSector(idea.sector);
-      var sectorColor = sectorObj ? sectorObj.color : '#64748b';
-      var sectorIcon = sectorObj ? sectorObj.icon : '';
-      var sectorName = sectorObj ? sectorObj.name.split('&')[0].trim() : idea.sector;
-
-      var costStr = E.formatCurrency(idea.startup_cost_min, idea.currency) + ' - ' + E.formatCurrency(idea.startup_cost_max, idea.currency);
-      var beStr = idea.breakeven_months_min + '-' + idea.breakeven_months_max + ' mo';
-      var revStr = E.formatCurrency(idea.monthly_revenue_min, idea.currency) + ' - ' + E.formatCurrency(idea.monthly_revenue_max, idea.currency);
-
-      var riskClass = 'meta-risk-' + (idea.risk || 'medium');
-      var riskLabel = (idea.risk || 'medium').charAt(0).toUpperCase() + (idea.risk || 'medium').slice(1);
-      var isCommunity = idea._community || idea.user_display_name;
-      var isSaved = savedIds.indexOf(idea.id) > -1;
-      var userVote = userVotes[idea.id];
-
-      var fitHtml = '';
-      if(budget && idea.startup_cost_min <= budget){
-        fitHtml = '<div class="idea-card-fit">Fits your budget</div>';
-      }
-
-      return '<div class="idea-card'+(isCommunity?' community':'')+'" data-id="'+idea.id+'">' +
-        '<div class="idea-card-header">' +
-          '<div class="idea-card-icon" style="background:'+sectorColor+'15;color:'+sectorColor+'">'+sectorIcon+'</div>' +
-          '<div>' +
-            '<h3>'+escHtml(idea.name)+'</h3>' +
-            '<div class="idea-card-meta">' +
-              '<span class="meta-sector">'+sectorName+'</span>' +
-              '<span class="'+riskClass+'">'+riskLabel+'</span>' +
-              (isCommunity ? '<span class="meta-community">Community</span>' : '') +
-            '</div>' +
-          '</div>' +
-        '</div>' +
-        '<div class="idea-card-body">' +
-          '<div class="idea-card-stats">' +
-            '<div class="stat-item"><div class="stat-label">Startup Cost</div><div class="stat-value">'+costStr+'</div></div>' +
-            '<div class="stat-item"><div class="stat-label">Breakeven</div><div class="stat-value">'+beStr+'</div></div>' +
-          '</div>' +
-          fitHtml +
-        '</div>' +
-        '<div class="idea-card-footer">' +
-          '<button type="button" class="btn-vote'+(userVote==='up'?' voted':'')+'" data-vote="'+idea.id+'" data-community="'+(isCommunity?1:0)+'" onclick="event.stopPropagation();doVote(this)">&#9650; '+(idea.vote_count||0)+'</button>' +
-          '<button type="button" class="btn-save'+(isSaved?' saved':'')+'" data-save="'+idea.id+'" data-community="'+(isCommunity?1:0)+'" onclick="event.stopPropagation();doSave(this)" title="Save idea">&#9733;</button>' +
-          '<button type="button" class="btn-details" onclick="event.stopPropagation();openDetail(\''+idea.id+'\')">Details</button>' +
-          '<a href="/tools/business-planner/?country='+countrySelect.value+'&industry='+idea.sector+'" class="btn-start" onclick="event.stopPropagation()">Start</a>' +
-        '</div>' +
-      '</div>';
-    }).join('');
-  }
-
-  function renderPagination(result){
-    if(result.pages <= 1){ paginationEl.innerHTML = ''; return; }
-    var html = '<button type="button" class="page-btn" onclick="goPage('+(currentPage-1)+')" '+(currentPage<=1?'disabled':'')+'>&#8249;</button>';
-    var start = Math.max(1, currentPage - 3);
-    var end = Math.min(result.pages, currentPage + 3);
-    for(var i=start;i<=end;i++){
-      html += '<button type="button" class="page-btn'+(i===currentPage?' active':'')+'" onclick="goPage('+i+')">'+i+'</button>';
-    }
-    html += '<button type="button" class="page-btn" onclick="goPage('+(currentPage+1)+')" '+(currentPage>=result.pages?'disabled':'')+'>&#8250;</button>';
-    html += '<span class="page-info">Page '+currentPage+' of '+result.pages+' ('+result.total+' ideas)</span>';
-    paginationEl.innerHTML = html;
-  }
-
-  window.goPage = function(p){ currentPage = p; render(); window.scrollTo({top:document.getElementById('filters-bar').offsetTop - 80, behavior:'smooth'}); };
-
-  // Vote
-  window.doVote = async function(btn){
-    try {
-      var id = btn.dataset.vote;
-      var isCommunity = btn.dataset.community === '1';
-      await E.voteIdea(id, 'up', isCommunity);
-      btn.classList.add('voted');
-      var num = parseInt(btn.textContent.replace(/[^0-9-]/g,'')) || 0;
-      btn.innerHTML = '&#9650; ' + (num + 1);
-      userVotes[id] = 'up';
-    } catch(e){
-      if(e.message.indexOf('signed in') > -1){ alert('Please sign in to vote on ideas.'); }
-    }
-  };
-
-  // Save
-  window.doSave = async function(btn){
-    try {
-      var id = btn.dataset.save;
-      var isCommunity = btn.dataset.community === '1';
-      var saved = await E.toggleSave(id, isCommunity);
-      btn.classList.toggle('saved', saved);
-      if(saved){ savedIds.push(id); } else { savedIds = savedIds.filter(function(x){ return x !== id; }); }
-    } catch(e){
-      if(e.message.indexOf('signed in') > -1){ alert('Please sign in to save ideas.'); }
-    }
-  };
-
-  // Detail modal
-  window.openDetail = async function(ideaId){
-    var idea = await E.getIdea(ideaId);
-    if(!idea) return;
-    var sectorObj = E.getSector(idea.sector);
-    var sColor = sectorObj ? sectorObj.color : '#64748b';
-    var sIcon = sectorObj ? sectorObj.icon : '';
-
-    var costStr = E.formatCurrency(idea.startup_cost_min, idea.currency) + ' - ' + E.formatCurrency(idea.startup_cost_max, idea.currency);
-    var revStr = E.formatCurrency(idea.monthly_revenue_min, idea.currency) + ' - ' + E.formatCurrency(idea.monthly_revenue_max, idea.currency);
-    var beStr = idea.breakeven_months_min + '-' + idea.breakeven_months_max + ' months';
-
-    document.getElementById('modal-header').innerHTML =
-      '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">' +
-        '<div style="width:44px;height:44px;border-radius:12px;background:'+sColor+'15;color:'+sColor+';display:flex;align-items:center;justify-content:center;font-size:1.3rem">'+sIcon+'</div>' +
-        '<h2 style="margin:0;padding-right:40px">'+escHtml(idea.name)+'</h2>' +
-      '</div>';
-
-    var b = '';
-    b += '<div class="detail-stats">' +
-      '<div class="detail-stat"><div class="num">'+costStr+'</div><div class="lbl">Startup Cost</div></div>' +
-      '<div class="detail-stat"><div class="num">'+revStr+'</div><div class="lbl">Monthly Revenue</div></div>' +
-      '<div class="detail-stat"><div class="num">'+beStr+'</div><div class="lbl">Breakeven</div></div>' +
-    '</div>';
-
-    if(idea.description) b += '<div class="detail-section"><h3>About This Business</h3><p>'+escHtml(idea.description)+'</p></div>';
-    if(idea.why_africa) b += '<div class="detail-section"><h3>Why This Works in Africa</h3><p>'+escHtml(idea.why_africa)+'</p></div>';
-
-    // Breakdown
-    try {
-      var bd = typeof idea.breakdown === 'string' ? JSON.parse(idea.breakdown) : idea.breakdown;
-      if(bd && bd.length){
-        b += '<div class="detail-section"><h3>Cost Breakdown</h3><table class="breakdown-table">';
-        bd.forEach(function(r){ b += '<tr><td>'+escHtml(r.item)+'</td><td>'+escHtml(r.cost)+'</td></tr>'; });
-        b += '</table></div>';
-      }
-    } catch(e){}
-
-    if(idea.revenue_model) b += '<div class="detail-section"><h3>Revenue Model</h3><p>'+escHtml(idea.revenue_model)+'</p></div>';
-
-    if(idea.regulations && idea.regulations.length){
-      b += '<div class="detail-section"><h3>Regulations</h3><ul>';
-      idea.regulations.forEach(function(r){ b += '<li>'+escHtml(r)+'</li>'; });
-      b += '</ul></div>';
-    }
-
-    if(idea.risks && idea.risks.length){
-      b += '<div class="detail-section"><h3>Risk Factors</h3>';
-      idea.risks.forEach(function(r){ b += '<div class="risk-item">'+escHtml(r)+'</div>'; });
-      b += '</div>';
-    }
-
-    if(idea.best_cities && idea.best_cities.length){
-      b += '<div class="detail-section"><h3>Best Cities</h3><div class="cities-list">';
-      idea.best_cities.forEach(function(c){ b += '<span class="city-tag">'+escHtml(c)+'</span>'; });
-      b += '</div></div>';
-    }
-
-    if(idea.scale_path) b += '<div class="detail-section"><h3>Scale Path</h3><p>'+escHtml(idea.scale_path)+'</p></div>';
-
-    b += '<div class="modal-actions">' +
-      '<a href="/tools/business-planner/?country='+countrySelect.value+'&industry='+idea.sector+'" class="btn-primary" style="flex:1;display:block;text-align:center">Start This Business</a>' +
-    '</div>';
-
-    document.getElementById('modal-body').innerHTML = b;
-    document.getElementById('modal-overlay').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  };
-
-  // Card click
-  ideasGrid.addEventListener('click', function(e){
-    var card = e.target.closest('.idea-card');
-    if(!card || e.target.closest('a') || e.target.closest('button')) return;
-    openDetail(card.dataset.id);
-  });
-
-  // Close modal
-  document.getElementById('modal-close').addEventListener('click', closeModal);
-  document.getElementById('modal-overlay').addEventListener('click', function(e){ if(e.target === this) closeModal(); });
-  function closeModal(){ document.getElementById('modal-overlay').classList.remove('open'); document.body.style.overflow = ''; }
-
-  // Submit form
-  function renderSubmitForm(){
-    var wrap = document.getElementById('submit-form-wrap');
-    // Check if logged in
-    var isLoggedIn = window.AfroAuth && AfroAuth.isLoggedIn && AfroAuth.isLoggedIn();
-    if(!isLoggedIn){
-      wrap.innerHTML = '<div class="form-login-msg">You need to <a href="#" onclick="event.preventDefault();AfroAuthModal.open()">sign in</a> to submit business ideas.<br>Submitting ideas is free for all users.</div>';
-      return;
-    }
-
-    wrap.innerHTML =
-      '<div class="form-row"><label>Business Name</label><input aria-label="E.g. Mobile Phone Repair Shop" type="text" id="sf-name" placeholder="e.g. Mobile Phone Repair Shop" maxlength="120"></div>' +
-      '<div class="form-grid">' +
-        '<div class="form-row"><label>Sector</label><select id="sf-sector" aria-label="Sf Sector">' + sectors.map(function(s){ return '<option value="'+s.id+'">'+s.name+'</option>'; }).join('') + '</select></div>' +
-        '<div class="form-row"><label>Country</label><select id="sf-country" aria-label="Sf Country">' + countries.map(function(c){ return '<option value="'+c.code+'" data-currency="'+c.currency+'">'+c.name+'</option>'; }).join('') + '</select></div>' +
-      '</div>' +
-      '<div class="form-row"><label>Description</label><textarea id="sf-desc" placeholder="Describe the business idea, what it does, and how it makes money..." maxlength="1000" aria-label="Describe the business idea, what it does, and how it makes money..."></textarea></div>' +
-      '<div class="form-row"><label>Why This Works in Africa</label><textarea id="sf-why" placeholder="Why is this idea particularly suited for the African market?" maxlength="500" aria-label="Why is this idea particularly suited for the African market?"></textarea></div>' +
-      '<div class="form-grid">' +
-        '<div class="form-row"><label>Cost Tier</label><select id="sf-cost-tier" aria-label="Sf Cost Tier"><option value="micro">Micro (under $500)</option><option value="small" selected>Small ($500 - $5K)</option><option value="medium">Medium ($5K - $50K)</option><option value="large">Large ($50K+)</option></select></div>' +
-        '<div class="form-row"><label>Risk Level</label><select id="sf-risk" aria-label="Sf Risk"><option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option></select></div>' +
-      '</div>' +
-      '<div class="form-grid">' +
-        '<div class="form-row"><label>Startup Cost (Min, local currency)</label><input aria-label="E.g. 500000" type="number" id="sf-cost-min" placeholder="e.g. 500000"></div>' +
-        '<div class="form-row"><label>Startup Cost (Max, local currency)</label><input aria-label="E.g. 2000000" type="number" id="sf-cost-max" placeholder="e.g. 2000000"></div>' +
-      '</div>' +
-      '<div class="form-grid">' +
-        '<div class="form-row"><label>Monthly Revenue (Min)</label><input aria-label="E.g. 100000" type="number" id="sf-rev-min" placeholder="e.g. 100000"></div>' +
-        '<div class="form-row"><label>Monthly Revenue (Max)</label><input aria-label="E.g. 500000" type="number" id="sf-rev-max" placeholder="e.g. 500000"></div>' +
-      '</div>' +
-      '<div class="form-grid">' +
-        '<div class="form-row"><label>Breakeven (Min Months)</label><input aria-label="E.g. 3" type="number" id="sf-be-min" placeholder="e.g. 3"></div>' +
-        '<div class="form-row"><label>Breakeven (Max Months)</label><input aria-label="E.g. 8" type="number" id="sf-be-max" placeholder="e.g. 8"></div>' +
-      '</div>' +
-      '<div class="form-row"><label>Revenue Model</label><input aria-label="How does the business make money?" type="text" id="sf-rev-model" placeholder="How does the business make money?" maxlength="300"></div>' +
-      '<div class="form-row"><label>Best Cities (comma separated)</label><input aria-label="E.g. Lagos, Abuja, Ibadan" type="text" id="sf-cities" placeholder="e.g. Lagos, Abuja, Ibadan" maxlength="200"></div>' +
-      '<div class="form-row" style="margin-top:20px"><button type="button" class="btn-primary" id="btn-submit-idea">Submit Idea</button></div>' +
-      '<div id="sf-status" style="text-align:center;margin-top:12px;font-size:.85rem;font-weight:600"></div>';
-
-    document.getElementById('btn-submit-idea').addEventListener('click', submitIdea);
-  }
-
-  async function submitIdea(){
-    var name = document.getElementById('sf-name').value.trim();
-    var desc = document.getElementById('sf-desc').value.trim();
-    if(!name || !desc){ alert('Please fill in at least the name and description.'); return; }
-
-    var countryEl = document.getElementById('sf-country');
-    var cc = countryEl.value;
-    var countryName = countryEl.options[countryEl.selectedIndex].text;
-    var currency = countryEl.options[countryEl.selectedIndex].dataset.currency;
-
-    var status = document.getElementById('sf-status');
-    status.textContent = 'Submitting...';
-    status.style.color = '#64748b';
-
-    try {
-      await E.submitIdea({
-        name: name,
-        sector: document.getElementById('sf-sector').value,
-        countryCode: cc,
-        countryName: countryName,
-        costTier: document.getElementById('sf-cost-tier').value,
-        risk: document.getElementById('sf-risk').value,
-        description: desc,
-        whyAfrica: document.getElementById('sf-why').value.trim(),
-        revenueModel: document.getElementById('sf-rev-model').value.trim(),
-        currency: currency,
-        startupCostMin: parseInt(document.getElementById('sf-cost-min').value) || 0,
-        startupCostMax: parseInt(document.getElementById('sf-cost-max').value) || 0,
-        monthlyRevenueMin: parseInt(document.getElementById('sf-rev-min').value) || 0,
-        monthlyRevenueMax: parseInt(document.getElementById('sf-rev-max').value) || 0,
-        breakevenMin: parseInt(document.getElementById('sf-be-min').value) || 0,
-        breakevenMax: parseInt(document.getElementById('sf-be-max').value) || 0,
-        bestCities: document.getElementById('sf-cities').value.split(',').map(function(c){ return c.trim(); }).filter(Boolean),
-        risks: [],
-        tags: []
-      });
-      status.textContent = 'Idea submitted! It will appear in the Community tab.';
-      status.style.color = '#16a34a';
-      // Clear form
-      document.getElementById('sf-name').value = '';
-      document.getElementById('sf-desc').value = '';
-      document.getElementById('sf-why').value = '';
-    } catch(e){
-      status.textContent = 'Error: ' + e.message;
-      status.style.color = '#dc2626';
-    }
-  }
-
-  // AI Chat
-  var chatMessages = document.getElementById('chat-messages');
-  var chatInput = document.getElementById('chat-input');
-
-  function sendChat(msg){
-    if(!msg.trim()) return;
-    chatMessages.innerHTML += '<div class="chat-msg user"><div class="bubble">'+escHtml(msg)+'</div></div>';
-    chatInput.value = '';
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-    var loadId = 'load-'+Date.now();
-    chatMessages.innerHTML += '<div class="chat-msg assistant" id="'+loadId+'"><div class="bubble">Thinking...</div></div>';
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-
-    var countryName = countrySelect.options[countrySelect.selectedIndex].text;
-    var budget = budgetInput.value || 'not specified';
-
-    fetch('/.netlify/functions/ai-advisor', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        tool: 'idea-board',
-        systemPrompt: 'You are the AfroIdeas Business Advisor. User is in ' + countryName + ' with budget: ' + budget + '. Give specific, actionable advice using local currency. Reference real regulations, costs, and market conditions. Keep responses concise (2-3 paragraphs max). If recommending ideas, include startup cost range and breakeven timeline.',
-        message: msg,
-        context: { country: countrySelect.value, budget: budget }
-      })
-    }).then(function(r){ return r.json(); }).then(function(data){
-      var el = document.getElementById(loadId);
-      if(el){
-        if(data.reply || data.response) el.querySelector('.bubble').innerHTML = formatReply(data.reply || data.response);
-        else el.querySelector('.bubble').textContent = 'Sorry, I couldn\'t process that. Try again.';
-      }
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    }).catch(function(){
-      var el = document.getElementById(loadId);
-      if(el) el.querySelector('.bubble').textContent = 'Connection error. Please try again.';
-    });
-  }
-
-  document.getElementById('btn-send').addEventListener('click', function(){ sendChat(chatInput.value); });
-  chatInput.addEventListener('keydown', function(e){ if(e.key === 'Enter') sendChat(chatInput.value); });
-  document.getElementById('suggested-qs').addEventListener('click', function(e){
-    var sq = e.target.closest('.sq');
-    if(sq) sendChat(sq.textContent);
-  });
-
-  function escHtml(s){ if(!s) return ''; var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
-  function formatReply(t){ return t.replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>'); }
-
-  // Init
-  function init(){
-    renderSubmitForm();
-    // Listen for auth changes to re-render submit form
-    if(window.AfroAuth && AfroAuth.onReady){
-      AfroAuth.onReady(function(){
-        renderSubmitForm();
-        loadUserData().then(function(){ /* votes/saves loaded */ });
-      });
-    }
-    render();
-  }
-
-  // Wait for supabase-auth to be ready
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', function(){ setTimeout(init, 200); });
-  } else {
-    setTimeout(init, 200);
-  }
-})();
-</script>
-
+<link rel="stylesheet" href="/assets/css/idea-evidence-explorer.css?v=3b97791e">
+<script src="/assets/js/components/navbar.min.js?v=996960fa" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "AfroIdeas — Business Idea Explorer",
-  "description": "Discover 11,000+ profitable business ideas across Africa with real startup costs, breakeven timelines, and AI-powered analysis for all 54 countries.",
+  "name": "African Business Idea Evidence Explorer",
   "url": "https://afrotools.com/tools/idea-board/",
-  "inLanguage": "en",
-  "applicationCategory": "WebApplication",
+  "description": "Explore submitted African business-idea records and compare planning estimates locally.",
+  "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
-  "browserRequirements": "Requires JavaScript",
+  "inLanguage": "en",
+  "isAccessibleForFree": true,
   "offers": {
     "@type": "Offer",
     "price": "0",
     "priceCurrency": "USD"
   },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
   "image": "https://afrotools.com/assets/img/tools/idea-board.webp"
 }
 </script>
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "name": "AfroIdeas — Business Idea Explorer",
-  "url": "https://afrotools.com/tools/idea-board/",
-  "description": "Discover 11,000+ profitable business ideas across Africa with real startup costs, breakeven timelines, and AI-powered analysis for all 54 countries.",
-  "inLanguage": "en",
-  "isPartOf": {
-    "@type": "WebSite",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/idea-board.webp"
-}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Are the costs and revenue figures verified?","acceptedAnswer":{"@type":"Answer","text":"No. They are submitted planning estimates. The current reviewed view supplies no provenance fields, so source, date and confidence are marked as not supplied."}},{"@type":"Question","name":"Does the shortlist leave my browser?","acceptedAnswer":{"@type":"Answer","text":"No. A shortlist is stored only after an explicit add or import action, and can be cleared from this browser."}},{"@type":"Question","name":"Does this tool use AI to recommend a business?","acceptedAnswer":{"@type":"Answer","text":"No. It filters available evidence records and does not send your search or shortlist to an AI service."}}]}
 </script>
-<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=e25622fc" defer></script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"African Business Idea Evidence Explorer","item":"https://afrotools.com/tools/idea-board/"}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/idea-board/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/idea-board/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/tableau-idees/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/idea-board/">
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<header class="iee-hero">
+  <div class="iee-shell">
+    <nav class="iee-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/business-roi/">Business tools</a><span aria-hidden="true">/</span><span>Idea evidence</span></nav>
+    <div class="iee-hero-grid">
+      <div><span class="iee-kicker">Private comparison · submitted evidence</span><h1>Explore business ideas.<br><em>Inspect the evidence.</em></h1><p>Search available African business-idea records without treating submitted costs, revenue or break-even timelines as verified outcomes.</p></div>
+      <img src="/assets/img/tools/idea-board.webp" alt="" width="560" height="360">
+    </div>
+  </div>
+</header>
+<main class="iee-main">
+  <div class="iee-shell">
+    <section class="iee-boundary" aria-label="Important evidence boundary"><strong>Evidence boundary</strong><p>Records may be incomplete or stale. Confirm demand, costs, licences, taxes and feasibility with current local sources before acting.</p></section>
+    <div data-idea-evidence-explorer data-locale="en"></div>
+    <section class="iee-method" aria-labelledby="iee-method-title">
+      <span class="iee-kicker">Method and limits</span><h2 id="iee-method-title">What this explorer does—and does not do</h2>
+      <div class="iee-method-grid">
+        <article><h3>Normalizes records</h3><p>Rows must contain a valid idea name, country and supported sector. Invalid or duplicate rows are excluded rather than guessed.</p></article>
+        <article><h3>Labels estimates</h3><p>Starting cost, monthly revenue and break-even are displayed as submitted planning estimates. Missing values remain visibly missing.</p></article>
+        <article><h3>Shows provenance gaps</h3><p>The current reviewed public projection supplies no provenance fields, so their absence is disclosed. Optional fields appear only under a future reviewed response contract.</p></article>
+        <article><h3>Keeps comparison local</h3><p>The shortlist is written only after your explicit action. Export or clear it before leaving a shared device.</p></article>
+      </div>
+    </section>
+    <section class="iee-faq" aria-labelledby="iee-faq-title"><h2 id="iee-faq-title">Questions before you compare</h2>
+      <details><summary>Are the costs and revenue figures verified?</summary><p>No. They are submitted planning estimates. The current reviewed view supplies no provenance fields, so source, date and confidence are marked as not supplied.</p></details>
+      <details><summary>Does the shortlist leave my browser?</summary><p>No. A shortlist is stored only after an explicit add or import action, and can be cleared from this browser.</p></details>
+      <details><summary>Does this tool use AI to recommend a business?</summary><p>No. It filters available evidence records and does not send your search or shortlist to an AI service.</p></details>
+    </section>
+  </div>
+</main>
+<afro-related-tools data-ssr="1" category="ecommerce" current="idea-board">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/vat-calculator/" data-related-tool data-id="vat-calc-pan-african" data-name="VAT Calculator (Pan-African)" data-category="ecommerce" data-icon="VC" data-desc="Custom-rate-first VAT planning, invoices, withholding scenarios, and rate comparisons, with authority-bound presets only">VAT Calculator (Pan-African)</a></li><li><a href="/nigeria/ng-vat" data-related-tool data-id="ng-vat" data-name="Nigeria VAT Calculator" data-category="ecommerce" data-icon="NV" data-desc="Add or extract Nigeria VAT at 7.5%, compare zero-rated and exempt treatment, build invoice estimates, and export a priva">Nigeria VAT Calculator</a></li><li><a href="/south-africa/za-vat" data-related-tool data-id="za-vat" data-name="South Africa VAT Calculator" data-category="ecommerce" data-icon="SA" data-desc="Add or extract VAT at the current 15% rate, keep confirmed zero-rated and exempt treatment distinct, screen 2026 registr">South Africa VAT Calculator</a></li><li><a href="/kenya/ke-vat" data-related-tool data-id="ke-vat" data-name="Kenya VAT Calculator" data-category="ecommerce" data-icon="KV" data-desc="Add or extract Kenya VAT at 16%, keep confirmed zero-rated and exempt treatment distinct, build invoice estimates, and e">Kenya VAT Calculator</a></li><li><a href="/egypt/eg-vat" data-related-tool data-id="eg-vat" data-name="Egypt VAT Calculator" data-category="ecommerce" data-icon="EV" data-desc="Add or extract Egypt&#39;s standard 14% VAT, screen the general registration threshold, and test clearly labelled non-statut">Egypt VAT Calculator</a></li><li><a href="/ghana/gh-vat" data-related-tool data-id="gh-vat" data-name="Ghana VAT Calculator" data-category="ecommerce" data-icon="GV" data-desc="Plan Ghana invoices under the 2026 GRA structure: 15% VAT, 2.5% NHIL and 2.5% GETFund on the same base.">Ghana VAT Calculator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+<script src="/assets/js/engines/idea-evidence-explorer.js?v=ec080973"></script>
+<script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c" defer></script>
+<script src="/assets/js/pages/idea-evidence-explorer.js?v=3c0dc094" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=f3f910a8" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=71239a16" defer></script>
 </body>
 </html>

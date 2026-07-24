@@ -1,12 +1,12 @@
 # AfroTools Tool Quality Ranking
 
-Generated: 2026-07-12T13:49:48.227Z
+Generated: 2026-07-23T02:59:15.235Z
 
 ## Scope
 
-- Registry rows scored: 3263
-- Live/new expanded tool instances represented: 2606
-- Unique live/new routes: 3259
+- Registry rows scored: 3663
+- Live/new expanded tool instances represented: 2607
+- Unique live/new routes: 3659
 - Browser smoke: not run
 - Reports: `reports/tool-quality-ranking.json`, `reports/tool-quality-ranking.csv`
 
@@ -22,39 +22,39 @@ Generated: 2026-07-12T13:49:48.227Z
 
 | Rank | Rows | Weighted instances |
 | --- | ---: | ---: |
-| A | 3263 | 5046 |
-| B | 0 | 0 |
-| C | 0 | 0 |
-| D | 0 | 0 |
-| F | 0 | 0 |
+| A | 3536 | 5319 |
+| B | 25 | 25 |
+| C | 75 | 75 |
+| D | 26 | 26 |
+| F | 1 | 1 |
 
-Low-ranked rows below C: 0
-Repair-first rows below D: 0
+Low-ranked rows below C: 27
+Repair-first rows below D: 1
 
 ## Lowest Category Averages
 
 | Category | Rows | Instances | Avg score | Low rows | P0 | Browser failures |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Finance, Tax & Market Data | 470 | 470 | 93 | 0 | 0 | 0 |
-| Uniquely African | 120 | 135 | 94.5 | 0 | 0 | 0 |
-| Education | 134 | 134 | 94.8 | 0 | 0 | 0 |
-| Insurance | 145 | 451 | 94.8 | 0 | 0 | 0 |
-| Diaspora | 3 | 3 | 95 | 0 | 0 | 0 |
-| Mortgage & Property | 267 | 445 | 95.1 | 0 | 0 | 0 |
-| Agriculture | 507 | 1113 | 95.1 | 0 | 0 | 0 |
-| Personal Finance | 25 | 25 | 95.2 | 0 | 0 | 0 |
-| Trade & Import | 65 | 65 | 95.4 | 0 | 0 | 0 |
-| Fintech & Banking | 72 | 72 | 95.4 | 0 | 0 | 0 |
-| Transport & Logistics | 46 | 46 | 95.4 | 0 | 0 | 0 |
-| Energy & Utilities | 237 | 504 | 95.4 | 0 | 0 | 0 |
-| Health & Wellness | 104 | 104 | 95.5 | 0 | 0 | 0 |
-| VAT & Business Tax | 242 | 242 | 95.6 | 0 | 0 | 0 |
-| Sports & Entertainment | 30 | 30 | 95.6 | 0 | 0 | 0 |
-| Government & Civic | 38 | 146 | 95.7 | 0 | 0 | 0 |
-| Business & ROI | 34 | 34 | 95.7 | 0 | 0 | 0 |
-| HR & Payroll | 27 | 312 | 95.7 | 0 | 0 | 0 |
-| Small Business & SME | 66 | 81 | 95.8 | 0 | 0 | 0 |
-| Travel & Tourism | 20 | 20 | 95.8 | 0 | 0 | 0 |
+| Sports & Entertainment | 36 | 36 | 90.7 | 1 | 0 | 0 |
+| Travel & Tourism | 25 | 25 | 91.2 | 0 | 0 | 0 |
+| Finance, Tax & Market Data | 480 | 480 | 91.4 | 4 | 0 | 0 |
+| Fintech & Banking | 81 | 81 | 91.9 | 8 | 0 | 0 |
+| Health & Wellness | 117 | 117 | 92.1 | 0 | 0 | 0 |
+| Security & Safety | 19 | 19 | 92.1 | 0 | 0 | 0 |
+| Creative Economy | 112 | 112 | 92.7 | 0 | 0 | 0 |
+| Uniquely African | 147 | 162 | 92.8 | 0 | 0 | 0 |
+| Personal Finance | 28 | 28 | 93 | 2 | 0 | 0 |
+| VAT & Business Tax | 251 | 251 | 93 | 1 | 0 | 0 |
+| Education | 141 | 141 | 93.4 | 0 | 0 | 0 |
+| Trade & Import | 69 | 69 | 94 | 3 | 0 | 0 |
+| Mortgage & Property | 273 | 451 | 94.6 | 5 | 0 | 0 |
+| Insurance | 146 | 452 | 94.6 | 0 | 0 | 0 |
+| Small Business & SME | 83 | 98 | 94.7 | 0 | 0 | 0 |
+| Image & Design | 78 | 78 | 94.8 | 0 | 0 | 0 |
+| Agriculture | 509 | 1115 | 95.1 | 0 | 0 | 0 |
+| Transport & Logistics | 52 | 52 | 95.6 | 0 | 0 | 0 |
+| Business & ROI | 34 | 34 | 95.6 | 0 | 0 | 0 |
+| Energy & Utilities | 267 | 534 | 95.6 | 0 | 0 | 0 |
 
 ## P0 Queue
 
@@ -63,110 +63,140 @@ No rows in this queue.
 
 ## High-Value P1 Queue
 
-No rows in this queue.
-
+| Score | Rank | Priority | Tool | Category | Benchmark | Top gaps |
+| ---: | --- | --- | --- | --- | --- | --- |
+| 57 | D | P1-high-value-upgrade | crypto-cgt-sw-coverage-crypto-tax | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 59 | D | P1-high-value-upgrade | business-name-gen-sw-coverage-business-name-gen | VAT & Business Tax | VAT, invoice, ecommerce calculator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 61 | D | P1-high-value-upgrade | africa-election-tracker-sw-coverage-africa-election-tracker | Government & Civic | Government and civic guide | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 61 | D | P1-high-value-upgrade | construction-budget-sw-coverage-construction-budget | Mortgage & Property | Legal and compliance workflow | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 61 | D | P1-high-value-upgrade | child-support-sw-coverage-child-support | Mortgage & Property | Legal and compliance workflow | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 61 | D | P1-high-value-upgrade | dev-feasibility-sw-coverage-dev-feasibility | Mortgage & Property | Legal and compliance workflow | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 61 | D | P1-high-value-upgrade | agent-commission-sw-coverage-agent-commission | Mortgage & Property | Legal and compliance workflow | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 61 | D | P1-high-value-upgrade | commodity-tracker-sw-coverage-commodity-tracker | Trade & Import | Trade and logistics calculator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 61 | D | P1-high-value-upgrade | budget-comparator-sw-coverage-budget-comparator | Government & Civic | Government and civic guide | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 63 | D | P1-high-value-upgrade | bnpl-calc-sw-coverage-bnpl-calc | Fintech & Banking | Fintech and payments tool | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P1-high-value-upgrade | afropoints-sw-coverage-afropoints | Uniquely African | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P1-high-value-upgrade | afroatlas-sw-coverage-afroatlas | Uniquely African | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P1-high-value-upgrade | africa-conflict-sw-coverage-africa-conflict | Uniquely African | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P1-high-value-upgrade | drug-price-compare-sw-coverage-drug-price-compare | Health & Wellness | Health and wellness estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P1-high-value-upgrade | blood-group-sw-coverage-blood-group | Health & Wellness | Health and wellness estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P1-high-value-upgrade | african-meal-plan-sw-coverage-african-meal-plan | Health & Wellness | Health and wellness estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P1-high-value-upgrade | csection-vs-natural-sw-coverage-csection-vs-natural | Health & Wellness | Health and wellness estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P1-high-value-upgrade | brideprice-advisor-sw-coverage-brideprice-advisor | Uniquely African | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P1-high-value-upgrade | electricity-estimator-sw-coverage-electricity-estimator | Uniquely African | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P1-high-value-upgrade | sars-efiling-fr-coverage-sars-efiling | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 65 | C | P1-high-value-upgrade | diaspora-guide-sw-coverage-diaspora-guide | Uniquely African | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P1-high-value-upgrade | coding-bootcamp-sw-coverage-coding-bootcamp | Education | Education calculator or guide | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P1-high-value-upgrade | breastfeeding-tracker-sw-coverage-breastfeeding-tracker | Health & Wellness | Health and wellness estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 66 | C | P1-high-value-upgrade | etims-guide-fr-coverage-etims-guide | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 68 | C | P1-high-value-upgrade | background-remover-sw-coverage-background-remover | Image & Design | Image and design utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 68 | C | P1-high-value-upgrade | certificate-maker-sw-coverage-certificate-maker | Image & Design | Image and design utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 68 | C | P1-high-value-upgrade | color-picker-sw-coverage-color-picker | Image & Design | Image and design utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 68 | C | P1-high-value-upgrade | colour-palette-sw-coverage-colour-palette | Image & Design | Image and design utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 69 | C | P1-high-value-upgrade | sars-efiling | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 69 | C | P1-high-value-upgrade | etims-guide | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
 
 ## Lowest 100 Individual Tools
 
 | Score | Rank | Priority | Tool | Category | Benchmark | Top gaps |
 | ---: | --- | --- | --- | --- | --- | --- |
-| 85 | A | P3-monitor | zana-tam-sam-som-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | missing export/copy/save path; browser smoke not run; missing official/verification evidence; no verification panel |
-| 86 | A | P3-monitor | drepanocytose-fr | Health & Wellness | Health and wellness estimator | no workflow or methodology evidence; browser smoke not run; stale or undated assumptions; missing methodology/breakdown |
-| 87 | A | P3-monitor | dr-congo-kikokotoo-kodi-mshahara-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; weak title length |
-| 88 | A | P3-monitor | remittance-compare-ha | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing methodology/breakdown; missing disclaimer/limitations; lags category-required features |
-| 88 | A | P3-monitor | flashcard-maker | Education | Education calculator or guide | browser smoke not run; missing source/reference evidence; missing disclaimer/limitations; weak meta description length |
-| 88 | A | P3-monitor | national-service-gh | Education | Education calculator or guide | browser smoke not run; missing methodology/breakdown; missing disclaimer/limitations; lags category-required features |
-| 88 | A | P3-monitor | scholarship-finder-ha | Education | Education calculator or guide | browser smoke not run; missing methodology/breakdown; missing disclaimer/limitations; lags category-required features |
-| 88 | A | P3-monitor | sn-paye-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; no verification panel |
-| 88 | A | P3-monitor | burkina-faso-kikokotoo-kodi-mshahara-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; no verification panel |
-| 88 | A | P3-monitor | cameroon-kikokotoo-kodi-mshahara-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; no verification panel |
-| 88 | A | P3-monitor | central-african-republic-kikokotoo-kodi-mshahara-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; no verification panel |
-| 88 | A | P3-monitor | chad-kikokotoo-kodi-mshahara-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; no verification panel |
-| 88 | A | P3-monitor | comoros-kikokotoo-kodi-mshahara-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; no verification panel |
-| 88 | A | P3-monitor | djibouti-kikokotoo-kodi-mshahara-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; no verification panel |
-| 88 | A | P3-monitor | guinea-kikokotoo-kodi-mshahara-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; no verification panel |
-| 88 | A | P3-monitor | madagascar-kikokotoo-kodi-mshahara-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; no verification panel |
-| 88 | A | P3-monitor | niger-kikokotoo-kodi-mshahara-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; no verification panel |
-| 88 | A | P3-monitor | senegal-kikokotoo-kodi-mshahara-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; no verification panel |
-| 88 | A | P3-monitor | binary-converter | Education | Education calculator or guide | browser smoke not run; missing methodology/breakdown; missing disclaimer/limitations; lags category-required features |
-| 88 | A | P3-monitor | roman-numerals | Education | Education calculator or guide | browser smoke not run; missing methodology/breakdown; missing disclaimer/limitations; lags category-required features |
-| 88 | A | P3-monitor | calculateur-credit-documentaire-fr | Trade & Import | Trade and logistics calculator | browser smoke not run; missing disclaimer/limitations; weak meta description length; weak related/internal links |
-| 88 | A | P3-monitor | rendement-locatif-fr | Mortgage & Property | Legal and compliance workflow | browser smoke not run; missing official/verification evidence; missing disclaimer/limitations; weak meta description length |
-| 88 | A | P3-monitor | calculateur-hypothecaire-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | gn-paye-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; weak meta description length |
-| 88 | A | P3-monitor | ne-paye-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; weak meta description length |
-| 88 | A | P3-monitor | suivi-carburant-algeria-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-angola-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-benin-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-botswana-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-burkina-faso-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-burundi-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-cabo-verde-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-cameroon-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-central-african-republic-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-chad-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-comoros-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-congo-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-cote-divoire-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-djibouti-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-dr-congo-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-egypt-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-equatorial-guinea-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-eritrea-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-eswatini-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-ethiopia-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-gabon-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-gambia-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-ghana-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-guinea-bissau-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-guinea-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-kenya-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-lesotho-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-liberia-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-libya-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-madagascar-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-malawi-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-mali-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-mauritania-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-mauritius-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-morocco-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-mozambique-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-namibia-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-niger-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-nigeria-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-rwanda-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-sao-tome-and-principe-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-senegal-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-seychelles-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-sierra-leone-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-somalia-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-south-africa-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-south-sudan-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-sudan-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-tanzania-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-togo-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-tunisia-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-uganda-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-zambia-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | suivi-carburant-zimbabwe-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | projection-pension-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | boarding-school | Education | Education calculator or guide | browser smoke not run; missing source/reference evidence; missing disclaimer/limitations; high-intent money tool lacks business CTA |
-| 89 | A | P3-monitor | employment-contract | Mortgage & Property | Legal and compliance workflow | missing or duplicate h1; browser smoke not run; missing methodology/breakdown; weak meta description length |
-| 89 | A | P3-monitor | algeria-kikokotoo-kodi-mshahara-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 89 | A | P3-monitor | cape-verde-kikokotoo-kodi-mshahara-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 89 | A | P3-monitor | congo-kikokotoo-kodi-mshahara-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 89 | A | P3-monitor | mshahara-na-kodi-crypto-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; no verification panel; weak title length; weak meta description length |
-| 89 | A | P3-monitor | sao-tome-kikokotoo-kodi-mshahara-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel |
-| 89 | A | P3-monitor | zana-kalenda-likizo-za-umma-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; no verification panel; high-intent money tool lacks business CTA |
-| 89 | A | P3-monitor | cameroon-sw | Uniquely African | General online utility | weak input surface; no input path; browser smoke not run; high-intent money tool lacks business CTA |
-| 89 | A | P3-monitor | cote-divoire-sw | Uniquely African | General online utility | weak input surface; no input path; browser smoke not run; high-intent money tool lacks business CTA |
-| 89 | A | P3-monitor | eswatini-sw | Uniquely African | General online utility | no app/script evidence; browser smoke not run; high-intent money tool lacks business CTA |
-| 89 | A | P3-monitor | ethiopia-sw | Uniquely African | General online utility | no app/script evidence; browser smoke not run; high-intent money tool lacks business CTA |
-| 89 | A | P3-monitor | ghana-sw | Uniquely African | General online utility | weak input surface; no input path; browser smoke not run; high-intent money tool lacks business CTA |
-| 89 | A | P3-monitor | kenya-sw | Uniquely African | General online utility | weak input surface; no input path; browser smoke not run; high-intent money tool lacks business CTA |
-| 89 | A | P3-monitor | nigeria-sw | Uniquely African | General online utility | weak input surface; no input path; browser smoke not run; high-intent money tool lacks business CTA |
-| 89 | A | P3-monitor | senegal-sw | Uniquely African | General online utility | weak input surface; no input path; browser smoke not run; high-intent money tool lacks business CTA |
-| 89 | A | P3-monitor | south-africa-sw | Uniquely African | General online utility | weak input surface; no input path; browser smoke not run; high-intent money tool lacks business CTA |
-| 89 | A | P3-monitor | tanzania-sw | Uniquely African | General online utility | weak input surface; no input path; browser smoke not run; high-intent money tool lacks business CTA |
-| 89 | A | P3-monitor | uganda-sw | Uniquely African | General online utility | weak input surface; no input path; browser smoke not run; high-intent money tool lacks business CTA |
-| 89 | A | P3-monitor | zimbabwe-sw | Uniquely African | General online utility | no app/script evidence; browser smoke not run; high-intent money tool lacks business CTA |
+| 39 | F | P1-repair | gh-retenue-source-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 57 | D | P1-high-value-upgrade | crypto-cgt-sw-coverage-crypto-tax | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 57 | D | P2-upgrade | compound-interest-sw-coverage-compound-interest | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 57 | D | P2-upgrade | afropayroll-os-sw-coverage-afropayroll-os | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 59 | D | P1-high-value-upgrade | business-name-gen-sw-coverage-business-name-gen | VAT & Business Tax | VAT, invoice, ecommerce calculator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 59 | D | P2-upgrade | contractor-vs-employee-sw-coverage-contractor-vs-employee | HR & Payroll | Payroll and HR utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 61 | D | P1-high-value-upgrade | africa-election-tracker-sw-coverage-africa-election-tracker | Government & Civic | Government and civic guide | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 61 | D | P1-high-value-upgrade | construction-budget-sw-coverage-construction-budget | Mortgage & Property | Legal and compliance workflow | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 61 | D | P1-high-value-upgrade | child-support-sw-coverage-child-support | Mortgage & Property | Legal and compliance workflow | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 61 | D | P1-high-value-upgrade | dev-feasibility-sw-coverage-dev-feasibility | Mortgage & Property | Legal and compliance workflow | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 61 | D | P1-high-value-upgrade | agent-commission-sw-coverage-agent-commission | Mortgage & Property | Legal and compliance workflow | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 61 | D | P1-high-value-upgrade | commodity-tracker-sw-coverage-commodity-tracker | Trade & Import | Trade and logistics calculator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 61 | D | P1-high-value-upgrade | budget-comparator-sw-coverage-budget-comparator | Government & Civic | Government and civic guide | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 61 | D | P2-upgrade | eac-cet-sw-coverage-eac-cet | Trade & Import | Trade and logistics calculator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 61 | D | P2-upgrade | ecowas-levy-sw-coverage-ecowas-levy | Trade & Import | Trade and logistics calculator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 61 | D | P2-upgrade | divorce-settlement-sw-coverage-divorce-settlement | Mortgage & Property | Legal and compliance workflow | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 63 | D | P1-high-value-upgrade | bnpl-calc-sw-coverage-bnpl-calc | Fintech & Banking | Fintech and payments tool | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 63 | D | P2-upgrade | betting-tax-sw-coverage-betting-tax | Sports & Entertainment | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 63 | D | P2-upgrade | 50-30-20-budget-sw-coverage-50-30-20-budget | Personal Finance | Personal finance calculator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 63 | D | P2-upgrade | album-budget-sw-coverage-album-budget | Personal Finance | Personal finance calculator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 63 | D | P2-upgrade | asset-finance-sw-coverage-asset-finance | Fintech & Banking | Fintech and payments tool | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 63 | D | P2-upgrade | b2b-payment-sw-coverage-b2b-payment | Fintech & Banking | Fintech and payments tool | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 63 | D | P2-upgrade | bill-split-sw-coverage-bill-split | Fintech & Banking | Fintech and payments tool | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 63 | D | P2-upgrade | bond-yield-sw-coverage-bond-yield | Fintech & Banking | Fintech and payments tool | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 63 | D | P2-upgrade | dca-calc-sw-coverage-dca-calc | Fintech & Banking | Fintech and payments tool | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 63 | D | P2-upgrade | debt-snowball-sw-coverage-debt-snowball | Fintech & Banking | Fintech and payments tool | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 63 | D | P2-upgrade | dividend-yield-sw-coverage-dividend-yield | Fintech & Banking | Fintech and payments tool | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P1-high-value-upgrade | afropoints-sw-coverage-afropoints | Uniquely African | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P1-high-value-upgrade | afroatlas-sw-coverage-afroatlas | Uniquely African | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P1-high-value-upgrade | africa-conflict-sw-coverage-africa-conflict | Uniquely African | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P1-high-value-upgrade | drug-price-compare-sw-coverage-drug-price-compare | Health & Wellness | Health and wellness estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P1-high-value-upgrade | blood-group-sw-coverage-blood-group | Health & Wellness | Health and wellness estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P1-high-value-upgrade | african-meal-plan-sw-coverage-african-meal-plan | Health & Wellness | Health and wellness estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P1-high-value-upgrade | csection-vs-natural-sw-coverage-csection-vs-natural | Health & Wellness | Health and wellness estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P1-high-value-upgrade | brideprice-advisor-sw-coverage-brideprice-advisor | Uniquely African | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P1-high-value-upgrade | electricity-estimator-sw-coverage-electricity-estimator | Uniquely African | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P1-high-value-upgrade | sars-efiling-fr-coverage-sars-efiling | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 65 | C | P1-high-value-upgrade | diaspora-guide-sw-coverage-diaspora-guide | Uniquely African | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P1-high-value-upgrade | coding-bootcamp-sw-coverage-coding-bootcamp | Education | Education calculator or guide | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P1-high-value-upgrade | breastfeeding-tracker-sw-coverage-breastfeeding-tracker | Health & Wellness | Health and wellness estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P3-monitor | amount-words-ke-sw-coverage-amount-words-ke | Uniquely African | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P3-monitor | binary-converter-sw-coverage-binary-converter | Education | Education calculator or guide | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P3-monitor | amount-words-gh-sw-coverage-amount-words-gh | Uniquely African | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P3-monitor | cholera-risk-sw-coverage-cholera-risk | Health & Wellness | Health and wellness estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P3-monitor | calorie-counter-tools-sw-coverage-calorie-counter | Health & Wellness | Health and wellness estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P3-monitor | concert-budget-sw-coverage-concert-budget | Sports & Entertainment | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P3-monitor | dj-booking-rate-sw-coverage-dj-booking-rate | Sports & Entertainment | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P3-monitor | betting-odds-sw-coverage-betting-odds | Sports & Entertainment | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P3-monitor | ebola-checklist-sw-coverage-ebola-checklist | Health & Wellness | Health and wellness estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P3-monitor | afcon-predictor-sw-coverage-afcon-predictor | Sports & Entertainment | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P3-monitor | bmi-calc-tools-sw-coverage-bmi-calculator | Health & Wellness | Health and wellness estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P3-monitor | africa-flight-sw-coverage-africa-flight | Travel & Tourism | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P3-monitor | afroprices-sw-coverage-afroprices | Uniquely African | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P3-monitor | airbnb-vs-hotel-sw-coverage-airbnb-vs-hotel | Travel & Tourism | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P3-monitor | beach-holiday-budget-sw-coverage-beach-holiday-budget | Travel & Tourism | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P3-monitor | business-continuity-sw-coverage-business-continuity | Small Business & SME | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P3-monitor | claim-tracker-sw-coverage-claim-tracker | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P3-monitor | classroom-size-sw-coverage-classroom-size | Education | Education calculator or guide | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P3-monitor | course-load-sw-coverage-course-load | Education | Education calculator or guide | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P3-monitor | cybersecurity-assessment-sw-coverage-cybersecurity-assessment | Security & Safety | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P3-monitor | due-date-tools-sw-coverage-due-date | Health & Wellness | Health and wellness estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 65 | C | P3-monitor | edu-savings-sw-coverage-edu-savings | Education | Education calculator or guide | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 66 | C | P1-high-value-upgrade | etims-guide-fr-coverage-etims-guide | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 66 | C | P3-monitor | employee-cost-sw-coverage-employee-cost | HR & Payroll | Payroll and HR utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
+| 68 | C | P1-high-value-upgrade | background-remover-sw-coverage-background-remover | Image & Design | Image and design utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 68 | C | P1-high-value-upgrade | certificate-maker-sw-coverage-certificate-maker | Image & Design | Image and design utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 68 | C | P1-high-value-upgrade | color-picker-sw-coverage-color-picker | Image & Design | Image and design utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 68 | C | P1-high-value-upgrade | colour-palette-sw-coverage-colour-palette | Image & Design | Image and design utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 68 | C | P3-monitor | crop-yield-sw-coverage-crop-yield | Agriculture | Agriculture and market-data tool | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 68 | C | P3-monitor | african-palette-sw-coverage-african-palette | Creative Economy | Creator workflow utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 68 | C | P3-monitor | afrostream-sw-coverage-afrostream | Creative Economy | Creator workflow utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 68 | C | P3-monitor | art-commission-sw-coverage-art-commission | Creative Economy | Creator workflow utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 68 | C | P3-monitor | creator-club-sw-coverage-creator-club | Creative Economy | Creator workflow utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 68 | C | P3-monitor | creator-course-sw-coverage-creator-course | Creative Economy | Creator workflow utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 68 | C | P3-monitor | creator-desk-sw-coverage-creator-desk | Creative Economy | Creator workflow utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 68 | C | P3-monitor | creator-mail-sw-coverage-creator-mail | Creative Economy | Creator workflow utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 68 | C | P3-monitor | creator-mind-sw-coverage-creator-mind | Creative Economy | Creator workflow utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 68 | C | P3-monitor | creator-polish-sw-coverage-creator-polish | Creative Economy | Creator workflow utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 68 | C | P3-monitor | creator-research-sw-coverage-creator-research | Creative Economy | Creator workflow utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 68 | C | P3-monitor | creator-schedule-sw-coverage-creator-schedule | Creative Economy | Creator workflow utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 68 | C | P3-monitor | creator-team-sw-coverage-creator-team | Creative Economy | Creator workflow utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 68 | C | P3-monitor | engagement-rate-sw-coverage-engagement-rate | Creative Economy | Creator workflow utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 68 | C | P3-monitor | doc-generator-sw-coverage-doc-generator | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 69 | C | P1-high-value-upgrade | sars-efiling | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 69 | C | P1-high-value-upgrade | etims-guide | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 70 | C | P3-monitor | childbirth-cost-sw-coverage-childbirth-cost | Health & Wellness | Health and wellness estimator | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
+| 70 | C | P3-monitor | cost-of-living-sw-coverage-cost-of-living | Uniquely African | General online utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
+| 70 | C | P3-monitor | dental-cost-sw-coverage-dental-cost | Health & Wellness | Health and wellness estimator | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
+| 70 | C | P3-monitor | ankara-kente-cost-sw-coverage-ankara-kente-cost | Uniquely African | General online utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
+| 70 | C | P3-monitor | cctv-cost-sw-coverage-cctv-cost | Security & Safety | General online utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
+| 70 | C | P3-monitor | credit-score-sw-coverage-credit-score | Fintech & Banking | Fintech and payments tool | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
+| 70 | C | P3-monitor | data-breach-cost-sw-coverage-data-breach-cost | Security & Safety | General online utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
+| 71 | C | P3-monitor | itax-guide | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no input path |
+| 72 | C | P3-monitor | clinic-costs-sw-coverage-clinic-costs | Health & Wellness | Health and wellness estimator | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
+| 72 | C | P3-monitor | cnps-guide | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 72 | C | P3-monitor | cnps-guide-fr-coverage-cnps-guide | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 72 | C | P3-monitor | athlete-earnings-sw-coverage-athlete-earnings | Sports & Entertainment | General online utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
+| 72 | C | P3-monitor | airport-transfer-sw-coverage-airport-transfer | Travel & Tourism | General online utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
+| 72 | C | P3-monitor | boarding-school-sw-coverage-boarding-school | Education | Education calculator or guide | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
+| 72 | C | P3-monitor | cert-roi-sw-coverage-cert-roi | Education | Education calculator or guide | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |

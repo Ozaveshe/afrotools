@@ -1,57 +1,112 @@
-<!DOCTYPE html>
+<!doctype html>
 <html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Transferts d'argent via crypto | AfroTools</title>
-<meta name="description" content="Transferts d'argent via crypto — Lisez cet article sur AfroTools.">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Transferts d'argent via crypto">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Comparateur de devis de transfert — Reçus et expiration</title>
+<meta name="description" content="Comparez deux ou trois devis de transfert saisis avec les mêmes devises et le même débit total. Vérifiez localement montant reçu, expiration et versement.">
+<meta name="theme-color" content="#102f62">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Comparateur de devis de transfert">
+<meta property="og:description" content="Comparez des reçus saisis par débit total, montant reçu et expiration. Aucun flux prestataire ni recommandation.">
 <meta property="og:url" content="https://afrotools.com/fr/crypto/remittance/">
-<meta property="og:site_name" content="AfroTools">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/crypto-remittance.webp">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
-<link rel="preload" href="/assets/css/tokens.min.css?v=c13f04eb" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" href="/assets/css/global.min.css?v=2777b75b" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb"><link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-</noscript>
-<style>
-.fr-hero{background:var(--color-bg-dark,#0A1628);padding:48px 0 32px;text-align:center}
-.fr-hero .container{max-width:900px;margin:0 auto;padding:0 24px}
-.fr-hero .section-label{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--color-brand-light,#4DA3FF);margin-bottom:12px}
-.fr-hero h1{font-size:clamp(1.5rem,3vw,2.2rem);font-weight:800;color:#fff;max-width:800px;margin:0 auto 12px;line-height:1.2}
-.fr-hero p{color:rgba(255,255,255,.55);font-size:.9rem;margin:0 auto;max-width:600px}
-.fr-iframe-wrap{max-width:900px;margin:0 auto;padding:32px 16px 64px}
-.fr-iframe-wrap iframe{width:100%;min-height:80vh;border:none;border-radius:12px;background:#fff}
-.fr-note{text-align:center;padding:16px;font-size:.8rem;color:var(--color-text-muted,#64748b)}
-.fr-note a{color:var(--color-brand,#0062CC);text-decoration:underline}
-</style>
-<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<meta name="twitter:title" content="Comparateur de devis de transfert">
+<meta name="twitter:description" content="Comparaison privée avec exports locaux PDF, CSV et JSON.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/crypto-remittance.webp">
+<link rel="stylesheet" href="/assets/css/remittance-quote-comparator.css?v=56b39c1c">
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"WebApplication","name":"Comparateur de devis de transfert","url":"https://afrotools.com/fr/crypto/remittance/","applicationCategory":"FinanceApplication","operatingSystem":"Any","inLanguage":"fr","description":"Feuille privée pour comparer deux ou trois reçus de devis saisis avec contrôle strict de comparabilité et d’expiration.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Reçus de devis saisis par l’utilisateur","Comparaison stricte des devises et du débit total","Exclusion des devis expirés","Exports locaux PDF, CSV et JSON"]},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ce comparateur charge-t-il des devis prestataires en direct ?","acceptedAnswer":{"@type":"Answer","text":"Non. Saisissez les devis obtenus directement. La feuille n’interroge aucun prestataire, aucune plateforme ni API de taux."}},{"@type":"Question","name":"Quand deux devis de transfert sont-ils comparables ?","acceptedAnswer":{"@type":"Answer","text":"Ils doivent avoir exactement la même devise d’envoi, la même devise de réception et le même débit total. Un devis explicitement expiré est exclu."}},{"@type":"Question","name":"Le montant reçu le plus élevé signifie-t-il que le prestataire est le meilleur ?","acceptedAnswer":{"@type":"Answer","text":"Non. C’est uniquement une observation arithmétique parmi les entrées comparables admissibles. Elle n’évalue pas la sécurité, l’éligibilité, la disponibilité, les contrôles d’identité, le règlement ou l’adéquation."}},{"@type":"Question","name":"Mes données de devis sont-elles téléversées ou enregistrées ?","acceptedAnswer":{"@type":"Answer","text":"Non. Le calcul et l’export ont lieu dans le navigateur. Les champs ne sont ni stockés ni placés dans une URL de partage."}}]}]</script>
 <link rel="canonical" href="https://afrotools.com/fr/crypto/remittance/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/crypto/remittance/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/crypto/remittance/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/crypto/remittance/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="remit-quote-page">
+<a class="rm-skip" href="#rm-form">Aller au comparateur</a>
 <afro-navbar></afro-navbar>
-<section class="fr-hero"><div class="container">
-<p class="section-label">Crypto</p>
-<h1>Transferts d'argent via crypto</h1>
-<p>Contenu disponible en anglais — traduction à venir.</p>
-</div></section>
-<div class="fr-iframe-wrap">
-<iframe src="/crypto/remittance/" title="Transferts d'argent via crypto" loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
+<header class="rm-hero"><div class="rm-wrap">
+  <nav class="rm-crumb" aria-label="Fil d’Ariane"><a href="/fr/">Accueil</a> / <a href="/fr/crypto/">Crypto</a> / Comparateur de devis</nav>
+  <h1>Comparez des reçus de transfert à conditions égales.</h1>
+  <p>Saisissez deux ou trois devis obtenus. La feuille compare uniquement les entrées non expirées avec exactement la même devise d’envoi, la même devise de réception et le même débit total.</p>
+  <div class="rm-badges"><span>Privé dans votre navigateur</span><span>Aucune API de prestataire ou de taux</span><span>Exports PDF et données locaux</span></div>
+</div></header>
+<main class="rm-main" data-remittance-comparator data-locale="fr"><div class="rm-wrap">
+<div class="rm-grid">
+<section class="rm-card" aria-labelledby="rm-form-title">
+  <h2 id="rm-form-title">Saisissez les reçus de devis vérifiés</h2>
+  <p class="rm-intro">Utilisez le montant total qui vous serait débité, y compris toute charge hors du montant affiché. Ne saisissez aucun nom, numéro de compte, adresse de portefeuille, téléphone ou identifiant de connexion.</p>
+  <p class="rm-privacy"><strong>Limite locale :</strong> les champs ne sont envoyés ni à AfroTools, ni à une IA, ni aux analyses, ni à Supabase, ni à un prestataire. Ils ne sont pas stockés dans le navigateur ni ajoutés à l’URL.</p>
+  <form id="rm-form" novalidate>
+  <div class="rm-quotes">
+    <fieldset class="rm-quote"><legend class="rm-help">Reçu A obligatoire</legend><h3>Devis A</h3><div class="rm-fields">
+      <div class="rm-field"><label for="rm-a-label">Libellé générique du prestataire ou du parcours</label><input id="rm-a-label" maxlength="48" required autocomplete="off" placeholder="ex. Devis bancaire A"><small>Utilisez un libellé générique, pas une personne ni un identifiant.</small></div>
+      <div class="rm-field"><label for="rm-a-payout">Mode de versement (facultatif)</label><select id="rm-a-payout" data-optional="true"><option value="">Non saisi</option><option value="bank">Compte bancaire</option><option value="mobile-wallet">Portefeuille mobile</option><option value="cash">Retrait en espèces</option><option value="crypto-wallet">Portefeuille crypto</option><option value="other">Autre</option></select></div>
+      <div class="rm-field"><label for="rm-a-send">Devise ou unité d’envoi</label><input id="rm-a-send" maxlength="8" pattern="[A-Za-z0-9]{2,8}" required autocomplete="off" placeholder="ex. EUR"></div>
+      <div class="rm-field"><label for="rm-a-debit">Débit total</label><input id="rm-a-debit" type="number" min="0.000000000001" max="1000000000000000" step="any" required inputmode="decimal"></div>
+      <div class="rm-field"><label for="rm-a-receive">Devise ou unité de réception</label><input id="rm-a-receive" maxlength="8" pattern="[A-Za-z0-9]{2,8}" required autocomplete="off" placeholder="ex. XOF"></div>
+      <div class="rm-field"><label for="rm-a-recipient">Montant reçu</label><input id="rm-a-recipient" type="number" min="0.000000000001" max="1000000000000000" step="any" required inputmode="decimal"></div>
+      <div class="rm-field"><label for="rm-a-fee">Frais indiqués inclus dans le débit (facultatif)</label><input id="rm-a-fee" type="number" min="0" max="1000000000000000" step="any" inputmode="decimal" data-optional="true"></div>
+      <div class="rm-field"><label for="rm-a-delivery">Délai indiqué en minutes (facultatif)</label><input id="rm-a-delivery" type="number" min="0" max="1000000000000000" step="any" inputmode="numeric" data-optional="true"></div>
+      <div class="rm-field"><label for="rm-a-observed">Vérifié à</label><input id="rm-a-observed" type="datetime-local" required></div>
+      <div class="rm-field"><label for="rm-a-expires">Expire à (facultatif)</label><input id="rm-a-expires" type="datetime-local" data-optional="true"></div>
+    </div></fieldset>
+    <fieldset class="rm-quote"><legend class="rm-help">Reçu B obligatoire</legend><h3>Devis B</h3><div class="rm-fields">
+      <div class="rm-field"><label for="rm-b-label">Libellé générique du prestataire ou du parcours</label><input id="rm-b-label" maxlength="48" required autocomplete="off" placeholder="ex. Devis mobile B"><small>Utilisez un libellé générique, pas une personne ni un identifiant.</small></div>
+      <div class="rm-field"><label for="rm-b-payout">Mode de versement (facultatif)</label><select id="rm-b-payout" data-optional="true"><option value="">Non saisi</option><option value="bank">Compte bancaire</option><option value="mobile-wallet">Portefeuille mobile</option><option value="cash">Retrait en espèces</option><option value="crypto-wallet">Portefeuille crypto</option><option value="other">Autre</option></select></div>
+      <div class="rm-field"><label for="rm-b-send">Devise ou unité d’envoi</label><input id="rm-b-send" maxlength="8" pattern="[A-Za-z0-9]{2,8}" required autocomplete="off"></div>
+      <div class="rm-field"><label for="rm-b-debit">Débit total</label><input id="rm-b-debit" type="number" min="0.000000000001" max="1000000000000000" step="any" required inputmode="decimal"></div>
+      <div class="rm-field"><label for="rm-b-receive">Devise ou unité de réception</label><input id="rm-b-receive" maxlength="8" pattern="[A-Za-z0-9]{2,8}" required autocomplete="off"></div>
+      <div class="rm-field"><label for="rm-b-recipient">Montant reçu</label><input id="rm-b-recipient" type="number" min="0.000000000001" max="1000000000000000" step="any" required inputmode="decimal"></div>
+      <div class="rm-field"><label for="rm-b-fee">Frais indiqués inclus dans le débit (facultatif)</label><input id="rm-b-fee" type="number" min="0" max="1000000000000000" step="any" inputmode="decimal" data-optional="true"></div>
+      <div class="rm-field"><label for="rm-b-delivery">Délai indiqué en minutes (facultatif)</label><input id="rm-b-delivery" type="number" min="0" max="1000000000000000" step="any" inputmode="numeric" data-optional="true"></div>
+      <div class="rm-field"><label for="rm-b-observed">Vérifié à</label><input id="rm-b-observed" type="datetime-local" required></div>
+      <div class="rm-field"><label for="rm-b-expires">Expire à (facultatif)</label><input id="rm-b-expires" type="datetime-local" data-optional="true"></div>
+    </div></fieldset>
+  </div>
+  <label class="rm-toggle" for="rm-third"><input id="rm-third" type="checkbox"> Ajouter un troisième reçu</label>
+  <fieldset class="rm-quote" id="rm-quote-c" hidden><legend class="rm-help">Reçu C facultatif</legend><h3>Devis C</h3><div class="rm-fields">
+    <div class="rm-field"><label for="rm-c-label">Libellé générique du prestataire ou du parcours</label><input id="rm-c-label" maxlength="48" required disabled autocomplete="off"><small>Utilisez un libellé générique, pas une personne ni un identifiant.</small></div>
+    <div class="rm-field"><label for="rm-c-payout">Mode de versement (facultatif)</label><select id="rm-c-payout" disabled data-optional="true"><option value="">Non saisi</option><option value="bank">Compte bancaire</option><option value="mobile-wallet">Portefeuille mobile</option><option value="cash">Retrait en espèces</option><option value="crypto-wallet">Portefeuille crypto</option><option value="other">Autre</option></select></div>
+    <div class="rm-field"><label for="rm-c-send">Devise ou unité d’envoi</label><input id="rm-c-send" maxlength="8" pattern="[A-Za-z0-9]{2,8}" required disabled autocomplete="off"></div>
+    <div class="rm-field"><label for="rm-c-debit">Débit total</label><input id="rm-c-debit" type="number" min="0.000000000001" max="1000000000000000" step="any" required disabled inputmode="decimal"></div>
+    <div class="rm-field"><label for="rm-c-receive">Devise ou unité de réception</label><input id="rm-c-receive" maxlength="8" pattern="[A-Za-z0-9]{2,8}" required disabled autocomplete="off"></div>
+    <div class="rm-field"><label for="rm-c-recipient">Montant reçu</label><input id="rm-c-recipient" type="number" min="0.000000000001" max="1000000000000000" step="any" required disabled inputmode="decimal"></div>
+    <div class="rm-field"><label for="rm-c-fee">Frais indiqués inclus dans le débit (facultatif)</label><input id="rm-c-fee" type="number" min="0" max="1000000000000000" step="any" disabled inputmode="decimal" data-optional="true"></div>
+    <div class="rm-field"><label for="rm-c-delivery">Délai indiqué en minutes (facultatif)</label><input id="rm-c-delivery" type="number" min="0" max="1000000000000000" step="any" disabled inputmode="numeric" data-optional="true"></div>
+    <div class="rm-field"><label for="rm-c-observed">Vérifié à</label><input id="rm-c-observed" type="datetime-local" required disabled></div>
+    <div class="rm-field"><label for="rm-c-expires">Expire à (facultatif)</label><input id="rm-c-expires" type="datetime-local" disabled data-optional="true"></div>
+  </div></fieldset>
+  <p id="rm-error" class="rm-error" role="alert"></p>
+  <div class="rm-actions"><button class="rm-btn" type="submit">Comparer les reçus saisis</button><button class="rm-btn rm-btn-secondary" type="button" id="rm-copy">Copier</button><button class="rm-btn rm-btn-secondary" type="button" id="rm-csv">CSV</button><button class="rm-btn rm-btn-secondary" type="button" id="rm-json">JSON</button><button class="rm-btn rm-btn-secondary" type="button" id="rm-pdf">PDF</button></div>
+  <p id="rm-status" class="rm-status" role="status" aria-live="polite"></p>
+  </form>
+</section>
+<section class="rm-card rm-results" id="rm-results" aria-labelledby="rm-results-title" aria-busy="true">
+  <h2 id="rm-results-title">Comparaison des reçus</h2>
+  <div class="rm-primary"><span id="rm-primary-label"></span><strong id="rm-primary-value">—</strong><p id="rm-primary-detail"></p></div>
+  <div id="rm-result-list" class="rm-result-list"></div>
+  <p class="rm-warning">Le montant reçu le plus élevé n’est pas une recommandation. Cette feuille ne vérifie ni l’exécution du devis, ni la sécurité, les contrôles d’identité, les limites, la réversibilité, la fiabilité ou l’adéquation. Un transfert crypto peut être irréversible.</p>
+</section>
 </div>
-<p class="fr-note"><a href="/fr/crypto/remittance/">Lire la version originale en anglais</a></p>
+<section class="rm-content">
+  <article><h2>Règle de comparaison stricte</h2><p>Deux entrées sont comparables uniquement si leur devise d’envoi, leur devise de réception et leur débit total correspondent exactement. Les entrées explicitement expirées sont exclues.</p><code>taux effectif = montant reçu ÷ débit total</code></article>
+  <article><h2>Expiration et preuve</h2><p>Copiez les valeurs de l’écran final du devis et notez l’heure de vérification. Une expiration inconnue est autorisée avec un avertissement ; elle ne signifie pas que le devis est actuel.</p></article>
+  <article><h2>Débit total, pas frais d’appel</h2><p>Utilisez la somme complète qui vous serait débitée. Les frais séparés sont consignés sans être ajoutés une seconde fois. Le versement et le délai ne modifient jamais le calcul.</p></article>
+  <article><h2>Confidentialité et exports</h2><p>Le calcul et la création des fichiers CSV, JSON et PDF lisibles ont lieu sur cet appareil. Utilisez des libellés génériques et ne saisissez aucune donnée personnelle, bancaire, de portefeuille ou de connexion.</p></article>
+</section>
+<section class="rm-faq" aria-labelledby="rm-faq-title"><h2 id="rm-faq-title">Questions sur la comparaison des devis</h2>
+  <details><summary>Pourquoi une entrée a-t-elle été exclue ?</summary><p>Elle était explicitement expirée, ou aucune autre entrée admissible ne partageait exactement les mêmes devises et le même débit total.</p></details>
+  <details><summary>Puis-je comparer un virement bancaire et un parcours crypto ?</summary><p>Oui, uniquement comme reçus saisis avec les mêmes devises et le même débit. Le calcul n’évalue pas garde, réversibilité, KYC, accès aux espèces, risque réseau ou disponibilité légale.</p></details>
+  <details><summary>Pourquoi l’outil ne nomme-t-il pas le prestataire le moins cher ?</summary><p>Prix, éligibilité et disponibilité changent. L’outil indique seulement le montant reçu le plus élevé parmi les entrées comparables admissibles que vous avez fournies.</p></details>
+</section>
+</div></main>
+<button id="rm-theme" class="rm-theme" type="button" aria-label="Basculer l’aperçu clair ou sombre" aria-pressed="false">◐ Thème</button>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
-<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=996960fa"></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911"></script>
+<script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c"></script>
+<script src="/engines/remittance-quote-comparator-engine.js?v=c1099d99"></script>
+<script src="/assets/js/pages/remittance-quote-comparator.js?v=628d388d"></script>
 </body>
 </html>

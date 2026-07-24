@@ -206,109 +206,6 @@ function handleCoinGecko(url) {
   return {};
 }
 
-function handleCryptoScam(method, url, postBody) {
-  const parsed = parseUrl(url);
-  if (method === 'POST') {
-    return { success: true, id: 'smoke-report-1', received: JSON.parse(postBody || '{}') };
-  }
-  if (parsed.searchParams.has('stats')) {
-    return {
-      total: 42,
-      totalLostNGN: 120500000,
-      byType: { phishing: 12, ponzi: 10, 'fake-investment': 8, 'rug-pull': 6 },
-      byCountry: { NG: 18, KE: 7, ZA: 6, GH: 5, EG: 3, UG: 3 }
-    };
-  }
-  if (parsed.searchParams.has('recent')) {
-    return {
-      reports: [
-        {
-          platform: 'FakeYield Africa',
-          scam_type: 'phishing',
-          amount_lost: 250000,
-          currency: 'NGN',
-          country: 'NG',
-          date_occurred: '2026-03-15',
-          reported_at: '2026-03-16',
-          story: 'Victim was asked to connect wallet to a fake exchange clone.',
-          address: '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef'
-        },
-        {
-          platform: 'Trust Wallet Support Clone',
-          scam_type: 'impersonation',
-          amount_lost: 1200,
-          currency: 'USD',
-          country: 'KE',
-          date_occurred: '2026-02-11',
-          reported_at: '2026-02-12',
-          story: 'Fake support account requested a seed phrase.',
-          address: 'TQwFakeAddress111111111111111111111'
-        }
-      ]
-    };
-  }
-  const q = (parsed.searchParams.get('q') || '').toLowerCase();
-  if (q.includes('deadbeef') || q.includes('fakeyield')) {
-    return {
-      found: 1,
-      reports: [
-        {
-          platform: 'FakeYield Africa',
-          scam_type: 'phishing',
-          amount_lost: 250000,
-          currency: 'NGN',
-          country: 'NG',
-          date_occurred: '2026-03-15',
-          reported_at: '2026-03-16',
-          story: 'Victim was asked to connect wallet to a fake exchange clone.',
-          address: '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef'
-        }
-      ]
-    };
-  }
-  return { found: 0, reports: [] };
-}
-
-function handleCryptoP2P(url) {
-  const parsed = parseUrl(url);
-  const asset = (parsed.searchParams.get('asset') || 'USDT').toUpperCase();
-  const fiat = (parsed.searchParams.get('fiat') || 'NGN').toUpperCase();
-  const basePrice = {
-    NGN: 1600,
-    KES: 130,
-    ZAR: 18.4,
-    GHS: 14,
-    EGP: 49,
-    TZS: 2600,
-    UGX: 3850,
-    XOF: 605,
-    ETB: 57,
-    RWF: 1290
-  }[fiat] || 1600;
-  const multiplier = asset === 'BTC' ? 65000 : asset === 'ETH' ? 3200 : asset === 'BNB' ? 580 : 1;
-  const unitPrice = basePrice * multiplier;
-  const makePlatform = (id, name, offset, source) => ({
-    id,
-    name,
-    source,
-    buyPrice: Number((unitPrice * (1 + offset)).toFixed(2)),
-    sellPrice: Number((unitPrice * (1 - offset * 0.75)).toFixed(2)),
-    methods: fiat === 'KES' ? ['Bank Transfer', 'M-Pesa'] : ['Bank Transfer', 'Mobile Money'],
-    trust: id === 'binance' ? 94 : id === 'bybit' ? 90 : 83,
-    fees: { maker: 0, taker: id === 'quidax' ? 0.25 : 0.1 },
-    url: `https://example.com/${id}`,
-    lastUpdated: new Date(NOW - Math.round(offset * 1000000)).toISOString()
-  });
-  return {
-    platforms: [
-      makePlatform('binance', 'Binance P2P', 0.004, 'live'),
-      makePlatform('bybit', 'Bybit P2P', 0.007, 'live'),
-      makePlatform('yellowcard', 'Yellow Card', 0.011, 'manual'),
-      makePlatform('quidax', 'Quidax', 0.015, 'manual')
-    ]
-  };
-}
-
 function handlePortfolio(method, postBody) {
   if (method === 'POST') {
     return { success: true, saved: true, holdings: JSON.parse(postBody || '{}').holdings || [] };
@@ -409,16 +306,16 @@ async function createContext(browser) {
     }
     if (url.startsWith(`${BASE_URL}/.netlify/functions/crypto-scam`)) {
       return route.fulfill({
-        status: 200,
+        status: 410,
         contentType: 'application/json',
-        body: JSON.stringify(handleCryptoScam(method, url, req.postData() || ''))
+        body: JSON.stringify({ error: 'crypto_scam_endpoint_retired', status: 'retired', replacement: '/crypto/scam-checker/' })
       });
     }
     if (url.startsWith(`${BASE_URL}/.netlify/functions/crypto-p2p`)) {
       return route.fulfill({
-        status: 200,
+        status: 410,
         contentType: 'application/json',
-        body: JSON.stringify(handleCryptoP2P(url))
+        body: JSON.stringify({ error: 'p2p_rate_endpoint_retired', status: 'retired', replacement: '/crypto/p2p-rates/' })
       });
     }
     if (url.startsWith(`${BASE_URL}/.netlify/functions/crypto-portfolio-advisor`)) {
@@ -567,7 +464,19 @@ async function main() {
       slug: 'p2p-rates',
       path: '/crypto/p2p-rates/',
       run: async (page) => {
-        await page.waitForSelector('.platform-card');
+        await page.fill('#p2-asset', 'USDT');
+        await page.fill('#p2-fiat', 'NGN');
+        await page.fill('#p2-amount', '100');
+        await page.fill('#p2-a-price', '1600');
+        await page.fill('#p2-a-time', '2026-07-23T12:00');
+        await page.fill('#p2-a-pct', '0');
+        await page.fill('#p2-a-fixed', '0');
+        await page.fill('#p2-b-price', '1610');
+        await page.fill('#p2-b-time', '2026-07-23T12:01');
+        await page.fill('#p2-b-pct', '0');
+        await page.fill('#p2-b-fixed', '0');
+        await page.click('#p2-form button[type="submit"]');
+        await page.waitForSelector('.p2-result[data-observed="true"]');
       }
     },
     {
@@ -590,15 +499,41 @@ async function main() {
       slug: 'remittance',
       path: '/crypto/remittance/',
       run: async (page) => {
-        await page.fill('input[type="number"]', '500');
-        await page.waitForSelector('#channels .channel-card');
+        await page.fill('#rm-a-label', 'Quote A');
+        await page.fill('#rm-a-send', 'USD');
+        await page.fill('#rm-a-debit', '500');
+        await page.fill('#rm-a-receive', 'NGN');
+        await page.fill('#rm-a-recipient', '780000');
+        await page.fill('#rm-a-observed', '2026-01-01T10:00');
+        await page.fill('#rm-b-label', 'Quote B');
+        await page.fill('#rm-b-send', 'USD');
+        await page.fill('#rm-b-debit', '500');
+        await page.fill('#rm-b-receive', 'NGN');
+        await page.fill('#rm-b-recipient', '790000');
+        await page.fill('#rm-b-observed', '2026-01-01T10:05');
+        await page.click('#rm-form button[type="submit"]');
+        await page.waitForSelector('.rm-result[data-highest="true"]');
       }
     },
     {
       slug: 'arbitrage',
       path: '/crypto/arbitrage/',
       run: async (page) => {
-        await page.waitForSelector('table tbody tr');
+        const checkedAt = await page.evaluate(() => {
+          const date = new Date(Date.now() - 5 * 60 * 1000);
+          const pad = (value) => String(value).padStart(2, '0');
+          return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+        });
+        await page.fill('#aw-asset', 'USDT');
+        await page.fill('#aw-amount', '100');
+        await page.fill('#aw-buy-debit', '150000');
+        await page.fill('#aw-sell-credit', '154000');
+        await page.fill('#aw-costs', '1000');
+        await page.fill('#aw-buy-checked', checkedAt);
+        await page.fill('#aw-sell-checked', checkedAt);
+        await page.check('#aw-confirm');
+        await page.click('#aw-form button[type="submit"]');
+        await page.waitForSelector('#aw-results:not([hidden])');
       }
     },
     {
@@ -644,46 +579,59 @@ async function main() {
       path: '/crypto/profit-calculator/',
       run: async (page) => {
         await page.fill('#buyPrice', '45000000');
+        await page.fill('#sellPrice', '52000000');
         await page.fill('#quantity', '0.5');
-        await page.click('#calcBtn');
-        await page.waitForSelector('#whatifSection', { state: 'visible' });
+        await page.click('.profit-submit');
+        await page.waitForSelector('#cryptoProfitResults .profit-result-hero', { state: 'visible' });
       }
     },
     {
       slug: 'mining-calculator',
       path: '/crypto/mining-calculator/',
       run: async (page) => {
-        await page.selectOption('#coinSelect', 'LTC');
-        await page.fill('#hashrate', '9.5');
-        await page.click('#calcBtn');
-        await page.waitForSelector('#chartSection', { state: 'visible' });
+        await page.fill('#coinLabel', 'BTC');
+        await page.fill('#grossCoinPerDay', '0.00005');
+        await page.fill('#coinPrice', '150000000');
+        await page.click('.mining-submit');
+        await page.waitForSelector('#miningMarginResults .mining-result-hero', { state: 'visible' });
       }
     },
     {
       slug: 'scam-checker',
       path: '/crypto/scam-checker/',
       run: async (page) => {
-        await page.fill('#check-query', '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef');
-        await page.click('#btn-check');
-        await page.waitForSelector('#check-result.danger', { state: 'attached' });
+        await page.fill('#incidentLabel', 'Unexpected support message');
+        await page.fill('#incidentDate', '2026-07-20');
+        await page.fill('#platform', 'Example service');
+        await page.check('[name="redFlag"]');
+        await page.fill('#evidenceNotes', 'screenshot-file.png');
+        await page.fill('#timelineNotes', '09:15 first message');
+        await page.click('.scam-submit');
+        await page.waitForSelector('#scamEvidenceResults[data-result-settled="true"]', { state: 'attached' });
       }
     },
     {
       slug: 'address-validator',
       path: '/crypto/address-validator/',
       run: async (page) => {
-        await page.fill('#addressInput', '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef');
-        await page.click('#validateBtn');
-        await page.waitForSelector('#resultCard .status-banner', { state: 'attached' });
+        await page.selectOption('#walletNetwork', 'evm');
+        await page.fill('#walletAddress', '0xde709f2102306220921060314715629080e2fb77');
+        await page.locator('#walletValidatorForm').evaluate((form) => form.requestSubmit());
+        await page.waitForSelector('#walletResult .wallet-badge.is-valid', { state: 'attached' });
       }
     },
     {
       slug: 'exchange-ratings',
       path: '/crypto/exchange-ratings/',
       run: async (page) => {
-        await page.waitForSelector('#exchangeTableBody tr');
-        await page.click('#exchangeTableBody tr:first-child');
-        await page.waitForSelector('#exchangeDetail .exchange-detail');
+        await page.fill('#provider-1-name', 'Provider Alpha');
+        await page.fill('#provider-1-country', 'Nigeria');
+        await page.fill('#provider-1-date', new Date().toISOString().slice(0, 10));
+        await page.fill('#provider-2-name', 'Provider Beta');
+        await page.fill('#provider-2-country', 'South Africa');
+        await page.fill('#provider-2-date', new Date().toISOString().slice(0, 10));
+        await page.locator('#exchangeWorkbookForm').evaluate((form) => form.requestSubmit());
+        await page.waitForSelector('#exchangeWorkbookResult .exchange-summary', { state: 'attached' });
       }
     },
     {
@@ -694,7 +642,7 @@ async function main() {
         await page.click('#scanBtn');
         await page.waitForFunction(() => {
           const el = document.getElementById('resultsContent');
-          return el && !/Enter a contract address/i.test(el.textContent || '');
+          return el && /No exact reviewed record|Record lookup unavailable/i.test(el.textContent || '');
         });
       }
     },
@@ -702,8 +650,8 @@ async function main() {
       slug: 'quiz',
       path: '/crypto/quiz/',
       run: async (page) => {
-        await page.click('.diff-card[data-level="beginner"]');
-        await page.waitForSelector('#questionText');
+        await page.click('[data-quiz-set="fundamentals"]');
+        await page.waitForSelector('#questionTitle');
       }
     }
   ];

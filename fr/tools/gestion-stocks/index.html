@@ -1,98 +1,52 @@
-<!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Gestion des stocks | AfroTools</title>
-<meta name="description" content="Suivez produits, quantités, prix et alertes de stock pour une PME, une boutique ou un commerce africain.">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:title" content="Gestion des stocks | AfroTools">
-<meta property="og:description" content="Suivez produits, quantités, prix et alertes de stock pour une PME, une boutique ou un commerce africain.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/inventory.webp">
-<meta property="og:url" content="https://afrotools.com/fr/tools/gestion-stocks/">
-<meta property="og:type" content="website">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
-<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
-<style>
-.tool-hero{text-align:center;padding:3rem 1rem 2rem;background:var(--bg)}
-.tool-hero h1{font-family:'Instrument Serif',serif;font-size:2.2rem;color:var(--text);margin:0 0 .5rem}
-.tool-hero p{color:var(--text-muted);max-width:600px;margin:0 auto}
-.tool-iframe-wrap{max-width:1000px;margin:0 auto;padding:0 1rem 2rem}
-.tool-iframe-wrap iframe{width:100%;height:700px;border:1px solid var(--border);border-radius:12px}
-.seo-section{max-width:760px;margin:0 auto;padding:2rem 1rem}
-.seo-section h2{font-family:'Instrument Serif',serif;font-size:1.5rem;margin:0 0 1rem;color:var(--text)}
-.seo-section p{line-height:1.7;color:var(--text-muted);margin:0 0 1rem}
-.faq{max-width:760px;margin:0 auto;padding:0 1rem 3rem}
-.faq h2{font-family:'Instrument Serif',serif;font-size:1.5rem;margin:0 0 1rem;color:var(--text)}
-.faq details{border:1px solid var(--border);border-radius:8px;margin:0 0 .5rem;padding:.75rem 1rem}
-.faq summary{cursor:pointer;font-weight:600;color:var(--text)}
-.faq details p{margin:.5rem 0 0;color:var(--text-muted);line-height:1.6}
-</style>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/inventory.webp">
+<!doctype html><html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Calculateur d’inventaire et suivi local des stocks | AfroTools</title><meta name="description" content="Suivez le stock localement et calculez valeur au coût, ventes potentielles, marge brute signée, alertes et quantités à recommander."><meta name="robots" content="index,follow">
+<meta property="og:title" content="Calculateur d’inventaire et suivi local des stocks"><meta property="og:description" content="Calculs privés dans le navigateur, sauvegarde et exports pour PME."><meta property="og:url" content="https://afrotools.com/fr/tools/gestion-stocks/"><meta property="og:type" content="website"><meta property="og:image" content="https://afrotools.com/assets/img/tools/inventory.webp">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75"><link rel="stylesheet" href="/assets/css/inventory-vip.css?v=4752332f">
+<script>(function(){try{var t=localStorage.getItem("aft_theme"),d=matchMedia("(prefers-color-scheme: dark)").matches,a=t==="dark"||t==="light"?t:(d?"dark":"light");document.documentElement.setAttribute("data-theme",a);document.documentElement.style.colorScheme=a}catch(_){}})();</script>
+<script src="/assets/js/components/navbar.min.js?v=996960fa" defer></script><script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script><script src="/assets/js/bundles/core.53e2e483.min.js" defer></script><script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c" defer></script><script src="/assets/js/engines/inventory-planner.js?v=3cf76554" defer></script><script src="/assets/js/pages/inventory-vip.js?v=8b66590f" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Calculateur d’inventaire et suivi local des stocks",
+  "url": "https://afrotools.com/fr/tools/gestion-stocks/",
+  "description": "Calculez la valeur au coût, les ventes potentielles, la marge brute potentielle signée et les quantités à recommander depuis vos données.",
+  "inLanguage": "fr",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "isAccessibleForFree": true,
+  "image": "https://afrotools.com/assets/img/tools/inventory.webp"
+}
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"La valeur du stock est-elle le coût des marchandises vendues ?","acceptedAnswer":{"@type":"Answer","text":"Non. La valeur au coût multiplie le coût unitaire par la quantité disponible. Ce n’est ni une méthode comptable de valorisation ni le coût des marchandises vendues."}},{"@type":"Question","name":"Comment calculer la quantité à recommander ?","acceptedAnswer":{"@type":"Answer","text":"Si vous saisissez un stock cible, la quantité suggérée est le stock cible moins la quantité disponible, avec un minimum de zéro."}},{"@type":"Question","name":"Où sont stockées les données ?","acceptedAnswer":{"@type":"Answer","text":"Les données restent dans le stockage local du navigateur et ne sortent que lors d’un export ou d’une copie explicite."}}]}</script>
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Gestion des stocks | AfroTools">
-<meta name="twitter:description" content="Suivez produits, quantités, prix et alertes de stock pour une PME, une boutique ou un commerce africain.">
-<style data-fr-action-planner-style>
-.fr-action-planner{margin:22px 0;border:1px solid #bfdbfe;border-radius:16px;background:linear-gradient(135deg,#eff6ff 0%,#fff 58%,#ecfdf5 100%);box-shadow:0 14px 34px rgba(15,23,42,.07);padding:18px}.fr-action-planner h2{margin:0 0 6px;color:#0f172a;font-size:1.08rem}.fr-action-planner p{margin:0 0 14px;color:#475569;line-height:1.6}.fr-action-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-action-grid label{display:grid;gap:6px;font-size:.84rem;font-weight:850;color:#0f172a}.fr-action-grid input,.fr-action-grid select,.fr-action-grid textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:10px;background:#fff;padding:10px 11px;font:inherit;color:#0f172a}.fr-action-grid textarea{min-height:84px;resize:vertical}.fr-action-output{display:block;margin-top:12px;border:1px solid #bfdbfe;border-radius:12px;background:#fff;padding:12px;color:#334155;line-height:1.55;min-height:56px}.fr-action-buttons{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.fr-action-buttons a,.fr-action-buttons button{border:0;border-radius:999px;padding:10px 14px;font-weight:850;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}.fr-action-buttons a{background:#0057b8;color:#fff}.fr-action-buttons button{background:#0f172a;color:#fff}.fr-action-status{font-size:.84rem;color:#64748b;align-self:center}.fr-action-method{margin-top:12px;border-left:4px solid #10b981;background:#f0fdf4;border-radius:10px;padding:10px 12px;color:#365346;font-size:.92rem;line-height:1.55}@media(max-width:640px){.fr-action-buttons a,.fr-action-buttons button{width:100%}}
-</style>
+<meta name="twitter:title" content="Calculateur d’inventaire et suivi local des stocks | AfroTools">
+<meta name="twitter:description" content="Suivez le stock localement et calculez valeur au coût, ventes potentielles, marge brute signée, alertes et quantités à recommander.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/inventory.webp">
 <link rel="canonical" href="https://afrotools.com/fr/tools/gestion-stocks/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/inventory/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/gestion-stocks/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kifuatiliaji-inventory/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/inventory/">
-</head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar></afro-navbar>
-<main>
-<section class="fr-action-planner" data-fr-action-planner data-tool-name="Gestion des stocks">
-<h2>Commencer ici</h2>
-<p>Ajoutez juste le contexte utile, puis ouvrez l'outil de fond avec un brief clair. Le résumé reste dans votre navigateur.</p>
-<div class="fr-action-grid">
-<label>Pays ou contexte<input name="scope" autocomplete="off" placeholder="Ex: Sénégal, client, projet"></label>
-<label>Action<select name="task"><option value="planifier">Planifier l'action</option><option value="comparer">Comparer les informations</option><option value="verifier">Vérifier avant décision</option></select></label>
-<label>Données ou demande<textarea name="details" placeholder="Montant, date, fichier, phrase, objectif ou contrainte"></textarea></label>
-</div>
-<output class="fr-action-output" data-fr-action-output>Ajoutez un contexte, une action ou des données pour préparer le brief.</output>
-<div class="fr-action-buttons"><a href="/fr/tools/inventory/">Ouvrir l'outil complet</a><button type="button" data-fr-action-copy>Copier le brief</button><span class="fr-action-status" data-fr-action-status aria-live="polite"></span></div>
-<div class="fr-action-method"><strong>Méthode:</strong> utilisez ce résultat comme aide de planification. Contrôle 2026: vérifiez les taux, règles, fichiers, licences ou sources officielles avant toute décision financière, juridique, santé, énergie ou business.</div>
-</section>
-<section class="tool-hero"><h1>Gestion des stocks</h1><p>Suivez produits, quantités, prix et alertes de stock pour une PME, une boutique ou un commerce africain.</p></section>
-<div class="tool-iframe-wrap"><iframe src="/tools/inventory/" title="Gestion des stocks" loading="lazy"></iframe></div>
-<section class="seo-section"><h2>À propos</h2><p>Gardez une vue claire sur les produits disponibles, les quantités faibles et les valeurs de stock.</p><p>La gestion des stocks aide à éviter les ruptures, les achats en double et les ventes mal suivies. Utilisez les exports comme base de travail, puis rapprochez-les avec vos ventes, reçus et inventaires physiques.</p></section>
-<section class="faq"><h2>Questions fréquentes</h2>
-<details><summary>Comment fonctionne l’outil ?</summary><p>Ajoutez vos produits avec les quantités et les prix. L’outil suit les entrées et sorties et vous alerte en cas de stock faible.</p></details>
-<details><summary>Puis-je gérer plusieurs magasins ?</summary><p>Oui, l’outil permet de suivre les stocks dans plusieurs points de vente et de transférer des produits entre magasins.</p></details>
-<details><summary>Où sont stockées mes données ?</summary><p>Les données restent dans votre navigateur pour cette session d'outil. Exportez vos données en CSV si vous voulez conserver une sauvegarde ou les rapprocher avec vos ventes.</p></details>
-</section>
-
-<section data-tool-verification-panel style="max-width:1080px;margin:20px auto;padding:20px;border:1px solid #dbeafe;border-radius:12px;background:#fff;box-shadow:0 8px 22px rgba(15,23,42,.05);line-height:1.65">
-  <!-- upgrade-proof-panel:start -->
-  <p style="margin:0 0 6px;font-size:.78rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#0f766e">Contrôle utile</p>
-  <h2 style="margin:0 0 8px;font-size:1.2rem;color:#0f172a">Stocks: méthode de décision</h2>
-  <p style="margin:.35rem 0;color:#475569"><strong>Méthodologie :</strong> Suivez entrée, sortie, seuil, d?lai fournisseur et valeur pour d?cider quand recommander.</p>
-  <p style="margin:.35rem 0;color:#475569"><strong>Source ? vérifier :</strong> Inventaire physique, factures, ventes POS et d?lais fournisseur réels.</p>
-  <p style="margin:.35rem 0;color:#475569"><strong>Avertissement :</strong> Les recommandations restent opérationnelles; vérifiez les ruptures, pertes et retours avant achat.</p>
-  <form aria-label="Stocks: méthode de décision" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px">
-    <label style="display:block;font-weight:850;margin:10px 0 6px;color:#334155">Montant ou contexte<input style="width:100%;min-height:42px;border:1px solid #cbd5e1;border-radius:8px;padding:9px 10px;font:inherit;background:#fff" inputmode="decimal" placeholder="Ex : 250000"></label>
-    <label style="display:block;font-weight:850;margin:10px 0 6px;color:#334155">Point ? confirmer<input style="width:100%;min-height:42px;border:1px solid #cbd5e1;border-radius:8px;padding:9px 10px;font:inherit;background:#fff" placeholder="Source, date, autorit?, expert"></label>
-    <button type="button" style="display:inline-flex;align-items:center;justify-content:center;min-height:42px;margin-top:12px;padding:10px 14px;border:0;border-radius:8px;background:#0f766e;color:#fff;font-weight:900;text-decoration:none;cursor:pointer">Copier le résumé</button>
-  </form>
-  <!-- upgrade-proof-panel:end -->
-</section>
-<section data-tool-verification-panel aria-labelledby="gestion-stocks-method-fr" style="max-width:900px;margin:28px auto;padding:0 20px;">
-  <h2 id="gestion-stocks-method-fr" style="font-size:1.1rem;font-weight:800;color:#111;margin:0 0 6px;">Méthodologie &amp; limites</h2>
-  <div style="font-size:.86rem;color:#475569;line-height:1.7;padding:12px 14px;background:#f5f9ff;border:1px solid #dbeafe;border-radius:8px;">
-    <p style="margin:0 0 8px;"><strong>Méthode de calcul :</strong> nous suivons les entrées et sorties de chaque produit, multiplions les quantités par les prix unitaires pour calculer la valeur du stock, et déclenchons une alerte lorsque la quantité passe sous le seuil que vous définissez ; les données restent dans votre navigateur.</p>
-    <p style="margin:0;"><strong>Limites :</strong> il s'agit d'un suivi opérationnel à titre d'information générale ; ce n'est pas un conseil comptable ou de gestion et cela ne remplace pas un inventaire officiel. Vérifiez les quantités, pertes et retours avec votre inventaire physique, vos factures et vos ventes avant toute décision d'achat. Dernière vérification 2026.</p>
-  </div>
-</section>
+</head><body>
+<a class="skip-link" href="#main-content">Aller à l’inventaire</a><afro-navbar active="tools"></afro-navbar>
+<main id="main-content" class="inv-shell" tabindex="-1">
+<header class="inv-hero"><span class="inv-kicker">Planification locale des stocks</span><h1>Calculateur d’inventaire et suivi des stocks</h1><p>Suivez vos produits sans les téléverser. Calculez valeur au coût, ventes potentielles, marge brute potentielle signée et quantité à recommander selon votre stock cible.</p></header>
+<section aria-label="Contrôles d’inventaire"><div class="inv-toolbar"><button id="invAdd" class="inv-button inv-primary" type="button">Ajouter un produit</button><label class="inv-field inv-search">Rechercher<input id="invSearch" class="inv-input" type="search" autocomplete="off"></label><label class="inv-field">Unité d’affichage<select id="invUnit" class="inv-input"><option>USD</option><option>NGN</option><option>KES</option><option>ZAR</option><option>GHS</option><option>XOF</option><option>XAF</option><option>UGX</option><option>TZS</option><option>RWF</option><option>ETB</option><option>Autre</option></select><span>Étiquette seulement, sans conversion de change.</span></label></div>
+<div id="invMetrics" class="inv-metrics" aria-live="polite"></div><div class="inv-card">
+<div class="inv-toolbar"><button id="invCopy" class="inv-button" type="button">Copier le résumé agrégé</button><button id="invCsv" class="inv-button" type="button">Exporter CSV sécurisé</button><button id="invJson" class="inv-button" type="button">Sauvegarder JSON</button><button id="invPdf" class="inv-button" type="button">Télécharger PDF</button><select id="invImportMode" class="inv-input" aria-label="Mode d’import JSON" style="width:auto"><option value="merge">Fusionner JSON</option><option value="replace">Remplacer par JSON</option></select><button id="invImportButton" class="inv-button" type="button">Importer JSON</button><input id="invImport" type="file" accept="application/json,.json" hidden><button id="invSample" class="inv-button" type="button">Charger l’exemple</button><button id="invClear" class="inv-button inv-danger" type="button">Tout effacer</button></div>
+<p id="invStatus" class="inv-status" aria-live="polite"></p><p class="inv-privacy"><strong>Privé par défaut.</strong> Produits, SKU et prix restent dans ce navigateur. Vérifiez inventaire physique, factures, pertes, péremption, retours et stock réservé avant achat ou comptabilité.</p>
+<div class="inv-table-wrap" tabindex="0" aria-label="Tableau d’inventaire défilant"><table class="inv-table"><thead><tr><th>Produit</th><th>SKU</th><th>Catégorie</th><th>Coût unitaire</th><th>Prix de vente</th><th>Disponible</th><th>Seuil</th><th>Cible</th><th>Valeur au coût</th><th>À recommander</th><th>Actions</th></tr></thead><tbody id="invBody"></tbody></table></div></div></section>
+<section class="inv-method"><h2>Méthode et limites</h2><ul><li>Valeur au coût = coût unitaire × quantité disponible. Ce n’est ni FIFO, ni coût moyen, ni COGS.</li><li>Ventes potentielles = prix de vente × quantité. Marge brute potentielle = (prix − coût) × quantité et peut être négative.</li><li>Le stock est faible si la quantité est inférieure ou égale au seuil. Quantité suggérée = max(stock cible − quantité, 0).</li><li>Aucune TVA, fiscalité, devise, demande, prix fournisseur, délai ou recommandation d’achat n’est fourni.</li></ul></section>
 </main>
+<div id="invModal" class="inv-modal" role="dialog" aria-modal="true" aria-labelledby="invModalTitle" aria-hidden="true"><div class="inv-dialog"><div class="inv-dialog-head"><h2 id="invModalTitle">Ajouter un produit</h2><button id="invClose" class="inv-button inv-close" type="button" aria-label="Fermer la fenêtre">×</button></div><form id="invForm"><div class="inv-form-grid"><label class="inv-field">Nom du produit<input id="invName" class="inv-input" maxlength="120" required></label><label class="inv-field">SKU facultatif<input id="invSku" class="inv-input" maxlength="80"></label><label class="inv-field">Catégorie facultative<input id="invCategory" class="inv-input" maxlength="80"></label><label class="inv-field">Coût unitaire<input id="invCost" class="inv-input" type="number" min="0" step="any" required></label><label class="inv-field">Prix de vente<input id="invSell" class="inv-input" type="number" min="0" step="any" required></label><label class="inv-field">Quantité disponible<input id="invQty" class="inv-input" type="number" min="0" step="any" required></label><label class="inv-field">Seuil de réapprovisionnement<input id="invReorder" class="inv-input" type="number" min="0" step="any" required></label><label class="inv-field">Stock cible facultatif<input id="invTarget" class="inv-input" type="number" min="0" step="any"><span>Active seulement le calcul de réapprovisionnement.</span></label></div><p id="invModalError" class="inv-modal-error" aria-live="assertive"></p><div class="inv-dialog-actions"><button id="invCancel" class="inv-button" type="button">Annuler</button><button class="inv-button inv-primary" type="submit">Enregistrer</button></div></form></div></div>
 <afro-footer></afro-footer>
-<script data-fr-action-planner-script>
-(function(){document.querySelectorAll('[data-fr-action-planner]').forEach(function(panel){var name=panel.getAttribute('data-tool-name')||'Outil';var output=panel.querySelector('[data-fr-action-output]');var status=panel.querySelector('[data-fr-action-status]');function val(sel){var el=panel.querySelector(sel);return el&&el.value?el.value.trim():'';}function summary(){var scope=val('[name="scope"]');var task=val('[name="task"]');var details=val('[name="details"]');var parts=[];if(scope)parts.push('Contexte: '+scope);if(task)parts.push('Action: '+task);if(details)parts.push('Donnees: '+details);return parts.length?name+' - '+parts.join(' | '):'Ajoutez un contexte, une action ou des donnees pour preparer le brief.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);panel.addEventListener('change',render);var copy=panel.querySelector('[data-fr-action-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Brief copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});render();});})();
-</script>
-</body>
-</html>
+<script>window.INVENTORY_VIP_CONFIG={locale:"fr",defaultUnit:"XOF",sample:{name:"Savon exemple",sku:"SAV-01",category:"Maison",unitCost:500,sellPrice:750,quantity:4,reorderPoint:4,targetStock:12},t:{products:"Produits",lowStock:"Stock faible",stockValue:"Valeur du stock au coût",potentialSales:"Ventes potentielles",potentialProfit:"Marge brute potentielle",reorderUnits:"Unités suggérées",edit:"Modifier",addOne:"Ajouter 1",removeOne:"Retirer 1",delete:"Supprimer",empty:"Aucun produit. Ajoutez-en un ou chargez explicitement l’exemple.",editProduct:"Modifier le produit",addProduct:"Ajouter un produit",saved:"Inventaire enregistré localement.",adjusted:"Stock ajusté localement.",deleted:"Produit supprimé localement.",unitSaved:"Unité d’affichage enregistrée.",storageBlocked:"Le stockage du navigateur est indisponible. Les changements restent dans cet onglet.",corrupt:"L’inventaire enregistré est illisible. Aucune donnée n’a été modifiée.",migrated:"{count} anciens enregistrements chargés; {duplicates} doublons exacts ignorés. Les anciennes clés sont conservées.",pdfMissing:"La bibliothèque PDF est indisponible.",pdfTitle:"Résumé d’inventaire AfroTools",formulaCost:"Valeur au coût = somme(coût unitaire x quantité disponible). Ce n’est ni COGS ni une méthode comptable.",formulaSales:"Ventes potentielles = somme(prix de vente x quantité disponible).",formulaProfit:"Marge brute potentielle = somme((prix de vente - coût unitaire) x quantité).",formulaReorder:"Quantité suggérée = max(stock cible - quantité disponible, 0), seulement avec une cible.",pdfLimits:"Outil de planification. Vérifiez stock physique, factures, pertes, péremption, retours et réservations.",lowList:"Stock faible et réapprovisionnement",exported:"Export créé localement.",fileTooLarge:"La sauvegarde dépasse la limite de 1 Mo.",confirmMerge:"Fusionner cette sauvegarde validée? Les doublons exacts seront ignorés.",confirmReplace:"Remplacer l’inventaire actuel par cette sauvegarde validée?",cancelled:"Action annulée; inventaire inchangé.",importedMerge:"Sauvegarde fusionnée; {duplicates} doublons exacts ignorés.",importedReplace:"Sauvegarde importée en remplacement.",confirmDelete:"Supprimer {name} ?",confirmSample:"Remplacer l’inventaire par un produit exemple?",confirmClear:"Effacer tous les enregistrements versionnés? Les anciennes clés resteront.",sampleLoaded:"Exemple chargé localement.",cleared:"Inventaire effacé localement.",copied:"Résumé agrégé copié."}};</script>
+<noscript>Ce calculateur exige JavaScript.</noscript><script src="/assets/js/lazy-analytics.js?v=71239a16" defer></script>
+</body></html>

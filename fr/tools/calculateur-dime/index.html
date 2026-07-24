@@ -1,379 +1,57 @@
-<!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Calculateur de dîme et offrande | Planificateur local</title>
-<meta name="description" content="Calculez une dîme, une offrande ou un budget de don selon revenu brut ou net, fréquence, pourcentage choisi et devise. Export local, sources et limites claires.">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Calculateur de dîme et offrande | AfroTools">
-<meta property="og:description" content="Planifiez une contribution religieuse sans imposer une doctrine: base brute ou nette, taux, offrande, fréquence et résumé partageable.">
-<meta property="og:url" content="https://afrotools.com/fr/tools/calculateur-dime/">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/tithe-offering.webp">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Calculateur de dîme et offrande | AfroTools">
-<meta name="twitter:description" content="Calcul local pour dîme, offrande et budget de don avec export TXT.">
+<!doctype html><html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr" data-tool="tithe-offering"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Planificateur privé de dîme et d'offrande | AfroTools</title>
+<meta name="description" content="Planifiez un pourcentage choisi, une offrande et une promesse en privé, sans taux imposé, doctrine, promesse de prospérité ni affirmation fiscale.">
+<meta name="robots" content="index,follow,max-image-preview:large"><meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools"><meta property="og:title" content="Planificateur privé de dîme et d'offrande"><meta property="og:description" content="Arithmétique de don dirigée par l'utilisateur, sans pourcentage prescrit."><meta property="og:url" content="https://afrotools.com/fr/tools/calculateur-dime/"><meta property="og:image" content="https://afrotools.com/assets/img/tools/tithe-offering.webp"><meta property="og:locale" content="fr_FR"><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Planificateur privé de dîme et d'offrande | AfroTools">
+<meta name="twitter:description" content="Planifiez un pourcentage choisi, une offrande et une promesse en privé, sans taux imposé, doctrine, promesse de prospérité ni affirmation fiscale.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/tithe-offering.webp">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
-<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
-<style>
-:root{--tithe-ink:#121826;--tithe-muted:#647086;--tithe-line:#d9e2ee;--tithe-soft:#f7f9fc;--tithe-blue:#2452c6;--tithe-green:#14785a;--tithe-gold:#946200;--tithe-red:#b42318}
-*,*::before,*::after{box-sizing:border-box}
-body{background:#f8fafc;color:var(--tithe-ink)}
-.tithe-hero{background:#fff;border-bottom:1px solid var(--tithe-line)}
-.tithe-shell{max-width:1160px;width:100%;margin:0 auto;padding:32px 20px}
-.tithe-kicker{display:inline-flex;border:1px solid #bfd0ff;border-radius:999px;background:#eef4ff;color:#2149a8;padding:7px 12px;font-size:.78rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
-.tithe-hero h1{font-size:clamp(2rem,5vw,3.85rem);line-height:1.04;letter-spacing:0;margin:16px 0 12px;max-width:920px}
-.tithe-hero p{max-width:790px;color:var(--tithe-muted);font-size:1.04rem;line-height:1.72;margin:0}
-.tithe-badges{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:22px}
-.tithe-badge{border:1px solid var(--tithe-line);background:var(--tithe-soft);border-radius:8px;padding:13px 14px;font-weight:900}
-.tithe-badge span{display:block;color:var(--tithe-muted);font-size:.75rem;margin-top:3px}
-.tithe-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:18px;align-items:start}
-.tithe-grid>*,.tithe-form>*{min-width:0}
-.tithe-card{min-width:0;max-width:100%;background:#fff;border:1px solid var(--tithe-line);border-radius:8px;box-shadow:0 18px 44px rgba(15,23,42,.06)}
-.tithe-panel{min-width:0;max-width:100%;padding:18px;overflow:hidden}
-.tithe-panel h2{font-size:1.12rem;margin:0 0 14px}
-.tithe-form{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-label{display:block;font-size:.86rem;font-weight:900;margin-bottom:7px;color:#1f2937}
-input,select,textarea{width:100%;min-width:0;border:1px solid #cfd8e6;border-radius:8px;background:#fff;color:#111827;font:inherit}
-input,select{height:44px;padding:0 12px}
-textarea{min-height:96px;padding:12px;resize:vertical;line-height:1.5}
-.wide{grid-column:1/-1}
-.tithe-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-.tithe-btn{border:1px solid #c9d4e5;border-radius:8px;background:#fff;min-height:44px;padding:0 15px;font-weight:900;color:#172033;cursor:pointer}
-.tithe-btn.primary{background:var(--tithe-blue);border-color:var(--tithe-blue);color:#fff}
-.tithe-btn.success{background:var(--tithe-green);border-color:var(--tithe-green);color:#fff}
-.tithe-btn:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid rgba(36,82,198,.24);outline-offset:2px}
-.tithe-status{min-height:24px;margin-top:12px;font-weight:900;color:var(--tithe-green)}
-.tithe-status.error{color:var(--tithe-red)}
-.tithe-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}
-.tithe-stat{border:1px solid var(--tithe-line);background:#f8fafc;border-radius:8px;padding:12px}
-.tithe-stat strong{display:block;font-size:1.18rem}
-.tithe-stat span{display:block;color:var(--tithe-muted);font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
-.tithe-note{border-left:4px solid var(--tithe-gold);background:#fffbeb;border-radius:8px;padding:12px 14px;color:#6f4b00;font-weight:800;line-height:1.55;margin-bottom:14px}
-.tithe-summary{white-space:pre-wrap;border:1px solid var(--tithe-line);border-radius:8px;background:#fbfdff;padding:12px;min-height:150px;color:#2d3748;line-height:1.55}
-.tithe-info{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px}
-.tithe-info h2{font-size:1.05rem;margin:0 0 10px}
-.tithe-info p,.tithe-info li,.tithe-faq p{color:var(--tithe-muted);font-size:.92rem;line-height:1.65}
-.tithe-info ul{padding-left:19px;margin:0}
-.tithe-links{display:grid;gap:10px}
-.tithe-links a{display:flex;justify-content:space-between;gap:10px;border:1px solid var(--tithe-line);border-radius:8px;padding:12px 14px;background:#fff;text-decoration:none;color:#1746b8;font-weight:900}
-.tithe-faq{margin-top:20px}
-.tithe-faq details{background:#fff;border:1px solid var(--tithe-line);border-radius:8px;margin-bottom:10px}
-.tithe-faq summary{cursor:pointer;padding:14px 16px;font-weight:900}
-.tithe-faq p{padding:0 16px 14px;margin:0}
-@media(max-width:900px){.tithe-grid,.tithe-info{grid-template-columns:1fr}.tithe-badges,.tithe-stats{grid-template-columns:1fr 1fr}}
-@media(max-width:620px){.tithe-shell{padding:24px 14px}.tithe-form,.tithe-badges,.tithe-stats{grid-template-columns:1fr}.tithe-actions .tithe-btn{width:100%}}
-</style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Calculateur de dîme et offrande AfroTools","url":"https://afrotools.com/fr/tools/calculateur-dime/","inLanguage":"fr","applicationCategory":"FinanceApplication","operatingSystem":"Web","description":"Planificateur local pour calculer une contribution religieuse selon base de revenu, pourcentage choisi, offrande et fréquence.","featureList":["Dime en pourcentage","Offrande fixe","Base brute ou nette","Projection annuelle","Copie et telechargement"],"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/tithe-offering.webp"}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Le calculateur decide-t-il si je dois donner ?","acceptedAnswer":{"@type":"Answer","text":"Non. L'outil calcule seulement un scénario numérique. La décision, la doctrine, la base brute ou nette et le destinataire doivent être discutes avec votre conscience, votre famille ou votre responsable religieux."}},{"@type":"Question","name":"Le taux doit-il toujours être 10% ?","acceptedAnswer":{"@type":"Answer","text":"Le taux de 10% est une référence courante pour la dîme, mais l'outil permet de modifier le pourcentage pour reflechir votre tradition ou votre décision personnelle."}},{"@type":"Question","name":"Puis-je suivre les dons annuels ?","acceptedAnswer":{"@type":"Answer","text":"Oui. Le résumé affiche une projection annuelle et peut être copie, telecharge ou sauvegarde localement dans ce navigateur."}}]}</script>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg"><link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb"><link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b"><link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75"><link rel="stylesheet" href="/assets/css/giving-plan-vip.css?v=80a9f097">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Planificateur privé de dîme et d'offrande",
+  "url": "https://afrotools.com/fr/tools/calculateur-dime/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "inLanguage": "fr",
+  "isAccessibleForFree": true,
+  "description": "Arithmétique locale pour un pourcentage, une offrande et une promesse choisis par l'utilisateur.",
+  "dateModified": "2026-07-23",
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools"
+  },
+  "image": "https://afrotools.com/assets/img/tools/tithe-offering.webp"
+}
+</script>
 <link rel="canonical" href="https://afrotools.com/fr/tools/calculateur-dime/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/tithe-calculator/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-dime/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-fungu-la-kumi-na-sadaka/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/tithe-calculator/">
-</head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar active="tools"></afro-navbar>
-<header class="tithe-hero">
-  <div class="tithe-shell">
-    <span class="tithe-kicker">Budget de don personnel</span>
-    <h1>Calculez une contribution sans transformer la foi en pression.</h1>
-    <p>Choisissez votre revenu brut ou net, un pourcentage, une offrande fixe et une fréquence. L'outil donne un résumé clair pour planifier, mais il ne remplace pas la doctrine de votre communauté ni votre décision personnelle.</p>
-    <div class="tithe-badges" aria-label="Fonctions principales">
-      <div class="tithe-badge">Base flexible <span>brut, net ou revenu libre</span></div>
-      <div class="tithe-badge">Taux modifiable <span>10% par défaut</span></div>
-      <div class="tithe-badge">Projection <span>mensuelle et annuelle</span></div>
-      <div class="tithe-badge">Export local <span>copie, TXT, sauvegarde</span></div>
-    </div>
-  </div>
-</header>
-
-<main class="tithe-shell">
-  <section class="tithe-grid" aria-labelledby="calc-title">
-    <div class="tithe-card tithe-panel">
-      <h2 id="calc-title">Scénario de contribution</h2>
-      <div class="tithe-form">
-        <div>
-          <label for="currency">Devise</label>
-          <select id="currency">
-            <option value="NGN">NGN</option>
-            <option value="GHS" selected>GHS</option>
-            <option value="KES">KES</option>
-            <option value="ZAR">ZAR</option>
-            <option value="XOF">XOF</option>
-            <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
-          </select>
-        </div>
-        <div>
-          <label for="frequency">Fréquence du revenu</label>
-          <select id="frequency">
-            <option value="12" selected>Mensuel</option>
-            <option value="52">Hebdomadaire</option>
-            <option value="26">Toutes les 2 semaines</option>
-            <option value="1">Annuel</option>
-          </select>
-        </div>
-        <div>
-          <label for="grossIncome">Revenu brut</label>
-          <input id="grossIncome" type="number" min="0" step="100" value="8500">
-        </div>
-        <div>
-          <label for="deductions">Taxes, dettes ou charges essentielles</label>
-          <input id="deductions" type="number" min="0" step="100" value="2200">
-        </div>
-        <div>
-          <label for="baseMode">Base choisie</label>
-          <select id="baseMode">
-            <option value="gross">Brut</option>
-            <option value="net" selected>Net après déductions</option>
-            <option value="free">Revenu libre après budget</option>
-          </select>
-        </div>
-        <div>
-          <label for="freeIncome">Revenu libre si choisi</label>
-          <input id="freeIncome" type="number" min="0" step="100" value="3600">
-        </div>
-        <div>
-          <label for="titheRate">Pourcentage de dîme (%)</label>
-          <input id="titheRate" type="number" min="0" max="100" step=".5" value="10">
-        </div>
-        <div>
-          <label for="offering">Offrande fixe en plus</label>
-          <input id="offering" type="number" min="0" step="50" value="250">
-        </div>
-        <div class="wide">
-          <label for="notes">Note personnelle</label>
-          <textarea id="notes">A confirmer avec ma communaute: base brute ou nette, dons speciaux, priorites familiales et budget d'urgence.</textarea>
-        </div>
-      </div>
-      <div class="tithe-actions">
-        <button class="tithe-btn primary" id="calcBtn" type="button">Calculer la contribution</button>
-        <button class="tithe-btn" id="sampleBtn" type="button">Exemple salaire</button>
-        <button class="tithe-btn" id="clearBtn" type="button">Effacer</button>
-      </div>
-      <div id="status" class="tithe-status" role="status" aria-live="polite">Prêt.</div>
-    </div>
-
-    <div class="tithe-card tithe-panel">
-      <h2>Résultat</h2>
-      <div class="tithe-stats">
-        <div class="tithe-stat"><strong id="baseValue">0</strong><span>base</span></div>
-        <div class="tithe-stat"><strong id="titheValue">0</strong><span>dîme</span></div>
-        <div class="tithe-stat"><strong id="totalValue">0</strong><span>total don</span></div>
-        <div class="tithe-stat"><strong id="annualValue">0</strong><span>projection annuelle</span></div>
-      </div>
-      <div class="tithe-note" id="riskNote">Le commentaire budgétaire apparaitra ici.</div>
-      <label for="summary">Résumé partageable</label>
-      <div id="summary" class="tithe-summary" tabindex="0"></div>
-      <div class="tithe-actions">
-        <button class="tithe-btn success" id="copyBtn" type="button">Copier le résumé</button>
-        <button class="tithe-btn" id="downloadBtn" type="button">Télécharger TXT</button>
-        <button class="tithe-btn" id="saveBtn" type="button">Sauvegarder localement</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="tithe-info" data-tool-verification-panel aria-label="Sources et vérification">
-    <div class="tithe-card tithe-panel">
-      <h2>Méthodologie et limites</h2>
-      <ul>
-        <li>Base brute = revenu brut declare.</li>
-        <li>Base nette = revenu brut - déductions essentielles.</li>
-        <li>Base libre = montant que vous saisissez comme disponible après budget.</li>
-        <li>Dîme = base x pourcentage. Total = dîme + offrande fixe.</li>
-      </ul>
-      <p>Information générale, non officielle et non prescriptive. Ce calculateur ne remplace pas un conseil pastoral, une décision familiale, une obligation religieuse, un conseil fiscal ou un suivi comptable. Références revues le 17 juin 2026.</p>
-    </div>
-    <div class="tithe-card tithe-panel">
-      <h2>Sources de référence</h2>
-      <div class="tithe-links">
-        <a href="https://www.britannica.com/topic/tithe" target="_blank" rel="noopener">Britannica: tithe <span>definition historique</span></a>
-        <a href="https://www.biblegateway.com/passage/?search=Malachi+3%3A10&version=KJV" target="_blank" rel="noopener">Malachi 3:10 <span>texte biblique</span></a>
-        <a href="https://www.biblegateway.com/passage/?search=2+Corinthians+9%3A6-7&version=ESV" target="_blank" rel="noopener">2 Corinthians 9:6-7 <span>don volontaire</span></a>
-        <a href="https://www.merriam-webster.com/dictionary/tithe" target="_blank" rel="noopener">Merriam-Webster <span>definition</span></a>
-      </div>
-    </div>
-  </section>
-
-  <section class="tithe-info" aria-labelledby="related-title">
-    <div class="tithe-card tithe-panel">
-      <h2 id="related-title">Related tools utiles</h2>
-      <div class="tithe-links">
-        <a href="/fr/tools/tithe-calculator/">Tithe calculateur anglais <span>version complete</span></a>
-        <a href="/fr/tools/calculateur-offrande/">Dîme et offrande <span>outil detaille</span></a>
-        <a href="/fr/tools/savings-goal/">Savings goal <span>épargne personnelle</span></a>
-        <a href="/fr/tools/fonds-urgence/">Emergency fund <span>budget de secours</span></a>
-        <a href="/fr/tools/budget-planner/">Budget planner <span>plan mensuel</span></a>
-      </div>
-    </div>
-    <div class="tithe-card tithe-panel">
-      <h2>Checklist de prudence</h2>
-      <ul>
-        <li>Ne sacrifiez pas nourriture, loyer, transport ou soins essentiels pour suivre un chiffre.</li>
-        <li>Clarifiez si votre communauté parle de brut, net, premier fruit ou don libre.</li>
-        <li>Gardez un reçu ou une note personnelle si vous suivez les dons annuels.</li>
-        <li>Revoyez le montant après changement de salaire, dette, maladie ou responsabilité familiale.</li>
-      </ul>
-    </div>
-  </section>
-
-  <section class="tithe-faq" aria-labelledby="faq-title">
-    <h2 id="faq-title">Questions fréquentes</h2>
-    <details><summary>La base brute ou nette est-elle la bonne ?</summary><p>Les pratiques varient selon les églises, familles et convictions. L'outil affiche les deux logiques pour faciliter une décision informee, pas pour imposer une réponse.</p></details>
-    <details><summary>Puis-je utiliser un autre pourcentage ?</summary><p>Oui. Modifiez le taux selon votre tradition ou votre engagement personnel. Le taux de 10% est seulement le point de départ par défaut.</p></details>
-    <details><summary>Mes données sont-elles envoyees ?</summary><p>Non. Les calculs se font dans le navigateur. La sauvegarde locale reste sur cet appareil tant que le stockage du navigateur n'est pas efface.</p></details>
-  </section>
-</main>
-<afro-footer></afro-footer>
-<script>
-(function(){
-  const el = (id) => document.getElementById(id);
-  function num(id){ return Number(el(id).value || 0); }
-  function money(value){
-    return new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 0 }).format(Math.max(0, Math.round(value))) + ' ' + el('currency').value;
-  }
-  function periods(){ return Number(el('frequency').value || 12); }
-  function getBase(){
-    const gross = num('grossIncome');
-    const deductions = num('deductions');
-    if (el('baseMode').value === 'gross') return gross;
-    if (el('baseMode').value === 'free') return num('freeIncome');
-    return Math.max(0, gross - deductions);
-  }
-  function setStatus(text, error){
-    el('status').textContent = text;
-    el('status').classList.toggle('error', Boolean(error));
-  }
-  function calculate(){
-    const base = getBase();
-    const rate = Math.max(0, num('titheRate')) / 100;
-    const tithe = base * rate;
-    const offering = num('offering');
-    const total = tithe + offering;
-    const annual = total * periods();
-    const gross = num('grossIncome');
-    if (base <= 0) {
-      setStatus('Entrez une base positive.', true);
-      return null;
-    }
-    const load = gross > 0 ? (total / gross) * 100 : 0;
-    const note = [];
-    if (load > 20) note.push('Contribution tres elevee par rapport au revenu: revoyez le budget essentiel.');
-    if (num('deductions') > gross * 0.5) note.push('Deductions importantes: base nette ou revenu libre peut etre plus prudent.');
-    if (offering > tithe) note.push('Offrande fixe superieure a la dime: confirmez que le montant reste soutenable.');
-    if (!note.length) note.push('Scenario lisible: confirmez la base et la pratique avec votre communaute ou votre decision personnelle.');
-    el('baseValue').textContent = money(base);
-    el('titheValue').textContent = money(tithe);
-    el('totalValue').textContent = money(total);
-    el('annualValue').textContent = money(annual);
-    el('riskNote').textContent = note.join(' ');
-    el('summary').textContent = [
-      'Calculateur de dime et offrande - AfroTools',
-      'Devise: ' + el('currency').value,
-      'Frequence: ' + el('frequency').selectedOptions[0].textContent,
-      'Base choisie: ' + el('baseMode').selectedOptions[0].textContent,
-      'Base de calcul: ' + money(base),
-      'Taux: ' + num('titheRate') + '%',
-      'Dime calculee: ' + money(tithe),
-      'Offrande fixe: ' + money(offering),
-      'Total par periode: ' + money(total),
-      'Projection annuelle: ' + money(annual),
-      'Part du brut: ' + load.toFixed(1) + '%',
-      'Note: ' + (el('notes').value || 'Aucune note'),
-      'Limite: scenario numerique non prescriptif; confirmer doctrine, budget et priorites.'
-    ].join('\n');
-    setStatus('Contribution calculee localement.');
-    return { base, tithe, total, annual };
-  }
-  async function copy(){
-    if (!el('summary').textContent.trim()) calculate();
-    try {
-      await navigator.clipboard.writeText(el('summary').textContent);
-      setStatus('Resume copie.');
-    } catch (error) {
-      const range = document.createRange();
-      range.selectNodeContents(el('summary'));
-      const selection = window.getSelection();
-      selection.removeAllRanges();
-      selection.addRange(range);
-      setStatus('Copie automatique bloquee. Resume selectionne.', true);
-    }
-  }
-  function download(){
-    if (!el('summary').textContent.trim()) calculate();
-    const blob = new Blob([el('summary').textContent], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'afrotools-calculateur-dime.txt';
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    URL.revokeObjectURL(url);
-    setStatus('Fichier TXT prepare.');
-  }
-  function save(){
-    const payload = {
-      currency: el('currency').value,
-      frequency: el('frequency').value,
-      grossIncome: el('grossIncome').value,
-      deductions: el('deductions').value,
-      baseMode: el('baseMode').value,
-      freeIncome: el('freeIncome').value,
-      titheRate: el('titheRate').value,
-      offering: el('offering').value,
-      notes: el('notes').value,
-      summary: el('summary').textContent,
-      savedAt: new Date().toISOString()
-    };
-    localStorage.setItem('afrotools:fr:calculateur-dime:last', JSON.stringify(payload));
-    setStatus('Scenario sauvegarde localement.');
-  }
-  function restore(){
-    try {
-      const raw = localStorage.getItem('afrotools:fr:calculateur-dime:last');
-      if (!raw) return;
-      const payload = JSON.parse(raw);
-      ['currency','frequency','grossIncome','deductions','baseMode','freeIncome','titheRate','offering','notes'].forEach((key) => {
-        if (payload[key] !== undefined && el(key)) el(key).value = payload[key];
-      });
-    } catch (error) {
-      localStorage.removeItem('afrotools:fr:calculateur-dime:last');
-    }
-  }
-  el('calcBtn').addEventListener('click', calculate);
-  el('sampleBtn').addEventListener('click', () => {
-    el('currency').value = 'NGN';
-    el('frequency').value = '12';
-    el('grossIncome').value = '420000';
-    el('deductions').value = '115000';
-    el('baseMode').value = 'net';
-    el('freeIncome').value = '180000';
-    el('titheRate').value = '10';
-    el('offering').value = '15000';
-    el('notes').value = 'Comparer le scenario net avec le budget familial et garder un recu mensuel.';
-    calculate();
-  });
-  el('clearBtn').addEventListener('click', () => {
-    ['grossIncome','deductions','freeIncome','offering'].forEach((id) => { el(id).value = ''; });
-    el('summary').textContent = '';
-    ['baseValue','titheValue','totalValue','annualValue'].forEach((id) => { el(id).textContent = '0'; });
-    el('riskNote').textContent = 'Le commentaire budgetaire apparaitra ici.';
-    setStatus('Champs effaces.');
-  });
-  el('copyBtn').addEventListener('click', copy);
-  el('downloadBtn').addEventListener('click', download);
-  el('saveBtn').addEventListener('click', save);
-  restore();
-  calculate();
-})();
-</script>
-</body>
-</html>
+</head><body class="gp-page"><a class="gp-skip" href="#gp-main">Aller à la feuille de don</a><afro-navbar active="tools"></afro-navbar>
+<header class="gp-hero"><div class="gp-wrap gp-hero-grid"><div><p class="gp-kicker">Vos valeurs. Vos montants. Votre choix.</p><h1>Planifiez un don sans transformer la foi en pression.</h1><p class="gp-lede">Choisissez votre montant de référence, pourcentage, offrande et rythme de promesse. Cette feuille privée montre l'arithmétique; elle n'impose aucune obligation religieuse et ne prédit aucun résultat spirituel ou financier.</p></div><aside class="gp-trust"><strong>Privé et local</strong><p>Aucune église, bénéficiaire, fiche de revenu, identifiant fiscal, compte, pièce, sauvegarde ou requête IA.</p></aside></div></header>
+<main class="gp-wrap gp-main" id="gp-main"><section class="gp-card gp-form-card"><h2>Construire un plan de don</h2><p class="gp-intro">Utilisez une période et une devise. Chaque pourcentage et montant est votre choix; zéro est valable.</p>
+<form id="gp-form" novalidate><div class="gp-grid">
+<div class="gp-field"><label for="gp-currency">Devise d'affichage</label><select id="gp-currency"><option data-code="XOF">XOF — franc CFA ouest-africain</option><option data-code="XAF">XAF — franc CFA d'Afrique centrale</option><option data-code="NGN">NGN — naira nigérian</option><option data-code="KES">KES — shilling kényan</option><option data-code="ZAR">ZAR — rand sud-africain</option><option data-code="GHS">GHS — cedi ghanéen</option><option data-code="EUR">EUR — euro</option><option data-code="USD">USD — dollar américain</option></select></div>
+<div class="gp-field"><label for="gp-reference">Montant de référence de cette période</label><input id="gp-reference" type="number" min="0" max="1000000000000000" step=".01" value="500000" inputmode="decimal" required><small>Brut, net, disponible ou autre base, uniquement selon votre choix.</small></div>
+<div class="gp-field"><label for="gp-rate">Votre pourcentage choisi</label><input id="gp-rate" type="number" min="0" max="100" step=".01" value="0" inputmode="decimal" required><small>Aucun pourcentage n'est fourni ni recommandé.</small></div>
+<div class="gp-field"><label for="gp-offering">Offrande supplémentaire de cette période</label><input id="gp-offering" type="number" min="0" max="1000000000000000" step=".01" value="10000" inputmode="decimal" required></div></div>
+<p class="gp-section">Répartition facultative d'une promesse</p><div class="gp-grid">
+<div class="gp-field"><label for="gp-pledge">Objectif total saisi</label><input id="gp-pledge" type="number" min="0" max="1000000000000000" step=".01" value="120000" inputmode="decimal" required></div>
+<div class="gp-field"><label for="gp-periods">Nombre de périodes</label><input id="gp-periods" type="number" min="1" max="600" step="1" value="6" inputmode="numeric" required><small>L'outil divise également; il ne fixe aucune échéance.</small></div>
+<div class="gp-field"><label for="gp-essentials">Dépenses essentielles de la même période</label><input id="gp-essentials" type="number" min="0" max="1000000000000000" step=".01" value="300000" inputmode="decimal" required><small>Pour afficher le reste arithmétique, pas un verdict d'abordabilité.</small></div></div>
+<label class="gp-confirm" for="gp-confirm"><input id="gp-confirm" type="checkbox" checked><span>Je confirme que le pourcentage, les montants, le bénéficiaire et le calendrier restent mes décisions.</span></label>
+<div class="gp-actions"><button class="gp-btn gp-btn-primary" type="submit">Additionner mon plan</button><button class="gp-btn" type="reset">Réinitialiser l'exemple</button></div></form><p class="gp-status" id="gp-status" role="status" aria-live="polite"></p></section>
+<section class="gp-card gp-results"><div class="gp-total"><span>Contribution prévue cette période</span><strong id="gp-total">—</strong><small>Total arithmétique, pas une obligation ni un score</small></div><div class="gp-metrics"><div class="gp-metric"><span>Montant du pourcentage choisi</span><strong id="gp-percentage">—</strong></div><div class="gp-metric"><span>Offrande supplémentaire</span><strong id="gp-offering-result">—</strong></div><div class="gp-metric"><span>Part de promesse par période</span><strong id="gp-pledge-result">—</strong></div><div class="gp-metric"><span>Reste après dépenses et plan</span><strong id="gp-remaining">—</strong><small>Pas un jugement d'abordabilité</small></div></div>
+<div class="gp-lines"><div class="gp-line"><span>Plan en part du montant de référence</span><strong id="gp-share">—</strong></div><div class="gp-line"><span>Dépenses essentielles saisies</span><strong id="gp-essentials-result">—</strong></div><div class="gp-line"><span>Montant de référence saisi</span><strong id="gp-reference-result">—</strong></div></div>
+<aside class="gp-boundary"><h3>Limite de foi et d'affirmation</h3><p>Aucun taux requis, interprétation, obligation, bénéficiaire, délai, bénédiction, prospérité, déductibilité fiscale ou conseil financier.</p></aside>
+<div class="gp-actions"><button class="gp-btn" id="gp-copy" type="button">Copier le résumé</button><button class="gp-btn" id="gp-json" type="button">Télécharger JSON</button><button class="gp-btn gp-btn-primary" id="gp-pdf" type="button" data-no-gate="true">Télécharger PDF</button></div></section></main>
+<section class="gp-wrap gp-content"><article class="gp-card"><h2>Aucun pourcentage imposé</h2><p>Le champ commence à zéro. Saisissez un pourcentage seulement s'il correspond à votre propre décision ou à un conseil que vous avez choisi indépendamment.</p></article><article class="gp-card"><h2>Ce que l'outil ne décide jamais</h2><ul class="gp-list"><li>Si le don est obligatoire.</li><li>La base ou le pourcentage approprié.</li><li>Le bénéficiaire.</li><li>La déductibilité fiscale.</li><li>Un résultat spirituel, prospère ou financier.</li></ul></article><article class="gp-card"><h2>Conservez les preuves séparément</h2><p>Si une preuve est nécessaire, obtenez un reçu du bénéficiaire et confirmez le traitement légal ou fiscal auprès de l'autorité ou d'un professionnel local qualifié.</p></article></section>
+<section class="gp-wrap gp-card gp-faq"><h2>Avant de vous appuyer sur le plan</h2><details><summary>Dix pour cent est-il intégré ?</summary><p>Non. Le champ commence à zéro et l'outil ne sélectionne ni ne recommande aucun taux.</p></details><details><summary>Un reste négatif signifie-t-il qu'il faut arrêter ?</summary><p>Il montre seulement que le plan et les dépenses saisis dépassent le montant de référence. Aucun jugement moral, religieux ou financier.</p></details><details><summary>Ce don est-il déductible fiscalement ?</summary><p>L'outil ne peut pas le déterminer. Cela dépend du bénéficiaire, du reçu, du pays, de la date et du droit en vigueur.</p></details><details><summary>Mes montants sont-ils envoyés ou sauvegardés ?</summary><p>Non. Le calcul et les exports restent locaux.</p></details></section>
+<afro-related-tools category="religious-cultural" current="tithe-offering"></afro-related-tools><afro-footer></afro-footer>
+<script>window.GivingPlanPage={locale:'fr',updated:'Votre plan choisi a été additionné localement.',changed:'Valeurs modifiées. Additionnez à nouveau.',copied:'Résumé copié localement.',copyUnavailable:'La copie est indisponible dans ce navigateur.',downloaded:'JSON téléchargé localement.',pdfUnavailable:'Le PDF est indisponible. Actualisez et réessayez.',pdfReady:'PDF généré localement.',notApplicable:'Sans objet',jsonFilename:'plan-de-don-prive.json',reportTitle:'Plan de don privé',reportSubtitle:'Pourcentage, offrande et répartition choisis par l’utilisateur',privatePlan:'Plan privé dirigé par l’utilisateur',inputsTitle:'Détails du plan saisi',boundaryTitle:"Limite de foi et d'affirmation",boundaryLabel:"Ce que l'outil ne décide pas",methodNote:"Aucun pourcentage, obligation, interprétation religieuse, bénéficiaire, calendrier, verdict d'abordabilité, prospérité, bénédiction, déductibilité fiscale ou conseil financier n'est fourni.",disclaimer:'Arithmétique privée uniquement. Confirmez indépendamment le bénéficiaire, le calendrier, les preuves et tout traitement légal ou fiscal.',labels:{reference:'Montant de référence',rate:'Pourcentage choisi',percentage:'Contribution en pourcentage',offering:'Offrande supplémentaire',pledgeGoal:'Objectif de promesse',pledgePeriods:'Périodes',pledgeAllocation:'Part par période',total:'Contribution prévue',essentials:'Dépenses essentielles saisies',remaining:'Reste après dépenses et plan',share:'Part du montant de référence'}};</script>
+<script src="/assets/js/components/navbar.min.js?v=996960fa" defer></script><script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script><script src="/assets/js/components/related-tools.min.js?v=f3f910a8" defer></script><script src="/assets/js/bundles/core.53e2e483.min.js" defer></script><script src="/assets/js/lib/pdf-template.js?v=980345b6" defer></script><script src="/assets/js/engines/giving-plan.js?v=de96ecb7"></script><script src="/assets/js/pages/giving-plan-vip.js?v=a999e18c" defer></script>
+</body></html>

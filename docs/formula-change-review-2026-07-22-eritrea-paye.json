@@ -1,0 +1,36 @@
+{
+  "reviewedBy": "Codex Day 3 release gate",
+  "reviewedAt": "2026-07-22",
+  "sourceUrl": "https://tile.loc.gov/storage-services/service/ll/lleritrea/eritrean-proc-62-1994/eritrean-proc-62-1994.pdf",
+  "reason": "Replace contradictory Eritrea payroll implementations with a conservative statutory-reference contract. The server and route apply the eight monthly marginal bands in Income Tax Proclamation 62/1994 and Legal Notice 20/1995. An optional public-sector scenario separately applies the 5% employee and 7% government or state-employer pension rates in Proclamation 146/2005 without deducting pension from the employment-tax base. A conflicting hosted secondary copy shows a different five-band schedule, so the UI does not claim current 2026 rates and directs users to confirm later amendments with the competent authority.",
+  "formulaIds": ["paye-browser-er", "paye-server-er", "route-er-paye"],
+  "fixtureDeltas": [
+    {
+      "fixtureId": "paye-er-defaults",
+      "previousExpected": {"deductions.totalDeductions": 264864, "result.netAnnual": 735136, "result.netMonthly": 61261, "tax.netTax": 264864},
+      "nextExpected": {"deductions.totalDeductions": 367940, "result.netAnnual": 632060, "result.netMonthly": 52672, "tax.netTax": 367940},
+      "reason": "The default annual fixture is evaluated as twelve repeated monthly cases under the eight-band statutory schedule, with no unsupported universal social contribution.",
+      "sourceUrl": "https://tile.loc.gov/storage-services/service/ll/lleritrea/eritrean-proc-62-1994/eritrean-proc-62-1994.pdf",
+      "reviewedBy": "Codex Day 3 release gate",
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "fixtureId": "paye-er-large-decimal",
+      "previousExpected": {"deductions.totalDeductions": 299964864, "result.netAnnual": 700035137, "result.netMonthly": 58336261, "tax.netTax": 299964864},
+      "nextExpected": {"deductions.totalDeductions": 379987940, "result.netAnnual": 620012060, "result.netMonthly": 51667672, "tax.netTax": 379987940},
+      "reason": "The high-income fixture now reaches the 38% top marginal band in the located primary schedule instead of the unsupported legacy model.",
+      "sourceUrl": "https://tile.loc.gov/storage-services/service/ll/lleritrea/eritrean-proc-62-1994/eritrean-proc-62-1994.pdf",
+      "reviewedBy": "Codex Day 3 release gate",
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "fixtureId": "paye-er-zero",
+      "previousExpected": {"deductions.totalDeductions": 0, "result.netAnnual": 0, "result.netMonthly": 0, "tax.netTax": 0},
+      "nextExpected": {"deductions.totalDeductions": 0, "result.netAnnual": 0, "result.netMonthly": 0, "tax.netTax": 0},
+      "reason": "The zero-income baseline remains zero under the statutory marginal schedule.",
+      "sourceUrl": "https://tile.loc.gov/storage-services/service/ll/lleritrea/eritrean-proc-62-1994/eritrean-proc-62-1994.pdf",
+      "reviewedBy": "Codex Day 3 release gate",
+      "reviewedAt": "2026-07-22"
+    }
+  ]
+}

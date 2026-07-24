@@ -1,0 +1,4 @@
+'use strict';const test=require('node:test');const assert=require('node:assert/strict');const fs=require('node:fs');const path=require('node:path');
+const root=path.join(__dirname,'..');const files=['tools/payslip-generator/index.html','fr/tools/generateur-fiche-paie/index.html','sw/zana/kizalishaji-payslip/index.html','ha/kayan-aiki/takardar-albashi/index.html'];
+test('payslip locale sources decode as UTF-8 without mojibake',()=>{for(const file of files){const text=fs.readFileSync(path.join(root,file),'utf8');assert.doesNotMatch(text,/Ã.|Â.|â(?:€™|€”|€œ|€|™|—)|Æ(?:˜|™)|É—/u,file);assert.ok(text.includes('<meta charset="utf-8">'),file);}});
+test('Hausa characters survive source round trip',()=>{const text=fs.readFileSync(path.join(root,files[3]),'utf8');assert.match(text,/Ƙirƙiri/);assert.match(text,/kuɗin/);assert.match(text,/na’ura/);assert.match(text,/—/);});

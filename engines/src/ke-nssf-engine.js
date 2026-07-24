@@ -1,59 +1,72 @@
-!function(e) {
+(function (global) {
   "use strict";
-  var l = e.AfroTools && e.AfroTools.payroll && e.AfroTools.payroll.ke;
-  if (l) {
-    var o = {
-      LEL: l.NSSF_LOWER_LIMIT,
-      UEL: l.NSSF_UPPER_LIMIT,
-      RATE: l.NSSF_RATE,
-      OLD_FLAT: l.LEGACY_NSSF_FLAT,
-      SHIF_RATE: l.SHIF_RATE,
-      SHIF_MIN: l.SHIF_MINIMUM,
-      AHL_RATE: l.AHL_RATE,
-      calculateNSSF: function(e, o) {
-        return l.calculateNssf(e, o || "new");
-      },
-      calculateSHIF: function(e) {
-        return l.calculateShif(e);
-      },
-      calculateAHL: function(e) {
-        return l.calculateAhl(e);
-      },
-      getAllDeductions: function(e, o) {
-        var t = l.calculateStatutoryBurden(e, o || "new");
-        return {
-          nssf: t.nssf,
-          employee: {
-            nssf: t.employee.nssf,
-            shif: t.employee.shif,
-            ahl: t.employee.ahl,
-            total: t.employee.total,
-            pctOfGross: t.gross > 0 ? t.employee.total / t.gross * 100 : 0
-          },
-          employer: {
-            nssf: t.employer.nssf,
-            shif: t.employer.shif,
-            ahl: t.employer.ahl,
-            total: t.employer.total,
-            pctOfGross: t.gross > 0 ? t.employer.total / t.gross * 100 : 0
-          }
-        };
-      },
-      compareActs: function(e) {
-        var o = l.calculateNssf(e, "new"), t = l.calculateNssf(e, "old"), a = o.totalEmployee - t.totalEmployee;
-        return {
-          oldActEmployee: t.totalEmployee,
-          newActEmployee: o.totalEmployee,
-          monthlyDifference: a,
-          annualDifference: 12 * a,
-          multiplier: t.totalEmployee > 0 ? o.totalEmployee / t.totalEmployee : 0
-        };
-      },
-      projectRetirement: function(e, l, o) {
-        var t = (o || 0) / 12, a = 12 * l;
-        return t > 0 && a > 0 ? e * ((Math.pow(1 + t, a) - 1) / t) : e * a;
-      }
-    };
-    "undefined" != typeof module && module.exports ? module.exports = o : e.KE_NSSF = o;
+
+  var RULES = Object.freeze({
+    scheme: "NSSF Year 4 (2026)",
+    effectiveFrom: "2026-02-01",
+    verifiedThrough: "2026-07-23",
+    lowerEarningsLimit: 9000,
+    upperEarningsLimit: 108000,
+    employeeRate: 0.06,
+    employerRate: 0.06,
+    remittanceDay: 9,
+    source: "NSSF Kenya Notice to Employers - Year 4 (2026)"
+  });
+
+  function number(value) {
+    if (value === "" || value === null || value === undefined) return null;
+    return Number(value);
   }
-}("undefined" != typeof globalThis ? globalThis : this);
+
+  function round(value) {
+    return Math.round((value + Number.EPSILON) * 100) / 100;
+  }
+
+  function calculate(raw) {
+    raw = raw || {};
+    var earnings = number(raw.monthlyPensionableEarnings);
+    var employeeActual = number(raw.employeeActual);
+    var employerActual = number(raw.employerActual);
+    var period = String(raw.contributionPeriod || "");
+
+    if (!Number.isFinite(earnings) || earnings <= 0 || earnings > 1e15) return { ok: false, error: "invalid_earnings" };
+    if (!/^\d{4}-\d{2}$/.test(period) || period < "2026-02" || period > "2026-07") return { ok: false, error: "unsupported_period" };
+    if ((employeeActual !== null && (!Number.isFinite(employeeActual) || employeeActual < 0 || employeeActual > 1e15)) || (employerActual !== null && (!Number.isFinite(employerActual) || employerActual < 0 || employerActual > 1e15))) return { ok: false, error: "invalid_actual" };
+
+    var pensionable = Math.min(earnings, RULES.upperEarningsLimit);
+    var tier1Base = Math.min(pensionable, RULES.lowerEarningsLimit);
+    var tier2Base = Math.max(0, pensionable - tier1Base);
+    var tier1Employee = round(tier1Base * RULES.employeeRate);
+    var tier2Employee = round(tier2Base * RULES.employeeRate);
+    var employeeExpected = round(tier1Employee + tier2Employee);
+    var employerExpected = employeeExpected;
+
+    return {
+      ok: true,
+      contributionPeriod: period,
+      monthlyPensionableEarnings: round(earnings),
+      cappedPensionableEarnings: round(pensionable),
+      earningsAboveUpperLimit: round(Math.max(0, earnings - RULES.upperEarningsLimit)),
+      tier1Base: round(tier1Base),
+      tier2Base: round(tier2Base),
+      tier1Employee: tier1Employee,
+      tier2Employee: tier2Employee,
+      tier1Employer: tier1Employee,
+      tier2Employer: tier2Employee,
+      employeeExpected: employeeExpected,
+      employerExpected: employerExpected,
+      combinedExpected: round(employeeExpected + employerExpected),
+      annualCombinedExpected: round((employeeExpected + employerExpected) * 12),
+      employeeActual: employeeActual,
+      employerActual: employerActual,
+      employeeVariance: employeeActual === null ? null : round(employeeActual - employeeExpected),
+      employerVariance: employerActual === null ? null : round(employerActual - employerExpected),
+      rules: RULES,
+      boundary: "Contribution arithmetic only. NSSF determines balances, credited returns, eligibility and benefits."
+    };
+  }
+
+  var api = { RULES: RULES, calculate: calculate };
+  if (typeof module !== "undefined" && module.exports) module.exports = api;
+  global.KE_NSSF = api;
+})(typeof globalThis !== "undefined" ? globalThis : this);

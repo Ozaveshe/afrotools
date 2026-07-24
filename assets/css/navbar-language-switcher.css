@@ -1,0 +1,60 @@
+.lang-drop {
+  top: 100%;
+  margin-top: 6px;
+  width: max-content;
+  min-width: 190px;
+  max-width: min(320px, calc(100vw - 32px));
+  max-height: min(70vh, 420px);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.lang-opt {
+  min-height: 44px;
+}
+.lang-opt-check {
+  width: 16px;
+  flex: 0 0 16px;
+  text-align: center;
+}
+.lang-opt:focus-visible,
+.mob-lang-opt:focus-visible {
+  outline: 3px solid rgba(0, 98, 204, 0.22);
+  outline-offset: -3px;
+}
+@media (max-width: 480px) {
+  .mob,
+  .mob-lang-section,
+  .mob-lang-row {
+    box-sizing: border-box;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+  }
+  .mob-lang-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+  .mob-lang-opt {
+    box-sizing: border-box;
+    max-width: 100%;
+    min-width: 0;
+    padding-inline: 10px;
+    white-space: normal;
+  }
+  .mob-lang-opt .lang-opt-label,
+  .mob-lang-opt .lang-opt-partial,
+  .mob-lang-opt .lang-opt-fallback {
+    max-width: 100%;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lang-btn-label,
+  .lang-opt,
+  .mob-lang-opt {
+    transition: none;
+  }
+}

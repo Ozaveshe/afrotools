@@ -1,334 +1,191 @@
-<!DOCTYPE html>
+<!doctype html>
 <html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nigeria Capital Gains Tax Calculator | AfroTools</title>
-<meta name="description" content="Calculate Nigeria Capital Gains Tax (CGT) at 10% on disposal of assets including property, shares, and investments. Covers exemptions and allowable deductions.">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Nigeria CGT Calculator | AfroTools">
-<meta property="og:description" content="Calculate your Nigeria Capital Gains Tax on property, shares, and asset disposals.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/ng-cgt.webp">
-<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/ng-cgt/">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
-
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
-<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=e25622fc" defer></script>
-<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
-<style>
-:root{--afro-dark:#0f1419;--accent:#16a34a}
-.tool-hero{background:linear-gradient(135deg,#14532d 0%,#16a34a 50%,#15803d 100%);padding:44px 0 36px}
-.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
-.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
-.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#bbf7d0}
-h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
-h1 em{color:#bbf7d0;font-style:normal}
-.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
-.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
-.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
-.b-em{background:rgba(187,247,208,.2);color:#bbf7d0;border:1px solid rgba(187,247,208,.4)}
-.tool-main{padding:28px 0 72px}
-.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
-.card+.card{margin-top:18px}
-.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
-.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
-.card-body{padding:22px}
-label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
-input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
-input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(22,163,74,.15)}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.field{margin-bottom:14px}
-.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px}
-.btn-primary{background:linear-gradient(135deg,#15803d,#16a34a);color:#fff}
-.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
-.result-box .num{font-size:1.3rem;font-weight:800;color:#16a34a}
-.result-box .lbl{font-size:.68rem;color:#64748b;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
-.result-box.highlight{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#86efac;grid-column:1/-1}
-.result-box.highlight .num{font-size:1.8rem}
-.sidebar .info-card{background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:16px;margin-top:14px}
-.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#14532d;margin-bottom:8px}
-.info-card p,.info-card li{font-size:.78rem;color:#14532d;line-height:1.6}
-.info-card ul{padding-left:16px;margin:6px 0}
-.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
-.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
-.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
-.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
-.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
-.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
-@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
-</style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Nigeria Capital Gains Tax Calculator","description":"Calculate Nigeria Capital Gains Tax (CGT) at 10% on disposal of assets.","url":"https://afrotools.com/tools/ng-cgt/","inLanguage":"en","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/ng-cgt.webp"}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Nigeria Capital Gains Tax Calculator","url":"https://afrotools.com/tools/ng-cgt/","description":"Calculate Nigeria Capital Gains Tax (CGT) at 10% on disposal of assets.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/ng-cgt.webp"}</script>
-<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
-<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
-<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
-<meta property="og:site_name" content="AfroTools">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Nigeria CGT Calculator | AfroTools">
-<meta name="twitter:description" content="Calculate your Nigeria Capital Gains Tax on property, shares, and asset disposals.">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/ng-cgt.webp">
-<script type="application/ld+json">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Nigeria Capital Gains Tax Calculator 2026 | NTA</title>
+    <meta name="description" content="Estimate Nigeria tax on asset gains under the Nigeria Tax Act 2025, with progressive individual rates, company rates and scoped share relief." />
+    <meta name="robots" content="index,follow" />
+    <meta name="tool-id" content="ng-cgt" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Nigeria Capital Gains Tax Calculator 2026" />
+    <meta property="og:description" content="A source-linked NTA 2025 disposal-gain estimate without the repealed flat 10% rule." />
+    <meta property="og:url" content="https://afrotools.com/tools/ng-cgt/" />
+    <meta property="og:image" content="https://afrotools.com/assets/img/tools/ng-cgt.webp">
+    <link rel="icon" href="/assets/img/logo-mark.svg" />
+    <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb" />
+    <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b" />
+    <link rel="stylesheet" href="/assets/css/ng-cgt-vip.css?v=5794d6b4" />
+    <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957" />
+    <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "AfroTools",
-      "item": "https://afrotools.com/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Tools",
-      "item": "https://afrotools.com/tools/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Nigeria CGT Calculator",
-      "item": "https://afrotools.com/tools/ng-cgt/"
-    }
-  ]
+  "@type": "WebApplication",
+  "name": "Nigeria Capital Gains Tax Calculator 2026",
+  "url": "https://afrotools.com/tools/ng-cgt/",
+  "description": "Local planning estimate for chargeable gains under the Nigeria Tax Act 2025.",
+  "inLanguage": "en",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "dateModified": "2026-07-22",
+  "image": "https://afrotools.com/assets/img/tools/ng-cgt.webp"
 }
 </script>
-<meta property="article:modified_time" content="2026-03-28">
-<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+  <!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How does Nigerian-share relief work?","acceptedAnswer":{"@type":"Answer","text":"Threshold relief requires aggregate proceeds below ₦150M and aggregate gains no more than ₦10M in 12 consecutive months. Same-year reinvestment can proportionately relieve the reinvested proceeds."}},{"@type":"Question","name":"Why does an individual enter other income?","acceptedAnswer":{"@type":"Answer","text":"The Fourth Schedule bands apply progressively. The calculator measures tax before and after adding this gain instead of pretending every individual has one flat rate."}},{"@type":"Question","name":"Which cases are outside this calculator?","acceptedAnswer":{"@type":"Answer","text":"Part disposals, capital-allowance residue disputes, gifts, compensation, indirect transfers, trusts, restructurings and special exemptions need a transaction-specific computation."}}]}
+</script>
 <!-- tool-structured-data:auto -->
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the CGT rate in Nigeria?","acceptedAnswer":{"@type":"Answer","text":"Nigeria applies a flat 10% Capital Gains Tax on gains from the disposal of chargeable assets. This applies equally to individuals and companies, and there is no distinction between short-term and long-term gains."}},{"@type":"Question","name":"Are share sales subject to CGT in Nigeria?","acceptedAnswer":{"@type":"Answer","text":"Yes, since the Finance Act 2021. If the total consideration from share disposals exceeds ₦100 million in any 12-month period, the gains are subject to 10% CGT. Transactions below this threshold remain exempt."}},{"@type":"Question","name":"What costs can I deduct from my gain?","acceptedAnswer":{"@type":"Answer","text":"You can deduct the original purchase price, any costs of improving or enhancing the asset (not repairs/maintenance), and incidental costs of both acquisition and disposal — including legal fees, agent/broker commissions, stamp duties, and surveyor fees."}},{"@type":"Question","name":"When must I file and pay CGT?","acceptedAnswer":{"@type":"Answer","text":"CGT must be filed and paid within 30 days of the disposal. For property transactions, the buyer's solicitor often withholds the tax at source. Late payment attracts penalties and interest from FIRS."}}]}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Nigeria Capital Gains Tax Calculator 2026 | NTA","item":"https://afrotools.com/tools/ng-cgt/"}]}
 </script>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Nigeria Capital Gains Tax Calculator 2026 | NTA">
+<meta name="twitter:description" content="Estimate Nigeria tax on asset gains under the Nigeria Tax Act 2025, with progressive individual rates, company rates and scoped share relief.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/ng-cgt.webp">
 <link rel="canonical" href="https://afrotools.com/tools/ng-cgt/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/ng-cgt/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/ng-plus-value/">
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/cgt-najeriya/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/ng-cgt/">
 </head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar></afro-navbar>
-<section class="tool-hero"><div class="tool-hero-inner">
-<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Nigeria CGT</span></div>
-<h1>Nigeria <em>Capital Gains Tax</em> Calculator</h1>
-<p class="hero-sub">Calculate your CGT liability on the disposal of assets in Nigeria. This calculator now distinguishes between individuals and companies and preserves the share-disposal threshold logic.</p>
-<div class="hero-badges"><span class="badge b-em">Nigeria 2026</span><span class="badge b-em">Property &amp; Shares</span><span class="badge b-em">Taxpayer Type</span></div>
-</div></section>
-
-<section class="tool-main"><div class="tool-main-inner">
-<div class="calculator">
-<div class="card">
-<div class="card-head"><span class="card-title">Asset Disposal Details</span></div>
-<div class="card-body">
-<div class="field"><label for="taxpayerType">Taxpayer Type</label>
-<select id="taxpayerType">
-<option value="individual">Individual</option>
-<option value="company">Company</option>
-</select></div>
-<div class="field"><label>Asset Type</label>
-<select id="assetType" aria-label="Asset Type">
-<option value="property">Property / Land</option>
-<option value="shares">Shares / Securities</option>
-<option value="other">Other Chargeable Assets</option>
-</select></div>
-<div class="row field">
-<div><label>Sale / Disposal Price (&#8358;)</label><input aria-label="SalePrice" type="number" id="salePrice" value="50000000" min="0" step="100000"></div>
-<div><label>Original Cost / Purchase Price (&#8358;)</label><input aria-label="CostPrice" type="number" id="costPrice" value="30000000" min="0" step="100000"></div>
-</div>
-<div class="row field">
-<div><label>Improvement Costs (&#8358;)</label><input aria-label="Improvements" type="number" id="improvements" value="2000000" min="0" step="100000"></div>
-<div><label>Incidental Costs of Disposal (&#8358;)</label><input aria-label="IncidentalCosts" type="number" id="incidentalCosts" value="500000" min="0" step="50000"></div>
-</div>
-<div class="field"><label>Year of Acquisition</label><input aria-label="YearAcquired" type="number" id="yearAcquired" value="2018" min="1960" max="2026"></div>
-<button type="button" class="btn btn-primary" onclick="calculate()">Calculate CGT</button>
-</div></div>
-
-<div class="card" id="resultCard" style="display:none">
-<div class="card-head"><span class="card-title">Your CGT Breakdown</span></div>
-<div class="card-body">
-<div class="result-grid" id="resultGrid"></div>
-<p id="notes" style="font-size:.76rem;color:#64748b;margin-top:14px;line-height:1.6"></p>
-</div></div>
-</div>
-
-<div class="sidebar">
-<div class="card">
-<div class="card-head"><span class="card-title">Nigeria CGT Rules</span></div>
-<div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
-<p>Nigeria's Capital Gains Tax Act (CGTA) imposes a flat <strong>10% tax</strong> on gains from the disposal of chargeable assets.</p>
-<p style="margin-top:6px"><strong>Chargeable assets</strong> include land, buildings, shares, options, and other property — but exclude personal motor vehicles, life assurance policies, and Nigerian government securities.</p>
-<p style="margin-top:6px"><strong>Allowable deductions:</strong> Original cost, improvement costs, and incidental costs of acquisition/disposal (legal fees, agent commissions, stamp duties).</p>
-<p style="margin-top:6px"><strong>Shares:</strong> Since the Finance Act 2021, gains from disposal of shares in Nigerian companies are subject to 10% CGT if total consideration exceeds &#8358;100 million in any 12-month period.</p>
-</div></div>
-<div class="info-card">
-<h4>Exempt Assets</h4>
-<ul>
-<li>Personal motor vehicles</li>
-<li>Decorations for gallantry</li>
-<li>Life assurance policies</li>
-<li>Nigerian government securities</li>
-<li>Shares under &#8358;100M consideration (since 2022)</li>
-<li>Gifts to approved charities</li>
-</ul>
-</div>
-<div class="info-card" style="margin-top:10px">
-<h4>Filing Requirements</h4>
-<ul>
-<li>File with FIRS within 30 days of disposal</li>
-<li>Self-assessment with Form CGT-1</li>
-<li>Retain proof of original cost and improvements</li>
-<li>Withholding agent may deduct at source</li>
-</ul>
-</div>
-</div>
-</div></section>
-
-<section class="seo-section">
-<h2>Understanding Capital Gains Tax in Nigeria</h2>
-<p>Nigeria's Capital Gains Tax (CGT) is governed by the Capital Gains Tax Act (CGTA), Cap C1 LFN 2004, as amended by subsequent Finance Acts. The tax applies a flat rate of 10% on gains arising from the disposal of chargeable assets by any person (individual or company) in Nigeria.</p>
-<p>A "disposal" occurs when an asset is sold, exchanged, gifted (except to approved charities), or transferred. The gain is calculated as the difference between the disposal consideration (sale price) and the allowable costs — which include the original purchase price, costs of improvements or enhancements, and incidental costs of both acquiring and disposing of the asset (such as legal fees, surveyor fees, and agent commissions).</p>
-<p>One of the most significant recent changes came with the Finance Act 2021, which brought gains from the disposal of shares back into the CGT net. Previously, share disposals were exempt. Now, if total proceeds from share transactions exceed &#8358;100 million within any 12-month period, the gains are subject to the 10% CGT. This was a major development for the Nigerian investment landscape.</p>
-<p>Property transactions remain the most common trigger for CGT in Nigeria. When selling land or buildings, the seller is liable for CGT on the gain. In practice, the buyer or their solicitor often withholds the CGT at source and remits it to the Federal Inland Revenue Service (FIRS) before completing the transaction. Obtaining a CGT clearance certificate is typically required before the Governor's consent for property transfers can be processed.</p>
-<p>Unlike some jurisdictions, Nigeria does not index the cost base for inflation, nor does it offer reduced rates for long-term holdings. The 10% rate applies regardless of how long the asset was held. There is also no annual exemption threshold for individuals — any gain on a chargeable asset is taxable from the first naira.</p>
-
-<h2>Frequently Asked Questions</h2>
-<details class="faq-item"><summary>What is the CGT rate in Nigeria?</summary><p>Nigeria applies a flat 10% Capital Gains Tax on gains from the disposal of chargeable assets. This applies equally to individuals and companies, and there is no distinction between short-term and long-term gains.</p></details>
-<details class="faq-item"><summary>Are share sales subject to CGT in Nigeria?</summary><p>Yes, since the Finance Act 2021. If the total consideration from share disposals exceeds &#8358;100 million in any 12-month period, the gains are subject to 10% CGT. Transactions below this threshold remain exempt.</p></details>
-<details class="faq-item"><summary>What costs can I deduct from my gain?</summary><p>You can deduct the original purchase price, any costs of improving or enhancing the asset (not repairs/maintenance), and incidental costs of both acquisition and disposal — including legal fees, agent/broker commissions, stamp duties, and surveyor fees.</p></details>
-<details class="faq-item"><summary>When must I file and pay CGT?</summary><p>CGT must be filed and paid within 30 days of the disposal. For property transactions, the buyer's solicitor often withholds the tax at source. Late payment attracts penalties and interest from FIRS.</p></details>
-</section>
-
-<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="ng-cgt">
-  <div class="tool-verification-card">
-    <span class="tool-verification-kicker">CGT source and document check</span>
-    <h2>Confirm the asset treatment and records before filing</h2>
-    <ul class="tool-verification-list">
-      <li><strong>Inputs:</strong> taxpayer type, asset type, sale value, cost base, improvement costs, incidental costs, and acquisition year.</li>
-      <li><strong>Method:</strong> applies the page's embedded Nigeria CGT logic to estimate chargeable gain, allowable cost, tax, and net proceeds.</li>
-      <li><strong>Verify before acting:</strong> current FIRS guidance, CGT Act/Finance Act treatment, share-disposal threshold, exemption status, property documentation, valuations, and filing route.</li>
-      <li><strong>Privacy:</strong> disposal figures run locally. Copy, download, save, or share only the summary you choose.</li>
-    </ul>
-    <p class="tool-verification-note"><strong>Reviewed 2026.</strong> Planning estimate only. It is not tax advice, legal advice, a filing instruction, or an official FIRS assessment.</p>
-  </div>
-</section>
-<afro-business-cta tool-name="Nigeria CGT Calculator" prospect-segment="tax-compliance" headline="Need a defensible disposal tax workpaper?" subhead="AfroTax Pro helps teams keep cost-base assumptions, exemption notes, and accountant handoff files together before filing."></afro-business-cta>
-<afro-related-tools category="financial" current="ng-cgt" data-ssr="1">
+  <body class="cgt-page">
+    <a class="skip-link" href="#main-content">Skip to calculator</a><afro-navbar></afro-navbar>
+    <header class="cgt-hero">
+      <div class="cgt-wrap">
+        <nav class="cgt-crumb" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/salary-tax/">Salary and tax</a> / Nigeria asset gains</nav>
+        <span class="cgt-kicker">Nigeria Tax Act 2025 · effective 1 January 2026</span>
+        <h1>Estimate disposal tax without the repealed flat 10% shortcut.</h1>
+        <p>The 2026 regime taxes a company at its company rate and an individual through the progressive income-tax bands. This local planner keeps the gain, exemption and rate steps visible.</p>
+        <div class="cgt-badges"><span class="cgt-badge">Individuals: marginal 0–25%</span><span class="cgt-badge">Companies: 0% or 30%</span><span class="cgt-badge">Shares: two threshold tests</span></div>
+      </div>
+    </header>
+    <main id="main-content" class="cgt-wrap cgt-main">
+      <div class="cgt-stack">
+        <section class="cgt-card" data-ng-cgt-app data-locale="en-NG" data-scope-error="Confirm the 2026 calculator scope before calculating." data-number-error="Enter zero or a positive number in every amount field." data-summary-title="AfroTools Nigeria chargeable-gains estimate" data-regime-label="Regime" data-gain-label="Calculated gain" data-taxable-label="Taxable gain" data-rate-label="Rate treatment" data-tax-label="Estimated incremental tax" data-relief-label="Relief" data-relief-none="No modelled relief" data-relief-shares="Nigerian-share threshold relief" data-relief-reinvest="Proportionate Nigerian-share reinvestment relief" data-relief-residence="Confirmed once-in-lifetime principal-residence relief" data-relief-review="Residence relief not applied; eligibility needs review" data-scope-note="Planning estimate only. Confirm classification, deductions, exemptions and filing treatment with NRS or the relevant state tax authority." data-copied="Summary copied." data-copy-error="Copy unavailable; select the result manually." data-downloaded="TXT summary downloaded.">
+          <div class="cgt-head">
+            <h2>Seller, asset and cost base</h2>
+            <p>Use this only for a disposal governed by the NTA 2025 regime from 1 January 2026.</p>
+          </div>
+          <div class="cgt-body">
+            <form class="cgt-form" novalidate>
+              <div class="cgt-field">
+                <label for="cgt-seller">Seller type</label
+                ><select id="cgt-seller" name="sellerType">
+                  <option value="individual">Individual</option>
+                  <option value="company">Nigerian company</option>
+                </select>
+              </div>
+              <div class="cgt-field">
+                <label for="cgt-asset">Asset treatment</label
+                ><select id="cgt-asset" name="assetType">
+                  <option value="general">General chargeable asset</option>
+                  <option value="shares">Shares in a Nigerian company</option>
+                  <option value="residence">Principal private residence</option>
+                </select>
+              </div>
+              <div class="cgt-field"><label for="cgt-proceeds">Disposal proceeds (₦)</label><input id="cgt-proceeds" name="proceeds" type="number" inputmode="decimal" min="0" value="20000000" required /></div>
+              <div class="cgt-field"><label for="cgt-cost">Acquisition cost or tax residue (₦)</label><input id="cgt-cost" name="acquisitionCost" type="number" inputmode="decimal" min="0" value="10000000" required /><small>For a business asset with capital allowances, section 39 uses its tax residue.</small></div>
+              <div class="cgt-field cgt-wide"><label for="cgt-expense">Incidental disposal costs wholly and exclusively incurred (₦)</label><input id="cgt-expense" name="disposalCosts" type="number" inputmode="decimal" min="0" value="1000000" required /></div>
+              <div class="cgt-conditional" data-individual>
+                <div class="cgt-field cgt-wide"><label for="cgt-income">Other chargeable income in the year, after applicable reliefs (₦)</label><input id="cgt-income" name="otherChargeableIncome" type="number" inputmode="decimal" min="0" value="0" /><small>The gain’s incremental tax depends on which progressive bands this income has already used.</small></div>
+              </div>
+              <div class="cgt-conditional" data-company hidden>
+                <div class="cgt-field"><label for="cgt-turnover">Company gross turnover (₦)</label><input id="cgt-turnover" name="turnover" type="number" inputmode="decimal" min="0" value="80000000" /></div>
+                <div class="cgt-field"><label for="cgt-assets">Company total fixed assets (₦)</label><input id="cgt-assets" name="fixedAssets" type="number" inputmode="decimal" min="0" value="200000000" /></div>
+                <label class="cgt-check" for="cgt-professional"
+                  ><input id="cgt-professional" name="professionalServices" type="checkbox" /><span><strong>The company provides professional services</strong><small>Professional-services businesses do not qualify as small companies.</small></span></label
+                >
+              </div>
+              <div class="cgt-conditional" data-shares hidden>
+                <div class="cgt-field"><label for="cgt-share-proceeds">Aggregate Nigerian-share proceeds over 12 months (₦)</label><input id="cgt-share-proceeds" name="aggregateShareProceeds" type="number" inputmode="decimal" min="0" value="20000000" /></div>
+                <div class="cgt-field"><label for="cgt-share-gain">Aggregate gain on those shares (₦)</label><input id="cgt-share-gain" name="aggregateShareGain" type="number" inputmode="decimal" min="0" value="9000000" /></div>
+                <div class="cgt-field cgt-wide"><label for="cgt-reinvest">Current proceeds reinvested in Nigerian-company shares in the same assessment year (₦)</label><input id="cgt-reinvest" name="reinvestedProceeds" type="number" inputmode="decimal" min="0" value="0" /></div>
+              </div>
+              <div class="cgt-conditional" data-residence hidden>
+                <label class="cgt-check" for="cgt-residence"
+                  ><input id="cgt-residence" name="residenceEligible" type="checkbox" /><span><strong>I confirm the statutory once-in-a-lifetime individual residence conditions</strong><small>The property is the individual’s dwelling-house; adjoining land is non-commercial and no more than one acre.</small></span></label
+                >
+              </div>
+              <label class="cgt-check" for="cgt-scope"
+                ><input id="cgt-scope" name="scopeConfirmed" type="checkbox" /><span><strong>I confirm this disposal belongs to the NTA 2025 regime</strong><small>Not a pre-2026 disposal, non-resident indirect transfer, gift, compensation, insurance, private vehicle, personal chattel, trust or business-restructuring case.</small></span></label
+              >
+              <div class="cgt-actions"><button class="cgt-button" type="submit">Calculate gain estimate</button></div>
+              <p class="cgt-error" data-error role="status" aria-live="polite"></p>
+            </form>
+          </div>
+          <section class="cgt-result" data-result role="status" aria-live="polite" tabindex="-1" hidden>
+            <div class="cgt-total"><span>Estimated incremental tax on this gain</span><strong data-tax></strong></div>
+            <div class="cgt-grid">
+              <div class="cgt-metric"><span>Calculated gain</span><strong data-gain></strong></div>
+              <div class="cgt-metric"><span>Taxable gain</span><strong data-taxable></strong></div>
+              <div class="cgt-metric"><span>Rate treatment</span><strong data-rate></strong></div>
+              <div class="cgt-metric"><span>Relief</span><strong data-relief></strong></div>
+            </div>
+            <div class="cgt-warning" data-review hidden><strong>Residence exemption not applied.</strong> Confirm the once-in-a-lifetime and property-use tests before relying on a taxable result.</div>
+            <div class="cgt-formula"><strong>Gain step:</strong> <span data-formula></span></div>
+            <div class="cgt-actions" style="margin-top: 14px"><button class="cgt-button secondary" type="button" data-copy>Copy summary</button><button class="cgt-button secondary" type="button" data-download>Download TXT</button></div>
+            <p class="cgt-status" data-status role="status" aria-live="polite"></p>
+            <p>No PDF is offered: this is not a return, assessment or tax-clearance document.</p>
+          </section>
+        </section>
+        <section class="cgt-card cgt-faq">
+          <div class="cgt-head"><h2>2026 rule checkpoints</h2></div>
+          <details>
+            <summary>How does Nigerian-share relief work?</summary>
+            <p>Threshold relief requires aggregate proceeds below ₦150M and aggregate gains no more than ₦10M in 12 consecutive months. Same-year reinvestment can proportionately relieve the reinvested proceeds.</p>
+          </details>
+          <details>
+            <summary>Why does an individual enter other income?</summary>
+            <p>The Fourth Schedule bands apply progressively. The calculator measures tax before and after adding this gain instead of pretending every individual has one flat rate.</p>
+          </details>
+          <details>
+            <summary>Which cases are outside this calculator?</summary>
+            <p>Part disposals, capital-allowance residue disputes, gifts, compensation, indirect transfers, trusts, restructurings and special exemptions need a transaction-specific computation.</p>
+          </details>
+        </section>
+      </div>
+      <aside class="cgt-side">
+        <section class="cgt-card" data-tool-verification-panel data-tool-id="ng-cgt">
+          <div class="cgt-head"><h2>Sources &amp; verification</h2></div>
+          <div class="cgt-body">
+            <ul class="cgt-list">
+              <li><a href="https://www.nipc.gov.ng/wp-content/uploads/2025/07/Nigeria-Tax-Act-2025.pdf" target="_blank" rel="noopener noreferrer">Nigeria Tax Act 2025 Gazette</a>: sections 33–58 and Fourth Schedule.</li>
+              <li><a href="https://finance.gov.ng/federal-government-issues-transition-guidelines-for-tax-acts-2025/" target="_blank" rel="noopener noreferrer">Federal Ministry of Finance transition guidance</a>: 1 January 2026 boundary.</li>
+            </ul>
+            <p>Sources reviewed 22 July 2026.</p>
+            <div data-source-meta-id="nigeria-cgt-2026-source" data-source-meta-compact="true"></div>
+            <p><a class="tool-verification-report" href="/contact/?topic=calculation-error&amp;tool=ng-cgt">Report calculation error</a></p>
+          </div>
+        </section>
+        <section class="cgt-card">
+          <div class="cgt-head"><h2>Privacy and evidence</h2></div>
+          <div class="cgt-body">
+            <p>Figures stay in this browser session. There is no account, API call, autosave or analytics payload containing the values. TXT is created locally.</p>
+            <div class="cgt-alert"><strong>Keep before filing:</strong> sale contract, valuation, cost invoices, disposal-cost evidence, share aggregation and reinvestment records, plus exemption evidence.</div>
+          </div>
+        </section>
+      </aside>
+    </main>
+<afro-related-tools data-ssr="1" category="financial" current="ng-cgt">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Tracker" data-category="financial" data-icon="AA" data-desc="Compare petrol, diesel, and LPG prices across 54 African countries, then estimate generator fuel costs in local currency">AfroFuel — African Fuel Price Tracker</a></li></ul>
+<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Reference" data-category="financial" data-icon="AA" data-desc="Inspect dated, row-sourced African petrol, diesel, and LPG snapshots, then estimate generator cost from a verified local">AfroFuel — African Fuel Price Reference</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
-<afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
-
-<script>
-function calculate(){
-  const taxpayerType=document.getElementById('taxpayerType') ? document.getElementById('taxpayerType').value : 'individual';
-  const salePrice=+document.getElementById('salePrice').value;
-  const costPrice=+document.getElementById('costPrice').value;
-  const improvements=+document.getElementById('improvements').value;
-  const incidentalCosts=+document.getElementById('incidentalCosts').value;
-  const assetType=document.getElementById('assetType').value;
-  const yearAcquired=+document.getElementById('yearAcquired').value;
-
-  const allowableCost=costPrice+improvements+incidentalCosts;
-  const gain=Math.max(0,salePrice-allowableCost);
-
-  let cgtRate=taxpayerType==='company'?0.30:0.10;
-  let sharesExempt=false;
-  if(assetType==='shares'&&salePrice<100000000){
-    sharesExempt=true;
-  }
-
-  const cgt=sharesExempt?0:gain*cgtRate;
-  const netProceeds=salePrice-cgt;
-  const effectiveRate=salePrice>0?((cgt/salePrice)*100):0;
-  const holdingYears=Math.max(0,new Date().getFullYear()-yearAcquired);
-  const fmt=n=>'₦'+Math.round(n).toLocaleString('en');
-
-  let html='';
-  html+=`<div class="result-box highlight"><div class="num">${fmt(cgt)}</div><div class="lbl">Capital Gains Tax Payable</div></div>`;
-  html+=`<div class="result-box"><div class="num">${fmt(gain)}</div><div class="lbl">Chargeable Gain</div></div>`;
-  html+=`<div class="result-box"><div class="num">${fmt(allowableCost)}</div><div class="lbl">Total Allowable Cost</div></div>`;
-  html+=`<div class="result-box"><div class="num">${fmt(netProceeds)}</div><div class="lbl">Net Proceeds After CGT</div></div>`;
-  html+=`<div class="result-box"><div class="num">${effectiveRate.toFixed(1)}%</div><div class="lbl">Effective Tax Rate</div></div>`;
-  html+=`<div class="result-box"><div class="num">${(cgtRate*100).toFixed(0)}%</div><div class="lbl">Applied Tax Rate</div></div>`;
-  html+=`<div class="result-box"><div class="num">${holdingYears} yrs</div><div class="lbl">Holding Period</div></div>`;
-
-  document.getElementById('resultGrid').innerHTML=html;
-
-  let notes='';
-  if(sharesExempt) notes='<strong>Note:</strong> Share disposals with total consideration under ₦100M in a 12-month period are exempt from CGT (Finance Act 2021).';
-  else if(gain<=0) notes='<strong>Note:</strong> No gain on this disposal — no CGT is payable. However, capital losses cannot be offset against other income in Nigeria.';
-  else notes=`<strong>Note:</strong> ${taxpayerType==='company'?'Company':'Individual'} tax on this disposal is ${fmt(cgt)} under the current AfroTools 2026 logic. File with FIRS using Form CGT-1 and confirm the final filing treatment for your fact pattern.`;
-  document.getElementById('notes').innerHTML=notes;
-
-  document.getElementById('resultCard').style.display='block';
-  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
-}
-</script>
-
-<script>
-(function(){
-  var target = document.getElementById('resultCard');
-  if (!target) return;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<button type="button" class="btn" id="tax-copy-summary" style="width:auto;margin-top:0">Copy summary</button><button type="button" class="btn" id="tax-download-summary" data-no-gate="true" style="width:auto;margin-top:0">Download TXT</button><save-result-button tool-slug="ng-cgt" tool-name="Nigeria CGT Calculator"></save-result-button><share-result-button tool-name="Nigeria CGT Calculator" tool-slug="ng-cgt"></share-result-button><span id="tax-export-status" role="status" aria-live="polite" style="flex-basis:100%;font-size:.78rem;color:#64748b"></span>';
-  target.appendChild(div);
-  function valueLabel(el) {
-    if (el.tagName === 'SELECT') return el.options[el.selectedIndex] ? el.options[el.selectedIndex].textContent.trim() : el.value;
-    return el.value;
-  }
-  function buildSummary() {
-    var inputs = Array.prototype.map.call(document.querySelectorAll('.calculator .card:first-of-type input,.calculator .card:first-of-type select'), function (el) {
-      var label = el.closest('div') && el.closest('div').querySelector('label') ? el.closest('div').querySelector('label').textContent.trim() : (el.getAttribute('aria-label') || el.id);
-      return label + ': ' + valueLabel(el);
-    });
-    var results = Array.prototype.map.call(document.querySelectorAll('#resultGrid .result-box'), function (box) {
-      return box.textContent.replace(/\s+/g, ' ').trim();
-    });
-    var notes = document.getElementById('notes') ? document.getElementById('notes').textContent.replace(/\s+/g, ' ').trim() : '';
-    return ['Nigeria CGT estimate summary'].concat(inputs, ['Results: ' + (results.length ? results.join(' | ') : 'Run the calculator to generate results'), 'Notes: ' + notes, 'Planning estimate only. Verify current FIRS guidance, asset treatment, share threshold, exemptions, valuations, and filing route before acting.']).join('\n');
-  }
-  function setStatus(message) {
-    var status = document.getElementById('tax-export-status');
-    if (status) status.textContent = message;
-  }
-  document.getElementById('tax-copy-summary').addEventListener('click', function () {
-    var text = buildSummary();
-    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { setStatus('Tax summary copied.'); }).catch(function () { setStatus('Copy failed. Select and copy manually.'); });
-    else setStatus(text);
-  });
-  document.getElementById('tax-download-summary').addEventListener('click', function () {
-    var blob = new Blob([buildSummary()], { type: 'text/plain;charset=utf-8' });
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url;
-    a.download = 'nigeria-cgt-summary.txt';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-    setStatus('TXT summary downloaded.');
-  });
-})();
-</script>
-<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+    <script src="/assets/js/components/navbar.min.js?v=996960fa" defer></script>
+    <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+    <script src="/assets/js/lib/source-confidence.js?v=e7c3ebe4" defer></script>
+    <script src="/assets/js/engines/ng-cgt.js?v=6e52ffe9" defer></script>
+    <script src="/assets/js/pages/ng-cgt-vip.js?v=bbff4ffc" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=f3f910a8" defer></script>
 </body>
 </html>

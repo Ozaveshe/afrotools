@@ -83,9 +83,15 @@ function normalizeTaxBandForApi(band, currency) {
   if (!band || typeof band !== 'object') return band;
 
   const from = Number(band.from);
-  const to = Number(band.to);
   const rate = Number(band.rate);
   const amount = Number(band.amount !== undefined ? band.amount : band.taxInBand);
+  const suppliedTo = band.to === null || band.to === undefined ? NaN : Number(band.to);
+  const inferredWidth = Number.isFinite(rate) && rate > 0 && Number.isFinite(amount)
+    ? Math.max(0, amount / rate)
+    : 0;
+  const to = Number.isFinite(suppliedTo) && suppliedTo >= from
+    ? suppliedTo
+    : from + inferredWidth;
   const existingLabel = typeof band.label === 'string' ? band.label.trim() : '';
   const boundaryLabel = Number.isFinite(from) && Number.isFinite(to)
     ? `${currency ? `${currency} ` : ''}${formatBandBoundary(from)} to ${formatBandBoundary(to)}`
@@ -93,6 +99,8 @@ function normalizeTaxBandForApi(band, currency) {
 
   return {
     ...band,
+    from,
+    to,
     label: existingLabel || boundaryLabel,
     rate,
     amount

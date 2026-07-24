@@ -1,390 +1,71 @@
-<!DOCTYPE html>
+<!doctype html>
 <html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nigeria Withholding Tax Calculator | AfroTools</title>
-<meta name="description" content="Calculate Nigeria Withholding Tax (WHT) rates on dividends, interest, rent, professional fees, contracts, and royalties for individuals and companies.">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Nigeria WHT Calculator | AfroTools">
-<meta property="og:description" content="Calculate Nigeria Withholding Tax on various payment types.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/ng-wht.webp">
-<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/ng-wht/">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
-
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
-<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=e25622fc" defer></script>
-<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
-<style>
-:root{--afro-dark:#0f1419;--accent:#16a34a}
-html,body{max-width:100%;overflow-x:hidden}
-.tool-hero{background:linear-gradient(135deg,#14532d 0%,#16a34a 50%,#15803d 100%);padding:44px 0 36px}
-.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
-.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
-.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#bbf7d0}
-h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
-h1 em{color:#bbf7d0;font-style:normal}
-.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
-.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
-.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
-.b-em{background:rgba(187,247,208,.2);color:#bbf7d0;border:1px solid rgba(187,247,208,.4)}
-.tool-main{padding:28px 0 72px}
-.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}.card+.card{margin-top:18px}
-.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
-.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
-.card-body{padding:22px;overflow-x:auto}
-label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
-input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
-input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(22,163,74,.15)}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{margin-bottom:14px}
-.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px}
-.btn-primary{background:linear-gradient(135deg,#15803d,#16a34a);color:#fff}
-.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
-.result-box .num{font-size:1.3rem;font-weight:800;color:#16a34a}
-.result-box .lbl{font-size:.68rem;color:#64748b;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
-.result-box.highlight{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#86efac;grid-column:1/-1}
-.result-box.highlight .num{font-size:1.8rem}
-.rate-table{width:100%;min-width:620px;border-collapse:collapse;font-size:.76rem;margin-top:12px}
-.rate-table th,.rate-table td{padding:8px 10px;border-bottom:1px solid #e2e8f0;text-align:left}
-.rate-table th{background:#f8fafc;font-weight:700;font-size:.68rem;text-transform:uppercase;letter-spacing:.04em}
-.rate-table tr.active{background:#f0fdf4;font-weight:700}
-.sidebar .info-card{background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:16px;margin-top:14px}
-.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#14532d;margin-bottom:8px}
-.info-card p,.info-card li{font-size:.78rem;color:#14532d;line-height:1.6}
-.info-card ul{padding-left:16px;margin:6px 0}
-.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
-.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
-.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
-.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
-.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
-.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
-@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
-</style>
-<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
-<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
-<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
-<meta property="og:site_name" content="AfroTools">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Nigeria WHT Calculator | AfroTools">
-<meta name="twitter:description" content="Calculate Nigeria Withholding Tax on various payment types.">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/ng-wht.webp">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "AfroTools",
-      "item": "https://afrotools.com/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Tools",
-      "item": "https://afrotools.com/tools/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Nigeria WHT Calculator",
-      "item": "https://afrotools.com/tools/ng-wht/"
-    }
-  ]
-}
-</script>
-<meta property="article:modified_time" content="2026-03-28">
-<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<!-- tool-structured-data:auto -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Nigeria Withholding Tax Calculator",
-  "description": "Calculate Nigeria Withholding Tax (WHT) rates on dividends, interest, rent, professional fees, contracts, and royalties for individuals and companies.",
-  "url": "https://afrotools.com/tools/ng-wht/",
-  "inLanguage": "en",
-  "applicationCategory": "FinanceApplication",
-  "operatingSystem": "Web",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/ng-wht.webp"
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="view-transition" content="same-origin">
+  <title>Nigeria WHT Calculator 2026 | Withholding Tax Rates</title>
+  <meta name="description" content="Estimate Nigeria withholding tax for 2026 common payments using the 2024 Deduction at Source Schedule referenced by current JRB guidance, with Tax ID, treaty and exemption checks.">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools"><meta property="og:locale" content="en_NG">
+  <meta property="og:title" content="Nigeria WHT Calculator 2026"><meta property="og:description" content="Source-checked withholding estimate for common Nigerian payments, with Tax ID and evidence boundaries.">
+  <meta property="og:url" content="https://afrotools.com/tools/ng-wht/"><meta property="og:image" content="https://afrotools.com/assets/img/tools/ng-wht.webp">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Nigeria WHT Calculator 2026"><meta name="twitter:description" content="Estimate WHT under Nigeria's current 2026 framework."><meta name="twitter:image" content="https://afrotools.com/assets/img/tools/ng-wht.webp">
+  <meta property="article:modified_time" content="2026-07-22">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb"><link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b"><link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75"><link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957"><link rel="stylesheet" href="/assets/css/ng-wht-vip.css?v=b95932f7">
+  <script src="/assets/js/components/navbar.min.js?v=996960fa" defer></script><script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script><script src="/assets/js/components/related-tools.min.js?v=f3f910a8" defer></script><script src="/assets/js/engines/ng-wht.js?v=6fca83dd" defer></script><script src="/assets/js/pages/ng-wht-vip.js?v=d76a4729" defer></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Nigeria WHT Calculator 2026","description":"Estimate withholding on common Nigerian payments under the current 2026 framework.","url":"https://afrotools.com/tools/ng-wht/","inLanguage":"en-NG","applicationCategory":"FinanceApplication","operatingSystem":"Web","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"NGN"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/ng-wht.webp"}</script>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does a missing Tax ID always double WHT?","acceptedAnswer":{"@type":"Answer","text":"The 2024 Regulations specify doubling for supply of goods, services or other eligible non-passive income. This calculator does not double passive dividend, interest, royalty or rent rates merely because the Tax ID box is clear."}},{"@type":"Question","name":"Can a small company payer skip WHT?","acceptedAnswer":{"@type":"Answer","text":"The Regulations contain a narrow condition for a qualifying small corporate or equivalent unincorporated payer when the supplier has a valid Tax ID and monthly transaction value is ₦2 million or less. The calculator never assumes those legal conditions; use the verified exemption path only with evidence."}},{"@type":"Question","name":"Is a treaty country enough to use a lower rate?","acceptedAnswer":{"@type":"Answer","text":"No. Confirm that the treaty or protocol is duly ratified, the recipient and payment qualify, and the chosen rate is actually lower than the Schedule rate."}}]}
 </script>
 <!-- tool-structured-data:auto -->
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is WHT a separate tax?","acceptedAnswer":{"@type":"Answer","text":"No. WHT is an advance payment of income tax, not a separate tax. For residents, it's credited against the final tax liability. For non-residents without a Nigerian permanent establishment, it's typically the final tax on that income type."}},{"@type":"Question","name":"Who is responsible for deducting WHT?","acceptedAnswer":{"@type":"Answer","text":"The payer (person or company making the payment) is legally responsible for deducting WHT and remitting it to FIRS. The payer must issue a credit note to the recipient and file WHT returns with FIRS."}},{"@type":"Question","name":"Can WHT be reduced under a DTA?","acceptedAnswer":{"@type":"Answer","text":"Yes. If Nigeria has a Double Taxation Agreement with the non-resident's country, the WHT rate may be reduced. Common treaty rates are 7.5%-15% for dividends and interest. The non-resident must provide a tax residence certificate to claim the reduced rate."}},{"@type":"Question","name":"What is the deadline for remitting WHT to FIRS?","acceptedAnswer":{"@type":"Answer","text":"WHT must be remitted to FIRS within 21 days of the date of deduction. Late remittance attracts a penalty of 10% of the amount not remitted plus interest at the CBN lending rate. The payer must also file monthly WHT returns alongside the remittance."}},{"@type":"Question","name":"Are there any payments exempt from WHT in Nigeria?","acceptedAnswer":{"@type":"Answer","text":"Yes. The 2024 Regulations exempt several transactions, including qualifying imported goods with no Nigerian taxable presence, goods manufactured by the supplier, certain fuel products, insurance premiums, and some low-value small-company deduction scenarios. Check the specific exemption before relying on a nil deduction."}},{"@type":"Question","name":"How do I obtain a WHT credit note?","acceptedAnswer":{"@type":"Answer","text":"The payer is legally required to issue a WHT credit note to the recipient at the time of deduction. This credit note serves as proof that tax was withheld and is needed when offsetting WHT against your annual tax liability during filing. If the payer fails to issue one, you can report this to FIRS."}},{"@type":"Question","name":"Does WHT apply to e-commerce and digital transactions?","acceptedAnswer":{"@type":"Answer","text":"Yes. The Finance Act 2023 expanded WHT to cover digital economy transactions in Nigeria. Payments to non-resident digital service providers, including software licensing, streaming platforms, and online advertising, are subject to WHT. The rate is typically 10% for non-residents unless a DTA provides a lower rate."}}]}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Nigeria WHT Calculator 2026 | Withholding Tax Rates","item":"https://afrotools.com/tools/ng-wht/"}]}
 </script>
 <link rel="canonical" href="https://afrotools.com/tools/ng-wht/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/ng-wht/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/ng-retenue-source/">
+<link rel="alternate" hreflang="yo" href="https://afrotools.com/yo/awon-ise/wht-naijiria/">
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/wht-najeriya/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/ng-wht/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="ng-wht-page">
 <afro-navbar></afro-navbar>
-<section class="tool-hero"><div class="tool-hero-inner">
-<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Nigeria WHT</span></div>
-<h1>Nigeria <em>Withholding Tax</em> Calculator</h1>
-<p class="hero-sub">Calculate Withholding Tax on payments to individuals and companies in Nigeria. Covers dividends, interest, rent, professional fees, contracts, royalties, and more.</p>
-<div class="hero-badges"><span class="badge b-em">2025 FIRS Rates</span><span class="badge b-em">Nigeria</span><span class="badge b-em">All Payment Types</span></div>
-</div></section>
-
-<section class="tool-main"><div class="tool-main-inner">
-<div class="calculator">
-<div class="card">
-<div class="card-head"><span class="card-title">Payment Details</span></div>
-<div class="card-body">
-<div class="row field">
-<div><label for="paymentType">Payment Type</label>
-<select id="paymentType" onchange="updateRate()">
-<option value="dividends">Dividends</option>
-<option value="interest">Interest</option>
-<option value="rent">Rent (Property)</option>
-<option value="royalties">Royalties</option>
-<option value="professional">Commission / Consultancy / Professional Fees</option>
-<option value="goods">Supply of Goods / Materials</option>
-<option value="tower">Co-location / Telecom Tower Services</option>
-<option value="services">Other Services</option>
-<option value="road-construction">Road / Bridge / Building / Power Plant Construction</option>
-<option value="construction">Other Construction Activities</option>
-<option value="brokerage">Brokerage Fees</option>
-</select></div>
-<div><label>Recipient Type</label>
-<select id="recipientType" onchange="updateRate()" aria-label="Recipient Type">
-<option value="company">Nigerian Company</option>
-<option value="individual">Nigerian Individual</option>
-<option value="non-resident-company">Non-Resident Company</option>
-<option value="non-resident-individual">Non-Resident Individual</option>
-</select></div>
-</div>
-<div class="row field">
-<div><label>Gross Payment Amount (&#8358;)</label><input aria-label="Amount" type="number" id="amount" value="5000000" min="0" step="100000"></div>
-<div><label>WHT Rate (%)</label><input aria-label="Rate" type="text" id="rate" value="10" readonly style="background:#e2e8f0;font-weight:700"></div>
-</div>
-<button type="button" class="btn btn-primary" onclick="calculate()">Calculate WHT</button>
-</div></div>
-
-<div class="card" id="resultCard" style="display:none">
-<div class="card-head"><span class="card-title">WHT Breakdown</span></div>
-<div class="card-body">
-<div class="result-grid" id="resultGrid"></div>
-<p id="notes" style="font-size:.76rem;color:#64748b;margin-top:14px;line-height:1.6"></p>
-</div></div>
-
-<div class="card">
-<div class="card-head"><span class="card-title">Nigeria WHT Rate Table</span></div>
-<div class="card-body">
-<table class="rate-table" id="rateTable">
-<tr><th>Payment Type</th><th>Resident Co.</th><th>Resident Ind.</th><th>NR Co.</th><th>NR Ind.</th></tr>
-<tr data-type="dividends"><td>Dividends</td><td>10%</td><td>10%</td><td>10%</td><td>10%</td></tr>
-<tr data-type="interest"><td>Interest</td><td>10%</td><td>10%</td><td>10%</td><td>10%</td></tr>
-<tr data-type="rent"><td>Rent / Hire / Lease</td><td>10%</td><td>10%</td><td>10%</td><td>10%</td></tr>
-<tr data-type="royalties"><td>Royalties</td><td>10%</td><td>5%</td><td>10%</td><td>5%</td></tr>
-<tr data-type="professional"><td>Commission / Consultancy / Professional Fees</td><td>5%</td><td>5%</td><td>10%</td><td>10%</td></tr>
-<tr data-type="goods"><td>Supply of Goods / Materials</td><td>2%</td><td>2%</td><td>—</td><td>—</td></tr>
-<tr data-type="tower"><td>Co-location / Tower Services</td><td>2%</td><td>2%</td><td>5%</td><td>5%</td></tr>
-<tr data-type="services"><td>Other Services</td><td>2%</td><td>2%</td><td>5%</td><td>5%</td></tr>
-<tr data-type="road-construction"><td>Road / Bridge / Building / Power Plant Construction</td><td>2%</td><td>2%</td><td>5%</td><td>5%</td></tr>
-<tr data-type="construction"><td>Other Construction Activities</td><td>5%</td><td>5%</td><td>10%</td><td>10%</td></tr>
-<tr data-type="brokerage"><td>Brokerage Fees</td><td>5%</td><td>5%</td><td>10%</td><td>10%</td></tr>
-</table>
-</div></div>
-</div>
-
-<div class="sidebar">
-<div class="card">
-<div class="card-head"><span class="card-title">What is WHT?</span></div>
-<div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
-<p><strong>Withholding Tax</strong> is an advance payment of income tax deducted at source by the payer. It's not a separate tax — it's a credit against the recipient's final income/company tax liability.</p>
-<p style="margin-top:6px"><strong>Who deducts?</strong> The payer (company or individual making the payment) must deduct WHT and remit to FIRS within 21 days.</p>
-<p style="margin-top:6px"><strong>Credit note:</strong> The payer issues a WHT credit note to the recipient, who uses it to offset against their tax liability when filing annual returns.</p>
-</div></div>
-<div class="info-card">
-<h4>Key Rules</h4>
-<ul>
-<li>Remit to FIRS within 21 days of deduction</li>
-<li>File WHT schedule with monthly returns</li>
-<li>Issue credit notes to recipients</li>
-<li>Non-residents: WHT is often final tax</li>
-<li>DTA may reduce rates for non-residents</li>
-<li>2024 regulations add special exemptions and reduced low-margin rates</li>
-</ul>
-</div>
-</div>
-</div></section>
-
-<section class="seo-section">
-<h2>Understanding Withholding Tax in Nigeria</h2>
-<p>Withholding Tax (WHT) in Nigeria is an advance payment of income tax that is deducted at source from payments made to individuals and companies. Governed by the Companies Income Tax Act (CITA), Personal Income Tax Act (PITA), and the WHT Regulations, it serves as a collection mechanism to ensure tax compliance and steady government revenue.</p>
-<p>WHT rates vary depending on the type of payment and whether the recipient is a resident company, resident individual, or non-resident. The 2024 Regulations also introduced lower rates for low-margin transactions such as supply of goods, general services, telecom tower services, and specific construction contracts.</p>
-<p>It's crucial to understand that WHT is not a final tax for Nigerian residents — it's a credit against the recipient's ultimate income tax liability. When filing annual tax returns, companies and individuals can offset WHT credits received during the year against their computed tax. If WHT exceeds the final tax, the excess is refundable (in theory, though FIRS refund processes can be slow in practice).</p>
-<p>For non-residents without a permanent establishment in Nigeria, WHT is typically the final tax on that income. This makes treaty planning important for foreign companies receiving payments from Nigeria — DTAs with countries like the UK, Netherlands, South Africa, and others may reduce WHT rates on dividends, interest, and royalties.</p>
-<p>The payer is legally responsible for deducting and remitting WHT to FIRS within 21 days of deduction. Failure to deduct or late remittance attracts penalties of 10% of the amount not deducted/remitted, plus interest at the Central Bank of Nigeria's lending rate. The payer must also issue a WHT credit note to the recipient as proof of deduction.</p>
-
-<h2>Frequently Asked Questions</h2>
-<details class="faq-item"><summary>Is WHT a separate tax?</summary><p>No. WHT is an advance payment of income tax, not a separate tax. For residents, it's credited against the final tax liability. For non-residents without a Nigerian permanent establishment, it's typically the final tax on that income type.</p></details>
-<details class="faq-item"><summary>Who is responsible for deducting WHT?</summary><p>The payer (person or company making the payment) is legally responsible for deducting WHT and remitting it to FIRS. The payer must issue a credit note to the recipient and file WHT returns with FIRS.</p></details>
-<details class="faq-item"><summary>Can WHT be reduced under a DTA?</summary><p>Yes. If Nigeria has a Double Taxation Agreement with the non-resident's country, the WHT rate may be reduced. Common treaty rates are 7.5%-15% for dividends and interest. The non-resident must provide a tax residence certificate to claim the reduced rate.</p></details>
-<details class="faq-item"><summary>What is the deadline for remitting WHT to FIRS?</summary><p>WHT must be remitted to FIRS within 21 days of the date of deduction. Late remittance attracts a penalty of 10% of the amount not remitted plus interest at the CBN lending rate. The payer must also file monthly WHT returns alongside the remittance.</p></details>
-<details class="faq-item"><summary>Are there any payments exempt from WHT in Nigeria?</summary><p>Yes. The 2024 Regulations exempt several transactions, including qualifying imported goods with no Nigerian taxable presence, goods manufactured by the supplier, certain fuel products, insurance premiums, and some low-value small-company deduction scenarios. Check the specific exemption before relying on a nil deduction.</p></details>
-<details class="faq-item"><summary>How do I obtain a WHT credit note?</summary><p>The payer is legally required to issue a WHT credit note to the recipient at the time of deduction. This credit note serves as proof that tax was withheld and is needed when offsetting WHT against your annual tax liability during filing. If the payer fails to issue one, you can report this to FIRS.</p></details>
-<details class="faq-item"><summary>Does WHT apply to e-commerce and digital transactions?</summary><p>Yes. The Finance Act 2023 expanded WHT to cover digital economy transactions in Nigeria. Payments to non-resident digital service providers, including software licensing, streaming platforms, and online advertising, are subject to WHT. The rate is typically 10% for non-residents unless a DTA provides a lower rate.</p></details>
-</section>
-
-<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="ng-wht">
-  <div class="tool-verification-card">
-    <span class="tool-verification-kicker">WHT source and filing check</span>
-    <h2>Confirm the payment category before withholding or remitting</h2>
-    <ul class="tool-verification-list">
-      <li><strong>Inputs:</strong> payment type, recipient type, gross amount, and the displayed WHT rate.</li>
-      <li><strong>Method:</strong> applies the embedded AfroTools Nigeria WHT rate table to estimate deduction and net payment.</li>
-      <li><strong>Verify before acting:</strong> current FIRS guidance, WHT regulations, treaty relief, exemption status, taxable presence, credit note wording, and TaxPro Max filing requirements.</li>
-      <li><strong>Privacy:</strong> payment scenarios run locally. Copy, download, save, or share only the summary you choose.</li>
-    </ul>
-    <p class="tool-verification-note"><strong>Reviewed 2026.</strong> Planning estimate only. It is not tax advice, a filing instruction, or an official FIRS assessment.</p>
+<header class="ng-wht-hero"><div class="ng-wht-wrap"><p class="ng-wht-crumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / Nigeria WHT</p><span class="ng-wht-kicker">2026 regime · source-checked planning tool</span><h1>Nigeria withholding tax calculator</h1><p>Estimate WHT on common payments from 1 January 2026. The rates come from the 2024 Deduction at Source Schedule that current 2026 JRB guidance still references—not from an invented “NTA rate table”.</p><div class="ng-wht-badges" aria-label="Calculator scope"><span>2026 transactions</span><span>Tax ID check</span><span>Treaty evidence</span><span>Local-only calculation</span></div></div></header>
+<section class="ng-wht-answer"><div class="ng-wht-wrap"><p><strong>Quick answer:</strong> a ₦5,000,000 resident-company professional fee with a valid Tax ID uses the 5% Schedule rate: estimated WHT is ₦250,000 and estimated net payment is ₦4,750,000. Classification and evidence can change the result.</p></div></section>
+<main class="ng-wht-wrap ng-wht-main" data-ng-wht-app>
+  <div class="ng-wht-stack">
+    <section class="ng-wht-card" aria-labelledby="ng-wht-title"><div class="ng-wht-head"><h2 id="ng-wht-title">Build the WHT estimate</h2><p>No names, Tax ID numbers, invoices or account details are requested. Inputs remain in this browser.</p></div><div class="ng-wht-body">
+      <form class="ng-wht-form" data-form novalidate>
+        <div class="ng-wht-field"><label for="transactionType">Payment category</label><select id="transactionType" name="transactionType"><option value="professional">Commission, consultancy, technical, management or professional fees</option><option value="dividend">Dividend</option><option value="interest">Interest</option><option value="royalty">Royalty</option><option value="rent">Rent, hire or lease</option><option value="goods">Goods or materials not supplied by their manufacturer or producer</option><option value="tower">Co-location or telecom tower services</option><option value="services">Other services not specifically listed</option><option value="specifiedConstruction">Road, bridge, building or power-plant construction</option><option value="otherConstruction">Other construction or related activities</option><option value="brokerage">Brokerage fee</option><option value="directorsFees">Directors' fees (non-corporate recipient only)</option><option value="winnings">Net winnings from lottery, gaming or reality shows</option></select></div>
+        <div class="ng-wht-field"><label for="grossAmount">Gross payment (₦)</label><input id="grossAmount" name="grossAmount" type="number" min="0" step="0.01" value="5000000" inputmode="decimal" required></div>
+        <div class="ng-wht-field"><label for="recipientClass">Recipient class</label><select id="recipientClass" name="recipientClass"><option value="corporate">Corporate recipient</option><option value="noncorporate">Non-corporate recipient</option></select></div>
+        <div class="ng-wht-field"><label for="residency">Recipient residence</label><select id="residency" name="residency"><option value="resident">Resident in Nigeria</option><option value="nonresident">Non-resident</option></select></div>
+        <div class="ng-wht-field"><label for="transactionDate">Payment or settlement date</label><input id="transactionDate" name="transactionDate" type="date" min="2026-01-01" value="2026-07-22" required><small>Pre-2026 periods must be assessed under the former regime.</small></div>
+        <div class="ng-wht-field"><label for="treatment">Rate treatment</label><select id="treatment" name="treatment"><option value="schedule">2024 Schedule rate referenced in 2026 guidance</option><option value="treaty">Verified treaty rate</option><option value="exempt">Verified exemption</option></select></div>
+        <div class="ng-wht-field ng-wht-wide ng-wht-conditional" data-treaty-field hidden><label for="treatyRatePercent">Verified treaty rate (%)</label><input id="treatyRatePercent" name="treatyRatePercent" type="number" min="0" step="0.01" value="7.5" inputmode="decimal"><small>Use only a rate in a treaty or protocol duly ratified by the National Assembly and applicable to this recipient.</small></div>
+        <label class="ng-wht-check"><input name="taxIdAvailable" type="checkbox" checked><span><strong>The recipient has a valid Tax ID</strong><small>For non-passive income, the Regulations double the Schedule rate when the recipient has no Tax ID. Do not enter the actual identifier.</small></span></label>
+        <label class="ng-wht-check" data-documentation-check hidden><input name="documentationConfirmed" type="checkbox"><span><strong>I have evidence for the selected treaty rate or exemption</strong><small>The calculator does not infer relief from residence, company size or a transaction label.</small></span></label>
+        <label class="ng-wht-check"><input name="scopeConfirmed" type="checkbox" required><span><strong>This is an in-scope 2026 payment estimate</strong><small>For winnings, the amount is the net payout. It is not PAYE, compensation for loss of employment, entertainers or sportsperson income, capital gains, an across-the-counter transaction, or a pre-2026 period.</small></span></label>
+        <div class="ng-wht-actions"><button class="ng-wht-button" type="submit">Calculate WHT estimate</button></div><p class="ng-wht-error" data-error role="alert"></p><p class="ng-wht-status" data-status role="status" aria-live="polite"></p>
+      </form>
+    </div>
+    <section class="ng-wht-result" data-result tabindex="-1" aria-live="polite" hidden><div class="ng-wht-total"><span>Estimated amount to deduct</span><strong data-deduction>₦0.00</strong></div><div class="ng-wht-grid"><div><span>Gross payment</span><strong data-gross>₦0.00</strong></div><div><span>Estimated net payment</span><strong data-net>₦0.00</strong></div><div><span>Schedule rate</span><strong data-schedule-rate>0.00%</strong></div><div><span>Applied rate</span><strong data-rate>0.00%</strong></div><div class="ng-wht-wide"><span>Treatment used</span><strong data-treatment>—</strong></div></div><div class="ng-wht-alert" data-notes></div><h3>Calculation steps</h3><ol class="ng-wht-steps" data-steps></ol><p>Planning estimate only. Confirm the relevant authority, current due date, transaction classification, Tax ID status and relief documents. This is not a return, receipt, credit confirmation or tax advice.</p><div class="ng-wht-actions"><button class="ng-wht-button secondary" type="button" data-copy>Copy summary</button><button class="ng-wht-button secondary" type="button" data-download>Download TXT</button><button class="ng-wht-button secondary" type="button" data-print>Print / save PDF</button></div></section>
+    </section>
+    <section class="ng-wht-card"><div class="ng-wht-head"><h2>Schedule rates used</h2><p>These values reproduce the 2024 Gazette Schedule referenced by current 2026 JRB guidance.</p></div><div class="ng-wht-body ng-wht-table-wrap"><table class="ng-wht-table"><thead><tr><th>Transaction</th><th>Corp resident</th><th>Corp non-resident</th><th>Non-corp resident</th><th>Non-corp non-resident</th></tr></thead><tbody><tr data-transaction="dividend"><td>Dividend / interest</td><td>10%</td><td>10%</td><td>10%</td><td>10%</td></tr><tr data-transaction="royalty"><td>Royalty</td><td>10%</td><td>10%</td><td>5%</td><td>5%</td></tr><tr data-transaction="rent"><td>Rent / hire / lease</td><td>10%</td><td>10%</td><td>10%</td><td>10%</td></tr><tr data-transaction="professional"><td>Professional fees</td><td>5%</td><td>10%</td><td>5%</td><td>10%</td></tr><tr data-transaction="goods"><td>Goods (not manufacturer)</td><td>2%</td><td>N/A</td><td>2%</td><td>N/A</td></tr><tr data-transaction="tower"><td>Tower services</td><td>2%</td><td>5%</td><td>2%</td><td>5%</td></tr><tr data-transaction="services"><td>Other services</td><td>2%</td><td>5%</td><td>2%</td><td>5%</td></tr><tr data-transaction="specifiedConstruction"><td>Specified construction</td><td>2%</td><td>5%</td><td>2%</td><td>5%</td></tr><tr data-transaction="otherConstruction"><td>Other construction</td><td>5%</td><td>10%</td><td>5%</td><td>10%</td></tr><tr data-transaction="brokerage"><td>Brokerage</td><td>5%</td><td>10%</td><td>5%</td><td>10%</td></tr><tr data-transaction="directorsFees"><td>Directors' fees</td><td>N/A</td><td>N/A</td><td>15%</td><td>20%</td></tr><tr data-transaction="winnings"><td>Net winnings</td><td>N/A</td><td>N/A</td><td>5%</td><td>15%</td></tr></tbody></table></div></section>
+    <section class="ng-wht-card ng-wht-content"><div class="ng-wht-head"><h2>Why the date and authority matter</h2></div><div class="ng-wht-body"><p>The Nigeria Tax Act 2025 applies from 1 January 2026. Federal transition guidance says pre-2026 liabilities remain under repealed laws. For 2026, section 51 requires deduction at rates prescribed by regulations, while the February 2026 JRB Personal Income Tax Guidelines explicitly reference the 2024 Deduction at Source Regulations.</p><p>The page does not repeat the old blanket “FIRS within 21 days” instruction. The relevant authority can be the Nigeria Revenue Service, a State Internal Revenue Service or the FCT authority. The 2026 JRB individual guidance says non-employee WHT is filed and paid by the last day of the following month; corporate users should confirm the active NRS portal period and current direction.</p></div></section>
+    <section class="ng-wht-card ng-wht-faq"><div class="ng-wht-head"><h2>Questions before relying</h2></div><details><summary>Does a missing Tax ID always double WHT?</summary><p>The 2024 Regulations specify doubling for supply of goods, services or other eligible non-passive income. This calculator does not double passive dividend, interest, royalty or rent rates merely because the Tax ID box is clear.</p></details><details><summary>Can a small company payer skip WHT?</summary><p>The Regulations contain a narrow condition for a qualifying small corporate or equivalent unincorporated payer when the supplier has a valid Tax ID and monthly transaction value is ₦2 million or less. The calculator never assumes those legal conditions; use the verified exemption path only with evidence.</p></details><details><summary>Is a treaty country enough to use a lower rate?</summary><p>No. Confirm that the treaty or protocol is duly ratified, the recipient and payment qualify, and the chosen rate is actually lower than the Schedule rate.</p></details></section>
   </div>
-</section>
-<afro-business-cta tool-name="Nigeria WHT Calculator" prospect-segment="tax-compliance" headline="Need repeatable WHT review before vendor payment?" subhead="AfroTax Pro helps teams keep deduction assumptions, credit-note notes, and accountant handoff files together before filing."></afro-business-cta>
+  <aside class="ng-wht-side"><section class="ng-wht-card"><div class="ng-wht-head"><h2>Primary sources</h2><p>Reviewed 22 July 2026</p></div><div class="ng-wht-body"><ul class="ng-wht-list"><li><a href="https://fiscalreforms.ng/wp-content/uploads/2024/10/Deduction-of-Tax-at-Source-Withholding-Regulations-2024_Gazetted.pdf" target="_blank" rel="noopener">Official Gazette: Deduction at Source Regulations 2024</a></li><li><a href="https://www.jrb.gov.ng/assets/2026-pit-guidelines-TJG3n9-T.pdf" target="_blank" rel="noopener">JRB Personal Income Tax Guidelines 2026</a></li><li><a href="https://finance.gov.ng/federal-government-issues-transition-guidelines-for-tax-acts-2025/" target="_blank" rel="noopener">Finance Ministry transition guidance</a></li><li><a href="https://selfservice.nrs.gov.ng/" target="_blank" rel="noopener">NRS taxpayer self-service portal</a></li></ul></div></section><section class="ng-wht-card"><div class="ng-wht-head"><h2>Before remitting</h2></div><div class="ng-wht-body"><ul class="ng-wht-list"><li>Confirm the payment category and deduction trigger.</li><li>Confirm corporate versus non-corporate status and residence.</li><li>Verify the recipient’s Tax ID without storing it here.</li><li>Check exemptions, treaty evidence and taxable presence.</li><li>Identify the correct federal, state or FCT authority.</li><li>Obtain the prescribed receipt and retain remittance evidence.</li></ul></div></section><section class="ng-wht-card"><div class="ng-wht-head"><h2>Privacy and exports</h2></div><div class="ng-wht-body"><p>The calculation runs locally. TXT and print/PDF outputs are created on your device and are not official forms. Do not enter taxpayer identifiers or personal details.</p></div></section></aside>
+</main>
+<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="ng-wht"><div class="tool-verification-wrap"><div class="tool-verification-card"><div class="tool-verification-head"><div><span class="tool-verification-kicker">Regime and source boundary</span><h2 class="tool-verification-title">2026 transaction scope, 2024 prescribed Schedule</h2><p class="tool-verification-lead">The calculator uses the Schedule that current JRB 2026 guidance references. It does not claim that the 2024 table was enacted by the Nigeria Tax Act 2025.</p></div><div class="tool-verification-status"><span class="tool-verification-badge">Planning estimate</span><p class="tool-verification-note">Recheck after regulations, portal periods, treaty facts or authority guidance changes.</p></div></div><div class="tool-verification-actions"><a class="tool-verification-report" href="https://www.jrb.gov.ng/assets/2026-pit-guidelines-TJG3n9-T.pdf" target="_blank" rel="noopener">Verify current guidance</a><p class="tool-verification-disclaimer">No filing, remittance, receipt issuance, Tax ID lookup, AI inference or professional advice is provided.</p></div></div></div></section>
 <afro-related-tools category="financial" current="ng-wht" data-ssr="1">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Tracker" data-category="financial" data-icon="AA" data-desc="Compare petrol, diesel, and LPG prices across 54 African countries, then estimate generator fuel costs in local currency">AfroFuel — African Fuel Price Tracker</a></li></ul>
+<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Reference" data-category="financial" data-icon="AA" data-desc="Inspect dated, row-sourced African petrol, diesel, and LPG snapshots, then estimate generator cost from a verified local">AfroFuel — African Fuel Price Reference</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
-</afro-related-tools>
-<afro-newsletter-cta></afro-newsletter-cta>
-<afro-footer></afro-footer>
-
-<script>
-const RATES={
-  dividends:{company:10,individual:10,'non-resident-company':10,'non-resident-individual':10},
-  interest:{company:10,individual:10,'non-resident-company':10,'non-resident-individual':10},
-  rent:{company:10,individual:10,'non-resident-company':10,'non-resident-individual':10},
-  royalties:{company:10,individual:5,'non-resident-company':10,'non-resident-individual':5},
-  professional:{company:5,individual:5,'non-resident-company':10,'non-resident-individual':10},
-  goods:{company:2,individual:2,'non-resident-company':null,'non-resident-individual':null},
-  tower:{company:2,individual:2,'non-resident-company':5,'non-resident-individual':5},
-  services:{company:2,individual:2,'non-resident-company':5,'non-resident-individual':5},
-  'road-construction':{company:2,individual:2,'non-resident-company':5,'non-resident-individual':5},
-  construction:{company:5,individual:5,'non-resident-company':10,'non-resident-individual':10},
-  brokerage:{company:5,individual:5,'non-resident-company':10,'non-resident-individual':10}
-};
-
-function updateRate(){
-  const type=document.getElementById('paymentType').value;
-  const recip=document.getElementById('recipientType').value;
-  const rate=RATES[type][recip];
-  document.getElementById('rate').value=rate==null?'N/A':rate;
-  // Highlight table row
-  document.querySelectorAll('.rate-table tr').forEach(r=>r.classList.remove('active'));
-  const row=document.querySelector(`.rate-table tr[data-type="${type}"]`);
-  if(row)row.classList.add('active');
-}
-
-function calculate(){
-  const amount=+document.getElementById('amount').value;
-  const type=document.getElementById('paymentType').value;
-  const recip=document.getElementById('recipientType').value;
-  const selectedRate=RATES[type][recip];
-  if(selectedRate==null){
-    document.getElementById('resultGrid').innerHTML='';
-    document.getElementById('notes').innerHTML='<strong>Note:</strong> The 2024 Nigeria WHT Regulations do not give a standard deduction rate for this recipient/payment combination in this simplified tool. Review the transaction and any taxable-presence analysis before withholding.';
-    document.getElementById('resultCard').style.display='block';
-    document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
-    return;
-  }
-  const rate=selectedRate/100;
-  const wht=amount*rate;
-  const net=amount-wht;
-  const fmt=n=>'₦'+Math.round(n).toLocaleString('en');
-
-  let html='';
-  html+=`<div class="result-box highlight"><div class="num">${fmt(wht)}</div><div class="lbl">WHT to Deduct</div></div>`;
-  html+=`<div class="result-box"><div class="num">${fmt(amount)}</div><div class="lbl">Gross Payment</div></div>`;
-  html+=`<div class="result-box"><div class="num">${fmt(net)}</div><div class="lbl">Net Payment to Recipient</div></div>`;
-  html+=`<div class="result-box"><div class="num">${(rate*100).toFixed(0)}%</div><div class="lbl">WHT Rate</div></div>`;
-
-  document.getElementById('resultGrid').innerHTML=html;
-  document.getElementById('notes').innerHTML=`<strong>Action:</strong> Deduct ${fmt(wht)} from the ${fmt(amount)} payment, remit to FIRS by the 21st of the following month, and issue a WHT credit note to the recipient.`;
-  document.getElementById('resultCard').style.display='block';
-  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
-}
-
-updateRate();
-</script>
-
-<script>
-(function(){
-  var target = document.getElementById('resultCard');
-  if (!target) return;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<button type="button" class="btn" id="tax-copy-summary" style="width:auto;margin-top:0">Copy summary</button><button type="button" class="btn" id="tax-download-summary" data-no-gate="true" style="width:auto;margin-top:0">Download TXT</button><save-result-button tool-slug="ng-wht" tool-name="Nigeria WHT Calculator"></save-result-button><share-result-button tool-name="Nigeria WHT Calculator" tool-slug="ng-wht"></share-result-button><span id="tax-export-status" role="status" aria-live="polite" style="flex-basis:100%;font-size:.78rem;color:#64748b"></span>';
-  target.appendChild(div);
-  function valueLabel(el) {
-    if (el.tagName === 'SELECT') return el.options[el.selectedIndex] ? el.options[el.selectedIndex].textContent.trim() : el.value;
-    return el.value;
-  }
-  function buildSummary() {
-    var inputs = Array.prototype.map.call(document.querySelectorAll('.calculator .card:first-of-type input,.calculator .card:first-of-type select'), function (el) {
-      var label = el.closest('div') && el.closest('div').querySelector('label') ? el.closest('div').querySelector('label').textContent.trim() : (el.getAttribute('aria-label') || el.id);
-      return label + ': ' + valueLabel(el);
-    });
-    var results = Array.prototype.map.call(document.querySelectorAll('#resultGrid .result-box'), function (box) {
-      return box.textContent.replace(/\s+/g, ' ').trim();
-    });
-    var notes = document.getElementById('notes') ? document.getElementById('notes').textContent.replace(/\s+/g, ' ').trim() : '';
-    return ['Nigeria WHT estimate summary'].concat(inputs, ['Results: ' + (results.length ? results.join(' | ') : 'Run the calculator to generate results'), 'Notes: ' + notes, 'Planning estimate only. Verify current FIRS guidance, treaty relief, exemptions, credit note wording, and filing requirements before acting.']).join('\n');
-  }
-  function setStatus(message) {
-    var status = document.getElementById('tax-export-status');
-    if (status) status.textContent = message;
-  }
-  document.getElementById('tax-copy-summary').addEventListener('click', function () {
-    var text = buildSummary();
-    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { setStatus('Tax summary copied.'); }).catch(function () { setStatus('Copy failed. Select and copy manually.'); });
-    else setStatus(text);
-  });
-  document.getElementById('tax-download-summary').addEventListener('click', function () {
-    var blob = new Blob([buildSummary()], { type: 'text/plain;charset=utf-8' });
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url;
-    a.download = 'nigeria-wht-summary.txt';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-    setStatus('TXT summary downloaded.');
-  });
-})();
-</script>
-<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
-</body>
-</html>
+</afro-related-tools><afro-business-cta tool-name="Nigeria WHT Calculator" prospect-segment="tax-compliance" save-note="Estimate locally, then verify the current authority, due date, Tax ID, exemption, treaty and remittance evidence."></afro-business-cta><afro-footer></afro-footer><script src="/assets/js/components/business-cta.js?v=af66626f" defer></script><script src="/assets/js/lazy-analytics.js?v=71239a16" defer></script>
+</body></html>

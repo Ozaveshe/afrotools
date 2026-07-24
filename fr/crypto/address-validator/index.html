@@ -1,57 +1,25 @@
-<!DOCTYPE html>
+<!doctype html>
 <html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Validateur d'adresses crypto | AfroTools</title>
-<meta name="description" content="Validateur d'adresses crypto — Lisez cet article sur AfroTools.">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Validateur d'adresses crypto">
-<meta property="og:url" content="https://afrotools.com/fr/crypto/address-validator/">
-<meta property="og:site_name" content="AfroTools">
-<meta name="twitter:card" content="summary_large_image">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
-<link rel="preload" href="/assets/css/tokens.min.css?v=c13f04eb" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" href="/assets/css/global.min.css?v=2777b75b" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb"><link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-</noscript>
-<style>
-.fr-hero{background:var(--color-bg-dark,#0A1628);padding:48px 0 32px;text-align:center}
-.fr-hero .container{max-width:900px;margin:0 auto;padding:0 24px}
-.fr-hero .section-label{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--color-brand-light,#4DA3FF);margin-bottom:12px}
-.fr-hero h1{font-size:clamp(1.5rem,3vw,2.2rem);font-weight:800;color:#fff;max-width:800px;margin:0 auto 12px;line-height:1.2}
-.fr-hero p{color:rgba(255,255,255,.55);font-size:.9rem;margin:0 auto;max-width:600px}
-.fr-iframe-wrap{max-width:900px;margin:0 auto;padding:32px 16px 64px}
-.fr-iframe-wrap iframe{width:100%;min-height:80vh;border:none;border-radius:12px;background:#fff}
-.fr-note{text-align:center;padding:16px;font-size:.8rem;color:var(--color-text-muted,#64748b)}
-.fr-note a{color:var(--color-brand,#0062CC);text-decoration:underline}
-</style>
-<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Validateur de format d’adresse de portefeuille | AfroTools</title>
+  <meta name="description" content="Validez localement les formats d’adresses Bitcoin, Ethereum/EVM, Solana et TRON, avec les contrôles de somme et de longueur pris en charge.">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg"><meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools"><meta property="og:title" content="Validateur de format d’adresse de portefeuille"><meta property="og:description" content="Contrôles locaux pour les adresses Bitcoin, EVM, Solana et TRON. Aucune recherche de solde, de propriétaire ou de sécurité."><meta property="og:url" content="https://afrotools.com/fr/crypto/address-validator/"><meta property="og:image" content="https://afrotools.com/assets/img/tools/crypto-address.webp"><meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb"><link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b"><link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75"><link rel="stylesheet" href="/assets/css/wallet-address-validator.css?v=d70127d4">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Validateur de format d’adresse de portefeuille","url":"https://afrotools.com/fr/crypto/address-validator/","applicationCategory":"FinanceApplication","operatingSystem":"Any","isAccessibleForFree":true,"inLanguage":["fr","en"],"description":"Un validateur local de format, de somme de contrôle et de longueur décodée pour les adresses Bitcoin, EVM, Solana et TRON sélectionnées."}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Un résultat valide prouve-t-il que le portefeuille est sûr ou appartient au destinataire ?","acceptedAnswer":{"@type":"Answer","text":"Non. Il signifie uniquement que l’adresse a réussi les contrôles locaux sélectionnés. Aucun propriétaire, solde, activité, sanction, signalement ou destinataire n’est vérifié."}},{"@type":"Question","name":"AfroTools envoie-t-il ou enregistre-t-il l’adresse ?","acceptedAnswer":{"@type":"Answer","text":"Non. La validation s’exécute localement sans recherche ni historique dans le stockage du navigateur. La copie produit un reçu expurgé."}},{"@type":"Question","name":"Quelles sommes de contrôle sont prises en charge ?","acceptedAnswer":{"@type":"Answer","text":"Bitcoin Base58Check, Bech32 et Bech32m ainsi que TRON Base58Check sont vérifiés. Solana est décodé en clé publique de 32 octets. Les sommes EIP-55 mixtes ne sont pas évaluées et produisent un résultat non vérifié."}}]}</script>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 <link rel="canonical" href="https://afrotools.com/fr/crypto/address-validator/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/crypto/address-validator/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/crypto/address-validator/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/crypto/address-validator/">
 </head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar></afro-navbar>
-<section class="fr-hero"><div class="container">
-<p class="section-label">Crypto</p>
-<h1>Validateur d'adresses crypto</h1>
-<p>Contenu disponible en anglais — traduction à venir.</p>
-</div></section>
-<div class="fr-iframe-wrap">
-<iframe src="/crypto/address-validator/" title="Validateur d'adresses crypto" loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
-</div>
-<p class="fr-note"><a href="/fr/crypto/address-validator/">Lire la version originale en anglais</a></p>
-<afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
-<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
-</body>
-</html>
+<body class="wallet-page"><afro-navbar></afro-navbar>
+<header class="wallet-hero"><div class="wallet-shell"><span class="wallet-kicker">Validation privée et locale</span><h1>Validateur de format et de somme de contrôle</h1><p>Choisissez le réseau prévu, puis vérifiez localement la structure de l’adresse. Les contrôles pris en charge s’exécutent dans ce navigateur, sans recherche de portefeuille ni promesse de sécurité.</p></div></header>
+<main class="wallet-main"><div class="wallet-shell"><aside class="wallet-privacy" role="note"><strong>Ne collez jamais une clé privée ni une phrase de récupération.</strong> Saisissez seulement une adresse publique de réception. AfroTools ne l’envoie, ne l’enregistre et ne l’interroge pas.</aside>
+<div class="wallet-grid"><section class="wallet-card" aria-labelledby="walletFormTitle"><h2 id="walletFormTitle">Contrôler une adresse</h2><form id="walletValidatorForm"><div class="wallet-field"><label for="walletNetwork">Réseau prévu</label><select id="walletNetwork" required><option value="bitcoin">Bitcoin mainnet</option><option value="evm">Ethereum / EVM</option><option value="solana">Solana</option><option value="tron">TRON</option></select><small class="wallet-hint">Le réseau est choisi explicitement car certaines adresses peuvent se ressembler.</small></div><div class="wallet-field"><label for="walletAddress">Adresse publique du portefeuille</label><textarea id="walletAddress" maxlength="120" required autocomplete="off" spellcheck="false" placeholder="Collez une adresse publique de réception"></textarea><small class="wallet-hint">Cette saisie reste dans l’onglet actuel. Elle n’est ajoutée ni à l’URL ni au stockage du navigateur.</small></div><button class="wallet-submit" type="submit">Valider localement</button><p id="walletStatus" class="wallet-status" role="status" aria-live="polite"></p></form></section><section class="wallet-card" aria-labelledby="walletResultTitle"><h2 id="walletResultTitle">Reçu de validation</h2><div id="walletResult" class="wallet-result" tabindex="-1"><p>Aucune validation lancée. Le résultat indique uniquement les contrôles réellement effectués.</p></div><button id="walletCopy" class="wallet-copy" type="button" disabled>Copier le reçu expurgé</button></section></div>
+<section class="wallet-info" aria-label="Méthode et limites"><article class="wallet-card"><h2>Contrôles effectués</h2><ul><li>Bitcoin : règles Base58Check, Bech32 ou Bech32m</li><li>TRON : Base58Check, longueur décodée et préfixe 0x41</li><li>Solana : Base58 décodé en exactement 32 octets</li><li>EVM : structure hexadécimale de 20 octets</li></ul></article><article class="wallet-card"><h2>Ce que l’outil ne prouve pas</h2><p>Aucune recherche de propriétaire, destinataire, contrat, solde, activité, liste noire, fraude ou transaction n’est effectuée. Confirmez par un canal fiable et envisagez un petit transfert d’essai.</p></article><article class="wallet-card"><h2>Normes utilisées</h2><p><a href="https://bips.dev/173/" rel="noopener">BIP 173</a> et <a href="https://bips.dev/350/" rel="noopener">BIP 350</a> ; <a href="https://eips.ethereum.org/EIPS/eip-55" rel="noopener">EIP-55</a> ; <a href="https://developers.tron.network/docs/account" rel="noopener">format TRON</a> ; <a href="https://solana.com/docs/core/accounts" rel="noopener">comptes Solana</a>.</p><p><strong>PDF :</strong> non proposé. Ce reçu est éphémère ; la sortie portable la plus sûre est la copie textuelle expurgée.</p></article></section>
+<section class="wallet-card wallet-faq" aria-labelledby="walletFaqTitle"><h2 id="walletFaqTitle">Questions sur la validation</h2><details><summary>Un résultat valide prouve-t-il que le portefeuille est sûr ou appartient au destinataire ?</summary><p>Non. Il signifie uniquement que l’adresse a réussi les contrôles locaux sélectionnés. Aucun propriétaire, solde, activité, sanction, signalement ou destinataire n’est vérifié.</p></details><details><summary>AfroTools envoie-t-il ou enregistre-t-il l’adresse ?</summary><p>Non. La validation s’exécute localement sans recherche ni historique dans le stockage du navigateur. La copie produit un reçu expurgé.</p></details><details><summary>Quelles sommes de contrôle sont prises en charge ?</summary><p>Bitcoin Base58Check, Bech32 et Bech32m ainsi que TRON Base58Check sont vérifiés. Solana est décodé en clé publique de 32 octets. Les sommes EIP-55 mixtes ne sont pas évaluées et produisent un résultat non vérifié.</p></details></section>
+</div></main><afro-related-tools data-ssr="1" category="financial" current="crypto-address"></afro-related-tools><afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.min.js?v=996960fa" defer></script><script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script><script src="/assets/js/bundles/core.53e2e483.min.js" defer></script><script src="/assets/js/lib/recent-tools.js?v=78dbe87f" defer></script><script src="/assets/js/engines/wallet-address-validator.js?v=7a8f28a6"></script><script src="/assets/js/pages/wallet-address-validator.js?v=7239182d"></script><script src="/assets/js/components/related-tools.min.js?v=f3f910a8" defer></script>
+</body></html>

@@ -1,57 +1,93 @@
-<!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<!doctype html>
+<html lang="fr" data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calculateur de minage crypto | AfroTools</title>
-<meta name="description" content="Calculateur de minage crypto — Lisez cet article sur AfroTools.">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Calculateur de minage crypto">
-<meta property="og:url" content="https://afrotools.com/fr/crypto/mining-calculator/">
-<meta property="og:site_name" content="AfroTools">
-<meta name="twitter:card" content="summary_large_image">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
-<link rel="preload" href="/assets/css/tokens.min.css?v=c13f04eb" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" href="/assets/css/global.min.css?v=2777b75b" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb"><link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-</noscript>
-<style>
-.fr-hero{background:var(--color-bg-dark,#0A1628);padding:48px 0 32px;text-align:center}
-.fr-hero .container{max-width:900px;margin:0 auto;padding:0 24px}
-.fr-hero .section-label{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--color-brand-light,#4DA3FF);margin-bottom:12px}
-.fr-hero h1{font-size:clamp(1.5rem,3vw,2.2rem);font-weight:800;color:#fff;max-width:800px;margin:0 auto 12px;line-height:1.2}
-.fr-hero p{color:rgba(255,255,255,.55);font-size:.9rem;margin:0 auto;max-width:600px}
-.fr-iframe-wrap{max-width:900px;margin:0 auto;padding:32px 16px 64px}
-.fr-iframe-wrap iframe{width:100%;min-height:80vh;border:none;border-radius:12px;background:#fff}
-.fr-note{text-align:center;padding:16px;font-size:.8rem;color:var(--color-text-muted,#64748b)}
-.fr-note a{color:var(--color-brand,#0062CC);text-decoration:underline}
-</style>
-<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Feuille de marge du minage crypto | AfroTools</title>
+  <meta name="description" content="Estimez la marge d’exploitation du minage avec vos propres données de production, prix, énergie et coûts. Exports CSV, JSON et PDF locaux.">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="AfroTools">
+  <meta property="og:title" content="Feuille de marge d’exploitation du minage crypto">
+  <meta property="og:description" content="Une feuille privée fondée uniquement sur les données que vous saisissez.">
+  <meta property="og:url" content="https://afrotools.com/fr/crypto/mining-calculator/">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/crypto-mining.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+  <link rel="stylesheet" href="/assets/css/crypto-mining-margin.css?v=7cffe860">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Feuille de marge d’exploitation du minage crypto","url":"https://afrotools.com/fr/crypto/mining-calculator/","applicationCategory":"FinanceApplication","operatingSystem":"Any","isAccessibleForFree":true,"inLanguage":["fr","en"],"description":"Une feuille locale et privée qui calcule la marge du minage à partir des données saisies par l’utilisateur."}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"La feuille récupère-t-elle les prix ou les données du réseau ?","acceptedAnswer":{"@type":"Answer","text":"Non. Vous saisissez la production brute quotidienne et le prix issus des données auxquelles vous faites confiance. Le calcul reste local."}},{"@type":"Question","name":"Que signifie le délai simple du matériel ?","acceptedAnswer":{"@type":"Answer","text":"Il divise le coût matériel facultatif par un résultat net quotidien positif. Il reste masqué si ces conditions ne sont pas réunies et ne constitue ni une prédiction ni un rendement."}},{"@type":"Question","name":"AfroTools reçoit-il mes données ?","acceptedAnswer":{"@type":"Answer","text":"Non. Le calcul et les exports s’exécutent dans votre navigateur sans envoyer les valeurs à AfroTools."}}]}</script>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 <link rel="canonical" href="https://afrotools.com/fr/crypto/mining-calculator/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/crypto/mining-calculator/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/crypto/mining-calculator/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/crypto/mining-calculator/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="mining-page">
 <afro-navbar></afro-navbar>
-<section class="fr-hero"><div class="container">
-<p class="section-label">Crypto</p>
-<h1>Calculateur de minage crypto</h1>
-<p>Contenu disponible en anglais — traduction à venir.</p>
-</div></section>
-<div class="fr-iframe-wrap">
-<iframe src="/crypto/mining-calculator/" title="Calculateur de minage crypto" loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
-</div>
-<p class="fr-note"><a href="/fr/crypto/mining-calculator/">Lire la version originale en anglais</a></p>
+<header class="mining-hero"><div class="mining-shell">
+  <span class="mining-kicker">Feuille d’exploitation privée</span>
+  <h1>Marge d’exploitation du minage crypto</h1>
+  <p>Utilisez vos propres données de pool ou de machine, votre prix, votre durée de fonctionnement et votre coût énergétique. Rien n’est récupéré, classé ou prédit.</p>
+</div></header>
+<main class="mining-main"><div class="mining-shell">
+  <div class="mining-grid">
+    <section class="mining-card mining-form-card" aria-labelledby="miningInputsTitle">
+      <h2 id="miningInputsTitle">Vos données</h2>
+      <form id="miningMarginForm">
+        <div class="mining-form-grid">
+          <div class="mining-field"><label for="currencyCode">Devise d’affichage</label><input id="currencyCode" value="XOF" maxlength="3" pattern="[A-Za-z]{3}" required autocomplete="off"><small class="mining-hint">Code de trois lettres, par exemple XOF, NGN ou USD. Aucune conversion.</small></div>
+          <div class="mining-field"><label for="coinLabel">Libellé de la crypto</label><input id="coinLabel" value="BTC" maxlength="12" pattern="[A-Za-z0-9._ -]{1,12}" required autocomplete="off"><small class="mining-hint">Simple libellé, sans sélection de réseau ni flux de prix.</small></div>
+          <div class="mining-field"><label for="grossCoinPerDay">Production brute quotidienne attendue</label><input type="number" id="grossCoinPerDay" value="0.00005" min="0.000000000001" max="1000000000" step="any" required><small class="mining-hint">Production avant frais issue de vos données de pool ou de machine.</small></div>
+          <div class="mining-field"><label for="coinPrice">Prix de la crypto dans la devise choisie</label><input type="number" id="coinPrice" value="60000000" min="0.000000000001" max="1000000000000000" step="any" required></div>
+          <div class="mining-field"><label for="powerWatts">Puissance de l’équipement (watts)</label><input type="number" id="powerWatts" value="3250" min="0" max="1000000000" step="any" required></div>
+          <div class="mining-field"><label for="uptimeHours">Heures de fonctionnement par jour</label><input type="number" id="uptimeHours" value="20" min="0" max="24" step="0.1" required></div>
+          <div class="mining-field"><label for="electricityRate">Coût de l’électricité par kWh</label><input type="number" id="electricityRate" value="120" min="0" max="1000000000000" step="any" required><small class="mining-hint">Dans la même devise. Zéro reste valable si le coût énergétique marginal est réellement nul.</small></div>
+          <div class="mining-field"><label for="poolFeePercent">Frais de pool (%)</label><input type="number" id="poolFeePercent" value="1" min="0" max="99.999999" step="any" required></div>
+          <div class="mining-field"><label for="otherDailyCost">Autres coûts d’exploitation quotidiens</label><input type="number" id="otherDailyCost" value="0" min="0" max="1000000000000000" step="any" required><small class="mining-hint">Refroidissement, connexion, travail ou autre coût que vous décidez d’inclure.</small></div>
+          <div class="mining-field"><label for="hardwareCost">Coût du matériel (facultatif)</label><input type="number" id="hardwareCost" value="0" min="0" max="1000000000000000" step="any"><small class="mining-hint">Uniquement pour le délai simple conditionnel, sans amortissement ni rendement.</small></div>
+          <div class="mining-field full"><label for="periodDays">Répéter les mêmes hypothèses pendant</label><select id="periodDays"><option value="30">30 jours</option><option value="365">365 jours</option></select><small class="mining-hint">Prolongement arithmétique, sans prédire le prix, la production ou la disponibilité.</small></div>
+        </div>
+        <button class="mining-submit" type="submit">Calculer la marge d’exploitation</button>
+        <p class="mining-status" id="miningMarginStatus" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+    <section class="mining-card" aria-labelledby="miningResultsTitle">
+      <h2 id="miningResultsTitle" tabindex="-1">Résultat</h2>
+      <div id="miningMarginResults" tabindex="-1"><p class="mining-intro">Le revenu, les frais de pool, l’énergie, le résultat net, le prix d’équilibre et le délai simple conditionnel apparaîtront ici.</p></div>
+      <div class="mining-actions" aria-label="Exports locaux du résultat">
+        <button type="button" data-mining-export="csv" disabled>Télécharger CSV</button>
+        <button type="button" data-mining-export="json" disabled>Télécharger JSON</button>
+        <button type="button" data-mining-export="pdf" disabled>Télécharger PDF</button>
+        <button type="button" data-mining-export="print" disabled>Imprimer / Enregistrer PDF</button>
+      </div>
+      <div class="mining-method"><strong>Méthode :</strong> revenu = production × prix. Les frais de pool sont déduits une fois. Énergie = kW × heures × coût du kWh. Net = revenu − frais − énergie − autres coûts. L’équilibre exclut le matériel. Le délai simple exige un coût matériel et un net quotidien positifs.</div>
+    </section>
+  </div>
+  <section class="mining-evidence" aria-label="Limites de la feuille">
+    <article class="mining-card"><h2>Données sous votre contrôle</h2><p>Conservez votre relevé de pool, votre tarif énergétique, la puissance de l’équipement et votre observation de prix avec l’export. AfroTools ne certifie pas ces valeurs.</p></article>
+    <article class="mining-card"><h2>Locale et privée</h2><p>Aucune valeur n’est envoyée à une API, à l’analytique, à un compte ou à un serveur. Les fichiers sont créés dans ce navigateur.</p></article>
+    <article class="mining-card"><h2>Limite de planification</h2><p>Il s’agit d’arithmétique d’exploitation, pas d’un conseil financier. Les variations du réseau, pannes, impôts, amortissements et valeurs de revente sont exclus.</p></article>
+  </section>
+  <section class="mining-card mining-faq" aria-labelledby="miningFaqTitle">
+    <h2 id="miningFaqTitle">Questions sur la feuille</h2>
+    <details><summary>Récupère-t-elle les prix ou les données du réseau ?</summary><p>Non. Saisissez une production quotidienne et un prix issus des données auxquelles vous faites confiance.</p></details>
+    <details><summary>Pourquoi le délai simple peut-il être absent ?</summary><p>Il n’est affiché que si le coût matériel et le résultat net quotidien sont positifs. Il ne promet pas que les jours futurs seront identiques.</p></details>
+    <details><summary>Qu’est-ce qui est exclu ?</summary><p>Tout élément non saisi, notamment impôts, amortissement, financement, réparations, arrêts, variation de production et mouvement du prix.</p></details>
+  </section>
+</div></main>
+<afro-related-tools data-ssr="1" category="financial" current="crypto-mining"></afro-related-tools>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=996960fa" defer></script>
 <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/bundles/core.53e2e483.min.js" defer></script>
+<script src="/assets/js/lib/recent-tools.js?v=78dbe87f" defer></script>
+<script src="/assets/js/engines/crypto-mining-margin.js?v=2a957e25"></script>
+<script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c"></script>
+<script src="/assets/js/pages/crypto-mining-margin.js?v=6cf1d96c"></script>
+<script src="/assets/js/components/related-tools.min.js?v=f3f910a8" defer></script>
 </body>
 </html>

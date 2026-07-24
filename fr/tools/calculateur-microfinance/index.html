@@ -1,92 +1,89 @@
-<!DOCTYPE html>
+<!doctype html>
 <html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Calculateur de microfinance | AfroTools</title>
-<meta name="description" content="Estimez mensualité, frais, coût total et montant réellement reçu pour un prêt de microfinance. Comparez taux, frais et assurance avant de signer.">
-<meta property="og:title" content="Calculateur de microfinance | AfroTools">
-<meta property="og:description" content="Comparez mensualité, frais, coût total et montant reçu avant de signer un prêt de microfinance.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/microfinance-calc.webp">
-<meta property="og:url" content="https://afrotools.com/fr/tools/calculateur-microfinance/">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:type" content="website">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
-<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
-<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/microfinance-calc.webp">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Calculateur de microfinance | AfroTools">
-<meta name="twitter:description" content="Comparez mensualité, frais, coût total et montant reçu avant de signer un prêt de microfinance.">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Calculateur du coût d'une offre de microfinance</title>
+<meta name="description" content="Vérifiez une offre écrite de microfinance: base du taux, intérêt flat ou dégressif, frais, échéancier et coût annuel effectif estimé.">
+<meta name="theme-color" content="#102f62">
+<meta property="og:type" content="website"><meta property="og:title" content="Calculateur du coût d'une offre de microfinance"><meta property="og:description" content="Transformez les conditions écrites en échéancier et coût annuel estimé."><meta property="og:url" content="https://afrotools.com/fr/tools/calculateur-microfinance/"><meta property="og:image" content="https://afrotools.com/assets/img/tools/microfinance-calc.webp">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Calculateur d'offre de microfinance"><meta name="twitter:description" content="Feuille privée pour intérêt flat ou dégressif."><meta name="twitter:image" content="https://afrotools.com/assets/img/tools/microfinance-calc.webp">
+<link rel="stylesheet" href="/assets/css/microfinance-offer.css?v=187632b2">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"fr","mainEntity":[{"@type":"Question","name":"Que calcule le calculateur de microfinance ?","acceptedAnswer":{"@type":"Answer","text":"Il estime la mensualité, les frais, le coût total, le montant réellement reçu et l'effet d'un taux flat ou dégressif à partir des hypothèses saisies."}},{"@type":"Question","name":"Le résultat remplace-t-il l'offre de l'institution ?","acceptedAnswer":{"@type":"Answer","text":"Non. Le résultat est une estimation seulement. Vérifiez le contrat écrit, les frais, l'assurance, les pénalités et le calendrier auprès de l'institution de microfinance."}},{"@type":"Question","name":"Pourquoi le coût total peut-il différer du taux annoncé ?","acceptedAnswer":{"@type":"Answer","text":"Le coût réel dépend aussi des frais de dossier, de l'assurance, du mode de calcul des intérêts, du montant décaissé et des pénalités éventuelles."}},{"@type":"Question","name":"Comment comparer deux offres de microfinance ?","acceptedAnswer":{"@type":"Answer","text":"Saisissez le même montant et la même durée pour chaque offre, puis comparez mensualité, coût total, montant reçu, frais initiaux et contraintes de remboursement."}}]}
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Calculateur du coût d'une offre de microfinance",
+    "url": "https://afrotools.com/fr/tools/calculateur-microfinance/",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Any",
+    "inLanguage": "fr",
+    "description": "Feuille privée pour modéliser les conditions, frais et flux d'une offre saisie par l'utilisateur.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "image": "https://afrotools.com/assets/img/tools/microfinance-calc.webp"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "inLanguage": "fr",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Le calculateur fournit-il les taux des prêteurs ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. Il utilise seulement les conditions écrites que vous saisissez et ne classe aucun prestataire."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Le coût annuel effectif estimé est-il un TAEG réglementaire ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. C'est une estimation par taux de rendement interne avec paiements égaux en fin de période."
+        }
+      }
+    ]
+  }
+]
 </script>
-<style data-fr-action-planner-style>
-.fr-action-planner{margin:22px 0;border:1px solid #bfdbfe;border-radius:16px;background:linear-gradient(135deg,#eff6ff 0%,#fff 58%,#ecfdf5 100%);box-shadow:0 14px 34px rgba(15,23,42,.07);padding:18px}.fr-action-planner h2{margin:0 0 6px;color:#0f172a;font-size:1.08rem}.fr-action-planner p{margin:0 0 14px;color:#475569;line-height:1.6}.fr-action-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-action-grid label{display:grid;gap:6px;font-size:.84rem;font-weight:850;color:#0f172a}.fr-action-grid input,.fr-action-grid select,.fr-action-grid textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:10px;background:#fff;padding:10px 11px;font:inherit;color:#0f172a}.fr-action-grid textarea{min-height:84px;resize:vertical}.fr-action-output{display:block;margin-top:12px;border:1px solid #bfdbfe;border-radius:12px;background:#fff;padding:12px;color:#334155;line-height:1.55;min-height:56px}.fr-action-buttons{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.fr-action-buttons a,.fr-action-buttons button{border:0;border-radius:999px;padding:10px 14px;font-weight:850;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}.fr-action-buttons a{background:#0057b8;color:#fff}.fr-action-buttons button{background:#0f172a;color:#fff}.fr-action-status{font-size:.84rem;color:#64748b;align-self:center}.fr-action-method{margin-top:12px;border-left:4px solid #10b981;background:#f0fdf4;border-radius:10px;padding:10px 12px;color:#365346;font-size:.92rem;line-height:1.55}@media(max-width:640px){.fr-action-buttons a,.fr-action-buttons button{width:100%}}
-</style>
-<style>
-.fr-trust-grid{max-width:1100px;margin:2rem auto;padding:0 1rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:14px}.fr-trust-grid article{border:1px solid #dbe4ef;border-radius:8px;background:#fff;padding:18px;box-shadow:0 8px 22px rgba(15,23,42,.06)}.fr-trust-grid h2{font-size:1rem;margin:0 0 8px;color:#0f172a}.fr-trust-grid p{margin:0;color:#475569;line-height:1.6}.fr-related-links{max-width:800px;margin:2rem auto;padding:0 1rem}.fr-related-links ul{display:grid;gap:8px;padding-left:1.1rem}.fr-related-links a{color:#0057b8;font-weight:800;text-decoration:none}
-</style>
 <link rel="canonical" href="https://afrotools.com/fr/tools/calculateur-microfinance/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/microfinance-calc/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-microfinance/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/microfinance-riba-tambarare-dhidi-ya-salio/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/microfinance-calc/">
 </head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar></afro-navbar>
-<main>
-<section class="fr-action-planner" data-fr-action-planner data-tool-name="Calculateur de microfinance">
-<h2>Commencer ici</h2>
-<p>Ajoutez juste le contexte utile, puis ouvrez l'outil complet avec un brief clair. Le résumé reste dans votre navigateur.</p>
-<div class="fr-action-grid">
-<label>Pays ou contexte<input name="scope" autocomplete="off" placeholder="Ex: Sénégal, client, projet"></label>
-<label>Action<select name="task"><option value="estimer">Estimer avec vos données</option><option value="comparer">Comparer deux options</option><option value="verifier">Vérifier les sources 2026</option></select></label>
-<label>Données ou demande<textarea name="details" placeholder="Montant, date, fichier, phrase, objectif ou contrainte"></textarea></label>
+<body>
+<a class="mf-skip" href="#mf-form">Aller au calculateur</a><afro-navbar></afro-navbar>
+<header class="mf-hero"><div class="mf-wrap"><nav class="mf-breadcrumb" aria-label="Fil d’Ariane"><a href="/fr/">Accueil</a> / <a href="/fr/all-tools/">Outils</a> / Offre de microfinance</nav><h1>Vérifiez le coût des flux d'une offre écrite de microfinance.</h1><p>Saisissez le taux tel qu'il est indiqué, déclarez sa base et choisissez séparément la méthode contractuelle. Aucun taux de prestataire, score d'approbation ou conseil.</p><div class="mf-badges"><span>Privé dans le navigateur</span><span>Flat ou dégressif</span><span>PDF local réel</span></div></div></header>
+<main class="mf-main" data-mf-tool data-locale="fr"><div class="mf-wrap">
+<div class="mf-grid">
+<section class="mf-card" aria-labelledby="mf-form-title"><h2 id="mf-form-title">Conditions de l'offre écrite</h2><p class="mf-intro">Utilisez une seule devise ou unité. Les valeurs initiales sont des exemples, pas des conditions du marché.</p>
+<form id="mf-form" novalidate><div class="mf-fields">
+<div class="mf-field"><label for="mf-currency">Code devise ou unité</label><input id="mf-currency" maxlength="12" required autocomplete="off" placeholder="ex. XOF ou unités"><span class="mf-help">Ex. XOF, MAD, USD ou « unités ».</span></div>
+<div class="mf-field"><label for="mf-principal">Montant demandé</label><input id="mf-principal" type="number" min="0.01" max="1000000000000000" step="0.01" required inputmode="decimal" placeholder="ex. 100000"></div>
+<div class="mf-field"><label for="mf-rate">Taux d'intérêt indiqué (%)</label><input id="mf-rate" type="number" min="0" max="1000" step="0.0001" required inputmode="decimal" placeholder="ex. 3"></div>
+<div class="mf-field"><label for="mf-rate-basis">Base du taux indiqué</label><select id="mf-rate-basis" required><option value="annuel">Par an</option><option value="mensuel" selected>Par mois</option><option value="period">Par échéance</option></select><span class="mf-help">La base ne détermine jamais la méthode.</span></div>
+<div class="mf-field"><label for="mf-method">Méthode d'intérêt contractuelle</label><select id="mf-method" required><option value="flat">Flat / add-on</option><option value="reducing">Solde dégressif</option></select></div>
+<div class="mf-field"><label for="mf-frequency">Fréquence de remboursement</label><select id="mf-frequency" required><option value="52">Hebdomadaire (52/an)</option><option value="26">Toutes les deux semaines (26/an)</option><option value="12" selected>Mensuelle (12/an)</option><option value="4">Trimestrielle (4/an)</option><option value="1">Annuelle (1/an)</option></select></div>
+<div class="mf-field"><label for="mf-count">Nombre d'échéances</label><input id="mf-count" type="number" min="1" max="520" step="1" required inputmode="numeric" placeholder="ex. 6"></div>
+<div class="mf-field"><label for="mf-withheld">Frais retenus sur le décaissement</label><input id="mf-withheld" type="number" value="0" min="0" max="1000000000000000" step="0.01" required inputmode="decimal"><span class="mf-help">Ils réduisent le montant reçu sans augmenter le solde.</span></div>
+<div class="mf-field"><label for="mf-financed">Frais ajoutés au solde</label><input id="mf-financed" type="number" value="0" min="0" max="1000000000000000" step="0.01" required inputmode="decimal"><span class="mf-help">Ils augmentent le solde d'ouverture.</span></div>
+<div class="mf-field"><label for="mf-interest-base">Les frais financés portent-ils intérêt ?</label><select id="mf-interest-base" required><option value="all">Oui — montant et frais financés</option><option value="principal">Non — montant demandé seulement</option></select><span class="mf-help">Choisissez ce que dit l'offre écrite.</span></div>
+<div class="mf-field"><label for="mf-recurring">Autre charge obligatoire par échéance</label><input id="mf-recurring" type="number" value="0" min="0" max="1000000000000000" step="0.01" required inputmode="decimal"></div>
+<div class="mf-field mf-field-wide"><label for="mf-note">Note privée (facultatif)</label><input id="mf-note" maxlength="180" autocomplete="off" placeholder="Date de l'offre ou clause à vérifier"></div>
+</div><p id="mf-error" class="mf-error" role="alert"></p><div class="mf-actions"><button class="mf-btn" type="submit">Calculer le coût</button><button class="mf-btn mf-btn-secondary" type="button" id="mf-copy">Copier</button><button class="mf-btn mf-btn-secondary" type="button" id="mf-csv">CSV</button><button class="mf-btn mf-btn-secondary" type="button" id="mf-json">JSON</button><button class="mf-btn mf-btn-secondary" type="button" id="mf-pdf">PDF</button></div><p id="mf-status" class="mf-status" role="status" aria-live="polite"></p></form></section>
+<section class="mf-card mf-results" id="mf-results" aria-labelledby="mf-results-title"><h2 id="mf-results-title">Estimation des flux</h2><div class="mf-result-primary"><span>Paiement par échéance</span><strong id="mf-payment">—</strong></div><div class="mf-metrics">
+<div class="mf-metric"><span>Montant net reçu</span><strong id="mf-net">—</strong></div><div class="mf-metric"><span>Solde d'ouverture dû</span><strong id="mf-opening">—</strong></div><div class="mf-metric"><span>Total des remboursements</span><strong id="mf-total">—</strong></div><div class="mf-metric"><span>Coût total de l'emprunt</span><strong id="mf-cost">—</strong></div><div class="mf-metric"><span>Taux annuel nominal normalisé</span><strong id="mf-stated">—</strong></div><div class="mf-metric"><span>Coût annuel effectif estimé</span><strong id="mf-ear">—</strong></div><div class="mf-metric mf-field-wide"><span>Base portant intérêt</span><strong id="mf-interest-base-result">—</strong></div></div><p class="mf-assumption">Le coût annuel est une estimation par TRI avec paiements égaux en fin de période. Ce n'est pas un TAEG réglementaire; dates exactes, base journalière, taxes, arrondis et règles locales peuvent le modifier.</p></section>
 </div>
-<output class="fr-action-output" data-fr-action-output>Ajoutez un contexte, une action ou des données pour préparer le brief.</output>
-<div class="fr-action-buttons"><a href="/fr/tools/microfinance-calc/">Ouvrir l'outil complet</a><button type="button" data-fr-action-copy>Copier le brief</button><span class="fr-action-status" data-fr-action-status aria-live="polite"></span></div>
-<div class="fr-action-method"><strong>Méthode:</strong> utilisez ce résultat comme aide de planification. Contrôle 2026: vérifiez les taux, règles, fichiers, licences ou sources officielles avant toute décision financière, juridique, santé, énergie ou business.</div>
-</section>
-<section class="hero-section" style="padding:3rem 1rem;text-align:center">
-<h1>Calculateur de microfinance</h1>
-<p>Estimez vos remboursements de prêt de microfinance comme repère avant de signer.</p>
-</section>
-<section style="max-width:1100px;margin:0 auto;padding:1rem">
-<iframe src="/tools/microfinance-calc/" style="width:100%;min-height:700px;border:none;border-radius:12px" loading="lazy" title="Calculateur de microfinance"></iframe>
-</section>
-<section style="max-width:800px;margin:2rem auto;padding:0 1rem">
-<p>Le calculateur de microfinance estime vos remboursements pour les prêts de microfinance en Afrique. Comparez les hypothèses entre institutions et planifiez vos mensualités selon les taux, frais et règles communiqués localement.</p>
-<p>La microfinance peut soutenir l'inclusion financière, mais le coût réel dépend du contrat, du calendrier de remboursement, des frais de dossier et de l'assurance crédit. Vérifiez l'offre avec l'institution avant de vous engager.</p>
-</section>
-<section class="fr-trust-grid" data-tool-verification-panel aria-label="Méthodologie et vérification">
-<article><h2>Méthodologie</h2><p>Nous calculons mensualité, coût total, montant réellement reçu et frais initiaux à partir du montant, de la durée, du taux, du mode d'intérêt et des frais saisis. La ventilation aide à comparer deux offres sur la même base.</p></article>
-<article><h2>Avertissement</h2><p>Le résultat est une estimation seulement. Il ne remplace pas un contrat de prêt, un conseil financier ou une décision de crédit. Confirmez toujours le taux effectif, l'assurance, les pénalités et les conditions écrites.</p></article>
-<article><h2>Sources et fraîcheur</h2><p>Source principale: vos champs et l'offre remise par l'institution. Dernière vérification de la page: 2026. Vérifiez aussi les règles de votre banque centrale ou autorité de microfinance quand elles s'appliquent.</p></article>
-</section>
-<afro-business-cta tool-name="Calculateur de microfinance" prospect-segment="finance" save-note="Comparez plusieurs offres avec les mêmes hypothèses, puis gardez le PDF ou le résumé avant la discussion avec l'institution."></afro-business-cta>
-<section class="fr-related-links" aria-label="Outils liés">
-<h2>Outils liés</h2>
-<ul>
-<li><a href="/fr/tools/planificateur-budget/">Planifier le budget après remboursement</a></li>
-<li><a href="/fr/tools/paiement-b2b-transfrontalier/">Comparer un paiement B2B transfrontalier</a></li>
-<li><a href="/business-enquiry/">Demander une version embarquée ou API</a></li>
-</ul>
-</section>
-<section style="max-width:800px;margin:2rem auto;padding:0 1rem">
-<h2>Questions fréquentes</h2>
-<details><summary>Quels taux pratiquent les IMF en Afrique ?</summary><p>Les taux varient fortement selon l'institution, le pays, le montant, la garantie et le type de prêt. Utilisez l'outil pour comparer des scénarios, puis confirmez le coût total dans l'offre écrite.</p></details>
-<details><summary>Quelle est la différence avec une banque ?</summary><p>Les IMF offrent des montants plus petits, des garanties flexibles comme la caution solidaire et un accès parfois plus simple, mais les taux et frais peuvent être plus élevés.</p></details>
-<details><summary>Comment rembourser efficacement ?</summary><p>Choisissez un calendrier compatible avec vos revenus, gardez une marge de sécurité et demandez à l'institution d'expliquer les pénalités, frais de retard et options de remboursement anticipé.</p></details>
-<details><summary>Que vérifier avant de signer ?</summary><p>Vérifiez le montant décaissé, le taux effectif, les frais obligatoires, l'assurance, les garanties, les pénalités et la possibilité de remboursement anticipé.</p></details>
-</section>
-</main>
-<afro-footer></afro-footer>
-<script data-fr-action-planner-script>
-(function(){document.querySelectorAll('[data-fr-action-planner]').forEach(function(panel){var name=panel.getAttribute('data-tool-name')||'Outil';var output=panel.querySelector('[data-fr-action-output]');var status=panel.querySelector('[data-fr-action-status]');function val(sel){var el=panel.querySelector(sel);return el&&el.value?el.value.trim():'';}function summary(){var scope=val('[name="scope"]');var task=val('[name="task"]');var details=val('[name="details"]');var parts=[];if(scope)parts.push('Contexte: '+scope);if(task)parts.push('Action: '+task);if(details)parts.push('Données: '+details);return parts.length?name+' - '+parts.join(' | '):'Ajoutez un contexte, une action ou des données pour préparer le brief.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);panel.addEventListener('change',render);var copy=panel.querySelector('[data-fr-action-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Brief copié.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});render();});})();
-</script>
-</body>
-</html>
+<section class="mf-card mf-table-card" aria-labelledby="mf-schedule-title"><h2 id="mf-schedule-title">Échéancier</h2><div class="mf-table-scroll" tabindex="0"><table class="mf-table"><thead><tr><th>Échéance</th><th>Solde initial</th><th>Intérêt</th><th>Principal</th><th>Autre charge</th><th>Paiement total</th><th>Solde final</th></tr></thead><tbody id="mf-schedule"></tbody></table></div></section>
+<section class="mf-content"><article><h2>Ce que calcule la feuille</h2><p>Elle normalise un taux annuel, mensuel ou par échéance sans deviner la méthode, puis modélise les frais et paiements saisis. La source est votre offre écrite actuelle.</p></article><article><h2>Avant de signer</h2><p>Comparez le résultat à l'échéancier daté. Confirmez frais obligatoires, montant décaissé, pénalités, assurance, épargne imposée, licence et informations réglementaires.</p></article><article><h2>Confidentialité</h2><p>Calculs et exports restent locaux. Ne saisissez ni nom, ni compte, ni pièce d'identité. PDF, CSV et JSON ne demandent aucune inscription.</p></article><article><h2>Limite de décision</h2><p>Estimation de planification seulement: ni conseil financier, ni offre, ni approbation, ni test d'abordabilité, ni classement ou recommandation.</p></article></section>
+<section class="mf-faq" aria-labelledby="mf-faq-title"><h2 id="mf-faq-title">Questions fréquentes</h2><details><summary>La base du taux choisit-elle la méthode ?</summary><p>Non. La base et la méthode d'intérêt sont deux conditions distinctes et deux champs distincts.</p></details><details><summary>Pourquoi séparer frais retenus et financés ?</summary><p>Les premiers réduisent le cash reçu; les seconds augmentent le solde dû, avec ou sans intérêt selon le contrat.</p></details><details><summary>Pourquoi l'information du prêteur peut-elle différer ?</summary><p>Les conventions légales peuvent employer les dates réelles, une base journalière prescrite et un traitement différent des frais.</p></details></section>
+</div></main>
+<button id="mf-theme" class="mf-theme" type="button" aria-label="Afficher en thème clair ou sombre" aria-pressed="false">◐ Thème</button><afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.min.js?v=996960fa"></script><script src="/assets/js/components/footer.min.js?v=dfb30911"></script><script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c"></script><script src="/engines/microfinance-offer-engine.js?v=17174348"></script><script src="/assets/js/pages/microfinance-offer.js?v=c966f49c"></script>
+</body></html>

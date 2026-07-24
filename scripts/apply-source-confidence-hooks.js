@@ -105,9 +105,18 @@ function addHelperScript(html, relativePath) {
   return { html: html.slice(0, headClose) + helperScriptTag() + '\n' + html.slice(headClose), action: 'inserted' };
 }
 
+function isIndexableContentFile(relativePath) {
+  const filePath = path.join(ROOT, relativePath);
+  if (!fs.existsSync(filePath)) return false;
+  const html = fs.readFileSync(filePath, 'utf8');
+  if (/<meta\b[^>]*\bname=["']robots["'][^>]*\bcontent=["'][^"']*\bnoindex\b/i.test(html)) return false;
+  if (/<meta\b[^>]*\bhttp-equiv=["']refresh["']/i.test(html)) return false;
+  return true;
+}
+
 function primaryRouteTargets(registry) {
   const priority = function (id) {
-    if (/^(?:import-duty-planning-rates|afrofuel-static-snapshot|forex-third-party-snapshot|afrorates-policy-rate-pack)$/.test(id)) return 100;
+    if (/^(?:import-duty-planning-rates|afrofuel-static-snapshot|forex-third-party-snapshot|afrorates-policy-rate-pack|paye-tax-engine-country-packs)$/.test(id)) return 100;
     if (/^(?:paye-[a-z]{2}-source|vat-[a-z]{2}-source)$/.test(id)) return 90;
     if (/^(?:social-security-country-packs|electricity-tariff-rates|remittance-fx-planning)$/.test(id)) return 85;
     if (/^ledger-tool-/.test(id)) return 70;
@@ -119,7 +128,7 @@ function primaryRouteTargets(registry) {
     if (!weight) return;
     (source.routes || []).forEach(function (route) {
       const file = routeToFile(route);
-      if (!file) return;
+      if (!file || !isIndexableContentFile(file)) return;
       const current = byFile.get(file);
       if (!current || weight > current.weight) byFile.set(file, { file, sourceId: source.id, weight });
     });
@@ -175,6 +184,7 @@ module.exports = {
   addSourceHook,
   applyTargets,
   isInsideScript,
+  isIndexableContentFile,
   primaryRouteTargets,
   routeToFile,
 };

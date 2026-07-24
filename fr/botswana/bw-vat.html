@@ -48,22 +48,24 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/paye-tool.css?v=075c178d">
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=996960fa" defer></script>
 <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <script src="/assets/js/bundles/tool-page.315f0428.min.js?v=315f0428" defer></script>
-<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script>
+<script src="/assets/js/bundles/core.53e2e483.min.js" defer></script>
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<link rel="stylesheet" href="/assets/css/botswana-vat-vip.css?v=e8993039">
 <style data-fr-vat-fallback-style>
 .fr-vat-fallback{border:1px solid #bfdbfe;border-radius:14px;background:#fff;box-shadow:0 12px 28px rgba(15,23,42,.06);padding:18px;margin:0 0 22px}.fr-vat-fallback h2{margin:0 0 8px;font-size:1.12rem;color:#0f172a}.fr-vat-fallback p{margin:0 0 14px;color:#475569;line-height:1.6}.fr-vat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:12px}.fr-vat-grid label{display:grid;gap:6px;font-weight:800;color:#334155;font-size:.88rem}.fr-vat-grid input,.fr-vat-grid select{width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px 11px;font:inherit;background:#fff}.fr-vat-fallback button{border:0;border-radius:999px;background:#0f172a;color:#fff;font-weight:900;padding:11px 15px;cursor:pointer}.fr-vat-output{display:block;margin-top:12px;border:1px solid #dbeafe;border-radius:12px;background:#eff6ff;color:#1e3a8a;padding:12px;line-height:1.55;min-height:48px}.fr-vat-note{margin-top:10px;color:#64748b;font-size:.86rem;line-height:1.5}
 </style>
+<script src="/assets/js/lib/source-confidence.js?v=e7c3ebe4" defer></script>
 <link rel="canonical" href="https://afrotools.com/fr/botswana/bw-vat">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/botswana/bw-vat">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/botswana/bw-vat">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/botswana/kikokotoo-vat/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/botswana/bw-vat">
 </head>
-<body class="tool-page top-level-page-ui-refresh">
+<body class="tool-page top-level-page-ui-refresh bw-vat-vip">
 <afro-navbar></afro-navbar>
 <section class="tool-hero"><div class="container">
 <div>
@@ -72,79 +74,33 @@
 <p class="tool-hero-sub">Calculez la TVA en Botswana — taux standard, exemptions et montants TTC/HT. Conforme BURS 2026.</p>
 </div>
 </div></section>
-<main class="container" style="padding-top:32px;padding-bottom:64px">
+<main class="container bwv-legacy" style="padding-top:32px;padding-bottom:64px">
 <section class="fr-vat-fallback" data-vat-fallback-calc aria-label="Calcul rapide TVA">
 <h2>Calcul rapide HT / TTC</h2>
 <p>Entrez le montant et le taux TVA actuellement applicable dans votre cas. Le calcul reste local et sert de contrôle avant vérification officielle.</p>
-<div class="fr-vat-grid"><label>Montant<input data-vat-amount type="number" inputmode="decimal" min="0" step="0.01" placeholder="Ex. 1000"></label><label>Taux TVA (%)<input data-vat-rate type="number" inputmode="decimal" min="0" step="0.01" placeholder="Ex. 15"></label><label>Mode<select data-vat-mode><option value="add">Ajouter la TVA au HT</option><option value="remove">Retirer la TVA du TTC</option></select></label><label>Action<button type="button" data-vat-run>Calculer</button></label></div>
+<div class="fr-vat-grid"><label>Montant<input data-vat-amount type="number" inputmode="decimal" min="0" step="0.01" placeholder="Ex. 1000"></label><label>Taux TVA (%)<input data-vat-rate type="number" inputmode="decimal" min="0" step="0.01" placeholder="Ex. 14"></label><label>Mode<select data-vat-mode><option value="add">Ajouter la TVA au HT</option><option value="remove">Retirer la TVA du TTC</option></select></label><label>Action<button type="button" data-vat-run>Calculer</button></label></div>
 <output class="fr-vat-output" data-vat-output>Ajoutez un montant et un taux pour afficher HT, TVA et TTC.</output>
 <p class="fr-vat-note">Vérifiez toujours le taux, l'exemption, la catégorie de produit et les obligations de dépôt avec l'administration fiscale ou un conseiller local.</p>
 </section>
 <div id="bw-vat-app"></div>
 </main>
-<!-- TOOL_VERIFICATION_PANEL_START -->
-<section class="tool-verification-sec" id="sources-verification" data-tool-verification-panel data-tool-id="bw-vat">
-  <div class="container">
-    <div class="tool-verification-card">
-      <div class="tool-verification-head">
-        <div>
-          <span class="tool-verification-kicker">Preuves officielles</span>
-          <h2 class="tool-verification-title">Sources et vérification</h2>
-          <p class="tool-verification-lead">Ce calculateur sensible relie les sources officielles, la méthode, les cas de test et les limites utilisés pour vérifier les résultats affichés.</p>
-        </div>
-        <div class="tool-verification-status">
-          <span class="tool-verification-badge">Dernière vérification 2026-01-01</span>
-          <p class="tool-verification-note">Botswana - risque élevé - Audit des sources AfroTools</p>
-        </div>
-      </div>
-      <div class="tool-verification-grid">
-        <div class="tool-verification-block">
-          <h3>Sources officielles</h3>
-          <ul class="tool-verification-list">
-<li><a href="https://burs.org.bw" target="_blank" rel="noopener">burs.org.bw</a></li>
-<li><a href="https://www.burs.org.bw" target="_blank" rel="noopener">burs.org.bw</a></li>
-          </ul>
-        </div>
-        <div class="tool-verification-block">
-          <h3>Loi, règlement ou version</h3>
-          <p class="tool-verification-meta">Last verified: 2026 · Source: BURS (burs</p>
-        </div>
-        <div class="tool-verification-block">
-          <h3>Méthode de calcul</h3>
-          <p class="tool-verification-meta">Le calculateur répartit le montant saisi entre montant hors taxe, TVA et total TTC selon le taux standard ou personnalisé affiché. Les catégories exonérées ou à taux zéro servent de guide et doivent être confirmées auprès de l’autorité liée avant toute déclaration.</p>
-        </div>
-        <div class="tool-verification-block">
-          <h3>Limites connues</h3>
-          <ul class="tool-verification-list">
-<li>Estimation informative uniquement. Elle ne constitue pas un conseil fiscal, juridique, de paie ou de déclaration.</li>
-<li>La classification des produits, les exonérations et les taux zéro peuvent nécessiter une vérification au niveau de la facture.</li>
-<li>Les règles sectorielles, régionales, conventionnelles, d’allègement ou de régime spécial peuvent ne pas être entièrement modélisées.</li>
-<li>Confirmez les obligations de déclaration, d’inscription et de paiement auprès de l’autorité officielle ou d’un conseiller qualifié avant toute soumission.</li>
-          </ul>
-        </div>
-        <div class="tool-verification-block">
-          <h3>Cas de test</h3>
-<div class="tool-verification-case"><p class="tool-verification-meta"><strong>Entrée:</strong> Montant hors taxe : 1 000 au taux de TVA standard affiché.<br><strong>Résultat attendu:</strong> La TVA correspond à 1 000 multiplié par le taux affiché ; le total correspond au montant hors taxe plus la TVA.<br><strong>Pourquoi:</strong> Confirme le calcul hors taxe principal et rend vérifiable la dépendance au taux.</p></div>
-<div class="tool-verification-case"><p class="tool-verification-meta"><strong>Entrée:</strong> Montant TTC avec le taux de TVA standard affiché.<br><strong>Résultat attendu:</strong> Le montant hors taxe correspond au total divisé par 1 plus le taux ; la TVA correspond au total moins le montant hors taxe.<br><strong>Pourquoi:</strong> Confirme le calcul inverse de la TVA pour les factures qui incluent déjà la taxe.</p></div>
-        </div>
-        <div class="tool-verification-block">
-          <h3>Historique des modifications</h3>
-          <ul class="tool-verification-list">
-<li><strong>2026-05-02:</strong> Ajout du panneau de confiance et de vérification avec sources, méthode, limites et lien de signalement.</li>
-          </ul>
-        </div>
-      </div>
-      <div class="tool-verification-actions">
-        <p class="tool-verification-disclaimer">Les calculateurs AfroTools sont des outils d’aide à la décision. Confirmez toujours les obligations de déclaration, d’inscription et de paiement auprès de l’autorité liée ou d’un conseiller local qualifié.</p>
-        <a class="tool-verification-report" href="/fr/contact/?topic=calculation-error&amp;tool=bw-vat">Signaler une erreur de calcul</a>
-      </div>
+<main class="bwv-shell" id="main-content">
+  <header class="bwv-intro"><div><span class="bwv-kicker">Outil revu à partir des sources BURS</span><h2>Prix, facture et inscription dans un espace clair</h2><p>Le calcul standard utilise 14 %. Le taux zéro et l'exonération restent des traitements à confirmer : l'outil ne déduit jamais le traitement juridique d'un nom de produit.</p></div><span class="bwv-review">Revu le 22 juillet 2026</span></header>
+  <div class="bwv-grid">
+    <section class="bwv-card" aria-labelledby="bwv-calc-title"><h3 id="bwv-calc-title">Montant de TVA</h3><p>Ajoutez la TVA à un prix HT ou extrayez-la d'un total TTC. Le calcul reste dans ce navigateur.</p><form id="bwvForm" novalidate><div class="bwv-actions" aria-label="Sens du calcul"><button class="bwv-button" type="button" data-bwv-mode="add" aria-pressed="true">Ajouter la TVA</button><button class="bwv-button" type="button" data-bwv-mode="extract" aria-pressed="false">Extraire la TVA</button></div><label class="bwv-field" for="bwvAmount"><span>Montant <small>Pula botswanais (BWP)</small></span><input id="bwvAmount" type="number" min="0" step="0.01" inputmode="decimal" value="10000" required></label><div class="bwv-actions" aria-label="Traitement TVA"><button class="bwv-button" type="button" data-bwv-rate="standard" aria-pressed="true">Taux standard 14 %</button><button class="bwv-button" type="button" data-bwv-rate="confirmed-zero" aria-pressed="false">Taux zéro confirmé 0 %</button></div><button class="bwv-button primary" type="submit">Calculer la TVA Botswana</button><p class="bwv-error" id="bwvError" aria-live="polite"></p></form><section class="bwv-result" id="bwvResult" aria-live="polite"><div class="bwv-result-label" id="bwvResultLabel">Total TTC</div><div class="bwv-result-main" id="bwvMain">0,00 BWP</div><dl><dt>Montant HT</dt><dd id="bwvNet"></dd><dt>TVA</dt><dd id="bwvVat"></dd><dt>Total TTC</dt><dd id="bwvGross"></dd><dt>Taux utilisé</dt><dd id="bwvRate">14 %</dd></dl><p class="bwv-note" id="bwvResultNote"></p></section><div class="bwv-tools"><button class="bwv-button" id="bwvPdf" type="button">Télécharger le PDF local</button><button class="bwv-button" id="bwvShare" type="button">Partager le lien</button></div></section>
+    <div class="bwv-stack">
+      <section class="bwv-card" aria-labelledby="bwv-invoice-title"><h3 id="bwv-invoice-title">Contrôle d'une ligne de facture</h3><p>Quantité × prix unitaire, avec le traitement TVA sélectionné.</p><form id="bwvInvoiceForm"><div class="bwv-inline"><label class="bwv-field" for="bwvDescription"><span>Description</span><input id="bwvDescription" value="Service de conseil"></label><label class="bwv-field" for="bwvQuantity"><span>Quantité</span><input id="bwvQuantity" type="number" min="0" step="0.01" value="2"></label><label class="bwv-field" for="bwvUnitPrice"><span>Prix unitaire</span><input id="bwvUnitPrice" type="number" min="0" step="0.01" value="5000"></label></div><button class="bwv-button" type="submit">Contrôler la facture</button><p class="bwv-error" id="bwvInvoiceError" aria-live="polite"></p></form><div class="bwv-mini-result" id="bwvInvoiceResult"><span>HT<strong id="bwvInvoiceNet"></strong></span><span>TVA<strong id="bwvInvoiceVat"></strong></span><span>TTC<strong id="bwvInvoiceGross"></strong></span></div></section>
+      <section class="bwv-card" aria-labelledby="bwv-reg-title"><h3 id="bwv-reg-title">Contrôle d'inscription</h3><p>BURS indique l'inscription obligatoire au-dessus de 1 million BWP. Entre 500 000 et 1 million BWP, une inscription volontaire peut être demandée, sous réserve d'acceptation.</p><form id="bwvRegistrationForm"><label class="bwv-field" for="bwvTurnover"><span>Fournitures taxables sur 12 mois <small>BWP</small></span><input id="bwvTurnover" type="number" min="0" step="0.01" value="1200000"></label><button class="bwv-button" type="submit">Contrôler le chiffre</button><p class="bwv-error" id="bwvRegistrationError" aria-live="polite"></p></form><div class="bwv-treatment" id="bwvRegistrationResult">Saisissez le chiffre d'affaires pour contrôler les seuils publiés.</div></section>
+      <section class="bwv-card" aria-labelledby="bwv-class-title"><h3 id="bwv-class-title">Limite de traitement</h3><p>Une opération à taux zéro n'est pas une opération exonérée ; les conséquences sur la TVA en amont peuvent différer.</p><label class="bwv-field" for="bwvClassification"><span>Traitement connu</span><select id="bwvClassification"><option value="review">Pas encore confirmé</option><option value="standard">Taux standard</option><option value="confirmed-zero">Taux zéro confirmé</option><option value="confirmed-exempt">Exonération confirmée</option></select></label><div class="bwv-treatment review" id="bwvClassificationResult">Confirmez l'annexe légale actuelle avec BURS avant facturation ou dépôt.</div></section>
     </div>
   </div>
-</section>
-<!-- TOOL_VERIFICATION_PANEL_END -->
+  <section class="bwv-card" data-tool-verification-panel data-tool-id="bw-vat" aria-labelledby="bwv-source-title" style="margin-top:18px"><div class="afro-source-meta" data-source-meta-id="vat-bw-source" data-source-meta-compact="true"></div><h3 id="bwv-source-title">Sources officielles, fraîcheur et limites</h3><p class="bwv-freshness">Le taux de 14 % et les seuils de 1 million / 500 000 BWP ont été revus le 22 juillet 2026. Le projet de loi TVA 2025 et les annonces 2026 sur les services numériques sont du contexte de changement ; l'outil ne présente pas leurs dispositions transitoires comme des règles de dépôt définitives.</p><ul class="bwv-source-list"><li><a href="https://www.burs.org.bw/index.php/brochure?download=815%3Aburs-vat-brochures" target="_blank" rel="noopener">Brochure TVA de BURS</a> — taux et seuils.</li><li><a href="https://www.burs.org.bw/index.php/tax/tax-amendment-bills" target="_blank" rel="noopener">Avis BURS sur la loi modificative</a> — seuil de 1 million BWP.</li><li><a href="https://www.botswanaspeaks.gov.bw/media/BILLS/2026%20BILLS/Bill39%2019_12_2025%20VALUE%20ADDED%20TAX.pdf" target="_blank" rel="noopener">Projet de loi TVA 2025</a> — taux de 14 % et réforme proposée.</li><li><a href="https://dailynews.gov.bw/news-detail/91645" target="_blank" rel="noopener">Mise à jour gouvernementale sur la TVA numérique</a> — transition 2026.</li></ul><p>Estimation de planification uniquement. Confirmez le traitement, l'inscription, la facturation, les services numériques, le dépôt et le paiement avec BURS ou un fiscaliste qualifié au Botswana.</p><a class="tool-verification-report" href="/fr/contact/?topic=calculation-error&amp;tool=bw-vat">Signaler une erreur de calcul</a></section><p class="bwv-status" id="bwvStatus" aria-live="polite"></p>
+</main>
 <afro-footer></afro-footer>
 <script data-fr-vat-fallback-script>
 (function(){document.querySelectorAll('[data-vat-fallback-calc]').forEach(function(card){var out=card.querySelector('[data-vat-output]');function money(x){return (isFinite(x)?x:0).toLocaleString('fr-FR',{maximumFractionDigits:2});}function calc(){var amount=parseFloat(card.querySelector('[data-vat-amount]').value)||0;var rate=(parseFloat(card.querySelector('[data-vat-rate]').value)||0)/100;var mode=card.querySelector('[data-vat-mode]').value;var net,tax,total;if(mode==='remove'){total=amount;net=rate?amount/(1+rate):amount;tax=total-net;}else{net=amount;tax=net*rate;total=net+tax;}out.textContent='HT: '+money(net)+' | TVA: '+money(tax)+' | TTC: '+money(total);}card.addEventListener('input',calc);var btn=card.querySelector('[data-vat-run]');if(btn)btn.addEventListener('click',calc);});})();
 </script>
+<script>window.BWVatLocale={numberLocale:"fr-FR",grossResult:"Total TTC",netResult:"Montant HT",zeroNote:"Utilisez 0 % seulement après confirmation du taux zéro dans la loi actuelle.",standardNote:"Estimation au taux standard botswanais de 14 %.",calculated:"Estimation TVA mise à jour localement.",invalid:"Saisissez un montant positif ou nul.",invalidInvoice:"Saisissez une quantité et un prix unitaire positifs ou nuls.","registration_mandatory":"Inscription obligatoire : les fournitures taxables dépassent 1 million BWP sur 12 mois.","registration_voluntary":"Zone d'inscription volontaire : demande possible sous réserve d'acceptation BURS.","registration_below-voluntary-floor":"Sous 500 000 BWP : le contrôle publié ne place pas l'activité dans la zone d'inscription volontaire.",classification_standard:"Traitement standard à 14 %.","classification_confirmed-zero":"Taux zéro à 0 % uniquement après confirmation de l'annexe actuelle.","classification_confirmed-exempt":"Exonération confirmée : aucune TVA en aval ; conservez la base juridique.",classification_review:"Confirmez la classification avec BURS avant facturation ou dépôt.",pdfTitle:"Estimation TVA Botswana",pdfSource:"Sources BURS et Gouvernement du Botswana revues le 22 juillet 2026.",net:"Montant HT",vat:"TVA",gross:"Total TTC",rateUsed:"Taux utilisé",pdfDisclaimer:"Estimation uniquement. Confirmez classification, inscription, facturation, services numériques, dépôt et paiement avec BURS ou un conseiller qualifié."};</script>
+<script src="/assets/js/engines/bw-vat.js?v=ce12389b"></script><script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c"></script><script src="/assets/js/pages/botswana-vat-vip.js?v=6b9f7907"></script>
 </body>
 </html>
