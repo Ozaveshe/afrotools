@@ -98,7 +98,7 @@
   applyThemePreference(readThemePreference() || 'auto', { silent: true });
 
   // NAVBAR_CSS_HREF_START
-  const NAVBAR_CSS_HREF = '/assets/css/navbar.min.css?v=2494dc2b';
+  const NAVBAR_CSS_HREF = '/assets/css/navbar.min.css?v=b20a7387';
   // NAVBAR_CSS_HREF_END
 
   // NAVBAR_TOP_LEVEL_DATA_START
