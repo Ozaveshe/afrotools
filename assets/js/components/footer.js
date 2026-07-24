@@ -534,6 +534,7 @@
   var _assistantLoaded = false;
   function _loadAssistant() {
     if (_assistantLoaded) return;
+    if (window.AfroDisableAssistant === true) return;
     if (document.querySelector('script[src*="site-assistant"]') || document.querySelector('script[src*="chat."]')) return;
     _assistantLoaded = true;
     const s = document.createElement('script');
