@@ -32,17 +32,33 @@
 <script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
 <link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c4853917">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<style>
+.bp-btn,.bp-export-btn,.file-label,.bp-template-btn,.bp-section-tab{min-height:44px}
+.bp-export-review{display:grid;grid-column:1/-1;grid-template-columns:auto minmax(0,1fr);gap:9px;align-items:start;min-width:0;flex:1 0 100%;padding:11px 12px;border:1px solid #bfdbfe;border-radius:8px;background:#f8fbff;color:#334155;font-size:.78rem;font-weight:700;line-height:1.45;overflow-wrap:anywhere;cursor:pointer}
+.bp-export-review input{width:20px;height:20px;margin:1px 0 0;accent-color:#0f4aa2}
+.bp-export-status{grid-column:1/-1;color:#475569;font-size:.76rem;font-weight:700}
+:root[data-theme="dark"] body{background:#0b1120!important;color:#e5edf8!important}
+:root[data-theme="dark"] .bp-topbar,:root[data-theme="dark"] .bp-panel,:root[data-theme="dark"] .bp-saved,:root[data-theme="dark"] .bp-export,:root[data-theme="dark"] .bp-review,:root[data-theme="dark"] .bp-metrics,:root[data-theme="dark"] .bp-preview-card,:root[data-theme="dark"] .bp-saved-card{background:#101a2b!important;border-color:#294164!important;color:#e5edf8!important}
+:root[data-theme="dark"] .bp-panel input,:root[data-theme="dark"] .bp-panel select,:root[data-theme="dark"] .bp-panel textarea,:root[data-theme="dark"] .bp-fin-table input{background:#f1f5f9!important;border-color:#64748b!important;color:#0f172a!important;-webkit-text-fill-color:#0f172a!important;color-scheme:light}
+:root[data-theme="dark"] .bp-panel label,:root[data-theme="dark"] .bp-panel h1,:root[data-theme="dark"] .bp-panel h2,:root[data-theme="dark"] .bp-review h2,:root[data-theme="dark"] .bp-check strong,:root[data-theme="dark"] .bp-metrics dd,:root[data-theme="dark"] .bp-brand,:root[data-theme="dark"] .bp-saved-title{color:#f1f5f9!important}
+:root[data-theme="dark"] .bp-help,:root[data-theme="dark"] .bp-field-note,:root[data-theme="dark"] .bp-check,:root[data-theme="dark"] .bp-metrics dt,:root[data-theme="dark"] .bp-title,:root[data-theme="dark"] .bp-back,:root[data-theme="dark"] .bp-saved-date{color:#b7c5d8!important}
+:root[data-theme="dark"] .bp-export-review{background:#101d31!important;border-color:#35527b!important;color:#dbeafe!important}
+:root[data-theme="dark"] .bp-export-status{color:#b7c5d8!important}
+:root[data-theme="dark"] .bp-preview{background:#fff!important;border-color:#cbd5e1!important;color:#1f2937!important}
+:root[data-theme="dark"] .bp-preview h1,:root[data-theme="dark"] .bp-preview h2,:root[data-theme="dark"] .bp-preview h3,:root[data-theme="dark"] .bp-preview p,:root[data-theme="dark"] .bp-preview th,:root[data-theme="dark"] .bp-preview td{color:#1f2937!important}
+@media (max-width:780px){.bp-app,.bp-left,.bp-right,.bp-right>section{min-width:0;max-width:100%}.bp-export-review{grid-column:1/-1}}
+</style>
 <script src="/assets/js/lib/dark-mode.js?v=5cb64ba3" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/business-plan/app">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh" data-local-first-downloads>
 <header class="bp-topbar">
   <a class="bp-back" href="index.html">Back</a>
   <a class="bp-brand" href="index.html">Business Plan Builder</a>
   <span class="bp-title" id="planTitle">Untitled plan</span>
   <button class="bp-btn" id="copyBriefBtn" type="button">Copy Brief</button>
   <button class="bp-btn" id="savePlanBtn" type="button">Save</button>
-  <button class="bp-btn primary" id="pdfBtn" type="button">PDF</button>
+  <button class="bp-btn primary" id="pdfBtn" type="button">Download PDF</button>
 </header>
 
 <main class="bp-app" aria-label="Business plan builder workspace">
@@ -146,6 +162,11 @@
       <button class="bp-export-btn" id="jsonBtn" type="button">JSON</button>
       <label class="bp-export-btn file-label" for="importJson">Import</label>
       <input id="importJson" class="bp-file-input" type="file" accept="application/json,.json">
+      <label class="bp-export-review" for="bpExportReview">
+        <input id="bpExportReview" type="checkbox">
+        <span>I reviewed the company, market evidence, offer, operations, milestones, forecast assumptions, funding, risks, and final plan preview.</span>
+        <span class="bp-export-status" id="bpExportStatus" role="status" aria-live="polite">Complete and review the plan before download or copied handoff.</span>
+      </label>
     </section>
 
     <section class="bp-review">
@@ -178,6 +199,76 @@
     </section>
   </aside>
 </main>
+<script>
+(function(){
+  var review=document.getElementById('bpExportReview');
+  var status=document.getElementById('bpExportStatus');
+  var exportIds=['pdfBtn','docBtn','txtBtn','csvBtn','jsonBtn','copyBriefBtn'];
+  function exportProblem(id){
+    if(id==='jsonBtn')return '';
+    var name=document.querySelector('[data-section-field="company.name"]');
+    var storedName=name?name.value:String((document.getElementById('planTitle')||{}).textContent||'').replace(/Untitled plan/i,'').trim();
+    if(!storedName)return 'Add a business name before this export.';
+    if(id==='csvBtn'){
+      var revenue=[].slice.call(document.querySelectorAll('[data-fin-row="revenue"]')).some(function(input){return Number(input.value)>0});
+      var metric=String((document.getElementById('metricRevenue')||{}).textContent||'');
+      if(!revenue&&!/[1-9]/.test(metric))return 'Add at least one positive revenue forecast before exporting CSV.';
+    }
+    var preview=String((document.getElementById('planPreview')||{}).textContent||'').trim();
+    if(preview.length<240)return 'Add enough company, market, offer, and operating detail before this handoff.';
+    return '';
+  }
+  function requireReview(event){
+    var button=event.target&&event.target.closest&&event.target.closest('button');
+    if(!button)return;
+    var id=button.id;
+    if(id==='nextSectionBtn'&&/Export PDF/i.test(button.textContent))id='pdfBtn';
+    if(exportIds.indexOf(id)===-1)return;
+    var problem=exportProblem(id);
+    if(problem){
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      if(status)status.textContent=problem;
+      var target=document.querySelector('[data-section-field="company.name"]')||document.getElementById('sectionNav');
+      if(target)target.focus();
+      return;
+    }
+    if(review&&review.checked)return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if(status)status.textContent='Review the final plan preview and confirm it before export.';
+    if(review)review.focus();
+  }
+  function invalidate(event){
+    if(!review||event.target===review||!review.checked)return;
+    if(event.target&&event.target.closest&&event.target.closest('.bp-app')){
+      review.checked=false;
+      if(status)status.textContent='Plan changed. Review the final preview again before export.';
+    }
+  }
+  function labelFinancialControls(){
+    document.querySelectorAll('[data-fin-row]').forEach(function(input){
+      if(input.getAttribute('aria-label'))return;
+      input.setAttribute('aria-label',input.getAttribute('data-fin-row')+' year '+(Number(input.getAttribute('data-fin-year'))+1));
+    });
+  }
+  document.addEventListener('click',requireReview,true);
+  document.addEventListener('input',invalidate,true);
+  document.addEventListener('change',invalidate,true);
+  document.addEventListener('click',function(event){
+    labelFinancialControls();
+    if(!review||!review.checked||!event.target||!event.target.closest)return;
+    var mutation=event.target.closest('[data-template],[data-open-saved]');
+    if(!mutation)return;
+    setTimeout(function(){
+      review.checked=false;
+      if(status)status.textContent='Plan changed. Review the final preview again before export.';
+    },0);
+  },true);
+  if(window.MutationObserver)new MutationObserver(labelFinancialControls).observe(document.getElementById('sectionBody'),{childList:true,subtree:true});
+  labelFinancialControls();
+})();
+</script>
 <script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
 </body>
 </html>
