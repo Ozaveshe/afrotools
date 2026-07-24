@@ -70,12 +70,32 @@
 <script src="/assets/js/pages/receipt-generator.js?v=f8a636cc" defer></script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1bd26ae3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<style>
+.tool-button,.export-button,.file-button,.delete-item{min-height:44px}
+.receipt-review{display:grid;grid-template-columns:auto 1fr;gap:9px;align-items:start;flex:1 0 100%;padding:11px 12px;border:1px solid #bfdbfe;border-radius:8px;background:#f8fbff;color:#334155;font-size:.78rem;font-weight:700;line-height:1.45;cursor:pointer}
+.receipt-review input{width:20px;height:20px;margin:1px 0 0;accent-color:#0f4aa2}
+.receipt-review-status{grid-column:1/-1;color:#475569;font-size:.76rem;font-weight:700}
+:root[data-theme="dark"] .receipt-app{background:#0b1120!important;color:#e5edf8!important}
+:root[data-theme="dark"] .receipt-hero{background:#0f1b2f!important;border-color:#294164!important}
+:root[data-theme="dark"] .form-panel,:root[data-theme="dark"] .receipt-saved,:root[data-theme="dark"] .receipt-toolbar,:root[data-theme="dark"] .export-panel,:root[data-theme="dark"] .quality-panel,:root[data-theme="dark"] .totals-panel,:root[data-theme="dark"] .saved-card,:root[data-theme="dark"] .benchmark-grid article,:root[data-theme="dark"] .receipt-benchmark{background:#101a2b!important;border-color:#294164!important;color:#e5edf8!important}
+:root[data-theme="dark"] .form-panel input,:root[data-theme="dark"] .form-panel select,:root[data-theme="dark"] .form-panel textarea,:root[data-theme="dark"] .logo-row input,:root[data-theme="dark"] .item-row input{background:#f1f5f9!important;border-color:#64748b!important;color:#0f172a!important;-webkit-text-fill-color:#0f172a!important;box-shadow:inset 0 0 0 1000px #f1f5f9!important;color-scheme:light}
+:root[data-theme="dark"] .form-panel label,:root[data-theme="dark"] .logo-row label,:root[data-theme="dark"] .section-head h2,:root[data-theme="dark"] .quality-panel h2,:root[data-theme="dark"] .totals-panel dd,:root[data-theme="dark"] .check-item strong,:root[data-theme="dark"] .benchmark-grid strong,:root[data-theme="dark"] .receipt-seo h2,:root[data-theme="dark"] .faq-list summary{color:#f1f5f9!important}
+:root[data-theme="dark"] .field-note,:root[data-theme="dark"] .check-item,:root[data-theme="dark"] .totals-panel dt,:root[data-theme="dark"] .benchmark-grid span,:root[data-theme="dark"] .receipt-seo p,:root[data-theme="dark"] .receipt-sub{color:#b7c5d8!important}
+:root[data-theme="dark"] .receipt-preview-frame{background:#17233a!important;border-color:#35527b!important}
+:root[data-theme="dark"] .receipt-review{background:#101d31!important;border-color:#35527b!important;color:#dbeafe!important}
+:root[data-theme="dark"] .receipt-review-status{color:#b7c5d8!important}
+:root[data-theme="dark"] .receipt-paper{background:#fff!important;color:#111827!important}
+:root[data-theme="dark"] .receipt-paper .r-biz,:root[data-theme="dark"] .receipt-paper .r-value,:root[data-theme="dark"] .receipt-paper .r-table td,:root[data-theme="dark"] .receipt-paper .r-total-row.final,:root[data-theme="dark"] .receipt-paper .r-total-row strong{color:#111827!important}
+:root[data-theme="dark"] .receipt-paper .r-muted,:root[data-theme="dark"] .receipt-paper .r-small,:root[data-theme="dark"] .receipt-paper .r-label,:root[data-theme="dark"] .receipt-paper .r-table th,:root[data-theme="dark"] .receipt-paper .r-total-row,:root[data-theme="dark"] .receipt-paper .r-note,:root[data-theme="dark"] .receipt-paper .r-footer{color:#475569!important}
+:root[data-theme="dark"] .receipt-paper .r-table thead,:root[data-theme="dark"] .receipt-paper .r-table th{background:#0f172a!important;color:#fff!important}
+:root[data-theme="dark"] .receipt-paper .r-table tbody,:root[data-theme="dark"] .receipt-paper .r-table tr,:root[data-theme="dark"] .receipt-paper .r-table td{background:#fff!important}
+</style>
 <link rel="canonical" href="https://afrotools.com/tools/receipt-generator/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/receipt-generator/">
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/kirkiro-resit/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/receipt-generator/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar active="document-pdf"></afro-navbar>
 
 <main class="receipt-app">
@@ -88,7 +108,7 @@
         <div>
           <p class="receipt-kicker">Business records</p>
           <h1>Receipt Generator</h1>
-          <p class="receipt-sub">Create a clean payment receipt, check the totals, then download or print it without an account gate.</p>
+          <p class="receipt-sub">Create a clean payment receipt, check the totals, then download or print it directly from this browser.</p>
         </div>
         <div class="receipt-hero-metrics" aria-label="Receipt generator highlights">
           <span><strong>16+</strong> currencies</span>
@@ -378,7 +398,7 @@
 
     <aside class="receipt-preview-column" aria-label="Receipt preview and export">
       <section class="export-panel">
-        <button class="export-button primary" id="downloadPdfBtn" type="button">PDF</button>
+        <button class="export-button primary" id="downloadPdfBtn" type="button">Download PDF</button>
         <button class="export-button" id="printBtn" type="button">Print</button>
         <button class="export-button" id="copySummaryBtn" type="button">Copy</button>
         <button class="export-button" id="txtBtn" type="button">TXT</button>
@@ -386,6 +406,11 @@
         <button class="export-button" id="jsonBtn" type="button">JSON</button>
         <label class="export-button file-button" for="importJson">Import</label>
         <input id="importJson" class="file-input" type="file" accept="application/json,.json">
+        <label class="receipt-review" for="receiptReviewConfirm">
+          <input id="receiptReviewConfirm" type="checkbox">
+          <span>I reviewed the seller, customer, receipt number, date, items, tax, payment reference, totals, status, and final paper preview.</span>
+          <span class="receipt-review-status" id="receiptReviewStatus" role="status" aria-live="polite">Complete and review the receipt before download, copy, or print.</span>
+        </label>
       </section>
 
       <section class="receipt-preview-frame">
@@ -455,5 +480,112 @@
 <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
 <script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
 <script src="/assets/js/components/related-tools.min.js?v=7d171d76" defer></script>
+<script>
+(function(){
+  var review=document.getElementById('receiptReviewConfirm');
+  var status=document.getElementById('receiptReviewStatus');
+  var exportIds=['downloadPdfBtn','printBtn','copySummaryBtn','txtBtn','csvBtn','jsonBtn'];
+  function value(id){var field=document.getElementById(id);return String(field&&field.value||'').trim()}
+  function exportProblem(id){
+    if(id==='jsonBtn')return '';
+    var item=[].slice.call(document.querySelectorAll('#itemsList [data-item-row]')).some(function(row){
+      var desc=row.querySelector('[data-item-field="desc"]');
+      var qty=row.querySelector('[data-item-field="qty"]');
+      var rate=row.querySelector('[data-item-field="rate"]');
+      return desc&&desc.value.trim()&&Number(qty&&qty.value)>0&&Number(rate&&rate.value)>0;
+    });
+    if(!value('businessName'))return 'Add the issuing business name before this export.';
+    if(!value('receiptNumber')||!value('receiptDate'))return 'Add a receipt number and date before this export.';
+    if(!item)return 'Add at least one priced item with a positive quantity and rate.';
+    var method=value('paymentMethod');
+    if(!/^(Cash|Other|Store credit)$/i.test(method)&&!value('paymentReference')&&!value('authCode')&&!value('qrData'))return 'Add a payment reference, approval code, or QR detail for this non-cash receipt.';
+    return '';
+  }
+  function requireReview(event){
+    var button=event.target&&event.target.closest&&event.target.closest('button');
+    if(!button||exportIds.indexOf(button.id)===-1)return;
+    var problem=exportProblem(button.id);
+    if(problem){
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      if(status)status.textContent=problem;
+      var target=/business/.test(problem)?document.getElementById('businessName'):/number and date/.test(problem)?document.getElementById('receiptNumber'):/priced item/.test(problem)?document.querySelector('[data-item-field="desc"]'):document.getElementById('paymentReference');
+      if(target)target.focus();
+      return;
+    }
+    if(review&&review.checked)return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if(status)status.textContent='Review the final receipt preview and confirm it before export.';
+    if(review)review.focus();
+  }
+  function invalidate(event){
+    if(!review||event.target===review||!review.checked)return;
+    if(event.target&&event.target.closest&&event.target.closest('.receipt-app')){
+      review.checked=false;
+      if(status)status.textContent='Receipt changed. Review the final preview again before export.';
+    }
+  }
+  document.addEventListener('click',requireReview,true);
+  document.addEventListener('input',invalidate,true);
+  document.addEventListener('change',invalidate,true);
+  document.addEventListener('click',function(event){
+    if(!review||!review.checked||!event.target||!event.target.closest)return;
+    var mutation=event.target.closest('#newReceiptBtn,#renumberBtn,#addItemBtn,#addServiceBtn,#clearLogoBtn,[data-delete-item],[data-open-saved],[data-delete-saved]');
+    if(!mutation)return;
+    setTimeout(function(){
+      review.checked=false;
+      if(status)status.textContent='Receipt changed. Review the final preview again before export.';
+    },0);
+  },true);
+  var pdfButton=document.getElementById('downloadPdfBtn');
+  if(pdfButton)pdfButton.addEventListener('click',function(event){
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if(!window.html2canvas||!window.jspdf||!window.jspdf.jsPDF){
+      if(status)status.textContent='PDF tools are still loading. Try again in a moment.';
+      return;
+    }
+    var original=pdfButton.textContent;
+    pdfButton.disabled=true;
+    pdfButton.textContent='Working';
+    window.html2canvas(document.getElementById('receiptPreview'),{scale:2,backgroundColor:'#ffffff',useCORS:true}).then(function(canvas){
+      var pdf=new window.jspdf.jsPDF({unit:'mm',format:'a4',orientation:'portrait',compress:true});
+      var pageWidth=pdf.internal.pageSize.getWidth();
+      var pageHeight=pdf.internal.pageSize.getHeight();
+      var printableWidth=pageWidth-20;
+      var printableHeight=pageHeight-20;
+      var widthScale=printableWidth/canvas.width;
+      var naturalHeight=canvas.height*widthScale;
+      var scale=naturalHeight<=printableHeight*1.3?Math.min(widthScale,printableHeight/canvas.height):widthScale;
+      var sliceHeight=Math.max(1,Math.floor(printableHeight/scale));
+      var offset=0;
+      var pageIndex=0;
+      while(offset<canvas.height){
+        var height=Math.min(sliceHeight,canvas.height-offset);
+        var slice=document.createElement('canvas');
+        slice.width=canvas.width;
+        slice.height=height;
+        slice.getContext('2d').drawImage(canvas,0,offset,canvas.width,height,0,0,canvas.width,height);
+        if(pageIndex)pdf.addPage();
+        var renderedWidth=canvas.width*scale;
+        var renderedHeight=height*scale;
+        var left=(pageWidth-renderedWidth)/2;
+        pdf.addImage(slice.toDataURL('image/jpeg',0.92),'JPEG',left,10,renderedWidth,renderedHeight,undefined,'FAST');
+        offset+=height;
+        pageIndex+=1;
+      }
+      var number=value('receiptNumber')||'receipt';
+      pdf.save(number.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+'.pdf');
+      if(status)status.textContent='Receipt PDF downloaded after final review.';
+    }).catch(function(){
+      if(status)status.textContent='PDF export failed. Use Print or try again.';
+    }).finally(function(){
+      pdfButton.disabled=false;
+      pdfButton.textContent=original;
+    });
+  },true);
+})();
+</script>
 </body>
 </html>
