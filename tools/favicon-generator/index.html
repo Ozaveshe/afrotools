@@ -26,10 +26,11 @@
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
 <link rel="stylesheet" href="/assets/css/image-design-workflow.css?v=0c4f7205">
 <link rel="stylesheet" href="/assets/css/image-design-tool-focus.css?v=8941fca1">
+<link rel="stylesheet" href="/assets/css/image-design-day4-tools.css?v=b25ad14e">
 <script src="/assets/js/pages/image-design-tool-focus.js?v=257c735f" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=783a8ae4" defer></script>
 <script src="/assets/js/components/footer.min.js?v=6f4a0d1b" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="/assets/vendor/jszip/jszip.min.js?v=3.10.1"></script>
 <style>
   :root {
     --afro-blue: var(--color-primary);
@@ -572,8 +573,9 @@
             <div class="upload-icon">??</div>
             <div class="upload-text">Choose an image or drag it here</div>
             <div class="upload-hint">PNG, JPG, WebP (Square recommended)</div>
-            <input aria-label="ImageInput" type="file" id="imageInput" accept="image/*">
+            <input aria-label="Choose an image for the favicon" aria-describedby="faviconStatus" type="file" id="imageInput" accept="image/*">
           </div>
+          <p class="favicon-status" id="faviconStatus" role="status" aria-live="polite">Choose a PNG, JPG, or WebP image.</p>
         </div>
       </div>
 
@@ -584,24 +586,24 @@
         </div>
         <div class="card-body">
           <div class="field">
-            <label class="f-label">
+            <label class="f-label" for="textInput">
               <span class="f-label-text">Text or Emoji</span>
             </label>
-            <input aria-label="A, ??, or logo" type="text" class="f-input" id="textInput" placeholder="A, ??, or logo" maxlength="3">
+            <input type="text" class="f-input" id="textInput" placeholder="A, emoji, or logo" maxlength="3">
           </div>
 
           <div class="field">
-            <label class="f-label">
+            <label class="f-label" for="bgColor">
               <span class="f-label-text">Background Color</span>
             </label>
-            <input aria-label="BgColor" type="color" class="color-input" id="bgColor" value="#0062cc">
+            <input type="color" class="color-input" id="bgColor" value="#0062cc">
           </div>
 
           <div class="field">
-            <label class="f-label">
+            <label class="f-label" for="textColor">
               <span class="f-label-text">Text Color</span>
             </label>
-            <input aria-label="TextColor" type="color" class="color-input" id="textColor" value="#ffffff">
+            <input type="color" class="color-input" id="textColor" value="#ffffff">
           </div>
         </div>
       </div>
@@ -758,6 +760,7 @@
   const previewCard = document.getElementById('previewCard');
   const faviconGrid = document.getElementById('faviconGrid');
   const downloadBtn = document.getElementById('downloadBtn');
+  const faviconStatus = document.getElementById('faviconStatus');
 
   let currentMode = 'image';
   let sourceImage = null;
@@ -802,6 +805,12 @@
   function handleImageUpload() {
     const file = imageInput.files[0];
     if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      sourceImage = null;
+      generateBtn.disabled = true;
+      faviconStatus.textContent = 'Choose a valid PNG, JPG, or WebP image file.';
+      return;
+    }
 
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -809,8 +818,19 @@
       img.onload = () => {
         sourceImage = img;
         generateBtn.disabled = false;
+        faviconStatus.textContent = `${file.name} is ready. Generate your favicon sizes.`;
+      };
+      img.onerror = () => {
+        sourceImage = null;
+        generateBtn.disabled = true;
+        faviconStatus.textContent = 'This image could not be decoded. Choose another PNG, JPG, or WebP file.';
       };
       img.src = e.target.result;
+    };
+    reader.onerror = () => {
+      sourceImage = null;
+      generateBtn.disabled = true;
+      faviconStatus.textContent = 'This image could not be read. Choose another file.';
     };
     reader.readAsDataURL(file);
   }
@@ -867,6 +887,7 @@
     });
 
     previewCard.classList.add('on');
+    faviconStatus.textContent = 'Favicons generated in four sizes. Your ZIP is ready to download.';
   });
 
   downloadBtn.addEventListener('click', async () => {
